@@ -61,7 +61,7 @@ public class PerformanceSteps {
 					PagesCollection.dialogPage.isDialogVisible();
 					PagesCollection.dialogPage
 							.tapDialogPageBottom();
-					PagesCollection.dialogPage.typeMessage(CommonUtils
+					PagesCollection.dialogPage.typeAndSendMessage(CommonUtils
 							.generateGUID());
 					Thread.sleep(1000);
 					if (perfCommon.random.nextBoolean()) {

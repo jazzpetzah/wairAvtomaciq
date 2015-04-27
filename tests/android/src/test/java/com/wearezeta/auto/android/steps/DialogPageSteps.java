@@ -61,11 +61,11 @@ public class DialogPageSteps {
 	@When("^I type the message and send it$")
 	public void WhenITypeRandomMessageAndSendIt() throws Exception {
 		message = CommonUtils.generateGUID();
-		PagesCollection.dialogPage.typeMessage(message);
+		PagesCollection.dialogPage.typeAndSendMessage(message);
 	}
 
 	/**
-	 * Inputs a custom message and sends it (Does it actually send the message?)
+	 * Inputs a custom message and sends it
 	 * 
 	 * @step. ^I input (.*) message and send it$
 	 * 
@@ -78,7 +78,35 @@ public class DialogPageSteps {
 	public void ITypeTheMessageAndSendIt(String myMessage) throws Exception {
 		message = myMessage;
 
+		PagesCollection.dialogPage.typeAndSendMessage(myMessage);
+	}
+	
+	/**
+	 * Inputs a custom message and does NOT send it
+	 * 
+	 * @step. ^I input (.*) message and send it$
+	 * 
+	 * @param myMessage
+	 *            the message to send
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I input (.*) message$")
+	public void ITypeInAMessage(String myMessage) throws Exception {
+		message = myMessage;
 		PagesCollection.dialogPage.typeMessage(myMessage);
+	}
+	
+	/**
+	 * Sends the message by pressing the keyboard send button
+	 * 
+	 * @step. ^I send the message$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I send the message$")
+	public void ISendTheMessage() throws Exception {
+		PagesCollection.dialogPage.pressKeyboardSendButton();
 	}
 
 	/**
@@ -91,7 +119,7 @@ public class DialogPageSteps {
 	@When("^I type long message and send it$")
 	public void WhenITypeLongMessageAndSendIt() throws Throwable {
 		message = ANDROID_LONG_MESSAGE;
-		PagesCollection.dialogPage.typeMessage(message);
+		PagesCollection.dialogPage.typeAndSendMessage(message);
 	}
 
 	/**
@@ -106,7 +134,7 @@ public class DialogPageSteps {
 	public void WhenITypeUpperLowerCaseAndSendIt() throws Throwable {
 		message = CommonUtils.generateRandomString(5).toLowerCase() + " "
 				+ CommonUtils.generateRandomString(5).toUpperCase();
-		PagesCollection.dialogPage.typeMessage(message);
+		PagesCollection.dialogPage.typeAndSendMessage(message);
 	}
 
 	/**

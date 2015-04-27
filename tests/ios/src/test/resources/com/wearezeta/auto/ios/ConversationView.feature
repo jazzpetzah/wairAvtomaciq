@@ -85,7 +85,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @staging @id1468
+  @regression @id1468
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -506,7 +506,7 @@ Feature: Conversation View
   #Examples:
   #| Login   | Password    | Name    | Contact     | YouTubeLink                                |
   #| aqaUser | aqaPassword | aqaUser | aqaContact1 | http://www.youtube.com/watch?v=Bb1RhktcugU |
-  @staging @id1387
+  @regression @id1387
   Scenario Outline: Verify you can play/pause media from the Media Bar - YouTube
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -641,7 +641,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
  
 
-  @staging @id1476
+  @regression @id1476
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

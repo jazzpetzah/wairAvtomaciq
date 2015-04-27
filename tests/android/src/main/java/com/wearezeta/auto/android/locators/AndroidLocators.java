@@ -177,7 +177,7 @@ public final class AndroidLocators {
 				+ ":id/cib__calling_mute";
 		
 		public static final String idAcceptButton = LOCATORS_PACKAGE
-				+ ":id/gtv__conversation_list__sticky_menu__trigger_startui";
+				+ ":id/gtv__calling__accept";
 		
 		public static final String idCallingUsersName = LOCATORS_PACKAGE
 				+ ":id/ttv__calling__message";
@@ -367,7 +367,7 @@ public final class AndroidLocators {
 		public static final String idCursorFrame = LOCATORS_PACKAGE + ":id/cv";
 
 		public static final String idKnockIcon = LOCATORS_PACKAGE
-				+ ":id/gtv__knock_icon";
+				+ ":id/gtv__knock_icon"; 
 
 		public static final String idMessage = LOCATORS_PACKAGE
 				+ ":id/ltv__row_conversation__message";
