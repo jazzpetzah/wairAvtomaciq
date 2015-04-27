@@ -10,10 +10,10 @@ Feature: Conversation List
     And I see dialog page
     And I swipe up on dialog page
     And I press options menu button
-    And I press Silence conversartion button
+    And I press Silence conversation button
     And I return to group chat page
     And I return to group chat page
-    And I swipe right on dialog page
+    And I navigate back from dialog page
     Then Contact <Contact1> is muted
 
     Examples: 
