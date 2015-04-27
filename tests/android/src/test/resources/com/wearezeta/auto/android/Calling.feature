@@ -81,7 +81,6 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-<<<<<<< HEAD
   @staging @id347
   Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
