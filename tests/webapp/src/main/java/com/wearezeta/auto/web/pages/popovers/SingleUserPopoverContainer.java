@@ -89,9 +89,4 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		return this.pendingParticipantInfoPopoverPage
 				.isPendingButtonToolTipCorrect();
 	}
-
-	public boolean isRemoveFromGroupChatButtonToolTipCorrect() {
-		return this.singleUserPopoverPage
-				.isRemoveFromGroupChatButtonToolTipCorrect();
-	}
 }

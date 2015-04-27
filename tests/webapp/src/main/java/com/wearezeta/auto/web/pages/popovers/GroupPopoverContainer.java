@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class GroupPopoverContainer extends PeoplePopoverContainer {
 
+	private SingleUserInfoPopoverPage singleUserPopoverPage;
 	private ParticipantsListPopoverPage participantsListPopoverPage;
 	private ConnectedParticipantInfoPopoverPage connectedParticipantInfoPopoverPage;
 	private NonConnectedParticipantInfoPopoverPage nonConnectedParticipantInfoPopoverPage;
@@ -17,6 +18,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	public GroupPopoverContainer(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
+		this.singleUserPopoverPage = new SingleUserInfoPopoverPage(driver,
+				wait, this);
 		this.participantsListPopoverPage = new ParticipantsListPopoverPage(
 				driver, wait, this);
 		this.connectedParticipantInfoPopoverPage = new ConnectedParticipantInfoPopoverPage(
@@ -133,5 +136,32 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	public boolean isRenameConversationToolTipCorrect() {
 		return this.participantsListPopoverPage
 				.isRenameConversationToolTipCorrect();
+	}
+
+	public boolean isPendingButtonToolTipCorrect() {
+		return this.pendingParticipantInfoPopoverPage
+				.isPendingButtonToolTipCorrect();
+	}
+
+	public boolean isRemoveFromGroupChatButtonToolTipCorrect() {
+		return this.singleUserPopoverPage
+				.isRemoveFromGroupChatButtonToolTipCorrect();
+	}
+
+	public String getUserName() {
+		return singleUserPopoverPage.getUserName();
+	}
+
+	public boolean isAvatarVisible() {
+		return this.singleUserPopoverPage.isAvatarVisible();
+	}
+
+	public String getUserMail() {
+		return this.singleUserPopoverPage.getMailText();
+	}
+
+	public boolean isPendingTextBoxVisible() {
+		return this.pendingParticipantInfoPopoverPage
+				.isPendingTextBoxDisplayed();
 	}
 }

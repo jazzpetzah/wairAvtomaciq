@@ -166,19 +166,6 @@ public class SingleUserPopoverPageSteps {
 	}
 
 	/**
-	 * Verifies whether Remove button is visible on Single Participant popover
-	 *
-	 * @step. ^I see Remove button on Single Participant popover$
-	 *
-	 * @throws Exception
-	 */
-	@When("^I see Remove button on Single Participant popover$")
-	public void ISeeRemoveUserFromGroupChat() throws Exception {
-		((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.isRemoveButtonVisible();
-	}
-
-	/**
 	 * Verifies Mail is visible on Single Participant popover
 	 *
 	 * @step. ^I see Mail on Single Participant popover$
@@ -251,38 +238,15 @@ public class SingleUserPopoverPageSteps {
 	}
 
 	/**
-	 * Verifies whether back button tool tip is correct or not.
-	 *
-	 * @step. ^I see correct back button tool tip$
-	 *
-	 */
-	@Then("^I see correct back button tool tip$")
-	public void ThenISeeCorrectBackButtonToolTip() {
-		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.isBackButtonToolTipCorrect());
-	}
-
-	/**
 	 * Verifies whether pending button tool tip is correct or not.
 	 *
-	 * @step. ^I see correct pending button tool tip$
+	 * @step. ^I see correct pending button tool tip on Single Participant
+	 *        popover$
 	 *
 	 */
-	@Then("^I see correct pending button tool tip$")
+	@Then("^I see correct pending button tool tip on Single Participant popover$")
 	public void ThenISeeCorrectPendingButtonToolTip() {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
 				.isPendingButtonToolTipCorrect());
-	}
-
-	/**
-	 * Verifies whether remove from group button tool tip is correct or not.
-	 *
-	 * @step. ^I see correct remove from group button tool tip$
-	 *
-	 */
-	@Then("^I see correct remove from group button tool tip$")
-	public void ThenISeeCorrectRemoveFromGroupChatButtonToolTip() {
-		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.isRemoveFromGroupChatButtonToolTipCorrect());
 	}
 }
