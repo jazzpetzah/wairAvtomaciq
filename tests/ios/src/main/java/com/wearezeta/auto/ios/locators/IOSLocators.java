@@ -96,9 +96,9 @@ public final class IOSLocators {
 	
 	public static final String nameCameraRollCancel = "Cancel";
 	
-	public static final String xpathCameraLibraryFirstFolder = "//UIAApplication/UIAWindow/UIATableView/UIATableCell[1]";
+	public static final String xpathCameraLibraryFirstFolder = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIATableView/UIATableCell[@name='Moments']";
 	
-	public static final String xpathLibraryFirstPicture = "//UIAApplication/UIAWindow/UIACollectionView/UIACollectionCell[1]";
+	public static final String xpathLibraryFirstPicture = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell[1]";
 	
 	public static final String nameConfirmPictureButton = "OK";
 	
