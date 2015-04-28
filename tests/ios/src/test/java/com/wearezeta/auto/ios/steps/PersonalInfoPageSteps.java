@@ -264,5 +264,23 @@ public class PersonalInfoPageSteps {
 	public void IChangeMyAccentColorViaTheColorpicker(){
 		PagesCollection.personalInfoPage.changeAccentColor();
 	}
+	
+	/**
+	 * Switches the chathead preview on or off in settings
+	 * @step. ^I switch on or off the chathead preview$
+	 */
+	@When("^I switch on or off the chathead preview$")
+	public void ISwitchOnOrOffTheChatheadPreview(){
+		PagesCollection.personalInfoPage.switchChatheadsOnOff();
+	}
+
+	/**
+	 * 
+	 */
+	@When("^I close the Settings$")
+	public void ICloseTheSettings(){
+		PagesCollection.personalInfoPage.pressSettingsBackButton();
+		PagesCollection.personalInfoPage.pressSettingsDoneButton();
+	}
 
 }
