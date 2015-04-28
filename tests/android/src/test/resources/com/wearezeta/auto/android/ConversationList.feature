@@ -12,7 +12,6 @@ Feature: Conversation List
     And I press options menu button
     And I press Silence conversation button
     And I return to group chat page
-    And I return to group chat page
     And I navigate back from dialog page
     Then Contact <Contact1> is muted
 
@@ -46,8 +45,8 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
       | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id2177 @staging
-  Scenario Outline: I can open and close people picker by UI button
+  @id2177 @regression
+  Scenario Outline: I can open and close people picker by UI button or swipe
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>

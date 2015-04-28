@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @id326 @staging
+ @id2262 @staging
   Scenario Outline: Sign in to ZClient in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: Sign In
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1413 @staging
+  @staging
   Scenario Outline: Negative case for sign in portrait mode
     Given I see sign in screen
     And I rotate UI to portrait
@@ -31,7 +31,7 @@ Feature: Sign In
       | Login | Password |
       | aaa   | aaa      |
 
-  @id326 @staging
+ @id2248 @staging
   Scenario Outline: Sign in to ZClient in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -47,7 +47,7 @@ Feature: Sign In
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1413 @staging
+  @staging
   Scenario Outline: Negative case for sign in landscape mode
     Given I see sign in screen
     And I rotate UI to landscape
