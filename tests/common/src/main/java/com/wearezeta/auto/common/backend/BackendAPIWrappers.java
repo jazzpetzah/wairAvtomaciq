@@ -18,6 +18,7 @@ import java.util.concurrent.Future;
 
 import javax.mail.Message;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -40,7 +41,7 @@ import com.wearezeta.auto.image_send.SelfImageProcessor;
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
 	public static final int UI_ACTIVATION_TIMEOUT = 120; // seconds
-	public static final int BACKEND_ACTIVATION_TIMEOUT = 60; // seconds
+	public static final int BACKEND_ACTIVATION_TIMEOUT = 45; // seconds
 
 	private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
 	private static final int SERVER_SIDE_ERROR = 500;
@@ -408,6 +409,13 @@ public final class BackendAPIWrappers {
 		final JSONObject userInfo = BackendREST.getUserInfoByID(id,
 				generateAuthToken(user));
 		return userInfo.getString("name");
+	}
+
+	public static String getUserPictureHash(ClientUser user) throws Exception {
+		final JSONObject userInfo = BackendREST
+				.getUserInfo(generateAuthToken(user));
+		final String picture = userInfo.getJSONArray("picture").toString();
+		return DigestUtils.sha256Hex(picture);
 	}
 
 	public static void sendConnectRequest(ClientUser user, ClientUser contact,

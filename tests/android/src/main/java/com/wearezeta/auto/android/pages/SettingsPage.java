@@ -41,7 +41,7 @@ public class SettingsPage extends AndroidPage {
 	
 	public CommonAndroidPage clickChangePassword() throws Exception {
 		settingsChangePassword.click();
-		Thread.sleep(2000);
+		Thread.sleep(2000); //Fix to pass animation
 		return new CommonAndroidPage(this.getDriver(), this.getWait());
 	}
 }

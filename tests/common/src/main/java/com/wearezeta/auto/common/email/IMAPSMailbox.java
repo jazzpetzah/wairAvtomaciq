@@ -16,7 +16,7 @@ import javax.mail.*;
 
 import org.apache.log4j.Logger;
 
-import com.sun.mail.iap.ConnectionException;
+import com.sun.mail.iap.ProtocolException;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -77,24 +77,37 @@ public class IMAPSMailbox {
 
 	private static Random random = new Random();
 
+	private static final int MAX_OPEN_RETRIES = 3;
+
 	public void openFolder(final Folder folderToOpen,
 			boolean shouldStartNotifier) throws MessagingException,
 			InterruptedException {
 		folderStateGuard.tryAcquire(FOLDER_OPEN_TIMEOUT, TimeUnit.SECONDS);
 
 		if (!folderToOpen.isOpen()) {
-			try {
-				folderToOpen.open(Folder.READ_ONLY);
-			} catch (Throwable e) {
+			int ntry = 0;
+			do {
 				try {
-					if (e instanceof ConnectionException) {
-						Thread.sleep(1000 * (5 + random.nextInt(30)));
+					folderToOpen.open(Folder.READ_ONLY);
+					break;
+				} catch (Exception e) {	
+					if (((e instanceof MessagingException) || (e instanceof ProtocolException))
+							&& ntry + 1 < MAX_OPEN_RETRIES) {
+						log.error(String
+								.format("Folder open operation failed: '%s' (retry %s of %s)...",
+										e.getMessage(), ntry + 1,
+										MAX_OPEN_RETRIES));
+						Thread.sleep(1000 * (5 + random.nextInt(5)));
+						ntry++;
+						continue;
 					}
-				} finally {
-					folderStateGuard.release();
+					try {
+						throw e;
+					} finally {
+						folderStateGuard.release();
+					}
 				}
-				throw e;
-			}
+			} while (ntry < MAX_OPEN_RETRIES);
 		}
 
 		if (shouldStartNotifier && messagesCountNotifier == null) {

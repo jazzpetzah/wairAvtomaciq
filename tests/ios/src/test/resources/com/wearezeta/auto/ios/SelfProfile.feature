@@ -73,11 +73,11 @@ Feature: Self Profile
       | Login      | Password      | Name      | NewUsername        | Contact   |
       | user1Email | user1Password | user1Name | New Name           | user2Name |
       
-  @staging @id667
+  @regression @id667
   Scenario Outline: Verify changing and applying accent color
   	Given There are 1 users where <Name> is me
-  	Given User <Name> change  name to <NewName>
-  	Given User <Name> change  accent color to <Color>
+  	Given User <Name> change name to <NewName>
+  	Given User <Name> change accent color to <Color>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>

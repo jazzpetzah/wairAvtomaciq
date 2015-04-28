@@ -17,6 +17,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidKeyEvent;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -25,6 +26,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class AndroidPage extends BasePage {
+	
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
 
@@ -87,9 +89,13 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public CommonAndroidPage minimizeApplication() throws Exception {
-		this.getDriver().sendKeyEvent(3);
+		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_HOME);
 		Thread.sleep(1000);
 		return new CommonAndroidPage(this.getDriver(), this.getWait());
+	}
+	
+	public void lockScreen() throws Exception {
+		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_POWER);
 	}
 
 	public void restoreApplication() {
@@ -200,7 +206,6 @@ public abstract class AndroidPage extends BasePage {
 
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
-
 		DriverUtils.swipeDown(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
@@ -240,11 +245,17 @@ public abstract class AndroidPage extends BasePage {
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	public AndroidPage swipeDownCoordinates(int time) throws Exception {
-		DriverUtils.swipeDownCoordinates(this.getDriver(), time);
+	public AndroidPage swipeByCoordinates(int time, int widthStartPercent, int hightStartPercent, int widthEndPercent, int hightEndPercent) throws Exception {
+		DriverUtils.swipeByCoordinates(this.getDriver(), time, widthStartPercent, hightStartPercent, widthEndPercent, hightEndPercent);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
+	public AndroidPage swipeDownCoordinates(int time)
+			throws Exception {
+		DriverUtils.swipeDownCoordinates(this.getDriver(), time);
+		return returnBySwipe(SwipeDirection.DOWN);
+	}
+	
 	public AndroidPage swipeDownCoordinates(int time, int verticalPercent)
 			throws Exception {
 		DriverUtils.swipeDownCoordinates(this.getDriver(), time,
@@ -257,6 +268,18 @@ public abstract class AndroidPage extends BasePage {
 		List<WebElement> buttonsList = element.findElements(By
 				.className(className));
 		buttonsList.get(index).click();
+	}
+	
+	public void tapByCoordinates(int widthPercent, int hightPercent) {
+		DriverUtils.genericTap(this.getDriver(), widthPercent, hightPercent);
+	}
+	
+	public void tapByCoordinates(int time, int widthPercent, int hightPercent) {
+		DriverUtils.genericTap(this.getDriver(), time, widthPercent, hightPercent);
+	}
+	
+	public void tapOnCenterOfScreen() {
+		DriverUtils.genericTap(this.getDriver());
 	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException,

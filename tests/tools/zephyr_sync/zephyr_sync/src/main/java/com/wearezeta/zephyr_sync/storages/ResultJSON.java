@@ -23,6 +23,11 @@ public class ResultJSON extends TestcasesStorage {
 
 	private static boolean parseIsPassed(JSONArray steps) {
 		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
+			if (steps.getJSONObject(stepIdx).getJSONObject("result")
+					.getString("status").equals("pending")) {
+				// Parse test cases with pending steps as passed by default
+				return true;
+			}
 			if (!steps.getJSONObject(stepIdx).getJSONObject("result")
 					.getString("status").equals("passed")) {
 				return false;

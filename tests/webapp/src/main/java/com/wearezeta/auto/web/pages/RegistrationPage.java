@@ -11,6 +11,8 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
@@ -73,27 +75,45 @@ public class RegistrationPage extends WebPage {
 		return verificationEmail.getText().equalsIgnoreCase(email);
 	}
 
-	public LoginPage switchToLoginPage() throws Exception {
-		final By locator = By.xpath(WebAppLocators.LoginPage.xpathSignInButton);
-		if (!DriverUtils.isElementDisplayed(this.getDriver(), locator)
-				&& DriverUtils
-						.isElementDisplayed(
-								this.getDriver(),
-								By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton),
-								3)) {
-			switchToSignInButton.click();
-		}
+	private static final int MAX_TRIES = 3;
 
-		// FIXME: I'm not sure whether white page instead of sign in is Amazon
-		// issue or webapp issue,
-		// but since this happens randomly in different browsers, then I can
-		// assume this issue has something to do to the hosting and/or Selenium
-		// driver
-		if (!DriverUtils.isElementDisplayed(this.getDriver(), locator)) {
-			log.error("Sign in page has failed to load. Trying to refresh...");
-			driver.navigate().to(driver.getCurrentUrl());
-			assert DriverUtils.isElementDisplayed(this.getDriver(), locator) : "Sign in page is not visible";
+	public LoginPage switchToLoginPage() throws Exception {
+		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
+		final By signInBtnlocator = By
+				.xpath(WebAppLocators.LoginPage.xpathSignInButton);
+		int ntry = 0;
+		// FIXME: temporary workaround for white page instead of sign in issue
+		while (ntry < MAX_TRIES) {
+			try {
+				if (!DriverUtils.isElementDisplayed(this.getDriver(),
+						signInBtnlocator)
+						&& DriverUtils
+								.isElementDisplayed(
+										this.getDriver(),
+										By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton))) {
+					switchToSignInButton.click();
+				}
+				if (DriverUtils.isElementDisplayed(this.getDriver(),
+						signInBtnlocator)) {
+					break;
+				} else {
+					log.debug(String
+							.format("Trying to refresh currupted login page (retry %s of %s)...",
+									ntry + 1, MAX_TRIES));
+					driver.navigate().to(driver.getCurrentUrl());
+				}
+			} catch (Exception e) {
+				driver.navigate().to(driver.getCurrentUrl());
+			}
+			if (PagesCollection.invitationCodePage.isVisible()) {
+				PagesCollection.invitationCodePage
+						.inputCode(WebAppConstants.INVITATION_CODE);
+				PagesCollection.invitationCodePage.proceed();
+			}
+			ntry++;
 		}
+		assert DriverUtils.isElementDisplayed(this.getDriver(),
+				signInBtnlocator) : "Sign in page is not visible";
 
 		return new LoginPage(this.getDriver(), this.getWait(),
 				CommonUtils.getWebAppApplicationPathFromConfig(this.getClass()));

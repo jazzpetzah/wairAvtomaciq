@@ -444,7 +444,7 @@ public final class IOSLocators {
 	public static final String nameHideSuggestedContactButton = "HIDE";
 	public static final String xpathSendAnInviteButton = "//UIACollectionCell[@name='Send an invitation']";
 	public static final String xpathInviteCopyButton = "//UIACollectionCell[@name='Copy']";
-	public static final String nameSuggestedContactNameTextType = "UIAStaticText";
+	public static final String nameSuggestedContactType = "UIACollectionCell";
 	public static final String nameHideSuggestedContactButtonType = "UIAButton";
 	public static final String nameInstantConnectButton = "instantPlusConnectButton";
 	public static final String xpathSearchResultCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]";
@@ -535,6 +535,10 @@ public final class IOSLocators {
 		public static final String nameEllipsisMenuButton = "metaControllerRightButton";
 		
 		public static final String nameArchiveButton = "ARCHIVE";
+	}
+	
+	public final class ContactListPage {
+		public static final String nameOpenStartUI = "OpenStartUI";
 	}
 	
 	/////////////

@@ -5,7 +5,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class ActivationPage extends WebPage {
@@ -14,21 +14,28 @@ public class ActivationPage extends WebPage {
 		super(driver, wait, url);
 	}
 
-	public void openInNewTab() throws Exception {
-		WebCommonUtils.openUrlInNewTab(
-				PagesCollection.registrationPage.getDriver(), this.getUrl(),
-				this.getDriver().getNodeIp());
+	private ContactListPage openWebApp(int timeoutSeconds) throws Exception {
+		final By openWebAppBtnLocator = By
+				.xpath(WebAppLocators.ActivationPage.xpathBtnOpenWebApp);
+		if (DriverUtils.isElementDisplayed(driver, openWebAppBtnLocator,
+				timeoutSeconds)) {
+			driver.findElement(openWebAppBtnLocator).click();
+		} else {
+			throw new RuntimeException(
+					"It seems there was some failure while verifying registered account");
+		}
+		return new ContactListPage(getDriver(), getWait());
 	}
 
-	public void verifyActivation(int timeoutSeconds) throws Exception {
-		assert DriverUtils.isElementDisplayed(driver,
-				By.xpath(WebAppLocators.ActivationPage.xpathSuccessfullResult),
-				timeoutSeconds) : "It seems there was some failure while verifying registered account";
-	}
-
-	@Override
-	public void close() throws Exception {
-		WebCommonUtils.switchToPreviousTab(driver);
-		super.close();
+	public ContactListPage verifyActivation(int timeoutSeconds)
+			throws Exception {
+		if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
+			assert DriverUtils.waitUntilElementDissapear(driver,
+					By.xpath(WebAppLocators.ActivationPage.xpathBtnOpenWebApp),
+					timeoutSeconds) : "Activation page is visible instead of the web app";
+			return new ContactListPage(getDriver(), getWait());
+		} else {
+			return openWebApp(timeoutSeconds);
+		}
 	}
 }

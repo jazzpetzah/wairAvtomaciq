@@ -3,8 +3,8 @@
 hubHost=${hubHost}
 hubPort=${hubPort}
 webappAppiumUrl=${url}
-webappEdgeApplicationPath=https://app-edge.zinfra.io/
-webappStagingApplicationPath=https://app-staging.zinfra.io/
+webappEdgeApplicationPath=https://wire-webapp-edge.zinfra.io/
+webappStagingApplicationPath=https://wire-webapp-staging.zinfra.io/
 webappProductionApplicationPath=https://app.wire.com/
 pictureResultsPath=${pictureResultsPath}
 driverTimeoutSeconds=${driverTimeoutSeconds}

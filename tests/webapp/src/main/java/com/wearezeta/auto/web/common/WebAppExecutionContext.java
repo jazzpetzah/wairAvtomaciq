@@ -25,6 +25,10 @@ public class WebAppExecutionContext {
 		return currentPlatform;
 	}
 
+	public static boolean isCurrentPlatfromWindows() {
+		return getCurrentPlatform().toLowerCase().contains("win");
+	}
+
 	private static Browser currentBrowser = null;
 	static {
 		try {
@@ -74,6 +78,27 @@ public class WebAppExecutionContext {
 
 		public static boolean isSupportedInCurrentBrowser() {
 			return Browser.isSubSetContains(BROWSERS_WITH_LOGGING_SUPPORT,
+					getCurrentBrowser());
+		}
+	}
+
+	public static final class SlowXPathLocation {
+		private static final Browser[] BROWSERS_WITH_SLOW_XPATH_LOCATION = new Browser[] { Browser.InternetExplorer };
+
+		public static boolean existsInCurrentBrowser() {
+			return Browser.isSubSetContains(BROWSERS_WITH_SLOW_XPATH_LOCATION,
+					getCurrentBrowser());
+		}
+	}
+
+	public static final class SyntheticDragAndDrop {
+		private static final Browser[] BROWSERS_WITH_SYNTHETIC_DRAG_DROP_SUPPORT = new Browser[] {
+				Browser.Chrome, Browser.Firefox, Browser.Opera,
+				Browser.InternetExplorer };
+
+		public static boolean isSupportedInCurrentBrowser() {
+			return Browser.isSubSetContains(
+					BROWSERS_WITH_SYNTHETIC_DRAG_DROP_SUPPORT,
 					getCurrentBrowser());
 		}
 	}
