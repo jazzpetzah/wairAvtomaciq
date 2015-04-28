@@ -47,7 +47,7 @@ Feature: Conversation List
       | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
   @id2177 @staging
-  Scenario Outline: I can open and close people picker by UI button
+  Scenario Outline: I can open and close people picker by UI button or swipe
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>

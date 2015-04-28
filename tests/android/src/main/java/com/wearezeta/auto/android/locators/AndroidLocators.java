@@ -437,7 +437,7 @@ public final class AndroidLocators {
 
 		public static final String xpathMessage = "//android.widget.LinearLayout/android.widget.TextView[contains(@text,'%s')]";
 		
-		public static final String xpathPing42 = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[2]";
+		public static final String xpathPing42 = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[3]";
 
 		public static final String xpathAddPicture42 = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[1]";
 		
@@ -680,13 +680,13 @@ public final class AndroidLocators {
 
 		public static final String xpathPickerSearchUsers42 = "//android.widget.FrameLayout/android.widget.ListView/android.widget.FrameLayout";
 
-		public static final String xpathConnectionRequiesMessage42 = "//android.widget.LinearLayout/android.widget.EditText[preceding-sibling::android.widget.RelativeLayout]";
+		public static final String xpathConnectionRequiesMessage42 = "//android.widget.LinearLayout/android.widget.FrameLayout[preceding-sibling::android.widget.RelativeLayout]/android.widget.EditText";
 
-		public static final String xpathSendConnectionRequestButton42 = "//android.widget.FrameLayout[preceding-sibling::android.widget.RelativeLayout]/android.widget.TextView";
+		public static final String xpathSendConnectionRequestButton42 = "//android.widget.FrameLayout/android.widget.TextView[following-sibling::android.widget.TextView]";
 
 		public static final String xpathPickerBtnDone42 = "//android.widget.TextView[@text='ADD TO CONVERSATION']";
 		
-		public static final String xpathParticipantsClose42 = "//android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView";
+		public static final String xpathParticipantsClose42 = "//android.widget.FrameLayout/android.widget.FrameLayout/android.widget.TextView[preceding-sibling::android.widget.LinearLayout]";
 
 	}
 
@@ -734,7 +734,7 @@ public final class AndroidLocators {
 
 		public static final String xpathSignOutBtn42 = "//android.widget.TextView[@text='SIGN OUT']";
 
-		public static final String xpathEmailField42 = "//android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.TextView";
+		public static final String xpathEmailField42 = "//android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView";
 
 		public static final String xpathNameField42 = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[following-sibling::android.widget.TextView]/android.widget.TextView[1]";
 
