@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @id328 @staging
+  @id2264 @staging
   Scenario Outline: ZClient change name in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -21,7 +21,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewTestName | user2Name |
 
-  @id328 @staging
+  @id2250 @staging
   Scenario Outline: ZClient change name in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -41,7 +41,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewTestName | user2Name |
 
-  @id325 @staging
+  @id2261 @staging
   Scenario Outline: Check contact personal info in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -57,7 +57,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id325 @staging
+  @id2247 @staging
   Scenario Outline: Check contact personal info in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -73,7 +73,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id205 @staging
+  @staging
   Scenario Outline: Change user picture in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -94,7 +94,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id205 @staging
+  @staging
   Scenario Outline: Change user picture in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
