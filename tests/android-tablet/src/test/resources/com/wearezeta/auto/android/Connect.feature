@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id191 @id193 @staging
+  @staging
   Scenario Outline: Send invitation message to a user landscape mode
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -25,7 +25,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id191 @id193 @staging
+  @staging
   Scenario Outline: Send invitation message to a user portrait mode
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -49,7 +49,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id323 @staging
+  @id2245 @staging 
   Scenario Outline: Accept connection request in landscape mode
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -67,7 +67,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | WaitingMess      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | 1 person waiting |
 
-  @id323 @staging
+  @id2259 @staging
   Scenario Outline: Accept connection request in portrait mode
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>

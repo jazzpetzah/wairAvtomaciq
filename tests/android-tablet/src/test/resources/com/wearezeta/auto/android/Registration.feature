@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @id9 @id30 @staging
+  @staging
   Scenario Outline: Register new user using front camera in landscape mode
     Given I see sign in screen
     And I rotate UI to landscape
@@ -21,7 +21,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id9 @id30 @staging
+  @staging
   Scenario Outline: Register new user using front camera in portrait mode
     Given I see sign in screen
     And I rotate UI to portrait
