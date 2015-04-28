@@ -94,7 +94,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @id1517 @staging
+  @id1517 @regression
   Scenario Outline: Verify you can send an invite
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact1>

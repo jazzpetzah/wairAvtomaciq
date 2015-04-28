@@ -133,7 +133,6 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-	
   @id1507 @staging
   Scenario Outline: Verify editing the conversation name
     Given There are 3 users where <Name> is me
@@ -151,8 +150,8 @@ Feature: People View
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | oldGroupChat 	  | newGroupName		|
-      
+      | user1Email | user1Password | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
+
   @id2236 @staging
   Scenario Outline: Check interaction with options menu
     Given There are 2 users where <Name> is me
@@ -186,23 +185,20 @@ Feature: People View
     #And I see profile page
     When I press options menu button
     Then I do not see profile page
+
     #And I see correct 1:1 options menu
-     
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-      
-        @id2214 @staging
+
+  @id2214 @staging
   Scenario Outline: I can dismiss PYMK by Hide button
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe down contact list
-    And I see People picker page
-    And I press Clear button
     And I wait for 30 seconds
-    And I swipe down contact list
+    When I swipe down contact list
     And I see People picker page
     And I swipe on random connect
     And I click on PYMK hide button
@@ -212,17 +208,15 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id2213 @staging 
+  @id2213 @staging
   Scenario Outline: I can dismiss PYMK by swipe
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
+    Given Contact <Contact1> send message to user <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe down contact list
-    And I see People picker page
-    And I press Clear button
     And I wait for 30 seconds
-    And I swipe down contact list
+    When I swipe down contact list
     And I see People picker page
     And I swipe on random connect
     And I hide random connect by swipe

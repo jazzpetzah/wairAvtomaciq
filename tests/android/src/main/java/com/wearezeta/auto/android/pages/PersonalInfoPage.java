@@ -80,16 +80,19 @@ public class PersonalInfoPage extends AndroidPage {
 		DriverUtils.androidMultiTap(this.getDriver(), page, 1, 0.2);
 	}
 
-	public void tapChangePhotoButton() {
+	public void tapChangePhotoButton() throws Throwable {
 		changePhotoBtn.click();
+		Thread.sleep(1000); //fix for animation
 	}
 
-	public void tapGalleryButton() {
+	public void tapGalleryButton() throws Throwable {
 		galleryBtn.click();
+		Thread.sleep(1000); //fix for animation
 	}
 
-	public void tapConfirmButton() throws IOException {
+	public void tapConfirmButton() throws IOException, Throwable {
 		confirmBtn.click();
+		Thread.sleep(1000); //fix for animation
 	}
 
 	public void tapSignOutBtn() {
@@ -124,11 +127,13 @@ public class PersonalInfoPage extends AndroidPage {
 	public void tapOptionsButton() throws InterruptedException {
 		refreshUITree();
 		optionsButton.click();
+		Thread.sleep(1000); //fix for animation
 	}
 
 	public SettingsPage tapSettingsButton() throws Exception {
 		refreshUITree();
 		settingsButton.click();
+		Thread.sleep(1000); //fix for animation
 		return new SettingsPage(this.getDriver(), this.getWait());
 	}
 
@@ -140,8 +145,7 @@ public class PersonalInfoPage extends AndroidPage {
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
-		//Wait because of possible animation
-		Thread.sleep(2000);
+		Thread.sleep(2000); //fix for animation
 		refreshUITree();
 		DriverUtils.waitUntilElementAppears(driver,
 				AndroidLocators.PersonalInfoPage.getByForNameEditField());

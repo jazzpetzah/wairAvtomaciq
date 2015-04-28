@@ -42,7 +42,7 @@ public class PeoplePickerPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerUserHideMenu")
 	private WebElement pickerUserHideMenu;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerUsersUnselected")
 	private List<WebElement> pickerUsersUnselected;
 
@@ -72,6 +72,9 @@ public class PeoplePickerPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private List<WebElement> connectToHeader;
+
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerRecomendedName")
+	private List<WebElement> recommendedNamesList;
 
 	@FindBy(xpath = AndroidLocators.PeoplePickerPage.xpathGmailLink)
 	private WebElement gmailLink;
@@ -379,5 +382,16 @@ public class PeoplePickerPage extends AndroidPage {
 		refreshUITree();
 		DriverUtils.swipeRight(getDriver(), pickerUserHideMenu, 1500, 30, 50,
 				90, 50);
+	}
+
+	public void waitForPYMKForSecs(int time) throws InterruptedException {
+
+		for (int i = 0; i < time; i++) {
+			if (recommendedNamesList == null || recommendedNamesList.size() == 0) {
+				Thread.sleep(1000);
+			} else {
+				break;
+			}
+		}
 	}
 }
