@@ -332,6 +332,24 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * Blocks a user
+	 *
+	 * @step. ^(.*) is blocking (.*)
+	 *
+	 * @param userFromNameAlias
+	 *            user which wants to block another
+	 * @param usersToNameAliases
+	 *            user to block
+	 *
+	 * @throws Exception
+	 */
+	@Given("^(.*) is blocking (.*)")
+	public void UserBlocks(String userFromNameAlias, String usersToNameAliases)
+			throws Exception {
+		commonSteps.BlockContact(userFromNameAlias, usersToNameAliases);
+	}
+
+	/**
 	 * Creates group chat with specified users
 	 * 
 	 * @step. ^(.*) (?:has|have) group chat (.*) with (.*)
@@ -511,8 +529,7 @@ public class CommonWebAppSteps {
 	 */
 	@Given("^My browser supports fast location by XPath$")
 	public void MyBrowserSupportsFastLocationByXpath() {
-		if (WebAppExecutionContext.SlowXPathLocation
-				.existsInCurrentBrowser()) {
+		if (WebAppExecutionContext.SlowXPathLocation.existsInCurrentBrowser()) {
 			throw new PendingException();
 		}
 	}

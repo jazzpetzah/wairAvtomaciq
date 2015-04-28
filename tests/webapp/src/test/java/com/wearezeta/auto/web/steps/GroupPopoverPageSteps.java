@@ -136,6 +136,65 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Click Unblock button on Group Participants popover
+	 *
+	 * @step. ^I click Unblock button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I click Unblock button on Group Participants popover$")
+	public void IClickUnblockButton() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickUnblockButton();
+	}
+
+	/**
+	 * Verifies whether Unblock button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct Unblock button tool tip on Group Participants
+	 *        popover$
+	 *
+	 */
+	@Then("^I see correct Unblock button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectUnblockButtonToolTip() {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getUnblockButtonToolTip().equals("Unblock"));
+	}
+
+	/**
+	 * Verifies whether Unblock button is visible on Group Participants popover
+	 *
+	 * @step. ^I see Unblock button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see Unblock button on Group Participants popover$")
+	public void ISeeUnblockButton() throws Exception {
+		Assert.assertTrue(
+				"Unblock button is not visible on Group Participants popover",
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.isUnblockButtonVisible());
+		Assert.assertTrue(
+				"Unblock button is not visible on Group Participants popover",
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getUnblockButtonCaption().trim()
+						.equalsIgnoreCase("Unblock"));
+	}
+
+	/**
+	 * Confirm Unblock from group chat by clicking UNBLOCK button
+	 *
+	 * @step. ^I confirm Unblock from group chat on Group Participants popover$
+	 * @throws Exception
+	 *
+	 */
+	@When("^I confirm Unblock from group chat on Group Participants popover$")
+	public void IConfirmUnblockUser() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickConfirmUnblockButton();
+	}
+
+	/**
 	 * Remove participant from group chat by clicking "exit" button
 	 *
 	 * @step. ^I click Remove button on Group Participants popover$
@@ -177,7 +236,7 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Verifies that contact is displayed on Group Participants popover
 	 *
-	 * @step. ^I see (.*) displayed on Group Participants popovere$
+	 * @step. ^I see (.*) displayed on Group Participants popover$
 	 *
 	 * @param contactsAliases
 	 * @throws Exception

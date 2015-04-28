@@ -48,8 +48,8 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		this.addPeoplePopoverPage.selectUserFromSearchResult(user);
 	}
 
-	public String getUserName() {
-		return singleUserPopoverPage.getUserName();
+	public String getUserName() throws Exception {
+		return getCurrentUserInfoPage().getUserName();
 	}
 
 	public boolean isAddButtonVisible() {
@@ -60,12 +60,12 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		return this.singleUserPopoverPage.isBlockButtonVisible();
 	}
 
-	public boolean isRemoveButtonVisible() {
-		return this.singleUserPopoverPage.isRemoveButtonVisible();
+	public boolean isRemoveButtonVisible() throws Exception {
+		return getCurrentUserInfoPage().isRemoveButtonVisible();
 	}
 
-	public boolean isAvatarVisible() {
-		return this.singleUserPopoverPage.isAvatarVisible();
+	public boolean isAvatarVisible() throws Exception {
+		return getCurrentUserInfoPage().isAvatarVisible();
 	}
 
 	public void clickBlockButton() {
@@ -93,8 +93,8 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 				.isPendingTextBoxDisplayed();
 	}
 
-	public String getUserMail() {
-		return this.singleUserPopoverPage.getMailText();
+	public String getUserMail() throws Exception {
+		return getCurrentUserInfoPage().getMailText();
 	}
 
 	public String getPendingButtonToolTip() {

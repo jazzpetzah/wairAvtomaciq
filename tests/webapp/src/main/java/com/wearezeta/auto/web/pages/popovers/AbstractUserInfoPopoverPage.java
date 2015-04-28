@@ -20,10 +20,17 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantInfoPage.xpathAvatar)
 	private WebElement avatar;
 
+	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantInfoPage.xpathUserName)
+	private WebElement username;
+
 	public AbstractUserInfoPopoverPage(ZetaWebAppDriver driver,
 			WebDriverWait wait, PeoplePopoverContainer container)
 			throws Exception {
 		super(driver, wait, container);
+	}
+
+	public String getUserName() {
+		return username.getText();
 	}
 
 	public void clickRemoveFromGroupChat() throws Exception {

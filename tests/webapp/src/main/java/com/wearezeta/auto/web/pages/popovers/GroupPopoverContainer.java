@@ -10,9 +10,11 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	private ConnectedParticipantInfoPopoverPage connectedParticipantInfoPopoverPage;
 	private NonConnectedParticipantInfoPopoverPage nonConnectedParticipantInfoPopoverPage;
 	private PendingParticipantInfoPopoverPage pendingParticipantInfoPopoverPage;
+	private BlockedParticipantInfoPopoverPage blockedParticipantInfoPopoverPage;
 	private AddPeopleConfirmationPopoverPage addPeopleConfirmationPopoverPage;
 	private LeaveGroupConfirmationPopoverPage leaveGroupConfirmationPopoverPage;
 	private RemoveFromGroupConfirmationPopoverPage removeFromGroupConfirmationPopoverPage;
+	private UnblockUserConfirmationPopoverPage unblockUserConfirmationPopoverPage;
 
 	public GroupPopoverContainer(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -25,11 +27,15 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 				driver, wait, this);
 		this.pendingParticipantInfoPopoverPage = new PendingParticipantInfoPopoverPage(
 				driver, wait, this);
+		this.blockedParticipantInfoPopoverPage = new BlockedParticipantInfoPopoverPage(
+				driver, wait, this);
 		this.addPeopleConfirmationPopoverPage = new AddPeopleConfirmationPopoverPage(
 				driver, wait, this);
 		this.leaveGroupConfirmationPopoverPage = new LeaveGroupConfirmationPopoverPage(
 				driver, wait, this);
 		this.removeFromGroupConfirmationPopoverPage = new RemoveFromGroupConfirmationPopoverPage(
+				driver, wait, this);
+		this.unblockUserConfirmationPopoverPage = new UnblockUserConfirmationPopoverPage(
 				driver, wait, this);
 	}
 
@@ -46,6 +52,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 			return this.nonConnectedParticipantInfoPopoverPage;
 		} else if (this.nonConnectedParticipantInfoPopoverPage.isCurrent()) {
 			return this.nonConnectedParticipantInfoPopoverPage;
+		} else if (this.blockedParticipantInfoPopoverPage.isCurrent()) {
+			return this.blockedParticipantInfoPopoverPage;
 		} else {
 			throw new RuntimeException(
 					"The current popover page is neither connected user info ,non-connected nor pending connection user info.");
@@ -88,6 +96,26 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 
 	public void clickAddPeopleButton() throws Exception {
 		this.participantsListPopoverPage.clickAddPeopleButton();
+	}
+
+	public void clickUnblockButton() throws Exception {
+		this.blockedParticipantInfoPopoverPage.clickUnblockButton();
+	}
+
+	public boolean isUnblockButtonVisible() {
+		return this.blockedParticipantInfoPopoverPage.isUnblockButtonVisible();
+	}
+
+	public String getUnblockButtonCaption() {
+		return this.blockedParticipantInfoPopoverPage.getUnblockButtonCaption();
+	}
+
+	public String getUnblockButtonToolTip() {
+		return this.blockedParticipantInfoPopoverPage.getUnblockButtonToolTip();
+	}
+
+	public void clickConfirmUnblockButton() throws Exception {
+		this.unblockUserConfirmationPopoverPage.clickConfirmUnblockButton();
 	}
 
 	public String getAddPeopleButtonToolTip() throws Exception {
