@@ -13,6 +13,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
@@ -354,16 +355,21 @@ public class ZephyrDB extends TestcasesStorage {
 	public int syncPhaseResults(ZephyrTestPhase phase) throws Exception {
 		final List<ExecutedZephyrTestcase> phaseTestcases = phase
 				.getTestcases();
-		int countOfUpdatedTestcases = 0;
-		for (ExecutedZephyrTestcase executedTC : phaseTestcases) {
-			if (!executedTC.getIsChanged()) {
-				continue;
-			}
+		List<ExecutedZephyrTestcase> changedTestcases = phaseTestcases.stream()
+				.filter(x -> x.getIsChanged()).collect(Collectors.toList());
+		System.out
+				.println(String.format(
+						"\nSynchronizing %s changed testcases with Zephyr:\n%s",
+						changedTestcases.size(),
+						StringUtils.join(
+								changedTestcases.stream().map(
+										x -> "[" + x.getId() + "] "
+												+ x.getName()).collect(Collectors.toList()), "\n")));
+		for (ExecutedZephyrTestcase executedTC : changedTestcases) {
 			final long lastTestResultId = addTestcaseResult(executedTC);
 			updateTestcaseStatus(executedTC, lastTestResultId);
-			countOfUpdatedTestcases++;
 		}
-		return countOfUpdatedTestcases;
+		return changedTestcases.size();
 	}
 
 	@Override

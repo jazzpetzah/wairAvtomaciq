@@ -130,8 +130,8 @@ public final class AndroidLocators {
 
 		public static final String xpathWelcomeSlogan42 = "//android.widget.TextView[contains(@text,'conversations.')]";
 
-		public static final String idLoginProgressBar = LOCATORS_PACKAGE
-				+ ":id/pv__sign_in__preview";
+		public static final String idLoginProgressViewContainer = LOCATORS_PACKAGE
+				+ ":id/fl__sign_in__progress_view__container";
 
 		public static final String idWelcomeButtonsContainer = LOCATORS_PACKAGE
 				+ ":id/cm__choose";
