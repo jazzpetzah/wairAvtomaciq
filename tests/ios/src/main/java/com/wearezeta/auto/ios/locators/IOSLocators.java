@@ -258,6 +258,13 @@ public final class IOSLocators {
 	
 	public static final String xpathSettingsHelpHeader = "//UIAApplication[@name='Safari']/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIALink[@name='Support']";
 	
+	public static final String xpathSettingsChatheadSwitch = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[1]/UIASwitch[@name='Message previews']";
+	
+	public static final String nameSettingsBackButton = "Back";
+	
+	public static final String nameSettingsDoneButton = "Done";
+
+	
 	///////////////////////
 	//Other User Profile
 	//////////////////////
