@@ -1,6 +1,6 @@
 Feature: Sign Out
 
-  @id2266 @smoke @torun
+  @id2266 @staging
   Scenario Outline: Sign out from ZClient in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: Sign Out
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id2251 @smoke @torun
+  @id2251 @staging
   Scenario Outline: Sign out from ZClient in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
