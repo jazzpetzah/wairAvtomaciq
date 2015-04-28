@@ -70,19 +70,20 @@ public class GroupPopoverPageSteps {
 	@Then("^I see correct back button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectBackButtonToolTip() {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.isBackButtonToolTipCorrect());
+				.getBackButtonToolTip().equals("Back"));
 	}
 
 	/**
 	 * Verifies whether pending button tool tip is correct or not.
 	 *
-	 * @step. ^I see correct pending button tool tip on Group Participants popover$
+	 * @step. ^I see correct pending button tool tip on Group Participants
+	 *        popover$
 	 *
 	 */
 	@Then("^I see correct pending button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectPendingButtonToolTip() {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.isPendingButtonToolTipCorrect());
+				.getPendingButtonToolTip().equals("Open conversation"));
 	}
 
 	/**
@@ -315,7 +316,8 @@ public class GroupPopoverPageSteps {
 	@Then("^I see correct add people button tool tip$")
 	public void ThenISeeCorrectAddPeopleButtonToolTip() throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.isAddPeopleButtonToolTipCorrect());
+				.getAddPeopleButtonToolTip().equals(
+						"Add people to conversation"));
 	}
 
 	/**
@@ -329,7 +331,7 @@ public class GroupPopoverPageSteps {
 	public void ThenISeeCorrectLeaveConversationButtonToolTip()
 			throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.isLeaveGroupChatButtonToolTipCorrect());
+				.getLeaveGroupChatButtonToolTip().equals("Leave conversation"));
 	}
 
 	/**
@@ -343,7 +345,8 @@ public class GroupPopoverPageSteps {
 	public void ThenISeeCorrectRenameConversationButtonToolTip()
 			throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.isRenameConversationToolTipCorrect());
+				.getRenameConversationToolTip().equals(
+						"Change conversation name"));
 	}
 
 	/**
@@ -356,13 +359,15 @@ public class GroupPopoverPageSteps {
 	@Then("^I see correct remove from group button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectRemoveFromGroupChatButtonToolTip() {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.isRemoveFromGroupChatButtonToolTipCorrect());
+				.getRemoveFromGroupChatButtonToolTip().equals(
+						"Remove from conversation"));
 	}
 
 	/**
 	 * Compares if name on Single User Profile popover on Group Participants
 	 * popover is same as expected
 	 *
+	 * @throws java.lang.Exception
 	 * @step. ^I see username (.*) on Single User Profile popover on Group
 	 *        Participants popover$
 	 *
@@ -370,7 +375,7 @@ public class GroupPopoverPageSteps {
 	 *            user name string
 	 */
 	@When("^I see username (.*) on Group Participants popover$")
-	public void IseeUserNameOnUserProfilePage(String name) {
+	public void IseeUserNameOnUserProfilePage(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertEquals(name,
 				((GroupPopoverContainer) PagesCollection.popoverPage)

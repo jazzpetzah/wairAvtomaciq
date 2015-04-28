@@ -81,18 +81,17 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		return getCurrentUserInfoPage().isRemoveButtonVisible();
 	}
 
-	public boolean isLeaveGroupChatButtonToolTipCorrect() throws Exception {
+	public String getLeaveGroupChatButtonToolTip() throws Exception {
 		return this.participantsListPopoverPage
-				.isLeaveGroupChatButtonToolTipCorrect();
+				.getLeaveGroupChatButtonToolTip();
 	}
 
 	public void clickAddPeopleButton() throws Exception {
 		this.participantsListPopoverPage.clickAddPeopleButton();
 	}
 
-	public boolean isAddPeopleButtonToolTipCorrect() throws Exception {
-		return this.participantsListPopoverPage
-				.isAddPeopleButtonToolTipCorrect();
+	public String getAddPeopleButtonToolTip() throws Exception {
+		return this.participantsListPopoverPage.getAddPeopleButtonToolTip();
 	}
 
 	public boolean isParticipantVisible(String name) throws Exception {
@@ -127,14 +126,12 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		return this.pendingParticipantInfoPopoverPage.getPendingButtonCaption();
 	}
 
-	public boolean isRenameConversationToolTipCorrect() {
-		return this.participantsListPopoverPage
-				.isRenameConversationToolTipCorrect();
+	public String getRenameConversationToolTip() {
+		return this.participantsListPopoverPage.getRenameConversationToolTip();
 	}
 
-	public boolean isPendingButtonToolTipCorrect() {
-		return this.pendingParticipantInfoPopoverPage
-				.isPendingButtonToolTipCorrect();
+	public String getPendingButtonToolTip() {
+		return this.pendingParticipantInfoPopoverPage.getPendingButtonToolTip();
 	}
 
 	public boolean isPendingTextBoxVisible() {
@@ -142,9 +139,9 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 				.isPendingTextBoxDisplayed();
 	}
 
-	public boolean isRemoveFromGroupChatButtonToolTipCorrect() {
+	public String getRemoveFromGroupChatButtonToolTip() {
 		return this.connectedParticipantInfoPopoverPage
-				.isRemoveFromGroupChatButtonToolTipCorrect();
+				.getRemoveFromGroupChatButtonToolTip();
 	}
 
 	public String getUserName() throws Exception {

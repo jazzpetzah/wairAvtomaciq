@@ -80,7 +80,7 @@ Feature: People View
 	 | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message     |
 	 | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | YOU REMOVED |
 
- @staging @id2268
+ @staging @id2268 @torun
    Scenario Outline: Verify I can see participant profile of user that you requested to connect with in a group conversation
       Given There are 3 users where <Name> is me
       Given Myself is connected to <KnownContact>

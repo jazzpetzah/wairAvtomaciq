@@ -97,8 +97,7 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		return this.singleUserPopoverPage.getMailText();
 	}
 
-	public boolean isPendingButtonToolTipCorrect() {
-		return this.pendingParticipantInfoPopoverPage
-				.isPendingButtonToolTipCorrect();
+	public String getPendingButtonToolTip() {
+		return this.pendingParticipantInfoPopoverPage.getPendingButtonToolTip();
 	}
 }

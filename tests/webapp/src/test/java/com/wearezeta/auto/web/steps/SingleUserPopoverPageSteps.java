@@ -247,6 +247,6 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see correct pending button tool tip on Single Participant popover$")
 	public void ThenISeeCorrectPendingButtonToolTip() {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.isPendingButtonToolTipCorrect());
+				.getPendingButtonToolTip().equals("Open conversation"));
 	}
 }
