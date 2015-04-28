@@ -294,7 +294,7 @@ public class PeoplePickerPageSteps {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		Assert.assertTrue(
 				"Avatar does not have a clock icon",
-				PagesCollection.peoplePickerPage.checkAvatarClockIcon(contact) > 0.95);
+				PagesCollection.peoplePickerPage.checkAvatarClockIcon(contact) > 0.50);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")

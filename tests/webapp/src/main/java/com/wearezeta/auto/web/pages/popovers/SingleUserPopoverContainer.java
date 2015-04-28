@@ -28,6 +28,18 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		return PopoverLocators.SingleUserPopover.xpathRootLocator;
 	}
 
+	private AbstractUserInfoPopoverPage getCurrentUserInfoPage()
+			throws Exception {
+		if (this.singleUserPopoverPage.isCurrent()) {
+			return this.singleUserPopoverPage;
+		} else if (this.pendingParticipantInfoPopoverPage.isCurrent()) {
+			return this.pendingParticipantInfoPopoverPage;
+		} else {
+			throw new RuntimeException(
+					"The current popover page is neither connected user info nor pending-connected user info.");
+		}
+	}
+
 	public void clickAddPeopleButton() throws Exception {
 		this.singleUserPopoverPage.clickAddPeopleButton();
 	}
@@ -85,13 +97,7 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		return this.singleUserPopoverPage.getMailText();
 	}
 
-	public boolean isPendingButtonToolTipCorrect() {
-		return this.pendingParticipantInfoPopoverPage
-				.isPendingButtonToolTipCorrect();
-	}
-
-	public boolean isRemoveFromGroupChatButtonToolTipCorrect() {
-		return this.singleUserPopoverPage
-				.isRemoveFromGroupChatButtonToolTipCorrect();
+	public String getPendingButtonToolTip() {
+		return this.pendingParticipantInfoPopoverPage.getPendingButtonToolTip();
 	}
 }

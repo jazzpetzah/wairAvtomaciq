@@ -97,16 +97,16 @@ Feature: People View
       And I see correct leave conversation button tool tip
       And I see correct rename conversation button tool tip
       When I click on participant <UnknownContact> on Group Participants popover
-      Then I see correct back button tool tip
-      And I see correct pending button tool tip
-      And I see correct remove from group button tool tip
-      Then I see username <UnknownContact> on Single User Profile popover
-      And I see an avatar on Single User Profile popover
-      And I see Remove button on Single Participant popover
-      And I do not see Mail on Single Participant popover
-      And I see Pending button on Single Participant popover
-      And I see Pending text box on Single Participant popover
-      When I click Pending button on Single Participant popover
+      Then I see correct back button tool tip on Group Participants popover
+      And I see correct pending button tool tip on Group Participants popover
+      And I see correct remove from group button tool tip on Group Participants popover
+      Then I see username <UnknownContact> on Group Participants popover
+      And I see an avatar on Group Participants popover
+      And I see Remove button on Group Participants popover
+      And I do not see Mail on Group Participants popover
+      And I see Pending button on Group Participants popover
+      And I see Pending text box on Group Participants popover
+      When I click Pending button on Group Participants popover
       Then I see conversation with <UnknownContact> is selected in conversations list
 
       Examples:
