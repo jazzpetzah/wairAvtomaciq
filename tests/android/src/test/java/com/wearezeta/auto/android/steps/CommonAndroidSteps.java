@@ -962,6 +962,7 @@ public class CommonAndroidSteps {
 	@When("^I rotate UI to landscape$")
 	public void WhenIRotateUILandscape() throws Exception {
 		PagesCollection.loginPage.rotateLandscape();
+		Thread.sleep(1000); //fix for animation
 	}
 
 	/**
@@ -974,6 +975,7 @@ public class CommonAndroidSteps {
 	@When("^I rotate UI to portrait$")
 	public void WhenIRotateUIPortrait() throws Exception {
 		PagesCollection.loginPage.rotatePortrait();
+		Thread.sleep(1000); //fix for animation
 	}
 
 }
