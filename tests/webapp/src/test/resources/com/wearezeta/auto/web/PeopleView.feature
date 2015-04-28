@@ -113,6 +113,39 @@ Feature: People View
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
+@staging @id2270 @torun
+   Scenario Outline: Verify I can see participant profile of connected user in a group conversation
+      Given There are 3 users where <Name> is me
+      Given Myself is connected to <KnownContact>
+      Given <KnownContact> is connected to <UnknownContact>
+      Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
+      Given I Sign in using login <Login> and password <Password>
+      Then I see my name on top of Contact list
+      When I open conversation with <ChatName>
+      Then I see correct people button tool tip
+      When I click People button in group conversation
+      Then I see Group Participants popover
+      Then I see correct add people button tool tip
+      And I see correct leave conversation button tool tip
+      And I see correct rename conversation button tool tip
+      When I click on participant <KnownContact> on Group Participants popover
+      Then I see correct back button tool tip on Group Participants popover
+      And I see correct remove from group button tool tip on Group Participants popover
+      Then I see username <KnownContact> on Group Participants popover
+      And I see an avatar on Group Participants popover
+      And I see Remove button on Group Participants popover
+      And I see Mail on Group Participants popover
+      And Click on mail on Group Participants popover would open mail client
+      And I see open conversation button on Group Participants popover
+      And I see correct open conversation button tool tip on Group Participants popover
+      When I click open conversation from Group Participants popover
+      Then I see conversation with <KnownContact> is selected in conversations list
+
+      Examples:
+	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
+	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
+
+
   @smoke @id1687
    Scenario Outline: Verify you can add participants to the group conversation by searching the user directory
       Given There are 5 users where <Name> is me

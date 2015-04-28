@@ -42,7 +42,7 @@ public class SingleUserPopoverPageSteps {
 	public void IChooseToCreateConversationFromSingleUserPopover()
 			throws Exception {
 		((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.clickCreateConversation();
+				.clickCreateGroupConversation();
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class SingleUserPopoverPageSteps {
 	 *            user name string
 	 */
 	@When("^I see username (.*) on Single User Profile popover$")
-	public void IseeUserNameOnUserProfilePage(String name) {
+	public void IseeUserNameOnUserProfilePage(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertEquals(name,
 				((SingleUserPopoverContainer) PagesCollection.popoverPage)
@@ -112,7 +112,7 @@ public class SingleUserPopoverPageSteps {
 	 *
 	 */
 	@When("^I see an avatar on Single User Profile popover$")
-	public void IseeAvatarOnUserProfilePage() {
+	public void IseeAvatarOnUserProfilePage() throws Exception {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
 				.isAvatarVisible());
 	}
@@ -225,6 +225,27 @@ public class SingleUserPopoverPageSteps {
 	}
 
 	/**
+	 * Verifies whether open conversation button is visible on Single
+	 * Participant popover
+	 *
+	 * @step. ^I see open conversation button on Single Participant popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see open conversation button on Single Participant popover$")
+	public void ISeeOpenConversationButton() throws Exception {
+		Assert.assertTrue(
+				"open conversation button is not visible on Single Participant popover",
+				((SingleUserPopoverContainer) PagesCollection.popoverPage)
+						.isOpenConvButtonVisible());
+		Assert.assertTrue(
+				"open conversation button is not visible on Single Participant popover",
+				((SingleUserPopoverContainer) PagesCollection.popoverPage)
+						.getOpenConvButtonCaption().trim()
+						.equalsIgnoreCase("Open Conversation"));
+	}
+
+	/**
 	 * Verifies Pending text box is visible on Single Participant popover
 	 *
 	 * @step. ^I see Pending text box on Single Participant popover$
@@ -238,6 +259,45 @@ public class SingleUserPopoverPageSteps {
 	}
 
 	/**
+	 * Creates conversation with one user from on Single Participant popover
+	 *
+	 * @step. ^I click open conversation from Single Participant popover$
+	 * @throws Exception
+	 */
+	@When("^I click open conversation from Single Participant popover$")
+	public void IClickOpenConversation() throws Exception {
+		((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.clickOpenConvButton();
+	}
+
+	/**
+	 * Verifies whether open conversation button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct open conversation button tool tip on Single
+	 *        Participant popover$
+	 *
+	 */
+	@Then("^I see correct open conversation button tool tip on Single Participant popover$")
+	public void ThenISeeCorrectOpenConvButtonToolTip() {
+		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.getOpenConvButtonToolTip().equals("Open conversation"));
+	}
+
+	/**
+	 * Verifies whether click on mail would open mail client or not.
+	 *
+	 * @step. ^Click on mail on Single Participant popover would open mail
+	 *        client$
+	 *
+	 */
+	@Then("^Click on mail on Single Participant popover would open mail client$")
+	public void ThenISeeThatClickOnMailWouldOpenMailClient() throws Exception {
+		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.getMailHref().contains("mailto:"));
+
+	}
+
+	/**
 	 * Verifies whether pending button tool tip is correct or not.
 	 *
 	 * @step. ^I see correct pending button tool tip on Single Participant
@@ -247,6 +307,6 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see correct pending button tool tip on Single Participant popover$")
 	public void ThenISeeCorrectPendingButtonToolTip() {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.getPendingButtonToolTip().equals("Open conversation"));
+				.getPendingButtonToolTip().equals("Pending"));
 	}
 }

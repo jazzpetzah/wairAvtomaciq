@@ -287,10 +287,22 @@ public class GroupPopoverPageSteps {
 	 * @step. ^I choose to create conversation from Group Participants popover$
 	 * @throws Exception
 	 */
-	@When("^I choose to create conversation from Group Participants popover$")
-	public void IChooseToCreateConversation() throws Exception {
+	@When("^I choose to create group conversation from Group Participants popover$")
+	public void IChooseToCreateGroupConversation() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
-				.clickCreateConversation();
+				.clickCreateGroupConversation();
+	}
+
+	/**
+	 * Creates conversation with one user from on Group Participants popover
+	 *
+	 * @step. ^I click open conversation from Group Participants popover$
+	 * @throws Exception
+	 */
+	@When("^I click open conversation from Group Participants popover$")
+	public void IClickOpenConversation() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickOpenConvButton();
 	}
 
 	/**
@@ -385,14 +397,28 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Verifies whether the users avatar exists on the popover
 	 *
+	 * @throws java.lang.Exception
 	 * @step. ^I see the users avatar on Group Participants User Profile
 	 *        popover$
 	 *
 	 */
 	@When("^I see an avatar on Group Participants popover")
-	public void IseeAvatarOnUserProfilePage() {
+	public void IseeAvatarOnUserProfilePage() throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
 				.isAvatarVisible());
+	}
+
+	/**
+	 * Verifies Mail is visible on Group Participants popover
+	 *
+	 * @step. ^I see Mail on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see Mail on Group Participants popover$")
+	public void ISeeMailOfUser() throws Exception {
+		Assert.assertFalse(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getUserMail().isEmpty());
 	}
 
 	/**
@@ -409,6 +435,21 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Verifies whether click on mail would open mail client or not.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^Click on mail on Single Participant popover would open mail
+	 *        client$
+	 *
+	 */
+	@Then("^Click on mail on Group Participants popover would open mail client$")
+	public void ThenISeeThatClickOnMailWouldOpenMailClient() throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getMailHref().contains("mailto:"));
+
+	}
+
+	/**
 	 * Verifies Pending text box is visible on Single Participant popover
 	 *
 	 * @step. ^I see Pending text box on Group Participants popover$
@@ -419,5 +460,40 @@ public class GroupPopoverPageSteps {
 	public void ISeePendingTextBox() throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
 				.isPendingTextBoxVisible());
+	}
+
+	/**
+	 * Verifies whether open conversation button tool tip is correct or not.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see correct leave conversation button tool tip on Group
+	 *        Participants popover$
+	 *
+	 */
+	@Then("^I see correct open conversation button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectOpenConversationButtonToolTip() throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getOpenConvButtonToolTip().equals("Open conversation"));
+	}
+
+	/**
+	 * Verifies whether open conversation button is visible on Group
+	 * Participants popover
+	 *
+	 * @step. ^I see open conversation button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see open conversation button on Group Participants popover$")
+	public void ISeeOpenConversationButton() throws Exception {
+		Assert.assertTrue(
+				"open conversation button is not visible on Group Participants popover",
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.isOpenConvButtonVisible());
+		Assert.assertTrue(
+				"open conversation button is not visible on Group Participants popover",
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getOpenConvButtonCaption().trim()
+						.equalsIgnoreCase("Open Conversation"));
 	}
 }
