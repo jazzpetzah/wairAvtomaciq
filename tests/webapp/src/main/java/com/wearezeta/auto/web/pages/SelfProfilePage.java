@@ -19,6 +19,9 @@ public class SelfProfilePage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathGearButton)
 	private WebElement gearButton;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathCameraButton)
+	private WebElement cameraButton;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathSelfUserName)
 	private WebElement userName;
 
@@ -113,5 +116,11 @@ public class SelfProfilePage extends WebPage {
 		}
 		throw new RuntimeException(
 				"No accent color is selected in color picker");
+	}
+
+	public ProfilePicturePage clickCameraButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(driver, cameraButton);
+		cameraButton.click();
+		return new ProfilePicturePage(getDriver(), getWait());
 	}
 }

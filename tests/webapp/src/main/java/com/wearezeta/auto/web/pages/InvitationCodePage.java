@@ -10,12 +10,11 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class InvitationCodePage extends WebPage {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
 			.getLog(InvitationCodePage.class.getSimpleName());
 
@@ -30,13 +29,41 @@ public class InvitationCodePage extends WebPage {
 		super(driver, wait, url);
 	}
 
+	private static final int MAX_LOAD_RETRIES = 3;
+
 	@Override
 	public void navigateTo() {
 		super.navigateTo();
-		if (!WebAppExecutionContext.ProfileManagement
-				.isSupportedInCurrentBrowser()) {
-			driver.manage().deleteAllCookies();
-			driver.navigate().refresh();
+		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
+
+		// FIXME: I'm not sure whether white page instead of sign in is
+		// Amazon issue or webapp issue,
+		// but since this happens randomly in different browsers, then I can
+		// assume this issue has something to do to the hosting and/or
+		// Selenium driver
+		int ntry = 0;
+		while (ntry < MAX_LOAD_RETRIES) {
+			try {
+				if (!(DriverUtils.isElementDisplayed(this.getDriver(),
+						By.id(WebAppLocators.InvitationCodePage.idCodeInput))
+						|| DriverUtils
+								.isElementDisplayed(
+										this.getDriver(),
+										By.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons)) || DriverUtils
+							.isElementDisplayed(
+									this.getDriver(),
+									By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton)))) {
+					log.error(String
+							.format("Startup page has failed to load. Trying to refresh (%s of %s)...",
+									ntry + 1, MAX_LOAD_RETRIES));
+					driver.navigate().to(driver.getCurrentUrl());
+				} else {
+					break;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ntry++;
 		}
 	}
 

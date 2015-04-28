@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @staging @id855
+  @regression @id855
   Scenario Outline: Verify swipe right tutorial appearance
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -85,7 +85,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @staging @id1468
+  @regression @id1468
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -506,7 +506,7 @@ Feature: Conversation View
   #Examples:
   #| Login   | Password    | Name    | Contact     | YouTubeLink                                |
   #| aqaUser | aqaPassword | aqaUser | aqaContact1 | http://www.youtube.com/watch?v=Bb1RhktcugU |
-  @staging @id1387
+  @regression @id1387
   Scenario Outline: Verify you can play/pause media from the Media Bar - YouTube
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -620,11 +620,11 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2132
+  @regression @id2132
   Scenario Outline: Verify displaying chathead when another conversation is opened
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
-    Given User <Contact2> change  name to <NewName>
+    Given User <Contact2> change name to <NewName>
     Given Myself is connected to <Contact>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
@@ -641,7 +641,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
  
 
-  @staging @id1476
+  @regression @id1476
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

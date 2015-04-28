@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
@@ -7,9 +8,6 @@ import com.wearezeta.auto.web.pages.RegistrationPage;
 import cucumber.api.java.en.Given;
 
 public class InvitationCodePageSteps {
-
-	private static final String INVITATION_CODE = "zeta22beta";
-
 	/**
 	 * Checks that opened page is Invitation page
 	 * 
@@ -33,7 +31,8 @@ public class InvitationCodePageSteps {
 	@Given("I enter invitation code")
 	public void IEnterInvitationCode() throws Exception {
 		if (PagesCollection.invitationCodePage.isVisible()) {
-			PagesCollection.invitationCodePage.inputCode(INVITATION_CODE);
+			PagesCollection.invitationCodePage
+					.inputCode(WebAppConstants.INVITATION_CODE);
 			PagesCollection.loginPage = PagesCollection.invitationCodePage
 					.proceed();
 		} else {

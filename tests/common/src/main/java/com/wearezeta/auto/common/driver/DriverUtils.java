@@ -23,10 +23,10 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -41,6 +41,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
 	public static final int DEFAULT_VISIBILITY_TIMEOUT = 20;
+	public static final int DEFAULT_PERCENTAGE = 50;
 
 	private static final Logger log = ZetaLogger.getLog(DriverUtils.class
 			.getSimpleName());
@@ -83,7 +84,8 @@ public class DriverUtils {
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
-					.pollingEvery(1, TimeUnit.SECONDS);
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(NoSuchElementException.class);
 			try {
 				return wait.until(drv -> {
 					return (drv.findElements(by).size() > 0)
@@ -117,7 +119,7 @@ public class DriverUtils {
 					return (drv.findElements(by).size() == 0)
 							|| (drv.findElements(by).size() > 0 && !drv
 									.findElement(by).isDisplayed());
-				} catch (StaleElementReferenceException e) {
+				} catch (WebDriverException e) {
 					return true;
 				}
 			});
@@ -244,9 +246,6 @@ public class DriverUtils {
 		js.executeScript("mobile: scrollTo", scrollToObject);
 	}
 
-	public static final int SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL = 100;
-	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL = 50;
-
 	/**
 	 * 
 	 * @param driver
@@ -275,10 +274,12 @@ public class DriverUtils {
 		}
 	}
 
+	public static final int SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL = 100;
+
 	public static void swipeLeft(AppiumDriver driver, WebElement element,
 			int time) {
 		swipeLeft(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
-				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL);
+				DEFAULT_PERCENTAGE);
 	}
 
 	public static void swipeRight(AppiumDriver driver, WebElement element,
@@ -298,14 +299,31 @@ public class DriverUtils {
 	}
 
 	public static void swipeRight(AppiumDriver driver, WebElement element,
-			int time) {
-		swipeRight(driver, element, time,
-				SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
-				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL);
+			int time, int startPercentX, int startPercentY, int endPercentX,
+			int endPercentY) {
+		final Point coords = element.getLocation();
+		final Dimension elementSize = element.getSize();
+		final int xStartOffset = (int) Math.round(elementSize.width
+				* (startPercentX / 100.0));
+		final int yStartOffset = (int) Math.round(elementSize.height
+				* (startPercentY / 100.0));
+		final int xEndOffset = (int) Math.round(elementSize.width
+				* (endPercentX / 100.0));
+		final int yEndOffset = (int) Math.round(elementSize.height
+				* (endPercentY / 100.0));
+		try {
+			driver.swipe(coords.x + xStartOffset, coords.y + yStartOffset,
+					coords.x + xEndOffset, coords.y + yEndOffset, time);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
-	public static final int SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL = 50;
-	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL = 100;
+	public static void swipeRight(AppiumDriver driver, WebElement element,
+			int time) {
+		swipeRight(driver, element, time,
+				SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, DEFAULT_PERCENTAGE);
+	}
 
 	public static void swipeUp(AppiumDriver driver, WebElement element,
 			int time, int percentX, int percentY) {
@@ -323,8 +341,10 @@ public class DriverUtils {
 		}
 	}
 
+	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL = 100;
+
 	public static void swipeUp(AppiumDriver driver, WebElement element, int time) {
-		swipeUp(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+		swipeUp(driver, element, time, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);
 	}
 
@@ -346,7 +366,7 @@ public class DriverUtils {
 
 	public static void swipeDown(AppiumDriver driver, WebElement element,
 			int time) {
-		swipeDown(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+		swipeDown(driver, element, time, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);
 	}
 
@@ -370,7 +390,6 @@ public class DriverUtils {
 		}
 	}
 
-	public static final int DEFAULT_PERCENTAGE = 50;
 	public static final int DEFAULT_TIME = 500; // milliseconds
 	public static final int DEFAULT_FINGERS = 1;
 
@@ -401,7 +420,6 @@ public class DriverUtils {
 		} catch (Exception ex) {
 			// ignore;
 		}
-
 	}
 
 	public static final int SWIPE_X_DEFAULT_PERCENTAGE_START = 10;
@@ -412,60 +430,54 @@ public class DriverUtils {
 	public static void swipeRightCoordinates(AppiumDriver driver, int time)
 			throws Exception {
 		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_START,
-				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL,
-				SWIPE_X_DEFAULT_PERCENTAGE_END,
-				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL);
+				DEFAULT_PERCENTAGE, SWIPE_X_DEFAULT_PERCENTAGE_END,
+				DEFAULT_PERCENTAGE);
 	}
 
 	public static void swipeRightCoordinates(AppiumDriver driver, int time,
-			int horizontalPercent) throws Exception {
+			int percentY) throws Exception {
 		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_START,
-				horizontalPercent, SWIPE_X_DEFAULT_PERCENTAGE_END,
-				horizontalPercent);
+				percentY, SWIPE_X_DEFAULT_PERCENTAGE_END, percentY);
 	}
 
 	public static void swipeLeftCoordinates(AppiumDriver driver, int time)
 			throws Exception {
 		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_END,
-				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL,
-				SWIPE_X_DEFAULT_PERCENTAGE_START,
-				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL);
+				DEFAULT_PERCENTAGE, SWIPE_X_DEFAULT_PERCENTAGE_START,
+				DEFAULT_PERCENTAGE);
 	}
 
 	public static void swipeLeftCoordinates(AppiumDriver driver, int time,
-			int horizontalPercent) throws Exception {
+			int percentY) throws Exception {
 		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_END,
-				horizontalPercent, SWIPE_X_DEFAULT_PERCENTAGE_START,
-				horizontalPercent);
+				percentY, SWIPE_X_DEFAULT_PERCENTAGE_START, percentY);
 	}
 
 	public static void swipeUpCoordinates(AppiumDriver driver, int time)
 			throws Exception {
-		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
-				SWIPE_Y_DEFAULT_PERCENTAGE_END,
-				SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+		swipeByCoordinates(driver, time, DEFAULT_PERCENTAGE,
+				SWIPE_Y_DEFAULT_PERCENTAGE_END, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_START);
 	}
 
 	public static void swipeUpCoordinates(AppiumDriver driver, int time,
-			int verticalPercent) throws Exception {
-		swipeByCoordinates(driver, time, verticalPercent,
-				SWIPE_Y_DEFAULT_PERCENTAGE_END, verticalPercent,
+			int percentX) throws Exception {
+		swipeByCoordinates(driver, time, percentX,
+				SWIPE_Y_DEFAULT_PERCENTAGE_END, percentX,
 				SWIPE_Y_DEFAULT_PERCENTAGE_START);
 	}
 
 	public static void swipeDownCoordinates(AppiumDriver driver, int time)
 			throws Exception {
-		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
-				SWIPE_Y_DEFAULT_PERCENTAGE_START,
-				SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+		swipeByCoordinates(driver, time, DEFAULT_PERCENTAGE,
+				SWIPE_Y_DEFAULT_PERCENTAGE_START, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_END);
 	}
 
 	public static void swipeDownCoordinates(AppiumDriver driver, int time,
-			int verticalPercent) throws Exception {
-		swipeByCoordinates(driver, time, verticalPercent,
-				SWIPE_Y_DEFAULT_PERCENTAGE_START, verticalPercent,
+			int percentX) throws Exception {
+		swipeByCoordinates(driver, time, percentX,
+				SWIPE_Y_DEFAULT_PERCENTAGE_START, percentX,
 				SWIPE_Y_DEFAULT_PERCENTAGE_END);
 	}
 

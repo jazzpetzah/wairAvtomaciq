@@ -3,7 +3,11 @@ package com.wearezeta.auto.common;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -331,4 +335,48 @@ public final class CommonSteps {
 				contactsToAdd, chatName);
 	}
 
+	private Map<String, String> profilePictureSnapshotsMap = new HashMap<String, String>();
+
+	public void UserXTakesSnapshotOfProfilePicture(String userNameAlias)
+			throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userNameAlias);
+		profilePictureSnapshotsMap.put(userAs.getEmail(),
+				BackendAPIWrappers.getUserPictureHash(userAs));
+	}
+
+	public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
+			String userNameAlias, int secondsTimeout) throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userNameAlias);
+		String expectedHash = null;
+		if (profilePictureSnapshotsMap.containsKey(userAs.getEmail())) {
+			expectedHash = profilePictureSnapshotsMap.get(userAs.getEmail());
+		} else {
+			throw new RuntimeException(String.format(
+					"Please take user picture snpshot for user '%s' first",
+					userAs.getEmail()));
+		}
+		long millisecondsStarted = System.currentTimeMillis();
+		String actualHash = null;
+		do {
+			actualHash = BackendAPIWrappers.getUserPictureHash(userAs);
+			if (actualHash.equals(expectedHash)) {
+				break;
+			}
+			Thread.sleep(500);
+		} while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000);
+		Assert.assertFalse(
+				String.format(
+						"Actual and previous user pictures are equal, but expected to be different after %s second(s)",
+						secondsTimeout), expectedHash.equals(actualHash));
+	}
+
+	private static final int PICTURE_CHANGE_TIMEOUT = 15; // seconds
+
+	public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
+			String userNameAlias) throws Exception {
+		UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias,
+				PICTURE_CHANGE_TIMEOUT);
+	}
 }

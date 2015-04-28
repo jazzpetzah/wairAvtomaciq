@@ -32,7 +32,7 @@ public class SettingsPageSteps {
 	 * 
 	 * @step. I select Sound Alerts setting to be (None|Some|All)
 	 * 
-	 * @param str
+	 * @param newLevel
 	 *            possible values None, Some, All
 	 */
 	@When("^I select Sound Alerts setting to be (None|Some|All)")
@@ -46,7 +46,7 @@ public class SettingsPageSteps {
 	 * 
 	 * @step. I see Sound Alerts setting is set to (None|Some|All)
 	 * 
-	 * @param str
+	 * @param expectedValue
 	 *            possible values None, Some, All
 	 */
 	@When("^I see Sound Alerts setting is set to (None|Some|All)")

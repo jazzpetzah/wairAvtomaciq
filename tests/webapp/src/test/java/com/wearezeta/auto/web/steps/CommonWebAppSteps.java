@@ -40,6 +40,7 @@ import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CommonWebAppSteps {
@@ -64,8 +65,7 @@ public class CommonWebAppSteps {
 				"warn");
 	}
 
-	private static void setCustomChromeProfile(
-			DesiredCapabilities capabilities, String browserPlatform)
+	private static void setCustomChromeProfile(DesiredCapabilities capabilities)
 			throws Exception {
 		ChromeOptions options = new ChromeOptions();
 		// simulate a fake webcam and mic for testing
@@ -75,10 +75,9 @@ public class CommonWebAppSteps {
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 	}
 
-	private static void setCustomOperaProfile(DesiredCapabilities capabilities,
-			String browserPlatform) throws Exception {
-		final String userProfileRoot = WebCommonUtils
-				.getOperaProfileRoot(browserPlatform);
+	private static void setCustomOperaProfile(DesiredCapabilities capabilities)
+			throws Exception {
+		final String userProfileRoot = WebCommonUtils.getOperaProfileRoot();
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("user-data-dir=" + userProfileRoot);
 		// simulate a fake webcam and mic for testing
@@ -129,18 +128,14 @@ public class CommonWebAppSteps {
 		switch (WebAppExecutionContext.getCurrentBrowser()) {
 		case Chrome:
 			capabilities = DesiredCapabilities.chrome();
-			setCustomChromeProfile(capabilities,
-					WebAppExecutionContext.getCurrentPlatform());
+			setCustomChromeProfile(capabilities);
 			break;
 		case Opera:
 			capabilities = DesiredCapabilities.chrome();
-			setCustomOperaProfile(capabilities,
-					WebAppExecutionContext.getCurrentPlatform());
+			setCustomOperaProfile(capabilities);
 			break;
 		case Firefox:
 			capabilities = DesiredCapabilities.firefox();
-			// This is to fix Desktop Notifications alert appearance in
-			// Firefox
 			setCustomFirefoxProfile(capabilities);
 			break;
 		case Safari:
@@ -376,6 +371,22 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * Sets self user to be the current user. Avatar picture for this user is
+	 * NOT set automatically
+	 * 
+	 * @step. ^User (\\w+) is [Mm]e without avatar$
+	 * 
+	 * @param nameAlias
+	 *            user to be set as self user
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^User (\\w+) is [Mm]e without avatar$")
+	public void UserXIsMeWithoutAvatar(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
+	}
+
+	/**
 	 * Sends connection request by one user to another
 	 * 
 	 * @step. ^(.*) (?:has|have) sent connection request to (.*)
@@ -455,7 +466,7 @@ public class CommonWebAppSteps {
 	 * Send message to a conversation
 	 * 
 	 * @step. ^User (.*) sent message (.*) to conversation (.*)
-	 * @param userToNameAlias
+	 * @param userFromNameAlias
 	 *            user who want to mute conversation
 	 * @param message
 	 *            message to send
@@ -491,6 +502,69 @@ public class CommonWebAppSteps {
 				conversationName);
 	}
 
+	/**
+	 * Forces the current test to be skipped if current browser does not support
+	 * fast location by XPath
+	 * 
+	 * @step. ^My browser supports fast location by XPath$
+	 * 
+	 */
+	@Given("^My browser supports fast location by XPath$")
+	public void MyBrowserSupportsFastLocationByXpath() {
+		if (WebAppExecutionContext.SlowXPathLocation
+				.existsInCurrentBrowser()) {
+			throw new PendingException();
+		}
+	}
+
+	/**
+	 * Record SHA256-hash of current user profile picture
+	 * 
+	 * @step. (.*) takes? snapshot of current profile picture$
+	 * 
+	 * @param asUser
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@Given("(.*) takes? snapshot of current profile picture$")
+	public void UserXTakesSnapshotOfProfilePicture(String asUser)
+			throws Exception {
+		commonSteps.UserXTakesSnapshotOfProfilePicture(asUser);
+	}
+
+	/**
+	 * Verify whether current user picture is changed since the last snapshot
+	 * was made
+	 * 
+	 * @step. ^I verify that current profile picture snapshot of (.*) differs?
+	 *        from the previous one$
+	 * 
+	 * @param userNameAlias
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@Then("^I verify that current profile picture snapshot of (.*) differs? from the previous one$")
+	public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
+			String userNameAlias) throws Exception {
+		commonSteps
+				.UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
+	}
+
+	/**
+	 * Will throw PendingException if the current browser does not support
+	 * synthetic drag and drop
+	 * 
+	 * @step. ^My browser supports synthetic drag and drop$
+	 * 
+	 */
+	@Given("^My browser supports synthetic drag and drop$")
+	public void MyBrowserSupportsSyntheticDragDrop() {
+		if (!WebAppExecutionContext.SyntheticDragAndDrop
+				.isSupportedInCurrentBrowser()) {
+			throw new PendingException();
+		}
+	}
+
 	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
 		log.debug("BROWSER CONSOLE LOGS:");
 		LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
@@ -519,8 +593,6 @@ public class CommonWebAppSteps {
 					writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
 							.getDriver(CURRENT_PLATFORM));
 				}
-				PlatformDrivers.getInstance().getDriver(CURRENT_PLATFORM)
-						.manage().deleteAllCookies();
 			} finally {
 				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 			}

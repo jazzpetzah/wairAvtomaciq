@@ -131,7 +131,7 @@ final class BackendREST {
 		} catch (UniformInterfaceException e) {
 			responseStr = "";
 		}
-		log.debug(String.format("GET REQUEST\n >>> Input data: %s",
+		log.debug(String.format("GET REQUEST\n >>> Response: %s",
 				(responseStr.length() > 0) ? responseStr : EMPTY_LOG_RECORD));
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return responseStr;

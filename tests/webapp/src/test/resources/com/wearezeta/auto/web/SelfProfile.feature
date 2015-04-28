@@ -40,3 +40,24 @@ Feature: Self Profile
     Examples: 
       | Login      | Password      | Name      | ColorName    |
       | user1Email | user1Password | user1Name | BrightOrange |
+
+  @regression @id1755
+  Scenario Outline: Verify you can edit your profile picture by dragging a new photo
+    Given My browser supports synthetic drag and drop
+    Given There is 1 user where <Name> is me
+    Given Myself take snapshot of current profile picture
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
+    And I see my name on top of Contact list
+    When I open self profile
+    And I click camera button
+    And I see profile picture dialog
+    And I drop <PictureName> to profile picture dialog
+    And I confirm picture selection on profile picture dialog
+    Then I do not see profile picture dialog
+    Then I verify that current profile picture snapshot of Myself differs from the previous one
+
+    Examples: 
+      | Login      | Password      | Name      | PictureName               |
+      | user1Email | user1Password | user1Name | userpicture_portrait.jpg  |

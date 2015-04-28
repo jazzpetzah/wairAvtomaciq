@@ -331,7 +331,7 @@ Feature: Connect
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe up on dialog page
-    And I press Right conversation button
+    And I press options menu button
     And I Press Block button
     #And I confirm block
     Then I do not see Contact list with name <Contact>
@@ -476,9 +476,12 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    And I wait for 90 seconds
+    And I see Contact list with my name <Name>
     When I swipe down contact list
+    And I see People picker page
+    And I press Clear button
+    And I wait for 30 seconds
+    And I swipe down contact list
     And I see People picker page
     And I press + button on a random Connect
   	And I press Clear button

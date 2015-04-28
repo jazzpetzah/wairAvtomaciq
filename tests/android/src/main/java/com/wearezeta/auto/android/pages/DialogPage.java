@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import io.appium.java_client.android.AndroidKeyCode;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 import java.awt.image.BufferedImage;
@@ -33,6 +34,8 @@ public class DialogPage extends AndroidPage {
 	public static final String MEDIA_PAUSE = "PAUSE";
 	public static final String PING_LABEL = "PINGED";
 	public static final String HOT_PING_LABEL = "PINGED AGAIN";
+	public static final String MUTE_BUTTON_LABEL = "MUTE";
+	public static final String SPEAKER_BUTTON_LABEL = "SPEAKER";
 	public static final String I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
@@ -46,10 +49,10 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private WebElement messageInList;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMissedCallMesage")
 	private WebElement missedCallMessage;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCursorFrame")
 	private WebElement cursurFrame;
 
@@ -121,19 +124,33 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idAddPicture")
 	private WebElement addPictureBtn;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPing")
 	private WebElement pingBtn;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCallingMessage")
+	private WebElement callingMessageText;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCall")
+	private WebElement callBtn;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMute")
+	private WebElement muteBtn;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idSpeaker")
+	private WebElement speakerBtn;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCancelCall")
+	private WebElement cancelCallBtn;
+	
 	@AndroidFindBy(xpath = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
 	private List<WebElement> linearLayout;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogPageBottom")
 	private WebElement dialogPageBottom;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idNewConversationNameMessage")
 	private WebElement newConversationNameMessage;
-	
 
 	private int initMessageCount = 0;
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
@@ -154,7 +171,7 @@ public class DialogPage extends AndroidPage {
 				break;
 			}
 		}
-		if( isVisible(messageInList)) {
+		if (isVisible(messageInList)) {
 			initMessageCount = messagesList.size();
 		}
 	}
@@ -166,15 +183,11 @@ public class DialogPage extends AndroidPage {
 	public void tapOnCursorFrame() {
 		cursurFrame.click();
 	}
-	
+
 	public void sendMessageInInput() throws InterruptedException {
 		this.getDriver().hideKeyboard();
 		Thread.sleep(2000);
 		cursorInput.sendKeys("\\n");
-	}
-
-	public void tapOnCenterOfScreen() {
-		DriverUtils.genericTap(this.getDriver());
 	}
 
 	public void multiTapOnCursorInput() throws InterruptedException {
@@ -201,16 +214,69 @@ public class DialogPage extends AndroidPage {
 		pingBtn.click();
 		Thread.sleep(1000);
 	}
-
-	public void typeMessage(String message) {
+	
+	public void tapCallBtn() throws InterruptedException {
 		refreshUITree();
-		cursorInput.sendKeys(message + "\\n");
+		callBtn.click();
+		Thread.sleep(1000);
+	}
+	
+	public void tapMuteBtn() throws InterruptedException {
+		refreshUITree();
+		muteBtn.click();
+	}
+	
+	public void tapSpeakerBtn() throws InterruptedException {
+		refreshUITree();
+		speakerBtn.click();
+	}
+	
+	public void tapCancelCallBtn() throws InterruptedException {
+		refreshUITree();
+		cancelCallBtn.click();
+		Thread.sleep(1000);
+	}
+	
+	public double checkCallingButton(String label) throws Exception {
+		refreshUITree();
+		String path = null;
+		BufferedImage callingButtonImage = null;
+		if (label.equals(MUTE_BUTTON_LABEL)) {
+			callingButtonImage = getElementScreenshot(muteBtn);
+			path = CommonUtils.getCallingMuteButtonPath(DialogPage.class);
+		} else if (label.equals(SPEAKER_BUTTON_LABEL)) {
+			callingButtonImage = getElementScreenshot(speakerBtn);
+			path = CommonUtils.getCallingSpeakerButtonPath(DialogPage.class);
+		}
+		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+		return ImageUtil.getOverlapScore(callingButtonImage, templateImage, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+	}
+	
+	public boolean checkCallingOverlay() throws Exception {
+		return DriverUtils.isElementDisplayed(driver, callingMessageText);
+	}
+	
+	public void typeAndSendMessage(String message) {
+		refreshUITree();
+		cursorInput.sendKeys(message + "\n");
 		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 		try {
 			this.getDriver().hideKeyboard();
 		} catch (Exception ex) {
-			
+
 		}
+	}
+
+	public void typeMessage(String message) {
+		refreshUITree();
+		cursorInput.sendKeys(message);
+	}
+
+	public void pressKeyboardSendButton() {
+		int sendKeyXPosPercentage = 95;
+		int sendKeyYPosPercentage = 95;
+		DriverUtils.genericTap(this.getDriver(), 200, sendKeyXPosPercentage,
+				sendKeyYPosPercentage);
 	}
 
 	public String getLastMessageFromDialog() {
@@ -220,7 +286,7 @@ public class DialogPage extends AndroidPage {
 	public void clickLastImageFromDialog() {
 		imageList.get(imageList.size() - 1).click();
 	}
-	
+
 	public String getChangedGroupNameMessage() {
 		return newConversationNameMessage.getText();
 	}
@@ -317,7 +383,8 @@ public class DialogPage extends AndroidPage {
 	public String getConnectRequestChatLabel() throws Exception {
 		if (isConnectRequestChatLabelVisible()) {
 			refreshUITree();
-			this.getWait().until(ExpectedConditions.visibilityOf(connectRequestChatLabel));
+			this.getWait().until(
+					ExpectedConditions.visibilityOf(connectRequestChatLabel));
 			return connectRequestChatLabel.getText().toLowerCase().trim();
 		} else {
 			return "CHAT HEAD NOT FOUND";
@@ -365,8 +432,9 @@ public class DialogPage extends AndroidPage {
 		refreshUITree();
 		closeImageBtn.click();
 	}
-	
-	public OtherUserPersonalInfoPage tapConversationDetailsButton() throws Exception {
+
+	public OtherUserPersonalInfoPage tapConversationDetailsButton()
+			throws Exception {
 		addParticipant.click();
 		return new OtherUserPersonalInfoPage(this.getDriver(), this.getWait());
 	}
@@ -532,7 +600,7 @@ public class DialogPage extends AndroidPage {
 			path = CommonUtils.getHotPingIconPath(DialogPage.class);
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(pingImage, templateImage);
+		return ImageUtil.getOverlapScore(pingImage, templateImage, ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
 	public String getKnockText() {
@@ -588,8 +656,7 @@ public class DialogPage extends AndroidPage {
 		playPauseBtn.click();
 	}
 
-	public void tapDialogPageBottom() throws NumberFormatException,
-			Exception {
+	public void tapDialogPageBottom() throws NumberFormatException, Exception {
 		refreshUITree();
 		if (!isVisible(addParticipant)) {
 			dialogPageBottom.click();
