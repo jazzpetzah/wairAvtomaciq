@@ -62,6 +62,31 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Verifies whether back button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct back button tool tip on Group Participants popover$
+	 *
+	 */
+	@Then("^I see correct back button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectBackButtonToolTip() {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getBackButtonToolTip().equals("Back"));
+	}
+
+	/**
+	 * Verifies whether pending button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct pending button tool tip on Group Participants
+	 *        popover$
+	 *
+	 */
+	@Then("^I see correct pending button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectPendingButtonToolTip() {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getPendingButtonToolTip().equals("Open conversation"));
+	}
+
+	/**
 	 * Click on a participant on Group Participants popover
 	 *
 	 * @step. ^I click on participant (.*) on Group Participants popover$
@@ -291,7 +316,8 @@ public class GroupPopoverPageSteps {
 	@Then("^I see correct add people button tool tip$")
 	public void ThenISeeCorrectAddPeopleButtonToolTip() throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.isAddPeopleButtonToolTipCorrect());
+				.getAddPeopleButtonToolTip().equals(
+						"Add people to conversation"));
 	}
 
 	/**
@@ -305,7 +331,7 @@ public class GroupPopoverPageSteps {
 	public void ThenISeeCorrectLeaveConversationButtonToolTip()
 			throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.isLeaveGroupChatButtonToolTipCorrect());
+				.getLeaveGroupChatButtonToolTip().equals("Leave conversation"));
 	}
 
 	/**
@@ -319,6 +345,79 @@ public class GroupPopoverPageSteps {
 	public void ThenISeeCorrectRenameConversationButtonToolTip()
 			throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.isRenameConversationToolTipCorrect());
+				.getRenameConversationToolTip().equals(
+						"Change conversation name"));
+	}
+
+	/**
+	 * Verifies whether remove from group button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct remove from group button tool tip on Group
+	 *        Participants popover$
+	 *
+	 */
+	@Then("^I see correct remove from group button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectRemoveFromGroupChatButtonToolTip() {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getRemoveFromGroupChatButtonToolTip().equals(
+						"Remove from conversation"));
+	}
+
+	/**
+	 * Compares if name on Single User Profile popover on Group Participants
+	 * popover is same as expected
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see username (.*) on Single User Profile popover on Group
+	 *        Participants popover$
+	 *
+	 * @param name
+	 *            user name string
+	 */
+	@When("^I see username (.*) on Group Participants popover$")
+	public void IseeUserNameOnUserProfilePage(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		Assert.assertEquals(name,
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getUserName());
+	}
+
+	/**
+	 * Verifies whether the users avatar exists on the popover
+	 *
+	 * @step. ^I see the users avatar on Group Participants User Profile
+	 *        popover$
+	 *
+	 */
+	@When("^I see an avatar on Group Participants popover")
+	public void IseeAvatarOnUserProfilePage() {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.isAvatarVisible());
+	}
+
+	/**
+	 * Verifies Mail is not visible on Group Participants User Profile popover
+	 *
+	 * @step. ^I see Mail on Group Participants User Profile popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I do not see Mail on Group Participants popover$")
+	public void IDoNotSeeMailOfUser() throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getUserMail().isEmpty());
+	}
+
+	/**
+	 * Verifies Pending text box is visible on Single Participant popover
+	 *
+	 * @step. ^I see Pending text box on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see Pending text box on Group Participants popover$")
+	public void ISeePendingTextBox() throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.isPendingTextBoxVisible());
 	}
 }
