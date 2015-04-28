@@ -448,6 +448,7 @@ public final class IOSLocators {
 	public static final String nameHideSuggestedContactButtonType = "UIAButton";
 	public static final String nameInstantConnectButton = "instantPlusConnectButton";
 	public static final String xpathSearchResultCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]";
+	public static final String xpathSearchResultContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
 	
 	//////////////////
 	//Connect to page
