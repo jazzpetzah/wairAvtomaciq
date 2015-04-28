@@ -170,21 +170,25 @@ public class CommonAndroidSteps {
 	@When("^I swipe right$")
 	public void ISwipeRight() throws Exception {
 		PagesCollection.androidPage.swipeRightCoordinates(DEFAULT_SWIPE_TIME);
+		Thread.sleep(1000); //fix for animation
 	}
 	
 	@When("^I swipe left$")
 	public void ISwipeLeft() throws Exception {
 		PagesCollection.androidPage.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
+		Thread.sleep(1000); //fix for animation
 	}
 	
 	@When("^I swipe up$")
 	public void ISwipeUp() throws Exception {
 		PagesCollection.androidPage.swipeUpCoordinates(DEFAULT_SWIPE_TIME);
+		Thread.sleep(1000); //fix for animation
 	}
 	
 	@When("^I swipe down$")
 	public void ISwipeDown() throws Exception {
 		PagesCollection.androidPage.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
+		Thread.sleep(1000); //fix for animation
 	}
 
 	public void commonBefore() throws Exception {
