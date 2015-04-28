@@ -12,7 +12,6 @@ Feature: Conversation List
     And I press options menu button
     And I press Silence conversation button
     And I return to group chat page
-    And I return to group chat page
     And I navigate back from dialog page
     Then Contact <Contact1> is muted
 
