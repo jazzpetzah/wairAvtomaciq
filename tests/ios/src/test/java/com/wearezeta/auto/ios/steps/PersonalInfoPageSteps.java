@@ -275,7 +275,8 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
-	 * 
+	 * Closes the settings by pressing back and done button
+	 * @step. ^I close the Settings$
 	 */
 	@When("^I close the Settings$")
 	public void ICloseTheSettings(){
