@@ -161,7 +161,7 @@ Feature: People View
       And I confirm add to chat on Group Participants popover
       And I input user name <Contact3> in search field on Group Participants popover
       And I select <Contact3> from Group Participants popover search results
-      And I choose to create conversation from Group Participants popover
+      And I choose to create group conversation from Group Participants popover
       And I open conversation with <ChatName>
       Then I see <Message> action for <Contact3> in conversation
       When I add <Contact4> to group chat
