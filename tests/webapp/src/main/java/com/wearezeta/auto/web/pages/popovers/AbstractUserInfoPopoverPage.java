@@ -11,8 +11,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 
-	private static final String TOOLTIP_REMOVE_FROM_CONVERSATION = "Remove from conversation";
-
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantInfoPage.xpathRemoveButton)
 	private WebElement removeButton;
 
@@ -33,9 +31,8 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 		removeButton.click();
 	}
 
-	public boolean isRemoveFromGroupChatButtonToolTipCorrect() {
-		return TOOLTIP_REMOVE_FROM_CONVERSATION.equals(removeButton
-				.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
+	public String getRemoveFromGroupChatButtonToolTip() {
+		return removeButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 
 	public boolean isRemoveButtonVisible() {
