@@ -57,17 +57,6 @@ Feature: Conversation List
     And I press Clear button
     Then I see Contact list with my name <Name>
     And I do not see TOP PEOPLE
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name |
-
-  @id2177 @staging
-  Scenario Outline: I can open and close people picker by swipe
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
     And I swipe down people picker
