@@ -353,7 +353,7 @@ public class CommonAndroidSteps {
 	@Then("^I compare 1st and 2nd screenshots and they are different$")
 	public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent() {
 		double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
-		Assert.assertTrue(score < 0.70d);
+		Assert.assertTrue(score < 0.75d);
 		images.clear();
 	}
 
