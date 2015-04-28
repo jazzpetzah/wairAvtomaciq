@@ -32,7 +32,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @staging @id1503
+  @id1503 @regression
   Scenario Outline: Silence an incoming call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -111,7 +111,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Message                   | SystemMessage | Action |
       | user1Email | user1Password | user1Name | user2Name | autocall    | simple message in english | YOU           | PINGED |
       
-  @staging @id2210
+  @id2210 @regression
   Scenario Outline: Calling bar buttons are clickable and change its state
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>

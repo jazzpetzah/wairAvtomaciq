@@ -46,7 +46,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
       | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id2177 @staging
+  @id2177 @regression
   Scenario Outline: I can open and close people picker by UI button or swipe
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
