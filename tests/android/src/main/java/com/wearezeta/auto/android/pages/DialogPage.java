@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import io.appium.java_client.android.AndroidKeyCode;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 import java.awt.image.BufferedImage;
