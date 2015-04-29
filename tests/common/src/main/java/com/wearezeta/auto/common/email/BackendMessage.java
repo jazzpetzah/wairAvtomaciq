@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.email;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -12,18 +11,13 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
-import javax.mail.Session;
-import javax.mail.internet.MimeMessage;
 
 public class BackendMessage {
 	private String content;
 	private Map<String, String> mapHeaders = new HashMap<String, String>();
 
 	public BackendMessage(String rawMsg) throws Exception {
-		final Session session = Session.getInstance(System.getProperties(),
-				null);
-		final Message msg = new MimeMessage(session, new ByteArrayInputStream(
-				rawMsg.getBytes()));
+		final Message msg = MessagingUtils.stringToMsg(rawMsg);
 
 		@SuppressWarnings("unchecked")
 		final Enumeration<Header> hdrs = msg.getAllHeaders();

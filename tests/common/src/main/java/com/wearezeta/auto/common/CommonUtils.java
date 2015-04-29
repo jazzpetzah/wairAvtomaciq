@@ -484,4 +484,14 @@ public class CommonUtils {
 		final byte[] digest = md.digest();
 		return Base64.encodeBase64String(digest);
 	}
+	
+	public static String getDefaultEmailListenerServiceHostFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "defaultEmailListenerServiceHost");
+	}
+	
+	public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");
+	}
 }

@@ -24,8 +24,8 @@ import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.email.ActivationMessage;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.UserState;

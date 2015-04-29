@@ -1,4 +1,4 @@
-package com.wearezeta.auto.common.email.local_client;
+package com.wearezeta.auto.common.email.handlers;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,11 @@ import org.apache.log4j.Logger;
 
 import com.sun.mail.iap.ProtocolException;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.email.ISupportsMessagesPolling;
 import com.wearezeta.auto.common.email.MessagingUtils;
-import com.wearezeta.auto.common.email.local_client.MBoxChangesListener;
+import com.wearezeta.auto.common.email.handlers.JavaXMBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-public class JavaXMailbox implements ISupportsMessagesPolling {
+class JavaXMailbox implements ISupportsMessagesPolling {
 	private static final String MAIL_PROTOCOL = "imaps";
 	private static final String MAILS_FOLDER = "Inbox";
 	private static final int FOLDER_OPEN_TIMEOUT = 60 * 15; // seconds
@@ -155,15 +154,10 @@ public class JavaXMailbox implements ISupportsMessagesPolling {
 	private final ExecutorService pool = Executors.newFixedThreadPool(1);
 
 	public Future<String> getMessage(Map<String, String> expectedHeaders,
-			int timeoutSeconds) throws Exception {
-		return getMessage(expectedHeaders, timeoutSeconds, 0);
-	}
-
-	public Future<String> getMessage(Map<String, String> expectedHeaders,
 			int timeoutSeconds, long rejectMessagesBeforeTimestamp)
 			throws Exception {
 		this.openFolder(true);
-		MBoxChangesListener listener = new MBoxChangesListener(this,
+		JavaXMBoxChangesListener listener = new JavaXMBoxChangesListener(this,
 				expectedHeaders, timeoutSeconds, rejectMessagesBeforeTimestamp);
 		this.getFolder().addMessageCountListener(listener);
 		log.debug(String.format(
