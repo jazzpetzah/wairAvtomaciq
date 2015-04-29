@@ -6,7 +6,7 @@ import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
 
 public class PagesCollection extends AbstractPagesCollection {
 
-	public static InvitationCodePage invitationCodePage = null;
+	public static LandingPage landingPage = null;
 
 	public static LoginPage loginPage = null;
 
