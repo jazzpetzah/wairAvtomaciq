@@ -88,6 +88,9 @@ public class PeoplePickerPage extends IOSPage {
 		for (int i = 0; i < 3; i++) {
 			if (DriverUtils.isElementDisplayed(this.getDriver(),
 					By.name(IOSLocators.nameShareButton))) {
+				if(i > 0) {
+					this.minimizeApplication(3);
+				}
 				getWait().until(ExpectedConditions.elementToBeClickable(shareButton));
 				DriverUtils.mobileTapByCoordinates(getDriver(), shareButton);
 				break;
