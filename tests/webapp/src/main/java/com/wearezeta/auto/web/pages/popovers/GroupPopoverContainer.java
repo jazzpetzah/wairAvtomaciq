@@ -44,8 +44,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 			return this.connectedParticipantInfoPopoverPage;
 		} else if (this.nonConnectedParticipantInfoPopoverPage.isCurrent()) {
 			return this.nonConnectedParticipantInfoPopoverPage;
-		} else if (this.nonConnectedParticipantInfoPopoverPage.isCurrent()) {
-			return this.nonConnectedParticipantInfoPopoverPage;
+		} else if (this.pendingParticipantInfoPopoverPage.isCurrent()) {
+			return this.pendingParticipantInfoPopoverPage;
 		} else {
 			throw new RuntimeException(
 					"The current popover page is neither connected user info ,non-connected nor pending connection user info.");
@@ -130,6 +130,29 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		return this.participantsListPopoverPage.getRenameConversationToolTip();
 	}
 
+	public String getOpenConvButtonCaption() {
+		return this.connectedParticipantInfoPopoverPage
+				.getOpenConvButtonCaption();
+	}
+
+	public boolean isOpenConvButtonVisible() {
+		return this.connectedParticipantInfoPopoverPage
+				.isOpenConvButtonVisible();
+	}
+
+	public String getOpenConvButtonToolTip() {
+		return this.connectedParticipantInfoPopoverPage
+				.getOpenConvButtonToolTip();
+	}
+
+	public void clickOpenConvButton() {
+		connectedParticipantInfoPopoverPage.clickOpenConversationButton();
+	}
+
+	public String getMailHref() throws Exception {
+		return getCurrentUserInfoPage().getMailHref();
+	}
+
 	public String getPendingButtonToolTip() {
 		return this.pendingParticipantInfoPopoverPage.getPendingButtonToolTip();
 	}
@@ -145,11 +168,11 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	}
 
 	public String getUserName() throws Exception {
-		return this.connectedParticipantInfoPopoverPage.getUserName();
+		return getCurrentUserInfoPage().getUserName();
 	}
 
-	public boolean isAvatarVisible() {
-		return this.connectedParticipantInfoPopoverPage.isAvatarVisible();
+	public boolean isAvatarVisible() throws Exception {
+		return getCurrentUserInfoPage().isAvatarVisible();
 	}
 
 	public String getUserMail() throws Exception {
