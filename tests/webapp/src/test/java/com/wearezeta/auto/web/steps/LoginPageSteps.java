@@ -59,7 +59,7 @@ public class LoginPageSteps {
 		// workaround Amazon page load issues
 		int ntry = 0;
 		while (ntry < MAX_LOGIN_RETRIES) {
-			PagesCollection.loginPage = PagesCollection.landingPage.switchToLoginPage();
+			PagesCollection.loginPage = PagesCollection.registrationPage.switchToLoginPage();
 			this.IEnterEmail(login);
 			this.IEnterPassword(password);
 			try {

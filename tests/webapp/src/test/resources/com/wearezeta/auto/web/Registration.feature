@@ -2,7 +2,6 @@ Feature: Registration
 
   @smoke @id1936
   Scenario Outline: Verify new user can be registered
-    Given I switch to Registration page
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password <Password> on Registration page

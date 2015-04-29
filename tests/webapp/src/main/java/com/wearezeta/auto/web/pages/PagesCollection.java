@@ -6,8 +6,6 @@ import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
 
 public class PagesCollection extends AbstractPagesCollection {
 
-	public static LandingPage landingPage = null;
-
 	public static LoginPage loginPage = null;
 
 	public static ContactListPage contactListPage = null;

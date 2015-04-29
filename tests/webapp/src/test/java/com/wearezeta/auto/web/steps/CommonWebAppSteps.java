@@ -32,8 +32,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
-import com.wearezeta.auto.web.pages.LandingPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 
 import cucumber.api.PendingException;
@@ -212,9 +212,9 @@ public class CommonWebAppSteps {
 					webDriver.manage().window().maximize();
 				}
 
-				PagesCollection.landingPage = new LandingPage(
+				PagesCollection.registrationPage = new RegistrationPage(
 						webDriver, wait, path);
-				PagesCollection.landingPage.navigateTo();
+				PagesCollection.registrationPage.navigateTo();
 				break;
 			} catch (WebDriverException e) {
 				log.debug(String
@@ -228,7 +228,7 @@ public class CommonWebAppSteps {
 				}
 			}
 		} while (tryNum <= MAX_DRIVER_CREATION_RETRIES);
-		ZetaFormatter.setDriver(PagesCollection.landingPage.getDriver());
+		ZetaFormatter.setDriver(PagesCollection.registrationPage.getDriver());
 	}
 
 	/**

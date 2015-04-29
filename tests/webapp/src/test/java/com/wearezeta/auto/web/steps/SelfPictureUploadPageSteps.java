@@ -21,8 +21,8 @@ public class SelfPictureUploadPageSteps {
 			throws Exception {
 		if (PagesCollection.selfPictureUploadPage == null) {
 			PagesCollection.selfPictureUploadPage = new SelfPictureUploadPage(
-					PagesCollection.loginPage.getDriver(),
-					PagesCollection.loginPage.getWait());
+					PagesCollection.registrationPage.getDriver(),
+					PagesCollection.registrationPage.getWait());
 		}
 		if (shouldNotBeVisible == null) {
 			PagesCollection.selfPictureUploadPage
