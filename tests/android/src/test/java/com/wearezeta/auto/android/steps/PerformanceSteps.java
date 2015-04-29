@@ -2,7 +2,6 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
@@ -13,7 +12,6 @@ import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
-import com.wearezeta.auto.common.log.ZetaLogger;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;

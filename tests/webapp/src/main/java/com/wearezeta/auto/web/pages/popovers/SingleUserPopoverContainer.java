@@ -30,7 +30,6 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		return PopoverLocators.SingleUserPopover.xpathRootLocator;
 	}
 
-	@SuppressWarnings("unused")
 	private AbstractUserInfoPopoverPage getCurrentUserInfoPage()
 			throws Exception {
 		if (this.singleUserPopoverPage.isCurrent()) {
