@@ -133,7 +133,6 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-	
   @id1507 @staging
   Scenario Outline: Verify editing the conversation name
     Given There are 3 users where <Name> is me
@@ -151,8 +150,8 @@ Feature: People View
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | oldGroupChat 	  | newGroupName		|
-      
+      | user1Email | user1Password | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
+
   @id2236 @staging
   Scenario Outline: Check interaction with options menu
     Given There are 2 users where <Name> is me
@@ -186,13 +185,13 @@ Feature: People View
     #And I see profile page
     When I press options menu button
     Then I do not see profile page
+
     #And I see correct 1:1 options menu
-     
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-      
-        @id2214 @staging
+
+  @id2214 @staging
   Scenario Outline: I can dismiss PYMK by Hide button
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -212,7 +211,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id2213 @staging 
+  @id2213 @staging
   Scenario Outline: I can dismiss PYMK by swipe
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -231,3 +230,26 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @id1509 @staging
+  Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given <Contact1> is connected to <Contact2>
+    Given <Contact1> has group chat <OldGroupChatName> with <Name>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <OldGroupChatName>
+    And I tap conversation details button
+    And I tap on group chat contact <Contact2>
+    Then I see connect to unconnected user page with user <Contact2>
+    When I click on the unconnected user page connect or pending button
+    And I press Connect button
+    And I tap on group chat contact <Contact2>
+    Then I see connect to unconnected user page pending button
+    When I click on the unconnected user page connect or pending button
+    Then I see connect to unconnected user page pending button
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
