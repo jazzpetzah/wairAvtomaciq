@@ -1,5 +1,6 @@
 package com.wearezeta.auto.common.email;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -11,37 +12,39 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
 
 public class BackendMessage {
 	private String content;
 	private Map<String, String> mapHeaders = new HashMap<String, String>();
 
-	public BackendMessage(Message msg) throws Exception {
-		IMAPSMailbox.getInstance().openFolder(msg.getFolder(), false);
-		try {
-			@SuppressWarnings("unchecked")
-			final Enumeration<Header> hdrs = msg.getAllHeaders();
-			while (hdrs.hasMoreElements()) {
-				final Header hdr = hdrs.nextElement();
-				mapHeaders.put(hdr.getName(), hdr.getValue());
-			}
+	public BackendMessage(String rawMsg) throws Exception {
+		final Session session = Session.getInstance(System.getProperties(),
+				null);
+		final Message msg = new MimeMessage(session, new ByteArrayInputStream(
+				rawMsg.getBytes()));
 
-			final Object msgContent = msg.getContent();
-			if (msgContent instanceof Multipart) {
-				final Multipart multipart = (Multipart) msgContent;
-				final StringBuilder multipartContent = new StringBuilder();
-				for (int j = 0; j < multipart.getCount(); j++) {
-					final BodyPart bodyPart = multipart.getBodyPart(j);
-					if (bodyPart.getDisposition() == null) {
-						multipartContent.append(getText(bodyPart));
-					}
+		@SuppressWarnings("unchecked")
+		final Enumeration<Header> hdrs = msg.getAllHeaders();
+		while (hdrs.hasMoreElements()) {
+			final Header hdr = hdrs.nextElement();
+			mapHeaders.put(hdr.getName(), hdr.getValue());
+		}
+
+		final Object msgContent = msg.getContent();
+		if (msgContent instanceof Multipart) {
+			final Multipart multipart = (Multipart) msgContent;
+			final StringBuilder multipartContent = new StringBuilder();
+			for (int j = 0; j < multipart.getCount(); j++) {
+				final BodyPart bodyPart = multipart.getBodyPart(j);
+				if (bodyPart.getDisposition() == null) {
+					multipartContent.append(getText(bodyPart));
 				}
-				this.content = multipartContent.toString();
-			} else {
-				this.content = msgContent.toString();
 			}
-		} finally {
-			IMAPSMailbox.getInstance().closeFolder(msg.getFolder(), false);
+			this.content = multipartContent.toString();
+		} else {
+			this.content = msgContent.toString();
 		}
 	}
 

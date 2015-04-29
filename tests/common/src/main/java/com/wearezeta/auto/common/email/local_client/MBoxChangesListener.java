@@ -1,4 +1,4 @@
-package com.wearezeta.auto.common.email;
+package com.wearezeta.auto.common.email.local_client;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,20 +20,21 @@ import javax.mail.event.MessageCountListener;
 
 import org.apache.log4j.Logger;
 
+import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-class MBoxChangesListener implements MessageCountListener, Callable<Message> {
+class MBoxChangesListener implements MessageCountListener, Callable<String> {
 	private Map<String, String> expectedHeaders = new HashMap<String, String>();
 	private CountDownLatch waitObj = new CountDownLatch(1);
 	private Message matchedMessage = null;
-	private IMAPSMailbox parentMBox;
+	private JavaXMailbox parentMBox;
 	private int timeoutSeconds;
 	private long filterMessagesAfter;
 
 	private static final Logger log = ZetaLogger
 			.getLog(MBoxChangesListener.class.getSimpleName());
 
-	public MBoxChangesListener(IMAPSMailbox parentMBox,
+	public MBoxChangesListener(JavaXMailbox parentMBox,
 			Map<String, String> expectedHeaders, int timeoutSeconds,
 			long filterMessagesAfter) {
 		// clone map
@@ -155,10 +156,10 @@ class MBoxChangesListener implements MessageCountListener, Callable<Message> {
 	}
 
 	@Override
-	public Message call() throws Exception {
+	public String call() throws Exception {
 		try {
 			if (this.waitObj.await(timeoutSeconds, TimeUnit.SECONDS)) {
-				return this.matchedMessage;
+				return MessagingUtils.msgToString(this.matchedMessage);
 			}
 		} finally {
 			this.parentMBox.getFolder().removeMessageCountListener(this);

@@ -3,8 +3,6 @@ package com.wearezeta.auto.ios.pages;
 import java.io.IOException;
 import java.util.List;
 
-import javax.mail.Message;
-
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -449,7 +447,7 @@ public class RegistrationPage extends IOSPage {
 			String expectedRecipient) throws Exception {
 		IMAPSMailbox mailbox = IMAPSMailbox.getInstance();
 
-		List<Message> allEmails = mailbox.getRecentMessages(allRecentEmailsCnt);
+		List<String> allEmails = mailbox.getRecentMessages(allRecentEmailsCnt);
 		final int actualCnt = (int) allEmails
 				.stream()
 				.filter(x -> {

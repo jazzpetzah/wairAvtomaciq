@@ -9,7 +9,7 @@ import javax.mail.MessagingException;
 
 public class PasswordResetMessage extends WireMessage {
 
-	public PasswordResetMessage(Message msg) throws Exception {
+	public PasswordResetMessage(String msg) throws Exception {
 		super(msg);
 	}
 

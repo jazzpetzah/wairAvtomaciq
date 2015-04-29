@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import javax.mail.Message;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.ImageUtil;
@@ -29,7 +27,7 @@ public class RegistrationPageSteps {
 
 	private ClientUser userToRegister = null;
 
-	private Future<Message> activationMessage;
+	private Future<String> activationMessage;
 
 	public static final int maxCheckCnt = 2;
 

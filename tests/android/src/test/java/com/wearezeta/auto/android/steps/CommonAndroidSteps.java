@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
-import javax.mail.Message;
-
 import org.junit.Assert;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -52,7 +50,7 @@ public class CommonAndroidSteps {
 	}
 
 	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-	private Future<Message> passwordResetMessage;
+	private Future<String> passwordResetMessage;
 	private ClientUser userToRegister = null;
 	private static boolean skipBeforeAfter = false;
 	private final CommonSteps commonSteps = CommonSteps.getInstance();

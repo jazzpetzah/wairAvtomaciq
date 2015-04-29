@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import javax.mail.Message;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
@@ -24,7 +22,7 @@ public class RegistrationPageSteps {
 
 	private ClientUser userToRegister = null;
 
-	public static Future<Message> activationMessage;
+	public static Future<String> activationMessage;
 
 	/**
 	 * Presses the camera button once to bring up the camera, and again to take

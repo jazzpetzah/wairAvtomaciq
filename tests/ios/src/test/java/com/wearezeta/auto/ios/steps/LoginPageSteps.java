@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import javax.mail.Message;
-
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -28,7 +26,7 @@ import cucumber.api.java.en.*;
 public class LoginPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private ClientUser userToRegister = null;
-	private Future<Message> activationMessage;
+	private Future<String> activationMessage;
 	private static final String stagingURLForgot = "https://staging-website.wire.com/forgot/";
 
 	/**

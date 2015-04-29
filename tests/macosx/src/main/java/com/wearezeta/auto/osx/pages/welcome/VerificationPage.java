@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import javax.mail.Message;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -40,7 +38,7 @@ public class VerificationPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.VerificationPage.nameReSendLink)
 	private WebElement reSendLink;
 
-	private Future<Message> activationMessage;
+	private Future<String> activationMessage;
 
 	private String activationResponse = null;
 	
@@ -104,7 +102,7 @@ public class VerificationPage extends OSXPage {
 				.contains(OSXLocators.RegistrationPage.ACTIVATION_RESPONSE_VERIFIED);
 	}
 
-	public Future<Message> getActivationMessage() {
+	public Future<String> getActivationMessage() {
 		return activationMessage;
 	}
 }
