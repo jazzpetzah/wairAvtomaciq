@@ -450,11 +450,11 @@ public class GroupPopoverPageSteps {
 	 * Verifies whether click on mail would open mail client or not.
 	 *
 	 * @throws java.lang.Exception
-	 * @step. ^Click on mail on Single Participant popover would open mail
-	 *        client$
+	 * @step. ^Would open mail client when clicking mail on Group Participants
+	 *        popover$
 	 *
 	 */
-	@Then("^Click on mail on Group Participants popover would open mail client$")
+	@Then("^Would open mail client when clicking mail on Group Participants popover$")
 	public void ThenISeeThatClickOnMailWouldOpenMailClient() throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
 				.getMailHref().contains(MAILTO));
@@ -462,7 +462,7 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
-	 * Verifies Pending text box is visible on Single Participant popover
+	 * Verifies Pending text box is visible on Group Participant popover
 	 *
 	 * @step. ^I see Pending text box on Group Participants popover$
 	 *

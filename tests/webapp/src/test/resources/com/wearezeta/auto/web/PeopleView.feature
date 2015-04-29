@@ -135,7 +135,7 @@ Feature: People View
       And I see an avatar on Group Participants popover
       And I see Remove button on Group Participants popover
       And I see Mail on Group Participants popover
-      And Would open mail client when clicking mail on Single Participant popover
+      And Would open mail client when clicking mail on Group Participants popover
       And I see open conversation button on Group Participants popover
       And I see correct open conversation button tool tip on Group Participants popover
       When I click open conversation from Group Participants popover
