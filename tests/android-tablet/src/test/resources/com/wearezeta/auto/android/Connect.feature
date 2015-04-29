@@ -1,7 +1,7 @@
 Feature: Connect
 
   @staging
-  Scenario Outline: Send invitation message to a user landscape mode
+  Scenario Outline: Send connection request from search in landscape
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     And I rotate UI to landscape
@@ -26,7 +26,7 @@ Feature: Connect
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
 
   @staging
-  Scenario Outline: Send invitation message to a user portrait mode
+  Scenario Outline: Send connection request from search in portrait
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     And I rotate UI to portrait
