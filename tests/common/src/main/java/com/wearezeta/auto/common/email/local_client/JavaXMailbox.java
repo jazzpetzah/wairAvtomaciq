@@ -32,8 +32,8 @@ public class JavaXMailbox implements ISupportsMessagesPolling {
 	private static final Logger log = ZetaLogger.getLog(JavaXMailbox.class
 			.getSimpleName());
 
-	private final Semaphore folderStateGuard = new Semaphore(1);
-	private Thread messagesCountNotifier = null;
+	private static final Semaphore folderStateGuard = new Semaphore(1);
+	private static Thread messagesCountNotifier = null;
 
 	private static Store store = null;
 	private static Folder folder = null;
