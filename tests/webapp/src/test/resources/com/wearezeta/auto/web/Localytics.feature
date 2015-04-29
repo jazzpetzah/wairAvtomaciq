@@ -6,8 +6,6 @@ Feature: Localytics
   @localytics @id2155
   Scenario Outline: Verify 'regFailed' stats
     Given I take snapshot of <AttrName> attribute count
-    Given I see invitation page
-    Given I enter invitation code
     Given I switch to Registration page
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
@@ -297,8 +295,6 @@ Feature: Localytics
   @localytics @id2166
   Scenario Outline: Verify 'regSucceeded' stats
     Given I take snapshot of <EventName> event count
-    Given I see invitation page
-    Given I enter invitation code
     Given I switch to Registration page
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
