@@ -16,7 +16,6 @@ import javax.mail.*;
 import org.apache.log4j.Logger;
 
 import com.sun.mail.iap.ProtocolException;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.handlers.JavaXMBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -188,13 +187,10 @@ class JavaXMailbox implements ISupportsMessagesPolling {
 			try {
 				store = session.getStore(MAIL_PROTOCOL);
 				store.connect(
-						CommonUtils
-								.getDefaultEmailServerFromConfig(JavaXMailbox.class),
+						MessagingUtils.getServerHost(),
 						-1,
-						CommonUtils
-								.getDefaultEmailFromConfig(JavaXMailbox.class),
-						CommonUtils
-								.getDefaultPasswordFromConfig(JavaXMailbox.class));
+						MessagingUtils.getAccountName(),
+						MessagingUtils.getAccountPassword());
 				break;
 			} catch (Exception e) {
 				log.debug(String.format(

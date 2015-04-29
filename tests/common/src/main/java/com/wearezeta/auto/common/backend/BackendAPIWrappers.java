@@ -24,6 +24,7 @@ import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.email.ActivationMessage;
+import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -58,7 +59,7 @@ public final class BackendAPIWrappers {
 	 * Creates a new user by sending the corresponding request to the backend
 	 * 
 	 * @param user
-	 *            ClientUser instance with initial iser parameters
+	 *            ClientUser instance with initial user parameters
 	 *            (name/email/password)
 	 * @param retryNumber
 	 *            set this to 1 if it is the first time you try to create this
@@ -70,7 +71,8 @@ public final class BackendAPIWrappers {
 			throws Exception {
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", user.getEmail());
+		expectedHeaders
+				.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
 		Future<String> activationMessage;
 		if (retryNumber == 1) {
 			activationMessage = mbox.getMessage(expectedHeaders,

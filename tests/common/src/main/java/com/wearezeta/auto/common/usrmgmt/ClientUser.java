@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.AccentColor;
-import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.email.MessagingUtils;
 
 public class ClientUser {
 	private String name = null;
@@ -154,7 +154,7 @@ public class ClientUser {
 	}
 
 	public static String generateEmail(String suffix) throws Exception {
-		return generateEmail(IMAPSMailbox.getName(), suffix);
+		return generateEmail(MessagingUtils.getAccountName(), suffix);
 	}
 
 	private static String generateEmail(String basemail, String suffix) {

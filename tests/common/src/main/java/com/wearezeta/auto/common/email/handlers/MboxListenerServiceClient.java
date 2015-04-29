@@ -13,18 +13,18 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 class MboxListenerServiceClient implements ISupportsMessagesPolling {
-	private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
+	private static final long POLLING_FREQUENCY_MILLISECONDS = 2000;
 
-	private static final Logger log = ZetaLogger.getLog(MboxListenerServiceClient.class
-			.getSimpleName());
-	
+	private static final Logger log = ZetaLogger
+			.getLog(MboxListenerServiceClient.class.getSimpleName());
+
 	public MboxListenerServiceClient() {
-		
 	}
-	
+
 	private static JSONArray waitForMessagesCount(String email, int minCount,
 			int timeoutSeconds) throws Exception {
 		final long millisecondsStarted = System.currentTimeMillis();
@@ -54,18 +54,20 @@ class MboxListenerServiceClient implements ISupportsMessagesPolling {
 					email, maxCount);
 		}
 		for (int i = 0; i < recentsEmails.length(); i++) {
-			final JSONObject recentEmail = recentsEmails.getJSONObject(i);
-			result.add(recentEmail.getString("rawText"));
+			final JSONObject recentEmailInfo = recentsEmails.getJSONObject(i);
+			result.add(recentEmailInfo.getString("raw_text"));
 		}
 		return result;
 	}
 
 	@Override
 	public List<String> getRecentMessages(int msgsCount) throws Exception {
-		return getRecentMessages(getAccountName(), msgsCount, 0, 0);
+		return getRecentMessages(MessagingUtils.getAccountName(), msgsCount, 0,
+				0);
 	}
-	
-	private final ExecutorService pool = Executors.newFixedThreadPool(1);
+
+	private final ExecutorService pool = Executors
+			.newFixedThreadPool(CommonUtils.MAX_PARALLEL_USER_CREATION_TASKS);
 
 	@Override
 	public Future<String> getMessage(Map<String, String> expectedHeaders,
@@ -77,10 +79,5 @@ class MboxListenerServiceClient implements ISupportsMessagesPolling {
 				"Started email listener for message containing headers %s...",
 				expectedHeaders.toString()));
 		return pool.submit(listener);
-	}
-
-	protected String getAccountName() throws Exception {
-		return CommonUtils
-				.getDefaultEmailFromConfig(MboxListenerServiceClient.class);
 	}
 }

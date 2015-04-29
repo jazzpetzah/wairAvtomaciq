@@ -8,7 +8,6 @@ import javax.mail.Message;
 import com.wearezeta.auto.common.email.MessagingUtils;
 
 class RESTChangesListener extends AbstractMboxChangesListener {
-	private static final String DELIVERED_TO_HEADER = "Delivered-To";
 	private static final int MAX_MSGS_TO_POLL = 5;
 
 	@Override
@@ -24,9 +23,9 @@ class RESTChangesListener extends AbstractMboxChangesListener {
 
 	private String getDeliveredToValue() throws Exception {
 		// Get emails for all recipients by default
-		String deliveredTo = getParentMbox().getAccountName();
+		String deliveredTo = MessagingUtils.getAccountName();
 		for (Map.Entry<String, String> pair : this.expectedHeaders.entrySet()) {
-			if (pair.getKey().equals(DELIVERED_TO_HEADER)) {
+			if (pair.getKey().equals(MessagingUtils.DELIVERED_TO_HEADER)) {
 				deliveredTo = pair.getValue();
 				break;
 			}
@@ -40,7 +39,7 @@ class RESTChangesListener extends AbstractMboxChangesListener {
 		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			final List<String> deliveredMessages = this.getParentMbox()
-					.getRecentMessages(deliveredTo, 1, MAX_MSGS_TO_POLL,
+					.getRecentMessages(deliveredTo, MAX_MSGS_TO_POLL, 1,
 							this.timeoutSeconds);
 			log.debug(String.format("Got %s new incoming message(s) for %s",
 					deliveredMessages.size(), deliveredTo));

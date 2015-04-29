@@ -17,8 +17,7 @@ public class IMAPSMailbox implements ISupportsMessagesPolling {
 	private ISupportsMessagesPolling mailboxHandler;
 
 	public List<String> getRecentMessages(int msgsCount) throws Exception {
-		return null;
-
+		return mailboxHandler.getRecentMessages(msgsCount);
 	}
 
 	public Future<String> getMessage(Map<String, String> expectedHeaders,
@@ -54,13 +53,5 @@ public class IMAPSMailbox implements ISupportsMessagesPolling {
 	private IMAPSMailbox(ISupportsMessagesPolling mailboxHandler)
 			throws Exception {
 		this.mailboxHandler = mailboxHandler;
-	}
-
-	public static String getServerName() throws Exception {
-		return CommonUtils.getDefaultEmailServerFromConfig(IMAPSMailbox.class);
-	}
-
-	public static String getName() throws Exception {
-		return CommonUtils.getDefaultEmailFromConfig(IMAPSMailbox.class);
 	}
 }
