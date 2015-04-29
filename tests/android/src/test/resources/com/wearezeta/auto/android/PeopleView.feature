@@ -191,38 +191,3 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-
-  @id2214 @staging
-  Scenario Outline: I can dismiss PYMK by Hide button
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I wait for 30 seconds
-    When I swipe down contact list
-    And I see People picker page
-    And I swipe on random connect
-    And I click on PYMK hide button
-    Then I do not see random connect
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name |
-
-  @id2213 @staging
-  Scenario Outline: I can dismiss PYMK by swipe
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given Contact <Contact1> send message to user <Name>
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I wait for 30 seconds
-    When I swipe down contact list
-    And I see People picker page
-    And I swipe on random connect
-    And I hide random connect by swipe
-    Then I do not see random connect
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name |
