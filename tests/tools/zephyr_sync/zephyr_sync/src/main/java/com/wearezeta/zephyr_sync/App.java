@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -442,10 +443,26 @@ public class App {
 			String jsonReportPath, ZephyrTestPhase dstPhase, String jobUrl)
 			throws Exception {
 		List<ExecutedZephyrTestcase> phaseTestcases = dstPhase.getTestcases();
+		System.out.println(String.format(
+				"\nFound %s testcases in Zephyr phase '%s': [%s]",
+				phaseTestcases.size(),
+				dstPhase.getName(),
+				StringUtils.join(phaseTestcases.stream().map(x -> x.getId())
+						.collect(Collectors.toList()), ", ")));
 
 		final ResultJSON resultJSON = new ResultJSON(jsonReportPath);
 		final List<ExecutedCucumberTestcase> executedCucumberTestcases = resultJSON
 				.getTestcases();
+		System.out.println(String.format(
+				"\nFound %s testcases in Cucumber report '%s':\n%s",
+				executedCucumberTestcases.size(),
+				jsonReportPath,
+				StringUtils.join(
+						executedCucumberTestcases
+								.stream()
+								.map(x -> "[" + x.getId() + "] " + x.getName()
+										+ " -> " + x.getStatus().name())
+								.collect(Collectors.toList()), "\n")));
 
 		for (ExecutedZephyrTestcase phaseTC : phaseTestcases) {
 			for (ExecutedCucumberTestcase executedCucumberTC : executedCucumberTestcases) {

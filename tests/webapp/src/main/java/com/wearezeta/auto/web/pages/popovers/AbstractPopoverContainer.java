@@ -14,7 +14,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public abstract class AbstractPopoverContainer extends WebPage {
 
 	private final static int VISIBILITY_TIMEOUT = 3; // seconds
-	private static final String TOOLTIP_BACK = "Back";
 
 	@FindBy(how = How.XPATH, using = PopoverLocators.Shared.xpathBackButton)
 	private WebElement backButton;
@@ -47,8 +46,7 @@ public abstract class AbstractPopoverContainer extends WebPage {
 				By.xpath(this.getXpathLocator()));
 	}
 
-	public boolean isBackButtonToolTipCorrect() {
-		return TOOLTIP_BACK.equals(backButton
-				.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
+	public String getBackButtonToolTip() {
+		return backButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 }

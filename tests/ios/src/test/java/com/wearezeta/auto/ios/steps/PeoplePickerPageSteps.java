@@ -6,6 +6,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
@@ -290,10 +291,10 @@ public class PeoplePickerPageSteps {
 
 	@Then("^I see the user (.*) avatar with a clock$")
 	public void ISeeUserWithAvatarClock(String contact) throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		Assert.assertTrue(
 				"Avatar does not have a clock icon",
-				PagesCollection.peoplePickerPage.checkAvatarClockIcon(contact) > 0.95);
+				PagesCollection.peoplePickerPage.checkAvatarClockIcon(contact) > 0.50);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")
@@ -469,7 +470,7 @@ public class PeoplePickerPageSteps {
 	public void IPressTheSendAnInviteButton() {
 		PagesCollection.peoplePickerPage.tapSendInviteButton();
 	}
-
+	
 	/**
 	 * Presses the Copy button on the Send Invitation pop up
 	 * 
@@ -483,5 +484,15 @@ public class PeoplePickerPageSteps {
 			Exception {
 		PagesCollection.peoplePickerPage.tapSendInviteCopyButton();
 	}
+	
+	/**
+	 * Presses the instant connect plus button
+	 * @step. ^I press the instant connect button$
+	 */
+	@When("^I press the instant connect button$")
+	public void IPressTheInstantConnectButton(){
+		PagesCollection.peoplePickerPage.pressInstantConnectButton();
+	}
+
 
 }

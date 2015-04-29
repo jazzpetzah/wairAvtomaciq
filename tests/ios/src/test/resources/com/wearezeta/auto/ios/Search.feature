@@ -160,6 +160,7 @@ Feature: Search
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
+    Given User <Name> change accent color to <Color>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I open search by clicking plus button
@@ -172,7 +173,11 @@ Feature: Search
     And I input message in connect dialog with <NumOfMessageChars> characters
     And I see message with max number of characters
     And I click Connect button on connect to dialog
-    And I wait for 10 seconds
+    And I click close button to dismiss people view
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user email <ContactEmail>
     Then I see the user <UnconnectedUser> avatar with a clock
     And I click close button to dismiss people view
     And I see conversation with not connected user <UnconnectedUser>
@@ -181,8 +186,8 @@ Feature: Search
     And I see <UnconnectedUser> user pending profile page
     
     Examples: 
-      | Login      | Password      | Name      | UnconnectedUser | NumOfMessageChars | StartLetter |
-      | user1Email | user1Password | user1Name | user2Name       | 141               | T           |
+      | Login      | Password      | Name      | UnconnectedUser |ContactEmail|  NumOfMessageChars | StartLetter |Color        |
+      | user1Email | user1Password | user1Name | user2Name       | user2Email | 141                | T           |BrightOrange |
       
   @staging @id763
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations

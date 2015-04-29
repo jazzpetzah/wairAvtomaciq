@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.pages.popovers;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
+
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SingleUserPopoverContainer extends PeoplePopoverContainer {
@@ -26,6 +27,19 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 	@Override
 	protected String getXpathLocator() {
 		return PopoverLocators.SingleUserPopover.xpathRootLocator;
+	}
+
+	@SuppressWarnings("unused")
+	private AbstractUserInfoPopoverPage getCurrentUserInfoPage()
+			throws Exception {
+		if (this.singleUserPopoverPage.isCurrent()) {
+			return this.singleUserPopoverPage;
+		} else if (this.pendingParticipantInfoPopoverPage.isCurrent()) {
+			return this.pendingParticipantInfoPopoverPage;
+		} else {
+			throw new RuntimeException(
+					"The current popover page is neither connected user info nor pending-connected user info.");
+		}
 	}
 
 	public void clickAddPeopleButton() throws Exception {
@@ -85,13 +99,7 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		return this.singleUserPopoverPage.getMailText();
 	}
 
-	public boolean isPendingButtonToolTipCorrect() {
-		return this.pendingParticipantInfoPopoverPage
-				.isPendingButtonToolTipCorrect();
-	}
-
-	public boolean isRemoveFromGroupChatButtonToolTipCorrect() {
-		return this.singleUserPopoverPage
-				.isRemoveFromGroupChatButtonToolTipCorrect();
+	public String getPendingButtonToolTip() {
+		return this.pendingParticipantInfoPopoverPage.getPendingButtonToolTip();
 	}
 }

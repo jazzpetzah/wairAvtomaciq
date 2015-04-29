@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @smoke @id344 @deployPictures
+  @torun @smoke @id344 @deployPictures
   Scenario Outline: Change your profile picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -9,7 +9,6 @@ Feature: Self Profile
     When I tap on my name <Name>
     And I tap on personal screen
     And I press Camera button
-    And I press Camera Roll button
     And I choose a picture from camera roll
     And I press Confirm button
     And I return to personal page

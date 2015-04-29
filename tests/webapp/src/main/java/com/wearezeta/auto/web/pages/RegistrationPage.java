@@ -1,22 +1,19 @@
 package com.wearezeta.auto.web.pages;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppConstants;
-import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(RegistrationPage.class
 			.getSimpleName());
 
@@ -34,9 +31,6 @@ public class RegistrationPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssVerificationEmail)
 	private WebElement verificationEmail;
-
-	@FindBy(how = How.XPATH, using = WebAppLocators.RegistrationPage.xpathSwitchToSignInButton)
-	private WebElement switchToSignInButton;
 
 	public RegistrationPage(ZetaWebAppDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -73,49 +67,5 @@ public class RegistrationPage extends WebPage {
 
 	public boolean isVerificationEmailCorrect(String email) {
 		return verificationEmail.getText().equalsIgnoreCase(email);
-	}
-
-	private static final int MAX_TRIES = 3;
-
-	public LoginPage switchToLoginPage() throws Exception {
-		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
-		final By signInBtnlocator = By
-				.xpath(WebAppLocators.LoginPage.xpathSignInButton);
-		int ntry = 0;
-		// FIXME: temporary workaround for white page instead of sign in issue
-		while (ntry < MAX_TRIES) {
-			try {
-				if (!DriverUtils.isElementDisplayed(this.getDriver(),
-						signInBtnlocator)
-						&& DriverUtils
-								.isElementDisplayed(
-										this.getDriver(),
-										By.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton))) {
-					switchToSignInButton.click();
-				}
-				if (DriverUtils.isElementDisplayed(this.getDriver(),
-						signInBtnlocator)) {
-					break;
-				} else {
-					log.debug(String
-							.format("Trying to refresh currupted login page (retry %s of %s)...",
-									ntry + 1, MAX_TRIES));
-					driver.navigate().to(driver.getCurrentUrl());
-				}
-			} catch (Exception e) {
-				driver.navigate().to(driver.getCurrentUrl());
-			}
-			if (PagesCollection.invitationCodePage.isVisible()) {
-				PagesCollection.invitationCodePage
-						.inputCode(WebAppConstants.INVITATION_CODE);
-				PagesCollection.invitationCodePage.proceed();
-			}
-			ntry++;
-		}
-		assert DriverUtils.isElementDisplayed(this.getDriver(),
-				signInBtnlocator) : "Sign in page is not visible";
-
-		return new LoginPage(this.getDriver(), this.getWait(),
-				CommonUtils.getWebAppApplicationPathFromConfig(this.getClass()));
 	}
 }

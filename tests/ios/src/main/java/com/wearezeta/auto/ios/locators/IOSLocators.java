@@ -96,9 +96,9 @@ public final class IOSLocators {
 	
 	public static final String nameCameraRollCancel = "Cancel";
 	
-	public static final String xpathCameraLibraryFirstFolder = "//UIAApplication/UIAWindow/UIATableView/UIATableCell[1]";
+	public static final String xpathCameraLibraryFirstFolder = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIATableView/UIATableCell[@name='Moments']";
 	
-	public static final String xpathLibraryFirstPicture = "//UIAApplication/UIAWindow/UIACollectionView/UIACollectionCell[1]";
+	public static final String xpathLibraryFirstPicture = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell[1]";
 	
 	public static final String nameConfirmPictureButton = "OK";
 	
@@ -257,6 +257,13 @@ public final class IOSLocators {
 	public static final String nameOptionsHelpButton = "SUPPORT";
 	
 	public static final String xpathSettingsHelpHeader = "//UIAApplication[@name='Safari']/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIALink[@name='Support']";
+	
+	public static final String xpathSettingsChatheadSwitch = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[1]/UIASwitch[@name='Message previews']";
+	
+	public static final String nameSettingsBackButton = "Back";
+	
+	public static final String nameSettingsDoneButton = "Done";
+
 	
 	///////////////////////
 	//Other User Profile
@@ -446,6 +453,9 @@ public final class IOSLocators {
 	public static final String xpathInviteCopyButton = "//UIACollectionCell[@name='Copy']";
 	public static final String nameSuggestedContactType = "UIACollectionCell";
 	public static final String nameHideSuggestedContactButtonType = "UIAButton";
+	public static final String nameInstantConnectButton = "instantPlusConnectButton";
+	public static final String xpathSearchResultCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]";
+	public static final String xpathSearchResultContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
 	
 	//////////////////
 	//Connect to page

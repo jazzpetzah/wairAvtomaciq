@@ -340,11 +340,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public DialogPage tabBackButton() throws Exception {
 		refreshUITree();
-		if (CommonUtils.getAndroidApiLvl(PeoplePickerPage.class) > 42) {
-			closeButton.click();
-		} else {
-			swipeDownCoordinates(1000);
-		}
+		closeButton.click();
 		return new DialogPage(this.getDriver(), this.getWait());
 	}
 

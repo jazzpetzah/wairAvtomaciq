@@ -170,21 +170,25 @@ public class CommonAndroidSteps {
 	@When("^I swipe right$")
 	public void ISwipeRight() throws Exception {
 		PagesCollection.androidPage.swipeRightCoordinates(DEFAULT_SWIPE_TIME);
+		Thread.sleep(1000); //fix for animation
 	}
 	
 	@When("^I swipe left$")
 	public void ISwipeLeft() throws Exception {
 		PagesCollection.androidPage.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
+		Thread.sleep(1000); //fix for animation
 	}
 	
 	@When("^I swipe up$")
 	public void ISwipeUp() throws Exception {
 		PagesCollection.androidPage.swipeUpCoordinates(DEFAULT_SWIPE_TIME);
+		Thread.sleep(1000); //fix for animation
 	}
 	
 	@When("^I swipe down$")
 	public void ISwipeDown() throws Exception {
 		PagesCollection.androidPage.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
+		Thread.sleep(1000); //fix for animation
 	}
 
 	public void commonBefore() throws Exception {
@@ -353,7 +357,7 @@ public class CommonAndroidSteps {
 	@Then("^I compare 1st and 2nd screenshots and they are different$")
 	public void ThenICompare1st2ndScreenshotsAndTheyAreDifferent() {
 		double score = ImageUtil.getOverlapScore(images.get(0), images.get(1));
-		Assert.assertTrue(score < 0.70d);
+		Assert.assertTrue(score < 0.75d);
 		images.clear();
 	}
 
@@ -962,6 +966,7 @@ public class CommonAndroidSteps {
 	@When("^I rotate UI to landscape$")
 	public void WhenIRotateUILandscape() throws Exception {
 		PagesCollection.loginPage.rotateLandscape();
+		Thread.sleep(1000); //fix for animation
 	}
 
 	/**
@@ -974,6 +979,7 @@ public class CommonAndroidSteps {
 	@When("^I rotate UI to portrait$")
 	public void WhenIRotateUIPortrait() throws Exception {
 		PagesCollection.loginPage.rotatePortrait();
+		Thread.sleep(1000); //fix for animation
 	}
 
 }

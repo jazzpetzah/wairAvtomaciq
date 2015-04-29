@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @id316 @staging
+  @id2252 @staging
   Scenario Outline: Send Message to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -17,7 +17,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id317 @staging
+  @id2253 @staging
   Scenario Outline: Send Hello and Hey to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -34,7 +34,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message | Action |
       | user1Email | user1Password | user1Name | user2Name | YOU     | PINGED |
 
-  @id318 @staging
+  @id2254 @staging
   Scenario Outline: Send Camera picture to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -53,7 +53,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1262 @staging
+  @id2255 @staging
   Scenario Outline: Add people to 1:1 chat in portrait mode
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
@@ -80,7 +80,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @id320 @staging
+  @id2256 @staging
   Scenario Outline: Send message to group chat in portrait mode
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
@@ -98,7 +98,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName     |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessGroupChat |
 
-  @id316 @staging
+  @id2238 @staging
   Scenario Outline: Send Message to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -115,7 +115,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id317 @staging
+  @id2239 @staging
   Scenario Outline: Send Hello and Hey to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -132,7 +132,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message | Action |
       | user1Email | user1Password | user1Name | user2Name | YOU     | PINGED |
 
-  @id318 @staging
+  @id2240 @staging
   Scenario Outline: Send Camera picture to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -151,7 +151,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1262 @staging
+  @id2241 @staging
   Scenario Outline: Add people to 1:1 chat in landscape mode
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
@@ -178,7 +178,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @id320 @staging
+  @id2242 @staging
   Scenario Outline: Send message to group chat in landscape mode
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>

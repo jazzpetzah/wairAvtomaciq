@@ -38,7 +38,7 @@ public class SettingsPage extends WebPage {
 	}
 
 	public enum SoundAlertsLevel {
-		None("None", 0), Some("Some", 1), All("All", 2);
+		None("None", 2), Some("Some", 1), All("All", 0);
 
 		private final String stringRepresentation;
 		private final int intRepresentation;
