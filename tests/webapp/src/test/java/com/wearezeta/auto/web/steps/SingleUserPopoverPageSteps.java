@@ -11,6 +11,12 @@ import org.junit.Assert;
 
 public class SingleUserPopoverPageSteps {
 
+	private static final String MAILTO = "mailto:";
+	private static final String CAPTION_PENDING = "Pending";
+	private static final String CAPTION_OPEN_CONVERSATION = "Open Conversation";
+	private static final String TOOLTIP_PENDING = "Pending";
+	private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
@@ -92,6 +98,7 @@ public class SingleUserPopoverPageSteps {
 	/**
 	 * Compares if name on Single User Profile popover is same as expected
 	 *
+	 * @throws java.lang.Exception
 	 * @step. ^I see username (.*) on Single User Profile popover$
 	 *
 	 * @param name
@@ -108,6 +115,7 @@ public class SingleUserPopoverPageSteps {
 	/**
 	 * Verifies whether the users avatar exists on the popover
 	 *
+	 * @throws java.lang.Exception
 	 * @step. ^I see the users avatar on Single User Profile popover$
 	 *
 	 */
@@ -200,15 +208,15 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I see Pending button on Single Participant popover$")
 	public void ISeePendingButton() throws Exception {
-		Assert.assertTrue(
-				"Pending button is not visible on Single Participant popover",
+		final String pendingButtonMissingMessage = "Pending button is not visible on Single Participant popover";
+		Assert.assertTrue(pendingButtonMissingMessage,
 				((SingleUserPopoverContainer) PagesCollection.popoverPage)
 						.isPendingButtonVisible());
 		Assert.assertTrue(
-				"Pending button is not visible on Single Participant popover",
+				pendingButtonMissingMessage,
 				((SingleUserPopoverContainer) PagesCollection.popoverPage)
 						.getPendingButtonCaption().trim()
-						.equalsIgnoreCase("Pending"));
+						.equalsIgnoreCase(CAPTION_PENDING));
 	}
 
 	/**
@@ -234,15 +242,15 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I see open conversation button on Single Participant popover$")
 	public void ISeeOpenConversationButton() throws Exception {
-		Assert.assertTrue(
-				"open conversation button is not visible on Single Participant popover",
+		final String openConvMissingMessage = "Open conversation button is not visible on Single Participant popover";
+		Assert.assertTrue(openConvMissingMessage,
 				((SingleUserPopoverContainer) PagesCollection.popoverPage)
 						.isOpenConvButtonVisible());
 		Assert.assertTrue(
-				"open conversation button is not visible on Single Participant popover",
+				openConvMissingMessage,
 				((SingleUserPopoverContainer) PagesCollection.popoverPage)
 						.getOpenConvButtonCaption().trim()
-						.equalsIgnoreCase("Open Conversation"));
+						.equalsIgnoreCase(CAPTION_OPEN_CONVERSATION));
 	}
 
 	/**
@@ -280,20 +288,22 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see correct open conversation button tool tip on Single Participant popover$")
 	public void ThenISeeCorrectOpenConvButtonToolTip() {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.getOpenConvButtonToolTip().equals("Open conversation"));
+				.getOpenConvButtonToolTip().equals(TOOLTIP_OPEN_CONVERSATION));
 	}
 
 	/**
-	 * Verifies whether click on mail would open mail client or not.
+	 * @throws java.lang.Exception
+	 *             * Verifies whether click on mail would open mail client or
+	 *             not.
 	 *
 	 * @step. ^Click on mail on Single Participant popover would open mail
 	 *        client$
 	 *
 	 */
-	@Then("^Click on mail on Single Participant popover would open mail client$")
+	@Then("^Would open mail client when clicking mail on Single Participant popover$")
 	public void ThenISeeThatClickOnMailWouldOpenMailClient() throws Exception {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.getMailHref().contains("mailto:"));
+				.getMailHref().contains(MAILTO));
 
 	}
 
@@ -307,6 +317,6 @@ public class SingleUserPopoverPageSteps {
 	@Then("^I see correct pending button tool tip on Single Participant popover$")
 	public void ThenISeeCorrectPendingButtonToolTip() {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.getPendingButtonToolTip().equals("Pending"));
+				.getPendingButtonToolTip().equals(TOOLTIP_PENDING));
 	}
 }

@@ -12,6 +12,17 @@ import org.junit.Assert;
 
 public class GroupPopoverPageSteps {
 
+	private static final String MAILTO = "mailto:";
+	private static final String CAPTION_OPEN__CONVERSATION = "Open Conversation";
+	private static final String CAPTION_PENDING = "Pending";
+	private static final String TOOLTIP_REMOVE_FROM_CONVERSATION = "Remove from conversation";
+	private static final String TOOLTIP_LEAVE_CONVERSATION = "Leave conversation";
+	private static final String TOOLTIP_ADD_PEOPLE_TO_CONVERSATION = "Add people to conversation";
+	private static final String TOOLTIP_BACK = "Back";
+	private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
+	private static final String TOOLTIP_CHANGE_CONVERSATION_NAME = "Change conversation name";
+	private static final String TOOLTIP_PENDING = "Pending";
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
@@ -70,7 +81,7 @@ public class GroupPopoverPageSteps {
 	@Then("^I see correct back button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectBackButtonToolTip() {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.getBackButtonToolTip().equals("Back"));
+				.getBackButtonToolTip().equals(TOOLTIP_BACK));
 	}
 
 	/**
@@ -83,7 +94,7 @@ public class GroupPopoverPageSteps {
 	@Then("^I see correct pending button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectPendingButtonToolTip() {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.getPendingButtonToolTip().equals("Open conversation"));
+				.getPendingButtonToolTip().equals(TOOLTIP_PENDING));
 	}
 
 	/**
@@ -111,15 +122,15 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I see Pending button on Group Participants popover$")
 	public void ISeePendingButton() throws Exception {
-		Assert.assertTrue(
-				"Pending button is not visible on Group Participants popover",
+		final String pendingButtonMissingMessage = "Pending button is not visible on Group Participants popover";
+		Assert.assertTrue(pendingButtonMissingMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.isPendingButtonVisible());
 		Assert.assertTrue(
-				"Pending button is not visible on Group Participants popover",
+				pendingButtonMissingMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.getPendingButtonCaption().trim()
-						.equalsIgnoreCase("Pending"));
+						.equalsIgnoreCase(CAPTION_PENDING));
 	}
 
 	/**
@@ -177,7 +188,7 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Verifies that contact is displayed on Group Participants popover
 	 *
-	 * @step. ^I see (.*) displayed on Group Participants popovere$
+	 * @step. ^I see (.*) displayed on Group Participants popover$
 	 *
 	 * @param contactsAliases
 	 * @throws Exception
@@ -194,7 +205,7 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
-	 * Set new title for converstaion on Group Participants popover
+	 * Set new title for conversation on Group Participants popover
 	 *
 	 * @step. I change group conversation title to (.*) on Group Participants
 	 *        popover
@@ -329,7 +340,7 @@ public class GroupPopoverPageSteps {
 	public void ThenISeeCorrectAddPeopleButtonToolTip() throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
 				.getAddPeopleButtonToolTip().equals(
-						"Add people to conversation"));
+						TOOLTIP_ADD_PEOPLE_TO_CONVERSATION));
 	}
 
 	/**
@@ -343,7 +354,8 @@ public class GroupPopoverPageSteps {
 	public void ThenISeeCorrectLeaveConversationButtonToolTip()
 			throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.getLeaveGroupChatButtonToolTip().equals("Leave conversation"));
+				.getLeaveGroupChatButtonToolTip().equals(
+						TOOLTIP_LEAVE_CONVERSATION));
 	}
 
 	/**
@@ -358,7 +370,7 @@ public class GroupPopoverPageSteps {
 			throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
 				.getRenameConversationToolTip().equals(
-						"Change conversation name"));
+						TOOLTIP_CHANGE_CONVERSATION_NAME));
 	}
 
 	/**
@@ -372,7 +384,7 @@ public class GroupPopoverPageSteps {
 	public void ThenISeeCorrectRemoveFromGroupChatButtonToolTip() {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
 				.getRemoveFromGroupChatButtonToolTip().equals(
-						"Remove from conversation"));
+						TOOLTIP_REMOVE_FROM_CONVERSATION));
 	}
 
 	/**
@@ -445,7 +457,7 @@ public class GroupPopoverPageSteps {
 	@Then("^Click on mail on Group Participants popover would open mail client$")
 	public void ThenISeeThatClickOnMailWouldOpenMailClient() throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.getMailHref().contains("mailto:"));
+				.getMailHref().contains(MAILTO));
 
 	}
 
@@ -473,7 +485,7 @@ public class GroupPopoverPageSteps {
 	@Then("^I see correct open conversation button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectOpenConversationButtonToolTip() throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.getOpenConvButtonToolTip().equals("Open conversation"));
+				.getOpenConvButtonToolTip().equals(TOOLTIP_OPEN_CONVERSATION));
 	}
 
 	/**
@@ -486,14 +498,14 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I see open conversation button on Group Participants popover$")
 	public void ISeeOpenConversationButton() throws Exception {
-		Assert.assertTrue(
-				"open conversation button is not visible on Group Participants popover",
+		final String openConvButtonMissingMessage = "Open conversation button is not visible on Group Participants popover";
+		Assert.assertTrue(openConvButtonMissingMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.isOpenConvButtonVisible());
 		Assert.assertTrue(
-				"open conversation button is not visible on Group Participants popover",
+				openConvButtonMissingMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.getOpenConvButtonCaption().trim()
-						.equalsIgnoreCase("Open Conversation"));
+						.equalsIgnoreCase(CAPTION_OPEN__CONVERSATION));
 	}
 }
