@@ -17,13 +17,13 @@ import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class UnknownUserDetailsPage extends AndroidPage {	
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserFromGroupDetailsPage.CLASS_NAME, locatorKey = "idOtherUsersName")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserDetailsPage.CLASS_NAME, locatorKey = "idOtherUsersName")
 	private WebElement otherUsersName;
 	
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserFromGroupDetailsPage.CLASS_NAME, locatorKey = "idConnectButton")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserDetailsPage.CLASS_NAME, locatorKey = "idConnectButton")
 	private WebElement connectAndPendingButton;
 	
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserFromGroupDetailsPage.CLASS_NAME, locatorKey = "idCommonUsersLabel")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserDetailsPage.CLASS_NAME, locatorKey = "idCommonUsersLabel")
 	private WebElement commonUsersLabel;
 	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
