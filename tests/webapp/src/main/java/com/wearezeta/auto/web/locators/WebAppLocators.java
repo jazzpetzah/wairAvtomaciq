@@ -267,6 +267,8 @@ public final class WebAppLocators {
 		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "1 person waiting";
 
 		public static final String TITLE_ATTRIBUTE_LOCATOR = "title";
+
+		public static final String HREF_ATTRIBUTE_LOCATOR = "href";
 	}
 
 	public static final class ProfilePicturePage {
