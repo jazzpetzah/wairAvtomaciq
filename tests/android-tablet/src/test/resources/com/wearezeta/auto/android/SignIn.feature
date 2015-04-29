@@ -16,7 +16,7 @@ Feature: Sign In
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging
+  @id2284 @staging
   Scenario Outline: Negative case for sign in portrait mode
     Given I see sign in screen
     And I rotate UI to portrait
@@ -47,7 +47,7 @@ Feature: Sign In
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging
+  @id2285 @staging
   Scenario Outline: Negative case for sign in landscape mode
     Given I see sign in screen
     And I rotate UI to landscape

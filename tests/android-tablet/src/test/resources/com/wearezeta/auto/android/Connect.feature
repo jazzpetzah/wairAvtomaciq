@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @staging
+  @id2281 @staging
   Scenario Outline: Send connection request from search in landscape
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -25,7 +25,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
 
-  @staging
+  @id2280 @staging
   Scenario Outline: Send connection request from search in portrait
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
