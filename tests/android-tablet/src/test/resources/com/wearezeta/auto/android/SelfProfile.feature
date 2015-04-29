@@ -73,7 +73,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging
+  @id2288 @staging
   Scenario Outline: Change user picture in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -94,7 +94,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging
+  @id2289 @staging
   Scenario Outline: Change user picture in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

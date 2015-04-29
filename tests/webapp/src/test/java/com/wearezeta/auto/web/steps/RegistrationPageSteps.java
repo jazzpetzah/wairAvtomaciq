@@ -18,7 +18,6 @@ import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.web.pages.ActivationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
-import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -167,19 +166,6 @@ public class RegistrationPageSteps {
 	public void IVerifyRegistrationEmail() throws Exception {
 		BackendAPIWrappers.activateRegisteredUser(this.activationMessage);
 		userToRegister.setUserState(UserState.Created);
-	}
-
-	/**
-	 * Switch to Sign In page
-	 * 
-	 * @step. ^I switch to [Ss]ign [Ii]n page$
-	 * 
-	 * @throws Exception
-	 */
-	@Given("^I switch to [Ss]ign [Ii]n page$")
-	public void ISwitchToLoginPage() throws Exception {
-		PagesCollection.loginPage = PagesCollection.registrationPage
-				.switchToLoginPage();
 	}
 
 	private static final int ACTIVATION_TIMEOUT = 15; // seconds

@@ -151,7 +151,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @2241 @staging
+  @id2241 @staging
   Scenario Outline: Add people to 1:1 chat in landscape mode
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
