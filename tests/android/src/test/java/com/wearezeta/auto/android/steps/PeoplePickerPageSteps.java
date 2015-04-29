@@ -444,5 +444,17 @@ public class PeoplePickerPageSteps {
 		Assert.assertFalse(PagesCollection.peoplePickerPage
 				.ispTopPeopleHeaderVisible());
 	}
+	
+	/**
+	 * Waiting for PYMK loading
+	 * 
+	 * @step. ^I wait for PYMK for (.*) secs$
+	 * 
+	 * @param time
+	 */
+	@When("I wait for PYMK for (.*) secs$")
+	public void WhenIWaitForPYMKForSec(int time) throws InterruptedException {
+		PagesCollection.peoplePickerPage.waitForPYMKForSecs(time);
+	}
 
 }

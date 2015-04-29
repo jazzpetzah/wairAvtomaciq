@@ -80,6 +80,12 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameInstantConnectButton)
 	private WebElement instantConnectButton;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultCell)
+	private WebElement searchResultCell;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultContainer)
+	private WebElement searchResultContainer;
+	
 
 	private int numberTopSelected = 0;
 
@@ -92,6 +98,9 @@ public class PeoplePickerPage extends IOSPage {
 		for (int i = 0; i < 3; i++) {
 			if (DriverUtils.isElementDisplayed(this.getDriver(),
 					By.name(IOSLocators.nameShareButton))) {
+				if(i > 0) {
+					this.minimizeApplication(3);
+				}
 				getWait().until(ExpectedConditions.elementToBeClickable(shareButton));
 				DriverUtils.mobileTapByCoordinates(getDriver(), shareButton);
 				break;
@@ -124,13 +133,18 @@ public class PeoplePickerPage extends IOSPage {
 		BufferedImage clockImage = getAvatarClockIconScreenShot(name);
 		path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(clockImage, templateImage);
-
+		double score = ImageUtil.getOverlapScore(clockImage, templateImage);
+		return score;
 	}
 
 	public BufferedImage getAvatarClockIconScreenShot(String name)
 			throws IOException {
-		return getElementScreenshot(driver.findElement(By.name(name)));
+		return getScreenshotByCoordinates(
+				searchResultCell.getLocation().x,
+				searchResultCell.getLocation().y / 3
+						+ searchResultContainer.getLocation().y,
+				searchResultCell.getSize().width / 2,
+				searchResultCell.getSize().height * 3);
 	}
 
 	public void fillTextInPeoplePickerSearch(String text) {

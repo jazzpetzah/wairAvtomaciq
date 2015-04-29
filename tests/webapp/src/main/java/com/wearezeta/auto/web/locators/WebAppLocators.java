@@ -11,11 +11,10 @@ public final class WebAppLocators {
 				+ "//*[contains(@class, 'btn-open-web') and contains(@class,'btn-success')]";
 	}
 
-	public static final class InvitationCodePage {
+	public static final class LandingPage {
+		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
 
-		public static final String idCodeInput = "code";
-
-		public static final String xpathProceedButton = "//button[contains(text(),'Proceed')]";
+		public static final String xpathSwitchToRegisterButton = "(//*[@data-uie-name='go-register'])[2]";
 	}
 
 	public static final class LoginPage {
@@ -27,8 +26,6 @@ public final class WebAppLocators {
 		public static final String xpathPasswordInput = "//*[@data-uie-name='enter-password']";
 
 		public static final String classNameSpinner = "loading-spinner";
-
-		public static final String xpathSwitchToRegisterButtons = "//*[@data-uie-name='go-register']";
 
 		public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
 
@@ -230,8 +227,6 @@ public final class WebAppLocators {
 		public static final String idCreateAccountButton = "wire-create";
 
 		public static final String cssVerificationEmail = ".form-posted-success span.wire-sent-email";
-
-		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
 	}
 
 	public static final class SelfPictureUploadPage {
@@ -272,6 +267,8 @@ public final class WebAppLocators {
 		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "1 person waiting";
 
 		public static final String TITLE_ATTRIBUTE_LOCATOR = "title";
+
+		public static final String HREF_ATTRIBUTE_LOCATOR = "href";
 	}
 
 	public static final class ProfilePicturePage {

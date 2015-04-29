@@ -27,8 +27,8 @@ public class ContactListPage extends IOSPage {
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
 
-	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.90;
-	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.90;
+	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
+	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.70;
 	private final double MIN_ACCEPTABLE_IMAGE_PING_VALUE = 0.90;
 	
 	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE =0.80;
@@ -486,7 +486,6 @@ public class ContactListPage extends IOSPage {
 			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
 					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		}
-
 		if (score <= MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE) {
 			return false;
 		}

@@ -24,23 +24,6 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 		return PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathBlockButton;
 	}
 
-	@Override
-	protected WebElement getSharedElement(String relativeXpath) {
-		return super
-				.getSharedElement(String
-						.format("%s%s",
-								PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathPageRootLocator,
-								relativeXpath));
-	}
-
-	private WebElement getUserNameElement() {
-		return this.getSharedElement(PopoverLocators.Shared.xpathUserName);
-	}
-
-	public String getUserName() {
-		return getUserNameElement().getText();
-	}
-
 	private WebElement getAddButtonElement() {
 		return this.getSharedElement(PopoverLocators.Shared.xpathAddButton);
 	}

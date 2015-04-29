@@ -1,7 +1,7 @@
 Feature: Connect
 
   @id191 @id193 @smoke @regression
-  Scenario Outline: Send invitation message to a user
+  Scenario Outline: Send connection request from search
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
@@ -479,10 +479,7 @@ Feature: Connect
     And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
-    And I press Clear button
-    And I wait for 30 seconds
-    And I swipe down contact list
-    And I see People picker page
+    And I wait for PYMK for 30 secs
     And I press + button on a random Connect
   	And I press Clear button
     Then I see Contact list with my name <Name>

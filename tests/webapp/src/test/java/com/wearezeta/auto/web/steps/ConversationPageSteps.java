@@ -272,7 +272,7 @@ public class ConversationPageSteps {
 		cpSteps.IClickConfirmAddToChat();
 		cpSteps.ISearchForUser(contact);
 		cpSteps.ISelectUserFromSearchResults(contact);
-		cpSteps.IChooseToCreateConversation();
+		cpSteps.IChooseToCreateGroupConversation();
 	}
 
 	/**

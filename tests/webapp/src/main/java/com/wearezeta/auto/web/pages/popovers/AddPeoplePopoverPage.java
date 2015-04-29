@@ -30,15 +30,15 @@ class AddPeoplePopoverPage extends AbstractPopoverPage {
 		getSearchFieldElement().sendKeys(searchText);
 	}
 
-	private WebElement getCreateConversationButton() {
+	private WebElement getCreateGroupConversationButton() {
 		return this
 				.getSharedElement(PopoverLocators.Shared.xpathCreateConversationButton);
 	}
 
-	public void clickCreateConversation() throws Exception {
+	public void clickCreateGroupConversation() throws Exception {
 		DriverUtils.waitUntilElementClickable(driver,
-				getCreateConversationButton());
-		getCreateConversationButton().click();
+				getCreateGroupConversationButton());
+		getCreateGroupConversationButton().click();
 	}
 
 	private WebElement getFoundItemElement(String name) {

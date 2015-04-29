@@ -152,7 +152,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
 
-  @id2236 @staging
+  @id2236 @regression
   Scenario Outline: Check interaction with options menu
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -173,20 +173,20 @@ Feature: People View
     Then I see profile page
     And I do not see 1:1 options menu
     When I press options menu button
+    #And I swipe left
+    #And I swipe right
+    #And I swipe up
+    And I do small swipe down
+    #Then I do not see 1:1 options menu
+    #And I see profile page
     Then I see correct 1:1 options menu
+    And I do not see profile page
     When I swipe down
     Then I see profile page
     And I do not see 1:1 options menu
-    When I swipe left
-    And I swipe up
-    And I swipe right
-    And I do small swipe down
-    Then I do not see 1:1 options menu
-    #And I see profile page
     When I press options menu button
     Then I do not see profile page
-
-    #And I see correct 1:1 options menu
+    And I see correct 1:1 options menu
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |

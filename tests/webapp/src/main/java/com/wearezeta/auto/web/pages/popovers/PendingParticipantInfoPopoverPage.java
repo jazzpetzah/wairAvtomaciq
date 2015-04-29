@@ -10,8 +10,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 class PendingParticipantInfoPopoverPage extends AbstractUserInfoPopoverPage {
 
-	private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
-
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.PendingParticipantPage.xpathPendingButton)
 	private WebElement pendingButton;
 
@@ -45,8 +43,7 @@ class PendingParticipantInfoPopoverPage extends AbstractUserInfoPopoverPage {
 		return pendingTextBox.isDisplayed();
 	}
 
-	boolean isPendingButtonToolTipCorrect() {
-		return TOOLTIP_OPEN_CONVERSATION.equals(pendingButton
-				.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
+	public String getPendingButtonToolTip() {
+		return pendingButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 }

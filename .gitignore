@@ -8,3 +8,4 @@ tests/tools/javadoc-exporter/target
 pom.xml
 tests/common/bin/*
 tests/webapp/bin/*
+tests/webapp/nbactions.xml
