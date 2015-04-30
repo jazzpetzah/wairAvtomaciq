@@ -15,12 +15,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class ClientUsersManager {
-	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
 	private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
 
 	public static final Function<Integer, String> NAME_ALIAS_TEMPLATE = idx -> String
@@ -226,7 +226,7 @@ public class ClientUsersManager {
 	// ! Mutates the users list
 	private void generateUsers(List<ClientUser> usersToCreate) throws Exception {
 		ExecutorService executor = Executors
-				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
+				.newFixedThreadPool(CommonUtils.MAX_PARALLEL_USER_CREATION_TASKS);
 
 		final AtomicInteger createdClientsCount = new AtomicInteger(0);
 		for (final ClientUser userToCreate : usersToCreate) {

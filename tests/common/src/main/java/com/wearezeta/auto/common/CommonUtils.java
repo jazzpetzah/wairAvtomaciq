@@ -23,6 +23,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CommonUtils {
 	public static final String OS_NAME_WINDOWS = "Windows";
+	
+	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
 
 	private static final String USER_IMAGE = "userpicture_landscape.jpg";
 	private static final String RESULT_USER_IMAGE = "userpicture_mobile_check.jpg";
@@ -483,5 +485,15 @@ public class CommonUtils {
 		md.update(item.getBytes("UTF-8"));
 		final byte[] digest = md.digest();
 		return Base64.encodeBase64String(digest);
+	}
+	
+	public static String getDefaultEmailListenerServiceHostFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "defaultEmailListenerServiceHost");
+	}
+	
+	public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");
 	}
 }

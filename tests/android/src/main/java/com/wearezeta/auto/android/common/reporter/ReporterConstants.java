@@ -64,14 +64,16 @@ public class ReporterConstants {
 		public static final int BUILD_NUMBER_ROW = 3;
 		public static final int NUMBER_OF_CONVERSATIONS_ROW = 4;
 		public static final int NETWORK_TYPE_ROW = 5;
+		public static final int DEVICE_MODEL_ROW = 6;
+		public static final int DEVICE_VERSION_ROW = 7;
 
-		private static final int VALUES_OFFSET = 8;
+		private static final int VALUES_OFFSET = 10;
 		public static final int CPU_STATS_ROW = VALUES_OFFSET;
 		public static final int FREE_PHYSICAL_MEMORY_STATS_ROW = VALUES_OFFSET + 1;
 		public static final int FREE_STORAGE_MEMORY_STATS_ROW = VALUES_OFFSET + 2;
 		public static final int TOTAL_RX_STATS_ROW = VALUES_OFFSET + 3;
 		public static final int TOTAL_TX_STATS_ROW = VALUES_OFFSET + 4;
-		private static final int TIME_OFFSET = 14;
+		private static final int TIME_OFFSET = VALUES_OFFSET + 6;
 		public static final int APPLICATION_STARTUP_TIME_ROW = TIME_OFFSET;
 		public static final int LOGIN_TIME_ROW = TIME_OFFSET + 1;
 		public static final int CONVERSATION_LOADING_TIME_ROW = TIME_OFFSET + 2;

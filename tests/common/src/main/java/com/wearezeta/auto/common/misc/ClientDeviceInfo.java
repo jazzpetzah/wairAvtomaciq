@@ -23,6 +23,14 @@ public class ClientDeviceInfo {
 		return gsmNetworkType;
 	}
 	
+	public String getDeviceName() {
+		return deviceName;
+	}
+	
+	public String getOperatingSystemBuild() {
+		return operatingSystemBuild;
+	}
+	
 	public ClientDeviceInfo(String os, String osBuild, String device, String carrier, Boolean isWifi) {
 		this.operatingSystemName = os;
 		this.operatingSystemBuild = osBuild;

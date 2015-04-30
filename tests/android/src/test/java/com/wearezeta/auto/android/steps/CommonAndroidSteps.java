@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
-import javax.mail.Message;
-
 import org.junit.Assert;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -32,7 +30,7 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -55,7 +53,7 @@ public class CommonAndroidSteps {
 	public static LogcatListener listener = new LogcatListener();
 
 	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-	private Future<Message> passwordResetMessage;
+	private Future<String> passwordResetMessage;
 	private ClientUser userToRegister = null;
 	private static boolean skipBeforeAfter = false;
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -515,6 +513,30 @@ public class CommonAndroidSteps {
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+	}
+
+	/**
+	 * Silences a given user from the perspective of the another user through
+	 * the backend
+	 * 
+	 * @step. ^(.*) is silenced to user (.*)$
+	 * 
+	 * @param mutedUser
+	 *            the user to silence
+	 * 
+	 * @param otherUser
+	 *            the user who does the silencing
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Given("^(.*) is silenced to user (.*)$")
+	public void UserIsSilenced(String mutedUser, String otherUser)
+			throws Exception {
+		mutedUser = usrMgr.findUserByNameOrNameAlias(mutedUser).getName();
+		otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
+
+		commonSteps.MuteConversationWithUser(otherUser, mutedUser);
 	}
 
 	/**

@@ -5,17 +5,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import javax.mail.Message;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.web.pages.ActivationPage;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -28,7 +27,7 @@ public class RegistrationPageSteps {
 
 	private ClientUser userToRegister = null;
 
-	private Future<Message> activationMessage;
+	private Future<String> activationMessage;
 
 	public static final int maxCheckCnt = 2;
 
@@ -201,6 +200,12 @@ public class RegistrationPageSteps {
 		userToRegister
 				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
 						.apply(userIndex));
+
+		if (PagesCollection.loginPage == null) {
+			PagesCollection.loginPage = new LoginPage(
+					activationPage.getDriver(), activationPage.getWait());
+		}
+		PagesCollection.loginPage.waitForLogin();
 	}
 
 	/**
