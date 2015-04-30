@@ -49,7 +49,7 @@ class RESTChangesListener extends AbstractMboxChangesListener {
 				if (this.areAllHeadersInMessage(foundMsg)) {
 					if (foundMsg.getSentDate().getTime() >= filterMessagesAfter) {
 						log.debug("\tMessage accepted by timestamp");
-						return deliveredMessages.get(0);
+						return deliveredMessage;
 					} else {
 						log.error("\t!!! Message rejected because it is outdated. Please check your local time (should be in sync with world time)!");
 					}
