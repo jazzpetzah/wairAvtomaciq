@@ -23,7 +23,9 @@ import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFPicture;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.ClientAnchor;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import com.opencsv.CSVReader;
@@ -51,6 +53,9 @@ public class AndroidPerformanceReportGenerator {
 	private static int usersCount;
 	private static ClientDeviceInfo deviceInfo;
 	private static String networkType;
+	private static String deviceModel;
+	private static String deviceOSVersion;
+
 	private static List<String[]> parsedRxLog = new ArrayList<String[]>();
 	private static LinkedHashMap<String, Double> timeMeasurements = new LinkedHashMap<String, Double>();
 	private static LinkedHashMap<String, AndroidResource> resources = new LinkedHashMap<String, AndroidResource>();
@@ -523,19 +528,33 @@ public class AndroidPerformanceReportGenerator {
 		return resultsPath;
 	}
 
-	public static boolean updateReportDataWithCurrentRun(String applicationLog) {
-		boolean generationPassed = false;
+	private static void fillBuildAndDeviceData() {
 		try {
 			buildNumber = AndroidCommonUtils.readClientVersionFromAdb();
 			deviceInfo = AndroidCommonUtils.readDeviceInfo();
 			log.debug("Execution device info: " + deviceInfo.toString());
 			try {
-				networkType = deviceInfo.isWifiEnabled() ? "Wifi" : "GSM";
+				networkType = deviceInfo.isWifiEnabled() ? "Wifi" : deviceInfo.getGsmNetworkType();
 			} catch (NullPointerException e) {
 				networkType = "Unknown";
 			}
+			try {
+				deviceModel = deviceInfo.getDeviceName();
+			} catch (NullPointerException e) {
+				deviceModel = "Unknown";
+			}
+			try {
+				deviceOSVersion = deviceInfo.getOperatingSystemBuild();
+			} catch (NullPointerException e) {
+				deviceOSVersion = "Unknown";
+			}
 		} catch (Exception e) {
 		}
+	}
+
+	public static boolean updateReportDataWithCurrentRun(String applicationLog) {
+		boolean generationPassed = false;
+		fillBuildAndDeviceData();
 		try {
 			parsedRxLog = readRxLog();
 			timeMeasurements = readTimeMeasurementsData(applicationLog);
@@ -609,11 +628,31 @@ public class AndroidPerformanceReportGenerator {
 		HSSFCell networkTypeCell = summary.getRow(
 				ReporterConstants.Xls.NETWORK_TYPE_ROW).getCell(
 				ReporterConstants.Xls.BUILD_NUMBER_COLUMN);
+		HSSFCell phoneModelCell = summary.getRow(
+				ReporterConstants.Xls.DEVICE_MODEL_ROW).getCell(
+				ReporterConstants.Xls.BUILD_NUMBER_COLUMN);
+		HSSFCell phoneOSVersionCell = summary.getRow(
+				ReporterConstants.Xls.DEVICE_VERSION_ROW).getCell(
+				ReporterConstants.Xls.BUILD_NUMBER_COLUMN);
+		HSSFCell previousBuildVersionCell = summary.getRow(
+				ReporterConstants.Xls.CPU_STATS_ROW - 1).getCell(3);
+
+		CellStyle cs = wb.createCellStyle();
+		cs.setWrapText(true);
+		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+		cs.setAlignment(CellStyle.ALIGN_CENTER);
+		previousBuildVersionCell.setCellStyle(cs);
+		Font font = wb.createFont();
+		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+		cs.setFont(font);
 
 		buildVersion.setCellValue(runDate.get(runDate.size() - 1));
 		numberOfConversations.setCellValue(usersCount);
-
 		networkTypeCell.setCellValue(networkType);
+		phoneModelCell.setCellValue(deviceModel);
+		phoneOSVersionCell.setCellValue(deviceOSVersion);
+		previousBuildVersionCell.setCellValue("Previous Build\n"
+				+ runDate.get(runDate.size() - 2));
 		try {
 			fillSheet(summary, medianCPU, ReporterConstants.Xls.CPU_STATS_ROW,
 					true);
