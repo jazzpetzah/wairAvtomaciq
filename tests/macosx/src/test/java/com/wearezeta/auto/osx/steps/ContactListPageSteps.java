@@ -202,7 +202,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I minimize Wire$")
 	public void IMinimizeWire() {
-		PagesCollection.contactListPage.minimizeWindow();
+		PagesCollection.contactListPage.minimizeWindowUsingScript();
 	}
 
 	/**
