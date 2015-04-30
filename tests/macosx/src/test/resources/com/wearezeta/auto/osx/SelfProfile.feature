@@ -74,6 +74,7 @@ Feature: User Profile
   @staging @id673
   Scenario Outline: Verify correct accent colors showing after sign out and sign in
     Given There is 1 user where <Name> is me
+    Given User <Name> changes accent color to <PreparationAccentColor>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I open self profile
@@ -88,5 +89,5 @@ Feature: User Profile
     And I see color <AccentColor> is the background color of self profile page
 
     Examples: 
-      | Login      | Password      | Name      | AccentColor     |
-      | user1Email | user1Password | user1Name | StrongLimeGreen |
+      | Login      | Password      | Name      | PreparationAccentColor | AccentColor     |
+      | user1Email | user1Password | user1Name | Violet                 | StrongLimeGreen |
