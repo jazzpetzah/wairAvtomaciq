@@ -137,6 +137,9 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathMessageEntryByText = text -> String
 				.format("//*[@data-uie-name='item-message']//div[contains(@class, 'text') and text()='%s']",
 						text);
+		
+		public static final Function<String, String> xpathEmbeddedYoutubeVideoById = text -> String
+				.format("//iframe[contains(@src, '%s')]", text);
 
 		public static final String idConversationInput = "conversation-input-text";
 
@@ -267,6 +270,8 @@ public final class WebAppLocators {
 		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "1 person waiting";
 
 		public static final String TITLE_ATTRIBUTE_LOCATOR = "title";
+
+		public static final String HREF_ATTRIBUTE_LOCATOR = "href";
 	}
 
 	public static final class ProfilePicturePage {

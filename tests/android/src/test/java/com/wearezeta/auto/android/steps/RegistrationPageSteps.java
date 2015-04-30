@@ -5,13 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import javax.mail.Message;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -24,7 +22,7 @@ public class RegistrationPageSteps {
 
 	private ClientUser userToRegister = null;
 
-	public static Future<Message> activationMessage;
+	public static Future<String> activationMessage;
 
 	/**
 	 * Presses the camera button once to bring up the camera, and again to take

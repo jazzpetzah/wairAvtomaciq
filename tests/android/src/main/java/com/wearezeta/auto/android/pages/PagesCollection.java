@@ -18,4 +18,5 @@ public class PagesCollection extends AbstractPagesCollection{
 	public static SettingsPage settingsPage = null;
 	public static AboutPage aboutPage = null; 
 	public static CommonAndroidPage commonAndroidPage = null;
+	public static UnknownUserDetailsPage unknownUserDetailsPage = null;
 }

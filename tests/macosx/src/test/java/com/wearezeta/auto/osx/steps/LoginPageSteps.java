@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;

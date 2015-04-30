@@ -156,7 +156,7 @@ public class AccentColorUtil {
 
 		final int VIVIDRED_GREEN_AND_BLUE_MAXVALUE = 100;
 		final int YELLOW_ORANGE_GREEN_DELIMITER = 170;
-
+		final int WHITE_COLOR_VALUE = 255;
 		// gray (not focused window, Undefined used for gray): all channels have
 		// the same value
 		// blue: blue > green > red
@@ -167,7 +167,7 @@ public class AccentColorUtil {
 		// orange: red > green > blue (green > YELLOW_ORANGE_RED_DELIMITER)
 		// pink: red > blue > green
 		// violet: blue > red > green
-		if (red == green && red == blue) {
+		if (red == green && red == blue && red < WHITE_COLOR_VALUE) {
 			return AccentColor.Undefined;
 		} else {
 			if (green >= red && green >= blue) {

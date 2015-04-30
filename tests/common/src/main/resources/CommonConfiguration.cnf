@@ -10,3 +10,6 @@ jenkinsSuPassword=123456
 jenkinsProjectDir=/Project/
 defaultCallingServiceHost=${defaultCallingServiceHost}
 defaultCallingServicePort=${defaultCallingServicePort}
+mailboxHandlerType=${mailboxHandlerType}
+defaultEmailListenerServiceHost=${defaultEmailListenerServiceHost}
+defaultEmailListenerServicePort=${defaultEmailListenerServicePort}

@@ -8,8 +8,6 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
-import javax.mail.Message;
-
 import org.junit.Assert;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -17,6 +15,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.reporter.LogcatListener;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.LoginPage;
@@ -31,7 +30,7 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -51,8 +50,10 @@ public class CommonAndroidSteps {
 				"warn");
 	}
 
+	public static LogcatListener listener = new LogcatListener();
+
 	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-	private Future<Message> passwordResetMessage;
+	private Future<String> passwordResetMessage;
 	private ClientUser userToRegister = null;
 	private static boolean skipBeforeAfter = false;
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -109,6 +110,8 @@ public class CommonAndroidSteps {
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
+		listener.startListeningLogcat();
+
 		if (this.isSkipBeforeAfter()) {
 			return;
 		}
@@ -166,29 +169,29 @@ public class CommonAndroidSteps {
 			PagesCollection.loginPage.hideKeyboard();
 		}
 	}
-	
+
 	@When("^I swipe right$")
 	public void ISwipeRight() throws Exception {
 		PagesCollection.androidPage.swipeRightCoordinates(DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); //fix for animation
+		Thread.sleep(1000); // fix for animation
 	}
-	
+
 	@When("^I swipe left$")
 	public void ISwipeLeft() throws Exception {
 		PagesCollection.androidPage.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); //fix for animation
+		Thread.sleep(1000); // fix for animation
 	}
-	
+
 	@When("^I swipe up$")
 	public void ISwipeUp() throws Exception {
 		PagesCollection.androidPage.swipeUpCoordinates(DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); //fix for animation
+		Thread.sleep(1000); // fix for animation
 	}
-	
+
 	@When("^I swipe down$")
 	public void ISwipeDown() throws Exception {
 		PagesCollection.androidPage.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); //fix for animation
+		Thread.sleep(1000); // fix for animation
 	}
 
 	public void commonBefore() throws Exception {
@@ -238,7 +241,7 @@ public class CommonAndroidSteps {
 					.minimizeApplication();
 		}
 	}
-	
+
 	/**
 	 * Locks the device
 	 * 
@@ -250,8 +253,7 @@ public class CommonAndroidSteps {
 	@When("^I lock the device$")
 	public void ILockTheDevice() throws Exception {
 		if (PagesCollection.loginPage != null) {
-			PagesCollection.loginPage
-					.lockScreen();
+			PagesCollection.loginPage.lockScreen();
 		}
 	}
 
@@ -501,8 +503,8 @@ public class CommonAndroidSteps {
 	 * @param userFromNameAlias
 	 *            the user to check
 	 * @param usersToNameAliases
-	 *            A separated list of
-	 *            user names to check to see if connected to user A.
+	 *            A separated list of user names to check to see if connected to
+	 *            user A.
 	 * 
 	 * @throws Exception
 	 * 
@@ -511,6 +513,30 @@ public class CommonAndroidSteps {
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+	}
+
+	/**
+	 * Silences a given user from the perspective of the another user through
+	 * the backend
+	 * 
+	 * @step. ^(.*) is silenced to user (.*)$
+	 * 
+	 * @param mutedUser
+	 *            the user to silence
+	 * 
+	 * @param otherUser
+	 *            the user who does the silencing
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Given("^(.*) is silenced to user (.*)$")
+	public void UserIsSilenced(String mutedUser, String otherUser)
+			throws Exception {
+		mutedUser = usrMgr.findUserByNameOrNameAlias(mutedUser).getName();
+		otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
+
+		commonSteps.MuteConversationWithUser(otherUser, mutedUser);
 	}
 
 	/**
@@ -523,9 +549,8 @@ public class CommonAndroidSteps {
 	 * @param chatName
 	 *            The name of the group chat
 	 * @param otherParticipantsNameAliases
-	 *            A separated list of
-	 *            user names to check to see if in a group conversation with
-	 *            user A.
+	 *            A separated list of user names to check to see if in a group
+	 *            conversation with user A.
 	 * 
 	 * @throws Exception
 	 * 
@@ -562,7 +587,7 @@ public class CommonAndroidSteps {
 	 * 
 	 * @param seconds
 	 *            The number of seconds to wait
-	 *            
+	 * 
 	 * @throws NumberFormatException
 	 *             , InterruptedException
 	 * 
@@ -582,7 +607,7 @@ public class CommonAndroidSteps {
 	 *            The user to do the blocking
 	 * @param userToBlockNameAlias
 	 *            The user to block
-	 *            
+	 * 
 	 * @throws Exception
 	 * 
 	 */
@@ -615,7 +640,7 @@ public class CommonAndroidSteps {
 	 *            The user to do the pinging
 	 * @param dstConversationName
 	 *            the target converation to send the ping to
-	 *            
+	 * 
 	 * @throws Exception
 	 * 
 	 */
@@ -635,7 +660,7 @@ public class CommonAndroidSteps {
 	 *            The user to do the hotpinging
 	 * @param dstConversationName
 	 *            the target converation to send the ping to
-	 *            
+	 * 
 	 * @throws Exception
 	 * 
 	 */
@@ -647,11 +672,11 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Transfers Wire contacts to Mac
-	 * (Why is this step in the android step files? - dean).
+	 * Transfers Wire contacts to Mac (Why is this step in the android step
+	 * files? - dean).
 	 * 
 	 * @step. ^I add contacts list users to Mac contacts$
-	 *        
+	 * 
 	 * @throws Exception
 	 * 
 	 */
@@ -661,11 +686,11 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Removes Wire contacts from Mac
-	 * (Why is this step in the android step files? - dean).
+	 * Removes Wire contacts from Mac (Why is this step in the android step
+	 * files? - dean).
 	 * 
 	 * @step. ^I remove contacts list users from Mac contacts$
-	 *        
+	 * 
 	 * @throws Exception
 	 * 
 	 */
@@ -695,13 +720,13 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Verifies that there are N new users for a test, and makes them if they don't exist.
-	 * -unused
+	 * Verifies that there are N new users for a test, and makes them if they
+	 * don't exist. -unused
 	 * 
 	 * @step. ^There \\w+ (\\d+) user[s]*$
 	 * 
 	 * @param count
-	 * 			the number of users to make
+	 *            the number of users to make
 	 * 
 	 * @throws Exception
 	 * 
@@ -712,14 +737,15 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Verifies that there are N new users for a test, makes them if they don't exist, and sets one of those users to be the current user. 
+	 * Verifies that there are N new users for a test, makes them if they don't
+	 * exist, and sets one of those users to be the current user.
 	 * 
 	 * @step. ^There \\w+ (\\d+) user[s]* where (.*) is me$
 	 * 
 	 * @param count
-	 * 			the number of users to make
+	 *            the number of users to make
 	 * @param myNameAlias
-	 * 			the name of the user to set as the current user 
+	 *            the name of the user to set as the current user
 	 * 
 	 * @throws Exception
 	 * 
@@ -731,15 +757,16 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Verifies that there are N new users for a test all sharing a common prefix in their names and makes them if they don't exist. 
+	 * Verifies that there are N new users for a test all sharing a common
+	 * prefix in their names and makes them if they don't exist.
 	 * 
 	 * @step. ^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$
 	 * 
 	 * @param count
-	 * 			the number of users to make
+	 *            the number of users to make
 	 * @param namePrefix
-	 * 			the prefix for all of the users to share
-	 *  
+	 *            the prefix for all of the users to share
+	 * 
 	 * @throws Exception
 	 * 
 	 */
@@ -750,12 +777,13 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Sets the current user to one of the pre-defined users based on the name of that user. 
+	 * Sets the current user to one of the pre-defined users based on the name
+	 * of that user.
 	 * 
 	 * @step. ^User (\\w+) is [Mm]e$
 	 * 
 	 * @param nameAlias
-	 * 			the user to set as current user.
+	 *            the user to set as current user.
 	 * 
 	 * @throws Exception
 	 * 
@@ -766,16 +794,19 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Waits for a given time to verify that another user exists in search results
+	 * Waits for a given time to verify that another user exists in search
+	 * results
 	 * 
-	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$
+	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in
+	 *        backend search results$
 	 * 
 	 * @param searchByNameAlias
-	 * 			the user to search for in the query results.
+	 *            the user to search for in the query results.
 	 * @param timeout
-	 * 			the length of time to wait before giving up the search.
+	 *            the length of time to wait before giving up the search.
 	 * @param query
-	 * 			the search query to pass to the backend, which will return a list of users. 
+	 *            the search query to pass to the backend, which will return a
+	 *            list of users.
 	 * 
 	 * @throws Exception
 	 * 
@@ -794,13 +825,15 @@ public class CommonAndroidSteps {
 	 * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
 	 * 
 	 * @param imageSenderUserNameAlias
-	 * 			the user to sending the image
+	 *            the user to sending the image
 	 * @param imageFileName
-	 * 			the file path name of the image to send. The path name is defined relative to the image file defined in Configuration.cnf.
+	 *            the file path name of the image to send. The path name is
+	 *            defined relative to the image file defined in
+	 *            Configuration.cnf.
 	 * @param conversationType
-	 * 			"single user" or "group" conversation. 
+	 *            "single user" or "group" conversation.
 	 * @param dstConversationName
-	 * 			the name of the conversation to send the image to. 
+	 *            the name of the conversation to send the image to.
 	 *
 	 * @throws Exception
 	 * 
@@ -852,12 +885,12 @@ public class CommonAndroidSteps {
 	public void setSkipBeforeAfter(boolean skipBeforeAfter) {
 		CommonAndroidSteps.skipBeforeAfter = skipBeforeAfter;
 	}
-	
+
 	/**
 	 * Resets the password for the given email address
 	 * 
 	 * @param email
-	 * 			the email associated to the account
+	 *            the email associated to the account
 	 * @throws Exception
 	 */
 
@@ -872,14 +905,15 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Resets the password for a given user's account to a newly defined password
+	 * Resets the password for a given user's account to a newly defined
+	 * password
 	 * 
 	 * @step. ^I reset (.*) password by URL to new (.*)$
 	 * 
 	 * @param name
-	 * 			the name of the user for which you want to reset the password.
+	 *            the name of the user for which you want to reset the password.
 	 * @param newPass
-	 * 			the new password.
+	 *            the new password.
 	 * 
 	 * @throws Exception
 	 * 
@@ -938,7 +972,8 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Verify that the open email message contains the given email address somewhere within
+	 * Verify that the open email message contains the given email address
+	 * somewhere within
 	 * 
 	 * @step. ^mail content contains my $
 	 * 
@@ -966,7 +1001,7 @@ public class CommonAndroidSteps {
 	@When("^I rotate UI to landscape$")
 	public void WhenIRotateUILandscape() throws Exception {
 		PagesCollection.loginPage.rotateLandscape();
-		Thread.sleep(1000); //fix for animation
+		Thread.sleep(1000); // fix for animation
 	}
 
 	/**
@@ -979,7 +1014,7 @@ public class CommonAndroidSteps {
 	@When("^I rotate UI to portrait$")
 	public void WhenIRotateUIPortrait() throws Exception {
 		PagesCollection.loginPage.rotatePortrait();
-		Thread.sleep(1000); //fix for animation
+		Thread.sleep(1000); // fix for animation
 	}
 
 }

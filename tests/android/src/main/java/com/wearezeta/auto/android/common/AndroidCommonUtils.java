@@ -249,11 +249,11 @@ public class AndroidCommonUtils extends CommonUtils {
 				if (output.contains("Wi-Fi is disabled")) {
 					result = false;
 				} else if (output.contains("Wi-Fi is enabled")) {
-					Pattern pattern = Pattern.compile("mNetworkInfo NetworkInfo: type: [^,]*, state: ([^,]*),");
+					Pattern pattern = Pattern.compile("mNetworkInfo (NetworkInfo: |\\[)?type: [^,]*, state: ([^,]*),");
 					Matcher matcher = pattern.matcher(output);
 					String state = "no info";
 					while (matcher.find()) {
-						state = matcher.group(1);
+						state = matcher.group(2);
 						log.debug("Retrieved wifi state: " + state);
 					}
 					if (state.contains("DISCONNECTED") || state.contains("SCANNING")) {

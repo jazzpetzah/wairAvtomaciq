@@ -34,8 +34,16 @@ public class MainWirePage extends OSXPage {
 				By.xpath(OSXLocators.MainWirePage.xpathWindow));
 	}
 
-	public void minimizeWindow() {
-		minimizeButton.click();
+	/*
+	 * public void minimizeWindow() { minimizeButton.click(); }
+	 */
+
+	public void minimizeWindowUsingScript() {
+		String minimizeScript = "tell application \"System Events\"\n"
+				+ "tell process \"Wire\"\n"
+				+ "click (first button of every window whose role description is \"minimize button\")\n"
+				+ "end tell\n" + "end tell";
+		driver.executeScript(minimizeScript);
 	}
 
 	public void zoomWindow() {
