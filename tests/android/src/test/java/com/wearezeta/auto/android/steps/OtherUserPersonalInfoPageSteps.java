@@ -224,7 +224,7 @@ public class OtherUserPersonalInfoPageSteps {
 		}
 
 		// This needs to be moved eventually
-		PagesCollection.unknownUserFromGroupDetailsPage = new UnknownUserDetailsPage(
+		PagesCollection.unknownUserDetailsPage = new UnknownUserDetailsPage(
 				PagesCollection.androidPage.getDriver(),
 				PagesCollection.androidPage.getWait());
 	}
@@ -507,10 +507,10 @@ public class OtherUserPersonalInfoPageSteps {
 			throws Exception {
 		username = usrMgr.findUserByNameOrNameAlias(username).getName();
 
-		Assert.assertTrue(PagesCollection.unknownUserFromGroupDetailsPage
+		Assert.assertTrue(PagesCollection.unknownUserDetailsPage
 				.isConnectButtonVisible());
 		Assert.assertEquals(username,
-				PagesCollection.unknownUserFromGroupDetailsPage
+				PagesCollection.unknownUserDetailsPage
 						.getOtherUsersName());
 	}
 
@@ -524,7 +524,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I click on the unconnected user page connect or pending button$")
 	public void IClickOnUnconnectedUserConnectButton() throws Exception {
-		PagesCollection.connectToPage = PagesCollection.unknownUserFromGroupDetailsPage
+		PagesCollection.connectToPage = PagesCollection.unknownUserDetailsPage
 				.tapConnectAndPendingButton();
 	}
 
@@ -538,7 +538,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I see connect to unconnected user page pending button$")
 	public void ISeeNoEditTexts() throws Exception {
-		Assert.assertTrue(PagesCollection.unknownUserFromGroupDetailsPage
+		Assert.assertTrue(PagesCollection.unknownUserDetailsPage
 				.isPendingButtonVisible());
 	}
 }

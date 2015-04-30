@@ -814,7 +814,7 @@ public final class AndroidLocators {
 	public static final class UnknownUserDetailsPage {
 
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
-				+ "$UnknownUserFromGroupDetailsPage";
+				+ "$UnknownUserDetailsPage";
 
 		public static final String idOtherUsersName = LOCATORS_PACKAGE
 				+ ":id/taet__participants__header";

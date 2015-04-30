@@ -234,7 +234,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1509 @staging
+  @id1509 @staging @torun
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
