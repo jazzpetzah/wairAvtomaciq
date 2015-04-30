@@ -56,6 +56,6 @@ public class UnknownUserDetailsPage extends AndroidPage {
 			connectAndPendingButton.click();
 			return new ConnectToPage(this.getDriver(), this.getWait());
 		}
-		throw new Exception("Button does nothing");
+		return null;
 	}
 }
