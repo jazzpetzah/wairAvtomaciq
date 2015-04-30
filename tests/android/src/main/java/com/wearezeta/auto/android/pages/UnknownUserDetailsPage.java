@@ -42,14 +42,16 @@ public class UnknownUserDetailsPage extends AndroidPage {
 
 	public boolean isConnectButtonVisible() throws Exception {
 		refreshUITree();
+		final String BUTTON_TEXT = "Connect";
 		String connectButtonText = connectAndPendingButton.getText();
-		return connectButtonText.equals("Connect");
+		return connectButtonText.equals(BUTTON_TEXT);
 	}
 	
 	public boolean isPendingButtonVisible() throws Exception {
 		refreshUITree();
+		final String BUTTON_TEXT = "Pending";
 		String connectButtonText = connectAndPendingButton.getText();
-		return connectButtonText.equals("Pending");
+		return connectButtonText.equals(BUTTON_TEXT);
 	}
 	
 	public String getOtherUsersName() {
@@ -62,7 +64,6 @@ public class UnknownUserDetailsPage extends AndroidPage {
 			connectAndPendingButton.click();
 			return new ConnectToPage(this.getDriver(), this.getWait());
 		}
-		
-		return null;
+		throw new Exception("Button does nothing");
 	}
 }

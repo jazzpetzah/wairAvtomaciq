@@ -512,11 +512,8 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I click on the unconnected user page connect or pending button$")
 	public void IClickOnUnconnectedUserConnectButton() throws Exception {
-		PagesCollection.unknownUserFromGroupDetailsPage
+		PagesCollection.connectToPage = PagesCollection.unknownUserFromGroupDetailsPage
 				.tapConnectAndPendingButton();
-		PagesCollection.connectToPage = new ConnectToPage(
-				PagesCollection.unknownUserFromGroupDetailsPage.getDriver(),
-				PagesCollection.unknownUserFromGroupDetailsPage.getWait());
 	}
 
 	/**
