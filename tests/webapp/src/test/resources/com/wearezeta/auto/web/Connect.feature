@@ -159,3 +159,45 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact2  | ChatName                 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChatWithPendingUser |
+
+  @regression @id1555
+  Scenario Outline: Verify you still receive messages from blocked person in a group chat
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    When I open conversation with <Contact1>
+    And I click People button in one to one conversation
+    And I see Single User Profile popover
+    And I see Block button on Single User Profile popover
+    And I click Block button on Single User Profile popover
+    And I confirm user blocking on Single User Profile popover
+    And I open conversation with <ChatName>
+    And I write random message
+    And I send message
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And I switch to sign in page
+    And I see Sign In page
+    And User <Name2> is me
+    And I Sign in using login <Login2> and password <Password2>
+    And I see my name on top of Contact list
+    And I open conversation with <ChatName>
+    Then I see random message in conversation
+    And I write random message
+    And I send message
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And I switch to sign in page
+    And I see Sign In page
+    And I Sign in using login <Login> and password <Password>
+    And User <Name> is me
+    And I open conversation with <ChatName>
+    And I see random message in conversation
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | ChatName                 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat | user2Email | user2Password | user2Name | GroupChatWithBlockedUser |

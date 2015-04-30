@@ -6,7 +6,7 @@ import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidGeneratePerfomanceReport;
+import com.wearezeta.auto.android.common.reporter.AndroidPerformanceReportGenerator;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.PerformanceCommon;
@@ -48,8 +48,8 @@ public class PerformanceSteps {
 								PagesCollection.contactListPage
 										.GetVisibleContacts());
 						counter++;
-					} while ((visibleContactsList.isEmpty()
-							|| visibleContactsList == null) && counter != 3);
+					} while ((visibleContactsList.isEmpty() || visibleContactsList == null)
+							&& counter != 3);
 					visibleContactsList.remove(0);
 					// --
 
@@ -59,9 +59,8 @@ public class PerformanceSteps {
 							.tapOnContactByPosition(visibleContactsList,
 									randomInt);
 					PagesCollection.dialogPage.isDialogVisible();
-					PagesCollection.dialogPage
-							.tapDialogPageBottom();
-					PagesCollection.dialogPage.typeAndSendMessage(CommonUtils
+					PagesCollection.dialogPage.tapDialogPageBottom();
+					PagesCollection.dialogPage.typeMessage(CommonUtils
 							.generateGUID());
 					Thread.sleep(1000);
 					if (perfCommon.random.nextBoolean()) {
@@ -72,8 +71,7 @@ public class PerformanceSteps {
 								.tapOnContactByPosition(visibleContactsList,
 										randomInt);
 						PagesCollection.dialogPage.isDialogVisible();
-						PagesCollection.dialogPage
-								.tapDialogPageBottom();
+						PagesCollection.dialogPage.tapDialogPageBottom();
 						Thread.sleep(1000);
 						PagesCollection.dialogPage.sendFrontCameraImage();
 					}
@@ -100,10 +98,17 @@ public class PerformanceSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I generate performance report$")
-	public void ThenIGeneratePerformanceReport() throws Exception{
-		AndroidCommonUtils.copyFileFromAndroid(AndroidCommonUtils.getRxLogResourceFilePathFromConfig(PerformanceSteps.class), RXLOGGER_RESOURCE_FILE_PATH);
+	@Then("^I generate performance report for (\\d+) users$")
+	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
+		AndroidPerformanceReportGenerator.setUsersCount(usersCount);
+		CommonAndroidSteps.listener.stopListeningLogcat();
+		AndroidCommonUtils.copyFileFromAndroid(
+				AndroidPerformanceReportGenerator.RXLOG_FILEPATH,
+				RXLOGGER_RESOURCE_FILE_PATH);
 		Thread.sleep(5000);
-		Assert.assertTrue(AndroidGeneratePerfomanceReport.generateRunReport());
+		Assert.assertTrue(AndroidPerformanceReportGenerator
+				.updateReportDataWithCurrentRun(CommonAndroidSteps.listener
+						.getOutput()));
+		Assert.assertTrue(AndroidPerformanceReportGenerator.generateRunReport());
 	}
 }

@@ -175,14 +175,14 @@ public class PeoplePickerPageSteps {
 
 	@When("I re-enter the people picker if top people list is not there")
 	public void IRetryPeoplePickerIfNotLoaded() throws Exception {
-		if (!PagesCollection.peoplePickerPage.isTopPeopleLabelVisible()) {
-			IClickCloseButtonDismissPeopleView();
-			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
+		for (int i = 0; i < 3; i++) {
+			if (!PagesCollection.peoplePickerPage.isTopPeopleLabelVisible()) {
+				IClickCloseButtonDismissPeopleView();
+				Thread.sleep(5000);
 				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
-						.swipeDown(1000);
+						.openSearch();
 			} else {
-				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
-						.swipeDownSimulator();
+				break;
 			}
 		}
 	}

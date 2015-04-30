@@ -36,11 +36,20 @@ public class SelfPictureUploadPage extends WebPage {
 		super(driver, wait);
 	}
 
+	public void waitUntilNotVisible(int secondsTimeout) throws Exception {
+		assert DriverUtils
+				.waitUntilElementDissapear(
+						driver,
+						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton),
+						secondsTimeout) : "Picture selection dialog button is still visible after "
+				+ secondsTimeout + " second(s) timeout";
+	}
+
 	public void waitUntilButtonsAreClickable(int secondsTimeout)
 			throws Exception {
 		assert DriverUtils.waitUntilElementClickable(driver,
 				selectPictureButton, secondsTimeout) : "Picture selection dialog button was not clickable within "
-				+ secondsTimeout + "second(s) timeout";
+				+ secondsTimeout + " second(s) timeout";
 	}
 
 	public void uploadPicture(String pictureName) throws Exception {

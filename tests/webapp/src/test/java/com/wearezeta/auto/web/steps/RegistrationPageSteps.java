@@ -167,19 +167,6 @@ public class RegistrationPageSteps {
 		userToRegister.setUserState(UserState.Created);
 	}
 
-	/**
-	 * Switch to Sign In page
-	 * 
-	 * @step. ^I switch to [Ss]ign [Ii]n page$
-	 * 
-	 * @throws Exception
-	 */
-	@Given("^I switch to [Ss]ign [Ii]n page$")
-	public void ISwitchToLoginPage() throws Exception {
-		PagesCollection.loginPage = PagesCollection.registrationPage
-				.switchToLoginPage();
-	}
-
 	private static final int ACTIVATION_TIMEOUT = 15; // seconds
 
 	/**
@@ -199,7 +186,8 @@ public class RegistrationPageSteps {
 				PagesCollection.registrationPage.getDriver(),
 				PagesCollection.registrationPage.getWait(), link);
 		activationPage.navigateTo();
-		PagesCollection.contactListPage = activationPage.verifyActivation(ACTIVATION_TIMEOUT);		
+		PagesCollection.contactListPage = activationPage
+				.verifyActivation(ACTIVATION_TIMEOUT);
 
 		this.userToRegister.setUserState(UserState.Created);
 		// indexes in aliases start from 1
@@ -211,5 +199,18 @@ public class RegistrationPageSteps {
 		userToRegister
 				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
 						.apply(userIndex));
+	}
+
+	/**
+	 * Switch to Sign In page
+	 * 
+	 * @step. ^I switch to [Ss]ign [Ii]n page$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I switch to [Ss]ign [Ii]n page$")
+	public void ISwitchToLoginPage() throws Exception {
+		PagesCollection.loginPage = PagesCollection.registrationPage
+				.switchToLoginPage();
 	}
 }
