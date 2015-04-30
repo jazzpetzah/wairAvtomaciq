@@ -55,7 +55,7 @@ class RESTChangesListener extends AbstractMboxChangesListener {
 					}
 				}
 			}
-			Thread.sleep(500);
+			Thread.sleep(MboxListenerServiceClient.POLLING_FREQUENCY_MILLISECONDS);
 		} while (System.currentTimeMillis() - millisecondsStarted <= this.timeoutSeconds * 1000);
 		throw new RuntimeException(
 				String.format(

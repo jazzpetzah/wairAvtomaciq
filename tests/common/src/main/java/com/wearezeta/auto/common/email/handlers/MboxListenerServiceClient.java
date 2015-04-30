@@ -17,7 +17,7 @@ import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 class MboxListenerServiceClient implements ISupportsMessagesPolling {
-	private static final long POLLING_FREQUENCY_MILLISECONDS = 2000;
+	public static final long POLLING_FREQUENCY_MILLISECONDS = 2000;
 
 	private static final Logger log = ZetaLogger
 			.getLog(MboxListenerServiceClient.class.getSimpleName());
