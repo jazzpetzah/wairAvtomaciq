@@ -21,7 +21,7 @@ import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class ClientUsersManager {
-	private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
+	private static final int NUMBER_OF_REGISTRATION_RETRIES = 3;
 
 	public static final Function<Integer, String> NAME_ALIAS_TEMPLATE = idx -> String
 			.format("user%dName", idx);
