@@ -1,7 +1,7 @@
 Feature: Connect
 
   @id191 @id193 @smoke @regression
-  Scenario Outline: Send invitation message to a user
+  Scenario Outline: Send connection request from search
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>

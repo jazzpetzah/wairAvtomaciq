@@ -77,6 +77,15 @@ public class PersonalInfoPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameAccentColorPicker)
 	private WebElement accentColorPicker;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsChatheadSwitch)
+	private WebElement settingsChatheadSwitch;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsBackButton)
+	private WebElement settingsBackButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsDoneButton)
+	private WebElement settingsDoneButton;
 
 	public PersonalInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
 			throws Exception {
@@ -244,6 +253,18 @@ public class PersonalInfoPage extends IOSPage {
 	
 	public void changeAccentColor(){
 		accentColorPicker.click();
+	}
+	
+	public void switchChatheadsOnOff(){
+		settingsChatheadSwitch.click();
+	}
+	
+	public void pressSettingsBackButton(){
+		settingsBackButton.click();
+	}
+	
+	public void pressSettingsDoneButton(){
+		settingsDoneButton.click();
 	}
 
 }

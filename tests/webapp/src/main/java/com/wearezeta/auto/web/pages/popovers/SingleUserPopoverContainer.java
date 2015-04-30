@@ -2,12 +2,13 @@ package com.wearezeta.auto.web.pages.popovers;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
+
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 
 	private SingleUserInfoPopoverPage singleUserPopoverPage;
-	private AddPeoplePopoverPage addPeoplePopoverPage;
+	private ConnectedParticipantInfoPopoverPage connectedParticipantInfoPopoverPage;
 	private BlockUserConfirmationPopoverPage blockUserConfirmationPopoverPage;
 	private PendingParticipantInfoPopoverPage pendingParticipantInfoPopoverPage;
 
@@ -16,10 +17,11 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		super(driver, wait);
 		this.singleUserPopoverPage = new SingleUserInfoPopoverPage(driver,
 				wait, this);
-		this.addPeoplePopoverPage = new AddPeoplePopoverPage(driver, wait, this);
 		this.blockUserConfirmationPopoverPage = new BlockUserConfirmationPopoverPage(
 				driver, wait, this);
 		this.pendingParticipantInfoPopoverPage = new PendingParticipantInfoPopoverPage(
+				driver, wait, this);
+		this.connectedParticipantInfoPopoverPage = new ConnectedParticipantInfoPopoverPage(
 				driver, wait, this);
 	}
 
@@ -64,6 +66,15 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		return getCurrentUserInfoPage().isRemoveButtonVisible();
 	}
 
+	public boolean isOpenConvButtonVisible() {
+		return this.connectedParticipantInfoPopoverPage
+				.isOpenConvButtonVisible();
+	}
+
+	public void clickOpenConvButton() {
+		this.connectedParticipantInfoPopoverPage.clickOpenConversationButton();
+	}
+
 	public boolean isAvatarVisible() throws Exception {
 		return getCurrentUserInfoPage().isAvatarVisible();
 	}
@@ -88,6 +99,11 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		return this.pendingParticipantInfoPopoverPage.getPendingButtonCaption();
 	}
 
+	public String getOpenConvButtonCaption() {
+		return this.connectedParticipantInfoPopoverPage
+				.getOpenConvButtonCaption();
+	}
+
 	public boolean isPendingTextBoxVisible() {
 		return this.pendingParticipantInfoPopoverPage
 				.isPendingTextBoxDisplayed();
@@ -99,5 +115,14 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 
 	public String getPendingButtonToolTip() {
 		return this.pendingParticipantInfoPopoverPage.getPendingButtonToolTip();
+	}
+
+	public String getOpenConvButtonToolTip() {
+		return this.connectedParticipantInfoPopoverPage
+				.getOpenConvButtonToolTip();
+	}
+
+	public String getMailHref() throws Exception {
+		return getCurrentUserInfoPage().getMailHref();
 	}
 }

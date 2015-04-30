@@ -42,6 +42,10 @@ public final class PopoverLocators {
 
 			public static final String xpathBlockButton = xpathRootLocator
 					+ xpathPageRootLocator + "//*[@data-uie-name='do-block']";
+
+			public static final String xpathOpenConversationButton = xpathRootLocator
+					+ xpathPageRootLocator
+					+ "//*[@data-uie-name='go-conversation']";
 		}
 
 		public static final class BlockUserConfirmationPage {

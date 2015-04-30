@@ -9,39 +9,28 @@ public class SelfPictureUploadPageSteps {
 	private static final int VISIBILITY_TIMEOUT = 10; // seconds
 
 	/**
-	 * Verify that Self Picture Upload dialog is visible
+	 * Verify that Self Picture Upload dialog is visible or not
 	 * 
-	 * @step. ^I see Self Picture Upload dialog$
+	 * @step. ^I( do not)? see Self Picture Upload dialog$
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist
 	 * @throws Exception
 	 */
-	@And("^I see Self Picture Upload dialog$")
-	public void ISeeSelfPictureUpload() throws Exception {
+	@And("^I( do not)? see Self Picture Upload dialog$")
+	public void ISeeSelfPictureUpload(String shouldNotBeVisible)
+			throws Exception {
 		if (PagesCollection.selfPictureUploadPage == null) {
 			PagesCollection.selfPictureUploadPage = new SelfPictureUploadPage(
-					PagesCollection.loginPage.getDriver(),
-					PagesCollection.loginPage.getWait());
+					PagesCollection.registrationPage.getDriver(),
+					PagesCollection.registrationPage.getWait());
 		}
-		PagesCollection.selfPictureUploadPage
-				.waitUntilButtonsAreClickable(VISIBILITY_TIMEOUT);
-	}
-
-	/**
-	 * Verify that Self Picture Upload dialog is not visible
-	 * 
-	 * @step. ^I do not see Self Picture Upload dialog$
-	 * @throws Exception
-	 */
-	@And("^I do not see Self Picture Upload dialog$")
-	public void IDontSeeSelfPictureUpload() throws Exception {
-		try {
+		if (shouldNotBeVisible == null) {
 			PagesCollection.selfPictureUploadPage
 					.waitUntilButtonsAreClickable(VISIBILITY_TIMEOUT);
-		} catch (AssertionError e) {
-			// Everything is ok, the page is not visible
-			return;
+		} else {
+			PagesCollection.selfPictureUploadPage
+					.waitUntilNotVisible(VISIBILITY_TIMEOUT);
 		}
-		throw new AssertionError(
-				"Self Picture Upload page should noit be visible");
 	}
 
 	/**

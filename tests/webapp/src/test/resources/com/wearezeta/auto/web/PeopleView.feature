@@ -113,6 +113,38 @@ Feature: People View
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
+@staging @id2270
+   Scenario Outline: Verify I can see participant profile of connected user in a group conversation
+      Given There are 3 users where <Name> is me
+      Given Myself is connected to <KnownContact>
+      Given <KnownContact> is connected to <UnknownContact>
+      Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
+      Given I Sign in using login <Login> and password <Password>
+      Then I see my name on top of Contact list
+      When I open conversation with <ChatName>
+      Then I see correct people button tool tip
+      When I click People button in group conversation
+      Then I see Group Participants popover
+      And I see correct add people button tool tip
+      And I see correct leave conversation button tool tip
+      And I see correct rename conversation button tool tip
+      When I click on participant <KnownContact> on Group Participants popover
+      Then I see correct back button tool tip on Group Participants popover
+      And I see correct remove from group button tool tip on Group Participants popover
+      And I see username <KnownContact> on Group Participants popover
+      And I see an avatar on Group Participants popover
+      And I see Remove button on Group Participants popover
+      And I see Mail on Group Participants popover
+      And Would open mail client when clicking mail on Group Participants popover
+      And I see open conversation button on Group Participants popover
+      And I see correct open conversation button tool tip on Group Participants popover
+      When I click open conversation from Group Participants popover
+      Then I see conversation with <KnownContact> is selected in conversations list
+
+      Examples:
+	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
+	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
+
  @staging @id2271 @torun
    Scenario Outline: Verify I can see participant profile of user I blocked in a group conversation
       Given There are 3 users where <Name> is me
@@ -162,7 +194,7 @@ Feature: People View
       And I confirm add to chat on Group Participants popover
       And I input user name <Contact3> in search field on Group Participants popover
       And I select <Contact3> from Group Participants popover search results
-      And I choose to create conversation from Group Participants popover
+      And I choose to create group conversation from Group Participants popover
       And I open conversation with <ChatName>
       Then I see <Message> action for <Contact3> in conversation
       When I add <Contact4> to group chat

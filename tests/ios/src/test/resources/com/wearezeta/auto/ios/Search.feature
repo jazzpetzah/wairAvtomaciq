@@ -293,3 +293,22 @@ Feature: Search
   	Examples:
       | Login      | Password      | Name      | Contact       | NewName      | LastName |
       | user1Email | user1Password | user1Name | user2Name     | NEW NAME     | NAME     |
+      
+  @staging @id2118 
+  Scenario Outline: Verify sending connection request from PYMK
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by clicking plus button
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I press the instant connect button
+    And I click close button to dismiss people view
+    Then I see first item in contact list named <Contact2>
+
+    Examples:
+      | Login | Password | Name | Contact1 | Contact2 | 
+      | user1Email | user1Password | user1Name | user2Name | user3Name |

@@ -173,21 +173,23 @@ Feature: People View
     Then I see profile page
     And I do not see 1:1 options menu
     When I press options menu button
-    #And I swipe left
-    #And I swipe right
-    #And I swipe up
-    And I do small swipe down
-    #Then I do not see 1:1 options menu
-    #And I see profile page
-    Then I see correct 1:1 options menu
-    And I do not see profile page
-    When I swipe down
+    And I swipe down
     Then I see profile page
     And I do not see 1:1 options menu
     When I press options menu button
     Then I do not see profile page
     And I see correct 1:1 options menu
-     
+    When I do small swipe down
+    Then I see correct 1:1 options menu
+    And I do not see profile page
+    #When I press options menu button
+    #Then I see profile page
+    #And I do not see 1:1 options menu
+    #When I swipe left
+    #And I swipe right
+    #And I swipe up
+    #Then I see correct 1:1 options menu
+    #And I do not see profile page
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
@@ -198,8 +200,11 @@ Feature: People View
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    And I wait for 30 seconds
     When I swipe down contact list
+    And I see People picker page
+    And I press Clear button
+    And I wait for 30 seconds
+    And I swipe down contact list
     And I see People picker page
     And I swipe on random connect
     And I click on PYMK hide button
@@ -213,11 +218,13 @@ Feature: People View
   Scenario Outline: I can dismiss PYMK by swipe
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
-    Given Contact <Contact1> send message to user <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    And I wait for 30 seconds
     When I swipe down contact list
+    And I see People picker page
+    And I press Clear button
+    And I wait for 30 seconds
+    And I swipe down contact list
     And I see People picker page
     And I swipe on random connect
     And I hide random connect by swipe
@@ -226,3 +233,26 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @id1509 @staging
+  Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given <Contact1> is connected to <Contact2>
+    Given <Contact1> has group chat <OldGroupChatName> with <Name>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <OldGroupChatName>
+    And I tap conversation details button
+    And I tap on group chat contact <Contact2>
+    Then I see connect to unconnected user page with user <Contact2>
+    When I click on the unconnected user page connect or pending button
+    And I press Connect button
+    And I tap on group chat contact <Contact2>
+    Then I see connect to unconnected user page pending button
+    When I click on the unconnected user page connect or pending button
+    Then I see connect to unconnected user page pending button
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
