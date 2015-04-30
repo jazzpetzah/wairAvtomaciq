@@ -14,8 +14,10 @@ import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -100,6 +102,19 @@ public class ConversationPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathMessageEntryByText
 						.apply(message));
+		return DriverUtils.isElementDisplayed(driver, locator, 5);
+	}
+
+	public boolean isYoutubeVideoEmbedded(String url) throws Exception {
+		String pattern = "[\\w\\-\\_]{10,12}";
+		Pattern compiledPattern = Pattern.compile(pattern);
+		Matcher matcher = compiledPattern.matcher(url);
+		assert matcher.find() : "Could not find Youtube id in URL: " + url;
+		final String id = matcher.group();
+
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById
+						.apply(id));
 		return DriverUtils.isElementDisplayed(driver, locator, 5);
 	}
 

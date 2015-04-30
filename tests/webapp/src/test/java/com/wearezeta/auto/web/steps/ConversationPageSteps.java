@@ -75,6 +75,15 @@ public class ConversationPageSteps {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isMessageSent(randomMessage));
 	}
+	
+	/**
+	 * Then I see embedded youtube video of <Youtubelink2>
+	 */
+	@Then("^I see embedded youtube video of (.*)")
+	public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
+		Assert.assertTrue(PagesCollection.conversationPage
+				.isYoutubeVideoEmbedded(url));
+	}
 
 	/**
 	 * Click People button in 1:1 conversation
