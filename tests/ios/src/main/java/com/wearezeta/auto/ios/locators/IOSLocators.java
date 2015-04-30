@@ -254,7 +254,7 @@ public final class IOSLocators {
 	
 	public static final String xpathChangePasswordPageChangePasswordButton = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIAButton[1]";
 	
-	public static final String nameOptionsHelpButton = "SUPPORT";
+	public static final String nameOptionsHelpButton = "HELP";
 	
 	public static final String xpathSettingsHelpHeader = "//UIAApplication[@name='Safari']/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIALink[@name='Support']";
 	
