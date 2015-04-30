@@ -14,6 +14,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.web.pages.ActivationPage;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -200,6 +201,10 @@ public class RegistrationPageSteps {
 				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
 						.apply(userIndex));
 
+		if (PagesCollection.loginPage == null) {
+			PagesCollection.loginPage = new LoginPage(
+					activationPage.getDriver(), activationPage.getWait());
+		}
 		PagesCollection.loginPage.waitForLogin();
 	}
 
