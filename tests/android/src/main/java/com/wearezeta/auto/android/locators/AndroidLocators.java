@@ -810,6 +810,24 @@ public final class AndroidLocators {
 		public static final String xpathVerifyEmailBtn42 = "//android.widget.TextView[@text='Re-send']";
 
 	}
+	
+	public static final class UnknownUserDetailsPage {
+
+		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
+				+ "$UnknownUserFromGroupDetailsPage";
+
+		public static final String idOtherUsersName = LOCATORS_PACKAGE
+				+ ":id/taet__participants__header";
+		
+		public static final String idConnectButton = LOCATORS_PACKAGE
+				+ ":id/ttv__participants__left_label";
+		
+		public static final String idCommonUsersLabel = LOCATORS_PACKAGE
+				+ ":id/ttv__connect_request__common_users__label";
+		
+		
+		
+	}
 
 	// public static final String idInstructions = LOCATORS_PACKAGE +
 	// ":id/instructions";
