@@ -360,7 +360,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | AddUserSEChat |
 
-  @staging @id1527
+  @regression @id1527
   Scenario Outline: Verify you cannot start 1on1 conversation from a group chat if the other user is not in your contact list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
