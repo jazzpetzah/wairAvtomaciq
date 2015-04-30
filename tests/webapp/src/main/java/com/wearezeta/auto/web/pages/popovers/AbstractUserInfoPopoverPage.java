@@ -40,14 +40,6 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 								relativeXpath));
 	}
 
-	private WebElement getUserNameElement() {
-		return this.getSharedElement(PopoverLocators.Shared.xpathUserName);
-	}
-
-	public String getUserName() {
-		return getUserNameElement().getText();
-	}
-
 	public String getUserName() {
 		return username.getText();
 	}

@@ -52,8 +52,6 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 			return this.nonConnectedParticipantInfoPopoverPage;
 		} else if (this.pendingParticipantInfoPopoverPage.isCurrent()) {
 			return this.pendingParticipantInfoPopoverPage;
-		} else if (this.nonConnectedParticipantInfoPopoverPage.isCurrent()) {
-			return this.nonConnectedParticipantInfoPopoverPage;
 		} else if (this.blockedParticipantInfoPopoverPage.isCurrent()) {
 			return this.blockedParticipantInfoPopoverPage;
 		} else {

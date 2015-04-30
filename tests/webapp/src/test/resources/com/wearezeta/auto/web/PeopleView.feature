@@ -170,7 +170,8 @@ Feature: People View
       And I see Remove button on Group Participants popover
       And I see Unblock button on Group Participants popover
       And I see correct Unblock button tool tip on Group Participants popover
-#       And I see Mail on Group Participants popover # depends on QA-1011
+      And I see Mail on Group Participants popover
+      And Would open mail client when clicking mail on Group Participants popover
       When I click Unblock button on Group Participants popover
       Then I confirm Unblock from group chat on Group Participants popover
       Then I see Contact list with name <KnownContact>
