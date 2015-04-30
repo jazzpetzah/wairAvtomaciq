@@ -156,3 +156,24 @@ Feature: Search
     Examples: 
       | Email      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
+      
+  @id319 @regression
+  Scenario Outline: I can create group chat from Search
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact1>
+    And I tap on user name found on People picker page <Contact1>
+    And I add in search field user name to connect to <Contact2>
+    And I tap on user name found on People picker page <Contact2>
+    #And I press back button
+    And I tap on create conversation
+    Then I see group chat page with users <Contact1>,<Contact2>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName           |
+      | user1Email | user1Password | user1Name | user3Name | user2Name | PeoplePicker GroupChat2 |
