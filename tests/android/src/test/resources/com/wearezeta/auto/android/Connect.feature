@@ -471,14 +471,20 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Message          | Picture     |
       | user1Email | user1Password | user1Name | user2Name | Hello my friend! | testing.jpg |
 
-  @id2215 @staging
+  @id2215 @staging 
   Scenario Outline: I can connect to someone from PYMK by clicking +
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I swipe down contact list
-    And I see People picker page
+    Given I see sign in screen
+    Given I press Join button
+    Given I press Camera button twice
+    Given I See selected picture
+    Given I confirm selection
+    Given I enter name <Name>
+    Given I enter email <Email>
+    Given I enter password <Password>
+    Given I submit registration data
+    Given I see confirmation page
+    Given I verify registration address
+    When I see People picker page
     And I wait for PYMK for 30 secs
     And I press + button on a random Connect
   	And I press Clear button
@@ -486,17 +492,23 @@ Feature: Connect
     And I see contact list loaded with PeoplePicker Random Connect
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  |
+      | Email      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
       
   @id2215 @staging
   Scenario Outline: I can connect to someone from PYMK by tap and typing connect message
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    When I swipe down contact list
-    And I see People picker page
+    Given I see sign in screen
+    Given I press Join button
+    Given I press Camera button twice
+    Given I See selected picture
+    Given I confirm selection
+    Given I enter name <Name>
+    Given I enter email <Email>
+    Given I enter password <Password>
+    Given I submit registration data
+    Given I see confirmation page
+    Given I verify registration address
+    When I see People picker page
     And I wait for PYMK for 30 secs
     And I tap on a random contact from PYMK and set it name to <Contact1> 
     And I see connect to <Contact1> dialog
@@ -508,5 +520,5 @@ Feature: Connect
     Then I see contact list loaded with User name <Contact1>
     
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Message       |
+      | Email      | Password      | Name      | Contact1  | Message       |
       | user1Email | user1Password | user1Name | user2Name | Hellow friend |

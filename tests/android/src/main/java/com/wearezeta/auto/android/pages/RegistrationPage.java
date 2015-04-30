@@ -155,7 +155,7 @@ public class RegistrationPage extends AndroidPage {
 		return DriverUtils.isElementDisplayed(this.getDriver(), verifyEmailBtn);
 	}
 
-	public ContactListPage continueRegistration() throws Exception {
+	public PeoplePickerPage continueRegistration() throws Exception {
 		try {
 			this.getWait().until(ExpectedConditions.visibilityOf(laterBtn));
 		} catch (NoSuchElementException e) {
@@ -163,7 +163,7 @@ public class RegistrationPage extends AndroidPage {
 		} catch (TimeoutException e) {
 
 		}
-		return new ContactListPage(this.getDriver(), this.getWait());
+		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
 
 	public void pressBackButton() {
