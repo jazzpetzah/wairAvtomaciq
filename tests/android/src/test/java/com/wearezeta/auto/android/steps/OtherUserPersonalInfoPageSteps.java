@@ -17,7 +17,8 @@ public class OtherUserPersonalInfoPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Checks to see that the profile page of another user is visible after swiping up from dialog
+	 * Checks to see that the profile page of another user is visible after
+	 * swiping up from dialog
 	 * 
 	 * @step. ^I see (.*) user profile page$
 	 * 
@@ -70,14 +71,12 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I click Remove$")
 	public void WhenIClickRemove() throws Throwable {
-		//TODO: check for native button click
-		PagesCollection.otherUserPersonalInfoPage
-				.pressOptionsMenuButton();
+		// TODO: check for native button click
+		PagesCollection.otherUserPersonalInfoPage.pressOptionsMenuButton();
 	}
 
 	/**
-	 * Checks to see that the remove user warning message appears
-	 * -unclear
+	 * Checks to see that the remove user warning message appears -unclear
 	 * 
 	 * @step. ^I see warning message$
 	 * 
@@ -114,7 +113,8 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Presses the "add people to conversation" button from another user's profile
+	 * Presses the "add people to conversation" button from another user's
+	 * profile
 	 * 
 	 * @step. ^I press add contact button$
 	 * 
@@ -138,8 +138,8 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Checks to see that we can see a given user's profile
-	 * -duplicate of WhenISeeOherUserProfilePage(String)
+	 * Checks to see that we can see a given user's profile -duplicate of
+	 * WhenISeeOherUserProfilePage(String)
 	 * 
 	 * @step. ^I see (.*) user name and email$
 	 * 
@@ -158,7 +158,8 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Checks to see that a user has been blocked by looking at the "is blocked" button on their profile page
+	 * Checks to see that a user has been blocked by looking at the "is blocked"
+	 * button on their profile page
 	 * 
 	 * @step. ^User info should be shown with Block button$
 	 * 
@@ -197,13 +198,12 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	// ------ Group
-	//Separate steps file?
+	// Separate steps file?
 
 	public static final String GROUP_CHAT_NAME = "TempTestChat";
 
 	/**
-	 * Taps on a contact from the group details page 
-	 * (seems out of place)
+	 * Taps on a contact from the group details page (seems out of place)
 	 * 
 	 * @step. ^I tap on group chat contact (.*)$
 	 * 
@@ -222,6 +222,11 @@ public class OtherUserPersonalInfoPageSteps {
 		if (PagesCollection.androidPage instanceof OtherUserPersonalInfoPage) {
 			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
 		}
+
+		// This needs to be moved eventually
+		PagesCollection.unknownUserFromGroupDetailsPage = new UnknownUserDetailsPage(
+				PagesCollection.androidPage.getDriver(),
+				PagesCollection.androidPage.getWait());
 	}
 
 	/**
@@ -238,8 +243,8 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Presses the ellipses ("...") on the right hand side of the other user's profile page
-	 * -unclear
+	 * Presses the ellipses ("...") on the right hand side of the other user's
+	 * profile page -unclear
 	 * 
 	 * @step. ^I press Right conversation button$
 	 * 
@@ -247,10 +252,9 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I press options menu button$")
 	public void WhenIPressOptionsMenuButton() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage
-				.pressOptionsMenuButton();
+		PagesCollection.otherUserPersonalInfoPage.pressOptionsMenuButton();
 	}
-	
+
 	/**
 	 * Presses the leave conversation button in the conversation settings page
 	 * -outofplace
@@ -264,10 +268,9 @@ public class OtherUserPersonalInfoPageSteps {
 		PagesCollection.contactListPage = PagesCollection.otherUserPersonalInfoPage
 				.pressLeaveButton();
 	}
-	
+
 	/**
 	 * Presses the "silence conversation" button in the conversation settings page
-	 * -unused
 	 * 
 	 * @step. ^I press Silence conversation button$
 	 * 
@@ -277,10 +280,22 @@ public class OtherUserPersonalInfoPageSteps {
 	public void WhenIPressSilenceConversationButton() throws Throwable {
 		PagesCollection.otherUserPersonalInfoPage.pressSilenceButton();
 	}
+	
+	/**
+	 * Presses the "notify conversation" button in the conversation settings page
+	 * (Note, this performs the same action as the press silence button)
+	 * 
+	 * @step. ^I press Notify conversation button$
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I press Notify conversation button$")
+	public void WhenIPressNotifyConversationButton() throws Throwable {
+		WhenIPressSilenceConversationButton();
+	}
 
 	/**
-	 * Confirms the current user's decision to leave a conversation
-	 * -outofplace
+	 * Confirms the current user's decision to leave a conversation -outofplace
 	 * 
 	 * @step. ^I confirm leaving$
 	 * 
@@ -307,8 +322,7 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Checks to see that the conversation name is what is expected
-	 * -outofplace
+	 * Checks to see that the conversation name is what is expected -outofplace
 	 * 
 	 * @step. ^I see that the conversation name is (.*)$
 	 * 
@@ -323,8 +337,7 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Checks to see that correct avatars for 2 given users appear
-	 * -outofplace
+	 * Checks to see that correct avatars for 2 given users appear -outofplace
 	 * 
 	 * @step. ^I see the correct participant (.*) and (.*) avatars$
 	 * 
@@ -350,8 +363,8 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Checks to see that the correct number of users appears in the group name title
-	 * -outofplace
+	 * Checks to see that the correct number of users appears in the group name
+	 * title -outofplace
 	 * 
 	 * @step. ^I see the correct number of participants in the title (.*)$
 	 * 
@@ -452,7 +465,7 @@ public class OtherUserPersonalInfoPageSteps {
 		Assert.assertFalse(PagesCollection.otherUserPersonalInfoPage
 				.isOneToOneOptionsMenuUIContentVisible());
 	}
-	
+
 	/**
 	 * Check that any UI content of other user profile is not showed
 	 * 
@@ -465,7 +478,7 @@ public class OtherUserPersonalInfoPageSteps {
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
 				.isOneToOneUserProfileFullyVisible());
 	}
-	
+
 	/**
 	 * Perform small swipe down on the page
 	 * 
@@ -476,5 +489,56 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I do small swipe down")
 	public void IDoSmallSwipeDown() throws Exception {
 		PagesCollection.androidPage.swipeByCoordinates(300, 50, 50, 50, 53);
+	}
+
+	/**
+	 * Checks to see that you are on the page to connect with a user who you
+	 * have not yet connected with, but are in a group conversation with
+	 * 
+	 * @step. ^I see connect to unconnected user page with user (.*)$
+	 * 
+	 * @param username
+	 *            the user who your are not connected to
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see connect to unconnected user page with user (.*)$")
+	public void ISeeConnectToUnconnectedUserPageWithUser(String username)
+			throws Exception {
+		username = usrMgr.findUserByNameOrNameAlias(username).getName();
+
+		Assert.assertTrue(PagesCollection.unknownUserFromGroupDetailsPage
+				.isConnectButtonVisible());
+		Assert.assertEquals(username,
+				PagesCollection.unknownUserFromGroupDetailsPage
+						.getOtherUsersName());
+	}
+
+	/**
+	 * Clicks on the connect button when viewing the user details of an
+	 * unconnected user from a group chat
+	 * 
+	 * @step. ^I click on the unconnected user page connect or pending button$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I click on the unconnected user page connect or pending button$")
+	public void IClickOnUnconnectedUserConnectButton() throws Exception {
+		PagesCollection.connectToPage = PagesCollection.unknownUserFromGroupDetailsPage
+				.tapConnectAndPendingButton();
+	}
+
+	/**
+	 * Checks to see that the previous "connect" button is now a pending
+	 * TextView
+	 * 
+	 * @step. ^I see connect to unconnected user page pending button$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see connect to unconnected user page pending button$")
+	public void ISeeNoEditTexts() throws Exception {
+		Assert.assertTrue(PagesCollection.unknownUserFromGroupDetailsPage
+				.isPendingButtonVisible());
 	}
 }
