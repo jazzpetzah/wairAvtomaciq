@@ -34,14 +34,14 @@ public class StartedCallPage extends CallPage {
 	public boolean isOngoingCallVisible(String subscriberName) throws Exception {
 		String xpath = String.format(
 				OSXLocators.CallPage.xpathFormatSubscriberName, subscriberName);
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 10);
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 30);
 	}
 
 	public boolean isPendingCallVisible(String subscriberName) throws Exception {
 		String xpath = String.format(
 				OSXLocators.CallPage.xpathFormatCallingUserMessage,
 				subscriberName);
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 10);
+		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 30);
 	}
 
 	public void cancelCallButton() {
