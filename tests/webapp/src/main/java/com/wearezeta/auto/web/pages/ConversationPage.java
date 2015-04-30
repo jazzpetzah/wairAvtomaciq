@@ -17,6 +17,8 @@ import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -29,8 +31,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ConversationPage extends WebPage {
-
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 
@@ -70,7 +70,8 @@ public class ConversationPage extends WebPage {
 		conversationInput.sendKeys(Keys.ENTER);
 	}
 
-	public boolean isActionMessageSent(final String message) throws Exception {
+	public boolean isActionMessageSent(final Set<String> parts)
+			throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathActionMessageEntries);
 		assert DriverUtils.waitUntilElementAppears(this.getDriver(), locator);
@@ -80,7 +81,21 @@ public class ConversationPage extends WebPage {
 		// Get the most recent action message only
 		final String actionMessageInUI = actionMessages.get(
 				actionMessages.size() - 1).getText();
-		return actionMessageInUI.toUpperCase().contains(message.toUpperCase());
+		for (String part : parts) {
+			if (!actionMessageInUI.toUpperCase().contains(part.toUpperCase())) {
+				log.error(String
+						.format("'%s' substring has not been found in '%s' action message",
+								part, actionMessageInUI));
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public boolean isActionMessageSent(String message) throws Exception {
+		Set<String> parts = new HashSet<String>();
+		parts.add(message);
+		return isActionMessageSent(parts);
 	}
 
 	public boolean isMessageSent(String message) throws Exception {

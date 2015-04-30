@@ -9,7 +9,7 @@ import javax.mail.MessagingException;
 
 public class ActivationMessage extends WireMessage {
 
-	public ActivationMessage(Message msg) throws Exception {
+	public ActivationMessage(String msg) throws Exception {
 		super(msg);
 	}
 

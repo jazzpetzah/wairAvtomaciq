@@ -11,30 +11,31 @@ import org.junit.Assert;
 
 public class SingleUserPopoverPageSteps {
 
+	private static final String MAILTO = "mailto:";
+	private static final String CAPTION_PENDING = "Pending";
+	private static final String CAPTION_OPEN_CONVERSATION = "Open Conversation";
+	private static final String TOOLTIP_PENDING = "Pending";
+	private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Verify that Single User Profile popover is visible
+	 * Verify that Single User Profile popover is visible or not
 	 *
-	 * @step. ^I see Single User Profile popover$
+	 * @step. ^I( do not)? see Single User Profile popover$
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part is not present
+	 * 
 	 * @throws Exception
 	 *
 	 */
-	@When("^I see Single User Profile popover$")
-	public void ISeeSingleUserPopup() throws Exception {
-		PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
-	}
-
-	/**
-	 * Verifies whether Single User Profile popover is not visible anymore
-	 *
-	 * @step. ^I do not see Single User Profile popover$
-	 *
-	 * @throws Exception
-	 */
-	@Then("^I do not see Single User Profile popover$")
-	public void IDontSeeSingleUserPopup() throws Exception {
-		PagesCollection.popoverPage.waitUntilNotVisibleOrThrowException();
+	@When("^I( do not)? see Single User Profile popover$")
+	public void ISeeSingleUserPopup(String shouldNotBeVisible) throws Exception {
+		if (shouldNotBeVisible == null) {
+			PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
+		} else {
+			PagesCollection.popoverPage.waitUntilNotVisibleOrThrowException();
+		}
 	}
 
 	/**
@@ -47,7 +48,7 @@ public class SingleUserPopoverPageSteps {
 	public void IChooseToCreateConversationFromSingleUserPopover()
 			throws Exception {
 		((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.clickCreateConversation();
+				.clickCreateGroupConversation();
 	}
 
 	/**
@@ -97,13 +98,14 @@ public class SingleUserPopoverPageSteps {
 	/**
 	 * Compares if name on Single User Profile popover is same as expected
 	 *
+	 * @throws java.lang.Exception
 	 * @step. ^I see username (.*) on Single User Profile popover$
 	 *
 	 * @param name
 	 *            user name string
 	 */
 	@When("^I see username (.*) on Single User Profile popover$")
-	public void IseeUserNameOnUserProfilePage(String name) {
+	public void IseeUserNameOnUserProfilePage(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertEquals(name,
 				((SingleUserPopoverContainer) PagesCollection.popoverPage)
@@ -113,11 +115,12 @@ public class SingleUserPopoverPageSteps {
 	/**
 	 * Verifies whether the users avatar exists on the popover
 	 *
+	 * @throws java.lang.Exception
 	 * @step. ^I see the users avatar on Single User Profile popover$
 	 *
 	 */
 	@When("^I see an avatar on Single User Profile popover$")
-	public void IseeAvatarOnUserProfilePage() {
+	public void IseeAvatarOnUserProfilePage() throws Exception {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
 				.isAvatarVisible());
 	}
@@ -171,19 +174,6 @@ public class SingleUserPopoverPageSteps {
 	}
 
 	/**
-	 * Verifies whether Remove button is visible on Single Participant popover
-	 *
-	 * @step. ^I see Remove button on Single Participant popover$
-	 *
-	 * @throws Exception
-	 */
-	@When("^I see Remove button on Single Participant popover$")
-	public void ISeeRemoveUserFromGroupChat() throws Exception {
-		((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.isRemoveButtonVisible();
-	}
-
-	/**
 	 * Verifies Mail is visible on Single Participant popover
 	 *
 	 * @step. ^I see Mail on Single Participant popover$
@@ -218,15 +208,15 @@ public class SingleUserPopoverPageSteps {
 	 */
 	@Then("^I see Pending button on Single Participant popover$")
 	public void ISeePendingButton() throws Exception {
-		Assert.assertTrue(
-				"Pending button is not visible on Single Participant popover",
+		final String pendingButtonMissingMessage = "Pending button is not visible on Single Participant popover";
+		Assert.assertTrue(pendingButtonMissingMessage,
 				((SingleUserPopoverContainer) PagesCollection.popoverPage)
 						.isPendingButtonVisible());
 		Assert.assertTrue(
-				"Pending button is not visible on Single Participant popover",
+				pendingButtonMissingMessage,
 				((SingleUserPopoverContainer) PagesCollection.popoverPage)
 						.getPendingButtonCaption().trim()
-						.equalsIgnoreCase("Pending"));
+						.equalsIgnoreCase(CAPTION_PENDING));
 	}
 
 	/**
@@ -243,6 +233,27 @@ public class SingleUserPopoverPageSteps {
 	}
 
 	/**
+	 * Verifies whether open conversation button is visible on Single
+	 * Participant popover
+	 *
+	 * @step. ^I see open conversation button on Single Participant popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see open conversation button on Single Participant popover$")
+	public void ISeeOpenConversationButton() throws Exception {
+		final String openConvMissingMessage = "Open conversation button is not visible on Single Participant popover";
+		Assert.assertTrue(openConvMissingMessage,
+				((SingleUserPopoverContainer) PagesCollection.popoverPage)
+						.isOpenConvButtonVisible());
+		Assert.assertTrue(
+				openConvMissingMessage,
+				((SingleUserPopoverContainer) PagesCollection.popoverPage)
+						.getOpenConvButtonCaption().trim()
+						.equalsIgnoreCase(CAPTION_OPEN_CONVERSATION));
+	}
+
+	/**
 	 * Verifies Pending text box is visible on Single Participant popover
 	 *
 	 * @step. ^I see Pending text box on Single Participant popover$
@@ -256,38 +267,56 @@ public class SingleUserPopoverPageSteps {
 	}
 
 	/**
-	 * Verifies whether back button tool tip is correct or not.
+	 * Creates conversation with one user from on Single Participant popover
 	 *
-	 * @step. ^I see correct back button tool tip$
+	 * @step. ^I click open conversation from Single Participant popover$
+	 * @throws Exception
+	 */
+	@When("^I click open conversation from Single Participant popover$")
+	public void IClickOpenConversation() throws Exception {
+		((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.clickOpenConvButton();
+	}
+
+	/**
+	 * Verifies whether open conversation button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct open conversation button tool tip on Single
+	 *        Participant popover$
 	 *
 	 */
-	@Then("^I see correct back button tool tip$")
-	public void ThenISeeCorrectBackButtonToolTip() {
+	@Then("^I see correct open conversation button tool tip on Single Participant popover$")
+	public void ThenISeeCorrectOpenConvButtonToolTip() {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.isBackButtonToolTipCorrect());
+				.getOpenConvButtonToolTip().equals(TOOLTIP_OPEN_CONVERSATION));
+	}
+
+	/**
+	 * @throws java.lang.Exception
+	 *             * Verifies whether click on mail would open mail client or
+	 *             not.
+	 *
+	 * @step. ^Click on mail on Single Participant popover would open mail
+	 *        client$
+	 *
+	 */
+	@Then("^Would open mail client when clicking mail on Single Participant popover$")
+	public void ThenISeeThatClickOnMailWouldOpenMailClient() throws Exception {
+		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.getMailHref().contains(MAILTO));
+
 	}
 
 	/**
 	 * Verifies whether pending button tool tip is correct or not.
 	 *
-	 * @step. ^I see correct pending button tool tip$
+	 * @step. ^I see correct pending button tool tip on Single Participant
+	 *        popover$
 	 *
 	 */
-	@Then("^I see correct pending button tool tip$")
+	@Then("^I see correct pending button tool tip on Single Participant popover$")
 	public void ThenISeeCorrectPendingButtonToolTip() {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.isPendingButtonToolTipCorrect());
-	}
-
-	/**
-	 * Verifies whether remove from group button tool tip is correct or not.
-	 *
-	 * @step. ^I see correct remove from group button tool tip$
-	 *
-	 */
-	@Then("^I see correct remove from group button tool tip$")
-	public void ThenISeeCorrectRemoveFromGroupChatButtonToolTip() {
-		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.isRemoveFromGroupChatButtonToolTipCorrect());
+				.getPendingButtonToolTip().equals(TOOLTIP_PENDING));
 	}
 }

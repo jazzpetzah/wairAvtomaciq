@@ -12,10 +12,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 class ParticipantsListPopoverPage extends AbstractPopoverPage {
 
-	private static final String TOOLTIP_ADD_PEOPLE_TO_CONVERSATION = "Add people to conversation";
-	private static final String TOOLTIP_CHANGE_CONVERSATION_NAME = "Change conversation name";
-	private static final String TOOLTIP_LEAVE_GROUP_CHAT = "Leave conversation";
-
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathConversationTitle)
 	private WebElement conversationTitle;
 
@@ -41,8 +37,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		leaveButton.click();
 	}
 
-	public SingleUserPopoverContainer clickOnParticipant(String name)
-			throws Exception {
+	public void clickOnParticipant(String name) throws Exception {
 		final By locator = By
 				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
 						.apply(name));
@@ -50,7 +45,6 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		WebElement participant = driver.findElement(locator);
 		assert DriverUtils.waitUntilElementClickable(driver, participant);
 		participant.click();
-		return new SingleUserPopoverContainer(this.getDriver(), this.getWait());
 	}
 
 	@Override
@@ -77,9 +71,8 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		getAddPeopleElement().click();
 	}
 
-	public boolean isAddPeopleButtonToolTipCorrect() throws Exception {
-		return TOOLTIP_ADD_PEOPLE_TO_CONVERSATION.equals(getAddPeopleElement()
-				.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
+	public String getAddPeopleButtonToolTip() throws Exception {
+		return getAddPeopleElement().getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 
 	public boolean isParticipantVisible(String name) throws Exception {
@@ -93,13 +86,11 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		return conversationTitle.getText();
 	}
 
-	public boolean isRenameConversationToolTipCorrect() {
-		return TOOLTIP_CHANGE_CONVERSATION_NAME.equals(conversationTitle
-				.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
+	public String getRenameConversationToolTip() {
+		return conversationTitle.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 
-	public boolean isLeaveGroupChatButtonToolTipCorrect() {
-		return TOOLTIP_LEAVE_GROUP_CHAT.equals(leaveButton
-				.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
+	public String getLeaveGroupChatButtonToolTip() {
+		return leaveButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 }

@@ -55,15 +55,11 @@ public class LoginPageSteps {
 		log.debug("Starting to Sign in using login " + login + " and password "
 				+ password);
 
-		InvitationCodePageSteps invitationPageSteps = new InvitationCodePageSteps();
-		invitationPageSteps.ISeeInvitationPage();
-		invitationPageSteps.IEnterInvitationCode();
-
 		// FIXME: Try to reenter login data if signing in fails to
 		// workaround Amazon page load issues
 		int ntry = 0;
 		while (ntry < MAX_LOGIN_RETRIES) {
-			PagesCollection.registrationPage.switchToLoginPage();
+			PagesCollection.loginPage = PagesCollection.registrationPage.switchToLoginPage();
 			this.IEnterEmail(login);
 			this.IEnterPassword(password);
 			try {
@@ -148,19 +144,5 @@ public class LoginPageSteps {
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
 		Assert.assertTrue(PagesCollection.loginPage.isVisible());
-	}
-
-	/**
-	 * Clicks the corresponding switcher button to make the registration page
-	 * active
-	 * 
-	 * @step. ^I switch to registration page$
-	 * 
-	 * @throws Exception
-	 */
-	@Given("^I switch to [Rr]egistration page$")
-	public void ISwitchToRegistrationPage() throws Exception {
-		PagesCollection.registrationPage = PagesCollection.loginPage
-				.switchToRegistrationPage();
 	}
 }

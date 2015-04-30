@@ -12,31 +12,38 @@ import org.junit.Assert;
 
 public class GroupPopoverPageSteps {
 
+	private static final String MAILTO = "mailto:";
+	private static final String CAPTION_OPEN__CONVERSATION = "Open Conversation";
+	private static final String CAPTION_PENDING = "Pending";
+	private static final String TOOLTIP_REMOVE_FROM_CONVERSATION = "Remove from conversation";
+	private static final String TOOLTIP_LEAVE_CONVERSATION = "Leave conversation";
+	private static final String TOOLTIP_ADD_PEOPLE_TO_CONVERSATION = "Add people to conversation";
+	private static final String TOOLTIP_BACK = "Back";
+	private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
+	private static final String TOOLTIP_CHANGE_CONVERSATION_NAME = "Change conversation name";
+	private static final String TOOLTIP_PENDING = "Pending";
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Verify that Group Participants popover is shown
+	 * Verify that Group Participants popover is shown or not
 	 *
-	 * @step. ^I see Group Participants popover$
+	 * @step. ^I( do not)? see Group Participants popover$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist
+	 * 
 	 * @throws Exception
 	 *
 	 */
-	@When("^I see Group Participants popover$")
-	public void ISeeUserProfilePopupPage() throws Exception {
-		PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
-	}
-
-	/**
-	 * Verify that Group Participants popover is not visible
-	 *
-	 * @step. ^I do not see Group Participants popover$
-	 * @throws Exception
-	 *
-	 */
-	@Then("^I do not see Group Participants popover$")
-	public void IDontSeeUserProfilePopupPage() throws Exception {
-		Assert.assertFalse("Popover is still visible",
-				PagesCollection.popoverPage.isVisible());
+	@When("^I( do not)? see Group Participants popover$")
+	public void ISeeUserProfilePopupPage(String shouldNotBeVisible)
+			throws Exception {
+		if (shouldNotBeVisible == null) {
+			PagesCollection.popoverPage.waitUntilVisibleOrThrowException();
+		} else {
+			PagesCollection.popoverPage.waitUntilNotVisibleOrThrowException();
+		}
 	}
 
 	/**
@@ -66,6 +73,31 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Verifies whether back button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct back button tool tip on Group Participants popover$
+	 *
+	 */
+	@Then("^I see correct back button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectBackButtonToolTip() {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getBackButtonToolTip().equals(TOOLTIP_BACK));
+	}
+
+	/**
+	 * Verifies whether pending button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct pending button tool tip on Group Participants
+	 *        popover$
+	 *
+	 */
+	@Then("^I see correct pending button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectPendingButtonToolTip() {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getPendingButtonToolTip().equals(TOOLTIP_PENDING));
+	}
+
+	/**
 	 * Click on a participant on Group Participants popover
 	 *
 	 * @step. ^I click on participant (.*) on Group Participants popover$
@@ -77,7 +109,7 @@ public class GroupPopoverPageSteps {
 	@When("^I click on participant (.*) on Group Participants popover$")
 	public void IClickOnParticipant(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.popoverPage = ((GroupPopoverContainer) PagesCollection.popoverPage)
+		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickOnParticipant(name);
 	}
 
@@ -90,15 +122,15 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I see Pending button on Group Participants popover$")
 	public void ISeePendingButton() throws Exception {
-		Assert.assertTrue(
-				"Pending button is not visible on Group Participants popover",
+		final String pendingButtonMissingMessage = "Pending button is not visible on Group Participants popover";
+		Assert.assertTrue(pendingButtonMissingMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.isPendingButtonVisible());
 		Assert.assertTrue(
-				"Pending button is not visible on Group Participants popover",
+				pendingButtonMissingMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.getPendingButtonCaption().trim()
-						.equalsIgnoreCase("Pending"));
+						.equalsIgnoreCase(CAPTION_PENDING));
 	}
 
 	/**
@@ -156,7 +188,7 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Verifies that contact is displayed on Group Participants popover
 	 *
-	 * @step. ^I see (.*) displayed on Group Participants popovere$
+	 * @step. ^I see (.*) displayed on Group Participants popover$
 	 *
 	 * @param contactsAliases
 	 * @throws Exception
@@ -173,7 +205,7 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
-	 * Set new title for converstaion on Group Participants popover
+	 * Set new title for conversation on Group Participants popover
 	 *
 	 * @step. I change group conversation title to (.*) on Group Participants
 	 *        popover
@@ -266,10 +298,22 @@ public class GroupPopoverPageSteps {
 	 * @step. ^I choose to create conversation from Group Participants popover$
 	 * @throws Exception
 	 */
-	@When("^I choose to create conversation from Group Participants popover$")
-	public void IChooseToCreateConversation() throws Exception {
+	@When("^I choose to create group conversation from Group Participants popover$")
+	public void IChooseToCreateGroupConversation() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
-				.clickCreateConversation();
+				.clickCreateGroupConversation();
+	}
+
+	/**
+	 * Creates conversation with one user from on Group Participants popover
+	 *
+	 * @step. ^I click open conversation from Group Participants popover$
+	 * @throws Exception
+	 */
+	@When("^I click open conversation from Group Participants popover$")
+	public void IClickOpenConversation() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickOpenConvButton();
 	}
 
 	/**
@@ -295,7 +339,8 @@ public class GroupPopoverPageSteps {
 	@Then("^I see correct add people button tool tip$")
 	public void ThenISeeCorrectAddPeopleButtonToolTip() throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.isAddPeopleButtonToolTipCorrect());
+				.getAddPeopleButtonToolTip().equals(
+						TOOLTIP_ADD_PEOPLE_TO_CONVERSATION));
 	}
 
 	/**
@@ -309,7 +354,8 @@ public class GroupPopoverPageSteps {
 	public void ThenISeeCorrectLeaveConversationButtonToolTip()
 			throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.isLeaveGroupChatButtonToolTipCorrect());
+				.getLeaveGroupChatButtonToolTip().equals(
+						TOOLTIP_LEAVE_CONVERSATION));
 	}
 
 	/**
@@ -323,6 +369,143 @@ public class GroupPopoverPageSteps {
 	public void ThenISeeCorrectRenameConversationButtonToolTip()
 			throws Exception {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.isRenameConversationToolTipCorrect());
+				.getRenameConversationToolTip().equals(
+						TOOLTIP_CHANGE_CONVERSATION_NAME));
+	}
+
+	/**
+	 * Verifies whether remove from group button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct remove from group button tool tip on Group
+	 *        Participants popover$
+	 *
+	 */
+	@Then("^I see correct remove from group button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectRemoveFromGroupChatButtonToolTip() {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getRemoveFromGroupChatButtonToolTip().equals(
+						TOOLTIP_REMOVE_FROM_CONVERSATION));
+	}
+
+	/**
+	 * Compares if name on Single User Profile popover on Group Participants
+	 * popover is same as expected
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see username (.*) on Single User Profile popover on Group
+	 *        Participants popover$
+	 *
+	 * @param name
+	 *            user name string
+	 */
+	@When("^I see username (.*) on Group Participants popover$")
+	public void IseeUserNameOnUserProfilePage(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		Assert.assertEquals(name,
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getUserName());
+	}
+
+	/**
+	 * Verifies whether the users avatar exists on the popover
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see the users avatar on Group Participants User Profile
+	 *        popover$
+	 *
+	 */
+	@When("^I see an avatar on Group Participants popover")
+	public void IseeAvatarOnUserProfilePage() throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.isAvatarVisible());
+	}
+
+	/**
+	 * Verifies Mail is visible on Group Participants popover
+	 *
+	 * @step. ^I see Mail on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see Mail on Group Participants popover$")
+	public void ISeeMailOfUser() throws Exception {
+		Assert.assertFalse(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getUserMail().isEmpty());
+	}
+
+	/**
+	 * Verifies Mail is not visible on Group Participants User Profile popover
+	 *
+	 * @step. ^I see Mail on Group Participants User Profile popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I do not see Mail on Group Participants popover$")
+	public void IDoNotSeeMailOfUser() throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getUserMail().isEmpty());
+	}
+
+	/**
+	 * Verifies whether click on mail would open mail client or not.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^Would open mail client when clicking mail on Group Participants
+	 *        popover$
+	 *
+	 */
+	@Then("^Would open mail client when clicking mail on Group Participants popover$")
+	public void ThenISeeThatClickOnMailWouldOpenMailClient() throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getMailHref().contains(MAILTO));
+
+	}
+
+	/**
+	 * Verifies Pending text box is visible on Group Participant popover
+	 *
+	 * @step. ^I see Pending text box on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see Pending text box on Group Participants popover$")
+	public void ISeePendingTextBox() throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.isPendingTextBoxVisible());
+	}
+
+	/**
+	 * Verifies whether open conversation button tool tip is correct or not.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I see correct leave conversation button tool tip on Group
+	 *        Participants popover$
+	 *
+	 */
+	@Then("^I see correct open conversation button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectOpenConversationButtonToolTip() throws Exception {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getOpenConvButtonToolTip().equals(TOOLTIP_OPEN_CONVERSATION));
+	}
+
+	/**
+	 * Verifies whether open conversation button is visible on Group
+	 * Participants popover
+	 *
+	 * @step. ^I see open conversation button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see open conversation button on Group Participants popover$")
+	public void ISeeOpenConversationButton() throws Exception {
+		final String openConvButtonMissingMessage = "Open conversation button is not visible on Group Participants popover";
+		Assert.assertTrue(openConvButtonMissingMessage,
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.isOpenConvButtonVisible());
+		Assert.assertTrue(
+				openConvButtonMissingMessage,
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getOpenConvButtonCaption().trim()
+						.equalsIgnoreCase(CAPTION_OPEN__CONVERSATION));
 	}
 }

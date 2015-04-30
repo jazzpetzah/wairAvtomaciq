@@ -16,8 +16,6 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
-import javax.mail.Message;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -26,8 +24,9 @@ import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.email.ActivationMessage;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.UserState;
@@ -60,7 +59,7 @@ public final class BackendAPIWrappers {
 	 * Creates a new user by sending the corresponding request to the backend
 	 * 
 	 * @param user
-	 *            ClientUser instance with initial iser parameters
+	 *            ClientUser instance with initial user parameters
 	 *            (name/email/password)
 	 * @param retryNumber
 	 *            set this to 1 if it is the first time you try to create this
@@ -72,8 +71,9 @@ public final class BackendAPIWrappers {
 			throws Exception {
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", user.getEmail());
-		Future<Message> activationMessage;
+		expectedHeaders
+				.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
+		Future<String> activationMessage;
 		if (retryNumber == 1) {
 			activationMessage = mbox.getMessage(expectedHeaders,
 					BACKEND_ACTIVATION_TIMEOUT);
@@ -92,7 +92,7 @@ public final class BackendAPIWrappers {
 		return user;
 	}
 
-	public static void activateRegisteredUser(Future<Message> activationMessage)
+	public static void activateRegisteredUser(Future<String> activationMessage)
 			throws Exception {
 		final ActivationMessage registrationInfo = new ActivationMessage(
 				activationMessage.get());
@@ -106,7 +106,7 @@ public final class BackendAPIWrappers {
 				registrationInfo.getLastUserEmail()));
 	}
 
-	public static String getUserActivationLink(Future<Message> activationMessage)
+	public static String getUserActivationLink(Future<String> activationMessage)
 			throws Exception {
 		ActivationMessage registrationInfo = new ActivationMessage(
 				activationMessage.get());
@@ -114,7 +114,7 @@ public final class BackendAPIWrappers {
 	}
 
 	public static String getPasswordResetLink(
-			Future<Message> passwordResetMessage) throws Exception {
+			Future<String> passwordResetMessage) throws Exception {
 		PasswordResetMessage resetPassword = new PasswordResetMessage(
 				passwordResetMessage.get());
 		return resetPassword.extractPasswordResetLink();

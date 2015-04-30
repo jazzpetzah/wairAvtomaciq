@@ -22,10 +22,10 @@ public class CallingPageSteps {
 	 */
 	@When("I click the ignore call button")
 	public void IClickIgnoreCallButton() throws Exception {
-		CallingOverlayPage page = new CallingOverlayPage(
+		PagesCollection.callingOverlayPage = new CallingOverlayPage(
 				PagesCollection.loginPage.getDriver(),
 				PagesCollection.loginPage.getWait());
-		page.muteConversation();
+		PagesCollection.callingOverlayPage.muteConversation();
 	}
 
 	/**
@@ -107,6 +107,22 @@ public class CallingPageSteps {
 		String callersName = PagesCollection.callingLockscreenPage
 				.getCallersName();
 		Assert.assertEquals(contact, callersName);
+	}
+
+	/**
+	 * Answers the call from the the calling overlay page
+	 * 
+	 * @step. ^I answer the call from the overlay bar$
+	 * 
+	 * @throws Exception
+	 */
+	@When("I answer the call from the overlay bar$")
+	public void IAnswerCallFromTheOverlayBar() throws Exception {
+		PagesCollection.callingOverlayPage = new CallingOverlayPage(
+				PagesCollection.loginPage.getDriver(),
+				PagesCollection.loginPage.getWait());
+		PagesCollection.callingOverlayPage.acceptCall();
+
 	}
 
 	/**

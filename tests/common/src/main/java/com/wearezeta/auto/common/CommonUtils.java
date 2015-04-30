@@ -23,6 +23,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CommonUtils {
 	public static final String OS_NAME_WINDOWS = "Windows";
+	
+	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
 
 	private static final String USER_IMAGE = "userpicture_landscape.jpg";
 	private static final String RESULT_USER_IMAGE = "userpicture_mobile_check.jpg";
@@ -32,7 +34,7 @@ public class CommonUtils {
 	private static final String IOS_HOT_PING_IMAGE = "ios_hot_ping_image.png";
 	private static final String CALLING_MUTE_BUTTON_IMAGE = "mutebtn_pressed.png";
 	private static final String CALLING_SPEAKER_BUTTON_IMAGE = "speakerbtn_pressed.png";
-	private static final String IOS_AVATAR_CLOCK_IMAGE = "searchedAvatarWithClock.png";
+	private static final String IOS_AVATAR_CLOCK_IMAGE = "new_avatarclock.png";
 	private static final String MEDIABAR_PLAY_IMAGE = "android_mediabar_play_image.png";
 	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image.png";
 	private static final String MEDIA_PLAY_IMAGE = "android_media_play_image.png";
@@ -483,5 +485,15 @@ public class CommonUtils {
 		md.update(item.getBytes("UTF-8"));
 		final byte[] digest = md.digest();
 		return Base64.encodeBase64String(digest);
+	}
+	
+	public static String getDefaultEmailListenerServiceHostFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "defaultEmailListenerServiceHost");
+	}
+	
+	public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");
 	}
 }

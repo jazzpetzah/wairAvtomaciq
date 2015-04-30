@@ -15,8 +15,8 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1617
-  Scenario Outline: Verify you can see image on the second end in a group conversation
+  @smoke @id1617 
+  Scenario Outline: Verify you can see image on the second end in a group conversation 
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>

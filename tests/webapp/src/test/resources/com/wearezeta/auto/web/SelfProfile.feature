@@ -41,7 +41,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | ColorName    |
       | user1Email | user1Password | user1Name | BrightOrange |
 
-  @staging @id1755
+  @regression @id1755
   Scenario Outline: Verify you can edit your profile picture by dragging a new photo
     Given My browser supports synthetic drag and drop
     Given There is 1 user where <Name> is me

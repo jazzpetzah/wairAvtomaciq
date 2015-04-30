@@ -6,9 +6,6 @@ Feature: Localytics
   @localytics @id2155
   Scenario Outline: Verify 'regFailed' stats
     Given I take snapshot of <AttrName> attribute count
-    Given I see invitation page
-    Given I enter invitation code
-    Given I switch to Registration page
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password <Password> on Registration page 
@@ -66,6 +63,31 @@ Feature: Localytics
 # End of regAddedPicture event
 #***************************************************
 
+#***************************************************
+# Start of uploadedContacts event
+#***************************************************
+
+@localytics @id2156
+  Scenario Outline: Verify 'uploadedContacts:source=Gmail' stats
+    Given I take snapshot of <AttrName> attribute count
+    Given There is 1 user where <Name> is me without avatar picture
+    Given I Sign in using login <Login> and password <Password>
+    And I see Self Picture Upload dialog
+    And I choose <PictureName> as my self picture on Self Picture Upload dialog
+    And I confirm picture selection on Self Picture Upload dialog
+    When I see Contacts Upload dialog
+    And I click button to import Gmail Contacts
+    And I see Google login popup
+    And I sign up at Google with email <GoogleEmail> and password <GooglePassword>
+    And I wait for 5 seconds
+
+    Examples:
+      | Login      | Password      | Name      | PictureName               | GoogleEmail                | GooglePassword | AttrName                      |
+      | user1Email | user1Password | user1Name | userpicture_landscape.jpg | smoketester.wire@gmail.com | aqa123456      | uploadedContacts:source=Gmail |
+
+#***************************************************
+# End of uploadedContacts event
+#***************************************************
 
 #***************************************************
 # Start of session event
@@ -272,9 +294,6 @@ Feature: Localytics
   @localytics @id2166
   Scenario Outline: Verify 'regSucceeded' stats
     Given I take snapshot of <EventName> event count
-    Given I see invitation page
-    Given I enter invitation code
-    Given I switch to Registration page
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password <Password> on Registration page
@@ -337,6 +356,7 @@ Feature: Localytics
       | regFailed:reason=Unauthorized e-mail address or phone number.        |
       | regAddedPicture:source=fromPhotoLibrary                              |
       | regAddedPicture:source=fromCarousel                                  |
+      | uploadedContacts:source=Gmail                                        |
       | session:connectRequestsSentActual=1                                  |
       | session:totalOutgoingConnectionRequestsActual=1                      |
       | session:totalIncomingConnectionRequestsActual=1                      |

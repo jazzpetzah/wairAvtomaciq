@@ -3,8 +3,6 @@ package com.wearezeta.auto.osx.pages.welcome;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import javax.mail.Message;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -50,7 +48,7 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.LoginPage.xpathForgotPasswordButton)
 	private WebElement forgotPasswordButton;
 
-	private Future<Message> passwordResetMessage;
+	private Future<String> passwordResetMessage;
 
 	public LoginPage(ZetaOSXDriver driver, WebDriverWait wait) throws Exception {
 		super(driver, wait);
@@ -185,11 +183,11 @@ public class LoginPage extends OSXPage {
 		}
 	}
 
-	public Future<Message> getPasswordResetMessage() {
+	public Future<String> getPasswordResetMessage() {
 		return passwordResetMessage;
 	}
 
-	public void setPasswordResetMessage(Future<Message> passwordResetMessage) {
+	public void setPasswordResetMessage(Future<String> passwordResetMessage) {
 		this.passwordResetMessage = passwordResetMessage;
 	}
 }

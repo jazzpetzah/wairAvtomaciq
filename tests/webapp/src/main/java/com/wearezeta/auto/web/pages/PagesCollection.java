@@ -1,11 +1,10 @@
 package com.wearezeta.auto.web.pages;
 
 import com.wearezeta.auto.common.AbstractPagesCollection;
+import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
 import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
 
 public class PagesCollection extends AbstractPagesCollection {
-
-	public static InvitationCodePage invitationCodePage = null;
 
 	public static LoginPage loginPage = null;
 
@@ -28,6 +27,8 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static SelfPictureUploadPage selfPictureUploadPage = null;
 
 	public static ContactsUploadPage contactsUploadPage = null;
+
+	public static GoogleLoginPage googeLoginPage = null;
 
 	public static ProfilePicturePage profilePicturePage = null;
 }
