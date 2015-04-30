@@ -15,6 +15,7 @@ public class GroupPopoverPageSteps {
 	private static final String MAILTO = "mailto:";
 	private static final String CAPTION_OPEN__CONVERSATION = "Open Conversation";
 	private static final String CAPTION_PENDING = "Pending";
+	private static final String CAPTION_UNBLOCK = "Unblock";
 	private static final String TOOLTIP_REMOVE_FROM_CONVERSATION = "Remove from conversation";
 	private static final String TOOLTIP_LEAVE_CONVERSATION = "Leave conversation";
 	private static final String TOOLTIP_ADD_PEOPLE_TO_CONVERSATION = "Add people to conversation";
@@ -22,6 +23,7 @@ public class GroupPopoverPageSteps {
 	private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
 	private static final String TOOLTIP_CHANGE_CONVERSATION_NAME = "Change conversation name";
 	private static final String TOOLTIP_PENDING = "Pending";
+	private static final String TOOLTIP_UNBLOCK = "Unblock";
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -169,7 +171,7 @@ public class GroupPopoverPageSteps {
 	@Then("^I see correct Unblock button tool tip on Group Participants popover$")
 	public void ThenISeeCorrectUnblockButtonToolTip() {
 		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.getUnblockButtonToolTip().equals("Unblock"));
+				.getUnblockButtonToolTip().equals(TOOLTIP_UNBLOCK));
 	}
 
 	/**
@@ -181,15 +183,15 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I see Unblock button on Group Participants popover$")
 	public void ISeeUnblockButton() throws Exception {
-		Assert.assertTrue(
-				"Unblock button is not visible on Group Participants popover",
+		final String openUnblockButtonMissingMessage = "Unblock button is not visible on Group Participants popover";
+		Assert.assertTrue(openUnblockButtonMissingMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.isUnblockButtonVisible());
 		Assert.assertTrue(
-				"Unblock button is not visible on Group Participants popover",
+				openUnblockButtonMissingMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.getUnblockButtonCaption().trim()
-						.equalsIgnoreCase("Unblock"));
+						.equalsIgnoreCase(CAPTION_UNBLOCK));
 	}
 
 	/**

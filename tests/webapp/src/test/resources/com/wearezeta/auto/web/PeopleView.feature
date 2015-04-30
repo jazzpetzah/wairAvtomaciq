@@ -145,7 +145,7 @@ Feature: People View
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
- @staging @id2271 @torun
+ @staging @id2271
    Scenario Outline: Verify I can see participant profile of user I blocked in a group conversation
       Given There are 3 users where <Name> is me
       Given Myself is connected to <KnownContact>
