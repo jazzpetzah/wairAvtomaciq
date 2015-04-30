@@ -238,11 +238,18 @@ public class ContactListPage extends WebPage {
 		final By muteLocator = By
 				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
 						.apply(conversationName));
+		final By unmuteLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathUnmuteButtonByContactName
+						.apply(conversationName));
 		final WebElement archiveButton = this.getDriver().findElement(
 				archiveLocator);
-		final WebElement muteButton = this.getDriver().findElement(muteLocator);
 		assert DriverUtils.waitUntilElementClickable(driver, archiveButton);
-		assert DriverUtils.waitUntilElementClickable(driver, muteButton);
+		assert (DriverUtils.isElementDisplayed(driver, muteLocator, 3) && DriverUtils
+				.waitUntilElementClickable(driver,
+						driver.findElement(muteLocator), 3))
+				|| (DriverUtils.isElementDisplayed(driver, unmuteLocator, 3) && DriverUtils
+						.waitUntilElementClickable(driver,
+								driver.findElement(unmuteLocator), 3));
 	}
 
 	public boolean isConversationMuted(String conversationName)
