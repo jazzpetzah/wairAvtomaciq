@@ -94,7 +94,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @id1517 @regression
+  @id1517 @regression 
   Scenario Outline: Verify you can send an invite
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -116,7 +116,6 @@ Feature: Search
     Given I see sign in screen
     Given I press Join button
     Given I press Camera button twice
-    Given I See selected picture
     Given I confirm selection
     Given I enter name <Name>
     Given I enter email <Email>
@@ -124,8 +123,7 @@ Feature: Search
     Given I submit registration data
     Given I see confirmation page
     Given I verify registration address
-    When I see People picker page
-    And I wait for PYMK for 30 secs
+    When I wait for PYMK for 30 secs
     And I swipe on random connect
     And I click on PYMK hide button
     Then I do not see random connect
@@ -139,7 +137,6 @@ Feature: Search
     Given I see sign in screen
     Given I press Join button
     Given I press Camera button twice
-    Given I See selected picture
     Given I confirm selection
     Given I enter name <Name>
     Given I enter email <Email>
@@ -147,8 +144,7 @@ Feature: Search
     Given I submit registration data
     Given I see confirmation page
     Given I verify registration address
-    When I see People picker page
-    And I wait for PYMK for 30 secs
+    When I wait for PYMK for 30 secs
     And I swipe on random connect
     And I hide random connect by swipe
     Then I do not see random connect

@@ -476,7 +476,6 @@ Feature: Connect
     Given I see sign in screen
     Given I press Join button
     Given I press Camera button twice
-    Given I See selected picture
     Given I confirm selection
     Given I enter name <Name>
     Given I enter email <Email>
@@ -484,8 +483,7 @@ Feature: Connect
     Given I submit registration data
     Given I see confirmation page
     Given I verify registration address
-    When I see People picker page
-    And I wait for PYMK for 30 secs
+    When I wait for PYMK for 30 secs
     And I press + button on a random Connect
   	And I press Clear button
     Then I see Contact list with my name <Name>
@@ -500,7 +498,6 @@ Feature: Connect
     Given I see sign in screen
     Given I press Join button
     Given I press Camera button twice
-    Given I See selected picture
     Given I confirm selection
     Given I enter name <Name>
     Given I enter email <Email>
@@ -508,8 +505,7 @@ Feature: Connect
     Given I submit registration data
     Given I see confirmation page
     Given I verify registration address
-    When I see People picker page
-    And I wait for PYMK for 30 secs
+    When I wait for PYMK for 30 secs
     And I tap on a random contact from PYMK and set it name to <Contact1> 
     And I see connect to <Contact1> dialog
     And I tap on edit connect request field

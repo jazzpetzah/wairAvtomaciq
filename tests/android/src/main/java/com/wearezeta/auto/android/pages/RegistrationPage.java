@@ -52,6 +52,9 @@ public class RegistrationPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
 	private WebElement laterBtn;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearch")
+	private WebElement pickerSearch;
+	
 	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
 	private List<WebElement> frameLayouts;
 
@@ -156,12 +159,13 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public PeoplePickerPage continueRegistration() throws Exception {
+		refreshUITree();
 		try {
-			this.getWait().until(ExpectedConditions.visibilityOf(laterBtn));
+			this.getWait().until(ExpectedConditions.visibilityOf(pickerSearch));
 		} catch (NoSuchElementException e) {
-
+			
 		} catch (TimeoutException e) {
-
+			
 		}
 		return new PeoplePickerPage(this.getDriver(), this.getWait());
 	}
