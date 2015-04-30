@@ -86,6 +86,13 @@ public final class AndroidLocators {
 
 		public static final String idCallingDismiss = LOCATORS_PACKAGE
 				+ ":id/cib__calling__dismiss";
+		
+		public static final String idOngoingCallMicrobar = LOCATORS_PACKAGE
+				+ ":id/ocpv__ongoing";
+		
+		public static final String idOngoingCallMinibar = LOCATORS_PACKAGE
+				+ ":id/ocpv__ongoing_small";
+		
 	}
 
 	public static final class SettingsPage {

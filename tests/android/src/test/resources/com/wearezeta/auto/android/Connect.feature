@@ -488,3 +488,25 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
+      
+  @id2215 @staging
+  Scenario Outline: I can connect to someone from PYMK by tap and typing connect message
+    Given There are 2 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I wait for PYMK for 30 secs
+    And I tap on a random contact from PYMK and set it name to <Contact1> 
+    And I see connect to <Contact1> dialog
+    And I tap on edit connect request field
+    And I type Connect request "<Message>"
+    And I press Connect button
+    And I see People picker page
+    And I navigate back to Conversations List
+    Then I see contact list loaded with User name <Contact1>
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Message       |
+      | user1Email | user1Password | user1Name | user2Name | Hellow friend |

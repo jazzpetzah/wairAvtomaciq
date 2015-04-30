@@ -85,7 +85,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 *  Swipe down people picker
+	 * Swipe down people picker
 	 * 
 	 * @step. ^I swipe down people picker$
 	 * 
@@ -193,7 +193,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 *  Wait for a user in the people picker search list
+	 * Wait for a user in the people picker search list
 	 * 
 	 * @step. ^I see user (.*) found on People picker page$
 	 * 
@@ -325,7 +325,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Tap on Random contact from PYMK
+	 * Press + button on Random contact from PYMK
 	 * 
 	 * @step. ^I press \\+ button on a random Connect$
 	 * 
@@ -337,6 +337,48 @@ public class PeoplePickerPageSteps {
 				.pressPlusOnContact(randomConnect);
 	}
 
+	/**
+	 * Tap on Random contact from PYMK
+	 * 
+	 * @step. ^I tap on a random contact from PYMK$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I tap on a random contact from PYMK$")
+	public void WhenITapOnRandomContactFromPYMK() throws Exception {
+		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect();
+		randomConnectName = PagesCollection.peoplePickerPage
+				.getPYMKContactName(randomConnect);
+		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
+				.tapOnPYMKContact(randomConnect);
+	}
+
+
+	/**
+	 * Tap on Random contact from PYMK and save it name
+	 * 
+	 * @step. ^I tap on a random contact from PYMK and set it name to (.*)$
+	 * 
+	 * @param contact
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I tap on a random contact from PYMK and set it name to (.*)$")
+	public void WhenITapOnRandomContactFromPYMKAndSetItNameTo(String contact) throws Exception {
+		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect();
+		randomConnectName = PagesCollection.peoplePickerPage
+				.getPYMKContactName(randomConnect);
+		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
+				.tapOnPYMKContact(randomConnect);
+		try {
+			usrMgr.findUserByNameOrNameAlias(contact).setName(randomConnectName);
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+	}
+	
 	/**
 	 * Swipe on Random contact from PYMK
 	 * 
@@ -444,17 +486,19 @@ public class PeoplePickerPageSteps {
 		Assert.assertFalse(PagesCollection.peoplePickerPage
 				.ispTopPeopleHeaderVisible());
 	}
-	
+
 	/**
 	 * Waiting for PYMK loading
 	 * 
 	 * @step. ^I wait for PYMK for (.*) secs$
 	 * 
 	 * @param time
+	 * 
+	 * @throws Exception 
 	 */
 	@When("I wait for PYMK for (.*) secs$")
-	public void WhenIWaitForPYMKForSec(int time) throws InterruptedException {
-		PagesCollection.peoplePickerPage.waitForPYMKForSecs(time);
+	public void WhenIWaitForPYMKForSec(int time) throws Exception {
+		Assert.assertTrue(PagesCollection.peoplePickerPage.waitForPYMKForSecs(time));
 	}
 
 }

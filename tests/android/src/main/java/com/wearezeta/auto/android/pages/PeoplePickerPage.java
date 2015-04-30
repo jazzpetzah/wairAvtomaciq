@@ -74,7 +74,7 @@ public class PeoplePickerPage extends AndroidPage {
 	private List<WebElement> connectToHeader;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerRecomendedName")
-	private List<WebElement> recommendedNamesList;
+	private WebElement recommendedName;
 
 	@FindBy(xpath = AndroidLocators.PeoplePickerPage.xpathGmailLink)
 	private WebElement gmailLink;
@@ -384,14 +384,31 @@ public class PeoplePickerPage extends AndroidPage {
 				90, 50);
 	}
 
-	public void waitForPYMKForSecs(int time) throws InterruptedException {
-
+	public boolean waitForPYMKForSecs(int time) throws Exception {
+		boolean exist = false;
 		for (int i = 0; i < time; i++) {
-			if (recommendedNamesList == null || recommendedNamesList.size() == 0) {
+			if (!isVisible(recommendedName)) {
 				Thread.sleep(1000);
 			} else {
+				exist = true;
 				break;
 			}
 		}
+		return exist;
+	}
+
+	public String getPYMKContactName(WebElement randomConnect) {
+		refreshUITree();
+		String name = randomConnect.findElement(
+				By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedName))
+				.getText();
+
+		return name;
+	}
+	
+	public ConnectToPage tapOnPYMKContact(WebElement randomConnect) throws Exception {
+		refreshUITree();
+		randomConnect.click();
+		return new ConnectToPage(getDriver(), getWait());
 	}
 }
