@@ -89,5 +89,5 @@ Feature: User Profile
     And I see color <AccentColor> is the background color of self profile page
 
     Examples: 
-      | Login      | Password      | Name      | PreparationAccentColor | AccentColor     |
-      | user1Email | user1Password | user1Name | Violet                 | StrongLimeGreen |
+      | Login      | Password      | Name      | PreparationAccentColor | AccentColor  |
+      | user1Email | user1Password | user1Name | Violet                 | BrightOrange |
