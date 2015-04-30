@@ -267,7 +267,6 @@ public class OtherUserPersonalInfoPageSteps {
 	
 	/**
 	 * Presses the "silence conversation" button in the conversation settings page
-	 * -unused
 	 * 
 	 * @step. ^I press Silence conversation button$
 	 * 
@@ -276,6 +275,19 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I press Silence conversation button$")
 	public void WhenIPressSilenceConversationButton() throws Throwable {
 		PagesCollection.otherUserPersonalInfoPage.pressSilenceButton();
+	}
+	
+	/**
+	 * Presses the "notify conversation" button in the conversation settings page
+	 * (Note, this performs the same action as the press silence button)
+	 * 
+	 * @step. ^I press Notify conversation button$
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I press Notify conversation button$")
+	public void WhenIPressNotifyConversationButton() throws Throwable {
+		WhenIPressSilenceConversationButton();
 	}
 
 	/**

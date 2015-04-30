@@ -516,6 +516,30 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * Silences a given user from the perspective of the another user through
+	 * the backend
+	 * 
+	 * @step. ^(.*) is silenced to user (.*)$
+	 * 
+	 * @param mutedUser
+	 *            the user to silence
+	 * 
+	 * @param otherUser
+	 *            the user who does the silencing
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Given("^(.*) is silenced to user (.*)$")
+	public void UserIsSilenced(String mutedUser, String otherUser)
+			throws Exception {
+		mutedUser = usrMgr.findUserByNameOrNameAlias(mutedUser).getName();
+		otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
+
+		commonSteps.MuteConversationWithUser(otherUser, mutedUser);
+	}
+
+	/**
 	 * Verifies that user A is in a group chat with a group of other users
 	 * 
 	 * @step. ^(.*) has group chat (.*) with (.*)$
