@@ -172,7 +172,7 @@ public class PerformanceSteps {
 
 	public void minimizeClient() throws Exception {
 		PagesCollection.contactListPage.waitUntilMainWindowAppears();
-		PagesCollection.contactListPage.minimizeWindow();
+		PagesCollection.contactListPage.minimizeWindowUsingScript();
 		perfCommon.getLogger().debug("Client minimized");
 	}
 
