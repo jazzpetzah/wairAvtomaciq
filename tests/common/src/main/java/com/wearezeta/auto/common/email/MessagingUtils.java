@@ -3,6 +3,7 @@ package com.wearezeta.auto.common.email;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Map;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -26,6 +27,18 @@ public class MessagingUtils {
 				null);
 		return new MimeMessage(session, new ByteArrayInputStream(
 				rawMsg.getBytes()));
+	}
+	
+	public static String extractDeliveredToValue(Map<String, String> headers) throws Exception {
+		// Get emails for all recipients by default
+		String deliveredTo = getAccountName();
+		for (Map.Entry<String, String> pair : headers.entrySet()) {
+			if (pair.getKey().equals(DELIVERED_TO_HEADER)) {
+				deliveredTo = pair.getValue();
+				break;
+			}
+		}
+		return deliveredTo;
 	}
 
 	public static String getServerHost() throws Exception {

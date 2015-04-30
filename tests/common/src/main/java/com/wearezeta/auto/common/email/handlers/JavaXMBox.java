@@ -20,14 +20,14 @@ import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.handlers.JavaXMBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-class JavaXMailbox implements ISupportsMessagesPolling {
+class JavaXMBox implements ISupportsMessagesPolling {
 	private static final String MAIL_PROTOCOL = "imaps";
 	private static final String MAILS_FOLDER = "Inbox";
 	private static final int FOLDER_OPEN_TIMEOUT = 60 * 15; // seconds
 	private static final int MBOX_MAX_CONNECT_RETRIES = 10;
 	private static final int NEW_MSG_CHECK_INTERVAL = 500; // milliseconds
 
-	private static final Logger log = ZetaLogger.getLog(JavaXMailbox.class
+	private static final Logger log = ZetaLogger.getLog(JavaXMBox.class
 			.getSimpleName());
 
 	private static final Semaphore folderStateGuard = new Semaphore(1);
@@ -86,13 +86,13 @@ class JavaXMailbox implements ISupportsMessagesPolling {
 				@Override
 				public void run() {
 					log.debug("Starting email messages notifier thread...");
-					while (JavaXMailbox.this.getFolder() != null
+					while (JavaXMBox.this.getFolder() != null
 							&& !this.isInterrupted()) {
 						try {
-							if (!JavaXMailbox.this.getFolder().isOpen()) {
-								JavaXMailbox.this.getFolder().open(
+							if (!JavaXMBox.this.getFolder().isOpen()) {
+								JavaXMBox.this.getFolder().open(
 										Folder.READ_ONLY);
-								JavaXMailbox.this.getFolder().getMessageCount();
+								JavaXMBox.this.getFolder().getMessageCount();
 							}
 							Thread.sleep(NEW_MSG_CHECK_INTERVAL);
 						} catch (InterruptedException e) {
@@ -210,7 +210,7 @@ class JavaXMailbox implements ISupportsMessagesPolling {
 
 	private static final Semaphore storeLock = new Semaphore(1);
 
-	public JavaXMailbox() throws Exception {
+	public JavaXMBox() throws Exception {
 		storeLock.acquire();
 		try {
 			if (store == null) {

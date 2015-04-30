@@ -15,9 +15,9 @@ import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-final class EmailListenerServiceREST {
+final class RESTMBoxAPI {
 	private static final Logger log = ZetaLogger
-			.getLog(EmailListenerServiceREST.class.getSimpleName());
+			.getLog(RESTMBoxAPI.class.getSimpleName());
 
 	private static final String URL_PROTOCOL = "http://";
 
@@ -27,21 +27,19 @@ final class EmailListenerServiceREST {
 					.format("%s%s:%s",
 							URL_PROTOCOL,
 							CommonUtils
-									.getDefaultEmailListenerServiceHostFromConfig(EmailListenerServiceREST.class),
+									.getDefaultEmailListenerServiceHostFromConfig(RESTMBoxAPI.class),
 							CommonUtils
-									.getDefaultEmailListenerServicePortFromConfig(EmailListenerServiceREST.class));
+									.getDefaultEmailListenerServicePortFromConfig(RESTMBoxAPI.class));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
 		}
 	}
 
-	private static Client client = Client.create();
-
 	private static void verifyRequestResult(int currentResponseCode,
-			int[] acceptableResponseCodes) throws EmailListenerException {
+			int[] acceptableResponseCodes) throws RESTMBoxException {
 		if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
-			throw new EmailListenerException(
+			throw new RESTMBoxException(
 					String.format(
 							"Backend request failed. Request return code is: %d. Expected codes are: %s",
 							currentResponseCode,
@@ -53,7 +51,7 @@ final class EmailListenerServiceREST {
 	private static final int MAX_RESPONSE_LENGTH = 80;
 
 	private static String httpGet(Builder webResource,
-			int[] acceptableResponseCodes) throws EmailListenerException {
+			int[] acceptableResponseCodes) throws RESTMBoxException {
 		ClientResponse response = webResource.get(ClientResponse.class);
 		final String responseString = response.getEntity(String.class);
 		if (responseString != null
@@ -67,17 +65,22 @@ final class EmailListenerServiceREST {
 		return responseString;
 	}
 
-	private static Builder buildDefaultRequest(String restAction) {
+	private static Builder buildDefaultRequest(String restAction,
+			int timeoutMilliseconds) {
 		final String dstUrl = String.format("%s/%s", getApiRoot(), restAction);
 		log.debug(String.format("Request to %s...", dstUrl));
+		final Client client = Client.create();
+		client.setReadTimeout(timeoutMilliseconds);
 		return client.resource(dstUrl).accept(MediaType.APPLICATION_JSON)
 				.type(MediaType.APPLICATION_JSON);
 	}
 
-	public static JSONArray getRecentEmailsForUser(String email, int maxCount)
-			throws EmailListenerException {
+	public static JSONArray getRecentEmailsForUser(String email, int minCount,
+			int maxCount, int timeoutMilliseconds)
+			throws RESTMBoxException {
 		Builder webResource = buildDefaultRequest(String.format(
-				"recent_emails/%s/%s", email, maxCount));
+				"recent_emails/%s/%s/%s", email, maxCount, minCount),
+				timeoutMilliseconds);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONArray(output);

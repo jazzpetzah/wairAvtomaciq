@@ -36,7 +36,7 @@ public class IMAPSMailbox implements ISupportsMessagesPolling {
 
 	public static synchronized IMAPSMailbox getInstance() throws Exception {
 		if (instance == null) {
-			final MailboxHandlerType handlerType = MailboxHandlerType
+			final MBoxHandlerType handlerType = MBoxHandlerType
 					.fromString(CommonUtils.getValueFromCommonConfig(
 							IMAPSMailbox.class, "mailboxHandlerType"));
 			final Constructor<?> ctor = handlerType.getHandlerClass()
