@@ -50,11 +50,19 @@ final class EmailListenerServiceREST {
 		}
 	}
 
+	private static final int MAX_RESPONSE_LENGTH = 80;
+
 	private static String httpGet(Builder webResource,
 			int[] acceptableResponseCodes) throws EmailListenerException {
 		ClientResponse response = webResource.get(ClientResponse.class);
 		final String responseString = response.getEntity(String.class);
-		log.debug("HTTP GET request.\nResponse: " + responseString);
+		if (responseString != null
+				&& responseString.length() > MAX_RESPONSE_LENGTH) {
+			log.debug("HTTP GET request.\nResponse: "
+					+ responseString.substring(0, MAX_RESPONSE_LENGTH) + "...");
+		} else {
+			log.debug("HTTP GET request.\nResponse: " + responseString);
+		}
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return responseString;
 	}
