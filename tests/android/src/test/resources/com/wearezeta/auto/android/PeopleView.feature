@@ -173,20 +173,23 @@ Feature: People View
     Then I see profile page
     And I do not see 1:1 options menu
     When I press options menu button
-    #And I swipe left
-    #And I swipe right
-    #And I swipe up
-    And I do small swipe down
-    #Then I do not see 1:1 options menu
-    #And I see profile page
-    Then I see correct 1:1 options menu
-    And I do not see profile page
-    When I swipe down
+    And I swipe down
     Then I see profile page
     And I do not see 1:1 options menu
     When I press options menu button
     Then I do not see profile page
     And I see correct 1:1 options menu
+    When I do small swipe down
+    Then I see correct 1:1 options menu
+    And I do not see profile page
+    #When I press options menu button
+    #Then I see profile page
+    #And I do not see 1:1 options menu
+    #When I swipe left
+    #And I swipe right
+    #And I swipe up
+    #Then I see correct 1:1 options menu
+    #And I do not see profile page
      
     Examples: 
       | Login      | Password      | Name      | Contact   |
