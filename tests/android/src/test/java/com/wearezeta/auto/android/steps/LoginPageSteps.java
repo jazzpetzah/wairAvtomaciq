@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android.steps;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
@@ -71,11 +69,10 @@ public class LoginPageSteps {
 	 * button used for signing in once details have been placed in.
 	 * 
 	 * @step. ^I press Sign in button$
-	 * 
-	 * @throws IOException
+	 * @throws Exception 
 	 */
 	@When("I press Sign in button")
-	public void WhenIPressSignInButton() throws IOException {
+	public void WhenIPressSignInButton() throws Exception {
 		PagesCollection.loginPage.SignIn();
 	}
 
@@ -156,9 +153,10 @@ public class LoginPageSteps {
 	 * Checks to see that the welcome screen is visible
 	 * 
 	 * @step. ^I see sign in and join buttons$
+	 * @throws Exception 
 	 */
 	@Then("^I see welcome screen$")
-	public void ThenISeeWelcomeScreen() {
+	public void ThenISeeWelcomeScreen() throws Exception {
 		Assert.assertTrue("We don't see welcome buttons",
 				PagesCollection.loginPage.isWelcomeButtonsExist());
 	}

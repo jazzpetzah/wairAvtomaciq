@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
@@ -18,21 +19,42 @@ import org.openqa.selenium.support.pagefactory.FieldDecorator;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.locators.ZetaElementLocatorFactory;
 import com.wearezeta.auto.common.locators.ZetaFieldDecorator;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class BasePage {
-	protected RemoteWebDriver driver;
+	private Future<? extends RemoteWebDriver> lazyDriver;
 
-	public RemoteWebDriver getDriver() {
+	public Future<? extends RemoteWebDriver> getLazyDriver() {
+		return this.lazyDriver;
+	}
+
+	private RemoteWebDriver driver = null;
+
+	protected synchronized RemoteWebDriver getDriver()
+			throws Exception {
+		if (this.driver == null) {
+			this.driver = this.getLazyDriver().get();
+			zetaLocatorFactory = new ZetaElementLocatorFactory(this.driver,
+					Long.parseLong(CommonUtils
+							.getDriverTimeoutFromConfig(getClass())),
+					AppiumFieldDecorator.DEFAULT_TIMEUNIT);
+			FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(
+					zetaLocatorFactory);
+			PageFactory.initElements(zetaFieldDecorator, this);
+		}
 		return this.driver;
 	}
 
 	private WebDriverWait wait;
 
-	public WebDriverWait getWait() {
+	protected synchronized WebDriverWait getWait() throws Exception {
+		if (this.wait == null) {
+			this.wait = PlatformDrivers.createDefaultExplicitWait(driver);
+		}
 		return this.wait;
 	}
 
@@ -40,29 +62,19 @@ public abstract class BasePage {
 			.getSimpleName());
 	private static ZetaElementLocatorFactory zetaLocatorFactory;
 
-	public BasePage(RemoteWebDriver driver, WebDriverWait wait)
-			throws Exception {
-		this.driver = driver;
-		this.wait = wait;
-
-		zetaLocatorFactory = new ZetaElementLocatorFactory(this.driver,
-				Long.parseLong(CommonUtils
-						.getDriverTimeoutFromConfig(getClass())),
-				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
-		FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(
-				zetaLocatorFactory);
-		PageFactory.initElements(zetaFieldDecorator, this);
+	public BasePage(Future<? extends RemoteWebDriver> lazyDriver) throws Exception {
+		this.lazyDriver = lazyDriver;
 	}
 
 	public void close() throws Exception {
 	}
 
-	public BufferedImage takeScreenshot() throws IOException {
+	public BufferedImage takeScreenshot() throws Exception {
 		return DriverUtils.takeScreenshot((ZetaDriver) this.getDriver());
 	}
 
 	public BufferedImage getElementScreenshot(WebElement element)
-			throws IOException {
+			throws Exception {
 		BufferedImage screenshot = takeScreenshot();
 		Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
@@ -74,7 +86,7 @@ public abstract class BasePage {
 	}
 
 	public BufferedImage getScreenshotByCoordinates(int x, int y, int w, int h)
-			throws IOException {
+			throws Exception {
 		BufferedImage screenshot = takeScreenshot();
 		try {
 			screenshot = screenshot.getSubimage(x, y, w, h);
@@ -84,7 +96,7 @@ public abstract class BasePage {
 		return screenshot;
 	}
 
-	public void refreshUITree() {
+	public void refreshUITree() throws Exception {
 		try {
 			this.getDriver().getPageSource();
 		} catch (WebDriverException ex) {
@@ -112,7 +124,7 @@ public abstract class BasePage {
 		}
 	}
 
-	public String getPageSource() {
+	public String getPageSource() throws Exception {
 		return this.getDriver().getPageSource();
 	}
 

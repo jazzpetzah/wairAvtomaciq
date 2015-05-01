@@ -3,12 +3,12 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -27,7 +27,7 @@ public class RegistrationPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement confirmImageButton;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistrationPage.CLASS_NAME, locatorKey = "idSignUpGalleryIcon")
 	protected WebElement signUpGalleryIcon;
 
@@ -54,7 +54,7 @@ public class RegistrationPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearch")
 	private WebElement pickerSearch;
-	
+
 	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
 	private List<WebElement> frameLayouts;
 
@@ -64,9 +64,9 @@ public class RegistrationPage extends AndroidPage {
 	private static final String YOUR_NAME = "your full name";
 	private static final String EMAIL = "email";
 
-	public RegistrationPage(ZetaAndroidDriver driver, WebDriverWait wait)
+	public RegistrationPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class RegistrationPage extends AndroidPage {
 		return null;
 	}
 
-	public void takePhoto() {
+	public void takePhoto() throws Exception {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(cameraButton));
 		cameraButton.click();
@@ -86,7 +86,7 @@ public class RegistrationPage extends AndroidPage {
 		signUpGalleryIcon.click();
 	}
 
-	public void chooseFirstPhoto() {
+	public void chooseFirstPhoto() throws Exception {
 		refreshUITree();
 		try {
 			frameLayouts.get(0).click();
@@ -103,20 +103,20 @@ public class RegistrationPage extends AndroidPage {
 
 	public boolean isPictureSelected() throws Exception {
 		refreshUITree();
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
 		return DriverUtils.isElementDisplayed(this.getDriver(),
 				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
 	}
 
-	public void confirmPicture() {
+	public void confirmPicture() throws Exception {
 		refreshUITree();
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(confirmImageButton));
 		confirmImageButton.click();
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws Exception {
 		refreshUITree();
 		this.getWait()
 				.until(ExpectedConditions.elementToBeClickable(nameField));
@@ -130,7 +130,7 @@ public class RegistrationPage extends AndroidPage {
 		}
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(String email) throws Exception {
 		refreshUITree();
 		// TABLET fix
 		if (nameField.getText().toLowerCase().contains(EMAIL)) {
@@ -142,7 +142,7 @@ public class RegistrationPage extends AndroidPage {
 		}
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(String password) throws Exception {
 		refreshUITree();
 		passwordField.sendKeys(password);
 	}
@@ -163,14 +163,14 @@ public class RegistrationPage extends AndroidPage {
 		try {
 			this.getWait().until(ExpectedConditions.visibilityOf(pickerSearch));
 		} catch (NoSuchElementException e) {
-			
+
 		} catch (TimeoutException e) {
-			
+
 		}
-		return new PeoplePickerPage(this.getDriver(), this.getWait());
+		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
-	public void pressBackButton() {
+	public void pressBackButton() throws Exception {
 		refreshUITree();
 		backButton.click();
 	}

@@ -2,9 +2,9 @@ package com.wearezeta.auto.web.pages;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -12,8 +12,8 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 
 public class WebPage extends BasePage {
 	@Override
-	public ZetaWebAppDriver getDriver() {
-		return (ZetaWebAppDriver) this.driver;
+	protected ZetaWebAppDriver getDriver() {
+		return (ZetaWebAppDriver) this.getDriver();
 	}
 
 	private String url = null;
@@ -22,21 +22,20 @@ public class WebPage extends BasePage {
 		return this.url;
 	}
 
-	public WebPage(ZetaWebAppDriver driver, WebDriverWait wait)
-			throws Exception {
-		this(driver, wait, null);
+	public WebPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
+		this(lazyDriver, null);
 	}
 
-	public WebPage(ZetaWebAppDriver driver, WebDriverWait wait, String url)
+	public WebPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 
 		this.url = url;
 	}
 
 	public void navigateTo() {
 		if (this.url != null) {
-			driver.navigate().to(this.url);
+			this.getDriver().navigate().to(this.url);
 		} else {
 			throw new RuntimeException(
 					String.format(

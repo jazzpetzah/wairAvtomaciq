@@ -24,8 +24,7 @@ public class CallingPageSteps {
 	@When("I click the ignore call button")
 	public void IClickIgnoreCallButton() throws Exception {
 		PagesCollection.callingOverlayPage = new CallingOverlayPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+				PagesCollection.loginPage.getLazyDriver());
 		PagesCollection.callingOverlayPage.muteConversation();
 	}
 
@@ -86,8 +85,7 @@ public class CallingPageSteps {
 	@When("I see the call lock screen$")
 	public void ISeeTheCallLockScreen() throws Exception {
 		PagesCollection.callingLockscreenPage = new CallingLockscreenPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+				PagesCollection.loginPage.getLazyDriver());
 		Assert.assertFalse(PagesCollection.callingOverlayPage.isVisible());
 	}
 
@@ -120,13 +118,10 @@ public class CallingPageSteps {
 	@When("I answer the call from the overlay bar$")
 	public void IAnswerCallFromTheOverlayBar() throws Exception {
 		PagesCollection.callingOverlayPage = new CallingOverlayPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
-		PagesCollection.dialogPage  = new DialogPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+				PagesCollection.loginPage.getLazyDriver());
+		PagesCollection.dialogPage = new DialogPage(
+				PagesCollection.loginPage.getLazyDriver());
 		PagesCollection.callingOverlayPage.acceptCall();
-
 	}
 
 	/**
@@ -142,7 +137,7 @@ public class CallingPageSteps {
 		PagesCollection.callingOverlayPage = PagesCollection.callingLockscreenPage
 				.acceptCall();
 	}
-	
+
 	/**
 	 * Check calling Big bar
 	 * 
@@ -152,15 +147,22 @@ public class CallingPageSteps {
 	 */
 	@When("^I see calling overlay Big bar$")
 	public void WhenISeeCallingOverlayBigBar() throws Exception {
-		Assert.assertTrue(PagesCollection.callingOverlayPage.callingOverlayIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage.incominCallerAvatarIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage.callingMessageIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage.callingDismissIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage.callingSpeakerIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage.callingMicMuteIsVisible());
-		Assert.assertFalse(PagesCollection.callingOverlayPage.ongoingCallMinibarIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.callingOverlayIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.incominCallerAvatarIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.callingMessageIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.callingDismissIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.callingSpeakerIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.callingMicMuteIsVisible());
+		Assert.assertFalse(PagesCollection.callingOverlayPage
+				.ongoingCallMinibarIsVisible());
 	}
-	
+
 	/**
 	 * Check calling Micro bar
 	 * 
@@ -170,15 +172,22 @@ public class CallingPageSteps {
 	 */
 	@When("^I see calling overlay Micro bar$")
 	public void WhenISeeCallingOverlayMicroBar() throws Exception {
-		Assert.assertTrue(PagesCollection.callingOverlayPage.callingOverlayIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage.ongoingCallMicrobarIsVisible());
-		Assert.assertFalse(PagesCollection.callingOverlayPage.incominCallerAvatarIsVisible());
-		Assert.assertFalse(PagesCollection.callingOverlayPage.callingMessageIsVisible());
-		Assert.assertFalse(PagesCollection.callingOverlayPage.callingDismissIsVisible());
-		Assert.assertFalse(PagesCollection.callingOverlayPage.callingSpeakerIsVisible());
-		Assert.assertFalse(PagesCollection.callingOverlayPage.callingMicMuteIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.callingOverlayIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.ongoingCallMicrobarIsVisible());
+		Assert.assertFalse(PagesCollection.callingOverlayPage
+				.incominCallerAvatarIsVisible());
+		Assert.assertFalse(PagesCollection.callingOverlayPage
+				.callingMessageIsVisible());
+		Assert.assertFalse(PagesCollection.callingOverlayPage
+				.callingDismissIsVisible());
+		Assert.assertFalse(PagesCollection.callingOverlayPage
+				.callingSpeakerIsVisible());
+		Assert.assertFalse(PagesCollection.callingOverlayPage
+				.callingMicMuteIsVisible());
 	}
-	
+
 	/**
 	 * Check calling Mini bar
 	 * 
@@ -188,12 +197,18 @@ public class CallingPageSteps {
 	 */
 	@When("^I see calling overlay Mini bar$")
 	public void WhenISeeCallingOverlayMiniBar() throws Exception {
-		Assert.assertTrue(PagesCollection.callingOverlayPage.callingOverlayIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage.ongoingCallMinibarIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage.callingMessageIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage.callingDismissIsVisible());
-		Assert.assertFalse(PagesCollection.callingOverlayPage.callingSpeakerIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage.callingMicMuteIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.callingOverlayIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.ongoingCallMinibarIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.callingMessageIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.callingDismissIsVisible());
+		Assert.assertFalse(PagesCollection.callingOverlayPage
+				.callingSpeakerIsVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.callingMicMuteIsVisible());
 	}
-	
+
 }
