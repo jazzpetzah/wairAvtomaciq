@@ -99,10 +99,10 @@ public class CommonAndroidSteps {
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
-		final Future<ZetaAndroidDriver> driver = resetAndroidDriver(getUrl(),
-				getPath(), isUnicode, this.getClass());
-		PagesCollection.loginPage = new LoginPage(driver);
-		ZetaFormatter.setLazyDriver(driver);
+		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
+				getUrl(), getPath(), isUnicode, this.getClass());
+		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
 	@Before("@performance")
