@@ -4,6 +4,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -11,7 +12,10 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
@@ -43,6 +47,19 @@ public class RegistrationPage extends WebPage {
 
 	@Override
 	public void navigateTo() {
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
+			// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
+			this.getDriver()
+					.manage()
+					.window()
+					.setSize(
+							new Dimension(
+									WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
+									WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
+		} else {
+			this.getDriver().manage().window().maximize();
+		}
+
 		super.navigateTo();
 		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
 

@@ -74,6 +74,7 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public Boolean isVisible() {
+		dismissUpdate();
 		return welcomeSlogan != null;
 	}
 

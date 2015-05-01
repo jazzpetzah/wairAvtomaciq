@@ -63,9 +63,9 @@ public final class CommonLocalyticsSteps {
 	private static final int SECONDS_INTERVAL = 20;
 
 	private static void pingDrivers() throws Exception {
-		Collection<Future<RemoteWebDriver>> registeredDrivers = PlatformDrivers
+		Collection<Future<? extends RemoteWebDriver>> registeredDrivers = PlatformDrivers
 				.getInstance().getRegisteredDrivers();
-		for (Future<RemoteWebDriver> driver : registeredDrivers) {
+		for (Future<? extends RemoteWebDriver> driver : registeredDrivers) {
 			driver.get().getCurrentUrl();
 		}
 	}

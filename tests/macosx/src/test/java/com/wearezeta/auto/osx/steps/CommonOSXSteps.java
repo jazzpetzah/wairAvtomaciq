@@ -1,17 +1,15 @@
 package com.wearezeta.auto.osx.steps;
 
-import io.appium.java_client.AppiumDriver;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
@@ -78,15 +76,16 @@ public class CommonOSXSteps {
 		}
 	}
 
-	private ZetaOSXDriver resetOSXDriver(String url) throws Exception {
+	@SuppressWarnings("unchecked")
+	private Future<ZetaOSXDriver> resetOSXDriver(String url) throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
 		capabilities.setCapability(CapabilityType.PLATFORM, CURRENT_PLATFORM
 				.getName().toUpperCase());
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 
-		return (ZetaOSXDriver) PlatformDrivers.getInstance().resetDriver(url,
-				capabilities);
+		return (Future<ZetaOSXDriver>) PlatformDrivers.getInstance()
+				.resetDriver(url, capabilities);
 	}
 
 	private void commonBefore() throws Exception {
@@ -100,23 +99,17 @@ public class CommonOSXSteps {
 		}
 
 		this.testStartedTimestamp = new Date();
-		final ZetaOSXDriver driver = resetOSXDriver(OSXExecutionContext.appiumUrl);
-		final WebDriverWait wait = PlatformDrivers
-				.createDefaultExplicitWait(driver);
+		final Future<ZetaOSXDriver> lazyDriver = resetOSXDriver(OSXExecutionContext.appiumUrl);
 
-		PagesCollection.mainMenuPage = new MainMenuAndDockPage(driver, wait);
-		PagesCollection.welcomePage = new WelcomePage(driver, wait);
-		PagesCollection.loginPage = new LoginPage(driver, wait);
-		PagesCollection.problemReportPage = new ProblemReportPage(driver, wait);
+		PagesCollection.mainMenuPage = new MainMenuAndDockPage(lazyDriver);
+		PagesCollection.welcomePage = new WelcomePage(lazyDriver);
+		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		PagesCollection.problemReportPage = new ProblemReportPage(lazyDriver);
 
-		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.welcomePage
-				.getDriver());
+		ZetaFormatter.setLazyDriver(lazyDriver);
 		// saving time of startup for Sync Engine
 		this.startupTime = new Date().getTime()
 				- this.testStartedTimestamp.getTime();
-
-		PagesCollection.welcomePage
-				.sendProblemReportIfAppears(PagesCollection.problemReportPage);
 	}
 
 	@Before("@performance")
@@ -359,12 +352,11 @@ public class CommonOSXSteps {
 	 * 
 	 * @param screenshotAlias
 	 *            string id for stored screenshot
-	 * 
-	 * @throws IOException
+	 * @throws Exception
 	 */
 	@When("^I take fullscreen shot and save it as (.*)$")
 	public void ITakeFullscreenShotAndSaveItAsAlias(String screenshotAlias)
-			throws IOException {
+			throws Exception {
 		BufferedImage shot = PagesCollection.mainMenuPage.takeScreenshot();
 		OSXExecutionContext.screenshots.put(screenshotAlias, shot);
 	}

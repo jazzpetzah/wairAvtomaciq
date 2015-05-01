@@ -22,7 +22,7 @@ public final class PlatformDrivers {
 	private static final Logger log = ZetaLogger.getLog(PlatformDrivers.class
 			.getSimpleName());
 
-	private Map<Platform, Future<RemoteWebDriver>> drivers = new ConcurrentHashMap<Platform, Future<RemoteWebDriver>>();
+	private Map<Platform, Future<? extends RemoteWebDriver>> drivers = new ConcurrentHashMap<Platform, Future<? extends RemoteWebDriver>>();
 
 	private static PlatformDrivers instance = null;
 
@@ -43,18 +43,24 @@ public final class PlatformDrivers {
 	private final ExecutorService pool = Executors.newFixedThreadPool(Platform
 			.values().length);
 
-	public synchronized Future<RemoteWebDriver> resetDriver(String url,
-			DesiredCapabilities capabilities) throws Exception {
+	public synchronized Future<? extends RemoteWebDriver> resetDriver(
+			String url, DesiredCapabilities capabilities, int maxRetryCount)
+			throws Exception {
 		final Platform platformInCapabilities = Platform
 				.getByName((String) capabilities.getCapability("platformName"));
 		if (this.hasDriver(platformInCapabilities)) {
 			this.quitDriver(platformInCapabilities);
 		}
 		final LazyDriverInitializer initializer = new LazyDriverInitializer(
-				platformInCapabilities, url, capabilities);
+				platformInCapabilities, url, capabilities, maxRetryCount);
 		Future<RemoteWebDriver> driverBeingCreated = pool.submit(initializer);
 		drivers.put(platformInCapabilities, driverBeingCreated);
 		return driverBeingCreated;
+	}
+
+	public Future<? extends RemoteWebDriver> resetDriver(String url,
+			DesiredCapabilities capabilities) throws Exception {
+		return resetDriver(url, capabilities, 1);
 	}
 
 	public static void setImplicitWaitTimeout(RemoteWebDriver driver,
@@ -69,7 +75,7 @@ public final class PlatformDrivers {
 				TimeUnit.SECONDS);
 	}
 
-	public Future<RemoteWebDriver> getDriver(Platform platform) {
+	public Future<? extends RemoteWebDriver> getDriver(Platform platform) {
 		if (!drivers.containsKey(platform)) {
 			throw new RuntimeException(String.format(
 					"Please initialize %s platform driver first",
@@ -78,7 +84,7 @@ public final class PlatformDrivers {
 		return drivers.get(platform);
 	}
 
-	public Collection<Future<RemoteWebDriver>> getRegisteredDrivers() {
+	public Collection<Future<? extends RemoteWebDriver>> getRegisteredDrivers() {
 		return drivers.values();
 	}
 
@@ -103,7 +109,7 @@ public final class PlatformDrivers {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
-				for (Entry<Platform, Future<RemoteWebDriver>> entry : drivers
+				for (Entry<Platform, Future<? extends RemoteWebDriver>> entry : drivers
 						.entrySet()) {
 					try {
 						entry.getValue().get().quit();

@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -150,7 +149,7 @@ public class CommonSteps {
 									log.debug(String
 											.format("%s: message received successfully.",
 													listener.platform()));
-								} catch (NoSuchElementException e) {
+								} catch (Exception e) {
 									log.debug(String.format(
 											"%s: message was not found.\n%s",
 											listener.platform(), e.getMessage()));

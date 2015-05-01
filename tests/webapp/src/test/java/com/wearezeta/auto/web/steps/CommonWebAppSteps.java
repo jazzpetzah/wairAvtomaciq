@@ -1,12 +1,10 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.logging.LogEntries;
@@ -15,10 +13,8 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
@@ -31,7 +27,6 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -51,8 +46,6 @@ public class CommonWebAppSteps {
 
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
 	private static final int MAX_DRIVER_CREATION_RETRIES = 3;
-	private static final int MIN_WEBAPP_WINDOW_WIDTH = 1366;
-	private static final int MIN_WEBAPP_WINDOW_HEIGHT = 768;
 
 	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
 
@@ -123,7 +116,8 @@ public class CommonWebAppSteps {
 				+ "'");
 	}
 
-	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
+	private Future<ZetaWebAppDriver> resetWebAppDriver(String url)
+			throws Exception {
 		final DesiredCapabilities capabilities;
 		switch (WebAppExecutionContext.getCurrentBrowser()) {
 		case Chrome:
@@ -171,10 +165,11 @@ public class CommonWebAppSteps {
 		// setCustomOperaProfile(capabilities, "win7_opera");
 
 		capabilities.setCapability("platformName", Platform.Web.getName());
-		final ZetaWebAppDriver webDriver = (ZetaWebAppDriver) PlatformDrivers
-				.getInstance().resetDriver(url, capabilities);
-		webDriver.setFileDetector(new LocalFileDetector());
-		return webDriver;
+		@SuppressWarnings("unchecked")
+		final Future<ZetaWebAppDriver> lazyWebDriver = (Future<ZetaWebAppDriver>) PlatformDrivers
+				.getInstance().resetDriver(url, capabilities,
+						MAX_DRIVER_CREATION_RETRIES);
+		return lazyWebDriver;
 	}
 
 	@Before("~@performance")
@@ -192,43 +187,10 @@ public class CommonWebAppSteps {
 				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
 		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
-		int tryNum = 1;
-		ZetaWebAppDriver webDriver;
-		WebDriverWait wait;
-		do {
-			try {
-				webDriver = resetWebAppDriver(url);
-				wait = PlatformDrivers.createDefaultExplicitWait(webDriver);
-				if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
-					// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
-					webDriver.manage().window().setPosition(new Point(0, 0));
-					webDriver
-							.manage()
-							.window()
-							.setSize(
-									new Dimension(MIN_WEBAPP_WINDOW_WIDTH,
-											MIN_WEBAPP_WINDOW_HEIGHT));
-				} else {
-					webDriver.manage().window().maximize();
-				}
-
-				PagesCollection.registrationPage = new RegistrationPage(
-						webDriver, wait, path);
-				PagesCollection.registrationPage.navigateTo();
-				break;
-			} catch (WebDriverException e) {
-				log.debug(String
-						.format("Driver initialization failed. Trying to recreate (%d of %d)...",
-								tryNum, MAX_DRIVER_CREATION_RETRIES));
-				e.printStackTrace();
-				if (tryNum >= MAX_DRIVER_CREATION_RETRIES) {
-					throw e;
-				} else {
-					tryNum++;
-				}
-			}
-		} while (tryNum <= MAX_DRIVER_CREATION_RETRIES);
-		ZetaFormatter.setDriver(PagesCollection.registrationPage.getDriver());
+		final Future<ZetaWebAppDriver> lazyWebDriver = resetWebAppDriver(url);
+		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
+				path);
+		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
 
 	/**
@@ -511,8 +473,7 @@ public class CommonWebAppSteps {
 	 */
 	@Given("^My browser supports fast location by XPath$")
 	public void MyBrowserSupportsFastLocationByXpath() {
-		if (WebAppExecutionContext.SlowXPathLocation
-				.existsInCurrentBrowser()) {
+		if (WebAppExecutionContext.SlowXPathLocation.existsInCurrentBrowser()) {
 			throw new PendingException();
 		}
 	}
@@ -591,7 +552,7 @@ public class CommonWebAppSteps {
 				if (WebAppExecutionContext.LoggingManagement
 						.isSupportedInCurrentBrowser()) {
 					writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
-							.getDriver(CURRENT_PLATFORM));
+							.getDriver(CURRENT_PLATFORM).get());
 				}
 			} finally {
 				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
