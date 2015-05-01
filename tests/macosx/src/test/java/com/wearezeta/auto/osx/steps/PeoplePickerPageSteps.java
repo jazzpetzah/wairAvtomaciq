@@ -26,9 +26,10 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @param user
 	 *            search string (usually user name or email)
+	 * @throws Exception 
 	 */
 	@When("I search for user (.*)")
-	public void ISearchForUser(String user) {
+	public void ISearchForUser(String user) throws Exception {
 		try {
 			user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		} catch (NoSuchUserException e) {

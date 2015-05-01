@@ -1,12 +1,13 @@
 package com.wearezeta.auto.osx.pages.common;
 
+import java.util.concurrent.Future;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -32,9 +33,8 @@ public class ChoosePicturePage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.ChoosePicturePage.xpathSelectColumnViewButton)
 	private WebElement selectColumnViewButton;
 
-	public ChoosePicturePage(ZetaOSXDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public ChoosePicturePage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public Boolean isVisible() {
@@ -45,7 +45,7 @@ public class ChoosePicturePage extends OSXPage {
 	}
 
 	public void searchForImage(String imageName) throws Exception {
-		DriverUtils.setDefaultImplicitWait(driver);
+		DriverUtils.setDefaultImplicitWait(this.getDriver());
 		String xpath = String.format(
 				OSXLocators.ChoosePicturePage.xpathFormatFinderImageFile,
 				imageName);
@@ -54,18 +54,18 @@ public class ChoosePicturePage extends OSXPage {
 		el.click();
 	}
 
-	public boolean selectColumnView() {
+	public boolean selectColumnView() throws Exception {
 		try {
 			selectColumnViewButton.click();
 			return true;
 		} catch (NoSuchElementException e) {
 			log.debug("Can't find column view selector.\n"
-					+ driver.getPageSource());
+					+ this.getDriver().getPageSource());
 			return false;
 		}
 	}
 
-	public void goToSelectedFavoritesFolder(String folderName) {
+	public void goToSelectedFavoritesFolder(String folderName) throws Exception {
 		try {
 			String xpath = String
 					.format(OSXLocators.ChoosePicturePage.xpathFormatFavoritesFolderPopUp,
@@ -74,7 +74,7 @@ public class ChoosePicturePage extends OSXPage {
 			folder.click();
 		} catch (NoSuchElementException e) {
 			log.debug("No " + folderName + " folder found in favorites.\n"
-					+ driver.getPageSource());
+					+ this.getDriver().getPageSource());
 		}
 	}
 
@@ -101,8 +101,8 @@ public class ChoosePicturePage extends OSXPage {
 					+ "tell application \"System Events\"\n"
 					+ "key code 36\n"
 					+ "end tell";
-			driver.executeScript(openImageScript);
-			driver.navigate().to(OSXExecutionContext.wirePath);
+			this.getDriver().executeScript(openImageScript);
+			this.getDriver().navigate().to(OSXExecutionContext.wirePath);
 		}
 	}
 }

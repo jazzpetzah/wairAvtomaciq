@@ -2,6 +2,7 @@ package com.wearezeta.auto.osx.pages;
 
 import java.awt.HeadlessException;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -9,7 +10,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.sikuli.script.App;
 import org.sikuli.script.Env;
 import org.sikuli.script.FindFailed;
@@ -78,19 +78,33 @@ public class ConversationInfoPage extends OSXPage {
 
 	private ConversationPage parent;
 
-	public ConversationInfoPage(ZetaOSXDriver driver, WebDriverWait wait,
+	public ConversationPage getParent() {
+		return parent;
+	}
+
+	public void setParent(ConversationPage parent) {
+		this.parent = parent;
+	}
+
+	public ConversationInfoPage(Future<ZetaOSXDriver> lazyDriver)
+			throws Exception {
+		this(lazyDriver, null);
+	}
+
+	public ConversationInfoPage(Future<ZetaOSXDriver> lazyDriver,
 			ConversationPage parent) throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 		this.parent = parent;
 	}
 
 	public boolean userIsNotExistInConversation(String user) throws Exception {
 		String xpath = String.format(
 				OSXLocators.xpathFormatPeoplePickerUserCell, user);
-		return DriverUtils.waitUntilElementDissapear(driver, By.xpath(xpath));
+		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
+				By.xpath(xpath));
 	}
 
-	public void selectUser(String user) {
+	public void selectUser(String user) throws Exception {
 		String xpath = String.format(
 				OSXLocators.xpathFormatPeoplePickerUserCell, user);
 		try {
@@ -98,7 +112,7 @@ public class ConversationInfoPage extends OSXPage {
 			el.click();
 		} catch (NoSuchElementException e) {
 			log.debug("Can't find user cell. Page source: "
-					+ driver.getPageSource());
+					+ this.getDriver().getPageSource());
 		}
 	}
 
@@ -120,11 +134,11 @@ public class ConversationInfoPage extends OSXPage {
 
 	private void confirmIfRequested() throws Exception {
 		try {
-			DriverUtils.setImplicitWaitValue(driver, 3);
+			DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
 			confirmationViewConfirmButton.click();
 		} catch (NoSuchElementException e) {
 		} finally {
-			DriverUtils.setDefaultImplicitWait(driver);
+			DriverUtils.setDefaultImplicitWait(this.getDriver());
 		}
 	}
 
@@ -140,7 +154,7 @@ public class ConversationInfoPage extends OSXPage {
 			groupChatAddPeopleButton.click();
 		}
 		confirmIfRequested();
-		return new PeoplePickerPage(this.getDriver(), this.getWait());
+		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 	public void removeUser() throws Exception {
@@ -179,10 +193,10 @@ public class ConversationInfoPage extends OSXPage {
 		return latestSetConversationName;
 	}
 
-	public int numberOfPeopleInConversation() {
+	public int numberOfPeopleInConversation() throws Exception {
 		int result = -1;
-		List<WebElement> elements = getDriver().findElements(By
-				.xpath(OSXLocators.xpathNumberOfPeopleInChat));
+		List<WebElement> elements = getDriver().findElements(
+				By.xpath(OSXLocators.xpathNumberOfPeopleInChat));
 		for (WebElement element : elements) {
 			String value = element.getText();
 			if (value.contains(OSXLocators.peopleCountTextSubstring)) {
@@ -193,9 +207,9 @@ public class ConversationInfoPage extends OSXPage {
 		return result;
 	}
 
-	public int numberOfParticipantsAvatars() {
-		List<WebElement> elements = getDriver().findElements(By
-				.xpath(OSXLocators.xpathUserAvatar));
+	public int numberOfParticipantsAvatars() throws Exception {
+		List<WebElement> elements = getDriver().findElements(
+				By.xpath(OSXLocators.xpathUserAvatar));
 		return elements.size();
 	}
 
@@ -225,7 +239,7 @@ public class ConversationInfoPage extends OSXPage {
 		userProfileViewBackButton.click();
 	}
 
-	public boolean isContactPersonalInfoAppear(String contact) {
+	public boolean isContactPersonalInfoAppear(String contact) throws Exception {
 		String xpath = String.format(
 				OSXLocators.xpathFormatUserProfileViewContactName, contact);
 		WebElement el = getDriver().findElement(By.xpath(xpath));
@@ -244,17 +258,17 @@ public class ConversationInfoPage extends OSXPage {
 	}
 
 	public boolean isOpenConversationButtonExists() throws Exception {
-		return DriverUtils.isElementDisplayed(driver,
+		return DriverUtils.isElementDisplayed(this.getDriver(),
 				By.xpath(OSXLocators.xpathOpenSingleChatButton), 5);
 	}
 
 	public boolean isRemoveUserFromConversationButtonExists() throws Exception {
-		return DriverUtils.isElementDisplayed(driver,
+		return DriverUtils.isElementDisplayed(this.getDriver(),
 				By.id(OSXLocators.idRemoveUserFromConversation), 5);
 	}
 
 	public boolean isConnectButtonExists() throws Exception {
-		return DriverUtils.isElementDisplayed(driver,
+		return DriverUtils.isElementDisplayed(this.getDriver(),
 				By.xpath(OSXLocators.xpathConnectToUserButton), 5);
 	}
 
@@ -267,7 +281,8 @@ public class ConversationInfoPage extends OSXPage {
 		return pendingButton.isDisplayed();
 	}
 
-	public boolean isSentConnectionRequestMessageExists(String message) {
+	public boolean isSentConnectionRequestMessageExists(String message)
+			throws Exception {
 		String xpath = String.format(
 				OSXLocators.xpathFormatSentConnectionRequestMessage, message);
 		WebElement el = getDriver().findElement(By.xpath(xpath));
@@ -275,8 +290,9 @@ public class ConversationInfoPage extends OSXPage {
 	}
 
 	public boolean isEmailButtonExists(String email) throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(String
-				.format(OSXLocators.xpathSingleChatUserEmailButton, email)));
+		return DriverUtils.waitUntilElementAppears(this.getDriver(), By
+				.xpath(String.format(
+						OSXLocators.xpathSingleChatUserEmailButton, email)));
 	}
 
 	public NSPoint retrieveAvatarFullScreenWindowSize() {
@@ -295,6 +311,6 @@ public class ConversationInfoPage extends OSXPage {
 
 	public ConnectToPopover connectToUser() throws Exception {
 		connectToUserButton.click();
-		return new ConnectToPopover(this.getDriver(), this.getWait());
+		return new ConnectToPopover(this.getLazyDriver());
 	}
 }

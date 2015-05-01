@@ -1,7 +1,7 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -10,7 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -59,22 +58,21 @@ public class SelfProfilePage extends MainWirePage {
 
 	private AccentColorPicker accentColorPicker;
 
-	public SelfProfilePage(ZetaOSXDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public SelfProfilePage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public void openPictureSettings() throws Exception {
-		Actions builder = new Actions(driver);
+		Actions builder = new Actions(this.getDriver());
 		builder.moveToElement(window).build().perform();
 		userPictureButton.click();
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
 
 	public ChoosePicturePage openChooseImageFileDialog() throws Exception {
 		choosePictureFromImageFileButton.click();
-		return new ChoosePicturePage(this.getDriver(), this.getWait());
+		return new ChoosePicturePage(this.getLazyDriver());
 	}
 
 	public void openCameraDialog() {
@@ -92,7 +90,7 @@ public class SelfProfilePage extends MainWirePage {
 			pictureSettingsCloseButton.click();
 		} catch (NoSuchElementException e) {
 		}
-		DriverUtils.waitUntilElementDissapear(driver,
+		DriverUtils.waitUntilElementDissapear(this.getDriver(),
 				By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
 
@@ -106,7 +104,7 @@ public class SelfProfilePage extends MainWirePage {
 			pictureSettingsCloseButton.click();
 		} catch (NoSuchElementException e) {
 		}
-		DriverUtils.waitUntilElementDissapear(driver,
+		DriverUtils.waitUntilElementDissapear(this.getDriver(),
 				By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
 
@@ -123,10 +121,11 @@ public class SelfProfilePage extends MainWirePage {
 				OSXLocators.xpathFormatSelfProfileNameTextField, name);
 		log.debug("Looking for name " + name + " by xpath '" + xpath
 				+ "' in user profile.");
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 60);
+		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+				By.xpath(xpath), 60);
 	}
 
-	public void changeUserName(String oldName, String newName) {
+	public void changeUserName(String oldName, String newName) throws Exception {
 		String xpath = String.format(
 				OSXLocators.xpathFormatSelfProfileNameTextField, oldName);
 		WebElement selfName = getDriver().findElement(By.xpath(xpath));
@@ -135,22 +134,22 @@ public class SelfProfilePage extends MainWirePage {
 		selfName.sendKeys(newName + "\\n");
 	}
 
-	public void changeAccentColor(AccentColor color) throws IOException {
+	public void changeAccentColor(AccentColor color) throws Exception {
 		accentColorPicker = findAccentColorPicker();
 		accentColorPicker.changeAccentColor(color);
 	}
 
-	public AccentColorPicker findAccentColorPicker() throws IOException {
+	public AccentColorPicker findAccentColorPicker() throws Exception {
 		return AccentColorPicker.findColorPickerInWindow(this.getDriver(),
 				this.window);
 	}
 
-	public AccentColor findSelectedAccentColor() throws IOException {
+	public AccentColor findSelectedAccentColor() throws Exception {
 		return AccentColorPicker.findSelectedAccentColor(this.getDriver(),
 				this.window);
 	}
 
-	public AccentColor findBackgroundSelfProfileColor() throws IOException {
+	public AccentColor findBackgroundSelfProfileColor() throws Exception {
 		BufferedImage selfProfileScreen = OSXCommonUtils.takeElementScreenshot(
 				window, this.getDriver());
 		return AccentColorUtil

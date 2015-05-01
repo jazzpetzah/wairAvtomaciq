@@ -1,12 +1,12 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -18,27 +18,28 @@ public class ConnectionRequestsPage extends OSXPage {
 	private static final Logger log = ZetaLogger
 			.getLog(ConnectionRequestsPage.class.getSimpleName());
 
-	public ConnectionRequestsPage(ZetaOSXDriver driver, WebDriverWait wait)
+	public ConnectionRequestsPage(Future<ZetaOSXDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	public boolean isRequestFromUserWithEmailExists(String email)
 			throws Exception {
 		String xpath = String.format(
 				OSXLocators.ConnectionRequestsPage.xpathFormatEmailText, email);
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 3);
+		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+				By.xpath(xpath), 3);
 	}
 
 	public boolean isRequestFromUserWithEmailNotExists(String email)
 			throws Exception {
 		String xpath = String.format(
 				OSXLocators.ConnectionRequestsPage.xpathFormatEmailText, email);
-		return DriverUtils
-				.waitUntilElementDissapear(driver, By.xpath(xpath), 3);
+		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
+				By.xpath(xpath), 3);
 	}
 
-	public void acceptRequestFromUserWithEmail(String email) {
+	public void acceptRequestFromUserWithEmail(String email) throws Exception {
 		String xpath = String.format(
 				OSXLocators.ConnectionRequestsPage.xpathFormatConnectButton,
 				email);
@@ -46,7 +47,7 @@ public class ConnectionRequestsPage extends OSXPage {
 		connectButton.click();
 	}
 
-	public void ignoreRequestFromUserWithEmail(String email) {
+	public void ignoreRequestFromUserWithEmail(String email) throws Exception {
 		String xpath = String.format(
 				OSXLocators.ConnectionRequestsPage.xpathFormatBlockButton,
 				email);
@@ -54,10 +55,11 @@ public class ConnectionRequestsPage extends OSXPage {
 		blockButton.click();
 	}
 
-	public void acceptAllRequests() {
-		List<WebElement> connectButtons = driver
-				.findElements(By
-						.id(OSXLocators.ConnectionRequestsPage.idAcceptConnectionRequestButton));
+	public void acceptAllRequests() throws Exception {
+		List<WebElement> connectButtons = this
+				.getDriver()
+				.findElements(
+						By.id(OSXLocators.ConnectionRequestsPage.idAcceptConnectionRequestButton));
 		for (WebElement connectButton : connectButtons) {
 			try {
 				connectButton.click();
@@ -67,10 +69,11 @@ public class ConnectionRequestsPage extends OSXPage {
 		}
 	}
 
-	public void ignoreAllRequests() {
-		List<WebElement> connectButtons = driver
-				.findElements(By
-						.id(OSXLocators.ConnectionRequestsPage.idIgnoreConnectionRequestButton));
+	public void ignoreAllRequests() throws Exception {
+		List<WebElement> connectButtons = this
+				.getDriver()
+				.findElements(
+						By.id(OSXLocators.ConnectionRequestsPage.idIgnoreConnectionRequestButton));
 		for (WebElement connectButton : connectButtons) {
 			try {
 				connectButton.click();

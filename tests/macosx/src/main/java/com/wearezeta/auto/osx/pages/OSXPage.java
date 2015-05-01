@@ -16,6 +16,12 @@ public abstract class OSXPage extends BasePage {
 	protected ZetaOSXDriver getDriver() throws Exception {
 		return (ZetaOSXDriver) super.getDriver();
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Future<ZetaOSXDriver> getLazyDriver() {
+		return (Future<ZetaOSXDriver>) super.getLazyDriver();
+	}
 
 	public OSXPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
 		this(lazyDriver, null);
