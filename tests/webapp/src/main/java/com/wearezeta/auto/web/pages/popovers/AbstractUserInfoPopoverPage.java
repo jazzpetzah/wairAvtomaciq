@@ -1,14 +1,17 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.util.concurrent.Future;
+
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
+
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.HREF_ATTRIBUTE_LOCATOR;
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 
@@ -22,10 +25,9 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantInfoPage.xpathAvatar)
 	private WebElement avatar;
 
-	public AbstractUserInfoPopoverPage(ZetaWebAppDriver driver,
-			WebDriverWait wait, PeoplePopoverContainer container)
-			throws Exception {
-		super(driver, wait, container);
+	public AbstractUserInfoPopoverPage(Future<ZetaWebAppDriver> lazyDriver,
+			PeoplePopoverContainer container) throws Exception {
+		super(lazyDriver, container);
 	}
 
 	@Override
@@ -46,7 +48,7 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 	}
 
 	public void clickRemoveFromGroupChat() throws Exception {
-		DriverUtils.waitUntilElementClickable(driver, removeButton);
+		DriverUtils.waitUntilElementClickable(this.getDriver(), removeButton);
 		removeButton.click();
 	}
 

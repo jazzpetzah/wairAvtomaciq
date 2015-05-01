@@ -1,12 +1,12 @@
 package com.wearezeta.auto.web.pages;
 
 import java.util.Random;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -31,15 +31,15 @@ public class SelfPictureUploadPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton)
 	private WebElement selectPictureButton;
 
-	public SelfPictureUploadPage(ZetaWebAppDriver driver, WebDriverWait wait)
+	public SelfPictureUploadPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	public void waitUntilNotVisible(int secondsTimeout) throws Exception {
 		assert DriverUtils
 				.waitUntilElementDissapear(
-						driver,
+						this.getDriver(),
 						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton),
 						secondsTimeout) : "Picture selection dialog button is still visible after "
 				+ secondsTimeout + " second(s) timeout";
@@ -47,7 +47,7 @@ public class SelfPictureUploadPage extends WebPage {
 
 	public void waitUntilButtonsAreClickable(int secondsTimeout)
 			throws Exception {
-		assert DriverUtils.waitUntilElementClickable(driver,
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				selectPictureButton, secondsTimeout) : "Picture selection dialog button was not clickable within "
 				+ secondsTimeout + " second(s) timeout";
 	}
@@ -58,10 +58,10 @@ public class SelfPictureUploadPage extends WebPage {
 		final String showPathInputJScript = "$(\""
 				+ WebAppLocators.SelfPictureUploadPage.cssSendPictureInput
 				+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});";
-		driver.executeScript(showPathInputJScript);
+		this.getDriver().executeScript(showPathInputJScript);
 		assert DriverUtils
 				.isElementDisplayed(
-						driver,
+						this.getDriver(),
 						By.cssSelector(WebAppLocators.SelfPictureUploadPage.cssSendPictureInput),
 						5);
 		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Safari) {
@@ -75,16 +75,16 @@ public class SelfPictureUploadPage extends WebPage {
 	public ContactsUploadPage confirmPictureSelection() throws Exception {
 		assert DriverUtils
 				.isElementDisplayed(
-						driver,
+						this.getDriver(),
 						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathConfirmPictureSelectionButton),
 						5);
 		pictureSelectionConfirmButton.click();
-		return new ContactsUploadPage(this.getDriver(), this.getWait());
+		return new ContactsUploadPage(this.getLazyDriver());
 	}
 
 	public void forceCarouselMode() {
 		final String forceCarouselScript = "window.wire.app.view.content.self_profile.show_get_picture();";
-		driver.executeScript(forceCarouselScript);
+		this.getDriver().executeScript(forceCarouselScript);
 	}
 
 	private static final Random random = new Random();

@@ -51,9 +51,8 @@ public class ContactListPageSteps {
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isSelfNameEntrySelected());
 		if (PagesCollection.selfProfilePage == null) {
-			PagesCollection.selfProfilePage = new SelfProfilePage(
-					PagesCollection.contactListPage.getDriver(),
-					PagesCollection.contactListPage.getWait());
+			PagesCollection.selfProfilePage = (SelfProfilePage) PagesCollection.contactListPage
+					.instantiatePage(SelfProfilePage.class);
 		}
 	}
 
@@ -172,10 +171,11 @@ public class ContactListPageSteps {
 	 * Open archived conversations
 	 * 
 	 * @step. ^I open archive$
+	 * @throws Exception 
 	 * 
 	 */
 	@When("^I open archive$")
-	public void IOpenArchive() {
+	public void IOpenArchive() throws Exception {
 		PagesCollection.contactListPage.openArchive();
 	}
 

@@ -16,10 +16,20 @@ public class WebPage extends BasePage {
 		return (ZetaWebAppDriver) this.getDriver();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Future<ZetaWebAppDriver> getLazyDriver() {
+		return (Future<ZetaWebAppDriver>) super.getLazyDriver();
+	}
+	
 	private String url = null;
 
 	public String getUrl() {
 		return this.url;
+	}
+	
+	protected void setUrl(String url) {
+		this.url = url;
 	}
 
 	public WebPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {

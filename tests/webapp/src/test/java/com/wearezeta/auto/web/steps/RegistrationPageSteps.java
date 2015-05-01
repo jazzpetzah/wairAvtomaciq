@@ -183,9 +183,9 @@ public class RegistrationPageSteps {
 	public void WhenIActivateUserByUrl() throws Exception {
 		final String link = BackendAPIWrappers
 				.getUserActivationLink(this.activationMessage);
-		ActivationPage activationPage = new ActivationPage(
-				PagesCollection.registrationPage.getDriver(),
-				PagesCollection.registrationPage.getWait(), link);
+		ActivationPage activationPage = (ActivationPage) PagesCollection.registrationPage
+				.instantiatePage(ActivationPage.class);
+		activationPage.setUrl(link);
 		activationPage.navigateTo();
 		PagesCollection.contactListPage = activationPage
 				.verifyActivation(ACTIVATION_TIMEOUT);
@@ -202,8 +202,8 @@ public class RegistrationPageSteps {
 						.apply(userIndex));
 
 		if (PagesCollection.loginPage == null) {
-			PagesCollection.loginPage = new LoginPage(
-					activationPage.getDriver(), activationPage.getWait());
+			PagesCollection.loginPage = (LoginPage) activationPage
+					.instantiatePage(LoginPage.class);
 		}
 		PagesCollection.loginPage.waitForLogin();
 	}

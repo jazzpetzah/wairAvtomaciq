@@ -1,9 +1,9 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.util.concurrent.Future;
+
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
-
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 
@@ -12,17 +12,17 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 	private BlockUserConfirmationPopoverPage blockUserConfirmationPopoverPage;
 	private PendingParticipantInfoPopoverPage pendingParticipantInfoPopoverPage;
 
-	public SingleUserPopoverContainer(ZetaWebAppDriver driver,
-			WebDriverWait wait) throws Exception {
-		super(driver, wait);
-		this.singleUserPopoverPage = new SingleUserInfoPopoverPage(driver,
-				wait, this);
+	public SingleUserPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
+			throws Exception {
+		super(lazyDriver);
+		this.singleUserPopoverPage = new SingleUserInfoPopoverPage(lazyDriver,
+				this);
 		this.blockUserConfirmationPopoverPage = new BlockUserConfirmationPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.pendingParticipantInfoPopoverPage = new PendingParticipantInfoPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.connectedParticipantInfoPopoverPage = new ConnectedParticipantInfoPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 	}
 
 	@Override

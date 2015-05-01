@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
 import java.util.NoSuchElementException;
+import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
@@ -8,7 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -23,14 +23,14 @@ public class SettingsPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.SettingsPage.cssSoundAlertsLevel)
 	private WebElement soundAlertsLevel;
 
-	public SettingsPage(ZetaWebAppDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public SettingsPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public boolean isVisible() throws Exception {
 		final String xpath = WebAppLocators.SettingsPage.xpathSettingsDialogRoot;
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
+		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+				By.xpath(xpath));
 	}
 
 	public void clickCloseButton() {
@@ -47,7 +47,8 @@ public class SettingsPage extends WebPage {
 			return this.intRepresentation;
 		}
 
-		private SoundAlertsLevel(String stringRepresentation, int intRepresentation) {
+		private SoundAlertsLevel(String stringRepresentation,
+				int intRepresentation) {
 			this.stringRepresentation = stringRepresentation;
 			this.intRepresentation = intRepresentation;
 		}
@@ -83,7 +84,7 @@ public class SettingsPage extends WebPage {
 	public void setSoundAlertsLevel(SoundAlertsLevel newLevel) {
 		assert SoundAlertsLevel.values().length > 1;
 		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Firefox) {
-			final Actions builder = new Actions(driver);
+			final Actions builder = new Actions(this.getDriver());
 			final int width = soundAlertsLevel.getSize().width;
 			final int height = soundAlertsLevel.getSize().height;
 			final int dstX = (width - SLIDER_CIRCLE_SIZE)
@@ -101,7 +102,8 @@ public class SettingsPage extends WebPage {
 							+ ");",
 					"wire.app.view.content.self_profile.user_repository.save_sound_settings('"
 							+ newLevel.toString().toLowerCase() + "');" };
-			driver.executeScript(StringUtils.join(sliderMoveCode, "\n"));
+			this.getDriver().executeScript(
+					StringUtils.join(sliderMoveCode, "\n"));
 		}
 	}
 

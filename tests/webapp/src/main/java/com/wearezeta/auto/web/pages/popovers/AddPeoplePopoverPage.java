@@ -1,16 +1,17 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.util.concurrent.Future;
+
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
 
 class AddPeoplePopoverPage extends AbstractPopoverPage {
-	public AddPeoplePopoverPage(ZetaWebAppDriver driver, WebDriverWait wait,
+	public AddPeoplePopoverPage(Future<ZetaWebAppDriver> lazyDriver,
 			PeoplePopoverContainer container) throws Exception {
-		super(driver, wait, container);
+		super(lazyDriver, container);
 	}
 
 	@Override
@@ -25,7 +26,8 @@ class AddPeoplePopoverPage extends AbstractPopoverPage {
 	}
 
 	public void searchForUser(String searchText) throws Exception {
-		DriverUtils.waitUntilElementClickable(driver, getSearchFieldElement());
+		DriverUtils.waitUntilElementClickable(this.getDriver(),
+				getSearchFieldElement());
 		getSearchFieldElement().clear();
 		getSearchFieldElement().sendKeys(searchText);
 	}
@@ -36,7 +38,7 @@ class AddPeoplePopoverPage extends AbstractPopoverPage {
 	}
 
 	public void clickCreateGroupConversation() throws Exception {
-		DriverUtils.waitUntilElementClickable(driver,
+		DriverUtils.waitUntilElementClickable(this.getDriver(),
 				getCreateGroupConversationButton());
 		getCreateGroupConversationButton().click();
 	}

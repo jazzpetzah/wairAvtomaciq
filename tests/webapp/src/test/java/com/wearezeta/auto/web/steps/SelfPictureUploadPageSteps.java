@@ -20,9 +20,8 @@ public class SelfPictureUploadPageSteps {
 	public void ISeeSelfPictureUpload(String shouldNotBeVisible)
 			throws Exception {
 		if (PagesCollection.selfPictureUploadPage == null) {
-			PagesCollection.selfPictureUploadPage = new SelfPictureUploadPage(
-					PagesCollection.registrationPage.getDriver(),
-					PagesCollection.registrationPage.getWait());
+			PagesCollection.selfPictureUploadPage = (SelfPictureUploadPage) PagesCollection.registrationPage
+					.instantiatePage(SelfPictureUploadPage.class);
 		}
 		if (shouldNotBeVisible == null) {
 			PagesCollection.selfPictureUploadPage

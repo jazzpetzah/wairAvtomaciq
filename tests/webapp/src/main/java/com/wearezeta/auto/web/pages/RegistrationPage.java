@@ -1,11 +1,12 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.concurrent.Future;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -35,9 +36,9 @@ public class RegistrationPage extends WebPage {
 
 	private static final int MAX_TRIES = 3;
 
-	public RegistrationPage(ZetaWebAppDriver driver, WebDriverWait wait,
-			String url) throws Exception {
-		super(driver, wait, url);
+	public RegistrationPage(Future<ZetaWebAppDriver> lazyDriver, String url)
+			throws Exception {
+		super(lazyDriver, url);
 	}
 
 	@Override
@@ -60,7 +61,8 @@ public class RegistrationPage extends WebPage {
 					log.error(String
 							.format("Landing page has failed to load. Trying to refresh (%s of %s)...",
 									ntry + 1, MAX_TRIES));
-					driver.navigate().to(driver.getCurrentUrl());
+					this.getDriver().navigate()
+							.to(this.getDriver().getCurrentUrl());
 				} else {
 					break;
 				}
@@ -92,22 +94,26 @@ public class RegistrationPage extends WebPage {
 					log.debug(String
 							.format("Trying to refresh currupted login page (retry %s of %s)...",
 									ntry + 1, MAX_TRIES));
-					driver.navigate().to(driver.getCurrentUrl());
+					this.getDriver().navigate()
+							.to(this.getDriver().getCurrentUrl());
 				}
 			} catch (Exception e) {
-				driver.navigate().to(driver.getCurrentUrl());
+				this.getDriver().navigate()
+						.to(this.getDriver().getCurrentUrl());
 			}
 			ntry++;
 		}
 		assert DriverUtils.isElementDisplayed(this.getDriver(),
 				signInBtnlocator) : "Sign in page is not visible";
 
-		return new LoginPage(this.getDriver(), this.getWait());
+		return new LoginPage(this.getLazyDriver());
 	}
 
 	private void removeReadonlyAttr(String cssLocator) {
-		driver.executeScript(String.format(
-				"$(document).find(\"%s\").removeAttr('readonly');", cssLocator));
+		this.getDriver().executeScript(
+				String.format(
+						"$(document).find(\"%s\").removeAttr('readonly');",
+						cssLocator));
 	}
 
 	public void enterName(String name) {
@@ -129,7 +135,8 @@ public class RegistrationPage extends WebPage {
 	}
 
 	public void submitRegistration() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(driver, createAccount) : "'Create Account' button is not clickable after timeout";
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				createAccount) : "'Create Account' button is not clickable after timeout";
 		createAccount.click();
 	}
 

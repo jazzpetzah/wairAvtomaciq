@@ -1,6 +1,6 @@
 package com.wearezeta.auto.web.pages.popovers;
 
-import org.openqa.selenium.support.ui.WebDriverWait;
+import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
@@ -8,10 +8,10 @@ import com.wearezeta.auto.web.locators.PopoverLocators;
 public class ConnectToPopoverContainer extends AbstractPopoverContainer {
 	private ConnectToPopoverPage connectToPopoverPage;
 
-	public ConnectToPopoverContainer(ZetaWebAppDriver driver, WebDriverWait wait)
+	public ConnectToPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
-		this.connectToPopoverPage = new ConnectToPopoverPage(driver, wait, this);
+		super(lazyDriver);
+		this.connectToPopoverPage = new ConnectToPopoverPage(lazyDriver, this);
 	}
 
 	@Override

@@ -21,9 +21,8 @@ public class SettingsPageSteps {
 	 */
 	@Then("^I see Settings dialog$")
 	public void ISeeSetingsDialog() throws Exception {
-		PagesCollection.settingsPage = new SettingsPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+		PagesCollection.settingsPage = (SettingsPage) PagesCollection.loginPage
+				.instantiatePage(SettingsPage.class);
 		Assert.assertTrue(PagesCollection.settingsPage.isVisible());
 	}
 
