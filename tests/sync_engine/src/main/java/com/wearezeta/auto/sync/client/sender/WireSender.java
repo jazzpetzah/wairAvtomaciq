@@ -104,7 +104,8 @@ public abstract class WireSender extends Thread {
 	protected abstract void sendTextMessageClient(String message)
 			throws Exception;
 
-	public void sendAllMessagesIos(String messages[], boolean checkTime) {
+	public void sendAllMessagesIos(String messages[], boolean checkTime)
+			throws Exception {
 		com.wearezeta.auto.ios.pages.DialogPage dialogPage = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
 		Date sendDate = new Date();
 		try {
