@@ -360,24 +360,24 @@ public class RegistrationPageSteps {
 		PagesCollection.registrationPage.createAccount();
 	}
 
-	@Then("^I confirm that (\\d+) recent emails in inbox contain (\\d+) for current recipient$")
-	public void VerifyRecipientsCount(final int recentEmailsCnt,
-			final int expectedCnt) throws Throwable {
+	/**
+	 * Verifies that mailbox contains at least X emails for the current
+	 * recipient
+	 * 
+	 * @step. ^I confirm that inbox contains (\\d+) emails? for current
+	 *        recipient$
+	 * 
+	 * @param expectedCnt
+	 *            expected messages count
+	 * @throws Exception
+	 */
+	@Then("^I confirm that inbox contains (\\d+) emails? for current recipient$")
+	public void VerifyRecipientsCount(int expectedCnt) throws Exception {
 		String expectedRecipient = this.userToRegister.getEmail();
-		int checksCnt = 0;
-		int actualCnt = 0;
-		while (checksCnt < maxCheckCnt) {
-			actualCnt = PagesCollection.registrationPage
-					.getRecentEmailsCountForRecipient(recentEmailsCnt,
-							expectedRecipient);
-			if (actualCnt == expectedCnt) {
-				break;
-			}
-			checksCnt++;
-		}
-		Assert.assertTrue("Expected mail count is : " + expectedCnt
-				+ ", but actual count is : " + actualCnt,
-				actualCnt == expectedCnt);
+		PagesCollection.registrationPage
+				.waitUntilEmailsCountReachesExpectedValue(expectedCnt,
+						expectedRecipient,
+						BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT);
 	}
 
 	@Then("^I resend verification email$")

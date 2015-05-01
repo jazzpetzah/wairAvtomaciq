@@ -3,8 +3,10 @@ package com.wearezeta.auto.common.email;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.Map;
 
+import javax.mail.Header;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -41,6 +43,21 @@ public class MessagingUtils {
 		return deliveredTo;
 	}
 
+	public static String extractDeliveredToValue(Message msg) throws Exception {
+		// Get emails for all recipients by default
+		String deliveredTo = getAccountName();
+		@SuppressWarnings("unchecked")
+		final Enumeration<Header> hdrs = msg.getAllHeaders();
+		while (hdrs.hasMoreElements()) {
+			final Header hdr = hdrs.nextElement();
+			if (hdr.getName().equals(DELIVERED_TO_HEADER)) {
+				deliveredTo = hdr.getValue();
+				break;
+			}
+		}
+		return deliveredTo;
+	}
+	
 	public static String getServerHost() throws Exception {
 		return CommonUtils
 				.getDefaultEmailServerFromConfig(MessagingUtils.class);

@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common.email.handlers;
 
 import java.lang.reflect.Constructor;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -15,10 +14,6 @@ public class IMAPSMailbox implements ISupportsMessagesPolling {
 			.getSimpleName());
 
 	private ISupportsMessagesPolling mailboxHandler;
-
-	public List<String> getRecentMessages(int msgsCount) throws Exception {
-		return mailboxHandler.getRecentMessages(msgsCount);
-	}
 
 	public Future<String> getMessage(Map<String, String> expectedHeaders,
 			int timeoutSeconds) throws Exception {
@@ -53,5 +48,12 @@ public class IMAPSMailbox implements ISupportsMessagesPolling {
 	private IMAPSMailbox(ISupportsMessagesPolling mailboxHandler)
 			throws Exception {
 		this.mailboxHandler = mailboxHandler;
+	}
+
+	@Override
+	public void waitUntilMessagesCountReaches(String deliveredTo,
+			int expectedMsgsCount, int timeoutSeconds) throws Exception {
+		this.mailboxHandler.waitUntilMessagesCountReaches(deliveredTo,
+				expectedMsgsCount, timeoutSeconds);
 	}
 }

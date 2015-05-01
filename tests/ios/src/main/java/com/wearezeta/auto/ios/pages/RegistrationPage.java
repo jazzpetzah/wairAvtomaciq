@@ -19,7 +19,6 @@ import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.email.BackendMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 
 public class RegistrationPage extends IOSPage {
@@ -443,22 +442,11 @@ public class RegistrationPage extends IOSPage {
 				1);
 	}
 
-	public int getRecentEmailsCountForRecipient(int allRecentEmailsCnt,
-			String expectedRecipient) throws Exception {
+	public void waitUntilEmailsCountReachesExpectedValue(int expectedMsgsCount,
+			String recipient, int timeoutSeconds) throws Exception {
 		IMAPSMailbox mailbox = IMAPSMailbox.getInstance();
-
-		List<String> allEmails = mailbox.getRecentMessages(allRecentEmailsCnt);
-		final int actualCnt = (int) allEmails
-				.stream()
-				.filter(x -> {
-					try {
-						return new BackendMessage(x).getLastUserEmail().equals(
-								expectedRecipient);
-					} catch (Exception e) {
-						return false;
-					}
-				}).count();
-		return actualCnt;
+		mailbox.waitUntilMessagesCountReaches(recipient, expectedMsgsCount,
+				timeoutSeconds);
 	}
 
 	public boolean isEmailVerifPromptVisible() {

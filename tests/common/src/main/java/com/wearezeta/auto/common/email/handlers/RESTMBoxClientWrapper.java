@@ -27,19 +27,13 @@ class RESTMBoxClientWrapper implements ISupportsMessagesPolling {
 			int maxCount, int timeoutMilliseconds) throws Exception {
 		List<String> result = new ArrayList<String>();
 		JSONArray recentsEmails;
-		recentsEmails = RESTMBoxAPI.getRecentEmailsForUser(email,
-				minCount, maxCount, timeoutMilliseconds);
+		recentsEmails = RESTMBoxAPI.getRecentEmailsForUser(email, minCount,
+				maxCount, timeoutMilliseconds);
 		for (int i = 0; i < recentsEmails.length(); i++) {
 			final JSONObject recentEmailInfo = recentsEmails.getJSONObject(i);
 			result.add(recentEmailInfo.getString("raw_text"));
 		}
 		return result;
-	}
-
-	@Override
-	public List<String> getRecentMessages(int msgsCount) throws Exception {
-		return getRecentMessages(MessagingUtils.getAccountName(), 0, msgsCount,
-				0);
 	}
 
 	private final ExecutorService pool = Executors
@@ -65,5 +59,12 @@ class RESTMBoxClientWrapper implements ISupportsMessagesPolling {
 				"Started email listener for message containing headers %s...",
 				expectedHeaders.toString()));
 		return pool.submit(listener);
+	}
+
+	@Override
+	public void waitUntilMessagesCountReaches(String deliveredTo,
+			int expectedMsgsCount, int timeoutSeconds) throws Exception {
+		getRecentMessages(deliveredTo, expectedMsgsCount, expectedMsgsCount,
+				timeoutSeconds * 1000);
 	}
 }

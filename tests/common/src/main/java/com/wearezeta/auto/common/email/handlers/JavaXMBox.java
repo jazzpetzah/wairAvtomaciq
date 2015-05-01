@@ -1,7 +1,5 @@
 package com.wearezeta.auto.common.email.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -12,6 +10,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import javax.mail.*;
+import javax.mail.search.SearchTerm;
 
 import org.apache.log4j.Logger;
 
@@ -129,27 +128,6 @@ class JavaXMBox implements ISupportsMessagesPolling {
 		}
 	}
 
-	public List<String> getRecentMessages(int msgsCount) throws Exception {
-		this.openFolder(false);
-		try {
-			int currentMsgsCount = folder.getMessageCount();
-			Message[] fetchedMsgs;
-			if (msgsCount > currentMsgsCount) {
-				fetchedMsgs = folder.getMessages();
-			} else {
-				fetchedMsgs = folder.getMessages(currentMsgsCount - msgsCount,
-						currentMsgsCount);
-			}
-			List<String> result = new ArrayList<String>();
-			for (Message fetchedMsg : fetchedMsgs) {
-				result.add(MessagingUtils.msgToString(fetchedMsg));
-			}
-			return result;
-		} finally {
-			this.closeFolder(false);
-		}
-	}
-
 	private final ExecutorService pool = Executors.newFixedThreadPool(1);
 
 	public Future<String> getMessage(Map<String, String> expectedHeaders,
@@ -186,9 +164,7 @@ class JavaXMBox implements ISupportsMessagesPolling {
 		do {
 			try {
 				store = session.getStore(MAIL_PROTOCOL);
-				store.connect(
-						MessagingUtils.getServerHost(),
-						-1,
+				store.connect(MessagingUtils.getServerHost(), -1,
 						MessagingUtils.getAccountName(),
 						MessagingUtils.getAccountPassword());
 				break;
@@ -219,5 +195,44 @@ class JavaXMBox implements ISupportsMessagesPolling {
 		} finally {
 			storeLock.release();
 		}
+	}
+
+	@Override
+	public void waitUntilMessagesCountReaches(String deliveredTo,
+			int expectedMsgsCount, int timeoutSeconds) throws Exception {
+		SearchTerm term = new SearchTerm() {
+			private static final long serialVersionUID = 1L;
+
+			public boolean match(Message message) {
+				try {
+					if (MessagingUtils.extractDeliveredToValue(message).equals(
+							deliveredTo)) {
+						return true;
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				return false;
+			}
+		};
+
+		int fetchedMsgsCount = 0;
+		this.openFolder(false);
+		try {
+			final long millisecondsStarted = System.currentTimeMillis();
+			do {
+				fetchedMsgsCount = folder.search(term).length;
+				if (fetchedMsgsCount >= expectedMsgsCount) {
+					break;
+				}
+				Thread.sleep(NEW_MSG_CHECK_INTERVAL);
+			} while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+		} finally {
+			this.closeFolder(false);
+		}
+		assert fetchedMsgsCount >= expectedMsgsCount : String
+				.format("Count of messages delivered to %s is %s, but should be at least %s after %s second(s)",
+						deliveredTo, fetchedMsgsCount, expectedMsgsCount,
+						timeoutSeconds);
 	}
 }
