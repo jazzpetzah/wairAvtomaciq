@@ -42,7 +42,7 @@ public class ConnectionRequestsPage extends OSXPage {
 		String xpath = String.format(
 				OSXLocators.ConnectionRequestsPage.xpathFormatConnectButton,
 				email);
-		WebElement connectButton = driver.findElement(By.xpath(xpath));
+		WebElement connectButton = getDriver().findElement(By.xpath(xpath));
 		connectButton.click();
 	}
 
@@ -50,7 +50,7 @@ public class ConnectionRequestsPage extends OSXPage {
 		String xpath = String.format(
 				OSXLocators.ConnectionRequestsPage.xpathFormatBlockButton,
 				email);
-		WebElement blockButton = driver.findElement(By.xpath(xpath));
+		WebElement blockButton = getDriver().findElement(By.xpath(xpath));
 		blockButton.click();
 	}
 

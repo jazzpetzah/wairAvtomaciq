@@ -49,7 +49,7 @@ public class SelfProfilePage extends WebPage {
 		DriverUtils.waitUntilElementAppears(driver, By.xpath(menuXPath));
 		final String menuItemXPath = WebAppLocators.SelfProfilePage.xpathGearMenuItemByName
 				.apply(name);
-		final WebElement itemElement = driver.findElement(By
+		final WebElement itemElement = getDriver().findElement(By
 				.xpath(menuItemXPath));
 		itemElement.click();
 	}

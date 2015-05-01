@@ -83,7 +83,7 @@ public class RegistrationPage extends WebPage {
 			try {
 				if (DriverUtils.isElementDisplayed(this.getDriver(),
 						switchtoSignInBtnlocator)) {
-					driver.findElement(switchtoSignInBtnlocator).click();
+					getDriver().findElement(switchtoSignInBtnlocator).click();
 				}
 				if (DriverUtils.isElementDisplayed(this.getDriver(),
 						signInBtnlocator)) {

@@ -50,7 +50,7 @@ public class ChoosePicturePage extends OSXPage {
 				OSXLocators.ChoosePicturePage.xpathFormatFinderImageFile,
 				imageName);
 
-		WebElement el = driver.findElement(By.xpath(xpath));
+		WebElement el = getDriver().findElement(By.xpath(xpath));
 		el.click();
 	}
 
@@ -70,7 +70,7 @@ public class ChoosePicturePage extends OSXPage {
 			String xpath = String
 					.format(OSXLocators.ChoosePicturePage.xpathFormatFavoritesFolderPopUp,
 							folderName);
-			WebElement folder = driver.findElement(By.xpath(xpath));
+			WebElement folder = getDriver().findElement(By.xpath(xpath));
 			folder.click();
 		} catch (NoSuchElementException e) {
 			log.debug("No " + folderName + " folder found in favorites.\n"

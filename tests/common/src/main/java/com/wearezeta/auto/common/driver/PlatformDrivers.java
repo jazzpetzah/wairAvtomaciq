@@ -1,8 +1,9 @@
 package com.wearezeta.auto.common.driver;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -21,7 +22,7 @@ public final class PlatformDrivers {
 	private static final Logger log = ZetaLogger.getLog(PlatformDrivers.class
 			.getSimpleName());
 
-	private HashMap<Platform, Future<RemoteWebDriver>> drivers = new HashMap<Platform, Future<RemoteWebDriver>>();
+	private Map<Platform, Future<RemoteWebDriver>> drivers = new ConcurrentHashMap<Platform, Future<RemoteWebDriver>>();
 
 	private static PlatformDrivers instance = null;
 

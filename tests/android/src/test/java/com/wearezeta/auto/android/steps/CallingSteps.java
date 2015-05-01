@@ -29,8 +29,8 @@ public class CallingSteps {
 			String userToNameAlias, String callBackend) throws Exception {
 		commonCallingSteps.UserXCallsToUserYUsingCallBackend(userFromNameAlias,
 				userToNameAlias, callBackend);
-		PagesCollection.callingOverlayPage = new CallingOverlayPage(
-				PagesCollection.loginPage.getLazyDriver());
+		PagesCollection.callingOverlayPage = (CallingOverlayPage) PagesCollection.loginPage
+				.instantiatePage(CallingOverlayPage.class);
 	}
 
 	/**

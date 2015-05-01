@@ -125,7 +125,7 @@ public class LoginPage extends OSXPage {
 				OSXLocators.xpathFormatContactEntryWithName, contact);
 		WebElement el = null;
 		try {
-			el = driver.findElement(By.xpath(xpath));
+			el = getDriver().findElement(By.xpath(xpath));
 		} catch (NoSuchElementException e) {
 			el = null;
 		}

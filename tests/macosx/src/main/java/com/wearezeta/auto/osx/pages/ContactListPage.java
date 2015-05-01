@@ -164,7 +164,7 @@ public class ContactListPage extends MainWirePage {
 		} else {
 			String xpath = String.format(
 					OSXLocators.xpathFormatContactEntryWithName, name);
-			result = driver.findElement(By.xpath(xpath));
+			result = getDriver().findElement(By.xpath(xpath));
 			return result;
 		}
 
@@ -223,7 +223,7 @@ public class ContactListPage extends MainWirePage {
 		WebElement el = wait.until(new Function<WebDriver, WebElement>() {
 
 			public WebElement apply(WebDriver driver) {
-				return driver.findElement(By
+				return getDriver().findElement(By
 						.name(OSXLocators.LoginPage.nameSignInButton));
 			}
 		});
@@ -264,7 +264,7 @@ public class ContactListPage extends MainWirePage {
 		WebElement peopleDecrementSB = null;
 		WebElement peopleIncrementSB = null;
 
-		WebElement scrollArea = driver.findElement(By
+		WebElement scrollArea = getDriver().findElement(By
 				.xpath(OSXLocators.xpathConversationListScrollArea));
 
 		NSPoint mainPosition = NSPoint.fromString(scrollArea
@@ -336,7 +336,7 @@ public class ContactListPage extends MainWirePage {
 	}
 
 	public void clickToggleMenuButton() {
-		WebElement toggleMenu = driver.findElement(By
+		WebElement toggleMenu = getDriver().findElement(By
 				.id(OSXLocators.idShowMenuButton));
 		toggleMenu.click();
 	}
@@ -355,14 +355,14 @@ public class ContactListPage extends MainWirePage {
 
 	public void changeMuteStateForConversation(String conversation) {
 		goToContactActionsMenu(conversation);
-		WebElement muteButton = driver.findElement(By
+		WebElement muteButton = getDriver().findElement(By
 				.id(OSXLocators.idMuteButton));
 		muteButton.click();
 	}
 
 	public void moveConversationToArchive(String conversation) {
 		goToContactActionsMenu(conversation);
-		WebElement archiveButton = driver.findElement(By
+		WebElement archiveButton = getDriver().findElement(By
 				.id(OSXLocators.idArchiveButton));
 		archiveButton.click();
 	}

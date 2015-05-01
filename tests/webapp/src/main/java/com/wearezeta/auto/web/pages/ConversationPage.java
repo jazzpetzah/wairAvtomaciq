@@ -216,7 +216,7 @@ public class ConversationPage extends WebPage {
 
 	public int numberOfPingMessagesVisible() {
 
-		return driver.findElementsByClassName(
+		return getDriver().findElementsByClassName(
 				WebAppLocators.ConversationPage.classPingMessage).size() - 1;
 	}
 
@@ -245,7 +245,7 @@ public class ConversationPage extends WebPage {
 		assert DriverUtils.isElementDisplayed(driver, locator,
 				MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
 				+ MISSED_CALL_MSG_TIMOEUT + " second(s) timeout";
-		return driver.findElement(locator).getText();
+		return getDriver().findElement(locator).getText();
 	}
 
 	private static final int MAX_CALLING_BAR_VISIBILITY_TIMEOUT = 5; // seconds
@@ -263,7 +263,7 @@ public class ConversationPage extends WebPage {
 		assert DriverUtils.isElementDisplayed(driver, locator,
 				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Accept call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
-		driver.findElement(locator).click();
+		getDriver().findElement(locator).click();
 	}
 
 	public void clickEndCallButton() throws Exception {
@@ -272,7 +272,7 @@ public class ConversationPage extends WebPage {
 		assert DriverUtils.isElementDisplayed(driver, locator,
 				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "End call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
-		driver.findElement(locator).click();
+		getDriver().findElement(locator).click();
 	}
 
 	public void clickSilenceCallButton() throws Exception {
@@ -281,7 +281,7 @@ public class ConversationPage extends WebPage {
 		assert DriverUtils.isElementDisplayed(driver, locator,
 				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Silence call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
-		driver.findElement(locator).click();
+		getDriver().findElement(locator).click();
 	}
 
 	public void verifyCallingBarIsNotVisible() throws Exception {

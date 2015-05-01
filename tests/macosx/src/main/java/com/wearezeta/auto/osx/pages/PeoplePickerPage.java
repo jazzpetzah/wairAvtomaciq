@@ -66,7 +66,7 @@ public class PeoplePickerPage extends MainWirePage {
 	}
 
 	public WebElement findSearchField() {
-		List<WebElement> textAreaCandidates = driver.findElements(By
+		List<WebElement> textAreaCandidates = getDriver().findElements(By
 				.className("AXTextArea"));
 		for (WebElement textArea : textAreaCandidates) {
 			if (textArea.getAttribute("AXIdentifier").equals(
@@ -83,7 +83,7 @@ public class PeoplePickerPage extends MainWirePage {
 	public WebElement findCancelButton() {
 		for (int i = 0; i < 3; i++) {
 			log.debug("Looking for CancelPeoplePicker button. Instance #" + i);
-			List<WebElement> buttonCandidates = driver.findElements(By
+			List<WebElement> buttonCandidates = getDriver().findElements(By
 					.className("AXButton"));
 			for (WebElement button : buttonCandidates) {
 				String attribute = button.getAttribute("AXIdentifier");
@@ -139,7 +139,7 @@ public class PeoplePickerPage extends MainWirePage {
 		WebElement peopleDecrementSB = null;
 		WebElement peopleIncrementSB = null;
 
-		WebElement scrollArea = driver.findElement(By
+		WebElement scrollArea = getDriver().findElement(By
 				.xpath(OSXLocators.xpathSearchResultsScrollArea));
 
 		WebElement userContact = null;
@@ -215,7 +215,7 @@ public class PeoplePickerPage extends MainWirePage {
 		String xpath = String
 				.format(OSXLocators.PeoplePickerPage.xpathFormatSearchResultEntry,
 						user);
-		WebElement userEntry = driver.findElement(By.xpath(xpath));
+		WebElement userEntry = getDriver().findElement(By.xpath(xpath));
 		userEntry.click();
 
 		switch (type) {

@@ -94,7 +94,7 @@ public class MainMenuAndDockPage extends OSXPage {
 			String xpath = String.format(
 					OSXLocators.MainMenuPage.xpathFormatDockApplicationIcon,
 					appName);
-			driver.findElement(By.xpath(xpath)).click();
+			getDriver().findElement(By.xpath(xpath)).click();
 		} finally {
 			if (driver != null)
 				driver.navigate().to(OSXExecutionContext.wirePath);

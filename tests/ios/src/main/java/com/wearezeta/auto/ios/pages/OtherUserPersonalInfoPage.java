@@ -1,10 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.concurrent.Future;
+
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -30,10 +31,10 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameExitOtherUserPersonalInfoPageButton)
 	private WebElement exitOtherPersonalInfoPageButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.DialogInfoPage.nameEllipsisMenuButton)
 	private WebElement ellipsisMenuButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.DialogInfoPage.nameArchiveButton)
 	private WebElement archiveButton;
 
@@ -45,67 +46,67 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
 	private WebElement startDialogButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameConversationMenu)
 	private WebElement conversationMenuButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameSilenceConversationButton)
 	private WebElement silenceMenuButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathSilenceConversationButton)
 	private WebElement menuSilenceButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameUnsilenceConversationButton)
 	private WebElement notifyMenuButton;
 
-	public OtherUserPersonalInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
+	public OtherUserPersonalInfoPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
-	public void catchContinueAlert() {
+	public void catchContinueAlert() throws Exception {
 		try {
-			WebElement el = driver
-					.findElementByName(IOSLocators.nameContinueButton);
+			WebElement el = this.getDriver().findElementByName(
+					IOSLocators.nameContinueButton);
 			el.click();
 		} catch (NoSuchElementException ex) {
 			// do nothing
 		}
 	}
-	
+
 	public void openEllipsisMenu() {
 		ellipsisMenuButton.click();
 	}
-	
+
 	public void clickArchiveMenuButton() {
 		archiveButton.click();
 	}
 
 	public IOSPage leavePageToGroupInfoPage() throws Exception {
 		exitOtherPersonalInfoPageButton.click();
-		return new GroupChatInfoPage(this.getDriver(), this.getWait());
+		return new GroupChatInfoPage(this.getLazyDriver());
 	}
-	
+
 	public DialogPage leavePageToDialogPage() throws Exception {
 		exitOtherPersonalInfoPageButton.click();
-		return new DialogPage(this.getDriver(), this.getWait());
+		return new DialogPage(this.getLazyDriver());
 	}
 
 	public PeoplePickerPage addContactToChat() throws Exception {
 		addButton.click();
 		catchContinueAlert();
-		return new PeoplePickerPage(this.getDriver(), this.getWait());
+		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
-	public boolean isOtherUserProfileEmailVisible(String name) {
-
-		WebElement otherUserEmail = driver.findElementByXPath(String.format(
-				IOSLocators.xpathOtherUserName, name.toUpperCase()));
+	public boolean isOtherUserProfileEmailVisible(String name) throws Exception {
+		WebElement otherUserEmail = getDriver().findElementByXPath(
+				String.format(IOSLocators.xpathOtherUserName,
+						name.toUpperCase()));
 		return otherUserEmail.isDisplayed();
 	}
 
-	public boolean isOtherUserProfileNameVisible(String name) {
-		WebElement otherUserName = driver.findElementByName(name);
+	public boolean isOtherUserProfileNameVisible(String name) throws Exception {
+		WebElement otherUserName = getDriver().findElementByName(name);
 		return otherUserName.isEnabled();
 	}
 
@@ -113,8 +114,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		continueButton.click();
 	}
 
-	public void removeFromConversation() {
-
+	public void removeFromConversation() throws Exception {
 		DriverUtils.mobileTapByCoordinates(this.getDriver(), removeFromChat);
 	}
 
@@ -135,7 +135,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		try {
 			result = emailField.getAttribute("value");
 		} catch (NoSuchElementException ex) {
-			
+
 		}
 		return result;
 	}
@@ -146,22 +146,22 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 				1,
 				this.getDriver().findElementByName(
 						IOSLocators.nameAddContactToChatButton), 1);
-		page = new DialogPage(this.getDriver(), this.getWait());
+		page = new DialogPage(this.getLazyDriver());
 		return page;
 	}
-	
-	public void openConversationMenu() throws InterruptedException{
+
+	public void openConversationMenu() throws InterruptedException {
 		conversationMenuButton.click();
 		Thread.sleep(2000);
 	}
-	
-	public void clickSilenceMenuButton() throws InterruptedException{
+
+	public void clickSilenceMenuButton() throws InterruptedException {
 		menuSilenceButton.click();
 	}
-	
-	public void clickNotifyMenuButton() throws InterruptedException{
+
+	public void clickNotifyMenuButton() throws InterruptedException {
 		notifyMenuButton.click();
-        Thread.sleep(2000);
+		Thread.sleep(2000);
 	}
 
 	@Override
@@ -169,7 +169,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		IOSPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new DialogPage(this.getDriver(), this.getWait());
+			page = new DialogPage(this.getLazyDriver());
 			break;
 		}
 		case UP: {

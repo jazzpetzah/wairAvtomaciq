@@ -129,7 +129,7 @@ public class SelfProfilePage extends MainWirePage {
 	public void changeUserName(String oldName, String newName) {
 		String xpath = String.format(
 				OSXLocators.xpathFormatSelfProfileNameTextField, oldName);
-		WebElement selfName = driver.findElement(By.xpath(xpath));
+		WebElement selfName = getDriver().findElement(By.xpath(xpath));
 		selfName.click();
 		selfName.clear();
 		selfName.sendKeys(newName + "\\n");

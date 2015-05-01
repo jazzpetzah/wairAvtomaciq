@@ -71,6 +71,12 @@ public abstract class IOSPage extends BasePage {
 		return (ZetaIOSDriver) super.getDriver();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Future<ZetaIOSDriver> getLazyDriver() {
+		return (Future<ZetaIOSDriver>) super.getLazyDriver();
+	}
+
 	@Override
 	public void close() throws Exception {
 		super.close();
@@ -227,7 +233,7 @@ public abstract class IOSPage extends BasePage {
 				.executeScript(script);
 	}
 
-	public boolean isSimulator() throws Throwable {
+	public boolean isSimulator() throws Exception {
 		return CommonUtils.getIsSimulatorFromConfig(IOSPage.class);
 	}
 

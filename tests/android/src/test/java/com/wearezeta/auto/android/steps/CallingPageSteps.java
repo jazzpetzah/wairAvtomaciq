@@ -23,8 +23,8 @@ public class CallingPageSteps {
 	 */
 	@When("I click the ignore call button")
 	public void IClickIgnoreCallButton() throws Exception {
-		PagesCollection.callingOverlayPage = new CallingOverlayPage(
-				PagesCollection.loginPage.getLazyDriver());
+		PagesCollection.callingOverlayPage = (CallingOverlayPage) PagesCollection.loginPage
+				.instantiatePage(CallingOverlayPage.class);
 		PagesCollection.callingOverlayPage.muteConversation();
 	}
 
@@ -84,8 +84,8 @@ public class CallingPageSteps {
 	 */
 	@When("I see the call lock screen$")
 	public void ISeeTheCallLockScreen() throws Exception {
-		PagesCollection.callingLockscreenPage = new CallingLockscreenPage(
-				PagesCollection.loginPage.getLazyDriver());
+		PagesCollection.callingLockscreenPage = (CallingLockscreenPage) PagesCollection.loginPage
+				.instantiatePage(CallingLockscreenPage.class);
 		Assert.assertFalse(PagesCollection.callingOverlayPage.isVisible());
 	}
 
@@ -117,10 +117,10 @@ public class CallingPageSteps {
 	 */
 	@When("I answer the call from the overlay bar$")
 	public void IAnswerCallFromTheOverlayBar() throws Exception {
-		PagesCollection.callingOverlayPage = new CallingOverlayPage(
-				PagesCollection.loginPage.getLazyDriver());
-		PagesCollection.dialogPage = new DialogPage(
-				PagesCollection.loginPage.getLazyDriver());
+		PagesCollection.callingOverlayPage = (CallingOverlayPage) PagesCollection.loginPage
+				.instantiatePage(CallingOverlayPage.class);
+		PagesCollection.dialogPage = (DialogPage) PagesCollection.loginPage
+				.instantiatePage(DialogPage.class);
 		PagesCollection.callingOverlayPage.acceptCall();
 	}
 

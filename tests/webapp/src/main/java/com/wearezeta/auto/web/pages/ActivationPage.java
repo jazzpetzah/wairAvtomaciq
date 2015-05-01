@@ -19,7 +19,7 @@ public class ActivationPage extends WebPage {
 				.xpath(WebAppLocators.ActivationPage.xpathBtnOpenWebApp);
 		if (DriverUtils.isElementDisplayed(driver, openWebAppBtnLocator,
 				timeoutSeconds)) {
-			driver.findElement(openWebAppBtnLocator).click();
+			getDriver().findElement(openWebAppBtnLocator).click();
 		} else {
 			throw new RuntimeException(
 					"It seems there was some failure while verifying registered account");

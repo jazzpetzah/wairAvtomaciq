@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -61,11 +62,11 @@ public final class CommonLocalyticsSteps {
 
 	private static final int SECONDS_INTERVAL = 20;
 
-	private static void pingDrivers() {
-		Collection<RemoteWebDriver> registeredDrivers = PlatformDrivers
+	private static void pingDrivers() throws Exception {
+		Collection<Future<RemoteWebDriver>> registeredDrivers = PlatformDrivers
 				.getInstance().getRegisteredDrivers();
-		for (RemoteWebDriver driver : registeredDrivers) {
-			driver.getCurrentUrl();
+		for (Future<RemoteWebDriver> driver : registeredDrivers) {
+			driver.get().getCurrentUrl();
 		}
 	}
 

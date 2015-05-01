@@ -43,7 +43,7 @@ public class PeoplePickerPage extends WebPage {
 	private void clickNotConnectedUser(String name) {
 		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 				.apply(name);
-		WebElement foundUserElement = driver.findElement(By
+		WebElement foundUserElement = getDriver().findElement(By
 				.xpath(foundUserXpath));
 		foundUserElement.click();
 	}
@@ -83,7 +83,7 @@ public class PeoplePickerPage extends WebPage {
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(name));
 		assert DriverUtils.isElementDisplayed(driver, locator, 3);
-		WebElement participant = driver.findElement(locator);
+		WebElement participant = getDriver().findElement(locator);
 		assert DriverUtils.waitUntilElementClickable(driver, participant);
 		participant.click();
 	}
@@ -94,7 +94,7 @@ public class PeoplePickerPage extends WebPage {
 						.apply(user));
 		assert DriverUtils.isElementDisplayed(driver, locator,
 				DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
-		WebElement userEl = driver.findElement(locator);
+		WebElement userEl = getDriver().findElement(locator);
 		assert DriverUtils.waitUntilElementClickable(driver, userEl);
 		userEl.click();
 	}

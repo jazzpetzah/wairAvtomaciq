@@ -151,7 +151,7 @@ public class ContactListPage extends WebPage {
 	private String getSelfName(By locator) {
 		String name = "";
 		for (int i = 1; i < 6; i++) {
-			name = driver.findElement(locator).getText();
+			name = getDriver().findElement(locator).getText();
 			if (!name.equals("")) {
 				break;
 			} else {
@@ -196,7 +196,7 @@ public class ContactListPage extends WebPage {
 		name = fixDefaultGroupConvoName(name, includeArchived);
 		final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
 				.apply(name);
-		return driver.findElement(By.cssSelector(locator));
+		return getDriver().findElement(By.cssSelector(locator));
 	}
 
 	public void openArchive() {
@@ -279,7 +279,7 @@ public class ContactListPage extends WebPage {
 			driver.executeScript(showOptionsButtonJScript);
 			assert DriverUtils.isElementDisplayed(driver, locator);
 		}
-		final WebElement optionsButton = driver.findElement(locator);
+		final WebElement optionsButton = getDriver().findElement(locator);
 		optionsButton.click();
 	}
 
@@ -307,7 +307,7 @@ public class ContactListPage extends WebPage {
 	}
 
 	private void selectEntryWithRetry(By locator, String cssLocator) {
-		final WebElement entry = driver.findElement(locator);
+		final WebElement entry = getDriver().findElement(locator);
 		if (!isEntrySelected(entry)) {
 			entry.click();
 			try {
@@ -416,14 +416,14 @@ public class ContactListPage extends WebPage {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
 		assert DriverUtils.isElementDisplayed(driver, entryLocator, 3) : "There are no visible incoming pending connections in the conversations list";
-		return driver.findElement(entryLocator).getText();
+		return getDriver().findElement(entryLocator).getText();
 	}
 
 	public boolean isSelfNameEntrySelected() throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
 		assert DriverUtils.isElementDisplayed(driver, locator, 3);
-		final WebElement entry = driver.findElement(locator);
+		final WebElement entry = getDriver().findElement(locator);
 		try {
 			waitUtilEntryIsSelected(entry);
 			return true;
@@ -438,7 +438,7 @@ public class ContactListPage extends WebPage {
 				.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
 						.apply(convoName));
 		assert DriverUtils.isElementDisplayed(driver, locator, 3);
-		final WebElement entryElement = driver.findElement(locator);
+		final WebElement entryElement = getDriver().findElement(locator);
 		try {
 			waitUtilEntryIsSelected(entryElement);
 			return true;

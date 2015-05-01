@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ConnectToPage;
 import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -65,7 +64,8 @@ public class GroupChatInfoPageSteps {
 	}
 
 	@When("^I see the correct participant (.*) avatar$")
-	public void IVerifyCorrectParticipantAvatars(String contact) throws IOException, NoSuchUserException {
+	public void IVerifyCorrectParticipantAvatars(String contact)
+			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.groupChatInfoPage
 				.areParticipantAvatarCorrect(contact));

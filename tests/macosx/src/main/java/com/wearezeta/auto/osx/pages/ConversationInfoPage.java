@@ -94,7 +94,7 @@ public class ConversationInfoPage extends OSXPage {
 		String xpath = String.format(
 				OSXLocators.xpathFormatPeoplePickerUserCell, user);
 		try {
-			WebElement el = driver.findElement(By.xpath(xpath));
+			WebElement el = getDriver().findElement(By.xpath(xpath));
 			el.click();
 		} catch (NoSuchElementException e) {
 			log.debug("Can't find user cell. Page source: "
@@ -181,7 +181,7 @@ public class ConversationInfoPage extends OSXPage {
 
 	public int numberOfPeopleInConversation() {
 		int result = -1;
-		List<WebElement> elements = driver.findElements(By
+		List<WebElement> elements = getDriver().findElements(By
 				.xpath(OSXLocators.xpathNumberOfPeopleInChat));
 		for (WebElement element : elements) {
 			String value = element.getText();
@@ -194,7 +194,7 @@ public class ConversationInfoPage extends OSXPage {
 	}
 
 	public int numberOfParticipantsAvatars() {
-		List<WebElement> elements = driver.findElements(By
+		List<WebElement> elements = getDriver().findElements(By
 				.xpath(OSXLocators.xpathUserAvatar));
 		return elements.size();
 	}
@@ -228,7 +228,7 @@ public class ConversationInfoPage extends OSXPage {
 	public boolean isContactPersonalInfoAppear(String contact) {
 		String xpath = String.format(
 				OSXLocators.xpathFormatUserProfileViewContactName, contact);
-		WebElement el = driver.findElement(By.xpath(xpath));
+		WebElement el = getDriver().findElement(By.xpath(xpath));
 		if (el != null)
 			return true;
 		else
@@ -270,7 +270,7 @@ public class ConversationInfoPage extends OSXPage {
 	public boolean isSentConnectionRequestMessageExists(String message) {
 		String xpath = String.format(
 				OSXLocators.xpathFormatSentConnectionRequestMessage, message);
-		WebElement el = driver.findElement(By.xpath(xpath));
+		WebElement el = getDriver().findElement(By.xpath(xpath));
 		return el.isDisplayed();
 	}
 

@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -9,7 +10,6 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -32,9 +32,8 @@ public class GroupChatPage extends DialogPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameYouRenamedConversationMessage)
 	private WebElement yourRenamedMessage;
 
-	public GroupChatPage(ZetaIOSDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public GroupChatPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public boolean areRequiredContactsAddedToChat(List<String> names) {
@@ -57,7 +56,7 @@ public class GroupChatPage extends DialogPage {
 	}
 
 	public boolean isGroupChatPageVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.name(IOSLocators.nameConversationCursorInput));
 	}
 
@@ -77,8 +76,10 @@ public class GroupChatPage extends DialogPage {
 		return youLeft.isDisplayed();
 	}
 
-	public boolean isUserAddedContactVisible(String user, String contact) {
-		return driver
+	public boolean isUserAddedContactVisible(String user, String contact)
+			throws Exception {
+		return this
+				.getDriver()
 				.findElement(
 						By.name(user.toUpperCase() + " ADDED "
 								+ contact.toUpperCase())).isDisplayed();
@@ -100,12 +101,12 @@ public class GroupChatPage extends DialogPage {
 				By.name(message));
 	}
 
-	public boolean isContactAvailableInChat(String contact) {
+	public boolean isContactAvailableInChat(String contact) throws Exception {
 		WebElement el = null;
 		boolean result = false;
 
 		try {
-			el = driver.findElementByName(contact);
+			el = getDriver().findElementByName(contact);
 		} catch (NoSuchElementException ex) {
 			el = null;
 		} finally {
@@ -116,7 +117,8 @@ public class GroupChatPage extends DialogPage {
 	}
 
 	public boolean waitForContactToDisappear(String contact) throws Exception {
-		return DriverUtils.waitUntilElementDissapear(driver, By.name(contact));
+		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
+				By.name(contact));
 	}
 
 	@Override
@@ -125,7 +127,7 @@ public class GroupChatPage extends DialogPage {
 			if (DriverUtils.isElementDisplayed(this.getDriver(),
 					By.name(IOSLocators.nameOpenConversationDetails))) {
 				openConversationDetails.click();
-				DriverUtils.waitUntilElementAppears(driver,
+				DriverUtils.waitUntilElementAppears(this.getDriver(),
 						By.name(IOSLocators.nameAddContactToChatButton), 5);
 			}
 			if (DriverUtils.isElementDisplayed(this.getDriver(),
@@ -136,13 +138,13 @@ public class GroupChatPage extends DialogPage {
 			}
 		}
 
-		return new GroupChatInfoPage(this.getDriver(), this.getWait());
+		return new GroupChatInfoPage(this.getLazyDriver());
 	}
 
 	@Override
 	public IOSPage swipeUp(int time) throws Exception {
-		WebElement element = driver.findElement(By
-				.name(IOSLocators.nameMainWindow));
+		WebElement element = getDriver().findElement(
+				By.name(IOSLocators.nameMainWindow));
 
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
@@ -154,8 +156,8 @@ public class GroupChatPage extends DialogPage {
 
 	@Override
 	public IOSPage swipeRight(int time) throws Exception {
-		WebElement element = driver.findElement(By
-				.name(IOSLocators.nameMainWindow));
+		WebElement element = getDriver().findElement(
+				By.name(IOSLocators.nameMainWindow));
 
 		Point coords = element.getLocation();
 		Dimension elementSize = element.getSize();
@@ -173,14 +175,14 @@ public class GroupChatPage extends DialogPage {
 			break;
 		}
 		case UP: {
-			page = new GroupChatInfoPage(this.getDriver(), this.getWait());
+			page = new GroupChatInfoPage(this.getLazyDriver());
 			break;
 		}
 		case LEFT: {
 			break;
 		}
 		case RIGHT: {
-			page = new ContactListPage(this.getDriver(), this.getWait());
+			page = new ContactListPage(this.getLazyDriver());
 			break;
 		}
 		}

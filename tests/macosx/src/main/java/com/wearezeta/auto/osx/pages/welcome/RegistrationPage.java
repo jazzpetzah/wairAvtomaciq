@@ -148,7 +148,7 @@ public class RegistrationPage extends OSXPage {
 
 	public boolean isTakePictureConfirmationScreen() {
 		final int CONFIRMATION_SCREEN_BUTTONS_COUNT = 2;
-		List<WebElement> buttons = driver.findElements(By
+		List<WebElement> buttons = getDriver().findElements(By
 				.xpath(OSXLocators.RegistrationPage.xpathConfirmPictureButton));
 		return buttons.size() == CONFIRMATION_SCREEN_BUTTONS_COUNT;
 	}

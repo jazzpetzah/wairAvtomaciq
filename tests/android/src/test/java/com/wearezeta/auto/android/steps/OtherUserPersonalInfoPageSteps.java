@@ -225,8 +225,8 @@ public class OtherUserPersonalInfoPageSteps {
 		}
 
 		// This needs to be moved eventually
-		PagesCollection.unknownUserDetailsPage = new UnknownUserDetailsPage(
-				PagesCollection.androidPage.getLazyDriver());
+		PagesCollection.unknownUserDetailsPage = (UnknownUserDetailsPage) PagesCollection.androidPage
+				.instantiatePage(UnknownUserDetailsPage.class);
 	}
 
 	/**
@@ -328,7 +328,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 * @step. ^I see that the conversation name is (.*)$
 	 * 
 	 * @param name
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Then("^I see that the conversation name is (.*)$")
 	public void IVerifyCorrectConversationName(String name) throws Exception {

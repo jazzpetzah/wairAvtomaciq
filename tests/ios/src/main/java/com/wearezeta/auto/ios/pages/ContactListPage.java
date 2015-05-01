@@ -1,8 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -12,7 +12,6 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -30,8 +29,8 @@ public class ContactListPage extends IOSPage {
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
 	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.70;
 	private final double MIN_ACCEPTABLE_IMAGE_PING_VALUE = 0.90;
-	
-	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE =0.80;
+
+	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE = 0.80;
 	private final double MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE = 0.90;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
@@ -42,7 +41,7 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
 	private WebElement profileName;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameOpenStartUI)
 	private WebElement openStartUI;
 
@@ -72,15 +71,14 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListContainer)
 	private WebElement contactListContainer;
-	
-//	@FindBy(how = How.NAME, using = IOSLocators.nameArchiveButton)
-//	private WebElement archiveButton;
+
+	// @FindBy(how = How.NAME, using = IOSLocators.nameArchiveButton)
+	// private WebElement archiveButton;
 
 	private int oldLocation = 0;
 
-	public ContactListPage(ZetaIOSDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public ContactListPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public boolean isMyUserNameDisplayedFirstInContactList(String name)
@@ -101,42 +99,45 @@ public class ContactListPage extends IOSPage {
 			}
 		}
 	}
-	
+
 	public PeoplePickerPage openSearch() throws Exception {
 		openStartUI.click();
-		return new PeoplePickerPage(getDriver(), getWait());
+		return new PeoplePickerPage(getLazyDriver());
 	}
 
-	public boolean isContactMuted(String contact) {
-
+	public boolean isContactMuted(String contact) throws Exception {
 		// potential floating bug, the icon is always visible, but simply
 		// changes x coordinate
-		return driver.findElementByXPath(
-				String.format(IOSLocators.xpathMutedIcon, contact))
+		return this
+				.getDriver()
+				.findElementByXPath(
+						String.format(IOSLocators.xpathMutedIcon, contact))
 				.getLocation().x < oldLocation;
 	}
 
 	public boolean isPlayPauseButtonVisible(String contact) throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(String
-				.format(IOSLocators.xpathContactListPlayPauseButton, contact)));
+		return DriverUtils.waitUntilElementAppears(this.getDriver(), By
+				.xpath(String.format(
+						IOSLocators.xpathContactListPlayPauseButton, contact)));
 	}
 
 	public void tapPlayPauseButton() {
 		playPauseButton.click();
 	}
 
-	public void tapPlayPauseButtonNextTo(String name)
-			throws InterruptedException {
-		WebElement element = driver.findElement(By.xpath(String.format(
-				IOSLocators.xpathContactListPlayPauseButton, name)));
+	public void tapPlayPauseButtonNextTo(String name) throws Exception {
+		WebElement element = this.getDriver().findElement(
+				By.xpath(String.format(
+						IOSLocators.xpathContactListPlayPauseButton, name)));
 		element.click();
 	}
-	
+
 	public PersonalInfoPage tapOnMyName(String name) throws Exception {
-		WebElement el = driver.findElementByXPath(String.format(IOSLocators.xpathSelfName, name));
+		WebElement el = this.getDriver().findElementByXPath(
+				String.format(IOSLocators.xpathSelfName, name));
 		el.click();
-		
-		return new PersonalInfoPage(this.getDriver(), this.getWait());
+
+		return new PersonalInfoPage(this.getLazyDriver());
 	}
 
 	public IOSPage tapOnName(String name) throws Exception {
@@ -157,19 +158,20 @@ public class ContactListPage extends IOSPage {
 			el.click();
 		}
 
-		return new DialogPage(this.getDriver(), this.getWait());
+		return new DialogPage(this.getLazyDriver());
 	}
 
 	public String getFirstDialogName(String name) throws Exception {
 
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(String.format(
-				IOSLocators.xpathFirstInContactList, name)));
-		WebElement contact = driver.findElement(By.xpath(String.format(
-				IOSLocators.xpathFirstInContactList, name)));
+		DriverUtils.waitUntilElementAppears(this.getDriver(), By.xpath(String
+				.format(IOSLocators.xpathFirstInContactList, name)));
+		WebElement contact = this.getDriver().findElement(
+				By.xpath(String.format(IOSLocators.xpathFirstInContactList,
+						name)));
 		return contact.getText();
 	}
 
-	private WebElement findNameInContactList(String name) {
+	private WebElement findNameInContactList(String name) throws Exception {
 		Boolean flag = true;
 		WebElement contact = null;
 		for (int i = 0; i < 5; i++) {
@@ -197,7 +199,7 @@ public class ContactListPage extends IOSPage {
 		return contact;
 	}
 
-	private WebElement findCellInContactList(String name) {
+	private WebElement findCellInContactList(String name) throws Exception {
 		Boolean flag = true;
 		WebElement contact = null;
 		for (int i = 0; i < 5; i++) {
@@ -224,7 +226,7 @@ public class ContactListPage extends IOSPage {
 		return contact;
 	}
 
-	public boolean isChatInContactList(String name) {
+	public boolean isChatInContactList(String name) throws Exception {
 		boolean flag = findNameInContactList(name) != null;
 		return flag;
 	}
@@ -248,7 +250,7 @@ public class ContactListPage extends IOSPage {
 				findNameInContactList(contact), time, 70, 50);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
-	
+
 	public IOSPage longSwipeRightOnContact(int time, String contact)
 			throws Exception {
 		DriverUtils.swipeRight(this.getDriver(),
@@ -269,16 +271,17 @@ public class ContactListPage extends IOSPage {
 	public GroupChatPage tapOnUnnamedGroupChat(String contact1, String contact2)
 			throws Exception {
 		findChatInContactList(contact1, contact2).click();
-		return new GroupChatPage(this.getDriver(), this.getWait());
+		return new GroupChatPage(this.getLazyDriver());
 	}
 
 	public IOSPage tapOnGroupChat(String chatName) throws Exception {
 		findNameInContactList(chatName).click();
-		return new GroupChatPage(this.getDriver(), this.getWait());
+		return new GroupChatPage(this.getLazyDriver());
 	}
 
 	public boolean waitForContactListToLoad() throws Exception {
-		boolean waitForUser = DriverUtils.waitUntilElementAppears(driver,
+		boolean waitForUser = DriverUtils.waitUntilElementAppears(
+				this.getDriver(),
 				By.xpath(IOSLocators.xpathMyUserInContactList));
 		if (!waitForUser) {
 			log.debug(this.getDriver().getPageSource());
@@ -309,7 +312,7 @@ public class ContactListPage extends IOSPage {
 		IOSPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new PeoplePickerPage(this.getDriver(), this.getWait());
+			page = new PeoplePickerPage(this.getLazyDriver());
 			break;
 		}
 		case UP: {
@@ -326,54 +329,58 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean isPendingRequestInContactList() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathPendingRequest));
 	}
 
-	public PendingRequestsPage clickPendingRequest() throws Throwable {
+	public PendingRequestsPage clickPendingRequest() throws Exception {
 		pendingRequest.click();
-		return new PendingRequestsPage(this.getDriver(), this.getWait());
+		return new PendingRequestsPage(this.getLazyDriver());
 	}
 
 	public boolean isDisplayedInContactList(String name) throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver, By.name(name));
+		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+				By.name(name));
 	}
 
 	public boolean isTutorialShown() throws Exception {
 		// this.refreshUITree();
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.name(IOSLocators.nameTutorialView));
 		boolean tutorialShown = DriverUtils.isElementDisplayed(
 				this.getDriver(), tutorialView);
 		return tutorialShown;
 	}
 
-	public void dismissTutorial() {
-
-		WebElement tutorialView = driver.findElement(By
-				.name(IOSLocators.nameTutorialView));
+	public void dismissTutorial() throws Exception {
+		WebElement tutorialView = this.getDriver().findElement(
+				By.name(IOSLocators.nameTutorialView));
 		DriverUtils.iOS3FingerTap(this.getDriver(), tutorialView, 3);
 	}
 
-	public List<WebElement> GetVisibleContacts() {
-		return driver.findElements(By.className(IOSLocators.classNameContactListNames));
+	public List<WebElement> GetVisibleContacts() throws Exception {
+		return this.getDriver().findElements(
+				By.className(IOSLocators.classNameContactListNames));
 	}
 
 	public IOSPage tapOnContactByIndex(List<WebElement> contacts, int index)
 			throws Exception {
 		IOSPage page = null;
-		log.debug(DriverUtils.isElementDisplayed(driver, contacts.get(index)));
-		DriverUtils.waitUntilElementClickable(driver, contacts.get(index));
+		log.debug(DriverUtils.isElementDisplayed(this.getDriver(),
+				contacts.get(index)));
+		DriverUtils.waitUntilElementClickable(this.getDriver(),
+				contacts.get(index));
 		try {
 			log.debug(contacts.get(index).getAttribute("name"));
 			contacts.get(index).click();
 		} catch (WebDriverException e) {
 			BufferedImage im = DriverUtils.takeScreenshot(this.getDriver());
 			ImageUtil.storeImageToFile(im, "/Project/ios_crash.jpg");
-			log.debug("Can't select contact by index " + index + ". Page source: " +driver.getPageSource());
+			log.debug("Can't select contact by index " + index
+					+ ". Page source: " + this.getDriver().getPageSource());
 			throw e;
 		}
-		page = new DialogPage(this.getDriver(), this.getWait());
+		page = new DialogPage(this.getLazyDriver());
 		return page;
 	}
 
@@ -395,17 +402,18 @@ public class ContactListPage extends IOSPage {
 		return chatExist;
 	}
 
-	public void silenceConversation(String conversation) {
+	public void silenceConversation(String conversation) throws Exception {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickSilenceConversationButton(this.getDriver(), contact);
 	}
 
-	public void unsilenceConversation(String conversation) {
+	public void unsilenceConversation(String conversation) throws Exception {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickSilenceConversationButton(this.getDriver(), contact);
 	}
 
-	public boolean isConversationSilenced(String conversation, boolean isSilenced) throws Exception {
+	public boolean isConversationSilenced(String conversation,
+			boolean isSilenced) throws Exception {
 		String deviceType = CommonUtils.getDeviceName(this.getClass());
 		BufferedImage silencedConversation = null;
 		BufferedImage referenceImage = null;
@@ -418,10 +426,10 @@ public class ContactListPage extends IOSPage {
 		} else if (deviceType.equals("iPhone 6 Plus") && !isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "verifyUnsilenceIphone6plus.png");
-		} else if (deviceType.equals("iPhone 6") && isSilenced){
+		} else if (deviceType.equals("iPhone 6") && isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "silenceTestIphone6.png");
-		} else if (deviceType.equals("iPhone 6") && !isSilenced){
+		} else if (deviceType.equals("iPhone 6") && !isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "verifyUnsilenceTestIphone6.png");
 		}
@@ -432,8 +440,9 @@ public class ContactListPage extends IOSPage {
 		}
 		return true;
 	}
-	
-	public boolean isConversationSilencedBefore(String conversation) throws Exception {
+
+	public boolean isConversationSilencedBefore(String conversation)
+			throws Exception {
 		String deviceType = CommonUtils.getDeviceName(this.getClass());
 		BufferedImage silencedConversation = null;
 		BufferedImage referenceImage = null;
@@ -455,14 +464,14 @@ public class ContactListPage extends IOSPage {
 		return true;
 	}
 
-	public void archiveConversation(String conversation) {
+	public void archiveConversation(String conversation) throws Exception {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickArchiveConversationButton(this.getDriver(), contact);
-		//DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
+		// DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
 	}
 
 	public boolean unreadDotIsVisible(boolean visible, boolean bigUnreadDot,
-			String conversation) throws IOException {
+			String conversation) throws Exception {
 		BufferedImage unreadDot = null;
 		BufferedImage referenceImage = null;
 		double score = 0;
@@ -492,9 +501,9 @@ public class ContactListPage extends IOSPage {
 
 		return true;
 	}
-	
+
 	public boolean pingIsVisible(boolean visible, boolean hotPing,
-			String conversation) throws IOException {
+			String conversation) throws Exception {
 		BufferedImage pingSymbol = null;
 		BufferedImage referenceImage = null;
 		double score = 0;
@@ -527,7 +536,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean missedCallIndicatorIsVisible(boolean isFirstInList,
-			String conversation) throws IOException {
+			String conversation) throws Exception {
 		BufferedImage missedCallIndicator = null;
 		BufferedImage referenceImage = null;
 		double score = 0;
@@ -548,7 +557,8 @@ public class ContactListPage extends IOSPage {
 			}
 		} else {
 			missedCallIndicator = getScreenshotByCoordinates(
-					contact.getLocation().x, contact.getLocation().y + contactListContainer.getLocation().y*2,
+					contact.getLocation().x, contact.getLocation().y
+							+ contactListContainer.getLocation().y * 2,
 					contact.getSize().width / 3, contact.getSize().height);
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "missedCallIndicator2.png");
@@ -559,19 +569,20 @@ public class ContactListPage extends IOSPage {
 			if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
 				return false;
 			}
-			
+
 		}
 		return true;
 	}
-	
-	public boolean changeOfAccentColorIsVisible(String name) throws IOException{
+
+	public boolean changeOfAccentColorIsVisible(String name) throws Exception {
 		BufferedImage changedAccentColorImage = null;
 		BufferedImage referenceImage = null;
 		double score = 0;
-		WebElement el = driver.findElementByXPath(String.format(IOSLocators.xpathSelfName, name));
+		WebElement el = this.getDriver().findElementByXPath(
+				String.format(IOSLocators.xpathSelfName, name));
 		changedAccentColorImage = getElementScreenshot(el);
-		referenceImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + "changedAccentColor.png");
+		referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+				+ "changedAccentColor.png");
 		score = ImageUtil.getOverlapScore(referenceImage,
 				changedAccentColorImage,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);

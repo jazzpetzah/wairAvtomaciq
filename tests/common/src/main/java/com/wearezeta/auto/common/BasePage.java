@@ -4,9 +4,11 @@ import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
@@ -28,41 +30,58 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 public abstract class BasePage {
 	private Future<? extends RemoteWebDriver> lazyDriver;
 
-	public Future<? extends RemoteWebDriver> getLazyDriver() {
+	protected Future<? extends RemoteWebDriver> getLazyDriver() {
 		return this.lazyDriver;
 	}
 
+	// Never work with 'driver' field directly. Use getter
+	// for this purpose
 	private RemoteWebDriver driver = null;
 
-	protected synchronized RemoteWebDriver getDriver()
-			throws Exception {
-		if (this.driver == null) {
-			this.driver = this.getLazyDriver().get();
-			zetaLocatorFactory = new ZetaElementLocatorFactory(this.driver,
-					Long.parseLong(CommonUtils
-							.getDriverTimeoutFromConfig(getClass())),
-					AppiumFieldDecorator.DEFAULT_TIMEUNIT);
-			FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(
-					zetaLocatorFactory);
-			PageFactory.initElements(zetaFieldDecorator, this);
+	private final Semaphore driverGuard = new Semaphore(1);
+
+	protected RemoteWebDriver getDriver() throws Exception {
+		driverGuard.acquire();
+		try {
+			if (this.driver == null) {
+				this.driver = this.getLazyDriver().get();
+				zetaLocatorFactory = new ZetaElementLocatorFactory(this.driver,
+						Long.parseLong(CommonUtils
+								.getDriverTimeoutFromConfig(getClass())),
+						AppiumFieldDecorator.DEFAULT_TIMEUNIT);
+				FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(
+						zetaLocatorFactory);
+				PageFactory.initElements(zetaFieldDecorator, this);
+			}
+			return this.driver;
+		} finally {
+			driverGuard.release();
 		}
-		return this.driver;
 	}
 
 	private WebDriverWait wait;
 
-	protected synchronized WebDriverWait getWait() throws Exception {
-		if (this.wait == null) {
-			this.wait = PlatformDrivers.createDefaultExplicitWait(driver);
+	private final Semaphore waitGuard = new Semaphore(1);
+
+	protected WebDriverWait getWait() throws Exception {
+		waitGuard.acquire();
+		try {
+			if (this.wait == null) {
+				this.wait = PlatformDrivers.createDefaultExplicitWait(this
+						.getDriver());
+			}
+			return this.wait;
+		} finally {
+			waitGuard.release();
 		}
-		return this.wait;
 	}
 
 	private static final Logger log = ZetaLogger.getLog(BasePage.class
 			.getSimpleName());
 	private static ZetaElementLocatorFactory zetaLocatorFactory;
 
-	public BasePage(Future<? extends RemoteWebDriver> lazyDriver) throws Exception {
+	public BasePage(Future<? extends RemoteWebDriver> lazyDriver)
+			throws Exception {
 		this.lazyDriver = lazyDriver;
 	}
 
@@ -131,5 +150,23 @@ public abstract class BasePage {
 	public static void changeZetaLocatorTimeout(long seconds) {
 		zetaLocatorFactory.resetImplicitlyWaitTimeOut(seconds,
 				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
+	}
+
+	/**
+	 * This method can only instantiate pages, which don't support direct
+	 * navigation and therefore accept only only one parameter of type 'Future<?
+	 * extends RemoteWebDriver>'. Main purpose of this method is to encapsulate
+	 * Selenium driver inside pages so no one can potentially break abstraction
+	 * layers by using the driver directly from steps ;-)
+	 * 
+	 * @param newPageCls
+	 *            page class to be instantiated
+	 * @return newly created page object
+	 * @throws Exception
+	 */
+	public BasePage instantiatePage(Class<? extends BasePage> newPageCls)
+			throws Exception {
+		final Constructor<?> ctor = newPageCls.getConstructor(Future.class);
+		return (BasePage) ctor.newInstance(this.getLazyDriver());
 	}
 }

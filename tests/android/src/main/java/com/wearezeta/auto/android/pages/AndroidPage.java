@@ -49,7 +49,7 @@ public abstract class AndroidPage extends BasePage {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Future<ZetaAndroidDriver> getLazyDriver() {
+	protected Future<ZetaAndroidDriver> getLazyDriver() {
 		return (Future<ZetaAndroidDriver>) super.getLazyDriver();
 	}
 

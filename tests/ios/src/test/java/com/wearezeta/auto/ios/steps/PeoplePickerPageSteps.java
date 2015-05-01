@@ -28,9 +28,8 @@ public class PeoplePickerPageSteps {
 	@When("I see Upload contacts dialog")
 	public void WhenISeeUploadContactsDialog() throws Exception {
 		if (PagesCollection.peoplePickerPage == null) {
-			PagesCollection.peoplePickerPage = new PeoplePickerPage(
-					PagesCollection.loginPage.getDriver(),
-					PagesCollection.loginPage.getWait());
+			PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.loginPage
+					.instantiatePage(PeoplePickerPage.class);
 		}
 		Assert.assertTrue("Upload dialog is not shown",
 				PagesCollection.peoplePickerPage.isUploadDialogShown());
@@ -131,8 +130,7 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage
 				.swipeCompletelyToDismissSuggestedContact(contact);
 	}
-	
-	
+
 	/**
 	 * Taps the hide button for a suggested contact
 	 * 
@@ -339,7 +337,8 @@ public class PeoplePickerPageSteps {
 	}
 
 	@Then("I tap on (.*) top connections")
-	public void WhenITapOnTopConnections(int numberOfTopConnections) {
+	public void WhenITapOnTopConnections(int numberOfTopConnections)
+			throws Exception {
 		PagesCollection.peoplePickerPage
 				.tapNumberOfTopConnections(numberOfTopConnections);
 	}
@@ -470,7 +469,7 @@ public class PeoplePickerPageSteps {
 	public void IPressTheSendAnInviteButton() {
 		PagesCollection.peoplePickerPage.tapSendInviteButton();
 	}
-	
+
 	/**
 	 * Presses the Copy button on the Send Invitation pop up
 	 * 
@@ -484,15 +483,15 @@ public class PeoplePickerPageSteps {
 			Exception {
 		PagesCollection.peoplePickerPage.tapSendInviteCopyButton();
 	}
-	
+
 	/**
 	 * Presses the instant connect plus button
+	 * 
 	 * @step. ^I press the instant connect button$
 	 */
 	@When("^I press the instant connect button$")
-	public void IPressTheInstantConnectButton(){
+	public void IPressTheInstantConnectButton() {
 		PagesCollection.peoplePickerPage.pressInstantConnectButton();
 	}
-
 
 }

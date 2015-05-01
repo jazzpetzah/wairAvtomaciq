@@ -76,7 +76,7 @@ public class ProfilePicturePage extends WebPage {
 		driver.executeScript(inputId + " = window.$('<input id=\"" + inputId
 				+ "\"/>').attr({type:'file'}).appendTo('body');");
 		// The file is expected to be uploaded automatically by Webdriver
-		driver.findElement(By.id(inputId)).sendKeys(srcPicturePath);
+		getDriver().findElement(By.id(inputId)).sendKeys(srcPicturePath);
 		driver.executeScript("e = $.Event('drop'); e.originalEvent = {dataTransfer : { files : "
 				+ inputId
 				+ ".get(0).files } }; $(\""

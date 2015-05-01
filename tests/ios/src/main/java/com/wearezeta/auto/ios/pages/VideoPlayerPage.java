@@ -1,12 +1,12 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -36,18 +36,17 @@ public class VideoPlayerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameVideoNextButton)
 	private WebElement videoNextButton;
 
-	public VideoPlayerPage(ZetaIOSDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public VideoPlayerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public void waitForVideoPlayerPage() throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.name(IOSLocators.nameVideoFullScreenButton));
 	}
 
 	public boolean isVideoPlayerPageOpened() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathVideoMainPage));
 	}
 
@@ -64,7 +63,7 @@ public class VideoPlayerPage extends IOSPage {
 		} catch (WebDriverException e) {
 
 		}
-		page = new DialogPage(this.getDriver(), this.getWait());
+		page = new DialogPage(this.getLazyDriver());
 		return page;
 
 	}
