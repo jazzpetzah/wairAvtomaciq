@@ -43,7 +43,7 @@ public class WebPage extends BasePage {
 		this.url = url;
 	}
 
-	public void navigateTo() throws Exception {
+	protected void navigateTo() throws Exception {
 		if (this.url != null) {
 			this.getDriver().navigate().to(this.url);
 		} else {

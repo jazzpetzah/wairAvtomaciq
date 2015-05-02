@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.driver;
 
 import java.net.URL;
 import java.util.concurrent.Callable;
+import java.util.function.Consumer;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Point;
@@ -21,13 +22,16 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 	private DesiredCapabilities capabilities;
 	private Platform platform;
 	private int maxRetryCount;
+	private Consumer<RemoteWebDriver> initCompletedCallback;
 
 	public LazyDriverInitializer(Platform platform, String url,
-			DesiredCapabilities capabilities, int maxRetryCount) {
+			DesiredCapabilities capabilities, int maxRetryCount,
+			Consumer<RemoteWebDriver> initCompletedCallback) {
 		this.url = url;
 		this.capabilities = capabilities;
 		this.platform = platform;
 		this.maxRetryCount = maxRetryCount;
+		this.initCompletedCallback = initCompletedCallback;
 	}
 
 	@Override
@@ -73,6 +77,11 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 				} else {
 					ntry++;
 				}
+			}
+			if (initCompletedCallback != null) {
+				log.debug("Invoking driver initialization callback...");
+				initCompletedCallback.accept(platformDriver);
+				log.debug("Driver initialization callback has been successfully invoked");
 			}
 			log.debug(String.format(
 					"Successfully created driver instance for platform '%s'",

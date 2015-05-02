@@ -5,6 +5,8 @@ import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.logging.LogEntries;
@@ -22,11 +24,15 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
+import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -116,6 +122,57 @@ public class CommonWebAppSteps {
 				+ "'");
 	}
 
+	private final static int MAX_TRIES = 3;
+
+	private void navigateToStartPage(RemoteWebDriver drv) {
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
+			// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
+			drv.manage()
+					.window()
+					.setSize(
+							new Dimension(
+									WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
+									WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
+		} else {
+			drv.manage().window().maximize();
+		}
+
+		try {
+			drv.navigate()
+					.to(CommonUtils
+							.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class));
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		// FIXME: I'm not sure whether white page instead of sign in is
+		// Amazon issue or webapp issue,
+		// but since this happens randomly in different browsers, then I can
+		// assume this issue has something to do to the hosting and/or
+		// Selenium driver
+		int ntry = 0;
+		while (ntry < MAX_TRIES) {
+			try {
+				if (DriverUtils
+						.isElementDisplayed(
+								drv,
+								By.xpath(WebAppLocators.LandingPage.xpathSwitchToSignInButton),
+								5)) {
+					break;
+				} else {
+					log.error(String
+							.format("Landing page has failed to load. Trying to refresh (%s of %s)...",
+									ntry + 1, MAX_TRIES));
+					drv.navigate().to(drv.getCurrentUrl());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ntry++;
+		}
+	}
+
 	private Future<ZetaWebAppDriver> resetWebAppDriver(String url)
 			throws Exception {
 		final DesiredCapabilities capabilities;
@@ -168,7 +225,7 @@ public class CommonWebAppSteps {
 		@SuppressWarnings("unchecked")
 		final Future<ZetaWebAppDriver> lazyWebDriver = (Future<ZetaWebAppDriver>) PlatformDrivers
 				.getInstance().resetDriver(url, capabilities,
-						MAX_DRIVER_CREATION_RETRIES);
+						MAX_DRIVER_CREATION_RETRIES, this::navigateToStartPage);
 		return lazyWebDriver;
 	}
 

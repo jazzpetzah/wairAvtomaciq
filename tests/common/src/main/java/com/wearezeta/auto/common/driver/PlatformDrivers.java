@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -44,7 +45,8 @@ public final class PlatformDrivers {
 			.values().length);
 
 	public synchronized Future<? extends RemoteWebDriver> resetDriver(
-			String url, DesiredCapabilities capabilities, int maxRetryCount)
+			String url, DesiredCapabilities capabilities, int maxRetryCount,
+			Consumer<RemoteWebDriver> initCompletedCallback)
 			throws Exception {
 		final Platform platformInCapabilities = Platform
 				.getByName((String) capabilities.getCapability("platformName"));
@@ -52,15 +54,22 @@ public final class PlatformDrivers {
 			this.quitDriver(platformInCapabilities);
 		}
 		final LazyDriverInitializer initializer = new LazyDriverInitializer(
-				platformInCapabilities, url, capabilities, maxRetryCount);
+				platformInCapabilities, url, capabilities, maxRetryCount, 
+				initCompletedCallback);
 		Future<RemoteWebDriver> driverBeingCreated = pool.submit(initializer);
 		drivers.put(platformInCapabilities, driverBeingCreated);
 		return driverBeingCreated;
 	}
 
+	public synchronized Future<? extends RemoteWebDriver> resetDriver(
+			String url, DesiredCapabilities capabilities, int maxRetryCount)
+			throws Exception {
+		return resetDriver(url, capabilities, maxRetryCount, null);
+	}
+
 	public Future<? extends RemoteWebDriver> resetDriver(String url,
 			DesiredCapabilities capabilities) throws Exception {
-		return resetDriver(url, capabilities, 1);
+		return resetDriver(url, capabilities, 1, null);
 	}
 
 	public static void setImplicitWaitTimeout(RemoteWebDriver driver,
