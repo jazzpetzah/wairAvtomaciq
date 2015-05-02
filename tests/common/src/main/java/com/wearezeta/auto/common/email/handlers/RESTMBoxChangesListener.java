@@ -51,6 +51,6 @@ class RESTMBoxChangesListener extends AbstractMBoxChangesListener {
 				String.format(
 						"Email message containing headers %s has not been found within %d seconds after %s retry",
 						this.expectedHeaders.toString(), this.timeoutSeconds,
-						this.retryNumber));
+						this.retryNumber + 1));
 	}
 }
