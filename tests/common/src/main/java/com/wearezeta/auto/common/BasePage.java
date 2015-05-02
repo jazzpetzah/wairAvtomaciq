@@ -94,7 +94,7 @@ public abstract class BasePage {
 			.getSimpleName());
 	private static ZetaElementLocatorFactory zetaLocatorFactory;
 
-	private static final long DRIVER_INIT_TIMEOUT = 30000; // milliseconds
+	private static final long DRIVER_INIT_TIMEOUT = 1000 * 60 * 5; // milliseconds
 
 	public BasePage(Future<? extends RemoteWebDriver> lazyDriver)
 			throws Exception {
@@ -116,7 +116,7 @@ public abstract class BasePage {
 												.getDriver());
 								return;
 							}
-							Thread.sleep(10);
+							Thread.sleep(50);
 						} catch (Exception e) {
 							e.printStackTrace();
 							break;
