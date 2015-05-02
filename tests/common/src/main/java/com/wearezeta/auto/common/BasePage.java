@@ -40,6 +40,7 @@ public abstract class BasePage {
 	 * initialized
 	 * 
 	 * @param drv
+	 *            selenium driver
 	 * @throws Exception
 	 */
 	protected void onDriverInitializationFinished(RemoteWebDriver drv)
@@ -102,26 +103,16 @@ public abstract class BasePage {
 		if (this.lazyDriver.isDone()) {
 			onDriverInitializationFinished(this.getDriver());
 		} else {
-			// Unfortunately, Java Future does not allow to assign any callbacks
-			// to isDone event, so we have to poll the value "manually"
 			new Thread() {
 				@Override
 				public void run() {
-					long millisecondsStarted = System.currentTimeMillis();
-					do {
-						try {
-							if (BasePage.this.lazyDriver.isDone()) {
-								BasePage.this
-										.onDriverInitializationFinished(BasePage.this
-												.getDriver());
-								return;
-							}
-							Thread.sleep(50);
-						} catch (Exception e) {
-							e.printStackTrace();
-							break;
-						}
-					} while (System.currentTimeMillis() - millisecondsStarted <= DRIVER_INIT_TIMEOUT);
+					try {
+						BasePage.this
+								.onDriverInitializationFinished(BasePage.this
+										.getDriver());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}.start();
 		}
