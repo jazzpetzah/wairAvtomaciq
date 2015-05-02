@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @torun @id1626
+  @smoke @id1626
   Scenario Outline: Send message in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

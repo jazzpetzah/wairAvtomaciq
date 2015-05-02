@@ -9,6 +9,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
@@ -34,7 +35,25 @@ public abstract class BasePage {
 		return this.lazyDriver;
 	}
 
-	// Never work with 'driver' field directly. Use getter
+	/**
+	 * Override this method to call some additional stuff upon the driver is
+	 * initialized
+	 * 
+	 * @param drv
+	 * @throws Exception
+	 */
+	protected void onDriverInitializationFinished(RemoteWebDriver drv)
+			throws Exception {
+		zetaLocatorFactory = new ZetaElementLocatorFactory(drv,
+				Long.parseLong(CommonUtils
+						.getDriverTimeoutFromConfig(getClass())),
+				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
+		FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(
+				zetaLocatorFactory);
+		PageFactory.initElements(zetaFieldDecorator, this);
+	}
+
+	// Never invoke 'driver' field directly. Use getter
 	// for this purpose
 	private RemoteWebDriver driver = null;
 
@@ -44,19 +63,13 @@ public abstract class BasePage {
 		driverGuard.acquire();
 		try {
 			if (this.driver == null) {
-				this.driver = this.getLazyDriver().get();
-				zetaLocatorFactory = new ZetaElementLocatorFactory(this.driver,
-						Long.parseLong(CommonUtils
-								.getDriverTimeoutFromConfig(getClass())),
-						AppiumFieldDecorator.DEFAULT_TIMEUNIT);
-				FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(
-						zetaLocatorFactory);
-				PageFactory.initElements(zetaFieldDecorator, this);
+				this.driver = this.getLazyDriver().get(DRIVER_INIT_TIMEOUT,
+						TimeUnit.MILLISECONDS);
 			}
-			return this.driver;
 		} finally {
 			driverGuard.release();
 		}
+		return this.driver;
 	}
 
 	private WebDriverWait wait;
@@ -70,19 +83,48 @@ public abstract class BasePage {
 				this.wait = PlatformDrivers.createDefaultExplicitWait(this
 						.getDriver());
 			}
-			return this.wait;
 		} finally {
 			waitGuard.release();
 		}
+		return this.wait;
+
 	}
 
 	private static final Logger log = ZetaLogger.getLog(BasePage.class
 			.getSimpleName());
 	private static ZetaElementLocatorFactory zetaLocatorFactory;
 
+	private static final long DRIVER_INIT_TIMEOUT = 30000; // milliseconds
+
 	public BasePage(Future<? extends RemoteWebDriver> lazyDriver)
 			throws Exception {
 		this.lazyDriver = lazyDriver;
+		if (this.lazyDriver.isDone()) {
+			onDriverInitializationFinished(this.getDriver());
+		} else {
+			// Unfortunately, Java Future does not allow to assign any callbacks
+			// to isDone event, so we have to poll the value "manually"
+			new Thread() {
+				@Override
+				public void run() {
+					long millisecondsStarted = System.currentTimeMillis();
+					do {
+						try {
+							if (BasePage.this.lazyDriver.isDone()) {
+								BasePage.this
+										.onDriverInitializationFinished(BasePage.this
+												.getDriver());
+								return;
+							}
+							Thread.sleep(10);
+						} catch (Exception e) {
+							e.printStackTrace();
+							break;
+						}
+					} while (System.currentTimeMillis() - millisecondsStarted <= DRIVER_INIT_TIMEOUT);
+				}
+			}.start();
+		}
 	}
 
 	public void close() throws Exception {

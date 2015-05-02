@@ -11,6 +11,7 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
@@ -41,6 +42,7 @@ public class RegistrationPage extends WebPage {
 	}
 
 	public LoginPage switchToLoginPage() throws Exception {
+		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
 		final By signInBtnlocator = By
 				.xpath(WebAppLocators.LoginPage.xpathSignInButton);
 		final By switchtoSignInBtnlocator = By

@@ -23,11 +23,6 @@ public class ActivationPage extends WebPage {
 	public void setUrl(String url) {
 		super.setUrl(url);
 	}
-	
-	@Override
-	public void navigateTo() throws Exception {
-		super.navigateTo();
-	}
 
 	private ContactListPage openWebApp(int timeoutSeconds) throws Exception {
 		final By openWebAppBtnLocator = By
