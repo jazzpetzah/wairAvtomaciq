@@ -46,7 +46,7 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		this.singleUserPopoverPage.clickAddPeopleButton();
 	}
 
-	public void selectUserFromSearchResult(String user) {
+	public void selectUserFromSearchResult(String user) throws Exception {
 		this.addPeoplePopoverPage.selectUserFromSearchResult(user);
 	}
 
@@ -54,7 +54,7 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		return getCurrentUserInfoPage().getUserName();
 	}
 
-	public boolean isAddButtonVisible() {
+	public boolean isAddButtonVisible() throws Exception {
 		return this.singleUserPopoverPage.isAddButtonVisible();
 	}
 

@@ -66,10 +66,11 @@ public class SelfPictureUploadPageSteps {
 	 * Force Carousel mode on Self Picture Upload dialog
 	 * 
 	 * @step. ^I force carousel mode on Self Picture Upload dialog$
+	 * @throws Exception 
 	 * 
 	 */
 	@And("^I force carousel mode on Self Picture Upload dialog$")
-	public void IForceCarouselMode() {
+	public void IForceCarouselMode() throws Exception {
 		PagesCollection.selfPictureUploadPage.forceCarouselMode();
 	}
 

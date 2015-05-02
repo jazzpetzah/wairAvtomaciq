@@ -217,8 +217,7 @@ public class ConversationPage extends WebPage {
 				.contains(message.toLowerCase());
 	}
 
-	public int numberOfPingMessagesVisible() {
-
+	public int numberOfPingMessagesVisible() throws Exception {
 		return getDriver().findElementsByClassName(
 				WebAppLocators.ConversationPage.classPingMessage).size() - 1;
 	}

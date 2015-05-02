@@ -29,7 +29,8 @@ abstract class AbstractPopoverPage extends WebPage {
 				By.xpath(getXpathLocator()));
 	}
 
-	protected WebElement getSharedElement(String relativeXpath) {
+	protected WebElement getSharedElement(String relativeXpath)
+			throws Exception {
 		return this.getDriver().findElement(
 				By.xpath(String.format("%s%s", this.getContainer()
 						.getXpathLocator(), relativeXpath)));

@@ -148,7 +148,7 @@ public class ContactListPage extends WebPage {
 				.getName());
 	}
 
-	private String getSelfName(By locator) {
+	private String getSelfName(By locator) throws Exception {
 		String name = "";
 		for (int i = 1; i < 6; i++) {
 			name = getDriver().findElement(locator).getText();
@@ -292,7 +292,7 @@ public class ContactListPage extends WebPage {
 		return !entry.getCssValue("color").equals(NON_SELECTED_ITEM_COLOR);
 	}
 
-	private void waitUtilEntryIsSelected(final WebElement entry) {
+	private void waitUtilEntryIsSelected(final WebElement entry) throws Exception {
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(this.getDriver())
 				.withTimeout(SELECTION_TIMEOUT, TimeUnit.SECONDS).pollingEvery(
 						1, TimeUnit.SECONDS);
@@ -303,14 +303,14 @@ public class ContactListPage extends WebPage {
 		});
 	}
 
-	public void clickWithJS(String cssSelector) {
+	public void clickWithJS(String cssSelector) throws Exception {
 		this.getDriver()
 				.executeScript(
 						String.format("$(document).find(\"%s\").click();",
 								cssSelector));
 	}
 
-	private void selectEntryWithRetry(By locator, String cssLocator) {
+	private void selectEntryWithRetry(By locator, String cssLocator) throws Exception {
 		final WebElement entry = getDriver().findElement(locator);
 		if (!isEntrySelected(entry)) {
 			entry.click();

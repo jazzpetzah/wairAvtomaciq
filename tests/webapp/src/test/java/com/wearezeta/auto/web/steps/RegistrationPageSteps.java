@@ -1,6 +1,5 @@
 package com.wearezeta.auto.web.steps;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -94,10 +93,10 @@ public class RegistrationPageSteps {
 	 * 
 	 * @param password
 	 *            user password/alias
-	 * @throws IOException
+	 * @throws Exception 
 	 */
 	@When("^I enter user password (.*) on Registration page$")
-	public void IEnterPassword(String password) throws IOException {
+	public void IEnterPassword(String password) throws Exception {
 		try {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
 					password).getPassword());

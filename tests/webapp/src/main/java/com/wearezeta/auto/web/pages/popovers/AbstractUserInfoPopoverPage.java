@@ -31,7 +31,7 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 	}
 
 	@Override
-	protected WebElement getSharedElement(String relativeXpath) {
+	protected WebElement getSharedElement(String relativeXpath) throws Exception {
 		return super
 				.getSharedElement(String
 						.format("%s%s",
@@ -39,11 +39,11 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 								relativeXpath));
 	}
 
-	private WebElement getUserNameElement() {
+	private WebElement getUserNameElement() throws Exception {
 		return this.getSharedElement(PopoverLocators.Shared.xpathUserName);
 	}
 
-	public String getUserName() {
+	public String getUserName() throws Exception {
 		return getUserNameElement().getText();
 	}
 

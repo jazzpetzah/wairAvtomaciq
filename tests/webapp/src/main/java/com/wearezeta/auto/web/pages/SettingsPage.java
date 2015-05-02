@@ -81,7 +81,7 @@ public class SettingsPage extends WebPage {
 
 	private static final int SLIDER_CIRCLE_SIZE = 20;
 
-	public void setSoundAlertsLevel(SoundAlertsLevel newLevel) {
+	public void setSoundAlertsLevel(SoundAlertsLevel newLevel) throws Exception {
 		assert SoundAlertsLevel.values().length > 1;
 		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Firefox) {
 			final Actions builder = new Actions(this.getDriver());

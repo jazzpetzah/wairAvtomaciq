@@ -24,11 +24,11 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 		return PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathBlockButton;
 	}
 
-	private WebElement getAddButtonElement() {
+	private WebElement getAddButtonElement() throws Exception {
 		return this.getSharedElement(PopoverLocators.Shared.xpathAddButton);
 	}
 
-	public boolean isAddButtonVisible() {
+	public boolean isAddButtonVisible() throws Exception {
 		return getAddButtonElement().isDisplayed();
 	}
 

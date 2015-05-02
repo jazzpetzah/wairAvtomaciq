@@ -107,11 +107,11 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		return this.participantsListPopoverPage.getConversationTitle();
 	}
 
-	public void selectUserFromSearchResult(String name) {
+	public void selectUserFromSearchResult(String name) throws Exception {
 		this.addPeoplePopoverPage.selectUserFromSearchResult(name);
 	}
 
-	public void confirmAddPeople() {
+	public void confirmAddPeople() throws Exception {
 		this.addPeopleConfirmationPopoverPage.clickContinueButton();
 	}
 

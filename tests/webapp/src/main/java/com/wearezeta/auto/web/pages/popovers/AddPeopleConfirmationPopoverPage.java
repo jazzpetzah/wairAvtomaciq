@@ -21,12 +21,12 @@ class AddPeopleConfirmationPopoverPage extends AbstractPopoverPage {
 				PopoverLocators.Shared.xpathContinueButton);
 	}
 
-	private WebElement getContinueButtonElement() {
+	private WebElement getContinueButtonElement() throws Exception {
 		return this
 				.getSharedElement(PopoverLocators.Shared.xpathContinueButton);
 	}
 
-	public void clickContinueButton() {
+	public void clickContinueButton() throws Exception {
 		this.getContinueButtonElement().click();
 	}
 }

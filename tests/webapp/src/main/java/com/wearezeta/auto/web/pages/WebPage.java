@@ -12,8 +12,8 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 
 public class WebPage extends BasePage {
 	@Override
-	protected ZetaWebAppDriver getDriver() {
-		return (ZetaWebAppDriver) this.getDriver();
+	protected ZetaWebAppDriver getDriver() throws Exception {
+		return (ZetaWebAppDriver) super.getDriver();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -21,13 +21,13 @@ public class WebPage extends BasePage {
 	protected Future<ZetaWebAppDriver> getLazyDriver() {
 		return (Future<ZetaWebAppDriver>) super.getLazyDriver();
 	}
-	
+
 	private String url = null;
 
 	public String getUrl() {
 		return this.url;
 	}
-	
+
 	protected void setUrl(String url) {
 		this.url = url;
 	}
@@ -43,7 +43,7 @@ public class WebPage extends BasePage {
 		this.url = url;
 	}
 
-	public void navigateTo() {
+	public void navigateTo() throws Exception {
 		if (this.url != null) {
 			this.getDriver().navigate().to(this.url);
 		} else {
@@ -54,7 +54,7 @@ public class WebPage extends BasePage {
 		}
 	}
 
-	public BufferedImage takeScreenshot() throws IOException {
+	public BufferedImage takeScreenshot() throws Exception {
 		return DriverUtils.takeScreenshot(this.getDriver());
 	}
 
@@ -84,7 +84,7 @@ public class WebPage extends BasePage {
 		return null;
 	}
 
-	public void acceptAlert() {
+	public void acceptAlert() throws Exception {
 		Alert popup = getDriver().switchTo().alert();
 		popup.accept();
 	}

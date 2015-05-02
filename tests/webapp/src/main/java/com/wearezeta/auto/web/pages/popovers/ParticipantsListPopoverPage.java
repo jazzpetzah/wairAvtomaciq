@@ -56,7 +56,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 	}
 
 	@Override
-	protected WebElement getSharedElement(String relativeXpath) {
+	protected WebElement getSharedElement(String relativeXpath) throws Exception {
 		return super
 				.getSharedElement(String
 						.format("%s%s",
@@ -64,7 +64,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 								relativeXpath));
 	}
 
-	private WebElement getAddPeopleElement() {
+	private WebElement getAddPeopleElement() throws Exception {
 		return this.getSharedElement(PopoverLocators.Shared.xpathAddButton);
 	}
 

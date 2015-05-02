@@ -82,7 +82,7 @@ public class SelfPictureUploadPage extends WebPage {
 		return new ContactsUploadPage(this.getLazyDriver());
 	}
 
-	public void forceCarouselMode() {
+	public void forceCarouselMode() throws Exception {
 		final String forceCarouselScript = "window.wire.app.view.content.self_profile.show_get_picture();";
 		this.getDriver().executeScript(forceCarouselScript);
 	}

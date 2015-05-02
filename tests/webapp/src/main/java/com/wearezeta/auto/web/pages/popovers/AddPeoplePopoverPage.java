@@ -20,7 +20,7 @@ class AddPeoplePopoverPage extends AbstractPopoverPage {
 				PopoverLocators.Shared.xpathSearchInputField);
 	}
 
-	private WebElement getSearchFieldElement() {
+	private WebElement getSearchFieldElement() throws Exception {
 		return this
 				.getSharedElement(PopoverLocators.Shared.xpathSearchInputField);
 	}
@@ -32,7 +32,7 @@ class AddPeoplePopoverPage extends AbstractPopoverPage {
 		getSearchFieldElement().sendKeys(searchText);
 	}
 
-	private WebElement getCreateGroupConversationButton() {
+	private WebElement getCreateGroupConversationButton() throws Exception {
 		return this
 				.getSharedElement(PopoverLocators.Shared.xpathCreateConversationButton);
 	}
@@ -43,13 +43,13 @@ class AddPeoplePopoverPage extends AbstractPopoverPage {
 		getCreateGroupConversationButton().click();
 	}
 
-	private WebElement getFoundItemElement(String name) {
+	private WebElement getFoundItemElement(String name) throws Exception {
 		return this
 				.getSharedElement(PopoverLocators.Shared.xpathSearchResultByName
 						.apply(name));
 	}
 
-	public void selectUserFromSearchResult(String name) {
+	public void selectUserFromSearchResult(String name) throws Exception {
 		this.getFoundItemElement(name).click();
 	}
 }

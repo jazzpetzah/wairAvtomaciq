@@ -309,10 +309,11 @@ public class ContactListPageSteps {
 	 * Verify that my name color is the same as in color picker
 	 * 
 	 * @step. ^I verify my name color is the same as in color picker$
+	 * @throws Exception 
 	 * 
 	 */
 	@Then("^I verify my name color is the same as in color picker$")
-	public void IVerifyMyNameColor() {
+	public void IVerifyMyNameColor() throws Exception {
 		final String selfNameColor = PagesCollection.contactListPage
 				.getSelfNameColor();
 		final String colorInColorPicker = PagesCollection.selfProfilePage

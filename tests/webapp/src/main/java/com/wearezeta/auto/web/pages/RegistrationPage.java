@@ -46,7 +46,7 @@ public class RegistrationPage extends WebPage {
 	}
 
 	@Override
-	public void navigateTo() {
+	public void navigateTo() throws Exception {
 		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
 			// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
 			this.getDriver()
@@ -126,26 +126,26 @@ public class RegistrationPage extends WebPage {
 		return new LoginPage(this.getLazyDriver());
 	}
 
-	private void removeReadonlyAttr(String cssLocator) {
+	private void removeReadonlyAttr(String cssLocator) throws Exception {
 		this.getDriver().executeScript(
 				String.format(
 						"$(document).find(\"%s\").removeAttr('readonly');",
 						cssLocator));
 	}
 
-	public void enterName(String name) {
+	public void enterName(String name) throws Exception {
 		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssNameFiled);
 		nameField.clear();
 		nameField.sendKeys(name);
 	}
 
-	public void enterEmail(String email) {
+	public void enterEmail(String email) throws Exception {
 		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssEmailFiled);
 		emailField.clear();
 		emailField.sendKeys(email);
 	}
 
-	public void enterPassword(String password) {
+	public void enterPassword(String password) throws Exception {
 		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssPasswordFiled);
 		passwordField.clear();
 		passwordField.sendKeys(password);

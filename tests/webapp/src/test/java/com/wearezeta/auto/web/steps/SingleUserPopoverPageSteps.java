@@ -4,9 +4,11 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import org.junit.Assert;
 
 public class SingleUserPopoverPageSteps {
@@ -129,10 +131,11 @@ public class SingleUserPopoverPageSteps {
 	 * Verifies whether Add People button exists on the popover
 	 *
 	 * @step. ^I see Add people button on Single User Profile popover$
+	 * @throws Exception 
 	 *
 	 */
 	@Then("^I see Add people button on Single User Profile popover$")
-	public void ISeeAddButton() {
+	public void ISeeAddButton() throws Exception {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
 				.isAddButtonVisible());
 	}

@@ -102,7 +102,7 @@ public class SelfProfilePage extends WebPage {
 		accentColorDiv.click();
 	}
 
-	public String getCurrentAccentColor() {
+	public String getCurrentAccentColor() throws Exception {
 		final WebElement accentColorCircleDiv = this
 				.getDriver()
 				.findElementByXPath(

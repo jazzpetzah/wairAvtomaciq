@@ -41,7 +41,7 @@ public class PeoplePickerPage extends WebPage {
 		openOrCreateConversationButton.click();
 	}
 
-	private void clickNotConnectedUser(String name) {
+	private void clickNotConnectedUser(String name) throws Exception {
 		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 				.apply(name);
 		WebElement foundUserElement = getDriver().findElement(
