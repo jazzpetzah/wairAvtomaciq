@@ -26,26 +26,31 @@ class RESTMBoxChangesListener extends AbstractMBoxChangesListener {
 	public String call() throws Exception {
 		final String deliveredTo = MessagingUtils
 				.extractDeliveredToValue(this.expectedHeaders);
-		final List<String> deliveredMessages = this.getParentMbox()
-				.getRecentMessages(deliveredTo, this.retryNumber + 1,
-						this.retryNumber + 1, this.timeoutSeconds * 1000);
-		log.debug(String.format("Got %s new incoming message(s) for %s",
-				deliveredMessages.size(), deliveredTo));
-		for (String deliveredMessage : deliveredMessages) {
-			final Message foundMsg = MessagingUtils
-					.stringToMsg(deliveredMessage);
-			if (this.areAllHeadersInMessage(foundMsg)) {
-				if (foundMsg.getSentDate().getTime() >= filterMessagesAfter) {
-					log.debug("\tMessage accepted by timestamp");
-					return deliveredMessage;
-				} else {
-					log.error("\t!!! Message rejected because it is outdated. Please check your local time (should be in sync with world time)!");
+		final long millisecondsStarted = System.currentTimeMillis();
+		do {
+			final List<String> deliveredRawMessages = this.getParentMbox()
+					.getRecentMessages(deliveredTo, 1, this.retryNumber + 1,
+							this.timeoutSeconds * 1000);
+			log.debug(String.format("Got %s incoming message(s) for %s",
+					deliveredRawMessages.size(), deliveredTo));
+			for (String deliveredRawMessage : deliveredRawMessages) {
+				final Message foundMsg = MessagingUtils
+						.stringToMsg(deliveredRawMessage);
+				if (this.areAllHeadersInMessage(foundMsg)) {
+					if (foundMsg.getSentDate().getTime() >= filterMessagesAfter) {
+						log.debug("\tMessage accepted by timestamp");
+						return deliveredRawMessage;
+					} else {
+						log.error("\t!!! Message rejected because it is outdated. Please check your local time (should be in sync with world time)!");
+					}
 				}
 			}
-		}
+			Thread.sleep(2000);
+		} while (System.currentTimeMillis() - millisecondsStarted <= this.timeoutSeconds * 1000);
 		throw new RuntimeException(
 				String.format(
-						"Email message containing headers %s has not been found within %d seconds",
-						this.expectedHeaders.toString(), this.timeoutSeconds));
+						"Email message containing headers %s has not been found within %d seconds after %s retry",
+						this.expectedHeaders.toString(), this.timeoutSeconds,
+						this.retryNumber + 1));
 	}
 }
