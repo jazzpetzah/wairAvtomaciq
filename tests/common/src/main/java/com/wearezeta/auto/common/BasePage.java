@@ -18,7 +18,6 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.pagefactory.FieldDecorator;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -26,6 +25,7 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.locators.ZetaElementLocatorFactory;
 import com.wearezeta.auto.common.locators.ZetaFieldDecorator;
+import com.wearezeta.auto.common.locators.ZetaSearchContext;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class BasePage {
@@ -35,42 +35,9 @@ public abstract class BasePage {
 		return this.lazyDriver;
 	}
 
-	/**
-	 * Override this method to call some additional stuff upon the driver is
-	 * initialized
-	 * 
-	 * @param drv
-	 *            selenium driver
-	 * @throws Exception
-	 */
-	protected void onDriverInitializationFinished(RemoteWebDriver drv)
-			throws Exception {
-		zetaLocatorFactory = new ZetaElementLocatorFactory(drv,
-				Long.parseLong(CommonUtils
-						.getDriverTimeoutFromConfig(getClass())),
-				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
-		FieldDecorator zetaFieldDecorator = new ZetaFieldDecorator(
-				zetaLocatorFactory);
-		PageFactory.initElements(zetaFieldDecorator, this);
-	}
-
-	// Never invoke 'driver' field directly. Use getter
-	// for this purpose
-	private RemoteWebDriver driver = null;
-
-	private final Semaphore driverGuard = new Semaphore(1);
-
 	protected RemoteWebDriver getDriver() throws Exception {
-		driverGuard.acquire();
-		try {
-			if (this.driver == null) {
-				this.driver = this.getLazyDriver().get(DRIVER_INIT_TIMEOUT,
-						TimeUnit.MILLISECONDS);
-			}
-		} finally {
-			driverGuard.release();
-		}
-		return this.driver;
+		return this.getLazyDriver().get(ZetaDriver.INIT_TIMEOUT,
+				TimeUnit.MILLISECONDS);
 	}
 
 	private WebDriverWait wait;
@@ -88,34 +55,21 @@ public abstract class BasePage {
 			waitGuard.release();
 		}
 		return this.wait;
-
 	}
 
 	private static final Logger log = ZetaLogger.getLog(BasePage.class
 			.getSimpleName());
-	private static ZetaElementLocatorFactory zetaLocatorFactory;
-
-	private static final long DRIVER_INIT_TIMEOUT = 1000 * 60 * 5; // milliseconds
+	private ZetaElementLocatorFactory zetaLocatorFactory;
 
 	public BasePage(Future<? extends RemoteWebDriver> lazyDriver)
 			throws Exception {
 		this.lazyDriver = lazyDriver;
-		if (this.lazyDriver.isDone()) {
-			onDriverInitializationFinished(this.getDriver());
-		} else {
-			new Thread() {
-				@Override
-				public void run() {
-					try {
-						BasePage.this
-								.onDriverInitializationFinished(BasePage.this
-										.getDriver());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}.start();
-		}
+		this.zetaLocatorFactory = new ZetaElementLocatorFactory(
+				new ZetaSearchContext(lazyDriver), Long.parseLong(CommonUtils
+						.getDriverTimeoutFromConfig(getClass())),
+				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
+		PageFactory.initElements(new ZetaFieldDecorator(zetaLocatorFactory),
+				this);
 	}
 
 	public void close() throws Exception {
@@ -180,7 +134,7 @@ public abstract class BasePage {
 		return this.getDriver().getPageSource();
 	}
 
-	public static void changeZetaLocatorTimeout(long seconds) {
+	public void changeZetaLocatorTimeout(long seconds) {
 		zetaLocatorFactory.resetImplicitlyWaitTimeOut(seconds,
 				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
 	}

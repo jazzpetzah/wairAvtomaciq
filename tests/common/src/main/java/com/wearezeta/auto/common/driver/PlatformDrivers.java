@@ -3,6 +3,7 @@ package com.wearezeta.auto.common.driver;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -41,20 +42,30 @@ public final class PlatformDrivers {
 		return this.drivers.containsKey(platform);
 	}
 
+	public Platform getDriverPlatform(Future<? extends RemoteWebDriver> drv) {
+		for (Map.Entry<Platform, Future<? extends RemoteWebDriver>> entry : this.drivers
+				.entrySet()) {
+			if (entry.getValue() == drv) {
+				return entry.getKey();
+			}
+		}
+		throw new NoSuchElementException(
+				"Platform is unknown for the passed driver element");
+	}
+
 	private final ExecutorService pool = Executors.newFixedThreadPool(Platform
 			.values().length);
 
 	public synchronized Future<? extends RemoteWebDriver> resetDriver(
 			String url, DesiredCapabilities capabilities, int maxRetryCount,
-			Consumer<RemoteWebDriver> initCompletedCallback)
-			throws Exception {
+			Consumer<RemoteWebDriver> initCompletedCallback) throws Exception {
 		final Platform platformInCapabilities = Platform
 				.getByName((String) capabilities.getCapability("platformName"));
 		if (this.hasDriver(platformInCapabilities)) {
 			this.quitDriver(platformInCapabilities);
 		}
 		final LazyDriverInitializer initializer = new LazyDriverInitializer(
-				platformInCapabilities, url, capabilities, maxRetryCount, 
+				platformInCapabilities, url, capabilities, maxRetryCount,
 				initCompletedCallback);
 		Future<RemoteWebDriver> driverBeingCreated = pool.submit(initializer);
 		drivers.put(platformInCapabilities, driverBeingCreated);

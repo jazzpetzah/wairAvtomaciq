@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.Future;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
@@ -29,9 +29,6 @@ import gherkin.formatter.model.Step;
 import gherkin.formatter.model.Tag;
 
 public class ZetaFormatter implements Formatter, Reporter {
-	// Please always use getDriver getter to access this field
-	private static RemoteWebDriver driver = null;
-
 	private String feature = "";
 	private String scenario = "";
 	private String scope = "Unknown";
@@ -206,18 +203,8 @@ public class ZetaFormatter implements Formatter, Reporter {
 		// TODO Auto-generated method stub
 	}
 
-	private static final Semaphore driverGuard = new Semaphore(1);
-
 	private static RemoteWebDriver getDriver() throws Exception {
-		driverGuard.acquire();
-		try {
-			if (driver == null) {
-				driver = lazyDriver.get();
-			}
-			return driver;
-		} finally {
-			driverGuard.release();
-		}
+		return lazyDriver.get(ZetaDriver.INIT_TIMEOUT, TimeUnit.MILLISECONDS);
 	}
 
 	private static Future<? extends RemoteWebDriver> lazyDriver = null;
