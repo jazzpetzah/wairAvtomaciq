@@ -131,9 +131,6 @@ public class AndroidWireInstance extends WireInstance {
 	@Override
 	public void signInImpl(String userAlias, String email, String password)
 			throws Throwable {
-		if (PagesCollection.loginPage.isDismissUpdateVisible()) {
-			PagesCollection.loginPage.dismissUpdate();
-		}
 		LoginPageSteps androidLoginPageSteps = new LoginPageSteps();
 		androidLoginPageSteps.GivenISignIn(email, password);
 		ContactListPageSteps androidContactListPageSteps = new ContactListPageSteps();

@@ -9,12 +9,15 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.reporter.LogcatListener;
+import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.LoginPage;
@@ -27,6 +30,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
@@ -95,7 +99,20 @@ public class CommonAndroidSteps {
 		}
 
 		return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-				.resetDriver(url, capabilities);
+				.resetDriver(url, capabilities, 1,
+						this::onDriverInitFinished);
+	}
+
+	private void onDriverInitFinished(RemoteWebDriver drv) {
+		final By locator = By
+				.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton);
+		try {
+			if (DriverUtils.isElementDisplayed(drv, locator, 2)) {
+				drv.findElement(locator).click();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {

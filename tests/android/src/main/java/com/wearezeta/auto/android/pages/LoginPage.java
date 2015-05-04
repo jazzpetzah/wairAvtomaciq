@@ -5,7 +5,6 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -74,7 +73,6 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public Boolean isVisible() {
-		dismissUpdate();
 		return welcomeSlogan != null;
 	}
 
@@ -203,14 +201,6 @@ public class LoginPage extends AndroidPage {
 						AndroidLocators.LoginPage
 								.getByForLoginPageRegistrationButton());
 		return new RegistrationPage(this.getLazyDriver());
-	}
-
-	public void dismissUpdate() {
-		try {
-			dismissUpdateButton.click();
-		} catch (NoSuchElementException e) {
-
-		}
 	}
 
 	public boolean isDismissUpdateVisible() throws Exception {
