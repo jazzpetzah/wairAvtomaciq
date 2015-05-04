@@ -246,6 +246,8 @@ Feature: People View
       And I see Mail on Group Participants popover
       And Would open mail client when clicking mail on Group Participants popover
       Then I see Contact list with name <KnownContact>
+      When I click open conversation from Group Participants popover
+      Then I see conversation with <KnownContact> is selected in conversations list
 
       Examples:
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
