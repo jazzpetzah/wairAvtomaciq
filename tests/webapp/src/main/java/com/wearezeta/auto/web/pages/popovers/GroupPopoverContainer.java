@@ -27,17 +27,17 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		this.nonConnectedParticipantInfoPopoverPage = new NonConnectedParticipantInfoPopoverPage(
 				lazyDriver, this);
 		this.pendingParticipantInfoPopoverPage = new PendingParticipantInfoPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.blockedParticipantInfoPopoverPage = new BlockedParticipantInfoPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.addPeopleConfirmationPopoverPage = new AddPeopleConfirmationPopoverPage(
 				lazyDriver, this);
 		this.leaveGroupConfirmationPopoverPage = new LeaveGroupConfirmationPopoverPage(
 				lazyDriver, this);
 		this.removeFromGroupConfirmationPopoverPage = new RemoveFromGroupConfirmationPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.unblockUserConfirmationPopoverPage = new UnblockUserConfirmationPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 	}
 
 	@Override
