@@ -43,7 +43,7 @@ Feature: Archive
     Given I Sign in using login <Email> and password <Password>
     And I see my name on top of Contact list
     When I archive conversation <Contact>
-    And Myself pinged the conversation <Contact> 
+    And <Contact> pinged the conversation with me 
     Then I do not see Contact list with name <Contact>
     And I see Archive button at the bottom of my Contact list
 

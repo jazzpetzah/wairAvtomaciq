@@ -502,7 +502,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Send Ping into a conversation using the backend
 	 * 
-	 * @step. ^(.*) pinged conversation (.*)$
+	 * @step. ^(.*) pinged conversation with (.*)$
 	 * 
 	 * @param pingFromUserNameAlias
 	 *            conversations list owner name/alias
@@ -510,7 +510,7 @@ public class CommonWebAppSteps {
 	 *            the name of conversation to send ping to
 	 * @throws Exception
 	 */
-	@When("^(.*) pinged the conversation (.*)$")
+	@When("^(.*) pinged the conversation with (.*)$")
 	public void UserPingedConversation(String pingFromUserNameAlias,
 			String dstConversationName) throws Exception {
 		commonSteps.UserPingedConversation(pingFromUserNameAlias,
