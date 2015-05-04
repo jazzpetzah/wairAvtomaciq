@@ -2,13 +2,13 @@ package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
@@ -99,12 +99,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
 	private List<WebElement> connectToHeader;
 
-	public OtherUserPersonalInfoPage(ZetaAndroidDriver driver,
-			WebDriverWait wait) throws Exception {
-		super(driver, wait);
+	public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
+			throws Exception {
+		super(lazyDriver);
 	}
 
-	public void pressOptionsMenuButton() {
+	public void pressOptionsMenuButton() throws Exception {
 		refreshUITree();// TODO workaround
 		this.getWait().until(
 				ExpectedConditions
@@ -115,22 +115,22 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public ContactListPage pressLeaveButton() throws Exception {
 		refreshUITree();
 		leaveButton.click();
-		return new ContactListPage(this.getDriver(), this.getWait());
+		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public void pressSilenceButton() {
+	public void pressSilenceButton() throws Exception {
 		refreshUITree();
 		silenceButton.click();
 	}
 
-	public void clickBlockBtn() {
+	public void clickBlockBtn() throws Exception {
 		refreshUITree();
 		blockButton.click();
 	}
 
 	public AndroidPage clickUnblockBtn() throws Exception {
 		unblockButton.click();
-		return new DialogPage(this.getDriver(), this.getWait());
+		return new DialogPage(this.getLazyDriver());
 	}
 
 	public boolean isUnblockBtnVisible() throws Exception {
@@ -138,7 +138,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isOneToOneOptionsMenuFullyVisible() throws Exception {
-		refreshUITree(); //Fix to pass animation
+		refreshUITree(); // Fix to pass animation
 		boolean flag = false;
 		if (isVisible(blockButton) && isVisible(silenceButton)
 				&& isVisible(archiveButton)) {
@@ -148,7 +148,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isOneToOneOptionsMenuUIContentVisible() throws Exception {
-		refreshUITree(); //Fix to pass animation
+		refreshUITree(); // Fix to pass animation
 		boolean flag = false;
 		if (isVisible(blockButton) || isVisible(silenceButton)
 				|| isVisible(archiveButton)) {
@@ -158,7 +158,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isOneToOneUserProfileUIContentVisible() throws Exception {
-		refreshUITree(); //Fix to pass animation
+		refreshUITree(); // Fix to pass animation
 		boolean flag = false;
 		if (isVisible(closeButton) || isVisible(rightConversationButton)
 				|| isVisible(addContactBtn) || isVisible(addContactLabel)
@@ -169,7 +169,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isOneToOneUserProfileFullyVisible() throws Exception {
-		refreshUITree(); //Fix to pass animation
+		refreshUITree(); // Fix to pass animation
 		boolean flag = false;
 		if (isVisible(closeButton) && isVisible(rightConversationButton)
 				&& isVisible(addContactBtn) && isVisible(addContactLabel)
@@ -184,7 +184,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		AndroidPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new PeoplePickerPage(this.getDriver(), this.getWait());
+			page = new PeoplePickerPage(this.getLazyDriver());
 			break;
 		}
 		case UP: {
@@ -200,7 +200,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return page;
 	}
 
-	public boolean isOtherUserNameVisible(String name) {
+	public boolean isOtherUserNameVisible(String name) throws Exception {
 		refreshUITree();// workaround to refresh UI tree
 		String text;
 		if (otherUserName.size() > 0) {
@@ -215,7 +215,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return text.equals(name.toLowerCase());
 	}
 
-	public boolean isOtherUserMailVisible(String mail) {
+	public boolean isOtherUserMailVisible(String mail) throws Exception {
 		refreshUITree();// workaround to refresh UI tree
 		String text;
 		if (otherUserName.size() > 0) {
@@ -239,13 +239,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
-		return new OtherUserPersonalInfoPage(this.getDriver(), this.getWait());
+		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}
 
 	public PeoplePickerPage tapAddContactBtn() throws Exception {
 		refreshUITree();
 		addContactBtn.click();
-		return new PeoplePickerPage(this.getDriver(), this.getWait());
+		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 	public boolean isBackGroundImageCorrect(String imageName) throws Exception {
@@ -262,13 +262,14 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return flag;
 	}
 
-	public boolean isContactExists(String contact) {
+	public boolean isContactExists(String contact) throws Exception {
 		boolean flag = true;
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(groupChatName));
-		List<WebElement> cn = driver.findElements(By.xpath(String.format(
-				AndroidLocators.ContactListPage.xpathContacts,
-				contact.toUpperCase())));
+		List<WebElement> cn = this.getDriver().findElements(
+				By.xpath(String.format(
+						AndroidLocators.ContactListPage.xpathContacts,
+						contact.toUpperCase())));
 		if (cn.isEmpty()) {
 			flag = false;
 		}
@@ -298,10 +299,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 			}
 		}
 		if (connectToHeader.size() > 0) {
-			return new ConnectToPage(this.getDriver(), this.getWait());
+			return new ConnectToPage(this.getLazyDriver());
 		} else {
-			return new OtherUserPersonalInfoPage(this.getDriver(),
-					this.getWait());
+			return new OtherUserPersonalInfoPage(this.getLazyDriver());
 		}
 	}
 
@@ -316,16 +316,16 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public AndroidPage tapOnContact(String contact) throws Exception {
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(groupChatName));
-		WebElement cn = driver.findElement(By.xpath(String.format(
-				AndroidLocators.ContactListPage.xpathContacts,
-				contact.toUpperCase())));
+		WebElement cn = this.getDriver().findElement(
+				By.xpath(String.format(
+						AndroidLocators.ContactListPage.xpathContacts,
+						contact.toUpperCase())));
 		cn.click();
 		refreshUITree();
 		if (connectToHeader.size() > 0) {
-			return new ConnectToPage(this.getDriver(), this.getWait());
+			return new ConnectToPage(this.getLazyDriver());
 		} else {
-			return new OtherUserPersonalInfoPage(this.getDriver(),
-					this.getWait());
+			return new OtherUserPersonalInfoPage(this.getLazyDriver());
 		}
 	}
 
@@ -333,7 +333,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return participantsSubHeader.getText().toLowerCase();
 	}
 
-	public String getConversationName() {
+	public String getConversationName() throws Exception {
 		refreshUITree();
 		return groupChatName.getText();
 	}
@@ -341,7 +341,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public DialogPage tabBackButton() throws Exception {
 		refreshUITree();
 		closeButton.click();
-		return new DialogPage(this.getDriver(), this.getWait());
+		return new DialogPage(this.getLazyDriver());
 	}
 
 	public boolean isParticipantAvatars(String contact1, String contact2)
@@ -353,11 +353,14 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		refreshUITree();
 		String path = CommonUtils.getImagesPath(CommonUtils.class);
 		for (int i = 1; i < linearLayout.size() + 1; i++) {
-			avatarIcon = getElementScreenshot(driver
-					.findElement(By.xpath(String
-							.format(AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayoutId,
-									i))));
-			String avatarName = driver
+			avatarIcon = getElementScreenshot(this
+					.getDriver()
+					.findElement(
+							By.xpath(String
+									.format(AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayoutId,
+											i))));
+			String avatarName = this
+					.getDriver()
 					.findElement(
 							By.xpath(String
 									.format(AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoContacts,

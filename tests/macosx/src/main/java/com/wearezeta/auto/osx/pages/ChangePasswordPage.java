@@ -1,11 +1,12 @@
 package com.wearezeta.auto.osx.pages;
 
+import java.util.concurrent.Future;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -31,37 +32,37 @@ public class ChangePasswordPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.ChangePasswordPage.nameQuitSafariButton)
 	private WebElement quitSafariButton;
 
-	public ChangePasswordPage(ZetaOSXDriver driver, WebDriverWait wait)
+	public ChangePasswordPage(Future<ZetaOSXDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	public void enterEmailForChangePasswordAndSubmit(String email)
 			throws Exception {
-		driver.navigate().to(OSXConstants.BrowserActions.SAFARI);
+		this.getDriver().navigate().to(OSXConstants.BrowserActions.SAFARI);
 		emailTextField.sendKeys(email);
 		changePasswordButton.click();
-		driver.navigate().to(OSXExecutionContext.wirePath);
+		this.getDriver().navigate().to(OSXExecutionContext.wirePath);
 	}
 
 	public boolean resetPasswordSetNew(String password) throws Exception {
-		driver.navigate().to(OSXConstants.BrowserActions.SAFARI);
+		this.getDriver().navigate().to(OSXConstants.BrowserActions.SAFARI);
 
 		passwordTextField.sendKeys(password);
 		changePasswordButton.click();
 
 		boolean isFound = DriverUtils
 				.waitUntilElementAppears(
-						driver,
+						this.getDriver(),
 						By.xpath(OSXLocators.ChangePasswordPage.xpathPasswordChangedMessage),
 						30);
 
 		if (!isFound)
-			log.debug(driver.getPageSource());
+			log.debug(this.getDriver().getPageSource());
 
 		quitSafariButton.click();
 
-		driver.navigate().to(OSXExecutionContext.wirePath);
+		this.getDriver().navigate().to(OSXExecutionContext.wirePath);
 
 		return isFound;
 	}

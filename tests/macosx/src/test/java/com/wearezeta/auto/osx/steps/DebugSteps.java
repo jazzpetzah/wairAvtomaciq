@@ -19,7 +19,7 @@ public class DebugSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@When("^I output page source$")
-	public void IOutputPageSource() {
+	public void IOutputPageSource() throws Exception {
 		log.debug(PagesCollection.mainMenuPage.getPageSource());
 	}
 

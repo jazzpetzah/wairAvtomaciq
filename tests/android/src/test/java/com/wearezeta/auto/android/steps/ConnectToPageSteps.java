@@ -24,13 +24,9 @@ public class ConnectToPageSteps {
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
-
-//		Thread.sleep(2000);
-//		if (PagesCollection.contactListPage.isHintVisible()) {
-//			PagesCollection.contactListPage.closeHint();
-//		}
-
+		if (PagesCollection.connectToPage == null) {
+			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
+		}
 		Assert.assertEquals(contact.toLowerCase(),
 				PagesCollection.connectToPage.getConnectToHeader());
 	}
@@ -112,10 +108,11 @@ public class ConnectToPageSteps {
 	 * Note: The message is also cleared (method name does not suggest this).
 	 * 
 	 * @step. ^I tap on edit connect request field$
+	 * @throws Exception 
 	 * 
 	 */
 	@When("^I tap on edit connect request field$")
-	public void WhenITapOnEditConnectRequestField() {
+	public void WhenITapOnEditConnectRequestField() throws Exception {
 		PagesCollection.connectToPage.tapEditConnectionRequest();
 	}
 	

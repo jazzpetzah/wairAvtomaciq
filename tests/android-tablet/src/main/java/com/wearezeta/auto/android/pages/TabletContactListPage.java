@@ -1,10 +1,11 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.concurrent.Future;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.locators.AndroidLocators;
@@ -22,7 +23,7 @@ public class TabletContactListPage extends ContactListPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idOpenStartUIButton")
 	private WebElement peoplePickerButton;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = TabletAndroidLocators.TabletContactListPage.CLASS_NAME, locatorKey = "idRootLeftView")
 	private WebElement rootLeftView;
 
@@ -30,18 +31,18 @@ public class TabletContactListPage extends ContactListPage {
 	private static final Logger log = ZetaLogger
 			.getLog(TabletContactListPage.class.getSimpleName());
 
-	public TabletContactListPage(ZetaAndroidDriver driver, WebDriverWait wait)
+	public TabletContactListPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
-	public void tapOnProfileLink() {
+	public void tapOnProfileLink() throws Exception {
 		getWait().until(ExpectedConditions.visibilityOf(profileLink));
 		profileLink.click();
 	}
 
 	public TabletDialogPage initDialogPage() throws Exception {
-		return new TabletDialogPage(getDriver(), getWait());
+		return new TabletDialogPage(getLazyDriver());
 	}
 
 	public boolean isPeoplePickerButtonVisible() throws NoSuchElementException {
@@ -58,14 +59,14 @@ public class TabletContactListPage extends ContactListPage {
 		elementSwipeDown(rootLeftView, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
-	
+
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 
 		AndroidPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new PeoplePickerPage(this.getDriver(), this.getWait());
+			page = new PeoplePickerPage(this.getLazyDriver());
 			break;
 		}
 		case UP: {
@@ -80,13 +81,12 @@ public class TabletContactListPage extends ContactListPage {
 		}
 		return page;
 	}
-	
+
 	public String getSelfName() {
 		return profileLink.getText();
 	}
 
-
 	public TabletPeoplePickerPage initPeoplePickerPage() throws Exception {
-		return new TabletPeoplePickerPage(getDriver(), getWait());
+		return new TabletPeoplePickerPage(getLazyDriver());
 	}
 }

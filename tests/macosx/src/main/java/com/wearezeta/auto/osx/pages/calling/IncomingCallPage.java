@@ -1,11 +1,12 @@
 package com.wearezeta.auto.osx.pages.calling;
 
+import java.util.concurrent.Future;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -23,9 +24,8 @@ public class IncomingCallPage extends CallPage {
 	@FindBy(how = How.ID, using = OSXLocators.CallPage.idIgnoreCallButton)
 	private WebElement ignoreCallButton;
 
-	public IncomingCallPage(ZetaOSXDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public IncomingCallPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public boolean isIncomingCallVisible(String subscriberName)
@@ -33,17 +33,18 @@ public class IncomingCallPage extends CallPage {
 		String xpath = String.format(
 				OSXLocators.CallPage.xpathFormatUserCallsMessage,
 				subscriberName);
-		boolean result = DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 10);
+		boolean result = DriverUtils.waitUntilElementAppears(this.getDriver(),
+				By.xpath(xpath), 30);
 		if (!result) {
 			log.debug(xpath);
-			log.debug(driver.getPageSource());
+			log.debug(this.getDriver().getPageSource());
 		}
 		return result;
 	}
 
 	public StartedCallPage joinCall() throws Exception {
 		joinCallButton.click();
-		return new StartedCallPage(this.getDriver(), this.getWait());
+		return new StartedCallPage(this.getLazyDriver());
 	}
 
 	public void ignoreCall() throws Exception {

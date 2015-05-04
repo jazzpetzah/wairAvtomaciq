@@ -20,9 +20,11 @@ public class ConnectionRequestsPageSteps {
 	 * 
 	 * @param username
 	 *            user which sent connection request
+	 * @throws Exception
 	 */
 	@When("^I accept connection request from user (.*)$")
-	public void IAcceptConnectionRequestFromUser(String username) {
+	public void IAcceptConnectionRequestFromUser(String username)
+			throws Exception {
 		String email = username;
 		try {
 			email = usrMgr.findUserByNameOrNameAlias(username).getEmail();
@@ -40,9 +42,11 @@ public class ConnectionRequestsPageSteps {
 	 * 
 	 * @param username
 	 *            user which sent connection request
+	 * @throws Exception
 	 */
 	@When("^I ignore connection request from user (.*)$")
-	public void IIgnoreConnectionRequestFromUser(String username) {
+	public void IIgnoreConnectionRequestFromUser(String username)
+			throws Exception {
 		String email = username;
 		try {
 			email = usrMgr.findUserByNameOrNameAlias(username).getEmail();
@@ -58,9 +62,10 @@ public class ConnectionRequestsPageSteps {
 	 * Accepts all displayed connection request
 	 * 
 	 * @step. ^I accept all connection requests$
+	 * @throws Exception
 	 */
 	@When("^I accept all connection requests$")
-	public void IAcceptAllConnectionRequests() {
+	public void IAcceptAllConnectionRequests() throws Exception {
 		PagesCollection.connectionRequestsPage.acceptAllRequests();
 	}
 
@@ -68,9 +73,10 @@ public class ConnectionRequestsPageSteps {
 	 * Ignores all displayed connection requests
 	 * 
 	 * @step. ^I ignore all connection requests$
+	 * @throws Exception
 	 */
 	@When("^I ignore all connection requests$")
-	public void IIgnoreAllConnectionRequests() {
+	public void IIgnoreAllConnectionRequests() throws Exception {
 		PagesCollection.connectionRequestsPage.ignoreAllRequests();
 	}
 

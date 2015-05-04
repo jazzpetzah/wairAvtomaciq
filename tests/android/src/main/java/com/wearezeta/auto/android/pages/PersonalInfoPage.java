@@ -2,12 +2,12 @@ package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -62,9 +62,9 @@ public class PersonalInfoPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
 	private List<WebElement> settingsButtonList;
 
-	public PersonalInfoPage(ZetaAndroidDriver driver, WebDriverWait wait)
+	public PersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	public boolean isPersonalInfoVisible() throws Exception {
@@ -72,31 +72,30 @@ public class PersonalInfoPage extends AndroidPage {
 		return isVisible(emailField);
 	}
 
-	public void waitForEmailFieldVisible() {
+	public void waitForEmailFieldVisible() throws Exception {
 		this.getWait().until(ExpectedConditions.visibilityOf(emailField));
 	}
 
-	public void clickOnPage() throws InterruptedException {
+	public void clickOnPage() throws Exception {
 		DriverUtils.androidMultiTap(this.getDriver(), page, 1, 0.2);
 	}
 
 	public void tapChangePhotoButton() throws Throwable {
 		changePhotoBtn.click();
-		Thread.sleep(1000); //fix for animation
+		Thread.sleep(1000); // fix for animation
 	}
 
 	public void tapGalleryButton() throws Throwable {
 		galleryBtn.click();
-		Thread.sleep(1000); //fix for animation
+		Thread.sleep(1000); // fix for animation
 	}
 
 	public void tapConfirmButton() throws IOException, Throwable {
 		confirmBtn.click();
-		Thread.sleep(1000); //fix for animation
+		Thread.sleep(1000); // fix for animation
 	}
 
-	public void tapSignOutBtn() {
-
+	public void tapSignOutBtn() throws Exception {
 		refreshUITree();
 		signOutBtn.click();
 	}
@@ -117,27 +116,27 @@ public class PersonalInfoPage extends AndroidPage {
 			break;
 		}
 		case RIGHT: {
-			page = new ContactListPage(this.getDriver(), this.getWait());
+			page = new ContactListPage(this.getLazyDriver());
 			break;
 		}
 		}
 		return page;
 	}
 
-	public void tapOptionsButton() throws InterruptedException {
+	public void tapOptionsButton() throws Exception {
 		refreshUITree();
 		optionsButton.click();
-		Thread.sleep(1000); //fix for animation
+		Thread.sleep(1000); // fix for animation
 	}
 
 	public SettingsPage tapSettingsButton() throws Exception {
 		refreshUITree();
 		settingsButton.click();
-		Thread.sleep(1000); //fix for animation
-		return new SettingsPage(this.getDriver(), this.getWait());
+		Thread.sleep(1000); // fix for animation
+		return new SettingsPage(this.getLazyDriver());
 	}
 
-	public void waitForConfirmBtn() {
+	public void waitForConfirmBtn() throws Exception {
 		this.getWait().until(ExpectedConditions.visibilityOf(confirmBtn));
 	}
 
@@ -145,18 +144,18 @@ public class PersonalInfoPage extends AndroidPage {
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
-		Thread.sleep(2000); //fix for animation
+		Thread.sleep(2000); // fix for animation
 		refreshUITree();
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				AndroidLocators.PersonalInfoPage.getByForNameEditField());
-		if(!isVisible(nameEdit)) {
+		if (!isVisible(nameEdit)) {
 			DriverUtils.mobileTapByCoordinates(getDriver(), nameField);
 		}
 	}
 
 	public void changeName(String name, String newName) throws Exception {
 		refreshUITree();
-		DriverUtils.waitUntilElementDissapear(driver,
+		DriverUtils.waitUntilElementDissapear(this.getDriver(),
 				By.id(AndroidLocators.PersonalInfoPage.idNameField));
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(nameEdit));
@@ -164,10 +163,10 @@ public class PersonalInfoPage extends AndroidPage {
 		try {
 			nameEdit.clear();
 		} catch (Exception ex) {
-			//ignore silently
+			// ignore silently
 		}
-		
-		//FIX if nameEdit.clear() failed to clear text
+
+		// FIX if nameEdit.clear() failed to clear text
 		int stringLength = nameEdit.getText().length();
 		if (stringLength > 0) {
 			for (int i = 0; i < stringLength; i++) {
@@ -178,19 +177,19 @@ public class PersonalInfoPage extends AndroidPage {
 				this.getDriver().sendKeyEvent(67); // "KEYCODE_DEL"
 			}
 		}
-		
+
 		nameEdit.sendKeys(newName);
-		driver.navigate().back();
+		this.getDriver().navigate().back();
 		Thread.sleep(1000);
 	}
 
 	@Override
 	public ContactListPage navigateBack() throws Exception {
-		driver.navigate().back();
-		return new ContactListPage(this.getDriver(), this.getWait());
+		this.getDriver().navigate().back();
+		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public String getUserName() {
+	public String getUserName() throws Exception {
 		refreshUITree();
 		return nameField.getText();
 	}
@@ -198,7 +197,7 @@ public class PersonalInfoPage extends AndroidPage {
 	public AboutPage tapAboutButton() throws Exception {
 		refreshUITree();
 		aboutButton.click();
-		return new AboutPage(this.getDriver(), this.getWait());
+		return new AboutPage(this.getLazyDriver());
 	}
 
 	public boolean isSettingsVisible() {
@@ -210,7 +209,7 @@ public class PersonalInfoPage extends AndroidPage {
 		boolean flag = false;
 		refreshUITree();
 		DriverUtils
-				.waitUntilElementDissapear(driver,
+				.waitUntilElementDissapear(this.getDriver(),
 						AndroidLocators.PersonalInfoPage
 								.getByForProfileOptionsButton());
 		if (!isVisible(settingsButton)) {
@@ -220,7 +219,7 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean waitForSettingsDissapear() throws Exception {
-		return DriverUtils.waitUntilElementDissapear(driver,
+		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
 				By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
 	}
 

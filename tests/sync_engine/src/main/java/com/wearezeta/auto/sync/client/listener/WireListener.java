@@ -73,16 +73,17 @@ public abstract class WireListener extends Thread {
 
 	public abstract String getChatSource();
 
-	public abstract void waitForMessage(String message, boolean checkTime);
+	public abstract void waitForMessage(String message, boolean checkTime)
+			throws Exception;
 
-	public void storePageSource(boolean doScroll) {
+	public void storePageSource(boolean doScroll) throws Exception {
 		if (owner.isEnabled()
 				&& owner.getState() != InstanceState.ERROR_CRASHED) {
 			storePageSourceImpl(doScroll);
 		}
 	}
 
-	public abstract void storePageSourceImpl(boolean doScroll);
+	public abstract void storePageSourceImpl(boolean doScroll) throws Exception;
 
 	public void receiveAllChatMessages(boolean checkTime) {
 		if (owner.isEnabled()) {
@@ -93,7 +94,7 @@ public abstract class WireListener extends Thread {
 	public abstract ArrayList<MessageEntry> receiveAllChatMessagesImpl(
 			boolean checkTime);
 
-	public void scrollToTheEndOfConversation() {
+	public void scrollToTheEndOfConversation() throws Exception {
 		com.wearezeta.auto.ios.pages.DialogPage dialogPage = com.wearezeta.auto.ios.pages.PagesCollection.dialogPage;
 		dialogPage.scrollToTheEndOfConversation();
 	}

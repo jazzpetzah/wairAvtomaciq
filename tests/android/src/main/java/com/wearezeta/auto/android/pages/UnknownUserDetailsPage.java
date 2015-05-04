@@ -1,37 +1,30 @@
 package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
 
-public class UnknownUserDetailsPage extends AndroidPage {	
+public class UnknownUserDetailsPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserDetailsPage.CLASS_NAME, locatorKey = "idOtherUsersName")
 	private WebElement otherUsersName;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserDetailsPage.CLASS_NAME, locatorKey = "idConnectButton")
 	private WebElement connectAndPendingButton;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserDetailsPage.CLASS_NAME, locatorKey = "idCommonUsersLabel")
 	private WebElement commonUsersLabel;
-	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
-	private List<WebElement> classEditText;
-	
-	public UnknownUserDetailsPage(ZetaAndroidDriver driver, WebDriverWait wait)
+
+	public UnknownUserDetailsPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	@Override
@@ -46,24 +39,24 @@ public class UnknownUserDetailsPage extends AndroidPage {
 		String connectButtonText = connectAndPendingButton.getText();
 		return connectButtonText.equals(BUTTON_TEXT);
 	}
-	
+
 	public boolean isPendingButtonVisible() throws Exception {
 		refreshUITree();
 		final String BUTTON_TEXT = "Pending";
 		String connectButtonText = connectAndPendingButton.getText();
 		return connectButtonText.equals(BUTTON_TEXT);
 	}
-	
+
 	public String getOtherUsersName() {
 		return otherUsersName.getText();
 	}
-	
+
 	public ConnectToPage tapConnectAndPendingButton() throws Exception {
 		refreshUITree();
 		if (isConnectButtonVisible()) {
 			connectAndPendingButton.click();
-			return new ConnectToPage(this.getDriver(), this.getWait());
+			return new ConnectToPage(this.getLazyDriver());
 		}
-		throw new Exception("Button does nothing");
+		return null;
 	}
 }

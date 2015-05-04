@@ -1,10 +1,11 @@
 package com.wearezeta.auto.osx.pages.common;
 
+import java.util.concurrent.Future;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -19,15 +20,15 @@ public class NoInternetConnectionPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.NoInternetConnectionPage.xpathNoInternetMessage)
 	private WebElement noInternetMessage;
 
-	public NoInternetConnectionPage(ZetaOSXDriver driver, WebDriverWait wait)
+	public NoInternetConnectionPage(Future<ZetaOSXDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	public boolean isVisible() throws Exception {
 		return DriverUtils
 				.waitUntilElementAppears(
-						driver,
+						this.getDriver(),
 						By.xpath(OSXLocators.NoInternetConnectionPage.xpathNoInternetMessage),
 						60);
 	}

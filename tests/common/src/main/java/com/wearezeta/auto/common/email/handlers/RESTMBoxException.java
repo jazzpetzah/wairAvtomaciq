@@ -1,6 +1,6 @@
 package com.wearezeta.auto.common.email.handlers;
 
-public class EmailListenerException extends Exception {
+public class RESTMBoxException extends Exception {
 
 	private static final long serialVersionUID = -77484643126202998L;
 
@@ -10,7 +10,7 @@ public class EmailListenerException extends Exception {
 		return this.returnCode;
 	}
 
-	public EmailListenerException(String message, int returnCode) {
+	public RESTMBoxException(String message, int returnCode) {
 		super(message);
 		this.returnCode = returnCode;
 	}

@@ -64,8 +64,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I take photo by rear camera$")
-	public void WhenITakePhotoByRearCamera() throws IOException,
-			InterruptedException {
+	public void WhenITakePhotoByRearCamera() throws Exception {
 		PagesCollection.registrationPage.takePhotoByRearCamera();
 		basePhoto = PagesCollection.registrationPage.takeScreenshot();
 		Thread.sleep(3000);
@@ -85,8 +84,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("^I See selected picture$")
-	public void ISeeSelectedPicture() throws IOException {
-
+	public void ISeeSelectedPicture() throws Exception {
 		templateImage = PagesCollection.registrationPage.takeScreenshot();
 		Assert.assertTrue(PagesCollection.registrationPage.isPictureSelected());
 	}
@@ -98,7 +96,6 @@ public class RegistrationPageSteps {
 
 	@When("^I confirm selection$")
 	public void IConfirmSelection() throws IOException {
-
 		PagesCollection.registrationPage.confirmPicture();
 	}
 
@@ -130,7 +127,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("I dismiss Vignette overlay")
-	public void IDismissVignetteOverlay() {
+	public void IDismissVignetteOverlay() throws Exception {
 		PagesCollection.registrationPage.dismissVignetteBakground();
 	}
 
@@ -246,7 +243,7 @@ public class RegistrationPageSteps {
 	}
 
 	@When("I clear email input field on Registration page")
-	public void IClearEmailInputRegistration() {
+	public void IClearEmailInputRegistration() throws Exception {
 		PagesCollection.registrationPage.clearEmailInput();
 	}
 
@@ -309,9 +306,8 @@ public class RegistrationPageSteps {
 	@Then("Contact list loads with only my name (.*)")
 	public void ContactListLoadsWithOnlyMyName(String name) throws Throwable {
 		name = this.userToRegister.getName();
-		PagesCollection.contactListPage = new ContactListPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.loginPage
+				.instantiatePage(ContactListPage.class);
 		PagesCollection.contactListPage.waitForContactListToLoad();
 		Assert.assertTrue("My username is not displayed first",
 				PagesCollection.contactListPage
@@ -360,28 +356,28 @@ public class RegistrationPageSteps {
 		PagesCollection.registrationPage.createAccount();
 	}
 
-	@Then("^I confirm that (\\d+) recent emails in inbox contain (\\d+) for current recipient$")
-	public void VerifyRecipientsCount(final int recentEmailsCnt,
-			final int expectedCnt) throws Throwable {
+	/**
+	 * Verifies that mailbox contains at least X emails for the current
+	 * recipient
+	 * 
+	 * @step. ^I confirm that inbox contains (\\d+) emails? for current
+	 *        recipient$
+	 * 
+	 * @param expectedCnt
+	 *            expected messages count
+	 * @throws Exception
+	 */
+	@Then("^I confirm that inbox contains (\\d+) emails? for current recipient$")
+	public void VerifyRecipientsCount(int expectedCnt) throws Exception {
 		String expectedRecipient = this.userToRegister.getEmail();
-		int checksCnt = 0;
-		int actualCnt = 0;
-		while (checksCnt < maxCheckCnt) {
-			actualCnt = PagesCollection.registrationPage
-					.getRecentEmailsCountForRecipient(recentEmailsCnt,
-							expectedRecipient);
-			if (actualCnt == expectedCnt) {
-				break;
-			}
-			checksCnt++;
-		}
-		Assert.assertTrue("Expected mail count is : " + expectedCnt
-				+ ", but actual count is : " + actualCnt,
-				actualCnt == expectedCnt);
+		PagesCollection.registrationPage
+				.waitUntilEmailsCountReachesExpectedValue(expectedCnt,
+						expectedRecipient,
+						BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT);
 	}
 
 	@Then("^I resend verification email$")
-	public void IResendVerificationEmail() {
+	public void IResendVerificationEmail() throws Exception {
 		PagesCollection.registrationPage.reSendEmail();
 	}
 

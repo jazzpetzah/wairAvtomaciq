@@ -97,9 +97,8 @@ public class LoginPageSteps {
 		}
 		if (page instanceof ContactListPage) {
 			PagesCollection.contactListPage = (ContactListPage) page;
-			PagesCollection.selfProfilePage = new SelfProfilePage(
-					PagesCollection.contactListPage.getDriver(),
-					PagesCollection.contactListPage.getWait());
+			PagesCollection.selfProfilePage = (SelfProfilePage) PagesCollection.contactListPage
+					.instantiatePage(SelfProfilePage.class);
 		} else if (page instanceof NoInternetConnectionPage) {
 			PagesCollection.noInternetPage = (NoInternetConnectionPage) page;
 		} else if (page instanceof LoginPage) {

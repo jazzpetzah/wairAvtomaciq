@@ -42,10 +42,8 @@ public class PerformanceSteps {
 	 */
 	@When("^I start test cycle for (\\d+) minutes$")
 	public void WhenIStartTestingCycleForMinutes(int timeout) throws Exception {
-		PagesCollection.contactListPage = new ContactListPage(
-				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait());
-
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.mainMenuPage
+				.instantiatePage(ContactListPage.class);
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
 				// Send messages cycle by UI
@@ -61,9 +59,8 @@ public class PerformanceSteps {
 					PagesCollection.contactListPage.openConversation(contact,
 							false);
 
-					PagesCollection.conversationPage = new ConversationPage(
-							PagesCollection.contactListPage.getDriver(),
-							PagesCollection.contactListPage.getWait());
+					PagesCollection.conversationPage = (ConversationPage) PagesCollection.contactListPage
+							.instantiatePage(ConversationPage.class);
 					int numberMessages = PagesCollection.conversationPage
 							.getNumberOfMessageEntries(contact);
 					int numberPictures = PagesCollection.conversationPage
@@ -172,7 +169,7 @@ public class PerformanceSteps {
 
 	public void minimizeClient() throws Exception {
 		PagesCollection.contactListPage.waitUntilMainWindowAppears();
-		PagesCollection.contactListPage.minimizeWindow();
+		PagesCollection.contactListPage.minimizeWindowUsingScript();
 		perfCommon.getLogger().debug("Client minimized");
 	}
 

@@ -29,13 +29,10 @@ public class RegistrationPageSteps {
 	 * a picture
 	 * 
 	 * @step. ^I press Camera button twice$
-	 * 
-	 * @throws IOException
-	 * @throws InterruptedException
+	 * @throws Exception 
 	 */
 	@When("^I press Camera button twice$")
-	public void WhenIPressCameraButton() throws IOException,
-			InterruptedException {
+	public void WhenIPressCameraButton() throws Exception {
 		PagesCollection.registrationPage.takePhoto();
 		Thread.sleep(2000);
 		PagesCollection.registrationPage.takePhoto();
@@ -57,11 +54,10 @@ public class RegistrationPageSteps {
 	 * Selects the first photo in the phone's stored photos
 	 * 
 	 * @step. ^I choose photo from album$
-	 * 
-	 * @throws IOException
+	 * @throws Exception 
 	 */
 	@When("^I choose photo from album$")
-	public void WhenIPressChoosePhoto() throws IOException {
+	public void WhenIPressChoosePhoto() throws Exception {
 		PagesCollection.registrationPage.chooseFirstPhoto();
 	}
 
@@ -82,11 +78,10 @@ public class RegistrationPageSteps {
 	 * Presses the confirm button to confirm the selected picture
 	 * 
 	 * @step. ^I confirm selection$
-	 * 
-	 * @throws IOException
+	 * @throws Exception 
 	 */
 	@When("^I confirm selection$")
-	public void IConfirmSelection() throws IOException {
+	public void IConfirmSelection() throws Exception {
 		PagesCollection.registrationPage.confirmPicture();
 	}
 
@@ -95,10 +90,11 @@ public class RegistrationPageSteps {
 	 * available at all steps of the process
 	 * 
 	 * @step. ^I press Registration back button$
+	 * @throws Exception 
 	 * 
 	 */
 	@When("^I press Registration back button$")
-	public void IPressRegistrationBackButton() {
+	public void IPressRegistrationBackButton() throws Exception {
 		PagesCollection.registrationPage.pressBackButton();
 	}
 
@@ -224,7 +220,7 @@ public class RegistrationPageSteps {
 		BackendAPIWrappers
 				.activateRegisteredUser(RegistrationPageSteps.activationMessage);
 		this.userToRegister.setUserState(UserState.Created);
-		PagesCollection.contactListPage = PagesCollection.registrationPage
+		PagesCollection.peoplePickerPage = PagesCollection.registrationPage
 				.continueRegistration();
 	}
 

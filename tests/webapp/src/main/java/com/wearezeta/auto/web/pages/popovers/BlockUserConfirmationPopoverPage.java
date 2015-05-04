@@ -1,9 +1,10 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.util.concurrent.Future;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
@@ -12,10 +13,10 @@ class BlockUserConfirmationPopoverPage extends AbstractPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.SingleUserPopover.BlockUserConfirmationPage.xpathConfirmBlockButton)
 	private WebElement confirmBlockButton;
 
-	public BlockUserConfirmationPopoverPage(ZetaWebAppDriver driver,
-			WebDriverWait wait, PeoplePopoverContainer container)
-			throws Exception {
-		super(driver, wait, container);
+	public BlockUserConfirmationPopoverPage(
+			Future<ZetaWebAppDriver> lazyDriver,
+			PeoplePopoverContainer container) throws Exception {
+		super(lazyDriver, container);
 	}
 
 	@Override

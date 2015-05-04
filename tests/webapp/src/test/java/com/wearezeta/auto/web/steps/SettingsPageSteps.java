@@ -21,9 +21,8 @@ public class SettingsPageSteps {
 	 */
 	@Then("^I see Settings dialog$")
 	public void ISeeSetingsDialog() throws Exception {
-		PagesCollection.settingsPage = new SettingsPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+		PagesCollection.settingsPage = (SettingsPage) PagesCollection.loginPage
+				.instantiatePage(SettingsPage.class);
 		Assert.assertTrue(PagesCollection.settingsPage.isVisible());
 	}
 
@@ -34,9 +33,10 @@ public class SettingsPageSteps {
 	 * 
 	 * @param newLevel
 	 *            possible values None, Some, All
+	 * @throws Exception 
 	 */
 	@When("^I select Sound Alerts setting to be (None|Some|All)")
-	public void ISelectSoundAlertsSetting(String newLevel) {
+	public void ISelectSoundAlertsSetting(String newLevel) throws Exception {
 		PagesCollection.settingsPage.setSoundAlertsLevel(SoundAlertsLevel
 				.fromString(newLevel));
 	}

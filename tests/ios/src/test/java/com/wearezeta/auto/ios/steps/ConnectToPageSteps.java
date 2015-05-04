@@ -119,9 +119,8 @@ public class ConnectToPageSteps {
 	public void IAcceptInvitationMessage() throws Exception {
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.WhenITapOnContactName(IOSLocators.xpathPendingRequest);
-		PagesCollection.connectToPage = new ConnectToPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
+		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.loginPage
+				.instantiatePage(ConnectToPage.class);
 		PagesCollection.connectToPage.acceptInvitation();
 		// Not needed since we auto accept all alerts
 	}

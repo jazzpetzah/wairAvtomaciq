@@ -77,6 +77,20 @@ public class ConversationPageSteps {
 	}
 
 	/**
+	 * Verifies whether YouTube video is visible
+	 * 
+	 * @step. ^I see embedded youtube video of (.*)
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Then("^I see embedded youtube video of (.*)")
+	public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
+		Assert.assertTrue(PagesCollection.conversationPage
+				.isYoutubeVideoEmbedded(url));
+	}
+
+	/**
 	 * Click People button in 1:1 conversation
 	 *
 	 * @step. I click People button in one to one conversation$
@@ -357,9 +371,8 @@ public class ConversationPageSteps {
 	@Then("^I see the calling bar$")
 	public void IWaitForCallingBar() throws Exception {
 		if (PagesCollection.conversationPage == null) {
-			PagesCollection.conversationPage = new ConversationPage(
-					PagesCollection.loginPage.getDriver(),
-					PagesCollection.loginPage.getWait());
+			PagesCollection.conversationPage = (ConversationPage) PagesCollection.loginPage
+					.instantiatePage(ConversationPage.class);
 		}
 		PagesCollection.conversationPage.waitForCallingBarToBeDisplayed();
 	}
@@ -374,9 +387,8 @@ public class ConversationPageSteps {
 	@Then("^I do not see the calling bar$")
 	public void IDoNotCallingBar() throws Exception {
 		if (PagesCollection.conversationPage == null) {
-			PagesCollection.conversationPage = new ConversationPage(
-					PagesCollection.loginPage.getDriver(),
-					PagesCollection.loginPage.getWait());
+			PagesCollection.conversationPage = (ConversationPage) PagesCollection.loginPage
+					.instantiatePage(ConversationPage.class);
 		}
 		PagesCollection.conversationPage.verifyCallingBarIsNotVisible();
 	}

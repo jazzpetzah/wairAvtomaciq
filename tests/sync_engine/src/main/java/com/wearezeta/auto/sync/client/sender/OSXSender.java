@@ -11,7 +11,7 @@ public class OSXSender extends WireSender {
 	}
 
 	@Override
-	protected void sendTextMessageClient(String message) {
+	protected void sendTextMessageClient(String message) throws Exception {
 		ConversationPageSteps steps = new ConversationPageSteps();
 		steps.IWriteMessage(message);
 		steps.WhenISendMessage();

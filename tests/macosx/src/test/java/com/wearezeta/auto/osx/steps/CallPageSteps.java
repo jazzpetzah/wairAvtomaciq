@@ -114,9 +114,8 @@ public class CallPageSteps {
 	 */
 	@When("^I see incoming call from (.*)$")
 	public void ISeeIncomingCallFrom(String contact) throws Exception {
-		PagesCollection.callPage = new IncomingCallPage(
-				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait());
+		PagesCollection.callPage = (IncomingCallPage) PagesCollection.mainMenuPage
+				.instantiatePage(IncomingCallPage.class);
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		Assert.assertTrue(((IncomingCallPage) PagesCollection.callPage)
 				.isIncomingCallVisible(contact.toUpperCase()));
@@ -178,9 +177,8 @@ public class CallPageSteps {
 	@When("^I see incoming call popup from (.*)$")
 	public void ISeeIncomingCallFromContactWhileMinimized(String contact)
 			throws Exception {
-		PagesCollection.callingFloatingPage = new CallingFloatingPage(
-				PagesCollection.contactListPage.getDriver(),
-				PagesCollection.contactListPage.getWait());
+		PagesCollection.callingFloatingPage = (CallingFloatingPage) PagesCollection.contactListPage
+				.instantiatePage(CallingFloatingPage.class);
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		Assert.assertTrue(PagesCollection.callingFloatingPage
 				.isCallFromUserVisible(contact));

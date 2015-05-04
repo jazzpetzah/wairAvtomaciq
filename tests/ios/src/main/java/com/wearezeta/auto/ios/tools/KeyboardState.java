@@ -22,7 +22,6 @@ public abstract class KeyboardState {
 			.getSimpleName());
 
 	protected KeyboardState(ZetaIOSDriver driver) {
-
 		this.driver = driver;
 	}
 	
@@ -30,7 +29,7 @@ public abstract class KeyboardState {
 	
 	protected void tapKey(String name){
 		if (name.equals(MORE_SYMBOLS) || name.equals(SHIFT) || name.equals(MORE_LETTERS) || name.equals(MORE_NUMBERS)) {
-			WebElement key = driver.findElementByName(name);
+			WebElement key = this.driver.findElementByName(name);
 			DriverUtils.mobileTapByCoordinates(driver, key);
 		} else {
 			try {

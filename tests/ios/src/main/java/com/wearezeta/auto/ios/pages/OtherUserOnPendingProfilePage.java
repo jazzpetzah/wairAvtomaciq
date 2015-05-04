@@ -1,12 +1,12 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -24,18 +24,18 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherProfilePageStartConversationButton)
 	private WebElement startConversationButton;
 
-	public OtherUserOnPendingProfilePage(ZetaIOSDriver driver, WebDriverWait wait)
+	public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	public boolean isClosePageButtonVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver, By
+		return DriverUtils.waitUntilElementAppears(this.getDriver(), By
 				.name(IOSLocators.nameOtherProfilePageStartConversationButton));
 	}
 
 	public boolean isPendingLabelVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver, By
+		return DriverUtils.waitUntilElementAppears(this.getDriver(), By
 				.name(IOSLocators.nameOtherProfilePageStartConversationButton));
 	}
 
@@ -44,7 +44,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	}
 
 	public boolean isUserNameDisplayed(String name) throws Exception {
-		WebElement otherUserName = driver.findElementByName(name);
+		WebElement otherUserName = getDriver().findElementByName(name);
 		return DriverUtils.isElementDisplayed(this.getDriver(), otherUserName);
 	}
 

@@ -1,11 +1,12 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.concurrent.Future;
+
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.locators.ZetaHow;
 
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -44,9 +45,8 @@ public class ConnectToPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
 	private WebElement confirmBtn;
 
-	public ConnectToPage(ZetaAndroidDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public ConnectToPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	@Override
@@ -69,10 +69,10 @@ public class ConnectToPage extends AndroidPage {
 		refreshUITree();
 		// driver.navigate().back();
 		swipeRightCoordinates(1000);
-		return new ContactListPage(this.getDriver(), this.getWait());
+		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public String getConnectToHeader() {
+	public String getConnectToHeader() throws Exception {
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(connectToHeader));
 		return connectToHeader.getText().toLowerCase();
@@ -80,13 +80,13 @@ public class ConnectToPage extends AndroidPage {
 
 	public DialogPage pressAcceptConnectButton() throws Exception {
 		connectAcceptBtn.click();
-		return new DialogPage(this.getDriver(), this.getWait());
+		return new DialogPage(this.getLazyDriver());
 	}
 
 	public ContactListPage pressIgnoreButton() throws Exception {
 		refreshUITree();
 		connectIgnoreBtn.click();
-		return new ContactListPage(this.getDriver(), this.getWait());
+		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public boolean isIgnoreConnectButtonVisible() throws Exception {
@@ -98,7 +98,7 @@ public class ConnectToPage extends AndroidPage {
 		return isVisible(pendingText);
 	}
 
-	public void tapEditConnectionRequest() {
+	public void tapEditConnectionRequest() throws Exception {
 		refreshUITree();
 		connectionRequestMessage.clear();
 	}
@@ -110,9 +110,11 @@ public class ConnectToPage extends AndroidPage {
 
 	public ContactListPage pressConnectButton() throws Exception {
 		refreshUITree();
-		this.getWait().until(ExpectedConditions.elementToBeClickable(sendConnectionRequestButton));
+		this.getWait().until(
+				ExpectedConditions
+						.elementToBeClickable(sendConnectionRequestButton));
 		sendConnectionRequestButton.click();
-		return new ContactListPage(this.getDriver(), this.getWait());
+		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public boolean getConnectButtonState() {
@@ -126,7 +128,7 @@ public class ConnectToPage extends AndroidPage {
 
 	public PeoplePickerPage clickCloseButton() throws Exception {
 		closeButton.click();
-		return new PeoplePickerPage(this.getDriver(), this.getWait());
+		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 }

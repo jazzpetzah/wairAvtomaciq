@@ -24,9 +24,8 @@ public class OSXListener extends WireListener {
 	@Override
 	public void waitForMessage(String message, boolean checkTime) {
 		try {
-			PagesCollection.conversationPage = new ConversationPage(
-					PagesCollection.loginPage.getDriver(),
-					PagesCollection.loginPage.getWait());
+			PagesCollection.conversationPage = (ConversationPage) PagesCollection.loginPage
+					.instantiatePage(ConversationPage.class);
 			ConversationPage conversationPage = PagesCollection.conversationPage;
 			MessageEntry entry = conversationPage.receiveMessage(message,
 					checkTime);
@@ -60,9 +59,8 @@ public class OSXListener extends WireListener {
 	@Override
 	public String getChatSource() {
 		try {
-			PagesCollection.conversationPage = new ConversationPage(
-					PagesCollection.loginPage.getDriver(),
-					PagesCollection.loginPage.getWait());
+			PagesCollection.conversationPage = (ConversationPage) PagesCollection.loginPage
+					.instantiatePage(ConversationPage.class);
 			return PagesCollection.conversationPage.getPageSource();
 		} catch (Exception e) {
 			// TODO: process exception

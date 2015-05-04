@@ -2,9 +2,9 @@ package com.wearezeta.auto.web.pages;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.Alert;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -12,8 +12,14 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 
 public class WebPage extends BasePage {
 	@Override
-	public ZetaWebAppDriver getDriver() {
-		return (ZetaWebAppDriver) this.driver;
+	protected ZetaWebAppDriver getDriver() throws Exception {
+		return (ZetaWebAppDriver) super.getDriver();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Future<ZetaWebAppDriver> getLazyDriver() {
+		return (Future<ZetaWebAppDriver>) super.getLazyDriver();
 	}
 
 	private String url = null;
@@ -22,21 +28,24 @@ public class WebPage extends BasePage {
 		return this.url;
 	}
 
-	public WebPage(ZetaWebAppDriver driver, WebDriverWait wait)
-			throws Exception {
-		this(driver, wait, null);
+	protected void setUrl(String url) {
+		this.url = url;
 	}
 
-	public WebPage(ZetaWebAppDriver driver, WebDriverWait wait, String url)
+	public WebPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
+		this(lazyDriver, null);
+	}
+
+	public WebPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 
 		this.url = url;
 	}
 
-	public void navigateTo() {
+	public void navigateTo() throws Exception {
 		if (this.url != null) {
-			driver.navigate().to(this.url);
+			this.getDriver().navigate().to(this.url);
 		} else {
 			throw new RuntimeException(
 					String.format(
@@ -45,7 +54,7 @@ public class WebPage extends BasePage {
 		}
 	}
 
-	public BufferedImage takeScreenshot() throws IOException {
+	public BufferedImage takeScreenshot() throws Exception {
 		return DriverUtils.takeScreenshot(this.getDriver());
 	}
 
@@ -75,7 +84,7 @@ public class WebPage extends BasePage {
 		return null;
 	}
 
-	public void acceptAlert() {
+	public void acceptAlert() throws Exception {
 		Alert popup = getDriver().switchTo().alert();
 		popup.accept();
 	}

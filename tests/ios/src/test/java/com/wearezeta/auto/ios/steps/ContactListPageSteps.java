@@ -23,7 +23,7 @@ public class ContactListPageSteps {
 
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
-		name = usrMgr.replaceAliasesOccurences(name,FindBy.NAME_ALIAS);
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 
 		boolean loginFinished = PagesCollection.loginPage.isLoginFinished(name);
 		if (!loginFinished) {
@@ -61,7 +61,8 @@ public class ContactListPageSteps {
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		PagesCollection.personalInfoPage = PagesCollection.contactListPage.tapOnMyName(name);
+		PagesCollection.personalInfoPage = PagesCollection.contactListPage
+				.tapOnMyName(name);
 
 		PagesCollection.personalInfoPage.waitForEmailFieldVisible();
 	}
@@ -98,26 +99,26 @@ public class ContactListPageSteps {
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Throwable {
 		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-			IOSPage page = PagesCollection.contactListPage
-					.swipeDown(500);
+			IOSPage page = PagesCollection.contactListPage.swipeDown(500);
 			PagesCollection.peoplePickerPage = (PeoplePickerPage) page;
 			PagesCollection.iOSPage = page;
 		} else {
-			IOSPage page = PagesCollection.contactListPage
-					.swipeDownSimulator();
+			IOSPage page = PagesCollection.contactListPage.swipeDownSimulator();
 			PagesCollection.peoplePickerPage = (PeoplePickerPage) page;
 			PagesCollection.iOSPage = page;
 		}
 	}
-	
+
 	/**
 	 * Open search by clicking plus button next to self name
+	 * 
 	 * @step. ^I open search by clicking plus button$
 	 * @throws Exception
 	 */
-	@When("^I open search by clicking plus button$") 
+	@When("^I open search by clicking plus button$")
 	public void IOpenSearchByClickingPlus() throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.contactListPage.openSearch();
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+				.openSearch();
 	}
 
 	@Then("^I see first item in contact list named (.*)$")
@@ -270,7 +271,8 @@ public class ContactListPageSteps {
 	}
 
 	@When("I see in contact list group chat named (.*)")
-	public void ISeeInContactListGroupChatWithName(String name) {
+	public void ISeeInContactListGroupChatWithName(String name)
+			throws Exception {
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isChatInContactList(name));
 	}
@@ -386,12 +388,13 @@ public class ContactListPageSteps {
 	@Then("^I see conversation (.*) is silenced$")
 	public void ISeeConversationIsSilenced(String conversation)
 			throws Exception {
-		conversation = usrMgr.replaceAliasesOccurences(conversation,FindBy.NAME_ALIAS);
+		conversation = usrMgr.replaceAliasesOccurences(conversation,
+				FindBy.NAME_ALIAS);
 		boolean isSilenced = PagesCollection.contactListPage
 				.isConversationSilenced(conversation, true);
 		Assert.assertTrue("Conversation is not silenced", isSilenced);
 	}
-	
+
 	/**
 	 * Verifies, that the conversation got silenced before from backend
 	 * 
@@ -405,7 +408,8 @@ public class ContactListPageSteps {
 	@Then("^I see conversation (.*) got silenced before$")
 	public void ISeeConversationGotSilencedBefore(String conversation)
 			throws Exception {
-		conversation = usrMgr.replaceAliasesOccurences(conversation,FindBy.NAME_ALIAS);
+		conversation = usrMgr.replaceAliasesOccurences(conversation,
+				FindBy.NAME_ALIAS);
 		boolean isSilenced = PagesCollection.contactListPage
 				.isConversationSilencedBefore(conversation);
 		Assert.assertTrue("Conversation is not silenced", isSilenced);
@@ -424,9 +428,9 @@ public class ContactListPageSteps {
 	@Then("^I see conversation (.*) is unsilenced$")
 	public void ISeeConversationIsUnSilenced(String conversation)
 			throws Exception {
-		conversation = usrMgr.replaceAliasesOccurences(conversation,FindBy.NAME_ALIAS);
-		boolean isSilenced = 
-				PagesCollection.contactListPage
+		conversation = usrMgr.replaceAliasesOccurences(conversation,
+				FindBy.NAME_ALIAS);
+		boolean isSilenced = PagesCollection.contactListPage
 				.isConversationSilenced(conversation, false);
 		Assert.assertTrue("Conversation is unsilenced", isSilenced);
 
@@ -512,13 +516,13 @@ public class ContactListPageSteps {
 	 * 
 	 */
 	@Then("^I see ping symbol for (.*)$")
-	public void ISeePingSymbol(String conversation)
-			throws Exception {
+	public void ISeePingSymbol(String conversation) throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean pingSymbolPresent = PagesCollection.contactListPage.pingIsVisible(true, false, conversation);
+		boolean pingSymbolPresent = PagesCollection.contactListPage
+				.pingIsVisible(true, false, conversation);
 		Assert.assertTrue("No ping symbol visible.", pingSymbolPresent);
 	}
-	
+
 	/**
 	 * Verifies that a hotping symbol is seen in the conversation list
 	 * 
@@ -531,44 +535,47 @@ public class ContactListPageSteps {
 	 * 
 	 */
 	@Then("^I see hotping symbol for (.*)$")
-	public void ISeeHotPingSymbol(String conversation)
-			throws Exception {
+	public void ISeeHotPingSymbol(String conversation) throws Exception {
 		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean pingSymbolPresent = PagesCollection.contactListPage.pingIsVisible(true, true, conversation);
+		boolean pingSymbolPresent = PagesCollection.contactListPage
+				.pingIsVisible(true, true, conversation);
 		Assert.assertTrue("No hotping symbol visible.", pingSymbolPresent);
 	}
-	
+
 	/**
 	 * Doing a long right swipe to archive the conversation immediately
 	 * 
 	 * @step. ^I long swipe right to archive conversation (.*)$
 	 * @param conversation
 	 *            to archive
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I long swipe right to archive conversation (.*)$")
-	public void ILongSwipeRightToArchiveConversation(String conversation) throws Exception {
-		conversation = usrMgr.replaceAliasesOccurences(conversation, FindBy.NAME_ALIAS);
-		PagesCollection.contactListPage.longSwipeRightOnContact(1000, conversation);
+	public void ILongSwipeRightToArchiveConversation(String conversation)
+			throws Exception {
+		conversation = usrMgr.replaceAliasesOccurences(conversation,
+				FindBy.NAME_ALIAS);
+		PagesCollection.contactListPage.longSwipeRightOnContact(1000,
+				conversation);
 	}
-	
+
 	/**
 	 * Verify that missed call indicator is seen in conversation list
 	 * 
 	 * @step. ^I see missed call indicator in list for contact (.*)$
 	 * @param contact
 	 *            the missed call is from
-	 * @throws NoSuchUserException
-	 * @throws IOException 
+	 * @throws Exception
 	 */
 	@Then("^I see missed call indicator in list for contact (.*)$")
 	public void ISeeMissedCallIndicatorInListForContact(String contact)
-			throws NoSuchUserException, IOException {
+			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		boolean missedCallSeen = PagesCollection.contactListPage.missedCallIndicatorIsVisible(true,contact);
+		boolean missedCallSeen = PagesCollection.contactListPage
+				.missedCallIndicatorIsVisible(true, contact);
 		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
 	}
-	
+
 	/**
 	 * Verify that missed call indicator got moved down and is still seen in
 	 * conversation list
@@ -577,29 +584,28 @@ public class ContactListPageSteps {
 	 *        (.*)$
 	 * @param contact
 	 *            the missed call is from
-	 * @throws NoSuchUserException
-	 * @throws IOException
+	 * @throws Exception
 	 */
 	@Then("^I see missed call indicator got moved down in list for contact (.*)$")
 	public void ISeeMissedCallIndicatorGotMovedDownInListForContact(
-			String contact) throws NoSuchUserException, IOException {
+			String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		boolean missedCallSeen = PagesCollection.contactListPage
 				.missedCallIndicatorIsVisible(false, contact);
 		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
 
 	}
-	
+
 	/**
 	 * Checks if the self conversation in changed to the new accent color
 	 * 
 	 * @step. I see my names (.*) accent color is changed$
 	 * @param name
 	 *            of yourself to check accent color change
-	 * @throws IOException
+	 * @throws Exception
 	 */
 	@Then("^I see my names (.*) accent color is changed$")
-	public void ISeeMyNamesAccentColorIsChanged(String name) throws IOException {
+	public void ISeeMyNamesAccentColorIsChanged(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		boolean colorIsChanged = PagesCollection.contactListPage
 				.changeOfAccentColorIsVisible(name);

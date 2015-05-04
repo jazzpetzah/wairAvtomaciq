@@ -85,7 +85,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 *  Swipe down people picker
+	 * Swipe down people picker
 	 * 
 	 * @step. ^I swipe down people picker$
 	 * 
@@ -193,7 +193,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 *  Wait for a user in the people picker search list
+	 * Wait for a user in the people picker search list
 	 * 
 	 * @step. ^I see user (.*) found on People picker page$
 	 * 
@@ -211,10 +211,11 @@ public class PeoplePickerPageSteps {
 	 * Checks to see that there are no results in the search field
 	 * 
 	 * @step. ^I see that no results found$
+	 * @throws Exception
 	 * 
 	 */
 	@Then("^I see that no results found$")
-	public void ISeeNoResultsFound() {
+	public void ISeeNoResultsFound() throws Exception {
 		Assert.assertTrue(PagesCollection.peoplePickerPage
 				.isNoResultsFoundVisible());
 	}
@@ -325,26 +326,71 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Tap on Random contact from PYMK
+	 * Press + button on Random contact from PYMK
 	 * 
 	 * @step. ^I press \\+ button on a random Connect$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I press \\+ button on a random Connect$")
-	public void WhenIPressPlusButtonOnARandomConnect() {
+	public void WhenIPressPlusButtonOnARandomConnect() throws Exception {
 		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect();
 		randomConnectName = PagesCollection.peoplePickerPage
 				.pressPlusOnContact(randomConnect);
 	}
 
 	/**
+	 * Tap on Random contact from PYMK
+	 * 
+	 * @step. ^I tap on a random contact from PYMK$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I tap on a random contact from PYMK$")
+	public void WhenITapOnRandomContactFromPYMK() throws Exception {
+		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect();
+		randomConnectName = PagesCollection.peoplePickerPage
+				.getPYMKContactName(randomConnect);
+		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
+				.tapOnPYMKContact(randomConnect);
+	}
+
+	/**
+	 * Tap on Random contact from PYMK and save it name
+	 * 
+	 * @step. ^I tap on a random contact from PYMK and set it name to (.*)$
+	 * 
+	 * @param contact
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I tap on a random contact from PYMK and set it name to (.*)$")
+	public void WhenITapOnRandomContactFromPYMKAndSetItNameTo(String contact)
+			throws Exception {
+		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect();
+		randomConnectName = PagesCollection.peoplePickerPage
+				.getPYMKContactName(randomConnect);
+		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
+				.tapOnPYMKContact(randomConnect);
+		try {
+			usrMgr.findUserByNameOrNameAlias(contact)
+					.setName(randomConnectName);
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+	}
+
+	/**
 	 * Swipe on Random contact from PYMK
 	 * 
 	 * @step. ^I swipe on random connect$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I swipe on random connect$")
-	public void WhenISwipeOnRandomConnect() {
+	public void WhenISwipeOnRandomConnect() throws Exception {
 		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect();
 		randomConnectName = PagesCollection.peoplePickerPage
 				.swipePYMKContact(randomConnect);
@@ -355,10 +401,11 @@ public class PeoplePickerPageSteps {
 	 * "Swipe on Random contact from PYMK")
 	 * 
 	 * @step. ^I hide random connect by swipe$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I hide random connect by swipe$")
-	public void WhenIHideRandomConnectBySwipe() {
+	public void WhenIHideRandomConnectBySwipe() throws Exception {
 		PagesCollection.peoplePickerPage.swipeRightPYMKHideMenu();
 	}
 
@@ -366,10 +413,11 @@ public class PeoplePickerPageSteps {
 	 * Hide random connect by Hide button
 	 * 
 	 * @step. ^I click on PYMK hide button$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I click on PYMK hide button$")
-	public void WhenIClickOnPYMKHideButton() {
+	public void WhenIClickOnPYMKHideButton() throws Exception {
 		PagesCollection.peoplePickerPage.clickPYMKHideButton();
 	}
 
@@ -377,10 +425,11 @@ public class PeoplePickerPageSteps {
 	 * Verify that random connect is not visible
 	 * 
 	 * @step. ^I do not see random connect$
+	 * @throws Exception
 	 * 
 	 */
 	@Then("^I do not see random connect$")
-	public void ThenIDonotSeeRandomConnect() {
+	public void ThenIDonotSeeRandomConnect() throws Exception {
 		Assert.assertFalse(PagesCollection.peoplePickerPage
 				.pYMKcontactIsVisible(randomConnectName, randomConnect));
 	}
@@ -444,17 +493,20 @@ public class PeoplePickerPageSteps {
 		Assert.assertFalse(PagesCollection.peoplePickerPage
 				.ispTopPeopleHeaderVisible());
 	}
-	
+
 	/**
 	 * Waiting for PYMK loading
 	 * 
 	 * @step. ^I wait for PYMK for (.*) secs$
 	 * 
 	 * @param time
+	 * 
+	 * @throws Exception
 	 */
 	@When("I wait for PYMK for (.*) secs$")
-	public void WhenIWaitForPYMKForSec(int time) throws InterruptedException {
-		PagesCollection.peoplePickerPage.waitForPYMKForSecs(time);
+	public void WhenIWaitForPYMKForSec(int time) throws Exception {
+		Assert.assertTrue(PagesCollection.peoplePickerPage
+				.waitForPYMKForSecs(time));
 	}
 
 }
