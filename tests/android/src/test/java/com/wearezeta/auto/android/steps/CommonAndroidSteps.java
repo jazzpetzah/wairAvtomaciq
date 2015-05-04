@@ -114,6 +114,7 @@ public class CommonAndroidSteps {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 
