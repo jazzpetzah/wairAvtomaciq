@@ -11,10 +11,12 @@ import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
@@ -31,8 +33,12 @@ import gherkin.formatter.model.Tag;
 public class ZetaFormatter implements Formatter, Reporter {
 	private String feature = "";
 	private String scenario = "";
+	@SuppressWarnings("unused")
 	private String scope = "Unknown";
 	private Queue<String> step = new LinkedList<String>();
+
+	private static final Logger log = ZetaLogger.getLog(ZetaFormatter.class
+			.getSimpleName());
 
 	private long startDate;
 	private long endDate;
@@ -70,7 +76,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 	@Override
 	public void feature(Feature arg0) {
 		feature = arg0.getName();
-		System.out.println("Feature: " + feature);
+		log.debug("Feature: " + feature);
 	}
 
 	@Override
@@ -96,7 +102,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 			}
 		}
 
-		System.out.println("\n\nScenario: " + scenario);
+		log.debug("\n\nScenario: " + scenario);
 	}
 
 	@Override
@@ -141,42 +147,15 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	@Override
 	public void match(Match arg0) {
-
 		startDate = new Date().getTime();
 	}
 
 	@Override
 	public void result(Result arg0) {
 		endDate = new Date().getTime();
-		String currentStep = step.poll();
-		System.out.println(currentStep + " (status: " + arg0.getStatus()
-				+ ", time: " + (endDate - startDate) + "ms)");
-		// send chat notification
-		if (arg0.getStatus().equals("failed") && scope.equals("Smoke Test")) {
-			try {
-				String errorMsg = arg0.getError().getMessage();
-				if (errorMsg == null) {
-					errorMsg = "Error with empty message appears: "
-							+ arg0.getError();
-				}
-				if (errorMsg.length() > 255) {
-					errorMsg = errorMsg.substring(0, 255);
-				}
-
-				// sendNotification("\n============Automatic notification============\n"
-				// +
-				// getDriver().getCapabilities().getCapability("platformName") +
-				// " "
-				// + scope +
-				// "(build " + buildNumber + ") \n" + "Feature: " + feature +
-				// ", Scenario: " + scenario + "(line number: " +
-				// Integer.toString(lineNumber) + ")" + "\nStep: " +
-				// currentStep + ", failed with error: \n" + errorMsg + "...");
-			} catch (Exception e) {
-
-				e.printStackTrace();
-			}
-		}
+		final String currentStep = step.poll();
+		log.debug(currentStep + " (status: " + arg0.getStatus() + ", time: "
+				+ (endDate - startDate) + "ms)");
 		// take screenshot
 		try {
 			if (getDriver() != null) {
@@ -191,9 +170,12 @@ public class ZetaFormatter implements Formatter, Reporter {
 					outputfile.getParentFile().mkdirs();
 				}
 				ImageIO.write(image, "png", outputfile);
+			} else {
+				log.debug(String
+						.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
+								currentStep));
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -204,7 +186,12 @@ public class ZetaFormatter implements Formatter, Reporter {
 	}
 
 	private static RemoteWebDriver getDriver() throws Exception {
-		return lazyDriver.get(ZetaDriver.INIT_TIMEOUT, TimeUnit.MILLISECONDS);
+		if (lazyDriver.isDone()) {
+			return lazyDriver.get(ZetaDriver.INIT_TIMEOUT,
+					TimeUnit.MILLISECONDS);
+		} else {
+			return null;
+		}
 	}
 
 	private static Future<? extends RemoteWebDriver> lazyDriver = null;
