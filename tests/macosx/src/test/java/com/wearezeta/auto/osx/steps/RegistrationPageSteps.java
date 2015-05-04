@@ -181,9 +181,8 @@ public class RegistrationPageSteps {
 	@When("I take registration picture from image file (.*)")
 	public void ITakeRegistrationPictureFromImageFile(String imageFile)
 			throws Exception {
-		ChoosePicturePage choosePicturePage = new ChoosePicturePage(
-				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait());
+		ChoosePicturePage choosePicturePage = (ChoosePicturePage) PagesCollection.mainMenuPage
+				.instantiatePage(ChoosePicturePage.class);
 		Assert.assertTrue(choosePicturePage.isVisible());
 
 		choosePicturePage.openImage(imageFile);
@@ -218,9 +217,8 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I see contact list of registered user")
 	public void ISeeContactListOfRegisteredUser() throws Exception {
-		PagesCollection.contactListPage = new ContactListPage(
-				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait());
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.mainMenuPage
+				.instantiatePage(ContactListPage.class);
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.ISeeMyNameInContactList();
 	}
@@ -234,9 +232,8 @@ public class RegistrationPageSteps {
 	 */
 	@Then("I see self profile of registered user")
 	public void ISeeSelfProfileOfRegisteredUser() throws Exception {
-		PagesCollection.selfProfilePage = new SelfProfilePage(
-				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait());
+		PagesCollection.selfProfilePage = (SelfProfilePage) PagesCollection.mainMenuPage
+				.instantiatePage(SelfProfilePage.class);
 		SelfProfilePageSteps upSteps = new SelfProfilePageSteps();
 		upSteps.ISeeNameInUserProfile(this.userToRegister.getName());
 	}
@@ -251,9 +248,10 @@ public class RegistrationPageSteps {
 	 * Tries to enter list of invalid emails and gathers error messages
 	 * 
 	 * @step. I enter invalid emails
+	 * @throws Exception
 	 */
 	@Then("I enter invalid emails")
-	public void IEnterInvalidEmails() {
+	public void IEnterInvalidEmails() throws Exception {
 		for (String invalidEmail : INVALID_EMAILS) {
 			PagesCollection.registrationPage.typeEmail(invalidEmail);
 			if (!PagesCollection.registrationPage.isInvalidEmailMessageAppear()) {
@@ -285,12 +283,13 @@ public class RegistrationPageSteps {
 	 * Checks that entered email caused error message to appear
 	 * 
 	 * @step. I see that email invalid
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if no error message when email entered
 	 */
 	@Then("I see that email invalid")
-	public void ISeeThatEmailInvalid() {
+	public void ISeeThatEmailInvalid() throws Exception {
 		Assert.assertTrue("Email accepted but shouldn't be.",
 				PagesCollection.registrationPage.isInvalidEmailMessageAppear());
 	}
@@ -319,12 +318,13 @@ public class RegistrationPageSteps {
 	 * Checks that confirmation dialog appears after picture shot or selected
 	 * 
 	 * @step. ^I see chosen picture confirmation request$
+	 * @throws Exception 
 	 * 
 	 * @throws AssertionError
 	 *             if confirmation dialog doesn't appear
 	 */
 	@Then("^I see chosen picture confirmation request$")
-	public void ISeeChosenPictureConfirmationRequest() {
+	public void ISeeChosenPictureConfirmationRequest() throws Exception {
 		Assert.assertTrue(PagesCollection.registrationPage
 				.isTakePictureConfirmationScreen());
 	}

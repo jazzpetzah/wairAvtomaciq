@@ -2,8 +2,7 @@ package com.wearezeta.auto.osx.pages;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
-import org.openqa.selenium.support.ui.WebDriverWait;
+import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -11,21 +10,36 @@ import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 
 public abstract class OSXPage extends BasePage {
+	private String path = null;
+
 	@Override
-	public ZetaOSXDriver getDriver() {
-		return (ZetaOSXDriver) this.driver;
+	protected ZetaOSXDriver getDriver() throws Exception {
+		return (ZetaOSXDriver) super.getDriver();
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Future<ZetaOSXDriver> getLazyDriver() {
+		return (Future<ZetaOSXDriver>) super.getLazyDriver();
 	}
 
-	public OSXPage(ZetaOSXDriver driver, WebDriverWait wait) throws Exception {
-		this(driver, wait, null);
+	public OSXPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		this(lazyDriver, null);
 	}
 
-	public OSXPage(ZetaOSXDriver driver, WebDriverWait wait, String path)
+	public OSXPage(Future<ZetaOSXDriver> lazyDriver, String path)
 			throws Exception {
-		super(driver, wait);
-		if (path != null) {
-			driver.navigate().to(path);
+		super(lazyDriver);
+		this.path = path;
+	}
+
+	public void navigateTo() throws Exception {
+		if (this.path == null) {
+			throw new RuntimeException(String.format(
+					"The page %s does not support direct navigation", this
+							.getClass().getName()));
 		}
+		this.getDriver().navigate().to(this.path);
 	}
 
 	@Override
@@ -33,12 +47,12 @@ public abstract class OSXPage extends BasePage {
 		super.close();
 	}
 
-	public BufferedImage takeScreenshot() throws IOException {
+	public BufferedImage takeScreenshot() throws Exception {
 		return DriverUtils.takeScreenshot(this.getDriver());
 	}
 
 	public void startApp() throws Exception {
-		driver.navigate().to(OSXExecutionContext.wirePath);
+		this.getDriver().navigate().to(OSXExecutionContext.wirePath);
 	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException,

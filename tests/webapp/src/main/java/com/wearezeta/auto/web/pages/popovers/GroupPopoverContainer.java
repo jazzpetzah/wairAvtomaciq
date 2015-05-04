@@ -1,8 +1,9 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.util.concurrent.Future;
+
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class GroupPopoverContainer extends PeoplePopoverContainer {
 
@@ -15,28 +16,31 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	private LeaveGroupConfirmationPopoverPage leaveGroupConfirmationPopoverPage;
 	private RemoveFromGroupConfirmationPopoverPage removeFromGroupConfirmationPopoverPage;
 	private UnblockUserConfirmationPopoverPage unblockUserConfirmationPopoverPage;
+	private PendingUserConfirmationPopoverPage pendingUserConfirmationPopoverPage;
 
-	public GroupPopoverContainer(ZetaWebAppDriver driver, WebDriverWait wait)
+	public GroupPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 		this.participantsListPopoverPage = new ParticipantsListPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.connectedParticipantInfoPopoverPage = new ConnectedParticipantInfoPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.nonConnectedParticipantInfoPopoverPage = new NonConnectedParticipantInfoPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.pendingParticipantInfoPopoverPage = new PendingParticipantInfoPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.blockedParticipantInfoPopoverPage = new BlockedParticipantInfoPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.addPeopleConfirmationPopoverPage = new AddPeopleConfirmationPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.leaveGroupConfirmationPopoverPage = new LeaveGroupConfirmationPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.removeFromGroupConfirmationPopoverPage = new RemoveFromGroupConfirmationPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.unblockUserConfirmationPopoverPage = new UnblockUserConfirmationPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
+		this.pendingUserConfirmationPopoverPage = new PendingUserConfirmationPopoverPage(
+				lazyDriver, this);
 	}
 
 	@Override
@@ -134,11 +138,11 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		return this.participantsListPopoverPage.getConversationTitle();
 	}
 
-	public void selectUserFromSearchResult(String name) {
+	public void selectUserFromSearchResult(String name) throws Exception {
 		this.addPeoplePopoverPage.selectUserFromSearchResult(name);
 	}
 
-	public void confirmAddPeople() {
+	public void confirmAddPeople() throws Exception {
 		this.addPeopleConfirmationPopoverPage.clickContinueButton();
 	}
 
@@ -205,6 +209,10 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 
 	public String getUserMail() throws Exception {
 		return getCurrentUserInfoPage().getMailText();
+	}
+
+	public void clickConfirmConnectButton() {
+		pendingUserConfirmationPopoverPage.clickConfirmConnectButton();
 	}
 
 }

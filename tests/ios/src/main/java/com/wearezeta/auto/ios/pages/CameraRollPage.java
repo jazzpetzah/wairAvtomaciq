@@ -1,10 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.concurrent.Future;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -28,18 +29,17 @@ public class CameraRollPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameConfirmPictureButton)
 	private WebElement confirmPictureButton;
 
-	public CameraRollPage(ZetaIOSDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public CameraRollPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public void pressSelectFromLibraryButton() throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathCameraLibraryButton));
 		cameraLibraryButton.click();
 	}
 
-	public void selectImageFromLibrary() throws Throwable {
+	public void selectImageFromLibrary() throws Exception {
 		try {
 			clickFirstLibraryFolder();
 		} catch (NoSuchElementException ex) {
@@ -49,20 +49,20 @@ public class CameraRollPage extends IOSPage {
 		clickFirstImage();
 	}
 
-	public void clickFirstLibraryFolder() throws Throwable {
-		DriverUtils.waitUntilElementAppears(driver,
+	public void clickFirstLibraryFolder() throws Exception {
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathCameraLibraryFirstFolder));
 		cameraLibraryFirstFolder.click();
 	}
 
-	public void clickFirstImage() throws Throwable {
-		DriverUtils.waitUntilElementAppears(driver,
+	public void clickFirstImage() throws Exception {
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathLibraryFirstPicture));
 		libraryFirstPicture.click();
 	}
 
 	public void pressConfirmButton() throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.name(IOSLocators.nameConfirmPictureButton));
 		confirmPictureButton.click();
 	}
@@ -78,11 +78,11 @@ public class CameraRollPage extends IOSPage {
 			break;
 		}
 		case LEFT: {
-			page = new OtherUserPersonalInfoPage(this.getDriver(), this.getWait());
+			page = new OtherUserPersonalInfoPage(this.getLazyDriver());
 			break;
 		}
 		case RIGHT: {
-			page = new ContactListPage(this.getDriver(), this.getWait());
+			page = new ContactListPage(this.getLazyDriver());
 			break;
 		}
 		}

@@ -42,7 +42,7 @@ public class IOSCommonUtils {
 		return new BuildVersionInfo(clientBuild, zmessagingBuild);
 	}
 
-	public static ClientDeviceInfo readDeviceInfo() {
+	public static ClientDeviceInfo readDeviceInfo() throws Exception {
 		String os = "iOS";
 		String osBuild = (String) IOSPage
 				.executeScript("UIATarget.localTarget().systemVersion();");

@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -12,7 +13,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.IOSPage;
@@ -114,9 +114,8 @@ public class RegistrationPage extends IOSPage {
 
 	private String[] listOfEmails;
 
-	public RegistrationPage(ZetaIOSDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public RegistrationPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	@Override
@@ -169,7 +168,7 @@ public class RegistrationPage extends IOSPage {
 
 	public CameraRollPage selectPicture() throws Exception {
 		photoButton.click();
-		return new CameraRollPage(this.getDriver(), this.getWait());
+		return new CameraRollPage(this.getLazyDriver());
 	}
 
 	public void chooseFirstPhoto() {
@@ -181,7 +180,7 @@ public class RegistrationPage extends IOSPage {
 		vignetteLayer.click();
 	}
 
-	public void dismissVignetteBakground() {
+	public void dismissVignetteBakground() throws Exception {
 		vignetteLayer.click();
 		this.getDriver().tap(1, vignetteLayer.getLocation().x + 10,
 				vignetteLayer.getLocation().y + 10, 1);
@@ -200,10 +199,10 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public PeoplePickerPage waitForConfirmationMessage() throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.className(IOSLocators.classNameConfirmationMessage));
 
-		return new PeoplePickerPage(this.getDriver(), this.getWait());
+		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 	public boolean isConfirmationShown() {
@@ -222,7 +221,7 @@ public class RegistrationPage extends IOSPage {
 		cancelImageButton.click();
 	}
 
-	public void hideKeyboard() {
+	public void hideKeyboard() throws Exception {
 		this.getDriver().hideKeyboard();
 	}
 
@@ -234,23 +233,23 @@ public class RegistrationPage extends IOSPage {
 		yourEmail.sendKeys("\n");
 	}
 
-	public void scriptInputEmail(String val) {
+	public void scriptInputEmail(String val) throws Exception {
 		String script = String.format(
 				IOSLocators.scriptRegistrationEmailInputPath
 						+ ".setValue(\"%s\");", val);
-		driver.executeScript(script);
+		this.getDriver().executeScript(script);
 	}
 
-	public void scriptInputAndConfirmEmail(String val) {
+	public void scriptInputAndConfirmEmail(String val) throws Exception {
 		String script = String.format(
 				IOSLocators.scriptRegistrationEmailInputPath
 						+ ".setValue(\"%s\");"
 						+ IOSLocators.scriptKeyboardReturnKeyPath + ".tap();",
 				val);
-		driver.executeScript(script);
+		this.getDriver().executeScript(script);
 	}
 
-	public void clearEmailInput() {
+	public void clearEmailInput() throws Exception {
 		scriptInputEmail("");
 	}
 
@@ -259,7 +258,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void clickCreateAccountButton() throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.name(IOSLocators.nameCreateAccountButton));
 		createAccountButton.click();
 	}
@@ -341,7 +340,7 @@ public class RegistrationPage extends IOSPage {
 		forwardWelcomeButton.click();
 	}
 
-	public void typeUsername() {
+	public void typeUsername() throws Exception {
 		this.getWait().until(ExpectedConditions.elementToBeClickable(yourName));
 		yourName.sendKeys(getName());
 	}
@@ -398,7 +397,7 @@ public class RegistrationPage extends IOSPage {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws Exception {
 		this.name = name;
 		typeUsername();
 	}
@@ -435,7 +434,7 @@ public class RegistrationPage extends IOSPage {
 		this.listOfEmails = list;
 	}
 
-	public void reSendEmail() {
+	public void reSendEmail() throws Exception {
 		Point p = reSendButton.getLocation();
 		Dimension k = reSendButton.getSize();
 		this.getDriver().tap(1, (p.x) + (k.width / 2), (p.y) + (k.height - 5),

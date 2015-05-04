@@ -38,7 +38,7 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	@When("^I click Remove$")
-	public void IClickRemove() {
+	public void IClickRemove() throws Exception {
 		PagesCollection.otherUserPersonalInfoPage.removeFromConversation();
 	}
 

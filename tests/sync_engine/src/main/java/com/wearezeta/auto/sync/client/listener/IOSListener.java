@@ -24,7 +24,8 @@ public class IOSListener extends WireListener {
 	}
 
 	@Override
-	public void waitForMessage(String message, boolean checkTime) {
+	public void waitForMessage(String message, boolean checkTime)
+			throws Exception {
 		DialogPage dialogPage = PagesCollection.dialogPage;
 		MessageEntry entry = dialogPage.receiveMessage(message, checkTime);
 		if (entry != null) {
@@ -68,7 +69,7 @@ public class IOSListener extends WireListener {
 	}
 
 	@Override
-	public void storePageSourceImpl(boolean doScroll) {
+	public void storePageSourceImpl(boolean doScroll) throws Exception {
 		if (!doScroll) {
 			try {
 				scrollToTheEndOfConversation();

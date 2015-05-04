@@ -42,11 +42,10 @@ public class TabletPersonalInfoPageSteps {
 	 * Check that personal info page opened and name is correct
 	 * 
 	 * @step. ^I see personal info page loaded with my name (.*)$
-	 * 
-	 * @throws NoSuchUserException
+	 * @throws Exception 
 	 */
 	@Then("^I see personal info page loaded with my name (.*)$")
-	public void ISeeMyProfileName(String name) throws NoSuchUserException {
+	public void ISeeMyProfileName(String name) throws Exception {
 		String currentName = null;
 		try {
 			currentName = usrMgr.findUserByNameOrNameAlias(name).getName();

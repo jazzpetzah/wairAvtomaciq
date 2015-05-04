@@ -75,7 +75,7 @@ public class ConversationPageSteps {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isMessageSent(randomMessage));
 	}
-	
+
 	/**
 	 * Verifies whether YouTube video is visible
 	 * 
@@ -371,9 +371,8 @@ public class ConversationPageSteps {
 	@Then("^I see the calling bar$")
 	public void IWaitForCallingBar() throws Exception {
 		if (PagesCollection.conversationPage == null) {
-			PagesCollection.conversationPage = new ConversationPage(
-					PagesCollection.loginPage.getDriver(),
-					PagesCollection.loginPage.getWait());
+			PagesCollection.conversationPage = (ConversationPage) PagesCollection.loginPage
+					.instantiatePage(ConversationPage.class);
 		}
 		PagesCollection.conversationPage.waitForCallingBarToBeDisplayed();
 	}
@@ -388,9 +387,8 @@ public class ConversationPageSteps {
 	@Then("^I do not see the calling bar$")
 	public void IDoNotCallingBar() throws Exception {
 		if (PagesCollection.conversationPage == null) {
-			PagesCollection.conversationPage = new ConversationPage(
-					PagesCollection.loginPage.getDriver(),
-					PagesCollection.loginPage.getWait());
+			PagesCollection.conversationPage = (ConversationPage) PagesCollection.loginPage
+					.instantiatePage(ConversationPage.class);
 		}
 		PagesCollection.conversationPage.verifyCallingBarIsNotVisible();
 	}

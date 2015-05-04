@@ -1,13 +1,13 @@
 package com.wearezeta.auto.web.pages;
 
 import java.io.File;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -24,15 +24,15 @@ public class ProfilePicturePage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ProfilePicturePage.xpathConfirmPictureSelectionButton)
 	private WebElement confirmButton;
 
-	public ProfilePicturePage(ZetaWebAppDriver driver, WebDriverWait wait)
+	public ProfilePicturePage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	public void waitUntilVisible(int timeoutSeconds) throws Exception {
 		assert DriverUtils
 				.isElementDisplayed(
-						driver,
+						this.getDriver(),
 						By.xpath(WebAppLocators.ProfilePicturePage.xpathSelectPictureButton),
 						timeoutSeconds) : "Profile picture dialog has not been shown after "
 				+ timeoutSeconds + " second(s) timeout";
@@ -41,7 +41,7 @@ public class ProfilePicturePage extends WebPage {
 	public void waitUntilNotVisible(int timeoutSeconds) throws Exception {
 		assert DriverUtils
 				.waitUntilElementDissapear(
-						driver,
+						this.getDriver(),
 						By.xpath(WebAppLocators.ProfilePicturePage.xpathSelectPictureButton),
 						timeoutSeconds) : "Profile picture dialog has not been hidden after "
 				+ timeoutSeconds + " second(s) timeout";
@@ -73,21 +73,24 @@ public class ProfilePicturePage extends WebPage {
 
 		// http://stackoverflow.com/questions/5188240/using-selenium-to-imitate-dragging-a-file-onto-an-upload-element
 		final String inputId = "SelfImageUpload";
-		driver.executeScript(inputId + " = window.$('<input id=\"" + inputId
-				+ "\"/>').attr({type:'file'}).appendTo('body');");
+		this.getDriver().executeScript(
+				inputId + " = window.$('<input id=\"" + inputId
+						+ "\"/>').attr({type:'file'}).appendTo('body');");
 		// The file is expected to be uploaded automatically by Webdriver
-		driver.findElement(By.id(inputId)).sendKeys(srcPicturePath);
-		driver.executeScript("e = $.Event('drop'); e.originalEvent = {dataTransfer : { files : "
-				+ inputId
-				+ ".get(0).files } }; $(\""
-				+ WebAppLocators.ProfilePicturePage.cssDropZone
-				+ "\").trigger(e);");
+		getDriver().findElement(By.id(inputId)).sendKeys(srcPicturePath);
+		this.getDriver().executeScript(
+				"e = $.Event('drop'); e.originalEvent = {dataTransfer : { files : "
+						+ inputId + ".get(0).files } }; $(\""
+						+ WebAppLocators.ProfilePicturePage.cssDropZone
+						+ "\").trigger(e);");
 
-		assert DriverUtils.waitUntilElementClickable(driver, confirmButton) : "Confirm button is not visible/clickable";
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				confirmButton) : "Confirm button is not visible/clickable";
 	}
 
 	public void clickConfirmImageButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(driver, confirmButton);
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				confirmButton);
 		confirmButton.click();
 	}
 }

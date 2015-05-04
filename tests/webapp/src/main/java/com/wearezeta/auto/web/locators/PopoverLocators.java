@@ -100,6 +100,15 @@ public final class PopoverLocators {
 					+ "//*[@data-uie-name='do-confirm' and @data-uie-value='unblock']";
 		}
 
+		public static final class ConnectParticipantConfirmationPage {
+
+			public static final String xpathConfirmConnectButton = xpathRootLocator
+					+ "//*[@data-uie-name='do-connect']";
+
+			public static final String xpathIgnoreConnectButton = xpathRootLocator
+					+ "//*[@data-uie-name='do-ignore']";
+		}
+
 		public static final class ParticipantInfoPage {
 
 			public static final String xpathRemoveButton = xpathRootLocator

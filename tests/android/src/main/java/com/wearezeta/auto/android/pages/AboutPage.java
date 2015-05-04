@@ -3,9 +3,9 @@ package com.wearezeta.auto.android.pages;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 import java.io.IOException;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -19,9 +19,8 @@ public class AboutPage extends AndroidPage {
 	@AndroidFindBy(xpath = AndroidLocators.AboutPage.xpathAboutClose)
 	private WebElement aboutClose;
 
-	public AboutPage(ZetaAndroidDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public AboutPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	@Override
@@ -31,7 +30,7 @@ public class AboutPage extends AndroidPage {
 		return null;
 	}
 
-	public boolean aboutLogoIsVisible() {
+	public boolean aboutLogoIsVisible() throws Exception {
 		refreshUITree();
 		return aboutLogo.isDisplayed();
 
@@ -39,7 +38,7 @@ public class AboutPage extends AndroidPage {
 
 	public PersonalInfoPage tapOnVersion() throws Exception {
 		aboutClose.click();
-		return new PersonalInfoPage(this.getDriver(), this.getWait());
+		return new PersonalInfoPage(this.getLazyDriver());
 	}
 
 }

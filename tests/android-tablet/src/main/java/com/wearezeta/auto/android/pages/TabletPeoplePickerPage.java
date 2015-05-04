@@ -1,18 +1,17 @@
 package com.wearezeta.auto.android.pages;
 
-import org.openqa.selenium.support.ui.WebDriverWait;
+import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletPeoplePickerPage extends PeoplePickerPage{
 
-	public TabletPeoplePickerPage(ZetaAndroidDriver driver, WebDriverWait wait)
+	public TabletPeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
-		// TODO Auto-generated constructor stub
+		super(lazyDriver);
 	}
 
 	public TabletConnectToPage initConnectToPage() throws Exception {
-		return new TabletConnectToPage(getDriver(), getWait());
+		return new TabletConnectToPage(getLazyDriver());
 	}
 }

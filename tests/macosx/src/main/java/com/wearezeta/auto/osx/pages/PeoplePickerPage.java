@@ -2,6 +2,7 @@ package com.wearezeta.auto.osx.pages;
 
 import java.awt.HeadlessException;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -9,7 +10,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.sikuli.script.App;
 import org.sikuli.script.Env;
 import org.sikuli.script.FindFailed;
@@ -60,14 +60,13 @@ public class PeoplePickerPage extends MainWirePage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerTopContactAvatar)
 	private WebElement peoplePickerTopContactAvatar;
 
-	public PeoplePickerPage(ZetaOSXDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public PeoplePickerPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
-	public WebElement findSearchField() {
-		List<WebElement> textAreaCandidates = driver.findElements(By
-				.className("AXTextArea"));
+	public WebElement findSearchField() throws Exception {
+		List<WebElement> textAreaCandidates = getDriver().findElements(
+				By.className("AXTextArea"));
 		for (WebElement textArea : textAreaCandidates) {
 			if (textArea.getAttribute("AXIdentifier").equals(
 					OSXLocators.idPeoplePickerSearchField)) {
@@ -80,11 +79,11 @@ public class PeoplePickerPage extends MainWirePage {
 						"AXTextArea", OSXLocators.idPeoplePickerSearchField));
 	}
 
-	public WebElement findCancelButton() {
+	public WebElement findCancelButton() throws Exception {
 		for (int i = 0; i < 3; i++) {
 			log.debug("Looking for CancelPeoplePicker button. Instance #" + i);
-			List<WebElement> buttonCandidates = driver.findElements(By
-					.className("AXButton"));
+			List<WebElement> buttonCandidates = getDriver().findElements(
+					By.className("AXButton"));
 			for (WebElement button : buttonCandidates) {
 				String attribute = button.getAttribute("AXIdentifier");
 				log.debug("Looking for button with attribute " + attribute);
@@ -99,7 +98,7 @@ public class PeoplePickerPage extends MainWirePage {
 		return null;
 	}
 
-	public void searchForText(String text) {
+	public void searchForText(String text) throws Exception {
 		int i = 0;
 		searchField = null;
 		while (searchField == null) {
@@ -119,14 +118,14 @@ public class PeoplePickerPage extends MainWirePage {
 		String xpath = String.format(
 				OSXLocators.xpathFormatPeoplePickerSearchResultUser, username);
 
-		DriverUtils.setImplicitWaitValue(driver, 60);
-		boolean result = DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.setImplicitWaitValue(this.getDriver(), 60);
+		boolean result = DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.xpath(xpath));
-		DriverUtils.setDefaultImplicitWait(driver);
+		DriverUtils.setDefaultImplicitWait(this.getDriver());
 		return result;
 	}
 
-	public void scrollToUserInSearchResults(String user) {
+	public void scrollToUserInSearchResults(String user) throws Exception {
 		NSPoint mainPosition = NSPoint.fromString(window
 				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		NSPoint mainSize = NSPoint.fromString(window
@@ -139,8 +138,8 @@ public class PeoplePickerPage extends MainWirePage {
 		WebElement peopleDecrementSB = null;
 		WebElement peopleIncrementSB = null;
 
-		WebElement scrollArea = driver.findElement(By
-				.xpath(OSXLocators.xpathSearchResultsScrollArea));
+		WebElement scrollArea = getDriver().findElement(
+				By.xpath(OSXLocators.xpathSearchResultsScrollArea));
 
 		WebElement userContact = null;
 		boolean isFoundPeople = false;
@@ -193,20 +192,20 @@ public class PeoplePickerPage extends MainWirePage {
 		boolean isFound = false;
 		isFound = DriverUtils
 				.waitUntilElementAppears(
-						driver,
+						this.getDriver(),
 						By.xpath(OSXLocators.PeoplePickerPage.idPeoplePickerSearchResultTable),
 						5);
 		if (!isFound) {
 			isFound = DriverUtils
 					.waitUntilElementAppears(
-							driver,
+							this.getDriver(),
 							By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader),
 							5);
 		}
 		return isFound;
 	}
 
-	public void closePeoplePicker() {
+	public void closePeoplePicker() throws Exception {
 		findCancelButton().click();
 	}
 
@@ -215,14 +214,14 @@ public class PeoplePickerPage extends MainWirePage {
 		String xpath = String
 				.format(OSXLocators.PeoplePickerPage.xpathFormatSearchResultEntry,
 						user);
-		WebElement userEntry = driver.findElement(By.xpath(xpath));
+		WebElement userEntry = getDriver().findElement(By.xpath(xpath));
 		userEntry.click();
 
 		switch (type) {
 		case NOT_CONNECTED:
-			return new ConnectToPopover(this.getDriver(), this.getWait());
+			return new ConnectToPopover(this.getLazyDriver());
 		case BLOCKED:
-			return new UnblockPopover(this.getDriver(), this.getWait());
+			return new UnblockPopover(this.getLazyDriver());
 		default:
 			return null;
 		}
@@ -232,7 +231,8 @@ public class PeoplePickerPage extends MainWirePage {
 		String xpath = String
 				.format(OSXLocators.PeoplePickerPage.xpathFormatSearchResultEntry,
 						user);
-		return DriverUtils.isElementDisplayed(driver, By.xpath(xpath));
+		return DriverUtils
+				.isElementDisplayed(this.getDriver(), By.xpath(xpath));
 	}
 
 	public void chooseUserInSearchResults(String user, SearchResultTypeEnum type)
@@ -248,13 +248,13 @@ public class PeoplePickerPage extends MainWirePage {
 			openConversationButton.click();
 		else
 			addToConversationButton.click();
-		return new ConversationPage(this.getDriver(), this.getWait());
+		return new ConversationPage(this.getLazyDriver());
 	}
 
 	public boolean isTopPeopleVisible() throws Exception {
 		return DriverUtils
 				.waitUntilElementAppears(
-						driver,
+						this.getDriver(),
 						By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader),
 						3);
 	}
@@ -262,7 +262,7 @@ public class PeoplePickerPage extends MainWirePage {
 	public boolean isCreateConversationButtonVisible() throws Exception {
 		if (DriverUtils
 				.waitUntilElementAppears(
-						driver,
+						this.getDriver(),
 						By.name(OSXLocators.PeoplePickerPage.nameCreateConversationButton),
 						5)) {
 			return NSPoint.fromString(
@@ -274,7 +274,7 @@ public class PeoplePickerPage extends MainWirePage {
 	}
 
 	public boolean isOpenConversationButtonVisible() throws Exception {
-		if (DriverUtils.waitUntilElementAppears(driver, By
+		if (DriverUtils.waitUntilElementAppears(this.getDriver(), By
 				.name(OSXLocators.PeoplePickerPage.nameOpenConversationButton),
 				5)) {
 			return NSPoint.fromString(

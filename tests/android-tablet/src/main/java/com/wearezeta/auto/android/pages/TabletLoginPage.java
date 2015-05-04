@@ -1,18 +1,14 @@
 package com.wearezeta.auto.android.pages;
 
-import org.openqa.selenium.support.ui.WebDriverWait;
+import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletLoginPage extends LoginPage {
 	
-	public TabletLoginPage(ZetaAndroidDriver driver, WebDriverWait wait)
+	public TabletLoginPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
-	}
-	
-	public TabletLoginPage(ZetaAndroidDriver driver, WebDriverWait wait, boolean isUnicode) throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 	
 	public void doLogIn() throws Exception {
@@ -20,16 +16,16 @@ public class TabletLoginPage extends LoginPage {
 	}
 	
 	public TabletPersonalInfoPage initProfilePage() throws Exception {
-		return new TabletPersonalInfoPage(getDriver(), getWait());
+		return new TabletPersonalInfoPage(getLazyDriver());
 	}
 	
 	public TabletContactListPage initContactListPage() throws Exception {
-		return new TabletContactListPage(getDriver(), getWait());
+		return new TabletContactListPage(getLazyDriver());
 	}
 	
 	public TabletRegistrationPage tabletJoin() throws Exception {
 		signUpButton.click();
-		return new TabletRegistrationPage(getDriver(), getWait());
+		return new TabletRegistrationPage(getLazyDriver());
 	}
 	
 	public static void clearTabletPagesCollection() throws IllegalArgumentException, IllegalAccessException {

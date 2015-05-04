@@ -23,9 +23,10 @@ public class OtherUserPersonalInfoPageSteps {
 	 * @step. ^I see (.*) user profile page$
 	 * 
 	 * @param name
+	 * @throws Exception
 	 */
 	@When("^I see (.*) user profile page$")
-	public void WhenISeeOherUserProfilePage(String name) {
+	public void WhenISeeOherUserProfilePage(String name) throws Exception {
 		if (PagesCollection.otherUserPersonalInfoPage == null) {
 			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
 		}
@@ -130,11 +131,11 @@ public class OtherUserPersonalInfoPageSteps {
 	 * Blocks a user from the user profile page
 	 * 
 	 * @step. ^I Press Block button$
+	 * @throws Exception
 	 */
 	@When("^I Press Block button$")
-	public void IPressBlockButton() {
+	public void IPressBlockButton() throws Exception {
 		PagesCollection.otherUserPersonalInfoPage.clickBlockBtn();
-
 	}
 
 	/**
@@ -224,9 +225,8 @@ public class OtherUserPersonalInfoPageSteps {
 		}
 
 		// This needs to be moved eventually
-		PagesCollection.unknownUserDetailsPage = new UnknownUserDetailsPage(
-				PagesCollection.androidPage.getDriver(),
-				PagesCollection.androidPage.getWait());
+		PagesCollection.unknownUserDetailsPage = (UnknownUserDetailsPage) PagesCollection.androidPage
+				.instantiatePage(UnknownUserDetailsPage.class);
 	}
 
 	/**
@@ -270,7 +270,8 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Presses the "silence conversation" button in the conversation settings page
+	 * Presses the "silence conversation" button in the conversation settings
+	 * page
 	 * 
 	 * @step. ^I press Silence conversation button$
 	 * 
@@ -280,10 +281,10 @@ public class OtherUserPersonalInfoPageSteps {
 	public void WhenIPressSilenceConversationButton() throws Throwable {
 		PagesCollection.otherUserPersonalInfoPage.pressSilenceButton();
 	}
-	
+
 	/**
-	 * Presses the "notify conversation" button in the conversation settings page
-	 * (Note, this performs the same action as the press silence button)
+	 * Presses the "notify conversation" button in the conversation settings
+	 * page (Note, this performs the same action as the press silence button)
 	 * 
 	 * @step. ^I press Notify conversation button$
 	 * 
@@ -327,10 +328,10 @@ public class OtherUserPersonalInfoPageSteps {
 	 * @step. ^I see that the conversation name is (.*)$
 	 * 
 	 * @param name
-	 * @throws IOException
+	 * @throws Exception
 	 */
 	@Then("^I see that the conversation name is (.*)$")
-	public void IVerifyCorrectConversationName(String name) throws IOException {
+	public void IVerifyCorrectConversationName(String name) throws Exception {
 		Assert.assertEquals(
 				PagesCollection.otherUserPersonalInfoPage.getConversationName(),
 				name);
@@ -510,8 +511,7 @@ public class OtherUserPersonalInfoPageSteps {
 		Assert.assertTrue(PagesCollection.unknownUserDetailsPage
 				.isConnectButtonVisible());
 		Assert.assertEquals(username,
-				PagesCollection.unknownUserDetailsPage
-						.getOtherUsersName());
+				PagesCollection.unknownUserDetailsPage.getOtherUsersName());
 	}
 
 	/**

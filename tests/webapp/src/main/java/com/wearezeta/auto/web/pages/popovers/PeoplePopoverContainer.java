@@ -1,16 +1,16 @@
 package com.wearezeta.auto.web.pages.popovers;
 
-import org.openqa.selenium.support.ui.WebDriverWait;
+import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 
 public abstract class PeoplePopoverContainer extends AbstractPopoverContainer {
 	protected AddPeoplePopoverPage addPeoplePopoverPage;
 
-	public PeoplePopoverContainer(ZetaWebAppDriver driver, WebDriverWait wait)
+	public PeoplePopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
-		this.addPeoplePopoverPage = new AddPeoplePopoverPage(driver, wait, this);
+		super(lazyDriver);
+		this.addPeoplePopoverPage = new AddPeoplePopoverPage(lazyDriver, this);
 	}
 
 	public void searchForUser(String searchText) throws Exception {

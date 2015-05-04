@@ -1,7 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
@@ -13,7 +13,6 @@ import com.wearezeta.auto.common.locators.ZetaHow;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -35,7 +34,7 @@ public class ContactListPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idMissedCallIcon")
 	private WebElement missedCallIcon;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
 	private List<WebElement> contactListNames;
 
@@ -77,22 +76,22 @@ public class ContactListPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
 	private WebElement closeHintBtn;
-	
+
 	@FindBy(xpath = AndroidLocators.CommonLocators.xpathGalleryCameraAlbum)
 	private WebElement galleryCameraAlbumButton;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConversationSendOption")
 	private WebElement conversationShareOption;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
 	private WebElement confirmShareButton;
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
 
-	public ContactListPage(ZetaAndroidDriver driver, WebDriverWait wait)
+	public ContactListPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	public AndroidPage tapOnName(String name) throws Exception {
@@ -119,7 +118,7 @@ public class ContactListPage extends AndroidPage {
 		elementSwipeUp(contactListFrame, time);
 	}
 
-	public void waitForConversationListLoad() {
+	public void waitForConversationListLoad() throws Exception {
 		getWait().until(ExpectedConditions.visibilityOf(contactListFrame));
 	}
 
@@ -128,11 +127,11 @@ public class ContactListPage extends AndroidPage {
 		AndroidPage page = null;
 		refreshUITree();
 		contacts.get(id).click();
-		page = new DialogPage(this.getDriver(), this.getWait());
+		page = new DialogPage(this.getLazyDriver());
 		return page;
 	}
 
-	public List<WebElement> GetVisibleContacts() {
+	public List<WebElement> GetVisibleContacts() throws Exception {
 		refreshUITree();
 		return contactListNames;
 	}
@@ -150,10 +149,12 @@ public class ContactListPage extends AndroidPage {
 			flag = true;
 		}
 		if (flag) {
-			List<WebElement> contactsList = driver
-					.findElements(By.xpath(String
-							.format(AndroidLocators.ContactListPage.xpathContacts,
-									name)));
+			List<WebElement> contactsList = this
+					.getDriver()
+					.findElements(
+							By.xpath(String
+									.format(AndroidLocators.ContactListPage.xpathContacts,
+											name)));
 			if (contactsList.size() > 0) {
 				contact = contactsList.get(0);
 			} else {
@@ -171,29 +172,32 @@ public class ContactListPage extends AndroidPage {
 			throws Exception {
 		refreshUITree();
 		AndroidPage page = null;
-		WebElement el = driver.findElementByXPath(String.format(
-				AndroidLocators.ContactListPage.xpathContactFrame, contact));
+		WebElement el = this.getDriver().findElementByXPath(
+				String.format(
+						AndroidLocators.ContactListPage.xpathContactFrame,
+						contact));
 		elementSwipeRight(el, time);
 		if (!isVisible(cursorInput)) {
-			page = new ContactListPage(this.getDriver(), this.getWait());
+			page = new ContactListPage(this.getLazyDriver());
 		} else if (isVisible(cursorInput)) {
-			page = new DialogPage(this.getDriver(), this.getWait());
+			page = new DialogPage(this.getLazyDriver());
 		}
 		return page;
 	}
 
 	public AndroidPage swipeOnArchiveUnarchive(String contact) throws Exception {
-		WebElement el = driver
-				.findElementByXPath(String
-						.format(AndroidLocators.ContactListPage.xpathContactListArchiveUnarchive,
+		WebElement el = getDriver()
+				.findElementByXPath(
+						String.format(
+								AndroidLocators.ContactListPage.xpathContactListArchiveUnarchive,
 								contact));
 		DriverUtils.swipeRight(this.getDriver(), el, 1000);
 		AndroidPage page = null;
 		refreshUITree();
 		if (!isVisible(cursorInput)) {
-			page = new ContactListPage(this.getDriver(), this.getWait());
+			page = new ContactListPage(this.getLazyDriver());
 		} else if (isVisible(cursorInput)) {
-			page = new DialogPage(this.getDriver(), this.getWait());
+			page = new DialogPage(this.getLazyDriver());
 		}
 		return page;
 	}
@@ -203,7 +207,7 @@ public class ContactListPage extends AndroidPage {
 				By.id(AndroidLocators.ContactListPage.idMutedIcon));
 	}
 
-	public boolean isHintVisible() throws InterruptedException, IOException {
+	public boolean isHintVisible() throws Exception {
 		refreshUITree();// TODO workaround
 		try {
 			this.getWait().until(
@@ -227,18 +231,19 @@ public class ContactListPage extends AndroidPage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public PeoplePickerPage pressOpenStartUIButton() throws Exception{
+	public PeoplePickerPage pressOpenStartUIButton() throws Exception {
 		refreshUITree();
 		openStartUIButton.click();
-		return new PeoplePickerPage(this.getDriver(), this.getWait());
+		return new PeoplePickerPage(this.getLazyDriver());
 	}
+
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 
 		AndroidPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new PeoplePickerPage(this.getDriver(), this.getWait());
+			page = new PeoplePickerPage(this.getLazyDriver());
 			break;
 		}
 		case UP: {
@@ -274,11 +279,11 @@ public class ContactListPage extends AndroidPage {
 			laterBtnPicker.get(0).click();
 		}
 
-		DriverUtils.waitUntilElementDissapear(driver,
+		DriverUtils.waitUntilElementDissapear(this.getDriver(),
 				By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
 		// TODO: we need this as sometimes we see people picker after login
 		PagesCollection.peoplePickerPage = new PeoplePickerPage(
-				this.getDriver(), this.getWait());
+				this.getLazyDriver());
 		return this;
 	}
 
@@ -289,14 +294,15 @@ public class ContactListPage extends AndroidPage {
 	public Boolean isContactExists(String name, int cycles) throws Exception {
 		return findInContactList(name, cycles) != null;
 	}
+
 	private AndroidPage getPages() throws Exception {
 		AndroidPage page = null;
 		if (isVisible(connectToHeader)) {
-			page = new ConnectToPage(this.getDriver(), this.getWait());
+			page = new ConnectToPage(this.getLazyDriver());
 		} else if (isVisible(selfUserName)) {
-			page = new PersonalInfoPage(this.getDriver(), this.getWait());
+			page = new PersonalInfoPage(this.getLazyDriver());
 		} else if (isVisible(cursorInput)) {
-			page = new DialogPage(this.getDriver(), this.getWait());
+			page = new DialogPage(this.getLazyDriver());
 		}
 
 		return page;
@@ -304,7 +310,7 @@ public class ContactListPage extends AndroidPage {
 
 	public boolean isPlayPauseMediaButtonVisible()
 			throws NumberFormatException, Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.id(AndroidLocators.ContactListPage.idPlayPauseMedia));
 		return isVisible(playPauseMedia);
 	}
@@ -330,51 +336,58 @@ public class ContactListPage extends AndroidPage {
 		refreshUITree();
 		return isVisible(missedCallIcon);
 	}
-	
-	public void shareImageToWireFromGallery(){
+
+	public void shareImageToWireFromGallery() throws Exception {
 		galleryCameraAlbumButton.click();
-		List<WebElement> galleryImageViews = driver.findElementsByClassName("android.widget.ImageView");
-		for(WebElement imageView: galleryImageViews){
-			if(imageView.getAttribute("name").equals("Share with")){
+		List<WebElement> galleryImageViews = this.getDriver()
+				.findElementsByClassName("android.widget.ImageView");
+		for (WebElement imageView : galleryImageViews) {
+			if (imageView.getAttribute("name").equals("Share with")) {
 				imageView.click();
 			}
 		}
-		List<WebElement> textViewElements = driver.findElementsByClassName("android.widget.TextView");
-		for(WebElement textView: textViewElements){
-			if(textView.getAttribute("text").equals("See all")){
+		List<WebElement> textViewElements = this.getDriver()
+				.findElementsByClassName("android.widget.TextView");
+		for (WebElement textView : textViewElements) {
+			if (textView.getAttribute("text").equals("See all")) {
 				textView.click();
 			}
 		}
-		//find elements again
-		textViewElements = driver.findElementsByClassName("android.widget.TextView");
-		for(WebElement textView: textViewElements){
-			if(textView.getAttribute("text").equals("Wire")){
+		// find elements again
+		textViewElements = this.getDriver().findElementsByClassName(
+				"android.widget.TextView");
+		for (WebElement textView : textViewElements) {
+			if (textView.getAttribute("text").equals("Wire")) {
 				textView.click();
 			}
 		}
 		conversationShareOption.click();
 		confirmShareButton.click();
 	}
-	
-	public void shareURLFromNativeBrowser() throws InterruptedException {
-		
-		List<WebElement> imageButtonElements = driver
-				.findElementsByClassName(AndroidLocators.Browsers.nameNativeBrowserMenuButton);
+
+	public void shareURLFromNativeBrowser() throws Exception {
+		List<WebElement> imageButtonElements = this.getDriver()
+				.findElementsByClassName(
+						AndroidLocators.Browsers.nameNativeBrowserMenuButton);
 		for (WebElement imageButton : imageButtonElements) {
 			if (imageButton.getAttribute("name").equals("More options")) {
 				imageButton.click();
 			}
 		}
-		List<WebElement> textViewElements = driver
-				.findElementsByClassName(AndroidLocators.Browsers.nameNativeBrowserMoreOptionsButton);
+		List<WebElement> textViewElements = this
+				.getDriver()
+				.findElementsByClassName(
+						AndroidLocators.Browsers.nameNativeBrowserMoreOptionsButton);
 		for (WebElement textView : textViewElements) {
 			if (textView.getAttribute("text").equals("Share page")) {
 				textView.click();
 				break;
 			}
 		}
-		List<WebElement> textElements = driver
-				.findElementsByClassName(AndroidLocators.Browsers.nameNativeBrowserShareWireButton);
+		List<WebElement> textElements = this
+				.getDriver()
+				.findElementsByClassName(
+						AndroidLocators.Browsers.nameNativeBrowserShareWireButton);
 		for (WebElement textView : textElements) {
 			if (textView.getAttribute("text").equals("Wire")) {
 				textView.click();

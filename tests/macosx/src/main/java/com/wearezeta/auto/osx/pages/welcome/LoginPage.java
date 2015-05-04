@@ -9,7 +9,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -50,12 +49,12 @@ public class LoginPage extends OSXPage {
 
 	private Future<String> passwordResetMessage;
 
-	public LoginPage(ZetaOSXDriver driver, WebDriverWait wait) throws Exception {
-		super(driver, wait);
+	public LoginPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.id(OSXLocators.LoginPage.idPasswordField), 10);
 	}
 
@@ -68,12 +67,11 @@ public class LoginPage extends OSXPage {
 		signInButton.click();
 		switch (expectedBehaviour) {
 		case SUCCESSFUL:
-			return new ContactListPage(this.getDriver(), this.getWait());
+			return new ContactListPage(this.getLazyDriver());
 		case ERROR:
 			return this;
 		case NO_INTERNET:
-			return new NoInternetConnectionPage(this.getDriver(),
-					this.getWait());
+			return new NoInternetConnectionPage(this.getLazyDriver());
 		default:
 			throw new Exception(String.format(
 					"Unsupported expected sign in behaviour - %s",
@@ -103,7 +101,7 @@ public class LoginPage extends OSXPage {
 							.readTextFileFromResources(OSXConstants.Scripts.SET_WIRE_FIELD_VALUE_SCRIPT),
 							OSXLocators.LoginPage.appleScriptPasswordFieldPath,
 							password);
-			driver.executeScript(script);
+			this.getDriver().executeScript(script);
 
 			break;
 		default:
@@ -113,19 +111,20 @@ public class LoginPage extends OSXPage {
 	}
 
 	public boolean waitForLogin() throws Exception {
-		DriverUtils.turnOffImplicitWait(driver);
-		boolean noSignIn = DriverUtils.waitUntilElementDissapear(driver,
+		DriverUtils.turnOffImplicitWait(this.getDriver());
+		boolean noSignIn = DriverUtils.waitUntilElementDissapear(
+				this.getDriver(),
 				By.name(OSXLocators.LoginPage.nameSignInButton));
-		DriverUtils.setDefaultImplicitWait(driver);
+		DriverUtils.setDefaultImplicitWait(this.getDriver());
 		return noSignIn;
 	}
 
-	public Boolean isLoginFinished(String contact) {
+	public Boolean isLoginFinished(String contact) throws Exception {
 		String xpath = String.format(
 				OSXLocators.xpathFormatContactEntryWithName, contact);
 		WebElement el = null;
 		try {
-			el = driver.findElement(By.xpath(xpath));
+			el = getDriver().findElement(By.xpath(xpath));
 		} catch (NoSuchElementException e) {
 			el = null;
 		}
@@ -150,8 +149,8 @@ public class LoginPage extends OSXPage {
 				.format(OSXCommonUtils
 						.readTextFileFromResources(OSXConstants.Scripts.OPEN_SAFARI_WITH_URL_SCRIPT),
 						passwordResetLink);
-		driver.executeScript(script);
-		return new ChangePasswordPage(this.getDriver(), this.getWait());
+		this.getDriver().executeScript(script);
+		return new ChangePasswordPage(this.getLazyDriver());
 	}
 
 	public ChangePasswordPage openStagingForgotPasswordPage() throws Exception {
@@ -159,8 +158,8 @@ public class LoginPage extends OSXPage {
 				.format(OSXCommonUtils
 						.readTextFileFromResources(OSXConstants.Scripts.OPEN_SAFARI_WITH_URL_SCRIPT),
 						OSXConstants.BrowserActions.STAGING_CHANGE_PASSWORD_URL);
-		driver.executeScript(script);
-		return new ChangePasswordPage(this.getDriver(), this.getWait());
+		this.getDriver().executeScript(script);
+		return new ChangePasswordPage(this.getLazyDriver());
 	}
 
 	public boolean isForgotPasswordPageAppears() throws Exception {
@@ -169,7 +168,7 @@ public class LoginPage extends OSXPage {
 						.readTextFileFromResources(OSXConstants.Scripts.PASSWORD_PAGE_VISIBLE_SCRIPT));
 
 		@SuppressWarnings("unchecked")
-		Map<String, String> value = (Map<String, String>) driver
+		Map<String, String> value = (Map<String, String>) this.getDriver()
 				.executeScript(script);
 		boolean result = Boolean.parseBoolean(value.get("result"));
 		return result;

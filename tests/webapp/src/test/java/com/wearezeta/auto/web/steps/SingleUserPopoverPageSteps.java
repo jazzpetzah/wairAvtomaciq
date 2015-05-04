@@ -4,9 +4,11 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import org.junit.Assert;
 
 public class SingleUserPopoverPageSteps {
@@ -129,10 +131,11 @@ public class SingleUserPopoverPageSteps {
 	 * Verifies whether Add People button exists on the popover
 	 *
 	 * @step. ^I see Add people button on Single User Profile popover$
+	 * @throws Exception
 	 *
 	 */
 	@Then("^I see Add people button on Single User Profile popover$")
-	public void ISeeAddButton() {
+	public void ISeeAddButton() throws Exception {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
 				.isAddButtonVisible());
 	}
@@ -174,29 +177,24 @@ public class SingleUserPopoverPageSteps {
 	}
 
 	/**
-	 * Verifies Mail is visible on Single Participant popover
+	 * Verifies Mail is visible on Group Participants popover or not
 	 *
-	 * @step. ^I see Mail on Single Participant popover$
+	 * @param not
+	 *            * is set to null if "do not" part does not exist
+	 * @step. ^I( do not)? see Mail on Group Participants popover$
 	 *
 	 * @throws Exception
 	 */
-	@Then("^I see Mail on Single Participant popover$")
-	public void ISeeMailOfUser() throws Exception {
-		Assert.assertFalse(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.getUserMail().isEmpty());
-	}
+	@Then("^I( do not)? see Mail on Single Participant popover$")
+	public void ISeeMailOfUser(String not) throws Exception {
+		if (not == null) {
+			Assert.assertFalse(((SingleUserPopoverContainer) PagesCollection.popoverPage)
+					.getUserMail().isEmpty());
+		} else {
+			Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
+					.getUserMail().isEmpty());
+		}
 
-	/**
-	 * Verifies Mail is not visible on Single Participant popover
-	 *
-	 * @step. ^I see Mail on Single Participant popover$
-	 *
-	 * @throws Exception
-	 */
-	@Then("^I do not see Mail on Single Participant popover$")
-	public void IDoNotSeeMailOfUser() throws Exception {
-		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-				.getUserMail().isEmpty());
 	}
 
 	/**

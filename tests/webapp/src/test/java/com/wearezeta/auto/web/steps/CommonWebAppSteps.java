@@ -1,12 +1,12 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.logging.LogEntries;
@@ -15,10 +15,8 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
@@ -26,12 +24,15 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
+import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -51,8 +52,6 @@ public class CommonWebAppSteps {
 
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
 	private static final int MAX_DRIVER_CREATION_RETRIES = 3;
-	private static final int MIN_WEBAPP_WINDOW_WIDTH = 1366;
-	private static final int MIN_WEBAPP_WINDOW_HEIGHT = 768;
 
 	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
 
@@ -123,7 +122,59 @@ public class CommonWebAppSteps {
 				+ "'");
 	}
 
-	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
+	private final static int MAX_TRIES = 3;
+
+	private void navigateToStartPage(RemoteWebDriver drv) {
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
+			// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
+			drv.manage()
+					.window()
+					.setSize(
+							new Dimension(
+									WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
+									WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
+		} else {
+			drv.manage().window().maximize();
+		}
+
+		try {
+			drv.navigate()
+					.to(CommonUtils
+							.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class));
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		// FIXME: I'm not sure whether white page instead of sign in is
+		// Amazon issue or webapp issue,
+		// but since this happens randomly in different browsers, then I can
+		// assume this issue has something to do to the hosting and/or
+		// Selenium driver
+		int ntry = 0;
+		while (ntry < MAX_TRIES) {
+			try {
+				if (DriverUtils
+						.isElementDisplayed(
+								drv,
+								By.xpath(WebAppLocators.LandingPage.xpathSwitchToSignInButton),
+								5)) {
+					break;
+				} else {
+					log.error(String
+							.format("Landing page has failed to load. Trying to refresh (%s of %s)...",
+									ntry + 1, MAX_TRIES));
+					drv.navigate().to(drv.getCurrentUrl());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			ntry++;
+		}
+	}
+
+	private Future<ZetaWebAppDriver> resetWebAppDriver(String url)
+			throws Exception {
 		final DesiredCapabilities capabilities;
 		switch (WebAppExecutionContext.getCurrentBrowser()) {
 		case Chrome:
@@ -171,10 +222,11 @@ public class CommonWebAppSteps {
 		// setCustomOperaProfile(capabilities, "win7_opera");
 
 		capabilities.setCapability("platformName", Platform.Web.getName());
-		final ZetaWebAppDriver webDriver = (ZetaWebAppDriver) PlatformDrivers
-				.getInstance().resetDriver(url, capabilities);
-		webDriver.setFileDetector(new LocalFileDetector());
-		return webDriver;
+		@SuppressWarnings("unchecked")
+		final Future<ZetaWebAppDriver> lazyWebDriver = (Future<ZetaWebAppDriver>) PlatformDrivers
+				.getInstance().resetDriver(url, capabilities,
+						MAX_DRIVER_CREATION_RETRIES, this::navigateToStartPage);
+		return lazyWebDriver;
 	}
 
 	@Before("~@performance")
@@ -192,43 +244,10 @@ public class CommonWebAppSteps {
 				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
 		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
-		int tryNum = 1;
-		ZetaWebAppDriver webDriver;
-		WebDriverWait wait;
-		do {
-			try {
-				webDriver = resetWebAppDriver(url);
-				wait = PlatformDrivers.createDefaultExplicitWait(webDriver);
-				if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
-					// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
-					webDriver.manage().window().setPosition(new Point(0, 0));
-					webDriver
-							.manage()
-							.window()
-							.setSize(
-									new Dimension(MIN_WEBAPP_WINDOW_WIDTH,
-											MIN_WEBAPP_WINDOW_HEIGHT));
-				} else {
-					webDriver.manage().window().maximize();
-				}
-
-				PagesCollection.registrationPage = new RegistrationPage(
-						webDriver, wait, path);
-				PagesCollection.registrationPage.navigateTo();
-				break;
-			} catch (WebDriverException e) {
-				log.debug(String
-						.format("Driver initialization failed. Trying to recreate (%d of %d)...",
-								tryNum, MAX_DRIVER_CREATION_RETRIES));
-				e.printStackTrace();
-				if (tryNum >= MAX_DRIVER_CREATION_RETRIES) {
-					throw e;
-				} else {
-					tryNum++;
-				}
-			}
-		} while (tryNum <= MAX_DRIVER_CREATION_RETRIES);
-		ZetaFormatter.setDriver(PagesCollection.registrationPage.getDriver());
+		final Future<ZetaWebAppDriver> lazyWebDriver = resetWebAppDriver(url);
+		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
+				path);
+		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
 
 	/**
@@ -481,6 +500,42 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * Archive conversation on the backend
+	 * 
+	 * @step. ^(.*) archived conversation with (.*)$
+	 * 
+	 * @param userToNameAlias
+	 *            the name/alias of conversations list owner
+	 * @param archivedUserNameAlias
+	 *            the name of conversation to archive
+	 * @throws Exception
+	 */
+	@When("^(.*) archived conversation with (.*)$")
+	public void ArchiveConversationWithUser(String userToNameAlias,
+			String archivedUserNameAlias) throws Exception {
+		commonSteps.ArchiveConversationWithUser(userToNameAlias,
+				archivedUserNameAlias);
+	}
+
+	/**
+	 * Send Ping into a conversation using the backend
+	 * 
+	 * @step. ^(.*) pinged conversation with (.*)$
+	 * 
+	 * @param pingFromUserNameAlias
+	 *            conversations list owner name/alias
+	 * @param dstConversationName
+	 *            the name of conversation to send ping to
+	 * @throws Exception
+	 */
+	@When("^(.*) pinged the conversation with (.*)$")
+	public void UserPingedConversation(String pingFromUserNameAlias,
+			String dstConversationName) throws Exception {
+		commonSteps.UserPingedConversation(pingFromUserNameAlias,
+				dstConversationName);
+	}
+
+	/**
 	 * Send message to a conversation
 	 * 
 	 * @step. ^User (.*) sent message (.*) to conversation (.*)
@@ -608,7 +663,7 @@ public class CommonWebAppSteps {
 				if (WebAppExecutionContext.LoggingManagement
 						.isSupportedInCurrentBrowser()) {
 					writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
-							.getDriver(CURRENT_PLATFORM));
+							.getDriver(CURRENT_PLATFORM).get());
 				}
 			} finally {
 				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);

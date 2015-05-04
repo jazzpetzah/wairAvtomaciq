@@ -20,9 +20,8 @@ public class SelfPictureUploadPageSteps {
 	public void ISeeSelfPictureUpload(String shouldNotBeVisible)
 			throws Exception {
 		if (PagesCollection.selfPictureUploadPage == null) {
-			PagesCollection.selfPictureUploadPage = new SelfPictureUploadPage(
-					PagesCollection.registrationPage.getDriver(),
-					PagesCollection.registrationPage.getWait());
+			PagesCollection.selfPictureUploadPage = (SelfPictureUploadPage) PagesCollection.registrationPage
+					.instantiatePage(SelfPictureUploadPage.class);
 		}
 		if (shouldNotBeVisible == null) {
 			PagesCollection.selfPictureUploadPage
@@ -67,10 +66,11 @@ public class SelfPictureUploadPageSteps {
 	 * Force Carousel mode on Self Picture Upload dialog
 	 * 
 	 * @step. ^I force carousel mode on Self Picture Upload dialog$
+	 * @throws Exception 
 	 * 
 	 */
 	@And("^I force carousel mode on Self Picture Upload dialog$")
-	public void IForceCarouselMode() {
+	public void IForceCarouselMode() throws Exception {
 		PagesCollection.selfPictureUploadPage.forceCarouselMode();
 	}
 

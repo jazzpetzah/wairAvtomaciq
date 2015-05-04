@@ -1,8 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -10,7 +10,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -65,9 +64,8 @@ public class GroupChatInfoPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherUserProfilePageCloseButton)
 	private WebElement closeButton;
 
-	public GroupChatInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public GroupChatInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public String getGroupChatName() {
@@ -85,7 +83,7 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public boolean isNumberOfParticipants(int correctNumber) throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathNumberOfParticipantsText));
 		int givenNumberOfParticipants = Integer
 				.parseInt(numberOfParticipantsText.getText().replaceAll("\\D+",
@@ -95,11 +93,10 @@ public class GroupChatInfoPage extends IOSPage {
 
 	public GroupChatPage closeGroupChatInfoPage() throws Exception {
 		closeButton.click();
-		return new GroupChatPage(this.getDriver(), this.getWait());
+		return new GroupChatPage(this.getLazyDriver());
 	}
 
-	public boolean areParticipantAvatarCorrect(String contact)
-			throws IOException {
+	public boolean areParticipantAvatarCorrect(String contact) throws Exception {
 
 		String name = "", picture = "";
 		if (contact.toLowerCase().contains(AQA_PICTURE_CONTACT.toLowerCase())) {
@@ -115,15 +112,18 @@ public class GroupChatInfoPage extends IOSPage {
 		for (WebElement avatar : participantAvatars) {
 			avatarIcon = CommonUtils.getElementScreenshot(avatar,
 					this.getDriver());
-			List<WebElement> avatarText = avatar.findElements(By.className("UIAStaticText"));
-			
+			List<WebElement> avatarText = avatar.findElements(By
+					.className("UIAStaticText"));
+
 			for (WebElement text : avatarText) {
 				String avatarName = text.getAttribute("name");
 				if (avatarName.equalsIgnoreCase(name)) {
-					BufferedImage realImage = ImageUtil.readImageFromFile(IOSPage
-							.getImagesPath() + picture);
-					
-					double score = ImageUtil.getOverlapScore(realImage, avatarIcon, ImageUtil.RESIZE_NORESIZE);
+					BufferedImage realImage = ImageUtil
+							.readImageFromFile(IOSPage.getImagesPath()
+									+ picture);
+
+					double score = ImageUtil.getOverlapScore(realImage,
+							avatarIcon, ImageUtil.RESIZE_NORESIZE);
 					if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
 						return false;
 					} else {
@@ -199,8 +199,7 @@ public class GroupChatInfoPage extends IOSPage {
 			if (getParticipantName(participant).equalsIgnoreCase(
 					participantName)) {
 				participant.click();
-				page = new OtherUserPersonalInfoPage(this.getDriver(),
-						this.getWait());
+				page = new OtherUserPersonalInfoPage(this.getLazyDriver());
 				return page;
 			}
 		}
@@ -230,10 +229,10 @@ public class GroupChatInfoPage extends IOSPage {
 		}
 	}
 
-	public int numberOfPeopleInConversation() {
+	public int numberOfPeopleInConversation() throws Exception {
 		int result = -1;
-		List<WebElement> elements = driver.findElements(By
-				.xpath(IOSLocators.xpathNumberPeopleText));
+		List<WebElement> elements = getDriver().findElements(
+				By.xpath(IOSLocators.xpathNumberPeopleText));
 		for (WebElement element : elements) {
 			String value = element.getText();
 			if (value.contains(IOSLocators.peopleCountTextSubstring)) {
@@ -244,9 +243,9 @@ public class GroupChatInfoPage extends IOSPage {
 		return result;
 	}
 
-	public int numberOfParticipantsAvatars() {
-		List<WebElement> elements = driver.findElements(By
-				.xpath(IOSLocators.xpathParticipantAvatarCell));
+	public int numberOfParticipantsAvatars() throws Exception {
+		List<WebElement> elements = getDriver().findElements(
+				By.xpath(IOSLocators.xpathParticipantAvatarCell));
 		return elements.size();
 	}
 
@@ -271,20 +270,20 @@ public class GroupChatInfoPage extends IOSPage {
 
 	public OtherUserPersonalInfoPage selectContactByName(String name)
 			throws Exception {
-		DriverUtils.mobileTapByCoordinates(this.getDriver(),
-				driver.findElementByName(name.toUpperCase()));
+		DriverUtils.mobileTapByCoordinates(this.getDriver(), getDriver()
+				.findElementByName(name.toUpperCase()));
 
-		return new OtherUserPersonalInfoPage(this.getDriver(), this.getWait());
+		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}
 
 	public ConnectToPage selectNotConnectedUser(String name) throws Exception {
-		driver.findElementByName(name.toUpperCase()).click();
+		getDriver().findElementByName(name.toUpperCase()).click();
 
-		return new ConnectToPage(this.getDriver(), this.getWait());
+		return new ConnectToPage(this.getLazyDriver());
 	}
 
 	public boolean isLeaveConversationAlertVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.name(IOSLocators.nameLeaveConversationAlert));
 	}
 
@@ -293,18 +292,18 @@ public class GroupChatInfoPage extends IOSPage {
 		IOSPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new GroupChatPage(this.getDriver(), this.getWait());
+			page = new GroupChatPage(this.getLazyDriver());
 			break;
 		}
 		case UP: {
 			break;
 		}
 		case LEFT: {
-			page = new GroupChatInfoPage(this.getDriver(), this.getWait());
+			page = new GroupChatInfoPage(this.getLazyDriver());
 			break;
 		}
 		case RIGHT: {
-			page = new ContactListPage(this.getDriver(), this.getWait());
+			page = new ContactListPage(this.getLazyDriver());
 			break;
 		}
 		}
@@ -319,7 +318,7 @@ public class GroupChatInfoPage extends IOSPage {
 		conversationName = newName;
 	}
 
-	public BufferedImage takeScreenShot() throws IOException {
+	public BufferedImage takeScreenShot() throws Exception {
 		return DriverUtils.takeScreenshot(this.getDriver());
 	}
 
@@ -336,7 +335,7 @@ public class GroupChatInfoPage extends IOSPage {
 	public PeoplePickerPage clickOnAddDialogContinueButton() throws Throwable {
 		PeoplePickerPage page = null;
 		addDialogContinueButton.click();
-		page = new PeoplePickerPage(this.getDriver(), this.getWait());
+		page = new PeoplePickerPage(this.getLazyDriver());
 		return page;
 	}
 }
