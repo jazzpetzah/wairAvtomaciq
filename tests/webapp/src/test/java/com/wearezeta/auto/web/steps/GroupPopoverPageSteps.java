@@ -208,6 +208,19 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Click confirm connect button on Group Participants popover
+	 *
+	 * @step. ^I click confirm connect button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I click confirm connect button on Group Participants popover$")
+	public void IClickConfirmConnectButton() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickConfirmConnectButton();
+	}
+
+	/**
 	 * Remove participant from group chat by clicking "exit" button
 	 *
 	 * @step. ^I click Remove button on Group Participants popover$

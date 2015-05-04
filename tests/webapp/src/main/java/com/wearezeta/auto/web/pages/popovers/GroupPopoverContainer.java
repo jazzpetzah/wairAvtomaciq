@@ -39,6 +39,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 				lazyDriver, this);
 		this.unblockUserConfirmationPopoverPage = new UnblockUserConfirmationPopoverPage(
 				lazyDriver, this);
+		this.pendingUserConfirmationPopoverPage = new PendingUserConfirmationPopoverPage(
+				lazyDriver, this);
 	}
 
 	@Override
