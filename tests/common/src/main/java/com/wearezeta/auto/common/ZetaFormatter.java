@@ -154,13 +154,14 @@ public class ZetaFormatter implements Formatter, Reporter {
 	public void result(Result arg0) {
 		endDate = new Date().getTime();
 		final String currentStep = step.poll();
+
 		log.debug(currentStep + " (status: " + arg0.getStatus() + ", time: "
 				+ (endDate - startDate) + "ms)");
 		// take screenshot
 		try {
-			if (getDriver() != null) {
-				BufferedImage image = DriverUtils
-						.takeScreenshot((ZetaDriver) getDriver());
+			final ZetaDriver driver = getDriver(arg0.getStatus() == Result.FAILED);
+			if (driver != null) {
+				BufferedImage image = DriverUtils.takeScreenshot(driver);
 				String picturePath = CommonUtils
 						.getPictureResultsPathFromConfig(this.getClass());
 				File outputfile = new File(picturePath + feature + "/"
@@ -185,9 +186,9 @@ public class ZetaFormatter implements Formatter, Reporter {
 		// TODO Auto-generated method stub
 	}
 
-	private static RemoteWebDriver getDriver() throws Exception {
-		if (lazyDriver.isDone()) {
-			return lazyDriver.get(ZetaDriver.INIT_TIMEOUT,
+	private static ZetaDriver getDriver(boolean forceWait) throws Exception {
+		if (lazyDriver.isDone() || forceWait) {
+			return (ZetaDriver) lazyDriver.get(ZetaDriver.INIT_TIMEOUT,
 					TimeUnit.MILLISECONDS);
 		} else {
 			return null;
