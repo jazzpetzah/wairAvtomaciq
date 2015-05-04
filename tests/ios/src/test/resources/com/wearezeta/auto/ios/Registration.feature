@@ -319,13 +319,13 @@ Feature: Registration
     And I input name <Name> and hit Enter
     And I input email <Email> and hit Enter
     And I enter password <Password>
-    Then I confirm that <EmailCount> recent emails in inbox contain 0 for current recipient
+    Then I confirm that inbox contains 0 emails for current recipient
     And I click Create Account Button
     And I wait for 10 seconds
-    Then I confirm that <EmailCount> recent emails in inbox contain 1 for current recipient
+    Then I confirm that inbox contains 1 email for current recipient
     And I resend verification email
     And I wait for 10 seconds
-    Then I confirm that <EmailCount> recent emails in inbox contain 2 for current recipient
+    Then I confirm that inbox contains 2 emails for current recipient
 
     Examples: 
       | Email      | Password      | Name      | EmailCount |

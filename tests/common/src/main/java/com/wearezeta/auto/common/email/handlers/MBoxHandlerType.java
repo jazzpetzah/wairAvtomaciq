@@ -2,8 +2,8 @@ package com.wearezeta.auto.common.email.handlers;
 
 import java.util.NoSuchElementException;
 
-enum MailboxHandlerType {
-	JavaX(JavaXMailbox.class), REST(MboxListenerServiceClient.class);
+enum MBoxHandlerType {
+	JavaX(JavaXMBox.class), REST(RESTMBoxClientWrapper.class);
 
 	private final Class<? extends ISupportsMessagesPolling> handlerClass;
 
@@ -11,12 +11,12 @@ enum MailboxHandlerType {
 		return this.handlerClass;
 	}
 
-	private MailboxHandlerType(Class<? extends ISupportsMessagesPolling> cls) {
+	private MBoxHandlerType(Class<? extends ISupportsMessagesPolling> cls) {
 		this.handlerClass = cls;
 	}
 
-	public static MailboxHandlerType fromString(String name) {
-		for (MailboxHandlerType value : MailboxHandlerType.values()) {
+	public static MBoxHandlerType fromString(String name) {
+		for (MBoxHandlerType value : MBoxHandlerType.values()) {
 			if (name.equals(value.name())) {
 				return value;
 			}

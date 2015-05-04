@@ -77,7 +77,12 @@ public class ConversationPageSteps {
 	}
 	
 	/**
-	 * Then I see embedded youtube video of <Youtubelink2>
+	 * Verifies whether YouTube video is visible
+	 * 
+	 * @step. ^I see embedded youtube video of (.*)
+	 * 
+	 * @throws Exception
+	 * 
 	 */
 	@Then("^I see embedded youtube video of (.*)")
 	public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {

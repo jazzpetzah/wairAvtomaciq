@@ -224,7 +224,7 @@ public class RegistrationPageSteps {
 		BackendAPIWrappers
 				.activateRegisteredUser(RegistrationPageSteps.activationMessage);
 		this.userToRegister.setUserState(UserState.Created);
-		PagesCollection.contactListPage = PagesCollection.registrationPage
+		PagesCollection.peoplePickerPage = PagesCollection.registrationPage
 				.continueRegistration();
 	}
 

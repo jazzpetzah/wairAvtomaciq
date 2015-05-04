@@ -94,7 +94,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @id1517 @regression
+  @id1517 @regression 
   Scenario Outline: Verify you can send an invite
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -113,35 +113,63 @@ Feature: Search
       
   @id2214 @staging
   Scenario Outline: I can dismiss PYMK by Hide button
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I wait for 30 seconds
-    When I swipe down contact list
-    And I see People picker page
+    Given I see sign in screen
+    Given I press Join button
+    Given I press Camera button twice
+    Given I confirm selection
+    Given I enter name <Name>
+    Given I enter email <Email>
+    Given I enter password <Password>
+    Given I submit registration data
+    Given I see confirmation page
+    Given I verify registration address
+    When I wait for PYMK for 30 secs
     And I swipe on random connect
     And I click on PYMK hide button
     Then I do not see random connect
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  |
+      | Email      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
 
   @id2213 @staging
   Scenario Outline: I can dismiss PYMK by swipe
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given Contact <Contact1> send message to user <Name>
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I wait for 30 seconds
-    When I swipe down contact list
-    And I see People picker page
+    Given I see sign in screen
+    Given I press Join button
+    Given I press Camera button twice
+    Given I confirm selection
+    Given I enter name <Name>
+    Given I enter email <Email>
+    Given I enter password <Password>
+    Given I submit registration data
+    Given I see confirmation page
+    Given I verify registration address
+    When I wait for PYMK for 30 secs
     And I swipe on random connect
     And I hide random connect by swipe
     Then I do not see random connect
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  |
+      | Email      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
+      
+  @id319 @regression
+  Scenario Outline: I can create group chat from Search
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in search field user name to connect to <Contact1>
+    And I tap on user name found on People picker page <Contact1>
+    And I add in search field user name to connect to <Contact2>
+    And I tap on user name found on People picker page <Contact2>
+    #And I press back button
+    And I tap on create conversation
+    Then I see group chat page with users <Contact1>,<Contact2>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName           |
+      | user1Email | user1Password | user1Name | user3Name | user2Name | PeoplePicker GroupChat2 |

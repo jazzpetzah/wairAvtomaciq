@@ -15,6 +15,15 @@ public class CallingOverlayPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idCallingOverlayContainer")
 	private WebElement callingOverlayContainer;
 	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idOngoingCallMicrobar")
+	private WebElement ongoingCallMicrobar;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idOngoingCallMinibar")
+	private WebElement ongoingCallMinibar;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idIncominCallerAvatar")
+	private WebElement incominCallerAvatar;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idIgnoreButton")
 	private WebElement ignoreButton;
 	
@@ -24,6 +33,18 @@ public class CallingOverlayPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idCallingUsersName")
 	private WebElement callingUsersName;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idCallMessage")
+	private WebElement callMessage;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idCallingDismiss")
+	private WebElement callingDismiss;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idCallingSpeaker")
+	private WebElement callingSpeaker;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idCallingMicMute")
+	private WebElement callingMicMute;
+	
 	public CallingOverlayPage(ZetaAndroidDriver driver, WebDriverWait wait)
 			throws Exception {
 		super(driver, wait);
@@ -50,4 +71,45 @@ public class CallingOverlayPage extends AndroidPage {
 		acceptButton.click();
 	}
 
+	public boolean incominCallerAvatarIsVisible() throws Exception {
+        refreshUITree();
+		return isVisible(callMessage);
+	}
+	
+	public boolean callingMessageIsVisible() throws Exception {
+        refreshUITree();
+		return isVisible(callMessage);
+	}
+
+	public boolean callingDismissIsVisible() throws Exception {
+		refreshUITree();
+		return isVisible(callingDismiss);
+	}
+
+	public boolean callingSpeakerIsVisible() throws Exception {
+		refreshUITree();
+		return isVisible(callingSpeaker);
+	}
+
+	public boolean callingMicMuteIsVisible() throws Exception {
+		refreshUITree();
+		return isVisible(callingMicMute);
+	}
+
+	public boolean callingOverlayIsVisible() throws Exception {
+		refreshUITree();
+		return  isVisible(callingOverlayContainer);
+	}
+
+	public boolean ongoingCallMicrobarIsVisible() throws Exception {
+		refreshUITree();
+		return  isVisible(ongoingCallMicrobar);
+	}
+	
+	public boolean ongoingCallMinibarIsVisible() throws Exception {
+		refreshUITree();
+		return  isVisible(ongoingCallMinibar);
+	}
 }
+
+

@@ -3,7 +3,10 @@ package com.wearezeta.auto.common.email;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Map;
 
+import javax.mail.Header;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -27,7 +30,34 @@ public class MessagingUtils {
 		return new MimeMessage(session, new ByteArrayInputStream(
 				rawMsg.getBytes()));
 	}
+	
+	public static String extractDeliveredToValue(Map<String, String> headers) throws Exception {
+		// Get emails for all recipients by default
+		String deliveredTo = getAccountName();
+		for (Map.Entry<String, String> pair : headers.entrySet()) {
+			if (pair.getKey().equals(DELIVERED_TO_HEADER)) {
+				deliveredTo = pair.getValue();
+				break;
+			}
+		}
+		return deliveredTo;
+	}
 
+	public static String extractDeliveredToValue(Message msg) throws Exception {
+		// Get emails for all recipients by default
+		String deliveredTo = getAccountName();
+		@SuppressWarnings("unchecked")
+		final Enumeration<Header> hdrs = msg.getAllHeaders();
+		while (hdrs.hasMoreElements()) {
+			final Header hdr = hdrs.nextElement();
+			if (hdr.getName().equals(DELIVERED_TO_HEADER)) {
+				deliveredTo = hdr.getValue();
+				break;
+			}
+		}
+		return deliveredTo;
+	}
+	
 	public static String getServerHost() throws Exception {
 		return CommonUtils
 				.getDefaultEmailServerFromConfig(MessagingUtils.class);

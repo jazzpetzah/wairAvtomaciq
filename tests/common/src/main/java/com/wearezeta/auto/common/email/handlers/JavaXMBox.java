@@ -1,7 +1,5 @@
 package com.wearezeta.auto.common.email.handlers;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
@@ -12,6 +10,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import javax.mail.*;
+import javax.mail.search.SearchTerm;
 
 import org.apache.log4j.Logger;
 
@@ -20,14 +19,14 @@ import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.handlers.JavaXMBoxChangesListener;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-class JavaXMailbox implements ISupportsMessagesPolling {
+class JavaXMBox implements ISupportsMessagesPolling {
 	private static final String MAIL_PROTOCOL = "imaps";
 	private static final String MAILS_FOLDER = "Inbox";
 	private static final int FOLDER_OPEN_TIMEOUT = 60 * 15; // seconds
 	private static final int MBOX_MAX_CONNECT_RETRIES = 10;
 	private static final int NEW_MSG_CHECK_INTERVAL = 500; // milliseconds
 
-	private static final Logger log = ZetaLogger.getLog(JavaXMailbox.class
+	private static final Logger log = ZetaLogger.getLog(JavaXMBox.class
 			.getSimpleName());
 
 	private static final Semaphore folderStateGuard = new Semaphore(1);
@@ -86,13 +85,13 @@ class JavaXMailbox implements ISupportsMessagesPolling {
 				@Override
 				public void run() {
 					log.debug("Starting email messages notifier thread...");
-					while (JavaXMailbox.this.getFolder() != null
+					while (JavaXMBox.this.getFolder() != null
 							&& !this.isInterrupted()) {
 						try {
-							if (!JavaXMailbox.this.getFolder().isOpen()) {
-								JavaXMailbox.this.getFolder().open(
+							if (!JavaXMBox.this.getFolder().isOpen()) {
+								JavaXMBox.this.getFolder().open(
 										Folder.READ_ONLY);
-								JavaXMailbox.this.getFolder().getMessageCount();
+								JavaXMBox.this.getFolder().getMessageCount();
 							}
 							Thread.sleep(NEW_MSG_CHECK_INTERVAL);
 						} catch (InterruptedException e) {
@@ -126,27 +125,6 @@ class JavaXMailbox implements ISupportsMessagesPolling {
 				messagesCountNotifier = null;
 			}
 			folderStateGuard.release();
-		}
-	}
-
-	public List<String> getRecentMessages(int msgsCount) throws Exception {
-		this.openFolder(false);
-		try {
-			int currentMsgsCount = folder.getMessageCount();
-			Message[] fetchedMsgs;
-			if (msgsCount > currentMsgsCount) {
-				fetchedMsgs = folder.getMessages();
-			} else {
-				fetchedMsgs = folder.getMessages(currentMsgsCount - msgsCount,
-						currentMsgsCount);
-			}
-			List<String> result = new ArrayList<String>();
-			for (Message fetchedMsg : fetchedMsgs) {
-				result.add(MessagingUtils.msgToString(fetchedMsg));
-			}
-			return result;
-		} finally {
-			this.closeFolder(false);
 		}
 	}
 
@@ -186,9 +164,7 @@ class JavaXMailbox implements ISupportsMessagesPolling {
 		do {
 			try {
 				store = session.getStore(MAIL_PROTOCOL);
-				store.connect(
-						MessagingUtils.getServerHost(),
-						-1,
+				store.connect(MessagingUtils.getServerHost(), -1,
 						MessagingUtils.getAccountName(),
 						MessagingUtils.getAccountPassword());
 				break;
@@ -210,7 +186,7 @@ class JavaXMailbox implements ISupportsMessagesPolling {
 
 	private static final Semaphore storeLock = new Semaphore(1);
 
-	public JavaXMailbox() throws Exception {
+	public JavaXMBox() throws Exception {
 		storeLock.acquire();
 		try {
 			if (store == null) {
@@ -219,5 +195,44 @@ class JavaXMailbox implements ISupportsMessagesPolling {
 		} finally {
 			storeLock.release();
 		}
+	}
+
+	@Override
+	public void waitUntilMessagesCountReaches(String deliveredTo,
+			int expectedMsgsCount, int timeoutSeconds) throws Exception {
+		SearchTerm term = new SearchTerm() {
+			private static final long serialVersionUID = 1L;
+
+			public boolean match(Message message) {
+				try {
+					if (MessagingUtils.extractDeliveredToValue(message).equals(
+							deliveredTo)) {
+						return true;
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				return false;
+			}
+		};
+
+		int fetchedMsgsCount = 0;
+		this.openFolder(false);
+		try {
+			final long millisecondsStarted = System.currentTimeMillis();
+			do {
+				fetchedMsgsCount = folder.search(term).length;
+				if (fetchedMsgsCount >= expectedMsgsCount) {
+					break;
+				}
+				Thread.sleep(NEW_MSG_CHECK_INTERVAL);
+			} while (System.currentTimeMillis() - millisecondsStarted <= timeoutSeconds * 1000);
+		} finally {
+			this.closeFolder(false);
+		}
+		assert fetchedMsgsCount >= expectedMsgsCount : String
+				.format("Count of messages delivered to %s is %s, but should be at least %s after %s second(s)",
+						deliveredTo, fetchedMsgsCount, expectedMsgsCount,
+						timeoutSeconds);
 	}
 }

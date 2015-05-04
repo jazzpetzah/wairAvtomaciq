@@ -110,7 +110,7 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Message                   | SystemMessage | Action |
       | user1Email | user1Password | user1Name | user2Name | autocall    | simple message in english | YOU           | PINGED |
-      
+
   @id2210 @regression
   Scenario Outline: Calling bar buttons are clickable and change its state
     Given There are 2 users where <Name> is me
@@ -118,18 +118,51 @@ Feature: Calling
     Given <Name> has an accent color <AccentColor>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list with my name <Name>
-	When I tap on contact name <Contact>
-	And I see dialog page
-	And I swipe on text input
-	And I press Call button
-	Then I see call overlay
-	And I press Mute button
-	Then I see MUTE calling button is pressed
-	And I press Speaker button
-	Then I see SPEAKER calling button is pressed
-	And I press Cancel call button
-	Then I do not see call overlay
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe on text input
+    And I press Call button
+    Then I see call overlay
+    And I press Mute button
+    Then I see MUTE calling button is pressed
+    And I press Speaker button
+    Then I see SPEAKER calling button is pressed
+    And I press Cancel call button
+    Then I do not see call overlay
 
     Examples: 
       | Login      | Password      | Name      | Contact   | AccentColor |
       | user1Email | user1Password | user1Name | user2Name | StrongBlue  |
+
+  @id2212 @staging
+  Scenario Outline: Correct calling bar in different places
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given <Contact2> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list with my name <Name>
+    When <Contact1> calls me using <CallBackend>
+    And I answer the call from the overlay bar
+    And I see dialog page
+    Then I see calling overlay Big bar
+    And I navigate back from dialog page
+    And I see Contact list with my name <Name>
+    And I swipe down contact list
+    And I see People picker page
+    And I see calling overlay Micro bar
+    And I press Clear button
+    Then I see Contact list with my name <Name>
+    And I tap on my name <Name>
+    And I see personal info page
+    And I see calling overlay Micro bar
+    And I swipe right to contact list
+    And I see calling overlay Micro bar
+    And I see Contact list with my name <Name>
+    And I tap on contact name <Contact2>
+    And I see dialog page
+    And I see calling overlay Mini bar
+
+    Examples: 
+
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall  |

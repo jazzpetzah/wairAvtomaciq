@@ -40,11 +40,11 @@ import com.wearezeta.auto.image_send.SelfImageProcessor;
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
 	public static final int UI_ACTIVATION_TIMEOUT = 120; // seconds
-	public static final int BACKEND_ACTIVATION_TIMEOUT = 45; // seconds
+	public static final int BACKEND_ACTIVATION_TIMEOUT = UI_ACTIVATION_TIMEOUT; // seconds
 
 	private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
 	private static final int SERVER_SIDE_ERROR = 500;
-	private static final int MAX_RETRIES = 5;
+	private static final int MAX_BACKEND_RETRIES = 5;
 
 	private static final long MAX_MSG_DELIVERY_OFFSET = 10000; // milliseconds
 
@@ -372,7 +372,7 @@ public final class BackendAPIWrappers {
 
 		JSONObject loggedUserInfo = null;
 		int tryNum = 0;
-		while (tryNum < MAX_RETRIES) {
+		while (tryNum < MAX_BACKEND_RETRIES) {
 			try {
 				loggedUserInfo = BackendREST.login(user.getEmail(),
 						user.getPassword());
@@ -381,10 +381,10 @@ public final class BackendAPIWrappers {
 				if (e.getReturnCode() == REQUEST_TOO_FREQUENT_ERROR) {
 					log.debug(String.format(
 							"Login request failed. Retrying (%d of %d)...",
-							tryNum + 1, MAX_RETRIES));
+							tryNum + 1, MAX_BACKEND_RETRIES));
 					e.printStackTrace();
 					tryNum++;
-					if (tryNum >= MAX_RETRIES) {
+					if (tryNum >= MAX_BACKEND_RETRIES) {
 						throw e;
 					} else {
 						Thread.sleep((tryNum + 1) * 2000);
@@ -512,7 +512,7 @@ public final class BackendAPIWrappers {
 	private static JSONArray getConversations(ClientUser user) throws Exception {
 		JSONObject conversationsInfo = null;
 		int tryNum = 0;
-		while (tryNum < MAX_RETRIES) {
+		while (tryNum < MAX_BACKEND_RETRIES) {
 			try {
 				conversationsInfo = BackendREST
 						.getConversationsInfo(generateAuthToken(user));
@@ -521,10 +521,10 @@ public final class BackendAPIWrappers {
 				if (e.getReturnCode() == SERVER_SIDE_ERROR) {
 					log.debug(String
 							.format("Server side request failed. Retrying (%d of %d)...",
-									tryNum + 1, MAX_RETRIES));
+									tryNum + 1, MAX_BACKEND_RETRIES));
 					e.printStackTrace();
 					tryNum++;
-					if (tryNum >= MAX_RETRIES) {
+					if (tryNum >= MAX_BACKEND_RETRIES) {
 						throw e;
 					} else {
 						Thread.sleep((tryNum + 1) * 2000);

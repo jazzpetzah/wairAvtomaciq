@@ -289,6 +289,7 @@ public class ConversationPage extends MainWirePage {
 					conversationDecrementSB = scrollButton;
 				}
 			}
+			log.debug(driver.getPageSource());
 			long TIMEOUT_MINUTES = 1;
 			long startDate = new Date().getTime();
 			while (mediaBarPosition.y() < conversationPosition.y()) {

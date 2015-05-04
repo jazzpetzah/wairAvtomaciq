@@ -15,17 +15,17 @@ import javax.mail.event.MessageCountListener;
 
 import com.wearezeta.auto.common.email.MessagingUtils;
 
-class JavaXMBoxChangesListener extends AbstractMboxChangesListener implements
+class JavaXMBoxChangesListener extends AbstractMBoxChangesListener implements
 		MessageCountListener {
 	private CountDownLatch waitObj = new CountDownLatch(1);
 	private Message matchedMessage = null;
 
 	@Override
-	protected JavaXMailbox getParentMbox() {
-		return (JavaXMailbox) this.parentMBox;
+	protected JavaXMBox getParentMbox() {
+		return (JavaXMBox) this.parentMBox;
 	}
 
-	public JavaXMBoxChangesListener(JavaXMailbox parentMBox,
+	public JavaXMBoxChangesListener(JavaXMBox parentMBox,
 			Map<String, String> expectedHeaders, int timeoutSeconds,
 			long filterMessagesAfter) {
 		super(parentMBox, expectedHeaders, timeoutSeconds, filterMessagesAfter);
