@@ -482,6 +482,42 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * Archive conversation on the backend
+	 * 
+	 * @step. ^(.*) archived conversation with (.*)$
+	 * 
+	 * @param userToNameAlias
+	 *            the name/alias of conversations list owner
+	 * @param archivedUserNameAlias
+	 *            the name of conversation to archive
+	 * @throws Exception
+	 */
+	@When("^(.*) archived conversation with (.*)$")
+	public void ArchiveConversationWithUser(String userToNameAlias,
+			String archivedUserNameAlias) throws Exception {
+		commonSteps.ArchiveConversationWithUser(userToNameAlias,
+				archivedUserNameAlias);
+	}
+
+	/**
+	 * Send Ping into a conversation using the backend
+	 * 
+	 * @step. ^(.*) pinged conversation with (.*)$
+	 * 
+	 * @param pingFromUserNameAlias
+	 *            conversations list owner name/alias
+	 * @param dstConversationName
+	 *            the name of conversation to send ping to
+	 * @throws Exception
+	 */
+	@When("^(.*) pinged the conversation with (.*)$")
+	public void UserPingedConversation(String pingFromUserNameAlias,
+			String dstConversationName) throws Exception {
+		commonSteps.UserPingedConversation(pingFromUserNameAlias,
+				dstConversationName);
+	}
+
+	/**
 	 * Send message to a conversation
 	 * 
 	 * @step. ^User (.*) sent message (.*) to conversation (.*)
