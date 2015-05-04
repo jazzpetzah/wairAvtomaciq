@@ -150,7 +150,7 @@ public class ClientUser {
 	}
 
 	private static String generateUniqName() {
-		return CommonUtils.generateGUID().replace("-", "");
+		return CommonUtils.generateGUID().replace("-", "").substring(0, 8);
 	}
 
 	public static String generateEmail(String suffix) throws Exception {
