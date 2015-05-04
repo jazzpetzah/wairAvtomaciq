@@ -99,15 +99,17 @@ public class CommonAndroidSteps {
 		}
 
 		return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-				.resetDriver(url, capabilities, 1,
-						this::onDriverInitFinished);
+				.resetDriver(url, capabilities, 1, this::onDriverInitFinished);
 	}
+
+	private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
 
 	private void onDriverInitFinished(RemoteWebDriver drv) {
 		final By locator = By
 				.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton);
 		try {
-			if (DriverUtils.isElementDisplayed(drv, locator, 2)) {
+			if (DriverUtils.isElementDisplayed(drv, locator,
+					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
 				drv.findElement(locator).click();
 			}
 		} catch (Exception e) {
