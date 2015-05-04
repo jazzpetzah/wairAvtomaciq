@@ -16,6 +16,7 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	private LeaveGroupConfirmationPopoverPage leaveGroupConfirmationPopoverPage;
 	private RemoveFromGroupConfirmationPopoverPage removeFromGroupConfirmationPopoverPage;
 	private UnblockUserConfirmationPopoverPage unblockUserConfirmationPopoverPage;
+	private PendingUserConfirmationPopoverPage pendingUserConfirmationPopoverPage;
 
 	public GroupPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -206,6 +207,10 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 
 	public String getUserMail() throws Exception {
 		return getCurrentUserInfoPage().getMailText();
+	}
+
+	public void clickConfirmConnectButton() {
+		pendingUserConfirmationPopoverPage.clickConfirmConnectButton();
 	}
 
 }

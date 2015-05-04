@@ -482,29 +482,24 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
-	 * Verifies Mail is visible on Group Participants popover
+	 * Verifies Mail is visible on Group Participants popover or not
 	 *
-	 * @step. ^I see Mail on Group Participants popover$
+	 * @param not
+	 *            is set to null if "do not" part does not exist
+	 * @step. ^I( do not)? see Mail on Group Participants popover$
 	 *
 	 * @throws Exception
 	 */
-	@Then("^I see Mail on Group Participants popover$")
-	public void ISeeMailOfUser() throws Exception {
-		Assert.assertFalse(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.getUserMail().isEmpty());
-	}
+	@Then("^I( do not)? see Mail on Group Participants popover$")
+	public void ISeeMailOfUser(String not) throws Exception {
+		if (not == null) {
+			Assert.assertFalse(((GroupPopoverContainer) PagesCollection.popoverPage)
+					.getUserMail().isEmpty());
+		} else {
+			Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+					.getUserMail().isEmpty());
+		}
 
-	/**
-	 * Verifies Mail is not visible on Group Participants User Profile popover
-	 *
-	 * @step. ^I see Mail on Group Participants User Profile popover$
-	 *
-	 * @throws Exception
-	 */
-	@Then("^I do not see Mail on Group Participants popover$")
-	public void IDoNotSeeMailOfUser() throws Exception {
-		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.getUserMail().isEmpty());
 	}
 
 	/**
