@@ -1,16 +1,14 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
@@ -23,8 +21,9 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class LoginPage extends AndroidPage {
 
-	private static final Logger log = ZetaLogger.getLog(LoginPage.class.getSimpleName());
-	
+	private static final Logger log = ZetaLogger.getLog(LoginPage.class
+			.getSimpleName());
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
 	private WebElement pickerClearBtn;
 
@@ -69,9 +68,8 @@ public class LoginPage extends AndroidPage {
 
 	private static final String LOGIN_ERROR_TEXT = "WRONG ADDRESS OR PASSWORD.\nPLEASE TRY AGAIN.";
 
-	public LoginPage(ZetaAndroidDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public LoginPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public Boolean isVisible() {
@@ -86,9 +84,9 @@ public class LoginPage extends AndroidPage {
 		return loginError.getText().equals(LOGIN_ERROR_TEXT);
 	}
 
-	public LoginPage SignIn() throws IOException {
+	public LoginPage SignIn() throws Exception {
 		refreshUITree();
-		//this.getWait().until(ExpectedConditions.visibilityOf(signInButton));
+		// this.getWait().until(ExpectedConditions.visibilityOf(signInButton));
 		signInButton.click();
 		return this;
 	}
@@ -99,15 +97,16 @@ public class LoginPage extends AndroidPage {
 				ExpectedConditions.elementToBeClickable(forgotPasswordButton));
 		forgotPasswordButton.click();
 		Thread.sleep(2000);
-		if(isVisible(forgotPasswordButton)) {
-			DriverUtils.androidMultiTap(this.getDriver(), forgotPasswordButton, 1, 50);
+		if (isVisible(forgotPasswordButton)) {
+			DriverUtils.androidMultiTap(this.getDriver(), forgotPasswordButton,
+					1, 50);
 		}
-		return new CommonAndroidPage(this.getDriver(), this.getWait());
+		return new CommonAndroidPage(this.getLazyDriver());
 	}
 
 	public ContactListPage LogIn() throws Exception {
 		confirmSignInButton.click();
-		return new ContactListPage(this.getDriver(), this.getWait());
+		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public void setLogin(String login) throws Exception {
@@ -116,8 +115,8 @@ public class LoginPage extends AndroidPage {
 			try {
 				loginInput.sendKeys(login);
 			} catch (Exception e) {
-				log.debug(driver.getPageSource());
-				
+				log.debug(this.getDriver().getPageSource());
+
 			}
 		} else {
 			for (WebElement editField : editText) {
@@ -126,12 +125,10 @@ public class LoginPage extends AndroidPage {
 				}
 			}
 		}
-		/*try {
-			hideKeyboard();
-			Thread.sleep(1000);
-		} catch (Exception ex) {
-			//
-		}*/
+		/*
+		 * try { hideKeyboard(); Thread.sleep(1000); } catch (Exception ex) { //
+		 * }
+		 */
 	}
 
 	public void setPassword(String password) throws Exception {
@@ -145,22 +142,22 @@ public class LoginPage extends AndroidPage {
 				}
 			}
 		}
-		/*try {
-			hideKeyboard();
-			Thread.sleep(1000);
-		} catch (Exception ex) {
-			//
-		}*/
+		/*
+		 * try { hideKeyboard(); Thread.sleep(1000); } catch (Exception ex) { //
+		 * }
+		 */
 	}
 
 	public boolean waitForLoginScreenDisappear() throws Exception {
-		return DriverUtils.waitUntilElementDissapear(driver,
+		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idLoginButton), 40);
 	}
 
 	public boolean waitForLogin() throws Exception {
-		return DriverUtils.waitUntilElementDissapear(driver,
-				AndroidLocators.LoginPage.getByForLoginPageRegistrationButton(), 40);
+		return DriverUtils
+				.waitUntilElementDissapear(this.getDriver(),
+						AndroidLocators.LoginPage
+								.getByForLoginPageRegistrationButton(), 40);
 	}
 
 	public Boolean isLoginFinished(String contact)
@@ -172,19 +169,18 @@ public class LoginPage extends AndroidPage {
 			refreshUITree();
 			if (isVisible(pickerClearBtn)) {
 				pickerClearBtn.click();
-			} /*else {
-				if (!isVisible(yourUser)) {
-					navigateBack();
-				}
-			}*/
+			} /*
+			 * else { if (!isVisible(yourUser)) { navigateBack(); } }
+			 */
 			refreshUITree();
 		}
-		return ( isVisible(yourUser) && DriverUtils.waitForElementWithTextByXPath(
-				AndroidLocators.ContactListPage.xpathContacts, contact,
-				this.getDriver()));
+		return (isVisible(yourUser) && DriverUtils
+				.waitForElementWithTextByXPath(
+						AndroidLocators.ContactListPage.xpathContacts, contact,
+						this.getDriver()));
 	}
 
-	public Boolean isWelcomeButtonsExist() {
+	public Boolean isWelcomeButtonsExist() throws Exception {
 		refreshUITree();
 		this.getWait().until(
 				ExpectedConditions
@@ -201,21 +197,16 @@ public class LoginPage extends AndroidPage {
 	public RegistrationPage join() throws Exception {
 		signUpButton.click();
 		DriverUtils
-				.waitUntilElementDissapear(driver, AndroidLocators.LoginPage
-						.getByForLoginPageRegistrationButton());
-		return new RegistrationPage(this.getDriver(), this.getWait());
-	}
-
-	public void dismissUpdate() {
-		try {
-			dismissUpdateButton.click();
-		} catch (NoSuchElementException e) {
-
-		}
+				.waitUntilElementDissapear(this.getDriver(),
+						AndroidLocators.LoginPage
+								.getByForLoginPageRegistrationButton());
+		return new RegistrationPage(this.getLazyDriver());
 	}
 
 	public boolean isDismissUpdateVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
-				By.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton));
+		return DriverUtils
+				.waitUntilElementAppears(
+						this.getDriver(),
+						By.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton));
 	}
 }

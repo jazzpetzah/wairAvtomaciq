@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.steps;
 
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -54,7 +55,8 @@ public class CommonIOSSteps {
 				.getIosApplicationPathFromConfig(CommonIOSSteps.class);
 	}
 
-	private ZetaIOSDriver resetIOSDriver(boolean enableAutoAcceptAlerts)
+	@SuppressWarnings("unchecked")
+	private Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
 			throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
@@ -74,8 +76,8 @@ public class CommonIOSSteps {
 		}
 
 		testStartedDate = new Date();
-		return (ZetaIOSDriver) PlatformDrivers.getInstance().resetDriver(
-				getUrl(), capabilities);
+		return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
+				.resetDriver(getUrl(), capabilities);
 	}
 
 	@Before("~@noAcceptAlert")
@@ -88,7 +90,8 @@ public class CommonIOSSteps {
 		commonBefore(resetIOSDriver(false));
 	}
 
-	private void commonBefore(ZetaIOSDriver driver) throws Exception {
+	private void commonBefore(Future<ZetaIOSDriver> lazyDriver)
+			throws Exception {
 		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps.getInstance().cleanupWaitingInstances();
@@ -101,9 +104,8 @@ public class CommonIOSSteps {
 		ZetaFormatter.setBuildNumber(IOSCommonUtils
 				.readClientVersionFromPlist().getClientBuildNumber());
 
-		PagesCollection.loginPage = new LoginPage(driver,
-				PlatformDrivers.createDefaultExplicitWait(driver));
-		ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
+		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
 	@When("^I see keyboard$")
@@ -122,7 +124,7 @@ public class CommonIOSSteps {
 	}
 
 	@When("^I scroll up page a bit$")
-	public void IScrollUpPageABit() {
+	public void IScrollUpPageABit() throws Exception {
 		PagesCollection.loginPage.smallScrollUp();
 	}
 
@@ -143,9 +145,10 @@ public class CommonIOSSteps {
 	 *            time in seconds to close the app
 	 * 
 	 * @step. ^I close the app for (.*) seconds$
+	 * @throws Exception 
 	 */
 	@When("^I close the app for (.*) seconds$")
-	public void ICloseApp(int seconds) {
+	public void ICloseApp(int seconds) throws Exception {
 		PagesCollection.iOSPage.minimizeApplication(seconds);
 	}
 

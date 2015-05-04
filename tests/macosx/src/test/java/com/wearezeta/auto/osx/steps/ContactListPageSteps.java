@@ -66,13 +66,14 @@ public class ContactListPageSteps {
 	 *            one of possible accent colors:
 	 *            StrongBlue|StrongLimeGreen|BrightYellow
 	 *            |VividRed|BrightOrange|SoftPink|Violet
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if accent color is not equal to expected
 	 */
 	@Then("^I see my name in [Cc]ontact [Ll]ist highlighted with color (.*)$")
 	public void ISeeMyNameHighlightedWithColor(String colorName)
-			throws IOException {
+			throws Exception {
 		AccentColor expectedColor = AccentColor.getByName(colorName);
 		AccentColor selfNameTextColor = PagesCollection.contactListPage
 				.selfNameEntryTextAccentColor();
@@ -199,9 +200,10 @@ public class ContactListPageSteps {
 	 * Minimizes Wire window
 	 * 
 	 * @step. ^I minimize Wire$
+	 * @throws Exception
 	 */
 	@When("^I minimize Wire$")
-	public void IMinimizeWire() {
+	public void IMinimizeWire() throws Exception {
 		PagesCollection.contactListPage.minimizeWindowUsingScript();
 	}
 
@@ -243,7 +245,7 @@ public class ContactListPageSteps {
 	}
 
 	private String clickOnContactListEntry(String contact, boolean isUserProfile)
-			throws MalformedURLException, IOException, NoSuchUserException {
+			throws Exception {
 		if (contact.equals(OSXLocators.RANDOM_KEYWORD)) {
 			contact = PagesCollection.conversationPage
 					.getCurrentConversationName();
@@ -279,9 +281,9 @@ public class ContactListPageSteps {
 	@Given("I open conversation with (.*)")
 	public void GivenIOpenConversationWith(String contact) throws Exception {
 		String realName = clickOnContactListEntry(contact, false);
-		PagesCollection.conversationPage = new ConversationPage(
-				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait(), realName);
+		PagesCollection.conversationPage = (ConversationPage) PagesCollection.mainMenuPage
+				.instantiatePage(ConversationPage.class);
+		PagesCollection.conversationPage.setCurrentConversationName(realName);
 	}
 
 	@When("I open People Picker from contact list")

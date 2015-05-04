@@ -1,14 +1,17 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.util.concurrent.Future;
+
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
+
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 class ParticipantsListPopoverPage extends AbstractPopoverPage {
 
@@ -21,10 +24,9 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathLeaveGroupChat)
 	private WebElement leaveButton;
 
-	public ParticipantsListPopoverPage(ZetaWebAppDriver driver,
-			WebDriverWait wait, PeoplePopoverContainer container)
-			throws Exception {
-		super(driver, wait, container);
+	public ParticipantsListPopoverPage(Future<ZetaWebAppDriver> lazyDriver,
+			PeoplePopoverContainer container) throws Exception {
+		super(lazyDriver, container);
 	}
 
 	public void setConversationTitle(String newTitle) {
@@ -41,9 +43,10 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		final By locator = By
 				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
 						.apply(name));
-		assert DriverUtils.isElementDisplayed(driver, locator, 3);
-		WebElement participant = driver.findElement(locator);
-		assert DriverUtils.waitUntilElementClickable(driver, participant);
+		assert DriverUtils.isElementDisplayed(this.getDriver(), locator, 3);
+		WebElement participant = getDriver().findElement(locator);
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				participant);
 		participant.click();
 	}
 
@@ -53,7 +56,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 	}
 
 	@Override
-	protected WebElement getSharedElement(String relativeXpath) {
+	protected WebElement getSharedElement(String relativeXpath) throws Exception {
 		return super
 				.getSharedElement(String
 						.format("%s%s",
@@ -61,7 +64,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 								relativeXpath));
 	}
 
-	private WebElement getAddPeopleElement() {
+	private WebElement getAddPeopleElement() throws Exception {
 		return this.getSharedElement(PopoverLocators.Shared.xpathAddButton);
 	}
 
@@ -79,7 +82,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		final By locator = By
 				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
 						.apply(name));
-		return DriverUtils.isElementDisplayed(driver, locator, 3);
+		return DriverUtils.isElementDisplayed(this.getDriver(), locator, 3);
 	}
 
 	public String getConversationTitle() {

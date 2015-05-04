@@ -2,7 +2,6 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.web.pages.ContactsUploadPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
-import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
@@ -19,19 +18,16 @@ public class ContactsUploadPageSteps {
 	@And("^I see Contacts Upload dialog$")
 	public void ISeeContactsUploadDialog() throws Exception {
 		if (PagesCollection.contactsUploadPage == null) {
-			PagesCollection.contactsUploadPage = new ContactsUploadPage(
-					PagesCollection.loginPage.getDriver(),
-					PagesCollection.loginPage.getWait());
+			PagesCollection.contactsUploadPage = (ContactsUploadPage) PagesCollection.loginPage
+					.instantiatePage(ContactsUploadPage.class);
 		}
 		PagesCollection.contactsUploadPage.waitUntilVisible(VISIBILITY_TIMEOUT);
 	}
 
 	@And("^I see Google login popup$")
 	public void ISeeGoogleLoginPopup() throws Exception {
-		PagesCollection.contactsUploadPage.switchToGooglePopup();
-		PagesCollection.googeLoginPage = new GoogleLoginPage(
-				PagesCollection.contactsUploadPage.getDriver(),
-				PagesCollection.contactsUploadPage.getWait());
+		PagesCollection.googeLoginPage = PagesCollection.contactsUploadPage
+				.switchToGooglePopup();
 	}
 
 	@When("^I sign up at Google with email (.*) and password (.*)$")

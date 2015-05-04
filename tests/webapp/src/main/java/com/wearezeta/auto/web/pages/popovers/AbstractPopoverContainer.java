@@ -1,15 +1,19 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.util.concurrent.Future;
+
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
+
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
+
 import com.wearezeta.auto.web.pages.WebPage;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class AbstractPopoverContainer extends WebPage {
 
@@ -18,9 +22,9 @@ public abstract class AbstractPopoverContainer extends WebPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.Shared.xpathBackButton)
 	private WebElement backButton;
 
-	public AbstractPopoverContainer(ZetaWebAppDriver driver, WebDriverWait wait)
+	public AbstractPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	protected abstract String getXpathLocator();

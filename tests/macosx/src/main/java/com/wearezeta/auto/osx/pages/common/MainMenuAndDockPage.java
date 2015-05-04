@@ -1,6 +1,6 @@
 package com.wearezeta.auto.osx.pages.common;
 
-import java.io.IOException;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -8,7 +8,6 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -34,9 +33,9 @@ public class MainMenuAndDockPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.MainMenuPage.nameSignOutMenuItem)
 	private WebElement signOutMenuItem;
 
-	public MainMenuAndDockPage(ZetaOSXDriver driver, WebDriverWait wait)
+	public MainMenuAndDockPage(Future<ZetaOSXDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait, OSXExecutionContext.wirePath);
+		super(lazyDriver, OSXExecutionContext.wirePath);
 	}
 
 	public void signOut() throws Exception {
@@ -56,15 +55,15 @@ public class MainMenuAndDockPage extends OSXPage {
 		} catch (InterruptedException e) {
 		}
 
-		driver.navigate().to(OSXExecutionContext.wirePath);
+		this.getDriver().navigate().to(OSXExecutionContext.wirePath);
 	}
 
-	public void quitWire() throws IOException {
+	public void quitWire() throws Exception {
 		try {
 			quitWireMenuItem.click();
 		} catch (NoSuchElementException e) {
 			log.debug("Can't find Quit Wire button. Source: "
-					+ driver.getPageSource());
+					+ this.getDriver().getPageSource());
 			throw e;
 		}
 	}
@@ -79,30 +78,29 @@ public class MainMenuAndDockPage extends OSXPage {
 		super.close();
 	}
 
-	public void restoreClient() {
+	public void restoreClient() throws Exception {
 		clickWireIconOnDock();
 	}
 
-	public void clickWireIconOnDock() {
+	public void clickWireIconOnDock() throws Exception {
 		clickAppIconOnDock(OSXConstants.Apps.WIRE);
 	}
 
-	public void clickAppIconOnDock(String appName) {
-
-		driver.navigate().to(OSXConstants.Apps.DOCK);
+	public void clickAppIconOnDock(String appName) throws Exception {
+		this.getDriver().navigate().to(OSXConstants.Apps.DOCK);
 		try {
 			String xpath = String.format(
 					OSXLocators.MainMenuPage.xpathFormatDockApplicationIcon,
 					appName);
-			driver.findElement(By.xpath(xpath)).click();
+			getDriver().findElement(By.xpath(xpath)).click();
 		} finally {
-			if (driver != null)
-				driver.navigate().to(OSXExecutionContext.wirePath);
+			if (this.getDriver() != null)
+				this.getDriver().navigate().to(OSXExecutionContext.wirePath);
 		}
 	}
 
 	public ChoosePicturePage sendImage() throws Exception {
 		sendImageMenuItem.click();
-		return new ChoosePicturePage(this.getDriver(), this.getWait());
+		return new ChoosePicturePage(this.getLazyDriver());
 	}
 }

@@ -1,7 +1,8 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.concurrent.Future;
+
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -21,9 +22,9 @@ public class CallingLockscreenPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LockscreenCallingPage.CLASS_NAME, locatorKey = "idIncomingCallChathead")
 	private WebElement incomingCallChathead;
 
-	public CallingLockscreenPage(ZetaAndroidDriver driver, WebDriverWait wait)
+	public CallingLockscreenPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	@Override
@@ -35,15 +36,16 @@ public class CallingLockscreenPage extends AndroidPage {
 		return DriverUtils.isElementDisplayed(this.getDriver(), lockScreenLogo);
 	}
 
-	public String getCallersName() {
+	public String getCallersName() throws Exception {
 		refreshUITree();
 		return callingUsersName.getText();
 	}
 
 	public CallingOverlayPage acceptCall() throws Exception {
 		refreshUITree();
-		DriverUtils.swipeRight(this.getDriver(), incomingCallChathead, 1500, 200, 50);
-		return new CallingOverlayPage(getDriver(), getWait());
+		DriverUtils.swipeRight(this.getDriver(), incomingCallChathead, 1500,
+				200, 50);
+		return new CallingOverlayPage(getLazyDriver());
 	}
 
 }

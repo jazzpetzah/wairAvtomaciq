@@ -1,25 +1,25 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
+import java.util.concurrent.Future;
 
 import javax.script.ScriptException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class ImageFullScreenPage extends IOSPage {
-	
+
 	final String[] rotateLeftScript = new String[] {
-			 "tell application \"System Events\"",
-	         "tell application \"iOS Simulator\" to activate",
-	         "tell application \"System Events\" to keystroke (ASCII character 28) using {command down}",
-	         "end tell" };
+			"tell application \"System Events\"",
+			"tell application \"iOS Simulator\" to activate",
+			"tell application \"System Events\" to keystroke (ASCII character 28) using {command down}",
+			"end tell" };
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameImageFullScreenPage)
 	private WebElement imageFullScreen;
@@ -36,9 +36,9 @@ public class ImageFullScreenPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenTimeStamp)
 	private WebElement fullScreenTimeStamp;
 
-	public ImageFullScreenPage(ZetaIOSDriver driver, WebDriverWait wait)
+	public ImageFullScreenPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	public boolean isImageFullScreenShown() {
@@ -48,7 +48,7 @@ public class ImageFullScreenPage extends IOSPage {
 	public DialogPage clickCloseButton() throws Exception {
 		DialogPage page = null;
 		fullScreenCloseButton.click();
-		page = new DialogPage(this.getDriver(), this.getWait());
+		page = new DialogPage(this.getLazyDriver());
 		return page;
 	}
 
@@ -80,8 +80,8 @@ public class ImageFullScreenPage extends IOSPage {
 	public String getTimeStamp() {
 		return fullScreenTimeStamp.getText();
 	}
-	
-	public void rotateSimulatorLeft() throws ScriptException{
+
+	public void rotateSimulatorLeft() throws ScriptException {
 		cmdVscript(rotateLeftScript);
 	}
 

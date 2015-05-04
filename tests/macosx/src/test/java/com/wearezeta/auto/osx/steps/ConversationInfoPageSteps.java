@@ -29,10 +29,10 @@ public class ConversationInfoPageSteps {
 	@When("I choose user (.*) in Conversation info")
 	public void WhenIChooseUserInConversationInfo(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		PagesCollection.conversationInfoPage = new ConversationInfoPage(
-				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait(),
-				PagesCollection.conversationPage);
+		PagesCollection.conversationInfoPage = (ConversationInfoPage) PagesCollection.mainMenuPage
+				.instantiatePage(ConversationInfoPage.class);
+		PagesCollection.conversationInfoPage
+				.setParent(PagesCollection.conversationPage);
 		PagesCollection.conversationInfoPage.selectUser(user);
 		PagesCollection.conversationInfoPage.selectUserIfNotSelected(user);
 	}
@@ -40,10 +40,10 @@ public class ConversationInfoPageSteps {
 	@Then("I do not see user (.*) in Conversation info")
 	public void IDontSeeUserInConversationInfo(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		PagesCollection.conversationInfoPage = new ConversationInfoPage(
-				PagesCollection.mainMenuPage.getDriver(),
-				PagesCollection.mainMenuPage.getWait(),
-				PagesCollection.conversationPage);
+		PagesCollection.conversationInfoPage = (ConversationInfoPage) PagesCollection.mainMenuPage
+				.instantiatePage(ConversationInfoPage.class);
+		PagesCollection.conversationInfoPage
+				.setParent(PagesCollection.conversationPage);
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.userIsNotExistInConversation(user));
 	}
@@ -72,7 +72,8 @@ public class ConversationInfoPageSteps {
 	}
 
 	@Then("I see that conversation has (.*) people")
-	public void ISeeThatConversationHasPeople(int expectedNumberOfPeople) {
+	public void ISeeThatConversationHasPeople(int expectedNumberOfPeople)
+			throws Exception {
 		int actualNumberOfPeople = PagesCollection.conversationInfoPage
 				.numberOfPeopleInConversation();
 		Assert.assertTrue("Actual number of people in chat ("
@@ -82,7 +83,7 @@ public class ConversationInfoPageSteps {
 	}
 
 	@Then("I see (.*) participants avatars")
-	public void ISeeParticipantsAvatars(int number) {
+	public void ISeeParticipantsAvatars(int number) throws Exception {
 		int actual = PagesCollection.conversationInfoPage
 				.numberOfParticipantsAvatars();
 		Assert.assertTrue("Actual number of avatars (" + actual
@@ -229,7 +230,7 @@ public class ConversationInfoPageSteps {
 	}
 
 	@Then("^I see connection request message (.*)$")
-	public void ISeeConnectionRequestMessage(String message) {
+	public void ISeeConnectionRequestMessage(String message) throws Exception {
 		Assert.assertTrue(PagesCollection.conversationInfoPage
 				.isSentConnectionRequestMessageExists(message));
 	}

@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -34,31 +35,32 @@ public class SelfProfilePage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathAccentColorPickerChildren)
 	private List<WebElement> colorsInColorPicker;
 
-	public SelfProfilePage(ZetaWebAppDriver driver, WebDriverWait wait)
+	public SelfProfilePage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	public void clickGearButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(driver, gearButton);
+		DriverUtils.waitUntilElementClickable(this.getDriver(), gearButton);
 		gearButton.click();
 	}
 
 	public void selectGearMenuItem(String name) throws Exception {
 		final String menuXPath = WebAppLocators.SelfProfilePage.xpathGearMenuRoot;
-		DriverUtils.waitUntilElementAppears(driver, By.xpath(menuXPath));
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
+				By.xpath(menuXPath));
 		final String menuItemXPath = WebAppLocators.SelfProfilePage.xpathGearMenuItemByName
 				.apply(name);
-		final WebElement itemElement = driver.findElement(By
-				.xpath(menuItemXPath));
+		final WebElement itemElement = getDriver().findElement(
+				By.xpath(menuItemXPath));
 		itemElement.click();
 	}
 
 	public boolean checkNameInSelfProfile(String name) throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.xpath(WebAppLocators.SelfProfilePage.xpathSelfUserName));
 
-		WebDriverWait wait = new WebDriverWait(driver, 10);
+		WebDriverWait wait = new WebDriverWait(this.getDriver(), 10);
 
 		return wait.until(new Function<WebDriver, Boolean>() {
 			public Boolean apply(WebDriver driver) {
@@ -72,7 +74,7 @@ public class SelfProfilePage extends WebPage {
 	}
 
 	public String getUserName() throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.xpath(WebAppLocators.SelfProfilePage.xpathSelfUserName));
 		return userName.getText();
 	}
@@ -91,17 +93,20 @@ public class SelfProfilePage extends WebPage {
 		final int id = AccentColor.getByName(colorName).getId();
 		final String xpathAccentColorDiv = WebAppLocators.SelfProfilePage.xpathAccentColorDivById
 				.apply(id);
-		assert DriverUtils.waitUntilElementAppears(driver,
+		assert DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.xpath(xpathAccentColorDiv));
-		final WebElement accentColorDiv = driver
-				.findElementByXPath(xpathAccentColorDiv);
-		assert DriverUtils.waitUntilElementClickable(driver, accentColorDiv);
+		final WebElement accentColorDiv = this.getDriver().findElementByXPath(
+				xpathAccentColorDiv);
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				accentColorDiv);
 		accentColorDiv.click();
 	}
 
-	public String getCurrentAccentColor() {
-		final WebElement accentColorCircleDiv = driver
-				.findElementByXPath(WebAppLocators.SelfProfilePage.xpathCurrentAccentColorCircleDiv);
+	public String getCurrentAccentColor() throws Exception {
+		final WebElement accentColorCircleDiv = this
+				.getDriver()
+				.findElementByXPath(
+						WebAppLocators.SelfProfilePage.xpathCurrentAccentColorCircleDiv);
 		return accentColorCircleDiv.getCssValue("border-top-color");
 	}
 
@@ -119,8 +124,8 @@ public class SelfProfilePage extends WebPage {
 	}
 
 	public ProfilePicturePage clickCameraButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(driver, cameraButton);
+		DriverUtils.waitUntilElementClickable(this.getDriver(), cameraButton);
 		cameraButton.click();
-		return new ProfilePicturePage(getDriver(), getWait());
+		return new ProfilePicturePage(getLazyDriver());
 	}
 }

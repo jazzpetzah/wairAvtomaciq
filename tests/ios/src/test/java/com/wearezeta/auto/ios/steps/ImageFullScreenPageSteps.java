@@ -1,9 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.script.ScriptException;
 
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -24,7 +21,7 @@ public class ImageFullScreenPageSteps {
 	BufferedImage referenceImage;
 
 	@When("^I see Full Screen Page opened$")
-	public void ISeeFullScreenPage(){
+	public void ISeeFullScreenPage() {
 		Assert.assertTrue(PagesCollection.imageFullScreenPage
 				.isImageFullScreenShown());
 	}
@@ -103,29 +100,28 @@ public class ImageFullScreenPageSteps {
 	public void ITapCloseFullscreenButton() throws Exception {
 		PagesCollection.imageFullScreenPage.clickCloseButton();
 	}
-	
+
 	/**
 	 * When the image is shown in fullscreen mode, the device gets rotated
 	 * 
 	 * @step. ^I rotate image in fullscreen mode$
-	 * @throws ScriptException 
-	 * @throws IOException 
-	 * @throws InterruptedException 
+	 * @throws Exception
 	 */
 	@Then("^I rotate image in fullscreen mode$")
-	public void IRotateImageInFullscreenMode() throws ScriptException, IOException, InterruptedException{
+	public void IRotateImageInFullscreenMode() throws Exception {
 		PagesCollection.imageFullScreenPage.rotateSimulatorLeft();
 		Thread.sleep(2000);
 		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot();
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "rotatedFullscreenImage.png");
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage, ImageUtil.RESIZE_NORESIZE);
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
+				ImageUtil.RESIZE_NORESIZE);
 		System.out.print("SCORE: " + score);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= "
 						+ FULLSCREEN_SCORE + " , current = " + score,
 				score >= FULLSCREEN_SCORE);
-		
+
 	}
 
 }

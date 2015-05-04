@@ -53,11 +53,12 @@ public class DialogPageSteps {
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
-		Assert.assertTrue(PagesCollection.dialogPage.waitForCursorInputVisible());
+		Assert.assertTrue(PagesCollection.dialogPage
+				.waitForCursorInputVisible());
 	}
 
 	@When("I tap on dialog page")
-	public void ITapOnDialogPage() {
+	public void ITapOnDialogPage() throws Exception {
 		PagesCollection.dialogPage.tapDialogWindow();
 	}
 
@@ -325,8 +326,7 @@ public class DialogPageSteps {
 	}
 
 	@When("I type and send long message and media link (.*)")
-	public void ITypeAndSendLongTextAndMediaLink(String link)
-			throws InterruptedException {
+	public void ITypeAndSendLongTextAndMediaLink(String link) throws Exception {
 		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
 		Thread.sleep(1000);
 		PagesCollection.dialogPage.sendMessageUsingScript(link);
@@ -359,7 +359,7 @@ public class DialogPageSteps {
 	}
 
 	@When("I tap on dialog window")
-	public void ITapOnDialogWindow() {
+	public void ITapOnDialogWindow() throws Exception {
 		PagesCollection.dialogPage.tapDialogWindow();
 	}
 
@@ -371,7 +371,7 @@ public class DialogPageSteps {
 	}
 
 	@When("I send long message")
-	public void ISendLongMessage() throws InterruptedException {
+	public void ISendLongMessage() throws Exception {
 		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
 	}
 
@@ -541,7 +541,7 @@ public class DialogPageSteps {
 	}
 
 	@When("I tap and hold on message input")
-	public void ITapHoldTextInput() {
+	public void ITapHoldTextInput() throws Exception {
 		PagesCollection.dialogPage.tapHoldTextInput();
 	}
 
@@ -633,10 +633,11 @@ public class DialogPageSteps {
 	 * Scrolls to the end of the conversation
 	 * 
 	 * @step. ^I scroll to the end of the conversation$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I scroll to the end of the conversation$")
-	public void IScrollToTheEndOfTheConversation() {
+	public void IScrollToTheEndOfTheConversation() throws Exception {
 		PagesCollection.dialogPage.scrollToEndOfConversation();
 	}
 

@@ -1,7 +1,6 @@
 package com.wearezeta.auto.osx.steps;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import org.junit.Assert;
 
@@ -74,7 +73,7 @@ public class SelfProfilePageSteps {
 	}
 
 	@Then("^I see changed user picture$")
-	public void ThenISeeChangedUserPicture() throws IOException {
+	public void ThenISeeChangedUserPicture() throws Exception {
 		if (userProfileAfter != null) {
 			userProfileBefore = userProfileAfter;
 		}
@@ -105,12 +104,12 @@ public class SelfProfilePageSteps {
 	}
 
 	@Then("I see user profile picture is not set")
-	public void ISeeUserProfilePictureIsNotSet() throws IOException {
+	public void ISeeUserProfilePictureIsNotSet() throws Exception {
 		ThenISeeChangedUserPicture();
 	}
 
 	@When("I see photo in User profile")
-	public void ISeePhotoInUserProfile() throws IOException {
+	public void ISeePhotoInUserProfile() throws Exception {
 		userProfileBefore = PagesCollection.selfProfilePage.takeScreenshot();
 	}
 
@@ -136,9 +135,10 @@ public class SelfProfilePageSteps {
 	 * 
 	 * @param name
 	 *            new username string
+	 * @throws Exception
 	 */
 	@And("^I change username to (.*)")
-	public void IChangeUserNameTo(String name) {
+	public void IChangeUserNameTo(String name) throws Exception {
 		PagesCollection.selfProfilePage.changeUserName(usrMgr.getSelfUser()
 				.getName(), name);
 		usrMgr.getSelfUser().setName(name);
@@ -155,11 +155,10 @@ public class SelfProfilePageSteps {
 	 *            one of possible accent colors:
 	 *            StrongBlue|StrongLimeGreen|BrightYellow
 	 *            |VividRed|BrightOrange|SoftPink|Violet
-	 * 
-	 * @throws IOException
+	 * @throws Exception
 	 */
 	@And("^I change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
-	public void IChangeAccentColor(String colorName) throws IOException {
+	public void IChangeAccentColor(String colorName) throws Exception {
 		AccentColor accentColor = AccentColor.getByName(colorName);
 		PagesCollection.selfProfilePage.changeAccentColor(accentColor);
 	}
@@ -176,13 +175,14 @@ public class SelfProfilePageSteps {
 	 *            one of possible accent colors:
 	 *            StrongBlue|StrongLimeGreen|BrightYellow
 	 *            |VividRed|BrightOrange|SoftPink|Violet
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if accent color is not equal to expected
 	 */
 	@And("^I see color (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet) selected on accent color picker$")
 	public void ISeeColorXSelectOnAccentColorPicker(String colorName)
-			throws IOException {
+			throws Exception {
 		AccentColor expectedColor = AccentColor.getByName(colorName);
 		AccentColor selectedColor = PagesCollection.selfProfilePage
 				.findSelectedAccentColor();
@@ -206,13 +206,14 @@ public class SelfProfilePageSteps {
 	 *            one of possible accent colors:
 	 *            StrongBlue|StrongLimeGreen|BrightYellow
 	 *            |VividRed|BrightOrange|SoftPink|Violet
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if accent color is not equal to expected
 	 */
 	@And("^I see color (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet) is the background color of self profile page$")
 	public void ISeeColorXIsTheBackgroundColor(String colorName)
-			throws IOException {
+			throws Exception {
 		AccentColor expectedColor = AccentColor.getByName(colorName);
 		AccentColor backgroundColor = PagesCollection.selfProfilePage
 				.findBackgroundSelfProfileColor();

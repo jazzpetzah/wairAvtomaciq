@@ -1,11 +1,12 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.concurrent.Future;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -35,40 +36,9 @@ public class RegistrationPage extends WebPage {
 
 	private static final int MAX_TRIES = 3;
 
-	public RegistrationPage(ZetaWebAppDriver driver, WebDriverWait wait,
-			String url) throws Exception {
-		super(driver, wait, url);
-	}
-
-	@Override
-	public void navigateTo() {
-		super.navigateTo();
-		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
-
-		// FIXME: I'm not sure whether white page instead of sign in is
-		// Amazon issue or webapp issue,
-		// but since this happens randomly in different browsers, then I can
-		// assume this issue has something to do to the hosting and/or
-		// Selenium driver
-		int ntry = 0;
-		while (ntry < MAX_TRIES) {
-			try {
-				if (!(DriverUtils
-						.isElementDisplayed(
-								this.getDriver(),
-								By.xpath(WebAppLocators.LandingPage.xpathSwitchToSignInButton)))) {
-					log.error(String
-							.format("Landing page has failed to load. Trying to refresh (%s of %s)...",
-									ntry + 1, MAX_TRIES));
-					driver.navigate().to(driver.getCurrentUrl());
-				} else {
-					break;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			ntry++;
-		}
+	public RegistrationPage(Future<ZetaWebAppDriver> lazyDriver, String url)
+			throws Exception {
+		super(lazyDriver, url);
 	}
 
 	public LoginPage switchToLoginPage() throws Exception {
@@ -83,7 +53,7 @@ public class RegistrationPage extends WebPage {
 			try {
 				if (DriverUtils.isElementDisplayed(this.getDriver(),
 						switchtoSignInBtnlocator)) {
-					driver.findElement(switchtoSignInBtnlocator).click();
+					getDriver().findElement(switchtoSignInBtnlocator).click();
 				}
 				if (DriverUtils.isElementDisplayed(this.getDriver(),
 						signInBtnlocator)) {
@@ -92,44 +62,49 @@ public class RegistrationPage extends WebPage {
 					log.debug(String
 							.format("Trying to refresh currupted login page (retry %s of %s)...",
 									ntry + 1, MAX_TRIES));
-					driver.navigate().to(driver.getCurrentUrl());
+					this.getDriver().navigate()
+							.to(this.getDriver().getCurrentUrl());
 				}
 			} catch (Exception e) {
-				driver.navigate().to(driver.getCurrentUrl());
+				this.getDriver().navigate()
+						.to(this.getDriver().getCurrentUrl());
 			}
 			ntry++;
 		}
 		assert DriverUtils.isElementDisplayed(this.getDriver(),
 				signInBtnlocator) : "Sign in page is not visible";
 
-		return new LoginPage(this.getDriver(), this.getWait());
+		return new LoginPage(this.getLazyDriver());
 	}
 
-	private void removeReadonlyAttr(String cssLocator) {
-		driver.executeScript(String.format(
-				"$(document).find(\"%s\").removeAttr('readonly');", cssLocator));
+	private void removeReadonlyAttr(String cssLocator) throws Exception {
+		this.getDriver().executeScript(
+				String.format(
+						"$(document).find(\"%s\").removeAttr('readonly');",
+						cssLocator));
 	}
 
-	public void enterName(String name) {
+	public void enterName(String name) throws Exception {
 		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssNameFiled);
 		nameField.clear();
 		nameField.sendKeys(name);
 	}
 
-	public void enterEmail(String email) {
+	public void enterEmail(String email) throws Exception {
 		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssEmailFiled);
 		emailField.clear();
 		emailField.sendKeys(email);
 	}
 
-	public void enterPassword(String password) {
+	public void enterPassword(String password) throws Exception {
 		removeReadonlyAttr(WebAppLocators.RegistrationPage.cssPasswordFiled);
 		passwordField.clear();
 		passwordField.sendKeys(password);
 	}
 
 	public void submitRegistration() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(driver, createAccount) : "'Create Account' button is not clickable after timeout";
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				createAccount) : "'Create Account' button is not clickable after timeout";
 		createAccount.click();
 	}
 

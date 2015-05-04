@@ -1,10 +1,11 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.concurrent.Future;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import android.view.KeyEvent;
 
@@ -18,10 +19,9 @@ import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class CommonAndroidPage extends AndroidPage {
 
-	public CommonAndroidPage(ZetaAndroidDriver driver, WebDriverWait wait)
+	public CommonAndroidPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
-		// TODO Auto-generated constructor stub
+		super(lazyDriver);
 	}
 
 	@FindBy(id = AndroidLocators.Gmail.idSubject)
@@ -33,10 +33,9 @@ public class CommonAndroidPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Browsers.CLASS_NAME, locatorKey = "idFirefoxUrlBar")
 	private WebElement urlBar;
 
-
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Browsers.CLASS_NAME, locatorKey = "idFirefoxUrlBarEditText")
 	private WebElement urlBarEditText;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Browsers.CLASS_NAME, locatorKey = "idUrlBar")
 	private WebElement chromeUrlBar;
 
@@ -61,7 +60,7 @@ public class CommonAndroidPage extends AndroidPage {
 		openFirefoxBrowser();
 		Thread.sleep(5000);
 		setFirefoxBrowserURL(link);
-		return new PeoplePickerPage(this.getDriver(), this.getWait());
+		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 	public void ConnectByInvitationLink(String link) throws Exception {
@@ -124,7 +123,7 @@ public class CommonAndroidPage extends AndroidPage {
 		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 	}
 
-	public String getGmailSubject() {
+	public String getGmailSubject() throws Exception {
 		getWait().until(ExpectedConditions.visibilityOf(gmailSubject));
 		return gmailSubject.getText();
 	}

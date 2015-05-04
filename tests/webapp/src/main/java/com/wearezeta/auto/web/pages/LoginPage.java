@@ -1,12 +1,13 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.concurrent.Future;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -33,13 +34,12 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathPasswordInput)
 	private WebElement passwordInput;
 
-	public LoginPage(ZetaWebAppDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public LoginPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilElementAppears(this.getDriver(),
 				By.xpath(WebAppLocators.LoginPage.xpathLoginPage));
 	}
 
@@ -60,7 +60,7 @@ public class LoginPage extends WebPage {
 		// 2. NPE when findElements() call
 		boolean noSignIn = false;
 		try {
-			noSignIn = DriverUtils.waitUntilElementDissapear(driver,
+			noSignIn = DriverUtils.waitUntilElementDissapear(this.getDriver(),
 					By.xpath(WebAppLocators.LoginPage.xpathSignInButton), 60);
 		} catch (WebDriverException e) {
 			if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
@@ -74,15 +74,16 @@ public class LoginPage extends WebPage {
 
 	public boolean waitForLogin() throws Exception {
 		boolean noSignIn = waitForLoginButtonDisappearance();
-		boolean noSignInSpinner = DriverUtils.waitUntilElementDissapear(driver,
+		boolean noSignInSpinner = DriverUtils.waitUntilElementDissapear(
+				this.getDriver(),
 				By.className(WebAppLocators.LoginPage.classNameSpinner), 40);
 		return noSignIn && noSignInSpinner;
 	}
 
 	public ContactListPage clickSignInButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(driver, signInButton);
+		DriverUtils.waitUntilElementClickable(this.getDriver(), signInButton);
 		signInButton.click();
 
-		return new ContactListPage(this.getDriver(), this.getWait());
+		return new ContactListPage(this.getLazyDriver());
 	}
 }

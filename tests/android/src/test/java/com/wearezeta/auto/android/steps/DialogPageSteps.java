@@ -664,12 +664,11 @@ public class DialogPageSteps {
 	 * 
 	 * @param contact
 	 *            contact name string
-	 * 
-	 * @throws NoSuchUserException
+	 * @throws Exception 
 	 */
 	@Then("^I see dialog with missed call from (.*)$")
 	public void ThenISeeDialogWithMissedCallFrom(String contact)
-			throws NoSuchUserException {
+			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertEquals(contact + " CALLED",
 				PagesCollection.dialogPage.getMissedCallMessage());

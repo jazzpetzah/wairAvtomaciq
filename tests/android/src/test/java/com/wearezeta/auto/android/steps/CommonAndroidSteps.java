@@ -9,13 +9,15 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.reporter.LogcatListener;
+import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.LoginPage;
@@ -28,6 +30,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
@@ -73,8 +76,9 @@ public class CommonAndroidSteps {
 				.getAndroidApplicationPathFromConfig(CommonAndroidSteps.class);
 	}
 
-	public ZetaAndroidDriver resetAndroidDriver(String url, String path,
-			boolean isUnicode, Class<?> cls) throws Exception {
+	@SuppressWarnings("unchecked")
+	public Future<ZetaAndroidDriver> resetAndroidDriver(String url,
+			String path, boolean isUnicode, Class<?> cls) throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		LoggingPreferences object = new LoggingPreferences();
 		object.enable("logcat", Level.ALL);
@@ -94,18 +98,31 @@ public class CommonAndroidSteps {
 			capabilities.setCapability("resetKeyboard", true);
 		}
 
-		return (ZetaAndroidDriver) PlatformDrivers.getInstance().resetDriver(
-				url, capabilities);
+		return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
+				.resetDriver(url, capabilities, 1, this::onDriverInitFinished);
+	}
+
+	private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
+
+	private void onDriverInitFinished(RemoteWebDriver drv) {
+		final By locator = By
+				.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton);
+		try {
+			if (DriverUtils.isElementDisplayed(drv, locator,
+					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
+				drv.findElement(locator).click();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
-		final ZetaAndroidDriver driver = resetAndroidDriver(getUrl(),
-				getPath(), isUnicode, this.getClass());
-		final WebDriverWait wait = PlatformDrivers
-				.createDefaultExplicitWait(driver);
-		PagesCollection.loginPage = new LoginPage(driver, wait);
-		ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
-		PagesCollection.loginPage.dismissUpdate();
+		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
+				getUrl(), getPath(), isUnicode, this.getClass());
+		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
 	@Before("@performance")
@@ -160,11 +177,12 @@ public class CommonAndroidSteps {
 	 * Hides the system keyboard
 	 * 
 	 * @step. ^I hide keyboard$
+	 * @throws Exception
 	 * 
 	 * 
 	 */
 	@When("^I hide keyboard$")
-	public void IHideKeyboard() {
+	public void IHideKeyboard() throws Exception {
 		if (PagesCollection.loginPage != null) {
 			PagesCollection.loginPage.hideKeyboard();
 		}
@@ -328,12 +346,11 @@ public class CommonAndroidSteps {
 	 * Takes screenshot for comparison
 	 * 
 	 * @step. ^I take screenshot$
-	 * 
-	 * @throws IOException
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I take screenshot$")
-	public void WhenITake1stScreenshot() throws IOException {
+	public void WhenITake1stScreenshot() throws Exception {
 		images.add(PagesCollection.loginPage.takeScreenshot());
 	}
 
@@ -367,10 +384,11 @@ public class CommonAndroidSteps {
 	 * Restores the application from a minimized state.
 	 * 
 	 * @step. ^I restore the application$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I restore the application$")
-	public void IRestoreApllication() {
+	public void IRestoreApllication() throws Exception {
 		if (PagesCollection.loginPage != null) {
 			PagesCollection.loginPage.restoreApplication();
 		}
@@ -963,10 +981,11 @@ public class CommonAndroidSteps {
 	 * 
 	 * @param subject
 	 *            the email subject header to check
+	 * @throws Exception
 	 * 
 	 */
 	@Then("^mail subject is (.*)$")
-	public void ThenMailSubjectIs(String subject) {
+	public void ThenMailSubjectIs(String subject) throws Exception {
 		Assert.assertEquals(subject,
 				PagesCollection.commonAndroidPage.getGmailSubject());
 	}

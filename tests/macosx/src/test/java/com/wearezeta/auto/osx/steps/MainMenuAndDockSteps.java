@@ -23,9 +23,10 @@ public class MainMenuAndDockSteps {
 	 * Restores Wire
 	 * 
 	 * @step. ^I restore application (.*) from [Dd]ock$
+	 * @throws Exception 
 	 */
 	@When("^I restore application (.*) from [Dd]ock$")
-	public void IRestoreApplicationFromDock(String app) {
+	public void IRestoreApplicationFromDock(String app) throws Exception {
 		PagesCollection.mainMenuPage.clickWireIconOnDock();
 	}
 }

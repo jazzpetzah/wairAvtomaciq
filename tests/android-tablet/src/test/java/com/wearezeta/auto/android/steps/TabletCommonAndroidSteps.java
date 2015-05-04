@@ -1,6 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
-import org.openqa.selenium.support.ui.WebDriverWait;
+import java.util.concurrent.Future;
 
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.android.pages.TabletLoginPage;
@@ -8,7 +8,6 @@ import com.wearezeta.auto.android.pages.TabletPagesCollection;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 import cucumber.api.java.After;
@@ -41,15 +40,11 @@ public class TabletCommonAndroidSteps {
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
-		final ZetaAndroidDriver driver = steps.resetAndroidDriver(getUrl(),
+		final Future<ZetaAndroidDriver> lazyDriver = steps.resetAndroidDriver(getUrl(),
 				getPath(), isUnicode, this.getClass());
-		final WebDriverWait wait = PlatformDrivers
-				.createDefaultExplicitWait(driver);
-		TabletPagesCollection.loginPage = new TabletLoginPage(driver, wait);
+		TabletPagesCollection.loginPage = new TabletLoginPage(lazyDriver);
 		PagesCollection.loginPage = TabletPagesCollection.loginPage;
-
-		ZetaFormatter.setDriver(TabletPagesCollection.loginPage.getDriver());
-		TabletPagesCollection.loginPage.dismissUpdate();
+		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
 	@Before({ "~@unicode", "~@performance" })

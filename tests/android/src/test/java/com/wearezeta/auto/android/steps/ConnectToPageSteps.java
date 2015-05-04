@@ -108,10 +108,11 @@ public class ConnectToPageSteps {
 	 * Note: The message is also cleared (method name does not suggest this).
 	 * 
 	 * @step. ^I tap on edit connect request field$
+	 * @throws Exception 
 	 * 
 	 */
 	@When("^I tap on edit connect request field$")
-	public void WhenITapOnEditConnectRequestField() {
+	public void WhenITapOnEditConnectRequestField() throws Exception {
 		PagesCollection.connectToPage.tapEditConnectionRequest();
 	}
 	

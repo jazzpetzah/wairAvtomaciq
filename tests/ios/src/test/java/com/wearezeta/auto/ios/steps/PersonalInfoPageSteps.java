@@ -27,12 +27,12 @@ public class PersonalInfoPageSteps {
 	}
 
 	@When("I tap to edit my name")
-	public void ITapToEditName() {
+	public void ITapToEditName() throws Exception {
 		PagesCollection.personalInfoPage.tapOnEditNameField();
 	}
 
 	@When("I attempt to input an empty name and press return")
-	public void EnterEmptyNameAndPressReturn() {
+	public void EnterEmptyNameAndPressReturn() throws Exception {
 		PagesCollection.personalInfoPage.clearNameField();
 		PagesCollection.personalInfoPage.pressEnterInNameField();
 	}
@@ -115,7 +115,7 @@ public class PersonalInfoPageSteps {
 
 	@Then("I see profile image is same as template")
 	public void ThenISeeProfileImageIsSameAsSelected(String filename)
-			throws IOException {
+			throws Exception {
 		BufferedImage profileImage = PagesCollection.personalInfoPage
 				.takeScreenshot();
 		double score = ImageUtil.getOverlapScore(
@@ -146,14 +146,14 @@ public class PersonalInfoPageSteps {
 	}
 
 	@When("I attempt to enter (.*) and press return")
-	public void EnterUsernameAndPressReturn(String username) {
+	public void EnterUsernameAndPressReturn(String username) throws Exception {
 		PagesCollection.personalInfoPage.clearNameField();
 		PagesCollection.personalInfoPage.enterNameInNamefield(username);
 		PagesCollection.personalInfoPage.pressEnterInNameField();
 	}
 
 	@When("I attempt to enter (.*) and tap the screen")
-	public void EnterUsernameAndTapScreen(String username) {
+	public void EnterUsernameAndTapScreen(String username) throws Exception {
 		PagesCollection.personalInfoPage.clearNameField();
 		PagesCollection.personalInfoPage.enterNameInNamefield(username);
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
@@ -195,7 +195,7 @@ public class PersonalInfoPageSteps {
 	public void IVerifyAllIsDefaultValue() {
 		PagesCollection.personalInfoPage.isDefaultSoundValOne();
 	}
-	
+
 	/**
 	 * I change name in textfield
 	 * 
@@ -204,13 +204,13 @@ public class PersonalInfoPageSteps {
 	 * @param name
 	 *            new username in textfield
 	 * 
-	 * @throws AssertionError 
-	 *  			  no such user exists
+	 * @throws AssertionError
+	 *             no such user exists
 	 * 
 	 */
 	@When("^I change name (.*) to (.*)$")
 	public void IChangeNameTo(String name, String newName) throws Throwable {
-		try{
+		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
@@ -218,7 +218,7 @@ public class PersonalInfoPageSteps {
 		PagesCollection.personalInfoPage.changeName(newName);
 		usrMgr.getSelfUser().setName(newName);
 	}
-	
+
 	/**
 	 * Verifies name in text field is changed
 	 * 
@@ -227,8 +227,8 @@ public class PersonalInfoPageSteps {
 	 * @param name
 	 *            new username in textfield
 	 * 
-	 * @throws AssertionError 
-	 *  			  no such user exists
+	 * @throws AssertionError
+	 *             no such user exists
 	 * 
 	 */
 	@Then("^I see my new name (.*)$")
@@ -236,50 +236,56 @@ public class PersonalInfoPageSteps {
 		Assert.assertTrue(name.equals(PagesCollection.personalInfoPage
 				.getUserNameValue()));
 	}
-	
+
 	/**
 	 * It clicks the Help button in the settings option menu
+	 * 
 	 * @step. ^I click on Help button from the options menu$
 	 */
 	@When("^I click on Help button from the options menu$")
-	public void IClickOnHelpButtonFromTheOptionsMenu(){
+	public void IClickOnHelpButtonFromTheOptionsMenu() {
 		PagesCollection.personalInfoPage.clickOnHelpButton();
 	}
 
 	/**
 	 * Verifies that it sees the Support web page
+	 * 
 	 * @step. ^I see Support web page$
 	 */
 	@Then("^I see Support web page$")
-	public void ISeeSupportWebPage(){
+	public void ISeeSupportWebPage() {
 		Assert.assertTrue(PagesCollection.personalInfoPage
 				.isSupportWebPageVisible());
 	}
-	
+
 	/**
-	 * Changes the accent color by pickick one by coordinates at the color picker
+	 * Changes the accent color by pickick one by coordinates at the color
+	 * picker
+	 * 
 	 * @step. ^I change my accent color via the colorpicker$
 	 */
 	@When("^I change my accent color via the colorpicker$")
-	public void IChangeMyAccentColorViaTheColorpicker(){
+	public void IChangeMyAccentColorViaTheColorpicker() {
 		PagesCollection.personalInfoPage.changeAccentColor();
 	}
-	
+
 	/**
 	 * Switches the chathead preview on or off in settings
+	 * 
 	 * @step. ^I switch on or off the chathead preview$
 	 */
 	@When("^I switch on or off the chathead preview$")
-	public void ISwitchOnOrOffTheChatheadPreview(){
+	public void ISwitchOnOrOffTheChatheadPreview() {
 		PagesCollection.personalInfoPage.switchChatheadsOnOff();
 	}
 
 	/**
 	 * Closes the settings by pressing back and done button
+	 * 
 	 * @step. ^I close the Settings$
 	 */
 	@When("^I close the Settings$")
-	public void ICloseTheSettings(){
+	public void ICloseTheSettings() {
 		PagesCollection.personalInfoPage.pressSettingsBackButton();
 		PagesCollection.personalInfoPage.pressSettingsDoneButton();
 	}

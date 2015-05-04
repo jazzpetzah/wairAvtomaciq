@@ -1,8 +1,9 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.util.concurrent.Future;
+
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class GroupPopoverContainer extends PeoplePopoverContainer {
 
@@ -16,23 +17,23 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	private RemoveFromGroupConfirmationPopoverPage removeFromGroupConfirmationPopoverPage;
 	private UnblockUserConfirmationPopoverPage unblockUserConfirmationPopoverPage;
 
-	public GroupPopoverContainer(ZetaWebAppDriver driver, WebDriverWait wait)
+	public GroupPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 		this.participantsListPopoverPage = new ParticipantsListPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.connectedParticipantInfoPopoverPage = new ConnectedParticipantInfoPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.nonConnectedParticipantInfoPopoverPage = new NonConnectedParticipantInfoPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.pendingParticipantInfoPopoverPage = new PendingParticipantInfoPopoverPage(
 				driver, wait, this);
 		this.blockedParticipantInfoPopoverPage = new BlockedParticipantInfoPopoverPage(
 				driver, wait, this);
 		this.addPeopleConfirmationPopoverPage = new AddPeopleConfirmationPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.leaveGroupConfirmationPopoverPage = new LeaveGroupConfirmationPopoverPage(
-				driver, wait, this);
+				lazyDriver, this);
 		this.removeFromGroupConfirmationPopoverPage = new RemoveFromGroupConfirmationPopoverPage(
 				driver, wait, this);
 		this.unblockUserConfirmationPopoverPage = new UnblockUserConfirmationPopoverPage(
@@ -134,11 +135,11 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		return this.participantsListPopoverPage.getConversationTitle();
 	}
 
-	public void selectUserFromSearchResult(String name) {
+	public void selectUserFromSearchResult(String name) throws Exception {
 		this.addPeoplePopoverPage.selectUserFromSearchResult(name);
 	}
 
-	public void confirmAddPeople() {
+	public void confirmAddPeople() throws Exception {
 		this.addPeopleConfirmationPopoverPage.clickContinueButton();
 	}
 

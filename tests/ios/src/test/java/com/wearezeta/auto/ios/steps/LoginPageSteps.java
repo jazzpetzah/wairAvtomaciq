@@ -194,9 +194,10 @@ public class LoginPageSteps {
 	 * Tap and holds the "finger" for a while on email input field
 	 * 
 	 * @step. I tap and hold on Email input
+	 * @throws Exception
 	 */
 	@When("I tap and hold on Email input")
-	public void ITapHoldEmailInput() {
+	public void ITapHoldEmailInput() throws Exception {
 		PagesCollection.loginPage.tapHoldEmailInput();
 	}
 
@@ -224,9 +225,10 @@ public class LoginPageSteps {
 	 * Copies the content of Email input field into clipboard
 	 * 
 	 * @step. I copy email input field content
+	 * @throws Exception
 	 */
 	@When("I copy email input field content")
-	public void ICopyEmailInputContent() {
+	public void ICopyEmailInputContent() throws Exception {
 		PagesCollection.loginPage.tapHoldEmailInput();
 		PagesCollection.loginPage.clickPopupSelectAllButton();
 		PagesCollection.loginPage.clickPopupCopyButton();
@@ -322,7 +324,7 @@ public class LoginPageSteps {
 	 * Verifies whether error message about email field is visible
 	 * 
 	 * @step. ^I see error with email notification$
-	 * @throws Exception 
+	 * @throws Exception
 	 * @throws AssertionError
 	 *             if error notification is not visible
 	 */
@@ -360,43 +362,45 @@ public class LoginPageSteps {
 	 * current screen
 	 * 
 	 * @step. ^I see wrong credentials notification$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Then("^I see wrong credentials notification$")
 	public void ISeeWrongCredentialsNotification() throws Exception {
 		Assert.assertTrue("I don't see wrong credentials notification",
 				PagesCollection.loginPage.wrongCredentialsNotificationIsShown());
 	}
-	
+
 	/**
 	 * Clicks on the Forgot/Change password button on the Sign In screen
 	 * 
 	 * @step. ^I click on Change Password button on SignIn$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I click on Change Password button on SignIn$")
-	public void IClickOnChangePasswordButtonOnSignIn() throws Exception{
-		PagesCollection.personalInfoPage = PagesCollection.loginPage.tapChangePasswordButton();
-		
+	public void IClickOnChangePasswordButtonOnSignIn() throws Exception {
+		PagesCollection.personalInfoPage = PagesCollection.loginPage
+				.tapChangePasswordButton();
+
 	}
 
 	@When("^I change URL to staging$")
-	public void IChangeURLToStaging() throws InterruptedException{
+	public void IChangeURLToStaging() throws Exception {
 		PagesCollection.loginPage.changeURLInBrowser(stagingURLForgot);
 	}
-	
+
 	/**
-	 * Types the mail into the field, where change password link should be send to
+	 * Types the mail into the field, where change password link should be send
+	 * to
 	 * 
 	 * @step. ^I type in email (.*) to change password$
 	 * @param email
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I type in email (.*) to change password$")
-	public void ITypeInEmailToChangePassword(String email) throws Exception{
-		email = usrMgr.replaceAliasesOccurences(email,FindBy.EMAIL_ALIAS);		
+	public void ITypeInEmailToChangePassword(String email) throws Exception {
+		email = usrMgr.replaceAliasesOccurences(email, FindBy.EMAIL_ALIAS);
 		PagesCollection.loginPage.tapEmailFieldToChangePassword(email);
-		
+
 		userToRegister = new ClientUser();
 		this.userToRegister.setName("SmoketesterReset");
 		this.userToRegister.clearNameAliases();
@@ -404,25 +408,26 @@ public class LoginPageSteps {
 		this.userToRegister.setEmail(email);
 		this.userToRegister.clearEmailAliases();
 		this.userToRegister.addEmailAlias(email);
-		
-		//activate the user, to get access to the mails
+
+		// activate the user, to get access to the mails
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To",this.userToRegister.getEmail());
+		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 	}
-	
+
 	/**
 	 * Presses the change password button in the safari webview
 	 * 
 	 * @step. ^I press Change Password button in browser$
+	 * @throws Exception
 	 *
 	 */
 	@When("^I press Change Password button in browser$")
-	public void IPressChangePasswordButtonInBrowser(){
+	public void IPressChangePasswordButtonInBrowser() throws Exception {
 		PagesCollection.loginPage.tapChangePasswordButtonInWebView();
 	}
-	
+
 	/**
 	 * Copies the link in the email and types it into the safari search field
 	 * 
@@ -435,20 +440,20 @@ public class LoginPageSteps {
 				.getPasswordResetLink(this.activationMessage);
 		PagesCollection.loginPage.changeURLInBrowser(link);
 	}
-	
+
 	/**
 	 * Types the new password into the password field
 	 * 
 	 * @step. ^I type in new password (.*)$
 	 * @param newPassword
 	 *            that gets set as new password by typing it into the field
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I type in new password (.*)$")
 	public void ITypeInNewPassword(String newPassword) throws Exception {
 		PagesCollection.loginPage.tapPasswordFieldToChangePassword(newPassword);
 	}
-	
+
 	/**
 	 * Verifys that the confirmation page for changed password is visible
 	 * 
@@ -456,20 +461,22 @@ public class LoginPageSteps {
 	 * 
 	 */
 	@When("^I see password changed confirmation page$")
-	public void ISeePasswordChangedConfirmationPage(){
-		boolean confirmationIsVisible = PagesCollection.loginPage.passwordConfiamtionIsVisible();
-		Assert.assertTrue("Password changed confirmation is not visible", confirmationIsVisible);
+	public void ISeePasswordChangedConfirmationPage() {
+		boolean confirmationIsVisible = PagesCollection.loginPage
+				.passwordConfiamtionIsVisible();
+		Assert.assertTrue("Password changed confirmation is not visible",
+				confirmationIsVisible);
 	}
-    
+
 	/**
 	 * Returns in Simulator back to Wire App
 	 * 
 	 * @step. ^Return to Wire app$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@When("^Return to Wire app$")
-	public void ReturnToWireApp() throws Exception{
+	public void ReturnToWireApp() throws Exception {
 		PagesCollection.loginPage.pressSimulatorHomeButton();
 
 	}
