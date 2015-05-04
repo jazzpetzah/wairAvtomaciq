@@ -40,7 +40,7 @@ import com.wearezeta.auto.image_send.SelfImageProcessor;
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
 	public static final int UI_ACTIVATION_TIMEOUT = 120; // seconds
-	public static final int BACKEND_ACTIVATION_TIMEOUT = UI_ACTIVATION_TIMEOUT; // seconds
+	public static final int BACKEND_ACTIVATION_TIMEOUT = 90; // seconds
 
 	private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
 	private static final int SERVER_SIDE_ERROR = 500;
