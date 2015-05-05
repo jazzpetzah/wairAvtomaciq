@@ -39,7 +39,7 @@ Feature: Archive
   Scenario Outline: Verify that Ping event cannot unarchive muted conversation automatically
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I have muted conversation with <Contact>
+    Given I muted conversation with <Contact>
     Given I Sign in using login <Email> and password <Password>
     And I see my name on top of Contact list
     When I archive conversation <Contact>
@@ -55,7 +55,7 @@ Feature: Archive
   Scenario Outline: Verify that Call event can unarchive muted conversation automatically
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I have muted conversation with <Contact>
+    Given I muted conversation with <Contact>
     Given I Sign in using login <Email> and password <Password>
     And I see my name on top of Contact list
     And I archive conversation <Contact>
