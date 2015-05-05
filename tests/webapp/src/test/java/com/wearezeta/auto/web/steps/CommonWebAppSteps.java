@@ -335,7 +335,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Creates connection between to users
 	 * 
-	 * @step. ^(\\w+) is connected to (\\w+)$
+	 * @step. ^(\\w+) is connected to (.*)$
 	 * 
 	 * @param userFromNameAlias
 	 *            user which sends connection request
@@ -344,7 +344,7 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(\\w+) is connected to (\\w+)$")
+	@Given("^(\\w+) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
