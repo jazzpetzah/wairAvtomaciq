@@ -5,7 +5,7 @@ Feature: Archive
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     And I see contact list loaded with User name <Contact>
     When I swipe right on a <Contact>
     Then Contact name <Contact> is not in list
@@ -24,7 +24,7 @@ Feature: Archive
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     And I see contact list loaded with User name <GroupChatName>
     When I swipe right on a <GroupChatName>
     Then Contact name <GroupChatName> is not in list

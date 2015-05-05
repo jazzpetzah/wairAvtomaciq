@@ -134,7 +134,7 @@ public class AndroidWireInstance extends WireInstance {
 		LoginPageSteps androidLoginPageSteps = new LoginPageSteps();
 		androidLoginPageSteps.GivenISignIn(email, password);
 		ContactListPageSteps androidContactListPageSteps = new ContactListPageSteps();
-		androidContactListPageSteps.GivenISeeContactListWithMyName(userAlias);
+		androidContactListPageSteps.GivenISeeContactList();
 	}
 
 	@Override

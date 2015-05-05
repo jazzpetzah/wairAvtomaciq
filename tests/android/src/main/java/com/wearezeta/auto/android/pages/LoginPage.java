@@ -33,9 +33,6 @@ public class LoginPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeSlogan")
 	private WebElement welcomeSlogan;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idYourName")
-	private WebElement yourUser;
-
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignUpButton")
 	protected WebElement signUpButton;
 
@@ -45,6 +42,9 @@ public class LoginPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginButton")
 	protected WebElement confirmSignInButton;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage .CLASS_NAME, locatorKey = "idSelfUserAvatar")
+	protected WebElement selfUserAvatar;
+	
 	@FindBy(xpath = AndroidLocators.LoginPage.xpathLoginInput)
 	private WebElement loginInput;
 
@@ -142,10 +142,6 @@ public class LoginPage extends AndroidPage {
 				}
 			}
 		}
-		/*
-		 * try { hideKeyboard(); Thread.sleep(1000); } catch (Exception ex) { //
-		 * }
-		 */
 	}
 
 	public boolean waitForLoginScreenDisappear() throws Exception {
@@ -160,11 +156,11 @@ public class LoginPage extends AndroidPage {
 								.getByForLoginPageRegistrationButton(), 40);
 	}
 
-	public Boolean isLoginFinished(String contact)
+	public Boolean isLoginFinished()
 			throws NumberFormatException, Exception {
 		refreshUITree();
 		try {
-			this.getWait().until(ExpectedConditions.visibilityOf(yourUser));
+			this.getWait().until(ExpectedConditions.visibilityOf(selfUserAvatar));
 		} catch (Exception ex) {
 			refreshUITree();
 			if (isVisible(pickerClearBtn)) {
@@ -174,10 +170,7 @@ public class LoginPage extends AndroidPage {
 			 */
 			refreshUITree();
 		}
-		return (isVisible(yourUser) && DriverUtils
-				.waitForElementWithTextByXPath(
-						AndroidLocators.ContactListPage.xpathContacts, contact,
-						this.getDriver()));
+		return (isVisible(selfUserAvatar));
 	}
 
 	public Boolean isWelcomeButtonsExist() throws Exception {
