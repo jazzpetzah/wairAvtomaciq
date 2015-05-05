@@ -3,7 +3,7 @@ Feature: Connect
   @smoke @id1910
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     When I see connection request from one user
@@ -144,7 +144,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact> is connected to Me,<Contact2>
     Given <Contact> has group chat <ChatName> with Me,<Contact2>
-    Given <Name> has sent connection request to <Contact2>
+    Given I sent connection request to <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I open conversation with <ChatName>

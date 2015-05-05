@@ -426,7 +426,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Sends connection request by one user to another
 	 * 
-	 * @step. ^(.*) (?:has|have) sent connection request to (.*)
+	 * @step. ^(.*) sent connection request to (.*)
 	 * 
 	 * @param userFromNameAlias
 	 *            user that sends connection request
@@ -435,7 +435,7 @@ public class CommonWebAppSteps {
 	 *
 	 * @throws Exception
 	 */
-	@Given("^(.*) (?:has|have) sent connection request to (.*)")
+	@Given("^(.*) sent connection request to (.*)")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,

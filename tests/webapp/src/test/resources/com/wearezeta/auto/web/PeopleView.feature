@@ -90,7 +90,7 @@ Feature: People View
       Given Myself is connected to <KnownContact>
       Given <KnownContact> is connected to <UnknownContact>
       Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
-      Given Myself has sent connection request to <UnknownContact>
+      Given I sent connection request to <UnknownContact>
       Given I Sign in using login <Login> and password <Password>
       Then I see my name on top of Contact list
       When I open conversation with <ChatName>
@@ -114,7 +114,7 @@ Feature: People View
       Given Myself is connected to <KnownContact>
       Given <KnownContact> is connected to <UnknownContact>
       Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
-      Given <UnknownContact> has sent connection request to Myself
+      Given <UnknownContact> sent connection request to Myself
       Given I Sign in using login <Login> and password <Password>
       Then I see my name on top of Contact list
       When I open conversation with <ChatName>
@@ -163,7 +163,7 @@ Feature: People View
       Given <KnownContact> is connected to <UnknownContact>
       Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
       Given Myself blocked <KnownContact>
-      Given Myself has sent connection request to <UnknownContact>
+      Given I sent connection request to <UnknownContact>
       Given I Sign in using login <Login> and password <Password>
       Then I see my name on top of Contact list
       When I open conversation with <ChatName>
@@ -189,8 +189,8 @@ Feature: People View
       Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>,<KnownContact2>,<UnknownContact2>
       Given <KnownContact> blocked Myself
       Given Myself blocked <KnownContact2>
-      Given Myself has sent connection request to <UnknownContact>
-      Given <UnknownContact2> has sent connection request to Myself
+      Given I sent connection request to <UnknownContact>
+      Given <UnknownContact2> sent connection request to me
       Given I Sign in using login <Login> and password <Password>
       Then I see my name on top of Contact list
       When I open conversation with <ChatName>
@@ -266,7 +266,7 @@ Feature: People View
       Given Myself is connected to <KnownContact>
       Given <KnownContact> is connected to <UnknownContact>
       Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
-      Given <UnknownContact> has sent connection request to Myself
+      Given <UnknownContact> sent connection request to me
       Given I Sign in using login <Login> and password <Password>
       Then I see my name on top of Contact list
       When I open conversation with <ChatName>

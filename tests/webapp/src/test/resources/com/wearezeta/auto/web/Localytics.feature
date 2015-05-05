@@ -117,7 +117,7 @@ Feature: Localytics
   Scenario Outline: Verify 'session:totalOutgoingConnectionRequestsActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
-    Given I have sent connection request to <Contact>
+    Given I sent connection request to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I see Contact list with name <Contact>
@@ -131,7 +131,7 @@ Feature: Localytics
   Scenario Outline: Verify 'session:totalIncomingConnectionRequestsActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to Me
+    Given <Contact> sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I see connection request from one user
@@ -145,7 +145,7 @@ Feature: Localytics
   Scenario Outline: Verify 'session:connectRequestsAcceptedActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to Me
+    Given <Contact> sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I see connection request from one user

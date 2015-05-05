@@ -397,7 +397,7 @@ public class CommonAndroidSteps {
 	/**
 	 * Verifies that user A has sent a connection request to user B
 	 * 
-	 * @step. ^(.*) has sent connection request to (.*)$
+	 * @step. ^(.*) sent connection request to (.*)$
 	 * 
 	 * @param userFromNameAlias
 	 *            the user from which the connection request originated
@@ -405,7 +405,7 @@ public class CommonAndroidSteps {
 	 *            the target user
 	 * 
 	 */
-	@Given("^(.*) has sent connection request to (.*)$")
+	@Given("^(.*) sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
