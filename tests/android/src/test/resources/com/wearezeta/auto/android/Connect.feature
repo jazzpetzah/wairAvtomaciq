@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id191 @id193 @smoke @regression
+  @id191 @id193 @smoke @regression 
   Scenario Outline: Send connection request from search
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -23,18 +23,17 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id323 @smoke @regression 
+  @id323 @smoke @regression
   Scenario Outline: Accept incoming connection request from conversation list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I wait for 10 seconds
-    And I tap on contact name <WaitingMess>
+    When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
-    Then I see Connect to <Contact> Dialog page
+    Then I see contact list loaded with User name <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact1  | WaitingMess      |
