@@ -124,6 +124,12 @@ public final class PopoverLocators {
 					+ "//*[@data-uie-name='status-user']";
 		}
 
+		public static final class SelfInfoPage {
+
+			public static final String xpathProfileButton = xpathRootLocator
+					+ "//*[@data-uie-name='go-profile']";
+		}
+
 		public static final class PendingParticipantPage {
 
 			public static final String xpathPendingButton = xpathRootLocator

@@ -13,9 +13,10 @@ import org.junit.Assert;
 public class GroupPopoverPageSteps {
 
 	private static final String MAILTO = "mailto:";
-	private static final String CAPTION_OPEN__CONVERSATION = "Open Conversation";
-	private static final String CAPTION_PENDING = "Pending";
-	private static final String CAPTION_UNBLOCK = "Unblock";
+	private static final String CAPTION_OPEN_CONVERSATION = "OPEN CONVERSATION";
+	private static final String CAPTION_PENDING = "PENDING";
+	private static final String CAPTION_UNBLOCK = "BLOCKED";
+	private static final String CAPTION_PROFILE = "PROFILE";
 	private static final String TOOLTIP_REMOVE_FROM_CONVERSATION = "Remove from conversation";
 	private static final String TOOLTIP_LEAVE_CONVERSATION = "Leave conversation";
 	private static final String TOOLTIP_ADD_PEOPLE_TO_CONVERSATION = "Add people to conversation";
@@ -24,6 +25,7 @@ public class GroupPopoverPageSteps {
 	private static final String TOOLTIP_CHANGE_CONVERSATION_NAME = "Change conversation name";
 	private static final String TOOLTIP_PENDING = "Pending";
 	private static final String TOOLTIP_UNBLOCK = "Unblock";
+	private static final String TOOLTIP_OPEN_YOUR_PROFILE = "Open your profile";
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -87,6 +89,17 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Click on back button.
+	 *
+	 * @step. ^I click back button on Group Participants popover$
+	 *
+	 */
+	@When("^I click back button on Group Participants popover$")
+	public void WhenIClickBackButton() {
+		((GroupPopoverContainer) PagesCollection.popoverPage).clickBackButton();
+	}
+
+	/**
 	 * Verifies whether pending button tool tip is correct or not.
 	 *
 	 * @step. ^I see correct pending button tool tip on Group Participants
@@ -125,14 +138,15 @@ public class GroupPopoverPageSteps {
 	@Then("^I see Pending button on Group Participants popover$")
 	public void ISeePendingButton() throws Exception {
 		final String pendingButtonMissingMessage = "Pending button is not visible on Group Participants popover";
+		final String pendingButtonWrongCaptionMessage = "Pending button has wrong caption on Group Participants popover";
 		Assert.assertTrue(pendingButtonMissingMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.isPendingButtonVisible());
 		Assert.assertTrue(
-				pendingButtonMissingMessage,
+				pendingButtonWrongCaptionMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.getPendingButtonCaption().trim()
-						.equalsIgnoreCase(CAPTION_PENDING));
+						.equals(CAPTION_PENDING));
 	}
 
 	/**
@@ -146,6 +160,53 @@ public class GroupPopoverPageSteps {
 	public void IClickPendingButton() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickPendingButton();
+	}
+
+	/**
+	 * Verifies whether profile button is visible on Group Participants popover
+	 *
+	 * @step. ^I see profile button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see profile button on Group Participants popover$")
+	public void ISeeProfileButton() throws Exception {
+		final String pendingButtonMissingMessage = "Profile button is not visible on Group Participants popover";
+		final String pendingButtonWrongCaptionMessage = "Profile button has wrong caption on Group Participants popover";
+		Assert.assertTrue(pendingButtonMissingMessage,
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.isProfileButtonVisible());
+		Assert.assertTrue(
+				pendingButtonWrongCaptionMessage,
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getProfileButtonCaption().trim()
+						.equals(CAPTION_PROFILE));
+	}
+
+	/**
+	 * Click profile button on Group Participants popover
+	 *
+	 * @step. ^I click profile button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I click profile button on Group Participants popover$")
+	public void IClickProfileButton() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickProfileButton();
+	}
+
+	/**
+	 * Verifies whether profile button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct profile button tool tip on Group Participants
+	 *        popover$
+	 *
+	 */
+	@Then("^I see correct profile button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectProfileButtonToolTip() {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getProfileButtonToolTip().equals(TOOLTIP_OPEN_YOUR_PROFILE));
 	}
 
 	/**
@@ -184,14 +245,15 @@ public class GroupPopoverPageSteps {
 	@Then("^I see Unblock button on Group Participants popover$")
 	public void ISeeUnblockButton() throws Exception {
 		final String openUnblockButtonMissingMessage = "Unblock button is not visible on Group Participants popover";
+		final String openUnblockButtonWrongCaptionMessage = "Unblock button has wrong caption on Group Participants popover";
 		Assert.assertTrue(openUnblockButtonMissingMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.isUnblockButtonVisible());
 		Assert.assertTrue(
-				openUnblockButtonMissingMessage,
+				openUnblockButtonWrongCaptionMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.getUnblockButtonCaption().trim()
-						.equalsIgnoreCase(CAPTION_UNBLOCK));
+						.equals(CAPTION_UNBLOCK));
 	}
 
 	/**
@@ -581,13 +643,14 @@ public class GroupPopoverPageSteps {
 	@Then("^I see open conversation button on Group Participants popover$")
 	public void ISeeOpenConversationButton() throws Exception {
 		final String openConvButtonMissingMessage = "Open conversation button is not visible on Group Participants popover";
+		final String openConvButtonWrongCaptionMessage = "Open conversation button has wrong caption on Group Participants popover";
 		Assert.assertTrue(openConvButtonMissingMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.isOpenConvButtonVisible());
 		Assert.assertTrue(
-				openConvButtonMissingMessage,
+				openConvButtonWrongCaptionMessage,
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.getOpenConvButtonCaption().trim()
-						.equalsIgnoreCase(CAPTION_OPEN__CONVERSATION));
+						.equals(CAPTION_OPEN_CONVERSATION));
 	}
 }

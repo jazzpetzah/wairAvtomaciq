@@ -17,6 +17,7 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	private RemoveFromGroupConfirmationPopoverPage removeFromGroupConfirmationPopoverPage;
 	private UnblockUserConfirmationPopoverPage unblockUserConfirmationPopoverPage;
 	private PendingUserConfirmationPopoverPage pendingUserConfirmationPopoverPage;
+	private SelfInfoPopoverPage selfInfoPopoverPage;
 
 	public GroupPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -41,6 +42,7 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 				lazyDriver, this);
 		this.pendingUserConfirmationPopoverPage = new PendingUserConfirmationPopoverPage(
 				lazyDriver, this);
+		this.selfInfoPopoverPage = new SelfInfoPopoverPage(lazyDriver, this);
 	}
 
 	@Override
@@ -58,6 +60,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 			return this.pendingParticipantInfoPopoverPage;
 		} else if (this.blockedParticipantInfoPopoverPage.isCurrent()) {
 			return this.blockedParticipantInfoPopoverPage;
+		} else if (this.selfInfoPopoverPage.isCurrent()) {
+			return this.selfInfoPopoverPage;
 		} else {
 			throw new RuntimeException(
 					"The current popover page is neither connected user info ,non-connected nor pending connection user info.");
@@ -217,6 +221,22 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 
 	public void clickIgnoreConnectButton() {
 		pendingUserConfirmationPopoverPage.clickIgnoreConnectButton();
+	}
+
+	public boolean isProfileButtonVisible() {
+		return selfInfoPopoverPage.isProfileButtonVisible();
+	}
+
+	public void clickProfileButton() {
+		selfInfoPopoverPage.clickProfileButton();
+	}
+
+	public String getProfileButtonCaption() {
+		return selfInfoPopoverPage.getProfileButtonCaption();
+	}
+
+	public String getProfileButtonToolTip() {
+		return selfInfoPopoverPage.getProfileButtonToolTip();
 	}
 
 }
