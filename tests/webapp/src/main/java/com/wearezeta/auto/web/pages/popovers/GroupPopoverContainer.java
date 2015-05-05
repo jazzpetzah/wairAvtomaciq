@@ -11,9 +11,11 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 	private ConnectedParticipantInfoPopoverPage connectedParticipantInfoPopoverPage;
 	private NonConnectedParticipantInfoPopoverPage nonConnectedParticipantInfoPopoverPage;
 	private PendingParticipantInfoPopoverPage pendingParticipantInfoPopoverPage;
+	private BlockedParticipantInfoPopoverPage blockedParticipantInfoPopoverPage;
 	private AddPeopleConfirmationPopoverPage addPeopleConfirmationPopoverPage;
 	private LeaveGroupConfirmationPopoverPage leaveGroupConfirmationPopoverPage;
 	private RemoveFromGroupConfirmationPopoverPage removeFromGroupConfirmationPopoverPage;
+	private UnblockUserConfirmationPopoverPage unblockUserConfirmationPopoverPage;
 	private PendingUserConfirmationPopoverPage pendingUserConfirmationPopoverPage;
 
 	public GroupPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
@@ -27,11 +29,15 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 				lazyDriver, this);
 		this.pendingParticipantInfoPopoverPage = new PendingParticipantInfoPopoverPage(
 				lazyDriver, this);
+		this.blockedParticipantInfoPopoverPage = new BlockedParticipantInfoPopoverPage(
+				lazyDriver, this);
 		this.addPeopleConfirmationPopoverPage = new AddPeopleConfirmationPopoverPage(
 				lazyDriver, this);
 		this.leaveGroupConfirmationPopoverPage = new LeaveGroupConfirmationPopoverPage(
 				lazyDriver, this);
 		this.removeFromGroupConfirmationPopoverPage = new RemoveFromGroupConfirmationPopoverPage(
+				lazyDriver, this);
+		this.unblockUserConfirmationPopoverPage = new UnblockUserConfirmationPopoverPage(
 				lazyDriver, this);
 		this.pendingUserConfirmationPopoverPage = new PendingUserConfirmationPopoverPage(
 				lazyDriver, this);
@@ -50,6 +56,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 			return this.nonConnectedParticipantInfoPopoverPage;
 		} else if (this.pendingParticipantInfoPopoverPage.isCurrent()) {
 			return this.pendingParticipantInfoPopoverPage;
+		} else if (this.blockedParticipantInfoPopoverPage.isCurrent()) {
+			return this.blockedParticipantInfoPopoverPage;
 		} else {
 			throw new RuntimeException(
 					"The current popover page is neither connected user info ,non-connected nor pending connection user info.");
@@ -92,6 +100,26 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 
 	public void clickAddPeopleButton() throws Exception {
 		this.participantsListPopoverPage.clickAddPeopleButton();
+	}
+
+	public void clickUnblockButton() throws Exception {
+		this.blockedParticipantInfoPopoverPage.clickUnblockButton();
+	}
+
+	public boolean isUnblockButtonVisible() {
+		return this.blockedParticipantInfoPopoverPage.isUnblockButtonVisible();
+	}
+
+	public String getUnblockButtonCaption() {
+		return this.blockedParticipantInfoPopoverPage.getUnblockButtonCaption();
+	}
+
+	public String getUnblockButtonToolTip() {
+		return this.blockedParticipantInfoPopoverPage.getUnblockButtonToolTip();
+	}
+
+	public void clickConfirmUnblockButton() throws Exception {
+		this.unblockUserConfirmationPopoverPage.clickConfirmUnblockButton();
 	}
 
 	public String getAddPeopleButtonToolTip() throws Exception {
@@ -185,6 +213,10 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 
 	public void clickConfirmConnectButton() {
 		pendingUserConfirmationPopoverPage.clickConfirmConnectButton();
+	}
+
+	public void clickIgnoreConnectButton() {
+		pendingUserConfirmationPopoverPage.clickIgnoreConnectButton();
 	}
 
 }

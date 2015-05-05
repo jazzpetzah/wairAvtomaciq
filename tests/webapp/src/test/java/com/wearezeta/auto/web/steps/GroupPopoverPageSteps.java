@@ -15,6 +15,7 @@ public class GroupPopoverPageSteps {
 	private static final String MAILTO = "mailto:";
 	private static final String CAPTION_OPEN__CONVERSATION = "Open Conversation";
 	private static final String CAPTION_PENDING = "Pending";
+	private static final String CAPTION_UNBLOCK = "Unblock";
 	private static final String TOOLTIP_REMOVE_FROM_CONVERSATION = "Remove from conversation";
 	private static final String TOOLTIP_LEAVE_CONVERSATION = "Leave conversation";
 	private static final String TOOLTIP_ADD_PEOPLE_TO_CONVERSATION = "Add people to conversation";
@@ -22,6 +23,7 @@ public class GroupPopoverPageSteps {
 	private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
 	private static final String TOOLTIP_CHANGE_CONVERSATION_NAME = "Change conversation name";
 	private static final String TOOLTIP_PENDING = "Pending";
+	private static final String TOOLTIP_UNBLOCK = "Unblock";
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -147,6 +149,65 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Click Unblock button on Group Participants popover
+	 *
+	 * @step. ^I click Unblock button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I click Unblock button on Group Participants popover$")
+	public void IClickUnblockButton() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickUnblockButton();
+	}
+
+	/**
+	 * Verifies whether Unblock button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct Unblock button tool tip on Group Participants
+	 *        popover$
+	 *
+	 */
+	@Then("^I see correct Unblock button tool tip on Group Participants popover$")
+	public void ThenISeeCorrectUnblockButtonToolTip() {
+		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+				.getUnblockButtonToolTip().equals(TOOLTIP_UNBLOCK));
+	}
+
+	/**
+	 * Verifies whether Unblock button is visible on Group Participants popover
+	 *
+	 * @step. ^I see Unblock button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see Unblock button on Group Participants popover$")
+	public void ISeeUnblockButton() throws Exception {
+		final String openUnblockButtonMissingMessage = "Unblock button is not visible on Group Participants popover";
+		Assert.assertTrue(openUnblockButtonMissingMessage,
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.isUnblockButtonVisible());
+		Assert.assertTrue(
+				openUnblockButtonMissingMessage,
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getUnblockButtonCaption().trim()
+						.equalsIgnoreCase(CAPTION_UNBLOCK));
+	}
+
+	/**
+	 * Confirm Unblock from group chat by clicking UNBLOCK button
+	 *
+	 * @step. ^I confirm Unblock from group chat on Group Participants popover$
+	 * @throws Exception
+	 *
+	 */
+	@When("^I confirm Unblock from group chat on Group Participants popover$")
+	public void IConfirmUnblockUser() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickConfirmUnblockButton();
+	}
+
+	/**
 	 * Click confirm connect button on Group Participants popover
 	 *
 	 * @step. ^I click confirm connect button on Group Participants popover$
@@ -157,6 +218,19 @@ public class GroupPopoverPageSteps {
 	public void IClickConfirmConnectButton() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickConfirmConnectButton();
+	}
+
+	/**
+	 * Click ignore connect button on Group Participants popover
+	 *
+	 * @step. ^I click ignore connect button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I click ignore connect button on Group Participants popover$")
+	public void IClickIgnoreConnectButton() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickIgnoreConnectButton();
 	}
 
 	/**
