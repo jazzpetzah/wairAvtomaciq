@@ -5,7 +5,7 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on my name <Name>
     And I tap on personal info screen
     And I tap change photo button
@@ -26,7 +26,7 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe up on dialog page
@@ -41,7 +41,7 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on my name <Name>
     And I see personal info page
     And I tap on my name

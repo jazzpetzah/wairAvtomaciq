@@ -6,7 +6,7 @@ Feature: Performance Tests
     Given User <Name> is Me
     Given Myself is connected to all other users
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I start test cycle for <Time> minutes
     Then I generate performance report for <UsersNumber> user
 
