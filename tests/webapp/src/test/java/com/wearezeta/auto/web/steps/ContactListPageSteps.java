@@ -199,20 +199,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Checks that connection request is displayed in Conversation List
-	 * 
-	 * @step. ^I see connection request from one user$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I see connection request from one user$")
-	public void ISeeIncomingConnectionFromOneUser() throws Exception {
-		Assert.assertTrue(PagesCollection.contactListPage
-				.getIncomingPendingItemText().equals(
-						WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
-	}
-
-	/**
 	 * Checks that connection request is displayed in Conversation List or not
 	 *
 	 * @param doNot
@@ -225,10 +211,12 @@ public class ContactListPageSteps {
 	public void IDoNotSeeIncomingConnection(String doNot) throws Exception {
 		if (doNot == null) {
 			Assert.assertTrue(PagesCollection.contactListPage
-					.isIncomingPendingItemTextPresent());
+					.getIncomingPendingItemText().equals(
+							WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
 		} else {
 			Assert.assertFalse(PagesCollection.contactListPage
-					.isIncomingPendingItemTextPresent());
+					.getIncomingPendingItemText().equals(
+							WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
 		}
 	}
 

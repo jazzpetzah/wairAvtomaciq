@@ -428,13 +428,6 @@ public class ContactListPage extends WebPage {
 		return new ConversationPage(this.getLazyDriver());
 	}
 
-	public boolean isIncomingPendingItemTextPresent() throws Exception {
-		final By entryLocator = By
-				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
-		return DriverUtils
-				.isElementDisplayed(this.getDriver(), entryLocator, 3);
-	}
-
 	public String getIncomingPendingItemText() throws Exception {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
