@@ -335,7 +335,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Creates connection between to users
 	 * 
-	 * @step. ^(\\w+) is connected to (\\w+)
+	 * @step. ^(.*) is connected to (.*)
 	 * 
 	 * @param userFromNameAlias
 	 *            user which sends connection request
@@ -344,7 +344,7 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(\\w+) is connected to (\\w+)")
+	@Given("^(.*) is connected to (.*)")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
@@ -353,7 +353,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Blocks a user
 	 *
-	 * @step. ^(\\w+) is blocking (\\w+)
+	 * @step. ^(.*) is blocking (.*)
 	 *
 	 * @param userFromNameAlias
 	 *            user which wants to block another
@@ -362,7 +362,7 @@ public class CommonWebAppSteps {
 	 *
 	 * @throws Exception
 	 */
-	@Given("^(\\w+) is blocking (\\w+)")
+	@Given("^(.*) is blocking (.*)")
 	public void UserBlocks(String userFromNameAlias, String usersToNameAliases)
 			throws Exception {
 		commonSteps.BlockContact(userFromNameAlias, usersToNameAliases);
