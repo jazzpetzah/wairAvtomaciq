@@ -29,4 +29,8 @@ class PendingUserConfirmationPopoverPage extends AbstractPopoverPage {
 	public void clickConfirmConnectButton() {
 		confirmConnectButton.click();
 	}
+
+	void clickIgnoreConnectButton() {
+		ignoreButton.click();
+	}
 }

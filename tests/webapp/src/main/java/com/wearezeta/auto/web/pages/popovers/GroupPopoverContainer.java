@@ -215,4 +215,8 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		pendingUserConfirmationPopoverPage.clickConfirmConnectButton();
 	}
 
+	public void clickIgnoreConnectButton() {
+		pendingUserConfirmationPopoverPage.clickIgnoreConnectButton();
+	}
+
 }
