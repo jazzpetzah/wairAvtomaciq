@@ -70,7 +70,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @staging @id1585
+  @regression @id1585
   Scenario Outline: Able to send and play youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
