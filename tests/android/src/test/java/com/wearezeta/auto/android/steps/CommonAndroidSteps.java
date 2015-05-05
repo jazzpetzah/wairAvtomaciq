@@ -815,8 +815,7 @@ public class CommonAndroidSteps {
 	 * Waits for a given time to verify that another user exists in search
 	 * results
 	 * 
-	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in
-	 *        backend search results$
+	 * @step. ^(\\w+) waits? until (.*) exists in backend search results$
 	 * 
 	 * @param searchByNameAlias
 	 *            the user to search for in the query results.
@@ -829,12 +828,10 @@ public class CommonAndroidSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, int timeout, String query)
-			throws Exception {
-		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
-				timeout);
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
 	/**

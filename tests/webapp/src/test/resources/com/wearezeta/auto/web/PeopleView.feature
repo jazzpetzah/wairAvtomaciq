@@ -6,8 +6,8 @@ Feature: People View
       Given Myself is connected to <Contact1>,<Contact2>
       Given I Sign in using login <Login> and password <Password>
       And I see my name on top of Contact list
-      And I wait up to 15 seconds until <Contact1> exists in backend search results
-      And I wait up to 15 seconds until <Contact2> exists in backend search results
+      And I wait until <Contact1> exists in backend search results
+      And I wait until <Contact2> exists in backend search results
       When I open People Picker from Contact List
       And I type <Contact1> in search field of People Picker
       And I select <Contact1> from People Picker results
@@ -253,7 +253,7 @@ Feature: People View
       And I click People button in one to one conversation
       And I see Single User Profile popover
       When I click Add People button on Single User Profile popover
-      And I wait up to 15 seconds until <Contact2> exists in backend search results
+      And I wait until <Contact2> exists in backend search results
       And I input user name <Contact2> in search field on Single User Profile popover
       And I select <Contact2> from Single User Profile popover search results
       And I choose to create conversation from Single User Profile popover

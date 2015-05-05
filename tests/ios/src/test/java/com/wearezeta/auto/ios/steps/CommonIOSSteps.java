@@ -348,12 +348,11 @@ public class CommonIOSSteps {
 		commonSteps.UserXIsMe(nameAlias);
 	}
 
-	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, int timeout, String query)
+			String searchByNameAlias, String query)
 			throws Exception {
-		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
-				timeout);
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
 	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")

@@ -21,6 +21,7 @@ import com.wearezeta.auto.common.usrmgmt.OSXAddressBookHelpers;
 public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
 	public static final String CONNECTION_MESSAGE = "Hello!";
+	private static final int BACKEND_USER_SYNC_TIMEOUT = 120; // seconds
 
 	private String pingId = null;
 
@@ -313,13 +314,13 @@ public final class CommonSteps {
 	}
 
 	public void WaitUntilContactIsFoundInSearch(String searchByNameAlias,
-			String contactAlias, int timeout) throws Exception {
+			String contactAlias) throws Exception {
 		String query = usrMgr.replaceAliasesOccurences(contactAlias,
 				FindBy.NAME_ALIAS);
 		query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
 		BackendAPIWrappers.waitUntilContactsFound(
 				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
-				true, timeout);
+				true, BACKEND_USER_SYNC_TIMEOUT);
 	}
 
 	public void UserXAddedContactsToGroupChat(String userAsNameAlias,

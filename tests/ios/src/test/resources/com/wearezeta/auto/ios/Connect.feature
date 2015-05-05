@@ -9,7 +9,7 @@ Feature: Connect
     When I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
-    Given I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
@@ -255,7 +255,7 @@ Feature: Connect
     When I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
-    And I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
@@ -311,7 +311,7 @@ Feature: Connect
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
-    Given I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
     And I see user <UnconnectedUser> found on People picker page
     And I press the instant connect button

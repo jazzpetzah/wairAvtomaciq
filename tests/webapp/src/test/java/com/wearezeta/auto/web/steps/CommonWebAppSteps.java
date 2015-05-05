@@ -427,8 +427,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 * 
-	 * @step. ^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend
-	 *        search results$
+	 * @step. ^(\\w+) waits? until (.*) exists in backend search results$
 	 * 
 	 * @param searchByNameAlias
 	 *            user name to search string
@@ -441,12 +440,10 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, int timeout, String query)
-			throws Exception {
-		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
-				timeout);
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
 	/**

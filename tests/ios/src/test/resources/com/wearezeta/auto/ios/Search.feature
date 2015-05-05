@@ -284,7 +284,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I open search by clicking plus button
-    And I wait up to 15 seconds until <LastName> exists in backend search results
+    And I wait until <LastName> exists in backend search results
     And I see People picker page 
     And I tap on Search input on People picker page
     And I input in People picker search field user name <LastName>

@@ -99,7 +99,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
-    And I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    And I wait until <ContactEmail> exists in backend search results
     When I open People Picker from Contact List
     And I type <ContactEmail> in search field of People Picker
     And I see user <Contact> found in People Picker
