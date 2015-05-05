@@ -6,7 +6,7 @@ Feature: Conversation List
     Given <Contact1> is connected to <Name>
     And I rotate UI to landscape
      Given I Sign in on tablet using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on tablet contact name <Contact1>
     And I see tablet dialog page
     And I tap on profile button
@@ -24,7 +24,7 @@ Feature: Conversation List
     Given <Contact1> is connected to <Name>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on tablet contact name <Contact1>
     And I see tablet dialog page
     And I tap on profile button

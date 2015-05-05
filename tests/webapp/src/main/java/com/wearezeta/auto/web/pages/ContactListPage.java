@@ -243,13 +243,16 @@ public class ContactListPage extends WebPage {
 						.apply(conversationName));
 		final WebElement archiveButton = this.getDriver().findElement(
 				archiveLocator);
-		assert DriverUtils.waitUntilElementClickable(this.getDriver(), archiveButton);
-		assert (DriverUtils.isElementDisplayed(this.getDriver(), muteLocator, 3) && DriverUtils
-				.waitUntilElementClickable(this.getDriver(),
-						this.getDriver().findElement(muteLocator), 3))
-				|| (DriverUtils.isElementDisplayed(this.getDriver(), unmuteLocator, 3) && DriverUtils
-						.waitUntilElementClickable(this.getDriver(),
-								this.getDriver().findElement(unmuteLocator), 3));
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				archiveButton);
+		assert (DriverUtils
+				.isElementDisplayed(this.getDriver(), muteLocator, 3) && DriverUtils
+				.waitUntilElementClickable(this.getDriver(), this.getDriver()
+						.findElement(muteLocator), 3))
+				|| (DriverUtils.isElementDisplayed(this.getDriver(),
+						unmuteLocator, 3) && DriverUtils
+						.waitUntilElementClickable(this.getDriver(), this
+								.getDriver().findElement(unmuteLocator), 3));
 	}
 
 	public boolean isConversationMuted(String conversationName)
@@ -297,7 +300,8 @@ public class ContactListPage extends WebPage {
 		return !entry.getCssValue("color").equals(NON_SELECTED_ITEM_COLOR);
 	}
 
-	private void waitUtilEntryIsSelected(final WebElement entry) throws Exception {
+	private void waitUtilEntryIsSelected(final WebElement entry)
+			throws Exception {
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(this.getDriver())
 				.withTimeout(SELECTION_TIMEOUT, TimeUnit.SECONDS).pollingEvery(
 						1, TimeUnit.SECONDS);
@@ -315,7 +319,8 @@ public class ContactListPage extends WebPage {
 								cssSelector));
 	}
 
-	private void selectEntryWithRetry(By locator, String cssLocator) throws Exception {
+	private void selectEntryWithRetry(By locator, String cssLocator)
+			throws Exception {
 		final WebElement entry = getDriver().findElement(locator);
 		if (!isEntrySelected(entry)) {
 			entry.click();
@@ -421,6 +426,13 @@ public class ContactListPage extends WebPage {
 		waitUtilEntryIsSelected(unarchivedEntry);
 
 		return new ConversationPage(this.getLazyDriver());
+	}
+
+	public boolean isIncomingPendingItemTextPresent() throws Exception {
+		final By entryLocator = By
+				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
+		return DriverUtils
+				.isElementDisplayed(this.getDriver(), entryLocator, 3);
 	}
 
 	public String getIncomingPendingItemText() throws Exception {

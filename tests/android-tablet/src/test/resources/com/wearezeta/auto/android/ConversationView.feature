@@ -6,7 +6,7 @@ Feature: Conversation View
     Given <Contact> is connected to <Name>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -23,7 +23,7 @@ Feature: Conversation View
     Given <Contact> is connected to <Name>
     And I rotate UI to portrait
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -40,7 +40,7 @@ Feature: Conversation View
     Given <Contact> is connected to <Name>
     And I rotate UI to portrait
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -59,7 +59,7 @@ Feature: Conversation View
     Given <Name> is connected to <Contact1>,<Contact2>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <Contact1>
     And I see tablet dialog page
     And I tap on profile button
@@ -87,7 +87,7 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <GroupChatName>
     And I see tablet dialog page
     And I tap on text input
@@ -104,7 +104,7 @@ Feature: Conversation View
     Given <Contact> is connected to <Name>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -121,7 +121,7 @@ Feature: Conversation View
     Given <Contact> is connected to <Name>
     And I rotate UI to landscape
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -138,7 +138,7 @@ Feature: Conversation View
     Given <Contact> is connected to <Name>
     And I rotate UI to landscape
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -157,7 +157,7 @@ Feature: Conversation View
     Given <Name> is connected to <Contact1>,<Contact2>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <Contact1>
     And I see tablet dialog page
     And I tap on profile button
@@ -185,7 +185,7 @@ Feature: Conversation View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <GroupChatName>
     And I see tablet dialog page
     And I tap on text input

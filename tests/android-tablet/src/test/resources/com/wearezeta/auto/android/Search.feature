@@ -6,7 +6,7 @@ Feature: Search
     Given Myself is connected to <Contact>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I swipe down on tablet contact list
     And I see People picker page
     And I press Clear button
@@ -22,7 +22,7 @@ Feature: Search
     Given Myself is connected to <Contact>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I swipe down on tablet contact list
     And I see People picker page
     And I press Clear button
