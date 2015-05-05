@@ -53,6 +53,9 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
 	private WebElement selfUserName;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage .CLASS_NAME, locatorKey = "idSelfUserAvatar")
+	protected WebElement selfUserAvatar;
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
 	private List<WebElement> laterBtn;
 
@@ -394,6 +397,12 @@ public class ContactListPage extends AndroidPage {
 			}
 		}
 		conversationShareOption.click();
+	}
+
+	public PersonalInfoPage tapOnMyAvatar() throws Exception {
+		refreshUITree();
+		selfUserAvatar.click();
+		return new PersonalInfoPage(getLazyDriver());
 	}
 
 }

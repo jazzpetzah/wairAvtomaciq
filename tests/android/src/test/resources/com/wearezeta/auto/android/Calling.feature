@@ -152,10 +152,10 @@ Feature: Calling
     And I see calling overlay Micro bar
     And I press Clear button
     Then I see Contact list
-    And I tap on my name <Name>
+    And I tap on my avatar
     And I see personal info page
     And I see calling overlay Micro bar
-    And I swipe right to contact list
+    And I close Personal Info Page
     And I see calling overlay Micro bar
     And I see Contact list
     And I tap on contact name <Contact2>

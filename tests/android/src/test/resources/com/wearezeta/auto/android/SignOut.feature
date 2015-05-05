@@ -6,7 +6,7 @@ Feature: Sign Out
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I tap on my name <Name>
+    When I tap on my avatar
     And I tap options button
     And I tap sign out button
     Then I see welcome screen

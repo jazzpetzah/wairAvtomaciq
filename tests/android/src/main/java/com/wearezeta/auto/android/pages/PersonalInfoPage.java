@@ -50,6 +50,9 @@ public class PersonalInfoPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idAboutButton")
 	private WebElement aboutButton;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idSelfProfileClose")
+	private WebElement selfProfileClose;
+	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement page;
 
@@ -165,7 +168,7 @@ public class PersonalInfoPage extends AndroidPage {
 		} catch (Exception ex) {
 			// ignore silently
 		}
-
+/*
 		// FIX if nameEdit.clear() failed to clear text
 		int stringLength = nameEdit.getText().length();
 		if (stringLength > 0) {
@@ -177,7 +180,7 @@ public class PersonalInfoPage extends AndroidPage {
 				this.getDriver().sendKeyEvent(67); // "KEYCODE_DEL"
 			}
 		}
-
+*/
 		nameEdit.sendKeys(newName);
 		this.getDriver().navigate().back();
 		Thread.sleep(1000);
@@ -221,6 +224,12 @@ public class PersonalInfoPage extends AndroidPage {
 	public boolean waitForSettingsDissapear() throws Exception {
 		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
 				By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
+	}
+
+	public ContactListPage pressCloseButton() throws Exception {
+		refreshUITree();
+		selfProfileClose.click();
+		return new ContactListPage(getLazyDriver());
 	}
 
 }

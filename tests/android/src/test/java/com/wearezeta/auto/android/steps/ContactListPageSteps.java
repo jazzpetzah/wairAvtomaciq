@@ -23,7 +23,7 @@ public class ContactListPageSteps {
 				PagesCollection.peoplePickerPage.tapClearButton();
 			}
 
-			WhenITapOnMyName(name);
+			//WhenITapOnMyName(name);
 			PagesCollection.contactListPage.navigateBack();
 
 			String contactName = "aqaContact1";
@@ -121,21 +121,16 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Taps on the currently logged-in user's name
+	 * Taps on the currently logged-in user's avatar
 	 * 
-	 * @step. ^I tap on my name (.*)$
-	 * @param name
+	 * @step. ^I tap on my avatar$
+	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap on my name (.*)$")
-	public void WhenITapOnMyName(String name) throws Exception {
-		try {
-			name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
+	@When("^I tap on my avatar$")
+	public void WhenITapOnMyAvatar() throws Exception {
 		PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.contactListPage
-				.tapOnName(name);
+				.tapOnMyAvatar();
 	}
 
 	/**

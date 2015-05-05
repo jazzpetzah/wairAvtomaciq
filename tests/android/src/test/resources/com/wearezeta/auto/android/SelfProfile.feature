@@ -6,7 +6,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I tap on my name <Name>
+    When I tap on my avatar
     And I tap on personal info screen
     And I tap change photo button
     And I press Gallery button
@@ -42,14 +42,11 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I tap on my name <Name>
+    When I tap on my avatar
     And I see personal info page
     And I tap on my name
     And I change <Name> to <NewName>
-    And I swipe right to contact list
-    Then I see contact list loaded with User name <NewName>
-    And I tap on my name <NewName>
-    Then I see my new name <NewName> and return old <Name>
+    Then I see my new name <NewName>
 
     Examples: 
       | Login      | Password      | Name      | NewName     | Contact   |
