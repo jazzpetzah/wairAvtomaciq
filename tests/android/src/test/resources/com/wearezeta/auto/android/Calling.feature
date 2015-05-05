@@ -5,7 +5,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
@@ -22,7 +22,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
@@ -37,7 +37,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I click the ignore call button
@@ -52,7 +52,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I minimize the application
     And <Contact> calls me using <CallBackend>
     Then I see the call lock screen
@@ -69,7 +69,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I lock the device
     And <Contact> calls me using <CallBackend>
     Then I see the call lock screen
@@ -86,7 +86,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And <Contact> calls me using <CallBackend>
@@ -117,7 +117,7 @@ Feature: Calling
     Given <Contact> is connected to <Name>
     Given <Name> has an accent color <AccentColor>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -140,24 +140,24 @@ Feature: Calling
     Given <Contact1> is connected to <Name>
     Given <Contact2> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When <Contact1> calls me using <CallBackend>
     And I answer the call from the overlay bar
     And I see dialog page
     Then I see calling overlay Big bar
     And I navigate back from dialog page
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I swipe down contact list
     And I see People picker page
     And I see calling overlay Micro bar
     And I press Clear button
-    Then I see Contact list with my name <Name>
+    Then I see Contact list
     And I tap on my name <Name>
     And I see personal info page
     And I see calling overlay Micro bar
     And I swipe right to contact list
     And I see calling overlay Micro bar
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I tap on contact name <Contact2>
     And I see dialog page
     And I see calling overlay Mini bar

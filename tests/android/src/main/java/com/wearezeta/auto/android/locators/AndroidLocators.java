@@ -279,6 +279,9 @@ public final class AndroidLocators {
 		public static final String idConvList = LOCATORS_PACKAGE
 				+ ":id/pv__conv_list";
 
+		public static final String idSelfUserAvatar = LOCATORS_PACKAGE
+				+ ":id/civ__searchbox__self_user_avatar";
+		
 		public static final String idMissedCallIcon = LOCATORS_PACKAGE
 				+ ":id/sci__list__missed_call";
 
