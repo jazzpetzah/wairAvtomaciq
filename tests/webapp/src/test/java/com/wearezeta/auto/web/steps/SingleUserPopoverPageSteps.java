@@ -177,11 +177,11 @@ public class SingleUserPopoverPageSteps {
 	}
 
 	/**
-	 * Verifies Mail is visible on Group Participants popover or not
+	 * Verifies Mail is visible on Single Participant popover or not
 	 *
 	 * @param not
 	 *            * is set to null if "do not" part does not exist
-	 * @step. ^I( do not)? see Mail on Group Participants popover$
+	 * @step. ^I( do not)? see Mail on Single Participant popover$
 	 *
 	 * @throws Exception
 	 */
