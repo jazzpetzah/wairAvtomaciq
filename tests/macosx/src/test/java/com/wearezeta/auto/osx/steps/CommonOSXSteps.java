@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
@@ -49,6 +50,8 @@ public class CommonOSXSteps {
 
 	public static final Platform CURRENT_PLATFORM = Platform.Mac;
 
+	private static final int MAX_DRIVER_CREATION_RETRIES = 3;
+
 	private Date testStartedTimestamp;
 
 	private long startupTime = -1;
@@ -85,7 +88,12 @@ public class CommonOSXSteps {
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 
 		return (Future<ZetaOSXDriver>) PlatformDrivers.getInstance()
-				.resetDriver(url, capabilities);
+				.resetDriver(url, capabilities, MAX_DRIVER_CREATION_RETRIES,
+						this::startApp);
+	}
+
+	private void startApp(RemoteWebDriver drv) {
+		drv.navigate().to(OSXExecutionContext.wirePath);
 	}
 
 	private void commonBefore() throws Exception {
