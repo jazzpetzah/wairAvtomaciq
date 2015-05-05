@@ -162,7 +162,7 @@ Feature: People View
       Given Myself is connected to <KnownContact>
       Given <KnownContact> is connected to <UnknownContact>
       Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
-      Given Myself is blocking <KnownContact>
+      Given Myself blocked <KnownContact>
       Given Myself has sent connection request to <UnknownContact>
       Given I Sign in using login <Login> and password <Password>
       Then I see my name on top of Contact list
@@ -181,14 +181,14 @@ Feature: People View
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
- @staging @id1703 @torun
+ @staging @id1703
    Scenario Outline: Verify you can tap individual participant profiles in a group conversation
       Given There are 5 users where <Name> is me
       Given Myself is connected to <KnownContact>,<KnownContact2>
       Given <KnownContact> is connected to <UnknownContact>,<UnknownContact2>,<KnownContact2>
       Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>,<KnownContact2>,<UnknownContact2>
-      Given <KnownContact> is blocking Myself
-      Given Myself is blocking <KnownContact2>
+      Given <KnownContact> blocked Myself
+      Given Myself blocked <KnownContact2>
       Given Myself has sent connection request to <UnknownContact>
       Given <UnknownContact2> has sent connection request to Myself
       Given I Sign in using login <Login> and password <Password>
