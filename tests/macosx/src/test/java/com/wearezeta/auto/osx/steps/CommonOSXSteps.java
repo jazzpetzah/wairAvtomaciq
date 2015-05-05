@@ -110,6 +110,8 @@ public class CommonOSXSteps {
 		// saving time of startup for Sync Engine
 		this.startupTime = new Date().getTime()
 				- this.testStartedTimestamp.getTime();
+		
+		PagesCollection.mainMenuPage.startApp();
 	}
 
 	@Before("@performance")
