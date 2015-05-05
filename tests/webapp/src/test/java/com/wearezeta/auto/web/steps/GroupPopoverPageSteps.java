@@ -27,6 +27,11 @@ public class GroupPopoverPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	@Then("^Wait (\\d*) ms$")
+	public void ThenWait(Long waittime) throws Exception {
+		Thread.sleep(waittime);
+	}
+
 	/**
 	 * Verify that Group Participants popover is shown or not
 	 *
@@ -218,6 +223,19 @@ public class GroupPopoverPageSteps {
 	public void IClickConfirmConnectButton() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickConfirmConnectButton();
+	}
+
+	/**
+	 * Click ignore connect button on Group Participants popover
+	 *
+	 * @step. ^I click ignore connect button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I click ignore connect button on Group Participants popover$")
+	public void IClickIgnoreConnectButton() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickIgnoreConnectButton();
 	}
 
 	/**
