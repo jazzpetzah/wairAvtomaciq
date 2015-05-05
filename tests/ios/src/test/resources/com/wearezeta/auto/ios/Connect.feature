@@ -29,7 +29,7 @@ Feature: Connect
   Scenario Outline: Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
-    Given <Contact> has sent connection request to Me
+    Given <Contact> sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
@@ -146,9 +146,9 @@ Feature: Connect
   @regression @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
     Given There are 5 users where <Name> is me
-    Given <Contact1> has sent connection request to me
-    Given <Contact2> has sent connection request to me
-    Given <Contact3> has sent connection request to me
+    Given <Contact1> sent connection request to me
+    Given <Contact2> sent connection request to me
+    Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
@@ -171,9 +171,9 @@ Feature: Connect
   @regression @id577
   Scenario Outline: Verify transitions between connection requests (connecting)
     Given There are 5 users where <Name> is me
-    Given <Contact1> has sent connection request to me
-    Given <Contact2> has sent connection request to me
-    Given <Contact3> has sent connection request to me
+    Given <Contact1> sent connection request to me
+    Given <Contact2> sent connection request to me
+    Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>

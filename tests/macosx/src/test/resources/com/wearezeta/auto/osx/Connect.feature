@@ -3,7 +3,7 @@ Feature: Connect to user
   @smoke @id473
   Scenario Outline: Receive invitation from user
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I see connect request
@@ -18,7 +18,7 @@ Feature: Connect to user
   @regression @id616
   Scenario Outline: Conversation created on second end after user accept connection request
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I see connect request
@@ -108,7 +108,7 @@ Feature: Connect to user
   @regression @id617
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I see connect request
@@ -146,8 +146,8 @@ Feature: Connect to user
   @regression @id1035
   Scenario Outline: Verify incoming connection requests list disappears after all requests are processed
     Given There are 3 users where <Name> is me
-    Given <Contact1> has sent connection request to me
-    Given <Contact2> has sent connection request to me
+    Given <Contact1> sent connection request to me
+    Given <Contact2> sent connection request to me
     Given I sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I see 2 connect requests
