@@ -33,6 +33,7 @@ import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -247,6 +248,7 @@ public class CommonWebAppSteps {
 		final Future<ZetaWebAppDriver> lazyWebDriver = resetWebAppDriver(url);
 		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
 				path);
+		PagesCollection.loginPage = new LoginPage(lazyWebDriver, path);
 		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
 
@@ -363,8 +365,8 @@ public class CommonWebAppSteps {
 	 * @throws Exception
 	 */
 	@Given("^(\\w+) blocked (\\w+)$")
-	public void UserBlocks(String userAsNameAlias, String usersToBlockNameAliases)
-			throws Exception {
+	public void UserBlocks(String userAsNameAlias,
+			String usersToBlockNameAliases) throws Exception {
 		commonSteps.BlockContact(userAsNameAlias, usersToBlockNameAliases);
 	}
 

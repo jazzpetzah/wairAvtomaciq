@@ -59,7 +59,8 @@ public class LoginPageSteps {
 		// workaround Amazon page load issues
 		int ntry = 0;
 		while (ntry < MAX_LOGIN_RETRIES) {
-			PagesCollection.loginPage = PagesCollection.registrationPage.switchToLoginPage();
+			PagesCollection.loginPage = PagesCollection.registrationPage
+					.switchToLoginPage();
 			this.IEnterEmail(login);
 			this.IEnterPassword(password);
 			try {
@@ -144,5 +145,18 @@ public class LoginPageSteps {
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
 		Assert.assertTrue(PagesCollection.loginPage.isVisible());
+	}
+
+	/**
+	 * Switch to [Rr]egistration page
+	 * 
+	 * @step. ^I switch to [Rr]egistration page$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I switch to [Rr]egistration page$")
+	public void ISwitchToRegistrationPage() throws Exception {
+		PagesCollection.registrationPage = PagesCollection.loginPage
+				.switchToRegistrationPage();
 	}
 }

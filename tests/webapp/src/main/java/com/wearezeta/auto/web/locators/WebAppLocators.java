@@ -30,6 +30,8 @@ public final class WebAppLocators {
 		public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
 
 		public static final String xpathSignInButton = "//*[@data-uie-name='do-sign-in']";
+
+		public static final String xpathSwitchToRegisterButtons = "//*[@data-uie-name='go-register']";
 	}
 
 	public static final class ContactListPage {
@@ -137,7 +139,7 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathMessageEntryByText = text -> String
 				.format("//*[@data-uie-name='item-message']//div[contains(@class, 'text') and text()='%s']",
 						text);
-		
+
 		public static final Function<String, String> xpathEmbeddedYoutubeVideoById = text -> String
 				.format("//iframe[contains(@src, '%s')]", text);
 
