@@ -5,7 +5,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -23,13 +23,13 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id323 @smoke @regression
+  @id323 @smoke @regression 
   Scenario Outline: Accept incoming connection request from conversation list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I wait for 10 seconds
     And I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
@@ -45,7 +45,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     Given I do not see Contact list with name <WaitingMess>
     Given <Contact> has sent connection request to <Name>
     When I tap on contact name <WaitingMess>
@@ -63,7 +63,7 @@ Feature: Connect
     Given There are 5 users where <Name> is me
     Given <Contact1> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     Given <Contact2> has sent connection request to <Name>
     When I wait for 2 seconds
     Then I see contact list loaded with User name <WaitingMess2>
@@ -99,7 +99,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     Given <Contact2> has sent connection request to <Name>
     When I see contact list loaded with User name <WaitingMess1>
     And I swipe down contact list
@@ -122,7 +122,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     And Contact name <WaitingMess> is not in list
     Given <Contact> has sent connection request to <Name>
     When I see contact list loaded with User name <WaitingMess>
@@ -149,7 +149,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> has sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I see contact list loaded with User name <WaitingMess>
     And I swipe down contact list
     And I see People picker page
@@ -170,7 +170,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -193,7 +193,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -214,7 +214,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -238,7 +238,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I minimize the application
     And <Contact> has sent connection request to Me
     And I restore the application
@@ -258,7 +258,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -284,7 +284,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -306,7 +306,7 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>
     Given <Contact1> has group chat <ChatName> with Myself,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <ChatName>
     And I swipe up on dialog page
     And I tap on group chat contact <Contact2>
@@ -327,7 +327,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe up on dialog page
@@ -352,7 +352,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -388,7 +388,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When User <Contact> blocks user <Name>
     And I wait for 120 seconds
     And I swipe down contact list
@@ -409,7 +409,7 @@ Feature: Connect
     Given User <Name> blocks user <Contact1>
     And I wait for 120 seconds
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -431,7 +431,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -456,7 +456,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I input <Message> message and send it
@@ -486,7 +486,7 @@ Feature: Connect
     When I wait for PYMK for 30 secs
     And I press + button on a random Connect
   	And I press Clear button
-    Then I see Contact list with my name <Name>
+    Then I see Contact list
     And I see contact list loaded with PeoplePicker Random Connect
 
     Examples: 

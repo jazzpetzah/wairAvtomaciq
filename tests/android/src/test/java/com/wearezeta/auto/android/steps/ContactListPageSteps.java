@@ -51,22 +51,14 @@ public class ContactListPageSteps {
 	 * Close People Picker and open contact list without contacts (Should these
 	 * two pieces of behaviour be different steps?)
 	 * 
-	 * @step. ^I see Contact list with no contacts and my name (.*)$
-	 * 
-	 * @param name
-	 *            user name string
+	 * @step. ^I see Contact list with no contacts$
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^I see Contact list with no contacts and my name (.*)$")
-	public void GivenISeeContactListWithNoContactsAndMyNameAnd(String name)
+	@Given("^I see Contact list with no contacts$")
+	public void GivenISeeContactListWithNoContacts()
 			throws Throwable {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
-			PagesCollection.peoplePickerPage.tapClearButton();
-		}
-
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
 
 	}
 
@@ -75,18 +67,13 @@ public class ContactListPageSteps {
 	 * current user name visible at the top (Must log in first for this step to
 	 * work - seems like it should be independent of the step before it)
 	 * 
-	 * @step. ^I see Contact list with my name (.*)$
-	 * 
-	 * @param name
-	 *            user name string
+	 * @step. ^I see Contact list$
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^I see Contact list with my name (.*)$")
-	public void GivenISeeContactListWithMyName(String name) throws Throwable {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+	@Given("^I see Contact list$")
+	public void GivenISeeContactList() throws Throwable {
+		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
 		PagesCollection.contactListPage.waitForContactListLoadFinished();
 
 	}
@@ -237,16 +224,13 @@ public class ContactListPageSteps {
 	 * Check to see that the current user's name appears at the top of the
 	 * contact list
 	 * 
-	 * @step. ^Contact list appears with my name (.*)$
-	 * @param name
-	 *            the current user's name
+	 * @step. ^Contact list appears$
+	 *
 	 * @throws Exception
 	 */
-	@Then("Contact list appears with my name (.*)")
-	public void ThenContactListAppears(String name) throws Exception {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished(name));
+	@Then("Contact list appears$")
+	public void ThenContactListAppears() throws Exception {
+		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
 	}
 
 	/**
