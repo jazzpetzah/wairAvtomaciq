@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @id2264 @staging  @torun
+  @id2264 @staging
   Scenario Outline: ZClient change name in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -18,7 +18,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewTestName | user2Name |
 
-  @id2250 @staging  @torun
+  @id2250 @staging 
   Scenario Outline: ZClient change name in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
