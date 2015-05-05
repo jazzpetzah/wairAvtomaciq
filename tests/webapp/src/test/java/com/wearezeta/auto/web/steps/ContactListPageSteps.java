@@ -216,6 +216,7 @@ public class ContactListPageSteps {
 	 * Checks that connection request is displayed in Conversation List or not
 	 *
 	 * @param doNot
+	 *            is set to null if "do not" part does not exist
 	 * @step. ^I(do not)? see connection request from one user$
 	 *
 	 * @throws Exception

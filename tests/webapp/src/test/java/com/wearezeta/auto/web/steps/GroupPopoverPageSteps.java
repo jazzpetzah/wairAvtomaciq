@@ -27,11 +27,6 @@ public class GroupPopoverPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	@Then("^Wait (\\d*) ms$")
-	public void ThenWait(Long waittime) throws Exception {
-		Thread.sleep(waittime);
-	}
-
 	/**
 	 * Verify that Group Participants popover is shown or not
 	 *
