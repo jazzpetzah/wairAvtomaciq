@@ -21,7 +21,7 @@ import com.wearezeta.auto.common.usrmgmt.OSXAddressBookHelpers;
 public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
 	public static final String CONNECTION_MESSAGE = "Hello!";
-	private static final int BACKEND_USER_SYNC_TIMEOUT = 120; // seconds
+	private static final int BACKEND_USER_SYNC_TIMEOUT = 15; // seconds
 
 	private String pingId = null;
 
