@@ -172,11 +172,11 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I swipe right to contact list$")
-	public void ISwipeRightToContactList() throws Exception {
+	@When("^I close Personal Info Page$")
+	public void IClosePersonalInfoPage() throws Exception {
 
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.personalInfoPage
-				.swipeRightCoordinates(1000);
+				.pressCloseButton();
 	}
 
 	/**
@@ -192,17 +192,10 @@ public class PersonalInfoPageSteps {
 	 *            The original name of the current user
 	 * @throws Throwable
 	 */
-	@Then("^I see my new name (.*) and return old (.*)$")
-	public void ISeeMyNewName(String name, String oldName) throws Throwable {
+	@Then("^I see my new name (.*)$")
+	public void ISeeMyNewName(String name) throws Throwable {
 		Assert.assertTrue(name.equals(PagesCollection.personalInfoPage
 				.getUserName()));
-		try {
-			oldName = usrMgr.findUserByNameOrNameAlias(name).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		PagesCollection.personalInfoPage.tapOnMyName();
-		PagesCollection.personalInfoPage.changeName(name, oldName);
 	}
 
 	/**

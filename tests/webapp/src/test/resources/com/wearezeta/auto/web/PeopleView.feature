@@ -21,6 +21,7 @@ Feature: People View
 	 | Login      | Password      | Name      | Contact1  | Contact2  |
 	 | user1Email | user1Password | user1Name | user2Name | user3Name |
 
+
   @smoke @id1686
    Scenario Outline: Verify you can access proﬁle information for the other participant in a 1to1 conversation
       Given There are 2 users where <Name> is me
@@ -37,6 +38,7 @@ Feature: People View
       Examples:
 	 | Login      | Password      | Name      | Contact   |
 	 | user1Email | user1Password | user1Name | user2Name |
+
 
   @smoke @id1692
    Scenario Outline: Leave from group chat
@@ -60,6 +62,7 @@ Feature: People View
 	 | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message  |
 	 | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | YOU LEFT |
 
+
   @smoke @id1694
    Scenario Outline: Verify you can remove participants from a group conversation
       Given There are 3 users where <Name> is me
@@ -80,7 +83,8 @@ Feature: People View
 	 | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message     |
 	 | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | YOU REMOVED |
 
- @staging @id2268
+
+  @regression @id2268
    Scenario Outline: Verify I can see participant profile of user that you requested to connect with in a group conversation
       Given There are 3 users where <Name> is me
       Given Myself is connected to <KnownContact>
@@ -113,7 +117,8 @@ Feature: People View
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
- @staging @id2268
+
+  @regression @id2269
    Scenario Outline: Verify I can see participant profile of user who has requested to connect with you in a group conversation
       Given There are 3 users where <Name> is me
       Given Myself is connected to <KnownContact>
@@ -149,7 +154,7 @@ Feature: People View
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
 
-@staging @id2270
+  @regression @id2270
    Scenario Outline: Verify I can see participant profile of connected user in a group conversation
       Given There are 3 users where <Name> is me
       Given Myself is connected to <KnownContact>
@@ -253,6 +258,41 @@ Feature: People View
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
+ @staging @id1551
+   Scenario Outline: Verify I can ignore connection request in a group conversation
+      Given There are 3 users where <Name> is me
+      Given Myself is connected to <KnownContact>
+      Given <KnownContact> is connected to <UnknownContact>
+      Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
+      Given <UnknownContact> has sent connection request to Myself
+      Given I Sign in using login <Login> and password <Password>
+      Then I see my name on top of Contact list
+      When I open conversation with <ChatName>
+      Then I see correct people button tool tip
+      When I click People button in group conversation
+      Then I see Group Participants popover
+      And I see correct add people button tool tip
+      And I see correct leave conversation button tool tip
+      And I see correct rename conversation button tool tip
+      When I click on participant <UnknownContact> on Group Participants popover
+      Then I see correct back button tool tip on Group Participants popover
+      And I see Remove button on Group Participants popover
+      And I see correct remove from group button tool tip on Group Participants popover
+      And I see username <UnknownContact> on Group Participants popover
+      And I see an avatar on Group Participants popover
+      And I see Remove button on Group Participants popover
+      And I see Mail on Group Participants popover
+      And I see Pending button on Group Participants popover
+      And I see correct pending button tool tip on Group Participants popover
+      And I see Pending text box on Group Participants popover
+      When I click Pending button on Group Participants popover
+      When I click ignore connect button on Group Participants popover
+      Then I do not see connection request from one user
+
+      Examples:
+	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
+	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
+
 
   @smoke @id1687
    Scenario Outline: Verify you can add participants to the group conversation by searching the user directory
@@ -290,6 +330,7 @@ Feature: People View
 	 | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | ChatName       | Message   |
 	 | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | AddToGroupChat | YOU ADDED |
 
+
   @smoke @id1683
    Scenario Outline: Verify the name of the group conversation can be edited
       Given There are 3 users where <Name> is me
@@ -307,6 +348,7 @@ Feature: People View
       Examples:
 	 | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | ChatNameEdit   | Message                  |
 	 | user1Email | user1Password | user1Name | user2Name | user3Name | BaseChatName | EditedCahtName | RENAMED THE CONVERSATION |
+
 
   @smoke @id1697
    Scenario Outline: Verify the new conversation is created on the other end from 1to1

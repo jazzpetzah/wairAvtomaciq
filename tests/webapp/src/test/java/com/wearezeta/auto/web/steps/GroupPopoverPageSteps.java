@@ -221,6 +221,19 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
+	 * Click ignore connect button on Group Participants popover
+	 *
+	 * @step. ^I click ignore connect button on Group Participants popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I click ignore connect button on Group Participants popover$")
+	public void IClickIgnoreConnectButton() throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.clickIgnoreConnectButton();
+	}
+
+	/**
 	 * Remove participant from group chat by clicking "exit" button
 	 *
 	 * @step. ^I click Remove button on Group Participants popover$

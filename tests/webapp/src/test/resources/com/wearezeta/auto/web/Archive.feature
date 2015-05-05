@@ -35,7 +35,7 @@ Feature: Archive
       | Email      | Password      | Name      | Contact   | Contact2  | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hello   |
 
-  @staging @id1543
+  @regression @id1543
   Scenario Outline: Verify that Ping event cannot unarchive muted conversation automatically
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -51,7 +51,7 @@ Feature: Archive
       | Email      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1544
+  @regression @id1544
   Scenario Outline: Verify that Call event can unarchive muted conversation automatically
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -68,7 +68,7 @@ Feature: Archive
       | Email      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @staging @id1541
+  @regression @id1541
   Scenario Outline: Verify the conversation is unarchived when there are new messages in this conversation (Ping message)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -83,7 +83,7 @@ Feature: Archive
       | Email      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1542
+  @regression @id1542
   Scenario Outline: Verify the conversation is unarchived when there are new calls in this conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

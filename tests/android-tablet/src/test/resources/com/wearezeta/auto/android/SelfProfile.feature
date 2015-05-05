@@ -6,36 +6,31 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    And I see Contact list
+    When  I tap on my avatar
     And I see personal info page
     And I wait for 10 seconds
     And I tap on my name
     And I change <Name> to <NewName>
-    And I swipe right to contact list
-    Then I see contact list loaded with User name <NewName>
-    When I tap on my name <NewName>
-    Then I see my new name <NewName> and return old <Name>
+    Then I see my new name <NewName>
 
     Examples: 
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewTestName | user2Name |
 
-  @id2250 @staging
+  @id2250 @staging 
   Scenario Outline: ZClient change name in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    And I see Contact list
+    When  I tap on my avatar
     And I see personal info page
     And I wait for 10 seconds
     And I tap on my name
     And I change <Name> to <NewName>
-    Then I see contact list loaded with User name <NewName>
-    When I tap on my name <NewName>
-    Then I see my new name <NewName> and return old <Name>
+    Then I see my new name <NewName>
 
     Examples: 
       | Login      | Password      | Name      | NewName     | Contact   |
@@ -47,7 +42,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <Contact>
     And I see tablet dialog page
     And I tap on profile button
@@ -63,7 +58,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <Contact>
     And I see tablet dialog page
     And I tap on profile button
@@ -79,8 +74,8 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    And I see Contact list
+    When  I tap on my avatar
     And I tap on tablet personal info screen
     And I tap change photo button
     And I press Gallery button
@@ -100,8 +95,8 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    And I see Contact list
+    When  I tap on my avatar
     And I tap on tablet personal info screen
     And I tap change photo button
     And I press Gallery button

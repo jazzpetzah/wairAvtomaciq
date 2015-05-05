@@ -749,6 +749,9 @@ public final class AndroidLocators {
 		public static final String idSignOutBtn = LOCATORS_PACKAGE
 				+ ":id/ttv__profile__settings_box__signout";
 
+		public static final String idSelfProfileClose = LOCATORS_PACKAGE
+				+ ":id/gtv__profile__close_button";
+		
 		public static final String idOpenFrom = "com.google.android.apps.plus:id/tiles";
 
 		public static final String xpathProfileOptionsButton42 = "//android.widget.FrameLayout[child::android.widget.LinearLayout]/android.widget.TextView";
