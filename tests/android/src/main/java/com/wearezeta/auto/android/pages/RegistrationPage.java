@@ -155,7 +155,7 @@ public class RegistrationPage extends AndroidPage {
 	public boolean isConfirmationVisible() throws Exception {
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(verifyEmailBtn));
-		return verifyEmailBtn.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(verifyEmailBtn);
 	}
 
 	public PeoplePickerPage continueRegistration() throws Exception {

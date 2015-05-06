@@ -25,7 +25,7 @@ public class ContactListPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
 	private WebElement pickerClearBtn;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConversationListFrame")
 	private WebElement contactListFrame;
 
@@ -50,9 +50,9 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
 	private WebElement selfUserName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage .CLASS_NAME, locatorKey = "idSelfUserAvatar")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idSelfUserAvatar")
 	protected WebElement selfUserAvatar;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
 	private List<WebElement> laterBtn;
 
@@ -104,7 +104,7 @@ public class ContactListPage extends AndroidPage {
 		// workaround for incorrect tap
 		if (page == null) {
 			el = findInContactList(name, 1);
-			if (el != null && el.isDisplayed()) {
+			if (el != null && DriverUtils.isElementPresentAndDisplayed(el)) {
 				this.restoreApplication();
 				el.click();
 				log.debug("tap on contact for the second time");

@@ -251,7 +251,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean checkCallingOverlay() throws Exception {
-		return callingMessageText.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(callingMessageText);
 	}
 
 	public void typeAndSendMessage(String message) throws Exception {
@@ -404,7 +404,7 @@ public class DialogPage extends AndroidPage {
 		swipeRightCoordinates(1000);
 		return new ContactListPage(this.getLazyDriver());
 	}
-	
+
 	public ContactListPage navigateBack(int time) throws Exception {
 		swipeRightCoordinates(time);
 		return new ContactListPage(this.getLazyDriver());

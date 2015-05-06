@@ -49,9 +49,24 @@ public class DriverUtils {
 		return s == null || s.length() == 0;
 	}
 
-	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver, By by)
-			throws Exception {
-		return waitUntilLocatorIsDisplayed(driver, by, DEFAULT_LOOKUP_TIMEOUT_SECONDS);
+	/**
+	 * https://code.google.com/p/selenium/issues/detail?id=1880
+	 * 
+	 * @param element
+	 * @return
+	 */
+	public static boolean isElementPresentAndDisplayed(final WebElement element) {
+		try {
+			return element.isDisplayed();
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+	}
+
+	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
+			By by) throws Exception {
+		return waitUntilLocatorIsDisplayed(driver, by,
+				DEFAULT_LOOKUP_TIMEOUT_SECONDS);
 	}
 
 	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
@@ -75,10 +90,10 @@ public class DriverUtils {
 		}
 	}
 
-
 	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
 			final By by) throws Exception {
-		return waitUntilLocatorDissapears(driver, by, DEFAULT_LOOKUP_TIMEOUT_SECONDS);
+		return waitUntilLocatorDissapears(driver, by,
+				DEFAULT_LOOKUP_TIMEOUT_SECONDS);
 	}
 
 	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
@@ -107,7 +122,8 @@ public class DriverUtils {
 
 	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
 			final By locator) throws Exception {
-		return waitUntilLocatorAppears(driver, locator, DEFAULT_LOOKUP_TIMEOUT_SECONDS);
+		return waitUntilLocatorAppears(driver, locator,
+				DEFAULT_LOOKUP_TIMEOUT_SECONDS);
 	}
 
 	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,

@@ -33,7 +33,7 @@ public class CallingLockscreenPage extends AndroidPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return lockScreenLogo.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(lockScreenLogo);
 	}
 
 	public String getCallersName() throws Exception {

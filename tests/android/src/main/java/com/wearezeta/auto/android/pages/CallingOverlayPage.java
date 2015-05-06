@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
@@ -56,7 +57,8 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return callingOverlayContainer.isDisplayed();
+		return DriverUtils
+				.isElementPresentAndDisplayed(callingOverlayContainer);
 	}
 
 	public void muteConversation() {
