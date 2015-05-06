@@ -168,32 +168,6 @@ public class DriverUtils {
 		}
 	}
 
-	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver)
-			throws Exception {
-		return waitUntilWebPageLoaded(driver, DEFAULT_LOOKUP_TIMEOUT_SECONDS);
-	}
-
-	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver,
-			int timeout) throws Exception {
-		turnOffImplicitWait(driver);
-		try {
-			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(timeout, TimeUnit.SECONDS)
-					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
-			return wait.until(drv -> {
-				return String.valueOf(
-						((JavascriptExecutor) drv)
-								.executeScript("return document.readyState"))
-						.equals("complete");
-			});
-		} catch (TimeoutException e) {
-			return false;
-		} finally {
-			setDefaultImplicitWait(driver);
-		}
-	}
-
 	public static void waitUntilAlertAppears(AppiumDriver driver)
 			throws Exception {
 		DriverUtils.turnOffImplicitWait(driver);
