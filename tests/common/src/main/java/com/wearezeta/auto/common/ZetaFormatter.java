@@ -159,7 +159,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 				+ (endDate - startDate) + "ms)");
 		// take screenshot
 		try {
-			final ZetaDriver driver = getDriver(arg0.getStatus() == Result.FAILED);
+			final ZetaDriver driver = getDriver(arg0.getStatus().equals(Result.FAILED));
 			if (driver != null) {
 				BufferedImage image = DriverUtils.takeScreenshot(driver);
 				String picturePath = CommonUtils

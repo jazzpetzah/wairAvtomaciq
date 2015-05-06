@@ -214,13 +214,15 @@ public class ContactListPageSteps {
 					.getIncomingPendingItemText()
 					.equals(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
 		} else {
+			String itemText = "";
 			try {
-				Assert.assertFalse(PagesCollection.contactListPage
-						.getIncomingPendingItemText()
-						.equals(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+				itemText = PagesCollection.contactListPage
+						.getIncomingPendingItemText();
 			} catch (AssertionError e) {
 				log.debug(e.getMessage());
 			}
+			Assert.assertFalse(itemText
+					.equals(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
 		}
 	}
 
