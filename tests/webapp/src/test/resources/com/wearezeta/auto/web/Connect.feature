@@ -3,7 +3,7 @@ Feature: Connect
   @smoke @id1910
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     When I see connection request from one user
@@ -22,7 +22,7 @@ Feature: Connect
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
     And I see my name on top of Contact list
-    And I wait up to 15 seconds until <Contact> exists in backend search results
+    And I wait until <Contact> exists in backend search results
     When I open People Picker from Contact List
     And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
@@ -42,7 +42,7 @@ Feature: Connect
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
     And I see my name on top of Contact list
-    And I wait up to 15 seconds until <Login2> exists in backend search results
+    And I wait until <Login2> exists in backend search results
     When I open People Picker from Contact List
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
@@ -83,7 +83,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
-    And I wait up to 15 seconds until <Login2> exists in backend search results
+    And I wait until <Login2> exists in backend search results
     When I see Contacts Upload dialog
     And I close Contacts Upload dialog
     And I open People Picker from Contact List
@@ -144,7 +144,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact> is connected to Me,<Contact2>
     Given <Contact> has group chat <ChatName> with Me,<Contact2>
-    Given <Name> has sent connection request to <Contact2>
+    Given I sent connection request to <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I open conversation with <ChatName>

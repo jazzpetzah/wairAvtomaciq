@@ -171,7 +171,7 @@ public class ContactListPageSteps {
 	 * Open archived conversations
 	 * 
 	 * @step. ^I open archive$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I open archive$")
@@ -199,17 +199,25 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Checks that connection request is displayed in Conversation List
-	 * 
-	 * @step. ^I see connection request from one user$
-	 * 
+	 * Checks that connection request is displayed in Conversation List or not
+	 *
+	 * @param doNot
+	 *            is set to null if "do not" part does not exist
+	 * @step. ^I(do not)? see connection request from one user$
+	 *
 	 * @throws Exception
 	 */
-	@When("^I see connection request from one user$")
-	public void ISeeIncomingConnectionFromOneUser() throws Exception {
-		Assert.assertTrue(PagesCollection.contactListPage
-				.getIncomingPendingItemText().equals(
-						WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+	@When("^I( do not)? see connection request from one user$")
+	public void IDoNotSeeIncomingConnection(String doNot) throws Exception {
+		if (doNot == null) {
+			Assert.assertTrue(PagesCollection.contactListPage
+					.getIncomingPendingItemText().equals(
+							WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+		} else {
+			Assert.assertFalse(PagesCollection.contactListPage
+					.getIncomingPendingItemText().equals(
+							WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+		}
 	}
 
 	/**
@@ -309,7 +317,7 @@ public class ContactListPageSteps {
 	 * Verify that my name color is the same as in color picker
 	 * 
 	 * @step. ^I verify my name color is the same as in color picker$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@Then("^I verify my name color is the same as in color picker$")

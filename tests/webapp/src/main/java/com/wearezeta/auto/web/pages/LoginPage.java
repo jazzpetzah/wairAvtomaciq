@@ -14,10 +14,10 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
-public class LoginPage extends WebPage {
-
+public class LoginPage extends WebPage {	
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 			.getSimpleName());
@@ -34,8 +34,9 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathPasswordInput)
 	private WebElement passwordInput;
 
-	public LoginPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
+	public LoginPage(Future<ZetaWebAppDriver> lazyDriver, String url)
+			throws Exception {
+		super(lazyDriver, url);
 	}
 
 	public boolean isVisible() throws Exception {
@@ -86,4 +87,23 @@ public class LoginPage extends WebPage {
 
 		return new ContactListPage(this.getLazyDriver());
 	}
+
+	public RegistrationPage switchToRegistrationPage() throws Exception {
+		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
+		final By locator = By
+				.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons);
+		if (DriverUtils.waitUntilElementAppears(this.getDriver(), locator, 2)) {
+			for (WebElement btn : getDriver().findElements(locator)) {
+				if (btn.isDisplayed()) {
+					btn.click();
+					break;
+				}
+			}
+		}
+		assert DriverUtils.isElementDisplayed(getDriver(),
+				By.xpath(WebAppLocators.RegistrationPage.xpathRootForm)) : "Registration page is not visible";
+
+		return new RegistrationPage(this.getLazyDriver(), this.getUrl());
+	}
+
 }

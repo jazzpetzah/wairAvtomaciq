@@ -397,7 +397,7 @@ public class CommonAndroidSteps {
 	/**
 	 * Verifies that user A has sent a connection request to user B
 	 * 
-	 * @step. ^(.*) has sent connection request to (.*)$
+	 * @step. ^(.*) sent connection request to (.*)$
 	 * 
 	 * @param userFromNameAlias
 	 *            the user from which the connection request originated
@@ -405,7 +405,7 @@ public class CommonAndroidSteps {
 	 *            the target user
 	 * 
 	 */
-	@Given("^(.*) has sent connection request to (.*)$")
+	@Given("^(.*) sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
@@ -815,8 +815,7 @@ public class CommonAndroidSteps {
 	 * Waits for a given time to verify that another user exists in search
 	 * results
 	 * 
-	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in
-	 *        backend search results$
+	 * @step. ^(\\w+) waits? until (.*) exists in backend search results$
 	 * 
 	 * @param searchByNameAlias
 	 *            the user to search for in the query results.
@@ -829,12 +828,10 @@ public class CommonAndroidSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, int timeout, String query)
-			throws Exception {
-		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
-				timeout);
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
 	/**

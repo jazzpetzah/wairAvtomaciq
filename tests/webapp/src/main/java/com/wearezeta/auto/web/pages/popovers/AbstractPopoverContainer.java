@@ -53,4 +53,8 @@ public abstract class AbstractPopoverContainer extends WebPage {
 	public String getBackButtonToolTip() {
 		return backButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
+
+	public void clickBackButton() {
+		backButton.click();
+	}
 }

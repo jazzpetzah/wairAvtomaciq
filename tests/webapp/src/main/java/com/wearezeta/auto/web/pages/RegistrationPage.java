@@ -74,7 +74,7 @@ public class RegistrationPage extends WebPage {
 		assert DriverUtils.isElementDisplayed(this.getDriver(),
 				signInBtnlocator) : "Sign in page is not visible";
 
-		return new LoginPage(this.getLazyDriver());
+		return new LoginPage(this.getLazyDriver(), this.getUrl());
 	}
 
 	private void removeReadonlyAttr(String cssLocator) throws Exception {

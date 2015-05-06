@@ -33,6 +33,7 @@ import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -247,6 +248,7 @@ public class CommonWebAppSteps {
 		final Future<ZetaWebAppDriver> lazyWebDriver = resetWebAppDriver(url);
 		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
 				path);
+		PagesCollection.loginPage = new LoginPage(lazyWebDriver, path);
 		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
 
@@ -335,7 +337,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Creates connection between to users
 	 * 
-	 * @step. ^(.*) is connected to (.*)
+	 * @step. ^(\\w+) is connected to (.*)$
 	 * 
 	 * @param userFromNameAlias
 	 *            user which sends connection request
@@ -344,10 +346,28 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(.*) is connected to (.*)")
+	@Given("^(\\w+) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+	}
+
+	/**
+	 * Blocks a user
+	 *
+	 * @step. ^(\\w+) blocked (\\w+)$
+	 *
+	 * @param userFromNameAlias
+	 *            user which wants to block another
+	 * @param usersToNameAliases
+	 *            user to block
+	 *
+	 * @throws Exception
+	 */
+	@Given("^(\\w+) blocked (\\w+)$")
+	public void UserBlocks(String userAsNameAlias,
+			String usersToBlockNameAliases) throws Exception {
+		commonSteps.BlockContact(userAsNameAlias, usersToBlockNameAliases);
 	}
 
 	/**
@@ -408,7 +428,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Sends connection request by one user to another
 	 * 
-	 * @step. ^(.*) (?:has|have) sent connection request to (.*)
+	 * @step. ^(.*) sent connection request to (.*)
 	 * 
 	 * @param userFromNameAlias
 	 *            user that sends connection request
@@ -417,7 +437,7 @@ public class CommonWebAppSteps {
 	 *
 	 * @throws Exception
 	 */
-	@Given("^(.*) (?:has|have) sent connection request to (.*)")
+	@Given("^(.*) sent connection request to (.*)")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
@@ -427,8 +447,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 * 
-	 * @step. ^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend
-	 *        search results$
+	 * @step. ^(\\w+) waits? until (.*) exists in backend search results$
 	 * 
 	 * @param searchByNameAlias
 	 *            user name to search string
@@ -441,12 +460,10 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, int timeout, String query)
-			throws Exception {
-		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
-				timeout);
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
 	/**

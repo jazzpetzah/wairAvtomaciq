@@ -82,15 +82,6 @@ public final class PopoverLocators {
 					xpathRootLocator + xpathPageRootLocator, name);
 		}
 
-		public static final class PendingParticipantPage {
-
-			public static final String xpathPendingButton = xpathRootLocator
-					+ "//*[@data-uie-name='go-conversation']";
-
-			public static final String xpathPendingTextBox = xpathRootLocator
-					+ "//*[@data-uie-name='enter-connect-message']";
-		}
-
 		public static final class LeaveGroupConfirmationPage {
 
 			public static final String xpathConfirmLeaveButton = xpathRootLocator
@@ -101,6 +92,12 @@ public final class PopoverLocators {
 
 			public static final String xpathConfirmRemoveButton = xpathRootLocator
 					+ "//*[@data-uie-name='do-confirm' and @data-uie-value='remove']";
+		}
+
+		public static final class UnblockUserConfirmationPage {
+
+			public static final String xpathConfirmUnblockButton = xpathRootLocator
+					+ "//*[@data-uie-name='do-confirm' and @data-uie-value='unblock']";
 		}
 
 		public static final class ConnectParticipantConfirmationPage {
@@ -122,6 +119,24 @@ public final class PopoverLocators {
 
 			public static final String xpathAvatar = xpathRootLocator
 					+ "//*[@data-uie-name='status-profile-picture']";
+
+			public static final String xpathUserName = xpathRootLocator
+					+ "//*[@data-uie-name='status-user']";
+		}
+
+		public static final class SelfInfoPage {
+
+			public static final String xpathProfileButton = xpathRootLocator
+					+ "//*[@data-uie-name='go-profile']";
+		}
+
+		public static final class PendingParticipantPage {
+
+			public static final String xpathPendingButton = xpathRootLocator
+					+ "//*[@data-uie-name='go-conversation']";
+
+			public static final String xpathPendingTextBox = xpathRootLocator
+					+ "//*[@data-uie-name='enter-connect-message']";
 		}
 
 		public static final class ConnectedParticipantPage {
@@ -134,6 +149,12 @@ public final class PopoverLocators {
 
 			public static final String xpathConnectButton = xpathRootLocator
 					+ "//*[@data-uie-name='do-connect']";
+		}
+
+		public static final class BlockedParticipantPage {
+
+			public static final String xpathUnblockButton = xpathRootLocator
+					+ "//*[@data-uie-name='do-unblock']";
 		}
 	}
 

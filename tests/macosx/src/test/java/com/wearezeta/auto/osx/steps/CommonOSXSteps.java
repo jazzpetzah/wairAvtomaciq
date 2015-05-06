@@ -150,7 +150,7 @@ public class CommonOSXSteps {
 		resetBackendSettingsIfOverwritten();
 	}
 
-	@Given("^(.*) has sent connection request to (.*)$")
+	@Given("^(.*) sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
@@ -292,12 +292,10 @@ public class CommonOSXSteps {
 		commonSteps.EnableTcpConnectionForApp(OSXConstants.Apps.WIRE);
 	}
 
-	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, int timeout, String query)
-			throws Exception {
-		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
-				timeout);
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
 	@When("^Contact (.*) sends random message to conversation (.*)")

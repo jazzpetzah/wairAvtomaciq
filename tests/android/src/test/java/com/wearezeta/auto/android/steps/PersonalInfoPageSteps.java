@@ -188,8 +188,6 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @param name
 	 *            The current (newly given) name of the current user
-	 * @param oldName
-	 *            The original name of the current user
 	 * @throws Throwable
 	 */
 	@Then("^I see my new name (.*)$")

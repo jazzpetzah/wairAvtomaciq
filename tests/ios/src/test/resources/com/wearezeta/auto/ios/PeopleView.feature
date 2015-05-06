@@ -13,7 +13,7 @@ Feature: People View
     And I see <Contact1> user profile page
     And I press Add button
     And I see People picker page
-    And I wait up to 15 seconds until <Contact2> exists in backend search results
+    And I wait until <Contact2> exists in backend search results
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact2>
     And I see user <Contact2> found on People picker page

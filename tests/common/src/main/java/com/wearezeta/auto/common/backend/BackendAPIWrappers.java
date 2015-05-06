@@ -12,7 +12,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
@@ -651,8 +650,6 @@ public final class BackendAPIWrappers {
 		}
 	}
 
-	private static Random random = new Random();
-
 	public static void waitUntilContactsFound(ClientUser searchByUser,
 			String query, int expectedCount, boolean orMore, int timeout)
 			throws Exception {
@@ -662,12 +659,17 @@ public final class BackendAPIWrappers {
 		while ((new Date()).getTime() <= startTimestamp + timeout * 1000) {
 			final JSONObject searchResult = BackendREST.searchForContacts(
 					generateAuthToken(searchByUser), query);
-			currentCount = searchResult.getInt("found");
+			if (searchResult.has("documents")
+					&& (searchResult.get("documents") instanceof JSONArray)) {
+				currentCount = searchResult.getJSONArray("documents").length();
+			} else {
+				currentCount = 0;
+			}
 			if (currentCount == expectedCount
 					|| (orMore && currentCount >= expectedCount)) {
 				return;
 			}
-			Thread.sleep(1000 + random.nextInt(4000));
+			Thread.sleep(1000);
 		}
 		throw new NoContactsFoundException(
 				String.format(
