@@ -70,7 +70,8 @@ public class CommonOSXSteps {
 	}
 
 	public static void resetBackendSettingsIfOverwritten() throws IOException,
-			Exception {
+			Exception {	
+		OSXCommonUtils.resetOSXPrefsDaemon();
 		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
 				.getBackendType(CommonOSXSteps.class))) {
 			log.debug("Backend setting were overwritten. Trying to restart app.");

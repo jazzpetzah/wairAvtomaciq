@@ -127,7 +127,7 @@ public class OSXCommonUtils extends CommonUtils {
 		disableStartUIOnFirstLogin(OSXExecutionContext.wireConfigDomain);
 	}
 
-	private static void resetOSXPrefsDaemon() throws Exception {
+	public static void resetOSXPrefsDaemon() throws Exception {
 		executeOsXCommand(new String[] { "/usr/bin/killall", "-SIGTERM",
 				"cfprefsd" });
 		Thread.sleep(PREFS_DAEMON_RESTART_TIMEOUT);
