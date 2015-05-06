@@ -25,10 +25,7 @@ public class ContactListPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
 	private WebElement pickerClearBtn;
-
-	@FindBy(className = AndroidLocators.CommonLocators.classNameLoginPage)
-	private WebElement content;
-
+	
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConversationListFrame")
 	private WebElement contactListFrame;
 
@@ -230,7 +227,7 @@ public class ContactListPage extends AndroidPage {
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
 		refreshUITree();
-		elementSwipeDown(content, time);
+		elementSwipeDown(contactListFrame, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 

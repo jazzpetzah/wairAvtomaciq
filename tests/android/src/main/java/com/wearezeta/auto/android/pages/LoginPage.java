@@ -159,15 +159,17 @@ public class LoginPage extends AndroidPage {
 	public Boolean isLoginFinished()
 			throws NumberFormatException, Exception {
 		refreshUITree();
+		// some workarounds for AN-1973
 		try {
-			this.getWait().until(ExpectedConditions.visibilityOf(selfUserAvatar));
+			this.getWait().until(ExpectedConditions.visibilityOf(pickerClearBtn));
+			pickerClearBtn.click();
+			
 		} catch (Exception ex) {
 			refreshUITree();
-			if (isVisible(pickerClearBtn)) {
+			/*if (isVisible(pickerClearBtn)) {
 				pickerClearBtn.click();
-			} /*
-			 * else { if (!isVisible(yourUser)) { navigateBack(); } }
-			 */
+			}*/
+			this.getWait().until(ExpectedConditions.visibilityOf(selfUserAvatar));
 			refreshUITree();
 		}
 		return (isVisible(selfUserAvatar));
