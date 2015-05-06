@@ -483,6 +483,7 @@ Feature: Connect
     Given I see confirmation page
     Given I verify registration address
     When I wait for PYMK for 30 secs
+    And I hide keyboard
     And I press + button on a random Connect
   	And I press Clear button
     Then I see Contact list
@@ -505,6 +506,7 @@ Feature: Connect
     Given I see confirmation page
     Given I verify registration address
     When I wait for PYMK for 30 secs
+    And I hide keyboard
     And I tap on a random contact from PYMK and set it name to <Contact1> 
     And I see connect to <Contact1> dialog
     And I tap on edit connect request field
