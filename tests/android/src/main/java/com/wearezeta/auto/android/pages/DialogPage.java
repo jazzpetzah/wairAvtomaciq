@@ -405,6 +405,11 @@ public class DialogPage extends AndroidPage {
 		swipeRightCoordinates(1000);
 		return new ContactListPage(this.getLazyDriver());
 	}
+	
+	public ContactListPage navigateBack(int time) throws Exception {
+		swipeRightCoordinates(time);
+		return new ContactListPage(this.getLazyDriver());
+	}
 
 	public boolean isHintVisible() throws Exception {
 		refreshUITree();// TODO workaround
