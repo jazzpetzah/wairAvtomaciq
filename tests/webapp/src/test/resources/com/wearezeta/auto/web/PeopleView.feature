@@ -181,6 +181,31 @@ Feature: People View
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
+ @staging @id2272
+   Scenario Outline: Verify I can see participant profile of user who blocked you in a group conversation
+      Given There are 3 users where <Name> is me
+      Given Myself is connected to <KnownContact>
+      Given <KnownContact> is connected to <UnknownContact>
+      Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
+      Given <KnownContact> blocked Myself
+      Given Myself sent connection request to <UnknownContact>
+      Given I Sign in using login <Login> and password <Password>
+      Then I see my name on top of Contact list
+      When I open conversation with <ChatName>
+      When I click People button in group conversation
+      Then I see Group Participants popover
+      When I click on participant <KnownContact> on Group Participants popover
+      Then I see username <KnownContact> on Group Participants popover
+      And I see open conversation button on Group Participants popover
+      And I see Mail on Group Participants popover
+      Then I see Contact list with name <KnownContact>
+      When I click open conversation from Group Participants popover
+      Then I see conversation with <KnownContact> is selected in conversations list
+
+      Examples:
+	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
+	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
+
  @staging @id1703
    Scenario Outline: Verify you can tap individual participant profiles in a group conversation
       Given There are 5 users where <Name> is me
