@@ -11,12 +11,6 @@ public final class WebAppLocators {
 				+ "//*[contains(@class, 'btn-open-web') and contains(@class,'btn-success')]";
 	}
 
-	public static final class LandingPage {
-		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
-
-		public static final String xpathSwitchToRegisterButton = "(//*[@data-uie-name='go-register'])[2]";
-	}
-
 	public static final class LoginPage {
 
 		public static final String xpathLoginPage = "//*[@data-uie-name='go-wire-dot-com']";
@@ -216,6 +210,8 @@ public final class WebAppLocators {
 	}
 
 	public static final class RegistrationPage {
+		
+		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
 
 		public static final String xpathRootForm = "//form[@id='form-create']";
 		public static final String cssRootForm = "#form-create";
