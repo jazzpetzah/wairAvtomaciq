@@ -184,7 +184,11 @@ public class CommonAndroidSteps {
 	@When("^I hide keyboard$")
 	public void IHideKeyboard() throws Exception {
 		if (PagesCollection.loginPage != null) {
-			PagesCollection.loginPage.hideKeyboard();
+			try {
+				PagesCollection.loginPage.hideKeyboard();
+			} catch (Exception ex) {
+				// ignore silently
+			}
 		}
 	}
 
