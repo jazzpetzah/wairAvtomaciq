@@ -43,10 +43,8 @@ public class MainMenuAndDockPage extends OSXPage {
 		quitWire();
 		try {
 			OSXCommonUtils.deleteWireLoginFromKeychain();
-			OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+			OSXCommonUtils.deletePreferencesFile();
 			OSXCommonUtils.deleteCacheFolder();
-			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-					.getBackendType(LoginPage.class));
 		} catch (Exception ex) {
 			log.error("Can't clear Wire settings in OSX.\n" + ex.getMessage());
 		}
@@ -55,7 +53,7 @@ public class MainMenuAndDockPage extends OSXPage {
 		} catch (InterruptedException e) {
 		}
 
-		this.getDriver().navigate().to(OSXExecutionContext.wirePath);
+		this.startApp();
 	}
 
 	public void quitWire() throws Exception {

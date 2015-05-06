@@ -26,9 +26,9 @@ import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class OSXCommonUtils extends CommonUtils {
+	
 	private static final int PREFS_DAEMON_RESTART_TIMEOUT = 1000;
-	private static final String[] BACKEND_TYPE_DOMAIN_NAMES = ConfigurationDomainEnum.domainsList;
-
+	
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class
 			.getSimpleName());
 
@@ -88,12 +88,19 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static void deleteCacheFolder() throws Exception {
-		String command = String.format(
-				"rm -rf %s/Library/Containers/com.wearezeta.zclient.mac*",
-				System.getProperty("user.home"));
+		String command = String.format("rm -rf %s/Library/Containers/%s/Data/Library/Caches",
+				System.getProperty("user.home"),
+				OSXExecutionContext.wireConfigDomain);
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
 
+	public static void deletePreferencesFile() throws Exception {
+		String command = String.format("rm -rf %s/Library/Preferences/%s.plist",
+				System.getProperty("user.home"),
+				OSXExecutionContext.wireConfigDomain);
+		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+	}
+	
 	public static void deleteWireLoginFromKeychain() throws Exception {
 		String command = "security delete-generic-password -s \"zeta staging-nginz-https.zinfra.io\"";
 
@@ -110,18 +117,14 @@ public class OSXCommonUtils extends CommonUtils {
 
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
 		resetOSXPrefsDaemon();
-		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
-			removeZClientDomain(domain);
-		}
+		removeZClientDomain(OSXExecutionContext.wireConfigDomain);
 	}
 
 	public static void setZClientBackendAndDisableStartUI(String bt)
 			throws Exception {
 		resetOSXPrefsDaemon();
-		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
-			setZClientBackendForDomain(domain, bt);
-			disableStartUIOnFirstLogin(domain);
-		}
+		setZClientBackendForDomain(OSXExecutionContext.wireConfigDomain, bt);
+		disableStartUIOnFirstLogin(OSXExecutionContext.wireConfigDomain);
 	}
 
 	private static void resetOSXPrefsDaemon() throws Exception {
@@ -151,10 +154,8 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static boolean isBackendTypeSet(String bt) throws Exception {
-		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
-			if (!isBackendTypeSetForDomain(domain, bt)) {
-				return false;
-			}
+		if (!isBackendTypeSetForDomain(OSXExecutionContext.wireConfigDomain, bt)) {
+			return false;
 		}
 		return true;
 	}
@@ -206,11 +207,6 @@ public class OSXCommonUtils extends CommonUtils {
 		ClientDeviceInfo result = new ClientDeviceInfo(osName, osVersion,
 				deviceName, null, isWifiEnabled);
 		return result;
-	}
-
-	public static String getOsxClientInfoPlistFromConfig(Class<?> c)
-			throws Exception {
-		return CommonUtils.getValueFromConfig(c, "osxClientInfoPlist");
 	}
 
 	public static void killWireIfStuck() {
@@ -282,5 +278,15 @@ public class OSXCommonUtils extends CommonUtils {
 										+ " | grep -Ei '(%s)'", logStartTime,
 								logEndTime, LOG_FILTER_REGEX) });
 		log.debug(collectedLogEntries);
+	}
+
+	public static String getOsxClientInfoPlistFromConfig(Class<?> c)
+			throws Exception {
+		return CommonUtils.getValueFromConfig(c, "osxClientInfoPlist");
+	}
+
+	public static String getWireConfigDomainFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "wireConfigDomain");
 	}
 }

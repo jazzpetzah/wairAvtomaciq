@@ -56,6 +56,8 @@ public class CommonOSXSteps {
 
 	private long startupTime = -1;
 
+	private static boolean backendSet = false;
+
 	public long getStartupTime() {
 		return this.startupTime;
 	}
@@ -124,12 +126,16 @@ public class CommonOSXSteps {
 	public void setUpPerformance() throws Exception {
 		CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
 		OSXCommonUtils.deleteWireLoginFromKeychain();
-		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+		OSXCommonUtils.deletePreferencesFile();
 		OSXCommonUtils.deleteCacheFolder();
 
-		OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-				.getBackendType(this.getClass()));
-
+		if (!backendSet) {
+			OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
+					.getBackendType(this.getClass()));
+			backendSet = true;
+		}
+		
 		commonBefore();
 
 		resetBackendSettingsIfOverwritten();
@@ -139,12 +145,16 @@ public class CommonOSXSteps {
 	public void setUp() throws Exception {
 		CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
 		OSXCommonUtils.deleteWireLoginFromKeychain();
-		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+		OSXCommonUtils.deletePreferencesFile();
 		OSXCommonUtils.deleteCacheFolder();
 
-		OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-				.getBackendType(this.getClass()));
-
+		if (!backendSet) {
+			OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
+					.getBackendType(this.getClass()));
+			backendSet = true;
+		}
+		
 		commonBefore();
 
 		resetBackendSettingsIfOverwritten();
