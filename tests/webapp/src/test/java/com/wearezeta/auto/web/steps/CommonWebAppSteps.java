@@ -357,17 +357,17 @@ public class CommonWebAppSteps {
 	 *
 	 * @step. ^(\\w+) blocked (\\w+)$
 	 *
-	 * @param userFromNameAlias
+	 * @param userAsNameAlias
 	 *            user which wants to block another
-	 * @param usersToNameAliases
+	 * @param userToBlockNameAlias
 	 *            user to block
 	 *
 	 * @throws Exception
 	 */
 	@Given("^(\\w+) blocked (\\w+)$")
-	public void UserBlocks(String userAsNameAlias,
-			String usersToBlockNameAliases) throws Exception {
-		commonSteps.BlockContact(userAsNameAlias, usersToBlockNameAliases);
+	public void UserBlocks(String userAsNameAlias, String userToBlockNameAlias)
+			throws Exception {
+		commonSteps.BlockContact(userAsNameAlias, userToBlockNameAlias);
 	}
 
 	/**
