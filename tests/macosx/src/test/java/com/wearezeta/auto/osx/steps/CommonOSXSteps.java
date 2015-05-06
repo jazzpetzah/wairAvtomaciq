@@ -95,7 +95,23 @@ public class CommonOSXSteps {
 	}
 
 	private void startApp(RemoteWebDriver drv) {
+		try { CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE); } catch (Exception e) { }
+		try { OSXCommonUtils.deleteWireLoginFromKeychain(); } catch (Exception e) { }
+		try { OSXCommonUtils.deletePreferencesFile(); } catch (Exception e) { }
+		try { OSXCommonUtils.deleteCacheFolder(); } catch (Exception e) { }
+
+		if (!backendSet) {
+			try { OSXCommonUtils.removeAllZClientSettingsFromDefaults(); } catch (Exception e) { }
+			try { OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
+					.getBackendType(this.getClass())); } catch (Exception e) { }
+			backendSet = true;
+		}
+		
 		drv.navigate().to(OSXExecutionContext.wirePath);
+		
+		try {
+			resetBackendSettingsIfOverwritten();
+		} catch (Exception e) { }
 	}
 
 	private void commonBefore() throws Exception {
@@ -124,40 +140,12 @@ public class CommonOSXSteps {
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
-		CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
-		OSXCommonUtils.deleteWireLoginFromKeychain();
-		OSXCommonUtils.deletePreferencesFile();
-		OSXCommonUtils.deleteCacheFolder();
-
-		if (!backendSet) {
-			OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-					.getBackendType(this.getClass()));
-			backendSet = true;
-		}
-		
 		commonBefore();
-
-		resetBackendSettingsIfOverwritten();
 	}
 
 	@Before("~@performance")
 	public void setUp() throws Exception {
-		CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
-		OSXCommonUtils.deleteWireLoginFromKeychain();
-		OSXCommonUtils.deletePreferencesFile();
-		OSXCommonUtils.deleteCacheFolder();
-
-		if (!backendSet) {
-			OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-					.getBackendType(this.getClass()));
-			backendSet = true;
-		}
-		
 		commonBefore();
-
-		resetBackendSettingsIfOverwritten();
 	}
 
 	@Given("^(.*) has sent connection request to (.*)$")
