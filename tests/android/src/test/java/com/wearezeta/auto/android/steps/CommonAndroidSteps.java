@@ -819,8 +819,6 @@ public class CommonAndroidSteps {
 	 * 
 	 * @param searchByNameAlias
 	 *            the user to search for in the query results.
-	 * @param timeout
-	 *            the length of time to wait before giving up the search.
 	 * @param query
 	 *            the search query to pass to the backend, which will return a
 	 *            list of users.

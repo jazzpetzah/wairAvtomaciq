@@ -452,9 +452,6 @@ public class CommonWebAppSteps {
 	 * @param searchByNameAlias
 	 *            user name to search string
 	 * 
-	 * @param timeout
-	 *            max ping timeout in sec
-	 * 
 	 * @param query
 	 *            querry string
 	 * 
