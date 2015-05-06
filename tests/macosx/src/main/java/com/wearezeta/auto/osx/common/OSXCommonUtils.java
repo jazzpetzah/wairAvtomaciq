@@ -140,16 +140,17 @@ public class OSXCommonUtils extends CommonUtils {
 
 	private static void setZClientBackendForDomain(String domain, String bt)
 			throws Exception {
-		final String setBackendTypeCmd = String.format(
-				"defaults write %s ZMBackendEnvironmentType -string %s",
-				domain, bt);
+		final String setBackendTypeCmd = String
+				.format("defaults write ~/Containers/%s/Data/Library/Preferences/%s.plist ZMBackendEnvironmentType -string %s",
+						domain, domain, bt);
 		executeOsXCommand(new String[] { "/bin/bash", "-c", setBackendTypeCmd });
 	}
 
 	private static void disableStartUIOnFirstLogin(String domain)
 			throws Exception {
-		final String disableCmd = String.format(
-				"defaults write %s ZCSkipFirstTimeUseChecks -bool YES", domain);
+		final String disableCmd = String
+				.format("defaults write ~/Containers/%s/Data/Library/Preferences/%s.plist ZCSkipFirstTimeUseChecks -bool YES",
+						domain, domain);
 		executeOsXCommand(new String[] { "/bin/bash", "-c", disableCmd });
 	}
 
