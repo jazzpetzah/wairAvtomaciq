@@ -108,7 +108,7 @@ public class CommonAndroidSteps {
 		final By locator = By
 				.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton);
 		try {
-			if (DriverUtils.isElementDisplayed(drv, locator,
+			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
 					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
 				drv.findElement(locator).click();
 			}

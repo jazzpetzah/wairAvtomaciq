@@ -27,7 +27,7 @@ public class ConnectionRequestsPage extends OSXPage {
 			throws Exception {
 		String xpath = String.format(
 				OSXLocators.ConnectionRequestsPage.xpathFormatEmailText, email);
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(xpath), 3);
 	}
 
@@ -35,7 +35,7 @@ public class ConnectionRequestsPage extends OSXPage {
 			throws Exception {
 		String xpath = String.format(
 				OSXLocators.ConnectionRequestsPage.xpathFormatEmailText, email);
-		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(xpath), 3);
 	}
 

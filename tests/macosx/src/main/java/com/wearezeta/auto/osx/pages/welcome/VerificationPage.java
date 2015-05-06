@@ -56,7 +56,7 @@ public class VerificationPage extends OSXPage {
 	}
 
 	public boolean isVerificationRequested() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.VerificationPage.idEmailSentMessage), 60);
 	}
 
@@ -65,17 +65,17 @@ public class VerificationPage extends OSXPage {
 		String xpath = String
 				.format(OSXLocators.VerificationPage.xpathFormatEmailSentMessage,
 						email);
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(xpath), 10);
 	}
 
 	public boolean isReSendLinkVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(OSXLocators.VerificationPage.nameReSendLink), 10);
 	}
 
 	public boolean isReSendLinkDisappears() throws Exception {
-		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.name(OSXLocators.VerificationPage.nameReSendLink), 10);
 	}
 

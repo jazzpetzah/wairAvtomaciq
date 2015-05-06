@@ -40,7 +40,7 @@ public class LoginPage extends WebPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(WebAppLocators.LoginPage.xpathLoginPage));
 	}
 
@@ -61,7 +61,7 @@ public class LoginPage extends WebPage {
 		// 2. NPE when findElements() call
 		boolean noSignIn = false;
 		try {
-			noSignIn = DriverUtils.waitUntilElementDissapear(this.getDriver(),
+			noSignIn = DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 					By.xpath(WebAppLocators.LoginPage.xpathSignInButton), 60);
 		} catch (WebDriverException e) {
 			if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
@@ -75,7 +75,7 @@ public class LoginPage extends WebPage {
 
 	public boolean waitForLogin() throws Exception {
 		boolean noSignIn = waitForLoginButtonDisappearance();
-		boolean noSignInSpinner = DriverUtils.waitUntilElementDissapear(
+		boolean noSignInSpinner = DriverUtils.waitUntilLocatorDissapears(
 				this.getDriver(),
 				By.className(WebAppLocators.LoginPage.classNameSpinner), 40);
 		return noSignIn && noSignInSpinner;
@@ -92,7 +92,7 @@ public class LoginPage extends WebPage {
 		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
 		final By locator = By
 				.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons);
-		if (DriverUtils.waitUntilElementAppears(this.getDriver(), locator, 2)) {
+		if (DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator, 2)) {
 			for (WebElement btn : getDriver().findElements(locator)) {
 				if (btn.isDisplayed()) {
 					btn.click();
@@ -100,7 +100,7 @@ public class LoginPage extends WebPage {
 				}
 			}
 		}
-		assert DriverUtils.isElementDisplayed(getDriver(),
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(WebAppLocators.RegistrationPage.xpathRootForm)) : "Registration page is not visible";
 
 		return new RegistrationPage(this.getLazyDriver(), this.getUrl());

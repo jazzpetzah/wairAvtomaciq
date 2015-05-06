@@ -38,7 +38,7 @@ public class SelfPictureUploadPage extends WebPage {
 
 	public void waitUntilNotVisible(int secondsTimeout) throws Exception {
 		assert DriverUtils
-				.waitUntilElementDissapear(
+				.waitUntilLocatorDissapears(
 						this.getDriver(),
 						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton),
 						secondsTimeout) : "Picture selection dialog button is still visible after "
@@ -60,7 +60,7 @@ public class SelfPictureUploadPage extends WebPage {
 				+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});";
 		this.getDriver().executeScript(showPathInputJScript);
 		assert DriverUtils
-				.isElementDisplayed(
+				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.cssSelector(WebAppLocators.SelfPictureUploadPage.cssSendPictureInput),
 						5);
@@ -74,7 +74,7 @@ public class SelfPictureUploadPage extends WebPage {
 
 	public ContactsUploadPage confirmPictureSelection() throws Exception {
 		assert DriverUtils
-				.isElementDisplayed(
+				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathConfirmPictureSelectionButton),
 						5);

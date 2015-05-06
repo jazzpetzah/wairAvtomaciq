@@ -103,9 +103,9 @@ public class RegistrationPage extends AndroidPage {
 
 	public boolean isPictureSelected() throws Exception {
 		refreshUITree();
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
 	}
 
@@ -155,7 +155,7 @@ public class RegistrationPage extends AndroidPage {
 	public boolean isConfirmationVisible() throws Exception {
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(verifyEmailBtn));
-		return DriverUtils.isElementDisplayed(this.getDriver(), verifyEmailBtn);
+		return verifyEmailBtn.isDisplayed();
 	}
 
 	public PeoplePickerPage continueRegistration() throws Exception {

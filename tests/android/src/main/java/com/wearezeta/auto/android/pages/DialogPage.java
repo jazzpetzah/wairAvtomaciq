@@ -251,8 +251,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean checkCallingOverlay() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
-				callingMessageText);
+		return callingMessageText.isDisplayed();
 	}
 
 	public void typeAndSendMessage(String message) throws Exception {
@@ -338,7 +337,7 @@ public class DialogPage extends AndroidPage {
 
 	public boolean isImageExists() throws Exception {
 		refreshUITree();// TODO workaround
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				AndroidLocators.DialogPage.getByForDialogPageImage());
 	}
 
@@ -356,7 +355,7 @@ public class DialogPage extends AndroidPage {
 
 	public void changeCamera() throws Exception {
 		refreshUITree();// TODO workaround
-		if (DriverUtils.isElementDisplayed(this.getDriver(),
+		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.id(AndroidLocators.DialogPage.idDialogChangeCameraButton))) {
 			changeCameraButton.click();
 		}
@@ -655,7 +654,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean isDialogVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(AndroidLocators.DialogPage.idMessage));
 	}
 

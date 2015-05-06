@@ -113,7 +113,7 @@ public class CommonAndroidPage extends AndroidPage {
 
 	private void setFirefoxBrowserURL(String link) throws Exception {
 		refreshUITree();
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(AndroidLocators.Browsers.idFirefoxUrlBar));
 		urlBar.click();
 		for (int i = 0; i < 10; i++) {

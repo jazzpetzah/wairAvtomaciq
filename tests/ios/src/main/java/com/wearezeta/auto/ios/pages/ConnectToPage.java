@@ -106,7 +106,7 @@ public class ConnectToPage extends IOSPage {
 	}
 
 	public boolean waitForConnectDialog() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.className(IOSLocators.clasNameConnectDialogLabel));
 	}
 
@@ -124,12 +124,12 @@ public class ConnectToPage extends IOSPage {
 	}
 
 	public boolean isSendButtonVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameSendConnectButton));
 	}
 
 	public boolean isSendConnectionInputVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameSendConnectionInputField));
 	}
 

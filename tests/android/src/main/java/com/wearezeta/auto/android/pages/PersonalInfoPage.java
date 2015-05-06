@@ -149,7 +149,7 @@ public class PersonalInfoPage extends AndroidPage {
 		nameField.click();
 		Thread.sleep(2000); // fix for animation
 		refreshUITree();
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				AndroidLocators.PersonalInfoPage.getByForNameEditField());
 		if (!isVisible(nameEdit)) {
 			DriverUtils.mobileTapByCoordinates(getDriver(), nameField);
@@ -158,7 +158,7 @@ public class PersonalInfoPage extends AndroidPage {
 
 	public void changeName(String name, String newName) throws Exception {
 		refreshUITree();
-		DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.PersonalInfoPage.idNameField));
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(nameEdit));
@@ -212,7 +212,7 @@ public class PersonalInfoPage extends AndroidPage {
 		boolean flag = false;
 		refreshUITree();
 		DriverUtils
-				.waitUntilElementDissapear(this.getDriver(),
+				.waitUntilLocatorDissapears(this.getDriver(),
 						AndroidLocators.PersonalInfoPage
 								.getByForProfileOptionsButton());
 		if (!isVisible(settingsButton)) {
@@ -222,7 +222,7 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean waitForSettingsDissapear() throws Exception {
-		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
 	}
 

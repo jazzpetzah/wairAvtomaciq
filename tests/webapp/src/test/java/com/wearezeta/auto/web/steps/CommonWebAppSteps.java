@@ -156,10 +156,15 @@ public class CommonWebAppSteps {
 		while (ntry < MAX_TRIES) {
 			try {
 				if (DriverUtils
-						.isElementDisplayed(
+						.waitUntilLocatorIsDisplayed(
 								drv,
 								By.xpath(WebAppLocators.LandingPage.xpathSwitchToSignInButton),
-								5)) {
+								5)
+						|| DriverUtils
+								.waitUntilLocatorIsDisplayed(
+										drv,
+										By.xpath(WebAppLocators.RegistrationPage.xpathRootForm),
+										5)) {
 					break;
 				} else {
 					log.error(String

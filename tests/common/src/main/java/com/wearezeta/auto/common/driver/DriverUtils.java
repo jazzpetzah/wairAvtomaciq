@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
@@ -40,8 +39,8 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
-	public static final int DEFAULT_VISIBILITY_TIMEOUT = 20;
 	public static final int DEFAULT_PERCENTAGE = 50;
+	private static final int DEFAULT_LOOKUP_TIMEOUT_SECONDS = 15;
 
 	private static final Logger log = ZetaLogger.getLog(DriverUtils.class
 			.getSimpleName());
@@ -50,35 +49,12 @@ public class DriverUtils {
 		return s == null || s.length() == 0;
 	}
 
-	/**
-	 * Please use this method ONLY if you know that the element already exists
-	 * on the current page. If not then it will cause 10-15 seconds delay every
-	 * time it is called.
-	 * 
-	 * There is overloaded version of this method, which accepts By parameter,
-	 * and it should be used in case when an element has not been checked for
-	 * existence yet
-	 * 
-	 * @param driver
-	 * @param element
-	 * @return boolean value
-	 * @throws Exception
-	 */
-	public static boolean isElementDisplayed(RemoteWebDriver driver,
-			WebElement element) throws Exception {
-		try {
-			return element.isDisplayed();
-		} catch (NoSuchElementException e) {
-			return false;
-		}
-	}
-
-	public static boolean isElementDisplayed(RemoteWebDriver driver, By by)
+	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver, By by)
 			throws Exception {
-		return isElementDisplayed(driver, by, 1);
+		return waitUntilLocatorIsDisplayed(driver, by, DEFAULT_LOOKUP_TIMEOUT_SECONDS);
 	}
 
-	public static boolean isElementDisplayed(RemoteWebDriver driver,
+	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
 			final By by, int timeoutSeconds) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
@@ -99,14 +75,13 @@ public class DriverUtils {
 		}
 	}
 
-	private static final int DEFAULT_LOOKUP_TIMEOUT = 20;
 
-	public static boolean waitUntilElementDissapear(RemoteWebDriver driver,
+	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
 			final By by) throws Exception {
-		return waitUntilElementDissapear(driver, by, DEFAULT_LOOKUP_TIMEOUT);
+		return waitUntilLocatorDissapears(driver, by, DEFAULT_LOOKUP_TIMEOUT_SECONDS);
 	}
 
-	public static boolean waitUntilElementDissapear(RemoteWebDriver driver,
+	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
 			final By by, int timeout) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
@@ -130,7 +105,12 @@ public class DriverUtils {
 		}
 	}
 
-	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
+	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
+			final By locator) throws Exception {
+		return waitUntilLocatorAppears(driver, locator, DEFAULT_LOOKUP_TIMEOUT_SECONDS);
+	}
+
+	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
 			final By locator, int timeout) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
@@ -148,15 +128,10 @@ public class DriverUtils {
 		}
 	}
 
-	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
-			final By locator) throws Exception {
-		return waitUntilElementAppears(driver, locator, DEFAULT_LOOKUP_TIMEOUT);
-	}
-
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
 			final WebElement element) throws Exception {
 		return waitUntilElementClickable(driver, element,
-				DEFAULT_LOOKUP_TIMEOUT);
+				DEFAULT_LOOKUP_TIMEOUT_SECONDS);
 	}
 
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
@@ -179,7 +154,7 @@ public class DriverUtils {
 
 	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver)
 			throws Exception {
-		return waitUntilWebPageLoaded(driver, DEFAULT_LOOKUP_TIMEOUT);
+		return waitUntilWebPageLoaded(driver, DEFAULT_LOOKUP_TIMEOUT_SECONDS);
 	}
 
 	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver,
@@ -214,28 +189,6 @@ public class DriverUtils {
 			wait.until(ExpectedConditions.alertIsPresent());
 		} finally {
 			setDefaultImplicitWait(driver);
-		}
-	}
-
-	public static void setTextForChildByClassName(WebElement parent,
-			String childClassName, String value) {
-		parent.findElement(By.className(childClassName)).sendKeys(value);
-	}
-
-	public static boolean waitForElementWithTextByXPath(String xpath,
-			String name, AppiumDriver driver) throws InterruptedException {
-		int counter = 0;
-		while (true) {
-			counter++;
-			List<WebElement> contactsList = driver.findElementsByXPath(String
-					.format(xpath, name));
-			if (contactsList.size() > 0) {
-				return true;
-			}
-			Thread.sleep(200);
-			if (counter >= 10) {
-				return false;
-			}
 		}
 	}
 

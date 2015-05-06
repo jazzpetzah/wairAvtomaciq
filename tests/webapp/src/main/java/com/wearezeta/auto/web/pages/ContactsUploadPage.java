@@ -28,7 +28,7 @@ public class ContactsUploadPage extends WebPage {
 
 	public void waitUntilVisible(int secondsTimeout) throws Exception {
 		assert DriverUtils
-				.isElementDisplayed(
+				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.xpath(WebAppLocators.ContactsUploadPage.xpathShareContactsButton),
 						secondsTimeout) : "Contacts upload dialog has not been show within "

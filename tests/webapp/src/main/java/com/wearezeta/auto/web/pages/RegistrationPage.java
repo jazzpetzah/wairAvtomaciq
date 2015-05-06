@@ -51,11 +51,11 @@ public class RegistrationPage extends WebPage {
 		// FIXME: temporary workaround for white page instead of landing issue
 		while (ntry < MAX_TRIES) {
 			try {
-				if (DriverUtils.isElementDisplayed(this.getDriver(),
+				if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 						switchtoSignInBtnlocator)) {
 					getDriver().findElement(switchtoSignInBtnlocator).click();
 				}
-				if (DriverUtils.isElementDisplayed(this.getDriver(),
+				if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 						signInBtnlocator)) {
 					break;
 				} else {
@@ -71,7 +71,7 @@ public class RegistrationPage extends WebPage {
 			}
 			ntry++;
 		}
-		assert DriverUtils.isElementDisplayed(this.getDriver(),
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				signInBtnlocator) : "Sign in page is not visible";
 
 		return new LoginPage(this.getLazyDriver(), this.getUrl());

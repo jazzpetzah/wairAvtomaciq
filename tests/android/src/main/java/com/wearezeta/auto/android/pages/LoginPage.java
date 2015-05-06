@@ -145,13 +145,13 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public boolean waitForLoginScreenDisappear() throws Exception {
-		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idLoginButton), 40);
 	}
 
 	public boolean waitForLogin() throws Exception {
 		return DriverUtils
-				.waitUntilElementDissapear(this.getDriver(),
+				.waitUntilLocatorDissapears(this.getDriver(),
 						AndroidLocators.LoginPage
 								.getByForLoginPageRegistrationButton(), 40);
 	}
@@ -192,7 +192,7 @@ public class LoginPage extends AndroidPage {
 	public RegistrationPage join() throws Exception {
 		signUpButton.click();
 		DriverUtils
-				.waitUntilElementDissapear(this.getDriver(),
+				.waitUntilLocatorDissapears(this.getDriver(),
 						AndroidLocators.LoginPage
 								.getByForLoginPageRegistrationButton());
 		return new RegistrationPage(this.getLazyDriver());
@@ -200,7 +200,7 @@ public class LoginPage extends AndroidPage {
 
 	public boolean isDismissUpdateVisible() throws Exception {
 		return DriverUtils
-				.waitUntilElementAppears(
+				.waitUntilLocatorAppears(
 						this.getDriver(),
 						By.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton));
 	}

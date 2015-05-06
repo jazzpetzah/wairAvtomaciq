@@ -221,7 +221,7 @@ public class ConversationPage extends MainWirePage {
 		boolean isSend = false;
 		String xpath = String.format(
 				OSXLocators.xpathFormatSpecificMessageEntry, message);
-		DriverUtils.waitUntilElementAppears(this.getDriver(), By.xpath(xpath));
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.xpath(xpath));
 		WebElement element = getDriver().findElement(By.xpath(xpath));
 		if (element != null) {
 			isSend = true;
@@ -242,7 +242,7 @@ public class ConversationPage extends MainWirePage {
 
 	public boolean isSoundCloudContainerVisible() throws Exception {
 		return DriverUtils
-				.waitUntilElementAppears(
+				.waitUntilLocatorAppears(
 						this.getDriver(),
 						By.xpath(OSXLocators.xpathSoundCloudMediaContainerWithoutImage));
 	}
@@ -431,7 +431,7 @@ public class ConversationPage extends MainWirePage {
 	}
 
 	public boolean isMediaLinkAppearsInDialog(String link) throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(link));
 	}
 

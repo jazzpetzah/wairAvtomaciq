@@ -121,12 +121,12 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void waitForLaterButton(int time) throws Exception {
-		DriverUtils.waitUntilElementAppears(getDriver(),
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.name(IOSLocators.nameShareButton), time);
 	}
 
 	public PeoplePickerPage clickLaterButton() throws Exception {
-		if (DriverUtils.isElementDisplayed(this.getDriver(),
+		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameShareButton))) {
 			shareButton.click();
 			return new PeoplePickerPage(this.getLazyDriver());
@@ -136,7 +136,7 @@ public class LoginPage extends IOSPage {
 	}
 
 	public boolean isSelfProfileVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameProfileName));
 	}
 
@@ -144,7 +144,7 @@ public class LoginPage extends IOSPage {
 
 		confirmSignInButton.click();
 
-		if (DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.name(IOSLocators.nameLoginButton), 40)) {
 			return new ContactListPage(this.getLazyDriver());
 		} else {
@@ -196,7 +196,7 @@ public class LoginPage extends IOSPage {
 	}
 
 	public boolean waitForLogin() throws Exception {
-		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.name(IOSLocators.nameLoginField));
 	}
 
@@ -210,7 +210,7 @@ public class LoginPage extends IOSPage {
 							.name(contact)));
 		} catch (WebDriverException ex) {
 		}
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(contact));
 	}
 
@@ -265,7 +265,7 @@ public class LoginPage extends IOSPage {
 	}
 
 	public Boolean errorMailNotificationIsShown() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameErrorMailNotification));
 	}
 
@@ -274,12 +274,12 @@ public class LoginPage extends IOSPage {
 	}
 
 	public Boolean wrongCredentialsNotificationIsShown() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameWrongCredentialsNotification));
 	}
 
 	public void ignoreUpdate() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.nameIgnoreUpdateButton));
 		ignoreUpdateButton.click();
 	}

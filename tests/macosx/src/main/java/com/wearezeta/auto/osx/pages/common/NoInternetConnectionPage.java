@@ -27,7 +27,7 @@ public class NoInternetConnectionPage extends OSXPage {
 
 	public boolean isVisible() throws Exception {
 		return DriverUtils
-				.waitUntilElementAppears(
+				.waitUntilLocatorAppears(
 						this.getDriver(),
 						By.xpath(OSXLocators.NoInternetConnectionPage.xpathNoInternetMessage),
 						60);

@@ -52,7 +52,7 @@ public class ChangePasswordPage extends OSXPage {
 		changePasswordButton.click();
 
 		boolean isFound = DriverUtils
-				.waitUntilElementAppears(
+				.waitUntilLocatorAppears(
 						this.getDriver(),
 						By.xpath(OSXLocators.ChangePasswordPage.xpathPasswordChangedMessage),
 						30);
