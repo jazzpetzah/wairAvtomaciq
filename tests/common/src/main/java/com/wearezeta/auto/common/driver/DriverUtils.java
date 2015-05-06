@@ -40,7 +40,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
 	public static final int DEFAULT_PERCENTAGE = 50;
-	private static final int DEFAULT_LOOKUP_TIMEOUT_SECONDS = 15;
+	private static final int DEFAULT_LOOKUP_TIMEOUT_SECONDS = 10;
 
 	private static final Logger log = ZetaLogger.getLog(DriverUtils.class
 			.getSimpleName());
