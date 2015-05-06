@@ -20,6 +20,8 @@ public class PerformanceSteps {
 	private static final String RXLOGGER_RESOURCE_FILE_PATH = "/sdcard/RxLogger/Resource0.csv";
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
+	private static final int DEFAULT_SWIPE_TIME = 500;
+	private static final long DEFAULT_WAIT_TIME = 1000;
 
 	/**
 	 * Starts standard actions loop (read messages/send messages) to measure
@@ -43,7 +45,7 @@ public class PerformanceSteps {
 					ArrayList<WebElement> visibleContactsList;
 					int counter = 0;
 					do {
-						Thread.sleep(1000);
+						Thread.sleep(DEFAULT_WAIT_TIME);
 						visibleContactsList = new ArrayList<WebElement>(
 								PagesCollection.contactListPage
 										.GetVisibleContacts());
@@ -62,24 +64,29 @@ public class PerformanceSteps {
 					PagesCollection.dialogPage.tapDialogPageBottom();
 					PagesCollection.dialogPage.typeMessage(CommonUtils
 							.generateGUID());
-					Thread.sleep(1000);
+					try {
+						PagesCollection.dialogPage.pressKeyboardSendButton();
+					} catch (Exception ex) {
+						//ignore silently
+					}
+					Thread.sleep(DEFAULT_WAIT_TIME);
 					if (perfCommon.random.nextBoolean()) {
-						PagesCollection.dialogPage.swipeDown(1000);
+						PagesCollection.dialogPage.swipeDown(DEFAULT_SWIPE_TIME);
 						PagesCollection.contactListPage = PagesCollection.dialogPage
-								.navigateBack();
+								.navigateBack(DEFAULT_SWIPE_TIME);
 						PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
 								.tapOnContactByPosition(visibleContactsList,
 										randomInt);
 						PagesCollection.dialogPage.isDialogVisible();
 						PagesCollection.dialogPage.tapDialogPageBottom();
-						Thread.sleep(1000);
+						Thread.sleep(DEFAULT_WAIT_TIME);
 						PagesCollection.dialogPage.sendFrontCameraImage();
 					}
 					for (int y = 0; y < 2; y++) {
-						PagesCollection.dialogPage.swipeDown(1000);
+						PagesCollection.dialogPage.swipeDown(DEFAULT_SWIPE_TIME);
 					}
 					PagesCollection.contactListPage = PagesCollection.dialogPage
-							.navigateBack();
+							.navigateBack(DEFAULT_SWIPE_TIME);
 				}
 
 				/*

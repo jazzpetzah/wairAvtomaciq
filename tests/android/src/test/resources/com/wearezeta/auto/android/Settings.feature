@@ -23,7 +23,7 @@ Feature: Settings
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on my avatar
     And I tap on my name
     Then Settings button is unreachable
