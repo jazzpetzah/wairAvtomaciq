@@ -37,7 +37,7 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameSignInButton)
 	private WebElement signInButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameLoginButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathLoginButton)
 	private WebElement confirmSignInButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameRegisterButton)
@@ -145,7 +145,7 @@ public class LoginPage extends IOSPage {
 		confirmSignInButton.click();
 
 		if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.name(IOSLocators.nameLoginButton), 40)) {
+				By.name(IOSLocators.xpathLoginButton), 40)) {
 			return new ContactListPage(this.getLazyDriver());
 		} else {
 			return null;
