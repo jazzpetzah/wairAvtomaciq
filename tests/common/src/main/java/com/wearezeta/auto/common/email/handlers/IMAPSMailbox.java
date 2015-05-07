@@ -13,7 +13,41 @@ public class IMAPSMailbox implements ISupportsMessagesPolling {
 	private static final Logger log = ZetaLogger.getLog(IMAPSMailbox.class
 			.getSimpleName());
 
-	private ISupportsMessagesPolling mailboxHandler;
+	private ISupportsMessagesPolling mailboxHandler = null;
+
+	private ISupportsMessagesPolling instantiateHandler(
+			MBoxHandlerType handlerType) throws Exception {
+		final Constructor<?> ctor = handlerType.getHandlerClass()
+				.getConstructor();
+		return (ISupportsMessagesPolling) ctor.newInstance();
+	}
+
+	private void setMainMailboxHandler(MBoxHandlerType firstPriorityHandlerType)
+			throws Exception {
+		final ISupportsMessagesPolling firstPriorityHandler = instantiateHandler(firstPriorityHandlerType);
+		if (firstPriorityHandler.isAlive()) {
+			this.mailboxHandler = firstPriorityHandler;
+		} else {
+			for (MBoxHandlerType handlerType : MBoxHandlerType.values()) {
+				if (handlerType == firstPriorityHandlerType) {
+					continue;
+				}
+				final ISupportsMessagesPolling handlerInstance = instantiateHandler(handlerType);
+				if (handlerInstance.isAlive()) {
+					this.mailboxHandler = handlerInstance;
+					break;
+				}
+			}
+		}
+		if (this.mailboxHandler == null) {
+			throw new RuntimeException(
+					"All available email message handlers are currently dead. Cannot proceed further :-(");
+		}
+		log.info(String
+				.format("First priority email messages handler is set to '%s' (suggested type was '%s')",
+						this.mailboxHandler.getClass().getSimpleName(),
+						firstPriorityHandlerType.name()));
+	}
 
 	public Future<String> getMessage(Map<String, String> expectedHeaders,
 			int timeoutSeconds) throws Exception {
@@ -31,23 +65,19 @@ public class IMAPSMailbox implements ISupportsMessagesPolling {
 
 	public static synchronized IMAPSMailbox getInstance() throws Exception {
 		if (instance == null) {
-			final MBoxHandlerType handlerType = MBoxHandlerType
+			final MBoxHandlerType firstPriorityHandlerType = MBoxHandlerType
 					.fromString(CommonUtils.getValueFromCommonConfig(
 							IMAPSMailbox.class, "mailboxHandlerType"));
-			final Constructor<?> ctor = handlerType.getHandlerClass()
-					.getConstructor();
-			instance = new IMAPSMailbox(
-					(ISupportsMessagesPolling) ctor.newInstance());
-			log.debug(String.format(
-					"Created %s singleton. Message handler is set to '%s'",
-					IMAPSMailbox.class.getSimpleName(), handlerType.name()));
+			instance = new IMAPSMailbox(firstPriorityHandlerType);
+			log.debug(String.format("Successfully created %s singleton",
+					IMAPSMailbox.class.getSimpleName()));
 		}
 		return instance;
 	}
 
-	private IMAPSMailbox(ISupportsMessagesPolling mailboxHandler)
+	private IMAPSMailbox(MBoxHandlerType firstPriorityHandlerType)
 			throws Exception {
-		this.mailboxHandler = mailboxHandler;
+		this.setMainMailboxHandler(firstPriorityHandlerType);
 	}
 
 	@Override
@@ -55,5 +85,10 @@ public class IMAPSMailbox implements ISupportsMessagesPolling {
 			int expectedMsgsCount, int timeoutSeconds) throws Exception {
 		this.mailboxHandler.waitUntilMessagesCountReaches(deliveredTo,
 				expectedMsgsCount, timeoutSeconds);
+	}
+
+	@Override
+	public boolean isAlive() {
+		return true;
 	}
 }
