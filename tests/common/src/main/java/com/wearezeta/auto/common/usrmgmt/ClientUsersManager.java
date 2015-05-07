@@ -29,13 +29,16 @@ public class ClientUsersManager {
 			.format("user%dPassword", idx);
 	public static final Function<Integer, String> EMAIL_ALIAS_TEMPLATE = idx -> String
 			.format("user%dEmail", idx);
+	public static final Function<Integer, String> PHONE_NUMBER_ALIAS_TEMPLATE = idx -> String
+			.format("user%dPhoneNumber", idx);
 	private static final int MAX_USERS = 1001;
 
 	private static final Logger log = ZetaLogger
 			.getLog(ClientUsersManager.class.getSimpleName());
 
 	private void setClientUserAliases(ClientUser user, String[] nameAliases,
-			String[] passwordAliases, String[] emailAliases) {
+			String[] passwordAliases, String[] emailAliases,
+			String[] phoneNumberAliases) {
 		if (nameAliases != null && nameAliases.length > 0) {
 			user.clearNameAliases();
 			for (String nameAlias : nameAliases) {
@@ -54,6 +57,12 @@ public class ClientUsersManager {
 				user.addEmailAlias(emailAlias);
 			}
 		}
+		if (phoneNumberAliases != null && phoneNumberAliases.length > 0) {
+			user.clearPhoneNumberAliases();
+			for (String phoneNumberAlias : phoneNumberAliases) {
+				user.addPhoneNumberAlias(phoneNumberAlias);
+			}
+		}
 	}
 
 	private void resetClientsList(List<ClientUser> dstList, int maxCount)
@@ -68,8 +77,10 @@ public class ClientUsersManager {
 					.apply(userIdx + 1) };
 			final String[] emailAliases = new String[] { EMAIL_ALIAS_TEMPLATE
 					.apply(userIdx + 1) };
+			final String[] phoneNumberAliases = new String[] { PHONE_NUMBER_ALIAS_TEMPLATE
+					.apply(userIdx + 1) };
 			setClientUserAliases(pendingUser, nameAliases, passwordAliases,
-					emailAliases);
+					emailAliases, phoneNumberAliases);
 			dstList.add(pendingUser);
 		}
 	}
