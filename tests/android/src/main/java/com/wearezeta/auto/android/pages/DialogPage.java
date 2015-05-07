@@ -260,7 +260,8 @@ public class DialogPage extends AndroidPage {
 
 	public void typeAndSendMessage(String message) throws Exception {
 		refreshUITree();
-		cursorInput.sendKeys(message + "\n");
+		cursorInput.sendKeys(message);
+		getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 		try {
 			this.getDriver().hideKeyboard();
