@@ -26,7 +26,7 @@ public class LogcatListener extends Thread {
 	}
 
 	public void startListeningLogcat() {
-		String adbCommand = AndroidCommonUtils.ADB_PREFIX + "adb -d logcat *:E";
+		String adbCommand = AndroidCommonUtils.ADB_PREFIX + "adb -d logcat *:W";
 		try {
 			process = Runtime.getRuntime().exec(
 					new String[] { "/bin/bash", "-c", adbCommand });

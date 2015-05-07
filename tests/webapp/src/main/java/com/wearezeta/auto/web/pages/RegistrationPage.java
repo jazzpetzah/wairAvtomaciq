@@ -34,7 +34,7 @@ public class RegistrationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssVerificationEmail)
 	private WebElement verificationEmail;
 
-	private static final int MAX_TRIES = 3;
+	private static final int MAX_TRIES = 5;
 
 	public RegistrationPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
@@ -46,28 +46,26 @@ public class RegistrationPage extends WebPage {
 		final By signInBtnlocator = By
 				.xpath(WebAppLocators.LoginPage.xpathSignInButton);
 		final By switchtoSignInBtnlocator = By
-				.xpath(WebAppLocators.LandingPage.xpathSwitchToSignInButton);
+				.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton);
 		int ntry = 0;
 		// FIXME: temporary workaround for white page instead of landing issue
 		while (ntry < MAX_TRIES) {
 			try {
 				if (DriverUtils.isElementDisplayed(this.getDriver(),
-						switchtoSignInBtnlocator)) {
+						switchtoSignInBtnlocator, 2)) {
 					getDriver().findElement(switchtoSignInBtnlocator).click();
 				}
 				if (DriverUtils.isElementDisplayed(this.getDriver(),
-						signInBtnlocator)) {
+						signInBtnlocator, 1)) {
 					break;
 				} else {
 					log.debug(String
 							.format("Trying to refresh currupted login page (retry %s of %s)...",
 									ntry + 1, MAX_TRIES));
-					this.getDriver().navigate()
-							.to(this.getDriver().getCurrentUrl());
+					this.getDriver().navigate().to(this.getUrl());
 				}
 			} catch (Exception e) {
-				this.getDriver().navigate()
-						.to(this.getDriver().getCurrentUrl());
+				this.getDriver().navigate().to(this.getUrl());
 			}
 			ntry++;
 		}

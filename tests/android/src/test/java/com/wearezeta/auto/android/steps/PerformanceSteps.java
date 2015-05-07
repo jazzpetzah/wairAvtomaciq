@@ -64,11 +64,6 @@ public class PerformanceSteps {
 					PagesCollection.dialogPage.tapDialogPageBottom();
 					PagesCollection.dialogPage.typeMessage(CommonUtils
 							.generateGUID());
-					try {
-						PagesCollection.dialogPage.pressKeyboardSendButton();
-					} catch (Exception ex) {
-						//ignore silently
-					}
 					Thread.sleep(DEFAULT_WAIT_TIME);
 					if (perfCommon.random.nextBoolean()) {
 						PagesCollection.dialogPage.swipeDown(DEFAULT_SWIPE_TIME);

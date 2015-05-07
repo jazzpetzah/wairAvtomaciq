@@ -155,6 +155,7 @@ public class DialogPage extends AndroidPage {
 	private int initMessageCount = 0;
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 	private final String DIALOG_IMAGE = "android_dialog_sendpicture_result.png";
+	private static final int DEFAULT_SWIPE_TIME = 500;
 
 	public DialogPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -195,11 +196,11 @@ public class DialogPage extends AndroidPage {
 
 	public void SwipeOnCursorInput() throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorInput));
-		DriverUtils.swipeRight(this.getDriver(), cursorInput, 1000);
+		DriverUtils.swipeRight(this.getDriver(), cursorInput, DEFAULT_SWIPE_TIME);
 	}
 
 	public void SwipeLeftOnCursorInput() throws Exception {
-		DriverUtils.swipeLeft(this.getDriver(), closeCursor, 1000);
+		DriverUtils.swipeLeft(this.getDriver(), closeCursor, DEFAULT_SWIPE_TIME);
 	}
 
 	public void tapAddPictureBtn() throws Exception {
@@ -272,6 +273,11 @@ public class DialogPage extends AndroidPage {
 	public void typeMessage(String message) throws Exception {
 		refreshUITree();
 		cursorInput.sendKeys(message);
+		try {
+			this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
+		} catch (Exception ex) {
+			//ignore silently
+		}
 	}
 
 	public void pressKeyboardSendButton() throws Exception {
@@ -449,6 +455,15 @@ public class DialogPage extends AndroidPage {
 		if (isVisible(addParticipant)) {
 			SwipeOnCursorInput();
 			tapAddPictureBtn();
+			Thread.sleep(1000);
+			try {
+				this.getDriver().hideKeyboard();
+				SwipeOnCursorInput();
+				tapAddPictureBtn();
+				log.debug("Fix for opened keyboard #1");
+			} catch (WebDriverException e) {
+				log.debug("No keyboard visible. Nothing to hide #1");
+			}
 			changeCamera();
 			Thread.sleep(1000);
 			takePhoto();
@@ -457,6 +472,14 @@ public class DialogPage extends AndroidPage {
 			Thread.sleep(500);
 			SwipeOnCursorInput();
 			tapAddPictureBtn();
+			Thread.sleep(1000);
+			try {
+				this.getDriver().hideKeyboard();
+				SwipeOnCursorInput();
+				log.debug("Fix for opened keyboard #2");
+			} catch (WebDriverException e) {
+				log.debug("No keyboard visible. Nothing to hide #2");
+			}
 			changeCamera();
 			takePhoto();
 		}
@@ -507,12 +530,12 @@ public class DialogPage extends AndroidPage {
 		case "up":
 			this.getDriver().swipe(coords.x + elementSize.width / 2,
 					coords.y + elementSize.height / 2,
-					coords.x + elementSize.width / 2, coords.y + 120, 1000);
+					coords.x + elementSize.width / 2, coords.y + 120, DEFAULT_SWIPE_TIME);
 			break;
 		case "down":
 			this.getDriver().swipe(coords.x + elementSize.width / 2,
 					coords.y + 150, coords.x + elementSize.width / 2,
-					coords.y + elementSize.height - 200, 1000);
+					coords.y + elementSize.height - 200, DEFAULT_SWIPE_TIME);
 			break;
 		default:
 			log.fatal("Unknown direction");
