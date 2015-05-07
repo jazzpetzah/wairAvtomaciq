@@ -145,7 +145,7 @@ public class LoginPage extends IOSPage {
 		confirmSignInButton.click();
 
 		if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.name(IOSLocators.xpathLoginButton), 40)) {
+				By.xpath(IOSLocators.xpathLoginButton), 40)) {
 			return new ContactListPage(this.getLazyDriver());
 		} else {
 			return null;
