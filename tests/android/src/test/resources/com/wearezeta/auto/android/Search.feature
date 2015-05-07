@@ -102,6 +102,7 @@ Feature: Search
     Given I see Contact list
     When I swipe down contact list
     And I see People picker page
+    And I hide keyboard
     And I tap on Send an invitation
     And I tap on Gmail link
     Then mail subject is <Subject>
