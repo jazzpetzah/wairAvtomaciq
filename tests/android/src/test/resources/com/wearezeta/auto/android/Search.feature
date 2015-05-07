@@ -75,7 +75,7 @@ Feature: Search
     When I swipe down contact list
     And I see People picker page
     And I press Clear button
-    Then Contact list appears with my name <Name>
+    Then Contact list appears
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
