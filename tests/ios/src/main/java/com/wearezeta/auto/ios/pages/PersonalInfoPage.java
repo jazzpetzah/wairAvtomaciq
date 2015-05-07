@@ -102,7 +102,7 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public boolean isSettingsButtonVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameProfileSettingsButton));
 	}
 
@@ -147,7 +147,7 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public boolean isTooShortNameErrorMessage() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameSelfNameTooShortError));
 	}
 
@@ -168,12 +168,12 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public void waitForSettingsButtonAppears() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.nameProfileSettingsButton));
 	}
 
 	public void waitForEmailFieldVisible() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathEmailField));
 	}
 

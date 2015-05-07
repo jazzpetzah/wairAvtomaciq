@@ -34,7 +34,7 @@ public class StartedCallPage extends CallPage {
 	public boolean isOngoingCallVisible(String subscriberName) throws Exception {
 		String xpath = String.format(
 				OSXLocators.CallPage.xpathFormatSubscriberName, subscriberName);
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(xpath), 30);
 	}
 
@@ -42,7 +42,7 @@ public class StartedCallPage extends CallPage {
 		String xpath = String.format(
 				OSXLocators.CallPage.xpathFormatCallingUserMessage,
 				subscriberName);
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(xpath), 30);
 	}
 

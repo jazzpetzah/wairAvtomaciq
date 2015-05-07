@@ -67,4 +67,16 @@ class RESTMBoxClientWrapper implements ISupportsMessagesPolling {
 		getRecentMessages(deliveredTo, expectedMsgsCount, expectedMsgsCount,
 				timeoutSeconds * 1000);
 	}
+
+	@Override
+	public boolean isAlive() {
+		try {
+			RESTMBoxAPI.getRecentEmailsForUser(MessagingUtils.getAccountName(),
+					0, 0, 1000);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

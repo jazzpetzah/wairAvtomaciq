@@ -41,12 +41,12 @@ public class VideoPlayerPage extends IOSPage {
 	}
 
 	public void waitForVideoPlayerPage() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.nameVideoFullScreenButton));
 	}
 
 	public boolean isVideoPlayerPageOpened() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathVideoMainPage));
 	}
 
@@ -69,7 +69,7 @@ public class VideoPlayerPage extends IOSPage {
 	}
 
 	public void clickPauseButton() throws Exception {
-		if (DriverUtils.isElementDisplayed(this.getDriver(),
+		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameVideoPauseButton))) {
 			videoPauseButton.click();
 		} else {

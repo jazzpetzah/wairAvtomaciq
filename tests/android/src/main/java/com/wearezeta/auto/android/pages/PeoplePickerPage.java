@@ -282,7 +282,7 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean userIsVisible(String contact) throws Exception {
-		DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.PeoplePickerPage.idNoResultsFound));
 		refreshUITree();
 		this.getWait().until(
@@ -296,7 +296,7 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean groupIsVisible(String contact) throws Exception {
-		DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.PeoplePickerPage.idNoResultsFound));
 		refreshUITree();
 		this.getWait().until(
@@ -313,7 +313,7 @@ public class PeoplePickerPage extends AndroidPage {
 	public PeoplePickerPage selectContactByLongTap(String contact)
 			throws Exception {
 		refreshUITree();
-		DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.PeoplePickerPage.idNoResultsFound));
 		refreshUITree();
 		WebElement el = this

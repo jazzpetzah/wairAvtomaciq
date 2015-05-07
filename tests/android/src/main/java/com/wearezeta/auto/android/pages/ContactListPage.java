@@ -25,7 +25,7 @@ public class ContactListPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
 	private WebElement pickerClearBtn;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConversationListFrame")
 	private WebElement contactListFrame;
 
@@ -50,9 +50,9 @@ public class ContactListPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
 	private WebElement selfUserName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage .CLASS_NAME, locatorKey = "idSelfUserAvatar")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idSelfUserAvatar")
 	protected WebElement selfUserAvatar;
-	
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
 	private List<WebElement> laterBtn;
 
@@ -104,8 +104,7 @@ public class ContactListPage extends AndroidPage {
 		// workaround for incorrect tap
 		if (page == null) {
 			el = findInContactList(name, 1);
-			if (el != null
-					&& DriverUtils.isElementDisplayed(this.getDriver(), el)) {
+			if (el != null && DriverUtils.isElementPresentAndDisplayed(el)) {
 				this.restoreApplication();
 				el.click();
 				log.debug("tap on contact for the second time");
@@ -203,7 +202,7 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isContactMuted() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.id(AndroidLocators.ContactListPage.idMutedIcon));
 	}
 
@@ -279,7 +278,7 @@ public class ContactListPage extends AndroidPage {
 			laterBtnPicker.get(0).click();
 		}
 
-		DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
 		// TODO: we need this as sometimes we see people picker after login
 		PagesCollection.peoplePickerPage = new PeoplePickerPage(
@@ -310,7 +309,7 @@ public class ContactListPage extends AndroidPage {
 
 	public boolean isPlayPauseMediaButtonVisible()
 			throws NumberFormatException, Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(AndroidLocators.ContactListPage.idPlayPauseMedia));
 		return isVisible(playPauseMedia);
 	}

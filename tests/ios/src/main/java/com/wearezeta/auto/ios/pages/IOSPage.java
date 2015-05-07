@@ -214,9 +214,9 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	public boolean isKeyboardVisible() throws Exception {
-		DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.className(IOSLocators.classNameKeyboard));
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.className(IOSLocators.classNameKeyboard));
 	}
 

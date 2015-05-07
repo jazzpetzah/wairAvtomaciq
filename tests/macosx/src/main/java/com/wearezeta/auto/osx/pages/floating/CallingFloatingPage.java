@@ -35,7 +35,7 @@ public class CallingFloatingPage extends OSXPage {
 
 	public boolean isWindowVisible() throws Exception {
 		String windowXPath = OSXLocators.CallingFloatingPage.xpathWindow;
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(windowXPath));
 	}
 
@@ -45,7 +45,7 @@ public class CallingFloatingPage extends OSXPage {
 				userName);
 		boolean userNameFound = false;
 		try {
-			userNameFound = DriverUtils.waitUntilElementAppears(
+			userNameFound = DriverUtils.waitUntilLocatorAppears(
 					this.getDriver(), By.xpath(userNameXPath));
 		} catch (TimeoutException e) {
 		}

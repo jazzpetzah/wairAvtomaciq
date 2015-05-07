@@ -66,7 +66,7 @@ public class SelfProfilePage extends MainWirePage {
 		Actions builder = new Actions(this.getDriver());
 		builder.moveToElement(window).build().perform();
 		userPictureButton.click();
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
 
@@ -90,7 +90,7 @@ public class SelfProfilePage extends MainWirePage {
 			pictureSettingsCloseButton.click();
 		} catch (NoSuchElementException e) {
 		}
-		DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
 
@@ -104,7 +104,7 @@ public class SelfProfilePage extends MainWirePage {
 			pictureSettingsCloseButton.click();
 		} catch (NoSuchElementException e) {
 		}
-		DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(OSXLocators.xpathPictureFromImageFile));
 	}
 
@@ -121,7 +121,7 @@ public class SelfProfilePage extends MainWirePage {
 				OSXLocators.xpathFormatSelfProfileNameTextField, name);
 		log.debug("Looking for name " + name + " by xpath '" + xpath
 				+ "' in user profile.");
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(xpath), 60);
 	}
 

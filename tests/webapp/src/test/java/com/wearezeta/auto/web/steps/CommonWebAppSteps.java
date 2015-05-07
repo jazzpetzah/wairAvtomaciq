@@ -156,12 +156,12 @@ public class CommonWebAppSteps {
 		while (ntry < MAX_TRIES) {
 			try {
 				if (DriverUtils
-						.isElementDisplayed(
+						.waitUntilLocatorIsDisplayed(
 								drv,
 								By.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons),
 								5)
 						|| DriverUtils
-								.isElementDisplayed(
+								.waitUntilLocatorIsDisplayed(
 										drv,
 										By.xpath(WebAppLocators.RegistrationPage.xpathRootForm),
 										5)) {

@@ -56,7 +56,7 @@ public class GroupChatPage extends DialogPage {
 	}
 
 	public boolean isGroupChatPageVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.nameConversationCursorInput));
 	}
 
@@ -97,7 +97,7 @@ public class GroupChatPage extends DialogPage {
 	}
 
 	public boolean isMessageShownInGroupChat(String message) throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(message));
 	}
 
@@ -117,20 +117,20 @@ public class GroupChatPage extends DialogPage {
 	}
 
 	public boolean waitForContactToDisappear(String contact) throws Exception {
-		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.name(contact));
 	}
 
 	@Override
 	public IOSPage openConversationDetailsClick() throws Exception {
 		for (int i = 0; i < 3; i++) {
-			if (DriverUtils.isElementDisplayed(this.getDriver(),
+			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 					By.name(IOSLocators.nameOpenConversationDetails))) {
 				openConversationDetails.click();
-				DriverUtils.waitUntilElementAppears(this.getDriver(),
+				DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 						By.name(IOSLocators.nameAddContactToChatButton), 5);
 			}
-			if (DriverUtils.isElementDisplayed(this.getDriver(),
+			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 					By.name(IOSLocators.nameAddContactToChatButton))) {
 				break;
 			} else {
@@ -190,7 +190,7 @@ public class GroupChatPage extends DialogPage {
 	}
 
 	public boolean isYouLeftMessageShown() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameYouLeftMessage));
 	}
 

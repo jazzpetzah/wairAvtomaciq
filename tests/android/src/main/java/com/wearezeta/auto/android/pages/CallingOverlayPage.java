@@ -57,8 +57,8 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
-				callingOverlayContainer);
+		return DriverUtils
+				.isElementPresentAndDisplayed(callingOverlayContainer);
 	}
 
 	public void muteConversation() {

@@ -31,7 +31,7 @@ public class ProfilePicturePage extends WebPage {
 
 	public void waitUntilVisible(int timeoutSeconds) throws Exception {
 		assert DriverUtils
-				.isElementDisplayed(
+				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.xpath(WebAppLocators.ProfilePicturePage.xpathSelectPictureButton),
 						timeoutSeconds) : "Profile picture dialog has not been shown after "
@@ -40,7 +40,7 @@ public class ProfilePicturePage extends WebPage {
 
 	public void waitUntilNotVisible(int timeoutSeconds) throws Exception {
 		assert DriverUtils
-				.waitUntilElementDissapear(
+				.waitUntilLocatorDissapears(
 						this.getDriver(),
 						By.xpath(WebAppLocators.ProfilePicturePage.xpathSelectPictureButton),
 						timeoutSeconds) : "Profile picture dialog has not been hidden after "

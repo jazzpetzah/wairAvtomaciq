@@ -83,7 +83,7 @@ public class ContactListPage extends IOSPage {
 
 	public boolean isMyUserNameDisplayedFirstInContactList(String name)
 			throws Exception {
-		if (DriverUtils.isElementDisplayed(this.getDriver(),
+		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(IOSLocators.xpathMyUserInContactList))) {
 			return myUserNameInContactList.getText().equals(name);
 		} else {
@@ -116,7 +116,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean isPlayPauseButtonVisible(String contact) throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(), By
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
 				.xpath(String.format(
 						IOSLocators.xpathContactListPlayPauseButton, contact)));
 	}
@@ -163,7 +163,7 @@ public class ContactListPage extends IOSPage {
 
 	public String getFirstDialogName(String name) throws Exception {
 
-		DriverUtils.waitUntilElementAppears(this.getDriver(), By.xpath(String
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.xpath(String
 				.format(IOSLocators.xpathFirstInContactList, name)));
 		WebElement contact = this.getDriver().findElement(
 				By.xpath(String.format(IOSLocators.xpathFirstInContactList,
@@ -280,7 +280,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean waitForContactListToLoad() throws Exception {
-		boolean waitForUser = DriverUtils.waitUntilElementAppears(
+		boolean waitForUser = DriverUtils.waitUntilLocatorAppears(
 				this.getDriver(),
 				By.xpath(IOSLocators.xpathMyUserInContactList));
 		if (!waitForUser) {
@@ -329,7 +329,7 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean isPendingRequestInContactList() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathPendingRequest));
 	}
 
@@ -339,17 +339,14 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean isDisplayedInContactList(String name) throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(name));
 	}
 
 	public boolean isTutorialShown() throws Exception {
 		// this.refreshUITree();
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
-				By.name(IOSLocators.nameTutorialView));
-		boolean tutorialShown = DriverUtils.isElementDisplayed(
-				this.getDriver(), tutorialView);
-		return tutorialShown;
+		return DriverUtils.waitUntilLocatorIsDisplayed(
+				this.getDriver(), By.name(IOSLocators.nameTutorialView), 10);
 	}
 
 	public void dismissTutorial() throws Exception {
@@ -366,8 +363,6 @@ public class ContactListPage extends IOSPage {
 	public IOSPage tapOnContactByIndex(List<WebElement> contacts, int index)
 			throws Exception {
 		IOSPage page = null;
-		log.debug(DriverUtils.isElementDisplayed(this.getDriver(),
-				contacts.get(index)));
 		DriverUtils.waitUntilElementClickable(this.getDriver(),
 				contacts.get(index));
 		try {

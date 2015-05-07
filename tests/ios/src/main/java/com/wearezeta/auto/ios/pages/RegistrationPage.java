@@ -129,7 +129,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public boolean isTakeOrSelectPhotoLabelVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameTakePhotoHintLabel));
 	}
 
@@ -199,7 +199,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public PeoplePickerPage waitForConfirmationMessage() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.className(IOSLocators.classNameConfirmationMessage));
 
 		return new PeoplePickerPage(this.getLazyDriver());
@@ -258,7 +258,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void clickCreateAccountButton() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.nameCreateAccountButton));
 		createAccountButton.click();
 	}

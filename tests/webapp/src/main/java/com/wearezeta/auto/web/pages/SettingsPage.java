@@ -29,7 +29,7 @@ public class SettingsPage extends WebPage {
 
 	public boolean isVisible() throws Exception {
 		final String xpath = WebAppLocators.SettingsPage.xpathSettingsDialogRoot;
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(xpath));
 	}
 

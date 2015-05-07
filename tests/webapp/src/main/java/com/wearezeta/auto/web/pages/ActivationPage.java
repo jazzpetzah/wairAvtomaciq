@@ -27,7 +27,7 @@ public class ActivationPage extends WebPage {
 	private ContactListPage openWebApp(int timeoutSeconds) throws Exception {
 		final By openWebAppBtnLocator = By
 				.xpath(WebAppLocators.ActivationPage.xpathBtnOpenWebApp);
-		if (DriverUtils.isElementDisplayed(this.getDriver(),
+		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				openWebAppBtnLocator, timeoutSeconds)) {
 			getDriver().findElement(openWebAppBtnLocator).click();
 		} else {
@@ -40,7 +40,7 @@ public class ActivationPage extends WebPage {
 	public ContactListPage verifyActivation(int timeoutSeconds)
 			throws Exception {
 		if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
-			assert DriverUtils.waitUntilElementDissapear(this.getDriver(),
+			assert DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 					By.xpath(WebAppLocators.ActivationPage.xpathBtnOpenWebApp),
 					timeoutSeconds) : "Activation page is visible instead of the web app";
 			return new ContactListPage(getLazyDriver());

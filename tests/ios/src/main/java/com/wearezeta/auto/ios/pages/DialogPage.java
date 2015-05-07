@@ -153,11 +153,11 @@ public class DialogPage extends IOSPage {
 
 	public boolean isMessageVisible(String msg) throws Exception {
 
-		return DriverUtils.isElementDisplayed(this.getDriver(), By.name(msg));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(msg));
 	}
 
 	public boolean isPingButtonVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePingButton));
 	}
 
@@ -171,10 +171,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean waitForCursorInputVisible() throws Exception {
-		this.getWait()
-				.until(ExpectedConditions.visibilityOf(conversationInput));
-
-		return DriverUtils.isElementDisplayed(getDriver(), conversationInput);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.name(IOSLocators.nameConversationCursorInput), 10);
 	}
 
 	public void waitForYouAddedCellVisible() throws Exception {
@@ -245,7 +243,7 @@ public class DialogPage extends IOSPage {
 	public CameraRollPage pressAddPictureButton() throws Exception {
 		CameraRollPage page;
 		addPictureButton.click();
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathCameraLibraryButton));
 		page = new CameraRollPage(this.getLazyDriver());
 		return page;
@@ -270,7 +268,7 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void startMediaContent() throws Exception {
-		boolean flag = DriverUtils.isElementDisplayed(this.getDriver(),
+		boolean flag = DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell));
 		if (flag) {
 			mediaLinkCell.click();
@@ -349,13 +347,13 @@ public class DialogPage extends IOSPage {
 	public IOSPage openConversationDetailsClick() throws Exception {
 
 		for (int i = 0; i < 3; i++) {
-			if (DriverUtils.isElementDisplayed(this.getDriver(),
+			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 					By.name(IOSLocators.nameOpenConversationDetails))) {
 				openConversationDetails.click();
-				DriverUtils.waitUntilElementAppears(this.getDriver(),
+				DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 						By.name(IOSLocators.nameAddContactToChatButton), 5);
 			}
-			if (DriverUtils.isElementDisplayed(this.getDriver(),
+			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 					By.name(IOSLocators.nameAddContactToChatButton))) {
 				break;
 			} else {
@@ -443,7 +441,7 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean isMediaContainerVisible() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell));
 		return mediaLinkCell != null;
 	}
@@ -850,7 +848,7 @@ public class DialogPage extends IOSPage {
 
 	public boolean isTypeOrSlideExists(String msg) throws Exception {
 		return DriverUtils
-				.waitUntilElementAppears(getDriver(), By.name(msg), 5);
+				.waitUntilLocatorAppears(getDriver(), By.name(msg), 5);
 	}
 
 	public boolean chatheadIsVisible(String contact) throws Exception {

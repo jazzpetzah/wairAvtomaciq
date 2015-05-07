@@ -33,7 +33,7 @@ public class ProblemReportPage extends OSXPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.ProblemReportPage.idWindow), 3);
 	}
 

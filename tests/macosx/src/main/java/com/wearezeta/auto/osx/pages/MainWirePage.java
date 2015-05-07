@@ -30,7 +30,7 @@ public class MainWirePage extends OSXPage {
 	}
 
 	public boolean isMainWindowVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(OSXLocators.MainWirePage.xpathWindow));
 	}
 
