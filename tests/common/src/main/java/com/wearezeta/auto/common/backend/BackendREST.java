@@ -36,12 +36,11 @@ final class BackendREST {
 			.getSimpleName());
 
 	private static String backendUrl = "not set";
-
+	private static Client client = Client.create();
 	static {
 		log.setLevel(Level.DEBUG);
+		client.setConnectTimeout(5000);
 	}
-
-	private static Client client = Client.create();
 
 	private static void verifyRequestResult(int currentResponseCode,
 			int[] acceptableResponseCodes) throws BackendRequestException {
