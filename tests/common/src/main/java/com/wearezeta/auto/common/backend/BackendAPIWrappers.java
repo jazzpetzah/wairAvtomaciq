@@ -92,11 +92,13 @@ public final class BackendAPIWrappers {
 			BackendREST.registerNewUser(user.getEmail(), user.getName(),
 					user.getPassword());
 			activateRegisteredUserByEmail(activationMessage);
+			// TODO: attach phone number
 			break;
 		case ByPhoneNumber:
 			BackendREST.registerNewUser(user.getPhoneNumber(), user.getName(),
 					user.getPassword());
 			activateRegisteredUserByPhoneNumber(user.getPhoneNumber());
+			// TODO: attach email
 			break;
 		default:
 			throw new RuntimeException(String.format(

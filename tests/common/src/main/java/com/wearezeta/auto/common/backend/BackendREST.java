@@ -2,7 +2,6 @@ package com.wearezeta.auto.common.backend;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -274,9 +273,8 @@ final class BackendREST {
 			PhoneNumber phoneNumber) throws Exception {
 		Builder webResource = buildDefaultRequest(
 				String.format("i/users/activation-code?phone=%s",
-						URLEncoder.encode(phoneNumber.toString(), "utf-8")),
-				MediaType.APPLICATION_JSON).header("Authorization",
-				BASIC_AUTH_HEADER_VALUE);
+						phoneNumber.toString()), MediaType.APPLICATION_JSON)
+				.header("Authorization", BASIC_AUTH_HEADER_VALUE);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
@@ -286,10 +284,9 @@ final class BackendREST {
 	private static JSONObject getActivationDataViaBackdoor(String email)
 			throws Exception {
 		Builder webResource = buildDefaultRequest(
-				String.format("i/users/activation-code?email=%s",
-						URLEncoder.encode(email, "utf-8")),
-				MediaType.APPLICATION_JSON).header("Authorization",
-				BASIC_AUTH_HEADER_VALUE);
+				String.format("i/users/activation-code?email=%s", email,
+						"utf-8"), MediaType.APPLICATION_JSON).header(
+				"Authorization", BASIC_AUTH_HEADER_VALUE);
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
@@ -530,8 +527,7 @@ final class BackendREST {
 			throws Exception {
 		// Changed this to make it look the same as in webapp
 		Builder webResource = buildDefaultRequestWithAuth(
-				String.format("search/contacts?q=%s&size=30&l=3&d=1",
-						URLEncoder.encode(query, "utf-8")),
+				String.format("search/contacts?q=%s&size=30&l=3&d=1", query),
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);
 		final String output = httpGet(webResource,
@@ -542,8 +538,7 @@ final class BackendREST {
 	public static JSONObject addContactsToGroupConvo(AuthToken token,
 			List<String> contactsIds, String conversationId) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
-				String.format("conversations/%s/members",
-						URLEncoder.encode(conversationId, "utf-8")),
+				String.format("conversations/%s/members", conversationId),
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
