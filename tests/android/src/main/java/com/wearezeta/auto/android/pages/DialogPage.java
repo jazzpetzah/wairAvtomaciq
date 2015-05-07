@@ -14,6 +14,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import android.view.KeyEvent;
+
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -257,7 +259,8 @@ public class DialogPage extends AndroidPage {
 
 	public void typeAndSendMessage(String message) throws Exception {
 		refreshUITree();
-		cursorInput.sendKeys(message + "\n");
+		cursorInput.sendKeys(message);
+		getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
 		try {
 			this.getDriver().hideKeyboard();
