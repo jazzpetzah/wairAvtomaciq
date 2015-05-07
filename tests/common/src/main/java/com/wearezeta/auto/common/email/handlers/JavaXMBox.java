@@ -235,4 +235,16 @@ class JavaXMBox implements ISupportsMessagesPolling {
 						deliveredTo, fetchedMsgsCount, expectedMsgsCount,
 						timeoutSeconds);
 	}
+
+	@Override
+	public boolean isAlive() {
+		try {
+			this.openFolder(false);
+			this.closeFolder(false);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

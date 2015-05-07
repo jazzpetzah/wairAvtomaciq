@@ -123,7 +123,7 @@ public class CommonWebAppSteps {
 				+ "'");
 	}
 
-	private final static int MAX_TRIES = 3;
+	private final static int MAX_TRIES = 5;
 
 	private void navigateToStartPage(RemoteWebDriver drv) {
 		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
@@ -158,7 +158,7 @@ public class CommonWebAppSteps {
 				if (DriverUtils
 						.waitUntilLocatorIsDisplayed(
 								drv,
-								By.xpath(WebAppLocators.LandingPage.xpathSwitchToSignInButton),
+								By.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons),
 								5)
 						|| DriverUtils
 								.waitUntilLocatorIsDisplayed(
@@ -168,7 +168,7 @@ public class CommonWebAppSteps {
 					break;
 				} else {
 					log.error(String
-							.format("Landing page has failed to load. Trying to refresh (%s of %s)...",
+							.format("Start page has failed to load. Trying to refresh (%s of %s)...",
 									ntry + 1, MAX_TRIES));
 					drv.navigate().to(drv.getCurrentUrl());
 				}
