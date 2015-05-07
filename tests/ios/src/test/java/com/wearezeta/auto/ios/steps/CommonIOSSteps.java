@@ -145,7 +145,7 @@ public class CommonIOSSteps {
 	 *            time in seconds to close the app
 	 * 
 	 * @step. ^I close the app for (.*) seconds$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I close the app for (.*) seconds$")
 	public void ICloseApp(int seconds) throws Exception {
@@ -175,13 +175,13 @@ public class CommonIOSSteps {
 
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
-		commonSteps.ThereAreNUsers(count);
+		commonSteps.ThereAreNUsers(Platform.iOS, count);
 	}
 
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(Platform.iOS, count, myNameAlias);
 	}
 
 	@When("^(.*) ignore all requests$")
@@ -350,8 +350,7 @@ public class CommonIOSSteps {
 
 	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, String query)
-			throws Exception {
+			String searchByNameAlias, String query) throws Exception {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 

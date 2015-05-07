@@ -173,13 +173,13 @@ public class CommonOSXSteps {
 
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
-		commonSteps.ThereAreNUsers(count);
+		commonSteps.ThereAreNUsers(Platform.Mac, count);
 	}
 
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Mac, count, myNameAlias);
 	}
 
 	@When("^(.*) ignore all requests$")

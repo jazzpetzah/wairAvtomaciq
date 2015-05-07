@@ -1,6 +1,9 @@
 package com.wearezeta.auto.common.usrmgmt;
 
+import java.math.BigInteger;
 import java.util.Random;
+
+import org.apache.commons.lang3.StringUtils;
 
 public final class PhoneNumber {
 	private static final int MAX_NUMBER_LENGTH = 16;
@@ -60,5 +63,15 @@ public final class PhoneNumber {
 					resultNumber, MAX_NUMBER_LENGTH));
 		}
 		return resultNumber;
+	}
+
+	public static PhoneNumber increasedBy(PhoneNumber srcNumber, BigInteger by)
+			throws IncorrectPhoneNumberException {
+		final int digitsCount = srcNumber.toString().length() - 1;
+		final BigInteger srcNumberAsBigInt = new BigInteger(srcNumber
+				.toString().substring(1, srcNumber.toString().length()));
+		final String increasedNumber = srcNumberAsBigInt.add(by).toString();
+		return new PhoneNumber("+", StringUtils.leftPad(increasedNumber,
+				digitsCount, '0'));
 	}
 }

@@ -163,7 +163,7 @@ public class ClientUser {
 
 	private Set<String> phoneNumberAliases = new HashSet<String>();
 
-	public Set<String> phoneNumberAliases() {
+	public Set<String> getPhoneNumberAliases() {
 		return new HashSet<String>(this.phoneNumberAliases);
 	}
 

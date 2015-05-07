@@ -289,7 +289,7 @@ public class CommonWebAppSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Web, count, myNameAlias);
 		IChangeUserAvatarPicture(myNameAlias, "default");
 	}
 
@@ -310,7 +310,7 @@ public class CommonWebAppSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
 	public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
 			String myNameAlias) throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Web, count, myNameAlias);
 	}
 
 	/**
