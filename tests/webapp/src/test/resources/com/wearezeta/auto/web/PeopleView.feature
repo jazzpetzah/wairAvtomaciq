@@ -123,15 +123,15 @@ Feature: People View
       Then I see correct add people button tool tip
       When I click on participant <UnknownContact> on Group Participants popover
       Then I see username <UnknownContact> on Group Participants popover
-      And I see Mail on Group Participants popover
+      And I see Mail <UnknownContactMail> on Group Participants popover
       And I see Pending button on Group Participants popover
       When I click Pending button on Group Participants popover
       When I click confirm connect button on Group Participants popover
       Then I see conversation with <UnknownContact> is selected in conversations list
 
       Examples:
-	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
-	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
+	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | UnknownContactMail                          | ChatName               | Message   |
+	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | smoketester.webapp+user3Name@wearezeta.com  | PeoplePopoverGroupChat | YOU ADDED |
 
 
   @regression @id2270
@@ -147,14 +147,14 @@ Feature: People View
       Then I see Group Participants popover
       When I click on participant <KnownContact> on Group Participants popover
       Then I see username <KnownContact> on Group Participants popover
-      And I see Mail on Group Participants popover
+      And I see Mail <KnownContactMail> on Group Participants popover
       And I see open conversation button on Group Participants popover
       When I click open conversation from Group Participants popover
       Then I see conversation with <KnownContact> is selected in conversations list
 
       Examples:
-	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
-	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
+	 | Login      | Password      | Name      | KnownContact  | KnownContactMail                            | UnknownContact  | ChatName               | Message   |
+	 | user1Email | user1Password | user1Name | user2Name     | smoketester.webapp+user2Name@wearezeta.com  | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
  @staging @id2271
    Scenario Outline: Verify I can see participant profile of user I blocked in a group conversation
@@ -172,14 +172,14 @@ Feature: People View
       When I click on participant <KnownContact> on Group Participants popover
       Then I see username <KnownContact> on Group Participants popover
       And I see Unblock button on Group Participants popover
-      And I see Mail on Group Participants popover
+      And I see Mail <KnownContactMail> on Group Participants popover
       When I click Unblock button on Group Participants popover
       When I confirm Unblock from group chat on Group Participants popover
       Then I see Contact list with name <KnownContact>
 
       Examples:
-	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
-	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
+	 | Login      | Password      | Name      | KnownContact  | KnownContactMail                            | UnknownContact  | ChatName               | Message   |
+	 | user1Email | user1Password | user1Name | user2Name     | smoketester.webapp+user2Name@wearezeta.com  | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
  @staging @id2272
    Scenario Outline: Verify I can see participant profile of user who blocked you in a group conversation
@@ -197,14 +197,14 @@ Feature: People View
       When I click on participant <KnownContact> on Group Participants popover
       Then I see username <KnownContact> on Group Participants popover
       And I see open conversation button on Group Participants popover
-      And I see Mail on Group Participants popover
+      And I see Mail <KnownContactMail> on Group Participants popover
       Then I see Contact list with name <KnownContact>
       When I click open conversation from Group Participants popover
       Then I see conversation with <KnownContact> is selected in conversations list
 
       Examples:
-	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
-	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
+	 | Login      | Password      | Name      | KnownContact  | KnownContactMail                            | UnknownContact  | ChatName               | Message   |
+	 | user1Email | user1Password | user1Name | user2Name     | smoketester.webapp+user2Name@wearezeta.com  | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
  @staging @id1703
    Scenario Outline: Verify you can tap individual participant profiles in a group conversation
@@ -236,7 +236,7 @@ Feature: People View
       And I see correct remove from group button tool tip on Group Participants popover
       And I see open conversation button on Group Participants popover
       And I see correct open conversation button tool tip on Group Participants popover
-      And I see Mail on Group Participants popover
+      And I see Mail <KnownContact2Mail> on Group Participants popover
       And Would open mail client when clicking mail on Group Participants popover
       When I click back button on Group Participants popover
 # checking User which I blocked
@@ -246,7 +246,7 @@ Feature: People View
       And I see Remove button on Group Participants popover
       And I see Unblock button on Group Participants popover
       And I see correct Unblock button tool tip on Group Participants popover
-      And I see Mail on Group Participants popover
+      And I see Mail <KnownContact2Mail> on Group Participants popover
       And Would open mail client when clicking mail on Group Participants popover
       When I click back button on Group Participants popover
 # checking User that I requested to connect
@@ -266,7 +266,7 @@ Feature: People View
       And I see an avatar on Group Participants popover
       And I see Remove button on Group Participants popover
       And I see correct remove from group button tool tip on Group Participants popover
-      And I see Mail on Group Participants popover
+      And I see Mail <UnknownContact2Mail> on Group Participants popover
       And Would open mail client when clicking mail on Group Participants popover
       And I see Pending button on Group Participants popover
       And I see correct pending button tool tip on Group Participants popover
@@ -274,16 +274,16 @@ Feature: People View
       When I click back button on Group Participants popover
 # checking my own profile
       When I click on participant Myself on Group Participants popover
-      Then I see username <Name> on Group Participants popover
+      Then I see username me on Group Participants popover
       And I see an avatar on Group Participants popover
       And I see profile button on Group Participants popover
       And I see correct profile button tool tip on Group Participants popover
-      And I see Mail on Group Participants popover
+      And I see Mail <Mail> on Group Participants popover
       And Would open mail client when clicking mail on Group Participants popover
 
       Examples:
-	 | Login      | Password      | Name      | KnownContact  | KnownContact2  | UnknownContact  | UnknownContact2  | ChatName               | Message   |
-	 | user1Email | user1Password | user1Name | user2Name     | user3Name      | user4Name       | user5Name        | PeoplePopoverGroupChat | YOU ADDED |
+	 | Login      | Password      | Name      | Mail                                        | KnownContact  | KnownContactMail                            | KnownContact2  | KnownContact2Mail                           | UnknownContact  | UnknownContact2  | UnknownContactMail                            | ChatName               | Message   |
+	 | user1Email | user1Password | user1Name | smoketester.webappp+user1Name@wearezeta.com  | user2Name     | smoketester.webapp+user2Name@wearezeta.com  | user3Name      | smoketester.webapp+user3Name@wearezeta.com  | user4Name       | user5Name        | smoketester.webapp+user5Name@wearezeta.com  | PeoplePopoverGroupChat | YOU ADDED |
 
  @staging @id1551
    Scenario Outline: Verify I can ignore connection request in a group conversation
@@ -300,15 +300,15 @@ Feature: People View
       When I click on participant <UnknownContact> on Group Participants popover
       Then I see correct remove from group button tool tip on Group Participants popover
       And I see username <UnknownContact> on Group Participants popover
-      And I see Mail on Group Participants popover
+      And I see Mail <UnknownContactMail> on Group Participants popover
       And I see Pending button on Group Participants popover
       When I click Pending button on Group Participants popover
       When I click ignore connect button on Group Participants popover
       Then I do not see connection request from one user
 
       Examples:
-	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | ChatName               | Message   |
-	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
+	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | UnknownContactMail                          | ChatName               | Message   |
+	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | smoketester.webapp+user3Name@wearezeta.com  | PeoplePopoverGroupChat | YOU ADDED |
 
 
   @smoke @id1687

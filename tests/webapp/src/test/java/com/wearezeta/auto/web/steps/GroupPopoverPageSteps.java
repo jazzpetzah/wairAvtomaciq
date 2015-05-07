@@ -574,16 +574,27 @@ public class GroupPopoverPageSteps {
 	 *
 	 * @param not
 	 *            is set to null if "do not" part does not exist
+	 * @param mail
+	 *            the mail to test for when mail is shown
 	 * @step. ^I( do not)? see Mail on Group Participants popover$
 	 *
 	 * @throws Exception
 	 */
-	@Then("^I( do not)? see Mail on Group Participants popover$")
-	public void ISeeMailOfUser(String not) throws Exception {
+	@Then("^I( do not)? see Mail (.*)on Group Participants popover$")
+	public void ISeeMailOfUser(String not, String mail) throws Exception {
+		mail = mail.trim();
 		if (not == null) {
-			Assert.assertFalse(((GroupPopoverContainer) PagesCollection.popoverPage)
-					.getUserMail().isEmpty());
+			if ("".equals(mail)) {
+				// no mail given. just check if any text is in mail field
+				Assert.assertFalse(((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getUserMail().isEmpty());
+			} else {
+				// mail given. strict check for mail
+				Assert.assertFalse(((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getUserMail().equals(mail));
+			}
 		} else {
+			// check for no mail
 			Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
 					.getUserMail().isEmpty());
 		}
