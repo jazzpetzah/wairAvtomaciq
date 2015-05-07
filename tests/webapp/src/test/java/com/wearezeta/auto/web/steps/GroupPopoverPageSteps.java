@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import cucumber.api.java.en.Then;
@@ -574,27 +575,34 @@ public class GroupPopoverPageSteps {
 	 *
 	 * @param not
 	 *            is set to null if "do not" part does not exist
-	 * @param mail
-	 *            the mail to test for when mail is shown
+	 * @param mailAlias
+	 *            the mail alias to test for when mail alias is shown
 	 * @step. ^I( do not)? see Mail on Group Participants popover$
 	 *
 	 * @throws Exception
 	 */
 	@Then("^I( do not)? see Mail (.*)on Group Participants popover$")
-	public void ISeeMailOfUser(String not, String mail) throws Exception {
-		mail = mail.trim();
+	public void ISeeMailOfUser(String not, String mailAlias) throws Exception {
+		mailAlias = mailAlias.trim();
 		if (not == null) {
-			if ("".equals(mail)) {
+			if ("".equals(mailAlias)) {
 				// no mail given. just check if any text is in mail field
 				Assert.assertFalse(((GroupPopoverContainer) PagesCollection.popoverPage)
 						.getUserMail().isEmpty());
 			} else {
 				// mail given. strict check for mail
-				Assert.assertFalse(((GroupPopoverContainer) PagesCollection.popoverPage)
-						.getUserMail().equals(mail));
+				String email = null;
+				try {
+					email = usrMgr.findUserByEmailOrEmailAlias(mailAlias)
+							.getEmail();
+				} catch (NoSuchUserException e) {
+					// Ignore silently
+				}
+				Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getUserMail().equals(email));
 			}
 		} else {
-			// check for no mail
+			// check for no mail, ignores the given mail alias
 			Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
 					.getUserMail().isEmpty());
 		}
