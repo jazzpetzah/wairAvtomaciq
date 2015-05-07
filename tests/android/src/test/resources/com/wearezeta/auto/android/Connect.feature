@@ -50,7 +50,7 @@ Feature: Connect
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
     And I press Ignore connect button
-    Then I see contact list loaded with User name <Name>
+    Then I see Contact list
     Then Contact name <WaitingMess> is not in list
 
     Examples: 
