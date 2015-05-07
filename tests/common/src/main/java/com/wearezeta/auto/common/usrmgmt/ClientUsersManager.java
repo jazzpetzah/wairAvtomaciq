@@ -251,7 +251,7 @@ public class ClientUsersManager {
 						long sleepInterval = 1000;
 						try {
 							BackendAPIWrappers.createUser(userToCreate,
-									retryNumber);
+									retryNumber, strategy);
 							createdClientsCount.incrementAndGet();
 							return;
 						} catch (BackendRequestException e) {

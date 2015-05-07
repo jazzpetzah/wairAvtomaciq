@@ -218,7 +218,7 @@ public class RegistrationPageSteps {
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Throwable {
 		BackendAPIWrappers
-				.activateRegisteredUser(RegistrationPageSteps.activationMessage);
+				.activateRegisteredUserByEmail(RegistrationPageSteps.activationMessage);
 		this.userToRegister.setUserState(UserState.Created);
 		PagesCollection.peoplePickerPage = PagesCollection.registrationPage
 				.continueRegistration();

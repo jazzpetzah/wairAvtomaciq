@@ -28,6 +28,8 @@ import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.image_send.AssetData;
 import com.wearezeta.auto.image_send.ImageAssetData;
@@ -66,33 +68,46 @@ public final class BackendAPIWrappers {
 	 * @return Created ClientUser instance (with id property filled)
 	 * @throws Exception
 	 */
-	public static ClientUser createUser(ClientUser user, int retryNumber)
-			throws Exception {
-		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders
-				.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
-		Future<String> activationMessage;
-		if (retryNumber == 1) {
-			activationMessage = mbox.getMessage(expectedHeaders,
-					BACKEND_ACTIVATION_TIMEOUT);
-		} else {
-			// The MAX_MSG_DELIVERY_OFFSET is necessary because of small time
-			// difference between
-			// UTC and your local machine
-			activationMessage = mbox.getMessage(expectedHeaders,
-					BACKEND_ACTIVATION_TIMEOUT, new Date().getTime()
-							- MAX_MSG_DELIVERY_OFFSET);
+	public static ClientUser createUser(ClientUser user, int retryNumber,
+			RegistrationStrategy strategy) throws Exception {
+		switch (strategy) {
+		case ByEmail:
+			IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+			Map<String, String> expectedHeaders = new HashMap<String, String>();
+			expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER,
+					user.getEmail());
+			Future<String> activationMessage;
+			if (retryNumber == 1) {
+				activationMessage = mbox.getMessage(expectedHeaders,
+						BACKEND_ACTIVATION_TIMEOUT);
+			} else {
+				// The MAX_MSG_DELIVERY_OFFSET is necessary because of small
+				// time
+				// difference between
+				// UTC and your local machine
+				activationMessage = mbox.getMessage(expectedHeaders,
+						BACKEND_ACTIVATION_TIMEOUT, new Date().getTime()
+								- MAX_MSG_DELIVERY_OFFSET);
+			}
+			BackendREST.registerNewUser(user.getEmail(), user.getName(),
+					user.getPassword());
+			activateRegisteredUserByEmail(activationMessage);
+			break;
+		case ByPhoneNumber:
+			BackendREST.registerNewUser(user.getPhoneNumber(), user.getName(),
+					user.getPassword());
+			activateRegisteredUserByPhoneNumber(user.getPhoneNumber());
+			break;
+		default:
+			throw new RuntimeException(String.format(
+					"Unknown registration strategy '%s'", strategy.name()));
 		}
-		BackendREST.registerNewUser(user.getEmail(), user.getName(),
-				user.getPassword());
-		activateRegisteredUser(activationMessage);
 		user.setUserState(UserState.Created);
 		return user;
 	}
 
-	public static void activateRegisteredUser(Future<String> activationMessage)
-			throws Exception {
+	public static void activateRegisteredUserByEmail(
+			Future<String> activationMessage) throws Exception {
 		final ActivationMessage registrationInfo = new ActivationMessage(
 				activationMessage.get());
 		final String key = registrationInfo.getXZetaKey();
@@ -101,8 +116,15 @@ public final class BackendAPIWrappers {
 				.format("Received activation email message with key: %s, code: %s. Proceeding with activation...",
 						key, code));
 		BackendREST.activateNewUser(key, code);
-		log.debug(String.format("User %s is activated",
+		log.debug(String.format("User '%s' is successfully activated",
 				registrationInfo.getLastUserEmail()));
+	}
+
+	public static void activateRegisteredUserByPhoneNumber(
+			PhoneNumber phoneNumber) throws Exception {
+		BackendREST.activateNewUser(phoneNumber);
+		log.debug(String.format("User '%s' is successfully activated",
+				phoneNumber.toString()));
 	}
 
 	public static String getUserActivationLink(Future<String> activationMessage)

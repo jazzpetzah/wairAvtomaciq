@@ -26,6 +26,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.onboarding.AddressBook;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.image_send.*;
 
 import java.awt.image.BufferedImage;
@@ -246,12 +247,66 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
+	public static JSONObject registerNewUser(PhoneNumber phoneNumber,
+			String userName, String password) throws Exception {
+		Builder webResource = buildDefaultRequest("register",
+				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("phone", phoneNumber.toString());
+		requestBody.put("name", userName);
+		requestBody.put("password", password);
+		final String output = httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_CREATED });
+		return new JSONObject(output);
+	}
+
 	public static void activateNewUser(String key, String code)
 			throws Exception {
 		Builder webResource = buildDefaultRequest(
 				String.format("activate?code=%s&key=%s", code, key),
 				MediaType.APPLICATION_JSON);
 		httpGet(webResource, new int[] { HttpStatus.SC_OK });
+	}
+
+	private static final String BASIC_AUTH_HEADER_VALUE = "Basic d2lyZS1lZGdlOiQyXVxTbihGYD8rUlkiLkM=";
+
+	private static JSONObject getActivationDataViaBackdoor(
+			PhoneNumber phoneNumber) throws Exception {
+		Builder webResource = buildDefaultRequest(
+				String.format("i/users/activation-code?phone=%s",
+						URLEncoder.encode(phoneNumber.toString(), "utf-8")),
+				MediaType.APPLICATION_JSON).header("Authorization",
+				BASIC_AUTH_HEADER_VALUE);
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
+	}
+
+	@SuppressWarnings("unused")
+	private static JSONObject getActivationDataViaBackdoor(String email)
+			throws Exception {
+		Builder webResource = buildDefaultRequest(
+				String.format("i/users/activation-code?email=%s",
+						URLEncoder.encode(email, "utf-8")),
+				MediaType.APPLICATION_JSON).header("Authorization",
+				BASIC_AUTH_HEADER_VALUE);
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
+	}
+
+	public static JSONObject activateNewUser(PhoneNumber phoneNumber)
+			throws Exception {
+		Builder webResource = buildDefaultRequest("activate",
+				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("phone", phoneNumber.toString());
+		requestBody.put("code", getActivationDataViaBackdoor(phoneNumber)
+				.getString("code"));
+		requestBody.put("dryrun", false);
+		final String output = httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
 	}
 
 	public static JSONObject createGroupConversation(AuthToken token,
