@@ -4,17 +4,17 @@ public final class IOSLocators {
 	
 	public static final String nameMainWindow = "ZClientMainWindow";
 	
-	public static final String nameSignInButton = "SignIn";
+	public static final String nameSignInButton = "I HAVE AN ACCOUNT";
 	
 	public static final String nameRegisterButton = "SignUp";
 	
 	public static final String nameTermsOfServiceButton = "LegalCheckmarkButton";
 	
-	public static final String nameLoginButton = "ConfirmSignIn";
+	public static final String xpathLoginButton = "//UIASecureTextField/UIAButton[1]";
 	
-	public static final String nameLoginField = "SignInEmail";
+	public static final String nameLoginField = "EmailField";
 	
-	public static final String namePasswordField = "SignInPassword";
+	public static final String namePasswordField = "PasswordField";
 	
 	public static final String nameErrorMailNotification = "PLEASE PROVIDE A VALID EMAIL ADDRESS";
 	
@@ -483,8 +483,8 @@ public final class IOSLocators {
 	//Script locators
 	public static final String scriptCursorInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"ConversationTextInputField\"]";
 	public static final String scriptKeyboardReturnKeyPath = "target.frontMostApp().keyboard().elements()[\"Return\"]";
-	public static final String scriptSignInEmailPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"SignInEmail\"]";
-	public static final String scriptSignInPasswordPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].secureTextFields()[\"SignInPassword\"]";
+	public static final String scriptSignInEmailPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"EmailField\"]";
+	public static final String scriptSignInPasswordPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].secureTextFields()[\"PasswordField\"]";
 	public static final String scriptRegistrationEmailInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"RegistrationEmailField\"]";
 
 	public static final String nameYouLeftMessage = "YOU LEFT";
