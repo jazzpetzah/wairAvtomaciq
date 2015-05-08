@@ -121,6 +121,7 @@ public class PerformanceSteps {
 		final String CONVERSATION_NAME_TEMPLATE = "perf%stxt%simgtst";
 		String conv = String.format(CONVERSATION_NAME_TEMPLATE, messages,
 				images);
+		PagesCollection.contactListPage.findInContactList(conv, 10);
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
 				.tapOnName(conv);
 		PagesCollection.dialogPage.isDialogVisible();

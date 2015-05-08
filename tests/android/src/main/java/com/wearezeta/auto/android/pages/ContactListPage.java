@@ -135,7 +135,7 @@ public class ContactListPage extends AndroidPage {
 		return contactListNames;
 	}
 
-	private WebElement findInContactList(String name, int cyclesNumber)
+	public WebElement findInContactList(String name, int cyclesNumber)
 			throws Exception {
 		WebElement contact = null;
 		Boolean flag = false;
