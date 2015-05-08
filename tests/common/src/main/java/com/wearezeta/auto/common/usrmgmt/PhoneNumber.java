@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 
 public final class PhoneNumber {
 	private static final int MAX_NUMBER_LENGTH = 16;
-	private static final int MIN_NUMBER_LENGTH = 8;
+	private static final int MIN_NUMBER_LENGTH = 9;
 	public static final String WIRE_COUNTRY_PREFIX = "+0";
 
 	private String number;
