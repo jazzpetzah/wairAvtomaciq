@@ -203,6 +203,7 @@ public class DialogPage extends AndroidPage {
 	public void SwipeOnCursorInput() throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorInput));
 		DriverUtils.swipeRight(this.getDriver(), cursorInput, DEFAULT_SWIPE_TIME);
+		Thread.sleep(1000); //fix for animation
 	}
 
 	public void SwipeLeftOnCursorInput() throws Exception {
@@ -213,6 +214,7 @@ public class DialogPage extends AndroidPage {
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(addPictureBtn));
 		addPictureBtn.click();
+		Thread.sleep(1000); //fix for animation
 	}
 
 	public void tapPingBtn() throws Exception {
@@ -364,8 +366,15 @@ public class DialogPage extends AndroidPage {
 
 	public void takePhoto() throws Exception {
 		refreshUITree();// TODO workaround
-		getWait().until(ExpectedConditions.visibilityOf(takePhotoButton));
-		takePhotoButton.click();
+		try {
+			getWait().until(ExpectedConditions.visibilityOf(takePhotoButton));
+			takePhotoButton.click();
+		} catch (Exception e) {
+			log.debug("Can't find element.\n" + e.getMessage());
+			log.debug(this.getPageSource());
+			throw e;
+		}
+		Thread.sleep(1000); //fix for animation
 	}
 
 	public void changeCamera() throws Exception {
@@ -373,6 +382,7 @@ public class DialogPage extends AndroidPage {
 		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.id(AndroidLocators.DialogPage.idDialogChangeCameraButton))) {
 			changeCameraButton.click();
+			Thread.sleep(1000); //fix for animation
 		}
 	}
 
@@ -460,7 +470,6 @@ public class DialogPage extends AndroidPage {
 		if (isVisible(addParticipant)) {
 			SwipeOnCursorInput();
 			tapAddPictureBtn();
-			Thread.sleep(1000);
 			try {
 				this.getDriver().hideKeyboard();
 				SwipeOnCursorInput();
@@ -470,17 +479,16 @@ public class DialogPage extends AndroidPage {
 				log.debug("No keyboard visible. Nothing to hide #1");
 			}
 			changeCamera();
-			Thread.sleep(1000);
 			takePhoto();
 		} else {
 			cursurFrame.click();
-			Thread.sleep(500);
+			Thread.sleep(1000); //fix for scrolling animation
 			SwipeOnCursorInput();
 			tapAddPictureBtn();
-			Thread.sleep(1000);
 			try {
 				this.getDriver().hideKeyboard();
 				SwipeOnCursorInput();
+				tapAddPictureBtn();
 				log.debug("Fix for opened keyboard #2");
 			} catch (WebDriverException e) {
 				log.debug("No keyboard visible. Nothing to hide #2");
@@ -488,7 +496,6 @@ public class DialogPage extends AndroidPage {
 			changeCamera();
 			takePhoto();
 		}
-		Thread.sleep(1000);
 		confirm();
 	}
 
