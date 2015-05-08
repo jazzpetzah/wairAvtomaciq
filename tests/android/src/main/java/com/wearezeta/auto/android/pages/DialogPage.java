@@ -369,6 +369,7 @@ public class DialogPage extends AndroidPage {
 			takePhotoButton.click();
 		} catch (NoSuchElementException e) {
 			log.debug("Can't find element.\n" + e.getMessage());
+			log.debug(this.getPageSource());
 			throw e;
 		}
 	}
