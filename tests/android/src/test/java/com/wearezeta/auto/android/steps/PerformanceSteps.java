@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.steps;
 import java.util.ArrayList;
 
 import org.junit.Assert;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
