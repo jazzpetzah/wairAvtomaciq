@@ -45,6 +45,7 @@ public final class BackendAPIWrappers {
 	public static final int BACKEND_ACTIVATION_TIMEOUT = 90; // seconds
 
 	private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
+	private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
 	private static final int AUTH_FAILED_ERROR = 403;
 	private static final int SERVER_SIDE_ERROR = 500;
 	private static final int MAX_BACKEND_RETRIES = 5;
@@ -455,7 +456,14 @@ public final class BackendAPIWrappers {
 				} catch (BackendRequestException e) {
 					// Retry in case the user has only phone number attached
 					if (e.getReturnCode() == AUTH_FAILED_ERROR) {
-						BackendREST.generateLoginCode(user.getPhoneNumber());
+						try {
+							BackendREST
+									.generateLoginCode(user.getPhoneNumber());
+						} catch (BackendRequestException e1) {
+							if (e1.getReturnCode() != LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR) {
+								throw e1;
+							}
+						}
 						final String code = BackendREST
 								.getLoginCodeViaBackdoor(user.getPhoneNumber())
 								.getString("code");
