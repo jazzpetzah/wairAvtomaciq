@@ -470,7 +470,7 @@ public class DialogPage extends AndroidPage {
 			try {
 				this.getDriver().hideKeyboard();
 				SwipeOnCursorInput();
-				Thread.sleep(1000);
+//				Thread.sleep(1000);
 				tapAddPictureBtn();
 				log.debug("Fix for opened keyboard #1");
 			} catch (WebDriverException e) {
@@ -483,12 +483,14 @@ public class DialogPage extends AndroidPage {
 			cursurFrame.click();
 			Thread.sleep(500);
 			SwipeOnCursorInput();
-			Thread.sleep(1000);
+//			Thread.sleep(1000);
 			tapAddPictureBtn();
 			Thread.sleep(1000);
 			try {
 				this.getDriver().hideKeyboard();
 				SwipeOnCursorInput();
+				Thread.sleep(1000);
+				tapAddPictureBtn();
 				log.debug("Fix for opened keyboard #2");
 			} catch (WebDriverException e) {
 				log.debug("No keyboard visible. Nothing to hide #2");
