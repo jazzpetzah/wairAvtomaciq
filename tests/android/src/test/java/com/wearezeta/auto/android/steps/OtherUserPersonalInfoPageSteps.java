@@ -489,7 +489,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I do small swipe down")
 	public void IDoSmallSwipeDown() throws Exception {
-		PagesCollection.androidPage.swipeByCoordinates(300, 50, 50, 50, 53);
+		PagesCollection.androidPage.swipeByCoordinates(2000, 50, 50, 50, 53);
 	}
 
 	/**
