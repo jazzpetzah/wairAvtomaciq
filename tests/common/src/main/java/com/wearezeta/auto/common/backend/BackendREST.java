@@ -26,6 +26,7 @@ import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.onboarding.AddressBook;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.image_send.*;
 
 import java.awt.image.BufferedImage;
@@ -35,7 +36,7 @@ final class BackendREST {
 	private static final Logger log = ZetaLogger.getLog(BackendREST.class
 			.getSimpleName());
 
-	private static String backendUrl = "not set";
+	private static String backendUrl = null;
 	private static Client client = Client.create();
 	static {
 		log.setLevel(Level.DEBUG);
@@ -106,6 +107,21 @@ final class BackendREST {
 		return responseStr;
 	}
 
+	private static String httpDelete(Builder webResource,
+			int[] acceptableResponseCodes) throws BackendRequestException {
+		ClientResponse response = webResource.delete(ClientResponse.class);
+		String responseStr;
+		try {
+			responseStr = response.getEntity(String.class);
+		} catch (UniformInterfaceException e) {
+			responseStr = "";
+		}
+		log.debug(String.format("DELETE REQUEST\n >>> Response: %s",
+				(responseStr.length() > 0) ? responseStr : EMPTY_LOG_RECORD));
+		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
+		return responseStr;
+	}
+
 	private static Object httpGet(Builder webResource, Class<?> entityClass,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.get(ClientResponse.class);
@@ -163,6 +179,18 @@ final class BackendREST {
 		requestBody.put("email", email);
 		requestBody.put("password", password);
 		requestBody.put("label", "");
+		final String output = httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
+	}
+
+	public static JSONObject login(PhoneNumber phoneNumber, String code)
+			throws Exception {
+		Builder webResource = buildDefaultRequest("login",
+				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("phone", phoneNumber.toString());
+		requestBody.put("code", code);
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
@@ -233,6 +261,56 @@ final class BackendREST {
 				HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
 	}
 
+	public static void updateSelfEmail(AuthToken token, String newEmail)
+			throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("self/email",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("email", newEmail);
+		httpPut(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_ACCEPTED });
+	}
+
+	public static void updateSelfPassword(AuthToken token, String oldPassword,
+			String newPassword) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("self/password",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		if (oldPassword != null) {
+			requestBody.put("old_password", oldPassword);
+		}
+		requestBody.put("new_password", newPassword);
+		httpPut(webResource, requestBody.toString(), new int[] {
+				HttpStatus.SC_ACCEPTED, HttpStatus.SC_OK });
+	}
+
+	public static void detachSelfEmail(AuthToken token) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("self/email",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		httpDelete(webResource, new int[] { HttpStatus.SC_OK });
+	}
+
+	public static void updateSelfPhoneNumber(AuthToken token,
+			PhoneNumber phoneNumber) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("self/phone",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("phone", phoneNumber.toString());
+		httpPut(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_ACCEPTED });
+	}
+
+	public static void detachSelfPhoneNumber(AuthToken token) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("self/phone",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		httpDelete(webResource, new int[] { HttpStatus.SC_OK });
+	}
+
 	public static JSONObject registerNewUser(String email, String userName,
 			String password) throws Exception {
 		Builder webResource = buildDefaultRequest("register",
@@ -246,12 +324,103 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
+	public static JSONObject registerNewUser(PhoneNumber phoneNumber,
+			String userName) throws Exception {
+		Builder webResource = buildDefaultRequest("register",
+				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("phone", phoneNumber.toString());
+		requestBody.put("name", userName);
+		final String output = httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_CREATED });
+		return new JSONObject(output);
+	}
+
 	public static void activateNewUser(String key, String code)
 			throws Exception {
 		Builder webResource = buildDefaultRequest(
 				String.format("activate?code=%s&key=%s", code, key),
 				MediaType.APPLICATION_JSON);
 		httpGet(webResource, new int[] { HttpStatus.SC_OK });
+	}
+
+	// Don't share these values with anyone!!!
+	// Otherwise backend guys will find your cunning ass
+	private static final String BASIC_AUTH_HEADER_VALUE_EDGE = "Basic d2lyZS1lZGdlOiQyXVxTbihGYD8rUlkiLkM=";
+	private static final String BASIC_AUTH_HEADER_VALUE_STAGING = "Basic d2lyZS1zdGFnaW5nOnRqNGEzbl1BQzpFcn5yJTQ=";
+
+	private static String getAuthValue() throws Exception {
+		String authValue = null;
+		final String host = getBaseURI().getHost();
+		if (host.toLowerCase().contains("edge")) {
+			authValue = BASIC_AUTH_HEADER_VALUE_EDGE;
+		} else if (host.toLowerCase().contains("staging")) {
+			authValue = BASIC_AUTH_HEADER_VALUE_STAGING;
+		} else {
+			throw new RuntimeException(String.format("Unknown backend host %s",
+					host));
+		}
+		return authValue;
+	}
+
+	public static JSONObject getActivationDataViaBackdoor(
+			PhoneNumber phoneNumber) throws Exception {
+		Builder webResource = buildDefaultRequest(
+				String.format("i/users/activation-code?phone=%s",
+						URLEncoder.encode(phoneNumber.toString(), "utf-8")),
+				MediaType.APPLICATION_JSON).header("Authorization",
+				getAuthValue());
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
+	}
+
+	@SuppressWarnings("unused")
+	private static JSONObject getActivationDataViaBackdoor(String email)
+			throws Exception {
+		Builder webResource = buildDefaultRequest(
+				String.format("i/users/activation-code?email=%s",
+						URLEncoder.encode(email, "utf-8")),
+				MediaType.APPLICATION_JSON).header("Authorization",
+				getAuthValue());
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
+	}
+
+	public static JSONObject activateNewUser(PhoneNumber phoneNumber,
+			String code) throws Exception {
+		Builder webResource = buildDefaultRequest("activate",
+				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("phone", phoneNumber.toString());
+		requestBody.put("code", code);
+		requestBody.put("dryrun", false);
+		final String output = httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
+	}
+
+	public static void generateLoginCode(PhoneNumber phoneNumber)
+			throws Exception {
+		Builder webResource = buildDefaultRequest("login/send",
+				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("phone", phoneNumber.toString());
+		httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK });
+	}
+
+	public static JSONObject getLoginCodeViaBackdoor(PhoneNumber phoneNumber)
+			throws Exception {
+		Builder webResource = buildDefaultRequest(
+				String.format("i/users/login-code?phone=%s",
+						URLEncoder.encode(phoneNumber.toString(), "utf-8")),
+				MediaType.APPLICATION_JSON).header("Authorization",
+				getAuthValue());
+		final String output = httpGet(webResource,
+				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
 	}
 
 	public static JSONObject createGroupConversation(AuthToken token,
@@ -487,8 +656,7 @@ final class BackendREST {
 	public static JSONObject addContactsToGroupConvo(AuthToken token,
 			List<String> contactsIds, String conversationId) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
-				String.format("conversations/%s/members",
-						URLEncoder.encode(conversationId, "utf-8")),
+				String.format("conversations/%s/members", conversationId),
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
@@ -526,7 +694,7 @@ final class BackendREST {
 	}
 
 	public static URI getBaseURI() throws Exception {
-		String backend = backendUrl.equals("not set") ? CommonUtils
+		String backend = (backendUrl == null) ? CommonUtils
 				.getDefaultBackEndUrlFromConfig(CommonUtils.class) : backendUrl;
 
 		return UriBuilder.fromUri(backend).build();

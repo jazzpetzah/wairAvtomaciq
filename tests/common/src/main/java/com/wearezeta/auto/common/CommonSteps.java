@@ -17,6 +17,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.OSXAddressBookHelpers;
+import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 
 public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
@@ -102,13 +103,16 @@ public final class CommonSteps {
 		}
 	}
 
-	public void ThereAreNUsers(int count) throws Exception {
-		usrMgr.createUsersOnBackend(count);
+	public void ThereAreNUsers(Platform currentPlatform, int count)
+			throws Exception {
+		usrMgr.createUsersOnBackend(count,
+				RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
 	}
 
-	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
-			throws Exception {
-		usrMgr.createUsersOnBackend(count);
+	public void ThereAreNUsersWhereXIsMe(Platform currentPlatform, int count,
+			String myNameAlias) throws Exception {
+		usrMgr.createUsersOnBackend(count,
+				RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 

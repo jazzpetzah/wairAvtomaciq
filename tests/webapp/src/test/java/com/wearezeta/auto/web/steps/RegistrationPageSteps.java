@@ -163,7 +163,7 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I verify registration email$")
 	public void IVerifyRegistrationEmail() throws Exception {
-		BackendAPIWrappers.activateRegisteredUser(this.activationMessage);
+		BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
 		userToRegister.setUserState(UserState.Created);
 	}
 
