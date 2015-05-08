@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.steps;
 import java.util.ArrayList;
 
 import org.junit.Assert;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
@@ -121,9 +122,19 @@ public class PerformanceSteps {
 		final String CONVERSATION_NAME_TEMPLATE = "perf%stxt%simgtst";
 		String conv = String.format(CONVERSATION_NAME_TEMPLATE, messages,
 				images);
-		PagesCollection.contactListPage.findInContactList(conv, 10);
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
-				.tapOnName(conv);
+		int count = 0;
+		while (count < 10) {
+			count++;
+			boolean isPassed = true;
+			try {
+				PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
+						.tapOnName(conv);
+			} catch (WebDriverException e) {
+				isPassed = false;
+				PagesCollection.contactListPage.contactListSwipeUp(1000);
+			}
+			if (isPassed) break;
+		}
 		PagesCollection.dialogPage.isDialogVisible();
 		CommonAndroidSteps.listener.stopListeningLogcat();
 		for (int y = 0; y < 2; y++) {
