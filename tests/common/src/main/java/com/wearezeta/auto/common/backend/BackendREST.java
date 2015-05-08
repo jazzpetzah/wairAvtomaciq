@@ -106,6 +106,21 @@ final class BackendREST {
 		return responseStr;
 	}
 
+	private static String httpDelete(Builder webResource,
+			int[] acceptableResponseCodes) throws BackendRequestException {
+		ClientResponse response = webResource.delete(ClientResponse.class);
+		String responseStr;
+		try {
+			responseStr = response.getEntity(String.class);
+		} catch (UniformInterfaceException e) {
+			responseStr = "";
+		}
+		log.debug(String.format("DELETE REQUEST\n >>> Response: %s",
+				(responseStr.length() > 0) ? responseStr : EMPTY_LOG_RECORD));
+		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
+		return responseStr;
+	}
+
 	private static Object httpGet(Builder webResource, Class<?> entityClass,
 			int[] acceptableResponseCodes) throws BackendRequestException {
 		ClientResponse response = webResource.get(ClientResponse.class);
@@ -231,6 +246,42 @@ final class BackendREST {
 		requestBody.put("status", newStatus.toString());
 		httpPut(webResource, requestBody.toString(), new int[] {
 				HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
+	}
+
+	public static void updateSelfEmail(AuthToken token, String newEmail)
+			throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("self/email",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("email", newEmail);
+		httpPut(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_ACCEPTED });
+	}
+
+	public static void detachSelfEmail(AuthToken token) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("self/email",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		httpDelete(webResource, new int[] { HttpStatus.SC_OK });
+	}
+
+	public static void updateSelfPhoneNumber(AuthToken token,
+			PhoneNumber phoneNumber) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("self/phone",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("phone", phoneNumber.toString());
+		httpPut(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_ACCEPTED });
+	}
+
+	public static void detachSelfPhoneNumber(AuthToken token) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("self/phone",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		httpDelete(webResource, new int[] { HttpStatus.SC_OK });
 	}
 
 	public static JSONObject registerNewUser(String email, String userName,

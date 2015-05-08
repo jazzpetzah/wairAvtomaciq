@@ -56,6 +56,24 @@ public final class BackendAPIWrappers {
 		BackendREST.setDefaultBackendURL(url);
 	}
 
+	private static Future<String> initMessageListenerForActivationMessage(
+			ClientUser userToActivate, int retryNumber) throws Exception {
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+		Map<String, String> expectedHeaders = new HashMap<String, String>();
+		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER,
+				userToActivate.getEmail());
+		if (retryNumber == 1) {
+			return mbox.getMessage(expectedHeaders, BACKEND_ACTIVATION_TIMEOUT);
+		} else {
+			// The MAX_MSG_DELIVERY_OFFSET is necessary because of small
+			// time
+			// difference between
+			// UTC and your local machine
+			return mbox.getMessage(expectedHeaders, BACKEND_ACTIVATION_TIMEOUT,
+					new Date().getTime() - MAX_MSG_DELIVERY_OFFSET);
+		}
+	}
+
 	/**
 	 * Creates a new user by sending the corresponding request to the backend
 	 * 
@@ -72,33 +90,18 @@ public final class BackendAPIWrappers {
 			RegistrationStrategy strategy) throws Exception {
 		switch (strategy) {
 		case ByEmail:
-			IMAPSMailbox mbox = IMAPSMailbox.getInstance();
-			Map<String, String> expectedHeaders = new HashMap<String, String>();
-			expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER,
-					user.getEmail());
-			Future<String> activationMessage;
-			if (retryNumber == 1) {
-				activationMessage = mbox.getMessage(expectedHeaders,
-						BACKEND_ACTIVATION_TIMEOUT);
-			} else {
-				// The MAX_MSG_DELIVERY_OFFSET is necessary because of small
-				// time
-				// difference between
-				// UTC and your local machine
-				activationMessage = mbox.getMessage(expectedHeaders,
-						BACKEND_ACTIVATION_TIMEOUT, new Date().getTime()
-								- MAX_MSG_DELIVERY_OFFSET);
-			}
+			final Future<String> activationMessage = initMessageListenerForActivationMessage(
+					user, retryNumber);
 			BackendREST.registerNewUser(user.getEmail(), user.getName(),
 					user.getPassword());
 			activateRegisteredUserByEmail(activationMessage);
-			// TODO: attach phone number
+			attachUserPhoneNumber(user);
 			break;
 		case ByPhoneNumber:
 			BackendREST.registerNewUser(user.getPhoneNumber(), user.getName(),
 					user.getPassword());
 			activateRegisteredUserByPhoneNumber(user.getPhoneNumber());
-			// TODO: attach email
+			attachUserEmail(user, retryNumber);
 			break;
 		default:
 			throw new RuntimeException(String.format(
@@ -119,7 +122,7 @@ public final class BackendAPIWrappers {
 						key, code));
 		BackendREST.activateNewUser(key, code);
 		log.debug(String.format("User '%s' is successfully activated",
-				registrationInfo.getLastUserEmail()));
+				registrationInfo.getDeliveredToEmail()));
 	}
 
 	public static void activateRegisteredUserByPhoneNumber(
@@ -127,6 +130,22 @@ public final class BackendAPIWrappers {
 		BackendREST.activateNewUser(phoneNumber);
 		log.debug(String.format("User '%s' is successfully activated",
 				phoneNumber.toString()));
+	}
+
+	public static void attachUserPhoneNumber(ClientUser user) throws Exception {
+		user = tryLoginByUser(user);
+		BackendREST.updateSelfPhoneNumber(generateAuthToken(user),
+				user.getPhoneNumber());
+		activateRegisteredUserByPhoneNumber(user.getPhoneNumber());
+	}
+
+	public static void attachUserEmail(ClientUser user, int retryNumber)
+			throws Exception {
+		final Future<String> activationMessage = initMessageListenerForActivationMessage(
+				user, retryNumber);
+		user = tryLoginByUser(user);
+		BackendREST.updateSelfEmail(generateAuthToken(user), user.getEmail());
+		activateRegisteredUserByEmail(activationMessage);
 	}
 
 	public static String getUserActivationLink(Future<String> activationMessage)
