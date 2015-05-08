@@ -129,7 +129,7 @@ public class PerformanceSteps {
 			try {
 				PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
 						.tapOnName(conv);
-			} catch (WebDriverException e) {
+			} catch (Exception e) {
 				isPassed = false;
 				PagesCollection.contactListPage.contactListSwipeUp(1000);
 			}
