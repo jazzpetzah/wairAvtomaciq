@@ -69,16 +69,18 @@ public class CommonOSXSteps {
 		CommonUtils.disableSeleniumLogs();
 	}
 
-	public static void resetBackendSettingsIfOverwritten() throws IOException,
+	public static boolean resetBackendSettingsIfOverwritten() throws IOException,
 			Exception {	
 		OSXCommonUtils.resetOSXPrefsDaemon();
 		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
 				.getBackendType(CommonOSXSteps.class))) {
 			log.debug("Backend setting were overwritten. Trying to restart app.");
-			PagesCollection.mainMenuPage.quitWire();
+			OSXCommonUtils.killWireIfStuck();
 			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
 					.getBackendType(CommonOSXSteps.class));
-			PagesCollection.mainMenuPage.startApp();
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -111,7 +113,9 @@ public class CommonOSXSteps {
 		drv.navigate().to(OSXExecutionContext.wirePath);
 		
 		try {
-			resetBackendSettingsIfOverwritten();
+			if (resetBackendSettingsIfOverwritten()) {
+				drv.navigate().to(OSXExecutionContext.wirePath);
+			}
 		} catch (Exception e) { }
 	}
 
