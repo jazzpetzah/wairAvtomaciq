@@ -318,14 +318,30 @@ final class BackendREST {
 		httpGet(webResource, new int[] { HttpStatus.SC_OK });
 	}
 
-	private static final String BASIC_AUTH_HEADER_VALUE = "Basic d2lyZS1lZGdlOiQyXVxTbihGYD8rUlkiLkM=";
+	// Don't share these values with anyone!!!
+	// Otherwise backend guys will find your cunning ass
+	private static final String BASIC_AUTH_HEADER_VALUE_EDGE = "Basic d2lyZS1lZGdlOiQyXVxTbihGYD8rUlkiLkM=";
+	private static final String BASIC_AUTH_HEADER_VALUE_STAGING = "Basic d2lyZS1zdGFnaW5nOnRqNGEzbl1BQzpFcn5yJTQ=";
+
+	private static String getAuthValue() {
+		String authValue = null;
+		if (backendUrl.contains("edge")) {
+			authValue = BASIC_AUTH_HEADER_VALUE_EDGE;
+		} else if (backendUrl.contains("staging")) {
+			authValue = BASIC_AUTH_HEADER_VALUE_STAGING;
+		} else {
+			throw new RuntimeException(String.format("Unknown backend url %s",
+					backendUrl));
+		}
+		return authValue;
+	}
 
 	private static JSONObject getActivationDataViaBackdoor(
 			PhoneNumber phoneNumber) throws Exception {
 		Builder webResource = buildDefaultRequest(
 				String.format("i/users/activation-code?phone=%s",
 						phoneNumber.toString()), MediaType.APPLICATION_JSON)
-				.header("Authorization", BASIC_AUTH_HEADER_VALUE);
+				.header("Authorization", getAuthValue());
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
@@ -337,7 +353,7 @@ final class BackendREST {
 		Builder webResource = buildDefaultRequest(
 				String.format("i/users/activation-code?email=%s", email,
 						"utf-8"), MediaType.APPLICATION_JSON).header(
-				"Authorization", BASIC_AUTH_HEADER_VALUE);
+				"Authorization", getAuthValue());
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);

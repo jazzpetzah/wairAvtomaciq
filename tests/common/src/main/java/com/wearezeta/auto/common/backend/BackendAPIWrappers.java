@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -101,7 +102,20 @@ public final class BackendAPIWrappers {
 			BackendREST.registerNewUser(user.getPhoneNumber(), user.getName(),
 					user.getPassword());
 			activateRegisteredUserByPhoneNumber(user.getPhoneNumber());
-			attachUserEmail(user, retryNumber);
+			final int maxAttachRetries = 3;
+			for (int tryNum = 1; tryNum <= maxAttachRetries; tryNum++) {
+				try {
+					log.debug(String
+							.format("Trying to attach email address '%s' to the newly created user (retry %s of %s)...",
+									user.getEmail(), tryNum, maxAttachRetries));
+					attachUserEmail(user, tryNum);
+					break;
+				} catch (ExecutionException e) {
+					if (tryNum >= maxAttachRetries) {
+						throw e;
+					}
+				}
+			}
 			break;
 		default:
 			throw new RuntimeException(String.format(
