@@ -367,7 +367,7 @@ public class DialogPage extends AndroidPage {
 		try {
 			getWait().until(ExpectedConditions.visibilityOf(takePhotoButton));
 			takePhotoButton.click();
-		} catch (NoSuchElementException e) {
+		} catch (Exception e) {
 			log.debug("Can't find element.\n" + e.getMessage());
 			log.debug(this.getPageSource());
 			throw e;
