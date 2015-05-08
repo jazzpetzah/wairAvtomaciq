@@ -159,11 +159,20 @@ public class ZetaFormatter implements Formatter, Reporter {
 				+ (endDate - startDate) + "ms)");
 		// take screenshot
 		try {
-			final ZetaDriver driver = getDriver(arg0.getStatus().equals(Result.FAILED));
+			final ZetaDriver driver = getDriver(arg0.getStatus().equals(
+					Result.FAILED));
 			if (driver != null) {
+				if (arg0.getStatus().equals(Result.SKIPPED)
+						|| arg0.getStatus().equals(Result.UNDEFINED)) {
+					// Don't make screenshots for skipped and undefined steps
+					// To speed up suite execution
+					return;
+				}
 				BufferedImage image = DriverUtils.takeScreenshot(driver);
 				String picturePath = CommonUtils
 						.getPictureResultsPathFromConfig(this.getClass());
+				// FIXME: some characters in steps/captions may not be
+				// acceptable for file names
 				File outputfile = new File(picturePath + feature + "/"
 						+ scenario + "/" + currentStep + ".png");
 
