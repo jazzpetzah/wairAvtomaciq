@@ -158,6 +158,7 @@ Feature: Connect
     And I click on Ignore button on Pending requests page <SentRequests> times
     And I dont see Pending request link in contact list
     And I don't see conversation with not connected user <Contact1>
+    And I wait until <Contact1> exists in backend search results
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
