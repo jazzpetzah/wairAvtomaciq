@@ -1,0 +1,15 @@
+#Configuration file for IOS tests
+#Configure before running tests
+iosAppiumUrl=${Url}
+iosApplicationPath=${appPath}
+isSimulator=${isSimulator}
+generateUsers=${generateUsers}
+swipeScriptPath=${Root}/${swipeScriptPath}
+pathToUserpic=${Root}/${pathToUserpic}
+driverTimeoutSeconds=${driverTimeoutSeconds}
+pictureResultsPath=${pictureResultsPath}
+iosImagesPath=${Root}/${iosImagesPath}
+iosClientInfoPlist=${iosClientInfoPlist}
+iosAppiumLogPath=${iosAppiumLogPath}
+defaultEmail=${defaultEmail}
+deviceName=${deviceName}

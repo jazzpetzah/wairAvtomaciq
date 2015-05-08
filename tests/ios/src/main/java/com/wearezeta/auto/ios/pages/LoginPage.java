@@ -172,6 +172,7 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setLogin(String login) throws Exception {
+		getWait().until(ExpectedConditions.elementToBeClickable(loginField));
 		String script = String.format(IOSLocators.scriptSignInEmailPath
 				+ ".setValue(\"%s\")", login);
 		try {

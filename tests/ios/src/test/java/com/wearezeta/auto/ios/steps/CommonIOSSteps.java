@@ -31,6 +31,8 @@ public class CommonIOSSteps {
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(CommonIOSSteps.class
 			.getSimpleName());
+	
+	private static boolean skipBeforeAfter = false;
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private Date testStartedDate;
@@ -54,9 +56,17 @@ public class CommonIOSSteps {
 		return CommonUtils
 				.getIosApplicationPathFromConfig(CommonIOSSteps.class);
 	}
+	
+	public boolean isSkipBeforeAfter() {
+		return skipBeforeAfter;
+	}
+
+	public void setSkipBeforeAfter(boolean skipBeforeAfter) {
+		CommonIOSSteps.skipBeforeAfter = skipBeforeAfter;
+	}
 
 	@SuppressWarnings("unchecked")
-	private Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
+	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
 			throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
@@ -75,22 +85,28 @@ public class CommonIOSSteps {
 			capabilities.setCapability("autoAcceptAlerts", true);
 		}
 
-		testStartedDate = new Date();
+		setTestStartedDate(new Date());
 		return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
 				.resetDriver(getUrl(), capabilities);
 	}
 
 	@Before("~@noAcceptAlert")
 	public void setUpAcceptAlerts() throws Exception {
+		if (this.isSkipBeforeAfter()) {
+			return;
+		}
 		commonBefore(resetIOSDriver(true));
 	}
 
 	@Before("@noAcceptAlert")
 	public void setUpNoAlerts() throws Exception {
+		if (this.isSkipBeforeAfter()) {
+			return;
+		}
 		commonBefore(resetIOSDriver(false));
 	}
 
-	private void commonBefore(Future<ZetaIOSDriver> lazyDriver)
+	public void commonBefore(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
 		try {
 			// async calls/waiting instances cleanup
@@ -388,9 +404,9 @@ public class CommonIOSSteps {
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
 
-		if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
+		if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !skipBeforeAfter) {
 			IOSCommonUtils.collectSimulatorLogs(
-					CommonUtils.getDeviceName(getClass()), testStartedDate);
+					CommonUtils.getDeviceName(getClass()), getTestStartedDate());
 		}
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
@@ -398,5 +414,13 @@ public class CommonIOSSteps {
 		}
 
 		commonSteps.getUserManager().resetUsers();
+	}
+
+	public Date getTestStartedDate() {
+		return testStartedDate;
+	}
+
+	public void setTestStartedDate(Date testStartedDate) {
+		this.testStartedDate = testStartedDate;
 	}
 }
