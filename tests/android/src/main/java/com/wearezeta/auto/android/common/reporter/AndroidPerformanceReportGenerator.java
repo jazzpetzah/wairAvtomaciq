@@ -31,9 +31,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
 public class AndroidPerformanceReportGenerator {
 
@@ -166,7 +169,7 @@ public class AndroidPerformanceReportGenerator {
 		Matcher matcher = pattern.matcher(output);
 		while (matcher.find()) {
 			try {
-				result = (int)(Long.parseLong(matcher.group(1))/1000000);
+				result = (int) (Long.parseLong(matcher.group(1)) / 1000000);
 			} catch (NumberFormatException e) {
 			}
 		}
@@ -180,7 +183,7 @@ public class AndroidPerformanceReportGenerator {
 		Matcher matcher = pattern.matcher(output);
 		while (matcher.find()) {
 			try {
-				result = (int)(Long.parseLong(matcher.group(1))/1000000);
+				result = (int) (Long.parseLong(matcher.group(1)) / 1000000);
 			} catch (NumberFormatException e) {
 			}
 		}
@@ -195,12 +198,13 @@ public class AndroidPerformanceReportGenerator {
 		Matcher matcher = pattern.matcher(output);
 		while (matcher.find()) {
 			try {
-				result += (int)(Long.parseLong(matcher.group(1))/1000000);
+				result = (int) (Long.parseLong(matcher.group(1)) / 1000000);
+				log.debug("Conversation loading time " + result);
 				count++;
 			} catch (NumberFormatException e) {
 			}
 		}
-		result /= (double) count;
+		log.debug("Conversation loading count " + count);
 		return result;
 	}
 
@@ -534,7 +538,8 @@ public class AndroidPerformanceReportGenerator {
 			deviceInfo = AndroidCommonUtils.readDeviceInfo();
 			log.debug("Execution device info: " + deviceInfo.toString());
 			try {
-				networkType = deviceInfo.isWifiEnabled() ? "Wifi" : deviceInfo.getGsmNetworkType();
+				networkType = deviceInfo.isWifiEnabled() ? "Wifi" : deviceInfo
+						.getGsmNetworkType();
 			} catch (NullPointerException e) {
 				networkType = "Unknown";
 			}

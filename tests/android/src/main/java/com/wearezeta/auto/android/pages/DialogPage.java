@@ -43,6 +43,9 @@ public class DialogPage extends AndroidPage {
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.DialogPage.xpathCloseCursor)
 	private WebElement closeCursor;
+	
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.Browsers.xpathNativeBrowserURLBar)
+	private WebElement nativeBrowserURL;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
 	private List<WebElement> messagesList;
@@ -118,6 +121,9 @@ public class DialogPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPlayPauseMedia")
 	private WebElement playPauseBtn;
+	
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idYoutubePlayButton")
+	private WebElement playYoutubeBtn;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMediaBarControl")
 	private WebElement mediaBarControl;
@@ -695,6 +701,11 @@ public class DialogPage extends AndroidPage {
 			dialogPageBottom.click();
 		}
 	}
+	
+	public void tapYouTubePlay() throws Exception {
+		refreshUITree();
+		playYoutubeBtn.click();
+	}
 
 	public double checkMediaBarControlIcon(String label) throws Exception {
 		refreshUITree();
@@ -734,5 +745,9 @@ public class DialogPage extends AndroidPage {
 	public String getMissedCallMessage() throws Exception {
 		refreshUITree();
 		return missedCallMessage.getText();
+	}
+	
+	public boolean isNativeBrowserURLVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(AndroidLocators.Browsers.xpathNativeBrowserURLBar));
 	}
 }

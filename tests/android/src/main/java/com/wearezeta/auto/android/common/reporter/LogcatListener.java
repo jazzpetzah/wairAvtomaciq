@@ -57,7 +57,7 @@ public class LogcatListener extends Thread {
 			while (process != null && isRunning) {
 				String s;
 
-				while ((s = bufferedReader.readLine()) != null) {
+				while ((s = bufferedReader.readLine()) != null && isRunning) {
 					output += s + "\n";
 				}
 			}

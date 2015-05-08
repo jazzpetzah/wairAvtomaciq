@@ -41,6 +41,8 @@ public final class AndroidLocators {
 		public static final String xpathFirefoxUrlBarEditText42 = "//android.widget.LinearLayout/android.widget.EditText";
 
 		public static final String xpathUrlBar42 = "//android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.widget.EditText";
+		
+		public static final String xpathNativeBrowserURLBar = "//android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.widget.RelativeLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.EditText[1]";
 
 		public static final String xpathNativeBrowserMenu = "//android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.widget.RelativeLayout[1]/android.widget.LinearLayout[1]/android.widget.ImageButton[2]";
 
@@ -366,6 +368,9 @@ public final class AndroidLocators {
 
 		public static final String idMediaBarControl = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_header__mediabar__control";
+		
+		public static final String idYoutubePlayButton = LOCATORS_PACKAGE
+				+ ":id/gtv__youtube_message__play";
 
 		public static final String idMissedCallMesage = LOCATORS_PACKAGE
 				+ ":id/ttv__row_conversation__missed_call";
