@@ -316,3 +316,20 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
+ @id170 @staging
+  Scenario Outline: Verify you can send and play youtube link
+    Given There are 3 users where <Name> is me
+    Given <Name> is connected to <Contact1>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap on text input
+    And I input <YoutubeLink> message and send it
+    And I press play on youtube container
+    Then I am taken out of Wire and into the native browser app
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | YoutubeLink                                    |
+      | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs    |
+      
