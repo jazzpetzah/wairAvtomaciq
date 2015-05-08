@@ -90,10 +90,16 @@ public class PersonalInfoPage extends AndroidPage {
 
 	public void tapGalleryButton() throws Throwable {
 		galleryBtn.click();
-		Thread.sleep(1000); // fix for animation
+		Thread.sleep(3000); // fix for animation
 	}
 
 	public void tapConfirmButton() throws IOException, Throwable {
+		Thread.sleep(1000); // fix for animation
+		try {
+			this.getDriver().hideKeyboard();
+		} catch (Exception ex) {
+			//ignore silently
+		}
 		confirmBtn.click();
 		Thread.sleep(1000); // fix for animation
 	}
