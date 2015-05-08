@@ -7,7 +7,7 @@ Feature: Performance Tests
     Given Myself is connected to all other users
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    #When I test conversation loading time for conversation with 300 messages and 30 images
+    When I test conversation loading time for conversation with 300 messages and 30 images
     When I start test cycle for <Time> minutes
     Then I generate performance report for <UsersNumber> users
 
