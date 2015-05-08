@@ -7,6 +7,7 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
+import org.jboss.netty.handler.timeout.ReadTimeoutException;
 import org.json.JSONArray;
 
 import com.sun.jersey.api.client.Client;
@@ -16,8 +17,8 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 final class RESTMBoxAPI {
-	private static final Logger log = ZetaLogger
-			.getLog(RESTMBoxAPI.class.getSimpleName());
+	private static final Logger log = ZetaLogger.getLog(RESTMBoxAPI.class
+			.getSimpleName());
 
 	private static final String URL_PROTOCOL = "http://";
 
@@ -76,13 +77,17 @@ final class RESTMBoxAPI {
 	}
 
 	public static JSONArray getRecentEmailsForUser(String email, int minCount,
-			int maxCount, int timeoutMilliseconds)
-			throws RESTMBoxException {
+			int maxCount, int timeoutMilliseconds) throws RESTMBoxException {
 		Builder webResource = buildDefaultRequest(String.format(
 				"recent_emails/%s/%s/%s", email, maxCount, minCount),
 				timeoutMilliseconds);
-		final String output = httpGet(webResource,
-				new int[] { HttpStatus.SC_OK });
-		return new JSONArray(output);
+		try {
+			final String output = httpGet(webResource,
+					new int[] { HttpStatus.SC_OK });
+			return new JSONArray(output);
+		} catch (ReadTimeoutException e) {
+			e.printStackTrace();
+			return new JSONArray();
+		}
 	}
 }

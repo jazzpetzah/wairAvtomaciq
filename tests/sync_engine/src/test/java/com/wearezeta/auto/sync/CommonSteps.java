@@ -69,8 +69,9 @@ public class CommonSteps {
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
+		// Setting platform to iOS as more universal one 
 		com.wearezeta.auto.common.CommonSteps.getInstance()
-				.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+				.ThereAreNUsersWhereXIsMe(Platform.iOS, count, myNameAlias);
 	}
 
 	@Given("I start all platform clients")
