@@ -101,7 +101,11 @@ Feature: People View
     Given Contact <Name> send message to user <Contact1>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    And I wait for 90 seconds
+    When I wait for 30 seconds
+    And I minimize the application #fix for first login
+    And I wait for 5 seconds       #fix for first login
+    And I restore the application  #fix for first login
+    And I wait for 25 seconds
     When I swipe down contact list
     And I see People picker page
     And I tap on <Contact1> in Top People
