@@ -364,8 +364,13 @@ public class DialogPage extends AndroidPage {
 
 	public void takePhoto() throws Exception {
 		refreshUITree();// TODO workaround
-		getWait().until(ExpectedConditions.visibilityOf(takePhotoButton));
-		takePhotoButton.click();
+		try {
+			getWait().until(ExpectedConditions.visibilityOf(takePhotoButton));
+			takePhotoButton.click();
+		} catch (NoSuchElementException e) {
+			log.debug("Can't find element.\n" + e.getMessage());
+			throw e;
+		}
 	}
 
 	public void changeCamera() throws Exception {
@@ -470,7 +475,7 @@ public class DialogPage extends AndroidPage {
 				log.debug("No keyboard visible. Nothing to hide #1");
 			}
 			changeCamera();
-			Thread.sleep(1000);
+			Thread.sleep(3000);
 			takePhoto();
 		} else {
 			cursurFrame.click();
