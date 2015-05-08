@@ -2,6 +2,7 @@ package com.wearezeta.auto.common.backend;
 
 import java.io.IOException;
 import java.net.URI;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,7 +36,7 @@ final class BackendREST {
 	private static final Logger log = ZetaLogger.getLog(BackendREST.class
 			.getSimpleName());
 
-	private static String backendUrl = "not set";
+	private static String backendUrl = null;
 	private static Client client = Client.create();
 	static {
 		log.setLevel(Level.DEBUG);
@@ -183,6 +184,18 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
+	public static JSONObject login(PhoneNumber phoneNumber, String code)
+			throws Exception {
+		Builder webResource = buildDefaultRequest("login",
+				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("phone", phoneNumber.toString());
+		requestBody.put("code", code);
+		final String output = httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
+	}
+
 	public static JSONObject getUserInfoByID(String id, AuthToken token)
 			throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("users/" + id,
@@ -259,6 +272,20 @@ final class BackendREST {
 				new int[] { HttpStatus.SC_ACCEPTED });
 	}
 
+	public static void updateSelfPassword(AuthToken token, String oldPassword,
+			String newPassword) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth("self/password",
+				MediaType.APPLICATION_JSON, token).type(
+				MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		if (oldPassword != null) {
+			requestBody.put("old_password", oldPassword);
+		}
+		requestBody.put("new_password", newPassword);
+		httpPut(webResource, requestBody.toString(), new int[] {
+				HttpStatus.SC_ACCEPTED, HttpStatus.SC_OK });
+	}
+
 	public static void detachSelfEmail(AuthToken token) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("self/email",
 				MediaType.APPLICATION_JSON, token).type(
@@ -298,13 +325,12 @@ final class BackendREST {
 	}
 
 	public static JSONObject registerNewUser(PhoneNumber phoneNumber,
-			String userName, String password) throws Exception {
+			String userName) throws Exception {
 		Builder webResource = buildDefaultRequest("register",
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
 		requestBody.put("name", userName);
-		requestBody.put("password", password);
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_CREATED });
 		return new JSONObject(output);
@@ -323,25 +349,27 @@ final class BackendREST {
 	private static final String BASIC_AUTH_HEADER_VALUE_EDGE = "Basic d2lyZS1lZGdlOiQyXVxTbihGYD8rUlkiLkM=";
 	private static final String BASIC_AUTH_HEADER_VALUE_STAGING = "Basic d2lyZS1zdGFnaW5nOnRqNGEzbl1BQzpFcn5yJTQ=";
 
-	private static String getAuthValue() {
+	private static String getAuthValue() throws Exception {
 		String authValue = null;
-		if (backendUrl.contains("edge")) {
+		final String host = getBaseURI().getHost();
+		if (host.toLowerCase().contains("edge")) {
 			authValue = BASIC_AUTH_HEADER_VALUE_EDGE;
-		} else if (backendUrl.contains("staging")) {
+		} else if (host.toLowerCase().contains("staging")) {
 			authValue = BASIC_AUTH_HEADER_VALUE_STAGING;
 		} else {
-			throw new RuntimeException(String.format("Unknown backend url %s",
-					backendUrl));
+			throw new RuntimeException(String.format("Unknown backend host %s",
+					host));
 		}
 		return authValue;
 	}
 
-	private static JSONObject getActivationDataViaBackdoor(
+	public static JSONObject getActivationDataViaBackdoor(
 			PhoneNumber phoneNumber) throws Exception {
 		Builder webResource = buildDefaultRequest(
 				String.format("i/users/activation-code?phone=%s",
-						phoneNumber.toString()), MediaType.APPLICATION_JSON)
-				.header("Authorization", getAuthValue());
+						URLEncoder.encode(phoneNumber.toString(), "utf-8")),
+				MediaType.APPLICATION_JSON).header("Authorization",
+				getAuthValue());
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
@@ -351,24 +379,46 @@ final class BackendREST {
 	private static JSONObject getActivationDataViaBackdoor(String email)
 			throws Exception {
 		Builder webResource = buildDefaultRequest(
-				String.format("i/users/activation-code?email=%s", email,
-						"utf-8"), MediaType.APPLICATION_JSON).header(
-				"Authorization", getAuthValue());
+				String.format("i/users/activation-code?email=%s",
+						URLEncoder.encode(email, "utf-8")),
+				MediaType.APPLICATION_JSON).header("Authorization",
+				getAuthValue());
 		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
 
-	public static JSONObject activateNewUser(PhoneNumber phoneNumber)
-			throws Exception {
+	public static JSONObject activateNewUser(PhoneNumber phoneNumber,
+			String code) throws Exception {
 		Builder webResource = buildDefaultRequest("activate",
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
-		requestBody.put("code", getActivationDataViaBackdoor(phoneNumber)
-				.getString("code"));
+		requestBody.put("code", code);
 		requestBody.put("dryrun", false);
 		final String output = httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK });
+		return new JSONObject(output);
+	}
+
+	public static void generateLoginCode(PhoneNumber phoneNumber)
+			throws Exception {
+		Builder webResource = buildDefaultRequest("login/send",
+				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("phone", phoneNumber.toString());
+		httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK });
+	}
+
+	public static JSONObject getLoginCodeViaBackdoor(PhoneNumber phoneNumber)
+			throws Exception {
+		Builder webResource = buildDefaultRequest(
+				String.format("i/users/login-code?phone=%s",
+						URLEncoder.encode(phoneNumber.toString(), "utf-8")),
+				MediaType.APPLICATION_JSON).header("Authorization",
+				getAuthValue());
+		final String output = httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
@@ -594,7 +644,8 @@ final class BackendREST {
 			throws Exception {
 		// Changed this to make it look the same as in webapp
 		Builder webResource = buildDefaultRequestWithAuth(
-				String.format("search/contacts?q=%s&size=30&l=3&d=1", query),
+				String.format("search/contacts?q=%s&size=30&l=3&d=1",
+						URLEncoder.encode(query, "utf-8")),
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);
 		final String output = httpGet(webResource,
@@ -643,7 +694,7 @@ final class BackendREST {
 	}
 
 	public static URI getBaseURI() throws Exception {
-		String backend = backendUrl.equals("not set") ? CommonUtils
+		String backend = (backendUrl == null) ? CommonUtils
 				.getDefaultBackEndUrlFromConfig(CommonUtils.class) : backendUrl;
 
 		return UriBuilder.fromUri(backend).build();

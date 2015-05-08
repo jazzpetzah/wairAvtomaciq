@@ -45,6 +45,7 @@ public final class BackendAPIWrappers {
 	public static final int BACKEND_ACTIVATION_TIMEOUT = 90; // seconds
 
 	private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
+	private static final int AUTH_FAILED_ERROR = 403;
 	private static final int SERVER_SIDE_ERROR = 500;
 	private static final int MAX_BACKEND_RETRIES = 5;
 
@@ -57,7 +58,7 @@ public final class BackendAPIWrappers {
 		BackendREST.setDefaultBackendURL(url);
 	}
 
-	private static Future<String> initMessageListenerForActivationMessage(
+	private static Future<String> initMessageListener(
 			ClientUser userToActivate, int retryNumber) throws Exception {
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
@@ -91,18 +92,18 @@ public final class BackendAPIWrappers {
 			RegistrationStrategy strategy) throws Exception {
 		switch (strategy) {
 		case ByEmail:
-			final Future<String> activationMessage = initMessageListenerForActivationMessage(
-					user, retryNumber);
+			final Future<String> activationMessage = initMessageListener(user,
+					retryNumber);
 			BackendREST.registerNewUser(user.getEmail(), user.getName(),
 					user.getPassword());
 			activateRegisteredUserByEmail(activationMessage);
 			attachUserPhoneNumber(user);
 			break;
 		case ByPhoneNumber:
-			BackendREST.registerNewUser(user.getPhoneNumber(), user.getName(),
-					user.getPassword());
+			BackendREST.registerNewUser(user.getPhoneNumber(), user.getName());
 			activateRegisteredUserByPhoneNumber(user.getPhoneNumber());
-			final int maxAttachRetries = 3;
+			changeUserPassword(user, null, user.getPassword());
+			final int maxAttachRetries = 2;
 			for (int tryNum = 1; tryNum <= maxAttachRetries; tryNum++) {
 				try {
 					log.debug(String
@@ -141,7 +142,8 @@ public final class BackendAPIWrappers {
 
 	public static void activateRegisteredUserByPhoneNumber(
 			PhoneNumber phoneNumber) throws Exception {
-		BackendREST.activateNewUser(phoneNumber);
+		BackendREST.activateNewUser(phoneNumber, BackendREST
+				.getActivationDataViaBackdoor(phoneNumber).getString("code"));
 		log.debug(String.format("User '%s' is successfully activated",
 				phoneNumber.toString()));
 	}
@@ -153,10 +155,27 @@ public final class BackendAPIWrappers {
 		activateRegisteredUserByPhoneNumber(user.getPhoneNumber());
 	}
 
+	/**
+	 * Change/set user password
+	 * 
+	 * @param user
+	 * @param oldPassword
+	 *            set this to null if the user has no password set
+	 * @param newPassword
+	 * @throws Exception
+	 */
+	public static void changeUserPassword(ClientUser user, String oldPassword,
+			String newPassword) throws Exception {
+		user = tryLoginByUser(user);
+		BackendREST.updateSelfPassword(generateAuthToken(user), oldPassword,
+				newPassword);
+		user.setPassword(newPassword);
+	}
+
 	public static void attachUserEmail(ClientUser user, int retryNumber)
 			throws Exception {
-		final Future<String> activationMessage = initMessageListenerForActivationMessage(
-				user, retryNumber);
+		final Future<String> activationMessage = initMessageListener(user,
+				retryNumber);
 		user = tryLoginByUser(user);
 		BackendREST.updateSelfEmail(generateAuthToken(user), user.getEmail());
 		activateRegisteredUserByEmail(activationMessage);
@@ -430,8 +449,20 @@ public final class BackendAPIWrappers {
 		int tryNum = 0;
 		while (tryNum < MAX_BACKEND_RETRIES) {
 			try {
-				loggedUserInfo = BackendREST.login(user.getEmail(),
-						user.getPassword());
+				try {
+					loggedUserInfo = BackendREST.login(user.getEmail(),
+							user.getPassword());
+				} catch (BackendRequestException e) {
+					// Retry in case the user has only phone number attached
+					if (e.getReturnCode() == AUTH_FAILED_ERROR) {
+						BackendREST.generateLoginCode(user.getPhoneNumber());
+						final String code = BackendREST
+								.getLoginCodeViaBackdoor(user.getPhoneNumber())
+								.getString("code");
+						loggedUserInfo = BackendREST.login(
+								user.getPhoneNumber(), code);
+					}
+				}
 				break;
 			} catch (BackendRequestException e) {
 				if (e.getReturnCode() == REQUEST_TOO_FREQUENT_ERROR) {
