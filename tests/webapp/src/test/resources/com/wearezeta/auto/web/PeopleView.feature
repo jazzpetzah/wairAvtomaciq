@@ -260,7 +260,7 @@ Feature: People View
 	 | Login      | Password      | Name      | KnownContact  | KnownContact2  | UnknownContact  | UnknownContact2  | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name      | user4Name       | user5Name        | PeoplePopoverGroupChat | YOU ADDED |
 
- @staging @id1551
+ @regression @id1551
    Scenario Outline: Verify I can ignore connection request in a group conversation
       Given There are 3 users where <Name> is me
       Given Myself is connected to <KnownContact>
