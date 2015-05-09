@@ -354,19 +354,19 @@ public final class CommonSteps {
 			String userNameAlias, int secondsTimeout) throws Exception {
 		final ClientUser userAs = usrMgr
 				.findUserByNameOrNameAlias(userNameAlias);
-		String expectedHash = null;
+		String previousHash = null;
 		if (profilePictureSnapshotsMap.containsKey(userAs.getEmail())) {
-			expectedHash = profilePictureSnapshotsMap.get(userAs.getEmail());
+			previousHash = profilePictureSnapshotsMap.get(userAs.getEmail());
 		} else {
 			throw new RuntimeException(String.format(
-					"Please take user picture snpshot for user '%s' first",
+					"Please take user picture snapshot for user '%s' first",
 					userAs.getEmail()));
 		}
 		long millisecondsStarted = System.currentTimeMillis();
 		String actualHash = null;
 		do {
 			actualHash = BackendAPIWrappers.getUserPictureHash(userAs);
-			if (actualHash.equals(expectedHash)) {
+			if (!actualHash.equals(previousHash)) {
 				break;
 			}
 			Thread.sleep(500);
@@ -374,7 +374,7 @@ public final class CommonSteps {
 		Assert.assertFalse(
 				String.format(
 						"Actual and previous user pictures are equal, but expected to be different after %s second(s)",
-						secondsTimeout), expectedHash.equals(actualHash));
+						secondsTimeout), previousHash.equals(actualHash));
 	}
 
 	private static final int PICTURE_CHANGE_TIMEOUT = 15; // seconds
