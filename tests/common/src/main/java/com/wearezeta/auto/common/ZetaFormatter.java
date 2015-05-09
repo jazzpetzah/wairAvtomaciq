@@ -162,8 +162,9 @@ public class ZetaFormatter implements Formatter, Reporter {
 			final ZetaDriver driver = getDriver(arg0.getStatus().equals(
 					Result.FAILED));
 			if (driver != null) {
-				if (arg0.getStatus().equals(Result.SKIPPED)
-						|| arg0.getStatus().equals(Result.UNDEFINED)) {
+				if (arg0.getStatus().equals(Result.SKIPPED.getStatus())
+						|| arg0.getStatus()
+								.equals(Result.UNDEFINED.getStatus())) {
 					// Don't make screenshots for skipped and undefined steps
 					// To speed up suite execution
 					return;
