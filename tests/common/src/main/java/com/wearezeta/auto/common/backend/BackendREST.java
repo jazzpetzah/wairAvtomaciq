@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common.backend;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Arrays;
@@ -20,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource.Builder;
@@ -40,9 +42,9 @@ final class BackendREST {
 	private static Client client = Client.create();
 	static {
 		log.setLevel(Level.DEBUG);
-		client.setReadTimeout(5000);
-		client.setConnectTimeout(5000);
 	}
+
+	private static final int MAX_REQUEST_RETRY_COUNT = 3;
 
 	private static void verifyRequestResult(int currentResponseCode,
 			int[] acceptableResponseCodes) throws BackendRequestException {
@@ -72,19 +74,25 @@ final class BackendREST {
 
 	private static String httpPost(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws BackendRequestException {
-		Object lock = new Object();
-		ClientResponse response;
-		synchronized (lock) {
-			response = webResource.post(ClientResponse.class, entity);
-		}
+		log.debug("PUT REQUEST...");
+		ClientResponse response = null;
+		int tryNum = 0;
+		do {
+			try {
+				response = webResource.post(ClientResponse.class, entity);
+				break;
+			} catch (ClientHandlerException e) {
+				e.printStackTrace();
+				tryNum++;
+			}
+		} while (tryNum < MAX_REQUEST_RETRY_COUNT);
 		String responseStr;
 		try {
 			responseStr = response.getEntity(String.class);
 		} catch (UniformInterfaceException e) {
 			responseStr = "";
 		}
-		log.debug(String.format(
-				"POST REQUEST\n >>> Input data: %s\n >>> Response: %s",
+		log.debug(String.format(" >>> Input data: %s\n >>> Response: %s",
 				formatEntity(entity), (responseStr.length() > 0) ? responseStr
 						: EMPTY_LOG_RECORD));
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
@@ -93,15 +101,25 @@ final class BackendREST {
 
 	private static String httpPut(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws BackendRequestException {
-		ClientResponse response = webResource.put(ClientResponse.class, entity);
+		log.debug("PUT REQUEST...");
+		ClientResponse response = null;
+		int tryNum = 0;
+		do {
+			try {
+				response = webResource.put(ClientResponse.class, entity);
+				break;
+			} catch (ClientHandlerException e) {
+				e.printStackTrace();
+				tryNum++;
+			}
+		} while (tryNum < MAX_REQUEST_RETRY_COUNT);
 		String responseStr;
 		try {
 			responseStr = response.getEntity(String.class);
 		} catch (UniformInterfaceException e) {
 			responseStr = "";
 		}
-		log.debug(String.format(
-				"PUT REQUEST\n >>> Input data: %s\n >>> Response: %s",
+		log.debug(String.format(" >>> Input data: %s\n >>> Response: %s",
 				formatEntity(entity), (responseStr.length() > 0) ? responseStr
 						: EMPTY_LOG_RECORD));
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
@@ -110,14 +128,25 @@ final class BackendREST {
 
 	private static String httpDelete(Builder webResource,
 			int[] acceptableResponseCodes) throws BackendRequestException {
-		ClientResponse response = webResource.delete(ClientResponse.class);
+		log.debug("DELETE REQUEST...");
+		ClientResponse response = null;
+		int tryNum = 0;
+		do {
+			try {
+				response = webResource.delete(ClientResponse.class);
+				break;
+			} catch (ClientHandlerException e) {
+				e.printStackTrace();
+				tryNum++;
+			}
+		} while (tryNum < MAX_REQUEST_RETRY_COUNT);
 		String responseStr;
 		try {
 			responseStr = response.getEntity(String.class);
 		} catch (UniformInterfaceException e) {
 			responseStr = "";
 		}
-		log.debug(String.format("DELETE REQUEST\n >>> Response: %s",
+		log.debug(String.format(" >>> Response: %s",
 				(responseStr.length() > 0) ? responseStr : EMPTY_LOG_RECORD));
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return responseStr;
@@ -125,14 +154,25 @@ final class BackendREST {
 
 	private static Object httpGet(Builder webResource, Class<?> entityClass,
 			int[] acceptableResponseCodes) throws BackendRequestException {
-		ClientResponse response = webResource.get(ClientResponse.class);
+		log.debug("GET REQUEST...");
+		ClientResponse response = null;
+		int tryNum = 0;
+		do {
+			try {
+				response = webResource.get(ClientResponse.class);
+				break;
+			} catch (ClientHandlerException e) {
+				e.printStackTrace();
+				tryNum++;
+			}
+		} while (tryNum < MAX_REQUEST_RETRY_COUNT);
 		Object responseObj = null;
 		try {
 			responseObj = response.getEntity(entityClass);
 		} catch (UniformInterfaceException e) {
 			// Do nothing
 		}
-		log.debug(String.format("GET REQUEST\n >>> Response Object: <%s>",
+		log.debug(String.format(" >>> Response Object: <%s>",
 				entityClass.getName()));
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return responseObj;
@@ -140,14 +180,25 @@ final class BackendREST {
 
 	private static String httpGet(Builder webResource,
 			int[] acceptableResponseCodes) throws BackendRequestException {
-		ClientResponse response = webResource.get(ClientResponse.class);
+		log.debug("GET REQUEST...");
+		ClientResponse response = null;
+		int tryNum = 0;
+		do {
+			try {
+				response = webResource.get(ClientResponse.class);
+				break;
+			} catch (ClientHandlerException e) {
+				e.printStackTrace();
+				tryNum++;
+			}
+		} while (tryNum < MAX_REQUEST_RETRY_COUNT);
 		String responseStr;
 		try {
 			responseStr = response.getEntity(String.class);
 		} catch (UniformInterfaceException e) {
 			responseStr = "";
 		}
-		log.debug(String.format("GET REQUEST\n >>> Response: %s",
+		log.debug(String.format(" >>> Response: %s",
 				(responseStr.length() > 0) ? responseStr : EMPTY_LOG_RECORD));
 		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
 		return responseStr;
