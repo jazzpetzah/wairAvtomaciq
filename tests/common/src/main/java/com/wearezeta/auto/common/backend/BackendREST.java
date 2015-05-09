@@ -40,8 +40,8 @@ final class BackendREST {
 	private static Client client = Client.create();
 	static {
 		log.setLevel(Level.DEBUG);
-		client.setReadTimeout(10000);
-		client.setConnectTimeout(10000);
+		client.setReadTimeout(5000);
+		client.setConnectTimeout(5000);
 	}
 
 	private static void verifyRequestResult(int currentResponseCode,
