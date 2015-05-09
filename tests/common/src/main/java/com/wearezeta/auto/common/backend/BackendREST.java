@@ -40,6 +40,7 @@ final class BackendREST {
 	private static Client client = Client.create();
 	static {
 		log.setLevel(Level.DEBUG);
+		client.setReadTimeout(5000);
 		client.setConnectTimeout(5000);
 	}
 
