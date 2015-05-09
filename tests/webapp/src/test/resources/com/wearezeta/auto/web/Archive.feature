@@ -60,6 +60,7 @@ Feature: Archive
     And I see my name on top of Contact list
     And I archive conversation <Contact>
     When <Contact> calls me using <CallBackend>
+    And I wait for 5 seconds
     And <Contact> stops all calls to me
     Then I see Contact list with name <Contact>
     And I do not see Archive button at the bottom of my Contact list
@@ -91,6 +92,7 @@ Feature: Archive
     And I see my name on top of Contact list
     And I archive conversation <Contact>
     When <Contact> calls me using <CallBackend>
+    And I wait for 5 seconds
     And <Contact> stops all calls to me
     Then I see Contact list with name <Contact>
     And I do not see Archive button at the bottom of my Contact list
