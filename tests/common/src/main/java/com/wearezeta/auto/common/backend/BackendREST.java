@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common.backend;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Arrays;
