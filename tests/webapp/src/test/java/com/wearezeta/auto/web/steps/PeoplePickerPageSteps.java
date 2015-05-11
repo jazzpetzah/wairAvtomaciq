@@ -89,7 +89,7 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.createConversation();
 	}
 
-	@Then("^I see more than (\\d+) suggestions in people picker$")
+	@Then("^I see more than (\\d+) suggestions? in people picker$")
 	public void ISeeMoreThanXSuggestionsInPeoplePicker(int count) {
 		Assert.assertTrue(PagesCollection.peoplePickerPage
 				.getNumberOfSuggestions() > count);
