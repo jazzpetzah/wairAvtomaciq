@@ -211,10 +211,13 @@ public class ConversationPage extends MainWirePage {
 
 	public int getNumberOfImageEntries() throws Exception {
 		DriverUtils.setImplicitWaitValue(this.getDriver(), 1);
-		List<WebElement> conversationImages = getDriver().findElements(
-				By.xpath(OSXLocators.xpathConversationImageEntry));
-		DriverUtils.setDefaultImplicitWait(this.getDriver());
-		return conversationImages.size();
+		try {
+			List<WebElement> conversationImages = getDriver().findElements(
+					By.xpath(OSXLocators.xpathConversationImageEntry));
+			return conversationImages.size();
+		} finally {
+			DriverUtils.restoreImplicitWait(this.getDriver());
+		}
 	}
 
 	public boolean isMessageSent(String message) throws Exception {
@@ -471,7 +474,7 @@ public class ConversationPage extends MainWirePage {
 						receivedDate.getTime() + time / 2), checkTime);
 			}
 		} finally {
-			DriverUtils.setDefaultImplicitWait(this.getDriver());
+			DriverUtils.restoreImplicitWait(this.getDriver());
 		}
 		return null;
 

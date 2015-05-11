@@ -137,24 +137,27 @@ public class PeoplePickerPage extends AndroidPage {
 		 */
 		refreshUITree();
 		DriverUtils.turnOffImplicitWait(this.getDriver());
-		if (this.getDriver()
-				.findElements(
-						AndroidLocators.OtherUserPersonalInfoPage
-								.getByForOtherUserPersonalInfoUnlockButton())
-				.size() > 0) {
-			page = new OtherUserPersonalInfoPage(this.getLazyDriver());
-		} else if (this
-				.getDriver()
-				.findElements(
-						AndroidLocators.ConnectToPage
-								.getByForConnectToPageHeader()).size() > 0) {
-			page = new ConnectToPage(this.getLazyDriver());
-		} else if (isVisible(addToConversationsButton)) {
-			page = this;
-		} else {
-			page = new DialogPage(this.getLazyDriver());
+		try {
+			if (this.getDriver()
+					.findElements(
+							AndroidLocators.OtherUserPersonalInfoPage
+									.getByForOtherUserPersonalInfoUnlockButton())
+					.size() > 0) {
+				page = new OtherUserPersonalInfoPage(this.getLazyDriver());
+			} else if (this
+					.getDriver()
+					.findElements(
+							AndroidLocators.ConnectToPage
+									.getByForConnectToPageHeader()).size() > 0) {
+				page = new ConnectToPage(this.getLazyDriver());
+			} else if (isVisible(addToConversationsButton)) {
+				page = this;
+			} else {
+				page = new DialogPage(this.getLazyDriver());
+			}
+		} finally {
+			DriverUtils.restoreImplicitWait(this.getDriver());
 		}
-		DriverUtils.setDefaultImplicitWait(this.getDriver());
 		return page;
 	}
 

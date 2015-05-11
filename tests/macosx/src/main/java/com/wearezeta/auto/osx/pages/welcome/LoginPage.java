@@ -111,11 +111,9 @@ public class LoginPage extends OSXPage {
 	}
 
 	public boolean waitForLogin() throws Exception {
-		DriverUtils.turnOffImplicitWait(this.getDriver());
 		boolean noSignIn = DriverUtils.waitUntilLocatorDissapears(
 				this.getDriver(),
 				By.name(OSXLocators.LoginPage.nameSignInButton));
-		DriverUtils.setDefaultImplicitWait(this.getDriver());
 		return noSignIn;
 	}
 

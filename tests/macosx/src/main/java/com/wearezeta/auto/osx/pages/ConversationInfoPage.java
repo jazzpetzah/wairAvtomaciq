@@ -133,12 +133,13 @@ public class ConversationInfoPage extends OSXPage {
 	}
 
 	private void confirmIfRequested() throws Exception {
+		DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
 		try {
-			DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
 			confirmationViewConfirmButton.click();
 		} catch (NoSuchElementException e) {
+			// pass silently
 		} finally {
-			DriverUtils.setDefaultImplicitWait(this.getDriver());
+			DriverUtils.restoreImplicitWait(this.getDriver());
 		}
 	}
 
