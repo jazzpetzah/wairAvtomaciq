@@ -34,6 +34,9 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathPasswordInput)
 	private WebElement passwordInput;
 
+	@FindBy(xpath = "//*[@data-uie-name='status-error']")
+	private WebElement errorMessage;
+
 	public LoginPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
 		super(lazyDriver, url);
@@ -104,6 +107,10 @@ public class LoginPage extends WebPage {
 				By.xpath(WebAppLocators.RegistrationPage.xpathRootForm)) : "Registration page is not visible";
 
 		return new RegistrationPage(this.getLazyDriver(), this.getUrl());
+	}
+
+	public String getErrorMessage() {
+		return errorMessage.getText();
 	}
 
 }

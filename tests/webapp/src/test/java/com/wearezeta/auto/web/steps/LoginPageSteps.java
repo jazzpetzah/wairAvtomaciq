@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class LoginPageSteps {
@@ -91,10 +92,19 @@ public class LoginPageSteps {
 	public void IPressSignInButton() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.loginPage
 				.clickSignInButton();
+	}
 
+	@Then("^I am signed in properly$")
+	public void IAmSignedInProperly() throws Exception {
 		Assert.assertTrue(
 				"Sign In button/login progress spinner are still visible",
 				PagesCollection.loginPage.waitForLogin());
+	}
+
+	@Then("^the sign in error message reads (.*)")
+	public void TheSignInErrorMessageReads(String message) throws Throwable {
+		Assert.assertEquals(message,
+				PagesCollection.loginPage.getErrorMessage());
 	}
 
 	/**
