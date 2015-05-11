@@ -350,7 +350,6 @@ public class CommonIOSSteps {
 	public void IChangeAccentColor(String userNameAlias, String newColor)
 			throws Exception {
 		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
-		Thread.sleep(1000);
 	}
 
 	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
