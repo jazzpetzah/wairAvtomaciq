@@ -72,4 +72,19 @@ Feature: Registration
     Examples: 
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @staging @id2051
+  Scenario Outline: Register using already registered but not verified yet email
+    Given I switch to Registration page
+    Given I enter user name <Name> on Registration page
+    Given I enter user email <Email> on Registration page
+    Given I enter user password <Password> on Registration page
+    Given I submit registration form
+    And I see email <Email> on Verification page
+    When I Sign in using login <Email> and password <Password>
+    Then I see email <Email> on Verification page
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
    
