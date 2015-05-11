@@ -26,6 +26,10 @@ public final class WebAppLocators {
 		public static final String xpathSignInButton = "//*[@data-uie-name='do-sign-in']";
 
 		public static final String xpathSwitchToRegisterButtons = "//*[@data-uie-name='go-register']";
+
+		public static final String xpathChangePasswordButton = "//*[@data-uie-name='go-forgot-password']";
+		
+		public static final String xpathLoginErrorText = "//*[@data-uie-name='status-error']";
 	}
 
 	public static final class ContactListPage {
@@ -210,7 +214,7 @@ public final class WebAppLocators {
 	}
 
 	public static final class RegistrationPage {
-		
+
 		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
 
 		public static final String xpathRootForm = "//form[@id='form-create']";
