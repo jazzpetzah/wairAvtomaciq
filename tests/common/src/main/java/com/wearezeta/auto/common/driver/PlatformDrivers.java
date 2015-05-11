@@ -116,7 +116,9 @@ public final class PlatformDrivers {
 
 	public synchronized void quitDriver(Platform platform) throws Exception {
 		try {
-			drivers.get(platform).get().quit();
+			drivers.get(platform)
+					.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+							TimeUnit.MILLISECONDS).quit();
 			log.debug(String.format(
 					"Successfully quit driver instance for platfrom '%s'",
 					platform.name()));
@@ -132,7 +134,9 @@ public final class PlatformDrivers {
 				for (Entry<Platform, Future<? extends RemoteWebDriver>> entry : drivers
 						.entrySet()) {
 					try {
-						entry.getValue().get().quit();
+						entry.getValue()
+								.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+										TimeUnit.MILLISECONDS).quit();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

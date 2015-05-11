@@ -36,7 +36,7 @@ public abstract class BasePage {
 	}
 
 	protected RemoteWebDriver getDriver() throws Exception {
-		return this.getLazyDriver().get(ZetaDriver.INIT_TIMEOUT,
+		return this.getLazyDriver().get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 				TimeUnit.MILLISECONDS);
 	}
 

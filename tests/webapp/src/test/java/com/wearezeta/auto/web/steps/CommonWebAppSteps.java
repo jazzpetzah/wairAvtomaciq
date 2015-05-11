@@ -1,6 +1,8 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -26,6 +28,7 @@ import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppConstants;
@@ -663,9 +666,14 @@ public class CommonWebAppSteps {
 			try {
 				if (WebAppExecutionContext.LoggingManagement
 						.isSupportedInCurrentBrowser()) {
-					writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
-							.getDriver(CURRENT_PLATFORM).get());
+					writeBrowserLogsIntoMainLog(PlatformDrivers
+							.getInstance()
+							.getDriver(CURRENT_PLATFORM)
+							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+									TimeUnit.MILLISECONDS));
 				}
+			} catch (ExecutionException e) {
+				e.printStackTrace();
 			} finally {
 				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 			}

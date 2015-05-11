@@ -20,7 +20,7 @@ public final class ZetaSearchContext implements SearchContext {
 
 	public RemoteWebDriver getDriver() {
 		try {
-			return lazyDriver.get(ZetaDriver.INIT_TIMEOUT,
+			return lazyDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 					TimeUnit.MILLISECONDS);
 		} catch (Exception e) {
 			e.printStackTrace();

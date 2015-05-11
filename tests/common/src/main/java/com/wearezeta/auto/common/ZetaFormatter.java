@@ -196,7 +196,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	private static ZetaDriver getDriver(boolean forceWait) throws Exception {
 		if (lazyDriver.isDone() || forceWait) {
-			return (ZetaDriver) lazyDriver.get(ZetaDriver.INIT_TIMEOUT,
+			return (ZetaDriver) lazyDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 					TimeUnit.MILLISECONDS);
 		} else {
 			return null;
