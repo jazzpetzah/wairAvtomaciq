@@ -11,6 +11,7 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.pages.WebPage;
 
 public class PasswordChangeRequestPage extends WebPage {
+	// FIXME: Works for staging backend only
 	private static final String STAGING_URL = "https://staging-website.zinfra.io/forgot/";
 
 	@FindBy(id = "email")

@@ -19,7 +19,7 @@ public class PasswordChangeSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private static final int VISIBILITY_TIMEOUT_SECONDS = 5;
+	private static final int VISIBILITY_TIMEOUT_SECONDS = 15;
 
 	/**
 	 * Verifies whether Password Change page is visible

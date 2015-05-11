@@ -37,7 +37,7 @@ public class LoginPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathPasswordInput)
 	private WebElement passwordInput;
-	
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathLoginErrorText)
 	private WebElement loginErrorText;
 
@@ -96,14 +96,16 @@ public class LoginPage extends WebPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public PasswordChangeRequestPage clickChangePasswordButton() throws Exception {
+	public PasswordChangeRequestPage clickChangePasswordButton()
+			throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				changePasswordButton);
 
 		// This is commented because the button always redirects to production
 		// site and we usually need staging one
 		// changePasswordButton.click();
-		final PasswordChangeRequestPage changePasswordPage = new PasswordChangeRequestPage(this.getLazyDriver());
+		final PasswordChangeRequestPage changePasswordPage = new PasswordChangeRequestPage(
+				this.getLazyDriver());
 		changePasswordPage.navigateTo();
 		return changePasswordPage;
 	}
@@ -126,8 +128,13 @@ public class LoginPage extends WebPage {
 		return new RegistrationPage(this.getLazyDriver(), this.getUrl());
 	}
 
-	public String getLoginErrorText() {
-		return loginErrorText.getText();
+	public String getLoginErrorText() throws Exception {
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(WebAppLocators.LoginPage.xpathLoginErrorText), 3)) {
+			return loginErrorText.getText();
+		} else {
+			return "";
+		}
 	}
 
 }

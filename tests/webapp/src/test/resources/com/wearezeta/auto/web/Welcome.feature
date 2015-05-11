@@ -1,6 +1,6 @@
 Feature: Welcome
 
-  @torun @id1777
+  @staging @id1777
   Scenario Outline: Verify possibility of reseting password
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -28,4 +28,4 @@ Feature: Welcome
 
     Examples: 
       | Email      | OldPassword   | Name      | NewPassword | LoginErr                                   |
-      | user1Email | user1Password | user1Name | aqa654321#  | Wrong email or password. Please try again. |
+      | user1Email | user1Password | user1Name | aqa654321#  | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |

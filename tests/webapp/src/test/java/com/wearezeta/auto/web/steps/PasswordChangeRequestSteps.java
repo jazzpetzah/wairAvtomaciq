@@ -66,6 +66,9 @@ public class PasswordChangeRequestSteps {
 		PagesCollection.passwordChangeRequestPage.setEmail(emailOrAlias);
 	}
 
+	private static final int PASSWORD_MSG_TIMWOUT_SECONDS = 60;
+	private static final long TIME_SENT_DELTA_MILLISECONDS = 2000;
+
 	/**
 	 * Start email listener for a particular mail box
 	 * 
@@ -87,7 +90,9 @@ public class PasswordChangeRequestSteps {
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER, email);
-		this.passwordChangeMessage = mbox.getMessage(expectedHeaders, 120);
+		this.passwordChangeMessage = mbox.getMessage(expectedHeaders,
+				PASSWORD_MSG_TIMWOUT_SECONDS, System.currentTimeMillis()
+						- TIME_SENT_DELTA_MILLISECONDS);
 	}
 
 	/**

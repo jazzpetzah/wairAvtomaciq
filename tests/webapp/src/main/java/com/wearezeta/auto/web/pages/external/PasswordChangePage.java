@@ -30,7 +30,6 @@ public class PasswordChangePage extends WebPage {
 	public PasswordChangeSuccessfullPage clickChangePasswordButton()
 			throws Exception {
 		changePasswordButton.click();
-
 		return new PasswordChangeSuccessfullPage(this.getLazyDriver());
 	}
 

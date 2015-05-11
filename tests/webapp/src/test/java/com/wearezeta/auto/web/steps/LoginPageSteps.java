@@ -81,7 +81,8 @@ public class LoginPageSteps {
 
 	/**
 	 * Presses Sign In button on the corresponding page and verifies whether an
-	 * account is signed in properly
+	 * account is signed in properly in case if correct credentials were entered
+	 * and login was successful
 	 * 
 	 * @step. ^I press Sign In button$
 	 * 
@@ -93,9 +94,15 @@ public class LoginPageSteps {
 		PagesCollection.contactListPage = PagesCollection.loginPage
 				.clickSignInButton();
 
-		Assert.assertTrue(
-				"Sign In button/login progress spinner are still visible",
-				PagesCollection.loginPage.waitForLogin());
+		final String loginErrorText = PagesCollection.loginPage
+				.getLoginErrorText();
+		if (loginErrorText.length() > 0) {
+			return;
+		} else {
+			Assert.assertTrue(
+					"Sign In button/login progress spinner are still visible",
+					PagesCollection.loginPage.waitForLogin());
+		}
 	}
 
 	/**
@@ -174,8 +181,17 @@ public class LoginPageSteps {
 				.clickChangePasswordButton();
 	}
 
+	/**
+	 * Verifies whether the expected login error is visible on the page
+	 * 
+	 * @step. ^I see login error \"(.*)\"$
+	 * 
+	 * @param expectedError
+	 *            the text of error
+	 * @throws Exception
+	 */
 	@Then("^I see login error \"(.*)\"$")
-	public void ISeeLoginError(String expectedError) {
+	public void ISeeLoginError(String expectedError) throws Exception {
 		final String loginErrorText = PagesCollection.loginPage
 				.getLoginErrorText();
 		Assert.assertTrue(
