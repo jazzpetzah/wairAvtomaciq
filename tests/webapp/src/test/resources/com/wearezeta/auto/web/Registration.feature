@@ -72,4 +72,12 @@ Feature: Registration
     Examples: 
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
-   
+
+  @staging @id1992
+  Scenario: I want to see an error screen if the registration fails - Something went wrong
+    Given I switch to Registration page
+    When I enter user name user1Name on Registration page
+    And I enter user email nope@wearezeta.com on Registration page
+    And I enter user password user1Password on Registration page
+    And I submit registration form
+    Then I see error "SORRY. THIS EMAIL ADDRESS IS FORBIDDEN." on Verification page

@@ -20,6 +20,9 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
 public class RegistrationPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -93,7 +96,7 @@ public class RegistrationPageSteps {
 	 * 
 	 * @param password
 	 *            user password/alias
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I enter user password (.*) on Registration page$")
 	public void IEnterPassword(String password) throws Exception {
@@ -153,6 +156,13 @@ public class RegistrationPageSteps {
 				.isVerificationEmailCorrect(email));
 	}
 
+	@Then("^I see error \"(.*)\" on [Vv]erification page$")
+	public void ISeeErrorMessageOnVerificationPage(String message)
+			throws Throwable {
+		assertThat(PagesCollection.registrationPage.getErrorMessage(),
+				equalTo(message));
+	}
+
 	/**
 	 * Activate newly registered user on the backend. Don't forget to call the
 	 * 'I start activation email monitoring' step before this one
@@ -163,7 +173,8 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I verify registration email$")
 	public void IVerifyRegistrationEmail() throws Exception {
-		BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
+		BackendAPIWrappers
+				.activateRegisteredUserByEmail(this.activationMessage);
 		userToRegister.setUserState(UserState.Created);
 	}
 
