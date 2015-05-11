@@ -9,6 +9,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.PeoplePickerPage;
 import com.wearezeta.auto.web.pages.WebPage;
 
 public class GoogleLoginPage extends WebPage {
@@ -50,5 +52,6 @@ public class GoogleLoginPage extends WebPage {
 		// switch back to main window
 		this.getDriver().switchTo()
 				.window(this.getDriver().getWindowHandles().iterator().next());
+		PagesCollection.peoplePickerPage = new PeoplePickerPage(getLazyDriver());
 	}
 }

@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
@@ -86,5 +87,11 @@ public class PeoplePickerPageSteps {
 	@When("^I choose to create conversation from People Picker$")
 	public void IChooseToCreateConversationFromPeoplePicker() throws Exception {
 		PagesCollection.peoplePickerPage.createConversation();
+	}
+
+	@Then("^I see more than (\\d+) suggestions in people picker$")
+	public void ISeeMoreThanXSuggestionsInPeoplePicker(int count) {
+		Assert.assertTrue(PagesCollection.peoplePickerPage
+				.getNumberOfSuggestions() > count);
 	}
 }
