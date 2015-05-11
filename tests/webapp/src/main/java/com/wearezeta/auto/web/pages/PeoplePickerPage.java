@@ -4,6 +4,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -11,9 +12,11 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.SendInvitationPopoverContainer;
 
 public class PeoplePickerPage extends WebPage {
 
@@ -29,6 +32,9 @@ public class PeoplePickerPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathCloseSearchButton)
 	private WebElement closeSearchButton;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathSendInvitationButton)
+	private WebElement sendInvitationButton;
 
 	public PeoplePickerPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -77,14 +83,16 @@ public class PeoplePickerPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 5);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 5);
 	}
 
 	public void clickOnParticipant(String name) throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(name));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
 		WebElement participant = getDriver().findElement(locator);
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				participant);
@@ -95,7 +103,8 @@ public class PeoplePickerPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(user));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator);
 		WebElement userEl = getDriver().findElement(locator);
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(), userEl);
 		userEl.click();
@@ -120,5 +129,26 @@ public class PeoplePickerPage extends WebPage {
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.className(WebAppLocators.PeoplePickerPage.classNamePeoplePickerVisible));
+	}
+
+	public SendInvitationPopoverContainer clickSendInvitationButton()
+			throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				sendInvitationButton);
+		sendInvitationButton.click();
+
+		return new SendInvitationPopoverContainer(this.getLazyDriver());
+	}
+
+	public void pasteFromCliboard() {
+		searchInput.clear();
+		searchInput
+				.sendKeys(Keys.chord(WebAppExecutionContext
+						.isCurrentPlatfromWindows() ? Keys.CONTROL
+						: Keys.COMMAND, "v"));
+	}
+
+	public String getSearchInputContent() {
+		return searchInput.getAttribute("value");
 	}
 }

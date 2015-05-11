@@ -38,3 +38,21 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | Contact2Email | Contact2Password |
       | user1Email | user1Password | user1Name | user2Name | user2Email    | user2Password    | user3Name | user3Email    | user3Password    |
+
+  @smoke @id1741
+  Scenario Outline: Verify you can send an invite by copying the message
+    Given There are 2 users where <Name> is me
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contacts Upload dialog
+    And I click Show Search button on Contacts Upload dialog
+    And I see Send Invitation button on People Picker page
+    When I click Send Invitation button on People Picker page
+    Then I see Send Invitation Popover 
+    When I copy invitation text into clipboard using keyboard
+    Then I do not see Send Invitation Popover
+    When I paste current clipboard content into search input on People Picker page
+    Then I verify that search input on People Picker page contains text <Text>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Text                    |
+      | user1Email | user1Password | user1Name | user2Name | I'm on Wire. Search for |
