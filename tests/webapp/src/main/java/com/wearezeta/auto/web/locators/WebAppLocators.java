@@ -209,7 +209,7 @@ public final class WebAppLocators {
 		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 
 		public static final String xpathSendInvitationButton = xpathRoot
-				+ "//[@id='invite-button']";
+				+ "//*[@id='invite-button']";
 	}
 
 	public static final class RegistrationPage {

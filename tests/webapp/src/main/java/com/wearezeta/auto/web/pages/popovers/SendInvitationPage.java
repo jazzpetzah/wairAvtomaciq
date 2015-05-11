@@ -4,6 +4,7 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -29,11 +30,21 @@ public class SendInvitationPage extends AbstractPopoverPage {
 		return invitationText.getText();
 	}
 
-	public void copyToClipboard() {
-		invitationText.click();
-		invitationText
-				.sendKeys(Keys.chord(WebAppExecutionContext
-						.isCurrentPlatfromWindows() ? Keys.CONTROL
-						: Keys.COMMAND, "c"));
+	public void copyToClipboard() throws Exception {
+		// FIXME: Send Cmd/Ctrl + C by Selenium
+		final Actions builder = new Actions(getDriver());
+		builder.moveToElement(invitationText)
+				.click(invitationText)
+				.sendKeys(
+						Keys.chord(WebAppExecutionContext
+								.isCurrentPlatfromWindows() ? Keys.CONTROL
+								: Keys.COMMAND, "c"));
+		builder.build().perform();
+		// this.getDriver()
+		// .executeScript(
+		// "$(\""
+		// +
+		// PopoverLocators.SendInvitationPopover.SendInvitationPage.cssInvitationText
+		// + "\").trigger('copy')");
 	}
 }

@@ -90,6 +90,19 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
+	 * Verify whether Send Invitation button is visible on People Picker page
+	 * 
+	 * @step. ^I see Send Invitation button on People Picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Send Invitation button on People Picker page$")
+	public void ISeeSendInvitationButton() throws Exception {
+		PagesCollection.peoplePickerPage
+				.waitUntilSendInvitationButtonIsVisible();
+	}
+
+	/**
 	 * Click Send Invitation button on People Picker page
 	 * 
 	 * @step. ^I click Send Invitation button on People Picker page$

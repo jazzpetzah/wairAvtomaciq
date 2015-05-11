@@ -40,6 +40,8 @@ public final class PopoverLocators {
 
 			public static final String xpathInvitationText = xpathRootLocator
 					+ "//textarea";
+			
+			public static final String cssInvitationText = ".invite-link-box .message"; 
 		}
 	}
 

@@ -131,6 +131,17 @@ public class PeoplePickerPage extends WebPage {
 						By.className(WebAppLocators.PeoplePickerPage.classNamePeoplePickerVisible));
 	}
 
+	private static final int BUTTON_VISIBILITY_TIMEOUT_SECONDS = 5;
+
+	public void waitUntilSendInvitationButtonIsVisible() throws Exception {
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.xpath(WebAppLocators.PeoplePickerPage.xpathSendInvitationButton),
+						BUTTON_VISIBILITY_TIMEOUT_SECONDS) : "Send Invitation button is not visible after "
+				+ BUTTON_VISIBILITY_TIMEOUT_SECONDS + " seconds timeout";
+	}
+
 	public SendInvitationPopoverContainer clickSendInvitationButton()
 			throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),

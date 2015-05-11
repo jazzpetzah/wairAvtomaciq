@@ -8,7 +8,16 @@ import cucumber.api.java.en.When;
 
 public class SendInvitationPopoverPageSteps {
 
-	@Then("^I( do not)?see Send Invitation popover$")
+	/**
+	 * Verifies whether Send Invitation popover is visible or not
+	 * 
+	 * @step. ^I( do not)? see Send Invitation popover$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part is not provided
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see Send Invitation popover$")
 	public void ISeeSendInvitationPopover(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
@@ -21,7 +30,8 @@ public class SendInvitationPopoverPageSteps {
 	}
 
 	/**
-	 * Emulates key combination Cmd/Ctrl+C to copy invitation text into cliboard
+	 * Emulate key combination Cmd/Ctrl+C to copy invitation text into system
+	 * clipboard
 	 * 
 	 * @step. ^I copy invitation text into clipboard using keyboard$
 	 * 
