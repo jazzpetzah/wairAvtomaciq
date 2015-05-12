@@ -1,7 +1,7 @@
 Feature: Conversation View
 
   @staging @id330
-  Scenario Outline: Send Message to contact (portrait)
+  Scenario Outline: Send Message to contact [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
@@ -17,7 +17,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name |
 
   @staging @id
-  Scenario Outline: Receive message from contact
+  Scenario Outline: Receive message from contact [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
@@ -32,7 +32,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name |
       
   @torun @staging @id332 @deployPictures @id1470
-  Scenario Outline: Send a camera roll picture to user from contact list
+  Scenario Outline: Send a camera roll picture to user from contact list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
@@ -40,10 +40,10 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
-    And I press Add Picture button
-    And I press Camera Roll button
-    And I choose a picture from camera roll
-    And I press Confirm button
+    And I press Add Picture button on iPad
+    And I press Camera Roll button on iPad
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
     Then I see new photo in the dialog
 
     Examples: 
