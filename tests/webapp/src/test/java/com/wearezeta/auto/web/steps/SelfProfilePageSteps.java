@@ -46,13 +46,13 @@ public class SelfProfilePageSteps {
 	/**
 	 * Verifies that correct user name is shown on self profile page
 	 * 
-	 * @step. I see user name on self profile page (.*)
+	 * @step. ^I see user name on self profile page (.*)$
 	 * 
 	 * @param name
 	 *            name of the user
 	 * @throws Exception
 	 */
-	@And("I see user name on self profile page (.*)")
+	@And("^I see user name on self profile page (.*)$")
 	public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		boolean nameCorrect = PagesCollection.selfProfilePage
@@ -63,14 +63,14 @@ public class SelfProfilePageSteps {
 	/**
 	 * Verifies that correct user email is shown on self profile page
 	 * 
-	 * @step. I see user email on self profile page (.*)
+	 * @step. ^I see user email on self profile page (.*)$
 	 * 
 	 * @param email
 	 *            email of the user
 	 * 
 	 * @throws NoSuchUserException
 	 */
-	@And("I see user email on self profile page (.*)")
+	@And("^I see user email on self profile page (.*)$")
 	public void ISeeUserEmailOnSelfProfilePage(String email)
 			throws NoSuchUserException {
 		try {

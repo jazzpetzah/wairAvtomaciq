@@ -41,6 +41,12 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathLoginErrorText)
 	private WebElement loginErrorText;
 
+	@FindBy(css = ".auth-page .has-error .form-control #wire-email")
+	private WebElement redDotOnEmailField;
+
+	@FindBy(css = ".auth-page .has-error .form-control #wire-password")
+	private WebElement redDotOnPasswordField;
+
 	public LoginPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
 		super(lazyDriver, url);
@@ -128,26 +134,16 @@ public class LoginPage extends WebPage {
 		return new RegistrationPage(this.getLazyDriver(), this.getUrl());
 	}
 
-	public static class NoLoginErrorException extends Exception {
-
-		private static final long serialVersionUID = -176955293564141899L;
-
-		public NoLoginErrorException() {
-			super();
-		}
-
-		public NoLoginErrorException(String msg) {
-			super(msg);
-		}
+	public String getErrorMessage() {
+		return loginErrorText.getText();
 	}
 
-	public String getLoginErrorText() throws Exception {
-		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(WebAppLocators.LoginPage.xpathLoginErrorText), 3)) {
-			return loginErrorText.getText();
-		} else {
-			throw new NoLoginErrorException();
-		}
+	public boolean isRedDotOnEmailField() {
+		return DriverUtils.isElementPresentAndDisplayed(redDotOnEmailField);
+	}
+
+	public boolean isRedDotOnPasswordField() {
+		return DriverUtils.isElementPresentAndDisplayed(redDotOnPasswordField);
 	}
 
 }
