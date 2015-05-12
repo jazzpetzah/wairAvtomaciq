@@ -5,7 +5,7 @@ Feature: Registration
     Given I switch to Registration page
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
-    And I enter user password <Password> on Registration page
+    And I enter user password "<Password>" on Registration page
     And I start activation email monitoring
     And I submit registration form
     Then I see email <Email> on Verification page
@@ -73,15 +73,34 @@ Feature: Registration
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id1992
-  Scenario: I want to see an error screen if the registration fails - Something went wrong
+  @staging @id1991
+  Scenario Outline: I want to be notified if the email address I entered during registration has already been registered
+    Given There is 1 user where user1Name is me without avatar picture
     Given I switch to Registration page
-    When I enter user name user1Name on Registration page
-    And I enter user email nope@wearezeta.com on Registration page
-    And I enter user password user1Password on Registration page
+    When I enter user name <Name> on Registration page
+    And I enter user email <Email> on Registration page
+    And I enter user password "<Password>" on Registration page
+    And I submit registration form
+    Then I see error "EMAIL ADDRESS ALREADY TAKEN" on Verification page
+    And I verify that a red dot is shown inside the email field on the registration form
+
+    Examples: 
+      | Name      | Email      | Password      |
+      | user1Name | user1Email | wrongpassword |
+
+  @staging @id1992
+  Scenario Outline: I want to see an error screen if the registration fails
+    Given I switch to Registration page
+    When I enter user name <Name> on Registration page
+    And I enter user email <Email> on Registration page
+    And I enter user password "<Password>" on Registration page
     And I submit registration form
     Then I see error "SORRY. THIS EMAIL ADDRESS IS FORBIDDEN." on Verification page
-    And a red dot is shown inside the email field on the registration form
+    And I verify that a red dot is shown inside the email field on the registration form
+
+    Examples: 
+      | Name      | Email              | Password      |
+      | user1Name | nope@wearezeta.com | user1Password |
 
   @staging @id2229
   Scenario: Use Gmail contacts import on registration

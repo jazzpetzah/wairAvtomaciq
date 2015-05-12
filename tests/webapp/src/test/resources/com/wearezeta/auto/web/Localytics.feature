@@ -8,7 +8,7 @@ Feature: Localytics
     Given I take snapshot of <AttrName> attribute count
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
-    And I enter user password <Password> on Registration page 
+    And I enter user password "<Password>" on Registration page 
     And I submit registration form
     And I wait for 5 seconds
 
@@ -296,7 +296,7 @@ Feature: Localytics
     Given I take snapshot of <EventName> event count
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
-    And I enter user password <Password> on Registration page
+    And I enter user password "<Password>" on Registration page
     And I submit registration form
     And I wait for 5 seconds
 
