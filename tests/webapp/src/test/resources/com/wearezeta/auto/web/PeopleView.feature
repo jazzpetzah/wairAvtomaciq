@@ -98,8 +98,13 @@ Feature: People View
       Then I see Group Participants popover
       When I click on participant <UnknownContact> on Group Participants popover
       Then I see username <UnknownContact> on Group Participants popover
+      And I see an avatar on Group Participants popover
+      And I see Remove button on Group Participants popover
+      And I see correct remove from group button tool tip on Group Participants popover
       And I do not see Mail on Group Participants popover
       And I see Pending button on Group Participants popover
+      And I see correct pending button tool tip on Group Participants popover
+      And I see Pending text box on Group Participants popover
       When I click Pending button on Group Participants popover
       Then I see conversation with <UnknownContact> is selected in conversations list
 
@@ -123,10 +128,16 @@ Feature: People View
       Then I see correct add people button tool tip
       When I click on participant <UnknownContact> on Group Participants popover
       Then I see username <UnknownContact> on Group Participants popover
+      And I see an avatar on Group Participants popover
+      And I see Remove button on Group Participants popover
+      And I see correct remove from group button tool tip on Group Participants popover
       And I see Mail <UnknownContactMail> on Group Participants popover
+      And Would open mail client when clicking mail on Group Participants popover
       And I see Pending button on Group Participants popover
+      And I see correct pending button tool tip on Group Participants popover
+      And I see Pending text box on Group Participants popover
       When I click Pending button on Group Participants popover
-      When I click confirm connect button on Group Participants popover
+      And I click confirm connect button on Group Participants popover
       Then I see conversation with <UnknownContact> is selected in conversations list
 
       Examples:
@@ -171,24 +182,28 @@ Feature: People View
       Then I see Group Participants popover
       When I click on participant <KnownContact> on Group Participants popover
       Then I see username <KnownContact> on Group Participants popover
+      And I see an avatar on Group Participants popover
+      And I see Remove button on Group Participants popover
       And I see Unblock button on Group Participants popover
+      And I see correct Unblock button tool tip on Group Participants popover
       And I see Mail <KnownContactMail> on Group Participants popover
+      And Would open mail client when clicking mail on Group Participants popover
       When I click Unblock button on Group Participants popover
-      When I confirm Unblock from group chat on Group Participants popover
+      And I confirm Unblock from group chat on Group Participants popover
       Then I see Contact list with name <KnownContact>
 
       Examples:
 	 | Login      | Password      | Name      | KnownContact  | KnownContactMail | UnknownContact  | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user2Email       | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
- @staging @id2272
-   Scenario Outline: Verify I can see participant profile of user who blocked you in a group conversation
+ @staging @id2271
+   Scenario Outline: Verify I can see participant profile of user I blocked in a group conversation
       Given There are 3 users where <Name> is me
       Given Myself is connected to <KnownContact>
       Given <KnownContact> is connected to <UnknownContact>
       Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
-      Given <KnownContact> blocked Myself
-      Given Myself sent connection request to <UnknownContact>
+      Given Myself blocked <KnownContact>
+      Given I sent connection request to <UnknownContact>
       Given I Sign in using login <Login> and password <Password>
       Then I see my name on top of Contact list
       When I open conversation with <ChatName>
@@ -196,83 +211,32 @@ Feature: People View
       Then I see Group Participants popover
       When I click on participant <KnownContact> on Group Participants popover
       Then I see username <KnownContact> on Group Participants popover
-      And I see open conversation button on Group Participants popover
+      And I see an avatar on Group Participants popover
+      And I see Remove button on Group Participants popover
+      And I see Unblock button on Group Participants popover
+      And I see correct Unblock button tool tip on Group Participants popover
       And I see Mail <KnownContactMail> on Group Participants popover
+      And Would open mail client when clicking mail on Group Participants popover
+      When I click Unblock button on Group Participants popover
+      And I confirm Unblock from group chat on Group Participants popover
       Then I see Contact list with name <KnownContact>
-      When I click open conversation from Group Participants popover
-      Then I see conversation with <KnownContact> is selected in conversations list
 
       Examples:
 	 | Login      | Password      | Name      | KnownContact  | KnownContactMail | UnknownContact  | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user2Email       | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
  @staging @id1703
-   Scenario Outline: Verify you can tap individual participant profiles in a group conversation
-      Given There are 5 users where <Name> is me
-      Given Myself is connected to <KnownContact>,<KnownContact2>
-      Given <KnownContact> is connected to <UnknownContact>,<UnknownContact2>,<KnownContact2>
-      Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>,<KnownContact2>,<UnknownContact2>
-      Given <KnownContact> blocked Myself
-      Given Myself blocked <KnownContact2>
-      Given I sent connection request to <UnknownContact>
-      Given <UnknownContact2> sent connection request to me
+   Scenario Outline: Verify I can see participant profile of myself in a group conversation
+      Given There are 3 users where <Name> is me
+      Given Myself is connected to <KnownContact>
+      Given <KnownContact> is connected to <UnknownContact>
+      Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
+      Given Myself sent connection request to <UnknownContact>
       Given I Sign in using login <Login> and password <Password>
       Then I see my name on top of Contact list
       When I open conversation with <ChatName>
-      Then I see correct people button tool tip
       When I click People button in group conversation
       Then I see Group Participants popover
-      Then I see correct add people button tool tip
-      And I see correct leave conversation button tool tip
-      And I see correct rename conversation button tool tip
-# checking User who is blocking me
-      When I click on participant <KnownContact> on Group Participants popover
-      Then I see correct back button tool tip on Group Participants popover
-      And I see username <KnownContact> on Group Participants popover
-      And I see Remove button on Group Participants popover
-      And I see correct remove from group button tool tip on Group Participants popover
-      And I see an avatar on Group Participants popover
-      And I see Remove button on Group Participants popover
-      And I see correct remove from group button tool tip on Group Participants popover
-      And I see open conversation button on Group Participants popover
-      And I see correct open conversation button tool tip on Group Participants popover
-      And I see Mail <KnownContactMail> on Group Participants popover
-      And Would open mail client when clicking mail on Group Participants popover
-      When I click back button on Group Participants popover
-# checking User which I blocked
-      When I click on participant <KnownContact2> on Group Participants popover
-      Then I see username <KnownContact2> on Group Participants popover
-      And I see an avatar on Group Participants popover
-      And I see Remove button on Group Participants popover
-      And I see Unblock button on Group Participants popover
-      And I see correct Unblock button tool tip on Group Participants popover
-      And I see Mail <KnownContact2Mail> on Group Participants popover
-      And Would open mail client when clicking mail on Group Participants popover
-      When I click back button on Group Participants popover
-# checking User that I requested to connect
-      When I click on participant <UnknownContact> on Group Participants popover
-      Then I see username <UnknownContact> on Group Participants popover
-      And I see an avatar on Group Participants popover
-      And I see Remove button on Group Participants popover
-      And I see correct remove from group button tool tip on Group Participants popover
-      And I do not see Mail on Group Participants popover
-      And I see Pending button on Group Participants popover
-      And I see correct pending button tool tip on Group Participants popover
-      And I see Pending text box on Group Participants popover
-      When I click back button on Group Participants popover
-# checking User who requested a connection
-      When I click on participant <UnknownContact2> on Group Participants popover
-      Then I see username <UnknownContact2> on Group Participants popover
-      And I see an avatar on Group Participants popover
-      And I see Remove button on Group Participants popover
-      And I see correct remove from group button tool tip on Group Participants popover
-      And I see Mail <UnknownContact2Mail> on Group Participants popover
-      And Would open mail client when clicking mail on Group Participants popover
-      And I see Pending button on Group Participants popover
-      And I see correct pending button tool tip on Group Participants popover
-      And I see Pending text box on Group Participants popover
-      When I click back button on Group Participants popover
-# checking my own profile
       When I click on participant Myself on Group Participants popover
       Then I see username me on Group Participants popover
       And I see an avatar on Group Participants popover
@@ -280,11 +244,13 @@ Feature: People View
       And I see correct profile button tool tip on Group Participants popover
       And I see Mail <Mail> on Group Participants popover
       And Would open mail client when clicking mail on Group Participants popover
+      When I click profile button on Group Participants popover
 
       Examples:
-	 | Login      | Password      | Name      | Mail       | KnownContact  | KnownContactMail | KnownContact2  | KnownContact2Mail | UnknownContact  | UnknownContact2  | UnknownContact2Mail | ChatName               | Message   |
-	 | user1Email | user1Password | user1Name | user1Email | user2Name     | user2Email       | user3Name      | user3Email        | user4Name       | user5Name        | user5Email         | PeoplePopoverGroupChat | YOU ADDED |
+	 | Login      | Password      | Name      | Mail       | KnownContact  | KnownContactMail | UnknownContact  | ChatName               | Message   |
+	 | user1Email | user1Password | user1Name | user1Email | user2Name     | user2Email       | user3Name       | PeoplePopoverGroupChat | YOU ADDED |
 
+ 
  @regression @id1551
    Scenario Outline: Verify I can ignore connection request in a group conversation
       Given There are 3 users where <Name> is me

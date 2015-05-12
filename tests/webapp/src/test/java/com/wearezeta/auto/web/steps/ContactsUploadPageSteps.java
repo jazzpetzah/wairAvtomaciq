@@ -35,7 +35,7 @@ public class ContactsUploadPageSteps {
 			throws Exception {
 		PagesCollection.googeLoginPage.setEmail(email);
 		PagesCollection.googeLoginPage.setPassword(password);
-		PagesCollection.googeLoginPage.clickSignIn();
+		PagesCollection.peoplePickerPage = PagesCollection.googeLoginPage.clickSignIn();
 	}
 
 	/**

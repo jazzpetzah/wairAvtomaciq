@@ -3,42 +3,52 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.wearezeta.auto</groupId>
-	<artifactId>auto-webapp</artifactId>
+	<artifactId>auto-ios-tablet</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>auto-webapp</name>
+	<name>auto-ios-tablet</name>
 	<url>http://maven.apache.org</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<skipTests>false</skipTests>
+		<skipTests>true</skipTests>
 		<TestRun>DevRun</TestRun>
-		<pictureResultsPath>/var/tmp/</pictureResultsPath>
-		<hubHost>127.0.0.1</hubHost>
-		<hubPort>4444</hubPort>
-		<url>http://${hubHost}:${hubPort}/wd/hub</url>
-		<driverTimeoutSeconds>7</driverTimeoutSeconds>
-		<defaultEmail>smoketester.webapp@wearezeta.com</defaultEmail>
-		<!-- chrome | firefox | ie | safari -->
-		<browser>chrome</browser>
-		<!-- mavericks | yosemite | win7 | win7_ie10 | win7_ie11 | <empty> -->
-		<platform></platform>
-		<!-- edge | staging | production -->
-		<backendType>staging</backendType>
-		<webappImagesPath>img/</webappImagesPath>
-		<!-- The levels in descending order are: SEVERE (highest value), WARNING, 
-			INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 
-			level OFF that can be used to turn off logging, and a level ALL that can 
-			be used to enable logging of all messages. -->
-		<extendedLoggingLevel>SEVERE</extendedLoggingLevel>
+		<Url>http://127.0.0.1:4723/wd/hub</Url>
+		<appPath>/Project/ZClient_ios.app</appPath>
+		<isSimulator>true</isSimulator>
+		<generateUsers>true</generateUsers>
+		<driverTimeoutSeconds>30</driverTimeoutSeconds>
+		<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic>
+		<iosImagesPath>img/</iosImagesPath>
+		<swipeScriptPath>swipeInWindow</swipeScriptPath>
+		<iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>
+		<defaultEmail>smoketester.ios@wearezeta.com</defaultEmail>
+		<iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
+		<deviceName>iPad Air</deviceName>
 	</properties>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>com.wearezeta.auto</groupId>
 			<artifactId>auto-common</artifactId>
 			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+		</dependency>
+		
+				<dependency>
+			<groupId>com.wearezeta.auto</groupId>
+			<artifactId>auto-ios</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<type>jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.wearezeta.auto</groupId>
+			<artifactId>auto-ios</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<classifier>tests</classifier>
 			<type>jar</type>
 		</dependency>
 
@@ -49,10 +59,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-library</artifactId>
-			<version>1.3</version>
-			<scope>test</scope>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20141113</version>
 		</dependency>
 
 		<dependency>
@@ -62,10 +71,23 @@
 		</dependency>
 
 		<dependency>
+			<groupId>io.appium</groupId>
+			<artifactId>java-client</artifactId>
+			<version>2.1.0</version>
+		</dependency>
+
+		<dependency>
 			<groupId>info.cukes</groupId>
 			<artifactId>cucumber-picocontainer</artifactId>
 			<version>1.1.8</version>
 		</dependency>
+
+		<dependency>
+			<groupId>info.cukes</groupId>
+			<artifactId>cucumber-java</artifactId>
+			<version>1.1.8</version>
+		</dependency>
+
 		<dependency>
 			<groupId>info.cukes</groupId>
 			<artifactId>cucumber-junit</artifactId>
@@ -73,19 +95,22 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20140107</version>
+			<groupId>com.googlecode.plist</groupId>
+			<artifactId>dd-plist</artifactId>
+			<version>1.8</version> <!-- corresponds to r108 -->
 		</dependency>
+
 	</dependencies>
 
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
+					<encoding>UTF-8</encoding>
 					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
@@ -153,6 +178,5 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-
 	</build>
 </project>
