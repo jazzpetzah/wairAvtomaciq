@@ -1,7 +1,7 @@
 Feature: Conversation View
 
   @staging @id330
-  Scenario Outline: Send Message to contact
+  Scenario Outline: Send Message to contact (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
