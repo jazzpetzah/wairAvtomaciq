@@ -113,7 +113,7 @@ public class LoginPage extends OSXPage {
 	public boolean waitForLogin() throws Exception {
 		boolean noSignIn = DriverUtils.waitUntilLocatorDissapears(
 				this.getDriver(),
-				By.name(OSXLocators.LoginPage.nameSignInButton));
+				By.name(OSXLocators.LoginPage.nameSignInButton), 60);
 		return noSignIn;
 	}
 

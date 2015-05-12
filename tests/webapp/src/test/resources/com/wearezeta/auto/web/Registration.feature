@@ -72,4 +72,16 @@ Feature: Registration
     Examples: 
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
-   
+
+  @staging @id2229
+  Scenario: Use Gmail contacts import on registration
+    Given There is 1 user where user1Name is me without avatar picture
+    Given I Sign in using login user1Email and password user1Password
+    Given I see Self Picture Upload dialog
+    Given I choose userpicture_landscape.jpg as my self picture on Self Picture Upload dialog
+    Given I confirm picture selection on Self Picture Upload dialog
+    When I see Contacts Upload dialog
+    And I click button to import Gmail Contacts
+    And I see Google login popup
+    And I sign up at Google with email smoketester.wire@gmail.com and password aqa123456
+    Then I see more than 5 suggestions in people picker
