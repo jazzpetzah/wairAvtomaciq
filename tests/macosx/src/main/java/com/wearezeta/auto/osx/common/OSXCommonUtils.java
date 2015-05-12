@@ -26,9 +26,9 @@ import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class OSXCommonUtils extends CommonUtils {
-	
+
 	private static final int PREFS_DAEMON_RESTART_TIMEOUT = 1000;
-	
+
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class
 			.getSimpleName());
 
@@ -88,19 +88,21 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static void deleteCacheFolder() throws Exception {
-		String command = String.format("rm -rf %s/Library/Containers/%s/Data/Library/Caches",
+		String command = String.format(
+				"rm -rf %s/Library/Containers/%s/Data/Library/Caches",
 				System.getProperty("user.home"),
 				OSXExecutionContext.wireConfigDomain);
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
 
 	public static void deletePreferencesFile() throws Exception {
-		String command = String.format("rm -rf %s/Library/Preferences/%s.plist",
+		String command = String.format(
+				"rm -rf %s/Library/Preferences/%s.plist",
 				System.getProperty("user.home"),
 				OSXExecutionContext.wireConfigDomain);
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
-	
+
 	public static void deleteWireLoginFromKeychain() throws Exception {
 		String command = "security delete-generic-password -s \"zeta staging-nginz-https.zinfra.io\"";
 
@@ -116,15 +118,15 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
-		resetOSXPrefsDaemon();
 		removeZClientDomain(OSXExecutionContext.wireConfigDomain);
+		resetOSXPrefsDaemon();
 	}
 
 	public static void setZClientBackendAndDisableStartUI(String bt)
 			throws Exception {
-		resetOSXPrefsDaemon();
 		setZClientBackendForDomain(OSXExecutionContext.wireConfigDomain, bt);
 		disableStartUIOnFirstLogin(OSXExecutionContext.wireConfigDomain);
+		resetOSXPrefsDaemon();
 	}
 
 	public static void resetOSXPrefsDaemon() throws Exception {
@@ -140,17 +142,16 @@ public class OSXCommonUtils extends CommonUtils {
 
 	private static void setZClientBackendForDomain(String domain, String bt)
 			throws Exception {
-		final String setBackendTypeCmd = String
-				.format("defaults write ~/Containers/%s/Data/Library/Preferences/%s.plist ZMBackendEnvironmentType -string %s",
-						domain, domain, bt);
+		final String setBackendTypeCmd = String.format(
+				"defaults write %s ZMBackendEnvironmentType -string %s",
+				domain, bt);
 		executeOsXCommand(new String[] { "/bin/bash", "-c", setBackendTypeCmd });
 	}
 
 	private static void disableStartUIOnFirstLogin(String domain)
 			throws Exception {
-		final String disableCmd = String
-				.format("defaults write ~/Containers/%s/Data/Library/Preferences/%s.plist ZCSkipFirstTimeUseChecks -bool YES",
-						domain, domain);
+		final String disableCmd = String.format(
+				"defaults write %s ZCSkipFirstTimeUseChecks -bool YES", domain);
 		executeOsXCommand(new String[] { "/bin/bash", "-c", disableCmd });
 	}
 

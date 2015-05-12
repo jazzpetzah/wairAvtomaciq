@@ -69,8 +69,8 @@ public class CommonOSXSteps {
 		CommonUtils.disableSeleniumLogs();
 	}
 
-	public static boolean resetBackendSettingsIfOverwritten() throws IOException,
-			Exception {	
+	public static boolean resetBackendSettingsIfOverwritten()
+			throws IOException, Exception {
 		OSXCommonUtils.resetOSXPrefsDaemon();
 		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
 				.getBackendType(CommonOSXSteps.class))) {
@@ -78,6 +78,7 @@ public class CommonOSXSteps {
 			OSXCommonUtils.killWireIfStuck();
 			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
 					.getBackendType(CommonOSXSteps.class));
+			OSXCommonUtils.resetOSXPrefsDaemon();
 			return true;
 		} else {
 			return false;
@@ -98,25 +99,43 @@ public class CommonOSXSteps {
 	}
 
 	private void startApp(RemoteWebDriver drv) {
-		try { CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE); } catch (Exception e) { }
-		try { OSXCommonUtils.deleteWireLoginFromKeychain(); } catch (Exception e) { }
-		try { OSXCommonUtils.deletePreferencesFile(); } catch (Exception e) { }
-		try { OSXCommonUtils.deleteCacheFolder(); } catch (Exception e) { }
+		try {
+			CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
+		} catch (Exception e) {
+		}
+		try {
+			OSXCommonUtils.deleteWireLoginFromKeychain();
+		} catch (Exception e) {
+		}
+		try {
+			OSXCommonUtils.deletePreferencesFile();
+		} catch (Exception e) {
+		}
+		try {
+			OSXCommonUtils.deleteCacheFolder();
+		} catch (Exception e) {
+		}
 
 		if (!backendSet) {
-			try { OSXCommonUtils.removeAllZClientSettingsFromDefaults(); } catch (Exception e) { }
-			try { OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-					.getBackendType(this.getClass())); } catch (Exception e) { }
+			try {
+				OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+			} catch (Exception e) {
+			}
+			try {
+				OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
+						.getBackendType(this.getClass()));
+			} catch (Exception e) {
+			}
 			backendSet = true;
 		}
-		
 		drv.navigate().to(OSXExecutionContext.wirePath);
-		
+
 		try {
 			if (resetBackendSettingsIfOverwritten()) {
 				drv.navigate().to(OSXExecutionContext.wirePath);
 			}
-		} catch (Exception e) { }
+		} catch (Exception e) {
+		}
 	}
 
 	private void commonBefore() throws Exception {
