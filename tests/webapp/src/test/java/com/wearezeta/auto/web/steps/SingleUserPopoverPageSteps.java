@@ -317,4 +317,29 @@ public class SingleUserPopoverPageSteps {
 		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
 				.getPendingButtonToolTip().equals(TOOLTIP_PENDING));
 	}
+	
+	/**
+	 * Verifies whether Block button exists on the popover
+	 *
+	 * @step. ^I see Block button on Single User Profile popover$
+	 *
+	 */
+	@Then("^I see Unblock button on Single User Profile popover$")
+	public void ISeeUnblockButton() {
+		Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.isUnblockButtonVisible());
+	}
+	/**
+	 * Click Unblock button on popover
+	 *
+	 * @step. ^I click Unblock button on popover$
+	 *
+	 * @throws Exception
+	 */
+
+	@When("^I click Unblock button on Single User popover$")
+	public void IClickUnblockButton() throws Exception {
+		((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.clickUnblockButton();
+	}
 }

@@ -13,6 +13,9 @@ import com.wearezeta.auto.web.locators.PopoverLocators;
 class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathBlockButton)
 	private WebElement blockButton;
+	
+	@FindBy(how = How.XPATH, using = PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathUnblockButton)
+	private WebElement unblockButton;
 
 	public SingleUserInfoPopoverPage(Future<ZetaWebAppDriver> lazyDriver,
 			PeoplePopoverContainer container) throws Exception {
@@ -35,6 +38,10 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 	public boolean isBlockButtonVisible() {
 		return blockButton.isDisplayed();
 	}
+	
+	public boolean isUnblockButtonVisible() {
+		return unblockButton.isDisplayed();
+	}
 
 	public void clickAddPeopleButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
@@ -43,6 +50,9 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 	}
 
 	public void clickBlockButton() {
-		blockButton.click();
+		blockButton.click();	
+	}
+	public void clickUnblockButton() {
+		unblockButton.click();
 	}
 }

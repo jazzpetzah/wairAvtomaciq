@@ -39,8 +39,8 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | Contact2Email | Contact2Password |
       | user1Email | user1Password | user1Name | user2Name | user2Email    | user2Password    | user3Name | user3Email    | user3Password    |
       
-     @torun @id1566
-     Scenario Outline: Verify you can unblock someone from search list
+  @regression @id1566
+  Scenario Outline: Verify you can unblock someone from search list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
@@ -57,8 +57,10 @@ Feature: Search
     When I open People Picker from Contact List
     And I type <Contact> in search field of People Picker
     And I select <Contact> from People Picker results
+    And I see Unblock button on Single User Profile popover
+    When I click Unblock button on Single User popover
+    Then I see Contact list with name <Contact> 
     
-
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
