@@ -4,23 +4,14 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.locators.PopoverLocators;
-
-import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
 
 import com.wearezeta.auto.web.pages.WebPage;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 public abstract class AbstractPopoverContainer extends WebPage {
 
 	private final static int VISIBILITY_TIMEOUT = 3; // seconds
-
-	@FindBy(how = How.XPATH, using = PopoverLocators.Shared.xpathBackButton)
-	private WebElement backButton;
 
 	public AbstractPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -50,11 +41,4 @@ public abstract class AbstractPopoverContainer extends WebPage {
 				By.xpath(this.getXpathLocator()));
 	}
 
-	public String getBackButtonToolTip() {
-		return backButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
-	}
-
-	public void clickBackButton() {
-		backButton.click();
-	}
 }

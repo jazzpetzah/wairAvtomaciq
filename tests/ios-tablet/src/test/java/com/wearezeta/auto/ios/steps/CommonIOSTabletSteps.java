@@ -28,7 +28,7 @@ public class CommonIOSTabletSteps {
 	}
 
 	public static final Platform CURRENT_PLATFORM = Platform.iOS;
-	public static final String PLATFORM_VERSION = "8.2";
+	public static final String PLATFORM_VERSION = "8.1";
 	
 	private CommonIOSSteps steps = new CommonIOSSteps();
 	{

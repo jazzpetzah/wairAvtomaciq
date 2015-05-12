@@ -13,7 +13,27 @@ Feature: Connect
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+	 | user1Email | user1Password | user1Name | user2Name |
+
+@staging @id1546
+   Scenario Outline: Verify pending user profiles contain all the info required by spec
+      Given There are 2 users where <Name> is me
+      Given <UnknownContact> sent connection request to me
+      Given I Sign in using login <Login> and password <Password>
+      Given User me change accent color to VividRed
+      Then I see connection request from one user
+      When I open the list of incoming connection requests
+      Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
+      And I see connection message "Hello!" in connection request from user <UnknownContact>
+      And I see avatar in connection request from user <UnknownContact>
+      And I see accept button in connection request from user <UnknownContact>
+      And I see ignore button in connection request from user <UnknownContact>
+      And I see correct color for accept button in connection request from user <UnknownContact>
+      And I see correct color for ignore button in connection request from user <UnknownContact>
+
+      Examples:
+	 | Login      | Password      | Name      | UnknownContact  | UnknownContactMail | Message   |
+	 | user1Email | user1Password | user1Name | user2Name       | user2Email         | YOU ADDED |
 
   @smoke @id1571
   Scenario Outline: Verify sending a connection request to user chosen from search

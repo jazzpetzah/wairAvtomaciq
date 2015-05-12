@@ -127,12 +127,12 @@ public class LoginPageSteps {
 	/**
 	 * Types email string into the corresponding input field on sign in page
 	 * 
-	 * @step. ^I enter email (.*)$
+	 * @step. ^I enter email (\\S+)$
 	 * 
 	 * @param email
 	 *            user email string
 	 */
-	@When("^I enter email (.*)$")
+	@When("^I enter email (\\S+)$")
 	public void IEnterEmail(String email) {
 		try {
 			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
@@ -145,12 +145,12 @@ public class LoginPageSteps {
 	/**
 	 * Types password string into the corresponding input field on sign in page
 	 * 
-	 * @step. ^I enter password (.*)$
+	 * @step. ^I enter password (\\S+)$
 	 * 
 	 * @param password
 	 *            password string
 	 */
-	@When("I enter password (.*)")
+	@When("^I enter password (\\S+)$")
 	public void IEnterPassword(String password) {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
@@ -185,5 +185,38 @@ public class LoginPageSteps {
 	public void ISwitchToRegistrationPage() throws Exception {
 		PagesCollection.registrationPage = PagesCollection.loginPage
 				.switchToRegistrationPage();
+	}
+
+	/**
+	 * Click Change Password button on login page
+	 * 
+	 * @step. ^I click Change Password button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Change Password button$")
+	public void IClickChangePassword() throws Exception {
+		PagesCollection.passwordChangeRequestPage = PagesCollection.loginPage
+				.clickChangePasswordButton();
+	}
+
+	/**
+	 * Verifies whether the expected login error is visible on the page
+	 * 
+	 * @step. ^I see login error \"(.*)\"$
+	 * 
+	 * @param expectedError
+	 *            the text of error
+	 * @throws Exception
+	 */
+	@Then("^I see login error \"(.*)\"$")
+	public void ISeeLoginError(String expectedError) throws Exception {
+		final String loginErrorText = PagesCollection.loginPage
+				.getErrorMessage();
+		Assert.assertTrue(
+				String.format(
+						"The actual login error '%s' is not equal to the expected one: '%s'",
+						loginErrorText, expectedError), loginErrorText
+						.equals(expectedError));
 	}
 }
