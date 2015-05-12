@@ -101,8 +101,8 @@ public class LoginPage extends WebPage {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				changePasswordButton);
 
-		// This is commented because the button always redirects to production
-		// site and we usually need staging one
+		// TODO: This is commented because the button always redirects to
+		// production site and we usually need staging one
 		// changePasswordButton.click();
 		final PasswordChangeRequestPage changePasswordPage = new PasswordChangeRequestPage(
 				this.getLazyDriver());
@@ -128,12 +128,25 @@ public class LoginPage extends WebPage {
 		return new RegistrationPage(this.getLazyDriver(), this.getUrl());
 	}
 
+	public static class NoLoginErrorException extends Exception {
+
+		private static final long serialVersionUID = -176955293564141899L;
+
+		public NoLoginErrorException() {
+			super();
+		}
+
+		public NoLoginErrorException(String msg) {
+			super(msg);
+		}
+	}
+
 	public String getLoginErrorText() throws Exception {
 		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(WebAppLocators.LoginPage.xpathLoginErrorText), 3)) {
 			return loginErrorText.getText();
 		} else {
-			return "";
+			throw new NoLoginErrorException();
 		}
 	}
 

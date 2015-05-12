@@ -6,6 +6,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.web.pages.LoginPage.NoLoginErrorException;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
@@ -94,11 +95,10 @@ public class LoginPageSteps {
 		PagesCollection.contactListPage = PagesCollection.loginPage
 				.clickSignInButton();
 
-		final String loginErrorText = PagesCollection.loginPage
-				.getLoginErrorText();
-		if (loginErrorText.length() > 0) {
+		try {
+			PagesCollection.loginPage.getLoginErrorText();
 			return;
-		} else {
+		} catch (NoLoginErrorException e) {
 			Assert.assertTrue(
 					"Sign In button/login progress spinner are still visible",
 					PagesCollection.loginPage.waitForLogin());
