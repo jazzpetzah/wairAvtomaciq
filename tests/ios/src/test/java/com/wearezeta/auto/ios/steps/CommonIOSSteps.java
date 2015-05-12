@@ -430,7 +430,10 @@ public class CommonIOSSteps {
 	/**
 	 * Rotate device to landscape
 	 * 
-	 * @step. ^I rotate UI to landscape$
+	 * @step. ^I rotate UI to (landscape|portrait)$
+	 * 
+	 * @param ScreenOrientation orientation
+	 * 			must be landscape or portrait
 	 * 
 	 * @throws Exception
 	 */
