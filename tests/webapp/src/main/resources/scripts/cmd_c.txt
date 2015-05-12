@@ -1,0 +1,25 @@
+set browsersList to {"Firefox", "Google Chrome", "Safari"}
+
+on isRunning(appName)
+    tell application "System Events" to (name of processes) contains appName
+end isRunning
+
+repeat with browser in browsersList
+    if isRunning(browser) then
+        tell application browser
+            activate
+            repeat with theWindow in windows
+                if index of theWindow is not 1 then
+                    try
+                        set index to 1
+                        set visible to false
+                        set visible to true
+                    on error errMsg
+                    end try
+                end if
+                delay 1
+                tell application "System Events" to keystroke "c" using command down
+            end repeat
+        end tell
+    end if
+end repeat

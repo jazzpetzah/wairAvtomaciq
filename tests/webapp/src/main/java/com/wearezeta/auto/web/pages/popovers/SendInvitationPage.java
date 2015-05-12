@@ -1,15 +1,18 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.concurrent.Future;
 
-import org.openqa.selenium.Keys;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.PopoverLocators;
 
 public class SendInvitationPage extends AbstractPopoverPage {
@@ -31,20 +34,42 @@ public class SendInvitationPage extends AbstractPopoverPage {
 	}
 
 	public void copyToClipboard() throws Exception {
-		// FIXME: Send Cmd/Ctrl + C by Selenium
-		final Actions builder = new Actions(getDriver());
-		builder.moveToElement(invitationText)
-				.click(invitationText)
-				.sendKeys(
-						Keys.chord(WebAppExecutionContext
-								.isCurrentPlatfromWindows() ? Keys.CONTROL
-								: Keys.COMMAND, "c"));
-		builder.build().perform();
-		// this.getDriver()
-		// .executeScript(
-		// "$(\""
-		// +
-		// PopoverLocators.SendInvitationPopover.SendInvitationPage.cssInvitationText
-		// + "\").trigger('copy')");
+		final ClassLoader classLoader = WebCommonUtils.class.getClassLoader();
+		String srcScriptPath = null;
+		InputStream scriptStream = null;
+		if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
+			scriptStream = classLoader.getResourceAsStream(String.format(
+					"%s/%s", WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
+					WebAppConstants.Scripts.PRESS_CTRL_C_WIN));
+			srcScriptPath = String.format("%s/%s", WebAppConstants.TMP_ROOT,
+					WebAppConstants.Scripts.PRESS_CTRL_C_WIN);
+		} else {
+			scriptStream = classLoader.getResourceAsStream(String.format(
+					"%s/%s", WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
+					WebAppConstants.Scripts.PRESS_CMD_C_MAC));
+			srcScriptPath = String.format("%s/%s", WebAppConstants.TMP_ROOT,
+					WebAppConstants.Scripts.PRESS_CMD_C_MAC);
+		}
+		final String dstScriptPath = srcScriptPath;
+		try {
+			FileUtils.copyInputStreamToFile(scriptStream, new File(
+					srcScriptPath));
+		} finally {
+			scriptStream.close();
+		}
+		try {
+			WebCommonUtils.putFileOnExecutionNode(getDriver().getNodeIp(),
+					srcScriptPath, dstScriptPath);
+		} finally {
+			new File(srcScriptPath).delete();
+		}
+
+		if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
+			WebCommonUtils.executeVBScriptFileOnNode(getDriver().getNodeIp(),
+					dstScriptPath);
+		} else {
+			WebCommonUtils.executeAppleScriptFileOnNode(
+					getDriver().getNodeIp(), dstScriptPath);
+		}
 	}
 }
