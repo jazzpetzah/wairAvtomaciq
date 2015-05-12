@@ -50,7 +50,7 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-	 | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
   @staging @id1866
    Scenario Outline: Verify I can call a user for more than 15 mins
@@ -71,8 +71,8 @@ Feature: Calling
     And <Contact> stops all waiting instances
 
     Examples: 
- | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
- | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
   # This has to work even in browsers, which don't support calling
   @regression @id2014
