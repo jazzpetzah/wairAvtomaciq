@@ -279,8 +279,10 @@ public class CommonIOSSteps {
 	@When("^Contact (.*) send message to user (.*)$")
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
 			String dstUserNameAlias) throws Exception {
+		String contactMessage = CommonUtils.generateRandomString(10);
 		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-				dstUserNameAlias, CommonUtils.generateRandomString(10));
+				dstUserNameAlias, contactMessage);
+		DialogPageSteps.message = contactMessage;
 	}
 
 	@When("^Contact (.*) send number (.*) of message to user (.*)$")
