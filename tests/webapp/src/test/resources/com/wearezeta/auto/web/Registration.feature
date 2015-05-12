@@ -78,15 +78,19 @@ Feature: Registration
     Given There is 1 user where user1Name is me without avatar picture
     Given I switch to Registration page
     When I enter user name <Name> on Registration page
-    And I enter user email <Email> on Registration page
-    And I enter user password "<Password>" on Registration page
+    And I enter user email <UsedEmail> on Registration page
+    And I enter user password "<NewPassword>" on Registration page
     And I submit registration form
     Then I see error "EMAIL ADDRESS ALREADY TAKEN" on Verification page
     And I verify that a red dot is shown inside the email field on the registration form
+    When I enter user email <UnusedEmail> on Registration page
+    Then I verify that a red dot is not shown inside the email field on the registration form
+    When I submit registration form
+    Then I see email <UnusedEmail> on Verification page
 
     Examples: 
-      | Name      | Email      | Password      |
-      | user1Name | user1Email | wrongpassword |
+      | Name      | UsedEmail  | UnusedEmail | Password      |
+      | user1Name | user1Email | user2Email  | user2Password |
 
   @staging @id1992
   Scenario Outline: I want to see an error screen if the registration fails
