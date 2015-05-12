@@ -34,8 +34,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
-import com.wearezeta.auto.common.BasePage;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
@@ -86,7 +84,7 @@ public class DriverUtils {
 				return false;
 			}
 		} finally {
-			setDefaultImplicitWait(driver);
+			restoreImplicitWait(driver);
 		}
 	}
 
@@ -116,7 +114,7 @@ public class DriverUtils {
 		} catch (TimeoutException ex) {
 			return false;
 		} finally {
-			setDefaultImplicitWait(driver);
+			restoreImplicitWait(driver);
 		}
 	}
 
@@ -140,7 +138,7 @@ public class DriverUtils {
 		} catch (TimeoutException ex) {
 			return false;
 		} finally {
-			setDefaultImplicitWait(driver);
+			restoreImplicitWait(driver);
 		}
 	}
 
@@ -164,7 +162,7 @@ public class DriverUtils {
 		} catch (TimeoutException e) {
 			return false;
 		} finally {
-			setDefaultImplicitWait(driver);
+			restoreImplicitWait(driver);
 		}
 	}
 
@@ -178,7 +176,7 @@ public class DriverUtils {
 					.ignoring(NoSuchElementException.class);
 			wait.until(ExpectedConditions.alertIsPresent());
 		} finally {
-			setDefaultImplicitWait(driver);
+			restoreImplicitWait(driver);
 		}
 	}
 
@@ -542,18 +540,15 @@ public class DriverUtils {
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
 	}
 
-	public static void setDefaultImplicitWait(RemoteWebDriver driver)
-			throws Exception {
-		driver.manage()
-				.timeouts()
-				.implicitlyWait(
-						Integer.parseInt(CommonUtils
-								.getDriverTimeoutFromConfig(BasePage.class)),
-						TimeUnit.SECONDS);
+	public static void setImplicitWaitValue(ZetaOSXDriver driver,
+			int secondsTimeout) {
+		driver.manage().timeouts()
+				.implicitlyWait(secondsTimeout, TimeUnit.SECONDS);
 	}
 
-	public static void setImplicitWaitValue(RemoteWebDriver driver, int seconds) {
-		driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
+	public static void restoreImplicitWait(RemoteWebDriver driver)
+			throws Exception {
+		PlatformDrivers.setDefaultImplicitWaitTimeout(driver);
 	}
 
 	public static BufferedImage takeScreenshot(ZetaDriver driver)

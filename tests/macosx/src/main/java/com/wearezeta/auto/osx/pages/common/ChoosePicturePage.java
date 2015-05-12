@@ -9,7 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
@@ -45,7 +44,6 @@ public class ChoosePicturePage extends OSXPage {
 	}
 
 	public void searchForImage(String imageName) throws Exception {
-		DriverUtils.setDefaultImplicitWait(this.getDriver());
 		String xpath = String.format(
 				OSXLocators.ChoosePicturePage.xpathFormatFinderImageFile,
 				imageName);

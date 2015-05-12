@@ -11,7 +11,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
@@ -47,6 +46,10 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.util.Iterator;
+import java.util.List;
+import org.apache.commons.collections.IteratorUtils;
+import static org.junit.Assert.assertTrue;
 
 public class CommonWebAppSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -294,6 +297,29 @@ public class CommonWebAppSteps {
 			throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Web, count, myNameAlias);
 		IChangeUserAvatarPicture(myNameAlias, "default");
+	}
+
+	/**
+	 * Changes the accent color settings of the given user
+	 *
+	 *
+	 * @step. ^User (\\w+) change accent color to
+	 *        (StrongBlue|StrongLimeGreen|BrightYellow
+	 *        |VividRed|BrightOrange|SoftPink|Violet)$
+	 *
+	 * @param userNameAlias
+	 *            alias of the user where the accent color will be changed
+	 * @param newColor
+	 *            one of possible accent colors:
+	 *            StrongBlue|StrongLimeGreen|BrightYellow
+	 *            |VividRed|BrightOrange|SoftPink|Violet
+	 *
+	 * @throws Exception
+	 */
+	@Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
+	public void IChangeAccentColor(String userNameAlias, String newColor)
+			throws Exception {
+		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
 	}
 
 	/**
@@ -641,12 +667,46 @@ public class CommonWebAppSteps {
 		}
 	}
 
-	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
-		log.debug("BROWSER CONSOLE LOGS:");
-		LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
-		for (LogEntry logEntry : logEntries) {
-			log.debug(logEntry.getMessage());
+	/**
+	 * Verifies whether current browser log is empty or not
+	 *
+	 * @step. ^I verify browser log is empty$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I verify browser log is empty$")
+	public void VerifyBrowserLogIsEmpty() throws Exception {
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			try {
+				if (WebAppExecutionContext.LoggingManagement
+						.isSupportedInCurrentBrowser()) {
+					List<LogEntry> browserLog = getBrowserLog(PlatformDrivers
+							.getInstance()
+							.getDriver(CURRENT_PLATFORM)
+							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+									TimeUnit.MILLISECONDS));
+					assertTrue(browserLog.isEmpty());
+				}
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
 		}
+	}
+
+	private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
+		return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs()
+				.get(LogType.BROWSER).iterator());
+	}
+
+	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
+		List<LogEntry> logEntries = getBrowserLog(driver);
+		if (!logEntries.isEmpty()) {
+			log.debug("BROWSER CONSOLE LOGS:");
+			for (LogEntry logEntry : logEntries) {
+				log.debug(logEntry.getMessage());
+			}
+		}
+
 	}
 
 	@After

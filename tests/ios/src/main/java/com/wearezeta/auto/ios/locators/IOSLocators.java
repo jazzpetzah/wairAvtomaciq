@@ -128,17 +128,17 @@ public final class IOSLocators {
 	
 	public static final String xpathNameMediaContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String namePhotoButton = "PhotoLibraryButton";
+	public static final String xpathPhotoButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[4]";
 	
 	public static final String nameAlbum = "Saved Photos";
 	
 	public static final String classNamePhotos = "UIACollectionCell";
 	
-	public static final String nameConfirmImageButton = "ImageConfirmerConfirmButton";
+	public static final String nameConfirmImageButton = "OK";
 	
-	public static final String nameCancelImageButton = "ImageConfirmerCancelButton";
+	public static final String nameCancelImageButton = "CANCEL";
 	
-	public static final String xpathYourName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAElement[1]/UIATextView[1]";
+	public static final String xpathYourName = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[@value='YOUR FULL NAME']";
 	
 	public static final String nameYourEmail = "RegistrationEmailField";
 	
@@ -445,7 +445,7 @@ public final class IOSLocators {
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[%d]";
 	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
-	public static final String nameShareButton = "SHARE";
+	public static final String nameShareButton = "SHARE CONTACTS";
 	public static final String nameContinueUploadButton = "SHARE";
 	public static final String namePeopleYouMayKnowLabel = "CONNECT";
 	public static final String nameHideSuggestedContactButton = "HIDE";
@@ -547,6 +547,17 @@ public final class IOSLocators {
 	
 	public final class ContactListPage {
 		public static final String nameOpenStartUI = "OpenStartUI";
+	}
+	
+	public final class RegistrationPage {
+		public static final String xpathCountryList = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
+		public static final String xpathCountry = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[1]";
+		public static final String xpathPhoneNumber = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]";
+		public static final String xpathActivationCode = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]";
+		public static final String xpathConfirmPhoneNumber = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]/UIAButton[1]";
+		public static final String nameAgreeButton = "I AGREE";
+		
+		public static final String nameSelectPictureButton = "SET A PICTURE";
 	}
 	
 	/////////////
