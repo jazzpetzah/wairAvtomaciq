@@ -34,6 +34,12 @@ public class RegistrationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssVerificationEmail)
 	private WebElement verificationEmail;
 
+	@FindBy(css = ".auth-page .has-error .form-control #wire-create-email")
+	private WebElement redDotOnEmailField;
+
+	@FindBy(xpath = "//*[@data-uie-name='status-error']//div")
+	private WebElement errorMessage;
+
 	private static final int MAX_TRIES = 5;
 
 	public RegistrationPage(Future<ZetaWebAppDriver> lazyDriver, String url)
@@ -108,5 +114,13 @@ public class RegistrationPage extends WebPage {
 
 	public boolean isVerificationEmailCorrect(String email) {
 		return verificationEmail.getText().equalsIgnoreCase(email);
+	}
+
+	public String getErrorMessage() {
+		return errorMessage.getText();
+	}
+
+	public boolean isRedDotOnEmailField() {
+		return DriverUtils.isElementPresentAndDisplayed(redDotOnEmailField);
 	}
 }

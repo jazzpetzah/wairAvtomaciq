@@ -124,22 +124,23 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Checks if a red dot is shown on the email field
+	 * Checks if a red dot is shown inside the email field on the sign in form
 	 *
-	 * @step. ^a red dot is shown on the email field$
+	 * @step. ^a red dot is shown inside the email field on the sign in form$
 	 */
-	@Then("^a red dot is shown on the email field$")
+	@Then("^a red dot is shown inside the email field on the sign in form$")
 	public void ARedDotIsShownOnTheEmailField() {
 		assertThat("Red dot on email field",
 				PagesCollection.loginPage.isRedDotOnEmailField());
 	}
 
 	/**
-	 * Checks if a red dot is shown on the password field
+	 * Checks if a red dot is shown inside the password field on the sign in
+	 * form
 	 *
-	 * @step. ^a red dot is shown on the password field$
+	 * @step. ^a red dot is shown inside the password field on the sign in form$
 	 */
-	@Then("^a red dot is shown on the password field$")
+	@Then("^a red dot is shown inside the password field on the sign in form$")
 	public void ARedDotIsShownOnThePasswordField() {
 		assertThat("Red dot on password field",
 				PagesCollection.loginPage.isRedDotOnEmailField());
