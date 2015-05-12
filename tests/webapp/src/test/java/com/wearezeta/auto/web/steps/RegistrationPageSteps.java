@@ -92,13 +92,13 @@ public class RegistrationPageSteps {
 	/**
 	 * Enter user password into registration form
 	 * 
-	 * @step. ^I enter user password (.*) on Registration page$
+	 * @step. ^I enter user password \"(.*)\" on Registration page$
 	 * 
 	 * @param password
 	 *            user password/alias
 	 * @throws Exception
 	 */
-	@When("^I enter user password (.*) on Registration page$")
+	@When("^I enter user password \"(.*)\" on Registration page$")
 	public void IEnterPassword(String password) throws Exception {
 		try {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
@@ -176,13 +176,18 @@ public class RegistrationPageSteps {
 	 * Checks if a red dot is shown inside the email field on the registration
 	 * form
 	 *
-	 * @step. ^a red dot is shown inside the email field on the registration
+	 * @step. ^I verify that a red dot is shown inside the email field on the registration
 	 *        form$
 	 */
-	@Then("^a red dot is shown inside the email field on the registration form$")
-	public void ARedDotIsShownOnTheEmailField() {
-		assertThat("Red dot on email field",
-				PagesCollection.registrationPage.isRedDotOnEmailField());
+	@Then("^I verify that a red dot is( not)? shown inside the email field on the registration form$")
+	public void ARedDotIsShownOnTheEmailField(String not) {
+		if (not == null) {
+			assertThat("Red dot on email field",
+					PagesCollection.registrationPage.isRedDotOnEmailField());
+		} else {
+			assertThat("Red dot on email field",
+					!PagesCollection.registrationPage.isRedDotOnEmailField());
+		}
 	}
 
 	/**
