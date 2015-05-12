@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
@@ -423,4 +424,18 @@ public class CommonIOSSteps {
 	public void setTestStartedDate(Date testStartedDate) {
 		this.testStartedDate = testStartedDate;
 	}
+	
+	/**
+	 * Rotate device to landscape
+	 * 
+	 * @step. ^I rotate UI to landscape$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I rotate UI to (landscape|portrait)$")
+	public void WhenIRotateUILandscape(ScreenOrientation orientation) throws Exception {
+		PagesCollection.loginPage.rotateScreen(orientation);
+		Thread.sleep(1000); // fix for animation
+	}
+
 }

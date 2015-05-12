@@ -11,6 +11,7 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 	private ConnectedParticipantInfoPopoverPage connectedParticipantInfoPopoverPage;
 	private BlockUserConfirmationPopoverPage blockUserConfirmationPopoverPage;
 	private PendingParticipantInfoPopoverPage pendingParticipantInfoPopoverPage;
+	private BlockedParticipantInfoPopoverPage blockedParticipantInfoPopoverPage;
 
 	public SingleUserPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -22,6 +23,8 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 		this.pendingParticipantInfoPopoverPage = new PendingParticipantInfoPopoverPage(
 				lazyDriver, this);
 		this.connectedParticipantInfoPopoverPage = new ConnectedParticipantInfoPopoverPage(
+				lazyDriver, this);
+		this.blockedParticipantInfoPopoverPage = new BlockedParticipantInfoPopoverPage(
 				lazyDriver, this);
 	}
 
@@ -36,6 +39,8 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 			return this.singleUserPopoverPage;
 		} else if (this.pendingParticipantInfoPopoverPage.isCurrent()) {
 			return this.pendingParticipantInfoPopoverPage;
+		} else if (this.blockedParticipantInfoPopoverPage.isCurrent()) {
+			return this.blockedParticipantInfoPopoverPage;
 		} else {
 			throw new RuntimeException(
 					"The current popover page is neither connected user info nor pending-connected user info.");
@@ -61,6 +66,11 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 	public boolean isBlockButtonVisible() {
 		return this.singleUserPopoverPage.isBlockButtonVisible();
 	}
+	
+	public boolean isUnblockButtonVisible() {
+		return this.singleUserPopoverPage.isUnblockButtonVisible();
+	}
+	
 
 	public boolean isRemoveButtonVisible() throws Exception {
 		return getCurrentUserInfoPage().isRemoveButtonVisible();
@@ -81,6 +91,10 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 
 	public void clickBlockButton() {
 		this.singleUserPopoverPage.clickBlockButton();
+	}
+	
+	public void clickUnblockButton() throws Exception {
+		this.singleUserPopoverPage.clickUnblockButton();
 	}
 
 	public void clickConfirmButton() {

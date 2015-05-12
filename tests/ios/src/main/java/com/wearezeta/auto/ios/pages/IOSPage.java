@@ -11,6 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -277,5 +278,31 @@ public abstract class IOSPage extends BasePage {
 		} catch (Exception e) {
 			// do nothing
 		}
+	}
+
+	public void rotateScreen(ScreenOrientation orientation) throws Exception {
+		switch (orientation) {
+		case LANDSCAPE:
+			rotateLandscape();
+			break;
+		case PORTRAIT:
+			rotatePortrait();
+			break;
+		default:
+			break;
+		}
+
+	}
+
+	private void rotateLandscape() throws Exception {
+		this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
+	}
+
+	private void rotatePortrait() throws Exception {
+		this.getDriver().rotate(ScreenOrientation.PORTRAIT);
+	}
+
+	private ScreenOrientation getOrientation() throws Exception {
+		return this.getDriver().getOrientation();
 	}
 }
