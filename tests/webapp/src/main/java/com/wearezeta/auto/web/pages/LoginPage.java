@@ -41,6 +41,12 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathLoginErrorText)
 	private WebElement loginErrorText;
 
+	@FindBy(css = ".auth-page .has-error .form-control #wire-email")
+	private WebElement redDotOnEmailField;
+
+	@FindBy(css = ".auth-page .has-error .form-control #wire-password")
+	private WebElement redDotOnPasswordField;
+
 	public LoginPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
 		super(lazyDriver, url);
@@ -130,6 +136,14 @@ public class LoginPage extends WebPage {
 
 	public String getErrorMessage() {
 		return loginErrorText.getText();
+	}
+
+	public boolean isRedDotOnEmailField() {
+		return DriverUtils.isElementPresentAndDisplayed(redDotOnEmailField);
+	}
+
+	public boolean isRedDotOnPasswordField() {
+		return DriverUtils.isElementPresentAndDisplayed(redDotOnPasswordField);
 	}
 
 }

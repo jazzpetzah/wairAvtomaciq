@@ -25,6 +25,8 @@ Feature: Sign In
     And I enter password "<Password>"
     And I press Sign In button
     Then the sign in error message reads <Error>
+    And a red dot is shown on the email field
+    And a red dot is shown on the password field
 
     Examples:
       | Email      | Password | Error                                      |

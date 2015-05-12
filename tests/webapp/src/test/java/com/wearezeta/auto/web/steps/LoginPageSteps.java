@@ -11,7 +11,6 @@ import com.wearezeta.auto.web.pages.PagesCollection;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -122,6 +121,28 @@ public class LoginPageSteps {
 	public void TheSignInErrorMessageReads(String message) throws Throwable {
 		assertThat("sign in error message",
 				PagesCollection.loginPage.getErrorMessage(), equalTo(message));
+	}
+
+	/**
+	 * Checks if a red dot is shown on the email field
+	 *
+	 * @step. ^a red dot is shown on the email field$
+	 */
+	@Then("^a red dot is shown on the email field$")
+	public void ARedDotIsShownOnTheEmailField() {
+		assertThat("Red dot on email field",
+				PagesCollection.loginPage.isRedDotOnEmailField());
+	}
+
+	/**
+	 * Checks if a red dot is shown on the password field
+	 *
+	 * @step. ^a red dot is shown on the password field$
+	 */
+	@Then("^a red dot is shown on the password field$")
+	public void ARedDotIsShownOnThePasswordField() {
+		assertThat("Red dot on password field",
+				PagesCollection.loginPage.isRedDotOnEmailField());
 	}
 
 	/**
