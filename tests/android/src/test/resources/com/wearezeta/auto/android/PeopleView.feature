@@ -102,9 +102,11 @@ Feature: People View
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I wait for 30 seconds
-    And I minimize the application #fix for first login
-    And I wait for 5 seconds       #fix for first login
-    And I restore the application  #fix for first login
+    #fix for first login
+    And I minimize the application
+    And I wait for 5 seconds
+    And I restore the application
+    #end of fix for first login
     And I wait for 25 seconds
     When I swipe down contact list
     And I see People picker page
@@ -165,6 +167,7 @@ Feature: People View
     When I do small swipe down
     Then I see correct 1:1 options menu
     And I do not see profile page
+
     #When I press options menu button
     #Then I see profile page
     #And I do not see 1:1 options menu

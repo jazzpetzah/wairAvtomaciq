@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
@@ -281,8 +282,10 @@ public class CommonIOSSteps {
 	@When("^Contact (.*) send message to user (.*)$")
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
 			String dstUserNameAlias) throws Exception {
+		String contactMessage = CommonUtils.generateRandomString(10);
 		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-				dstUserNameAlias, CommonUtils.generateRandomString(10));
+				dstUserNameAlias, contactMessage);
+		DialogPageSteps.message = contactMessage;
 	}
 
 	@When("^Contact (.*) send number (.*) of message to user (.*)$")
@@ -423,4 +426,18 @@ public class CommonIOSSteps {
 	public void setTestStartedDate(Date testStartedDate) {
 		this.testStartedDate = testStartedDate;
 	}
+	
+	/**
+	 * Rotate device to landscape
+	 * 
+	 * @step. ^I rotate UI to landscape$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I rotate UI to (landscape|portrait)$")
+	public void WhenIRotateUILandscape(ScreenOrientation orientation) throws Exception {
+		PagesCollection.loginPage.rotateScreen(orientation);
+		Thread.sleep(1000); // fix for animation
+	}
+
 }
