@@ -12,6 +12,9 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
 public class LoginPageSteps {
 
 	private static final Logger log = ZetaLogger.getLog(LoginPageSteps.class
@@ -80,11 +83,10 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Presses Sign In button on the corresponding page and verifies whether an
-	 * account is signed in properly
-	 * 
+	 * Presses Sign In button on the corresponding page
+	 *
 	 * @step. ^I press Sign In button$
-	 * 
+	 *
 	 * @throws Exception
 	 *             if Selenium fails to wait until sign in action completes
 	 */
@@ -94,6 +96,13 @@ public class LoginPageSteps {
 				.clickSignInButton();
 	}
 
+	/**
+	 * Verifies whether an account is signed in properly
+	 *
+	 * @step. ^I am signed in properly$
+	 *
+	 * @throws Exception
+	 */
 	@Then("^I am signed in properly$")
 	public void IAmSignedInProperly() throws Exception {
 		Assert.assertTrue(
@@ -101,10 +110,18 @@ public class LoginPageSteps {
 				PagesCollection.loginPage.waitForLogin());
 	}
 
+	/**
+	 * Checks if a error message is shown on the sign in page
+	 *
+	 * @step. ^the sign in error message reads (.*)
+	 * @param message
+	 *            expected error message
+	 * @throws Throwable
+	 */
 	@Then("^the sign in error message reads (.*)")
 	public void TheSignInErrorMessageReads(String message) throws Throwable {
-		Assert.assertEquals(message,
-				PagesCollection.loginPage.getErrorMessage());
+		assertThat("sign in error message",
+				PagesCollection.loginPage.getErrorMessage(), equalTo(message));
 	}
 
 	/**
