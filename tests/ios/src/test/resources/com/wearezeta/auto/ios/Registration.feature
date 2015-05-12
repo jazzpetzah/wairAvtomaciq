@@ -111,16 +111,14 @@ Feature: Registration
   @regression @id589 @deployPictures
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
-    When I press Join button
+    When I enter phone number for user <Name>
+    And I enter activation code
+    And I accept terms of service
+    And I input name <Name> and hit Enter
     And I press Picture button
     And I choose a picture from camera roll
     And I See selected picture
     And I confirm selection
-    And I input name <Name> and hit Enter
-    And I input email <Email> and hit Enter
-    And I input password <Password> and hit Enter
-    Then I see confirmation page
-    And I verify registration address
     And I see Contact list with my name <Name>
 
     Examples: 

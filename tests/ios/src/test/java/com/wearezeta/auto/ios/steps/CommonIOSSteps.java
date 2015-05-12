@@ -19,6 +19,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.RegistrationPage;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 
@@ -121,6 +122,7 @@ public class CommonIOSSteps {
 				.readClientVersionFromPlist().getClientBuildNumber());
 
 		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		PagesCollection.registrationPage = new RegistrationPage(lazyDriver);
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 

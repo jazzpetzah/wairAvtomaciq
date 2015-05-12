@@ -114,18 +114,6 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Taps Join button on Welcome page
-	 * 
-	 * @step. I press Join button
-	 * 
-	 * @throws IOException
-	 */
-	@When("I press Join button")
-	public void WhenIPressJoinButton() throws Exception {
-		PagesCollection.registrationPage = PagesCollection.loginPage.join();
-	}
-
-	/**
 	 * Types login string into the corresponding input field on sign in page
 	 * 
 	 * @step. I have entered login (.*)
