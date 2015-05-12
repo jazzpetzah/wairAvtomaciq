@@ -26,6 +26,10 @@ public final class WebAppLocators {
 		public static final String xpathSignInButton = "//*[@data-uie-name='do-sign-in']";
 
 		public static final String xpathSwitchToRegisterButtons = "//*[@data-uie-name='go-register']";
+
+		public static final String xpathChangePasswordButton = "//*[@data-uie-name='go-forgot-password']";
+		
+		public static final String xpathLoginErrorText = "//*[@data-uie-name='status-error']";
 	}
 
 	public static final class ContactListPage {
@@ -180,6 +184,14 @@ public final class WebAppLocators {
 
 	public static final class ConnectToPage {
 
+		public static final String xpathRequestAvatarPartial = "/../../div[contains(@class, 'sender')]//div[contains(@class, 'user-avatar-image')]";
+		public static final String xpathRequestEmailPartial = "/following-sibling::div[contains(@class, 'mail')]";
+		public static final String xpathRequestMessagePartial = "/following-sibling::div[contains(@class, 'message')]";
+
+		public static final Function<String, String> xpathRequestByName = name -> String
+				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]",
+						name);
+
 		public static final Function<String, String> xpathAcceptRequestButtonByName = name -> String
 				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='accept']",
 						name);
@@ -187,6 +199,8 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathIgnoreReqestButtonByName = name -> String
 				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='ignore']",
 						name);
+
+		public static final String xpathAllConnectionRequests = "//div[contains(@class, 'connect-request')";
 	}
 
 	public static final class PeoplePickerPage {

@@ -261,6 +261,11 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
+	public boolean checkNoCallingOverlay() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.id(AndroidLocators.DialogPage.idCallingMessage), 20);
+	}
+
 	public boolean checkCallingOverlay() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(callingMessageText);
 	}
@@ -283,7 +288,7 @@ public class DialogPage extends AndroidPage {
 		try {
 			this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 		} catch (Exception ex) {
-			//ignore silently
+			// ignore silently
 		}
 	}
 
@@ -374,7 +379,7 @@ public class DialogPage extends AndroidPage {
 			log.debug(this.getPageSource());
 			throw e;
 		}
-		Thread.sleep(1000); //fix for animation
+		Thread.sleep(1000); // fix for animation
 	}
 
 	public void changeCamera() throws Exception {
@@ -382,7 +387,7 @@ public class DialogPage extends AndroidPage {
 		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.id(AndroidLocators.DialogPage.idDialogChangeCameraButton))) {
 			changeCameraButton.click();
-			Thread.sleep(1000); //fix for animation
+			Thread.sleep(1000); // fix for animation
 		}
 	}
 
@@ -482,7 +487,7 @@ public class DialogPage extends AndroidPage {
 			takePhoto();
 		} else {
 			cursurFrame.click();
-			Thread.sleep(1000); //fix for scrolling animation
+			Thread.sleep(1000); // fix for scrolling animation
 			SwipeOnCursorInput();
 			tapAddPictureBtn();
 			try {
@@ -542,7 +547,8 @@ public class DialogPage extends AndroidPage {
 		case "up":
 			this.getDriver().swipe(coords.x + elementSize.width / 2,
 					coords.y + elementSize.height / 2,
-					coords.x + elementSize.width / 2, coords.y + 120, DEFAULT_SWIPE_TIME);
+					coords.x + elementSize.width / 2, coords.y + 120,
+					DEFAULT_SWIPE_TIME);
 			break;
 		case "down":
 			this.getDriver().swipe(coords.x + elementSize.width / 2,
@@ -708,7 +714,7 @@ public class DialogPage extends AndroidPage {
 			dialogPageBottom.click();
 		}
 	}
-	
+
 	public void tapYouTubePlay() throws Exception {
 		refreshUITree();
 		playYoutubeBtn.click();
@@ -753,8 +759,9 @@ public class DialogPage extends AndroidPage {
 		refreshUITree();
 		return missedCallMessage.getText();
 	}
-	
+
 	public boolean isNativeBrowserURLVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.name(AndroidLocators.Browsers.xpathNativeBrowserURLBar));
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.name(AndroidLocators.Browsers.xpathNativeBrowserURLBar));
 	}
 }

@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,8 +18,12 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
+
+	private static final Logger log = ZetaLogger
+			.getLog(OtherUserPersonalInfoPage.class.getSimpleName());
 
 	public static final String REMOVE_FROM_CONVERSATION_BUTTON = "Remove";
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
@@ -316,11 +321,18 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public AndroidPage tapOnContact(String contact) throws Exception {
 		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(groupChatName));
-		WebElement cn = this.getDriver().findElement(
-				By.xpath(String.format(
-						AndroidLocators.ContactListPage.xpathContacts,
-						contact.toUpperCase())));
-		cn.click();
+		try {
+			WebElement cn = this.getDriver().findElement(
+					By.xpath(String.format(
+							AndroidLocators.ContactListPage.xpathContacts,
+							contact.toUpperCase())));
+
+			cn.click();
+		} catch (Exception e) {
+			log.debug("Failed to find contact with name " + contact
+					+ "\n. Page source: " + this.getDriver().getPageSource());
+			throw e;
+		}
 		refreshUITree();
 		if (connectToHeader.size() > 0) {
 			return new ConnectToPage(this.getLazyDriver());

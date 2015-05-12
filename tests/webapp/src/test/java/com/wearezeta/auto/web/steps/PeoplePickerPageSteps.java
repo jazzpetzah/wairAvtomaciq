@@ -9,6 +9,9 @@ import com.wearezeta.auto.web.pages.PagesCollection;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -87,6 +90,13 @@ public class PeoplePickerPageSteps {
 	@When("^I choose to create conversation from People Picker$")
 	public void IChooseToCreateConversationFromPeoplePicker() throws Exception {
 		PagesCollection.peoplePickerPage.createConversation();
+	}
+
+	@Then("^I see more than (\\d+) suggestions? in people picker$")
+	public void ISeeMoreThanXSuggestionsInPeoplePicker(int count) {
+		assertThat("people suggestions",
+				PagesCollection.peoplePickerPage.getNumberOfSuggestions(),
+				greaterThan(count));
 	}
 
 	/**

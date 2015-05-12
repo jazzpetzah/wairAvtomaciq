@@ -120,19 +120,20 @@ Feature: Calling
     Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I swipe on text input
-    And I press Call button
-    Then I see call overlay
-    And I press Mute button
+    And <Contact> calls me using <CallBackend>
+    And I see call overlay
+    And I answer the call from the overlay bar
+    When I press Mute button
     Then I see MUTE calling button is pressed
-    And I press Speaker button
+    When I press Speaker button
     Then I see SPEAKER calling button is pressed
-    And I press Cancel call button
+    When I press Cancel call button
     Then I do not see call overlay
+    And <Contact> stops all calls to me
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | AccentColor |
-      | user1Email | user1Password | user1Name | user2Name | StrongBlue  |
+      | Login      | Password      | Name      | Contact   | AccentColor | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | StrongBlue  | autocall    |
 
   @id2212 @staging
   Scenario Outline: Correct calling bar in different places
@@ -163,6 +164,5 @@ Feature: Calling
     And I see calling overlay Mini bar
 
     Examples: 
-
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    |

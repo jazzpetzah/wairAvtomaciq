@@ -16,8 +16,9 @@ import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
 
-public class LoginPage extends WebPage {	
+public class LoginPage extends WebPage {
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 			.getSimpleName());
@@ -28,11 +29,23 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSignInButton)
 	private WebElement signInButton;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathChangePasswordButton)
+	private WebElement changePasswordButton;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathEmailInput)
 	private WebElement emailInput;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathPasswordInput)
 	private WebElement passwordInput;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathLoginErrorText)
+	private WebElement loginErrorText;
+
+	@FindBy(css = ".auth-page .has-error .form-control #wire-email")
+	private WebElement redDotOnEmailField;
+
+	@FindBy(css = ".auth-page .has-error .form-control #wire-password")
+	private WebElement redDotOnPasswordField;
 
 	public LoginPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
@@ -82,10 +95,25 @@ public class LoginPage extends WebPage {
 	}
 
 	public ContactListPage clickSignInButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(this.getDriver(), signInButton);
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				signInButton);
 		signInButton.click();
 
 		return new ContactListPage(this.getLazyDriver());
+	}
+
+	public PasswordChangeRequestPage clickChangePasswordButton()
+			throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				changePasswordButton);
+
+		// TODO: This is commented because the button always redirects to
+		// production site and we usually need staging one
+		// changePasswordButton.click();
+		final PasswordChangeRequestPage changePasswordPage = new PasswordChangeRequestPage(
+				this.getLazyDriver());
+		changePasswordPage.navigateTo();
+		return changePasswordPage;
 	}
 
 	public RegistrationPage switchToRegistrationPage() throws Exception {
@@ -104,6 +132,18 @@ public class LoginPage extends WebPage {
 				By.xpath(WebAppLocators.RegistrationPage.xpathRootForm)) : "Registration page is not visible";
 
 		return new RegistrationPage(this.getLazyDriver(), this.getUrl());
+	}
+
+	public String getErrorMessage() {
+		return loginErrorText.getText();
+	}
+
+	public boolean isRedDotOnEmailField() {
+		return DriverUtils.isElementPresentAndDisplayed(redDotOnEmailField);
+	}
+
+	public boolean isRedDotOnPasswordField() {
+		return DriverUtils.isElementPresentAndDisplayed(redDotOnPasswordField);
 	}
 
 }
