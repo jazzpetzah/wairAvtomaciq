@@ -22,7 +22,7 @@ Feature: Sign In
     Given There is 1 user where user1Name is me
     Given I switch to sign in page
     When I enter email <Email>
-    And I enter password <Password>
+    And I enter password "<Password>"
     And I press Sign In button
     Then the sign in error message reads <Error>
 

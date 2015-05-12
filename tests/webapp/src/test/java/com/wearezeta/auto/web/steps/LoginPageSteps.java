@@ -145,12 +145,12 @@ public class LoginPageSteps {
 	/**
 	 * Types password string into the corresponding input field on sign in page
 	 * 
-	 * @step. ^I enter password (\\S+)$
+	 * @step. ^I enter password \"([^\"]*)\"$
 	 * 
 	 * @param password
 	 *            password string
 	 */
-	@When("^I enter password (\\S+)$")
+	@When("^I enter password \"([^\"]*)\"$")
 	public void IEnterPassword(String password) {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
