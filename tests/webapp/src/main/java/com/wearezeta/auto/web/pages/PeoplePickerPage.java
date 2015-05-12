@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -29,6 +30,9 @@ public class PeoplePickerPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathCloseSearchButton)
 	private WebElement closeSearchButton;
+
+	@FindBy(xpath = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']")
+	private List<WebElement> suggestions;
 
 	public PeoplePickerPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -120,5 +124,9 @@ public class PeoplePickerPage extends WebPage {
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.className(WebAppLocators.PeoplePickerPage.classNamePeoplePickerVisible));
+	}
+
+	public int getNumberOfSuggestions() {
+		return suggestions.size();
 	}
 }
