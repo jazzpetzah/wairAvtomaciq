@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -72,7 +73,7 @@ public class RegistrationPageSteps {
 
 	@When("^I See photo taken$")
 	public void ISeePhotoTaken() throws IOException {
-
+		
 		Assert.assertTrue(PagesCollection.registrationPage.isPictureSelected());
 	}
 
@@ -150,6 +151,45 @@ public class RegistrationPageSteps {
 	@When("I see Registration name input")
 	public void ISeeRegistrationNameInput() {
 		Assert.assertTrue(PagesCollection.registrationPage.isNameLabelVisible());
+	}
+	
+	/**
+	 * Input fake phone number for given user
+	 * @param name
+	 * 	User name alias
+	 * @throws Exception
+	 */
+	@When("^I enter phone number for user (.*)$")
+	public void IEnterPhoneNumber(String name) throws Exception {
+		if (this.userToRegister == null) {
+			this.userToRegister = new ClientUser();
+		}
+		this.userToRegister.setName(name);
+		this.userToRegister.clearNameAliases();
+		this.userToRegister.addNameAlias(name);
+		
+		this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
+		String number = this.userToRegister.getPhoneNumber().toString();
+		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
+		PagesCollection.registrationPage.inputPhoneNumber(number, PhoneNumber.WIRE_COUNTRY_PREFIX);
+	}
+	
+	/**
+	 * Click on I AGREE button to accept terms of service
+	 */
+	@When("^I accept terms of service$")
+	public void IAcceptTermsOfService() {
+		PagesCollection.registrationPage.clickAgreeButton();
+	}
+	
+	/**
+	 * Input activation code generated for fake phone number
+	 * @throws Exception
+	 */
+	@When("^I enter activation code$")
+	public void IEnterActivationCode() throws Exception {
+		String code = BackendAPIWrappers.getActivationCodeByPhoneNumber(this.userToRegister.getPhoneNumber());
+		PagesCollection.registrationPage.inputActivationCode(code);
 	}
 
 	@When("^I enter name (.*)$")
