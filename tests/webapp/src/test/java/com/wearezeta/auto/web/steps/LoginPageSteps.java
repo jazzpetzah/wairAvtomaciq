@@ -6,12 +6,14 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.pages.LoginPage.NoLoginErrorException;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 public class LoginPageSteps {
 
@@ -81,12 +83,10 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Presses Sign In button on the corresponding page and verifies whether an
-	 * account is signed in properly in case if correct credentials were entered
-	 * and login was successful
-	 * 
+	 * Presses Sign In button on the corresponding page
+	 *
 	 * @step. ^I press Sign In button$
-	 * 
+	 *
 	 * @throws Exception
 	 *             if Selenium fails to wait until sign in action completes
 	 */
@@ -94,15 +94,34 @@ public class LoginPageSteps {
 	public void IPressSignInButton() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.loginPage
 				.clickSignInButton();
+	}
 
-		try {
-			PagesCollection.loginPage.getLoginErrorText();
-			return;
-		} catch (NoLoginErrorException e) {
-			Assert.assertTrue(
-					"Sign In button/login progress spinner are still visible",
-					PagesCollection.loginPage.waitForLogin());
-		}
+	/**
+	 * Verifies whether an account is signed in properly
+	 *
+	 * @step. ^I am signed in properly$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I am signed in properly$")
+	public void IAmSignedInProperly() throws Exception {
+		Assert.assertTrue(
+				"Sign In button/login progress spinner are still visible",
+				PagesCollection.loginPage.waitForLogin());
+	}
+
+	/**
+	 * Checks if a error message is shown on the sign in page
+	 *
+	 * @step. ^the sign in error message reads (.*)
+	 * @param message
+	 *            expected error message
+	 * @throws Throwable
+	 */
+	@Then("^the sign in error message reads (.*)")
+	public void TheSignInErrorMessageReads(String message) throws Throwable {
+		assertThat("sign in error message",
+				PagesCollection.loginPage.getErrorMessage(), equalTo(message));
 	}
 
 	/**
@@ -126,12 +145,12 @@ public class LoginPageSteps {
 	/**
 	 * Types password string into the corresponding input field on sign in page
 	 * 
-	 * @step. ^I enter password (\\S+)$
+	 * @step. ^I enter password \"([^\"]*)\"$
 	 * 
 	 * @param password
 	 *            password string
 	 */
-	@When("^I enter password (\\S+)$")
+	@When("^I enter password \"([^\"]*)\"$")
 	public void IEnterPassword(String password) {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
@@ -193,7 +212,7 @@ public class LoginPageSteps {
 	@Then("^I see login error \"(.*)\"$")
 	public void ISeeLoginError(String expectedError) throws Exception {
 		final String loginErrorText = PagesCollection.loginPage
-				.getLoginErrorText();
+				.getErrorMessage();
 		Assert.assertTrue(
 				String.format(
 						"The actual login error '%s' is not equal to the expected one: '%s'",
