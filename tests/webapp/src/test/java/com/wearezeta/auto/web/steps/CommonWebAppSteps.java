@@ -297,6 +297,29 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * Changes the accent color settings of the given user
+	 *
+	 *
+	 * @step. ^User (\\w+) change accent color to
+	 *        (StrongBlue|StrongLimeGreen|BrightYellow
+	 *        |VividRed|BrightOrange|SoftPink|Violet)$
+	 *
+	 * @param userNameAlias
+	 *            alias of the user where the accent color will be changed
+	 * @param newColor
+	 *            one of possible accent colors:
+	 *            StrongBlue|StrongLimeGreen|BrightYellow
+	 *            |VividRed|BrightOrange|SoftPink|Violet
+	 *
+	 * @throws Exception
+	 */
+	@Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
+	public void IChangeAccentColor(String userNameAlias, String newColor)
+			throws Exception {
+		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
+	}
+
+	/**
 	 * Creates specified number of users and sets user with specified name as
 	 * main user. Avatar picture for Self user is NOT set automatically
 	 * 

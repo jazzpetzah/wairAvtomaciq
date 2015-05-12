@@ -206,11 +206,8 @@ public class ContactListPage extends MainWirePage {
 	}
 
 	public boolean waitForSignOut() throws Exception {
-		DriverUtils.setImplicitWaitValue(this.getDriver(), 1);
-		boolean noContactList = DriverUtils.waitUntilLocatorDissapears(
-				this.getDriver(), By.id(OSXLocators.idContactEntry));
-		DriverUtils.setDefaultImplicitWait(this.getDriver());
-		return noContactList;
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.id(OSXLocators.idContactEntry));
 	}
 
 	public Boolean isSignOutFinished() throws Exception {
@@ -237,25 +234,28 @@ public class ContactListPage extends MainWirePage {
 		if (DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.idShareContactsLaterButton), 5)) {
 			int count = 0;
+			DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
 			try {
-				DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
 				do {
 					count++;
 					shareContactsLaterButton.click();
 					Thread.sleep(1000);
 				} while (count < 10);
 			} catch (NoSuchElementException e) {
+				// pass silently
 			} finally {
-				DriverUtils.setDefaultImplicitWait(this.getDriver());
+				DriverUtils.restoreImplicitWait(this.getDriver());
 			}
 		}
 	}
 
 	public int numberOfContacts() throws Exception {
 		DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
-		int result = contactsTextFields.size();
-		DriverUtils.setDefaultImplicitWait(this.getDriver());
-		return result;
+		try {
+			return contactsTextFields.size();
+		} finally {
+			DriverUtils.restoreImplicitWait(this.getDriver());
+		}
 	}
 
 	public List<WebElement> getContacts() {

@@ -118,10 +118,8 @@ public class PeoplePickerPage extends MainWirePage {
 		String xpath = String.format(
 				OSXLocators.xpathFormatPeoplePickerSearchResultUser, username);
 
-		DriverUtils.setImplicitWaitValue(this.getDriver(), 60);
 		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(xpath));
-		DriverUtils.setDefaultImplicitWait(this.getDriver());
 		return result;
 	}
 

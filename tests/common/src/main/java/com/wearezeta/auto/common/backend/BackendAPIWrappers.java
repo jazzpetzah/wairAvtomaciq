@@ -59,6 +59,15 @@ public final class BackendAPIWrappers {
 		BackendREST.setDefaultBackendURL(url);
 	}
 
+	public static ClientUser updateUserAccentColor(ClientUser user)
+			throws Exception {
+		final JSONObject additionalUserInfo = BackendREST
+				.getUserInfo(generateAuthToken(user));
+		user.setAccentColor(AccentColor.getById(additionalUserInfo
+				.getInt("accent_id")));
+		return user;
+	}
+
 	private static Future<String> initMessageListener(
 			ClientUser userToActivate, int retryNumber) throws Exception {
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
