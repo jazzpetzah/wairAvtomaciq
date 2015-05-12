@@ -81,6 +81,7 @@ Feature: Registration
     And I enter user password user1Password on Registration page
     And I submit registration form
     Then I see error "SORRY. THIS EMAIL ADDRESS IS FORBIDDEN." on Verification page
+    And a red dot is shown inside the email field on the registration form
 
   @staging @id2229
   Scenario: Use Gmail contacts import on registration

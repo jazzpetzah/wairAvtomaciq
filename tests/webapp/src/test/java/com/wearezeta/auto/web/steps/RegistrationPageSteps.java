@@ -156,11 +156,33 @@ public class RegistrationPageSteps {
 				.isVerificationEmailCorrect(email));
 	}
 
+	/**
+	 * Verify whether I see an error message on the verification page
+	 *
+	 * @step. ^I see error \"(.*)\" on [Vv]erification page$
+	 *
+	 * @param message
+	 *            expected error message
+	 * @throws NoSuchUserException
+	 */
 	@Then("^I see error \"(.*)\" on [Vv]erification page$")
 	public void ISeeErrorMessageOnVerificationPage(String message)
 			throws Throwable {
 		assertThat(PagesCollection.registrationPage.getErrorMessage(),
 				equalTo(message));
+	}
+
+	/**
+	 * Checks if a red dot is shown inside the email field on the registration
+	 * form
+	 *
+	 * @step. ^a red dot is shown inside the email field on the registration
+	 *        form$
+	 */
+	@Then("^a red dot is shown inside the email field on the registration form$")
+	public void ARedDotIsShownOnTheEmailField() {
+		assertThat("Red dot on email field",
+				PagesCollection.registrationPage.isRedDotOnEmailField());
 	}
 
 	/**

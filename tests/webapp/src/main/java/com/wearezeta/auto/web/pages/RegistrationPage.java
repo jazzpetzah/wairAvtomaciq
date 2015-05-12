@@ -34,6 +34,9 @@ public class RegistrationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssVerificationEmail)
 	private WebElement verificationEmail;
 
+	@FindBy(css = ".auth-page .has-error .form-control #wire-create-email")
+	private WebElement redDotOnEmailField;
+
 	@FindBy(xpath = "//*[@data-uie-name='status-error']//div")
 	private WebElement errorMessage;
 
@@ -115,5 +118,9 @@ public class RegistrationPage extends WebPage {
 
 	public String getErrorMessage() {
 		return errorMessage.getText();
+	}
+
+	public boolean isRedDotOnEmailField() {
+		return DriverUtils.isElementPresentAndDisplayed(redDotOnEmailField);
 	}
 }
