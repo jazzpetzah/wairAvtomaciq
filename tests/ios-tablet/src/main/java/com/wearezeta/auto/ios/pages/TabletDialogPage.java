@@ -20,12 +20,12 @@ public class TabletDialogPage extends DialogPage {
 		super(lazyDriver);
 	}
 	
-	public CameraRolliPadPopoverPage pressAddPictureiPadButton() throws Exception {
-		CameraRolliPadPopoverPage page;
+	public CameraRollTabletPopoverPage pressAddPictureiPadButton() throws Exception {
+		CameraRollTabletPopoverPage page;
 		addPictureButton.click();
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathCameraLibraryButton));
-		page = new CameraRolliPadPopoverPage(this.getLazyDriver());
+		page = new CameraRollTabletPopoverPage(this.getLazyDriver());
 		return page;
 	}
 
