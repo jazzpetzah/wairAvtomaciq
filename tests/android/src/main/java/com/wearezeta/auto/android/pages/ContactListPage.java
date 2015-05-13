@@ -99,7 +99,6 @@ public class ContactListPage extends AndroidPage {
 		WebElement el = findInContactList(name, 5);
 		this.getWait().until(ExpectedConditions.visibilityOf(el));
 		el.click();
-		refreshUITree();
 		page = getPages();
 		// workaround for incorrect tap
 		if (page == null) {
@@ -124,14 +123,12 @@ public class ContactListPage extends AndroidPage {
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
 			throws Exception {
 		AndroidPage page = null;
-		refreshUITree();
 		contacts.get(id).click();
 		page = new DialogPage(this.getLazyDriver());
 		return page;
 	}
 
 	public List<WebElement> GetVisibleContacts() throws Exception {
-		refreshUITree();
 		return contactListNames;
 	}
 
@@ -139,12 +136,12 @@ public class ContactListPage extends AndroidPage {
 			throws Exception {
 		WebElement contact = null;
 		Boolean flag = false;
-		refreshUITree();
 		if (CommonUtils.getAndroidApiLvl(ContactListPage.class) > 42) {
-			if (isVisible(convList)) {
+			if (DriverUtils.isElementPresentAndDisplayed(convList)) {
 				flag = true;
 			}
-		} else if (!isVisible(cursorInput) && !isVisible(selfUserName)) {
+		} else if (!DriverUtils.isElementPresentAndDisplayed(cursorInput)
+				&& !DriverUtils.isElementPresentAndDisplayed(selfUserName)) {
 			flag = true;
 		}
 		if (flag) {
@@ -169,16 +166,15 @@ public class ContactListPage extends AndroidPage {
 
 	public AndroidPage swipeRightOnContact(int time, String contact)
 			throws Exception {
-		refreshUITree();
 		AndroidPage page = null;
 		WebElement el = this.getDriver().findElementByXPath(
 				String.format(
 						AndroidLocators.ContactListPage.xpathContactFrame,
 						contact));
 		elementSwipeRight(el, time);
-		if (!isVisible(cursorInput)) {
+		if (!DriverUtils.isElementPresentAndDisplayed(cursorInput)) {
 			page = new ContactListPage(this.getLazyDriver());
-		} else if (isVisible(cursorInput)) {
+		} else if (DriverUtils.isElementPresentAndDisplayed(cursorInput)) {
 			page = new DialogPage(this.getLazyDriver());
 		}
 		return page;
@@ -192,10 +188,9 @@ public class ContactListPage extends AndroidPage {
 								contact));
 		DriverUtils.swipeRight(this.getDriver(), el, 1000);
 		AndroidPage page = null;
-		refreshUITree();
-		if (!isVisible(cursorInput)) {
+		if (!DriverUtils.isElementPresentAndDisplayed(cursorInput)) {
 			page = new ContactListPage(this.getLazyDriver());
-		} else if (isVisible(cursorInput)) {
+		} else if (DriverUtils.isElementPresentAndDisplayed(cursorInput)) {
 			page = new DialogPage(this.getLazyDriver());
 		}
 		return page;
@@ -207,7 +202,6 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isHintVisible() throws Exception {
-		refreshUITree();// TODO workaround
 		try {
 			this.getWait().until(
 					ExpectedConditions.elementToBeClickable(closeHintBtn));
@@ -225,13 +219,11 @@ public class ContactListPage extends AndroidPage {
 
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
-		refreshUITree();
 		elementSwipeDown(contactListFrame, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	public PeoplePickerPage pressOpenStartUIButton() throws Exception {
-		refreshUITree();
 		openStartUIButton.click();
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
@@ -271,7 +263,6 @@ public class ContactListPage extends AndroidPage {
 		// DriverUtils.waitUntilElementDissapear(driver,
 		// By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
 
-		refreshUITree();
 		if (laterBtn.size() > 0) {
 			laterBtn.get(0).click();
 		} else if (laterBtnPicker.size() > 0) {
@@ -296,11 +287,11 @@ public class ContactListPage extends AndroidPage {
 
 	private AndroidPage getPages() throws Exception {
 		AndroidPage page = null;
-		if (isVisible(connectToHeader)) {
+		if (DriverUtils.isElementPresentAndDisplayed(connectToHeader)) {
 			page = new ConnectToPage(this.getLazyDriver());
-		} else if (isVisible(selfUserName)) {
+		} else if (DriverUtils.isElementPresentAndDisplayed(selfUserName)) {
 			page = new PersonalInfoPage(this.getLazyDriver());
-		} else if (isVisible(cursorInput)) {
+		} else if (DriverUtils.isElementPresentAndDisplayed(cursorInput)) {
 			page = new DialogPage(this.getLazyDriver());
 		}
 
@@ -311,15 +302,13 @@ public class ContactListPage extends AndroidPage {
 			throws NumberFormatException, Exception {
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(AndroidLocators.ContactListPage.idPlayPauseMedia));
-		return isVisible(playPauseMedia);
+		return DriverUtils.isElementPresentAndDisplayed(playPauseMedia);
 	}
 
 	public void waitForContactListLoadFinished() throws InterruptedException {
-
 		if (contactListNames.size() > 0) {
 			waitForContacListLoading();
 		}
-
 	}
 
 	private void waitForContacListLoading() throws InterruptedException {
@@ -332,8 +321,7 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {
-		refreshUITree();
-		return isVisible(missedCallIcon);
+		return DriverUtils.isElementPresentAndDisplayed(missedCallIcon);
 	}
 
 	public void shareImageToWireFromGallery() throws Exception {
@@ -396,7 +384,6 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public PersonalInfoPage tapOnMyAvatar() throws Exception {
-		refreshUITree();
 		selfUserAvatar.click();
 		return new PersonalInfoPage(getLazyDriver());
 	}

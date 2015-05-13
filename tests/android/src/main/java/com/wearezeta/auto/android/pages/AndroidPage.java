@@ -8,7 +8,6 @@ import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebDriverException;
@@ -58,7 +57,6 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void selectPhoto() throws Exception {
-		refreshUITree();
 		try {
 			frameLayouts.get(0).click();
 			return;
@@ -297,22 +295,6 @@ public abstract class AndroidPage extends BasePage {
 	public static void clearPagesCollection() throws IllegalArgumentException,
 			IllegalAccessException {
 		clearPagesCollection(PagesCollection.class, AndroidPage.class);
-	}
-
-	public boolean isVisible(WebElement element) throws Exception {
-		boolean value = false;
-		try {
-			changeZetaLocatorTimeout(3);
-			element.isDisplayed();
-			value = true;
-		} catch (NoSuchElementException ex) {
-			value = false;
-		} finally {
-			changeZetaLocatorTimeout(Long.parseLong(CommonUtils
-					.getDriverTimeoutFromConfig(getClass())));
-		}
-		return value;
-
 	}
 
 	private void showLogs() throws Exception {

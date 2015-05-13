@@ -71,8 +71,7 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isPersonalInfoVisible() throws Exception {
-		refreshUITree();
-		return isVisible(emailField);
+		return DriverUtils.isElementPresentAndDisplayed(emailField);
 	}
 
 	public void waitForEmailFieldVisible() throws Exception {
@@ -105,7 +104,6 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public void tapSignOutBtn() throws Exception {
-		refreshUITree();
 		signOutBtn.click();
 	}
 
@@ -133,13 +131,11 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public void tapOptionsButton() throws Exception {
-		refreshUITree();
 		optionsButton.click();
 		Thread.sleep(1000); // fix for animation
 	}
 
 	public SettingsPage tapSettingsButton() throws Exception {
-		refreshUITree();
 		settingsButton.click();
 		Thread.sleep(1000); // fix for animation
 		return new SettingsPage(this.getLazyDriver());
@@ -150,23 +146,19 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public void tapOnMyName() throws Exception {
-		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
 		Thread.sleep(2000); // fix for animation
-		refreshUITree();
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				AndroidLocators.PersonalInfoPage.getByForNameEditField());
-		if (!isVisible(nameEdit)) {
+		if (!DriverUtils.isElementPresentAndDisplayed(nameEdit)) {
 			DriverUtils.mobileTapByCoordinates(getDriver(), nameField);
 		}
 	}
 
 	public void changeName(String name, String newName) throws Exception {
-		refreshUITree();
 		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.PersonalInfoPage.idNameField));
-		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(nameEdit));
 
 		try {
@@ -174,19 +166,6 @@ public class PersonalInfoPage extends AndroidPage {
 		} catch (Exception ex) {
 			// ignore silently
 		}
-/*
-		// FIX if nameEdit.clear() failed to clear text
-		int stringLength = nameEdit.getText().length();
-		if (stringLength > 0) {
-			for (int i = 0; i < stringLength; i++) {
-				this.getDriver().sendKeyEvent(22); // "KEYCODE_DPAD_RIGHT"
-			}
-
-			for (int i = 0; i < stringLength; i++) {
-				this.getDriver().sendKeyEvent(67); // "KEYCODE_DEL"
-			}
-		}
-*/
 		nameEdit.sendKeys(newName);
 		this.getDriver().navigate().back();
 		Thread.sleep(1000);
@@ -199,12 +178,10 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public String getUserName() throws Exception {
-		refreshUITree();
 		return nameField.getText();
 	}
 
 	public AboutPage tapAboutButton() throws Exception {
-		refreshUITree();
 		aboutButton.click();
 		return new AboutPage(this.getLazyDriver());
 	}
@@ -215,16 +192,11 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isSettingsButtonNotVisible() throws Exception {
-		boolean flag = false;
-		refreshUITree();
 		DriverUtils
 				.waitUntilLocatorDissapears(this.getDriver(),
 						AndroidLocators.PersonalInfoPage
 								.getByForProfileOptionsButton());
-		if (!isVisible(settingsButton)) {
-			flag = true;
-		}
-		return flag;
+		return !DriverUtils.isElementPresentAndDisplayed(settingsButton);
 	}
 
 	public boolean waitForSettingsDissapear() throws Exception {
@@ -233,7 +205,6 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public ContactListPage pressCloseButton() throws Exception {
-		refreshUITree();
 		selfProfileClose.click();
 		return new ContactListPage(getLazyDriver());
 	}

@@ -37,12 +37,10 @@ public class CallingLockscreenPage extends AndroidPage {
 	}
 
 	public String getCallersName() throws Exception {
-		refreshUITree();
 		return callingUsersName.getText();
 	}
 
 	public CallingOverlayPage acceptCall() throws Exception {
-		refreshUITree();
 		DriverUtils.swipeRight(this.getDriver(), incomingCallChathead, 1500,
 				200, 50);
 		return new CallingOverlayPage(getLazyDriver());

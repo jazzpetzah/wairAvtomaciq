@@ -72,7 +72,6 @@ public class CommonAndroidPage extends AndroidPage {
 	}
 
 	public void requestResetPassword(String email) throws Exception {
-		refreshUITree();
 		this.getWait()
 				.until(ExpectedConditions.elementToBeClickable(emailEditField));
 		setChromeBrowserURL(SERVER_URL);
@@ -100,7 +99,6 @@ public class CommonAndroidPage extends AndroidPage {
 	}
 
 	private void setChromeBrowserURL(String link) throws Exception {
-		refreshUITree();
 		if (CommonUtils.getAndroidApiLvl(RegistrationPage.class) < 43) {
 			int ln = chromeUrlBar.getText().length();
 			chromeUrlBar.click();
@@ -115,7 +113,6 @@ public class CommonAndroidPage extends AndroidPage {
 	}
 
 	private void setFirefoxBrowserURL(String link) throws Exception {
-		refreshUITree();
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(AndroidLocators.Browsers.idFirefoxUrlBar));
 		urlBar.click();

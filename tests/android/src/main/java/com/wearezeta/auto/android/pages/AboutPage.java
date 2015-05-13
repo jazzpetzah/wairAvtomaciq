@@ -8,6 +8,7 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaHow;
@@ -31,9 +32,7 @@ public class AboutPage extends AndroidPage {
 	}
 
 	public boolean aboutLogoIsVisible() throws Exception {
-		refreshUITree();
-		return aboutLogo.isDisplayed();
-
+		return DriverUtils.isElementPresentAndDisplayed(aboutLogo);
 	}
 
 	public PersonalInfoPage tapOnVersion() throws Exception {

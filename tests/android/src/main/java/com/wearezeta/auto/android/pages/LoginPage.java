@@ -85,19 +85,16 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public LoginPage SignIn() throws Exception {
-		refreshUITree();
-		// this.getWait().until(ExpectedConditions.visibilityOf(signInButton));
 		signInButton.click();
 		return this;
 	}
 
 	public CommonAndroidPage forgotPassword() throws Exception {
-		refreshUITree();
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(forgotPasswordButton));
 		forgotPasswordButton.click();
 		Thread.sleep(2000);
-		if (isVisible(forgotPasswordButton)) {
+		if (DriverUtils.isElementPresentAndDisplayed(forgotPasswordButton)) {
 			DriverUtils.androidMultiTap(this.getDriver(), forgotPasswordButton,
 					1, 50);
 		}
@@ -110,7 +107,6 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public void setLogin(String login) throws Exception {
-		refreshUITree();
 		if (CommonUtils.getAndroidApiLvl(LoginPage.class) > 42) {
 			try {
 				loginInput.sendKeys(login);
@@ -158,25 +154,18 @@ public class LoginPage extends AndroidPage {
 
 	public Boolean isLoginFinished()
 			throws NumberFormatException, Exception {
-		refreshUITree();
 		// some workarounds for AN-1973
 		try {
 			this.getWait().until(ExpectedConditions.visibilityOf(pickerClearBtn));
 			pickerClearBtn.click();
 			
 		} catch (Exception ex) {
-			refreshUITree();
-			/*if (isVisible(pickerClearBtn)) {
-				pickerClearBtn.click();
-			}*/
 			this.getWait().until(ExpectedConditions.visibilityOf(selfUserAvatar));
-			refreshUITree();
 		}
-		return (isVisible(selfUserAvatar));
+		return (DriverUtils.isElementPresentAndDisplayed(selfUserAvatar));
 	}
 
 	public Boolean isWelcomeButtonsExist() throws Exception {
-		refreshUITree();
 		this.getWait().until(
 				ExpectedConditions
 						.visibilityOfAllElements(welcomeSloganContainer));

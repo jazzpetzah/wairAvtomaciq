@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.locators.TabletAndroidLocators;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
@@ -35,9 +36,8 @@ public class TabletDialogPage extends DialogPage {
 	}
 
 	public boolean isProfileButtonDisplayed() throws Exception {
-		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(profileButton));
-		return isVisible(profileButton);
+		return DriverUtils.isElementPresentAndDisplayed(profileButton);
 	}
 
 	public void tapOnProfileButton() throws Exception {
@@ -56,12 +56,9 @@ public class TabletDialogPage extends DialogPage {
 	}
 
 	public boolean isPopOverDisplayed() throws Exception {
-		if (isVisible(profileButton) && isVisible(otherUserName)
-				&& isVisible(addContactBtn)) {
-			return true;
-		} else {
-			return false;
-		}
+		return (DriverUtils.isElementPresentAndDisplayed(profileButton)
+				&& DriverUtils.isElementPresentAndDisplayed(otherUserName) && DriverUtils
+					.isElementPresentAndDisplayed(addContactBtn));
 	}
 
 	@Override
