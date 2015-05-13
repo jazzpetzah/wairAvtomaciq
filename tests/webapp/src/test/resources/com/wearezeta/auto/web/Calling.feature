@@ -82,6 +82,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     When <Contact> calls me using <CallBackend>
+    And I wait for 5 seconds
     And <Contact> stops all calls to me
     When I open conversation with <Contact>
     Then I see conversation with missed call from <Contact>

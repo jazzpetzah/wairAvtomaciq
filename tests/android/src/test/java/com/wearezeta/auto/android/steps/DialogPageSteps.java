@@ -612,11 +612,11 @@ public class DialogPageSteps {
 	 * 
 	 * @param message
 	 * @param contact
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see  message (.*) contact (.*) on group page$")
 	public void ThenISeeMessageContactOnGroupPage(String message, String contact)
-			throws Throwable {
+			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
 				.toUpperCase();
 		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message
@@ -630,13 +630,13 @@ public class DialogPageSteps {
 	 * @step. ^I see a message informing me that I renamed the conversation to
 	 *        (.*)$
 	 * 
-	 * @param newConveresationName
+	 * @param newConversationName
 	 *            the new conversation name to check for
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see a message informing me that I renamed the conversation to (.*)$")
 	public void ThenISeeMessageInformingGroupRename(String newConversationName)
-			throws Throwable {
+			throws Exception {
 		Assert.assertEquals(
 				PagesCollection.dialogPage.getChangedGroupNameMessage(),
 				newConversationName);

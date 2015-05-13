@@ -58,9 +58,9 @@ public final class AndroidLocators {
 
 		public static final class ForgotPasswordPage {
 
-			public static final String xpathEditField = "//android.webkit.WebView/android.view.View/android.widget.EditText";
+			public static final String xpathEditField = "//android.widget.EditText[@content-desc='Email']";
 
-			public static final String xpathChangePasswordButton = "//android.webkit.WebView/android.view.View/android.widget.Button";
+			public static final String xpathChangePasswordButton = "//android.widget.Button[@content-desc='CHANGE PASSWORD']";
 		}
 	}
 

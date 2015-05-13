@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.backend.ConnectionStatus;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -105,14 +106,14 @@ public final class CommonSteps {
 
 	public void ThereAreNUsers(Platform currentPlatform, int count)
 			throws Exception {
-		usrMgr.createUsersOnBackend(count,
-				RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
+		usrMgr.createUsersOnBackend(count, RegistrationStrategy
+				.getRegistrationStrategyForPlatform(currentPlatform));
 	}
 
 	public void ThereAreNUsersWhereXIsMe(Platform currentPlatform, int count,
 			String myNameAlias) throws Exception {
-		usrMgr.createUsersOnBackend(count,
-				RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
+		usrMgr.createUsersOnBackend(count, RegistrationStrategy
+				.getRegistrationStrategyForPlatform(currentPlatform));
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
@@ -122,9 +123,32 @@ public final class CommonSteps {
 		BackendAPIWrappers.ignoreAllConnections(userTo);
 	}
 
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
-		Thread.sleep(Integer.parseInt(seconds) * 1000);
+	private static final int DRIVER_PING_INTERVAL_SECONDS = 15;
+
+	public void WaitForTime(int seconds) throws Exception {
+		final Thread pingThread = new Thread() {
+			public void run() {
+				do {
+					try {
+						Thread.sleep(DRIVER_PING_INTERVAL_SECONDS * 1000);
+					} catch (InterruptedException e) {
+						return;
+					}
+					try {
+						PlatformDrivers.getInstance().pingDrivers();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				} while (!isInterrupted());
+			}
+		};
+		pingThread.start();
+		try {
+			Thread.sleep(seconds * 1000);
+		} finally {
+			pingThread.interrupt();
+		}
 	}
 
 	public void BlockContact(String blockAsUserNameAlias,
