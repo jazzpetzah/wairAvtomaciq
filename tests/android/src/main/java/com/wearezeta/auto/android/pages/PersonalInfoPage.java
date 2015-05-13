@@ -52,7 +52,7 @@ public class PersonalInfoPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idSelfProfileClose")
 	private WebElement selfProfileClose;
-	
+
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement page;
 
@@ -97,7 +97,7 @@ public class PersonalInfoPage extends AndroidPage {
 		try {
 			this.getDriver().hideKeyboard();
 		} catch (Exception ex) {
-			//ignore silently
+			// ignore silently
 		}
 		confirmBtn.click();
 		Thread.sleep(1000); // fix for animation
@@ -148,10 +148,8 @@ public class PersonalInfoPage extends AndroidPage {
 	public void tapOnMyName() throws Exception {
 		this.getWait().until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
-		Thread.sleep(2000); // fix for animation
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				AndroidLocators.PersonalInfoPage.getByForNameEditField());
-		if (!DriverUtils.isElementPresentAndDisplayed(nameEdit)) {
+		if (!DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				AndroidLocators.PersonalInfoPage.getByForNameEditField())) {
 			DriverUtils.mobileTapByCoordinates(getDriver(), nameField);
 		}
 	}
@@ -159,8 +157,6 @@ public class PersonalInfoPage extends AndroidPage {
 	public void changeName(String name, String newName) throws Exception {
 		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.PersonalInfoPage.idNameField));
-		this.getWait().until(ExpectedConditions.visibilityOf(nameEdit));
-
 		try {
 			nameEdit.clear();
 		} catch (Exception ex) {
@@ -192,11 +188,10 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isSettingsButtonNotVisible() throws Exception {
-		DriverUtils
+		return DriverUtils
 				.waitUntilLocatorDissapears(this.getDriver(),
 						AndroidLocators.PersonalInfoPage
 								.getByForProfileOptionsButton());
-		return !DriverUtils.isElementPresentAndDisplayed(settingsButton);
 	}
 
 	public boolean waitForSettingsDissapear() throws Exception {

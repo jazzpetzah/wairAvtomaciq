@@ -203,6 +203,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isOneToOneUserProfileFullyVisible() throws Exception {
+		// FIXME: this might be slow. Need to replace
+		// isElementPresentAndDisplayed -> waitUntilLocatorDissapears
 		for (WebElement elem : new WebElement[] { closeButton,
 				rightConversationButton, addContactBtn, addContactLabel,
 				participantsSubHeader, groupChatName }) {

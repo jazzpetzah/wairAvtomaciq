@@ -314,7 +314,8 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public CommonAndroidPage tapOnGmailLink() throws NumberFormatException,
 			Exception {
-		if (!DriverUtils.isElementPresentAndDisplayed(gmailLink)) {
+		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(AndroidLocators.PeoplePickerPage.xpathGmailLink))) {
 			DriverUtils
 					.swipeUp(
 							this.getDriver(),
@@ -373,23 +374,15 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean waitForPYMKForSecs(int time) throws Exception {
-		boolean exist = false;
-		for (int i = 0; i < time; i++) {
-			if (!DriverUtils.isElementPresentAndDisplayed(recommendedName)) {
-				Thread.sleep(1000);
-			} else {
-				exist = true;
-				break;
-			}
-		}
-		return exist;
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedName),
+				time);
 	}
 
 	public String getPYMKContactName(WebElement randomConnect) throws Exception {
 		String name = randomConnect.findElement(
 				By.id(AndroidLocators.PeoplePickerPage.idPickerRecomendedName))
 				.getText();
-
 		return name;
 	}
 

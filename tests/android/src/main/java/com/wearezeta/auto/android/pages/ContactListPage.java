@@ -140,8 +140,10 @@ public class ContactListPage extends AndroidPage {
 			if (DriverUtils.isElementPresentAndDisplayed(convList)) {
 				flag = true;
 			}
-		} else if (!DriverUtils.isElementPresentAndDisplayed(cursorInput)
-				&& !DriverUtils.isElementPresentAndDisplayed(selfUserName)) {
+		} else if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.className(AndroidLocators.CommonLocators.classEditText))
+				&& DriverUtils.waitUntilLocatorDissapears(getDriver(),
+						By.id(AndroidLocators.PersonalInfoPage.idNameField))) {
 			flag = true;
 		}
 		if (flag) {
@@ -172,7 +174,8 @@ public class ContactListPage extends AndroidPage {
 						AndroidLocators.ContactListPage.xpathContactFrame,
 						contact));
 		elementSwipeRight(el, time);
-		if (!DriverUtils.isElementPresentAndDisplayed(cursorInput)) {
+		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.className(AndroidLocators.CommonLocators.classEditText))) {
 			page = new ContactListPage(this.getLazyDriver());
 		} else if (DriverUtils.isElementPresentAndDisplayed(cursorInput)) {
 			page = new DialogPage(this.getLazyDriver());
@@ -188,7 +191,8 @@ public class ContactListPage extends AndroidPage {
 								contact));
 		DriverUtils.swipeRight(this.getDriver(), el, 1000);
 		AndroidPage page = null;
-		if (!DriverUtils.isElementPresentAndDisplayed(cursorInput)) {
+		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.className(AndroidLocators.CommonLocators.classEditText))) {
 			page = new ContactListPage(this.getLazyDriver());
 		} else if (DriverUtils.isElementPresentAndDisplayed(cursorInput)) {
 			page = new DialogPage(this.getLazyDriver());

@@ -168,14 +168,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void waitForCursorInputVisible() throws Exception {
-		int counter = 0;
-		while (!DriverUtils.isElementPresentAndDisplayed(cursorInput)) {
-			Thread.sleep(500);
-			counter++;
-			if (counter == 10) {
-				break;
-			}
-		}
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.className(AndroidLocators.CommonLocators.classEditText), 5);
 		if (DriverUtils.isElementPresentAndDisplayed(messageInList)) {
 			initMessageCount = messagesList.size();
 		}
@@ -686,8 +680,9 @@ public class DialogPage extends AndroidPage {
 		playPauseBtn.click();
 	}
 
-	public void tapDialogPageBottom() throws NumberFormatException, Exception {
-		if (!DriverUtils.isElementPresentAndDisplayed(addParticipant)) {
+	public void tapDialogPageBottom() throws Exception {
+		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(AndroidLocators.DialogPage.idAddParticipants))) {
 			dialogPageBottom.click();
 		}
 	}
