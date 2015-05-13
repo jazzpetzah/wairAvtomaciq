@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.ios.pages.CameraRollPage;
 import com.wearezeta.auto.ios.pages.CameraRolliPadPopoverPage;
 import com.wearezeta.auto.ios.pages.TabletPagesCollection;
 

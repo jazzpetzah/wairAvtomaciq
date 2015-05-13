@@ -609,14 +609,11 @@ public class CommonAndroidSteps {
 	 * 
 	 * @param seconds
 	 *            The number of seconds to wait
-	 * 
-	 * @throws NumberFormatException
-	 *             , InterruptedException
+	 * @throws Exception 
 	 * 
 	 */
-	@When("^I wait for (.*) second[s]*$")
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
+	@When("^I wait for (\\d+) seconds?$")
+	public void WaitForTime(int seconds) throws Exception {
 		commonSteps.WaitForTime(seconds);
 	}
 
