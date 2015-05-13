@@ -77,14 +77,15 @@ Feature: Search
     When I remember invitation link on Send Invitation popover
     And I click Send Invitation button on People Picker page
     Then I do not see Send Invitation popover
-    When I open self profile
+    And I close People Picker page
+    And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And User <ContactName> is me
-    When I Sign in using login <ContactEmail> and password <ContactPassword>
+    And I Sign in using login <ContactEmail> and password <ContactPassword>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I navigate to previously remembered invitation link
+    When I navigate to previously remembered invitation link
     And I click Connect button on You are invited page
     Then I see Contact list with name <Name>
 

@@ -24,7 +24,7 @@ public class SendInvitationPage extends AbstractPopoverPage {
 	}
 
 	public String getInvitationText() {
-		return invitationText.getText();
+		return invitationText.getAttribute("value");
 	}
-	
+
 }

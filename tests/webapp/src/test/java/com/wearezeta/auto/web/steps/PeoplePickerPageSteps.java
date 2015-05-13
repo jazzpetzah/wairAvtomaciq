@@ -6,9 +6,9 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -123,5 +123,17 @@ public class PeoplePickerPageSteps {
 	public void IClickSendInvitationButton() throws Exception {
 		PagesCollection.popoverPage = PagesCollection.peoplePickerPage
 				.clickSendInvitationButton();
+	}
+
+	/**
+	 * Click X button to close People Picker page
+	 * 
+	 * @step. ^I close People Picker page$
+	 * @throws Exception
+	 * 
+	 */
+	@And("^I close People Picker page$")
+	public void IClosePeoplePicker() throws Exception {
+		PagesCollection.peoplePickerPage.closeSearch();
 	}
 }

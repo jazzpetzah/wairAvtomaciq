@@ -40,7 +40,8 @@ public class YouAreInvitedPageSteps {
 		if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
 			PagesCollection.youAreInvitedPage.clickConnectButton();
 		} else {
-			throw new PendingException();
+			throw new PendingException(
+					"The feature is not available under Mac OS");
 		}
 	}
 }
