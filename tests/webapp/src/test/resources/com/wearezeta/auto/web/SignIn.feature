@@ -29,6 +29,6 @@ Feature: Sign In
     And a red dot is shown inside the password field on the sign in form
 
     Examples: 
-      | Email      | Password | Error                                      |
-      | user1Email |          | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
-      | user1Email | wrong    | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
+      | Email      | Password      | Error                                      |
+      | user1Email |               | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
+      | user1Email | wrongPassword | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
