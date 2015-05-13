@@ -14,6 +14,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
@@ -152,6 +153,29 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return flag;
 	}
 
+	public boolean isOneToOneOptionsMenuUIContentNotVisible() throws Exception {
+		refreshUITree();
+
+		By blockButtonBy = By
+				.id(AndroidLocators.OtherUserPersonalInfoPage.idBlockButton);
+		By silenceButtonBy = By
+				.id(AndroidLocators.OtherUserPersonalInfoPage.idSilenceButton);
+		By archiveButtonBy = By
+				.id(AndroidLocators.OtherUserPersonalInfoPage.idArchiveButton);
+
+		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				blockButtonBy, 15))
+			return false;
+		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				silenceButtonBy, 15))
+			return false;
+		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				archiveButtonBy, 15))
+			return false;
+
+		return true;
+	}
+
 	public boolean isOneToOneOptionsMenuUIContentVisible() throws Exception {
 		refreshUITree(); // Fix to pass animation
 		boolean flag = false;
@@ -160,6 +184,44 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 			flag = true;
 		}
 		return flag;
+	}
+
+	public boolean isOneToOneUserProfileUIContentNotVisible() throws Exception {
+		refreshUITree();
+
+		By closeButtonBy = By
+				.id(AndroidLocators.PeoplePickerPage.idParticipantsClose);
+		By rightConversationButtonBy = By
+				.id(AndroidLocators.OtherUserPersonalInfoPage.idRightActionButton);
+		By addContactButtonBy = By
+				.id(AndroidLocators.OtherUserPersonalInfoPage.idLeftActionButton);
+		By addContactLabelBy = By
+				.id(AndroidLocators.OtherUserPersonalInfoPage.idLeftActionLabel);
+		By participantsSubHeaderBy = By
+				.id(AndroidLocators.OtherUserPersonalInfoPage.idParticipantsSubHeader);
+		By groupChatNameBy = By
+				.id(AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeader);
+
+		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				closeButtonBy, 15))
+			return false;
+		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				rightConversationButtonBy, 15))
+			return false;
+		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				addContactButtonBy, 15))
+			return false;
+		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				addContactLabelBy, 15))
+			return false;
+		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				participantsSubHeaderBy, 15))
+			return false;
+		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				groupChatNameBy, 15))
+			return false;
+
+		return true;
 	}
 
 	public boolean isOneToOneUserProfileUIContentVisible() throws Exception {
