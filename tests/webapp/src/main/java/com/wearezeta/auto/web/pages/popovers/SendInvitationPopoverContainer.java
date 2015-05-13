@@ -1,6 +1,8 @@
 package com.wearezeta.auto.web.pages.popovers;
 
 import java.util.concurrent.Future;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
@@ -23,7 +25,17 @@ public class SendInvitationPopoverContainer extends AbstractPopoverContainer {
 		return this.sendInvitationPage.getInvitationText();
 	}
 
-	public void copyToClipboard() throws Exception {
-		this.sendInvitationPage.copyToClipboard();
+	public String parseInvitationLink() {
+		final String invitationText = this.getInvitationText();
+		final String regex = "(https://\\S+)";
+		final Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		final Matcher urlMatcher = p.matcher(invitationText);
+		if (urlMatcher.find()) {
+			return urlMatcher.group(1);
+		} else {
+			throw new RuntimeException(String.format(
+					"Invitation link could not be parsed from this text: '%s'",
+					invitationText));
+		}
 	}
 }

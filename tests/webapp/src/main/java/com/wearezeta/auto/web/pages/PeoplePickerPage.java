@@ -5,7 +5,6 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -13,7 +12,6 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
@@ -153,18 +151,6 @@ public class PeoplePickerPage extends WebPage {
 		sendInvitationButton.click();
 
 		return new SendInvitationPopoverContainer(this.getLazyDriver());
-	}
-
-	public void pasteFromCliboard() {
-		searchInput.clear();
-		searchInput
-				.sendKeys(Keys.chord(WebAppExecutionContext
-						.isCurrentPlatfromWindows() ? Keys.CONTROL
-						: Keys.COMMAND, "v"));
-	}
-
-	public String getSearchInputContent() {
-		return searchInput.getAttribute("value");
 	}
 
 	public int getNumberOfSuggestions() {

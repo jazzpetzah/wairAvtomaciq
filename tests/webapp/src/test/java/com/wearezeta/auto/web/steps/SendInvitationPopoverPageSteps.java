@@ -1,12 +1,15 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.external.YouAreInvitedPage;
 import com.wearezeta.auto.web.pages.popovers.SendInvitationPopoverContainer;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class SendInvitationPopoverPageSteps {
+
+	private String invitationLink = null;
 
 	/**
 	 * Verifies whether Send Invitation popover is visible or not
@@ -30,17 +33,35 @@ public class SendInvitationPopoverPageSteps {
 	}
 
 	/**
-	 * Emulate key combination Cmd/Ctrl+C to copy invitation text into system
-	 * clipboard
+	 * Save invitation link from the corresponding popover into internal
+	 * variable
 	 * 
-	 * @step. ^I copy invitation text into clipboard using keyboard$
+	 * @step. ^I remember invitation link on Send Invitation popover$
+	 * 
+	 */
+	@When("^I remember invitation link on Send Invitation popover$")
+	public void IRemeberInvitationLink() {
+		invitationLink = ((SendInvitationPopoverContainer) PagesCollection.popoverPage)
+				.parseInvitationLink();
+	}
+
+	/**
+	 * Navigates to previously remembered invitation link
+	 * 
+	 * @step. ^I navigate to previously remembered invitation link$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I copy invitation text into clipboard using keyboard$")
-	public void ICopyInvitationUsingKeyboard() throws Exception {
-		((SendInvitationPopoverContainer) PagesCollection.popoverPage)
-				.copyToClipboard();
-	}
+	@When("^I navigate to previously remembered invitation link$")
+	public void INavigateToNavigationLink() throws Exception {
+		if (invitationLink == null) {
+			throw new RuntimeException(
+					"Invitation link has not been remembered before!");
+		}
 
+		PagesCollection.youAreInvitedPage = (YouAreInvitedPage) PagesCollection.loginPage
+				.instantiatePage(YouAreInvitedPage.class);
+		PagesCollection.youAreInvitedPage.setUrl(invitationLink);
+		PagesCollection.youAreInvitedPage.navigateTo();
+	}
 }

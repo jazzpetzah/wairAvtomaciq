@@ -64,22 +64,30 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-            | user1Email | user1Password | user1Name | user2Name | user2Email    | user2Password    | user3Name | user3Email    | user3Password    |
 
-  @torun @id1741
-  Scenario Outline: Verify you can send an invite by copying the message
-    Given There is 1 user where <Name> is me
+  @torun @id1742
+  Scenario Outline: Verify possibility of invitation accepting
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I click Show Search button on Contacts Upload dialog
     And I see Send Invitation button on People Picker page
     When I click Send Invitation button on People Picker page
     Then I see Send Invitation popover 
-    When I copy invitation text into clipboard using keyboard
+    When I remember invitation link on Send Invitation popover
+    And I click Send Invitation button on People Picker page
     Then I do not see Send Invitation popover
-    When I paste current clipboard content into search input on People Picker page
-    Then I verify that search input on People Picker page contains text <Text>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And User <ContactName> is me
+    When I Sign in using login <ContactEmail> and password <ContactPassword>
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
+    And I navigate to previously remembered invitation link
+    And I click Connect button on You are invited page
+    Then I see Contact list with name <Name>
 
     Examples: 
-      | Login      | Password      | Name      | Text                    |
-      | user1Email | user1Password | user1Name | I'm on Wire. Search for |
+      | Login      | Password      | Name      | ContactEmail | ContactName | ContactPassword |
+      | user1Email | user1Password | user1Name | user2Email   | user2Name   | user2Password   |

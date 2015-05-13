@@ -8,16 +8,19 @@ import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.web.common.WebAppConstants;
+import com.wearezeta.auto.web.locators.ExternalLocators;
 import com.wearezeta.auto.web.pages.WebPage;
 
 public class PasswordChangeRequestPage extends WebPage {
 	// FIXME: Works for staging backend only
-	private static final String STAGING_URL = "https://staging-website.zinfra.io/forgot/";
+	private static final String STAGING_URL = WebAppConstants.STAGING_SITE_ROOT
+			+ "/forgot/";
 
-	@FindBy(id = "email")
+	@FindBy(id = ExternalLocators.PasswordChangeRequestPage.idEmailInput)
 	private WebElement emailField;
 
-	@FindBy(xpath = "//button[@type='submit']")
+	@FindBy(xpath = ExternalLocators.PasswordChangeRequestPage.xpathSubmitButton)
 	private WebElement changePasswordButton;
 
 	public PasswordChangeRequestPage(Future<ZetaWebAppDriver> lazyDriver)
@@ -39,7 +42,7 @@ public class PasswordChangeRequestPage extends WebPage {
 
 	public void waitUntilVisible(int timeoutSeconds) throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id("email")) : "Password Change Request page has not been displayed within "
+				By.id(ExternalLocators.PasswordChangeRequestPage.idEmailInput)) : "Password Change Request page has not been displayed within "
 				+ timeoutSeconds + " seconds";
 	}
 }

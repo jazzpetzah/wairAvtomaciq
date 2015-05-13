@@ -124,38 +124,4 @@ public class PeoplePickerPageSteps {
 		PagesCollection.popoverPage = PagesCollection.peoplePickerPage
 				.clickSendInvitationButton();
 	}
-
-	/**
-	 * Paste the content of clipboard into search field
-	 * 
-	 * @step. ^I paste current clipboard content into search input on People
-	 *        Picker page$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I paste current clipboard content into search input on People Picker page$")
-	public void IPasteIntoSearchField() throws Exception {
-		PagesCollection.peoplePickerPage.pasteFromCliboard();
-	}
-
-	/**
-	 * Verify that current text in search input contains expected text
-	 * 
-	 * @step. ^I verify that search input on People Picker page contains text
-	 *        (.*)"
-	 * 
-	 * @param expectedText
-	 *            a part of text to check
-	 * @throws Exception
-	 */
-	@Then("^I verify that search input on People Picker page contains text (.*)")
-	public void IVerifySearchInput(String expectedText) throws Exception {
-		final String actualContent = PagesCollection.peoplePickerPage
-				.getSearchInputContent();
-		Assert.assertTrue(
-				String.format(
-						"Actual contant of search input '%s' does not contain the text '%s'",
-						actualContent, expectedText), actualContent
-						.contains(expectedText));
-	}
 }
