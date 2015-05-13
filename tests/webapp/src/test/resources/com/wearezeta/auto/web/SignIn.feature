@@ -25,10 +25,10 @@ Feature: Sign In
     And I enter password "<Password>"
     And I press Sign In button
     Then the sign in error message reads <Error>
-    And a red dot is shown on the email field
-    And a red dot is shown on the password field
+    And a red dot is shown inside the email field on the sign in form
+    And a red dot is shown inside the password field on the sign in form
 
-    Examples:
+    Examples: 
       | Email      | Password | Error                                      |
       | user1Email |          | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
       | user1Email | wrong    | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |

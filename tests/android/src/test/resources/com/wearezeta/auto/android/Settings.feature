@@ -72,7 +72,7 @@ Feature: Settings
     And I have entered login <Login>
     And I have entered password <NewPassword>
     And I press Log in button
-    Then Contact list appears with my name <Name>
+    Then I see Contact list
 
     Examples: 
       | Login      | Password      | Name      | NewPassword | Contact   |
