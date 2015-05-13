@@ -138,12 +138,10 @@ public final class PlatformDrivers {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
-				for (Entry<Platform, Future<? extends RemoteWebDriver>> entry : drivers
-						.entrySet()) {
+				for (Future<? extends RemoteWebDriver> driver : getRegisteredDrivers()) {
 					try {
-						entry.getValue()
-								.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-										TimeUnit.MILLISECONDS).quit();
+						driver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+								TimeUnit.MILLISECONDS).quit();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
