@@ -20,6 +20,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.RegistrationPage;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 
@@ -32,7 +33,7 @@ public class CommonIOSSteps {
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(CommonIOSSteps.class
 			.getSimpleName());
-	
+
 	private static boolean skipBeforeAfter = false;
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -57,7 +58,7 @@ public class CommonIOSSteps {
 		return CommonUtils
 				.getIosApplicationPathFromConfig(CommonIOSSteps.class);
 	}
-	
+
 	public boolean isSkipBeforeAfter() {
 		return skipBeforeAfter;
 	}
@@ -107,8 +108,7 @@ public class CommonIOSSteps {
 		commonBefore(resetIOSDriver(false));
 	}
 
-	public void commonBefore(Future<ZetaIOSDriver> lazyDriver)
-			throws Exception {
+	public void commonBefore(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps.getInstance().cleanupWaitingInstances();
@@ -122,6 +122,7 @@ public class CommonIOSSteps {
 				.readClientVersionFromPlist().getClientBuildNumber());
 
 		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		PagesCollection.registrationPage = new RegistrationPage(lazyDriver);
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
@@ -405,9 +406,12 @@ public class CommonIOSSteps {
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
 
-		if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !skipBeforeAfter) {
-			IOSCommonUtils.collectSimulatorLogs(
-					CommonUtils.getDeviceName(getClass()), getTestStartedDate());
+		if (CommonUtils.getIsSimulatorFromConfig(getClass())
+				&& !skipBeforeAfter) {
+			IOSCommonUtils
+					.collectSimulatorLogs(
+							CommonUtils.getDeviceName(getClass()),
+							getTestStartedDate());
 		}
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
@@ -424,16 +428,20 @@ public class CommonIOSSteps {
 	public void setTestStartedDate(Date testStartedDate) {
 		this.testStartedDate = testStartedDate;
 	}
-	
+
 	/**
 	 * Rotate device to landscape
 	 * 
-	 * @step. ^I rotate UI to landscape$
+	 * @step. ^I rotate UI to (landscape|portrait)$
+	 * 
+	 * @param orientation
+	 *            must be landscape or portrait
 	 * 
 	 * @throws Exception
 	 */
 	@When("^I rotate UI to (landscape|portrait)$")
-	public void WhenIRotateUILandscape(ScreenOrientation orientation) throws Exception {
+	public void WhenIRotateUILandscape(ScreenOrientation orientation)
+			throws Exception {
 		PagesCollection.loginPage.rotateScreen(orientation);
 		Thread.sleep(1000); // fix for animation
 	}

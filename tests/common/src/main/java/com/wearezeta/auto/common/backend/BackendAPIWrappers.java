@@ -157,6 +157,12 @@ public final class BackendAPIWrappers {
 		log.debug(String.format("User '%s' is successfully activated",
 				phoneNumber.toString()));
 	}
+	
+	public static String getActivationCodeByPhoneNumber(
+			PhoneNumber phoneNumber) throws Exception {
+		return BackendREST
+				.getActivationDataViaBackdoor(phoneNumber).getString("code");
+	}
 
 	public static void attachUserPhoneNumber(ClientUser user) throws Exception {
 		user = tryLoginByUser(user);
