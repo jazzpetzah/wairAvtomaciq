@@ -329,7 +329,8 @@ public class PeoplePickerPage extends AndroidPage {
 		return this;
 	}
 
-	public void tapOnSendInvitation() {
+	public void tapOnSendInvitation() throws Exception {
+		refreshUITree();
 		sendInvitationFrame.click();
 	}
 
