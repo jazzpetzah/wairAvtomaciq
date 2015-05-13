@@ -15,7 +15,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
 	 | user1Email | user1Password | user1Name | user2Name |
 
-@staging @id1546
+   @regression @id1546
    Scenario Outline: Verify pending user profiles contain all the info required by spec
       Given There are 2 users where <Name> is me
       Given <UnknownContact> sent connection request to me
