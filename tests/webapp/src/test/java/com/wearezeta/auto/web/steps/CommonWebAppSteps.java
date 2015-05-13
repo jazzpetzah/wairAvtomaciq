@@ -46,9 +46,12 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import java.util.Iterator;
 import java.util.List;
+
 import org.apache.commons.collections.IteratorUtils;
+
 import static org.junit.Assert.assertTrue;
 
 public class CommonWebAppSteps {
@@ -693,6 +696,7 @@ public class CommonWebAppSteps {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
 		return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs()
 				.get(LogType.BROWSER).iterator());
