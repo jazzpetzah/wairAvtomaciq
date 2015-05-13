@@ -17,7 +17,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id1792
+  @regression @id1792
   Scenario Outline: Verify sign in error appearance in case of wrong credentials
     Given There is 1 user where user1Name is me
     Given I switch to sign in page
@@ -29,6 +29,6 @@ Feature: Sign In
     And a red dot is shown inside the password field on the sign in form
 
     Examples: 
-      | Email      | Password | Error                                      |
-      | user1Email |          | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
-      | user1Email | wrong    | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
+      | Email      | Password      | Error                                      |
+      | user1Email |               | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
+      | user1Email | wrongPassword | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |

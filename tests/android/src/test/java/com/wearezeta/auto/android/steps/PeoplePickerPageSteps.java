@@ -292,10 +292,11 @@ public class PeoplePickerPageSteps {
 	 * Tap on Send an invitation
 	 * 
 	 * @step. ^I tap on Send an invitation$
+	 * @throws Exception 
 	 * 
 	 */
 	@When("^I tap on Send an invitation$")
-	public void WhenITapOnSendAnInvitation() {
+	public void WhenITapOnSendAnInvitation() throws Exception {
 		PagesCollection.peoplePickerPage.tapOnSendInvitation();
 	}
 

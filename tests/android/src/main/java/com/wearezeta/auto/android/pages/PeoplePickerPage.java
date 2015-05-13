@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Future;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -15,8 +16,12 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class PeoplePickerPage extends AndroidPage {
+
+	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
+			.getSimpleName());
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearchUsers")
 	private List<WebElement> pickerSearchUsers;
@@ -329,8 +334,14 @@ public class PeoplePickerPage extends AndroidPage {
 		return this;
 	}
 
-	public void tapOnSendInvitation() {
-		sendInvitationFrame.click();
+	public void tapOnSendInvitation() throws Exception {
+		refreshUITree();
+		try {
+			sendInvitationFrame.click();
+		} catch (NoSuchElementException e) {
+			log.debug("Can't find send invitation button.\nPage source: "
+					+ this.getDriver().getPageSource());
+		}
 	}
 
 	public CommonAndroidPage tapOnGmailLink() throws NumberFormatException,

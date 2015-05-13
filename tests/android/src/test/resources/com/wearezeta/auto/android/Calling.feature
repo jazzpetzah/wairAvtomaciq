@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @regression @id373
+  @calling_basic @id373
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -17,22 +17,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @regression @id373
-  Scenario Outline: Verify calling from missed call indicator in Conversation List
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    When <Contact> calls me using <CallBackend>
-    And I wait for 5 seconds
-    And <Contact> stops all calls to me
-    Then Conversation List contains missed call icon
-
-    Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
-
-  @id1503 @regression
+  @id1503 @calling_basic
   Scenario Outline: Silence an incoming call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -47,7 +32,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @staging @id1497
+  @calling_basic @id1497
   Scenario Outline: Receive call while Wire is running in the background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -64,7 +49,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @staging @id1499
+  @calling_basic @id1499
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
