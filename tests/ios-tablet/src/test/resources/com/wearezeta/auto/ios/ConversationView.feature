@@ -31,7 +31,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @torun @staging @id332 @deployPictures @id1470
+  @staging @id332 @deployPictures @id1470
   Scenario Outline: Send a camera roll picture to user from contact list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
