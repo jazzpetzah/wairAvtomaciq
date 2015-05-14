@@ -94,7 +94,7 @@ public class PeoplePickerPage extends IOSPage {
 	public void clickLaterButton() throws Exception {
 		for (int i = 0; i < 3; i++) {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.nameShareButton))) {
+					By.name(IOSLocators.nameShareButton), 3)) {
 				if (i > 0) {
 					this.minimizeApplication(3);
 				}
@@ -381,10 +381,10 @@ public class PeoplePickerPage extends IOSPage {
 
 	public OtherUserOnPendingProfilePage clickOnUserOnPending(String contact)
 			throws Exception {
-		OtherUserOnPendingProfilePage page;
-		getDriver().findElement(By.name(contact)).click();
-		page = new OtherUserOnPendingProfilePage(this.getLazyDriver());
-		return page;
+
+		WebElement el = getDriver().findElement(By.name(contact));
+		DriverUtils.mobileTapByCoordinates(getDriver(), el);
+		return new OtherUserOnPendingProfilePage(this.getLazyDriver());
 	}
 
 	public boolean isUploadDialogShown() throws Exception {

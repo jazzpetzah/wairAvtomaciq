@@ -129,7 +129,7 @@ public final class PlatformDrivers {
 	public void pingDrivers() throws Exception {
 		for (Future<? extends RemoteWebDriver> driver : drivers.values()) {
 			driver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-					TimeUnit.MILLISECONDS).getCurrentUrl();
+					TimeUnit.MILLISECONDS).getPageSource();
 		}
 	}
 

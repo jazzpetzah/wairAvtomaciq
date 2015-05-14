@@ -8,3 +8,4 @@ tests/tools/javadoc-exporter/target
 tests/common/bin/*
 tests/webapp/bin/*
 tests/webapp/nbactions.xml
+tests/tools/jenkins_controller/.idea
