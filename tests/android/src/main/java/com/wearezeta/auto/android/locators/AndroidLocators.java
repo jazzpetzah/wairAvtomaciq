@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android.locators;
 
+import java.util.function.Function;
+
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -41,7 +43,7 @@ public final class AndroidLocators {
 		public static final String xpathFirefoxUrlBarEditText42 = "//android.widget.LinearLayout/android.widget.EditText";
 
 		public static final String xpathUrlBar42 = "//android.widget.FrameLayout/android.widget.FrameLayout/android.view.View/android.widget.EditText";
-		
+
 		public static final String xpathNativeBrowserURLBar = "//android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.widget.RelativeLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.EditText[1]";
 
 		public static final String xpathNativeBrowserMenu = "//android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.widget.RelativeLayout[1]/android.widget.LinearLayout[1]/android.widget.ImageButton[2]";
@@ -61,7 +63,7 @@ public final class AndroidLocators {
 			public static final String xpathEmailEditField = "//android.widget.EditText[@content-desc='Email']";
 
 			public static final String xpathEnterNewPasswordEditField = "//android.widget.EditText[@content-desc='Enter new password']";
-			
+
 			public static final String xpathChangePasswordButton = "//android.widget.Button[@content-desc='CHANGE PASSWORD']";
 		}
 	}
@@ -90,13 +92,13 @@ public final class AndroidLocators {
 
 		public static final String idCallingDismiss = LOCATORS_PACKAGE
 				+ ":id/cib__calling__dismiss";
-		
+
 		public static final String idOngoingCallMicrobar = LOCATORS_PACKAGE
 				+ ":id/ocpv__ongoing";
-		
+
 		public static final String idOngoingCallMinibar = LOCATORS_PACKAGE
 				+ ":id/ocpv__ongoing_small";
-		
+
 	}
 
 	public static final class SettingsPage {
@@ -167,7 +169,8 @@ public final class AndroidLocators {
 
 		public static By getByForLoginProgressViewContainer() throws Exception {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {
-				return By.xpath(AndroidLocators.LoginPage.xpathLoginProgressViewContainer42);
+				return By
+						.xpath(AndroidLocators.LoginPage.xpathLoginProgressViewContainer42);
 			} else {
 				return By
 						.id(AndroidLocators.LoginPage.idLoginProgressViewContainer);
@@ -285,7 +288,7 @@ public final class AndroidLocators {
 
 		public static final String idSelfUserAvatar = LOCATORS_PACKAGE
 				+ ":id/civ__searchbox__self_user_avatar";
-		
+
 		public static final String idMissedCallIcon = LOCATORS_PACKAGE
 				+ ":id/sci__list__missed_call";
 
@@ -294,7 +297,8 @@ public final class AndroidLocators {
 
 		public static final String xpathContactFrame = "//android.widget.FrameLayout[child::android.widget.TextView[@text='%s']]";
 
-		public static final String xpathContacts = "//android.widget.TextView[@text='%s']";
+		public static final Function<String, String> xpathContactByName = name -> String
+				.format("//android.widget.TextView[@text='%s']", name);
 
 		public static final String idSimpleDialogPageText = LOCATORS_PACKAGE
 				+ ":id/ttv__simple_dialog__text";
@@ -370,7 +374,7 @@ public final class AndroidLocators {
 
 		public static final String idMediaBarControl = LOCATORS_PACKAGE
 				+ ":id/gtv__conversation_header__mediabar__control";
-		
+
 		public static final String idYoutubePlayButton = LOCATORS_PACKAGE
 				+ ":id/gtv__youtube_message__play";
 
@@ -459,9 +463,11 @@ public final class AndroidLocators {
 		public static final String idCancelCall = LOCATORS_PACKAGE
 				+ ":id/cib__calling__dismiss";
 
-		public static final String xpathFormatSpecificMessage = "//android.widget.TextView[@resource-id='"
-				+ LOCATORS_PACKAGE
-				+ ":id/ltv__row_conversation__message' and @text='%s']";
+		public static final Function<String, String> xpathFormatSpecificMessageByText = text -> String
+				.format("//android.widget.TextView[@resource-id='"
+						+ LOCATORS_PACKAGE
+						+ ":id/ltv__row_conversation__message' and @text='%s']",
+						text);
 
 		public static final String xpathMessage = "//android.widget.LinearLayout/android.widget.TextView[contains(@text,'%s')]";
 
@@ -615,7 +621,8 @@ public final class AndroidLocators {
 
 	public static final class PeoplePickerPage {
 
-		public static final String xpathTopConversationContact = "//android.widget.TextView[@text='%s']";
+		public static final Function<String, String> xpathTopConversationContactByName = name -> String
+				.format("//android.widget.TextView[@text='%s']", name);
 
 		public static final String xpathGmailLink = "//android.widget.TextView[@text='Gmail']";
 
@@ -692,13 +699,17 @@ public final class AndroidLocators {
 		public static final String xpathSendInvitationFrame = "//android.widget.LinearLayout[child::android.widget.FrameLayout[@resource-id='"
 				+ LOCATORS_PACKAGE + ":id/fl_pickuser__invite__bubble']]";
 
-		public static final String xpathPeoplePickerGroup = "//android.widget.TextView[@resource-id='"
-				+ LOCATORS_PACKAGE
-				+ ":id/ttv_pickuser_searchconversation_name' and @text='%s']";
+		public static final Function<String, String> xpathPeoplePickerGroupByName = name -> String
+				.format("//android.widget.TextView[@resource-id='"
+						+ LOCATORS_PACKAGE
+						+ ":id/ttv_pickuser_searchconversation_name' and @text='%s']",
+						name);
 
-		public static final String xpathPeoplePickerContact = "//android.widget.TextView[@resource-id='"
-				+ LOCATORS_PACKAGE
-				+ ":id/ttv_pickuser__searchuser_name' and @text='%s']";
+		public static final Function<String, String> xpathPeoplePickerContactByName = name -> String
+				.format("//android.widget.TextView[@resource-id='"
+						+ LOCATORS_PACKAGE
+						+ ":id/ttv_pickuser__searchuser_name' and @text='%s']",
+						name);
 
 		public static final String xpathCreateConversationIcon42 = "//android.widget.TextView[@text='CREATE CONVERSATION']";
 
@@ -758,7 +769,7 @@ public final class AndroidLocators {
 
 		public static final String idSelfProfileClose = LOCATORS_PACKAGE
 				+ ":id/gtv__profile__close_button";
-		
+
 		public static final String idOpenFrom = "com.google.android.apps.plus:id/tiles";
 
 		public static final String xpathProfileOptionsButton42 = "//android.widget.FrameLayout[child::android.widget.LinearLayout]/android.widget.TextView";
@@ -830,7 +841,7 @@ public final class AndroidLocators {
 		public static final String xpathVerifyEmailBtn42 = "//android.widget.TextView[@text='Re-send']";
 
 	}
-	
+
 	public static final class UnknownUserDetailsPage {
 
 		public static final String CLASS_NAME = AndroidLocators.CLASS_NAME
@@ -838,15 +849,13 @@ public final class AndroidLocators {
 
 		public static final String idOtherUsersName = LOCATORS_PACKAGE
 				+ ":id/taet__participants__header";
-		
+
 		public static final String idConnectButton = LOCATORS_PACKAGE
 				+ ":id/ttv__participants__left_label";
-		
+
 		public static final String idCommonUsersLabel = LOCATORS_PACKAGE
 				+ ":id/ttv__connect_request__common_users__label";
-		
-		
-		
+
 	}
 
 	// public static final String idInstructions = LOCATORS_PACKAGE +

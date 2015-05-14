@@ -2,10 +2,9 @@ package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.concurrent.Future;
 
-import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -91,7 +90,6 @@ public class RegistrationPage extends AndroidPage {
 			frameLayouts.get(0).click();
 			return;
 		} catch (Exception ex) {
-
 		}
 		try {
 			image.get(0).click();
@@ -101,21 +99,19 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public boolean isPictureSelected() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
 	}
 
 	public void confirmPicture() throws Exception {
-		this.getWait().until(
-				ExpectedConditions.elementToBeClickable(confirmImageButton));
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				confirmImageButton);
 		confirmImageButton.click();
 	}
 
 	public void setName(String name) throws Exception {
-		this.getWait()
-				.until(ExpectedConditions.elementToBeClickable(nameField));
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				confirmImageButton);
 		// TABLET fix
 		if (nameField.getText().toLowerCase().contains(YOUR_NAME)) {
 			nameField.sendKeys(name);
@@ -145,18 +141,13 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public boolean isConfirmationVisible() throws Exception {
-		this.getWait().until(ExpectedConditions.visibilityOf(verifyEmailBtn));
-		return DriverUtils.isElementPresentAndDisplayed(verifyEmailBtn);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.RegistrationPage.idVerifyEmailBtn));
 	}
 
 	public PeoplePickerPage continueRegistration() throws Exception {
-		try {
-			this.getWait().until(ExpectedConditions.visibilityOf(pickerSearch));
-		} catch (NoSuchElementException e) {
-
-		} catch (TimeoutException e) {
-
-		}
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.PeoplePickerPage.idPickerSearch));
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
 

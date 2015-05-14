@@ -1,6 +1,7 @@
 package com.wearezeta.auto.sync.client.reporter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
@@ -11,7 +12,7 @@ import com.wearezeta.auto.sync.client.WireInstance;
 public abstract class InstanceReporter {
 
 	private long startupTime;
-	private ArrayList<MessageEntry> allMessagesList = new ArrayList<MessageEntry>();
+	private List<MessageEntry> allMessagesList = new ArrayList<MessageEntry>();
 	private boolean orderCorrect;
 	private BuildVersionInfo version;
 	private ClientDeviceInfo device;
@@ -57,7 +58,7 @@ public abstract class InstanceReporter {
 	protected abstract BuildVersionInfo readBuildVersion();
 
 	// getters and setters
-	public ArrayList<MessageEntry> getAllMessagesList() {
+	public List<MessageEntry> getAllMessagesList() {
 		return allMessagesList;
 	}
 
