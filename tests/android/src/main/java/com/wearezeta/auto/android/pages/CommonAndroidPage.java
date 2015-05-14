@@ -91,11 +91,9 @@ public class CommonAndroidPage extends AndroidPage {
 	}
 
 	private void openFirefoxBrowser() throws Exception {
-
 		this.getDriver().startActivity("org.mozilla.firefox",
 				"org.mozilla.firefox.App", "org.mozilla.firefox",
 				"org.mozilla.firefox.App");
-
 	}
 
 	private void setChromeBrowserURL(String link) throws Exception {

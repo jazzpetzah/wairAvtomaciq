@@ -87,8 +87,8 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public boolean isIgnoreConnectButtonVisible() throws Exception {
-
-		return connectIgnoreBtn.isDisplayed() && connectAcceptBtn.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(connectIgnoreBtn)
+				&& DriverUtils.isElementPresentAndDisplayed(connectAcceptBtn);
 	}
 
 	public boolean isPending() throws NumberFormatException, Exception {

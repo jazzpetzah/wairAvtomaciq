@@ -94,7 +94,8 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public boolean callingOverlayIsVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(callingOverlayContainer);
+		return DriverUtils
+				.isElementPresentAndDisplayed(callingOverlayContainer);
 	}
 
 	public boolean ongoingCallMicrobarIsVisible() throws Exception {

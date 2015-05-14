@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
@@ -167,6 +166,7 @@ public class DialogPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
+	// FIXME: unexpected method behavior
 	public void waitForCursorInputVisible() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.className(AndroidLocators.CommonLocators.classEditText), 5);
@@ -313,27 +313,19 @@ public class DialogPage extends AndroidPage {
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		AndroidPage page = null;
 		switch (direction) {
-		case DOWN: {
-			page = this;
-			break;
-		}
 		case UP: {
-			page = new OtherUserPersonalInfoPage(this.getLazyDriver());
-			break;
-		}
-		case LEFT: {
-			break;
+			return new OtherUserPersonalInfoPage(this.getLazyDriver());
 		}
 		case RIGHT: {
-			page = new ContactListPage(this.getLazyDriver());
-			break;
+			return new ContactListPage(this.getLazyDriver());
 		}
+		default:
+			return null;
 		}
-		return page;
 	}
 
+	// FIXME: unexpected method behavior
 	public void waitForMessage() throws InterruptedException {
 		for (int i = 0; i < 10; i++) {
 			if (initMessageCount < messagesList.size()) {
@@ -374,18 +366,17 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean isConnectMessageVisible() {
-		return conversationMessage.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(conversationMessage);
 	}
 
 	public boolean isConnectMessageValid(String message) {
-
 		return conversationMessage.getText().toLowerCase()
 				.contains(message.toLowerCase());
 	}
 
 	public Boolean isKnockIconVisible() throws Exception {
 		this.getWait().until(ExpectedConditions.visibilityOf(knockIcon));
-		return knockIcon.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(knockIcon);
 	}
 
 	public String getConnectRequestChatLabel() throws Exception {
@@ -406,7 +397,6 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public String getConnectRequestChatUserName() {
-
 		return connectRequestChatUserName.getText().toLowerCase();
 	}
 
@@ -421,13 +411,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean isHintVisible() throws Exception {
-		try {
-			this.getWait().until(
-					ExpectedConditions.elementToBeClickable(closeHintBtn));
-		} catch (NoSuchElementException e) {
-			return false;
-		}
-		return closeHintBtn.isEnabled();
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.CommonLocators.idSearchHintClose));
 	}
 
 	public void closeHint() {
@@ -482,42 +467,34 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean dialogImageCompare() throws Exception {
-		boolean flag = false;
 		BufferedImage dialogImage = getElementScreenshot(image);
 		BufferedImage realImage = ImageUtil.readImageFromFile(CommonUtils
 				.getImagesPath(CommonUtils.class) + DIALOG_IMAGE);
 		double score = ImageUtil.getOverlapScore(realImage, dialogImage,
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-		if (score >= MIN_ACCEPTABLE_IMAGE_VALUE) {
-			flag = true;
-		}
-
-		return flag;
+		return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
 	}
 
 	private static final String TEXT_MESSAGE_PATTERN = "<android.widget.TextView[^>]*text=\"([^\"]*)\"[^>]*/>";
 	private static final int TIMES_TO_SCROLL = 100;
 
 	private String tryGetPageSourceFewTimes(int times) throws Exception {
-		String source = null;
 		int tries = 0;
-		boolean isPageSourceRetrieved = true;
+		WebDriverException savedException = null;
 		do {
-			tries++;
 			try {
-				source = this.getDriver().getPageSource();
+				return this.getDriver().getPageSource();
 			} catch (WebDriverException e) {
+				savedException = e;
 				log.debug("Error while getting source code for Android. Trying again.");
-				isPageSourceRetrieved = false;
+				tries++;
 			}
-		} while (!isPageSourceRetrieved && tries < times);
-		return source;
+		} while (tries < times);
+		throw savedException;
 	}
 
 	public boolean swipeAndCheckMessageFound(String direction, String pattern)
 			throws Exception {
-		boolean result = false;
-
 		Point coords = new Point(0, 0);
 		Dimension elementSize = this.getDriver().manage().window().getSize();
 		switch (direction) {
@@ -543,12 +520,13 @@ public class DialogPage extends AndroidPage {
 			Pattern messagePattern = Pattern.compile(pattern);
 			Matcher messageMatcher = messagePattern.matcher(message);
 			if (messageMatcher.find()) {
-				result = true;
+				return true;
 			}
 		}
-		return result;
+		return false;
 	}
 
+	// FIXME: Handle situation when message is not reached
 	public void swipeTillTextMessageWithPattern(String direction, String pattern)
 			throws Exception {
 		boolean isAddedMessage = false;
@@ -636,29 +614,23 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public Boolean isKnockText(String message, String action) throws Exception {
-		Boolean flag = false;
 		List<WebElement> messageElement = this.getDriver().findElements(
 				By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage,
 						message.trim())));
 		List<WebElement> actionElement = this.getDriver().findElements(
 				By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage,
 						action.trim())));
-		if (!messageElement.isEmpty() && !actionElement.isEmpty()) {
-			flag = true;
-		}
-		return flag;
+		return (!messageElement.isEmpty() && !actionElement.isEmpty());
 	}
 
 	public boolean isMessageExists(String messageText) throws Exception {
-		boolean flag = false;
 		for (WebElement element : messagesList) {
 			String text = element.getText();
 			if (text.equals(messageText)) {
-				flag = true;
-				break;
+				return true;
 			}
 		}
-		return flag;
+		return false;
 	}
 
 	public boolean isGroupChatDialogContainsNames(List<String> names) {
