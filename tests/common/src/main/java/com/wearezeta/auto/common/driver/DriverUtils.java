@@ -34,14 +34,19 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
 	public static final int DEFAULT_PERCENTAGE = 50;
-	private static final int DEFAULT_LOOKUP_TIMEOUT_SECONDS = 10;
 
 	private static final Logger log = ZetaLogger.getLog(DriverUtils.class
 			.getSimpleName());
+
+	private static int getDefaultLookupTimeoutSeconds() throws Exception {
+		return Integer.parseInt(CommonUtils
+				.getDriverTimeoutFromConfig(DriverUtils.class));
+	}
 
 	public static boolean isNullOrEmpty(String s) {
 		return s == null || s.length() == 0;
@@ -49,6 +54,13 @@ public class DriverUtils {
 
 	/**
 	 * https://code.google.com/p/selenium/issues/detail?id=1880
+	 * 
+	 * DO NOT use this method if you want to check whether the element is NOT
+	 * visible, because it will wait at least "imlicitTimeout" seconds until the
+	 * actual result is returned. This slows down automated tests!
+	 * 
+	 * Use "waitUntilLocatorDissapears" method instead. That's quick and does
+	 * exactly what you need
 	 * 
 	 * @param element
 	 * @return
@@ -64,7 +76,7 @@ public class DriverUtils {
 	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
 			By by) throws Exception {
 		return waitUntilLocatorIsDisplayed(driver, by,
-				DEFAULT_LOOKUP_TIMEOUT_SECONDS);
+				getDefaultLookupTimeoutSeconds());
 	}
 
 	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
@@ -91,7 +103,7 @@ public class DriverUtils {
 	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
 			final By by) throws Exception {
 		return waitUntilLocatorDissapears(driver, by,
-				DEFAULT_LOOKUP_TIMEOUT_SECONDS);
+				getDefaultLookupTimeoutSeconds());
 	}
 
 	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
@@ -121,7 +133,7 @@ public class DriverUtils {
 	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
 			final By locator) throws Exception {
 		return waitUntilLocatorAppears(driver, locator,
-				DEFAULT_LOOKUP_TIMEOUT_SECONDS);
+				getDefaultLookupTimeoutSeconds());
 	}
 
 	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
@@ -145,7 +157,7 @@ public class DriverUtils {
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
 			final WebElement element) throws Exception {
 		return waitUntilElementClickable(driver, element,
-				DEFAULT_LOOKUP_TIMEOUT_SECONDS);
+				getDefaultLookupTimeoutSeconds());
 	}
 
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,

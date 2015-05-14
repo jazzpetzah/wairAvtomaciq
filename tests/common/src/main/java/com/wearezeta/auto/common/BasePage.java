@@ -14,7 +14,6 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -100,14 +99,6 @@ public abstract class BasePage {
 			log.debug("Screenshot object is out of borders");
 		}
 		return screenshot;
-	}
-
-	public void refreshUITree() throws Exception {
-		try {
-			this.getDriver().getPageSource();
-		} catch (WebDriverException ex) {
-			ex.printStackTrace();
-		}
 	}
 
 	public abstract BasePage swipeLeft(int time) throws IOException, Exception;;
