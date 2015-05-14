@@ -23,7 +23,7 @@ public class ContactListPageSteps {
 				PagesCollection.peoplePickerPage.tapClearButton();
 			}
 
-			WhenITapOnMyName(name);
+			// WhenITapOnMyName(name);
 			PagesCollection.contactListPage.navigateBack();
 
 			String contactName = "aqaContact1";
@@ -56,8 +56,7 @@ public class ContactListPageSteps {
 	 * @throws Exception
 	 */
 	@Given("^I see Contact list with no contacts$")
-	public void GivenISeeContactListWithNoContacts()
-			throws Throwable {
+	public void GivenISeeContactListWithNoContacts() throws Throwable {
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
 
 	}
@@ -121,21 +120,16 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Taps on the currently logged-in user's name
+	 * Taps on the currently logged-in user's avatar
 	 * 
-	 * @step. ^I tap on my name (.*)$
-	 * @param name
+	 * @step. ^I tap on my avatar$
+	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap on my name (.*)$")
-	public void WhenITapOnMyName(String name) throws Exception {
-		try {
-			name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
+	@When("^I tap on my avatar$")
+	public void WhenITapOnMyAvatar() throws Exception {
 		PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.contactListPage
-				.tapOnName(name);
+				.tapOnMyAvatar();
 	}
 
 	/**
@@ -253,18 +247,19 @@ public class ContactListPageSteps {
 		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(
 				userName, 5));
 	}
-	
-	/** 
+
+	/**
 	 * Check that Conversation List contains Random user from PYMK
 	 * 
 	 * @step. ^I see contact list loaded with PeoplePicker Random Connect$
 	 * 
 	 */
 	@Then("^I see contact list loaded with PeoplePicker Random Connect$")
-	public void ThenISeeContactListLoadedWithPeoplePickerRandomConnect() throws Exception {
-		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(PeoplePickerPageSteps.randomConnectName,5));
+	public void ThenISeeContactListLoadedWithPeoplePickerRandomConnect()
+			throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(
+				PeoplePickerPageSteps.randomConnectName, 5));
 	}
-	
 
 	/**
 	 * Checks to see that the muted symbol appears. Note, it just checks to see
@@ -278,8 +273,6 @@ public class ContactListPageSteps {
 	public void ContactIsMuted(String contact) throws Exception {
 		Assert.assertTrue(PagesCollection.contactListPage.isContactMuted());
 	}
-	
-	
 
 	/**
 	 * Check to see that the muted symbol does not appear Note, this step just
@@ -327,18 +320,5 @@ public class ContactListPageSteps {
 			throws NumberFormatException, Exception {
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isPlayPauseMediaButtonVisible());
-	}
-
-	/**
-	 * Check that conversation list contains missed call icon
-	 * 
-	 * @step. ^Conversation List contains missed call icon$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^Conversation List contains missed call icon$")
-	public void ThenISeeMissedCallIcon() throws Exception {
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isVisibleMissedCallIcon());
 	}
 }

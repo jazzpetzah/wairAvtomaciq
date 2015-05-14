@@ -10,4 +10,6 @@ public interface ISupportsMessagesPolling {
 	public Future<String> getMessage(Map<String, String> expectedHeaders,
 			int timeoutSeconds, long rejectMessagesBeforeTimestamp)
 			throws Exception;
+	
+	public boolean isAlive();
 }

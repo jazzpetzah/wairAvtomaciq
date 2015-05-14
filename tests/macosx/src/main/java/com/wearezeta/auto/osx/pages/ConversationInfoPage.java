@@ -100,7 +100,7 @@ public class ConversationInfoPage extends OSXPage {
 	public boolean userIsNotExistInConversation(String user) throws Exception {
 		String xpath = String.format(
 				OSXLocators.xpathFormatPeoplePickerUserCell, user);
-		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(xpath));
 	}
 
@@ -133,17 +133,18 @@ public class ConversationInfoPage extends OSXPage {
 	}
 
 	private void confirmIfRequested() throws Exception {
+		DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
 		try {
-			DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
 			confirmationViewConfirmButton.click();
 		} catch (NoSuchElementException e) {
+			// pass silently
 		} finally {
-			DriverUtils.setDefaultImplicitWait(this.getDriver());
+			DriverUtils.restoreImplicitWait(this.getDriver());
 		}
 	}
 
 	public boolean isPeoplePopoverDisplayed() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(PopoverLocators.Common.xpathPopoverWindow));
 	}
 
@@ -258,17 +259,17 @@ public class ConversationInfoPage extends OSXPage {
 	}
 
 	public boolean isOpenConversationButtonExists() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(OSXLocators.xpathOpenSingleChatButton), 5);
 	}
 
 	public boolean isRemoveUserFromConversationButtonExists() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.id(OSXLocators.idRemoveUserFromConversation), 5);
 	}
 
 	public boolean isConnectButtonExists() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(OSXLocators.xpathConnectToUserButton), 5);
 	}
 
@@ -290,7 +291,7 @@ public class ConversationInfoPage extends OSXPage {
 	}
 
 	public boolean isEmailButtonExists(String email) throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(), By
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
 				.xpath(String.format(
 						OSXLocators.xpathSingleChatUserEmailButton, email)));
 	}

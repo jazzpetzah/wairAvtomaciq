@@ -5,8 +5,8 @@ Feature: Settings
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    Given I see Contact list
+    When I tap on my avatar
     And I tap options button
     And I tap settings button
     And I wait for 2 seconds
@@ -23,8 +23,8 @@ Feature: Settings
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    Given I see Contact list
+    When I tap on my avatar
     And I tap on my name
     Then Settings button is unreachable
 
@@ -37,8 +37,8 @@ Feature: Settings
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    Given I see Contact list
+    When I tap on my avatar
     And I tap options button
     And I tap about button
     Then I see About page
@@ -54,8 +54,8 @@ Feature: Settings
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    Given I see Contact list
+    When I tap on my avatar
     And I tap options button
     And I tap settings button
     And I wait for 2 seconds
@@ -72,7 +72,7 @@ Feature: Settings
     And I have entered login <Login>
     And I have entered password <NewPassword>
     And I press Log in button
-    Then Contact list appears with my name <Name>
+    Then I see Contact list
 
     Examples: 
       | Login      | Password      | Name      | NewPassword | Contact   |

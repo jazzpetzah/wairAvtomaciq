@@ -101,7 +101,13 @@ Feature: People View
     Given Contact <Name> send message to user <Contact1>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    And I wait for 90 seconds
+    When I wait for 30 seconds
+    #fix for first login
+    And I minimize the application
+    And I wait for 5 seconds
+    And I restore the application
+    #end of fix for first login
+    And I wait for 25 seconds
     When I swipe down contact list
     And I see People picker page
     And I tap on <Contact1> in Top People
@@ -159,16 +165,17 @@ Feature: People View
     Then I do not see profile page
     And I see correct 1:1 options menu
     When I do small swipe down
+    Then I do not see 1:1 options menu
+    And I see profile page
+    When I press options menu button
     Then I see correct 1:1 options menu
     And I do not see profile page
-    #When I press options menu button
-    #Then I see profile page
-    #And I do not see 1:1 options menu
-    #When I swipe left
-    #And I swipe right
-    #And I swipe up
-    #Then I see correct 1:1 options menu
-    #And I do not see profile page
+    When I swipe left
+    And I swipe right
+    And I swipe up
+    Then I see correct 1:1 options menu
+    And I do not see profile page
+
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |

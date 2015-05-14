@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id191 @id193 @smoke @regression
+  @id191 @id193 @smoke @regression 
   Scenario Outline: Send connection request from search
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -23,18 +23,17 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id323 @smoke @regression 
+  @id323 @smoke @regression
   Scenario Outline: Accept incoming connection request from conversation list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I wait for 10 seconds
-    And I tap on contact name <WaitingMess>
+    When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
-    Then I see Connect to <Contact> Dialog page
+    Then I see contact list loaded with User name <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact1  | WaitingMess      |
@@ -47,11 +46,11 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     Given I do not see Contact list with name <WaitingMess>
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
     And I press Ignore connect button
-    Then I see contact list loaded with User name <Name>
+    Then I see Contact list
     Then Contact name <WaitingMess> is not in list
 
     Examples: 
@@ -61,18 +60,18 @@ Feature: Connect
   @id539 @id543 @regression
   Scenario Outline: I can see a inbox count increasing/decreasing correctly + I ignore someone from people picker and clear my inbox
     Given There are 5 users where <Name> is me
-    Given <Contact1> has sent connection request to <Name>
+    Given <Contact1> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    Given <Contact2> has sent connection request to <Name>
+    Given <Contact2> sent connection request to <Name>
     When I wait for 2 seconds
     Then I see contact list loaded with User name <WaitingMess2>
     When I tap on contact name <WaitingMess2>
     And I press Ignore connect button
     And I navigate back from connect page
     Then I see contact list loaded with User name <WaitingMess1>
-    And <Contact3> has sent connection request to <Name>
-    And <Contact4> has sent connection request to <Name>
+    And <Contact3> sent connection request to <Name>
+    And <Contact4> sent connection request to <Name>
     And I see contact list loaded with User name <WaitingMess3>
     And I swipe down contact list
     And I see People picker page
@@ -97,10 +96,10 @@ Feature: Connect
   @id544 @regression
   Scenario Outline: I accept someone from people picker and -1 from inbox as well
     Given There are 3 users where <Name> is me
-    Given <Contact1> has sent connection request to <Name>
+    Given <Contact1> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    Given <Contact2> has sent connection request to <Name>
+    Given <Contact2> sent connection request to <Name>
     When I see contact list loaded with User name <WaitingMess1>
     And I swipe down contact list
     And I see People picker page
@@ -124,7 +123,7 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     And Contact name <WaitingMess> is not in list
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     When I see contact list loaded with User name <WaitingMess>
     And I tap on contact name <WaitingMess>
     And I press Ignore connect button
@@ -147,7 +146,7 @@ Feature: Connect
   @id542 @regression
   Scenario Outline: Accept incoming connection request from search
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I see contact list loaded with User name <WaitingMess>
@@ -240,7 +239,7 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I minimize the application
-    And <Contact> has sent connection request to Me
+    And <Contact> sent connection request to Me
     And I restore the application
     #And I press back button
     And I see contact list loaded with User name <WaitingMess>
@@ -484,6 +483,7 @@ Feature: Connect
     Given I see confirmation page
     Given I verify registration address
     When I wait for PYMK for 30 secs
+    And I hide keyboard
     And I press + button on a random Connect
   	And I press Clear button
     Then I see Contact list
@@ -506,6 +506,7 @@ Feature: Connect
     Given I see confirmation page
     Given I verify registration address
     When I wait for PYMK for 30 secs
+    And I hide keyboard
     And I tap on a random contact from PYMK and set it name to <Contact1> 
     And I see connect to <Contact1> dialog
     And I tap on edit connect request field

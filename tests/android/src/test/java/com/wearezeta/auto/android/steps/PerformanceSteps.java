@@ -20,6 +20,8 @@ public class PerformanceSteps {
 	private static final String RXLOGGER_RESOURCE_FILE_PATH = "/sdcard/RxLogger/Resource0.csv";
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
+	private static final int DEFAULT_SWIPE_TIME = 500;
+	private static final long DEFAULT_WAIT_TIME = 1000;
 
 	/**
 	 * Starts standard actions loop (read messages/send messages) to measure
@@ -43,7 +45,7 @@ public class PerformanceSteps {
 					ArrayList<WebElement> visibleContactsList;
 					int counter = 0;
 					do {
-						Thread.sleep(1000);
+						Thread.sleep(DEFAULT_WAIT_TIME);
 						visibleContactsList = new ArrayList<WebElement>(
 								PagesCollection.contactListPage
 										.GetVisibleContacts());
@@ -53,8 +55,13 @@ public class PerformanceSteps {
 					visibleContactsList.remove(0);
 					// --
 
-					int randomInt = perfCommon.random
-							.nextInt(visibleContactsList.size() - 1);
+					int randomInt;
+					String convName;
+					do {
+						randomInt = perfCommon.random
+								.nextInt(visibleContactsList.size() - 1);
+						convName = visibleContactsList.get(randomInt).getText();
+					} while (convName.contains("tst"));
 					PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
 							.tapOnContactByPosition(visibleContactsList,
 									randomInt);
@@ -62,24 +69,26 @@ public class PerformanceSteps {
 					PagesCollection.dialogPage.tapDialogPageBottom();
 					PagesCollection.dialogPage.typeMessage(CommonUtils
 							.generateGUID());
-					Thread.sleep(1000);
+					Thread.sleep(DEFAULT_WAIT_TIME);
 					if (perfCommon.random.nextBoolean()) {
-						PagesCollection.dialogPage.swipeDown(1000);
+						PagesCollection.dialogPage
+								.swipeDown(DEFAULT_SWIPE_TIME);
 						PagesCollection.contactListPage = PagesCollection.dialogPage
-								.navigateBack();
+								.navigateBack(DEFAULT_SWIPE_TIME);
 						PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
 								.tapOnContactByPosition(visibleContactsList,
 										randomInt);
 						PagesCollection.dialogPage.isDialogVisible();
 						PagesCollection.dialogPage.tapDialogPageBottom();
-						Thread.sleep(1000);
+						Thread.sleep(DEFAULT_WAIT_TIME);
 						PagesCollection.dialogPage.sendFrontCameraImage();
 					}
 					for (int y = 0; y < 2; y++) {
-						PagesCollection.dialogPage.swipeDown(1000);
+						PagesCollection.dialogPage
+								.swipeDown(DEFAULT_SWIPE_TIME);
 					}
 					PagesCollection.contactListPage = PagesCollection.dialogPage
-							.navigateBack();
+							.navigateBack(DEFAULT_SWIPE_TIME);
 				}
 
 				/*
@@ -92,6 +101,49 @@ public class PerformanceSteps {
 	}
 
 	/**
+	 * Tests loading time of conversation with specified number of messages and
+	 * images
+	 * 
+	 * @step. ^I test conversation loading time for conversation with (\\d+)
+	 *        messages and (\\d+) images$
+	 * 
+	 * @param messages
+	 *            number of messages in conversation
+	 * @param images
+	 *            number of images in conversation
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I test conversation loading time for conversation with (\\d+) messages and (\\d+) images$")
+	public void ITestConversationLoadingTimeForConversation(int messages,
+			int images) throws Exception {
+		final String CONVERSATION_NAME_TEMPLATE = "perf%stxt%simgtst";
+		String conv = String.format(CONVERSATION_NAME_TEMPLATE, messages,
+				images);
+		int count = 0;
+		while (count < 10) {
+			count++;
+			boolean isPassed = true;
+			try {
+				PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
+						.tapOnName(conv);
+			} catch (Exception e) {
+				isPassed = false;
+				PagesCollection.contactListPage.contactListSwipeUp(1000);
+			}
+			if (isPassed) break;
+		}
+		PagesCollection.dialogPage.isDialogVisible();
+		CommonAndroidSteps.listener.stopListeningLogcat();
+		for (int y = 0; y < 2; y++) {
+			PagesCollection.dialogPage.swipeDown(DEFAULT_SWIPE_TIME);
+		}
+		PagesCollection.contactListPage = PagesCollection.dialogPage
+				.navigateBack(DEFAULT_SWIPE_TIME);
+	}
+
+	/**
 	 * Generates android performance report
 	 * 
 	 * @step. ^I generate performance report$
@@ -101,7 +153,7 @@ public class PerformanceSteps {
 	@Then("^I generate performance report for (\\d+) users$")
 	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
 		AndroidPerformanceReportGenerator.setUsersCount(usersCount);
-		CommonAndroidSteps.listener.stopListeningLogcat();
+		// CommonAndroidSteps.listener.stopListeningLogcat();
 		AndroidCommonUtils.copyFileFromAndroid(
 				AndroidPerformanceReportGenerator.RXLOG_FILEPATH,
 				RXLOGGER_RESOURCE_FILE_PATH);

@@ -1,6 +1,8 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
@@ -9,7 +11,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
@@ -26,6 +27,7 @@ import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppConstants;
@@ -33,6 +35,7 @@ import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -43,6 +46,13 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.collections.IteratorUtils;
+
+import static org.junit.Assert.assertTrue;
 
 public class CommonWebAppSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -122,7 +132,7 @@ public class CommonWebAppSteps {
 				+ "'");
 	}
 
-	private final static int MAX_TRIES = 3;
+	private final static int MAX_TRIES = 5;
 
 	private void navigateToStartPage(RemoteWebDriver drv) {
 		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
@@ -155,14 +165,19 @@ public class CommonWebAppSteps {
 		while (ntry < MAX_TRIES) {
 			try {
 				if (DriverUtils
-						.isElementDisplayed(
+						.waitUntilLocatorIsDisplayed(
 								drv,
-								By.xpath(WebAppLocators.LandingPage.xpathSwitchToSignInButton),
-								5)) {
+								By.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons),
+								5)
+						|| DriverUtils
+								.waitUntilLocatorIsDisplayed(
+										drv,
+										By.xpath(WebAppLocators.RegistrationPage.xpathRootForm),
+										5)) {
 					break;
 				} else {
 					log.error(String
-							.format("Landing page has failed to load. Trying to refresh (%s of %s)...",
+							.format("Start page has failed to load. Trying to refresh (%s of %s)...",
 									ntry + 1, MAX_TRIES));
 					drv.navigate().to(drv.getCurrentUrl());
 				}
@@ -247,6 +262,7 @@ public class CommonWebAppSteps {
 		final Future<ZetaWebAppDriver> lazyWebDriver = resetWebAppDriver(url);
 		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
 				path);
+		PagesCollection.loginPage = new LoginPage(lazyWebDriver, path);
 		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
 
@@ -282,8 +298,31 @@ public class CommonWebAppSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Web, count, myNameAlias);
 		IChangeUserAvatarPicture(myNameAlias, "default");
+	}
+
+	/**
+	 * Changes the accent color settings of the given user
+	 *
+	 *
+	 * @step. ^User (\\w+) change accent color to
+	 *        (StrongBlue|StrongLimeGreen|BrightYellow
+	 *        |VividRed|BrightOrange|SoftPink|Violet)$
+	 *
+	 * @param userNameAlias
+	 *            alias of the user where the accent color will be changed
+	 * @param newColor
+	 *            one of possible accent colors:
+	 *            StrongBlue|StrongLimeGreen|BrightYellow
+	 *            |VividRed|BrightOrange|SoftPink|Violet
+	 *
+	 * @throws Exception
+	 */
+	@Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
+	public void IChangeAccentColor(String userNameAlias, String newColor)
+			throws Exception {
+		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
 	}
 
 	/**
@@ -303,7 +342,7 @@ public class CommonWebAppSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
 	public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
 			String myNameAlias) throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Web, count, myNameAlias);
 	}
 
 	/**
@@ -335,7 +374,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Creates connection between to users
 	 * 
-	 * @step. ^(.*) is connected to (.*)
+	 * @step. ^(\\w+) is connected to (.*)$
 	 * 
 	 * @param userFromNameAlias
 	 *            user which sends connection request
@@ -344,10 +383,28 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(.*) is connected to (.*)")
+	@Given("^(\\w+) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+	}
+
+	/**
+	 * Blocks a user
+	 *
+	 * @step. ^(\\w+) blocked (\\w+)$
+	 *
+	 * @param userAsNameAlias
+	 *            user which wants to block another
+	 * @param userToBlockNameAlias
+	 *            user to block
+	 *
+	 * @throws Exception
+	 */
+	@Given("^(\\w+) blocked (\\w+)$")
+	public void UserBlocks(String userAsNameAlias, String userToBlockNameAlias)
+			throws Exception {
+		commonSteps.BlockContact(userAsNameAlias, userToBlockNameAlias);
 	}
 
 	/**
@@ -408,7 +465,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Sends connection request by one user to another
 	 * 
-	 * @step. ^(.*) (?:has|have) sent connection request to (.*)
+	 * @step. ^(.*) sent connection request to (.*)
 	 * 
 	 * @param userFromNameAlias
 	 *            user that sends connection request
@@ -417,7 +474,7 @@ public class CommonWebAppSteps {
 	 *
 	 * @throws Exception
 	 */
-	@Given("^(.*) (?:has|have) sent connection request to (.*)")
+	@Given("^(.*) sent connection request to (.*)")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
@@ -427,40 +484,33 @@ public class CommonWebAppSteps {
 	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 * 
-	 * @step. ^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend
-	 *        search results$
+	 * @step. ^(\\w+) waits? until (.*) exists in backend search results$
 	 * 
 	 * @param searchByNameAlias
 	 *            user name to search string
-	 * 
-	 * @param timeout
-	 *            max ping timeout in sec
 	 * 
 	 * @param query
 	 *            querry string
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, int timeout, String query)
-			throws Exception {
-		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
-				timeout);
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
 	/**
 	 * Wait for specified amount of seconds
 	 * 
-	 * @step. ^I wait for (.*) seconds?$
+	 * @step. ^I wait for (\\d+) seconds?$
 	 * 
 	 * @param seconds
 	 * @throws NumberFormatException
 	 * @throws InterruptedException
 	 */
-	@When("^I wait for (.*) seconds?$")
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
+	@When("^I wait for (\\d+) seconds?$")
+	public void WaitForTime(int seconds) throws Exception {
 		commonSteps.WaitForTime(seconds);
 	}
 
@@ -619,12 +669,47 @@ public class CommonWebAppSteps {
 		}
 	}
 
-	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
-		log.debug("BROWSER CONSOLE LOGS:");
-		LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
-		for (LogEntry logEntry : logEntries) {
-			log.debug(logEntry.getMessage());
+	/**
+	 * Verifies whether current browser log is empty or not
+	 *
+	 * @step. ^I verify browser log is empty$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I verify browser log is empty$")
+	public void VerifyBrowserLogIsEmpty() throws Exception {
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			try {
+				if (WebAppExecutionContext.LoggingManagement
+						.isSupportedInCurrentBrowser()) {
+					List<LogEntry> browserLog = getBrowserLog(PlatformDrivers
+							.getInstance()
+							.getDriver(CURRENT_PLATFORM)
+							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+									TimeUnit.MILLISECONDS));
+					assertTrue(browserLog.isEmpty());
+				}
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
+		return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs()
+				.get(LogType.BROWSER).iterator());
+	}
+
+	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
+		List<LogEntry> logEntries = getBrowserLog(driver);
+		if (!logEntries.isEmpty()) {
+			log.debug("BROWSER CONSOLE LOGS:");
+			for (LogEntry logEntry : logEntries) {
+				log.debug(logEntry.getMessage());
+			}
+		}
+
 	}
 
 	@After
@@ -644,9 +729,14 @@ public class CommonWebAppSteps {
 			try {
 				if (WebAppExecutionContext.LoggingManagement
 						.isSupportedInCurrentBrowser()) {
-					writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
-							.getDriver(CURRENT_PLATFORM).get());
+					writeBrowserLogsIntoMainLog(PlatformDrivers
+							.getInstance()
+							.getDriver(CURRENT_PLATFORM)
+							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+									TimeUnit.MILLISECONDS));
 				}
+			} catch (ExecutionException e) {
+				e.printStackTrace();
 			} finally {
 				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 			}

@@ -172,7 +172,7 @@ public class CommonOSXSteps {
 		commonBefore();
 	}
 
-	@Given("^(.*) has sent connection request to (.*)$")
+	@Given("^(.*) sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
@@ -195,13 +195,13 @@ public class CommonOSXSteps {
 
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
-		commonSteps.ThereAreNUsers(count);
+		commonSteps.ThereAreNUsers(Platform.Mac, count);
 	}
 
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Mac, count, myNameAlias);
 	}
 
 	@When("^(.*) ignore all requests$")
@@ -210,9 +210,8 @@ public class CommonOSXSteps {
 		commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
 	}
 
-	@When("^I wait for (.*) seconds$")
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
+	@When("^I wait for (\\d+) seconds?$")
+	public void WaitForTime(int seconds) throws Exception {
 		commonSteps.WaitForTime(seconds);
 	}
 
@@ -314,12 +313,10 @@ public class CommonOSXSteps {
 		commonSteps.EnableTcpConnectionForApp(OSXConstants.Apps.WIRE);
 	}
 
-	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, int timeout, String query)
-			throws Exception {
-		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
-				timeout);
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
 	@When("^Contact (.*) sends random message to conversation (.*)")

@@ -30,12 +30,12 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	}
 
 	public boolean isClosePageButtonVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(), By
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
 				.name(IOSLocators.nameOtherProfilePageStartConversationButton));
 	}
 
 	public boolean isPendingLabelVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(), By
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
 				.name(IOSLocators.nameOtherProfilePageStartConversationButton));
 	}
 
@@ -44,8 +44,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	}
 
 	public boolean isUserNameDisplayed(String name) throws Exception {
-		WebElement otherUserName = getDriver().findElementByName(name);
-		return DriverUtils.isElementDisplayed(this.getDriver(), otherUserName);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(name), 10);
 	}
 
 	@Override

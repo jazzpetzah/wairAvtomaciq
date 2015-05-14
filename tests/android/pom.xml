@@ -19,7 +19,7 @@
 		<package>com.waz.zclient.dev</package>
 		<generateUsers>true</generateUsers>
 		<activity>com.waz.zclient.MainActivity</activity>
-		<driverTimeoutSeconds>15</driverTimeoutSeconds>
+		<driverTimeoutSeconds>7</driverTimeoutSeconds>
 		<defaultImagesPath>img/</defaultImagesPath>
 		<androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
 		<androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
@@ -89,6 +89,12 @@
 			<groupId>info.cukes</groupId>
 			<artifactId>cucumber-junit</artifactId>
 			<version>1.1.8</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>jfree</groupId>
+			<artifactId>jcommon</artifactId>
+			<version>1.0.16</version>
 		</dependency>
 
 		<dependency>

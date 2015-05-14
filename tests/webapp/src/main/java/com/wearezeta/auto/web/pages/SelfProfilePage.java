@@ -47,7 +47,7 @@ public class SelfProfilePage extends WebPage {
 
 	public void selectGearMenuItem(String name) throws Exception {
 		final String menuXPath = WebAppLocators.SelfProfilePage.xpathGearMenuRoot;
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(menuXPath));
 		final String menuItemXPath = WebAppLocators.SelfProfilePage.xpathGearMenuItemByName
 				.apply(name);
@@ -57,7 +57,7 @@ public class SelfProfilePage extends WebPage {
 	}
 
 	public boolean checkNameInSelfProfile(String name) throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(WebAppLocators.SelfProfilePage.xpathSelfUserName));
 
 		WebDriverWait wait = new WebDriverWait(this.getDriver(), 10);
@@ -74,7 +74,7 @@ public class SelfProfilePage extends WebPage {
 	}
 
 	public String getUserName() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(WebAppLocators.SelfProfilePage.xpathSelfUserName));
 		return userName.getText();
 	}
@@ -93,7 +93,7 @@ public class SelfProfilePage extends WebPage {
 		final int id = AccentColor.getByName(colorName).getId();
 		final String xpathAccentColorDiv = WebAppLocators.SelfProfilePage.xpathAccentColorDivById
 				.apply(id);
-		assert DriverUtils.waitUntilElementAppears(this.getDriver(),
+		assert DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(xpathAccentColorDiv));
 		final WebElement accentColorDiv = this.getDriver().findElementByXPath(
 				xpathAccentColorDiv);

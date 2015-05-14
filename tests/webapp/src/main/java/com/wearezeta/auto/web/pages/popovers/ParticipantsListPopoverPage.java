@@ -43,7 +43,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		final By locator = By
 				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
 						.apply(name));
-		assert DriverUtils.isElementDisplayed(this.getDriver(), locator, 3);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
 		WebElement participant = getDriver().findElement(locator);
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				participant);
@@ -82,7 +82,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 		final By locator = By
 				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
 						.apply(name));
-		return DriverUtils.isElementDisplayed(this.getDriver(), locator, 3);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
 	}
 
 	public String getConversationTitle() {

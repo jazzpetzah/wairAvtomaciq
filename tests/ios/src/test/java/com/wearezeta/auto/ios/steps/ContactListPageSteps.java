@@ -166,7 +166,7 @@ public class ContactListPageSteps {
 		PeoplePickerPageSteps pickerSteps = new PeoplePickerPageSteps();
 		pickerSteps.WhenISeePeoplePickerPage();
 		CommonIOSSteps cSteps = new CommonIOSSteps();
-		cSteps.UserWaitsUntilContactExistsInHisSearchResults("I", 15, contact2);
+		cSteps.UserWaitsUntilContactExistsInHisSearchResults("I", contact2);
 		pickerSteps.WhenITapOnSearchInputOnPeoplePickerPage();
 		pickerSteps.WhenIInputInPeoplePickerSearchFieldUserName(contact2);
 		pickerSteps.WhenISeeUserFoundOnPeoplePickerPage(contact2);

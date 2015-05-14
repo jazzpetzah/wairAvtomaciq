@@ -4,23 +4,14 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.locators.PopoverLocators;
-
-import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
 
 import com.wearezeta.auto.web.pages.WebPage;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
 public abstract class AbstractPopoverContainer extends WebPage {
 
 	private final static int VISIBILITY_TIMEOUT = 3; // seconds
-
-	@FindBy(how = How.XPATH, using = PopoverLocators.Shared.xpathBackButton)
-	private WebElement backButton;
 
 	public AbstractPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -30,7 +21,7 @@ public abstract class AbstractPopoverContainer extends WebPage {
 	protected abstract String getXpathLocator();
 
 	public void waitUntilVisibleOrThrowException() throws Exception {
-		assert DriverUtils.isElementDisplayed(getDriver(),
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(this.getXpathLocator()), VISIBILITY_TIMEOUT) : "Popover "
 				+ this.getXpathLocator()
 				+ " has not been shown within "
@@ -38,7 +29,7 @@ public abstract class AbstractPopoverContainer extends WebPage {
 	}
 
 	public void waitUntilNotVisibleOrThrowException() throws Exception {
-		assert DriverUtils.waitUntilElementDissapear(getDriver(),
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.xpath(this.getXpathLocator()), VISIBILITY_TIMEOUT) : "Popover "
 				+ this.getXpathLocator()
 				+ " has not been hidden within "
@@ -46,11 +37,8 @@ public abstract class AbstractPopoverContainer extends WebPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(this.getXpathLocator()));
 	}
 
-	public String getBackButtonToolTip() {
-		return backButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
-	}
 }

@@ -80,7 +80,7 @@ public class DialogPageSteps {
 
 		PagesCollection.dialogPage.typeAndSendMessage(myMessage);
 	}
-	
+
 	/**
 	 * Inputs a custom message and does NOT send it
 	 * 
@@ -96,7 +96,7 @@ public class DialogPageSteps {
 		message = myMessage;
 		PagesCollection.dialogPage.typeMessage(myMessage);
 	}
-	
+
 	/**
 	 * Sends the message by pressing the keyboard send button
 	 * 
@@ -210,7 +210,7 @@ public class DialogPageSteps {
 	public void WhenIPressCallButton() throws Throwable {
 		PagesCollection.dialogPage.tapCallBtn();
 	}
-	
+
 	/**
 	 * Press on the mute button in the calling controls
 	 * 
@@ -222,7 +222,7 @@ public class DialogPageSteps {
 	public void WhenIPressMuteButton() throws Throwable {
 		PagesCollection.dialogPage.tapMuteBtn();
 	}
-	
+
 	/**
 	 * Press on the Speaker button in the calling controls
 	 * 
@@ -234,7 +234,7 @@ public class DialogPageSteps {
 	public void WhenIPressSpeakerButton() throws Throwable {
 		PagesCollection.dialogPage.tapSpeakerBtn();
 	}
-	
+
 	/**
 	 * Press on the Cancel call button in the Calling controls
 	 * 
@@ -246,27 +246,28 @@ public class DialogPageSteps {
 	public void WhenIPressCancelCallButton() throws Throwable {
 		PagesCollection.dialogPage.tapCancelCallBtn();
 	}
-	
+
 	/**
-	 * 	Checks to see if a certain calling button is pressed
+	 * Checks to see if a certain calling button is pressed
 	 * 
 	 * @step. ^I see (.*) calling button is pressed$
 	 * 
 	 * @param buttonName
-	 *        the name of the calling button to check
+	 *            the name of the calling button to check
 	 * 
 	 * @throws Throwable
 	 */
 	@Then("^I see (.*) calling button is pressed$")
 	public void WhenIPressCancelCallButton(String buttonName) throws Throwable {
-		double score = PagesCollection.dialogPage.checkCallingButton(buttonName);
+		double score = PagesCollection.dialogPage
+				.checkCallingButton(buttonName);
 		Assert.assertTrue(
 				"Calling button not present or not clicked. Expected >= 0.95, current = "
 						+ score, score >= 0.95d);
 	}
-	
+
 	/**
-	 * 	Checks to see if call overlay is present
+	 * Checks to see if call overlay is present
 	 * 
 	 * @step. ^I see call overlay$
 	 * 
@@ -274,11 +275,12 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see call overlay$")
 	public void WhenISeeCallOverlay() throws Throwable {
-		Assert.assertTrue("Call overlay not visible", PagesCollection.dialogPage.checkCallingOverlay());
+		Assert.assertTrue("Call overlay not visible",
+				PagesCollection.dialogPage.checkCallingOverlay());
 	}
-	
+
 	/**
-	 * 	Checks to see if call overlay IS NOT present
+	 * Checks to see if call overlay IS NOT present
 	 * 
 	 * @step. ^I do not see call overlay$
 	 * 
@@ -286,9 +288,11 @@ public class DialogPageSteps {
 	 */
 	@Then("^I do not see call overlay$")
 	public void WhenIDoNotSeeCallOverlay() throws Throwable {
-		Assert.assertFalse("Call overlay is visible, it should have been dismissed", PagesCollection.dialogPage.checkCallingOverlay());
+		Assert.assertTrue(
+				"Call overlay is visible, it should have been dismissed",
+				PagesCollection.dialogPage.checkNoCallingOverlay());
 	}
-	
+
 	/**
 	 * Tap on Dialog page bottom for scrolling page to the end
 	 * 
@@ -301,7 +305,7 @@ public class DialogPageSteps {
 	public void WhenITapOnDialogPageBottom() throws Throwable {
 		PagesCollection.dialogPage.tapDialogPageBottom();
 	}
-	
+
 	/**
 	 * Tap in Dialog page on details button to open participants view
 	 * 
@@ -312,8 +316,8 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap conversation details button$")
 	public void WhenITapConversationDetailsBottom() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage = 
-				((DialogPage) PagesCollection.androidPage).tapConversationDetailsButton();
+		PagesCollection.otherUserPersonalInfoPage = ((DialogPage) PagesCollection.androidPage)
+				.tapConversationDetailsButton();
 	}
 
 	/**
@@ -327,6 +331,33 @@ public class DialogPageSteps {
 	@When("^I press PlayPause media item button$")
 	public void WhenIPressPlayPauseButton() throws Throwable {
 		PagesCollection.dialogPage.tapPlayPauseBtn();
+	}
+
+	/**
+	 * Tap on Play on youtube container
+	 * 
+	 * @step. ^I press play on youtube container$
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@When("^I press play on youtube container$")
+	public void WhenIPressPlayOnYoutubeContainer() throws Throwable {
+		PagesCollection.dialogPage.tapYouTubePlay();
+	}
+
+	/**
+	 * Waits until URL bar is visible to confirm tapping on YouTube link takes
+	 * you out of Wire to view video
+	 * 
+	 * @step. ^I am taken out of Wire and into the native browser app$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I am taken out of Wire and into the native browser app$")
+	public void IPlayYoutubeVideoInNativeBrowser() throws Exception {
+		PagesCollection.dialogPage.isNativeBrowserURLVisible();
 	}
 
 	/**
@@ -425,7 +456,7 @@ public class DialogPageSteps {
 		String lastMess = PagesCollection.dialogPage.getLastMessageFromDialog();
 		Assert.assertTrue(lastMess.equals(message.trim()));
 	}
-	
+
 	/**
 	 * Verifies the URL is in the chat
 	 * 
@@ -527,7 +558,9 @@ public class DialogPageSteps {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertEquals("connected to " + contact.toLowerCase(),
+		Assert.assertEquals(
+				String.format("connected to %s. start a conversation",
+						contact.toLowerCase()),
 				PagesCollection.dialogPage.getConnectRequestChatLabel());
 	}
 
@@ -581,32 +614,36 @@ public class DialogPageSteps {
 	 * 
 	 * @param message
 	 * @param contact
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see  message (.*) contact (.*) on group page$")
 	public void ThenISeeMessageContactOnGroupPage(String message, String contact)
-			throws Throwable {
+			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
 				.toUpperCase();
 		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message
 				+ " " + contact));
 	}
-	
+
 	/**
-	 * Checks to see that after the group was renamed, the user is informed of the change in the dialog page
+	 * Checks to see that after the group was renamed, the user is informed of
+	 * the change in the dialog page
 	 * 
-	 * @step. ^I see a message informing me that I renamed the conversation to (.*)$
+	 * @step. ^I see a message informing me that I renamed the conversation to
+	 *        (.*)$
 	 * 
-	 * @param newConveresationName
-	 * 			the new conversation name to check for
-	 * @throws Throwable
+	 * @param newConversationName
+	 *            the new conversation name to check for
+	 * @throws Exception
 	 */
 	@Then("^I see a message informing me that I renamed the conversation to (.*)$")
-	public void ThenISeeMessageInformingGroupRename(String newConveresationName)
-			throws Throwable {
-		Assert.assertEquals(PagesCollection.dialogPage.getChangedGroupNameMessage(), newConveresationName);
+	public void ThenISeeMessageInformingGroupRename(String newConversationName)
+			throws Exception {
+		Assert.assertEquals(
+				PagesCollection.dialogPage.getChangedGroupNameMessage(),
+				newConversationName);
 	}
-	
+
 	/**
 	 * Used once to check that the last message sent is the same as what is
 	 * expected
@@ -664,7 +701,7 @@ public class DialogPageSteps {
 	 * 
 	 * @param contact
 	 *            contact name string
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Then("^I see dialog with missed call from (.*)$")
 	public void ThenISeeDialogWithMissedCallFrom(String contact)

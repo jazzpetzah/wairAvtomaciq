@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.script.ScriptException;
 
 import org.apache.log4j.Logger;
@@ -23,6 +25,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.ScreenOrientation;
 
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -153,11 +156,12 @@ public class DialogPage extends IOSPage {
 
 	public boolean isMessageVisible(String msg) throws Exception {
 
-		return DriverUtils.isElementDisplayed(this.getDriver(), By.name(msg));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.name(msg));
 	}
 
 	public boolean isPingButtonVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePingButton));
 	}
 
@@ -171,10 +175,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean waitForCursorInputVisible() throws Exception {
-		this.getWait()
-				.until(ExpectedConditions.visibilityOf(conversationInput));
-
-		return DriverUtils.isElementDisplayed(getDriver(), conversationInput);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.name(IOSLocators.nameConversationCursorInput), 10);
 	}
 
 	public void waitForYouAddedCellVisible() throws Exception {
@@ -245,7 +247,7 @@ public class DialogPage extends IOSPage {
 	public CameraRollPage pressAddPictureButton() throws Exception {
 		CameraRollPage page;
 		addPictureButton.click();
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathCameraLibraryButton));
 		page = new CameraRollPage(this.getLazyDriver());
 		return page;
@@ -270,7 +272,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void startMediaContent() throws Exception {
-		boolean flag = DriverUtils.isElementDisplayed(this.getDriver(),
+		boolean flag = DriverUtils.waitUntilLocatorIsDisplayed(
+				this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell));
 		if (flag) {
 			mediaLinkCell.click();
@@ -349,13 +352,13 @@ public class DialogPage extends IOSPage {
 	public IOSPage openConversationDetailsClick() throws Exception {
 
 		for (int i = 0; i < 3; i++) {
-			if (DriverUtils.isElementDisplayed(this.getDriver(),
+			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 					By.name(IOSLocators.nameOpenConversationDetails))) {
 				openConversationDetails.click();
-				DriverUtils.waitUntilElementAppears(this.getDriver(),
+				DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 						By.name(IOSLocators.nameAddContactToChatButton), 5);
 			}
-			if (DriverUtils.isElementDisplayed(this.getDriver(),
+			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 					By.name(IOSLocators.nameAddContactToChatButton))) {
 				break;
 			} else {
@@ -443,7 +446,7 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean isMediaContainerVisible() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell));
 		return mediaLinkCell != null;
 	}
@@ -780,12 +783,19 @@ public class DialogPage extends IOSPage {
 	public double checkPingIcon(String label) throws Exception {
 		String path = null;
 		BufferedImage pingImage = null;
+		ScreenOrientation orient = getOrientation();
 		if (label.equals(PING_LABEL)) {
 			pingImage = getPingIconScreenShot();
 			path = CommonUtils.getPingIconPathIOS(GroupChatPage.class);
+			if (orient == ScreenOrientation.LANDSCAPE) {
+				path = path.replace(".png", "_landscape.png");
+			}
 		} else if (label.equals(HOT_PING_LABEL)) {
 			pingImage = getPingAgainIconScreenShot();
 			path = CommonUtils.getHotPingIconPathIOS(GroupChatPage.class);
+			if (orient == ScreenOrientation.LANDSCAPE) {
+				path = path.replace(".png", "_landscape.png");
+			}
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		return ImageUtil.getOverlapScore(pingImage, templateImage);
@@ -850,7 +860,7 @@ public class DialogPage extends IOSPage {
 
 	public boolean isTypeOrSlideExists(String msg) throws Exception {
 		return DriverUtils
-				.waitUntilElementAppears(getDriver(), By.name(msg), 5);
+				.waitUntilLocatorAppears(getDriver(), By.name(msg), 5);
 	}
 
 	public boolean chatheadIsVisible(String contact) throws Exception {

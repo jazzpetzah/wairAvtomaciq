@@ -38,9 +38,10 @@ class AddPeoplePopoverPage extends AbstractPopoverPage {
 	}
 
 	public void clickCreateGroupConversation() throws Exception {
-		DriverUtils.waitUntilElementClickable(this.getDriver(),
-				getCreateGroupConversationButton());
-		getCreateGroupConversationButton().click();
+		final WebElement createGroupConversationButton = getCreateGroupConversationButton();
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				createGroupConversationButton) : "Create Group Convesation button is not clickable after timeout";
+		createGroupConversationButton.click();
 	}
 
 	private WebElement getFoundItemElement(String name) throws Exception {

@@ -54,7 +54,7 @@ public class LoginPage extends OSXPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.LoginPage.idPasswordField), 10);
 	}
 
@@ -111,11 +111,9 @@ public class LoginPage extends OSXPage {
 	}
 
 	public boolean waitForLogin() throws Exception {
-		DriverUtils.turnOffImplicitWait(this.getDriver());
-		boolean noSignIn = DriverUtils.waitUntilElementDissapear(
+		boolean noSignIn = DriverUtils.waitUntilLocatorDissapears(
 				this.getDriver(),
-				By.name(OSXLocators.LoginPage.nameSignInButton));
-		DriverUtils.setDefaultImplicitWait(this.getDriver());
+				By.name(OSXLocators.LoginPage.nameSignInButton), 60);
 		return noSignIn;
 	}
 

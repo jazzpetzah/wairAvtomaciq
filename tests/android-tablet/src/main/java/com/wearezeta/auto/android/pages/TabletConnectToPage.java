@@ -14,7 +14,6 @@ public class TabletConnectToPage extends ConnectToPage {
 	}
 
 	public boolean connectToHeaderContains(String contact) throws Exception {
-		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(connectToHeader));
 		return connectToHeader.getText().toLowerCase()
 				.contains(contact.toLowerCase());

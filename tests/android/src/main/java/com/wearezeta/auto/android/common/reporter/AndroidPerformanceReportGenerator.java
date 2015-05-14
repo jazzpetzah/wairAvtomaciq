@@ -166,7 +166,7 @@ public class AndroidPerformanceReportGenerator {
 		Matcher matcher = pattern.matcher(output);
 		while (matcher.find()) {
 			try {
-				result = Integer.parseInt(matcher.group(1));
+				result = (int) (Long.parseLong(matcher.group(1)) / 1000000);
 			} catch (NumberFormatException e) {
 			}
 		}
@@ -180,7 +180,7 @@ public class AndroidPerformanceReportGenerator {
 		Matcher matcher = pattern.matcher(output);
 		while (matcher.find()) {
 			try {
-				result = Integer.parseInt(matcher.group(1));
+				result = (int) (Long.parseLong(matcher.group(1)) / 1000000);
 			} catch (NumberFormatException e) {
 			}
 		}
@@ -195,12 +195,13 @@ public class AndroidPerformanceReportGenerator {
 		Matcher matcher = pattern.matcher(output);
 		while (matcher.find()) {
 			try {
-				result += Integer.parseInt(matcher.group(1));
+				result = (int) (Long.parseLong(matcher.group(1)) / 1000000);
+				log.debug("Conversation loading time " + result);
 				count++;
 			} catch (NumberFormatException e) {
 			}
 		}
-		result /= (double) count;
+		log.debug("Conversation loading count " + count);
 		return result;
 	}
 
@@ -534,7 +535,8 @@ public class AndroidPerformanceReportGenerator {
 			deviceInfo = AndroidCommonUtils.readDeviceInfo();
 			log.debug("Execution device info: " + deviceInfo.toString());
 			try {
-				networkType = deviceInfo.isWifiEnabled() ? "Wifi" : deviceInfo.getGsmNetworkType();
+				networkType = deviceInfo.isWifiEnabled() ? "Wifi" : deviceInfo
+						.getGsmNetworkType();
 			} catch (NullPointerException e) {
 				networkType = "Unknown";
 			}

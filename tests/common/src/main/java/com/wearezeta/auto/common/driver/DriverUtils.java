@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
@@ -35,37 +34,38 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
-import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
-	public static final int DEFAULT_VISIBILITY_TIMEOUT = 20;
 	public static final int DEFAULT_PERCENTAGE = 50;
 
 	private static final Logger log = ZetaLogger.getLog(DriverUtils.class
 			.getSimpleName());
+
+	private static int getDefaultLookupTimeoutSeconds() throws Exception {
+		return Integer.parseInt(CommonUtils
+				.getDriverTimeoutFromConfig(DriverUtils.class));
+	}
 
 	public static boolean isNullOrEmpty(String s) {
 		return s == null || s.length() == 0;
 	}
 
 	/**
-	 * Please use this method ONLY if you know that the element already exists
-	 * on the current page. If not then it will cause 10-15 seconds delay every
-	 * time it is called.
+	 * https://code.google.com/p/selenium/issues/detail?id=1880
 	 * 
-	 * There is overloaded version of this method, which accepts By parameter,
-	 * and it should be used in case when an element has not been checked for
-	 * existence yet
+	 * DO NOT use this method if you want to check whether the element is NOT
+	 * visible, because it will wait at least "imlicitTimeout" seconds until the
+	 * actual result is returned. This slows down automated tests!
 	 * 
-	 * @param driver
+	 * Use "waitUntilLocatorDissapears" method instead. That's quick and does
+	 * exactly what you need
+	 * 
 	 * @param element
-	 * @return boolean value
-	 * @throws Exception
+	 * @return
 	 */
-	public static boolean isElementDisplayed(RemoteWebDriver driver,
-			WebElement element) throws Exception {
+	public static boolean isElementPresentAndDisplayed(final WebElement element) {
 		try {
 			return element.isDisplayed();
 		} catch (NoSuchElementException e) {
@@ -73,12 +73,13 @@ public class DriverUtils {
 		}
 	}
 
-	public static boolean isElementDisplayed(RemoteWebDriver driver, By by)
-			throws Exception {
-		return isElementDisplayed(driver, by, 1);
+	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
+			By by) throws Exception {
+		return waitUntilLocatorIsDisplayed(driver, by,
+				getDefaultLookupTimeoutSeconds());
 	}
 
-	public static boolean isElementDisplayed(RemoteWebDriver driver,
+	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
 			final By by, int timeoutSeconds) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
@@ -95,18 +96,17 @@ public class DriverUtils {
 				return false;
 			}
 		} finally {
-			setDefaultImplicitWait(driver);
+			restoreImplicitWait(driver);
 		}
 	}
 
-	private static final int DEFAULT_LOOKUP_TIMEOUT = 20;
-
-	public static boolean waitUntilElementDissapear(RemoteWebDriver driver,
+	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
 			final By by) throws Exception {
-		return waitUntilElementDissapear(driver, by, DEFAULT_LOOKUP_TIMEOUT);
+		return waitUntilLocatorDissapears(driver, by,
+				getDefaultLookupTimeoutSeconds());
 	}
 
-	public static boolean waitUntilElementDissapear(RemoteWebDriver driver,
+	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
 			final By by, int timeout) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
@@ -126,11 +126,17 @@ public class DriverUtils {
 		} catch (TimeoutException ex) {
 			return false;
 		} finally {
-			setDefaultImplicitWait(driver);
+			restoreImplicitWait(driver);
 		}
 	}
 
-	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
+	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
+			final By locator) throws Exception {
+		return waitUntilLocatorAppears(driver, locator,
+				getDefaultLookupTimeoutSeconds());
+	}
+
+	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
 			final By locator, int timeout) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
@@ -144,19 +150,14 @@ public class DriverUtils {
 		} catch (TimeoutException ex) {
 			return false;
 		} finally {
-			setDefaultImplicitWait(driver);
+			restoreImplicitWait(driver);
 		}
-	}
-
-	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
-			final By locator) throws Exception {
-		return waitUntilElementAppears(driver, locator, DEFAULT_LOOKUP_TIMEOUT);
 	}
 
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
 			final WebElement element) throws Exception {
 		return waitUntilElementClickable(driver, element,
-				DEFAULT_LOOKUP_TIMEOUT);
+				getDefaultLookupTimeoutSeconds());
 	}
 
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
@@ -173,33 +174,7 @@ public class DriverUtils {
 		} catch (TimeoutException e) {
 			return false;
 		} finally {
-			setDefaultImplicitWait(driver);
-		}
-	}
-
-	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver)
-			throws Exception {
-		return waitUntilWebPageLoaded(driver, DEFAULT_LOOKUP_TIMEOUT);
-	}
-
-	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver,
-			int timeout) throws Exception {
-		turnOffImplicitWait(driver);
-		try {
-			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(timeout, TimeUnit.SECONDS)
-					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
-			return wait.until(drv -> {
-				return String.valueOf(
-						((JavascriptExecutor) drv)
-								.executeScript("return document.readyState"))
-						.equals("complete");
-			});
-		} catch (TimeoutException e) {
-			return false;
-		} finally {
-			setDefaultImplicitWait(driver);
+			restoreImplicitWait(driver);
 		}
 	}
 
@@ -213,29 +188,7 @@ public class DriverUtils {
 					.ignoring(NoSuchElementException.class);
 			wait.until(ExpectedConditions.alertIsPresent());
 		} finally {
-			setDefaultImplicitWait(driver);
-		}
-	}
-
-	public static void setTextForChildByClassName(WebElement parent,
-			String childClassName, String value) {
-		parent.findElement(By.className(childClassName)).sendKeys(value);
-	}
-
-	public static boolean waitForElementWithTextByXPath(String xpath,
-			String name, AppiumDriver driver) throws InterruptedException {
-		int counter = 0;
-		while (true) {
-			counter++;
-			List<WebElement> contactsList = driver.findElementsByXPath(String
-					.format(xpath, name));
-			if (contactsList.size() > 0) {
-				return true;
-			}
-			Thread.sleep(200);
-			if (counter >= 10) {
-				return false;
-			}
+			restoreImplicitWait(driver);
 		}
 	}
 
@@ -337,7 +290,10 @@ public class DriverUtils {
 			driver.swipe(coords.x + xOffset, coords.y + yOffset, coords.x
 					+ xOffset, coords.y, time);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.debug(String.format("Failed to swipe up using params: "
+					+ "{startx: %s; starty: %s; endx: %s; endy: %s; time: %s}",
+					coords.x + xOffset, coords.y + yOffset, coords.x + xOffset,
+					coords.y, time));
 		}
 	}
 
@@ -599,18 +555,15 @@ public class DriverUtils {
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
 	}
 
-	public static void setDefaultImplicitWait(RemoteWebDriver driver)
-			throws Exception {
-		driver.manage()
-				.timeouts()
-				.implicitlyWait(
-						Integer.parseInt(CommonUtils
-								.getDriverTimeoutFromConfig(BasePage.class)),
-						TimeUnit.SECONDS);
+	public static void setImplicitWaitValue(ZetaOSXDriver driver,
+			int secondsTimeout) {
+		driver.manage().timeouts()
+				.implicitlyWait(secondsTimeout, TimeUnit.SECONDS);
 	}
 
-	public static void setImplicitWaitValue(RemoteWebDriver driver, int seconds) {
-		driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
+	public static void restoreImplicitWait(RemoteWebDriver driver)
+			throws Exception {
+		PlatformDrivers.setDefaultImplicitWaitTimeout(driver);
 	}
 
 	public static BufferedImage takeScreenshot(ZetaDriver driver)

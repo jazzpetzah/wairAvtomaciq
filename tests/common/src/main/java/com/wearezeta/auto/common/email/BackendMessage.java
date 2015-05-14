@@ -99,7 +99,7 @@ public class BackendMessage {
 
 	private static final String DELIVERED_TO_HEADER_NAME = "Delivered-To";
 
-	public String getLastUserEmail() throws MessagingException {
+	public String getDeliveredToEmail() throws MessagingException {
 		return this.getHeaderValue(DELIVERED_TO_HEADER_NAME);
 	}
 

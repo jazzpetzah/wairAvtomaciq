@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -29,6 +30,9 @@ public class PeoplePickerPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathCloseSearchButton)
 	private WebElement closeSearchButton;
+
+	@FindBy(xpath = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']")
+	private List<WebElement> suggestions;
 
 	public PeoplePickerPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -60,12 +64,12 @@ public class PeoplePickerPage extends WebPage {
 	public boolean isUserFound(String name) throws Exception {
 		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 				.apply(name);
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(foundUserXpath), 3);
 	}
 
 	public void closeSearch() throws Exception {
-		assert DriverUtils.isElementDisplayed(this.getDriver(), By
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathCloseSearchButton),
 				5);
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
@@ -77,14 +81,14 @@ public class PeoplePickerPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(name));
-		return DriverUtils.isElementDisplayed(this.getDriver(), locator, 5);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 5);
 	}
 
 	public void clickOnParticipant(String name) throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(name));
-		assert DriverUtils.isElementDisplayed(this.getDriver(), locator, 3);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
 		WebElement participant = getDriver().findElement(locator);
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				participant);
@@ -95,8 +99,7 @@ public class PeoplePickerPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(user));
-		assert DriverUtils.isElementDisplayed(this.getDriver(), locator,
-				DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
 		WebElement userEl = getDriver().findElement(locator);
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(), userEl);
 		userEl.click();
@@ -118,8 +121,12 @@ public class PeoplePickerPage extends WebPage {
 	public boolean isVisibleAfterTimeout(int secondsTimeout) throws Exception {
 		Thread.sleep(secondsTimeout * 1000);
 		return DriverUtils
-				.isElementDisplayed(
+				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.className(WebAppLocators.PeoplePickerPage.classNamePeoplePickerVisible));
+	}
+
+	public int getNumberOfSuggestions() {
+		return suggestions.size();
 	}
 }

@@ -46,13 +46,13 @@ public class PendingRequestsPage extends IOSPage {
 			throws Exception {
 		ContactListPage page = null;
 		for (int i = 0; i < clicks; i++) {
-			DriverUtils.waitUntilElementAppears(this.getDriver(),
+			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 					By.name(IOSLocators.namePendingRequestIgnoreButton));
 			this.getWait().until(
 					ExpectedConditions
 							.elementToBeClickable(ignoreRequestButton));
 			ignoreRequestButton.click();
-			DriverUtils.waitUntilElementAppears(this.getDriver(),
+			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 					By.name(IOSLocators.namePendingRequestIgnoreButton));
 		}
 		page = new ContactListPage(this.getLazyDriver());
@@ -72,13 +72,13 @@ public class PendingRequestsPage extends IOSPage {
 			throws Exception {
 		ContactListPage page = null;
 		for (int i = 0; i < clicks; i++) {
-			DriverUtils.waitUntilElementAppears(this.getDriver(),
+			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 					By.name(IOSLocators.namePendingRequestConnectButton));
 			this.getWait().until(
 					ExpectedConditions
 							.elementToBeClickable(connectRequestButton));
 			connectRequestButton.click();
-			DriverUtils.waitUntilElementAppears(this.getDriver(),
+			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 					By.name(IOSLocators.namePendingRequestConnectButton));
 		}
 		page = new ContactListPage(this.getLazyDriver());
@@ -86,7 +86,7 @@ public class PendingRequestsPage extends IOSPage {
 	}
 
 	public boolean isConnectButtonDisplayed() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePendingRequestConnectButton));
 	}
 

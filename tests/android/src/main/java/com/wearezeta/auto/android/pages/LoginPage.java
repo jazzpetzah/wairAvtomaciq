@@ -85,19 +85,16 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public LoginPage SignIn() throws Exception {
-		refreshUITree();
-		// this.getWait().until(ExpectedConditions.visibilityOf(signInButton));
 		signInButton.click();
 		return this;
 	}
 
 	public CommonAndroidPage forgotPassword() throws Exception {
-		refreshUITree();
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(forgotPasswordButton));
 		forgotPasswordButton.click();
 		Thread.sleep(2000);
-		if (isVisible(forgotPasswordButton)) {
+		if (DriverUtils.isElementPresentAndDisplayed(forgotPasswordButton)) {
 			DriverUtils.androidMultiTap(this.getDriver(), forgotPasswordButton,
 					1, 50);
 		}
@@ -110,7 +107,6 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public void setLogin(String login) throws Exception {
-		refreshUITree();
 		if (CommonUtils.getAndroidApiLvl(LoginPage.class) > 42) {
 			try {
 				loginInput.sendKeys(login);
@@ -145,36 +141,31 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public boolean waitForLoginScreenDisappear() throws Exception {
-		return DriverUtils.waitUntilElementDissapear(this.getDriver(),
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idLoginButton), 40);
 	}
 
 	public boolean waitForLogin() throws Exception {
 		return DriverUtils
-				.waitUntilElementDissapear(this.getDriver(),
+				.waitUntilLocatorDissapears(this.getDriver(),
 						AndroidLocators.LoginPage
 								.getByForLoginPageRegistrationButton(), 40);
 	}
 
 	public Boolean isLoginFinished()
 			throws NumberFormatException, Exception {
-		refreshUITree();
+		// some workarounds for AN-1973
 		try {
-			this.getWait().until(ExpectedConditions.visibilityOf(selfUserAvatar));
+			this.getWait().until(ExpectedConditions.visibilityOf(pickerClearBtn));
+			pickerClearBtn.click();
+			
 		} catch (Exception ex) {
-			refreshUITree();
-			if (isVisible(pickerClearBtn)) {
-				pickerClearBtn.click();
-			} /*
-			 * else { if (!isVisible(yourUser)) { navigateBack(); } }
-			 */
-			refreshUITree();
+			this.getWait().until(ExpectedConditions.visibilityOf(selfUserAvatar));
 		}
-		return (isVisible(selfUserAvatar));
+		return (DriverUtils.isElementPresentAndDisplayed(selfUserAvatar));
 	}
 
 	public Boolean isWelcomeButtonsExist() throws Exception {
-		refreshUITree();
 		this.getWait().until(
 				ExpectedConditions
 						.visibilityOfAllElements(welcomeSloganContainer));
@@ -190,7 +181,7 @@ public class LoginPage extends AndroidPage {
 	public RegistrationPage join() throws Exception {
 		signUpButton.click();
 		DriverUtils
-				.waitUntilElementDissapear(this.getDriver(),
+				.waitUntilLocatorDissapears(this.getDriver(),
 						AndroidLocators.LoginPage
 								.getByForLoginPageRegistrationButton());
 		return new RegistrationPage(this.getLazyDriver());
@@ -198,7 +189,7 @@ public class LoginPage extends AndroidPage {
 
 	public boolean isDismissUpdateVisible() throws Exception {
 		return DriverUtils
-				.waitUntilElementAppears(
+				.waitUntilLocatorAppears(
 						this.getDriver(),
 						By.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton));
 	}

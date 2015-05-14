@@ -87,7 +87,6 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void chooseFirstPhoto() throws Exception {
-		refreshUITree();
 		try {
 			frameLayouts.get(0).click();
 			return;
@@ -102,28 +101,24 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public boolean isPictureSelected() throws Exception {
-		refreshUITree();
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
 	}
 
 	public void confirmPicture() throws Exception {
-		refreshUITree();
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(confirmImageButton));
 		confirmImageButton.click();
 	}
 
 	public void setName(String name) throws Exception {
-		refreshUITree();
 		this.getWait()
 				.until(ExpectedConditions.elementToBeClickable(nameField));
 		// TABLET fix
 		if (nameField.getText().toLowerCase().contains(YOUR_NAME)) {
 			nameField.sendKeys(name);
-			refreshUITree();
 			this.getWait().until(
 					ExpectedConditions.elementToBeClickable(nextArrow));
 			nextArrow.click();
@@ -131,11 +126,9 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void setEmail(String email) throws Exception {
-		refreshUITree();
 		// TABLET fix
 		if (nameField.getText().toLowerCase().contains(EMAIL)) {
 			nameField.sendKeys(email);
-			refreshUITree();
 			this.getWait().until(
 					ExpectedConditions.elementToBeClickable(nextArrow));
 			nextArrow.click();
@@ -143,7 +136,6 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void setPassword(String password) throws Exception {
-		refreshUITree();
 		passwordField.sendKeys(password);
 	}
 
@@ -153,13 +145,11 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public boolean isConfirmationVisible() throws Exception {
-		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(verifyEmailBtn));
-		return DriverUtils.isElementDisplayed(this.getDriver(), verifyEmailBtn);
+		return DriverUtils.isElementPresentAndDisplayed(verifyEmailBtn);
 	}
 
 	public PeoplePickerPage continueRegistration() throws Exception {
-		refreshUITree();
 		try {
 			this.getWait().until(ExpectedConditions.visibilityOf(pickerSearch));
 		} catch (NoSuchElementException e) {
@@ -171,7 +161,6 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void pressBackButton() throws Exception {
-		refreshUITree();
 		backButton.click();
 	}
 

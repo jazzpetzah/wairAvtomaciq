@@ -5,7 +5,7 @@ tests/tools/javadoc-exporter/bin
 tests/tools/javadoc-exporter/target
 *.log*
 .DS_Store
-pom.xml
 tests/common/bin/*
 tests/webapp/bin/*
 tests/webapp/nbactions.xml
+tests/tools/jenkins_controller/.idea

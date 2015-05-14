@@ -8,7 +8,7 @@ Feature: Localytics
     Given I take snapshot of <AttrName> attribute count
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
-    And I enter user password <Password> on Registration page 
+    And I enter user password "<Password>" on Registration page 
     And I submit registration form
     And I wait for 5 seconds
 
@@ -99,7 +99,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
-    And I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    And I wait until <ContactEmail> exists in backend search results
     When I open People Picker from Contact List
     And I type <ContactEmail> in search field of People Picker
     And I see user <Contact> found in People Picker
@@ -117,7 +117,7 @@ Feature: Localytics
   Scenario Outline: Verify 'session:totalOutgoingConnectionRequestsActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
-    Given I have sent connection request to <Contact>
+    Given I sent connection request to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I see Contact list with name <Contact>
@@ -131,7 +131,7 @@ Feature: Localytics
   Scenario Outline: Verify 'session:totalIncomingConnectionRequestsActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to Me
+    Given <Contact> sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I see connection request from one user
@@ -145,7 +145,7 @@ Feature: Localytics
   Scenario Outline: Verify 'session:connectRequestsAcceptedActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to Me
+    Given <Contact> sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I see connection request from one user
@@ -296,7 +296,7 @@ Feature: Localytics
     Given I take snapshot of <EventName> event count
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
-    And I enter user password <Password> on Registration page
+    And I enter user password "<Password>" on Registration page
     And I submit registration form
     And I wait for 5 seconds
 

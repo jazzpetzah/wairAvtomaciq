@@ -93,8 +93,8 @@ public class PeoplePickerPage extends IOSPage {
 
 	public void clickLaterButton() throws Exception {
 		for (int i = 0; i < 3; i++) {
-			if (DriverUtils.isElementDisplayed(this.getDriver(),
-					By.name(IOSLocators.nameShareButton))) {
+			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+					By.name(IOSLocators.nameShareButton), 3)) {
 				if (i > 0) {
 					this.minimizeApplication(3);
 				}
@@ -107,7 +107,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public Boolean isPeoplePickerPageVisible() throws Exception {
-		boolean result = DriverUtils.waitUntilElementAppears(this.getDriver(),
+		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.namePickerClearButton));
 		Thread.sleep(1000);
 		clickLaterButton();
@@ -154,7 +154,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public boolean waitUserPickerFindUser(String user) throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(user));
 	}
 
@@ -239,7 +239,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public boolean isAddToConversationBtnVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePeoplePickerAddToConversationButton));
 	}
 
@@ -306,7 +306,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public boolean isContactsLabelVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePeoplePickerContactsLabel));
 	}
 
@@ -328,7 +328,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public boolean isCreateConversationButtonVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameCreateConversationButton));
 	}
 
@@ -342,12 +342,12 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public boolean isTopPeopleLabelVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.NamePeoplePickerTopPeopleLabel));
 	}
 
 	public boolean isConnectLabelVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePeopleYouMayKnowLabel));
 	}
 
@@ -381,27 +381,27 @@ public class PeoplePickerPage extends IOSPage {
 
 	public OtherUserOnPendingProfilePage clickOnUserOnPending(String contact)
 			throws Exception {
-		OtherUserOnPendingProfilePage page;
-		getDriver().findElement(By.name(contact)).click();
-		page = new OtherUserOnPendingProfilePage(this.getLazyDriver());
-		return page;
+
+		WebElement el = getDriver().findElement(By.name(contact));
+		DriverUtils.mobileTapByCoordinates(getDriver(), el);
+		return new OtherUserOnPendingProfilePage(this.getLazyDriver());
 	}
 
 	public boolean isUploadDialogShown() throws Exception {
-		boolean isLaterBtnVisible = DriverUtils.isElementDisplayed(
+		boolean isLaterBtnVisible = DriverUtils.waitUntilLocatorIsDisplayed(
 				this.getDriver(), By.name(IOSLocators.nameShareButton));
 		return isLaterBtnVisible;
 	}
 
 	public void clickContinueButton() throws Exception {
-		if (DriverUtils.isElementDisplayed(this.getDriver(),
+		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameContinueUploadButton))) {
 			continueButton.click();
 		}
 	}
 
 	public boolean isPeopleYouMayKnowLabelVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePeopleYouMayKnowLabel));
 	}
 

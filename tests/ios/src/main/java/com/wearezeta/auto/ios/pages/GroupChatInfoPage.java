@@ -83,7 +83,7 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public boolean isNumberOfParticipants(int correctNumber) throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathNumberOfParticipantsText));
 		int givenNumberOfParticipants = Integer
 				.parseInt(numberOfParticipantsText.getText().replaceAll("\\D+",
@@ -283,7 +283,7 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public boolean isLeaveConversationAlertVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.nameLeaveConversationAlert));
 	}
 
@@ -327,7 +327,7 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public boolean isAddDialogHeaderVisible() throws Exception {
-		boolean flag = DriverUtils.isElementDisplayed(this.getDriver(),
+		boolean flag = DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameAddPeopleDialogHeader));
 		return flag;
 	}

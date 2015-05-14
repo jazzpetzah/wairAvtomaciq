@@ -61,7 +61,7 @@ public class ContactListPage extends MainWirePage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(OSXLocators.ContactListPage.idOpenSearchUIButton));
 	}
 
@@ -85,7 +85,7 @@ public class ContactListPage extends MainWirePage {
 	}
 
 	public boolean waitUntilMainWindowAppears() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(OSXLocators.MainWirePage.xpathWindow));
 	}
 
@@ -111,7 +111,7 @@ public class ContactListPage extends MainWirePage {
 		} else {
 			String xpath = String.format(
 					OSXLocators.xpathFormatContactEntryWithName, name);
-			return DriverUtils.waitUntilElementAppears(this.getDriver(),
+			return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 					By.xpath(xpath));
 		}
 		return false;
@@ -136,7 +136,7 @@ public class ContactListPage extends MainWirePage {
 		} else {
 			String xpath = String.format(
 					OSXLocators.xpathFormatContactEntryWithName, name);
-			return DriverUtils.waitUntilElementDissapear(this.getDriver(),
+			return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 					By.xpath(xpath));
 		}
 		return true;
@@ -206,11 +206,8 @@ public class ContactListPage extends MainWirePage {
 	}
 
 	public boolean waitForSignOut() throws Exception {
-		DriverUtils.setImplicitWaitValue(this.getDriver(), 1);
-		boolean noContactList = DriverUtils.waitUntilElementDissapear(
-				this.getDriver(), By.id(OSXLocators.idContactEntry));
-		DriverUtils.setDefaultImplicitWait(this.getDriver());
-		return noContactList;
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.id(OSXLocators.idContactEntry));
 	}
 
 	public Boolean isSignOutFinished() throws Exception {
@@ -234,28 +231,31 @@ public class ContactListPage extends MainWirePage {
 	}
 
 	public void pressLaterButton() throws Exception {
-		if (DriverUtils.waitUntilElementAppears(this.getDriver(),
+		if (DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.idShareContactsLaterButton), 5)) {
 			int count = 0;
+			DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
 			try {
-				DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
 				do {
 					count++;
 					shareContactsLaterButton.click();
 					Thread.sleep(1000);
 				} while (count < 10);
 			} catch (NoSuchElementException e) {
+				// pass silently
 			} finally {
-				DriverUtils.setDefaultImplicitWait(this.getDriver());
+				DriverUtils.restoreImplicitWait(this.getDriver());
 			}
 		}
 	}
 
 	public int numberOfContacts() throws Exception {
 		DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
-		int result = contactsTextFields.size();
-		DriverUtils.setDefaultImplicitWait(this.getDriver());
-		return result;
+		try {
+			return contactsTextFields.size();
+		} finally {
+			DriverUtils.restoreImplicitWait(this.getDriver());
+		}
 	}
 
 	public List<WebElement> getContacts() {
@@ -347,14 +347,14 @@ public class ContactListPage extends MainWirePage {
 
 	public boolean isConversationMutedButtonVisible(String conversation)
 			throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(), By
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
 				.xpath(String.format(OSXLocators.xpathFormatMutedButton,
 						conversation)));
 	}
 
 	public boolean isConversationMutedButtonNotVisible(String conversation)
 			throws Exception {
-		return DriverUtils.waitUntilElementDissapear(this.getDriver(), By
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By
 				.xpath(String.format(OSXLocators.xpathFormatMutedButton,
 						conversation)));
 	}
@@ -379,7 +379,7 @@ public class ContactListPage extends MainWirePage {
 	}
 
 	public PeoplePickerPage isHiddenByPeoplePicker() throws Exception {
-		if (DriverUtils.waitUntilElementAppears(this.getDriver(),
+		if (DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.idShareContactsLaterButton), 3)) {
 			return new PeoplePickerPage(this.getLazyDriver());
 		} else {

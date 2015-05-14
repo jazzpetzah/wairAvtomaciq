@@ -34,7 +34,13 @@ public class RegistrationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssVerificationEmail)
 	private WebElement verificationEmail;
 
-	private static final int MAX_TRIES = 3;
+	@FindBy(css = ".auth-page .has-error .form-control #wire-create-email")
+	private WebElement redDotOnEmailField;
+
+	@FindBy(xpath = "//*[@data-uie-name='status-error']//div")
+	private WebElement errorMessage;
+
+	private static final int MAX_TRIES = 5;
 
 	public RegistrationPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
@@ -46,35 +52,33 @@ public class RegistrationPage extends WebPage {
 		final By signInBtnlocator = By
 				.xpath(WebAppLocators.LoginPage.xpathSignInButton);
 		final By switchtoSignInBtnlocator = By
-				.xpath(WebAppLocators.LandingPage.xpathSwitchToSignInButton);
+				.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton);
 		int ntry = 0;
 		// FIXME: temporary workaround for white page instead of landing issue
 		while (ntry < MAX_TRIES) {
 			try {
-				if (DriverUtils.isElementDisplayed(this.getDriver(),
-						switchtoSignInBtnlocator)) {
+				if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+						switchtoSignInBtnlocator, 2)) {
 					getDriver().findElement(switchtoSignInBtnlocator).click();
 				}
-				if (DriverUtils.isElementDisplayed(this.getDriver(),
-						signInBtnlocator)) {
+				if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+						signInBtnlocator, 1)) {
 					break;
 				} else {
 					log.debug(String
 							.format("Trying to refresh currupted login page (retry %s of %s)...",
 									ntry + 1, MAX_TRIES));
-					this.getDriver().navigate()
-							.to(this.getDriver().getCurrentUrl());
+					this.getDriver().navigate().to(this.getUrl());
 				}
 			} catch (Exception e) {
-				this.getDriver().navigate()
-						.to(this.getDriver().getCurrentUrl());
+				this.getDriver().navigate().to(this.getUrl());
 			}
 			ntry++;
 		}
-		assert DriverUtils.isElementDisplayed(this.getDriver(),
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				signInBtnlocator) : "Sign in page is not visible";
 
-		return new LoginPage(this.getLazyDriver());
+		return new LoginPage(this.getLazyDriver(), this.getUrl());
 	}
 
 	private void removeReadonlyAttr(String cssLocator) throws Exception {
@@ -110,5 +114,13 @@ public class RegistrationPage extends WebPage {
 
 	public boolean isVerificationEmailCorrect(String email) {
 		return verificationEmail.getText().equalsIgnoreCase(email);
+	}
+
+	public String getErrorMessage() {
+		return errorMessage.getText();
+	}
+
+	public boolean isRedDotOnEmailField() {
+		return DriverUtils.isElementPresentAndDisplayed(redDotOnEmailField);
 	}
 }

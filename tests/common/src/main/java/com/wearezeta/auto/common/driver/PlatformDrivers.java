@@ -2,7 +2,6 @@ package com.wearezeta.auto.common.driver;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -116,7 +115,9 @@ public final class PlatformDrivers {
 
 	public synchronized void quitDriver(Platform platform) throws Exception {
 		try {
-			drivers.get(platform).get().quit();
+			drivers.get(platform)
+					.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+							TimeUnit.MILLISECONDS).quit();
 			log.debug(String.format(
 					"Successfully quit driver instance for platfrom '%s'",
 					platform.name()));
@@ -125,14 +126,21 @@ public final class PlatformDrivers {
 		}
 	}
 
+	public void pingDrivers() throws Exception {
+		for (Future<? extends RemoteWebDriver> driver : drivers.values()) {
+			driver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+					TimeUnit.MILLISECONDS).getPageSource();
+		}
+	}
+
 	{
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
-				for (Entry<Platform, Future<? extends RemoteWebDriver>> entry : drivers
-						.entrySet()) {
+				for (Future<? extends RemoteWebDriver> driver : getRegisteredDrivers()) {
 					try {
-						entry.getValue().get().quit();
+						driver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+								TimeUnit.MILLISECONDS).quit();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

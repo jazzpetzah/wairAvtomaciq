@@ -142,7 +142,7 @@ public class RegistrationPage extends OSXPage {
 
 	public boolean isChoosePictureMessageVisible() throws Exception {
 		return DriverUtils
-				.isElementDisplayed(
+				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.xpath(OSXLocators.RegistrationPage.xpathChoosePictureAndSelectColourMessage));
 	}

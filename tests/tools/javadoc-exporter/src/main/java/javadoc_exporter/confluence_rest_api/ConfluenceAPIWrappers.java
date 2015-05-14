@@ -1,6 +1,9 @@
 package javadoc_exporter.confluence_rest_api;
 
+import java.util.Random;
+
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -8,11 +11,26 @@ import org.json.JSONObject;
  * confluence-5-5-1-via-rest-call
  */
 public class ConfluenceAPIWrappers {
+	private static final int MAX_RETRIES = 3;
+
+	private static final Random random = new Random();
+
 	public static long createChildPage(long parentPageId, String spaceKey,
 			String pageTitle, String pageBody) throws Exception {
-		final JSONObject pageInfo = RESTMethods.createChildPage(parentPageId,
-				spaceKey, pageTitle, pageBody);
-		return pageInfo.getLong("id");
+		int tryNum = 1;
+		JSONException savedException = null;
+		do {
+			try {
+				final JSONObject pageInfo = RESTMethods.createChildPage(
+						parentPageId, spaceKey, pageTitle, pageBody);
+				return pageInfo.getLong("id");
+			} catch (JSONException e) {
+				savedException = e;
+				Thread.sleep((random.nextInt(5) + 1) * 1000);
+				tryNum++;
+			}
+		} while (tryNum <= MAX_RETRIES);
+		throw savedException;
 	}
 
 	public static void removeChildren(long parentPageId, boolean recursive)

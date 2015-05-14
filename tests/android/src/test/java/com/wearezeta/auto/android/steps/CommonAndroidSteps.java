@@ -108,7 +108,7 @@ public class CommonAndroidSteps {
 		final By locator = By
 				.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton);
 		try {
-			if (DriverUtils.isElementDisplayed(drv, locator,
+			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
 					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
 				drv.findElement(locator).click();
 			}
@@ -184,7 +184,11 @@ public class CommonAndroidSteps {
 	@When("^I hide keyboard$")
 	public void IHideKeyboard() throws Exception {
 		if (PagesCollection.loginPage != null) {
-			PagesCollection.loginPage.hideKeyboard();
+			try {
+				PagesCollection.loginPage.hideKeyboard();
+			} catch (Exception ex) {
+				// ignore silently
+			}
 		}
 	}
 
@@ -397,7 +401,7 @@ public class CommonAndroidSteps {
 	/**
 	 * Verifies that user A has sent a connection request to user B
 	 * 
-	 * @step. ^(.*) has sent connection request to (.*)$
+	 * @step. ^(.*) sent connection request to (.*)$
 	 * 
 	 * @param userFromNameAlias
 	 *            the user from which the connection request originated
@@ -405,7 +409,7 @@ public class CommonAndroidSteps {
 	 *            the target user
 	 * 
 	 */
-	@Given("^(.*) has sent connection request to (.*)$")
+	@Given("^(.*) sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
@@ -605,14 +609,11 @@ public class CommonAndroidSteps {
 	 * 
 	 * @param seconds
 	 *            The number of seconds to wait
-	 * 
-	 * @throws NumberFormatException
-	 *             , InterruptedException
+	 * @throws Exception 
 	 * 
 	 */
-	@When("^I wait for (.*) second[s]*$")
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
+	@When("^I wait for (\\d+) seconds?$")
+	public void WaitForTime(int seconds) throws Exception {
 		commonSteps.WaitForTime(seconds);
 	}
 
@@ -751,7 +752,7 @@ public class CommonAndroidSteps {
 	 */
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
-		commonSteps.ThereAreNUsers(count);
+		commonSteps.ThereAreNUsers(Platform.Android, count);
 	}
 
 	/**
@@ -771,7 +772,7 @@ public class CommonAndroidSteps {
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Android, count, myNameAlias);
 	}
 
 	/**
@@ -815,13 +816,10 @@ public class CommonAndroidSteps {
 	 * Waits for a given time to verify that another user exists in search
 	 * results
 	 * 
-	 * @step. ^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in
-	 *        backend search results$
+	 * @step. ^(\\w+) waits? until (.*) exists in backend search results$
 	 * 
 	 * @param searchByNameAlias
 	 *            the user to search for in the query results.
-	 * @param timeout
-	 *            the length of time to wait before giving up the search.
 	 * @param query
 	 *            the search query to pass to the backend, which will return a
 	 *            list of users.
@@ -829,12 +827,10 @@ public class CommonAndroidSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, int timeout, String query)
-			throws Exception {
-		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
-				timeout);
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
 	/**

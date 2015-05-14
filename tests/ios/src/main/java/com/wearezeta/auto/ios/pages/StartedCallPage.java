@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -26,7 +27,8 @@ public class StartedCallPage extends CallPage {
 	private WebElement muteCallButton;
 
 	public boolean isCallingMessageVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(getDriver(), callingMessage);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(IOSLocators.StartedCallPage.xpathCallingMessage), 10);
 	}
 
 	public boolean isIncomingCallMessageVisible(String contact)

@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @regression @id373
+  @calling_basic @id373
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -17,22 +17,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @regression @id373
-  Scenario Outline: Verify calling from missed call indicator in Conversation List
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    When <Contact> calls me using <CallBackend>
-    And I wait for 5 seconds
-    And <Contact> stops all calls to me
-    Then Conversation List contains missed call icon
-
-    Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
-
-  @id1503 @regression
+  @id1503 @calling_basic
   Scenario Outline: Silence an incoming call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -47,7 +32,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @staging @id1497
+  @calling_basic @id1497
   Scenario Outline: Receive call while Wire is running in the background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -64,7 +49,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @staging @id1499
+  @calling_basic @id1499
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -120,19 +105,20 @@ Feature: Calling
     Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I swipe on text input
-    And I press Call button
-    Then I see call overlay
-    And I press Mute button
+    And <Contact> calls me using <CallBackend>
+    And I see call overlay
+    And I answer the call from the overlay bar
+    When I press Mute button
     Then I see MUTE calling button is pressed
-    And I press Speaker button
+    When I press Speaker button
     Then I see SPEAKER calling button is pressed
-    And I press Cancel call button
+    When I press Cancel call button
     Then I do not see call overlay
+    And <Contact> stops all calls to me
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | AccentColor |
-      | user1Email | user1Password | user1Name | user2Name | StrongBlue  |
+      | Login      | Password      | Name      | Contact   | AccentColor | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | StrongBlue  | autocall    |
 
   @id2212 @staging
   Scenario Outline: Correct calling bar in different places
@@ -152,10 +138,10 @@ Feature: Calling
     And I see calling overlay Micro bar
     And I press Clear button
     Then I see Contact list
-    And I tap on my name <Name>
+    And I tap on my avatar
     And I see personal info page
     And I see calling overlay Micro bar
-    And I swipe right to contact list
+    And I close Personal Info Page
     And I see calling overlay Micro bar
     And I see Contact list
     And I tap on contact name <Contact2>
@@ -163,6 +149,5 @@ Feature: Calling
     And I see calling overlay Mini bar
 
     Examples: 
-
       | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | autocall    |

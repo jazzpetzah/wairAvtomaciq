@@ -34,7 +34,7 @@ public class CameraRollPage extends IOSPage {
 	}
 
 	public void pressSelectFromLibraryButton() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathCameraLibraryButton));
 		cameraLibraryButton.click();
 	}
@@ -50,19 +50,19 @@ public class CameraRollPage extends IOSPage {
 	}
 
 	public void clickFirstLibraryFolder() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathCameraLibraryFirstFolder));
 		cameraLibraryFirstFolder.click();
 	}
 
 	public void clickFirstImage() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathLibraryFirstPicture));
 		libraryFirstPicture.click();
 	}
 
 	public void pressConfirmButton() throws Exception {
-		DriverUtils.waitUntilElementAppears(this.getDriver(),
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.nameConfirmPictureButton));
 		confirmPictureButton.click();
 	}

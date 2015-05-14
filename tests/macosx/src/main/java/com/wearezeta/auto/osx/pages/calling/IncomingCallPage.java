@@ -33,7 +33,7 @@ public class IncomingCallPage extends CallPage {
 		String xpath = String.format(
 				OSXLocators.CallPage.xpathFormatUserCallsMessage,
 				subscriberName);
-		boolean result = DriverUtils.waitUntilElementAppears(this.getDriver(),
+		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(xpath), 30);
 		if (!result) {
 			log.debug(xpath);

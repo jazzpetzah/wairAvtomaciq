@@ -75,7 +75,7 @@ Feature: Search
     When I swipe down contact list
     And I see People picker page
     And I press Clear button
-    Then Contact list appears with my name <Name>
+    Then Contact list appears
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -102,6 +102,7 @@ Feature: Search
     Given I see Contact list
     When I swipe down contact list
     And I see People picker page
+    And I hide keyboard
     And I tap on Send an invitation
     And I tap on Gmail link
     Then mail subject is <Subject>
@@ -124,6 +125,7 @@ Feature: Search
     Given I see confirmation page
     Given I verify registration address
     When I wait for PYMK for 30 secs
+    And I hide keyboard
     And I swipe on random connect
     And I click on PYMK hide button
     Then I do not see random connect
@@ -145,6 +147,7 @@ Feature: Search
     Given I see confirmation page
     Given I verify registration address
     When I wait for PYMK for 30 secs
+    And I hide keyboard
     And I swipe on random connect
     And I hide random connect by swipe
     Then I do not see random connect

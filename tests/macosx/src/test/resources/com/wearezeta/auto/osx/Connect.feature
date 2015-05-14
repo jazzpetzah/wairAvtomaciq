@@ -3,7 +3,7 @@ Feature: Connect to user
   @smoke @id473
   Scenario Outline: Receive invitation from user
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I see connect request
@@ -18,7 +18,7 @@ Feature: Connect to user
   @regression @id616
   Scenario Outline: Conversation created on second end after user accept connection request
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I see connect request
@@ -42,7 +42,7 @@ Feature: Connect to user
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open People Picker from contact list
-    And I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    And I wait until <ContactEmail> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
     And I select not connected contact <Contact> from search results
@@ -63,7 +63,7 @@ Feature: Connect to user
     And I wait for 10 seconds
     Then I do not see conversation <Contact> in contact list
     When I open People Picker from contact list
-    When I wait up to 15 seconds until <Contact> exists in backend search results
+    When I wait until <Contact> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
     And I select blocked contact <Contact> from search results
@@ -89,7 +89,7 @@ Feature: Connect to user
     And I wait for 10 seconds
     Then I do not see conversation <Contact> in contact list
     When I open People Picker from contact list
-    When I wait up to 15 seconds until <Contact> exists in backend search results
+    When I wait until <Contact> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
     And I select blocked contact <Contact> from search results
@@ -108,7 +108,7 @@ Feature: Connect to user
   @regression @id617
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I see connect request
@@ -131,7 +131,7 @@ Feature: Connect to user
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open People Picker from contact list
-    Given I wait up to 60 seconds until <ContactEmail> exists in backend search results
+    Given I wait until <ContactEmail> exists in backend search results
     And I search by email for user <Contact>
     And I see user <Contact> in search results
     And I select not connected contact <Contact> from search results
@@ -146,8 +146,8 @@ Feature: Connect to user
   @regression @id1035
   Scenario Outline: Verify incoming connection requests list disappears after all requests are processed
     Given There are 3 users where <Name> is me
-    Given <Contact1> has sent connection request to me
-    Given <Contact2> has sent connection request to me
+    Given <Contact1> sent connection request to me
+    Given <Contact2> sent connection request to me
     Given I sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     And I see 2 connect requests

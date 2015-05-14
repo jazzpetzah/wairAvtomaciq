@@ -118,10 +118,8 @@ public class PeoplePickerPage extends MainWirePage {
 		String xpath = String.format(
 				OSXLocators.xpathFormatPeoplePickerSearchResultUser, username);
 
-		DriverUtils.setImplicitWaitValue(this.getDriver(), 60);
-		boolean result = DriverUtils.waitUntilElementAppears(this.getDriver(),
+		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(xpath));
-		DriverUtils.setDefaultImplicitWait(this.getDriver());
 		return result;
 	}
 
@@ -191,13 +189,13 @@ public class PeoplePickerPage extends MainWirePage {
 	public boolean isPeoplePickerPageVisible() throws Exception {
 		boolean isFound = false;
 		isFound = DriverUtils
-				.waitUntilElementAppears(
+				.waitUntilLocatorAppears(
 						this.getDriver(),
 						By.xpath(OSXLocators.PeoplePickerPage.idPeoplePickerSearchResultTable),
 						5);
 		if (!isFound) {
 			isFound = DriverUtils
-					.waitUntilElementAppears(
+					.waitUntilLocatorAppears(
 							this.getDriver(),
 							By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader),
 							5);
@@ -232,7 +230,7 @@ public class PeoplePickerPage extends MainWirePage {
 				.format(OSXLocators.PeoplePickerPage.xpathFormatSearchResultEntry,
 						user);
 		return DriverUtils
-				.isElementDisplayed(this.getDriver(), By.xpath(xpath));
+				.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpath));
 	}
 
 	public void chooseUserInSearchResults(String user, SearchResultTypeEnum type)
@@ -253,7 +251,7 @@ public class PeoplePickerPage extends MainWirePage {
 
 	public boolean isTopPeopleVisible() throws Exception {
 		return DriverUtils
-				.waitUntilElementAppears(
+				.waitUntilLocatorAppears(
 						this.getDriver(),
 						By.xpath(OSXLocators.xpathPeoplePickerTopContactsSectionHeader),
 						3);
@@ -261,7 +259,7 @@ public class PeoplePickerPage extends MainWirePage {
 
 	public boolean isCreateConversationButtonVisible() throws Exception {
 		if (DriverUtils
-				.waitUntilElementAppears(
+				.waitUntilLocatorAppears(
 						this.getDriver(),
 						By.name(OSXLocators.PeoplePickerPage.nameCreateConversationButton),
 						5)) {
@@ -274,7 +272,7 @@ public class PeoplePickerPage extends MainWirePage {
 	}
 
 	public boolean isOpenConversationButtonVisible() throws Exception {
-		if (DriverUtils.waitUntilElementAppears(this.getDriver(), By
+		if (DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
 				.name(OSXLocators.PeoplePickerPage.nameOpenConversationButton),
 				5)) {
 			return NSPoint.fromString(

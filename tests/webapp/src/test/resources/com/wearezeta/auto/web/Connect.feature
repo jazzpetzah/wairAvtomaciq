@@ -3,7 +3,7 @@ Feature: Connect
   @smoke @id1910
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     When I see connection request from one user
@@ -13,7 +13,27 @@ Feature: Connect
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+	 | user1Email | user1Password | user1Name | user2Name |
+
+   @regression @id1546
+   Scenario Outline: Verify pending user profiles contain all the info required by spec
+      Given There are 2 users where <Name> is me
+      Given <UnknownContact> sent connection request to me
+      Given I Sign in using login <Login> and password <Password>
+      Given User me change accent color to VividRed
+      Then I see connection request from one user
+      When I open the list of incoming connection requests
+      Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
+      And I see connection message "Hello!" in connection request from user <UnknownContact>
+      And I see avatar in connection request from user <UnknownContact>
+      And I see accept button in connection request from user <UnknownContact>
+      And I see ignore button in connection request from user <UnknownContact>
+      And I see correct color for accept button in connection request from user <UnknownContact>
+      And I see correct color for ignore button in connection request from user <UnknownContact>
+
+      Examples:
+	 | Login      | Password      | Name      | UnknownContact  | UnknownContactMail | Message   |
+	 | user1Email | user1Password | user1Name | user2Name       | user2Email         | YOU ADDED |
 
   @smoke @id1571
   Scenario Outline: Verify sending a connection request to user chosen from search
@@ -22,7 +42,7 @@ Feature: Connect
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
     And I see my name on top of Contact list
-    And I wait up to 15 seconds until <Contact> exists in backend search results
+    And I wait until <Contact> exists in backend search results
     When I open People Picker from Contact List
     And I type <Contact> in search field of People Picker
     And I see user <Contact> found in People Picker
@@ -42,7 +62,7 @@ Feature: Connect
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
     And I see my name on top of Contact list
-    And I wait up to 15 seconds until <Login2> exists in backend search results
+    And I wait until <Login2> exists in backend search results
     When I open People Picker from Contact List
     And I type <Login2> in search field of People Picker
     And I see user <Name2> found in People Picker
@@ -83,7 +103,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
-    And I wait up to 15 seconds until <Login2> exists in backend search results
+    And I wait until <Login2> exists in backend search results
     When I see Contacts Upload dialog
     And I close Contacts Upload dialog
     And I open People Picker from Contact List
@@ -144,7 +164,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact> is connected to Me,<Contact2>
     Given <Contact> has group chat <ChatName> with Me,<Contact2>
-    Given <Name> has sent connection request to <Contact2>
+    Given I sent connection request to <Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I open conversation with <ChatName>

@@ -7,14 +7,14 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <GroupChatName>
     And I see tablet dialog page
     And I tap on profile button
     And I press Right conversation button
     And I press Leave conversartion button
     And I confirm leaving
-    Then I see Contact list with my name <Name>
+    Then I see Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName  |
@@ -27,7 +27,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I see contact list loaded with User name <Contact1>
     And I see contact list loaded with User name <Contact2>
     When I tap on tablet contact name <GroupChatName>
@@ -53,7 +53,7 @@ Feature: People View
     Given Contact <Name> send message to user <Contact1>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I wait for 90 seconds
     When I swipe down contact list
     And I see People picker page
@@ -72,14 +72,14 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <GroupChatName>
     And I see tablet dialog page
     And I tap on profile button
     And I press Right conversation button
     And I press Leave conversartion button
     And I confirm leaving
-    Then I see Contact list with my name <Name>
+    Then I see Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName  |
@@ -92,7 +92,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I see contact list loaded with User name <Contact1>
     And I see contact list loaded with User name <Contact2>
     When I tap on tablet contact name <GroupChatName>
@@ -118,7 +118,7 @@ Feature: People View
     Given Contact <Name> send message to user <Contact1>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I wait for 90 seconds
     When I swipe down contact list
     And I see People picker page

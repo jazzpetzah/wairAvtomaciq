@@ -304,9 +304,9 @@ Feature: People View
     Given I change user <Contact1> avatar picture from file <AvatarPicture>
     Given I change user <Contact2> avatar picture from file <AvatarPicture>
     Given I change user <Contact3> avatar picture from file <AvatarPicture>
-    Given <Contact1> is connected to <Name>,<Contact2>,<Contact3>
-    Given <Name> has sent connection request to <Contact2>
-    Given <Contact1> has group chat <ChatName> with <Name>,<Contact2>,<Contact3>
+    Given <Contact1> is connected to me,<Contact2>,<Contact3>
+    Given I sent connection request to <Contact2>
+    Given <Contact1> has group chat <ChatName> with me,<Contact2>,<Contact3>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <ChatName>

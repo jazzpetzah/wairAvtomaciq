@@ -12,8 +12,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -29,6 +29,8 @@ import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
+import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.image_send.AssetData;
 import com.wearezeta.auto.image_send.ImageAssetData;
@@ -43,6 +45,8 @@ public final class BackendAPIWrappers {
 	public static final int BACKEND_ACTIVATION_TIMEOUT = 90; // seconds
 
 	private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
+	private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
+	private static final int AUTH_FAILED_ERROR = 403;
 	private static final int SERVER_SIDE_ERROR = 500;
 	private static final int MAX_BACKEND_RETRIES = 5;
 
@@ -53,6 +57,33 @@ public final class BackendAPIWrappers {
 
 	public static void setDefaultBackendURL(String url) {
 		BackendREST.setDefaultBackendURL(url);
+	}
+
+	public static ClientUser updateUserAccentColor(ClientUser user)
+			throws Exception {
+		final JSONObject additionalUserInfo = BackendREST
+				.getUserInfo(generateAuthToken(user));
+		user.setAccentColor(AccentColor.getById(additionalUserInfo
+				.getInt("accent_id")));
+		return user;
+	}
+
+	private static Future<String> initMessageListener(
+			ClientUser userToActivate, int retryNumber) throws Exception {
+		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
+		Map<String, String> expectedHeaders = new HashMap<String, String>();
+		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER,
+				userToActivate.getEmail());
+		if (retryNumber == 1) {
+			return mbox.getMessage(expectedHeaders, BACKEND_ACTIVATION_TIMEOUT);
+		} else {
+			// The MAX_MSG_DELIVERY_OFFSET is necessary because of small
+			// time
+			// difference between
+			// UTC and your local machine
+			return mbox.getMessage(expectedHeaders, BACKEND_ACTIVATION_TIMEOUT,
+					new Date().getTime() - MAX_MSG_DELIVERY_OFFSET);
+		}
 	}
 
 	/**
@@ -67,33 +98,46 @@ public final class BackendAPIWrappers {
 	 * @return Created ClientUser instance (with id property filled)
 	 * @throws Exception
 	 */
-	public static ClientUser createUser(ClientUser user, int retryNumber)
-			throws Exception {
-		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders
-				.put(MessagingUtils.DELIVERED_TO_HEADER, user.getEmail());
-		Future<String> activationMessage;
-		if (retryNumber == 1) {
-			activationMessage = mbox.getMessage(expectedHeaders,
-					BACKEND_ACTIVATION_TIMEOUT);
-		} else {
-			// The MAX_MSG_DELIVERY_OFFSET is necessary because of small time
-			// difference between
-			// UTC and your local machine
-			activationMessage = mbox.getMessage(expectedHeaders,
-					BACKEND_ACTIVATION_TIMEOUT, new Date().getTime()
-							- MAX_MSG_DELIVERY_OFFSET);
+	public static ClientUser createUser(ClientUser user, int retryNumber,
+			RegistrationStrategy strategy) throws Exception {
+		switch (strategy) {
+		case ByEmail:
+			final Future<String> activationMessage = initMessageListener(user,
+					retryNumber);
+			BackendREST.registerNewUser(user.getEmail(), user.getName(),
+					user.getPassword());
+			activateRegisteredUserByEmail(activationMessage);
+			attachUserPhoneNumber(user);
+			break;
+		case ByPhoneNumber:
+			BackendREST.registerNewUser(user.getPhoneNumber(), user.getName());
+			activateRegisteredUserByPhoneNumber(user.getPhoneNumber());
+			changeUserPassword(user, null, user.getPassword());
+			final int maxAttachRetries = 2;
+			for (int tryNum = 1; tryNum <= maxAttachRetries; tryNum++) {
+				try {
+					log.debug(String
+							.format("Trying to attach email address '%s' to the newly created user (retry %s of %s)...",
+									user.getEmail(), tryNum, maxAttachRetries));
+					attachUserEmail(user, tryNum);
+					break;
+				} catch (ExecutionException e) {
+					if (tryNum >= maxAttachRetries) {
+						throw e;
+					}
+				}
+			}
+			break;
+		default:
+			throw new RuntimeException(String.format(
+					"Unknown registration strategy '%s'", strategy.name()));
 		}
-		BackendREST.registerNewUser(user.getEmail(), user.getName(),
-				user.getPassword());
-		activateRegisteredUser(activationMessage);
 		user.setUserState(UserState.Created);
 		return user;
 	}
 
-	public static void activateRegisteredUser(Future<String> activationMessage)
-			throws Exception {
+	public static void activateRegisteredUserByEmail(
+			Future<String> activationMessage) throws Exception {
 		final ActivationMessage registrationInfo = new ActivationMessage(
 				activationMessage.get());
 		final String key = registrationInfo.getXZetaKey();
@@ -102,8 +146,55 @@ public final class BackendAPIWrappers {
 				.format("Received activation email message with key: %s, code: %s. Proceeding with activation...",
 						key, code));
 		BackendREST.activateNewUser(key, code);
-		log.debug(String.format("User %s is activated",
-				registrationInfo.getLastUserEmail()));
+		log.debug(String.format("User '%s' is successfully activated",
+				registrationInfo.getDeliveredToEmail()));
+	}
+
+	public static void activateRegisteredUserByPhoneNumber(
+			PhoneNumber phoneNumber) throws Exception {
+		BackendREST.activateNewUser(phoneNumber, BackendREST
+				.getActivationDataViaBackdoor(phoneNumber).getString("code"));
+		log.debug(String.format("User '%s' is successfully activated",
+				phoneNumber.toString()));
+	}
+	
+	public static String getActivationCodeByPhoneNumber(
+			PhoneNumber phoneNumber) throws Exception {
+		return BackendREST
+				.getActivationDataViaBackdoor(phoneNumber).getString("code");
+	}
+
+	public static void attachUserPhoneNumber(ClientUser user) throws Exception {
+		user = tryLoginByUser(user);
+		BackendREST.updateSelfPhoneNumber(generateAuthToken(user),
+				user.getPhoneNumber());
+		activateRegisteredUserByPhoneNumber(user.getPhoneNumber());
+	}
+
+	/**
+	 * Change/set user password
+	 * 
+	 * @param user
+	 * @param oldPassword
+	 *            set this to null if the user has no password set
+	 * @param newPassword
+	 * @throws Exception
+	 */
+	public static void changeUserPassword(ClientUser user, String oldPassword,
+			String newPassword) throws Exception {
+		user = tryLoginByUser(user);
+		BackendREST.updateSelfPassword(generateAuthToken(user), oldPassword,
+				newPassword);
+		user.setPassword(newPassword);
+	}
+
+	public static void attachUserEmail(ClientUser user, int retryNumber)
+			throws Exception {
+		final Future<String> activationMessage = initMessageListener(user,
+				retryNumber);
+		user = tryLoginByUser(user);
+		BackendREST.updateSelfEmail(generateAuthToken(user), user.getEmail());
+		activateRegisteredUserByEmail(activationMessage);
 	}
 
 	public static String getUserActivationLink(Future<String> activationMessage)
@@ -374,8 +465,27 @@ public final class BackendAPIWrappers {
 		int tryNum = 0;
 		while (tryNum < MAX_BACKEND_RETRIES) {
 			try {
-				loggedUserInfo = BackendREST.login(user.getEmail(),
-						user.getPassword());
+				try {
+					loggedUserInfo = BackendREST.login(user.getEmail(),
+							user.getPassword());
+				} catch (BackendRequestException e) {
+					// Retry in case the user has only phone number attached
+					if (e.getReturnCode() == AUTH_FAILED_ERROR) {
+						try {
+							BackendREST
+									.generateLoginCode(user.getPhoneNumber());
+						} catch (BackendRequestException e1) {
+							if (e1.getReturnCode() != LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR) {
+								throw e1;
+							}
+						}
+						final String code = BackendREST
+								.getLoginCodeViaBackdoor(user.getPhoneNumber())
+								.getString("code");
+						loggedUserInfo = BackendREST.login(
+								user.getPhoneNumber(), code);
+					}
+				}
 				break;
 			} catch (BackendRequestException e) {
 				if (e.getReturnCode() == REQUEST_TOO_FREQUENT_ERROR) {
@@ -651,8 +761,6 @@ public final class BackendAPIWrappers {
 		}
 	}
 
-	private static Random random = new Random();
-
 	public static void waitUntilContactsFound(ClientUser searchByUser,
 			String query, int expectedCount, boolean orMore, int timeout)
 			throws Exception {
@@ -662,12 +770,17 @@ public final class BackendAPIWrappers {
 		while ((new Date()).getTime() <= startTimestamp + timeout * 1000) {
 			final JSONObject searchResult = BackendREST.searchForContacts(
 					generateAuthToken(searchByUser), query);
-			currentCount = searchResult.getInt("found");
+			if (searchResult.has("documents")
+					&& (searchResult.get("documents") instanceof JSONArray)) {
+				currentCount = searchResult.getJSONArray("documents").length();
+			} else {
+				currentCount = 0;
+			}
 			if (currentCount == expectedCount
 					|| (orMore && currentCount >= expectedCount)) {
 				return;
 			}
-			Thread.sleep(1000 + random.nextInt(4000));
+			Thread.sleep(1000);
 		}
 		throw new NoContactsFoundException(
 				String.format(

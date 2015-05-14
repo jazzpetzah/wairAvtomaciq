@@ -444,14 +444,16 @@ public class OtherUserPersonalInfoPageSteps {
 	/**
 	 * Check that any UI content of other user profile is not showed
 	 * 
-	 * @step. ^I do not see (.*) profile page$
+	 * @step. ^I do not see profile page$
 	 * 
 	 * @throws Exception
 	 */
 	@Then("^I do not see profile page$")
 	public void IDoNotSeeContactProfile() throws Exception {
-		Assert.assertFalse(PagesCollection.otherUserPersonalInfoPage
-				.isOneToOneUserProfileUIContentVisible());
+		Assert.assertTrue(
+				"Contact profile page is visible, but expected not to be.",
+				PagesCollection.otherUserPersonalInfoPage
+						.isOneToOneUserProfileUIContentNotVisible());
 	}
 
 	/**
@@ -463,14 +465,16 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I do not see 1:1 options menu$")
 	public void ThenIDoNotSeeOptionsMenu() throws Throwable {
-		Assert.assertFalse(PagesCollection.otherUserPersonalInfoPage
-				.isOneToOneOptionsMenuUIContentVisible());
+		Assert.assertTrue(
+				"1on1 options menu is visible, but expected not to be.",
+				PagesCollection.otherUserPersonalInfoPage
+						.isOneToOneOptionsMenuUIContentNotVisible());
 	}
 
 	/**
 	 * Check that any UI content of other user profile is not showed
 	 * 
-	 * @step. ^I do not see (.*) profile page$
+	 * @step. ^I see profile page$
 	 * 
 	 * @throws Exception
 	 */
@@ -489,7 +493,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I do small swipe down")
 	public void IDoSmallSwipeDown() throws Exception {
-		PagesCollection.androidPage.swipeByCoordinates(300, 50, 50, 50, 53);
+		PagesCollection.androidPage.swipeByCoordinates(2000, 50, 50, 50, 53);
 	}
 
 	/**

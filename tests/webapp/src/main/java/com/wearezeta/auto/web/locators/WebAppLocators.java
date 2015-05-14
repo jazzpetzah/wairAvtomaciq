@@ -11,12 +11,6 @@ public final class WebAppLocators {
 				+ "//*[contains(@class, 'btn-open-web') and contains(@class,'btn-success')]";
 	}
 
-	public static final class LandingPage {
-		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
-
-		public static final String xpathSwitchToRegisterButton = "(//*[@data-uie-name='go-register'])[2]";
-	}
-
 	public static final class LoginPage {
 
 		public static final String xpathLoginPage = "//*[@data-uie-name='go-wire-dot-com']";
@@ -30,6 +24,12 @@ public final class WebAppLocators {
 		public static final String xpathCreateAccountButton = "//*[@data-uie-name='do-register']";
 
 		public static final String xpathSignInButton = "//*[@data-uie-name='do-sign-in']";
+
+		public static final String xpathSwitchToRegisterButtons = "//*[@data-uie-name='go-register']";
+
+		public static final String xpathChangePasswordButton = "//*[@data-uie-name='go-forgot-password']";
+		
+		public static final String xpathLoginErrorText = "//*[@data-uie-name='status-error']";
 	}
 
 	public static final class ContactListPage {
@@ -137,7 +137,7 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathMessageEntryByText = text -> String
 				.format("//*[@data-uie-name='item-message']//div[contains(@class, 'text') and text()='%s']",
 						text);
-		
+
 		public static final Function<String, String> xpathEmbeddedYoutubeVideoById = text -> String
 				.format("//iframe[contains(@src, '%s')]", text);
 
@@ -184,6 +184,14 @@ public final class WebAppLocators {
 
 	public static final class ConnectToPage {
 
+		public static final String xpathRequestAvatarPartial = "/../../div[contains(@class, 'sender')]//div[contains(@class, 'user-avatar-image')]";
+		public static final String xpathRequestEmailPartial = "/following-sibling::div[contains(@class, 'mail')]";
+		public static final String xpathRequestMessagePartial = "/following-sibling::div[contains(@class, 'message')]";
+
+		public static final Function<String, String> xpathRequestByName = name -> String
+				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]",
+						name);
+
 		public static final Function<String, String> xpathAcceptRequestButtonByName = name -> String
 				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='accept']",
 						name);
@@ -191,6 +199,8 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathIgnoreReqestButtonByName = name -> String
 				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='ignore']",
 						name);
+
+		public static final String xpathAllConnectionRequests = "//div[contains(@class, 'connect-request')";
 	}
 
 	public static final class PeoplePickerPage {
@@ -214,6 +224,8 @@ public final class WebAppLocators {
 	}
 
 	public static final class RegistrationPage {
+
+		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
 
 		public static final String xpathRootForm = "//form[@id='form-create']";
 		public static final String cssRootForm = "#form-create";

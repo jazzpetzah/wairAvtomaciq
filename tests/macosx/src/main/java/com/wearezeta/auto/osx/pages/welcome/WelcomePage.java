@@ -46,7 +46,7 @@ public class WelcomePage extends OSXPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.WelcomePage.idWelcomePage));
 	}
 

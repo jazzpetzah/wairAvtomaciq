@@ -29,7 +29,7 @@ Feature: Sign In
   #Examples:
   #| Login   | Password    | UserA   | UserB       |
   #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
-  @regression @id1398
+  @regression @id1398 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong
     Given I see sign in screen
     When I press Sign in button

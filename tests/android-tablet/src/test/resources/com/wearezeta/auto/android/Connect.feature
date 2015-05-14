@@ -6,7 +6,7 @@ Feature: Connect
     Given <Contact1> is connected to <Name>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I swipe down on tablet contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -31,7 +31,7 @@ Feature: Connect
     Given <Contact1> is connected to <Name>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I swipe down on tablet contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -52,11 +52,11 @@ Feature: Connect
   @id2245 @staging 
   Scenario Outline: Accept connection request in landscape mode
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact1> is connected to me
+    Given <Contact> sent connection request to me
     And I rotate UI to landscape
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I wait for 10 seconds
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
@@ -70,11 +70,11 @@ Feature: Connect
   @id2259 @staging
   Scenario Outline: Accept connection request in portrait mode
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact1> is connected to me
+    Given <Contact> sent connection request to me
     And I rotate UI to portrait
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I wait for 10 seconds
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog

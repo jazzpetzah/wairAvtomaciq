@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
@@ -19,6 +20,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.RegistrationPage;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 
@@ -31,6 +33,8 @@ public class CommonIOSSteps {
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(CommonIOSSteps.class
 			.getSimpleName());
+
+	private static boolean skipBeforeAfter = false;
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private Date testStartedDate;
@@ -55,8 +59,16 @@ public class CommonIOSSteps {
 				.getIosApplicationPathFromConfig(CommonIOSSteps.class);
 	}
 
+	public boolean isSkipBeforeAfter() {
+		return skipBeforeAfter;
+	}
+
+	public void setSkipBeforeAfter(boolean skipBeforeAfter) {
+		CommonIOSSteps.skipBeforeAfter = skipBeforeAfter;
+	}
+
 	@SuppressWarnings("unchecked")
-	private Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
+	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
 			throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
@@ -75,23 +87,28 @@ public class CommonIOSSteps {
 			capabilities.setCapability("autoAcceptAlerts", true);
 		}
 
-		testStartedDate = new Date();
+		setTestStartedDate(new Date());
 		return (Future<ZetaIOSDriver>) PlatformDrivers.getInstance()
 				.resetDriver(getUrl(), capabilities);
 	}
 
 	@Before("~@noAcceptAlert")
 	public void setUpAcceptAlerts() throws Exception {
+		if (this.isSkipBeforeAfter()) {
+			return;
+		}
 		commonBefore(resetIOSDriver(true));
 	}
 
 	@Before("@noAcceptAlert")
 	public void setUpNoAlerts() throws Exception {
+		if (this.isSkipBeforeAfter()) {
+			return;
+		}
 		commonBefore(resetIOSDriver(false));
 	}
 
-	private void commonBefore(Future<ZetaIOSDriver> lazyDriver)
-			throws Exception {
+	public void commonBefore(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps.getInstance().cleanupWaitingInstances();
@@ -105,6 +122,7 @@ public class CommonIOSSteps {
 				.readClientVersionFromPlist().getClientBuildNumber());
 
 		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		PagesCollection.registrationPage = new RegistrationPage(lazyDriver);
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
@@ -145,14 +163,14 @@ public class CommonIOSSteps {
 	 *            time in seconds to close the app
 	 * 
 	 * @step. ^I close the app for (.*) seconds$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I close the app for (.*) seconds$")
 	public void ICloseApp(int seconds) throws Exception {
 		PagesCollection.iOSPage.minimizeApplication(seconds);
 	}
 
-	@Given("^(.*) has sent connection request to (.*)$")
+	@Given("^(.*) sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
@@ -175,13 +193,13 @@ public class CommonIOSSteps {
 
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
-		commonSteps.ThereAreNUsers(count);
+		commonSteps.ThereAreNUsers(Platform.iOS, count);
 	}
 
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(Platform.iOS, count, myNameAlias);
 	}
 
 	@When("^(.*) ignore all requests$")
@@ -190,9 +208,8 @@ public class CommonIOSSteps {
 		commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
 	}
 
-	@When("^I wait for (.*) seconds$")
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
+	@When("^I wait for (\\d+) seconds?$")
+	public void WaitForTime(int seconds) throws Exception {
 		commonSteps.WaitForTime(seconds);
 	}
 
@@ -263,8 +280,10 @@ public class CommonIOSSteps {
 	@When("^Contact (.*) send message to user (.*)$")
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
 			String dstUserNameAlias) throws Exception {
+		String contactMessage = CommonUtils.generateRandomString(10);
 		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-				dstUserNameAlias, CommonUtils.generateRandomString(10));
+				dstUserNameAlias, contactMessage);
+		DialogPageSteps.message = contactMessage;
 	}
 
 	@When("^Contact (.*) send number (.*) of message to user (.*)$")
@@ -334,7 +353,6 @@ public class CommonIOSSteps {
 	public void IChangeAccentColor(String userNameAlias, String newColor)
 			throws Exception {
 		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
-		Thread.sleep(1000);
 	}
 
 	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
@@ -348,12 +366,10 @@ public class CommonIOSSteps {
 		commonSteps.UserXIsMe(nameAlias);
 	}
 
-	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, int timeout, String query)
-			throws Exception {
-		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
-				timeout);
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
 	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
@@ -389,9 +405,12 @@ public class CommonIOSSteps {
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
 
-		if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-			IOSCommonUtils.collectSimulatorLogs(
-					CommonUtils.getDeviceName(getClass()), testStartedDate);
+		if (CommonUtils.getIsSimulatorFromConfig(getClass())
+				&& !skipBeforeAfter) {
+			IOSCommonUtils
+					.collectSimulatorLogs(
+							CommonUtils.getDeviceName(getClass()),
+							getTestStartedDate());
 		}
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
@@ -400,4 +419,30 @@ public class CommonIOSSteps {
 
 		commonSteps.getUserManager().resetUsers();
 	}
+
+	public Date getTestStartedDate() {
+		return testStartedDate;
+	}
+
+	public void setTestStartedDate(Date testStartedDate) {
+		this.testStartedDate = testStartedDate;
+	}
+
+	/**
+	 * Rotate device to landscape
+	 * 
+	 * @step. ^I rotate UI to (landscape|portrait)$
+	 * 
+	 * @param orientation
+	 *            must be landscape or portrait
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I rotate UI to (landscape|portrait)$")
+	public void WhenIRotateUILandscape(ScreenOrientation orientation)
+			throws Exception {
+		PagesCollection.loginPage.rotateScreen(orientation);
+		Thread.sleep(1000); // fix for animation
+	}
+
 }

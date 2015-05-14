@@ -22,8 +22,8 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
-    And I wait up to 15 seconds until <Contact1> exists in backend search results
-    And I wait up to 15 seconds until <Contact2> exists in backend search results
+    And I wait until <Contact1> exists in backend search results
+    And I wait until <Contact2> exists in backend search results
     When I open People Picker from contact list
     And I search for user <Contact1>
     And I select connected contact <Contact1> from search results
