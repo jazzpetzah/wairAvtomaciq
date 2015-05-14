@@ -321,7 +321,6 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I share image from Gallery to Wire$")
 	public void IShareImageFromGallery() throws Exception {
-		IOpenGalleryApp();
 		PagesCollection.contactListPage.shareImageToWireFromGallery();
 	}
 
