@@ -278,7 +278,10 @@ public class DriverUtils {
 			driver.swipe(coords.x + xOffset, coords.y + yOffset, coords.x
 					+ xOffset, coords.y, time);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.debug(String.format("Failed to swipe up using params: "
+					+ "{startx: %s; starty: %s; endx: %s; endy: %s; time: %s}",
+					coords.x + xOffset, coords.y + yOffset, coords.x + xOffset,
+					coords.y, time));
 		}
 	}
 
