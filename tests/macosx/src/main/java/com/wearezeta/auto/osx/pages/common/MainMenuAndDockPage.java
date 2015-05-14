@@ -41,7 +41,6 @@ public class MainMenuAndDockPage extends OSXPage {
 		quitWire();
 		try {
 			OSXCommonUtils.deleteWireLoginFromKeychain();
-			OSXCommonUtils.deletePreferencesFile();
 			OSXCommonUtils.deleteCacheFolder();
 		} catch (Exception ex) {
 			log.error("Can't clear Wire settings in OSX.\n" + ex.getMessage());
