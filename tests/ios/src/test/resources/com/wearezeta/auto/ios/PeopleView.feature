@@ -4,7 +4,7 @@ Feature: People View
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -31,7 +31,7 @@ Feature: People View
   Scenario Outline: Add user to a group conversation
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
     And I return to the chat list
@@ -59,7 +59,7 @@ Feature: People View
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
     #And I swipe up on group chat page
@@ -80,7 +80,7 @@ Feature: People View
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
     #And I swipe up on group chat page
@@ -104,7 +104,7 @@ Feature: People View
     Given User <Contact2> change accent color to <Color>
     Given User <Contact1> change accent color to <Color1>
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
     #And I swipe up on group chat page
@@ -122,7 +122,7 @@ Feature: People View
   Scenario Outline: I can edit the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
     #And I swipe up on group chat page
@@ -142,7 +142,7 @@ Feature: People View
   Scenario Outline: I can see the individual user profile if I select someone in participants view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
     #And I swipe up on group chat page
@@ -160,7 +160,7 @@ Feature: People View
     Given <GroupCreator> is connected to me
     Given <GroupCreator> is connected to <NonConnectedContact>
     Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     #And I swipe up on group chat page
@@ -176,7 +176,7 @@ Feature: People View
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
     #And I swipe up on group chat page
@@ -196,7 +196,7 @@ Feature: People View
     Given <GroupCreator> is connected to me
     Given <GroupCreator> is connected to <NonConnectedContact>
     Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
     #And I swipe up on group chat page
@@ -213,7 +213,7 @@ Feature: People View
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -242,7 +242,7 @@ Feature: People View
   Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -272,7 +272,7 @@ Feature: People View
   Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -367,7 +367,7 @@ Feature: People View
     Given <Contact> is connected to <Name>
     Given User <Contact> change accent color to <Color>
     Given User <Contact> change name to <NewName>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -391,7 +391,7 @@ Feature: People View
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given <Name> silenced conversation with <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I see conversation <Contact> got silenced before
     When I tap on contact name <Contact>

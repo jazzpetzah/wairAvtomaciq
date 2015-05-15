@@ -42,9 +42,9 @@ public class LoginPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginButton")
 	protected WebElement confirmSignInButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage .CLASS_NAME, locatorKey = "idSelfUserAvatar")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idSelfUserAvatar")
 	protected WebElement selfUserAvatar;
-	
+
 	@FindBy(xpath = AndroidLocators.LoginPage.xpathLoginInput)
 	private WebElement loginInput;
 
@@ -77,7 +77,7 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public Boolean isLoginError() {
-		return loginError.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(loginError);
 	}
 
 	public Boolean isLoginErrorTextOk() {
@@ -85,19 +85,16 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public LoginPage SignIn() throws Exception {
-		refreshUITree();
-		// this.getWait().until(ExpectedConditions.visibilityOf(signInButton));
 		signInButton.click();
 		return this;
 	}
 
 	public CommonAndroidPage forgotPassword() throws Exception {
-		refreshUITree();
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(forgotPasswordButton));
 		forgotPasswordButton.click();
 		Thread.sleep(2000);
-		if (isVisible(forgotPasswordButton)) {
+		if (DriverUtils.isElementPresentAndDisplayed(forgotPasswordButton)) {
 			DriverUtils.androidMultiTap(this.getDriver(), forgotPasswordButton,
 					1, 50);
 		}
@@ -110,25 +107,21 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public void setLogin(String login) throws Exception {
-		refreshUITree();
 		if (CommonUtils.getAndroidApiLvl(LoginPage.class) > 42) {
 			try {
 				loginInput.sendKeys(login);
 			} catch (Exception e) {
 				log.debug(this.getDriver().getPageSource());
-
+				throw e;
 			}
 		} else {
 			for (WebElement editField : editText) {
 				if (editField.getText().toLowerCase().equals("email")) {
 					editField.sendKeys(login);
+					return;
 				}
 			}
 		}
-		/*
-		 * try { hideKeyboard(); Thread.sleep(1000); } catch (Exception ex) { //
-		 * }
-		 */
 	}
 
 	public void setPassword(String password) throws Exception {
@@ -139,6 +132,7 @@ public class LoginPage extends AndroidPage {
 			for (WebElement editField : editText) {
 				if (editField.getText().toLowerCase().isEmpty()) {
 					editField.sendKeys(password);
+					return;
 				}
 			}
 		}
@@ -156,31 +150,22 @@ public class LoginPage extends AndroidPage {
 								.getByForLoginPageRegistrationButton(), 40);
 	}
 
-	public Boolean isLoginFinished()
-			throws NumberFormatException, Exception {
-		refreshUITree();
+	public Boolean isLoginFinished() throws Exception {
 		// some workarounds for AN-1973
 		try {
-			this.getWait().until(ExpectedConditions.visibilityOf(pickerClearBtn));
+			this.getWait().until(
+					ExpectedConditions.visibilityOf(pickerClearBtn));
 			pickerClearBtn.click();
-			
 		} catch (Exception ex) {
-			refreshUITree();
-			/*if (isVisible(pickerClearBtn)) {
-				pickerClearBtn.click();
-			}*/
-			this.getWait().until(ExpectedConditions.visibilityOf(selfUserAvatar));
-			refreshUITree();
+			this.getWait().until(
+					ExpectedConditions.visibilityOf(selfUserAvatar));
 		}
-		return (isVisible(selfUserAvatar));
+		return DriverUtils.isElementPresentAndDisplayed(selfUserAvatar);
 	}
 
 	public Boolean isWelcomeButtonsExist() throws Exception {
-		refreshUITree();
-		this.getWait().until(
-				ExpectedConditions
-						.visibilityOfAllElements(welcomeSloganContainer));
-		return welcomeSloganContainer.size() > 0;
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.id(AndroidLocators.LoginPage.idWelcomeSlogan));
 	}
 
 	@Override
@@ -191,7 +176,7 @@ public class LoginPage extends AndroidPage {
 
 	public RegistrationPage join() throws Exception {
 		signUpButton.click();
-		DriverUtils
+		assert DriverUtils
 				.waitUntilLocatorDissapears(this.getDriver(),
 						AndroidLocators.LoginPage
 								.getByForLoginPageRegistrationButton());

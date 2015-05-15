@@ -23,6 +23,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.ScreenOrientation;
 
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -153,7 +154,8 @@ public class DialogPage extends IOSPage {
 
 	public boolean isMessageVisible(String msg) throws Exception {
 
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(msg));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.name(msg));
 	}
 
 	public boolean isPingButtonVisible() throws Exception {
@@ -268,7 +270,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void startMediaContent() throws Exception {
-		boolean flag = DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+		boolean flag = DriverUtils.waitUntilLocatorIsDisplayed(
+				this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell));
 		if (flag) {
 			mediaLinkCell.click();
@@ -778,12 +781,19 @@ public class DialogPage extends IOSPage {
 	public double checkPingIcon(String label) throws Exception {
 		String path = null;
 		BufferedImage pingImage = null;
+		ScreenOrientation orient = getOrientation();
 		if (label.equals(PING_LABEL)) {
 			pingImage = getPingIconScreenShot();
 			path = CommonUtils.getPingIconPathIOS(GroupChatPage.class);
+			if (orient == ScreenOrientation.LANDSCAPE) {
+				path = path.replace(".png", "_landscape.png");
+			}
 		} else if (label.equals(HOT_PING_LABEL)) {
 			pingImage = getPingAgainIconScreenShot();
 			path = CommonUtils.getHotPingIconPathIOS(GroupChatPage.class);
+			if (orient == ScreenOrientation.LANDSCAPE) {
+				path = path.replace(".png", "_landscape.png");
+			}
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		return ImageUtil.getOverlapScore(pingImage, templateImage);

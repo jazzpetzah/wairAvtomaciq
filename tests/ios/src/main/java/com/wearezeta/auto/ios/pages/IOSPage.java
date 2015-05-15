@@ -302,8 +302,7 @@ public abstract class IOSPage extends BasePage {
 		this.getDriver().rotate(ScreenOrientation.PORTRAIT);
 	}
 
-	@SuppressWarnings("unused")
-	private ScreenOrientation getOrientation() throws Exception {
+	public ScreenOrientation getOrientation() throws Exception {
 		return this.getDriver().getOrientation();
 	}
 }

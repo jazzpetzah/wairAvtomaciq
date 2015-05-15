@@ -22,6 +22,7 @@ osx.backend.sender=${osx.backend.sender}
 osxAppiumUrl=${osxAppiumUrl}
 osxApplicationPath=${osxApplicationPath}
 osxClientInfoPlist=${osxClientInfoPlist}
+wireConfigDomain=${wireConfigDomain}
 
 ### ANDROID CONFIG ###
 android.client.enabled=${android.client.enabled}

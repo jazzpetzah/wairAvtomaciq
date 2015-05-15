@@ -558,7 +558,9 @@ public class DialogPageSteps {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertEquals("connected to " + contact.toLowerCase(),
+		Assert.assertEquals(
+				String.format("connected to %s. start a conversation",
+						contact.toLowerCase()),
 				PagesCollection.dialogPage.getConnectRequestChatLabel());
 	}
 

@@ -9,7 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
@@ -17,7 +16,6 @@ import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.OSXPage;
-import com.wearezeta.auto.osx.pages.welcome.LoginPage;
 
 public class MainMenuAndDockPage extends OSXPage {
 
@@ -43,10 +41,7 @@ public class MainMenuAndDockPage extends OSXPage {
 		quitWire();
 		try {
 			OSXCommonUtils.deleteWireLoginFromKeychain();
-			OSXCommonUtils.removeAllZClientSettingsFromDefaults();
 			OSXCommonUtils.deleteCacheFolder();
-			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-					.getBackendType(LoginPage.class));
 		} catch (Exception ex) {
 			log.error("Can't clear Wire settings in OSX.\n" + ex.getMessage());
 		}
@@ -55,7 +50,7 @@ public class MainMenuAndDockPage extends OSXPage {
 		} catch (InterruptedException e) {
 		}
 
-		this.getDriver().navigate().to(OSXExecutionContext.wirePath);
+		this.startApp();
 	}
 
 	public void quitWire() throws Exception {

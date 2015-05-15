@@ -560,6 +560,10 @@ public final class IOSLocators {
 		public static final String nameSelectPictureButton = "SET A PICTURE";
 	}
 	
+	public final class LoginPage {
+		public static final String namePhoneLoginButton = "PHONE SIGN IN";
+	}
+	
 	/////////////
 	//Chathead
 	/////////////

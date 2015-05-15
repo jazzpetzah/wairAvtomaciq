@@ -98,7 +98,7 @@ public class AndroidCommonUtils extends CommonUtils {
 		}
 	}
 
-	
+	//should be refactored and use package name from current configuration
 	public static void killAndroidClient() throws Exception {
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
 			Runtime.getRuntime().exec(

@@ -321,7 +321,6 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I share image from Gallery to Wire$")
 	public void IShareImageFromGallery() throws Exception {
-		IOpenGalleryApp();
 		PagesCollection.contactListPage.shareImageToWireFromGallery();
 	}
 
@@ -609,7 +608,7 @@ public class CommonAndroidSteps {
 	 * 
 	 * @param seconds
 	 *            The number of seconds to wait
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I wait for (\\d+) seconds?$")
@@ -752,7 +751,7 @@ public class CommonAndroidSteps {
 	 */
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
-		commonSteps.ThereAreNUsers(Platform.Android, count);
+		commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
 	}
 
 	/**
@@ -772,7 +771,8 @@ public class CommonAndroidSteps {
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Android, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+				myNameAlias);
 	}
 
 	/**

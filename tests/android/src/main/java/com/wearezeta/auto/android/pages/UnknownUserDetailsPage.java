@@ -34,14 +34,12 @@ public class UnknownUserDetailsPage extends AndroidPage {
 	}
 
 	public boolean isConnectButtonVisible() throws Exception {
-		refreshUITree();
 		final String BUTTON_TEXT = "Connect";
 		String connectButtonText = connectAndPendingButton.getText();
 		return connectButtonText.equals(BUTTON_TEXT);
 	}
 
 	public boolean isPendingButtonVisible() throws Exception {
-		refreshUITree();
 		final String BUTTON_TEXT = "Pending";
 		String connectButtonText = connectAndPendingButton.getText();
 		return connectButtonText.equals(BUTTON_TEXT);
@@ -52,11 +50,11 @@ public class UnknownUserDetailsPage extends AndroidPage {
 	}
 
 	public ConnectToPage tapConnectAndPendingButton() throws Exception {
-		refreshUITree();
 		if (isConnectButtonVisible()) {
 			connectAndPendingButton.click();
 			return new ConnectToPage(this.getLazyDriver());
 		}
-		return null;
+		throw new RuntimeException(
+				"Connect button is not visible after timeout expired");
 	}
 }
