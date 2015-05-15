@@ -111,7 +111,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public void pressOptionsMenuButton() throws Exception {
-		refreshUITree();// TODO workaround
 		this.getWait().until(
 				ExpectedConditions
 						.elementToBeClickable(rightConversationButton));
@@ -119,18 +118,15 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public ContactListPage pressLeaveButton() throws Exception {
-		refreshUITree();
 		leaveButton.click();
 		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public void pressSilenceButton() throws Exception {
-		refreshUITree();
 		silenceButton.click();
 	}
 
 	public void clickBlockBtn() throws Exception {
-		refreshUITree();
 		blockButton.click();
 	}
 
@@ -140,169 +136,112 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isUnblockBtnVisible() throws Exception {
-		return isVisible(unblockButton);
+		return DriverUtils.isElementPresentAndDisplayed(unblockButton);
 	}
 
-	public boolean isOneToOneOptionsMenuFullyVisible() throws Exception {
-		refreshUITree(); // Fix to pass animation
-		boolean flag = false;
-		if (isVisible(blockButton) && isVisible(silenceButton)
-				&& isVisible(archiveButton)) {
-			flag = true;
+	private static By[] getOneToOneOptionsMenuLocators() {
+		return new By[] {
+				By.id(AndroidLocators.OtherUserPersonalInfoPage.idBlockButton),
+				By.id(AndroidLocators.OtherUserPersonalInfoPage.idSilenceButton),
+				By.id(AndroidLocators.OtherUserPersonalInfoPage.idArchiveButton) };
+	}
+
+	private static final int MENU_ITEM_VISIBILITY_TIMEOUT_SECONDS = 5;
+
+	public boolean areOneToOneMenuOptionsVisible() throws Exception {
+		for (By locator : getOneToOneOptionsMenuLocators()) {
+			if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
+					MENU_ITEM_VISIBILITY_TIMEOUT_SECONDS)) {
+				return false;
+			}
 		}
-		return flag;
-	}
-
-	public boolean isOneToOneOptionsMenuUIContentNotVisible() throws Exception {
-		refreshUITree();
-
-		By blockButtonBy = By
-				.id(AndroidLocators.OtherUserPersonalInfoPage.idBlockButton);
-		By silenceButtonBy = By
-				.id(AndroidLocators.OtherUserPersonalInfoPage.idSilenceButton);
-		By archiveButtonBy = By
-				.id(AndroidLocators.OtherUserPersonalInfoPage.idArchiveButton);
-
-		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				blockButtonBy, 15))
-			return false;
-		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				silenceButtonBy, 15))
-			return false;
-		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				archiveButtonBy, 15))
-			return false;
-
 		return true;
 	}
 
-	public boolean isOneToOneOptionsMenuUIContentVisible() throws Exception {
-		refreshUITree(); // Fix to pass animation
-		boolean flag = false;
-		if (isVisible(blockButton) || isVisible(silenceButton)
-				|| isVisible(archiveButton)) {
-			flag = true;
+	public boolean areOneToOneMenuOptionsNotVisible() throws Exception {
+		for (By locator : getOneToOneOptionsMenuLocators()) {
+			if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+					locator, MENU_ITEM_VISIBILITY_TIMEOUT_SECONDS)) {
+				return false;
+			}
 		}
-		return flag;
+		return true;
+	}
+
+	private static By[] getUserProfileLocators() {
+		return new By[] {
+				By.id(AndroidLocators.PeoplePickerPage.idParticipantsClose),
+				By.id(AndroidLocators.OtherUserPersonalInfoPage.idRightActionButton),
+				By.id(AndroidLocators.OtherUserPersonalInfoPage.idLeftActionButton),
+				By.id(AndroidLocators.OtherUserPersonalInfoPage.idLeftActionLabel),
+				By.id(AndroidLocators.OtherUserPersonalInfoPage.idParticipantsSubHeader),
+				By.id(AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeader) };
 	}
 
 	public boolean isOneToOneUserProfileUIContentNotVisible() throws Exception {
-		refreshUITree();
-
-		By closeButtonBy = By
-				.id(AndroidLocators.PeoplePickerPage.idParticipantsClose);
-		By rightConversationButtonBy = By
-				.id(AndroidLocators.OtherUserPersonalInfoPage.idRightActionButton);
-		By addContactButtonBy = By
-				.id(AndroidLocators.OtherUserPersonalInfoPage.idLeftActionButton);
-		By addContactLabelBy = By
-				.id(AndroidLocators.OtherUserPersonalInfoPage.idLeftActionLabel);
-		By participantsSubHeaderBy = By
-				.id(AndroidLocators.OtherUserPersonalInfoPage.idParticipantsSubHeader);
-		By groupChatNameBy = By
-				.id(AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeader);
-
-		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				closeButtonBy, 15))
-			return false;
-		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				rightConversationButtonBy, 15))
-			return false;
-		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				addContactButtonBy, 15))
-			return false;
-		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				addContactLabelBy, 15))
-			return false;
-		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				participantsSubHeaderBy, 15))
-			return false;
-		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				groupChatNameBy, 15))
-			return false;
-
+		for (By locator : getUserProfileLocators()) {
+			if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+					locator, MENU_ITEM_VISIBILITY_TIMEOUT_SECONDS)) {
+				return false;
+			}
+		}
 		return true;
 	}
 
 	public boolean isOneToOneUserProfileUIContentVisible() throws Exception {
-		refreshUITree(); // Fix to pass animation
-		boolean flag = false;
-		if (isVisible(closeButton) || isVisible(rightConversationButton)
-				|| isVisible(addContactBtn) || isVisible(addContactLabel)
-				|| isVisible(participantsSubHeader) || isVisible(groupChatName)) {
-			flag = true;
+		for (By locator : getUserProfileLocators()) {
+			if (!DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+					locator, MENU_ITEM_VISIBILITY_TIMEOUT_SECONDS)) {
+				return false;
+			}
 		}
-		return flag;
-	}
-
-	public boolean isOneToOneUserProfileFullyVisible() throws Exception {
-		refreshUITree(); // Fix to pass animation
-		boolean flag = false;
-		if (isVisible(closeButton) && isVisible(rightConversationButton)
-				&& isVisible(addContactBtn) && isVisible(addContactLabel)
-				&& isVisible(participantsSubHeader) && isVisible(groupChatName)) {
-			flag = true;
-		}
-		return flag;
+		return true;
 	}
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		AndroidPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new PeoplePickerPage(this.getLazyDriver());
-			break;
+			return new PeoplePickerPage(this.getLazyDriver());
 		}
-		case UP: {
-			break;
+		default:
+			return null;
 		}
-		case LEFT: {
-			break;
-		}
-		case RIGHT: {
-			break;
-		}
-		}
-		return page;
 	}
 
 	public boolean isOtherUserNameVisible(String name) throws Exception {
-		refreshUITree();// workaround to refresh UI tree
 		String text;
 		if (otherUserName.size() > 0) {
-			text = otherUserName.get(0).getText().toLowerCase();
+			text = otherUserName.get(0).getText();
 		} else {
 			try {
-				text = otherUserSingleName.get(0).getText().toLowerCase();
+				text = otherUserSingleName.get(0).getText();
 			} catch (Exception ex) {
 				text = "NONE";
 			}
 		}
-		return text.equals(name.toLowerCase());
+		return text.toLowerCase().equals(name.toLowerCase());
 	}
 
 	public boolean isOtherUserMailVisible(String mail) throws Exception {
-		refreshUITree();// workaround to refresh UI tree
 		String text;
 		if (otherUserName.size() > 0) {
-			text = otherUserMail.get(0).getText().toLowerCase();
+			text = otherUserMail.get(0).getText();
 		} else {
 			try {
-				text = otherUserSingleMail.get(0).getText().toLowerCase();
+				text = otherUserSingleMail.get(0).getText();
 			} catch (Exception ex) {
 				text = "NONE";
 			}
 		}
-		return text.equals(mail.toLowerCase());
+		return text.toLowerCase().equals(mail.toLowerCase());
 	}
 
 	public boolean isRemoveFromConversationAlertVisible() {
-		return confirmMenu.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(confirmMenu);
 	}
 
 	public OtherUserPersonalInfoPage pressRemoveConfirmBtn() throws Exception {
-		refreshUITree();// TODO workaround
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
@@ -310,44 +249,30 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public PeoplePickerPage tapAddContactBtn() throws Exception {
-		refreshUITree();
 		addContactBtn.click();
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 	public boolean isBackGroundImageCorrect(String imageName) throws Exception {
-		BufferedImage bgImage = null;
-		boolean flag = false;
-		bgImage = getElementScreenshot(backGround);
+		final BufferedImage bgImage = getElementScreenshot(backGround);
 		String path = CommonUtils.getImagesPath(CommonUtils.class);
 		BufferedImage realImage = ImageUtil.readImageFromFile(path + imageName);
 		double score = ImageUtil.getOverlapScore(realImage, bgImage);
 		System.out.println(score);
-		if (score >= MIN_ACCEPTABLE_IMAGE_VALUE) {
-			flag = true;
-		}
-		return flag;
+		return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
 	}
 
 	public boolean isContactExists(String contact) throws Exception {
-		boolean flag = true;
-		refreshUITree();
-		this.getWait().until(ExpectedConditions.visibilityOf(groupChatName));
-		List<WebElement> cn = this.getDriver().findElements(
-				By.xpath(String.format(
-						AndroidLocators.ContactListPage.xpathContacts,
-						contact.toUpperCase())));
-		if (cn.isEmpty()) {
-			flag = false;
-		}
-		return flag;
+		final By locator = By
+				.xpath(AndroidLocators.ContactListPage.xpathContactByName
+						.apply(contact.toUpperCase()));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
+	// FIXME: need better (faster) locator for user name
 	public AndroidPage selectContactByName(String contactName)
 			throws Exception, InterruptedException {
-		boolean flag = false;
-		refreshUITree();
-
+		boolean isNameElementFound = false;
 		for (WebElement user : linearLayout) {
 			List<WebElement> elements = user
 					.findElements(By
@@ -357,11 +282,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 						&& element.getText()
 								.equals((contactName.toUpperCase()))) {
 					user.click();
-					flag = true;
+					isNameElementFound = true;
 					break;
 				}
 			}
-			if (flag) {
+			if (isNameElementFound) {
 				break;
 			}
 		}
@@ -381,21 +306,19 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public AndroidPage tapOnContact(String contact) throws Exception {
-		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(groupChatName));
 		try {
-			WebElement cn = this.getDriver().findElement(
-					By.xpath(String.format(
-							AndroidLocators.ContactListPage.xpathContacts,
-							contact.toUpperCase())));
-
-			cn.click();
+			final By nameLocator = By
+					.xpath(AndroidLocators.ContactListPage.xpathContactByName
+							.apply(contact.toUpperCase()));
+			assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					nameLocator);
+			this.getDriver().findElement(nameLocator).click();
 		} catch (Exception e) {
 			log.debug("Failed to find contact with name " + contact
 					+ "\n. Page source: " + this.getDriver().getPageSource());
 			throw e;
 		}
-		refreshUITree();
 		if (connectToHeader.size() > 0) {
 			return new ConnectToPage(this.getLazyDriver());
 		} else {
@@ -408,12 +331,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public String getConversationName() throws Exception {
-		refreshUITree();
 		return groupChatName.getText();
 	}
 
 	public DialogPage tabBackButton() throws Exception {
-		refreshUITree();
 		closeButton.click();
 		return new DialogPage(this.getLazyDriver());
 	}
@@ -422,9 +343,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 			throws Exception {
 		boolean flag1 = false;
 		boolean flag2 = false;
-		boolean commonFlag = false;
 		BufferedImage avatarIcon = null;
-		refreshUITree();
 		String path = CommonUtils.getImagesPath(CommonUtils.class);
 		for (int i = 1; i < linearLayout.size() + 1; i++) {
 			avatarIcon = getElementScreenshot(this
@@ -461,11 +380,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 				flag2 = true;
 			}
 		}
-		if (flag1 && flag2) {
-			commonFlag = true;
-		}
-
-		return commonFlag;
+		return (flag1 && flag2);
 	}
 
 }

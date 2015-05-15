@@ -1,11 +1,9 @@
 package com.wearezeta.auto.ios.steps;
 
-
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 
@@ -14,8 +12,8 @@ import cucumber.api.java.Before;
 
 public class CommonIOSTabletSteps {
 	@SuppressWarnings("unused")
-	private static final Logger log = ZetaLogger.getLog(CommonIOSTabletSteps.class
-			.getSimpleName());
+	private static final Logger log = ZetaLogger
+			.getLog(CommonIOSTabletSteps.class.getSimpleName());
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
@@ -27,9 +25,6 @@ public class CommonIOSTabletSteps {
 				"warn");
 	}
 
-	public static final Platform CURRENT_PLATFORM = Platform.iOS;
-	public static final String PLATFORM_VERSION = "8.1";
-	
 	private CommonIOSSteps steps = new CommonIOSSteps();
 	{
 		steps.setSkipBeforeAfter(true);
@@ -43,18 +38,19 @@ public class CommonIOSTabletSteps {
 
 	@Before("@noAcceptAlert")
 	public void setUpNoAlerts() throws Exception {
-		
+
 		steps.commonBefore(steps.resetIOSDriver(false));
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		
+
 		if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
 			IOSCommonUtils.collectSimulatorLogs(
-					CommonUtils.getDeviceName(getClass()), steps.getTestStartedDate());
+					CommonUtils.getDeviceName(getClass()),
+					steps.getTestStartedDate());
 		}
-		
+
 		commonSteps.getUserManager().resetUsers();
 	}
 }

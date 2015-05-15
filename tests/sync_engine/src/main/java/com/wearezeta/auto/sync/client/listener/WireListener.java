@@ -3,6 +3,7 @@ package com.wearezeta.auto.sync.client.listener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,12 +30,12 @@ public abstract class WireListener extends Thread {
 		return owner.platform();
 	}
 
-	public ArrayList<MessageEntry> allMessagesList = new ArrayList<MessageEntry>();
+	public List<MessageEntry> allMessagesList = new ArrayList<MessageEntry>();
 
-	public LinkedHashMap<String, MessageEntry> registeredMessages = new LinkedHashMap<String, MessageEntry>();
-	public LinkedHashMap<String, MessageEntry> notReceivedMessages = new LinkedHashMap<String, MessageEntry>();
+	public Map<String, MessageEntry> registeredMessages = new LinkedHashMap<String, MessageEntry>();
+	public Map<String, MessageEntry> notReceivedMessages = new LinkedHashMap<String, MessageEntry>();
 
-	public LinkedHashMap<Date, String> pageSources = new LinkedHashMap<Date, String>();
+	public Map<Date, String> pageSources = new LinkedHashMap<Date, String>();
 
 	public WireListener(WireInstance owner) {
 		this.owner = owner;
@@ -91,7 +92,7 @@ public abstract class WireListener extends Thread {
 		}
 	}
 
-	public abstract ArrayList<MessageEntry> receiveAllChatMessagesImpl(
+	public abstract List<MessageEntry> receiveAllChatMessagesImpl(
 			boolean checkTime);
 
 	public void scrollToTheEndOfConversation() throws Exception {
@@ -99,9 +100,9 @@ public abstract class WireListener extends Thread {
 		dialogPage.scrollToTheEndOfConversation();
 	}
 
-	protected LinkedHashMap<String, MessageEntry> parsePageSources(
+	protected Map<String, MessageEntry> parsePageSources(
 			boolean checkTime) {
-		LinkedHashMap<String, MessageEntry> result = new LinkedHashMap<String, MessageEntry>();
+		Map<String, MessageEntry> result = new LinkedHashMap<String, MessageEntry>();
 		for (Map.Entry<Date, String> source : pageSources.entrySet()) {
 			final Pattern pattern = Pattern
 					.compile(UUID_TEXT_MESSAGE_PATTERN());
@@ -118,7 +119,7 @@ public abstract class WireListener extends Thread {
 		return result;
 	}
 
-	public LinkedHashMap<Date, String> getPageSources() {
+	public Map<Date, String> getPageSources() {
 		return pageSources;
 	}
 

@@ -39,9 +39,12 @@ public class CommonAndroidPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Browsers.CLASS_NAME, locatorKey = "idUrlBar")
 	private WebElement chromeUrlBar;
 
-	@FindBy(xpath = AndroidLocators.Browsers.ForgotPasswordPage.xpathEditField)
-	private WebElement editField;
+	@FindBy(xpath = AndroidLocators.Browsers.ForgotPasswordPage.xpathEmailEditField)
+	private WebElement emailEditField;
 
+	@FindBy(xpath = AndroidLocators.Browsers.ForgotPasswordPage.xpathEnterNewPasswordEditField)
+	private WebElement enterNewPasswordEditField;
+	
 	@FindBy(xpath = AndroidLocators.Browsers.ForgotPasswordPage.xpathChangePasswordButton)
 	private WebElement changePassswordButton;
 
@@ -69,35 +72,31 @@ public class CommonAndroidPage extends AndroidPage {
 	}
 
 	public void requestResetPassword(String email) throws Exception {
-		refreshUITree();
 		this.getWait()
-				.until(ExpectedConditions.elementToBeClickable(editField));
+				.until(ExpectedConditions.elementToBeClickable(emailEditField));
 		setChromeBrowserURL(SERVER_URL);
-		this.getWait().until(ExpectedConditions.visibilityOf(editField));
-		editField.click();
-		editField.sendKeys(email);
+		this.getWait().until(ExpectedConditions.visibilityOf(emailEditField));
+		emailEditField.click();
+		emailEditField.sendKeys(email);
 		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 	}
 
 	public PeoplePickerPage resetByLink(String link, String newPass)
 			throws Exception {
 		setChromeBrowserURL(link);
-		editField.click();
-		editField.sendKeys(newPass);
+		enterNewPasswordEditField.click();
+		enterNewPasswordEditField.sendKeys(newPass);
 		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 		return null;
 	}
 
 	private void openFirefoxBrowser() throws Exception {
-
 		this.getDriver().startActivity("org.mozilla.firefox",
 				"org.mozilla.firefox.App", "org.mozilla.firefox",
 				"org.mozilla.firefox.App");
-
 	}
 
 	private void setChromeBrowserURL(String link) throws Exception {
-		refreshUITree();
 		if (CommonUtils.getAndroidApiLvl(RegistrationPage.class) < 43) {
 			int ln = chromeUrlBar.getText().length();
 			chromeUrlBar.click();
@@ -112,7 +111,6 @@ public class CommonAndroidPage extends AndroidPage {
 	}
 
 	private void setFirefoxBrowserURL(String link) throws Exception {
-		refreshUITree();
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(AndroidLocators.Browsers.idFirefoxUrlBar));
 		urlBar.click();

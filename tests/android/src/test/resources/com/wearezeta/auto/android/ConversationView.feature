@@ -295,6 +295,7 @@ Feature: Conversation View
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I tap on contact name <Contact>
+    And I open the gallery application
     And I share image from Gallery to Wire
     Then I see new photo in the dialog
 

@@ -7,26 +7,27 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
-public class CameraRolliPadPopoverPage {
+public class CameraRollTabletPopoverPage extends IOSPage{
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraLibraryButton)
 	private WebElement cameraLibraryButton;
 	
-	@FindBy(how = How.XPATH, using = IOSTabletLocators.xpathIPADCameraLibraryFirstFolder)
+	@FindBy(how = How.XPATH, using = IOSTabletLocators.CameraRollTabletPopoverPage.xpathIPADCameraLibraryFirstFolder)
 	private WebElement cameraLibraryFirstFolderiPadPopover;
 	
-	@FindBy(how = How.XPATH, using = IOSTabletLocators.xpathIPADCameraLibraryFirtImage)
+	@FindBy(how = How.XPATH, using = IOSTabletLocators.CameraRollTabletPopoverPage.xpathIPADCameraLibraryFirtImage)
 	private WebElement ipadPopoverLibraryFirstPicture;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameConfirmPictureButton)
 	private WebElement confirmPictureButton;
 	
-	public CameraRolliPadPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super();
+	public CameraRollTabletPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 		
 
@@ -62,5 +63,12 @@ public class CameraRolliPadPopoverPage {
 //		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 //				By.name(IOSLocators.nameConfirmPictureButton));
 		confirmPictureButton.click();
+	}
+
+
+	@Override
+	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

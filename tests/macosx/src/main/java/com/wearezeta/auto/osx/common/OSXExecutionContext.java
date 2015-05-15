@@ -17,6 +17,8 @@ public class OSXExecutionContext {
 
 	public static String wirePath;
 
+	public static String wireConfigDomain;
+
 	public static String userDocuments = System.getProperty("user.home")
 			+ "/Documents/";
 
@@ -39,6 +41,15 @@ public class OSXExecutionContext {
 			log.debug("Failed to read Wire path from config file. "
 					+ "Setting default value: Wire");
 			wirePath = "Wire";
+		}
+
+		try {
+			wireConfigDomain = OSXCommonUtils
+					.getWireConfigDomainFromConfig(OSXExecutionContext.class);
+		} catch (Exception e) {
+			log.debug("Failed to read config domain for Wire. "
+					+ "Setting default value: com.wearezeta.zclient.mac.development");
+			wireConfigDomain = ConfigurationDomainEnum.DEVELOPMENT.getDomain();
 		}
 	}
 }

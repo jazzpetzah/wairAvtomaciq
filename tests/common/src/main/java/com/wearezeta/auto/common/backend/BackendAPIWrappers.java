@@ -20,6 +20,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonSteps;
@@ -110,8 +111,13 @@ public final class BackendAPIWrappers {
 			attachUserPhoneNumber(user);
 			break;
 		case ByPhoneNumber:
-			BackendREST.registerNewUser(user.getPhoneNumber(), user.getName());
-			activateRegisteredUserByPhoneNumber(user.getPhoneNumber());
+			BackendREST.bookPhoneNumber(user.getPhoneNumber());
+			final String activationCode = getActivationCodeForBookedPhoneNumber(user
+					.getPhoneNumber());
+			activateRegisteredUserByPhoneNumber(user.getPhoneNumber(),
+					activationCode, true);
+			BackendREST.registerNewUser(user.getPhoneNumber(), user.getName(),
+					activationCode);
 			changeUserPassword(user, null, user.getPassword());
 			final int maxAttachRetries = 2;
 			for (int tryNum = 1; tryNum <= maxAttachRetries; tryNum++) {
@@ -150,25 +156,34 @@ public final class BackendAPIWrappers {
 				registrationInfo.getDeliveredToEmail()));
 	}
 
+	public static String getActivationCodeForBookedPhoneNumber(
+			PhoneNumber phoneNumber) throws JSONException, Exception {
+		return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString(
+				"code");
+	}
+
 	public static void activateRegisteredUserByPhoneNumber(
-			PhoneNumber phoneNumber) throws Exception {
-		BackendREST.activateNewUser(phoneNumber, BackendREST
-				.getActivationDataViaBackdoor(phoneNumber).getString("code"));
+			PhoneNumber phoneNumber, String activationCode, boolean isDryRun)
+			throws Exception {
+		BackendREST.activateNewUser(phoneNumber, activationCode, isDryRun);
 		log.debug(String.format("User '%s' is successfully activated",
 				phoneNumber.toString()));
 	}
-	
-	public static String getActivationCodeByPhoneNumber(
-			PhoneNumber phoneNumber) throws Exception {
-		return BackendREST
-				.getActivationDataViaBackdoor(phoneNumber).getString("code");
+
+	public static String getActivationCodeByPhoneNumber(PhoneNumber phoneNumber)
+			throws Exception {
+		return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString(
+				"code");
 	}
 
 	public static void attachUserPhoneNumber(ClientUser user) throws Exception {
 		user = tryLoginByUser(user);
 		BackendREST.updateSelfPhoneNumber(generateAuthToken(user),
 				user.getPhoneNumber());
-		activateRegisteredUserByPhoneNumber(user.getPhoneNumber());
+		final String activationCode = getActivationCodeForBookedPhoneNumber(user
+				.getPhoneNumber());
+		activateRegisteredUserByPhoneNumber(user.getPhoneNumber(),
+				activationCode, false);
 	}
 
 	/**

@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.locators.ZetaHow;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
@@ -59,21 +60,18 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public void pressConfirmBtn() throws Exception {
-		refreshUITree();
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
 	}
 
 	public ContactListPage navigateBack() throws Exception {
-		refreshUITree();
 		// driver.navigate().back();
 		swipeRightCoordinates(1000);
 		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public String getConnectToHeader() throws Exception {
-		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(connectToHeader));
 		return connectToHeader.getText().toLowerCase();
 	}
@@ -84,32 +82,28 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public ContactListPage pressIgnoreButton() throws Exception {
-		refreshUITree();
 		connectIgnoreBtn.click();
 		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public boolean isIgnoreConnectButtonVisible() throws Exception {
-
-		return connectIgnoreBtn.isDisplayed() && connectAcceptBtn.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(connectIgnoreBtn)
+				&& DriverUtils.isElementPresentAndDisplayed(connectAcceptBtn);
 	}
 
 	public boolean isPending() throws NumberFormatException, Exception {
-		return isVisible(pendingText);
+		return DriverUtils.isElementPresentAndDisplayed(pendingText);
 	}
 
 	public void tapEditConnectionRequest() throws Exception {
-		refreshUITree();
 		connectionRequestMessage.clear();
 	}
 
 	public void typeConnectionRequies(String message) throws Exception {
-		refreshUITree();
 		connectionRequestMessage.sendKeys(message);
 	}
 
 	public ContactListPage pressConnectButton() throws Exception {
-		refreshUITree();
 		this.getWait().until(
 				ExpectedConditions
 						.elementToBeClickable(sendConnectionRequestButton));

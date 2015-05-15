@@ -375,13 +375,26 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
+	// public static JSONObject registerNewUser(PhoneNumber phoneNumber,
+	// String userName) throws Exception {
+	// Builder webResource = buildDefaultRequest("register",
+	// MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+	// JSONObject requestBody = new JSONObject();
+	// requestBody.put("phone", phoneNumber.toString());
+	// requestBody.put("name", userName);
+	// final String output = httpPost(webResource, requestBody.toString(),
+	// new int[] { HttpStatus.SC_CREATED });
+	// return new JSONObject(output);
+	// }
+
 	public static JSONObject registerNewUser(PhoneNumber phoneNumber,
-			String userName) throws Exception {
+			String userName, String activationCode) throws Exception {
 		Builder webResource = buildDefaultRequest("register",
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
 		requestBody.put("name", userName);
+		requestBody.put("phone_code", activationCode);
 		final String output = httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_CREATED });
 		return new JSONObject(output);
@@ -393,6 +406,16 @@ final class BackendREST {
 				String.format("activate?code=%s&key=%s", code, key),
 				MediaType.APPLICATION_JSON);
 		httpGet(webResource, new int[] { HttpStatus.SC_OK });
+	}
+
+	public static void bookPhoneNumber(PhoneNumber phoneNumber)
+			throws Exception {
+		Builder webResource = buildDefaultRequest("activate/send",
+				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("phone", phoneNumber.toString());
+		httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK });
 	}
 
 	// Don't share these values with anyone!!!
@@ -439,17 +462,16 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
-	public static JSONObject activateNewUser(PhoneNumber phoneNumber,
-			String code) throws Exception {
+	public static void activateNewUser(PhoneNumber phoneNumber, String code,
+			boolean isDryRun) throws Exception {
 		Builder webResource = buildDefaultRequest("activate",
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
 		requestBody.put("code", code);
-		requestBody.put("dryrun", false);
-		final String output = httpPost(webResource, requestBody.toString(),
+		requestBody.put("dryrun", isDryRun);
+		httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK });
-		return new JSONObject(output);
 	}
 
 	public static void generateLoginCode(PhoneNumber phoneNumber)

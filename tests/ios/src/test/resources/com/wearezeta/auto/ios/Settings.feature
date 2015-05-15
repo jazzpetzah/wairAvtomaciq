@@ -73,7 +73,7 @@ Feature: Settings
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
       
-  @staging @id2146
+  @regression @id2146
   Scenario Outline: Verify switching on/off chatheads
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>

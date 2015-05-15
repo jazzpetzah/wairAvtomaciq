@@ -55,7 +55,6 @@ public class TabletContactListPage extends ContactListPage {
 
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
-		refreshUITree();
 		elementSwipeDown(rootLeftView, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}

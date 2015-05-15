@@ -123,7 +123,7 @@ public final class CommonSteps {
 		BackendAPIWrappers.ignoreAllConnections(userTo);
 	}
 
-	private static final int DRIVER_PING_INTERVAL_SECONDS = 15;
+	private static final int DRIVER_PING_INTERVAL_SECONDS = 60;
 
 	public void WaitForTime(int seconds) throws Exception {
 		final Thread pingThread = new Thread() {

@@ -74,42 +74,35 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public boolean incominCallerAvatarIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(callMessage);
+		return DriverUtils.isElementPresentAndDisplayed(callMessage);
 	}
 
 	public boolean callingMessageIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(callMessage);
+		return DriverUtils.isElementPresentAndDisplayed(callMessage);
 	}
 
 	public boolean callingDismissIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(callingDismiss);
+		return DriverUtils.isElementPresentAndDisplayed(callingDismiss);
 	}
 
 	public boolean callingSpeakerIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(callingSpeaker);
+		return DriverUtils.isElementPresentAndDisplayed(callingSpeaker);
 	}
 
 	public boolean callingMicMuteIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(callingMicMute);
+		return DriverUtils.isElementPresentAndDisplayed(callingMicMute);
 	}
 
 	public boolean callingOverlayIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(callingOverlayContainer);
+		return DriverUtils
+				.isElementPresentAndDisplayed(callingOverlayContainer);
 	}
 
 	public boolean ongoingCallMicrobarIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(ongoingCallMicrobar);
+		return DriverUtils.isElementPresentAndDisplayed(ongoingCallMicrobar);
 	}
 
 	public boolean ongoingCallMinibarIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(ongoingCallMinibar);
+		return DriverUtils.isElementPresentAndDisplayed(ongoingCallMinibar);
 	}
 }

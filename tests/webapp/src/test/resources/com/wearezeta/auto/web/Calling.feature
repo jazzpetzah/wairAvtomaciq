@@ -52,7 +52,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-  @staging @id1866
+  @regression @id1866
    Scenario Outline: Verify I can call a user for more than 15 mins
     Given My browser supports calling
     Given There are 2 users where <Name> is me

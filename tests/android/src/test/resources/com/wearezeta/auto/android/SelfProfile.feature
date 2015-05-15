@@ -36,14 +36,16 @@ Feature: Self Profile
       | user1Email | user1Password | user1Name | user2Name |
 
   @id328 @smoke @regression
-  Scenario Outline: ZClient change name
+  Scenario Outline: I can change my name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
+    Then Contact list appears
     When I tap on my avatar
     And I see personal info page
     And I tap on my name
+    Then I see edit name field
+    When Edit name field can be cleaned in expected way
     And I change <Name> to <NewName>
     Then I see my new name <NewName>
 

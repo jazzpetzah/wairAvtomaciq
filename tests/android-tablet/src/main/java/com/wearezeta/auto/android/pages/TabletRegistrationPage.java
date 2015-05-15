@@ -12,7 +12,6 @@ public class TabletRegistrationPage extends RegistrationPage {
 	}
 
 	public TabletPersonalInfoPage initProfilePage() throws Exception {
-		refreshUITree();
 		return new TabletPersonalInfoPage(getLazyDriver());
 	}
 

@@ -438,7 +438,7 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I see correct 1:1 options menu$")
 	public void ThenISeeOneToOneOptionsMenu() throws Throwable {
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isOneToOneOptionsMenuFullyVisible());
+				.areOneToOneMenuOptionsVisible());
 	}
 
 	/**
@@ -468,7 +468,7 @@ public class OtherUserPersonalInfoPageSteps {
 		Assert.assertTrue(
 				"1on1 options menu is visible, but expected not to be.",
 				PagesCollection.otherUserPersonalInfoPage
-						.isOneToOneOptionsMenuUIContentNotVisible());
+						.areOneToOneMenuOptionsNotVisible());
 	}
 
 	/**
@@ -481,7 +481,7 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I see profile page$")
 	public void ISeeCorrectContactProfile() throws Exception {
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isOneToOneUserProfileFullyVisible());
+				.isOneToOneUserProfileUIContentVisible());
 	}
 
 	/**
