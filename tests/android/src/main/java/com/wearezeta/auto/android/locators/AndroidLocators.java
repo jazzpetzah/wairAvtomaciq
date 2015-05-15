@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android.locators;
 
+import java.util.function.Function;
+
 import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.CommonUtils;
@@ -295,7 +297,8 @@ public final class AndroidLocators {
 
 		public static final String xpathContactFrame = "//android.widget.FrameLayout[child::android.widget.TextView[@text='%s']]";
 
-		public static final String xpathContacts = "//android.widget.TextView[@text='%s']";
+		public static final Function<String, String> xpathContactByName = name -> String
+				.format("//android.widget.TextView[@text='%s']", name);
 
 		public static final String idSimpleDialogPageText = LOCATORS_PACKAGE
 				+ ":id/ttv__simple_dialog__text";
@@ -460,9 +463,11 @@ public final class AndroidLocators {
 		public static final String idCancelCall = LOCATORS_PACKAGE
 				+ ":id/cib__calling__dismiss";
 
-		public static final String xpathFormatSpecificMessage = "//android.widget.TextView[@resource-id='"
-				+ LOCATORS_PACKAGE
-				+ ":id/ltv__row_conversation__message' and @text='%s']";
+		public static final Function<String, String> xpathFormatSpecificMessageByText = text -> String
+				.format("//android.widget.TextView[@resource-id='"
+						+ LOCATORS_PACKAGE
+						+ ":id/ltv__row_conversation__message' and @text='%s']",
+						text);
 
 		public static final String xpathMessage = "//android.widget.LinearLayout/android.widget.TextView[contains(@text,'%s')]";
 
@@ -616,7 +621,8 @@ public final class AndroidLocators {
 
 	public static final class PeoplePickerPage {
 
-		public static final String xpathTopConversationContact = "//android.widget.TextView[@text='%s']";
+		public static final Function<String, String> xpathTopConversationContactByName = name -> String
+				.format("//android.widget.TextView[@text='%s']", name);
 
 		public static final String xpathGmailLink = "//android.widget.TextView[@text='Gmail']";
 
@@ -693,13 +699,17 @@ public final class AndroidLocators {
 		public static final String xpathSendInvitationFrame = "//android.widget.LinearLayout[child::android.widget.FrameLayout[@resource-id='"
 				+ LOCATORS_PACKAGE + ":id/fl_pickuser__invite__bubble']]";
 
-		public static final String xpathPeoplePickerGroup = "//android.widget.TextView[@resource-id='"
-				+ LOCATORS_PACKAGE
-				+ ":id/ttv_pickuser_searchconversation_name' and @text='%s']";
+		public static final Function<String, String> xpathPeoplePickerGroupByName = name -> String
+				.format("//android.widget.TextView[@resource-id='"
+						+ LOCATORS_PACKAGE
+						+ ":id/ttv_pickuser_searchconversation_name' and @text='%s']",
+						name);
 
-		public static final String xpathPeoplePickerContact = "//android.widget.TextView[@resource-id='"
-				+ LOCATORS_PACKAGE
-				+ ":id/ttv_pickuser__searchuser_name' and @text='%s']";
+		public static final Function<String, String> xpathPeoplePickerContactByName = name -> String
+				.format("//android.widget.TextView[@resource-id='"
+						+ LOCATORS_PACKAGE
+						+ ":id/ttv_pickuser__searchuser_name' and @text='%s']",
+						name);
 
 		public static final String xpathCreateConversationIcon42 = "//android.widget.TextView[@text='CREATE CONVERSATION']";
 

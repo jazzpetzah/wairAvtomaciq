@@ -54,6 +54,7 @@ public class UnknownUserDetailsPage extends AndroidPage {
 			connectAndPendingButton.click();
 			return new ConnectToPage(this.getLazyDriver());
 		}
-		return null;
+		throw new RuntimeException(
+				"Connect button is not visible after timeout expired");
 	}
 }

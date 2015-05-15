@@ -119,25 +119,13 @@ public class PersonalInfoPage extends AndroidPage {
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-
-		AndroidPage page = null;
 		switch (direction) {
-		case DOWN: {
-			break;
-		}
-		case UP: {
-			page = this;
-			break;
-		}
-		case LEFT: {
-			break;
-		}
 		case RIGHT: {
-			page = new ContactListPage(this.getLazyDriver());
-			break;
+			return new ContactListPage(this.getLazyDriver());
 		}
+		default:
+			return null;
 		}
-		return page;
 	}
 
 	public void tapOptionsButton() throws Exception {
@@ -210,7 +198,7 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isSettingsVisible() {
-		return settingBox.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(settingBox);
 	}
 
 	public boolean isOptionsMenuReachable() throws Exception {

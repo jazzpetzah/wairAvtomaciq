@@ -390,10 +390,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean isConnectRequestChatLabelVisible() throws Exception {
-		this.getWait().until(
-				ExpectedConditions.visibilityOf(connectRequestChatLabel));
-		return DriverUtils
-				.isElementPresentAndDisplayed(connectRequestChatLabel);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idConnectRequestChatLabel));
 	}
 
 	public String getConnectRequestChatUserName() {
@@ -510,7 +508,8 @@ public class DialogPage extends AndroidPage {
 					coords.y + elementSize.height - 200, DEFAULT_SWIPE_TIME);
 			break;
 		default:
-			log.fatal("Unknown direction");
+			throw new RuntimeException(String.format("Unknown direction '%s'",
+					direction));
 		}
 		String source = tryGetPageSourceFewTimes(5);
 		Pattern messagesPattern = Pattern.compile(TEXT_MESSAGE_PATTERN);
@@ -540,7 +539,7 @@ public class DialogPage extends AndroidPage {
 	private static final String UUID_TEXT_MESSAGE_PATTERN = "<android.widget.TextView[^>]*text=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>";
 	private static final String DIALOG_START_MESSAGE_PATTERN = "^(.*)\\sADDED\\s(.*)$";
 
-	public ArrayList<MessageEntry> listAllMessages(boolean checkTime)
+	public List<MessageEntry> listAllMessages(boolean checkTime)
 			throws Exception {
 		try {
 			this.getDriver().hideKeyboard();
@@ -553,7 +552,7 @@ public class DialogPage extends AndroidPage {
 
 		swipeTillTextMessageWithPattern("down", DIALOG_START_MESSAGE_PATTERN);
 
-		LinkedHashMap<String, MessageEntry> messages = new LinkedHashMap<String, MessageEntry>();
+		Map<String, MessageEntry> messages = new LinkedHashMap<String, MessageEntry>();
 
 		boolean lastMessageAppears = false;
 		boolean temp = false;
@@ -566,7 +565,7 @@ public class DialogPage extends AndroidPage {
 			Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
 			Matcher matcher = pattern.matcher(source);
 			while (matcher.find()) {
-				if (messages.get(matcher.group(1)) == null) {
+				if (!messages.containsKey(matcher.group(1))) {
 					messages.put(matcher.group(1), new MessageEntry("text",
 							matcher.group(1), receivedDate, checkTime));
 				}
@@ -576,8 +575,7 @@ public class DialogPage extends AndroidPage {
 			}
 		} while (!lastMessageAppears && i < TIMES_TO_SCROLL);
 
-		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
-
+		List<MessageEntry> listResult = new ArrayList<MessageEntry>();
 		for (Map.Entry<String, MessageEntry> mess : messages.entrySet()) {
 			listResult.add(mess.getValue());
 		}
@@ -586,11 +584,11 @@ public class DialogPage extends AndroidPage {
 
 	public MessageEntry receiveMessage(String message, boolean checkTime)
 			throws Exception {
-		WebElement messageElement = this.getDriver().findElement(
-				By.xpath(String.format(
-						AndroidLocators.DialogPage.xpathFormatSpecificMessage,
-						message)));
-		if (messageElement != null) {
+		if (DriverUtils
+				.waitUntilLocatorAppears(
+						getDriver(),
+						By.xpath(AndroidLocators.DialogPage.xpathFormatSpecificMessageByText
+								.apply(message)))) {
 			return new MessageEntry("text", message, new Date(), checkTime);
 		}
 		return null;

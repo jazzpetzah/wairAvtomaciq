@@ -20,6 +20,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class PeoplePickerPage extends AndroidPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
@@ -93,13 +94,11 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public void tapOnContactInTopPeoples(String name) throws Exception {
-		WebElement el = this
-				.getDriver()
-				.findElement(
-						By.xpath(String
-								.format(AndroidLocators.PeoplePickerPage.xpathTopConversationContact,
-										name.toUpperCase())));
-		el.click();
+		final By locator = By
+				.xpath(AndroidLocators.PeoplePickerPage.xpathTopConversationContactByName
+						.apply(name.toUpperCase()));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+		this.getDriver().findElement(locator).click();
 	}
 
 	public void typeTextInPeopleSearch(String contactName) throws Exception {
@@ -115,7 +114,6 @@ public class PeoplePickerPage extends AndroidPage {
 			int keyCode = KeyboardMapper.getPrimaryKeyCode(ch);
 			this.getDriver().sendKeyEvent(keyCode);
 		}
-
 	}
 
 	public boolean isNoResultsFoundVisible() throws Exception {
@@ -127,7 +125,6 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public AndroidPage selectContact(String contactName) throws Exception {
-		AndroidPage page = null;
 		pickerSearchUser.click();
 		DriverUtils.turnOffImplicitWait(this.getDriver());
 		try {
@@ -136,41 +133,36 @@ public class PeoplePickerPage extends AndroidPage {
 							AndroidLocators.OtherUserPersonalInfoPage
 									.getByForOtherUserPersonalInfoUnlockButton())
 					.size() > 0) {
-				page = new OtherUserPersonalInfoPage(this.getLazyDriver());
+				return new OtherUserPersonalInfoPage(this.getLazyDriver());
 			} else if (this
 					.getDriver()
 					.findElements(
 							AndroidLocators.ConnectToPage
 									.getByForConnectToPageHeader()).size() > 0) {
-				page = new ConnectToPage(this.getLazyDriver());
+				return new ConnectToPage(this.getLazyDriver());
 			} else if (DriverUtils
 					.isElementPresentAndDisplayed(addToConversationsButton)) {
-				page = this;
+				return this;
 			} else {
-				page = new DialogPage(this.getLazyDriver());
+				return new DialogPage(this.getLazyDriver());
 			}
 		} finally {
 			DriverUtils.restoreImplicitWait(this.getDriver());
 		}
-		return page;
 	}
 
 	public AndroidPage selectGroup(String contactName) throws Exception {
-		AndroidPage page = null;
-		WebElement el = this
-				.getDriver()
-				.findElementByXPath(
-						String.format(
-								AndroidLocators.PeoplePickerPage.xpathPeoplePickerGroup,
-								contactName));
-		el.click();
+		final By locator = By
+				.xpath(AndroidLocators.PeoplePickerPage.xpathPeoplePickerGroupByName
+						.apply(contactName));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+		this.getDriver().findElement(locator).click();
 
 		if (DriverUtils.isElementPresentAndDisplayed(addToConversationsButton)) {
-			page = this;
+			return this;
 		} else {
-			page = new DialogPage(this.getLazyDriver());
+			return new DialogPage(this.getLazyDriver());
 		}
-		return page;
 	}
 
 	@Override
@@ -181,34 +173,20 @@ public class PeoplePickerPage extends AndroidPage {
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		AndroidPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new ContactListPage(this.getLazyDriver());
-			break;
+			return new ContactListPage(this.getLazyDriver());
 		}
-		case UP: {
-			break;
+		default:
+			return null;
 		}
-		case LEFT: {
-			break;
-		}
-		case RIGHT: {
-			break;
-		}
-		}
-		return page;
 	}
 
 	public boolean isPeoplePickerPageVisible() throws Exception {
-		try {
-			this.getWait().until(ExpectedConditions.visibilityOf(pickerSearch));
-		} catch (Exception e) {
-			return false;
-		}
-		return pickerSearchList.size() > 0;
+		return DriverUtils.isElementPresentAndDisplayed(pickerSearch);
 	}
 
+	// FIXME: find better locator
 	public void waitUserPickerFindUser(String contactName) throws Exception {
 		for (int i = 0; i < 50; i++) {
 			List<WebElement> elements = pickerSearchUsers;
@@ -232,7 +210,8 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isAddToConversationBtnVisible() {
-		return addToConversationsButton.isDisplayed();
+		return DriverUtils
+				.isElementPresentAndDisplayed(addToConversationsButton);
 	}
 
 	public DialogPage clickOnAddToCoversationButton() throws Exception {
@@ -244,16 +223,15 @@ public class PeoplePickerPage extends AndroidPage {
 	// TODO: move this to some base page
 
 	public AndroidPage tapCreateConversation() throws Exception {
-		this.getWait().until(
-				ExpectedConditions.visibilityOf(createConversation));
+		final By locator = By
+				.id(AndroidLocators.PeoplePickerPage.idCreateConversationIcon);
 		try {
 			this.getDriver().hideKeyboard();
 		} catch (Exception ex) {
-
+			// pass silently
 		}
-		if (DriverUtils.isElementPresentAndDisplayed(createConversation)) {
-			createConversation.click();
-		}
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+		createConversation.click();
 		return new DialogPage(this.getLazyDriver());
 	}
 
@@ -263,57 +241,38 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean userIsVisible(String contact) throws Exception {
-		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.PeoplePickerPage.idNoResultsFound));
-		this.getWait().until(
-				ExpectedConditions.visibilityOfAllElements(pickerSearchUsers));
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.xpath(String
-								.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact,
-										contact)));
+						By.xpath(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContactByName
+								.apply(contact)));
 	}
 
 	public boolean groupIsVisible(String contact) throws Exception {
-		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.PeoplePickerPage.idNoResultsFound));
-		this.getWait().until(
-				ExpectedConditions
-						.visibilityOfAllElements(pickerSearchConversations));
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.xpath(String
-								.format(AndroidLocators.PeoplePickerPage.xpathPeoplePickerGroup,
-										contact)));
+						By.xpath(AndroidLocators.PeoplePickerPage.xpathPeoplePickerGroupByName
+								.apply(contact)));
 	}
 
 	public PeoplePickerPage selectContactByLongTap(String contact)
 			throws Exception {
-		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.PeoplePickerPage.idNoResultsFound));
-		WebElement el = this
-				.getDriver()
-				.findElementByXPath(
-						String.format(
-								AndroidLocators.PeoplePickerPage.xpathPeoplePickerContact,
-								contact));
-		DriverUtils.androidLongClick(this.getDriver(), el);
+		final By locator = By
+				.xpath(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContactByName
+						.apply(contact));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+		DriverUtils.androidLongClick(this.getDriver(),
+				getDriver().findElement(locator));
 		return this;
 	}
 
 	public void tapOnSendInvitation() throws Exception {
-		try {
-			sendInvitationFrame.click();
-		} catch (NoSuchElementException e) {
-			log.debug("Can't find send invitation button.\nPage source: "
-					+ this.getDriver().getPageSource());
-		}
+		sendInvitationFrame.click();
 	}
 
-	public CommonAndroidPage tapOnGmailLink() throws NumberFormatException,
-			Exception {
+	// FIXME: Unexpected method behavior
+	public CommonAndroidPage tapOnGmailLink() throws Exception {
 		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.xpath(AndroidLocators.PeoplePickerPage.xpathGmailLink))) {
 			DriverUtils
