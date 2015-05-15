@@ -151,11 +151,12 @@ public class ContactListPage extends AndroidPage {
 			}
 		}
 
-		List<WebElement> contactsList = this.getDriver().findElements(
-				By.xpath(String.format(
-						AndroidLocators.ContactListPage.xpathContacts, name)));
-		if (contactsList.size() > 0) {
-			return contactsList.get(0);
+		final By nameLocator = By
+				.xpath(AndroidLocators.ContactListPage.xpathContactByName
+						.apply(name));
+		if (DriverUtils
+				.waitUntilLocatorIsDisplayed(getDriver(), nameLocator, 2)) {
+			return this.getDriver().findElement(nameLocator);
 		} else {
 			if (cyclesNumber > 0) {
 				cyclesNumber--;
