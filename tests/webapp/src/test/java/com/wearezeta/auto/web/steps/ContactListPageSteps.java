@@ -85,6 +85,34 @@ public class ContactListPageSteps {
 	}
 
 	/**
+	 * Checks that we can see conversation with specified name in archive List
+	 *
+	 * @step. I see archive list with name (.*)
+	 *
+	 * @param name
+	 *            conversation name string
+	 *
+	 * @throws Exception
+	 *             if conversation name does not appear in archive List
+	 */
+	@Given("I see archive list with name (.*)")
+	public void GivenISeeArchiveListWithName(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		log.debug("Looking for contact with name " + name);
+		Assert.assertTrue("No contact list loaded.",
+				PagesCollection.contactListPage.waitForContactListVisible());
+		for (int i = 0; i < 5; i++) {
+			if (PagesCollection.contactListPage
+					.isArchiveListEntryWithNameExist(name)) {
+				return;
+			}
+			Thread.sleep(1000);
+		}
+		throw new AssertionError("Conversation list entry '" + name
+				+ "' is not visible after timeout expired");
+	}
+
+	/**
 	 * Opens conversation by choosing it from Contact List
 	 * 
 	 * @step. ^I open conversation with (.*)
