@@ -49,7 +49,7 @@ Feature: People View
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Leave button on Group Participants popover
-    And I confirm leave group conversation on Group Participants popover
+      And I click confirm leave group conversation on Group Participants popover
     And I wait for 2 seconds
     Then I do not see Contact list with name <ChatName>
     When I open archive
@@ -285,7 +285,7 @@ Feature: People View
       And I see Myself,<KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
       And I do not see Archive button at the bottom of my Contact list
       When I click Leave button on Group Participants popover
-      And I confirm leave group conversation on Group Participants popover
+      And I click confirm leave group conversation on Group Participants popover
       Then I see Archive button at the bottom of my Contact list
       And I do not see Contact list with name <ChatName>
       When I open archive
