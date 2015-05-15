@@ -4,10 +4,13 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.Future;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import android.view.KeyEvent;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -15,8 +18,13 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.locators.ZetaHow;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class PersonalInfoPage extends AndroidPage {
+
+	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
+			.getSimpleName());
+
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idBackgroundOverlay")
 	private WebElement backgroundOverlay;
 
@@ -65,6 +73,8 @@ public class PersonalInfoPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
 	private List<WebElement> settingsButtonList;
 
+	private static final String EMPTY_NAME = "Your name";
+
 	public PersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -109,25 +119,13 @@ public class PersonalInfoPage extends AndroidPage {
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-
-		AndroidPage page = null;
 		switch (direction) {
-		case DOWN: {
-			break;
-		}
-		case UP: {
-			page = this;
-			break;
-		}
-		case LEFT: {
-			break;
-		}
 		case RIGHT: {
-			page = new ContactListPage(this.getLazyDriver());
-			break;
+			return new ContactListPage(this.getLazyDriver());
 		}
+		default:
+			return null;
 		}
-		return page;
 	}
 
 	public void tapOptionsButton() throws Exception {
@@ -154,17 +152,34 @@ public class PersonalInfoPage extends AndroidPage {
 		}
 	}
 
-	public void changeName(String name, String newName) throws Exception {
-		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.PersonalInfoPage.idNameField));
-		try {
-			nameEdit.clear();
-		} catch (Exception ex) {
-			// ignore silently
+	public boolean isNameEditShowed() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				AndroidLocators.PersonalInfoPage.getByForNameEditField());
+	}
+
+	public boolean isNameEditCanBeCleaned() throws Exception {
+		nameEdit.clear();
+		if (!nameEdit.getText().equals(EMPTY_NAME)) {
+			log.debug("Text in name field is not as expected, trying to clean by KEYCODE commands");
+			int stringLength = nameEdit.getText().length();
+			for (int i = 0; i < stringLength; i++) {
+				this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_DPAD_RIGHT);
+				this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_DEL);
+			}
+		} else {
+			return true;
 		}
+		if (!nameEdit.getText().equals(EMPTY_NAME)) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public void changeName(String name, String newName) throws Exception {
+
 		nameEdit.sendKeys(newName);
 		this.getDriver().navigate().back();
-		Thread.sleep(1000);
 	}
 
 	@Override
@@ -183,15 +198,17 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isSettingsVisible() {
-
-		return settingBox.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(settingBox);
 	}
 
-	public boolean isSettingsButtonNotVisible() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorDissapears(this.getDriver(),
-						AndroidLocators.PersonalInfoPage
-								.getByForProfileOptionsButton());
+	public boolean isOptionsMenuReachable() throws Exception {
+		try {
+			optionsButton.click();
+			return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+					By.id(AndroidLocators.PersonalInfoPage.idAboutButton), 10);
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	public boolean waitForSettingsDissapear() throws Exception {
