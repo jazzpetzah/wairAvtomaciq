@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
-public class CameraRollTabletPopoverPage extends IOSPage{
+public class CameraRollTabletPopoverPage extends CameraRollPage{
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraLibraryButton)
 	private WebElement cameraLibraryButton;

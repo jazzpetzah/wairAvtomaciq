@@ -37,7 +37,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I tap on tablet contact name <Contact>
+    When I tap on contact name <Contact>
     And I see dialog page
     And I swipe the text input cursor
     And I press Add Picture button on iPad
