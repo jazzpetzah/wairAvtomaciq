@@ -65,9 +65,9 @@ Feature: Search
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @torun @id1742
+  @staging @id1742
   Scenario Outline: Verify possibility of invitation accepting
-    Given There are 2 users where <Name> is me
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I click Show Search button on Contacts Upload dialog
@@ -77,18 +77,10 @@ Feature: Search
     When I remember invitation link on Send Invitation popover
     And I click Send Invitation button on People Picker page
     Then I do not see Send Invitation popover
-    And I close People Picker page
-    And I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
-    And User <ContactName> is me
-    And I Sign in using login <ContactEmail> and password <ContactPassword>
-    And I see Contacts Upload dialog
-    And I close Contacts Upload dialog
     When I navigate to previously remembered invitation link
-    And I click Connect button on You are invited page
-    Then I see Contact list with name <Name>
+    Then I see You are invited page
+    # We don't go further since invitation flow will be changed soon 
 
     Examples: 
-      | Login      | Password      | Name      | ContactEmail | ContactName | ContactPassword |
-      | user1Email | user1Password | user1Name | user2Email   | user2Name   | user2Password   |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
