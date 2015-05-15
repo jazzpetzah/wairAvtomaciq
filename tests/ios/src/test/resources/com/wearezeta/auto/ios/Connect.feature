@@ -302,7 +302,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id2294
+  @regression @id2294
   Scenario Outline: Verify sending connection request by clicking instant + button (with search)
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
