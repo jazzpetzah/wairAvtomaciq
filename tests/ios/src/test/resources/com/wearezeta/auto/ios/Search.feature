@@ -294,7 +294,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact       | NewName      | LastName |
       | user1Email | user1Password | user1Name | user2Name     | NEW NAME     | NAME     |
       
-  @staging @id2118 
+  @regression @id2118 
   Scenario Outline: Verify sending connection request from PYMK
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>

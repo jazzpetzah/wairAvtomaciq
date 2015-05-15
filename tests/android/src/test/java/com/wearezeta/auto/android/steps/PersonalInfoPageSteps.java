@@ -181,8 +181,8 @@ public class PersonalInfoPageSteps {
 
 	/**
 	 * Confirms that the current user's name is as given, and then changes it
-	 * back to the old one (Why not reuse the old step
-	 * IChangeNameTo(String, String))
+	 * back to the old one (Why not reuse the old step IChangeNameTo(String,
+	 * String))
 	 * 
 	 * @step. ^I see my new name (.*) and return old (.*)$
 	 * 
@@ -244,16 +244,40 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
-	 * Checks to see that no settings button is visible when the user taps on
-	 * their own name to edit it
+	 * Checks that app menu options are not reachable after the user taps on
+	 * self name
 	 * 
-	 * @step. ^Settings button is unreachable$
+	 * @step. ^Menu options are unreachable$
 	 *
 	 * @throws Throwable
 	 */
-	@Then("^Settings button is unreachable$")
-	public void ThenSettingsButtonIsUnreachable() throws Throwable {
-		Assert.assertTrue(PagesCollection.personalInfoPage
-				.isSettingsButtonNotVisible());
+	@Then("^Menu options are unreachable$")
+	public void ThenMenuOptionsAreUnreachable() throws Throwable {
+		Assert.assertFalse(PagesCollection.personalInfoPage
+				.isOptionsMenuReachable());
+	}
+
+	/**
+	 * Checks that self name edit field is showed
+	 * 
+	 * @step. ^I see edit name field$
+	 *
+	 * @throws Throwable
+	 */
+	@Then("^I see edit name field$")
+	public void ThenISeeEditNameField() throws Throwable {
+		Assert.assertTrue(PagesCollection.personalInfoPage.isNameEditShowed());
+	}
+	
+	/**
+	 * Trying to clean self name and check empty name string
+	 * 
+	 * @step. ^Edit name field can be cleaned in expected way$
+	 *
+	 * @throws Throwable
+	 */
+	@When("^Edit name field can be cleaned in expected way$")
+	public void WhenNameEditFieldCleaned() throws Throwable {
+		Assert.assertTrue(PagesCollection.personalInfoPage.isNameEditCanBeCleaned());
 	}
 }
