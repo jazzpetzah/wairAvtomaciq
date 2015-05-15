@@ -28,7 +28,7 @@ public final class WebAppLocators {
 		public static final String xpathSwitchToRegisterButtons = "//*[@data-uie-name='go-register']";
 
 		public static final String xpathChangePasswordButton = "//*[@data-uie-name='go-forgot-password']";
-		
+
 		public static final String xpathLoginErrorText = "//*[@data-uie-name='status-error']";
 	}
 
@@ -69,6 +69,11 @@ public final class WebAppLocators {
 				name) -> String.format(
 				"%s div[data-uie-name=item-conversation][data-uie-value='%s']",
 				cssParentContactListItem, name);
+
+		public static final Function<String, String> cssArchiveListEntryByName = (
+				name) -> String
+				.format("%s div[data-uie-name='item-conversation-archived'][data-uie-value='%s']",
+						cssParentContactListItem, name);
 
 		public static final Function<String, String> cssOptionsButtonByContactName = (
 				name) -> String.format("%s + div [data-uie-name=go-options]",

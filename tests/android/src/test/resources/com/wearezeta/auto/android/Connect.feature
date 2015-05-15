@@ -493,7 +493,7 @@ Feature: Connect
       | Email      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @id2215 @staging
+  @id2216 @staging
   Scenario Outline: I can connect to someone from PYMK by tap and typing connect message
     Given I see sign in screen
     Given I press Join button
