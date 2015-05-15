@@ -136,3 +136,24 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
       | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
+  
+  @torun @id2279
+  Scenario Outline: Send a long message containing new lines in 1on1
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    And I open conversation with <Contact>
+    When I write message <Message1>
+    And I send message
+    Then I see message <Message1>more than 200 chars in conversation - new lines are stripped 
+    When I write message more than 200 chars containing multiple new lines at the end 	
+    And I send message
+    Then I see message more than 200 chars in conversation - new lines are stripped 
+    When I write message more than 200 chars containing 5 new lines in a row between text
+    And I send message
+    Then I see message more than 200 chars in conversation - the lines are not stripped
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

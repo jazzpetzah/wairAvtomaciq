@@ -448,4 +448,20 @@ public class ConversationPageSteps {
 		Assert.assertEquals(contact + " CALLED",
 				PagesCollection.conversationPage.getMissedCallMessage());
 	}
+	/**
+	 * Send message to a conversation
+	 * 
+	 * @step. ^User (.*) sent message (.*)
+	 *
+	 * @param message
+	 *            message to send
+	 * @param conversationName
+	 *            the name of existing conversation to send the message to
+	 * @throws Exception
+	 */
+	@When("^I write message (.*)$")
+	public void IWriteMessage(String message1) {
+		PagesCollection.conversationPage.writeNewMessage(message1);
+	}
+	
 }
