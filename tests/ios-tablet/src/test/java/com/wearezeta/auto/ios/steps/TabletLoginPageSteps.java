@@ -40,7 +40,6 @@ public class TabletLoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		//Assert.assertNotNull(TabletPagesCollection.tabletLoginPage.isVisible());
 		TabletPagesCollection.loginPage = (LoginPage) (PagesCollection.loginPage
 				.signIn());
 		TabletPagesCollection.loginPage.setLogin(login);
