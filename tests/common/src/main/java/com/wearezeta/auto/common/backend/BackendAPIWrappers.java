@@ -163,6 +163,26 @@ public final class BackendAPIWrappers {
 		return BackendREST
 				.getActivationDataViaBackdoor(phoneNumber).getString("code");
 	}
+	
+	public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber) throws Exception {
+		String code = null;
+		int count = 0; Exception ex = null;
+		while (code == null && count < 10) {
+			count ++;
+			try {
+				code = BackendREST.getLoginCodeViaBackdoor(phoneNumber).getString("code");
+			} catch (Exception e) {
+				code = null;
+				ex = e;
+				Thread.sleep(500);
+			}
+		}
+		if (code == null) {
+			throw ex; 
+		}
+			
+		return code;
+	}
 
 	public static void attachUserPhoneNumber(ClientUser user) throws Exception {
 		user = tryLoginByUser(user);

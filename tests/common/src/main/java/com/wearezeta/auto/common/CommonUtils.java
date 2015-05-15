@@ -51,6 +51,13 @@ public class CommonUtils {
 	public static String getOsName() {
 		return System.getProperty("os.name");
 	}
+	
+	public static boolean trueInPercents(int percent) {
+		Random rand = new Random();
+		int nextInt = rand.nextInt(100);
+		if (nextInt < percent) return true;
+		else return false;
+	}
 
 	public static int executeOsXCommand(String[] cmd) throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);

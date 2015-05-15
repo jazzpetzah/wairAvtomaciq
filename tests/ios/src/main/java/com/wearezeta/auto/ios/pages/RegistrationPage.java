@@ -178,11 +178,12 @@ public class RegistrationPage extends IOSPage {
 		confirmInput.click();
 	}
 	
-	public void inputActivationCode(String code) {
+	public void inputActivationCode(String code) throws Exception {
+		getWait().until(ExpectedConditions.elementToBeClickable(activationCode));
 		activationCode.sendKeys(code);
 		confirmInput.click();
 	}
-
+   
 	public boolean isTakePhotoSmileDisplayed() {
 		return takePhotoSmile.isEnabled();
 	}
