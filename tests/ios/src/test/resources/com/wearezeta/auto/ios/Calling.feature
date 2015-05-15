@@ -4,7 +4,7 @@ Feature: Calling
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
@@ -23,7 +23,7 @@ Feature: Calling
   Scenario Outline: Verify starting and ending outgoing call by same person
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -42,7 +42,7 @@ Feature: Calling
   Scenario Outline: Verify ignoring of incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
@@ -57,7 +57,7 @@ Feature: Calling
   Scenario Outline: Verify accepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
@@ -73,7 +73,7 @@ Feature: Calling
   Scenario Outline: Receiving missed call notification from one user
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
@@ -91,7 +91,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given User <Name> change accent color to <Color>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
@@ -112,7 +112,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page

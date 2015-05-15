@@ -3,7 +3,7 @@ Feature: Settings
   @id482 @regression
   Scenario Outline: Verify user can access settings
     Given There is 1 user where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I click on Settings button on personal page
@@ -17,7 +17,7 @@ Feature: Settings
   @id729 @regression
   Scenario Outline: Attempt to open About screen in settings
     Given There is 1 user where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I click on Settings button on personal page
@@ -31,7 +31,7 @@ Feature: Settings
 @regression @id862
   Scenario Outline: Verify reset password page is accessible from settings
     Given There is 1 user where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
 	And I click on Settings button on personal page
@@ -46,7 +46,7 @@ Feature: Settings
   @id1258 @regression
   Scenario Outline: Verify default value for sound settings is all
     Given There is 1 user where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I tap on my name <Name>
     And I click on Settings button on personal page
@@ -62,7 +62,7 @@ Feature: Settings
   @regression @id2074
   Scenario Outline: Verify you can access Help site within the app
   	Given There is 1 user where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I tap on my name <Name>
     And I click on Settings button on personal page
@@ -79,7 +79,7 @@ Feature: Settings
     Given User <Contact2> change avatar picture to <Picture>
     Given User <Contact2> change name to <NewName>
     Given Myself is connected to <Contact>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I tap on my name <Name>
     And I click on Settings button on personal page

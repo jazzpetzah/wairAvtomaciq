@@ -3,7 +3,7 @@ Feature: Search
   @regression @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I open search by clicking plus button
     And I see People picker page
@@ -18,7 +18,7 @@ Feature: Search
   @regression @id2148 
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
@@ -33,7 +33,7 @@ Feature: Search
   @regression @id299 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading
     Given There is 1 user where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I dismiss alert
     And I swipe down contact list
     And I see Upload contacts dialog
@@ -53,7 +53,7 @@ Feature: Search
   Scenario Outline: Verify uploading address book to the server
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I add contacts list users to Mac contacts
     And I dismiss alert
     And I open search by clicking plus button
@@ -112,7 +112,7 @@ Feature: Search
     Given Myself is connected to all other users
     Given Contact <Contact> send message to user <Name>
     Given Contact <Name> send message to user <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
     And I open search by clicking plus button
@@ -135,7 +135,7 @@ Feature: Search
     Given Myself is connected to all other users
     Given Contact <Contact> send message to user <Name>
     Given Contact <Name> send message to user <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
     And I open search by clicking plus button
@@ -161,7 +161,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
     Given User <Name> change accent color to <Color>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I open search by clicking plus button
     And I see People picker page
@@ -193,7 +193,7 @@ Feature: Search
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
   	Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
     And I open search by clicking plus button
@@ -216,7 +216,7 @@ Feature: Search
   	Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I dont see conversation <Contact> in contact list
     And I open search by clicking plus button
     And I see People picker page
@@ -240,7 +240,7 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend1>
     Given <ContactWithFriends> is connected to <Friend2>
     Given <ContactWithFriends> is connected to <Friend3>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I open search by clicking plus button
     And I see People picker page
@@ -262,7 +262,7 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend1>
     Given <ContactWithFriends> is connected to <Friend2>
     Given <ContactWithFriends> is connected to <Friend3>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I open search by clicking plus button
     And I see People picker page
@@ -281,7 +281,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I open search by clicking plus button
     And I wait until <LastName> exists in backend search results
@@ -299,7 +299,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I open search by clicking plus button
     And I see People picker page
