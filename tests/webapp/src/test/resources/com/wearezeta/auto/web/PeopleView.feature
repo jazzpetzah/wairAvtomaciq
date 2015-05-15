@@ -276,6 +276,41 @@ Feature: People View
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | UnknownContactMail | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | user3Email         | PeoplePopoverGroupChat | YOU ADDED |
 
+ @staging @id1700 @torun
+   Scenario Outline: Verify users can properly leave a group conversation on the other end
+      Given There are 4 users where <Name> is me
+      Given Myself is connected to <KnownContact>
+      Given <KnownContact> is connected to <UnknownContact>,<UnknownContact2>
+      Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>,<UnknownContact2>
+      Given User <KnownContact> changes avatar picture to default
+      Given <UnknownContact> sent connection request to me
+      Given I Sign in using login <Login> and password <Password>
+      Then I see my name on top of Contact list
+      When I open conversation with <ChatName>
+      When I click People button in group conversation
+      Then I see Group Participants popover
+      And I see Myself,<KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
+      And I do not see Archive button at the bottom of my Contact list
+      When I click Leave button on Group Participants popover
+      And I confirm leave group conversation on Group Participants popover
+      Then I see Archive button at the bottom of my Contact list
+      And I do not see Contact list with name <ChatName>
+      When I open archive
+      Then I see archive list with name <ChatName>
+      When I open self profile
+      And I click gear button on self profile page
+      And I select Sign out menu item on self profile page
+      And I Sign in using login <KnownContact> and password <KnownContactPassword>
+      And I open conversation with <ChatName>
+      Then I see <MessageLeft> action for <Name> in conversation
+      When I click People button in group conversation
+      Then I see Group Participants popover
+      And I see <KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
+
+      Examples:
+	 | Login      | Password      | Name      | KnownContact  | KnownContactPassword | UnknownContact  | UnknownContact2 | ChatName               | MessageLeft |
+	 | user1Email | user1Password | user1Name | user2Name     | user2Password        | user3Name       | user4Name       | PeoplePopoverGroupChat | LEFT        |
+
 
   @smoke @id1687
    Scenario Outline: Verify you can add participants to the group conversation by searching the user directory
