@@ -105,23 +105,6 @@ public class WebCommonUtils extends CommonUtils {
 		}
 	}
 
-	public static void executeVBScriptFileOnNode(String node, String scriptPath)
-			throws Exception {
-		String commandTemplate = SSHPASS_PREFIX
-				+ "sshpass -p %s "
-				+ "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
-				+ "%s@%s \"cd $(dirname " + scriptPath
-				+ "); cscript $(basename " + scriptPath + ")\"";
-		String command = String.format(commandTemplate,
-				getJenkinsSuperUserPassword(CommonUtils.class),
-				getJenkinsSuperUserLogin(CommonUtils.class), node, scriptPath);
-		if (WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
-				command }) == 255) {
-			WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
-					command });
-		}
-	}
-
 	private static void formatTextInFileAndSave(InputStream fis,
 			String dstFile, Object[] params) throws IOException {
 		String script = "";

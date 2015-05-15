@@ -63,10 +63,6 @@ public class WebAppConstants {
 
 		public static final String SAFARI_OPEN_TAB_SCRIPT = "safari_open_tab.txt";
 
-		public static final String PRESS_CTRL_C_WIN = "ctrl_c.vbs";
-
-		public static final String PRESS_CMD_C_MAC = "cmd_c.txt";
-
 		public static final String RESOURCES_SCRIPTS_ROOT = "scripts";
 	}
 }
