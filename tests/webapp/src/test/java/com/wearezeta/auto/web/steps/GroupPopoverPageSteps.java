@@ -67,11 +67,12 @@ public class GroupPopoverPageSteps {
 	 * Confirm leaving group chat by clicking LEAVE button on Group Participants
 	 * popover
 	 *
-	 * @step. ^I confirm leave group conversation on Group Participants popover$
+	 * @step. ^I click confirm leave group conversation on Group Participants
+	 *        popover$
 	 * @throws Exception
 	 *
 	 */
-	@When("^I confirm leave group conversation on Group Participants popover$")
+	@When("^I click confirm leave group conversation on Group Participants popover$")
 	public void IClickConfirmLeaveGroupChat() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.confirmLeaveGroupChat();

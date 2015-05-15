@@ -236,7 +236,7 @@ public class CommonWebAppSteps {
 		// default one
 		// setCustomOperaProfile(capabilities, "win7_opera");
 
-		capabilities.setCapability("platformName", Platform.Web.getName());
+		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 		@SuppressWarnings("unchecked")
 		final Future<ZetaWebAppDriver> lazyWebDriver = (Future<ZetaWebAppDriver>) PlatformDrivers
 				.getInstance().resetDriver(url, capabilities,
@@ -298,7 +298,8 @@ public class CommonWebAppSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Web, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+				myNameAlias);
 		IChangeUserAvatarPicture(myNameAlias, "default");
 	}
 
@@ -342,7 +343,8 @@ public class CommonWebAppSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
 	public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
 			String myNameAlias) throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Web, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+				myNameAlias);
 	}
 
 	/**
