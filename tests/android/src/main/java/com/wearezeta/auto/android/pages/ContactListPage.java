@@ -131,6 +131,7 @@ public class ContactListPage extends AndroidPage {
 		return contactListNames;
 	}
 
+	//Someone please clarify what cyclesNumber is used for
 	public WebElement findInContactList(String name, int cyclesNumber)
 			throws Exception {
 		if (CommonUtils.getAndroidApiLvl(ContactListPage.class) > 42) {
@@ -162,8 +163,9 @@ public class ContactListPage extends AndroidPage {
 				return findInContactList(name, cyclesNumber);
 			}
 		}
-		throw new RuntimeException(String.format(
-				"Contact '%s' cannot be found in the conversation list", name));
+//		throw new RuntimeException(String.format(
+//				"Contact '%s' cannot be found in the conversation list", name));
+		return null;
 	}
 
 	public AndroidPage swipeRightOnContact(int time, String contact)

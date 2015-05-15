@@ -20,17 +20,16 @@ Feature: Settings
 
   @id71 @regression
   Scenario Outline: Can not open Settings page when editing user name
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
+    Then Contact list appears
     When I tap on my avatar
     And I tap on my name
-    Then Settings button is unreachable
+    Then Menu options are unreachable
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @id90 @id91 @id92 @regression
   Scenario Outline: Open Close About page from Settings page
