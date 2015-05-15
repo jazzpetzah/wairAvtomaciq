@@ -37,31 +37,4 @@ public class TabletContactListPageSteps {
 				.swipeDown(500);
 	}
 	
-	/**
-	 * Tabs on the name on contact list
-	 * 
-	 * @step. ^I tap on tablet contact name (.*)$
-	 * @param name
-	 *            name that should be tapped on in contact list
-	 * @throws Exception
-	 */
-	@When("^I tap on tablet contact name (.*)$")
-	public void WhenITapOnContactName(String name) throws Exception {
-		try {
-			name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		IOSPage page = null;
-
-		page = TabletPagesCollection.contactListPage.tapOnName(name);
-
-		if (page instanceof DialogPage) {
-			//TabletPagesCollection.dialogPage = (TabletDialogPage) PagesCollection.dialogPage;
-			TabletPagesCollection.tabletDialogPage = (TabletDialogPage) page;
-		}
-
-		PagesCollection.iOSPage = page;
-	}
-
 }
