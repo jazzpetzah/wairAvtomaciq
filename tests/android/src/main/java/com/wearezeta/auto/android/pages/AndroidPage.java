@@ -61,13 +61,13 @@ public abstract class AndroidPage extends BasePage {
 			frameLayouts.get(0).click();
 			return;
 		} catch (Exception ex) {
-			//ignore silently
+			// ignore silently
 		}
 		try {
 			image.get(0).click();
 			return;
 		} catch (Exception ex) {
-			//ignore silently
+			// ignore silently
 		}
 	}
 
