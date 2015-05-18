@@ -40,6 +40,7 @@ Feature: Search
     And I click Continue button on Upload dialog
     And I dismiss alert
     And I dont see CONNECT label
+    And I press maybe later button
     And I click clear button
     And I swipe down contact list
     And I scroll up page a bit

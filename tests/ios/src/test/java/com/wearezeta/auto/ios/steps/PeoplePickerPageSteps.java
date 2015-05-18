@@ -78,6 +78,14 @@ public class PeoplePickerPageSteps {
 				PagesCollection.peoplePickerPage
 						.isPeopleYouMayKnowLabelVisible());
 	}
+	
+	/**
+	 * Click maybe later to dismiss contacts import
+	 */
+	@When("^I press maybe later button$")
+	public void IPressMaybeLater() {
+		PagesCollection.peoplePickerPage.clickMaybeLaterButton();
+	}
 
 	/**
 	 * Hides the keyboard on main people picker page
