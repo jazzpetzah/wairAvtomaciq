@@ -10,7 +10,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -47,9 +46,6 @@ public class LoginPage extends AndroidPage {
 
 	@FindBy(id = AndroidLocators.LoginPage.idPasswordInput)
 	private WebElement passwordInput;
-
-	@FindBy(className = AndroidLocators.CommonLocators.classEditText)
-	private List<WebElement> editText;
 
 	@FindBy(id = AndroidLocators.LoginPage.idLoginError)
 	private WebElement loginError;
@@ -104,35 +100,17 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public void setLogin(String login) throws Exception {
-		if (CommonUtils.getAndroidApiLvl(LoginPage.class) > 42) {
-			try {
-				loginInput.sendKeys(login);
-			} catch (Exception e) {
-				log.debug(this.getDriver().getPageSource());
-				throw e;
-			}
-		} else {
-			for (WebElement editField : editText) {
-				if (editField.getText().toLowerCase().equals("email")) {
-					editField.sendKeys(login);
-					return;
-				}
-			}
+		try {
+			loginInput.sendKeys(login);
+		} catch (Exception e) {
+			log.debug(this.getDriver().getPageSource());
+			throw e;
 		}
 	}
 
 	public void setPassword(String password) throws Exception {
-		if (CommonUtils.getAndroidApiLvl(LoginPage.class) > 42) {
-			passwordInput.click();
-			passwordInput.sendKeys(password);
-		} else {
-			for (WebElement editField : editText) {
-				if (editField.getText().toLowerCase().isEmpty()) {
-					editField.sendKeys(password);
-					return;
-				}
-			}
-		}
+		passwordInput.click();
+		passwordInput.sendKeys(password);
 	}
 
 	public boolean waitForLoginScreenDisappear() throws Exception {

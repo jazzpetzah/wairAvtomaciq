@@ -226,7 +226,7 @@ public final class AndroidLocators {
 		public static final String xpathContactFrame = "//android.widget.FrameLayout[child::android.widget.TextView[@text='%s']]";
 
 		public static final Function<String, String> xpathContactByName = name -> String
-				.format("//android.widget.TextView[@text='%s']", name);
+				.format("//*[@id='tv_conv_list_topic' and @value='%s']", name);
 
 		public static final String idSimpleDialogPageText = "ttv__simple_dialog__text";
 
@@ -251,7 +251,7 @@ public final class AndroidLocators {
 
 		public static final String idConfirmBtn = "confirm";
 
-		public static final String classEditText = "android.widget.EditText";
+		public static final String idEditText = "cet__cursor_view";
 
 		public static final String classNameTextView = "android.widget.TextView";
 
@@ -346,10 +346,6 @@ public final class AndroidLocators {
 
 		public static final String idCancelCall = "cib__calling__dismiss";
 
-		public static final Function<String, String> xpathFormatSpecificMessageByText = text -> String
-				.format("//*[@id='ltv__row_conversation__message' and @text='%s']",
-						text);
-
 		public static final String xpathMessage = "//android.widget.LinearLayout/android.widget.TextView[contains(@text,'%s')]";
 
 		public static final String xpathPing42 = "//android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView[3]";
@@ -373,6 +369,13 @@ public final class AndroidLocators {
 		public static final String xpathConfirmButton42 = "//android.widget.TextView[@text='OK']";
 
 		public static final String xpathDialogImages42 = "//android.widget.FrameLayout//android.widget.ImageView";
+
+		public static final Function<String, String> xpathConversationMessageByText = text -> String
+				.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
+						text);
+		
+		public static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
+
 
 		public static By getByForDialogPageImage() throws Exception {
 			if (CommonUtils.getAndroidApiLvl(AndroidLocators.class) < 43) {

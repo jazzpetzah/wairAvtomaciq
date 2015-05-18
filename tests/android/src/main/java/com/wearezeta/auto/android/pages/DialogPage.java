@@ -38,7 +38,7 @@ public class DialogPage extends AndroidPage {
 	public static final String SPEAKER_BUTTON_LABEL = "SPEAKER";
 	public static final String I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
+	@FindBy(id = AndroidLocators.CommonLocators.idEditText)
 	private WebElement cursorInput;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.DialogPage.xpathCloseCursor)
@@ -49,9 +49,6 @@ public class DialogPage extends AndroidPage {
 
 	@FindBy(id = AndroidLocators.DialogPage.idMessage)
 	private List<WebElement> messagesList;
-
-	@FindBy(id = AndroidLocators.DialogPage.idMessage)
-	private WebElement conversationMessage;
 
 	@FindBy(id = AndroidLocators.DialogPage.idMissedCallMesage)
 	private WebElement missedCallMessage;
@@ -101,7 +98,7 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.DialogPage.idBackgroundOverlay)
 	private WebElement backgroundOverlay;
 
-	@FindBy(id= AndroidLocators.DialogPage.idConnectRequestChatLabel)
+	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestChatLabel)
 	private WebElement connectRequestChatLabel;
 
 	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestChatUserName)
@@ -155,7 +152,9 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.DialogPage.idNewConversationNameMessage)
 	private WebElement newConversationNameMessage;
 
-	private int initMessageCount = 0;
+	@FindBy(id = AndroidLocators.DialogPage.xpathLastConversationMessage)
+	private WebElement lastConversationMessage;
+
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 	private final String DIALOG_IMAGE = "android_dialog_sendpicture_result.png";
 	private static final int DEFAULT_SWIPE_TIME = 500;
@@ -164,14 +163,9 @@ public class DialogPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	// FIXME: unexpected method behavior
 	public void waitForCursorInputVisible() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.className(AndroidLocators.CommonLocators.classEditText), 5);
-		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.DialogPage.idMessage))) {
-			initMessageCount = messagesList.size();
-		}
+				By.id(AndroidLocators.CommonLocators.idEditText), 5);
 	}
 
 	public void tapOnCursorInput() {
@@ -284,10 +278,6 @@ public class DialogPage extends AndroidPage {
 				sendKeyYPosPercentage);
 	}
 
-	public String getLastMessageFromDialog() {
-		return messagesList.get(messagesList.size() - 1).getText();
-	}
-
 	public void clickLastImageFromDialog() {
 		imageList.get(imageList.size() - 1).click();
 	}
@@ -324,13 +314,18 @@ public class DialogPage extends AndroidPage {
 		}
 	}
 
-	// FIXME: unexpected method behavior
-	public void waitForMessage() throws InterruptedException {
-		for (int i = 0; i < 10; i++) {
-			if (initMessageCount < messagesList.size()) {
-				break;
-			}
-			Thread.sleep(200);
+	private static final int MSG_DELIVERY_TIMEOUT_SECONDS = 4;
+
+	public void waitForMessage(String text) throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.DialogPage.xpathConversationMessageByText
+						.apply(text));
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
+				MSG_DELIVERY_TIMEOUT_SECONDS)) {
+			throw new RuntimeException(
+					String.format(
+							"Message '%s' has not been displayed after '%s' seconds timeout",
+							text, MSG_DELIVERY_TIMEOUT_SECONDS));
 		}
 	}
 
@@ -365,11 +360,12 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean isConnectMessageVisible() {
-		return DriverUtils.isElementPresentAndDisplayed(conversationMessage);
+		return DriverUtils
+				.isElementPresentAndDisplayed(lastConversationMessage);
 	}
 
 	public boolean isConnectMessageValid(String message) {
-		return conversationMessage.getText().toLowerCase()
+		return lastConversationMessage.getText().toLowerCase()
 				.contains(message.toLowerCase());
 	}
 
@@ -586,7 +582,7 @@ public class DialogPage extends AndroidPage {
 		if (DriverUtils
 				.waitUntilLocatorAppears(
 						getDriver(),
-						By.xpath(AndroidLocators.DialogPage.xpathFormatSpecificMessageByText
+						By.xpath(AndroidLocators.DialogPage.xpathConversationMessageByText
 								.apply(message)))) {
 			return new MessageEntry("text", message, new Date(), checkTime);
 		}
@@ -620,18 +616,8 @@ public class DialogPage extends AndroidPage {
 		return (!messageElement.isEmpty() && !actionElement.isEmpty());
 	}
 
-	public boolean isMessageExists(String messageText) throws Exception {
-		for (WebElement element : messagesList) {
-			String text = element.getText();
-			if (text.equals(messageText)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public boolean isGroupChatDialogContainsNames(List<String> names) {
-		final String convoText = conversationMessage.getText();
+		final String convoText = lastConversationMessage.getText();
 		for (String name : names) {
 			if (!convoText.toLowerCase().contains(name.toLowerCase())) {
 				return false;
@@ -699,5 +685,9 @@ public class DialogPage extends AndroidPage {
 	public boolean isNativeBrowserURLVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(AndroidLocators.Browsers.xpathNativeBrowserURLBar));
+	}
+
+	public String getLastMessageFromDialog() {
+		return lastConversationMessage.getText();
 	}
 }

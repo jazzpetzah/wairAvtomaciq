@@ -52,16 +52,15 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Generates a random message and sends it in the chat
+	 * Send message to the chat
 	 * 
-	 * @step. ^I type the message and send it$
+	 * @step. ^I type the message \"(.*)\" and send it$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I type the message and send it$")
-	public void WhenITypeRandomMessageAndSendIt() throws Exception {
-		message = CommonUtils.generateGUID();
-		PagesCollection.dialogPage.typeAndSendMessage(message);
+	@When("^I type the message \"(.*)\" and send it$")
+	public void WhenITypeRandomMessageAndSendIt(String msg) throws Exception {
+		PagesCollection.dialogPage.typeAndSendMessage(msg);
 	}
 
 	/**
@@ -446,15 +445,13 @@ public class DialogPageSteps {
 	 * Checks to see that a message that has been sent appears in the chat
 	 * history
 	 * 
-	 * @step. ^I see my message in the dialog$
+	 * @step. ^I see my message \"(.*)\" in the dialog$
 	 * 
 	 * @throws Throwable
 	 */
-	@Then("^I see my message in the dialog$")
-	public void ThenISeeMyMessageInTheDialog() throws Throwable {
-		PagesCollection.dialogPage.waitForMessage();
-		String lastMess = PagesCollection.dialogPage.getLastMessageFromDialog();
-		Assert.assertTrue(lastMess.equals(message.trim()));
+	@Then("^I see my message \"(.*)\" in the dialog$")
+	public void ThenISeeMyMessageInTheDialog(String msg) throws Throwable {
+		PagesCollection.dialogPage.waitForMessage(msg);
 	}
 
 	/**
@@ -467,9 +464,8 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see URL in the dialog$")
 	public void ThenISeeURLInDialog() throws Throwable {
-		PagesCollection.dialogPage.waitForMessage();
-		String lastMess = PagesCollection.dialogPage.getLastMessageFromDialog();
-		Assert.assertTrue(lastMess.contains("www.google.com"));
+		// FIXME: Magic string
+		PagesCollection.dialogPage.waitForMessage("www.google.com");
 	}
 
 	/**
@@ -621,8 +617,7 @@ public class DialogPageSteps {
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
 				.toUpperCase();
-		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message
-				+ " " + contact));
+		PagesCollection.dialogPage.waitForMessage(message + " " + contact);
 	}
 
 	/**

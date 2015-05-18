@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @id316 @torun
+  @id316 @smoke
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -9,12 +9,12 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I type the message and send it
-    Then I see my message in the dialog
+    And I type the message "<Message>" and send it
+    Then I see my message "<Message>" in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Message |
+      | user1Email | user1Password | user1Name | user2Name | Yo      |
 
   @id317 @smoke
   Scenario Outline: Send Hello and Hey to contact
@@ -86,12 +86,12 @@ Feature: Conversation View
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I tap on text input
-    And I type the message and send it
-    Then I see my message in the dialog
+    And I type the message "<Message>" and send it
+    Then I see my message "<Message>" in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName     |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessGroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName     | Message |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
   @id143 @regression
   Scenario Outline: Send Long Message to contact

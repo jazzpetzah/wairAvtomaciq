@@ -1,13 +1,12 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
-
-import com.wearezeta.auto.common.CommonUtils;
-
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -33,7 +32,7 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.ContactListPage.idContactListNames)
 	private List<WebElement> contactListNames;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
+	@FindBy(id = AndroidLocators.CommonLocators.idEditText)
 	private WebElement cursorInput;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
@@ -97,16 +96,17 @@ public class ContactListPage extends AndroidPage {
 		WebElement el = findInContactList(name, 5);
 		this.getWait().until(ExpectedConditions.visibilityOf(el));
 		el.click();
-		page = getPages();
-		// workaround for incorrect tap
-		if (page == null) {
+		try {
+			page = detectCurrentPage();
+		} catch (WebDriverException e) {
+			// workaround for incorrect tap
 			el = findInContactList(name, 1);
 			if (el != null && DriverUtils.isElementPresentAndDisplayed(el)) {
 				this.restoreApplication();
 				el.click();
 				log.debug("tap on contact for the second time");
 			}
-			page = getPages();
+			page = detectCurrentPage();
 		}
 		return page;
 	}
@@ -129,42 +129,23 @@ public class ContactListPage extends AndroidPage {
 		return contactListNames;
 	}
 
-	// Someone please clarify what cyclesNumber is used for¢
-	public WebElement findInContactList(String name, int cyclesNumber)
+	public WebElement findInContactList(String name, int maxSwypesInList)
 			throws Exception {
-		if (CommonUtils.getAndroidApiLvl(ContactListPage.class) > 42) {
-			if (!DriverUtils.isElementPresentAndDisplayed(convList)) {
-				throw new RuntimeException(
-						String.format(
-								"Converation list is not visible and the contact '%s' cannot be found",
-								name));
-			}
-		} else {
-			if (!(DriverUtils.isElementPresentAndDisplayed(cursorInput) && DriverUtils
-					.isElementPresentAndDisplayed(selfUserName))) {
-				throw new RuntimeException(
-						String.format(
-								"Converation list is not visible and the contact '%s' cannot be found",
-								name));
-			}
-		}
-
 		final By nameLocator = By
 				.xpath(AndroidLocators.ContactListPage.xpathContactByName
 						.apply(name));
 		if (DriverUtils
-				.waitUntilLocatorIsDisplayed(getDriver(), nameLocator, 2)) {
+				.waitUntilLocatorIsDisplayed(getDriver(), nameLocator, 1)) {
 			return this.getDriver().findElement(nameLocator);
 		} else {
-			if (cyclesNumber > 0) {
-				cyclesNumber--;
+			if (maxSwypesInList > 0) {
+				maxSwypesInList--;
 				DriverUtils.swipeUp(this.getDriver(), mainControl, 500);
-				return findInContactList(name, cyclesNumber);
+				return findInContactList(name, maxSwypesInList);
 			}
 		}
-		// throw new RuntimeException(String.format(
-		// "Contact '%s' cannot be found in the conversation list", name));
-		return null;
+		throw new RuntimeException(String.format(
+				"Contact '%s' cannot be found in the conversation list", name));
 	}
 
 	public AndroidPage swipeRightOnContact(int time, String contact)
@@ -175,14 +156,11 @@ public class ContactListPage extends AndroidPage {
 						contact));
 		elementSwipeRight(el, time);
 		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.className(AndroidLocators.CommonLocators.classEditText), 2)) {
+				By.id(AndroidLocators.CommonLocators.idEditText), 2)) {
 			return new ContactListPage(this.getLazyDriver());
-		} else if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.className(AndroidLocators.CommonLocators.classEditText), 2)) {
+		} else {
 			return new DialogPage(this.getLazyDriver());
 		}
-		throw new RuntimeException(String.format(
-				"Failed to swipe right on contact '%s' ", contact));
 	}
 
 	public AndroidPage swipeOnArchiveUnarchive(String contact) throws Exception {
@@ -193,14 +171,11 @@ public class ContactListPage extends AndroidPage {
 								contact));
 		DriverUtils.swipeRight(this.getDriver(), el, 1000);
 		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.className(AndroidLocators.CommonLocators.classEditText), 2)) {
+				By.id(AndroidLocators.CommonLocators.idEditText), 2)) {
 			return new ContactListPage(this.getLazyDriver());
-		} else if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.className(AndroidLocators.CommonLocators.classEditText), 2)) {
+		} else {
 			return new DialogPage(this.getLazyDriver());
 		}
-		throw new RuntimeException(String.format(
-				"Failed to swipe on Archive for contact '%s' ", contact));
 	}
 
 	public boolean isContactMuted() throws Exception {
@@ -262,18 +237,24 @@ public class ContactListPage extends AndroidPage {
 		return findInContactList(name, cycles) != null;
 	}
 
-	// FIXME: unclear method name
-	private AndroidPage getPages() throws Exception {
-		AndroidPage page = null;
-		if (DriverUtils.isElementPresentAndDisplayed(connectToHeader)) {
-			page = new ConnectToPage(this.getLazyDriver());
-		} else if (DriverUtils.isElementPresentAndDisplayed(selfUserName)) {
-			page = new PersonalInfoPage(this.getLazyDriver());
-		} else if (DriverUtils.isElementPresentAndDisplayed(cursorInput)) {
-			page = new DialogPage(this.getLazyDriver());
+	private AndroidPage detectCurrentPage() throws Exception {
+		final Map<By, AndroidPage> pageMapping = new HashMap<By, AndroidPage>();
+		pageMapping.put(By.id(AndroidLocators.ConnectToPage.idConnectToHeader),
+				new ConnectToPage(this.getLazyDriver()));
+		pageMapping.put(By.id(AndroidLocators.PersonalInfoPage.idNameField),
+				new PersonalInfoPage(this.getLazyDriver()));
+		pageMapping.put(
+				By.id(AndroidLocators.CommonLocators.idEditText),
+				new DialogPage(this.getLazyDriver()));
+		for (Map.Entry<By, AndroidPage> entry : pageMapping.entrySet()) {
+			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					entry.getKey(), 2)) {
+				return entry.getValue();
+			}
 		}
-
-		return page;
+		log.debug(getDriver().getPageSource());
+		throw new WebDriverException(
+				"Current page type cannot be detected. Please check locators");
 	}
 
 	public boolean isPlayPauseMediaButtonVisible()
