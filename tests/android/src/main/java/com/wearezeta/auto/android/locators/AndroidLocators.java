@@ -196,6 +196,8 @@ public final class AndroidLocators {
 		public static final String xpathConfirmCancelButton42 = "//android.widget.TextView[@text='LATER']";
 
 		public static final String idContactListNames = "tv_conv_list_topic";
+		
+		public static final String xpathLoadingContactListItem = "//*[@id='tv_conv_list_topic' and contains(@value, '…')]";
 
 		public static final Function<String, String> xpathContactListArchiveUnarchiveByName = name -> String
 				.format("//*[@value='%s']//*[@value='ARCHIVE' or @value='UNARCHIVE']",

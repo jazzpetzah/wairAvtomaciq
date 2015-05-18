@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.pages;
 
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -55,9 +56,20 @@ public class CallingOverlayPage extends AndroidPage {
 		return null;
 	}
 
+	private static final int VISIBILITY_TIMEOUT_SECONDS = 5;
+
 	public boolean isVisible() throws Exception {
-		return DriverUtils
-				.isElementPresentAndDisplayed(callingOverlayContainer);
+		final By locator = By
+				.id(AndroidLocators.CallingOverlayPage.idCallingOverlayContainer);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
+				VISIBILITY_TIMEOUT_SECONDS);
+	}
+
+	public boolean waitUntilNotVisible() throws Exception {
+		final By locator = By
+				.id(AndroidLocators.CallingOverlayPage.idCallingOverlayContainer);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
+				VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public void muteConversation() {
@@ -68,8 +80,9 @@ public class CallingOverlayPage extends AndroidPage {
 		return callingUsersName.getText();
 	}
 
-	public void acceptCall() {
+	public DialogPage acceptCall() throws Exception {
 		acceptButton.click();
+		return new DialogPage(getLazyDriver());
 	}
 
 	public boolean incominCallerAvatarIsVisible() throws Exception {

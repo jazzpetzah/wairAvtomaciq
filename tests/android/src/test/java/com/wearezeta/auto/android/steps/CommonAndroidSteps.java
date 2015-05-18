@@ -93,11 +93,9 @@ public class CommonAndroidSteps {
 				CommonUtils.getAndroidActivityFromConfig(cls));
 		capabilities.setCapability("appWaitActivity",
 				CommonUtils.getAndroidActivityFromConfig(cls));
-		capabilities.setCapability("applicationName",
-				"selendroid");
-		capabilities.setCapability("automationName",
-				"selendroid");		
-		
+		capabilities.setCapability("applicationName", "selendroid");
+		capabilities.setCapability("automationName", "selendroid");
+
 		if (isUnicode) {
 			capabilities.setCapability("unicodeKeyboard", true);
 			capabilities.setCapability("resetKeyboard", true);
@@ -173,9 +171,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I press back button$")
 	public void PressBackButton() throws Exception {
-		if (PagesCollection.loginPage != null) {
-			PagesCollection.loginPage.navigateBack();
-		}
+		PagesCollection.loginPage.navigateBack();
 	}
 
 	/**
@@ -184,41 +180,34 @@ public class CommonAndroidSteps {
 	 * @step. ^I hide keyboard$
 	 * @throws Exception
 	 * 
-	 * 
 	 */
 	@When("^I hide keyboard$")
 	public void IHideKeyboard() throws Exception {
-		if (PagesCollection.loginPage != null) {
-			try {
-				PagesCollection.loginPage.hideKeyboard();
-			} catch (Exception ex) {
-				// ignore silently
-			}
+		try {
+			PagesCollection.loginPage.hideKeyboard();
+		} catch (Exception ex) {
+			// ignore silently
 		}
 	}
 
 	@When("^I swipe right$")
 	public void ISwipeRight() throws Exception {
 		PagesCollection.androidPage.swipeRightCoordinates(DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); // fix for animation
 	}
 
 	@When("^I swipe left$")
 	public void ISwipeLeft() throws Exception {
 		PagesCollection.androidPage.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); // fix for animation
 	}
 
 	@When("^I swipe up$")
 	public void ISwipeUp() throws Exception {
 		PagesCollection.androidPage.swipeUpCoordinates(DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); // fix for animation
 	}
 
 	@When("^I swipe down$")
 	public void ISwipeDown() throws Exception {
 		PagesCollection.androidPage.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); // fix for animation
 	}
 
 	public void commonBefore() throws Exception {
@@ -263,10 +252,8 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I minimize the application$")
 	public void IMimizeApllication() throws Exception {
-		if (PagesCollection.loginPage != null) {
-			PagesCollection.commonAndroidPage = PagesCollection.loginPage
-					.minimizeApplication();
-		}
+		PagesCollection.commonAndroidPage = PagesCollection.loginPage
+				.minimizeApplication();
 	}
 
 	/**
@@ -279,9 +266,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I lock the device$")
 	public void ILockTheDevice() throws Exception {
-		if (PagesCollection.loginPage != null) {
-			PagesCollection.loginPage.lockScreen();
-		}
+		PagesCollection.loginPage.lockScreen();
 	}
 
 	/**
@@ -397,9 +382,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I restore the application$")
 	public void IRestoreApllication() throws Exception {
-		if (PagesCollection.loginPage != null) {
-			PagesCollection.loginPage.restoreApplication();
-		}
+		PagesCollection.loginPage.restoreApplication();
 	}
 
 	/**
@@ -1021,7 +1004,6 @@ public class CommonAndroidSteps {
 	@When("^I rotate UI to landscape$")
 	public void WhenIRotateUILandscape() throws Exception {
 		PagesCollection.loginPage.rotateLandscape();
-		Thread.sleep(1000); // fix for animation
 	}
 
 	/**
@@ -1034,7 +1016,6 @@ public class CommonAndroidSteps {
 	@When("^I rotate UI to portrait$")
 	public void WhenIRotateUIPortrait() throws Exception {
 		PagesCollection.loginPage.rotatePortrait();
-		Thread.sleep(1000); // fix for animation
 	}
 
 }

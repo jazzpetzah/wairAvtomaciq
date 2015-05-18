@@ -12,41 +12,6 @@ import cucumber.api.java.en.When;
 public class ContactListPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	@SuppressWarnings("unused")
-	private void disableHint(String name) throws Exception {
-		Thread.sleep(2000);
-		if (PagesCollection.contactListPage.isHintVisible()) {
-			PagesCollection.contactListPage.closeHint();
-			Thread.sleep(1000);
-			ISwipeDownContactList();
-			if (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
-				PagesCollection.peoplePickerPage.tapClearButton();
-			}
-
-			// WhenITapOnMyName(name);
-			PagesCollection.contactListPage.navigateBack();
-
-			String contactName = "aqaContact1";
-			WhenITapOnContactName(contactName);
-
-			if (PagesCollection.contactListPage.isHintVisible()) {
-				PagesCollection.contactListPage.closeHint();
-			}
-			PagesCollection.contactListPage.navigateBack();
-
-			WhenITapOnContactName(contactName);
-
-			if (PagesCollection.contactListPage.isHintVisible()) {
-				PagesCollection.contactListPage.closeHint();
-			}
-			DialogPageSteps steps = new DialogPageSteps();
-			steps.WhenISeeDialogPage();
-			steps.WhenISwipeOnTextInput();
-			steps.WhenISwipeLeftOnTextInput();
-			PagesCollection.contactListPage.navigateBack();
-		}
-	}
-
 	/**
 	 * Close People Picker and open contact list without contacts (Should these
 	 * two pieces of behaviour be different steps?)
@@ -58,7 +23,6 @@ public class ContactListPageSteps {
 	@Given("^I see Contact list with no contacts$")
 	public void GivenISeeContactListWithNoContacts() throws Throwable {
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
-
 	}
 
 	/**
@@ -74,7 +38,6 @@ public class ContactListPageSteps {
 	public void GivenISeeContactList() throws Throwable {
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
 		PagesCollection.contactListPage.waitForContactListLoadFinished();
-
 	}
 
 	/**
@@ -87,16 +50,14 @@ public class ContactListPageSteps {
 	 * @throws Exception
 	 */
 	@Given("^I do not see Contact list with name (.*)$")
-	public void GivenIDoNotSeeContactListWithName(String selfContactName)
-			throws Exception {
+	public void GivenIDoNotSeeContactListWithName(String name) throws Exception {
 		try {
-			selfContactName = usrMgr.findUserByNameOrNameAlias(selfContactName)
-					.getName();
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
 		Assert.assertFalse(PagesCollection.contactListPage
-				.isContactExists(selfContactName));
+				.isContactExists(name));
 	}
 
 	/**
@@ -285,8 +246,8 @@ public class ContactListPageSteps {
 	 */
 	@Then("^Contact (.*) is not muted$")
 	public void ThenContactIsNotMuted(String contact) throws Exception {
-
-		Assert.assertFalse(PagesCollection.contactListPage.isContactMuted());
+		Assert.assertTrue(PagesCollection.contactListPage
+				.waitUntilContactNotMuted());
 	}
 
 	/**

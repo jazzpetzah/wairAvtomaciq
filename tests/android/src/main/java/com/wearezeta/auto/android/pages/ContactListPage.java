@@ -144,8 +144,7 @@ public class ContactListPage extends AndroidPage {
 				return findInContactList(name, maxSwypesInList);
 			}
 		}
-		throw new RuntimeException(String.format(
-				"Contact '%s' cannot be found in the conversation list", name));
+		return null;
 	}
 
 	public AndroidPage swipeRightOnContact(int time, String contact)
@@ -180,6 +179,11 @@ public class ContactListPage extends AndroidPage {
 
 	public boolean isContactMuted() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.id(AndroidLocators.ContactListPage.idMutedIcon));
+	}
+
+	public boolean waitUntilContactNotMuted() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.ContactListPage.idMutedIcon));
 	}
 
@@ -256,29 +260,26 @@ public class ContactListPage extends AndroidPage {
 				"Current page type cannot be detected. Please check locators");
 	}
 
-	public boolean isPlayPauseMediaButtonVisible()
-			throws NumberFormatException, Exception {
-		if (DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.ContactListPage.idPlayPauseMedia))) {
-			return DriverUtils.isElementPresentAndDisplayed(playPauseMedia);
-		} else {
-			return false;
-		}
+	public boolean isPlayPauseMediaButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.ContactListPage.idPlayPauseMedia));
 	}
 
-	public void waitForContactListLoadFinished() throws InterruptedException {
+	public void waitForContactListLoadFinished() throws Exception {
 		if (contactListNames.size() > 0) {
 			waitForContacListLoading();
 		}
 	}
 
-	private void waitForContacListLoading() throws InterruptedException {
-		for (WebElement contact : contactListNames) {
-			if (contact.getText().contains("…")) {
-				Thread.sleep(500);
-				waitForContacListLoading();
-			}
-		}
+	private static final int CONTACT_LIST_ITEMS_LOAD_TIMEOUT_SECONDS = 60;
+
+	private void waitForContacListLoading() throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.ContactListPage.xpathLoadingContactListItem);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
+				CONTACT_LIST_ITEMS_LOAD_TIMEOUT_SECONDS) : String
+				.format("Not all conversation list items were loaded within %s seconds",
+						CONTACT_LIST_ITEMS_LOAD_TIMEOUT_SECONDS);
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {

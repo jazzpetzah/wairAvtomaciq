@@ -11,11 +11,10 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-
 public class AboutPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.AboutPage.idAboutLogo)
 	private WebElement aboutLogo;
-	
+
 	@FindBy(xpath = AndroidLocators.AboutPage.xpathAboutClose)
 	private WebElement aboutClose;
 
@@ -26,8 +25,7 @@ public class AboutPage extends AndroidPage {
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction)
 			throws IOException {
-		// TODO Auto-generated method stub
-		return null;
+		throw new RuntimeException("Swipe is not supported on About page");
 	}
 
 	public boolean aboutLogoIsVisible() throws Exception {
