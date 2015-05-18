@@ -1,12 +1,12 @@
 Feature: Conversation View
 
-  @id316 @staging
+  @id2252 @staging
   Scenario Outline: Send Message to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -17,13 +17,13 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id317 @staging
+  @id2253 @staging
   Scenario Outline: Send Hello and Hey to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     And I rotate UI to portrait
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -34,13 +34,13 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message | Action |
       | user1Email | user1Password | user1Name | user2Name | YOU     | PINGED |
 
-  @id318 @staging
+  @id2254 @staging
   Scenario Outline: Send Camera picture to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     And I rotate UI to portrait
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -53,13 +53,13 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1262 @staging
+  @id2255 @staging
   Scenario Outline: Add people to 1:1 chat in portrait mode
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <Contact1>
     And I see tablet dialog page
     And I tap on profile button
@@ -80,14 +80,14 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @id320 @staging
+  @id2256 @staging
   Scenario Outline: Send message to group chat in portrait mode
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <GroupChatName>
     And I see tablet dialog page
     And I tap on text input
@@ -98,13 +98,13 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName     |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessGroupChat |
 
-  @id316 @staging
+  @id2238 @staging
   Scenario Outline: Send Message to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -115,13 +115,13 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id317 @staging
+  @id2239 @staging
   Scenario Outline: Send Hello and Hey to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     And I rotate UI to landscape
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -132,13 +132,13 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message | Action |
       | user1Email | user1Password | user1Name | user2Name | YOU     | PINGED |
 
-  @id318 @staging
+  @id2240 @staging
   Scenario Outline: Send Camera picture to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     And I rotate UI to landscape
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -151,13 +151,13 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1262 @staging
+  @id2241 @staging
   Scenario Outline: Add people to 1:1 chat in landscape mode
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <Contact1>
     And I see tablet dialog page
     And I tap on profile button
@@ -178,14 +178,14 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @id320 @staging
+  @id2242 @staging
   Scenario Outline: Send message to group chat in landscape mode
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <GroupChatName>
     And I see tablet dialog page
     And I tap on text input

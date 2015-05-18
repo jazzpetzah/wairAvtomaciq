@@ -2,15 +2,16 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -75,31 +76,52 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathSendAnInviteButton)
 	private WebElement sendInviteButton;
 
+	@FindBy(how = How.NAME, using = IOSLocators.nameInstantConnectButton)
+	private WebElement instantConnectButton;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultCell)
+	private WebElement searchResultCell;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultContainer)
+	private WebElement searchResultContainer;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameLaterButton)
+	private WebElement maybeLaterButton;
+
 	private int numberTopSelected = 0;
 
-	public PeoplePickerPage(ZetaIOSDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public PeoplePickerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
+	}
+	
+	public void clickMaybeLaterButton() {
+		maybeLaterButton.click();
 	}
 
 	public void clickLaterButton() throws Exception {
-		if (DriverUtils.isElementDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameShareButton))) {
-			//shareButton.click();
-			DriverUtils.mobileTapByCoordinates(getDriver(), shareButton);
+		for (int i = 0; i < 3; i++) {
+			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+					By.name(IOSLocators.nameShareButton), 3)) {
+				if (i > 0) {
+					this.minimizeApplication(3);
+				}
+				getWait().until(
+						ExpectedConditions.elementToBeClickable(shareButton));
+				DriverUtils.mobileTapByCoordinates(getDriver(), shareButton);
+				break;
+			}
 		}
 	}
 
 	public Boolean isPeoplePickerPageVisible() throws Exception {
-
-		boolean result = DriverUtils.waitUntilElementAppears(driver,
+		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.namePickerClearButton));
 		Thread.sleep(1000);
 		clickLaterButton();
 		return result;
 	}
 
-	public void tapOnPeoplePickerSearch() {
+	public void tapOnPeoplePickerSearch() throws Exception {
 		this.getDriver().tap(1, peoplePickerSearch.getLocation().x + 40,
 				peoplePickerSearch.getLocation().y + 30, 1);// workaround for
 															// people picker
@@ -115,48 +137,116 @@ public class PeoplePickerPage extends IOSPage {
 		BufferedImage clockImage = getAvatarClockIconScreenShot(name);
 		path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(clockImage, templateImage);
+		double score = ImageUtil.getOverlapScore(clockImage, templateImage);
+		return score;
 	}
 
 	public BufferedImage getAvatarClockIconScreenShot(String name)
-			throws IOException {
-		return getElementScreenshot(driver.findElement(By.name(name)));
+			throws Exception {
+		return getScreenshotByCoordinates(
+				searchResultCell.getLocation().x,
+				searchResultCell.getLocation().y / 3
+						+ searchResultContainer.getLocation().y,
+				searchResultCell.getSize().width / 2,
+				searchResultCell.getSize().height * 3);
 	}
 
 	public void fillTextInPeoplePickerSearch(String text) {
-		peoplePickerSearch.sendKeys(text);
+		try {
+			peoplePickerSearch.sendKeys(text);
+		} catch (WebDriverException ex) {
+			peoplePickerSearch.clear();
+			peoplePickerSearch.sendKeys(text);
+		}
 	}
 
 	public boolean waitUserPickerFindUser(String user) throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver, By.name(user));
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.name(user));
 	}
 
 	public ConnectToPage clickOnNotConnectedUser(String name) throws Exception {
 		ConnectToPage page;
-		driver.findElement(By.name(name)).click();
-		page = new ConnectToPage(this.getDriver(), this.getWait());
+		getDriver().findElement(By.name(name)).click();
+		page = new ConnectToPage(this.getLazyDriver());
 		return page;
 	}
 
 	public ConnectToPage pickUserAndTap(String name) throws Exception {
 
 		PickUser(name).click();
-		return new ConnectToPage(this.getDriver(), this.getWait());
+		return new ConnectToPage(this.getLazyDriver());
 	}
 
 	public PendingRequestsPage pickIgnoredUserAndTap(String name)
 			throws Exception {
 		PickUser(name).click();
-		return new PendingRequestsPage(this.getDriver(), this.getWait());
+		return new PendingRequestsPage(this.getLazyDriver());
 	}
 
 	public ContactListPage dismissPeoplePicker() throws Exception {
 		peoplePickerClearBtn.click();
-		return new ContactListPage(this.getDriver(), this.getWait());
+		return new ContactListPage(this.getLazyDriver());
+	}
+
+	public void hidePeoplePickerKeyboard() throws Exception {
+		DriverUtils.swipeUp(this.getDriver(), sendInviteButton, 500, 50, 40);
+	}
+
+	public void swipeToRevealHideSuggestedContact(String contact)
+			throws Exception {
+		List<WebElement> collectionElements = this.getDriver()
+				.findElementsByClassName(IOSLocators.nameSuggestedContactType);
+		for (WebElement collectionElement : collectionElements) {
+			if (!collectionElement.findElements(By.name(contact.toLowerCase()))
+					.isEmpty()) {
+				DriverUtils.swipeRight(this.getDriver(), collectionElement,
+						500, 50, 50);
+				break;
+			}
+		}
+	}
+
+	public void swipeCompletelyToDismissSuggestedContact(String contact)
+			throws Exception {
+		List<WebElement> collectionElements = this.getDriver()
+				.findElementsByClassName(IOSLocators.nameSuggestedContactType);
+		for (WebElement collectionElement : collectionElements) {
+			if (!collectionElement.findElements(By.name(contact.toLowerCase()))
+					.isEmpty()) {
+				DriverUtils.swipeRight(this.getDriver(), collectionElement,
+						1000, 100, 50);
+				break;
+			}
+		}
+	}
+
+	public void tapHideSuggestedContact() throws Exception {
+		List<WebElement> buttonElements = this.getDriver()
+				.findElementsByClassName(
+						IOSLocators.nameHideSuggestedContactButtonType);
+		for (WebElement buttonElement : buttonElements) {
+			if (buttonElement.getLocation().x > 0
+					&& buttonElement.getAttribute("name").equals(
+							IOSLocators.nameHideSuggestedContactButton)) {
+				buttonElement.click();
+			}
+		}
+	}
+
+	public boolean isSuggestedContactVisible(String contact) throws Exception {
+		List<WebElement> textElements = this.getDriver()
+				.findElementsByClassName("UIAStaticText");
+		for (WebElement textElement : textElements) {
+			if (textElement.getText().toLowerCase().equals(contact)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean isAddToConversationBtnVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePeoplePickerAddToConversationButton));
 	}
 
@@ -174,17 +264,17 @@ public class PeoplePickerPage extends IOSPage {
 	public IOSPage clickOnGoButton(boolean isGroupChat) throws Exception {
 		goButton.click();
 		if (numberTopSelected >= 2 || isGroupChat) {
-			return new GroupChatPage(this.getDriver(), this.getWait());
+			return new GroupChatPage(this.getLazyDriver());
 		} else {
-			return new DialogPage(this.getDriver(), this.getWait());
+			return new DialogPage(this.getLazyDriver());
 		}
 	}
 
 	public GroupChatInfoPage clickOnUserToAddToExistingGroupChat(String name)
 			throws Throwable {
 		GroupChatInfoPage page = null;
-		driver.findElement(By.name(name)).click();
-		page = new GroupChatInfoPage(this.getDriver(), this.getWait());
+		getDriver().findElement(By.name(name)).click();
+		page = new GroupChatInfoPage(this.getLazyDriver());
 		return page;
 	}
 
@@ -193,7 +283,7 @@ public class PeoplePickerPage extends IOSPage {
 		IOSPage page = null;
 		switch (direction) {
 		case DOWN: {
-			page = new ContactListPage(this.getDriver(), this.getWait());
+			page = new ContactListPage(this.getLazyDriver());
 			break;
 		}
 		case UP: {
@@ -214,7 +304,7 @@ public class PeoplePickerPage extends IOSPage {
 		WebElement user = null;
 		fillTextInPeoplePickerSearch(name);
 		waitUserPickerFindUser(name);
-		user = driver.findElementByName(name);
+		user = getDriver().findElementByName(name);
 		return user;
 	}
 
@@ -223,21 +313,21 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public boolean isContactsLabelVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePeoplePickerContactsLabel));
 	}
 
 	public void selectUser(String name) throws Exception {
-		WebElement el = driver.findElement(By.name(name));
-		DriverUtils.waitUntilElementClickable(driver, el);
+		WebElement el = getDriver().findElement(By.name(name));
+		DriverUtils.waitUntilElementClickable(this.getDriver(), el);
 		el.click();
 	}
 
-	public void tapNumberOfTopConnections(int numberToTap) {
+	public void tapNumberOfTopConnections(int numberToTap) throws Exception {
 		numberTopSelected = 0;
 		for (int i = 1; i < numberToTap + 1; i++) {
 			numberTopSelected++;
-			driver.findElement(
+			getDriver().findElement(
 					By.xpath(String.format(
 							IOSLocators.xpathPeoplePickerTopConnectionsAvatar,
 							i))).click();
@@ -245,34 +335,41 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public boolean isCreateConversationButtonVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameCreateConversationButton));
 	}
 
 	public IOSPage clickCreateConversationButton() throws Throwable {
 		createConverstaionButton.click();
 		if (numberTopSelected >= 2) {
-			return new GroupChatPage(this.getDriver(), this.getWait());
+			return new GroupChatPage(this.getLazyDriver());
 		} else {
-			return new DialogPage(this.getDriver(), this.getWait());
+			return new DialogPage(this.getLazyDriver());
 		}
 	}
 
 	public boolean isTopPeopleLabelVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.NamePeoplePickerTopPeopleLabel));
 	}
 
-	public boolean isUserSelected(String name) {
-		WebElement el = driver.findElement(By.xpath(String.format(
-				IOSLocators.xpathPeoplePickerUserAvatar, name)));
+	public boolean isConnectLabelVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.name(IOSLocators.namePeopleYouMayKnowLabel));
+	}
+
+	public boolean isUserSelected(String name) throws Exception {
+		WebElement el = getDriver().findElement(
+				By.xpath(String.format(IOSLocators.xpathPeoplePickerUserAvatar,
+						name)));
 		boolean flag = el.getAttribute("value").equals("1");
 		return flag;
 	}
 
-	public void clickConnectedUserAvatar(String name) {
-		WebElement el = driver.findElement(By.xpath(String.format(
-				IOSLocators.xpathPeoplePickerUserAvatar, name)));
+	public void clickConnectedUserAvatar(String name) throws Exception {
+		WebElement el = getDriver().findElement(
+				By.xpath(String.format(IOSLocators.xpathPeoplePickerUserAvatar,
+						name)));
 		el.click();
 	}
 
@@ -286,39 +383,38 @@ public class PeoplePickerPage extends IOSPage {
 
 	public GroupChatPage clickAddToCoversationButton() throws Exception {
 		addToConversationBtn.click();
-		return new GroupChatPage(this.getDriver(), this.getWait());
+		return new GroupChatPage(this.getLazyDriver());
 	}
 
 	public OtherUserOnPendingProfilePage clickOnUserOnPending(String contact)
 			throws Exception {
-		OtherUserOnPendingProfilePage page;
-		driver.findElement(By.name(contact)).click();
-		page = new OtherUserOnPendingProfilePage(this.getDriver(),
-				this.getWait());
-		return page;
+
+		WebElement el = getDriver().findElement(By.name(contact));
+		DriverUtils.mobileTapByCoordinates(getDriver(), el);
+		return new OtherUserOnPendingProfilePage(this.getLazyDriver());
 	}
 
 	public boolean isUploadDialogShown() throws Exception {
-		boolean isLaterBtnVisible = DriverUtils.isElementDisplayed(
+		boolean isLaterBtnVisible = DriverUtils.waitUntilLocatorIsDisplayed(
 				this.getDriver(), By.name(IOSLocators.nameShareButton));
 		return isLaterBtnVisible;
 	}
 
 	public void clickContinueButton() throws Exception {
-		if (DriverUtils.isElementDisplayed(this.getDriver(),
+		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameContinueUploadButton))) {
 			continueButton.click();
 		}
 	}
 
 	public boolean isPeopleYouMayKnowLabelVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePeopleYouMayKnowLabel));
 	}
 
 	public DialogPage unblockUser() throws Exception {
 		unblockButton.click();
-		return new DialogPage(this.getDriver(), this.getWait());
+		return new DialogPage(this.getLazyDriver());
 	}
 
 	public int getNumberOfSelectedTopPeople() {
@@ -338,6 +434,10 @@ public class PeoplePickerPage extends IOSPage {
 	public void tapSendInviteCopyButton() throws UnsupportedFlavorException,
 			Exception {
 		inviteCopyButton.click();
+	}
+
+	public void pressInstantConnectButton() {
+		instantConnectButton.click();
 	}
 
 }

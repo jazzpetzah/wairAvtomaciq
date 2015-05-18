@@ -9,7 +9,10 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 public class LoginPageSteps {
 
@@ -17,6 +20,8 @@ public class LoginPageSteps {
 			.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private static final int MAX_LOGIN_RETRIES = 3;
 
 	/**
 	 * Enters user email and password into corresponding fields on sign in
@@ -53,22 +58,34 @@ public class LoginPageSteps {
 		log.debug("Starting to Sign in using login " + login + " and password "
 				+ password);
 
-		InvitationCodePageSteps invitationPageSteps = new InvitationCodePageSteps();
-		invitationPageSteps.ISeeInvitationPage();
-		invitationPageSteps.IEnterInvitationCode();
-
-		PagesCollection.registrationPage.switchToLoginPage();
-		this.IEnterEmail(login);
-		this.IEnterPassword(password);
-		this.IPressSignInButton();
+		// FIXME: Try to reenter login data if signing in fails to
+		// workaround Amazon page load issues
+		int ntry = 0;
+		while (ntry < MAX_LOGIN_RETRIES) {
+			PagesCollection.loginPage = PagesCollection.registrationPage
+					.switchToLoginPage();
+			this.IEnterEmail(login);
+			this.IEnterPassword(password);
+			try {
+				this.IPressSignInButton();
+				break;
+			} catch (AssertionError e) {
+				log.error(String.format(
+						"Failed to sign in. Retrying (%s of %s)...", ntry + 1,
+						MAX_LOGIN_RETRIES));
+				if (ntry + 1 >= MAX_LOGIN_RETRIES) {
+					throw e;
+				}
+			}
+			ntry++;
+		}
 	}
 
 	/**
-	 * Presses Sign In button on the corresponding page and verifies whether an
-	 * account is signed in properly
-	 * 
+	 * Presses Sign In button on the corresponding page
+	 *
 	 * @step. ^I press Sign In button$
-	 * 
+	 *
 	 * @throws Exception
 	 *             if Selenium fails to wait until sign in action completes
 	 */
@@ -76,19 +93,68 @@ public class LoginPageSteps {
 	public void IPressSignInButton() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.loginPage
 				.clickSignInButton();
+	}
 
-		Assert.assertTrue(PagesCollection.loginPage.waitForLogin());
+	/**
+	 * Verifies whether an account is signed in properly
+	 *
+	 * @step. ^I am signed in properly$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I am signed in properly$")
+	public void IAmSignedInProperly() throws Exception {
+		Assert.assertTrue(
+				"Sign In button/login progress spinner are still visible",
+				PagesCollection.loginPage.waitForLogin());
+	}
+
+	/**
+	 * Checks if a error message is shown on the sign in page
+	 *
+	 * @step. ^the sign in error message reads (.*)
+	 * @param message
+	 *            expected error message
+	 * @throws Throwable
+	 */
+	@Then("^the sign in error message reads (.*)")
+	public void TheSignInErrorMessageReads(String message) throws Throwable {
+		assertThat("sign in error message",
+				PagesCollection.loginPage.getErrorMessage(), equalTo(message));
+	}
+
+	/**
+	 * Checks if a red dot is shown inside the email field on the sign in form
+	 *
+	 * @step. ^a red dot is shown inside the email field on the sign in form$
+	 */
+	@Then("^a red dot is shown inside the email field on the sign in form$")
+	public void ARedDotIsShownOnTheEmailField() {
+		assertThat("Red dot on email field",
+				PagesCollection.loginPage.isRedDotOnEmailField());
+	}
+
+	/**
+	 * Checks if a red dot is shown inside the password field on the sign in
+	 * form
+	 *
+	 * @step. ^a red dot is shown inside the password field on the sign in form$
+	 */
+	@Then("^a red dot is shown inside the password field on the sign in form$")
+	public void ARedDotIsShownOnThePasswordField() {
+		assertThat("Red dot on password field",
+				PagesCollection.loginPage.isRedDotOnEmailField());
 	}
 
 	/**
 	 * Types email string into the corresponding input field on sign in page
 	 * 
-	 * @step. ^I enter email (.*)$
+	 * @step. ^I enter email (\\S+)$
 	 * 
 	 * @param email
 	 *            user email string
 	 */
-	@When("^I enter email (.*)$")
+	@When("^I enter email (\\S+)$")
 	public void IEnterEmail(String email) {
 		try {
 			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
@@ -101,12 +167,12 @@ public class LoginPageSteps {
 	/**
 	 * Types password string into the corresponding input field on sign in page
 	 * 
-	 * @step. ^I enter password (.*)$
+	 * @step. ^I enter password \"([^\"]*)\"$
 	 * 
 	 * @param password
 	 *            password string
 	 */
-	@When("I enter password (.*)")
+	@When("^I enter password \"([^\"]*)\"$")
 	public void IEnterPassword(String password) {
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
@@ -131,10 +197,9 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Clicks the corresponding switcher button to make the registration page
-	 * active
+	 * Switch to [Rr]egistration page
 	 * 
-	 * @step. ^I switch to registration page$
+	 * @step. ^I switch to [Rr]egistration page$
 	 * 
 	 * @throws Exception
 	 */
@@ -142,5 +207,38 @@ public class LoginPageSteps {
 	public void ISwitchToRegistrationPage() throws Exception {
 		PagesCollection.registrationPage = PagesCollection.loginPage
 				.switchToRegistrationPage();
+	}
+
+	/**
+	 * Click Change Password button on login page
+	 * 
+	 * @step. ^I click Change Password button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Change Password button$")
+	public void IClickChangePassword() throws Exception {
+		PagesCollection.passwordChangeRequestPage = PagesCollection.loginPage
+				.clickChangePasswordButton();
+	}
+
+	/**
+	 * Verifies whether the expected login error is visible on the page
+	 * 
+	 * @step. ^I see login error \"(.*)\"$
+	 * 
+	 * @param expectedError
+	 *            the text of error
+	 * @throws Exception
+	 */
+	@Then("^I see login error \"(.*)\"$")
+	public void ISeeLoginError(String expectedError) throws Exception {
+		final String loginErrorText = PagesCollection.loginPage
+				.getErrorMessage();
+		Assert.assertTrue(
+				String.format(
+						"The actual login error '%s' is not equal to the expected one: '%s'",
+						loginErrorText, expectedError), loginErrorText
+						.equals(expectedError));
 	}
 }

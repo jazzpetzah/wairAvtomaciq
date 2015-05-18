@@ -1,33 +1,33 @@
 Feature: People View
 
-  @id321 @staging
+  @id2257 @staging
   Scenario Outline: Leave group conversation in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <GroupChatName>
     And I see tablet dialog page
     And I tap on profile button
     And I press Right conversation button
     And I press Leave conversartion button
     And I confirm leaving
-    Then I see Contact list with my name <Name>
+    Then I see Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @id322  @staging
+  @id2258 @staging 
   Scenario Outline: Remove from group chat in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I see contact list loaded with User name <Contact1>
     And I see contact list loaded with User name <Contact2>
     When I tap on tablet contact name <GroupChatName>
@@ -45,7 +45,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
       | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
 
-  @id1395 @staging
+  @id2282 @staging
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -53,46 +53,46 @@ Feature: People View
     Given Contact <Name> send message to user <Contact1>
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I wait for 90 seconds
     When I swipe down contact list
     And I see People picker page
     And I tap on <Contact1> in Top People
-    And I tap on create conversation
+    And I tap on tablet create conversation
     And I see tablet dialog page
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
-      
-        @id321 @staging
+
+  @id2243 @staging
   Scenario Outline: Leave group conversation in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     When I tap on tablet contact name <GroupChatName>
     And I see tablet dialog page
     And I tap on profile button
     And I press Right conversation button
     And I press Leave conversartion button
     And I confirm leaving
-    Then I see Contact list with my name <Name>
+    Then I see Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @id322 @staging
+  @id2244 @staging
   Scenario Outline: Remove from group chat in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I see contact list loaded with User name <Contact1>
     And I see contact list loaded with User name <Contact2>
     When I tap on tablet contact name <GroupChatName>
@@ -110,7 +110,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
       | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
 
-  @id1395  @staging
+  @id2283 @staging
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -118,12 +118,12 @@ Feature: People View
     Given Contact <Name> send message to user <Contact1>
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I wait for 90 seconds
     When I swipe down contact list
     And I see People picker page
     And I tap on <Contact1> in Top People
-    And I tap on create conversation
+    And I tap on tablet create conversation
     And I see tablet dialog page
 
     Examples: 

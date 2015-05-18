@@ -1,11 +1,11 @@
 Feature: Connect
 
   @id191 @id193 @smoke @regression 
-  Scenario Outline: Send invitation message to a user
+  Scenario Outline: Send connection request from search
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -23,17 +23,17 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id323 @smoke 
-  Scenario Outline: Accept connection request
+  @id323 @smoke @regression
+  Scenario Outline: Accept incoming connection request from conversation list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
-    Then I see Connect to <Contact> Dialog page
+    Then I see contact list loaded with User name <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact1  | WaitingMess      |
@@ -44,13 +44,13 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I do not see Contact list with name <WaitingMess>
-    And <Contact> has sent connection request to <Name>
+    Given I see Contact list
+    Given I do not see Contact list with name <WaitingMess>
+    Given <Contact> sent connection request to <Name>
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
     And I press Ignore connect button
-    Then I see contact list loaded with User name <Name>
+    Then I see Contact list
     Then Contact name <WaitingMess> is not in list
 
     Examples: 
@@ -60,18 +60,18 @@ Feature: Connect
   @id539 @id543 @regression
   Scenario Outline: I can see a inbox count increasing/decreasing correctly + I ignore someone from people picker and clear my inbox
     Given There are 5 users where <Name> is me
-    Given <Contact1> has sent connection request to <Name>
+    Given <Contact1> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And <Contact2> has sent connection request to <Name>
-    And I wait for 2 seconds
-    And I see contact list loaded with User name <WaitingMess2>
+    Given I see Contact list
+    Given <Contact2> sent connection request to <Name>
+    When I wait for 2 seconds
+    Then I see contact list loaded with User name <WaitingMess2>
     When I tap on contact name <WaitingMess2>
     And I press Ignore connect button
     And I navigate back from connect page
     Then I see contact list loaded with User name <WaitingMess1>
-    And <Contact3> has sent connection request to <Name>
-    And <Contact4> has sent connection request to <Name>
+    And <Contact3> sent connection request to <Name>
+    And <Contact4> sent connection request to <Name>
     And I see contact list loaded with User name <WaitingMess3>
     And I swipe down contact list
     And I see People picker page
@@ -96,10 +96,10 @@ Feature: Connect
   @id544 @regression
   Scenario Outline: I accept someone from people picker and -1 from inbox as well
     Given There are 3 users where <Name> is me
-    Given <Contact1> has sent connection request to <Name>
+    Given <Contact1> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And <Contact2> has sent connection request to <Name>
+    Given I see Contact list
+    Given <Contact2> sent connection request to <Name>
     When I see contact list loaded with User name <WaitingMess1>
     And I swipe down contact list
     And I see People picker page
@@ -121,9 +121,9 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     And Contact name <WaitingMess> is not in list
-    And <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     When I see contact list loaded with User name <WaitingMess>
     And I tap on contact name <WaitingMess>
     And I press Ignore connect button
@@ -144,11 +144,11 @@ Feature: Connect
       | user1Email | user1Password | user1Name | user2Name | user3Name | 1 person waiting |
 
   @id542 @regression
-  Scenario Outline: I want to be taken to the connect inbox right away if the person I select already sent me a connect request
+  Scenario Outline: Accept incoming connection request from search
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to <Name>
+    Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I see contact list loaded with User name <WaitingMess>
     And I swipe down contact list
     And I see People picker page
@@ -169,10 +169,10 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I swipe down contact list
+    Given I see Contact list
+    When I swipe down contact list
     And I see People picker page
-    When I tap on Search input on People picker page
+    And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -192,10 +192,10 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I swipe down contact list
+    Given I see Contact list
+    When I swipe down contact list
     And I see People picker page
-    When I tap on Search input on People picker page
+    And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -213,8 +213,8 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I swipe down contact list
+    Given I see Contact list
+    When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -237,9 +237,9 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I minimize the application
-    And <Contact> has sent connection request to Me
+    And <Contact> sent connection request to Me
     And I restore the application
     #And I press back button
     And I see contact list loaded with User name <WaitingMess>
@@ -257,8 +257,8 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I swipe down contact list
+    Given I see Contact list
+    When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -283,10 +283,10 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And I swipe down contact list
+    Given I see Contact list
+    When I swipe down contact list
     And I see People picker page
-    When I tap on Search input on People picker page
+    And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -305,7 +305,7 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>
     Given <Contact1> has group chat <ChatName> with Myself,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <ChatName>
     And I swipe up on dialog page
     And I tap on group chat contact <Contact2>
@@ -326,11 +326,11 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe up on dialog page
-    And I press Right conversation button
+    And I press options menu button
     And I Press Block button
     #And I confirm block
     Then I do not see Contact list with name <Contact>
@@ -351,7 +351,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -382,15 +382,15 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Contact1  | Message      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hello friend |
 
-  @regression_off @id720
+  @regression_off @id720 @mute
   Scenario Outline: I do not want to be seen in the search results of someone I blocked
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    And User <Contact> blocks user <Name>
+    Given I see Contact list
+    When User <Contact> blocks user <Name>
     And I wait for 120 seconds
-    When I swipe down contact list
+    And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -408,7 +408,7 @@ Feature: Connect
     Given User <Name> blocks user <Contact1>
     And I wait for 120 seconds
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    And I see Contact list
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -422,7 +422,7 @@ Feature: Connect
     And I see contact list loaded with User name <Contact1>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2 |
+      | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @id1405 @regression
@@ -430,7 +430,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -455,7 +455,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I input <Message> message and send it
@@ -469,3 +469,53 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact   | Message          | Picture     |
       | user1Email | user1Password | user1Name | user2Name | Hello my friend! | testing.jpg |
+
+  @id2215 @staging 
+  Scenario Outline: I can connect to someone from PYMK by clicking +
+    Given I see sign in screen
+    Given I press Join button
+    Given I press Camera button twice
+    Given I confirm selection
+    Given I enter name <Name>
+    Given I enter email <Email>
+    Given I enter password <Password>
+    Given I submit registration data
+    Given I see confirmation page
+    Given I verify registration address
+    When I wait for PYMK for 30 secs
+    And I hide keyboard
+    And I press + button on a random Connect
+  	And I press Clear button
+    Then I see Contact list
+    And I see contact list loaded with PeoplePicker Random Connect
+
+    Examples: 
+      | Email      | Password      | Name      | Contact1  |
+      | user1Email | user1Password | user1Name | user2Name |
+      
+  @id2216 @staging
+  Scenario Outline: I can connect to someone from PYMK by tap and typing connect message
+    Given I see sign in screen
+    Given I press Join button
+    Given I press Camera button twice
+    Given I confirm selection
+    Given I enter name <Name>
+    Given I enter email <Email>
+    Given I enter password <Password>
+    Given I submit registration data
+    Given I see confirmation page
+    Given I verify registration address
+    When I wait for PYMK for 30 secs
+    And I hide keyboard
+    And I tap on a random contact from PYMK and set it name to <Contact1> 
+    And I see connect to <Contact1> dialog
+    And I tap on edit connect request field
+    And I type Connect request "<Message>"
+    And I press Connect button
+    And I see People picker page
+    And I navigate back to Conversations List
+    Then I see contact list loaded with User name <Contact1>
+    
+    Examples: 
+      | Email      | Password      | Name      | Contact1  | Message       |
+      | user1Email | user1Password | user1Name | user2Name | Hellow friend |

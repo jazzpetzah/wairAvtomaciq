@@ -4,12 +4,12 @@ Feature: Connect
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe down contact list
+    When I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
-    Given I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    Given I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
@@ -29,8 +29,8 @@ Feature: Connect
   Scenario Outline: Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
-    Given <Contact> has sent connection request to Me
-    Given I Sign in using login <Login> and password <Password>
+    Given <Contact> sent connection request to Me
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
@@ -51,7 +51,7 @@ Feature: Connect
     Given Myself is connected to <GroupCreator>
     Given <GroupCreator> is connected to <UnconnectedUser>
     Given <GroupCreator> has group chat <GroupChatName> with <UnconnectedUser>,Myself
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I swipe up on group chat page
@@ -146,11 +146,11 @@ Feature: Connect
   @regression @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
     Given There are 5 users where <Name> is me
-    Given <Contact1> has sent connection request to me
-    Given <Contact2> has sent connection request to me
-    Given <Contact3> has sent connection request to me
+    Given <Contact1> sent connection request to me
+    Given <Contact2> sent connection request to me
+    Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
@@ -158,6 +158,7 @@ Feature: Connect
     And I click on Ignore button on Pending requests page <SentRequests> times
     And I dont see Pending request link in contact list
     And I don't see conversation with not connected user <Contact1>
+    And I wait until <Contact1> exists in backend search results
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -171,11 +172,11 @@ Feature: Connect
   @regression @id577
   Scenario Outline: Verify transitions between connection requests (connecting)
     Given There are 5 users where <Name> is me
-    Given <Contact1> has sent connection request to me
-    Given <Contact2> has sent connection request to me
-    Given <Contact3> has sent connection request to me
+    Given <Contact1> sent connection request to me
+    Given <Contact2> sent connection request to me
+    Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
@@ -194,9 +195,9 @@ Feature: Connect
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe down contact list
+    When I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -220,7 +221,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When Contact <Contact> sends image <Picture> to single user conversation <Name>
     And Contact <Contact> ping conversation <Name>
@@ -250,12 +251,12 @@ Feature: Connect
   @regression @id596
   Scenario Outline: Verify you cannot send the invitation message twice
     Given There are 2 users where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe down contact list
+    When I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
-    And I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    And I wait until <ContactEmail> exists in backend search results
     And I input in People picker search field user email <ContactEmail>
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
@@ -280,9 +281,9 @@ Feature: Connect
   Scenario Outline: Verify you can send an invitation via mail
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I swipe down contact list
+    When I open search by clicking plus button
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -300,3 +301,33 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @regression @id2294
+  Scenario Outline: Verify sending connection request by clicking instant + button (with search)
+    Given There are 2 users where <Name> is me
+    Given User <UnconnectedUser> name starts with <StartLetter>
+    Given User <Name> change accent color to <Color>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    Given I wait until <ContactEmail> exists in backend search results
+    And I input in People picker search field user email <ContactEmail>
+    And I see user <UnconnectedUser> found on People picker page
+    And I press the instant connect button
+    And I click close button to dismiss people view
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user email <ContactEmail>
+    Then I see the user <UnconnectedUser> avatar with a clock
+    And I click close button to dismiss people view
+    And I see first item in contact list named <UnconnectedUser>
+    And I tap on contact name <UnconnectedUser>
+    Then I see Pending Connect to <UnconnectedUser> message on Dialog page from user <Name>
+    
+    Examples: 
+      | Login      | Password      | Name      | UnconnectedUser | ContactEmail | StartLetter |Color        |
+      | user1Email | user1Password | user1Name | user2Name 		 | user2Email   | T		      |BrightOrange |
+  	

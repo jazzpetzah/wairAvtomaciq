@@ -1,11 +1,13 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.List;
+import java.util.concurrent.Future;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -13,6 +15,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.SendInvitationPopoverContainer;
 
 public class PeoplePickerPage extends WebPage {
 
@@ -29,22 +32,28 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathCloseSearchButton)
 	private WebElement closeSearchButton;
 
-	public PeoplePickerPage(ZetaWebAppDriver driver, WebDriverWait wait)
+	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathSendInvitationButton)
+	private WebElement sendInvitationButton;
+
+	@FindBy(xpath = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']")
+	private List<WebElement> suggestions;
+
+	public PeoplePickerPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	public void createConversation() throws Exception {
-		DriverUtils.waitUntilElementClickable(driver,
+		DriverUtils.waitUntilElementClickable(this.getDriver(),
 				openOrCreateConversationButton);
 		openOrCreateConversationButton.click();
 	}
 
-	private void clickNotConnectedUser(String name) {
+	private void clickNotConnectedUser(String name) throws Exception {
 		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 				.apply(name);
-		WebElement foundUserElement = driver.findElement(By
-				.xpath(foundUserXpath));
+		WebElement foundUserElement = getDriver().findElement(
+				By.xpath(foundUserXpath));
 		foundUserElement.click();
 	}
 
@@ -52,22 +61,23 @@ public class PeoplePickerPage extends WebPage {
 			throws Exception {
 		clickNotConnectedUser(name);
 		PagesCollection.popoverPage = new ConnectToPopoverContainer(
-				this.getDriver(), this.getWait());
+				this.getLazyDriver());
 		return (ConnectToPopoverContainer) PagesCollection.popoverPage;
 	}
 
 	public boolean isUserFound(String name) throws Exception {
 		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 				.apply(name);
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(foundUserXpath), 3);
 	}
 
 	public void closeSearch() throws Exception {
-		assert DriverUtils.isElementDisplayed(driver, By
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathCloseSearchButton),
 				5);
-		assert DriverUtils.waitUntilElementClickable(driver, closeSearchButton);
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				closeSearchButton);
 		closeSearchButton.click();
 	}
 
@@ -75,16 +85,19 @@ public class PeoplePickerPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(name));
-		return DriverUtils.isElementDisplayed(driver, locator, 5);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 5);
 	}
 
 	public void clickOnParticipant(String name) throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(name));
-		assert DriverUtils.isElementDisplayed(driver, locator, 3);
-		WebElement participant = driver.findElement(locator);
-		assert DriverUtils.waitUntilElementClickable(driver, participant);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
+		WebElement participant = getDriver().findElement(locator);
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				participant);
 		participant.click();
 	}
 
@@ -92,10 +105,10 @@ public class PeoplePickerPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(user));
-		assert DriverUtils.isElementDisplayed(driver, locator,
-				DriverUtils.DEFAULT_VISIBILITY_TIMEOUT);
-		WebElement userEl = driver.findElement(locator);
-		assert DriverUtils.waitUntilElementClickable(driver, userEl);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator);
+		WebElement userEl = getDriver().findElement(locator);
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(), userEl);
 		userEl.click();
 	}
 
@@ -104,20 +117,43 @@ public class PeoplePickerPage extends WebPage {
 	}
 
 	public void searchForUser(String name) throws Exception {
-		if (!WebCommonUtils.isElementFocused(driver,
+		if (!WebCommonUtils.isElementFocused(this.getDriver(),
 				WebAppLocators.PeoplePickerPage.cssNameSearchInput)) {
-			WebCommonUtils.setFocusToElement(driver,
+			WebCommonUtils.setFocusToElement(this.getDriver(),
 					WebAppLocators.PeoplePickerPage.cssNameSearchInput);
 		}
 		searchInput.sendKeys(name);
 	}
-	
-	public boolean isVisibleAfterTimeout(int secondsTimeout)
-			throws Exception {
+
+	public boolean isVisibleAfterTimeout(int secondsTimeout) throws Exception {
 		Thread.sleep(secondsTimeout * 1000);
 		return DriverUtils
-				.isElementDisplayed(
-						driver,
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
 						By.className(WebAppLocators.PeoplePickerPage.classNamePeoplePickerVisible));
+	}
+
+	private static final int BUTTON_VISIBILITY_TIMEOUT_SECONDS = 5;
+
+	public void waitUntilSendInvitationButtonIsVisible() throws Exception {
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.xpath(WebAppLocators.PeoplePickerPage.xpathSendInvitationButton),
+						BUTTON_VISIBILITY_TIMEOUT_SECONDS) : "Send Invitation button is not visible after "
+				+ BUTTON_VISIBILITY_TIMEOUT_SECONDS + " seconds timeout";
+	}
+
+	public SendInvitationPopoverContainer clickSendInvitationButton()
+			throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				sendInvitationButton);
+		sendInvitationButton.click();
+
+		return new SendInvitationPopoverContainer(this.getLazyDriver());
+	}
+
+	public int getNumberOfSuggestions() {
+		return suggestions.size();
 	}
 }

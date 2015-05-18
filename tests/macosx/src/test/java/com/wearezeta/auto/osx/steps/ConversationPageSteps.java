@@ -38,7 +38,7 @@ public class ConversationPageSteps {
 	public String pingID;
 
 	@When("I write random message")
-	public void WhenIWriteRandomMessage() {
+	public void WhenIWriteRandomMessage() throws Exception {
 		randomMessage = CommonUtils.generateGUID();
 		IWriteMessage(randomMessage);
 	}
@@ -53,7 +53,7 @@ public class ConversationPageSteps {
 	}
 
 	@When("I write message (.*)")
-	public void IWriteMessage(String message) {
+	public void IWriteMessage(String message) throws Exception {
 		PagesCollection.conversationPage.writeNewMessage(message);
 	}
 
@@ -62,10 +62,11 @@ public class ConversationPageSteps {
 	 * e.g. in pending state.
 	 * 
 	 * @step. I can not write a random message
+	 * @throws Exception
 	 * 
 	 */
 	@When("I can not write a random message")
-	public void ICanNotWriteAMessage() {
+	public void ICanNotWriteAMessage() throws Exception {
 		boolean messageTextArea = PagesCollection.conversationPage
 				.isMessageTextAreaVisible();
 		Assert.assertFalse(
@@ -86,10 +87,8 @@ public class ConversationPageSteps {
 		}
 		PagesCollection.conversationPage.writeNewMessage("");
 		PagesCollection.conversationPage.openChooseImageDialog();
-		PagesCollection.choosePicturePage = new ChoosePicturePage(
-				PagesCollection.conversationPage.getDriver(),
-				PagesCollection.conversationPage.getWait());
-
+		PagesCollection.choosePicturePage = (ChoosePicturePage) PagesCollection.conversationPage
+				.instantiatePage(ChoosePicturePage.class);
 		Assert.assertTrue("Choose picture page were not opened.",
 				PagesCollection.choosePicturePage.isVisible());
 
@@ -203,7 +202,7 @@ public class ConversationPageSteps {
 		PagesCollection.conversationPage.scrollDownToLastMessage();
 	}
 
-	private void calcNumberOfPings(String user) {
+	private void calcNumberOfPings(String user) throws Exception {
 		if (beforeNumberOfKnocks < 0) {
 			beforeNumberOfKnocks = PagesCollection.conversationPage
 					.getNumberOfYouPingedMessages(String.format(
@@ -217,13 +216,13 @@ public class ConversationPageSteps {
 	}
 
 	@When("I ping user")
-	public void WhenIPingUser() {
+	public void WhenIPingUser() throws Exception {
 		calcNumberOfPings("YOU");
 		PagesCollection.conversationPage.ping();
 	}
 
 	@When("I ping again user")
-	public void IPingAgainUser() {
+	public void IPingAgainUser() throws Exception {
 		calcNumberOfPings("YOU");
 		PagesCollection.conversationPage.pingAgain();
 	}
@@ -298,7 +297,7 @@ public class ConversationPageSteps {
 		Thread.sleep(1000);
 	}
 
-	private void verifyPingedMessage(String user) throws InterruptedException {
+	private void verifyPingedMessage(String user) throws Exception {
 		boolean isNumberIncreased = false;
 		int afterNumberOfKnocks = -1;
 		for (int i = 0; i < 3; i++) {
@@ -317,8 +316,7 @@ public class ConversationPageSteps {
 				isNumberIncreased);
 	}
 
-	private void verifyPingedAgainMessage(String user)
-			throws InterruptedException {
+	private void verifyPingedAgainMessage(String user) throws Exception {
 		boolean isNumberIncreased = false;
 		int afterNumberOfHotKnocks = -1;
 		for (int i = 0; i < 3; i++) {
@@ -337,8 +335,7 @@ public class ConversationPageSteps {
 				+ afterNumberOfHotKnocks, isNumberIncreased);
 	}
 
-	private void verifyMsgExistsInConversationView(String msg)
-			throws InterruptedException {
+	private void verifyMsgExistsInConversationView(String msg) throws Exception {
 		msg = usrMgr.replaceAliasesOccurences(msg, FindBy.NAME_ALIAS);
 		msg = msg.toUpperCase();
 		Assert.assertTrue(String.format("Message '%s' not found.", msg),
@@ -346,8 +343,7 @@ public class ConversationPageSteps {
 	}
 
 	@Then("I see message (.*) in conversation$")
-	public void ThenISeeMessageInConversation(String message)
-			throws InterruptedException {
+	public void ThenISeeMessageInConversation(String message) throws Exception {
 		if (message.equals(OSXLocators.YOU_PINGED_MESSAGE)) {
 			verifyPingedMessage("YOU");
 		} else if (message.equals(OSXLocators.YOU_PINGED_AGAIN_MESSAGE)) {
@@ -365,12 +361,13 @@ public class ConversationPageSteps {
 	public void WhenIOpenPeoplePickerFromConversation() throws Exception {
 		IScrollDownToConversation();
 		PagesCollection.conversationPage.writeNewMessage("");
-		PagesCollection.conversationPage.openConversationPeoplePicker();
-		PagesCollection.conversationInfoPage = new ConversationInfoPage(
-				PagesCollection.conversationPage.getDriver(),
-				PagesCollection.conversationPage.getWait());
+		PagesCollection.conversationPage.openPeoplePopover();
+		PagesCollection.conversationInfoPage = (ConversationInfoPage) PagesCollection.conversationPage
+				.instantiatePage(ConversationInfoPage.class);
+		PagesCollection.conversationInfoPage
+				.setParent(PagesCollection.conversationPage);
 		if (!PagesCollection.conversationInfoPage.isPeoplePopoverDisplayed()) {
-			PagesCollection.conversationPage.openConversationPeoplePicker();
+			PagesCollection.conversationPage.openPeoplePopover();
 		}
 		PagesCollection.peoplePickerPage = PagesCollection.conversationInfoPage
 				.openPeoplePicker();
@@ -379,11 +376,12 @@ public class ConversationPageSteps {
 	@When("I open Conversation info")
 	public void WhenIOpenConversationInfo() throws Exception {
 		PagesCollection.conversationPage.writeNewMessage("");
-		PagesCollection.conversationPage.openConversationPeoplePicker();
+		PagesCollection.conversationPage.openPeoplePopover();
 		if (PagesCollection.conversationInfoPage == null) {
-			PagesCollection.conversationInfoPage = new ConversationInfoPage(
-					PagesCollection.conversationPage.getDriver(),
-					PagesCollection.conversationPage.getWait());
+			PagesCollection.conversationInfoPage = (ConversationInfoPage) PagesCollection.conversationPage
+					.instantiatePage(ConversationInfoPage.class);
+			PagesCollection.conversationInfoPage
+					.setParent(PagesCollection.conversationPage);
 		}
 	}
 
@@ -516,9 +514,10 @@ public class ConversationPageSteps {
 	}
 
 	@Then("^I see conversation name (.*) in conversation$")
-	public void ISeeConversationNameInConversation(String name) {
+	public void ISeeConversationNameInConversation(String name)
+			throws Exception {
 		if (name.equals(OSXLocators.RANDOM_KEYWORD)) {
-			name = PagesCollection.conversationInfoPage
+			name = PagesCollection.conversationPage
 					.getCurrentConversationName();
 		}
 		String result = PagesCollection.conversationPage
@@ -531,8 +530,7 @@ public class ConversationPageSteps {
 	}
 
 	@When("^I wait (.*) seconds till playback finishes$")
-	public void WhenIWaitTillPlaybackFinishes(int time)
-			throws InterruptedException {
+	public void WhenIWaitTillPlaybackFinishes(int time) throws Exception {
 		Thread.sleep(time * 1000);
 		String currentState = PagesCollection.conversationPage
 				.getSoundCloudButtonState();
@@ -561,7 +559,7 @@ public class ConversationPageSteps {
 	}
 
 	@When("I open Documents folder in Finder")
-	public void IOpenDocumentsFolderInFinder() {
+	public void IOpenDocumentsFolderInFinder() throws Exception {
 		PagesCollection.conversationPage.openFinder();
 	}
 

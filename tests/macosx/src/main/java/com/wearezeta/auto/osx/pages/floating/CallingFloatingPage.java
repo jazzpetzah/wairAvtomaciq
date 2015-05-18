@@ -1,11 +1,12 @@
 package com.wearezeta.auto.osx.pages.floating;
 
+import java.util.concurrent.Future;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -27,14 +28,14 @@ public class CallingFloatingPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.CallingFloatingPage.nameAnswerButton)
 	private WebElement answerButton;
 
-	public CallingFloatingPage(ZetaOSXDriver driver, WebDriverWait wait)
+	public CallingFloatingPage(Future<ZetaOSXDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	public boolean isWindowVisible() throws Exception {
 		String windowXPath = OSXLocators.CallingFloatingPage.xpathWindow;
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(windowXPath));
 	}
 
@@ -44,8 +45,8 @@ public class CallingFloatingPage extends OSXPage {
 				userName);
 		boolean userNameFound = false;
 		try {
-			userNameFound = DriverUtils.waitUntilElementAppears(driver,
-					By.xpath(userNameXPath));
+			userNameFound = DriverUtils.waitUntilLocatorAppears(
+					this.getDriver(), By.xpath(userNameXPath));
 		} catch (TimeoutException e) {
 		}
 		return isWindowVisible() && userNameFound;
@@ -53,7 +54,7 @@ public class CallingFloatingPage extends OSXPage {
 
 	public StartedCallPage answerCall() throws Exception {
 		answerButton.click();
-		return new StartedCallPage(this.getDriver(), this.getWait());
+		return new StartedCallPage(this.getLazyDriver());
 	}
 
 	public void ignoreCall() {

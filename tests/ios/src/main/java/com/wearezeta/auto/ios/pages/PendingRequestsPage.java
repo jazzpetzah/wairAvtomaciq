@@ -1,11 +1,12 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.concurrent.Future;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -29,62 +30,63 @@ public class PendingRequestsPage extends IOSPage {
 
 	private String autoHelloMessage = CommonSteps.CONNECTION_MESSAGE;
 
-	public PendingRequestsPage(ZetaIOSDriver driver, WebDriverWait wait)
+	public PendingRequestsPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
-	public ContactListPage clickIgnoreButton() throws Throwable {
+	public ContactListPage clickIgnoreButton() throws Exception {
 		ContactListPage page = null;
 		ignoreRequestButton.click();
-		page = new ContactListPage(this.getDriver(), this.getWait());
+		page = new ContactListPage(this.getLazyDriver());
 		return page;
 	}
 
 	public ContactListPage clickIgnoreButtonMultiple(int clicks)
-			throws Throwable {
+			throws Exception {
 		ContactListPage page = null;
 		for (int i = 0; i < clicks; i++) {
-			DriverUtils.waitUntilElementAppears(driver,
+			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 					By.name(IOSLocators.namePendingRequestIgnoreButton));
 			this.getWait().until(
 					ExpectedConditions
 							.elementToBeClickable(ignoreRequestButton));
 			ignoreRequestButton.click();
-			DriverUtils.waitUntilElementAppears(driver,
+			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 					By.name(IOSLocators.namePendingRequestIgnoreButton));
 		}
-		page = new ContactListPage(this.getDriver(), this.getWait());
+		page = new ContactListPage(this.getLazyDriver());
 		return page;
 	}
 
-	public ContactListPage clickConnectButton() throws Throwable {
+	public ContactListPage clickConnectButton() throws Exception {
 		ContactListPage page = null;
-		DriverUtils.waitUntilElementClickable(driver, connectRequestButton);
+		DriverUtils.waitUntilElementClickable(this.getDriver(),
+				connectRequestButton);
 		connectRequestButton.click();
-		page = new ContactListPage(this.getDriver(), this.getWait());
+		page = new ContactListPage(this.getLazyDriver());
 		return page;
 	}
 
 	public ContactListPage clickConnectButtonMultiple(int clicks)
-			throws Throwable {
+			throws Exception {
 		ContactListPage page = null;
 		for (int i = 0; i < clicks; i++) {
-			DriverUtils.waitUntilElementAppears(driver,
+			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 					By.name(IOSLocators.namePendingRequestConnectButton));
 			this.getWait().until(
 					ExpectedConditions
 							.elementToBeClickable(connectRequestButton));
 			connectRequestButton.click();
-			DriverUtils.waitUntilElementAppears(driver,
+			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 					By.name(IOSLocators.namePendingRequestConnectButton));
 		}
-		page = new ContactListPage(this.getDriver(), this.getWait());
+		page = new ContactListPage(this.getLazyDriver());
 		return page;
 	}
 
 	public boolean isConnectButtonDisplayed() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePendingRequestConnectButton));
 	}
 
@@ -115,7 +117,7 @@ public class PendingRequestsPage extends IOSPage {
 			break;
 		}
 		case RIGHT: {
-			page = new ContactListPage(this.getDriver(), this.getWait());
+			page = new ContactListPage(this.getLazyDriver());
 			break;
 		}
 		}

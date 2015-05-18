@@ -6,7 +6,11 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
+import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -32,7 +36,7 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @step. ^I type (.*) in search field of People Picker$
 	 * 
-	 * @param name
+	 * @param nameOrEmail
 	 * @throws Exception
 	 */
 	@When("^I type (.*) in search field of People Picker$")
@@ -86,5 +90,50 @@ public class PeoplePickerPageSteps {
 	@When("^I choose to create conversation from People Picker$")
 	public void IChooseToCreateConversationFromPeoplePicker() throws Exception {
 		PagesCollection.peoplePickerPage.createConversation();
+	}
+
+	@Then("^I see more than (\\d+) suggestions? in people picker$")
+	public void ISeeMoreThanXSuggestionsInPeoplePicker(int count) {
+		assertThat("people suggestions",
+				PagesCollection.peoplePickerPage.getNumberOfSuggestions(),
+				greaterThan(count));
+	}
+
+	/**
+	 * Verify whether Send Invitation button is visible on People Picker page
+	 * 
+	 * @step. ^I see Send Invitation button on People Picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Send Invitation button on People Picker page$")
+	public void ISeeSendInvitationButton() throws Exception {
+		PagesCollection.peoplePickerPage
+				.waitUntilSendInvitationButtonIsVisible();
+	}
+
+	/**
+	 * Click Send Invitation button on People Picker page
+	 * 
+	 * @step. ^I click Send Invitation button on People Picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Send Invitation button on People Picker page$")
+	public void IClickSendInvitationButton() throws Exception {
+		PagesCollection.popoverPage = PagesCollection.peoplePickerPage
+				.clickSendInvitationButton();
+	}
+
+	/**
+	 * Click X button to close People Picker page
+	 * 
+	 * @step. ^I close People Picker page$
+	 * @throws Exception
+	 * 
+	 */
+	@And("^I close People Picker page$")
+	public void IClosePeoplePicker() throws Exception {
+		PagesCollection.peoplePickerPage.closeSearch();
 	}
 }

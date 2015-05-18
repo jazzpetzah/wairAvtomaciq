@@ -4,21 +4,18 @@ Feature: Localytics
 # Start of regFailed event
 #***************************************************
   @localytics @id2155
-  Scenario Outline: Verify 'regFailed:reason=The given e-mail address or phone number is in use.' stats
+  Scenario Outline: Verify 'regFailed' stats
     Given I take snapshot of <AttrName> attribute count
-    Given I see invitation page
-    Given I enter invitation code
-    Given I switch to Registration page
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
-    And I enter user password <Password> on Registration page 
+    And I enter user password "<Password>" on Registration page 
     And I submit registration form
     And I wait for 5 seconds
 
     Examples: 
       | Name      | Password      | Email                     | AttrName                                                             |
       | user1Name | user1Password | smoketester@wearezeta.com | regFailed:reason=The given e-mail address or phone number is in use. |
-      | user1Name | user1Password | smoketester+123@gmail.com | regFailed:reason=Bad e-mail address                                  |
+      | user1Name | user1Password | smoketester+123@gmail.com | regFailed:reason=Unauthorized e-mail address or phone number.        |
 # FIXME: Are there any other 'reason' values to check ?
 
 #***************************************************
@@ -66,15 +63,35 @@ Feature: Localytics
 # End of regAddedPicture event
 #***************************************************
 
+#***************************************************
+# Start of uploadedContacts event
+#***************************************************
+
+@localytics @id2156
+  Scenario Outline: Verify 'uploadedContacts:source=Gmail' stats
+    Given I take snapshot of <AttrName> attribute count
+    Given There is 1 user where <Name> is me without avatar picture
+    Given I Sign in using login <Login> and password <Password>
+    And I see Self Picture Upload dialog
+    And I choose <PictureName> as my self picture on Self Picture Upload dialog
+    And I confirm picture selection on Self Picture Upload dialog
+    When I see Contacts Upload dialog
+    And I click button to import Gmail Contacts
+    And I see Google login popup
+    And I sign up at Google with email <GoogleEmail> and password <GooglePassword>
+    And I wait for 5 seconds
+
+    Examples:
+      | Login      | Password      | Name      | PictureName               | GoogleEmail                | GooglePassword | AttrName                      |
+      | user1Email | user1Password | user1Name | userpicture_landscape.jpg | smoketester.wire@gmail.com | aqa123456      | uploadedContacts:source=Gmail |
+
+#***************************************************
+# End of uploadedContacts event
+#***************************************************
 
 #***************************************************
 # Start of session event
 #***************************************************
-
-# TODO: session: \
-#        "incomingCallsMutedActual",
-#        "incomingCallsAcceptedActual",
-#        "voiceCallsInitiatedActual",
 
   @localytics @id2159
   Scenario Outline: Verify 'session:connectRequestsSentActual=1' stats
@@ -82,7 +99,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
-    And I wait up to 15 seconds until <ContactEmail> exists in backend search results
+    And I wait until <ContactEmail> exists in backend search results
     When I open People Picker from Contact List
     And I type <ContactEmail> in search field of People Picker
     And I see user <Contact> found in People Picker
@@ -100,7 +117,7 @@ Feature: Localytics
   Scenario Outline: Verify 'session:totalOutgoingConnectionRequestsActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
-    Given I have sent connection request to <Contact>
+    Given I sent connection request to <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I see Contact list with name <Contact>
@@ -114,7 +131,7 @@ Feature: Localytics
   Scenario Outline: Verify 'session:totalIncomingConnectionRequestsActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to Me
+    Given <Contact> sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I see connection request from one user
@@ -128,7 +145,7 @@ Feature: Localytics
   Scenario Outline: Verify 'session:connectRequestsAcceptedActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
-    Given <Contact> has sent connection request to Me
+    Given <Contact> sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I see connection request from one user
@@ -214,6 +231,57 @@ Feature: Localytics
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName1  | ChatName2  | AttrName                                |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupChat1 | GroupChat2 | session:totalGroupConversationsActual=2 |
 
+  @localytics @id2167
+  Scenario Outline: Verify the 'session:incomingCallsMutedActual=1' attribute is sent
+    Given I take snapshot of session:incomingCallsMutedActual=1 attribute count
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Me
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    When <Contact> calls me using <CallBackend>
+    Then I see the calling bar
+    And I silence the incoming call
+    Then I do not see the calling bar
+    And <Contact> stops all calls to me
+    And I wait for 65 seconds
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | autocall    |
+
+  @localytics @id2168
+  Scenario Outline: Verify the 'session:incomingCallsAcceptedActual=1' attribute is sent
+    Given I take snapshot of session:incomingCallsAcceptedActual=1 attribute count
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Me
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    When <Contact> calls me using <CallBackend>
+    Then I see the calling bar
+    And I accept the incoming call
+    And I wait for 65 seconds
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | autocall    |
+
+  @localytics @id2169
+  Scenario Outline: Verify the 'session:voiceCallsInitiatedActual=1' attribute is sent
+    Given I take snapshot of session:voiceCallsInitiatedActual=1 attribute count
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Me
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    When I open conversation with <Contact>
+    And I call
+    Then I see the calling bar
+    # It is not mandatory for the other side to pick up the call
+    And I wait for 65 seconds
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | autocall    |
+
 #***************************************************
 # End of session event
 #***************************************************
@@ -226,12 +294,9 @@ Feature: Localytics
   @localytics @id2166
   Scenario Outline: Verify 'regSucceeded' stats
     Given I take snapshot of <EventName> event count
-    Given I see invitation page
-    Given I enter invitation code
-    Given I switch to Registration page
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
-    And I enter user password <Password> on Registration page
+    And I enter user password "<Password>" on Registration page
     And I submit registration form
     And I wait for 5 seconds
 
@@ -248,7 +313,29 @@ Feature: Localytics
 # Start of voiceCallEnded event
 #***************************************************
 
-# TODO: implement calling automation
+  @localytics @id2267
+  Scenario Outline: Verify the 'voiceCallEnded' stats
+    Given I take snapshot of <EventName> event count
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to Me
+    Given <Contact> starts waiting instance using <OutCallBackend>
+    Given <Contact> accepts next incoming call automatically
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    When I open conversation with <Contact>
+    And I call
+    When <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar
+    Then I end the call
+    When <Contact> calls me using <InCallBackend>
+    And I see the calling bar
+    And I accept the incoming call
+    Then I end the call
+    And I wait for 5 seconds
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | OutCallBackend | InCallBackend  | Timeout | EventName      |
+      | user1Email | user1Password | user1Name | user2Name | webdriver      | autocall       | 120     | voiceCallEnded |
 
 #***************************************************
 # End of voiceCallEnded event
@@ -261,14 +348,15 @@ Feature: Localytics
 
   @localytics
   Scenario Outline: Verify count of each attribute is increased
-    Then I verify the count of <AttrName> attribute has been increased within 300 seconds
+    Then I verify the count of <AttrName> attribute has been increased within 400 seconds
 
     Examples:
       | AttrName                                                             |
       | regFailed:reason=The given e-mail address or phone number is in use. |
-      | regFailed:reason=Bad e-mail address                                  |
+      | regFailed:reason=Unauthorized e-mail address or phone number.        |
       | regAddedPicture:source=fromPhotoLibrary                              |
       | regAddedPicture:source=fromCarousel                                  |
+      | uploadedContacts:source=Gmail                                        |
       | session:connectRequestsSentActual=1                                  |
       | session:totalOutgoingConnectionRequestsActual=1                      |
       | session:totalIncomingConnectionRequestsActual=1                      |
@@ -277,11 +365,15 @@ Feature: Localytics
       | session:totalContactsActual=3                                        |
       | session:textMessagesSentActual=5                                     |
       | session:totalGroupConversationsActual=2                              |
+      | session:incomingCallsMutedActual=1                                   |
+      | session:incomingCallsAcceptedActual=1                                |
+      | session:voiceCallsInitiatedActual=1                                  |
 
   @localytics
   Scenario Outline: Verify count of each event is increased
-    Then I verify the count of <EventName> event has been increased within 600 seconds
+    Then I verify the count of <EventName> event has been increased within 400 seconds
 
     Examples:
-      | EventName    |
-      | regSucceeded |
+      | EventName      |
+      | regSucceeded   |
+      | voiceCallEnded |

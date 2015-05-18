@@ -1,6 +1,7 @@
 package com.wearezeta.auto.sync.client.listener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -21,7 +22,7 @@ public class AndroidListener extends WireListener {
 	}
 
 	@Override
-	public void waitForMessage(String message, boolean checkTime) {
+	public void waitForMessage(String message, boolean checkTime) throws Exception {
 		DialogPage dialogPage = PagesCollection.dialogPage;
 		MessageEntry entry = dialogPage.receiveMessage(message, checkTime);
 		if (entry != null) {
@@ -33,7 +34,7 @@ public class AndroidListener extends WireListener {
 	}
 
 	@Override
-	public ArrayList<MessageEntry> receiveAllChatMessagesImpl(boolean checkTime) {
+	public List<MessageEntry> receiveAllChatMessagesImpl(boolean checkTime) {
 		try {
 			return PagesCollection.dialogPage.listAllMessages(checkTime);
 		} catch (Exception e) {

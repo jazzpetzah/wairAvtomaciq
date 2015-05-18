@@ -6,42 +6,30 @@ import com.wearezeta.auto.web.pages.SelfPictureUploadPage;
 import cucumber.api.java.en.And;
 
 public class SelfPictureUploadPageSteps {
-	private static final int VISIBILITY_TIMEOUT = 5; // seconds
+	private static final int VISIBILITY_TIMEOUT = 10; // seconds
 
 	/**
-	 * Verify that Self Picture Upload dialog is visible
+	 * Verify that Self Picture Upload dialog is visible or not
 	 * 
-	 * @step. ^I see Self Picture Upload dialog$
+	 * @step. ^I( do not)? see Self Picture Upload dialog$
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist
 	 * @throws Exception
 	 */
-	@And("^I see Self Picture Upload dialog$")
-	public void ISeeSelfPictureUpload() throws Exception {
+	@And("^I( do not)? see Self Picture Upload dialog$")
+	public void ISeeSelfPictureUpload(String shouldNotBeVisible)
+			throws Exception {
 		if (PagesCollection.selfPictureUploadPage == null) {
-			PagesCollection.selfPictureUploadPage = new SelfPictureUploadPage(
-					PagesCollection.loginPage.getDriver(),
-					PagesCollection.loginPage.getWait());
+			PagesCollection.selfPictureUploadPage = (SelfPictureUploadPage) PagesCollection.registrationPage
+					.instantiatePage(SelfPictureUploadPage.class);
 		}
-		PagesCollection.selfPictureUploadPage
-				.waitUntilVisible(VISIBILITY_TIMEOUT);
-	}
-
-	/**
-	 * Verify that Self Picture Upload dialog is not visible
-	 * 
-	 * @step. ^I do not see Self Picture Upload dialog$
-	 * @throws Exception
-	 */
-	@And("^I do not see Self Picture Upload dialog$")
-	public void IDontSeeSelfPictureUpload() throws Exception {
-		try {
+		if (shouldNotBeVisible == null) {
 			PagesCollection.selfPictureUploadPage
-					.waitUntilVisible(VISIBILITY_TIMEOUT);
-		} catch (AssertionError e) {
-			// Everything is ok, the page is not visible
-			return;
+					.waitUntilButtonsAreClickable(VISIBILITY_TIMEOUT);
+		} else {
+			PagesCollection.selfPictureUploadPage
+					.waitUntilNotVisible(VISIBILITY_TIMEOUT);
 		}
-		throw new AssertionError(
-				"Self Picture Upload page should noit be visible");
 	}
 
 	/**
@@ -51,7 +39,7 @@ public class SelfPictureUploadPageSteps {
 	 * 
 	 * @step. ^I choose (.*) as my self picture on Self Picture Upload dialog$
 	 * 
-	 * @param name
+	 * @param pictureName
 	 *            existing picture name
 	 * 
 	 * @throws Exception
@@ -66,25 +54,23 @@ public class SelfPictureUploadPageSteps {
 	 * 
 	 * @step. ^I confirm picture selection on Self Picture Upload dialog$
 	 * 
-	 * @param name
-	 *            existing picture name
-	 * 
 	 * @throws Exception
 	 */
 	@And("^I confirm picture selection on Self Picture Upload dialog$")
 	public void IConfirmPictureSelection() throws Exception {
-		PagesCollection.selfPictureUploadPage.confirmPictureSelection();
-		;
+		PagesCollection.contactsUploadPage = PagesCollection.selfPictureUploadPage
+				.confirmPictureSelection();
 	}
 
 	/**
 	 * Force Carousel mode on Self Picture Upload dialog
 	 * 
 	 * @step. ^I force carousel mode on Self Picture Upload dialog$
+	 * @throws Exception 
 	 * 
 	 */
 	@And("^I force carousel mode on Self Picture Upload dialog$")
-	public void IForceCarouselMode() {
+	public void IForceCarouselMode() throws Exception {
 		PagesCollection.selfPictureUploadPage.forceCarouselMode();
 	}
 

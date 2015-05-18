@@ -4,9 +4,9 @@ Feature: Ping
   Scenario Outline: Verify you can send Ping in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Name> change  accent color to <Color>
+    Given User <Name> change accent color to <Color>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I swipe the text input cursor
@@ -27,10 +27,10 @@ Feature: Ping
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given User <Contact1> change  name to <ContactName>
-    Given User <Contact1> change  accent color to <Color>
+    Given User <Contact1> change name to <ContactName>
+    Given User <Contact1> change accent color to <Color>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
     And User <Contact1> Ping in chat <GroupChatName> by BackEnd
@@ -49,10 +49,10 @@ Feature: Ping
   @regression @id1356
   Scenario Outline: Verify you can see Ping on the other side (1:1 conversation)
     Given There are 2 users where <Name> is me
-    Given User <Contact1> change  name to <ContactName>
+    Given User <Contact1> change name to <ContactName>
     Given Myself is connected to <Contact1>
-    Given User <Contact1> change  accent color to <Color>
-    And I Sign in using login <Login> and password <Password>
+    Given User <Contact1> change accent color to <Color>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact1>
     And User <Contact1> Ping in chat <Name> by BackEnd

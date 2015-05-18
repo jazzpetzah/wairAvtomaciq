@@ -1,0 +1,8 @@
+tell application "Wire" to activate
+tell application "System Events"
+	tell process "Wire"
+		set value of attribute "AXFocused" of %s to true
+		delay 1
+		keystroke "%s"
+	end tell
+end tell

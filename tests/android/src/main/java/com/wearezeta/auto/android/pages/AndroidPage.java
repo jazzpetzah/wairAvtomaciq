@@ -3,20 +3,20 @@ package com.wearezeta.auto.android.pages;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 
 import java.util.List;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidKeyEvent;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -25,6 +25,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class AndroidPage extends BasePage {
+
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
 
@@ -41,36 +42,41 @@ public abstract class AndroidPage extends BasePage {
 	private List<WebElement> image;
 
 	@Override
-	public ZetaAndroidDriver getDriver() {
-		return (ZetaAndroidDriver) this.driver;
+	protected ZetaAndroidDriver getDriver() throws Exception {
+		return (ZetaAndroidDriver) super.getDriver();
 	}
 
-	public AndroidPage(ZetaAndroidDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Future<ZetaAndroidDriver> getLazyDriver() {
+		return (Future<ZetaAndroidDriver>) super.getLazyDriver();
 	}
 
-	public void selectPhoto() {
-		refreshUITree();
+	public AndroidPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
+	}
+
+	public void selectPhoto() throws Exception {
 		try {
 			frameLayouts.get(0).click();
 			return;
 		} catch (Exception ex) {
-
+			// ignore silently
 		}
 		try {
 			image.get(0).click();
 			return;
 		} catch (Exception ex) {
+			// ignore silently
 		}
 	}
 
-	public void hideKeyboard() {
+	public void hideKeyboard() throws Exception {
 		this.getDriver().hideKeyboard();
 	}
 
 	public AndroidPage navigateBack() throws Exception {
-		driver.navigate().back();
+		this.getDriver().navigate().back();
 		return null;
 	}
 
@@ -87,21 +93,22 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public CommonAndroidPage minimizeApplication() throws Exception {
-		this.getDriver().sendKeyEvent(3);
+		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_HOME);
 		Thread.sleep(1000);
-		return new CommonAndroidPage(this.getDriver(), this.getWait());
+		return new CommonAndroidPage(this.getLazyDriver());
 	}
 
-	public void restoreApplication() {
+	public void lockScreen() throws Exception {
+		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_POWER);
+	}
+
+	public void restoreApplication() throws Exception {
 		try {
 			this.getDriver().runAppInBackground(10);
 			Thread.sleep(1000);
 		} catch (WebDriverException ex) {
 			// do nothing, sometimes after restoring the app we have this
 			// exception, Appium bug
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 
@@ -141,9 +148,9 @@ public abstract class AndroidPage extends BasePage {
 		Point coords = el.getLocation();
 		Dimension elementSize = el.getSize();
 		try {
-			this.getDriver().swipe(coords.x + 20,
+			this.getDriver().swipe(coords.x + 30,
 					coords.y + elementSize.height / 2,
-					coords.x + elementSize.width - 20,
+					coords.x + elementSize.width - 10,
 					coords.y + elementSize.height / 2, time);
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -173,7 +180,7 @@ public abstract class AndroidPage extends BasePage {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public void dialogsPagesSwipeUp(int time) {
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();
@@ -200,7 +207,6 @@ public abstract class AndroidPage extends BasePage {
 
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
-
 		DriverUtils.swipeDown(this.getDriver(), content, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
@@ -240,6 +246,15 @@ public abstract class AndroidPage extends BasePage {
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
+	public AndroidPage swipeByCoordinates(int time, int widthStartPercent,
+			int hightStartPercent, int widthEndPercent, int hightEndPercent)
+			throws Exception {
+		DriverUtils.swipeByCoordinates(this.getDriver(), time,
+				widthStartPercent, hightStartPercent, widthEndPercent,
+				hightEndPercent);
+		return returnBySwipe(SwipeDirection.DOWN);
+	}
+
 	public AndroidPage swipeDownCoordinates(int time) throws Exception {
 		DriverUtils.swipeDownCoordinates(this.getDriver(), time);
 		return returnBySwipe(SwipeDirection.DOWN);
@@ -259,26 +274,24 @@ public abstract class AndroidPage extends BasePage {
 		buttonsList.get(index).click();
 	}
 
+	public void tapByCoordinates(int widthPercent, int hightPercent)
+			throws Exception {
+		DriverUtils.genericTap(this.getDriver(), widthPercent, hightPercent);
+	}
+
+	public void tapByCoordinates(int time, int widthPercent, int hightPercent)
+			throws Exception {
+		DriverUtils.genericTap(this.getDriver(), time, widthPercent,
+				hightPercent);
+	}
+
+	public void tapOnCenterOfScreen() throws Exception {
+		DriverUtils.genericTap(this.getDriver());
+	}
+
 	public static void clearPagesCollection() throws IllegalArgumentException,
 			IllegalAccessException {
 		clearPagesCollection(PagesCollection.class, AndroidPage.class);
-	}
-
-	public boolean isVisible(WebElement element) throws NumberFormatException,
-			Exception {
-		boolean value = false;
-		try {
-			changeZetaLocatorTimeout(3);
-			element.isDisplayed();
-			value = true;
-		} catch (NoSuchElementException ex) {
-			value = false;
-		} finally {
-			changeZetaLocatorTimeout(Long.parseLong(CommonUtils
-					.getDriverTimeoutFromConfig(getClass())));
-		}
-		return value;
-
 	}
 
 	private void showLogs() throws Exception {

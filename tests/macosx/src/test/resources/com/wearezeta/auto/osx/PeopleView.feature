@@ -27,7 +27,7 @@ Feature: People View
     When I open conversation with <ChatName>
     And I open Conversation info
     And I set name <NewName> for conversation
-    Then I see Contact list with name <NewName>
+    Then I see contact <NewName> in Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName          | NewName      |
@@ -45,7 +45,7 @@ Feature: People View
     And I open Conversation info
     And I set name <NewName> for conversation
     Then I do not see conversation <NewName> in contact list
-    And I see Contact list with name <ChatName>
+    And I see contact <ChatName> in Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName         | NewName |
@@ -61,7 +61,7 @@ Feature: People View
     When I open conversation with <ChatName>
     And I open Conversation info
     And I set name <NewName> for conversation
-    Then I see Contact list with name <ExpectedNewName>
+    Then I see contact <ExpectedNewName> in Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName         | NewName                                      | ExpectedNewName         |
@@ -86,7 +86,7 @@ Feature: People View
       | user1Email | user1Password | user1Name | user2Name | user3Name | PartViewNavChat |
 
   @regression @id100
-  Scenario Outline: Access proﬁle information for the other participant in a 1on1 conversation
+  Scenario Outline: Access profile information for the other participant in a 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I change user <Contact> avatar picture from file aqaPictureContact.jpg
@@ -251,13 +251,13 @@ Feature: People View
     When I sign out
     And I Sign in using login <Contact1Email> and password <Password>
     And I see my name <Contact1> in Contact list
-    Then I see Contact list with name <Name>, <Contact2>
+    Then I see contact <Name>, <Contact2> in Contact list
     And I open conversation with <Name>, <Contact2>
     And I see message <Name> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
     And I sign out
     And I Sign in using login <Contact2Email> and password <Password>
     And I see my name <Contact2> in Contact list
-    Then I see Contact list with name <Name>, <Contact1>
+    Then I see contact <Name>, <Contact1> in Contact list
     And I open conversation with <Name>, <Contact1>
     And I see message <Name> STARTED A CONVERSATION WITH <Contact2>, <Contact1> in conversation
 
@@ -304,9 +304,9 @@ Feature: People View
     Given I change user <Contact1> avatar picture from file <AvatarPicture>
     Given I change user <Contact2> avatar picture from file <AvatarPicture>
     Given I change user <Contact3> avatar picture from file <AvatarPicture>
-    Given <Contact1> is connected to <Name>,<Contact2>,<Contact3>
-    Given <Name> has sent connection request to <Contact2>
-    Given <Contact1> has group chat <ChatName> with <Name>,<Contact2>,<Contact3>
+    Given <Contact1> is connected to me,<Contact2>,<Contact3>
+    Given I sent connection request to <Contact2>
+    Given <Contact1> has group chat <ChatName> with me,<Contact2>,<Contact3>
     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When I open conversation with <ChatName>
@@ -359,3 +359,25 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | ChatName      |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | AddUserSEChat |
+
+  @regression @id1527
+  Scenario Outline: Verify you cannot start 1on1 conversation from a group chat if the other user is not in your contact list
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>,<Contact2>
+    Given <Contact1> has group chat <ChatName> with <Name>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name <Name> in Contact list
+    When I open conversation with <ChatName>
+    And I open Conversation info
+    And I choose user <Contact2> in Conversation info
+    And I see connect button
+    Then I do not see open conversation button
+    And I click on connect button on people popover
+	And I do not see conversation <Contact2> in contact list
+	And I see connect popover
+	And I send connection request to selected user
+	Then I see contact <Contact2> in contact list
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName                |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ParticipantProfilesChat |

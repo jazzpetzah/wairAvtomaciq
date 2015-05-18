@@ -8,7 +8,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
-import com.wearezeta.auto.web.pages.PeoplePickerPage;
+import com.wearezeta.auto.web.pages.SelfProfilePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -21,20 +21,6 @@ public class ContactListPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private static final int PEOPLE_PICKER_VISIBILITY_TIMEOUT_SECONDS = 3;
-	
-	private void closePeoplePickerIfVisible() throws Exception {
-		if (PagesCollection.peoplePickerPage == null) {
-			PagesCollection.peoplePickerPage = new PeoplePickerPage(
-					PagesCollection.contactListPage.getDriver(),
-					PagesCollection.contactListPage.getWait());
-		}
-		if (PagesCollection.peoplePickerPage
-				.isVisibleAfterTimeout(PEOPLE_PICKER_VISIBILITY_TIMEOUT_SECONDS)) {
-			PagesCollection.peoplePickerPage.closeSearch();
-		}
-	}
-
 	/**
 	 * Checks that we can see signed in user on top of Contact List
 	 * 
@@ -45,11 +31,29 @@ public class ContactListPageSteps {
 	 */
 	@Given("^I see my name on top of Contact list$")
 	public void ISeeMyNameOnTopOfContactList() throws Exception {
-		closePeoplePickerIfVisible();
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isSelfNameEntryExist());
+	}
+
+	/**
+	 * Verify whether self name entry is selected in the convo list
+	 * 
+	 * @step. ^I see my name is selected on top of Contact list$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see my name is selected on top of Contact list$")
+	public void ISeeMyNameIsSelectedOnTopOfContactList() throws Exception {
+		Assert.assertTrue("No contact list loaded.",
+				PagesCollection.contactListPage.waitForContactListVisible());
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isSelfNameEntrySelected());
+		if (PagesCollection.selfProfilePage == null) {
+			PagesCollection.selfProfilePage = (SelfProfilePage) PagesCollection.contactListPage
+					.instantiatePage(SelfProfilePage.class);
+		}
 	}
 
 	/**
@@ -66,13 +70,40 @@ public class ContactListPageSteps {
 	@Given("I see Contact list with name (.*)")
 	public void GivenISeeContactListWithName(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		closePeoplePickerIfVisible();
 		log.debug("Looking for contact with name " + name);
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
 		for (int i = 0; i < 5; i++) {
 			if (PagesCollection.contactListPage
 					.isConvoListEntryWithNameExist(name)) {
+				return;
+			}
+			Thread.sleep(1000);
+		}
+		throw new AssertionError("Conversation list entry '" + name
+				+ "' is not visible after timeout expired");
+	}
+
+	/**
+	 * Checks that we can see conversation with specified name in archive List
+	 *
+	 * @step. I see archive list with name (.*)
+	 *
+	 * @param name
+	 *            conversation name string
+	 *
+	 * @throws Exception
+	 *             if conversation name does not appear in archive List
+	 */
+	@Given("I see archive list with name (.*)")
+	public void GivenISeeArchiveListWithName(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		log.debug("Looking for contact with name " + name);
+		Assert.assertTrue("No contact list loaded.",
+				PagesCollection.contactListPage.waitForContactListVisible());
+		for (int i = 0; i < 5; i++) {
+			if (PagesCollection.contactListPage
+					.isArchiveListEntryWithNameExist(name)) {
 				return;
 			}
 			Thread.sleep(1000);
@@ -96,6 +127,24 @@ public class ContactListPageSteps {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.conversationPage = PagesCollection.contactListPage
 				.openConversation(contact);
+	}
+
+	/**
+	 * Verifies whether the particular conversation is selected in the list
+	 * 
+	 * @step. ^I see conversation with (.*) is selected in conversations list$
+	 * 
+	 * @param convoName
+	 *            conversation name
+	 * @throws Exception
+	 */
+	@Then("^I see conversation with (.*) is selected in conversations list$")
+	public void ISeeConversationIsSelected(String convoName) throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(String.format("Conversation '%s' should be selected",
+				convoName), PagesCollection.contactListPage
+				.isConversationSelected(convoName));
 	}
 
 	/**
@@ -150,10 +199,11 @@ public class ContactListPageSteps {
 	 * Open archived conversations
 	 * 
 	 * @step. ^I open archive$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I open archive$")
-	public void IOpenArchive() {
+	public void IOpenArchive() throws Exception {
 		PagesCollection.contactListPage.openArchive();
 	}
 
@@ -177,17 +227,31 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Checks that connection request is displayed in Conversation List
-	 * 
-	 * @step. ^I see connection request from one user$
-	 * 
+	 * Checks that connection request is displayed in Conversation List or not
+	 *
+	 * @param doNot
+	 *            is set to null if "do not" part does not exist
+	 * @step. ^I(do not)? see connection request from one user$
+	 *
 	 * @throws Exception
 	 */
-	@When("^I see connection request from one user$")
-	public void ISeeIncomingConnectionFromOneUser() throws Exception {
-		Assert.assertTrue(PagesCollection.contactListPage
-				.getIncomingPendingItemText().equals(
-						WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+	@When("^I( do not)? see connection request from one user$")
+	public void IDoNotSeeIncomingConnection(String doNot) throws Exception {
+		if (doNot == null) {
+			Assert.assertTrue(PagesCollection.contactListPage
+					.getIncomingPendingItemText()
+					.equals(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+		} else {
+			String itemText = "";
+			try {
+				itemText = PagesCollection.contactListPage
+						.getIncomingPendingItemText();
+			} catch (AssertionError e) {
+				log.debug(e.getMessage());
+			}
+			Assert.assertFalse(itemText
+					.equals(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+		}
 	}
 
 	/**
@@ -287,10 +351,11 @@ public class ContactListPageSteps {
 	 * Verify that my name color is the same as in color picker
 	 * 
 	 * @step. ^I verify my name color is the same as in color picker$
+	 * @throws Exception
 	 * 
 	 */
 	@Then("^I verify my name color is the same as in color picker$")
-	public void IVerifyMyNameColor() {
+	public void IVerifyMyNameColor() throws Exception {
 		final String selfNameColor = PagesCollection.contactListPage
 				.getSelfNameColor();
 		final String colorInColorPicker = PagesCollection.selfProfilePage
@@ -298,5 +363,54 @@ public class ContactListPageSteps {
 		Assert.assertTrue("Colors are not the same",
 				colorInColorPicker.equalsIgnoreCase(selfNameColor));
 
+	}
+
+	/**
+	 * Verify whether the particular conversations list item has expected index
+	 * 
+	 * @step. ^I verify that (.*) index in Contact list is (\\d+)$
+	 * 
+	 * @param convoNameAlias
+	 *            conversation name/alias
+	 * @param expectedIndex
+	 *            the expected index (starts from 1)
+	 * @throws Exception
+	 */
+	@Then("^I verify that (.*) index in Contact list is (\\d+)$")
+	public void IVerifyContactIndex(String convoNameAlias, int expectedIndex)
+			throws Exception {
+		convoNameAlias = usrMgr.replaceAliasesOccurences(convoNameAlias,
+				FindBy.NAME_ALIAS);
+		final int actualIndex = PagesCollection.contactListPage
+				.getItemIndex(convoNameAlias);
+		Assert.assertTrue(
+				String.format(
+						"The index of '%s' item in Conevrsations list does not equal to %s (current value is %s)",
+						convoNameAlias, expectedIndex, actualIndex),
+				actualIndex == expectedIndex);
+	}
+
+	private static final int ARCHIVE_BTN_VISILITY_TIMEOUT = 5; // seconds
+
+	/**
+	 * Verify whether Archive button at the bottom of the convo list is visible
+	 * or not
+	 * 
+	 * @step. ^I( do not)? see Archive button at the bottom of my Contact list$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist in the step
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see Archive button at the bottom of my Contact list$")
+	public void IVerifyArchiveButtonVisibility(String shouldNotBeVisible)
+			throws Exception {
+		if (shouldNotBeVisible == null) {
+			PagesCollection.contactListPage
+					.waitUntilArhiveButtonIsVisible(ARCHIVE_BTN_VISILITY_TIMEOUT);
+		} else {
+			PagesCollection.contactListPage
+					.waitUntilArhiveButtonIsNotVisible(ARCHIVE_BTN_VISILITY_TIMEOUT);
+		}
 	}
 }

@@ -1,7 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+import java.util.concurrent.Future;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -11,10 +11,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.PagesCollection;
@@ -60,16 +60,22 @@ public abstract class IOSPage extends BasePage {
 
 	private static String imagesPath = "";
 
-	public IOSPage(ZetaIOSDriver driver, WebDriverWait wait) throws Exception {
-		super(driver, wait);
+	public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
+		super(driver);
 
 		setImagesPath(CommonUtils.getSimulatorImagesPathFromConfig(this
 				.getClass()));
 	}
 
 	@Override
-	public ZetaIOSDriver getDriver() {
-		return (ZetaIOSDriver) driver;
+	protected ZetaIOSDriver getDriver() throws Exception {
+		return (ZetaIOSDriver) super.getDriver();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Future<ZetaIOSDriver> getLazyDriver() {
+		return (Future<ZetaIOSDriver>) super.getLazyDriver();
 	}
 
 	@Override
@@ -146,11 +152,11 @@ public abstract class IOSPage extends BasePage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public void smallScrollUp() {
+	public void smallScrollUp() throws Exception {
 		this.getDriver().swipe(10, 220, 10, 200, 500);
 	}
 
-	public void smallScrollDown() {
+	public void smallScrollDown() throws Exception {
 		this.getDriver().swipe(20, 300, 20, 400, 500);
 	}
 
@@ -181,7 +187,7 @@ public abstract class IOSPage extends BasePage {
 
 	@Override
 	public BufferedImage getElementScreenshot(WebElement element)
-			throws IOException {
+			throws Exception {
 		BufferedImage screenshot = takeScreenshot();
 		Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
@@ -196,22 +202,22 @@ public abstract class IOSPage extends BasePage {
 		return screenshot.getSubimage(x, y, w, h);
 	}
 
-	public void pasteStringToInput(WebElement element, String text) {
+	public void pasteStringToInput(WebElement element, String text)
+			throws Exception {
 		IOSCommonUtils.copyToSystemClipboard(text);
 		DriverUtils.iOSLongTap(this.getDriver(), element);
 		clickPopupPasteButton();
 	}
 
-	public void inputStringFromKeyboard(String returnKey)
-			throws InterruptedException {
+	public void inputStringFromKeyboard(String returnKey) throws Exception {
 		IOSKeyboard keyboard = IOSKeyboard.getInstance();
 		keyboard.typeString(returnKey, this.getDriver());
 	}
 
 	public boolean isKeyboardVisible() throws Exception {
-		DriverUtils.waitUntilElementDissapear(driver,
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.className(IOSLocators.classNameKeyboard));
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.className(IOSLocators.classNameKeyboard));
 	}
 
@@ -223,21 +229,21 @@ public abstract class IOSPage extends BasePage {
 		keyboardReturnBtn.click();
 	}
 
-	public static Object executeScript(String script) {
-		return PlatformDrivers.getInstance().getDriver(Platform.iOS)
+	public static Object executeScript(String script) throws Exception {
+		return PlatformDrivers.getInstance().getDriver(Platform.iOS).get()
 				.executeScript(script);
 	}
 
-	public boolean isSimulator() throws Throwable {
+	public boolean isSimulator() throws Exception {
 		return CommonUtils.getIsSimulatorFromConfig(IOSPage.class);
 	}
 
 	public void cmdVscript(String[] scriptString) throws ScriptException {
-//		final String[] scriptArr = new String[] {
-//				"property thisapp: \"iOS Simulator\"",
-//				"tell application \"System Events\"", " tell process thisapp",
-//				" click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
-//				" end tell", "end tell" };
+		// final String[] scriptArr = new String[] {
+		// "property thisapp: \"iOS Simulator\"",
+		// "tell application \"System Events\"", " tell process thisapp",
+		// " click menu item \"Paste\" of menu \"Edit\" of menu bar 1",
+		// " end tell", "end tell" };
 
 		final String script = StringUtils.join(scriptString, "\n");
 		ScriptEngineManager mgr = new ScriptEngineManager();
@@ -247,29 +253,56 @@ public abstract class IOSPage extends BasePage {
 		}
 	}
 
-	public void hideKeyboard() {
+	public void hideKeyboard() throws Exception {
 		this.getDriver().hideKeyboard();
 	}
 
 	public void acceptAlert() throws Exception {
 		DriverUtils.waitUntilAlertAppears(this.getDriver());
 		try {
-			driver.switchTo().alert().accept();
+			this.getDriver().switchTo().alert().accept();
 		} catch (Exception e) {
 			// do nothing
 		}
 	}
 
-	public void minimizeApplication(int time) {
-		driver.executeScript("au.backgroundApp(" + Integer.toString(time) + ")");
+	public void minimizeApplication(int time) throws Exception {
+		this.getDriver().executeScript(
+				"au.backgroundApp(" + Integer.toString(time) + ")");
 	}
 
 	public void dismissAlert() throws Exception {
 		DriverUtils.waitUntilAlertAppears(this.getDriver());
 		try {
-			driver.switchTo().alert().dismiss();
+			this.getDriver().switchTo().alert().dismiss();
 		} catch (Exception e) {
 			// do nothing
 		}
+	}
+
+	public void rotateScreen(ScreenOrientation orientation) throws Exception {
+		switch (orientation) {
+		case LANDSCAPE:
+			rotateLandscape();
+			break;
+		case PORTRAIT:
+			rotatePortrait();
+			break;
+		default:
+			break;
+		}
+
+	}
+
+	private void rotateLandscape() throws Exception {
+		this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
+	}
+
+	private void rotatePortrait() throws Exception {
+		this.getDriver().rotate(ScreenOrientation.PORTRAIT);
+	}
+
+	public ScreenOrientation getOrientation() throws Exception {
+		return this.getDriver().getOrientation();
 	}
 }

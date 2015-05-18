@@ -2,8 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 import java.util.List;
-
-import javax.mail.Message;
+import java.util.concurrent.Future;
 
 import org.junit.Assert;
 import org.openqa.selenium.By;
@@ -14,15 +13,13 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.email.BackendMessage;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 
 public class RegistrationPage extends IOSPage {
 
@@ -32,7 +29,7 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameCameraShootButton)
 	private WebElement cameraShootButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePhotoButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPhotoButton)
 	private WebElement photoButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSwitchCameraButton)
@@ -106,6 +103,27 @@ public class RegistrationPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathEmailVerifPrompt)
 	private WebElement emailVerifPrompt;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathPhoneNumber)
+	private WebElement phoneNumber;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathActivationCode)
+	private WebElement activationCode;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountry)
+	private WebElement selectCountry;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountryList)
+	private WebElement countryList;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathConfirmPhoneNumber)
+	private WebElement confirmInput;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameAgreeButton)
+	private WebElement agreeButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameSelectPictureButton)
+	private WebElement selectPictureButton;
 
 	private String name;
 	private String email;
@@ -117,9 +135,8 @@ public class RegistrationPage extends IOSPage {
 
 	private String[] listOfEmails;
 
-	public RegistrationPage(ZetaIOSDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public RegistrationPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	@Override
@@ -127,13 +144,52 @@ public class RegistrationPage extends IOSPage {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
+	public void clickAgreeButton() {
+		agreeButton.click();
+	}
+	
+	private void selectCountryByCode(String code) throws Exception {
+		selectCountry.click();
+		boolean result = false; int count = 0;
+		while (!result && count < 10) {
+			WebElement el = null;
+			boolean flag = false;
+			count ++;
+			try {
+				el = getDriver().findElementByName(code);	
+			} catch (NoSuchElementException ex) {
+				flag = true;
+			}
+			if (!el.isDisplayed() || flag) {
+				List<WebElement> elementsList = countryList.findElements(By.className("UIATableCell"));
+				WebElement last = elementsList.get(elementsList.size() - 1);
+				DriverUtils.scrollToElement(getDriver(), last);
+				continue;
+			}
+			el.click();
+			result = true;
+		}
+	}
+	
+	public void inputPhoneNumber(String number, String code) throws Exception {
+		selectCountryByCode(code);
+		phoneNumber.sendKeys(number);
+		confirmInput.click();
+	}
+	
+	public void inputActivationCode(String code) throws Exception {
+		getWait().until(ExpectedConditions.elementToBeClickable(activationCode));
+		activationCode.sendKeys(code);
+		confirmInput.click();
+	}
+   
 	public boolean isTakePhotoSmileDisplayed() {
 		return takePhotoSmile.isEnabled();
 	}
 
 	public boolean isTakeOrSelectPhotoLabelVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameTakePhotoHintLabel));
 	}
 
@@ -171,8 +227,9 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public CameraRollPage selectPicture() throws Exception {
+		selectPictureButton.click();
 		photoButton.click();
-		return new CameraRollPage(this.getDriver(), this.getWait());
+		return new CameraRollPage(this.getLazyDriver());
 	}
 
 	public void chooseFirstPhoto() {
@@ -184,7 +241,7 @@ public class RegistrationPage extends IOSPage {
 		vignetteLayer.click();
 	}
 
-	public void dismissVignetteBakground() {
+	public void dismissVignetteBakground() throws Exception {
 		vignetteLayer.click();
 		this.getDriver().tap(1, vignetteLayer.getLocation().x + 10,
 				vignetteLayer.getLocation().y + 10, 1);
@@ -203,10 +260,10 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public PeoplePickerPage waitForConfirmationMessage() throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.className(IOSLocators.classNameConfirmationMessage));
 
-		return new PeoplePickerPage(this.getDriver(), this.getWait());
+		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
 	public boolean isConfirmationShown() {
@@ -225,35 +282,35 @@ public class RegistrationPage extends IOSPage {
 		cancelImageButton.click();
 	}
 
-	public void hideKeyboard() {
+	public void hideKeyboard() throws Exception {
 		this.getDriver().hideKeyboard();
 	}
 
 	public void inputName() {
-		yourName.sendKeys("\n");
+		confirmInput.click();
 	}
 
 	public void inputEmail() {
 		yourEmail.sendKeys("\n");
 	}
 
-	public void scriptInputEmail(String val) {
+	public void scriptInputEmail(String val) throws Exception {
 		String script = String.format(
 				IOSLocators.scriptRegistrationEmailInputPath
 						+ ".setValue(\"%s\");", val);
-		driver.executeScript(script);
+		this.getDriver().executeScript(script);
 	}
 
-	public void scriptInputAndConfirmEmail(String val) {
+	public void scriptInputAndConfirmEmail(String val) throws Exception {
 		String script = String.format(
 				IOSLocators.scriptRegistrationEmailInputPath
 						+ ".setValue(\"%s\");"
 						+ IOSLocators.scriptKeyboardReturnKeyPath + ".tap();",
 				val);
-		driver.executeScript(script);
+		this.getDriver().executeScript(script);
 	}
 
-	public void clearEmailInput() {
+	public void clearEmailInput() throws Exception {
 		scriptInputEmail("");
 	}
 
@@ -262,7 +319,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void clickCreateAccountButton() throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.nameCreateAccountButton));
 		createAccountButton.click();
 	}
@@ -344,7 +401,7 @@ public class RegistrationPage extends IOSPage {
 		forwardWelcomeButton.click();
 	}
 
-	public void typeUsername() {
+	public void typeUsername() throws Exception {
 		this.getWait().until(ExpectedConditions.elementToBeClickable(yourName));
 		yourName.sendKeys(getName());
 	}
@@ -401,7 +458,7 @@ public class RegistrationPage extends IOSPage {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(String name) throws Exception {
 		this.name = name;
 		typeUsername();
 	}
@@ -438,29 +495,18 @@ public class RegistrationPage extends IOSPage {
 		this.listOfEmails = list;
 	}
 
-	public void reSendEmail() {
+	public void reSendEmail() throws Exception {
 		Point p = reSendButton.getLocation();
 		Dimension k = reSendButton.getSize();
 		this.getDriver().tap(1, (p.x) + (k.width / 2), (p.y) + (k.height - 5),
 				1);
 	}
 
-	public int getRecentEmailsCountForRecipient(int allRecentEmailsCnt,
-			String expectedRecipient) throws Exception {
+	public void waitUntilEmailsCountReachesExpectedValue(int expectedMsgsCount,
+			String recipient, int timeoutSeconds) throws Exception {
 		IMAPSMailbox mailbox = IMAPSMailbox.getInstance();
-
-		List<Message> allEmails = mailbox.getRecentMessages(allRecentEmailsCnt);
-		final int actualCnt = (int) allEmails
-				.stream()
-				.filter(x -> {
-					try {
-						return new BackendMessage(x).getLastUserEmail().equals(
-								expectedRecipient);
-					} catch (Exception e) {
-						return false;
-					}
-				}).count();
-		return actualCnt;
+		mailbox.waitUntilMessagesCountReaches(recipient, expectedMsgsCount,
+				timeoutSeconds);
 	}
 
 	public boolean isEmailVerifPromptVisible() {

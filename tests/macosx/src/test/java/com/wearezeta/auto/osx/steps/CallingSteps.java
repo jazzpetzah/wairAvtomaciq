@@ -1,135 +1,152 @@
 package com.wearezeta.auto.osx.steps;
 
-import java.io.IOException;
+import com.wearezeta.auto.common.CommonCallingSteps;
 
-import org.apache.log4j.Logger;
-import org.junit.Assert;
-
-import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.calling.AudioPlayer;
-import com.wearezeta.auto.common.calling.AudioRecorder;
-import com.wearezeta.auto.common.calling.CallingUtil;
-import com.wearezeta.auto.common.log.ZetaLogger;
-
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CallingSteps {
-
-	private static final Logger log = ZetaLogger.getLog(CallingSteps.class
-			.getSimpleName());
-
-	private final CommonSteps commonSteps = CommonSteps.getInstance();
-
-	private AudioRecorder recorder;
-	private AudioPlayer player;
+	private final CommonCallingSteps commonCallingSteps = CommonCallingSteps
+			.getInstance();
 
 	/**
-	 * Calls to specifed user
+	 * Make call to a specific user. You may instantiate more than one incoming
+	 * call from single caller by calling this step multiple times
 	 * 
-	 * @step. ^(.*) calls (.*)$
+	 * @step. (.*) calls (.*) using (\\w+)$
 	 * 
-	 * @param callerUserNameAlias
-	 *            name alias of user that calls
-	 * @param conversationNameAlias
-	 *            conversation name in which call will appear
-	 * 
+	 * @param userFromNameAlias
+	 *            caller name/alias
+	 * @param userToNameAlias
+	 *            destination name/alias
+	 * @param callBackend
+	 *            call backend. Available values: 'autocall', 'webdriver'
 	 * @throws Exception
 	 */
-	@When("^(.*) calls (.*)$")
-	public void UserCallsToConversation(String callerUserNameAlias,
-			String conversationNameAlias) throws Exception {
-		commonSteps.UserCallsToConversation(callerUserNameAlias,
-				conversationNameAlias);
+	@When("(.*) calls (.*) using (\\w+)$")
+	public void UserXCallsToUserYUsingCallBackend(String userFromNameAlias,
+			String userToNameAlias, String callBackend) throws Exception {
+		commonCallingSteps.UserXCallsToUserYUsingCallBackend(userFromNameAlias,
+				userToNameAlias, callBackend);
 	}
 
 	/**
-	 * Stops current call
+	 * Stop all outgoing calls on the caller side (for all call backends)
 	 * 
-	 * @step. ^Caller dismisses call$
+	 * @step. (.*) stops? all calls to (.*)
 	 * 
+	 * @param userFromNameAlias
+	 *            caller name/alias
+	 * @param userToNameAlias
+	 *            destination name/alias
 	 * @throws Exception
 	 */
-	@When("^Caller dismisses call$")
-	public void UserStopsCall() throws Exception {
-		commonSteps.StopCurrentCall();
+	@When("(.*) stops? all calls to (.*)")
+	public void UserXStopsCallsToUserY(String userFromNameAlias,
+			String userToNameAlias) throws Exception {
+		commonCallingSteps.UserXStopsCallsToUserY(userFromNameAlias,
+				userToNameAlias);
 	}
 
 	/**
-	 * Start to listen what caller says
+	 * Verify whether call status is changed to one of the expected values after
+	 * N seconds timeout
 	 * 
-	 * @step. ^I start listening to caller$
+	 * @step. (.*) verifies that call status to (.*) is changed to (.*) in
+	 *        (\\d+) seconds?$
 	 * 
+	 * @param userFromNameAlias
+	 *            caller name/alias
+	 * @param userToNameAlias
+	 *            destination name/alias
+	 * @param expectedStatuses
+	 *            comma-separated list of expected call statuses. Available
+	 *            values: "starting", "waiting", "active", "active_muted",
+	 *            "stopping", "inactive"
+	 * @param timeoutSeconds
+	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
-	@When("^I start listening to caller$")
-	public void IStartListeningToCaller() throws Exception {
-		// TODO: store previous input and output
-		CallingUtil.setSpeakerSource(CallingUtil.SOUNDFLOWER_2CH);
-		CallingUtil.setMicrophoneSource(CallingUtil.SOUNDFLOWER_2CH);
-		CallingUtil.setInputVolume(100);
-		CallingUtil.setOutputVolume(100);
-		recorder = new AudioRecorder(CallingUtil.AUDIO_TOOLS_PATH
-				+ "/output.wav");
-		recorder.captureAudio();
+	@When("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
+	public void UserXVerifesCallStatusToUserY(String userFromNameAlias,
+			String userToNameAlias, String expectedStatuses, int timeoutSeconds)
+			throws Exception {
+		commonCallingSteps.UserXVerifesCallStatusToUserY(userFromNameAlias,
+				userToNameAlias, expectedStatuses, timeoutSeconds);
 	}
 
 	/**
-	 * Send audio file content as microphone input from autocall side
+	 * Verify whether waiting instance status is changed to one of the expected
+	 * values after N seconds timeout
 	 * 
-	 * @step. ^Caller says (.*) to call$
+	 * @step. (.*) verifies that waiting instance status is changed to (.*) in
+	 *        (\\d+) seconds?$
 	 * 
-	 * @param filename
-	 *            audio file
-	 * 
-	 * @throws IOException
+	 * @param userFromNameAlias
+	 *            caller name/alias
+	 * @param expectedStatuses
+	 *            comma-separated list of expected call statuses. Available
+	 *            values: "starting", "waiting", "active", "active_muted",
+	 *            "stopping", "inactive"
+	 * @param timeoutSeconds
+	 *            number of seconds to wait until call status is changed
+	 * @throws Exception
 	 */
-	@When("^Caller says (.*) to call$")
-	public void ContactSaysToCall(String filename) throws IOException {
-		player = new AudioPlayer(CallingUtil.AUDIO_TOOLS_PATH + "/" + filename);
-		player.playAudio();
+	@When("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")
+	public void UserXVerifesCallStatusToUserY(String userFromNameAlias,
+			String expectedStatuses, int timeoutSeconds) throws Exception {
+		commonCallingSteps.UserXVerifesWaitingInstanceStatus(userFromNameAlias,
+				expectedStatuses, timeoutSeconds);
 	}
 
 	/**
-	 * Stop listening for call content
+	 * Execute waiting instance as 'userAsNameAlias' user on calling server
+	 * using 'callingServiceBackend' tool
 	 * 
-	 * @step. ^I stop listening to caller$
+	 * @step. (.*) starts? waiting instance using (\\w+)$
 	 * 
+	 * @param userAsNameAlias
+	 *            call receiver's name/alias
+	 * @param callingServiceBackend
+	 *            available values: 'blender', 'webdriver'
 	 * @throws Exception
 	 */
-	@When("^I stop listening to caller$")
-	public void IStopListeningToContact() throws Exception {
-		CallingUtil.setInputVolume(50);
-		CallingUtil.setOutputVolume(50);
-		CallingUtil.setSpeakerSource(CallingUtil.HEADPHONES);
-		CallingUtil.setMicrophoneSource(CallingUtil.INTERNAL_MICROPHONE);
-		recorder.stopCapture();
+	@When("(.*) starts? waiting instance using (\\w+)$")
+	public void UserXStartsWaitingInstance(String userAsNameAlias,
+			String callingServiceBackend) throws Exception {
+		commonCallingSteps.UserXStartsWaitingInstance(userAsNameAlias,
+				callingServiceBackend);
 	}
 
 	/**
-	 * Calculate PESQ score for transfered audio
+	 * Automatically accept the next incoming call for the particular user as
+	 * soon as it appears in UI. Waiting instance should be already created for
+	 * this particular user
 	 * 
-	 * @step. ^I check that I hear all as said from (.*)$
+	 * @step. (.*) accepts? next incoming call automatically$
 	 * 
-	 * @param filename
-	 *            source audio file
-	 * 
+	 * @param userAsNameAlias
+	 *            call receiver's name/alias
 	 * @throws Exception
 	 */
-	@Then("^I check that I hear all as said from (.*)$")
-	public void ICheckThatIHearAllCorrect(String filename) throws Exception {
-		// prepare output file
-		CallingUtil.removeSilenceFromFile(CallingUtil.AUDIO_TOOLS_PATH
-				+ "/output.wav", CallingUtil.AUDIO_TOOLS_PATH
-				+ "/clean_output.wav");
-		CallingUtil
-				.removeSilenceFromFile(CallingUtil.AUDIO_TOOLS_PATH + "/"
-						+ filename, CallingUtil.AUDIO_TOOLS_PATH + "/clean_"
-						+ filename);
-		double score = CallingUtil.calculatePESQScore(
-				CallingUtil.AUDIO_TOOLS_PATH + "/clean_" + filename,
-				CallingUtil.AUDIO_TOOLS_PATH + "/clean_output.wav");
-		log.debug(score);
-		Assert.assertTrue("Incorrect score (" + score + "< 3)", score > 3);
+	@When("(.*) accepts? next incoming call automatically$")
+	public void UserXAcceptsNextIncomingCallAutomatically(String userAsNameAlias)
+			throws Exception {
+		commonCallingSteps
+				.UserXAcceptsNextIncomingCallAutomatically(userAsNameAlias);
+	}
+
+	/**
+	 * Close all waiting instances (and incoming calls) for the particular user
+	 * 
+	 * @step. (.*) stops? all waiting instances$
+	 * 
+	 * @param userAsNameAlias
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@When("(.*) stops? all waiting instances$")
+	public void UserXStopsIncomingCalls(String userAsNameAlias)
+			throws Exception {
+		commonCallingSteps.UserXStopsIncomingCalls(userAsNameAlias);
 	}
 }

@@ -4,12 +4,11 @@ Feature: Self Profile
   Scenario Outline: Change your profile picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap on personal screen
     And I press Camera button
-    And I press Camera Roll button
     And I choose a picture from camera roll
     And I press Confirm button
     And I return to personal page
@@ -23,7 +22,7 @@ Feature: Self Profile
   Scenario Outline: Attempt to enter a name with 0 chars
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
@@ -40,7 +39,7 @@ Feature: Self Profile
   Scenario Outline: Attempt to enter a name with 1 char
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
@@ -57,7 +56,7 @@ Feature: Self Profile
   Scenario Outline: Verify name change
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
@@ -72,3 +71,20 @@ Feature: Self Profile
     Examples: 
       | Login      | Password      | Name      | NewUsername        | Contact   |
       | user1Email | user1Password | user1Name | New Name           | user2Name |
+      
+  @regression @id667
+  Scenario Outline: Verify changing and applying accent color
+  	Given There are 1 users where <Name> is me
+  	Given User <Name> change name to <NewName>
+  	Given User <Name> change accent color to <Color>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I change my accent color via the colorpicker
+    And I swipe right on the personal page
+    Then I see my names <Name> accent color is changed
+   
+    Examples: 
+      | Login      | Password      | Name      | NewName           | Color  |
+      | user1Email | user1Password | user1Name | AccentColorChange | Violet |
+  

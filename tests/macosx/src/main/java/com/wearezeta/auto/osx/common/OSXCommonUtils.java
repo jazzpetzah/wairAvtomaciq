@@ -1,5 +1,8 @@
 package com.wearezeta.auto.osx.common;
 
+import io.appium.java_client.AppiumDriver;
+
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -9,18 +12,22 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.dd.plist.NSDictionary;
 import com.dd.plist.PropertyListParser;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
+import com.wearezeta.auto.osx.util.NSPoint;
 
 public class OSXCommonUtils extends CommonUtils {
+
 	private static final int PREFS_DAEMON_RESTART_TIMEOUT = 1000;
-	private static final String[] BACKEND_TYPE_DOMAIN_NAMES = ConfigurationDomainEnum.domainsList;
 
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class
 			.getSimpleName());
@@ -82,8 +89,17 @@ public class OSXCommonUtils extends CommonUtils {
 
 	public static void deleteCacheFolder() throws Exception {
 		String command = String.format(
-				"rm -rf %s/Library/Containers/com.wearezeta.zclient.mac*",
-				System.getProperty("user.home"));
+				"rm -rf %s/Library/Containers/%s/Data/Library/Caches",
+				System.getProperty("user.home"),
+				OSXExecutionContext.wireConfigDomain);
+		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+	}
+
+	public static void deletePreferencesFile() throws Exception {
+		String command = String.format(
+				"rm -rf %s/Library/Preferences/%s.plist",
+				System.getProperty("user.home"),
+				OSXExecutionContext.wireConfigDomain);
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
 
@@ -102,22 +118,18 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
+		removeZClientDomain(OSXExecutionContext.wireConfigDomain);
 		resetOSXPrefsDaemon();
-		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
-			removeZClientDomain(domain);
-		}
 	}
 
 	public static void setZClientBackendAndDisableStartUI(String bt)
 			throws Exception {
+		setZClientBackendForDomain(OSXExecutionContext.wireConfigDomain, bt);
+		disableStartUIOnFirstLogin(OSXExecutionContext.wireConfigDomain);
 		resetOSXPrefsDaemon();
-		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
-			setZClientBackendForDomain(domain, bt);
-			disableStartUIOnFirstLogin(domain);
-		}
 	}
 
-	private static void resetOSXPrefsDaemon() throws Exception {
+	public static void resetOSXPrefsDaemon() throws Exception {
 		executeOsXCommand(new String[] { "/usr/bin/killall", "-SIGTERM",
 				"cfprefsd" });
 		Thread.sleep(PREFS_DAEMON_RESTART_TIMEOUT);
@@ -144,10 +156,8 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static boolean isBackendTypeSet(String bt) throws Exception {
-		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
-			if (!isBackendTypeSetForDomain(domain, bt)) {
-				return false;
-			}
+		if (!isBackendTypeSetForDomain(OSXExecutionContext.wireConfigDomain, bt)) {
+			return false;
 		}
 		return true;
 	}
@@ -201,17 +211,23 @@ public class OSXCommonUtils extends CommonUtils {
 		return result;
 	}
 
-	public static String getOsxClientInfoPlistFromConfig(Class<?> c)
-			throws Exception {
-		return CommonUtils.getValueFromConfig(c, "osxClientInfoPlist");
-	}
-
 	public static void killWireIfStuck() {
 		try {
 			executeOsXCommand(new String[] { "/bin/bash", "-c",
 					"kill -9 $(lsof -c Wire -t)" });
 		} catch (Exception e) {
 		}
+	}
+
+	public static NSPoint calculateScreenResolution(ZetaDriver driver)
+			throws IOException {
+		BufferedImage im = DriverUtils.takeScreenshot(driver);
+		return new NSPoint(im.getWidth(), im.getHeight());
+	}
+
+	public static boolean isRetinaDisplay(ZetaDriver driver) throws IOException {
+		NSPoint size = calculateScreenResolution(driver);
+		return isRetinaDisplay(size.x(), size.y());
 	}
 
 	public static boolean isRetinaDisplay(int width, int height) {
@@ -223,7 +239,29 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static boolean osxAXValueToBoolean(String value) {
-		return value.equals("0") ? false : true;
+		return value.equals(OSXConstants.Common.AX_BOOLEAN_FALSE) ? false
+				: true;
+	}
+
+	public static int screenPixelsMultiplier(AppiumDriver driver)
+			throws IOException {
+		return (isRetinaDisplay((ZetaDriver) driver)) ? OSXConstants.Common.SIZE_MULTIPLIER_RETINA
+				: OSXConstants.Common.SIZE_MULTIPLIER_NO_RETINA;
+	}
+
+	public static BufferedImage takeElementScreenshot(WebElement element,
+			AppiumDriver driver) throws IOException {
+		int multiply = screenPixelsMultiplier(driver);
+
+		BufferedImage screenshot = DriverUtils
+				.takeScreenshot((ZetaDriver) driver);
+		NSPoint elementLocation = NSPoint.fromString(element
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
+		NSPoint elementSize = NSPoint.fromString(element
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
+		return screenshot.getSubimage(elementLocation.x() * multiply,
+				elementLocation.y() * multiply, elementSize.x() * multiply,
+				elementSize.y() * multiply);
 	}
 
 	private static final String LOG_FILTER_REGEX = "(wire|zclient|appium)";
@@ -242,5 +280,15 @@ public class OSXCommonUtils extends CommonUtils {
 										+ " | grep -Ei '(%s)'", logStartTime,
 								logEndTime, LOG_FILTER_REGEX) });
 		log.debug(collectedLogEntries);
+	}
+
+	public static String getOsxClientInfoPlistFromConfig(Class<?> c)
+			throws Exception {
+		return CommonUtils.getValueFromConfig(c, "osxClientInfoPlist");
+	}
+
+	public static String getWireConfigDomainFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "wireConfigDomain");
 	}
 }

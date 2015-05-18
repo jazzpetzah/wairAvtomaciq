@@ -1,4 +1,4 @@
-Feature: ConversationList
+Feature: Conversation List
 
   @smoke @id1545
   Scenario Outline: Archive and unarchive conversation
@@ -34,7 +34,7 @@ Feature: ConversationList
   Scenario Outline: Unmute 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given <Name> muted conversation with <Contact>
+    Given I muted conversation with <Contact>
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
     And I see that conversation <Contact> is muted

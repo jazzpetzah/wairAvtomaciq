@@ -2,19 +2,12 @@ package com.wearezeta.auto.osx.locators;
 
 public final class OSXLocators {
 
-	public static final String idRegistrationTakePictureButton = "RegistrationTakePictureButton";
-	public static final String idRegistrationPickImageButton = "RegistrationPickImageButton";
-	public static final String xpathRegistrationPictureConfirmationButton = "//AXButton[1]";
-
 	public static final String idContactEntry = "clListItemNameField";
 	public static final String idAddImageButton = "AddImageButton";
 	public static final String idPeopleButton = "PeopleButton";
 	public static final String idPeoplePickerSearchField = "people_picker_searchfield";
 	public static final String xpathPeoplePickerTopContactsSectionHeader = "//AXStaticText[@AXValue='TOP PEOPLE']";
 	public static final String idPeoplePickerDismissButton = "people_picker_cancel_button";
-	public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
-	public static final String xpathPeoplePickerSearchResultTable = "//AXTable[@AXIdentifier='people_picker_searchresult']";
-	public static final String idUnblockUserButton = "unblock";
 	public static final String idPeoplePickerTopContactsGrid = "people_picker_user_collectionview";
 	public static final String xpathPeoplePickerTopContacts = "//AXGrid[@AXIdentifier='people_picker_user_collectionview']";
 	public static final String xpathPeoplePickerTopContactAvatar = "//AXRow[descendant::AXStaticText[@AXValue='TOP PEOPLE']]/following-sibling::AXRow[1]//AXUnknown";
@@ -26,7 +19,6 @@ public final class OSXLocators {
 
 	public static final String namePingMenuItem = "Ping";
 	public static final String namePingAgainMenuItem = "Ping Again";
-	public static final String idSendInvitationButton = "send";
 
 	public static final String xpathMessageEntry = "//AXGroup/AXStaticText";
 	public static final String xpathConversationLastNewNameEntry = "//AXHeading/AXStaticText[last()]";
@@ -54,17 +46,12 @@ public final class OSXLocators {
 	public static final String YOU_STARTED_CONVERSATION_MESSAGE = "YOU STARTED A CONVERSATION WITH";
 	public static final String USER_STARTED_CONVERSATION_MESSAGE_FORMAT = " STARTED A CONVERSATION WITH ";
 
-
 	public static final String idAddPeopleButtonGroupChat = "addButton";
 	public static final String idConfirmationViewConfirmButton = "ConfirmationViewConfirmButton";
 	public static final String idAddPeopleButtonSingleChat = "userProfileViewButtonOnTheLeft";
 	public static final String idBlockUserButtonSingleChat = "userProfileViewButtonOnTheRight";
-	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
-	public static final String namePeoplePickerOpenConversationButton = "OPEN CONVERSATION";
-	public static final String namePeoplePickerCreateConversationButton = "CREATE CONVERSATION";
 	public static final String idLeaveConversationButton = "leaveButton";
 	public static final String idRemoveUserFromConversation = "userProfileViewButtonOnTheRight";
-	public static final String idConversationScrollArea = "ConversationScrollArea";
 
 	public static final String xpathPictureFromImageFile = "//AXCheckBox[1]";
 	public static final String xpathPictureFromCamera = "//AXCheckBox[2]";
@@ -76,11 +63,6 @@ public final class OSXLocators {
 	public static final String xpathPictureSettingsCloseButton = "//AXWindow[@AXRoleDescription='floating window']/AXButton[@AXRoleDescription='close button']";
 
 	public static final String xpathFormatMutedButton = "//AXCell[AXStaticText[@AXValue='%s']]/AXImage[@AXTitle='']";
-
-	public static final String idAcceptConnectionRequestButton = "connect";
-	public static final String idIgnoreConnectionRequestButton = "block";
-
-	public static final String xpathPleaseProvideEmailAddress = "//AXStaticText[@AXValue='PLEASE PROVIDE A VALID EMAIL ADDRESS']";
 
 	public static final String xpathConversationNameEdit = "//AXPopover/AXScrollArea/AXTextArea";
 	public static final String xpathUserAvatar = "//AXPopover/AXScrollArea/AXGrid/AXUnknown";
@@ -109,7 +91,6 @@ public final class OSXLocators {
 	public static final String SOUNDCLOUD_BUTTON_STATE_PLAY = "Play";
 	public static final String xpathConversationViewScrollArea = "//AXScrollArea";
 
-	public static final String idSelfProfileSettingsButton = "selfProfileViewSettingsButton";
 	public static final String xpathFormatSelfProfileNameTextField = "//AXTextArea[@AXValue='%s']";
 	public static final String idSelfProfileEmailTextField = "phoneTextField";
 	public static final String idUserProfileViewBackButton = "userProfileViewBackButton";
@@ -125,11 +106,7 @@ public final class OSXLocators {
 	public static final String xpathRemoveUserPictureConfirmation = "//AXButton[@AXTitle='DELETE']";
 	public static final String xpathRemoveUserPictureCancel = "//AXButton[@AXTitle='CANCEL']";
 
-	public static final String CONTACT_LIST_ONE_CONNECT_REQUEST = "One person waiting";
-
 	public static final String idShareContactsLaterButton = "ConfirmationViewCancelButton";
-
-	public static final String xpathPeoplePopover = "//AXPopover";
 
 	public static final String xpathImagePopupCloseButton = "//AXWindow[@AXRoleDescription='floating window']/AXButton[@AXRoleDescription='close button']";
 
@@ -162,8 +139,10 @@ public final class OSXLocators {
 
 		public static final String idPasswordField = "TempLoginViewControllerPasswordField";
 
+		public static final String appleScriptPasswordFieldPath = "text field 1 of window 1";
+
 		public static final String relativePathEmailField = "id,"
-				+ idPasswordField + ",0,-40";
+				+ idPasswordField + ",center,0,-40";
 
 		public static final String nameSignInButton = "SIGN IN";
 
@@ -177,12 +156,28 @@ public final class OSXLocators {
 		public static final String idPasswordField = "TempLoginViewControllerPasswordField";
 
 		public static final String relativePathFullNameField = "id,"
-				+ idPasswordField + ",0,-80";
+				+ idPasswordField + ",center,0,-80";
 
 		public static final String relativePathEmailField = "id,"
-				+ idPasswordField + ",0,-40";
+				+ idPasswordField + ",center,0,-40";
 
 		public static final String idCreateAccountButton = "RegistrationCreateButton";
+
+		public static final String idRegistrationBackButton = "RegistrationBackButton";
+
+		public static final String idTakePictureButton = "RegistrationTakePictureButton";
+
+		public static final String idPickImageButton = "RegistrationPickImageButton";
+
+		public static final String xpathConfirmPictureButton = "//AXButton[@AXIdentifier='']";
+
+		public static final String xpathAcceptTakenPictureButton = "//AXButton[1]";
+
+		public static final String xpathRejectTakenPictureButton = "//AXButton[2]";
+
+		public static final String xpathChoosePictureAndSelectColourMessage = "//*[contains(@AXValue,'CHOOSE A PICTURE AND ') and contains(@AXValue,'SELECT A COLOUR')]";
+
+		public static final String xpathPleaseProvideEmailAddressMessage = "//AXStaticText[@AXValue='PLEASE ENTER A VALID EMAIL ADDRESS']";
 
 		public static final String ACTIVATION_RESPONSE_VERIFIED = "Account created.";
 	}
@@ -191,7 +186,7 @@ public final class OSXLocators {
 
 		public static final String xpathEmailTextField = "//AXTextField[@AXPlaceholderValue='Email']";
 
-		public static final String xpathPasswordTextField = "//AXTextField[@AXPlaceholderValue='Password']";
+		public static final String xpathPasswordTextField = "//AXTextField[@AXPlaceholderValue='Enter new password']";
 
 		public static final String nameChangePasswordButton = "CHANGE PASSWORD";
 
@@ -262,13 +257,74 @@ public final class OSXLocators {
 	public static final class ContactListPage {
 
 		public static final String idOpenSearchUIButton = "addConversationButton";
+
+		public static final String xpathSelfProfileCLEntry = "//AXWindow/AXStaticText[@AXIdentifier='clListItemNameField']";
+
+		public static final String regexPatternConnectRequests = ".* (person|people) waiting";
+
+		public static final String titleSingleConnectRequestCLEntry = "One person waiting";
+
+		public static final String titleFormatMultipleConnectRequestsCLEntry = "%s people waiting";
+
+		public static final String xpathConnectionRequestsCLEntry = "//AXStaticText[@AXIdentifier='clListItemNameField' and (contains(@AXValue,'person waiting') or contains(@AXValue,'people waiting'))]";
+
+		public static final String xpathFormatPlayPauseButtonCLEntry = "//AXCell[AXStaticText[@AXValue='%s']]/AXButton[@AXIdentifier='clMediaButton']";
 	}
-	
+
 	public static final class PeoplePickerPage {
-		
+
+		public static final String idPeoplePickerSearchResultTable = "people_picker_searchresult";
+
+		public static final String relativePathSearchField = "id,"
+				+ idPeoplePickerSearchResultTable + ",top,20,-20";
+
+		public static final String idPeoplePickerSearchResultEntry = "people_picker_result_namefield";
+
+		public static final String xpathFormatSearchResultEntry = "//AXStaticText[@AXIdentifier='"
+				+ idPeoplePickerSearchResultEntry + "' and @AXValue='%s']";
+
+		public static final String nameAddToConversationButton = "ADD TO CONVERSATION";
+
+		public static final String nameOpenConversationButton = "OPEN CONVERSATION";
+
+		public static final String nameCreateConversationButton = "CREATE CONVERSATION";
+	}
+
+	public static final class ConnectionRequestsPage {
+
+		public static final String xpathFormatBlockButton = "//AXCell[AXStaticText[@AXValue='%s']]/AXButton[@AXIdentifier='block']";
+
+		public static final String xpathFormatConnectButton = "//AXCell[AXStaticText[@AXValue='%s']]/AXButton[@AXIdentifier='connect']";
+
+		public static final String xpathFormatEmailText = "//AXCell[AXStaticText[@AXValue='%s']]";
+
+		public static final String xpathFormatMessageText = "//AXCell[AXStaticText[@AXValue='%s']]/AXTextArea[@AXIdentifier='message']";
+
+		public static final String xpathFormatTitleText = "//AXCell[AXStaticText[@AXValue='%s']]/AXStaticText[@AXIdentifier='title']";
+
+		public static final String xpathFormatProfilePopupButton = "//AXCell[AXStaticText[@AXValue='%s']]/AXButton[@AXIdentifier='']";
+
+		public static final String idAcceptConnectionRequestButton = "connect";
+
+		public static final String idIgnoreConnectionRequestButton = "block";
+	}
+
+	public static final class ConversationPage {
+
+		public static final String idConversationScrollArea = "ConversationScrollArea";
+
+		public static final String idOpenPeoplePopoverButton = "PeopleButton";
+
+		public static final String idSendImageButton = "AddImageButton";
+
+		public static final String idPingButton = "PingIcon";
+
+		public static final String idCallButton = "JoinChannelIcon";
 	}
 
 	public static final class MainMenuPage {
+
+		public static final String nameSendImageMenuItem = "Picture…";
 
 		public static final String nameSignOutMenuItem = "Sign Out";
 
@@ -301,7 +357,7 @@ public final class OSXLocators {
 		public static final String xpathSelectColumnViewButton = "//AXRadioButton[@AXDescription='column view' or @AXLabel='column view']";
 
 		public static final String xpathFormatFinderImageFile = "//AXTextField[@AXValue='%s']";
-		
+
 		public static final String xpathFormatFavoritesFolderPopUp = "//AXStaticText[@AXValue='%s']";
 	}
 }

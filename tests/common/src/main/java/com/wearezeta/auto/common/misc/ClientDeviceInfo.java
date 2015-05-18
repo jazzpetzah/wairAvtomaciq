@@ -15,6 +15,21 @@ public class ClientDeviceInfo {
 		this.isWifiEnabled = null;
 	}
 	
+	public boolean isWifiEnabled() {
+		return isWifiEnabled;
+	}
+	
+	public String getGsmNetworkType() {
+		return gsmNetworkType;
+	}
+	
+	public String getDeviceName() {
+		return deviceName;
+	}
+	
+	public String getOperatingSystemBuild() {
+		return operatingSystemBuild;
+	}
 	
 	public ClientDeviceInfo(String os, String osBuild, String device, String carrier, Boolean isWifi) {
 		this.operatingSystemName = os;

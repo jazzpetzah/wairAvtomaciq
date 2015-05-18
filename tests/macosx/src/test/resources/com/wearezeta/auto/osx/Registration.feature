@@ -3,10 +3,11 @@ Feature: Register new user
   #no camera on some Jenkins slaves
   #  @regression @id1080
   #  Scenario Outline: Register new user using front camera
-  #    And I see Welcome screen
+  #    Given I see Welcome screen
   #    When I start registration
   #    And I choose register using camera
   #    And I take registration picture from camera
+  #	   And I accept taken picture
   #    And I enter name <Name>
   #    And I enter email <Email>
   #    And I enter password <Password>
@@ -17,13 +18,13 @@ Feature: Register new user
   #    Examples:
   #      | Email   | Password    | Name    |
   #      | aqaUser | aqaPassword | aqaUser |
-  
   @smoke @id177
   Scenario Outline: Register new user with image - landscape image
-    And I see Welcome screen
+    Given I see Welcome screen
     When I start registration
     And I choose register with image
     And I take registration picture from image file <ImageFile>
+    And I accept taken picture
     And I enter name <Name>
     And I enter email <Email>
     And I enter password <Password>
@@ -38,10 +39,11 @@ Feature: Register new user
 
   @smoke @id177
   Scenario Outline: Register new user with image - portrait image
-    And I see Welcome screen
+    Given I see Welcome screen
     When I start registration
     And I choose register with image
     And I take registration picture from image file <ImageFile>
+    And I accept taken picture
     And I enter name <Name>
     And I enter email <Email>
     And I enter password <Password>
@@ -56,10 +58,11 @@ Feature: Register new user
 
   @regression @id171
   Scenario Outline: Do not accept email with spaces
-    And I see Welcome screen
+    Given I see Welcome screen
     When I start registration
     And I choose register with image
     And I take registration picture from image file userpicture_portrait.jpg
+    And I accept taken picture
     And I enter email <Email>
     Then I see that email invalid
 
@@ -69,19 +72,21 @@ Feature: Register new user
 
   @regression @id171
   Scenario: Fail registration on incorrect email
-    And I see Welcome screen
+    Given I see Welcome screen
     When I start registration
     And I choose register with image
     And I take registration picture from image file userpicture_portrait.jpg
+    And I accept taken picture
     And I enter invalid emails
     Then I see that all emails not accepted
 
-  @regression @1964
+  @regression @id1096
   Scenario Outline: Verify automatic email verification is performed
-    And I see Welcome screen
+    Given I see Welcome screen
     When I start registration
     And I choose register with image
     And I take registration picture from image file <ImageFile>
+    And I accept taken picture
     And I enter name <Name>
     And I enter email <Email>
     And I enter password <Password>

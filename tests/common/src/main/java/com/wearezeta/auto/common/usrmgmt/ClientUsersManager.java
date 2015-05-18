@@ -1,5 +1,6 @@
 package com.wearezeta.auto.common.usrmgmt;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -15,13 +16,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class ClientUsersManager {
-	private static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
-	private static final int NUMBER_OF_REGISTRATION_RETRIES = 5;
+	private static final int NUMBER_OF_REGISTRATION_RETRIES = 3;
 
 	public static final Function<Integer, String> NAME_ALIAS_TEMPLATE = idx -> String
 			.format("user%dName", idx);
@@ -29,13 +30,16 @@ public class ClientUsersManager {
 			.format("user%dPassword", idx);
 	public static final Function<Integer, String> EMAIL_ALIAS_TEMPLATE = idx -> String
 			.format("user%dEmail", idx);
+	public static final Function<Integer, String> PHONE_NUMBER_ALIAS_TEMPLATE = idx -> String
+			.format("user%dPhoneNumber", idx);
 	private static final int MAX_USERS = 1001;
 
 	private static final Logger log = ZetaLogger
 			.getLog(ClientUsersManager.class.getSimpleName());
 
 	private void setClientUserAliases(ClientUser user, String[] nameAliases,
-			String[] passwordAliases, String[] emailAliases) {
+			String[] passwordAliases, String[] emailAliases,
+			String[] phoneNumberAliases) {
 		if (nameAliases != null && nameAliases.length > 0) {
 			user.clearNameAliases();
 			for (String nameAlias : nameAliases) {
@@ -54,6 +58,12 @@ public class ClientUsersManager {
 				user.addEmailAlias(emailAlias);
 			}
 		}
+		if (phoneNumberAliases != null && phoneNumberAliases.length > 0) {
+			user.clearPhoneNumberAliases();
+			for (String phoneNumberAlias : phoneNumberAliases) {
+				user.addPhoneNumberAlias(phoneNumberAlias);
+			}
+		}
 	}
 
 	private void resetClientsList(List<ClientUser> dstList, int maxCount)
@@ -68,8 +78,10 @@ public class ClientUsersManager {
 					.apply(userIdx + 1) };
 			final String[] emailAliases = new String[] { EMAIL_ALIAS_TEMPLATE
 					.apply(userIdx + 1) };
+			final String[] phoneNumberAliases = new String[] { PHONE_NUMBER_ALIAS_TEMPLATE
+					.apply(userIdx + 1) };
 			setClientUserAliases(pendingUser, nameAliases, passwordAliases,
-					emailAliases);
+					emailAliases, phoneNumberAliases);
 			dstList.add(pendingUser);
 		}
 	}
@@ -224,9 +236,10 @@ public class ClientUsersManager {
 	private final Random random = new Random();
 
 	// ! Mutates the users list
-	private void generateUsers(List<ClientUser> usersToCreate) throws Exception {
+	private void generateUsers(List<ClientUser> usersToCreate,
+			final RegistrationStrategy strategy) throws Exception {
 		ExecutorService executor = Executors
-				.newFixedThreadPool(MAX_PARALLEL_USER_CREATION_TASKS);
+				.newFixedThreadPool(CommonUtils.MAX_PARALLEL_USER_CREATION_TASKS);
 
 		final AtomicInteger createdClientsCount = new AtomicInteger(0);
 		for (final ClientUser userToCreate : usersToCreate) {
@@ -238,7 +251,7 @@ public class ClientUsersManager {
 						long sleepInterval = 1000;
 						try {
 							BackendAPIWrappers.createUser(userToCreate,
-									retryNumber);
+									retryNumber, strategy);
 							createdClientsCount.incrementAndGet();
 							return;
 						} catch (BackendRequestException e) {
@@ -289,7 +302,8 @@ public class ClientUsersManager {
 		}
 	}
 
-	public void createUsersOnBackend(int count) throws Exception {
+	public void createUsersOnBackend(int count, RegistrationStrategy strategy)
+			throws Exception {
 		this.resetClientsList(this.users, MAX_USERS);
 		if (count > MAX_USERS) {
 			throw new TooManyUsersToCreateException(
@@ -297,13 +311,14 @@ public class ClientUsersManager {
 							"Maximum allowed number of users to create is %d. Current number is %d",
 							MAX_USERS, count));
 		}
-		generateUsers(this.users.subList(0, count));
+		generateUsers(this.users.subList(0, count), strategy);
 	}
 
 	private static String[] SELF_USER_NAME_ALISES = new String[] { "I", "Me",
 			"Myself" };
 	private static String[] SELF_USER_PASSWORD_ALISES = new String[] { "myPassword" };
 	private static String[] SELF_USER_EMAIL_ALISES = new String[] { "myEmail" };
+	private static String[] SELF_USER_PHONE_NUMBER_ALISES = new String[] { "myPhoneNumber" };
 
 	private ClientUser selfUser = null;
 
@@ -330,6 +345,12 @@ public class ClientUsersManager {
 					this.selfUser.removeEmailAlias(emailAlias);
 				}
 			}
+			for (String phoneNumberAlias : SELF_USER_PHONE_NUMBER_ALISES) {
+				if (this.selfUser.getPhoneNumberAliases().contains(
+						phoneNumberAlias)) {
+					this.selfUser.removePhoneNumberAlias(phoneNumberAlias);
+				}
+			}
 		}
 		this.selfUser = usr;
 		for (String nameAlias : SELF_USER_NAME_ALISES) {
@@ -340,6 +361,9 @@ public class ClientUsersManager {
 		}
 		for (String emailAlias : SELF_USER_EMAIL_ALISES) {
 			this.selfUser.addEmailAlias(emailAlias);
+		}
+		for (String phoneNumberAlias : SELF_USER_PHONE_NUMBER_ALISES) {
+			this.selfUser.addPhoneNumberAlias(phoneNumberAlias);
 		}
 	}
 
@@ -370,8 +394,8 @@ public class ClientUsersManager {
 
 	private static final int SHARED_USERS_MIN_CREATION_INTERVAL = 10;
 
-	private void generateSharedUsers(List<ClientUser> sharedUsers,
-			String commonEmailSuffix, int count) throws Exception {
+	private void generateSharedUsers(List<ClientUser> sharedUsers, int count,
+			RegistrationStrategy strategy) throws Exception {
 		// It is highly possible, that some part (or, probably, all)
 		// of these shared users already
 		// exist on the backend, so we test which user doesn't exist
@@ -403,8 +427,9 @@ public class ClientUsersManager {
 			}
 		}
 
-		this.generateUsers(sharedUsers.subList(lastExistingUserIndex + 1,
-				sharedUsers.size()));
+		this.generateUsers(
+				sharedUsers.subList(lastExistingUserIndex + 1,
+						sharedUsers.size()), strategy);
 	}
 
 	public void appendSharedUsers(String commonNamePrefix, int count)
@@ -432,7 +457,47 @@ public class ClientUsersManager {
 			dstUser.setEmail(ClientUser.generateEmail(name));
 			dstUser.addEmailAlias(name + "Email");
 		}
-		generateSharedUsers(sharedUsers, commonNamePrefix, ceiledCount);
+		generateSharedUsers(sharedUsers, ceiledCount,
+				RegistrationStrategy.ByEmail);
+
+		// Appending shared users to the end of "normal" users list
+		int appendPos = getCreatedUsers().size();
+		for (int sharedUserIdx = 0; sharedUserIdx < count; sharedUserIdx++) {
+			this.users.set(appendPos, sharedUsers.get(sharedUserIdx));
+			appendPos++;
+		}
+	}
+
+	public void appendSharedUsers(String commonNamePrefix,
+			PhoneNumber startingPhoneNumber, int count) throws Exception {
+		if (count <= 0) {
+			throw new RuntimeException(
+					"Count of users should be positive integer number");
+		}
+		if (commonNamePrefix.length() == 0) {
+			throw new RuntimeException(
+					"Common name prefix value could not be empty");
+		}
+
+		List<ClientUser> sharedUsers = new ArrayList<ClientUser>();
+		final int ceiledCount = count / SHARED_USERS_MIN_CREATION_INTERVAL
+				* SHARED_USERS_MIN_CREATION_INTERVAL
+				+ SHARED_USERS_MIN_CREATION_INTERVAL;
+		resetClientsList(sharedUsers, ceiledCount);
+		for (int sharedUserIdx = 0; sharedUserIdx < sharedUsers.size(); sharedUserIdx++) {
+			ClientUser dstUser = sharedUsers.get(sharedUserIdx);
+			final String name = commonNamePrefix
+					+ Integer.toString(sharedUserIdx + 1);
+			dstUser.setName(name);
+			dstUser.addNameAlias(name);
+			dstUser.setEmail(ClientUser.generateEmail(name));
+			dstUser.addEmailAlias(name + "Email");
+			dstUser.setPhoneNumber(PhoneNumber.increasedBy(startingPhoneNumber,
+					BigInteger.valueOf(sharedUserIdx)));
+			dstUser.addPhoneNumberAlias(name + "PhoneNumber");
+		}
+		generateSharedUsers(sharedUsers, ceiledCount,
+				RegistrationStrategy.ByPhoneNumber);
 
 		// Appending shared users to the end of "normal" users list
 		int appendPos = getCreatedUsers().size();

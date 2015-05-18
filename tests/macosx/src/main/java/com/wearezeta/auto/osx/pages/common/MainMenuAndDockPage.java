@@ -1,6 +1,6 @@
 package com.wearezeta.auto.osx.pages.common;
 
-import java.io.IOException;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -8,9 +8,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
@@ -18,12 +16,14 @@ import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.OSXPage;
-import com.wearezeta.auto.osx.pages.welcome.LoginPage;
 
 public class MainMenuAndDockPage extends OSXPage {
 
-	private static final Logger log = ZetaLogger.getLog(MainMenuAndDockPage.class
-			.getSimpleName());
+	private static final Logger log = ZetaLogger
+			.getLog(MainMenuAndDockPage.class.getSimpleName());
+
+	@FindBy(how = How.NAME, using = OSXLocators.MainMenuPage.nameSendImageMenuItem)
+	private WebElement sendImageMenuItem;
 
 	@FindBy(how = How.NAME, using = OSXLocators.MainMenuPage.nameQuitWireMenuItem)
 	private WebElement quitWireMenuItem;
@@ -31,9 +31,9 @@ public class MainMenuAndDockPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.MainMenuPage.nameSignOutMenuItem)
 	private WebElement signOutMenuItem;
 
-	public MainMenuAndDockPage(ZetaOSXDriver driver, WebDriverWait wait)
+	public MainMenuAndDockPage(Future<ZetaOSXDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait, OSXExecutionContext.wirePath);
+		super(lazyDriver, OSXExecutionContext.wirePath);
 	}
 
 	public void signOut() throws Exception {
@@ -41,10 +41,7 @@ public class MainMenuAndDockPage extends OSXPage {
 		quitWire();
 		try {
 			OSXCommonUtils.deleteWireLoginFromKeychain();
-			OSXCommonUtils.removeAllZClientSettingsFromDefaults();
 			OSXCommonUtils.deleteCacheFolder();
-			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-					.getBackendType(LoginPage.class));
 		} catch (Exception ex) {
 			log.error("Can't clear Wire settings in OSX.\n" + ex.getMessage());
 		}
@@ -53,17 +50,15 @@ public class MainMenuAndDockPage extends OSXPage {
 		} catch (InterruptedException e) {
 		}
 
-		driver.navigate()
-				.to(CommonUtils
-						.getOsxApplicationPathFromConfig(MainMenuAndDockPage.class));
+		this.startApp();
 	}
 
-	public void quitWire() throws IOException {
+	public void quitWire() throws Exception {
 		try {
 			quitWireMenuItem.click();
 		} catch (NoSuchElementException e) {
 			log.debug("Can't find Quit Wire button. Source: "
-					+ driver.getPageSource());
+					+ this.getDriver().getPageSource());
 			throw e;
 		}
 	}
@@ -78,23 +73,29 @@ public class MainMenuAndDockPage extends OSXPage {
 		super.close();
 	}
 
-	public void restoreClient() {
+	public void restoreClient() throws Exception {
 		clickWireIconOnDock();
 	}
-	
-	public void clickWireIconOnDock() {
+
+	public void clickWireIconOnDock() throws Exception {
 		clickAppIconOnDock(OSXConstants.Apps.WIRE);
 	}
-	
-	public void clickAppIconOnDock(String appName) {
 
-		driver.navigate().to(OSXConstants.Apps.DOCK);
+	public void clickAppIconOnDock(String appName) throws Exception {
+		this.getDriver().navigate().to(OSXConstants.Apps.DOCK);
 		try {
-			String xpath = String.format(OSXLocators.MainMenuPage.xpathFormatDockApplicationIcon,
+			String xpath = String.format(
+					OSXLocators.MainMenuPage.xpathFormatDockApplicationIcon,
 					appName);
-			driver.findElement(By.xpath(xpath)).click();
+			getDriver().findElement(By.xpath(xpath)).click();
 		} finally {
-			if (driver != null) driver.navigate().to(OSXExecutionContext.wirePath);
+			if (this.getDriver() != null)
+				this.getDriver().navigate().to(OSXExecutionContext.wirePath);
 		}
+	}
+
+	public ChoosePicturePage sendImage() throws Exception {
+		sendImageMenuItem.click();
+		return new ChoosePicturePage(this.getLazyDriver());
 	}
 }

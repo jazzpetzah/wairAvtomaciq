@@ -3,15 +3,12 @@ package com.wearezeta.auto.osx.pages.welcome;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import javax.mail.Message;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -50,14 +47,14 @@ public class LoginPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.LoginPage.xpathForgotPasswordButton)
 	private WebElement forgotPasswordButton;
 
-	private Future<Message> passwordResetMessage;
+	private Future<String> passwordResetMessage;
 
-	public LoginPage(ZetaOSXDriver driver, WebDriverWait wait) throws Exception {
-		super(driver, wait);
+	public LoginPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.LoginPage.idPasswordField), 10);
 	}
 
@@ -70,12 +67,11 @@ public class LoginPage extends OSXPage {
 		signInButton.click();
 		switch (expectedBehaviour) {
 		case SUCCESSFUL:
-			return new ContactListPage(this.getDriver(), this.getWait());
+			return new ContactListPage(this.getLazyDriver());
 		case ERROR:
 			return this;
 		case NO_INTERNET:
-			return new NoInternetConnectionPage(this.getDriver(),
-					this.getWait());
+			return new NoInternetConnectionPage(this.getLazyDriver());
 		default:
 			throw new Exception(String.format(
 					"Unsupported expected sign in behaviour - %s",
@@ -84,6 +80,7 @@ public class LoginPage extends OSXPage {
 	}
 
 	public void typeEmail(String email) {
+		emailField.clear();
 		emailField.sendKeys(email);
 	}
 
@@ -101,9 +98,10 @@ public class LoginPage extends OSXPage {
 			passwordField.clear();
 			String script = String
 					.format(OSXCommonUtils
-							.readTextFileFromResources(OSXConstants.Scripts.INPUT_PASSWORD_LOGIN_PAGE_SCRIPT),
+							.readTextFileFromResources(OSXConstants.Scripts.SET_WIRE_FIELD_VALUE_SCRIPT),
+							OSXLocators.LoginPage.appleScriptPasswordFieldPath,
 							password);
-			driver.executeScript(script);
+			this.getDriver().executeScript(script);
 
 			break;
 		default:
@@ -113,19 +111,18 @@ public class LoginPage extends OSXPage {
 	}
 
 	public boolean waitForLogin() throws Exception {
-		DriverUtils.turnOffImplicitWait(driver);
-		boolean noSignIn = DriverUtils.waitUntilElementDissapear(driver,
-				By.name(OSXLocators.LoginPage.nameSignInButton));
-		DriverUtils.setDefaultImplicitWait(driver);
+		boolean noSignIn = DriverUtils.waitUntilLocatorDissapears(
+				this.getDriver(),
+				By.name(OSXLocators.LoginPage.nameSignInButton), 60);
 		return noSignIn;
 	}
 
-	public Boolean isLoginFinished(String contact) {
+	public Boolean isLoginFinished(String contact) throws Exception {
 		String xpath = String.format(
 				OSXLocators.xpathFormatContactEntryWithName, contact);
 		WebElement el = null;
 		try {
-			el = driver.findElement(By.xpath(xpath));
+			el = getDriver().findElement(By.xpath(xpath));
 		} catch (NoSuchElementException e) {
 			el = null;
 		}
@@ -143,16 +140,6 @@ public class LoginPage extends OSXPage {
 		}
 	}
 
-	public void setPasswordUsingScript(String password) {
-		String script = "tell application \"Wire\" to activate\n"
-				+ "tell application \"System Events\"\n"
-				+ "tell process \"Wire\"\n"
-				+ "set value of attribute \"AXFocused\" of text field 1 of window 1 to true\n"
-				+ "keystroke \"" + password + "\"\n" + "end tell\n"
-				+ "end tell";
-		driver.executeScript(script);
-	}
-
 	public ChangePasswordPage openResetPasswordPage() throws Exception {
 		String passwordResetLink = BackendAPIWrappers
 				.getPasswordResetLink(this.passwordResetMessage);
@@ -160,8 +147,8 @@ public class LoginPage extends OSXPage {
 				.format(OSXCommonUtils
 						.readTextFileFromResources(OSXConstants.Scripts.OPEN_SAFARI_WITH_URL_SCRIPT),
 						passwordResetLink);
-		driver.executeScript(script);
-		return new ChangePasswordPage(this.getDriver(), this.getWait());
+		this.getDriver().executeScript(script);
+		return new ChangePasswordPage(this.getLazyDriver());
 	}
 
 	public ChangePasswordPage openStagingForgotPasswordPage() throws Exception {
@@ -169,8 +156,8 @@ public class LoginPage extends OSXPage {
 				.format(OSXCommonUtils
 						.readTextFileFromResources(OSXConstants.Scripts.OPEN_SAFARI_WITH_URL_SCRIPT),
 						OSXConstants.BrowserActions.STAGING_CHANGE_PASSWORD_URL);
-		driver.executeScript(script);
-		return new ChangePasswordPage(this.getDriver(), this.getWait());
+		this.getDriver().executeScript(script);
+		return new ChangePasswordPage(this.getLazyDriver());
 	}
 
 	public boolean isForgotPasswordPageAppears() throws Exception {
@@ -179,7 +166,7 @@ public class LoginPage extends OSXPage {
 						.readTextFileFromResources(OSXConstants.Scripts.PASSWORD_PAGE_VISIBLE_SCRIPT));
 
 		@SuppressWarnings("unchecked")
-		Map<String, String> value = (Map<String, String>) driver
+		Map<String, String> value = (Map<String, String>) this.getDriver()
 				.executeScript(script);
 		boolean result = Boolean.parseBoolean(value.get("result"));
 		return result;
@@ -193,11 +180,11 @@ public class LoginPage extends OSXPage {
 		}
 	}
 
-	public Future<Message> getPasswordResetMessage() {
+	public Future<String> getPasswordResetMessage() {
 		return passwordResetMessage;
 	}
 
-	public void setPasswordResetMessage(Future<Message> passwordResetMessage) {
+	public void setPasswordResetMessage(Future<String> passwordResetMessage) {
 		this.passwordResetMessage = passwordResetMessage;
 	}
 }

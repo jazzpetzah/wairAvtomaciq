@@ -2,7 +2,6 @@ package com.wearezeta.auto.common.localytics;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -61,14 +59,6 @@ public final class CommonLocalyticsSteps {
 
 	private static final int SECONDS_INTERVAL = 20;
 
-	private static void pingDrivers() {
-		Collection<RemoteWebDriver> registeredDrivers = PlatformDrivers
-				.getInstance().getRegisteredDrivers();
-		for (RemoteWebDriver driver : registeredDrivers) {
-			driver.getCurrentUrl();
-		}
-	}
-
 	public void IVerifyTheCountOfXEventHasBeenIncreasedWithinYSeconds(
 			String events, long secondsTimeout) throws Exception {
 		List<String> eventsList = splitEvents(events);
@@ -93,7 +83,7 @@ public final class CommonLocalyticsSteps {
 				}
 				Thread.sleep(SECONDS_INTERVAL * 1000);
 				// This is to keep selenium alive
-				pingDrivers();
+				PlatformDrivers.getInstance().pingDrivers();
 			} while (new Date().getTime() - milliSecondsStarted < secondsTimeout * 1000);
 			log.debug(String.format("\tCurrent value: %s", currentValue));
 			if (currentValue <= snapshottedValue) {
@@ -213,7 +203,7 @@ public final class CommonLocalyticsSteps {
 				}
 				Thread.sleep(SECONDS_INTERVAL * 1000);
 				// This is to keep selenium alive
-				pingDrivers();
+				PlatformDrivers.getInstance().pingDrivers();
 			} while (new Date().getTime() - milliSecondsStarted < secondsTimeout * 1000);
 			log.debug(String.format("\tCurrent value: %s", currentValue));
 			if (currentValue <= snapshottedValue) {

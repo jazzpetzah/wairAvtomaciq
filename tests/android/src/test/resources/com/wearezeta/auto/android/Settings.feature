@@ -5,8 +5,8 @@ Feature: Settings
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    Given I see Contact list
+    When I tap on my avatar
     And I tap options button
     And I tap settings button
     And I wait for 2 seconds
@@ -20,25 +20,24 @@ Feature: Settings
 
   @id71 @regression
   Scenario Outline: Can not open Settings page when editing user name
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    Then Contact list appears
+    When I tap on my avatar
     And I tap on my name
-    Then Settings button is unreachable
+    Then Menu options are unreachable
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @id90 @id91 @id92 @regression
   Scenario Outline: Open Close About page from Settings page
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    Given I see Contact list
+    When I tap on my avatar
     And I tap options button
     And I tap about button
     Then I see About page
@@ -49,22 +48,31 @@ Feature: Settings
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id2020 @regression
-  Scenario Outline: Verify possibility of reseting password
+  @id863 @regression
+  Scenario Outline: Verify possibility of reseting password from settings
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I see sign in screen
-    When I press Sign in button
-    And I press FORGOT PASSWORD button
-    And I request reset password for <Email>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list
+    When I tap on my avatar
+    And I tap options button
+    And I tap settings button
+    And I wait for 2 seconds
+    Then I see settings page
+    And I see change password item 
+    When I click on CHANGE PASSWORD 
+    And I request reset password for <Login>
     Then I reset <Name> password by URL to new <NewPassword>
+    When I restore the application
+    And I wait for 2 seconds
+    And I minimize the application
     And I restore the application
     And I press Sign in button
-    And I have entered login <Email>
+    And I have entered login <Login>
     And I have entered password <NewPassword>
     And I press Log in button
-    Then Contact list appears with my name <Name>
+    Then I see Contact list
 
     Examples: 
-      | Email      | Password      | Name      | NewPassword | Contact   |
+      | Login      | Password      | Name      | NewPassword | Contact   |
       | user1Email | user1Password | user1Name | qatest1234  | user2Name |

@@ -1,16 +1,18 @@
 package com.wearezeta.auto.osx.pages.calling;
 
+import java.util.concurrent.Future;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
+import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class StartedCallPage extends CallPage {
@@ -25,22 +27,23 @@ public class StartedCallPage extends CallPage {
 	@FindBy(how = How.ID, using = OSXLocators.CallPage.idMuteMicrophoneButton)
 	private WebElement muteMicrophoneButton;
 
-	public StartedCallPage(ZetaOSXDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public StartedCallPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public boolean isOngoingCallVisible(String subscriberName) throws Exception {
 		String xpath = String.format(
 				OSXLocators.CallPage.xpathFormatSubscriberName, subscriberName);
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 10);
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(xpath), 30);
 	}
 
 	public boolean isPendingCallVisible(String subscriberName) throws Exception {
 		String xpath = String.format(
 				OSXLocators.CallPage.xpathFormatCallingUserMessage,
 				subscriberName);
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 10);
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(xpath), 30);
 	}
 
 	public void cancelCallButton() {
@@ -48,7 +51,8 @@ public class StartedCallPage extends CallPage {
 	}
 
 	public boolean isMicrophoneMuted() {
-		String state = muteMicrophoneButton.getAttribute("AXValue");
+		String state = muteMicrophoneButton
+				.getAttribute(OSXConstants.Attributes.AXVALUE);
 		return OSXCommonUtils.osxAXValueToBoolean(state);
 	}
 

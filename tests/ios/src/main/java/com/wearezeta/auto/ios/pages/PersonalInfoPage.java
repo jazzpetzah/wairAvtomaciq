@@ -1,12 +1,12 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.util.*;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -68,16 +68,27 @@ public class PersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
 	private WebElement changePasswordPageChangePasswordButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsHelpButton)
 	private WebElement settingsHelpButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsHelpHeader)
 	private WebElement supportWebPageHeader;
 
-	public PersonalInfoPage(ZetaIOSDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	@FindBy(how = How.NAME, using = IOSLocators.nameAccentColorPicker)
+	private WebElement accentColorPicker;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsChatheadSwitch)
+	private WebElement settingsChatheadSwitch;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsBackButton)
+	private WebElement settingsBackButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsDoneButton)
+	private WebElement settingsDoneButton;
+
+	public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public String getUserNameValue() {
@@ -91,7 +102,7 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public boolean isSettingsButtonVisible() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameProfileSettingsButton));
 	}
 
@@ -120,23 +131,23 @@ public class PersonalInfoPage extends IOSPage {
 	public LoginPage clickSignoutButton() throws Exception {
 		LoginPage page;
 		signoutButton.click();
-		page = new LoginPage(this.getDriver(), this.getWait());
+		page = new LoginPage(this.getLazyDriver());
 		return page;
 	}
 
-	public void tapOnEditNameField() {
+	public void tapOnEditNameField() throws Exception {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(profileNameEditField));
 		profileNameEditField.click();
 	}
-	
+
 	public void changeName(String newName) throws Exception {
 		profileNameEditField.clear();
 		profileNameEditField.sendKeys(newName);
 	}
 
 	public boolean isTooShortNameErrorMessage() throws Exception {
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameSelfNameTooShortError));
 	}
 
@@ -144,25 +155,25 @@ public class PersonalInfoPage extends IOSPage {
 		profileNameEditField.clear();
 	}
 
-	public void enterNameInNamefield(String username) {
+	public void enterNameInNamefield(String username) throws Exception {
 		DriverUtils.mobileTapByCoordinates(this.getDriver(),
 				profileNameEditField);
 		profileNameEditField.sendKeys(username);
 	}
 
-	public void pressEnterInNameField() {
+	public void pressEnterInNameField() throws Exception {
 		DriverUtils.mobileTapByCoordinates(this.getDriver(),
 				profileNameEditField);
 		profileNameEditField.sendKeys("\n");
 	}
 
 	public void waitForSettingsButtonAppears() throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.nameProfileSettingsButton));
 	}
 
 	public void waitForEmailFieldVisible() throws Exception {
-		DriverUtils.waitUntilElementAppears(driver,
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathEmailField));
 	}
 
@@ -183,7 +194,7 @@ public class PersonalInfoPage extends IOSPage {
 	public CameraRollPage pressCameraButton() throws Exception {
 
 		CameraRollPage page;
-		page = new CameraRollPage(this.getDriver(), this.getWait());
+		page = new CameraRollPage(this.getLazyDriver());
 		pictureButton.click();
 
 		return page;
@@ -204,7 +215,7 @@ public class PersonalInfoPage extends IOSPage {
 			break;
 		}
 		case RIGHT: {
-			page = new ContactListPage(this.getDriver(), this.getWait());
+			page = new ContactListPage(this.getLazyDriver());
 			break;
 		}
 		}
@@ -230,13 +241,29 @@ public class PersonalInfoPage extends IOSPage {
 	public void isDefaultSoundValOne() {
 		allSoundAlertsButton.getAttribute("value").equals("1");
 	}
-	
-	public void clickOnHelpButton(){
+
+	public void clickOnHelpButton() {
 		settingsHelpButton.click();
 	}
-	
+
 	public boolean isSupportWebPageVisible() {
 		return supportWebPageHeader.isDisplayed();
+	}
+
+	public void changeAccentColor() {
+		accentColorPicker.click();
+	}
+
+	public void switchChatheadsOnOff() {
+		settingsChatheadSwitch.click();
+	}
+
+	public void pressSettingsBackButton() {
+		settingsBackButton.click();
+	}
+
+	public void pressSettingsDoneButton() {
+		settingsDoneButton.click();
 	}
 
 }

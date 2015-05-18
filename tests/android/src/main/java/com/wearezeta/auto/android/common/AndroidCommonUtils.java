@@ -58,7 +58,14 @@ public class AndroidCommonUtils extends CommonUtils {
 			executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb shell am start -t image/* -a android.intent.action.VIEW" });
 		}
 	}
-
+	
+	public static void openBroswerApplication() throws Exception {
+		if (getOsName().contains(OS_NAME_WINDOWS)) {
+			Runtime.getRuntime().exec("cmd /C adb shell am start -a android.intent.action.VIEW -d http://www.google.com");
+		} else {
+			executeOsXCommand(new String[] { "/bin/bash", "-c", ADB_PREFIX + "adb shell am start -a android.intent.action.VIEW -d http://www.google.com" });
+		}
+	}
 	
 	public static void copyFileFromAndroid(String filePathOnSystem,  String filePathOnDevice) throws Exception {
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
@@ -91,7 +98,7 @@ public class AndroidCommonUtils extends CommonUtils {
 		}
 	}
 
-	
+	//should be refactored and use package name from current configuration
 	public static void killAndroidClient() throws Exception {
 		if (getOsName().contains(OS_NAME_WINDOWS)) {
 			Runtime.getRuntime().exec(
@@ -242,11 +249,11 @@ public class AndroidCommonUtils extends CommonUtils {
 				if (output.contains("Wi-Fi is disabled")) {
 					result = false;
 				} else if (output.contains("Wi-Fi is enabled")) {
-					Pattern pattern = Pattern.compile("mNetworkInfo NetworkInfo: type: [^,]*, state: ([^,]*),");
+					Pattern pattern = Pattern.compile("mNetworkInfo (NetworkInfo: |\\[)?type: [^,]*, state: ([^,]*),");
 					Matcher matcher = pattern.matcher(output);
 					String state = "no info";
 					while (matcher.find()) {
-						state = matcher.group(1);
+						state = matcher.group(2);
 						log.debug("Retrieved wifi state: " + state);
 					}
 					if (state.contains("DISCONNECTED") || state.contains("SCANNING")) {

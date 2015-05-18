@@ -1,11 +1,11 @@
 Feature: Search
 
-  @staging @id2147 
+  @regression @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
@@ -15,10 +15,10 @@ Feature: Search
 	 | Login      | Password      | Name      | ContactEmail  | ContactName |
      | user1Email | user1Password | user1Name | user2Email | user2Name |
 
-  @staging @id2148 
+  @regression @id2148 
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I swipe down contact list
     And I see People picker page
@@ -33,13 +33,14 @@ Feature: Search
   @regression @id299 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading
     Given There is 1 user where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I dismiss alert
     And I swipe down contact list
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I dismiss alert
-    And I dont see PEOPLE YOU MAY KNOW label
+    And I dont see CONNECT label
+    And I press maybe later button
     And I click clear button
     And I swipe down contact list
     And I scroll up page a bit
@@ -53,14 +54,14 @@ Feature: Search
   Scenario Outline: Verify uploading address book to the server
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I add contacts list users to Mac contacts
     And I dismiss alert
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I accept alert
-    Then I see PEOPLE YOU MAY KNOW label
+    Then I see CONNECT label
     And I see user <Contact1> found on People picker page
     And I see user <Contact2> found on People picker page
     And I remove contacts list users from Mac contacts
@@ -112,10 +113,10 @@ Feature: Search
     Given Myself is connected to all other users
     Given Contact <Contact> send message to user <Name>
     Given Contact <Name> send message to user <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -135,10 +136,10 @@ Feature: Search
     Given Myself is connected to all other users
     Given Contact <Contact> send message to user <Name>
     Given Contact <Name> send message to user <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -160,9 +161,10 @@ Feature: Search
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
-    Given I Sign in using login <Login> and password <Password>
+    Given User <Name> change accent color to <Color>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
@@ -172,7 +174,11 @@ Feature: Search
     And I input message in connect dialog with <NumOfMessageChars> characters
     And I see message with max number of characters
     And I click Connect button on connect to dialog
-    And I wait for 10 seconds
+    And I click close button to dismiss people view
+    When I swipe down contact list
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user email <ContactEmail>
     Then I see the user <UnconnectedUser> avatar with a clock
     And I click close button to dismiss people view
     And I see conversation with not connected user <UnconnectedUser>
@@ -181,17 +187,17 @@ Feature: Search
     And I see <UnconnectedUser> user pending profile page
     
     Examples: 
-      | Login      | Password      | Name      | UnconnectedUser | NumOfMessageChars | StartLetter |
-      | user1Email | user1Password | user1Name | user2Name       | 141               | T           |
+      | Login      | Password      | Name      | UnconnectedUser |ContactEmail|  NumOfMessageChars | StartLetter |Color        |
+      | user1Email | user1Password | user1Name | user2Name       | user2Email | 141                | T           |BrightOrange |
       
   @staging @id763
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
   	Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -211,9 +217,9 @@ Feature: Search
   	Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I dont see conversation <Contact> in contact list
-    And I swipe down contact list
+    And I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -227,3 +233,83 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name | 
+      
+  @regression @id2117
+  Scenario Outline: Verify dismissing with clicking on Hide
+  	Given There are 5 users where <Name> is me
+    Given <ContactWithFriends> is connected to <Name>
+    Given <ContactWithFriends> is connected to <Friend1>
+    Given <ContactWithFriends> is connected to <Friend2>
+    Given <ContactWithFriends> is connected to <Friend3>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by clicking plus button
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+	And I see CONNECT label
+	And I hide peoplepicker keyboard
+	And I swipe to reveal hide button for suggested contact <Friend1>
+	And I tap hide for suggested contact
+	Then I do not see suggested contact <Friend1>
+	
+    Examples: 
+      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+
+  @regression @id2116
+  Scenario Outline: Verify dismissing with one single gesture
+    Given There are 5 users where <Name> is me
+    Given <ContactWithFriends> is connected to <Name>
+    Given <ContactWithFriends> is connected to <Friend1>
+    Given <ContactWithFriends> is connected to <Friend2>
+    Given <ContactWithFriends> is connected to <Friend3>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by clicking plus button
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I hide peoplepicker keyboard
+    And I swipe completely to dismiss suggested contact <Friend1>
+    Then I do not see suggested contact <Friend1>
+
+    Examples: 
+      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+
+  @regression @id2149
+  Scenario Outline: Verify search by second name (something after space)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by clicking plus button
+    And I wait until <LastName> exists in backend search results
+    And I see People picker page 
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <LastName>
+    Then I see user <NewName> found on People picker page
+
+  	Examples:
+      | Login      | Password      | Name      | Contact       | NewName      | LastName |
+      | user1Email | user1Password | user1Name | user2Name     | NEW NAME     | NAME     |
+      
+  @regression @id2118 
+  Scenario Outline: Verify sending connection request from PYMK
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by clicking plus button
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I press the instant connect button
+    And I click close button to dismiss people view
+    Then I see first item in contact list named <Contact2>
+
+    Examples:
+      | Login | Password | Name | Contact1 | Contact2 | 
+      | user1Email | user1Password | user1Name | user2Name | user3Name |

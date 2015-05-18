@@ -1,14 +1,12 @@
 package com.wearezeta.auto.common.locators;
 
-import static io.appium.java_client.remote.MobilePlatform.ANDROID;
-import static io.appium.java_client.remote.MobilePlatform.IOS;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.pagefactory.Annotations;
 import org.openqa.selenium.support.pagefactory.ByAll;
 import org.openqa.selenium.support.pagefactory.ByChained;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.Platform;
 
 import io.appium.java_client.MobileBy;
 import io.appium.java_client.pagefactory.AndroidFindAll;
@@ -26,7 +24,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ZetaAnnotations extends Annotations{
+public class ZetaAnnotations extends Annotations {
 
 	private final static List<String> METHODS_TO_BE_EXCLUDED_WHEN_ANNOTATION_IS_READ = new ArrayList<String>() {
 		private static final long serialVersionUID = 1L;
@@ -41,6 +39,7 @@ public class ZetaAnnotations extends Annotations{
 		}
 	};
 	private final static Class<?>[] DEFAULT_ANNOTATION_METHOD_ARGUMENTS = new Class<?>[] {};
+
 	private static List<String> getMethodNames(Method[] methods) {
 		List<String> names = new ArrayList<String>();
 		for (Method m : methods) {
@@ -146,21 +145,21 @@ public class ZetaAnnotations extends Annotations{
 	}
 
 	private final Field mobileField;
-	private final String platform;
+	private final Platform platform;
 
-	ZetaAnnotations(Field field, String platform) {
+	ZetaAnnotations(Field field, Platform platform) {
 		super(field);
 		mobileField = field;
-		this.platform = String.valueOf(platform).
-				toUpperCase().trim();
+		this.platform = platform;
 	}
 
 	private static void checkDisallowedAnnotationPairs(Annotation a1,
 			Annotation a2) throws IllegalArgumentException {
 		if (a1 != null && a2 != null) {
-			throw new IllegalArgumentException(
-					"If you use a '@" + a1.getClass().getSimpleName() + "' annotation, "
-							+ "you must not also use a '@" + a2.getClass().getSimpleName() + "' annotation");
+			throw new IllegalArgumentException("If you use a '@"
+					+ a1.getClass().getSimpleName() + "' annotation, "
+					+ "you must not also use a '@"
+					+ a2.getClass().getSimpleName() + "' annotation");
 		}
 	}
 
@@ -169,8 +168,8 @@ public class ZetaAnnotations extends Annotations{
 				.getAnnotation(AndroidFindBy.class);
 		AndroidFindBys androidBys = mobileField
 				.getAnnotation(AndroidFindBys.class);
-		AndroidFindAll androidFindAll = mobileField.
-				getAnnotation(AndroidFindAll.class);
+		AndroidFindAll androidFindAll = mobileField
+				.getAnnotation(AndroidFindAll.class);
 
 		iOSFindBy iOSBy = mobileField.getAnnotation(iOSFindBy.class);
 		iOSFindBys iOSBys = mobileField.getAnnotation(iOSFindBys.class);
@@ -187,12 +186,16 @@ public class ZetaAnnotations extends Annotations{
 
 	private static Method[] prepareAnnotationMethods(
 			Class<? extends Annotation> annotation) {
-		List<String> targeAnnotationMethodNamesList = getMethodNames(annotation.getDeclaredMethods());
-		targeAnnotationMethodNamesList.removeAll(METHODS_TO_BE_EXCLUDED_WHEN_ANNOTATION_IS_READ);
+		List<String> targeAnnotationMethodNamesList = getMethodNames(annotation
+				.getDeclaredMethods());
+		targeAnnotationMethodNamesList
+				.removeAll(METHODS_TO_BE_EXCLUDED_WHEN_ANNOTATION_IS_READ);
 		Method[] result = new Method[targeAnnotationMethodNamesList.size()];
-		for (String methodName: targeAnnotationMethodNamesList){
+		for (String methodName : targeAnnotationMethodNamesList) {
 			try {
-				result[targeAnnotationMethodNamesList.indexOf(methodName)] = annotation.getMethod(methodName, DEFAULT_ANNOTATION_METHOD_ARGUMENTS);
+				result[targeAnnotationMethodNamesList.indexOf(methodName)] = annotation
+						.getMethod(methodName,
+								DEFAULT_ANNOTATION_METHOD_ARGUMENTS);
 			} catch (NoSuchMethodException e) {
 				throw new RuntimeException(e);
 			} catch (SecurityException e) {
@@ -238,7 +241,8 @@ public class ZetaAnnotations extends Annotations{
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T extends By> T getComplexMobileBy(Annotation[] annotations, Class<T> requiredByClass) {
+	private <T extends By> T getComplexMobileBy(Annotation[] annotations,
+			Class<T> requiredByClass) {
 		;
 		By[] byArray = new By[annotations.length];
 		for (int i = 0; i < annotations.length; i++) {
@@ -247,7 +251,7 @@ public class ZetaAnnotations extends Annotations{
 		}
 		try {
 			Constructor<?> c = requiredByClass.getConstructor(By[].class);
-			Object[] values = new Object[]{byArray};
+			Object[] values = new Object[] { byArray };
 			return (T) c.newInstance(values);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -258,44 +262,46 @@ public class ZetaAnnotations extends Annotations{
 	public By buildBy() {
 		assertValidAnnotations();
 
-		AndroidFindBy androidBy = mobileField
-				.getAnnotation(AndroidFindBy.class);
-		if (androidBy != null && ANDROID.toUpperCase().equals(platform)) {
-			return getMobileBy(androidBy, getFilledValue(androidBy));
+		switch (platform) {
+		case Android:
+			AndroidFindBy androidBy = mobileField
+					.getAnnotation(AndroidFindBy.class);
+			if (androidBy != null) {
+				return getMobileBy(androidBy, getFilledValue(androidBy));
+			}
+			AndroidFindBys androidBys = mobileField
+					.getAnnotation(AndroidFindBys.class);
+			if (androidBys != null) {
+				return getComplexMobileBy(androidBys.value(), ByChained.class);
+			}
+			AndroidFindAll androidFindAll = mobileField
+					.getAnnotation(AndroidFindAll.class);
+			if (androidFindAll != null) {
+				return getComplexMobileBy(androidFindAll.value(), ByAll.class);
+			}
+			break;
+		case iOS:
+			iOSFindBy iOSBy = mobileField.getAnnotation(iOSFindBy.class);
+			if (iOSBy != null) {
+				return getMobileBy(iOSBy, getFilledValue(iOSBy));
+			}
+			iOSFindBys iOSBys = mobileField.getAnnotation(iOSFindBys.class);
+			if (iOSBys != null) {
+				return getComplexMobileBy(iOSBys.value(), ByChained.class);
+			}
+			iOSFindAll iOSFindAll = mobileField.getAnnotation(iOSFindAll.class);
+			if (iOSFindAll != null) {
+				return getComplexMobileBy(iOSFindAll.value(), ByAll.class);
+			}
+			break;
+		default:
+			break;
 		}
-
-		AndroidFindBys androidBys = mobileField
-				.getAnnotation(AndroidFindBys.class);
-		if (androidBys != null && ANDROID.toUpperCase().equals(platform)) {
-			return getComplexMobileBy(androidBys.value(), ByChained.class);
-		}
-
-		AndroidFindAll androidFindAll = mobileField.getAnnotation(AndroidFindAll.class);
-		if (androidFindAll != null && ANDROID.toUpperCase().equals(platform)) {
-			return getComplexMobileBy(androidFindAll.value(), ByAll.class);
-		}
-
-		iOSFindBy iOSBy = mobileField.getAnnotation(iOSFindBy.class);
-		if (iOSBy != null && IOS.toUpperCase().equals(platform)) {
-			return getMobileBy(iOSBy, getFilledValue(iOSBy));
-		}
-
-		iOSFindBys iOSBys = mobileField.getAnnotation(iOSFindBys.class);
-		if (iOSBys != null && IOS.toUpperCase().equals(platform)) {
-			return getComplexMobileBy(iOSBys.value(), ByChained.class);
-		}
-
-		iOSFindAll iOSFindAll = mobileField.getAnnotation(iOSFindAll.class);
-		if (iOSFindAll != null && IOS.toUpperCase().equals(platform)) {
-			return getComplexMobileBy(iOSFindAll.value(), ByAll.class);
-		}		
-		
 		ZetaFindBy zetaFindBy = mobileField.getAnnotation(ZetaFindBy.class);
 		if (zetaFindBy != null) {
 			try {
 				return buildByFromZetaFindBy(zetaFindBy);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				return null;
 			}
@@ -303,13 +309,13 @@ public class ZetaAnnotations extends Annotations{
 		return super.buildBy();
 	}
 
-	protected By buildByFromZetaFindBy(ZetaFindBy findBy) throws Exception{
+	protected By buildByFromZetaFindBy(ZetaFindBy findBy) throws Exception {
 		ZetaHow how = findBy.how();
 		String locatorsDb = findBy.locatorsDb();
 		String locatorKey = findBy.locatorKey();
 
-		if(CommonUtils.getAndroidApiLvl(ZetaAnnotations.class) < 43){
-			if(how == ZetaHow.ID){
+		if (CommonUtils.getAndroidApiLvl(ZetaAnnotations.class) < 43) {
+			if (how == ZetaHow.ID) {
 				how = ZetaHow.XPATH;
 			}
 			locatorKey = "xpath" + locatorKey.substring(2) + "42";
@@ -346,10 +352,12 @@ public class ZetaAnnotations extends Annotations{
 
 		default:
 			// Note that this shouldn't happen (eg, the above matches all
-					// possible values for the How enum)
-					throw new IllegalArgumentException("Cannot determine how to locate element " + mobileField);
+			// possible values for the How enum)
+			throw new IllegalArgumentException(
+					"Cannot determine how to locate element " + mobileField);
 		}
 	}
+
 	public String getLocatorValue(String db, String key) {
 		try {
 			Class<?> locatorsClass = Class.forName(db);
@@ -358,9 +366,12 @@ public class ZetaAnnotations extends Annotations{
 		} catch (ClassNotFoundException e) {
 			System.out.println("Can't find locators class for name " + db);
 		} catch (NoSuchFieldException e) {
-			System.out.println("No locator with name " + key + " in " + db + " class.");
+			System.out.println("No locator with name " + key + " in " + db
+					+ " class.");
 		} catch (IllegalAccessException e) {
-			System.out.println("Error while trying to access locator with name " + key + ": " + e.getMessage());
+			System.out
+					.println("Error while trying to access locator with name "
+							+ key + ": " + e.getMessage());
 		}
 		return key;
 

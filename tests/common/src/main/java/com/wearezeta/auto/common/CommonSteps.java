@@ -3,21 +3,27 @@ package com.wearezeta.auto.common;
 import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.backend.ConnectionStatus;
-import com.wearezeta.auto.common.calling.CallingUtil;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.OSXAddressBookHelpers;
+import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 
 public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
 	public static final String CONNECTION_MESSAGE = "Hello!";
+	private static final int BACKEND_USER_SYNC_TIMEOUT = 15; // seconds
 
 	private String pingId = null;
 
@@ -98,13 +104,16 @@ public final class CommonSteps {
 		}
 	}
 
-	public void ThereAreNUsers(int count) throws Exception {
-		usrMgr.createUsersOnBackend(count);
+	public void ThereAreNUsers(Platform currentPlatform, int count)
+			throws Exception {
+		usrMgr.createUsersOnBackend(count, RegistrationStrategy
+				.getRegistrationStrategyForPlatform(currentPlatform));
 	}
 
-	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
-			throws Exception {
-		usrMgr.createUsersOnBackend(count);
+	public void ThereAreNUsersWhereXIsMe(Platform currentPlatform, int count,
+			String myNameAlias) throws Exception {
+		usrMgr.createUsersOnBackend(count, RegistrationStrategy
+				.getRegistrationStrategyForPlatform(currentPlatform));
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
@@ -114,9 +123,32 @@ public final class CommonSteps {
 		BackendAPIWrappers.ignoreAllConnections(userTo);
 	}
 
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
-		Thread.sleep(Integer.parseInt(seconds) * 1000);
+	private static final int DRIVER_PING_INTERVAL_SECONDS = 60;
+
+	public void WaitForTime(int seconds) throws Exception {
+		final Thread pingThread = new Thread() {
+			public void run() {
+				do {
+					try {
+						Thread.sleep(DRIVER_PING_INTERVAL_SECONDS * 1000);
+					} catch (InterruptedException e) {
+						return;
+					}
+					try {
+						PlatformDrivers.getInstance().pingDrivers();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				} while (!isInterrupted());
+			}
+		};
+		pingThread.start();
+		try {
+			Thread.sleep(seconds * 1000);
+		} finally {
+			pingThread.interrupt();
+		}
 	}
 
 	public void BlockContact(String blockAsUserNameAlias,
@@ -310,34 +342,13 @@ public final class CommonSteps {
 	}
 
 	public void WaitUntilContactIsFoundInSearch(String searchByNameAlias,
-			String contactAlias, int timeout) throws Exception {
+			String contactAlias) throws Exception {
 		String query = usrMgr.replaceAliasesOccurences(contactAlias,
 				FindBy.NAME_ALIAS);
 		query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
 		BackendAPIWrappers.waitUntilContactsFound(
 				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
-				true, timeout);
-	}
-
-	public void UserCallsToConversation(String userNameAlias,
-			String conversationName) throws Exception {
-		ClientUser caller = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
-				FindBy.NAME_ALIAS);
-		CallingUtil.startCall(caller, conversationName);
-	}
-
-	public void StopCurrentCall() throws Exception {
-		CallingUtil.stopCall();
-	}
-
-	public void waitForCallToAccept(String userNameAlias) throws Exception {
-		ClientUser callee = usrMgr.findUserByNameOrNameAlias(userNameAlias);
-		CallingUtil.waitsForCallToAccept(callee);
-	}
-
-	public void waitForCalleeToAcceptCall() {
-
+				true, BACKEND_USER_SYNC_TIMEOUT);
 	}
 
 	public void UserXAddedContactsToGroupChat(String userAsNameAlias,
@@ -353,4 +364,48 @@ public final class CommonSteps {
 				contactsToAdd, chatName);
 	}
 
+	private Map<String, String> profilePictureSnapshotsMap = new HashMap<String, String>();
+
+	public void UserXTakesSnapshotOfProfilePicture(String userNameAlias)
+			throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userNameAlias);
+		profilePictureSnapshotsMap.put(userAs.getEmail(),
+				BackendAPIWrappers.getUserPictureHash(userAs));
+	}
+
+	public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
+			String userNameAlias, int secondsTimeout) throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userNameAlias);
+		String previousHash = null;
+		if (profilePictureSnapshotsMap.containsKey(userAs.getEmail())) {
+			previousHash = profilePictureSnapshotsMap.get(userAs.getEmail());
+		} else {
+			throw new RuntimeException(String.format(
+					"Please take user picture snapshot for user '%s' first",
+					userAs.getEmail()));
+		}
+		long millisecondsStarted = System.currentTimeMillis();
+		String actualHash = null;
+		do {
+			actualHash = BackendAPIWrappers.getUserPictureHash(userAs);
+			if (!actualHash.equals(previousHash)) {
+				break;
+			}
+			Thread.sleep(500);
+		} while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000);
+		Assert.assertFalse(
+				String.format(
+						"Actual and previous user pictures are equal, but expected to be different after %s second(s)",
+						secondsTimeout), previousHash.equals(actualHash));
+	}
+
+	private static final int PICTURE_CHANGE_TIMEOUT = 15; // seconds
+
+	public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
+			String userNameAlias) throws Exception {
+		UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias,
+				PICTURE_CHANGE_TIMEOUT);
+	}
 }

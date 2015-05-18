@@ -20,6 +20,7 @@
 		<driverTimeoutSeconds>10</driverTimeoutSeconds>
 		<osxClientInfoPlist>/Project/builds_info/Info_osx.plist</osxClientInfoPlist>
 		<defaultEmail>smoketester.osx@wearezeta.com</defaultEmail>
+		<wireConfigDomain>com.wearezeta.zclient.mac.development</wireConfigDomain>
 	</properties>
 
 	<dependencies>

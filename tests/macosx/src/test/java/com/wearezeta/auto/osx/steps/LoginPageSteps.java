@@ -7,8 +7,9 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.osx.common.InputMethodEnum;
@@ -35,7 +36,7 @@ public class LoginPageSteps {
 	 * Enters user email and password into corresponding fields on sign in
 	 * screen then taps "Sign In" button
 	 * 
-	 * @step. I Sign in using login (.*) and password (.*)
+	 * @step. ^I [Ss]ign in using login (.*) and password (.*)$
 	 * 
 	 * @param login
 	 *            user login string
@@ -45,7 +46,7 @@ public class LoginPageSteps {
 	 * @throws AssertionError
 	 *             if login operation was unsuccessful
 	 */
-	@Given("I Sign in using login (.*) and password (.*)")
+	@Given("^I [Ss]ign in using login (.*) and password (.*)$")
 	public void ISignInUsingLoginAndPassword(String login, String password)
 			throws Exception {
 		log.debug(String.format("Sign in using email %s and password %s",
@@ -59,6 +60,19 @@ public class LoginPageSteps {
 		Assert.assertTrue(String.format(
 				"Failed to sign in using email %s and password %s", login,
 				password), PagesCollection.loginPage.waitForLogin());
+
+		ClientUser user = null;
+		try {
+			user = usrMgr.findUserByNameOrNameAlias(login);
+		} catch (NoSuchUserException e) {
+			try {
+				user = usrMgr.findUserByEmailOrEmailAlias(login);
+			} catch (NoSuchUserException ex) {
+			}
+		}
+		if (user != null) {
+			usrMgr.setSelfUser(user);
+		}
 	}
 
 	/**
@@ -83,9 +97,8 @@ public class LoginPageSteps {
 		}
 		if (page instanceof ContactListPage) {
 			PagesCollection.contactListPage = (ContactListPage) page;
-			PagesCollection.selfProfilePage = new SelfProfilePage(
-					PagesCollection.contactListPage.getDriver(),
-					PagesCollection.contactListPage.getWait());
+			PagesCollection.selfProfilePage = (SelfProfilePage) PagesCollection.contactListPage
+					.instantiatePage(SelfProfilePage.class);
 		} else if (page instanceof NoInternetConnectionPage) {
 			PagesCollection.noInternetPage = (NoInternetConnectionPage) page;
 		} else if (page instanceof LoginPage) {

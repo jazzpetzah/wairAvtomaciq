@@ -2,13 +2,12 @@ package com.wearezeta.auto.android.pages;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.concurrent.Future;
 
-import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -21,6 +20,9 @@ public class RegistrationPage extends AndroidPage {
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
 	private WebElement cameraButton;
+
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.RegistrationPage.CLASS_NAME, locatorKey = "idRegistrationBack")
+	private WebElement backButton;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
 	private WebElement confirmImageButton;
@@ -49,6 +51,9 @@ public class RegistrationPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
 	private WebElement laterBtn;
 
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearch")
+	private WebElement pickerSearch;
+
 	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
 	private List<WebElement> frameLayouts;
 
@@ -58,9 +63,9 @@ public class RegistrationPage extends AndroidPage {
 	private static final String YOUR_NAME = "your full name";
 	private static final String EMAIL = "email";
 
-	public RegistrationPage(ZetaAndroidDriver driver, WebDriverWait wait)
+	public RegistrationPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
 	@Override
@@ -70,7 +75,7 @@ public class RegistrationPage extends AndroidPage {
 		return null;
 	}
 
-	public void takePhoto() {
+	public void takePhoto() throws Exception {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(cameraButton));
 		cameraButton.click();
@@ -80,13 +85,11 @@ public class RegistrationPage extends AndroidPage {
 		signUpGalleryIcon.click();
 	}
 
-	public void chooseFirstPhoto() {
-		refreshUITree();
+	public void chooseFirstPhoto() throws Exception {
 		try {
 			frameLayouts.get(0).click();
 			return;
 		} catch (Exception ex) {
-
 		}
 		try {
 			image.get(0).click();
@@ -96,48 +99,39 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public boolean isPictureSelected() throws Exception {
-		refreshUITree();
-		DriverUtils.waitUntilElementAppears(driver,
-				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
-		return DriverUtils.isElementDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
 	}
 
-	public void confirmPicture() {
-		refreshUITree();
-		this.getWait().until(
-				ExpectedConditions.elementToBeClickable(confirmImageButton));
+	public void confirmPicture() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				confirmImageButton);
 		confirmImageButton.click();
 	}
 
-	public void setName(String name) {
-		refreshUITree();
-		this.getWait()
-				.until(ExpectedConditions.elementToBeClickable(nameField));
+	public void setName(String name) throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				confirmImageButton);
 		// TABLET fix
 		if (nameField.getText().toLowerCase().contains(YOUR_NAME)) {
 			nameField.sendKeys(name);
-			refreshUITree();
 			this.getWait().until(
 					ExpectedConditions.elementToBeClickable(nextArrow));
 			nextArrow.click();
 		}
 	}
 
-	public void setEmail(String email) {
-		refreshUITree();
+	public void setEmail(String email) throws Exception {
 		// TABLET fix
 		if (nameField.getText().toLowerCase().contains(EMAIL)) {
 			nameField.sendKeys(email);
-			refreshUITree();
 			this.getWait().until(
 					ExpectedConditions.elementToBeClickable(nextArrow));
 			nextArrow.click();
 		}
 	}
 
-	public void setPassword(String password) {
-		refreshUITree();
+	public void setPassword(String password) throws Exception {
 		passwordField.sendKeys(password);
 	}
 
@@ -147,20 +141,18 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public boolean isConfirmationVisible() throws Exception {
-		refreshUITree();
-		this.getWait().until(ExpectedConditions.visibilityOf(verifyEmailBtn));
-		return DriverUtils.isElementDisplayed(this.getDriver(), verifyEmailBtn);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.RegistrationPage.idVerifyEmailBtn));
 	}
 
-	public ContactListPage continueRegistration() throws Exception {
-		try {
-			this.getWait().until(ExpectedConditions.visibilityOf(laterBtn));
-		} catch (NoSuchElementException e) {
+	public PeoplePickerPage continueRegistration() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.PeoplePickerPage.idPickerSearch));
+		return new PeoplePickerPage(this.getLazyDriver());
+	}
 
-		} catch (TimeoutException e) {
-
-		}
-		return new ContactListPage(this.getDriver(), this.getWait());
+	public void pressBackButton() throws Exception {
+		backButton.click();
 	}
 
 }

@@ -1,15 +1,12 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.io.IOException;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -21,14 +18,17 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.osx.common.OSXCommonUtils;
+import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.common.ProblemReportPage;
+import com.wearezeta.auto.osx.util.AccentColorUtil;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class ContactListPage extends MainWirePage {
@@ -36,14 +36,17 @@ public class ContactListPage extends MainWirePage {
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
 
-	@FindBy(how = How.ID, using = OSXLocators.idAcceptConnectionRequestButton)
-	private WebElement acceptInvitationButton;
+	@FindBy(how = How.ID, using = OSXLocators.ContactListPage.idOpenSearchUIButton)
+	private WebElement openSearchUIButton;
+
+	@FindBy(how = How.XPATH, using = OSXLocators.ContactListPage.xpathSelfProfileCLEntry)
+	private WebElement selfProfileCLEntry;
+
+	@FindBy(how = How.XPATH, using = OSXLocators.ContactListPage.xpathConnectionRequestsCLEntry)
+	private WebElement connectionRequestsCLEntry;
 
 	@FindBy(how = How.ID, using = OSXLocators.idContactEntry)
 	private List<WebElement> contactsTextFields;
-
-	@FindBy(how = How.ID, using = OSXLocators.ContactListPage.idOpenSearchUIButton)
-	private WebElement addConversationButton;
 
 	@FindBy(how = How.ID, using = OSXLocators.idShowArchivedButton)
 	private WebElement showArchivedButton;
@@ -53,40 +56,37 @@ public class ContactListPage extends MainWirePage {
 
 	public static HashMap<String, Boolean> shareContactsProcessedUsers = new HashMap<String, Boolean>();
 
-	public ContactListPage(ZetaOSXDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public ContactListPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(OSXLocators.ContactListPage.idOpenSearchUIButton));
 	}
 
 	public PeoplePickerPage openPeoplePicker() throws Exception {
-		addConversationButton.click();
-		return new PeoplePickerPage(this.getDriver(), this.getWait());
+		openSearchUIButton.click();
+		return new PeoplePickerPage(this.getLazyDriver());
+	}
+
+	public SelfProfilePage openSelfProfile() throws Exception {
+		selfProfileCLEntry.click();
+		return new SelfProfilePage(this.getLazyDriver());
+	}
+
+	public ConnectionRequestsPage openConnectionRequests() throws Exception {
+		connectionRequestsCLEntry.click();
+		return new ConnectionRequestsPage(this.getLazyDriver());
+	}
+
+	public String readSelfProfileName() {
+		return selfProfileCLEntry.getAttribute(OSXConstants.Attributes.AXVALUE);
 	}
 
 	public boolean waitUntilMainWindowAppears() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(OSXLocators.MainWirePage.xpathWindow));
-	}
-
-	public void restoreZClient() throws InterruptedException, ScriptException,
-			IOException {
-		final String[] scriptArr = new String[] {
-				"property bi : \"com.wearezeta.zclient.mac.development\"",
-				"property thisapp: \"Wire\"",
-				"tell application id bi to activate",
-				"tell application \"System Events\"", " tell process thisapp",
-				" click last menu item of menu \"Window\" of menu bar 1",
-				" end tell", "end tell" };
-
-		final String script = StringUtils.join(scriptArr, "\n");
-		ScriptEngineManager mgr = new ScriptEngineManager();
-		ScriptEngine engine = mgr.getEngineByName("AppleScript");
-		engine.eval(script);
 	}
 
 	public boolean isContactWithNameExists(String name) throws Exception {
@@ -107,11 +107,12 @@ public class ContactListPage extends MainWirePage {
 				}
 			}
 			log.debug("Can't find correct contact list entry. Page source: "
-					+ driver.getPageSource());
+					+ this.getDriver().getPageSource());
 		} else {
 			String xpath = String.format(
 					OSXLocators.xpathFormatContactEntryWithName, name);
-			return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath));
+			return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+					By.xpath(xpath));
 		}
 		return false;
 	}
@@ -135,13 +136,13 @@ public class ContactListPage extends MainWirePage {
 		} else {
 			String xpath = String.format(
 					OSXLocators.xpathFormatContactEntryWithName, name);
-			return DriverUtils.waitUntilElementDissapear(driver,
+			return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 					By.xpath(xpath));
 		}
 		return true;
 	}
 
-	public WebElement getContactWithName(String name) {
+	public WebElement getContactWithName(String name) throws Exception {
 		WebElement result = null;
 
 		if (name.contains(",")) {
@@ -162,7 +163,7 @@ public class ContactListPage extends MainWirePage {
 		} else {
 			String xpath = String.format(
 					OSXLocators.xpathFormatContactEntryWithName, name);
-			result = driver.findElement(By.xpath(xpath));
+			result = getDriver().findElement(By.xpath(xpath));
 			return result;
 		}
 
@@ -170,7 +171,7 @@ public class ContactListPage extends MainWirePage {
 	}
 
 	public boolean openConversation(String conversationName,
-			boolean isUserProfile) {
+			boolean isUserProfile) throws Exception {
 
 		if (conversationName.contains(",")) {
 			String[] exContacts = conversationName.split(",");
@@ -205,99 +206,75 @@ public class ContactListPage extends MainWirePage {
 	}
 
 	public boolean waitForSignOut() throws Exception {
-		DriverUtils.setImplicitWaitValue(driver, 1);
-		boolean noContactList = DriverUtils.waitUntilElementDissapear(driver,
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(OSXLocators.idContactEntry));
-		DriverUtils.setDefaultImplicitWait(driver);
-		return noContactList;
 	}
 
-	public Boolean isSignOutFinished() {
-		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+	public Boolean isSignOutFinished() throws Exception {
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(this.getDriver())
 				.withTimeout(30, TimeUnit.SECONDS)
 				.pollingEvery(2, TimeUnit.SECONDS)
 				.ignoring(NoSuchElementException.class);
 
 		WebElement el = wait.until(new Function<WebDriver, WebElement>() {
-
 			public WebElement apply(WebDriver driver) {
-				return driver.findElement(By
-						.name(OSXLocators.LoginPage.nameSignInButton));
+				try {
+					return getDriver().findElement(
+							By.name(OSXLocators.LoginPage.nameSignInButton));
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
 			}
 		});
 		return el != null;
 	}
 
-	public boolean isInvitationExist() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
-				By.id(OSXLocators.idAcceptConnectionRequestButton));
-	}
-
-	public void acceptAllInvitations() {
-		List<WebElement> connectButtons = driver.findElements(By
-				.id(OSXLocators.idAcceptConnectionRequestButton));
-		for (WebElement connectButton : connectButtons) {
-			try {
-				connectButton.click();
-			} catch (NoSuchElementException e) {
-				log.error(e.getMessage());
-			}
-		}
-	}
-
-	public void ignoreAllInvitations() {
-		List<WebElement> connectButtons = driver.findElements(By
-				.id(OSXLocators.idIgnoreConnectionRequestButton));
-		for (WebElement connectButton : connectButtons) {
-			try {
-				connectButton.click();
-			} catch (NoSuchElementException e) {
-				log.error(e.getMessage());
-			}
-		}
-	}
-
 	public void pressLaterButton() throws Exception {
-		if (DriverUtils.waitUntilElementAppears(driver,
+		if (DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.idShareContactsLaterButton), 5)) {
 			int count = 0;
+			DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
 			try {
-				DriverUtils.setImplicitWaitValue(driver, 3);
 				do {
 					count++;
 					shareContactsLaterButton.click();
 					Thread.sleep(1000);
 				} while (count < 10);
 			} catch (NoSuchElementException e) {
+				// pass silently
 			} finally {
-				DriverUtils.setDefaultImplicitWait(driver);
+				DriverUtils.restoreImplicitWait(this.getDriver());
 			}
 		}
 	}
 
 	public int numberOfContacts() throws Exception {
-		DriverUtils.setImplicitWaitValue(driver, 3);
-		int result = contactsTextFields.size();
-		DriverUtils.setDefaultImplicitWait(driver);
-		return result;
+		DriverUtils.setImplicitWaitValue(this.getDriver(), 3);
+		try {
+			return contactsTextFields.size();
+		} finally {
+			DriverUtils.restoreImplicitWait(this.getDriver());
+		}
 	}
 
 	public List<WebElement> getContacts() {
 		return contactsTextFields;
 	}
 
-	public void scrollToConversationInList(WebElement conversation) {
+	public void scrollToConversationInList(WebElement conversation)
+			throws Exception {
 		// get scrollbar for contact list
 		WebElement peopleDecrementSB = null;
 		WebElement peopleIncrementSB = null;
 
-		WebElement scrollArea = driver.findElement(By
-				.xpath(OSXLocators.xpathConversationListScrollArea));
+		WebElement scrollArea = getDriver().findElement(
+				By.xpath(OSXLocators.xpathConversationListScrollArea));
 
 		NSPoint mainPosition = NSPoint.fromString(scrollArea
-				.getAttribute("AXPosition"));
-		NSPoint mainSize = NSPoint
-				.fromString(scrollArea.getAttribute("AXSize"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
+		NSPoint mainSize = NSPoint.fromString(scrollArea
+				.getAttribute(OSXConstants.Attributes.AXSIZE));
 
 		NSPoint latestPoint = new NSPoint(mainPosition.x() + mainSize.x(),
 				mainPosition.y() + mainSize.y());
@@ -305,7 +282,7 @@ public class ContactListPage extends MainWirePage {
 		WebElement userContact = conversation;
 
 		NSPoint userPosition = NSPoint.fromString(userContact
-				.getAttribute("AXPosition"));
+				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		if (conversation.isDisplayed()) {
 			return;
 		}
@@ -332,7 +309,7 @@ public class ContactListPage extends MainWirePage {
 						+ latestPoint);
 				peopleIncrementSB.click();
 				userPosition = NSPoint.fromString(userContact
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 				count++;
 			}
 			count = 0;
@@ -341,20 +318,20 @@ public class ContactListPage extends MainWirePage {
 						+ "; mainPosition point: " + mainPosition);
 				peopleDecrementSB.click();
 				userPosition = NSPoint.fromString(userContact
-						.getAttribute("AXPosition"));
+						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 				count++;
 			}
 		}
 	}
 
-	public void goToContactActionsMenu(String contact) {
+	public void goToContactActionsMenu(String contact) throws Exception {
 		try {
 			clickToggleMenuButton();
 			return;
 		} catch (NoSuchElementException e) {
 		}
 
-		Actions builder = new Actions(driver);
+		Actions builder = new Actions(this.getDriver());
 		Action moveMouseToContact = builder.moveToElement(window)
 				.moveToElement(getContactWithName(contact)).build();
 		moveMouseToContact.perform();
@@ -362,35 +339,38 @@ public class ContactListPage extends MainWirePage {
 		clickToggleMenuButton();
 	}
 
-	public void clickToggleMenuButton() {
-		WebElement toggleMenu = driver.findElement(By
-				.id(OSXLocators.idShowMenuButton));
+	public void clickToggleMenuButton() throws Exception {
+		WebElement toggleMenu = getDriver().findElement(
+				By.id(OSXLocators.idShowMenuButton));
 		toggleMenu.click();
 	}
 
 	public boolean isConversationMutedButtonVisible(String conversation)
 			throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(String
-				.format(OSXLocators.xpathFormatMutedButton, conversation)));
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
+				.xpath(String.format(OSXLocators.xpathFormatMutedButton,
+						conversation)));
 	}
 
 	public boolean isConversationMutedButtonNotVisible(String conversation)
 			throws Exception {
-		return DriverUtils.waitUntilElementDissapear(driver, By.xpath(String
-				.format(OSXLocators.xpathFormatMutedButton, conversation)));
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(), By
+				.xpath(String.format(OSXLocators.xpathFormatMutedButton,
+						conversation)));
 	}
 
-	public void changeMuteStateForConversation(String conversation) {
+	public void changeMuteStateForConversation(String conversation)
+			throws Exception {
 		goToContactActionsMenu(conversation);
-		WebElement muteButton = driver.findElement(By
-				.id(OSXLocators.idMuteButton));
+		WebElement muteButton = getDriver().findElement(
+				By.id(OSXLocators.idMuteButton));
 		muteButton.click();
 	}
 
-	public void moveConversationToArchive(String conversation) {
+	public void moveConversationToArchive(String conversation) throws Exception {
 		goToContactActionsMenu(conversation);
-		WebElement archiveButton = driver.findElement(By
-				.id(OSXLocators.idArchiveButton));
+		WebElement archiveButton = getDriver().findElement(
+				By.id(OSXLocators.idArchiveButton));
 		archiveButton.click();
 	}
 
@@ -399,12 +379,29 @@ public class ContactListPage extends MainWirePage {
 	}
 
 	public PeoplePickerPage isHiddenByPeoplePicker() throws Exception {
-		if (DriverUtils.waitUntilElementAppears(driver,
+		if (DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.idShareContactsLaterButton), 3)) {
-			return new PeoplePickerPage(this.getDriver(), this.getWait());
+			return new PeoplePickerPage(this.getLazyDriver());
 		} else {
 			return null;
 		}
+	}
+
+	public ArrayList<String> listContacts() {
+		ArrayList<String> contacts = new ArrayList<String>();
+
+		for (WebElement contactEl : contactsTextFields) {
+			contacts.add(contactEl
+					.getAttribute(OSXConstants.Attributes.AXVALUE));
+		}
+		return contacts;
+	}
+
+	public AccentColor selfNameEntryTextAccentColor() throws Exception {
+		BufferedImage selfNameScreen = OSXCommonUtils.takeElementScreenshot(
+				selfProfileCLEntry, this.getDriver());
+		return AccentColorUtil
+				.calculateAccentColorForForeground(selfNameScreen);
 	}
 
 	public void sendProblemReportIfAppears(ProblemReportPage reportPage)

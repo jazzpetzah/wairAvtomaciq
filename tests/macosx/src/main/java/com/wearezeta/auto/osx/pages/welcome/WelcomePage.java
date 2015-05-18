@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.pages.welcome;
 
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -10,7 +11,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -41,21 +41,21 @@ public class WelcomePage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.WelcomePage.xpathAcceptTermsOfUseCheckbox)
 	private WebElement acceptTermsOfUseCheckbox;
 
-	public WelcomePage(ZetaOSXDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	public WelcomePage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.WelcomePage.idWelcomePage));
 	}
 
 	public RegistrationPage startRegistration() throws Exception {
 		acceptTermsOfUseCheckbox.click();
 
-		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(
-				10, TimeUnit.SECONDS).pollingEvery(1, TimeUnit.SECONDS);
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(this.getDriver())
+				.withTimeout(10, TimeUnit.SECONDS).pollingEvery(1,
+						TimeUnit.SECONDS);
 
 		wait.until(new Function<WebDriver, Boolean>() {
 			public Boolean apply(WebDriver driver) {
@@ -65,12 +65,12 @@ public class WelcomePage extends OSXPage {
 
 		registerButton.click();
 
-		return new RegistrationPage(this.getDriver(), this.getWait());
+		return new RegistrationPage(this.getLazyDriver());
 	}
 
 	public LoginPage startSignIn() throws Exception {
 		signInButton.click();
-		return new LoginPage(this.getDriver(), this.getWait());
+		return new LoginPage(this.getLazyDriver());
 	}
 
 	public void sendProblemReportIfAppears(ProblemReportPage reportPage)

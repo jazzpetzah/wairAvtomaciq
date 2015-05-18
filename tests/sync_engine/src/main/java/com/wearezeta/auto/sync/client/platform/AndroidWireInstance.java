@@ -1,14 +1,14 @@
 package com.wearezeta.auto.sync.client.platform;
 
 import java.util.Date;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.wearezeta.auto.android.CommonAndroidSteps;
-import com.wearezeta.auto.android.ContactListPageSteps;
-import com.wearezeta.auto.android.DialogPageSteps;
-import com.wearezeta.auto.android.LoginPageSteps;
+import com.wearezeta.auto.android.steps.CommonAndroidSteps;
+import com.wearezeta.auto.android.steps.ContactListPageSteps;
+import com.wearezeta.auto.android.steps.DialogPageSteps;
+import com.wearezeta.auto.android.steps.LoginPageSteps;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.LoginPage;
@@ -16,7 +16,6 @@ import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.sync.ExecutionContext;
@@ -107,14 +106,12 @@ public class AndroidWireInstance extends WireInstance {
 			long endDate = 0;
 			try {
 				androidSteps.commonBefore();
-				final ZetaAndroidDriver driver = androidSteps
+				final Future<ZetaAndroidDriver> lazyDriver = androidSteps
 						.resetAndroidDriver(appiumUrl, wirePath, false,
 								this.getClass());
-				final WebDriverWait wait = PlatformDrivers
-						.createDefaultExplicitWait(driver);
-				PagesCollection.loginPage = new LoginPage(driver, wait);
+				PagesCollection.loginPage = new LoginPage(lazyDriver);
 				endDate = new Date().getTime();
-				ZetaFormatter.setDriver(PagesCollection.loginPage.getDriver());
+				ZetaFormatter.setLazyDriver(lazyDriver);
 			} catch (Exception e) {
 				log.debug("Failed to start Android client. Error message: "
 						+ e.getMessage());
@@ -134,13 +131,10 @@ public class AndroidWireInstance extends WireInstance {
 	@Override
 	public void signInImpl(String userAlias, String email, String password)
 			throws Throwable {
-		if (PagesCollection.loginPage.isDismissUpdateVisible()) {
-			PagesCollection.loginPage.dismissUpdate();
-		}
 		LoginPageSteps androidLoginPageSteps = new LoginPageSteps();
 		androidLoginPageSteps.GivenISignIn(email, password);
 		ContactListPageSteps androidContactListPageSteps = new ContactListPageSteps();
-		androidContactListPageSteps.GivenISeeContactListWithMyName(userAlias);
+		androidContactListPageSteps.GivenISeeContactList();
 	}
 
 	@Override

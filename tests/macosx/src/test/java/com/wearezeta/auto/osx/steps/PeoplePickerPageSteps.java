@@ -4,7 +4,12 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.osx.common.SearchResultTypeEnum;
+import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
+import com.wearezeta.auto.osx.pages.popovers.ConnectToPopover;
+import com.wearezeta.auto.osx.pages.popovers.PopoverPage;
+import com.wearezeta.auto.osx.pages.popovers.UnblockPopover;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -21,9 +26,10 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @param user
 	 *            search string (usually user name or email)
+	 * @throws Exception 
 	 */
 	@When("I search for user (.*)")
-	public void ISearchForUser(String user) {
+	public void ISearchForUser(String user) throws Exception {
 		try {
 			user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		} catch (NoSuchUserException e) {
@@ -70,7 +76,6 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue("User " + user + " not found in results",
 				PagesCollection.peoplePickerPage
 						.areSearchResultsContainUser(user));
-		PagesCollection.peoplePickerPage.scrollToUserInSearchResults(user);
 	}
 
 	/**
@@ -90,50 +95,67 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.peoplePickerPage.chooseUserInSearchResults(user);
+
+		if (PagesCollection.peoplePickerPage.isRequiredScrollToUser(user)) {
+			PagesCollection.peoplePickerPage.scrollToUserInSearchResults(user);
+		}
+		PagesCollection.peoplePickerPage.chooseUserInSearchResults(user,
+				SearchResultTypeEnum.CONNECTION);
 	}
 
 	/**
 	 * Selects user from search result for future use (connect | block | create
 	 * conversation | etc)
 	 * 
-	 * @step. ^I select user (.*) from search results$
+	 * @step. ^I select (connected|group|not connected|blocked) contact (.*)
+	 *        from search results$
 	 * 
+	 * @param contactState
+	 *            select type of search result entry: connected, group, not
+	 *            connected, blocked
 	 * @param user
 	 *            user name string
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^I select user (.*) from search results$")
-	public void ISelectUserFromSearchResults(String user) throws Exception {
+	@Given("^I select (connected|group|not connected|blocked) contact (.*) from search results$")
+	public void ISelectUserFromSearchResults(String contactState, String user)
+			throws Exception {
+		SearchResultTypeEnum resultType = SearchResultTypeEnum
+				.getTypeByState(contactState);
 		try {
 			user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		} catch (NoSuchUserException e) {
 			// ignore silently
 		}
-		PagesCollection.peoplePickerPage.selectUserInSearchResults(user);
-
+		OSXPage page = PagesCollection.peoplePickerPage
+				.selectContactInSearchResults(user, resultType);
+		if (page instanceof ConnectToPopover) {
+			PagesCollection.popover = (PopoverPage) page;
+		} else if (page instanceof UnblockPopover) {
+			PagesCollection.popover = (PopoverPage) page;
+		}
 	}
 
 	/**
 	 * Sends connection request when connect dialog appears after user selected
 	 * in search results
 	 * 
-	 * @step. I send invitation to user
+	 * @step. ^I send connection request to selected user$
 	 */
-	@When("I send invitation to user")
+	@When("^I send connection request to selected user$")
 	public void WhenISendInvitationToUser() {
-		PagesCollection.peoplePickerPage.sendInvitationToUserIfRequested();
+		((ConnectToPopover) PagesCollection.popover).sendConnectionRequest();
 	}
 
 	/**
 	 * Unblocks user selected in search results
 	 * 
-	 * @step. I unblock user
+	 * @step. I unblock selected user
 	 */
-	@When("I unblock user")
+	@When("^I unblock selected user$")
 	public void IUnblockUserInPeoplePicker() {
-		PagesCollection.peoplePickerPage.unblockUser();
+		((UnblockPopover) PagesCollection.popover).unblock();
 	}
 
 	/**

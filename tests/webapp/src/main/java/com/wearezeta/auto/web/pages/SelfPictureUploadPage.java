@@ -1,18 +1,18 @@
 package com.wearezeta.auto.web.pages;
 
 import java.util.Random;
+import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
-import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class SelfPictureUploadPage extends WebPage {
@@ -28,16 +28,28 @@ public class SelfPictureUploadPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfPictureUploadPage.xpathPreviousCarouselImageBtn)
 	private WebElement previousCarouselImageBtn;
 
-	public SelfPictureUploadPage(ZetaWebAppDriver driver, WebDriverWait wait)
+	@FindBy(how = How.XPATH, using = WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton)
+	private WebElement selectPictureButton;
+
+	public SelfPictureUploadPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 	}
 
-	public void waitUntilVisible(int secondsTimeout) throws Exception {
-		assert DriverUtils.isElementDisplayed(driver,
-				By.xpath(WebAppLocators.SelfPictureUploadPage.xpathRootDiv),
-				secondsTimeout) : "Picture selection dialog has not been show within "
-				+ secondsTimeout + "second(s) timeout";
+	public void waitUntilNotVisible(int secondsTimeout) throws Exception {
+		assert DriverUtils
+				.waitUntilLocatorDissapears(
+						this.getDriver(),
+						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathSelectPictureButton),
+						secondsTimeout) : "Picture selection dialog button is still visible after "
+				+ secondsTimeout + " second(s) timeout";
+	}
+
+	public void waitUntilButtonsAreClickable(int secondsTimeout)
+			throws Exception {
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				selectPictureButton, secondsTimeout) : "Picture selection dialog button was not clickable within "
+				+ secondsTimeout + " second(s) timeout";
 	}
 
 	public void uploadPicture(String pictureName) throws Exception {
@@ -46,32 +58,33 @@ public class SelfPictureUploadPage extends WebPage {
 		final String showPathInputJScript = "$(\""
 				+ WebAppLocators.SelfPictureUploadPage.cssSendPictureInput
 				+ "\").css({'left': '0', 'opacity': '100', 'z-index': '100'});";
-		driver.executeScript(showPathInputJScript);
+		this.getDriver().executeScript(showPathInputJScript);
 		assert DriverUtils
-				.isElementDisplayed(
-						driver,
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
 						By.cssSelector(WebAppLocators.SelfPictureUploadPage.cssSendPictureInput),
 						5);
-		if (WebAppExecutionContext.browserName
-				.equals(WebAppConstants.Browser.SAFARI)) {
-			WebCommonUtils.sendPictureInSafari(picturePath);
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Safari) {
+			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
+					.getNodeIp());
 		} else {
 			picturePathInput.sendKeys(picturePath);
 		}
 	}
 
-	public void confirmPictureSelection() throws Exception {
+	public ContactsUploadPage confirmPictureSelection() throws Exception {
 		assert DriverUtils
-				.isElementDisplayed(
-						driver,
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
 						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathConfirmPictureSelectionButton),
 						5);
 		pictureSelectionConfirmButton.click();
+		return new ContactsUploadPage(this.getLazyDriver());
 	}
 
-	public void forceCarouselMode() {
+	public void forceCarouselMode() throws Exception {
 		final String forceCarouselScript = "window.wire.app.view.content.self_profile.show_get_picture();";
-		driver.executeScript(forceCarouselScript);
+		this.getDriver().executeScript(forceCarouselScript);
 	}
 
 	private static final Random random = new Random();

@@ -1,5 +1,7 @@
 package com.wearezeta.auto.osx.pages.welcome;
 
+import java.util.List;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
@@ -12,9 +14,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
@@ -38,18 +40,23 @@ public class RegistrationPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idCreateAccountButton)
 	private WebElement createAccountButton;
 
-	@FindBy(how = How.ID, using = OSXLocators.idRegistrationTakePictureButton)
+	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idTakePictureButton)
 	private WebElement takePictureButton;
 
-	@FindBy(how = How.ID, using = OSXLocators.idRegistrationPickImageButton)
+	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idPickImageButton)
 	private WebElement pickImageButton;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.xpathRegistrationPictureConfirmationButton)
-	private WebElement confirmChosenPictureButton;
+	@FindBy(how = How.XPATH, using = OSXLocators.RegistrationPage.xpathAcceptTakenPictureButton)
+	private WebElement acceptTakenPictureButton;
 
-	public RegistrationPage(ZetaOSXDriver driver, WebDriverWait wait)
-			throws Exception {
-		super(driver, wait);
+	@FindBy(how = How.XPATH, using = OSXLocators.RegistrationPage.xpathRejectTakenPictureButton)
+	private WebElement rejectTakenPictureButton;
+
+	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idRegistrationBackButton)
+	private WebElement backButton;
+
+	public RegistrationPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public void typeFullName(String name) {
@@ -71,10 +78,11 @@ public class RegistrationPage extends OSXPage {
 
 	public VerificationPage createAccount(String email) throws Exception {
 		VerificationPage verificationPage = new VerificationPage(
-				this.getDriver(), this.getWait(), email);
+				this.getLazyDriver(), email);
 
-		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(5,
-				TimeUnit.SECONDS).pollingEvery(1, TimeUnit.SECONDS);
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(this.getDriver())
+				.withTimeout(5, TimeUnit.SECONDS).pollingEvery(1,
+						TimeUnit.SECONDS);
 
 		try {
 			wait.until(new Function<WebDriver, Boolean>() {
@@ -99,20 +107,51 @@ public class RegistrationPage extends OSXPage {
 		pickImageButton.click();
 	}
 
-	public void acceptTakenPicture() throws InterruptedException {
-		Thread.sleep(1000);
-		confirmChosenPictureButton.click();
+	public void acceptTakenPicture() {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+		acceptTakenPictureButton.click();
 	}
 
-	public boolean isInvalidEmailMessageAppear() {
+	public void rejectTakenPicture() {
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+		}
+		rejectTakenPictureButton.click();
+	}
+
+	public boolean isInvalidEmailMessageAppear() throws Exception {
 		passwordField.click();
 		emailField.click();
 		try {
-			return driver.findElement(By
-					.xpath(OSXLocators.xpathPleaseProvideEmailAddress)) != null;
+			return this
+					.getDriver()
+					.findElement(
+							By.xpath(OSXLocators.RegistrationPage.xpathPleaseProvideEmailAddressMessage)) != null;
 		} catch (NoSuchElementException e) {
 			return false;
 		}
 	}
 
+	public void goBack() {
+		backButton.click();
+	}
+
+	public boolean isChoosePictureMessageVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.xpath(OSXLocators.RegistrationPage.xpathChoosePictureAndSelectColourMessage));
+	}
+
+	public boolean isTakePictureConfirmationScreen() throws Exception {
+		final int CONFIRMATION_SCREEN_BUTTONS_COUNT = 2;
+		List<WebElement> buttons = getDriver()
+				.findElements(
+						By.xpath(OSXLocators.RegistrationPage.xpathConfirmPictureButton));
+		return buttons.size() == CONFIRMATION_SCREEN_BUTTONS_COUNT;
+	}
 }

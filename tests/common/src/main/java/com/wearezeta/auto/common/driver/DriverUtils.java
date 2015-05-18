@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
@@ -26,6 +25,7 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -34,37 +34,38 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
-import com.google.common.base.Function;
-import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
-	public static final int DEFAULT_VISIBILITY_TIMEOUT = 20;
+	public static final int DEFAULT_PERCENTAGE = 50;
 
 	private static final Logger log = ZetaLogger.getLog(DriverUtils.class
 			.getSimpleName());
+
+	private static int getDefaultLookupTimeoutSeconds() throws Exception {
+		return Integer.parseInt(CommonUtils
+				.getDriverTimeoutFromConfig(DriverUtils.class));
+	}
 
 	public static boolean isNullOrEmpty(String s) {
 		return s == null || s.length() == 0;
 	}
 
 	/**
-	 * Please use this method ONLY if you know that the element already exists
-	 * on the current page. If not then it will cause 10-15 seconds delay every
-	 * time it is called.
+	 * https://code.google.com/p/selenium/issues/detail?id=1880
 	 * 
-	 * There is overloaded version of this method, which accepts By parameter,
-	 * and it should be used in case when an element has not been checked for
-	 * existence yet
+	 * DO NOT use this method if you want to check whether the element is NOT
+	 * visible, because it will wait at least "imlicitTimeout" seconds until the
+	 * actual result is returned. This slows down automated tests!
 	 * 
-	 * @param driver
+	 * Use "waitUntilLocatorDissapears" method instead. That's quick and does
+	 * exactly what you need
+	 * 
 	 * @param element
-	 * @return boolean value
-	 * @throws Exception
+	 * @return
 	 */
-	public static boolean isElementDisplayed(RemoteWebDriver driver,
-			WebElement element) throws Exception {
+	public static boolean isElementPresentAndDisplayed(final WebElement element) {
 		try {
 			return element.isDisplayed();
 		} catch (NoSuchElementException e) {
@@ -72,39 +73,40 @@ public class DriverUtils {
 		}
 	}
 
-	public static boolean isElementDisplayed(RemoteWebDriver driver, By by)
-			throws Exception {
-		return isElementDisplayed(driver, by, 1);
+	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
+			By by) throws Exception {
+		return waitUntilLocatorIsDisplayed(driver, by,
+				getDefaultLookupTimeoutSeconds());
 	}
 
-	public static boolean isElementDisplayed(RemoteWebDriver driver,
+	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
 			final By by, int timeoutSeconds) throws Exception {
-		if (waitUntilElementAppears(driver, by, timeoutSeconds)) {
+		turnOffImplicitWait(driver);
+		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(timeoutSeconds / 2 + 1, TimeUnit.SECONDS)
-					.pollingEvery(1, TimeUnit.SECONDS);
+					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(NoSuchElementException.class);
 			try {
-				return wait.until(new Function<WebDriver, Boolean>() {
-					public Boolean apply(WebDriver driver) {
-						return driver.findElement(by).isDisplayed();
-					}
+				return wait.until(drv -> {
+					return (drv.findElements(by).size() > 0)
+							&& drv.findElement(by).isDisplayed();
 				});
 			} catch (TimeoutException e) {
 				return false;
 			}
-		} else {
-			return false;
+		} finally {
+			restoreImplicitWait(driver);
 		}
 	}
 
-	private static final int DEFAULT_LOOKUP_TIMEOUT = 20;
-
-	public static boolean waitUntilElementDissapear(RemoteWebDriver driver,
+	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
 			final By by) throws Exception {
-		return waitUntilElementDissapear(driver, by, DEFAULT_LOOKUP_TIMEOUT);
+		return waitUntilLocatorDissapears(driver, by,
+				getDefaultLookupTimeoutSeconds());
 	}
 
-	public static boolean waitUntilElementDissapear(RemoteWebDriver driver,
+	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
 			final By by, int timeout) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
@@ -112,20 +114,29 @@ public class DriverUtils {
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-
-			return wait.until(new Function<WebDriver, Boolean>() {
-				public Boolean apply(WebDriver driver) {
-					return (driver.findElements(by).size() == 0);
+			return wait.until(drv -> {
+				try {
+					return (drv.findElements(by).size() == 0)
+							|| (drv.findElements(by).size() > 0 && !drv
+									.findElement(by).isDisplayed());
+				} catch (WebDriverException e) {
+					return true;
 				}
 			});
 		} catch (TimeoutException ex) {
 			return false;
 		} finally {
-			setDefaultImplicitWait(driver);
+			restoreImplicitWait(driver);
 		}
 	}
 
-	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
+	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
+			final By locator) throws Exception {
+		return waitUntilLocatorAppears(driver, locator,
+				getDefaultLookupTimeoutSeconds());
+	}
+
+	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
 			final By locator, int timeout) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
@@ -133,28 +144,20 @@ public class DriverUtils {
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-
-			return wait.until(new Function<WebDriver, Boolean>() {
-				public Boolean apply(WebDriver driver) {
-					return (driver.findElements(locator).size() > 0);
-				}
+			return wait.until(drv -> {
+				return (drv.findElements(locator).size() > 0);
 			});
 		} catch (TimeoutException ex) {
 			return false;
 		} finally {
-			setDefaultImplicitWait(driver);
+			restoreImplicitWait(driver);
 		}
-	}
-
-	public static boolean waitUntilElementAppears(RemoteWebDriver driver,
-			final By locator) throws Exception {
-		return waitUntilElementAppears(driver, locator, DEFAULT_LOOKUP_TIMEOUT);
 	}
 
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
 			final WebElement element) throws Exception {
 		return waitUntilElementClickable(driver, element,
-				DEFAULT_LOOKUP_TIMEOUT);
+				getDefaultLookupTimeoutSeconds());
 	}
 
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
@@ -171,38 +174,7 @@ public class DriverUtils {
 		} catch (TimeoutException e) {
 			return false;
 		} finally {
-			setDefaultImplicitWait(driver);
-		}
-	}
-
-	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver)
-			throws Exception {
-		return waitUntilWebPageLoaded(driver, DEFAULT_LOOKUP_TIMEOUT);
-	}
-
-	public static boolean waitUntilWebPageLoaded(RemoteWebDriver driver,
-			int timeout) throws Exception {
-		turnOffImplicitWait(driver);
-		try {
-			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(timeout, TimeUnit.SECONDS)
-					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
-
-			return wait.until(new Function<WebDriver, Boolean>() {
-				@Override
-				public Boolean apply(WebDriver t) {
-					return String
-							.valueOf(
-									((JavascriptExecutor) driver)
-											.executeScript("return document.readyState"))
-							.equals("complete");
-				}
-			});
-		} catch (TimeoutException e) {
-			return false;
-		} finally {
-			setDefaultImplicitWait(driver);
+			restoreImplicitWait(driver);
 		}
 	}
 
@@ -216,29 +188,7 @@ public class DriverUtils {
 					.ignoring(NoSuchElementException.class);
 			wait.until(ExpectedConditions.alertIsPresent());
 		} finally {
-			setDefaultImplicitWait(driver);
-		}
-	}
-
-	public static void setTextForChildByClassName(WebElement parent,
-			String childClassName, String value) {
-		parent.findElement(By.className(childClassName)).sendKeys(value);
-	}
-
-	public static boolean waitForElementWithTextByXPath(String xpath,
-			String name, AppiumDriver driver) throws InterruptedException {
-		int counter = 0;
-		while (true) {
-			counter++;
-			List<WebElement> contactsList = driver.findElementsByXPath(String
-					.format(xpath, name));
-			if (contactsList.size() > 0) {
-				return true;
-			}
-			Thread.sleep(200);
-			if (counter >= 10) {
-				return false;
-			}
+			restoreImplicitWait(driver);
 		}
 	}
 
@@ -248,9 +198,6 @@ public class DriverUtils {
 		scrollToObject.put("element", ((RemoteWebElement) element).getId());
 		js.executeScript("mobile: scrollTo", scrollToObject);
 	}
-
-	public static final int SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL = 100;
-	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL = 50;
 
 	/**
 	 * 
@@ -280,10 +227,12 @@ public class DriverUtils {
 		}
 	}
 
+	public static final int SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL = 100;
+
 	public static void swipeLeft(AppiumDriver driver, WebElement element,
 			int time) {
 		swipeLeft(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
-				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL);
+				DEFAULT_PERCENTAGE);
 	}
 
 	public static void swipeRight(AppiumDriver driver, WebElement element,
@@ -303,14 +252,31 @@ public class DriverUtils {
 	}
 
 	public static void swipeRight(AppiumDriver driver, WebElement element,
-			int time) {
-		swipeRight(driver, element, time,
-				SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
-				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL);
+			int time, int startPercentX, int startPercentY, int endPercentX,
+			int endPercentY) {
+		final Point coords = element.getLocation();
+		final Dimension elementSize = element.getSize();
+		final int xStartOffset = (int) Math.round(elementSize.width
+				* (startPercentX / 100.0));
+		final int yStartOffset = (int) Math.round(elementSize.height
+				* (startPercentY / 100.0));
+		final int xEndOffset = (int) Math.round(elementSize.width
+				* (endPercentX / 100.0));
+		final int yEndOffset = (int) Math.round(elementSize.height
+				* (endPercentY / 100.0));
+		try {
+			driver.swipe(coords.x + xStartOffset, coords.y + yStartOffset,
+					coords.x + xEndOffset, coords.y + yEndOffset, time);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
-	public static final int SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL = 50;
-	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL = 100;
+	public static void swipeRight(AppiumDriver driver, WebElement element,
+			int time) {
+		swipeRight(driver, element, time,
+				SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, DEFAULT_PERCENTAGE);
+	}
 
 	public static void swipeUp(AppiumDriver driver, WebElement element,
 			int time, int percentX, int percentY) {
@@ -324,12 +290,17 @@ public class DriverUtils {
 			driver.swipe(coords.x + xOffset, coords.y + yOffset, coords.x
 					+ xOffset, coords.y, time);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.debug(String.format("Failed to swipe up using params: "
+					+ "{startx: %s; starty: %s; endx: %s; endy: %s; time: %s}",
+					coords.x + xOffset, coords.y + yOffset, coords.x + xOffset,
+					coords.y, time));
 		}
 	}
 
+	public static final int SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL = 100;
+
 	public static void swipeUp(AppiumDriver driver, WebElement element, int time) {
-		swipeUp(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+		swipeUp(driver, element, time, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);
 	}
 
@@ -351,7 +322,7 @@ public class DriverUtils {
 
 	public static void swipeDown(AppiumDriver driver, WebElement element,
 			int time) {
-		swipeDown(driver, element, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+		swipeDown(driver, element, time, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);
 	}
 
@@ -375,8 +346,7 @@ public class DriverUtils {
 		}
 	}
 
-	public static final int DEFAULT_PERCENTAGE = 50;
-	public static final int DEFAULT_TIME = 500; //milliseconds
+	public static final int DEFAULT_TIME = 500; // milliseconds
 	public static final int DEFAULT_FINGERS = 1;
 
 	public static void genericTap(AppiumDriver driver) {
@@ -397,8 +367,8 @@ public class DriverUtils {
 	public static void genericTap(AppiumDriver driver, int time, int fingers,
 			int percentX, int percentY) {
 		final Dimension screenSize = driver.manage().window().getSize();
-		final int xCoords = (int) Math
-				.round(screenSize.width * (percentX / 100.0));
+		final int xCoords = (int) Math.round(screenSize.width
+				* (percentX / 100.0));
 		final int yCoords = (int) Math.round(screenSize.height
 				* (percentY / 100.0));
 		try {
@@ -406,7 +376,6 @@ public class DriverUtils {
 		} catch (Exception ex) {
 			// ignore;
 		}
-
 	}
 
 	public static final int SWIPE_X_DEFAULT_PERCENTAGE_START = 10;
@@ -417,60 +386,54 @@ public class DriverUtils {
 	public static void swipeRightCoordinates(AppiumDriver driver, int time)
 			throws Exception {
 		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_START,
-				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL,
-				SWIPE_X_DEFAULT_PERCENTAGE_END,
-				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL);
+				DEFAULT_PERCENTAGE, SWIPE_X_DEFAULT_PERCENTAGE_END,
+				DEFAULT_PERCENTAGE);
 	}
 
 	public static void swipeRightCoordinates(AppiumDriver driver, int time,
-			int horizontalPercent) throws Exception {
+			int percentY) throws Exception {
 		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_START,
-				horizontalPercent, SWIPE_X_DEFAULT_PERCENTAGE_END,
-				horizontalPercent);
+				percentY, SWIPE_X_DEFAULT_PERCENTAGE_END, percentY);
 	}
 
 	public static void swipeLeftCoordinates(AppiumDriver driver, int time)
 			throws Exception {
 		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_END,
-				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL,
-				SWIPE_X_DEFAULT_PERCENTAGE_START,
-				SWIPE_Y_DEFAULT_PERCENTAGE_HORIZONTAL);
+				DEFAULT_PERCENTAGE, SWIPE_X_DEFAULT_PERCENTAGE_START,
+				DEFAULT_PERCENTAGE);
 	}
 
 	public static void swipeLeftCoordinates(AppiumDriver driver, int time,
-			int horizontalPercent) throws Exception {
+			int percentY) throws Exception {
 		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_END,
-				horizontalPercent, SWIPE_X_DEFAULT_PERCENTAGE_START,
-				horizontalPercent);
+				percentY, SWIPE_X_DEFAULT_PERCENTAGE_START, percentY);
 	}
 
 	public static void swipeUpCoordinates(AppiumDriver driver, int time)
 			throws Exception {
-		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
-				SWIPE_Y_DEFAULT_PERCENTAGE_END,
-				SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+		swipeByCoordinates(driver, time, DEFAULT_PERCENTAGE,
+				SWIPE_Y_DEFAULT_PERCENTAGE_END, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_START);
 	}
 
 	public static void swipeUpCoordinates(AppiumDriver driver, int time,
-			int verticalPercent) throws Exception {
-		swipeByCoordinates(driver, time, verticalPercent,
-				SWIPE_Y_DEFAULT_PERCENTAGE_END, verticalPercent,
+			int percentX) throws Exception {
+		swipeByCoordinates(driver, time, percentX,
+				SWIPE_Y_DEFAULT_PERCENTAGE_END, percentX,
 				SWIPE_Y_DEFAULT_PERCENTAGE_START);
 	}
 
 	public static void swipeDownCoordinates(AppiumDriver driver, int time)
 			throws Exception {
-		swipeByCoordinates(driver, time, SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
-				SWIPE_Y_DEFAULT_PERCENTAGE_START,
-				SWIPE_X_DEFAULT_PERCENTAGE_VERTICAL,
+		swipeByCoordinates(driver, time, DEFAULT_PERCENTAGE,
+				SWIPE_Y_DEFAULT_PERCENTAGE_START, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_END);
 	}
 
 	public static void swipeDownCoordinates(AppiumDriver driver, int time,
-			int verticalPercent) throws Exception {
-		swipeByCoordinates(driver, time, verticalPercent,
-				SWIPE_Y_DEFAULT_PERCENTAGE_START, verticalPercent,
+			int percentX) throws Exception {
+		swipeByCoordinates(driver, time, percentX,
+				SWIPE_Y_DEFAULT_PERCENTAGE_START, percentX,
 				SWIPE_Y_DEFAULT_PERCENTAGE_END);
 	}
 
@@ -592,18 +555,15 @@ public class DriverUtils {
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
 	}
 
-	public static void setDefaultImplicitWait(RemoteWebDriver driver)
-			throws Exception {
-		driver.manage()
-				.timeouts()
-				.implicitlyWait(
-						Integer.parseInt(CommonUtils
-								.getDriverTimeoutFromConfig(BasePage.class)),
-						TimeUnit.SECONDS);
+	public static void setImplicitWaitValue(ZetaOSXDriver driver,
+			int secondsTimeout) {
+		driver.manage().timeouts()
+				.implicitlyWait(secondsTimeout, TimeUnit.SECONDS);
 	}
 
-	public static void setImplicitWaitValue(RemoteWebDriver driver, int seconds) {
-		driver.manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
+	public static void restoreImplicitWait(RemoteWebDriver driver)
+			throws Exception {
+		PlatformDrivers.setDefaultImplicitWaitTimeout(driver);
 	}
 
 	public static BufferedImage takeScreenshot(ZetaDriver driver)

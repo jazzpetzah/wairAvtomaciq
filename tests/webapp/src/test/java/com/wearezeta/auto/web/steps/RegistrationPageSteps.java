@@ -1,26 +1,27 @@
 package com.wearezeta.auto.web.steps;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import javax.mail.Message;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.web.pages.ActivationPage;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 public class RegistrationPageSteps {
 
@@ -28,7 +29,7 @@ public class RegistrationPageSteps {
 
 	private ClientUser userToRegister = null;
 
-	private Future<Message> activationMessage;
+	private Future<String> activationMessage;
 
 	public static final int maxCheckCnt = 2;
 
@@ -91,14 +92,14 @@ public class RegistrationPageSteps {
 	/**
 	 * Enter user password into registration form
 	 * 
-	 * @step. ^I enter user password (.*) on Registration page$
+	 * @step. ^I enter user password \"(.*)\" on Registration page$
 	 * 
 	 * @param password
 	 *            user password/alias
-	 * @throws IOException
+	 * @throws Exception
 	 */
-	@When("^I enter user password (.*) on Registration page$")
-	public void IEnterPassword(String password) throws IOException {
+	@When("^I enter user password \"(.*)\" on Registration page$")
+	public void IEnterPassword(String password) throws Exception {
 		try {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
 					password).getPassword());
@@ -156,6 +157,40 @@ public class RegistrationPageSteps {
 	}
 
 	/**
+	 * Verify whether I see an error message on the verification page
+	 *
+	 * @step. ^I see error \"(.*)\" on [Vv]erification page$
+	 *
+	 * @param message
+	 *            expected error message
+	 * @throws NoSuchUserException
+	 */
+	@Then("^I see error \"(.*)\" on [Vv]erification page$")
+	public void ISeeErrorMessageOnVerificationPage(String message)
+			throws Throwable {
+		assertThat(PagesCollection.registrationPage.getErrorMessage(),
+				equalTo(message));
+	}
+
+	/**
+	 * Checks if a red dot is shown inside the email field on the registration
+	 * form
+	 *
+	 * @step. ^I verify that a red dot is shown inside the email field on the registration
+	 *        form$
+	 */
+	@Then("^I verify that a red dot is( not)? shown inside the email field on the registration form$")
+	public void ARedDotIsShownOnTheEmailField(String not) {
+		if (not == null) {
+			assertThat("Red dot on email field",
+					PagesCollection.registrationPage.isRedDotOnEmailField());
+		} else {
+			assertThat("Red dot on email field",
+					!PagesCollection.registrationPage.isRedDotOnEmailField());
+		}
+	}
+
+	/**
 	 * Activate newly registered user on the backend. Don't forget to call the
 	 * 'I start activation email monitoring' step before this one
 	 * 
@@ -165,8 +200,49 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I verify registration email$")
 	public void IVerifyRegistrationEmail() throws Exception {
-		BackendAPIWrappers.activateRegisteredUser(this.activationMessage);
+		BackendAPIWrappers
+				.activateRegisteredUserByEmail(this.activationMessage);
 		userToRegister.setUserState(UserState.Created);
+	}
+
+	private static final int ACTIVATION_TIMEOUT = 15; // seconds
+
+	/**
+	 * Activates user using browser URL from activation email and sign him in to
+	 * the app if the activation was successful. Don't forget to call the 'I
+	 * start activation email monitoring' step before this one
+	 * 
+	 * @step. ^I activate user by URL$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I activate user by URL$")
+	public void WhenIActivateUserByUrl() throws Exception {
+		final String link = BackendAPIWrappers
+				.getUserActivationLink(this.activationMessage);
+		ActivationPage activationPage = (ActivationPage) PagesCollection.registrationPage
+				.instantiatePage(ActivationPage.class);
+		activationPage.setUrl(link);
+		activationPage.navigateTo();
+		PagesCollection.contactListPage = activationPage
+				.verifyActivation(ACTIVATION_TIMEOUT);
+
+		this.userToRegister.setUserState(UserState.Created);
+		// indexes in aliases start from 1
+		final int userIndex = usrMgr.appendCustomUser(userToRegister) + 1;
+		userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE
+				.apply(userIndex));
+		userToRegister.addNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE
+				.apply(userIndex));
+		userToRegister
+				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
+						.apply(userIndex));
+
+		if (PagesCollection.loginPage == null) {
+			PagesCollection.loginPage = (LoginPage) activationPage
+					.instantiatePage(LoginPage.class);
+		}
+		PagesCollection.loginPage.waitForLogin();
 	}
 
 	/**
@@ -180,42 +256,5 @@ public class RegistrationPageSteps {
 	public void ISwitchToLoginPage() throws Exception {
 		PagesCollection.loginPage = PagesCollection.registrationPage
 				.switchToLoginPage();
-	}
-
-	private static final int ACTIVATION_TIMEOUT = 5; // seconds
-
-	/**
-	 * Activates user using browser URL from activation email. Don't forget to
-	 * call the 'I start activation email monitoring' step before this one
-	 * 
-	 * @step. ^I activate user by URL$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I activate user by URL$")
-	public void WhenIActivateUserByUrl() throws Exception {
-		final String link = BackendAPIWrappers
-				.getUserActivationLink(this.activationMessage);
-		ActivationPage activationPage = new ActivationPage(
-				PagesCollection.registrationPage.getDriver(),
-				PagesCollection.registrationPage.getWait(), link);
-		activationPage.navigateTo();
-		activationPage.verifyActivation(ACTIVATION_TIMEOUT);
-		PagesCollection.loginPage.navigateTo();
-
-//		activationPage.openInNewTab();
-//		activationPage.verifyActivation(ACTIVATION_TIMEOUT);
-//		activationPage.close();
-
-		this.userToRegister.setUserState(UserState.Created);
-		// indexes in aliases start from 1
-		final int userIndex = usrMgr.appendCustomUser(userToRegister) + 1;
-		userToRegister.addEmailAlias(ClientUsersManager.EMAIL_ALIAS_TEMPLATE
-				.apply(userIndex));
-		userToRegister.addNameAlias(ClientUsersManager.NAME_ALIAS_TEMPLATE
-				.apply(userIndex));
-		userToRegister
-				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
-						.apply(userIndex));
 	}
 }

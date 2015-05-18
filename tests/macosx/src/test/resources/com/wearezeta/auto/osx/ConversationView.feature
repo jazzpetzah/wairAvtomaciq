@@ -31,7 +31,7 @@ Feature: Conversation
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id451 @id1534
+  @smoke @id446
   Scenario Outline: Send picture to conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

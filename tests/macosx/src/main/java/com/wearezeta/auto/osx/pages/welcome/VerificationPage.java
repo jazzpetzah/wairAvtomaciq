@@ -4,19 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import javax.mail.Message;
-
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXConstants;
@@ -40,19 +37,18 @@ public class VerificationPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.VerificationPage.nameReSendLink)
 	private WebElement reSendLink;
 
-	private Future<Message> activationMessage;
+	private Future<String> activationMessage;
 
 	private String activationResponse = null;
-	
-	public VerificationPage(ZetaOSXDriver driver, WebDriverWait wait, String email)
+
+	public VerificationPage(Future<ZetaOSXDriver> lazyDriver, String email)
 			throws Exception {
-		super(driver, wait);
+		super(lazyDriver);
 
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", email);
-		activationMessage = IMAPSMailbox
-				.getInstance().getMessage(expectedHeaders,
-						BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+		activationMessage = IMAPSMailbox.getInstance().getMessage(
+				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 	}
 
 	public void reSendEmailMessage() {
@@ -60,7 +56,7 @@ public class VerificationPage extends OSXPage {
 	}
 
 	public boolean isVerificationRequested() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.VerificationPage.idEmailSentMessage), 60);
 	}
 
@@ -69,20 +65,21 @@ public class VerificationPage extends OSXPage {
 		String xpath = String
 				.format(OSXLocators.VerificationPage.xpathFormatEmailSentMessage,
 						email);
-		return DriverUtils.waitUntilElementAppears(driver, By.xpath(xpath), 10);
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(xpath), 10);
 	}
 
 	public boolean isReSendLinkVisible() throws Exception {
-		return DriverUtils.waitUntilElementAppears(driver,
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(OSXLocators.VerificationPage.nameReSendLink), 10);
 	}
 
 	public boolean isReSendLinkDisappears() throws Exception {
-		return DriverUtils.waitUntilElementDissapear(driver,
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.name(OSXLocators.VerificationPage.nameReSendLink), 10);
 	}
-	
-	//browser activation page
+
+	// browser activation page
 	public void activateUserFromBrowser() throws Exception {
 		String activationLink = BackendAPIWrappers
 				.getUserActivationLink(this.activationMessage);
@@ -92,19 +89,18 @@ public class VerificationPage extends OSXPage {
 						activationLink);
 
 		@SuppressWarnings("unchecked")
-		Map<String, String> value = (Map<String, String>) driver
+		Map<String, String> value = (Map<String, String>) this.getDriver()
 				.executeScript(script);
 		activationResponse = value.get("result");
 		log.debug(activationResponse);
 	}
-	
 
 	public boolean isUserActivated() {
 		return activationResponse
 				.contains(OSXLocators.RegistrationPage.ACTIVATION_RESPONSE_VERIFIED);
 	}
 
-	public Future<Message> getActivationMessage() {
+	public Future<String> getActivationMessage() {
 		return activationMessage;
 	}
 }

@@ -15,7 +15,7 @@ Feature: Registration
     And I minimize the application
     And I activate user by URL
     And I wait for 10 seconds
-    And I see Contact list with no contacts and my name <Name>
+    And I see Contact list with no contacts
 
     Examples: 
       | Email      | Password      | Name      |
@@ -30,7 +30,7 @@ Feature: Registration
     And I confirm selection
     And I hide keyboard
     And I take screenshot
-    And I press back button
+    And I press Registration back button
     And I press Picture button
     And I choose photo from album
     And I confirm selection

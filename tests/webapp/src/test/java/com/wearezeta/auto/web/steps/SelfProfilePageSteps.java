@@ -7,7 +7,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
-import com.wearezeta.auto.web.pages.SettingsPage;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -45,31 +44,15 @@ public class SelfProfilePageSteps {
 	}
 
 	/**
-	 * Verifies whether settings dialog is visible
-	 * 
-	 * @step. ^I see Settings dialog$
-	 * 
-	 * @throws AssertionError
-	 *             if settings dialog is not currently visible
-	 */
-	@Then("^I see Settings dialog$")
-	public void ISeeSetingsDialog() throws Exception {
-		PagesCollection.settingsPage = new SettingsPage(
-				PagesCollection.loginPage.getDriver(),
-				PagesCollection.loginPage.getWait());
-		Assert.assertTrue(PagesCollection.settingsPage.isVisible());
-	}
-
-	/**
 	 * Verifies that correct user name is shown on self profile page
 	 * 
-	 * @step. I see user name on self profile page (.*)
+	 * @step. ^I see user name on self profile page (.*)$
 	 * 
 	 * @param name
 	 *            name of the user
 	 * @throws Exception
 	 */
-	@And("I see user name on self profile page (.*)")
+	@And("^I see user name on self profile page (.*)$")
 	public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		boolean nameCorrect = PagesCollection.selfProfilePage
@@ -80,14 +63,14 @@ public class SelfProfilePageSteps {
 	/**
 	 * Verifies that correct user email is shown on self profile page
 	 * 
-	 * @step. I see user email on self profile page (.*)
+	 * @step. ^I see user email on self profile page (.*)$
 	 * 
 	 * @param email
 	 *            email of the user
 	 * 
 	 * @throws NoSuchUserException
 	 */
-	@And("I see user email on self profile page (.*)")
+	@And("^I see user email on self profile page (.*)$")
 	public void ISeeUserEmailOnSelfProfilePage(String email)
 			throws NoSuchUserException {
 		try {
@@ -140,7 +123,6 @@ public class SelfProfilePageSteps {
 	 * 
 	 * @throws Exception
 	 */
-
 	@Then("^I verify my accent color in color picker is set to (\\w+) color$")
 	public void IVerifyMyAccentColor(String colorName) {
 		final int expectedColorId = AccentColor.getByName(colorName).getId();
@@ -148,5 +130,18 @@ public class SelfProfilePageSteps {
 				.getCurrentAccentColorId();
 		Assert.assertTrue("my actual accent color is not set",
 				actualColorId == expectedColorId);
+	}
+
+	/**
+	 * Click camera button on Self Profile page
+	 * 
+	 * @step. ^I click camera button$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I click camera button$")
+	public void IClickCameraButton() throws Exception {
+		PagesCollection.profilePicturePage = PagesCollection.selfProfilePage
+				.clickCameraButton();
 	}
 }

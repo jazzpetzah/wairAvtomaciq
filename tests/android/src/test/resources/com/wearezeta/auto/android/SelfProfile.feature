@@ -1,16 +1,15 @@
 Feature: Self Profile
 
-  @id205 @smoke
+  @id205 @smoke @regression
   Scenario Outline: Change user picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    Given I see Contact list
+    When I tap on my avatar
     And I tap on personal info screen
     And I tap change photo button
     And I press Gallery button
-    And I wait for 10 seconds
     And I select picture
     And I press Confirm button
     And I wait for 60 seconds
@@ -26,7 +25,7 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe up on dialog page
@@ -37,20 +36,18 @@ Feature: Self Profile
       | user1Email | user1Password | user1Name | user2Name |
 
   @id328 @smoke @regression
-  Scenario Outline: ZClient change name
+  Scenario Outline: I can change my name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
-    When I tap on my name <Name>
+    Then Contact list appears
+    When I tap on my avatar
     And I see personal info page
-    And I wait for 10 seconds
     And I tap on my name
+    Then I see edit name field
+    When Edit name field can be cleaned in expected way
     And I change <Name> to <NewName>
-    And I swipe right to contact list
-    Then I see contact list loaded with User name <NewName>
-    And I tap on my name <NewName>
-    Then I see my new name <NewName> and return old <Name>
+    Then I see my new name <NewName>
 
     Examples: 
       | Login      | Password      | Name      | NewName     | Contact   |

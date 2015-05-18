@@ -1,10 +1,14 @@
 package com.wearezeta.auto.common.driver;
 
-import java.net.URL;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map.Entry;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -19,7 +23,7 @@ public final class PlatformDrivers {
 	private static final Logger log = ZetaLogger.getLog(PlatformDrivers.class
 			.getSimpleName());
 
-	private HashMap<Platform, RemoteWebDriver> drivers = new HashMap<Platform, RemoteWebDriver>();
+	private Map<Platform, Future<? extends RemoteWebDriver>> drivers = new ConcurrentHashMap<Platform, Future<? extends RemoteWebDriver>>();
 
 	private static PlatformDrivers instance = null;
 
@@ -37,54 +41,60 @@ public final class PlatformDrivers {
 		return this.drivers.containsKey(platform);
 	}
 
-	public synchronized RemoteWebDriver resetDriver(String url,
-			DesiredCapabilities capabilities) throws Exception {
+	public Platform getDriverPlatform(Future<? extends RemoteWebDriver> drv) {
+		for (Map.Entry<Platform, Future<? extends RemoteWebDriver>> entry : this.drivers
+				.entrySet()) {
+			if (entry.getValue() == drv) {
+				return entry.getKey();
+			}
+		}
+		throw new NoSuchElementException(
+				"Platform is unknown for the passed driver element");
+	}
+
+	private final ExecutorService pool = Executors.newFixedThreadPool(Platform
+			.values().length);
+
+	public synchronized Future<? extends RemoteWebDriver> resetDriver(
+			String url, DesiredCapabilities capabilities, int maxRetryCount,
+			Consumer<RemoteWebDriver> initCompletedCallback) throws Exception {
 		final Platform platformInCapabilities = Platform
 				.getByName((String) capabilities.getCapability("platformName"));
 		if (this.hasDriver(platformInCapabilities)) {
 			this.quitDriver(platformInCapabilities);
 		}
-		log.debug(String.format(
-				"Creating driver instance for platform '%s'...",
-				platformInCapabilities.name()));
-		RemoteWebDriver platformDriver = null;
-		switch (platformInCapabilities) {
-		case Mac:
-			platformDriver = new ZetaOSXDriver(new URL(url), capabilities);
-			break;
-		case iOS:
-			platformDriver = new ZetaIOSDriver(new URL(url), capabilities);
-			break;
-		case Android:
-			platformDriver = new ZetaAndroidDriver(new URL(url), capabilities);
-			break;
-		case Web:
-			platformDriver = new ZetaWebAppDriver(new URL(url), capabilities);
-			break;
-		default:
-			throw new RuntimeException(String.format(
-					"Platform '%s' is unknown", platformInCapabilities));
-		}
-		drivers.put(platformInCapabilities, platformDriver);
-
-		setDefaultImplicitWaitTimeout(platformInCapabilities);
-
-		return this.getDriver(platformInCapabilities);
+		final LazyDriverInitializer initializer = new LazyDriverInitializer(
+				platformInCapabilities, url, capabilities, maxRetryCount,
+				initCompletedCallback);
+		Future<RemoteWebDriver> driverBeingCreated = pool.submit(initializer);
+		drivers.put(platformInCapabilities, driverBeingCreated);
+		return driverBeingCreated;
 	}
 
-	public void setImplicitWaitTimeout(Platform platform, int count,
-			TimeUnit unit) {
-		this.getDriver(platform).manage().timeouts()
-				.implicitlyWait(count, unit);
-	}
-
-	public void setDefaultImplicitWaitTimeout(Platform platform)
+	public synchronized Future<? extends RemoteWebDriver> resetDriver(
+			String url, DesiredCapabilities capabilities, int maxRetryCount)
 			throws Exception {
-		this.setImplicitWaitTimeout(platform, Integer.parseInt(CommonUtils
-				.getDriverTimeoutFromConfig(getClass())), TimeUnit.SECONDS);
+		return resetDriver(url, capabilities, maxRetryCount, null);
 	}
 
-	public RemoteWebDriver getDriver(Platform platform) {
+	public Future<? extends RemoteWebDriver> resetDriver(String url,
+			DesiredCapabilities capabilities) throws Exception {
+		return resetDriver(url, capabilities, 1, null);
+	}
+
+	public static void setImplicitWaitTimeout(RemoteWebDriver driver,
+			int count, TimeUnit unit) throws Exception {
+		driver.manage().timeouts().implicitlyWait(count, unit);
+	}
+
+	public static void setDefaultImplicitWaitTimeout(RemoteWebDriver driver)
+			throws Exception {
+		setImplicitWaitTimeout(driver, Integer.parseInt(CommonUtils
+				.getDriverTimeoutFromConfig(PlatformDrivers.class)),
+				TimeUnit.SECONDS);
+	}
+
+	public Future<? extends RemoteWebDriver> getDriver(Platform platform) {
 		if (!drivers.containsKey(platform)) {
 			throw new RuntimeException(String.format(
 					"Please initialize %s platform driver first",
@@ -92,8 +102,8 @@ public final class PlatformDrivers {
 		}
 		return drivers.get(platform);
 	}
-	
-	public Collection<RemoteWebDriver> getRegisteredDrivers() {
+
+	public Collection<Future<? extends RemoteWebDriver>> getRegisteredDrivers() {
 		return drivers.values();
 	}
 
@@ -103,9 +113,11 @@ public final class PlatformDrivers {
 				.getDriverTimeoutFromConfig(PlatformDrivers.class)));
 	}
 
-	public synchronized void quitDriver(Platform platform) {
+	public synchronized void quitDriver(Platform platform) throws Exception {
 		try {
-			drivers.get(platform).quit();
+			drivers.get(platform)
+					.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+							TimeUnit.MILLISECONDS).quit();
 			log.debug(String.format(
 					"Successfully quit driver instance for platfrom '%s'",
 					platform.name()));
@@ -114,14 +126,21 @@ public final class PlatformDrivers {
 		}
 	}
 
+	public void pingDrivers() throws Exception {
+		for (Future<? extends RemoteWebDriver> driver : drivers.values()) {
+			driver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+					TimeUnit.MILLISECONDS).getPageSource();
+		}
+	}
+
 	{
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
-				for (Entry<Platform, RemoteWebDriver> entry : drivers
-						.entrySet()) {
+				for (Future<? extends RemoteWebDriver> driver : getRegisteredDrivers()) {
 					try {
-						entry.getValue().quit();
+						driver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+								TimeUnit.MILLISECONDS).quit();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

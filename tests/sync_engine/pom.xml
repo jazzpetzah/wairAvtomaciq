@@ -51,6 +51,7 @@
 		<iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
 		<iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>
 		<deviceName>iPhone 6</deviceName>
+		<wireConfigDomain>com.wearezeta.zclient.mac.development</wireConfigDomain>
 	</properties>
 
 	<dependencies>

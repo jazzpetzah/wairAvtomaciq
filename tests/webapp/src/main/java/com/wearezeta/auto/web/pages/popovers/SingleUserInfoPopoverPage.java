@@ -1,9 +1,10 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.util.concurrent.Future;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -12,11 +13,13 @@ import com.wearezeta.auto.web.locators.PopoverLocators;
 class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathBlockButton)
 	private WebElement blockButton;
+	
+	@FindBy(how = How.XPATH, using = PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathUnblockButton)
+	private WebElement unblockButton;
 
-	public SingleUserInfoPopoverPage(ZetaWebAppDriver driver,
-			WebDriverWait wait, PeoplePopoverContainer container)
-			throws Exception {
-		super(driver, wait, container);
+	public SingleUserInfoPopoverPage(Future<ZetaWebAppDriver> lazyDriver,
+			PeoplePopoverContainer container) throws Exception {
+		super(lazyDriver, container);
 	}
 
 	@Override
@@ -24,38 +27,32 @@ class SingleUserInfoPopoverPage extends AbstractUserInfoPopoverPage {
 		return PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathBlockButton;
 	}
 
-	@Override
-	protected WebElement getSharedElement(String relativeXpath) {
-		return super
-				.getSharedElement(String
-						.format("%s%s",
-								PopoverLocators.SingleUserPopover.SingleUserInfoPage.xpathPageRootLocator,
-								relativeXpath));
-	}
-
-	private WebElement getUserNameElement() {
-		return this.getSharedElement(PopoverLocators.Shared.xpathUserName);
-	}
-
-	public String getUserName() {
-		return getUserNameElement().getText();
-	}
-
-	private WebElement getAddButtonElement() {
+	private WebElement getAddButtonElement() throws Exception {
 		return this.getSharedElement(PopoverLocators.Shared.xpathAddButton);
 	}
 
-	public boolean isAddButtonVisible() {
+	public boolean isAddButtonVisible() throws Exception {
 		return getAddButtonElement().isDisplayed();
 	}
 
 	public boolean isBlockButtonVisible() {
 		return blockButton.isDisplayed();
 	}
+	
+	public boolean isUnblockButtonVisible() {
+		return unblockButton.isDisplayed();
+	}
 
 	public void clickAddPeopleButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				getAddButtonElement());
 		getAddButtonElement().click();
+	}
+
+	public void clickBlockButton() {
+		blockButton.click();	
+	}
+	public void clickUnblockButton() {
+		unblockButton.click();
 	}
 }

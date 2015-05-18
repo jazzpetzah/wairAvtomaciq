@@ -1,18 +1,21 @@
 package com.wearezeta.auto.osx.steps;
 
-import io.appium.java_client.AppiumDriver;
-
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
+import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -33,6 +36,7 @@ import com.wearezeta.auto.osx.pages.welcome.WelcomePage;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CommonOSXSteps {
@@ -46,9 +50,13 @@ public class CommonOSXSteps {
 
 	public static final Platform CURRENT_PLATFORM = Platform.Mac;
 
+	private static final int MAX_DRIVER_CREATION_RETRIES = 3;
+
 	private Date testStartedTimestamp;
 
 	private long startupTime = -1;
+
+	private static boolean backendSet = false;
 
 	public long getStartupTime() {
 		return this.startupTime;
@@ -61,81 +69,110 @@ public class CommonOSXSteps {
 		CommonUtils.disableSeleniumLogs();
 	}
 
-	public static void resetBackendSettingsIfOverwritten() throws IOException,
-			Exception {
+	public static boolean resetBackendSettingsIfOverwritten()
+			throws IOException, Exception {
+		OSXCommonUtils.resetOSXPrefsDaemon();
 		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
 				.getBackendType(CommonOSXSteps.class))) {
 			log.debug("Backend setting were overwritten. Trying to restart app.");
-			PagesCollection.mainMenuPage.quitWire();
+			OSXCommonUtils.killWireIfStuck();
 			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
 					.getBackendType(CommonOSXSteps.class));
-			PagesCollection.mainMenuPage.startApp();
+			OSXCommonUtils.resetOSXPrefsDaemon();
+			return true;
+		} else {
+			return false;
 		}
 	}
 
-	private ZetaOSXDriver resetOSXDriver(String url) throws Exception {
+	@SuppressWarnings("unchecked")
+	private Future<ZetaOSXDriver> resetOSXDriver(String url) throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
 		capabilities.setCapability(CapabilityType.PLATFORM, CURRENT_PLATFORM
 				.getName().toUpperCase());
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 
-		return (ZetaOSXDriver) PlatformDrivers.getInstance().resetDriver(url,
-				capabilities);
+		return (Future<ZetaOSXDriver>) PlatformDrivers.getInstance()
+				.resetDriver(url, capabilities, MAX_DRIVER_CREATION_RETRIES,
+						this::startApp);
+	}
+
+	private void startApp(RemoteWebDriver drv) {
+		try {
+			CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
+		} catch (Exception e) {
+		}
+		try {
+			OSXCommonUtils.deleteWireLoginFromKeychain();
+		} catch (Exception e) {
+		}
+		try {
+			OSXCommonUtils.deletePreferencesFile();
+		} catch (Exception e) {
+		}
+		try {
+			OSXCommonUtils.deleteCacheFolder();
+		} catch (Exception e) {
+		}
+
+		if (!backendSet) {
+			try {
+				OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+			} catch (Exception e) {
+			}
+			try {
+				OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
+						.getBackendType(this.getClass()));
+			} catch (Exception e) {
+			}
+			backendSet = true;
+		}
+		drv.navigate().to(OSXExecutionContext.wirePath);
+
+		try {
+			if (resetBackendSettingsIfOverwritten()) {
+				drv.navigate().to(OSXExecutionContext.wirePath);
+			}
+		} catch (Exception e) {
+		}
 	}
 
 	private void commonBefore() throws Exception {
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
 		this.testStartedTimestamp = new Date();
-		final ZetaOSXDriver driver = resetOSXDriver(OSXExecutionContext.appiumUrl);
-		final WebDriverWait wait = PlatformDrivers
-				.createDefaultExplicitWait(driver);
+		final Future<ZetaOSXDriver> lazyDriver = resetOSXDriver(OSXExecutionContext.appiumUrl);
 
-		PagesCollection.mainMenuPage = new MainMenuAndDockPage(driver, wait);
-		PagesCollection.welcomePage = new WelcomePage(driver, wait);
-		PagesCollection.loginPage = new LoginPage(driver, wait);
-		PagesCollection.problemReportPage = new ProblemReportPage(driver, wait);
+		PagesCollection.mainMenuPage = new MainMenuAndDockPage(lazyDriver);
+		PagesCollection.welcomePage = new WelcomePage(lazyDriver);
+		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		PagesCollection.problemReportPage = new ProblemReportPage(lazyDriver);
 
-		ZetaFormatter.setDriver((AppiumDriver) PagesCollection.welcomePage
-				.getDriver());
+		ZetaFormatter.setLazyDriver(lazyDriver);
 		// saving time of startup for Sync Engine
 		this.startupTime = new Date().getTime()
 				- this.testStartedTimestamp.getTime();
-
-		PagesCollection.welcomePage
-				.sendProblemReportIfAppears(PagesCollection.problemReportPage);
 	}
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
-		CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
-		OSXCommonUtils.deleteWireLoginFromKeychain();
-		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-		OSXCommonUtils.deleteCacheFolder();
-
-		OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-				.getBackendType(this.getClass()));
-
 		commonBefore();
-
-		resetBackendSettingsIfOverwritten();
 	}
 
 	@Before("~@performance")
 	public void setUp() throws Exception {
-		CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
-		OSXCommonUtils.deleteWireLoginFromKeychain();
-		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-		OSXCommonUtils.deleteCacheFolder();
-
-		OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-				.getBackendType(this.getClass()));
-
 		commonBefore();
-
-		resetBackendSettingsIfOverwritten();
 	}
 
-	@Given("^(.*) has sent connection request to (.*)$")
+	@Given("^(.*) sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
@@ -158,13 +195,13 @@ public class CommonOSXSteps {
 
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
-		commonSteps.ThereAreNUsers(count);
+		commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
 	}
 
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
 	}
 
 	@When("^(.*) ignore all requests$")
@@ -173,9 +210,8 @@ public class CommonOSXSteps {
 		commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
 	}
 
-	@When("^I wait for (.*) seconds$")
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
+	@When("^I wait for (\\d+) seconds?$")
+	public void WaitForTime(int seconds) throws Exception {
 		commonSteps.WaitForTime(seconds);
 	}
 
@@ -277,12 +313,10 @@ public class CommonOSXSteps {
 		commonSteps.EnableTcpConnectionForApp(OSXConstants.Apps.WIRE);
 	}
 
-	@Given("^(\\w+) wait[s]* up to (\\d+) second[s]* until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, int timeout, String query)
-			throws Exception {
-		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
-				timeout);
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
 	@When("^Contact (.*) sends random message to conversation (.*)")
@@ -314,8 +348,88 @@ public class CommonOSXSteps {
 				dstUserNameAlias);
 	}
 
+	/**
+	 * Changes accent color of specified user to one from the list using REST
+	 * API
+	 * 
+	 * @step. ^User (\\w+) changes accent color to
+	 *        (StrongBlue|StrongLimeGreen|BrightYellow
+	 *        |VividRed|BrightOrange|SoftPink|Violet)$
+	 * 
+	 * @param userNameAlias
+	 *            user name
+	 * @param newColor
+	 *            one of possible accent colors:
+	 *            StrongBlue|StrongLimeGreen|BrightYellow
+	 *            |VividRed|BrightOrange|SoftPink|Violet
+	 * 
+	 * @throws Exception
+	 */
+	@When("^User (\\w+) changes accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
+	public void IChangeAccentColor(String userNameAlias, String newColor)
+			throws Exception {
+		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
+	}
+
+	/**
+	 * Stores screenshot of the whole screen for usage during execution by
+	 * specified alias
+	 * 
+	 * @step. ^I take fullscreen shot and save it as (.*)$
+	 * 
+	 * @param screenshotAlias
+	 *            string id for stored screenshot
+	 * @throws Exception
+	 */
+	@When("^I take fullscreen shot and save it as (.*)$")
+	public void ITakeFullscreenShotAndSaveItAsAlias(String screenshotAlias)
+			throws Exception {
+		BufferedImage shot = PagesCollection.mainMenuPage.takeScreenshot();
+		OSXExecutionContext.screenshots.put(screenshotAlias, shot);
+	}
+
+	/**
+	 * Compares screenshots stored with specified aliases
+	 * 
+	 * @step. ^I see that screen (.*) is changed in comparison with (.*)$
+	 * 
+	 * @param resultAlias
+	 *            current screen appearance
+	 * @param previousAlias
+	 *            screen stored before
+	 * 
+	 * @throws AssertionError
+	 *             if screenshots are similar enough
+	 */
+	@Then("^I see that screen (.*) is changed in comparison with (.*)$")
+	public void ISeeScreensAreDifferent(String resultAlias, String previousAlias) {
+		BufferedImage reference = OSXExecutionContext.screenshots
+				.get(resultAlias);
+		BufferedImage template = OSXExecutionContext.screenshots
+				.get(previousAlias);
+		Assert.assertNotNull(reference);
+		Assert.assertNotNull(template);
+		double score = ImageUtil.getOverlapScore(reference, template,
+				ImageUtil.RESIZE_NORESIZE);
+		log.debug(String.format(
+				"Score for comparison of screens %s and %s is %.3f",
+				resultAlias, previousAlias, score));
+		Assert.assertTrue(String.format(
+				"Screens are the same, but expected not to be. "
+						+ "Score %.3f >= 0.980d", score), score < 0.98d);
+	}
+
 	@After
 	public void tearDown() throws Exception {
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
 		OSXCommonUtils.collectSystemLogs(testStartedTimestamp);
 
 		OSXPage.clearPagesCollection();

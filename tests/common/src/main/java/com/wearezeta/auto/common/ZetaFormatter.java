@@ -6,16 +6,17 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.UserState;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
@@ -30,83 +31,78 @@ import gherkin.formatter.model.Step;
 import gherkin.formatter.model.Tag;
 
 public class ZetaFormatter implements Formatter, Reporter {
-	
-	private static RemoteWebDriver driver = null;
-	
 	private String feature = "";
 	private String scenario = "";
+	@SuppressWarnings("unused")
 	private String scope = "Unknown";
 	private Queue<String> step = new LinkedList<String>();
+
+	private static final Logger log = ZetaLogger.getLog(ZetaFormatter.class
+			.getSimpleName());
 
 	private long startDate;
 	private long endDate;
 	@SuppressWarnings("unused")
 	private int lineNumber = 0;
-	
-	private static final String LOGIN = "smoketester+bot@wearezeta.com";
-	private static final String PASSWORD = "aqa123456";
-	private static final String CONTACT_ANDROID = "Android Smoke Feedback";
-	private static final String CONTACT_IOS = "iOS Smoke Feedback";
-	private static final String CONTACT_OSX = "OSX Smoke Feedback";
-	
+
 	private static String buildNumber = "unknown";
-	
+
 	@Override
 	public void background(Background arg0) {
-		
+
 	}
 
 	@Override
 	public void close() {
-	
+
 	}
 
 	@Override
 	public void done() {
-	
+
 	}
 
 	@Override
 	public void eof() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void examples(Examples arg0) {
-		
+
 	}
 
 	@Override
 	public void feature(Feature arg0) {
-		feature = arg0.getName(); 
-		System.out.println("Feature: " + feature);
+		feature = arg0.getName();
+		log.debug("Feature: " + feature);
 	}
 
 	@Override
 	public void scenario(Scenario arg0) {
-		scenario = arg0.getName(); 
+		scenario = arg0.getName();
 		lineNumber = arg0.getLine();
 		for (Tag t : arg0.getTags()) {
-			if(t.getName().equals("@torun")) {
+			if (t.getName().equals("@torun")) {
 				scope = "Dev Test";
 				break;
 			}
-			
-			if(t.getName().equals("@smoke")) {
+
+			if (t.getName().equals("@smoke")) {
 				scope = "Smoke Test";
 			}
-			
-			if(t.getName().equals("@regression")) {
+
+			if (t.getName().equals("@regression")) {
 				scope = "Regression Test";
 			}
-			
-			if(t.getName().equals("@staging")) {
+
+			if (t.getName().equals("@staging")) {
 				scope = "Staging Test";
 			}
 		}
 
-		System.out.println("\n\nScenario: " + scenario);
+		log.debug("\n\nScenario: " + scenario);
 	}
 
 	@Override
@@ -122,82 +118,74 @@ public class ZetaFormatter implements Formatter, Reporter {
 	@Override
 	public void syntaxError(String arg0, String arg1, List<String> arg2,
 			String arg3, Integer arg4) {
-	
+
 	}
 
 	@Override
 	public void uri(String arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void after(Match arg0, Result arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void before(Match arg0, Result arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void embedding(String arg0, byte[] arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void match(Match arg0) {
-		
 		startDate = new Date().getTime();
 	}
 
 	@Override
 	public void result(Result arg0) {
 		endDate = new Date().getTime();
-		String currentStep = step.poll();
-		System.out.println(currentStep + " (status: " + arg0.getStatus() + ", time: " + (endDate-startDate) + "ms)");
-		//send chat notification
-		if (arg0.getStatus().equals("failed") && scope.equals("Smoke Test")) {
-			try {
-				String errorMsg = arg0.getError().getMessage();
-				if (errorMsg == null) {
-					errorMsg = "Error with empty message appears: " + arg0.getError();
+		final String currentStep = step.poll();
+
+		log.debug(currentStep + " (status: " + arg0.getStatus() + ", time: "
+				+ (endDate - startDate) + "ms)");
+		// take screenshot
+		try {
+			final ZetaDriver driver = getDriver(arg0.getStatus().equals(
+					Result.FAILED));
+			if (driver != null) {
+				if (arg0.getStatus().equals(Result.SKIPPED.getStatus())) {
+					// Don't make screenshots for skipped steps to speed up
+					// suite execution
+					return;
 				}
-				if (errorMsg.length() > 255) {
-					errorMsg = errorMsg.substring(0, 255);
-				}
-				
-//				sendNotification("\n============Automatic notification============\n" +
-//						driver.getCapabilities().getCapability("platformName") + " " + scope + 
-//						"(build " + buildNumber + ") \n" + "Feature: " + feature + 
-//						", Scenario: " + scenario + "(line number: " + Integer.toString(lineNumber) + ")" + "\nStep: " + 
-//						currentStep + ", failed with error: \n" + errorMsg + "...");
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-			}
-		}
-		//take screenshot
-		if (driver != null) {
-			try {
-				BufferedImage image = DriverUtils.takeScreenshot((ZetaDriver) driver);
-				String picturePath = CommonUtils.getPictureResultsPathFromConfig(this.getClass());
-				File outputfile = new File(picturePath + feature + "/" +
-						scenario + "/" + currentStep + ".png");
-				
+				BufferedImage image = DriverUtils.takeScreenshot(driver);
+				String picturePath = CommonUtils
+						.getPictureResultsPathFromConfig(this.getClass());
+				// FIXME: some characters in steps/captions may not be
+				// acceptable for file names
+				File outputfile = new File(picturePath + feature + "/"
+						+ scenario + "/" + currentStep + ".png");
+
 				if (!outputfile.getParentFile().exists()) {
 					outputfile.getParentFile().mkdirs();
 				}
-			    ImageIO.write(image, "png", outputfile);
-
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				ImageIO.write(image, "png", outputfile);
+			} else {
+				log.debug(String
+						.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
+								currentStep));
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -205,45 +193,33 @@ public class ZetaFormatter implements Formatter, Reporter {
 	public void write(String arg0) {
 		// TODO Auto-generated method stub
 	}
-	
-	@SuppressWarnings("unused")
-	private void sendNotification(String message) throws Exception {
-		ClientUser bot = new ClientUser();
-		bot.setEmail(LOGIN);
-		bot.setPassword(PASSWORD);
-		bot.setName("AutomationBot");
-		bot.setUserState(UserState.AllContactsConnected);
-		switch (driver.getCapabilities().getCapability("platformName").toString()) {
-			case "Android":
-				BackendAPIWrappers.sendDialogMessageByChatName(bot, CONTACT_ANDROID, message);
-				break;
-			case "Mac":
-				BackendAPIWrappers.sendDialogMessageByChatName(bot, CONTACT_OSX, message);
-				break;
-			case "iOS":
-				BackendAPIWrappers.sendDialogMessageByChatName(bot, CONTACT_IOS, message);
-				break;
+
+	private static ZetaDriver getDriver(boolean forceWait) throws Exception {
+		if (lazyDriver.isDone() || forceWait) {
+			return (ZetaDriver) lazyDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+					TimeUnit.MILLISECONDS);
+		} else {
+			return null;
 		}
 	}
 
-	public static RemoteWebDriver getDriver() {
-		return driver;
-	}
+	private static Future<? extends RemoteWebDriver> lazyDriver = null;
 
-	public static void setDriver(RemoteWebDriver driver) {
-		ZetaFormatter.driver = driver;
+	public static void setLazyDriver(
+			Future<? extends RemoteWebDriver> lazyDriver) {
+		ZetaFormatter.lazyDriver = lazyDriver;
 	}
 
 	@Override
 	public void startOfScenarioLifeCycle(Scenario scenario) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void endOfScenarioLifeCycle(Scenario scenario) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public static String getBuildNumber() {

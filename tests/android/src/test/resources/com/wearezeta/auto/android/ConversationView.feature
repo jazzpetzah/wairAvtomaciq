@@ -5,7 +5,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -21,7 +21,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -37,7 +37,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -55,7 +55,7 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact1>
     And I see dialog page
     And I swipe up on dialog page
@@ -82,7 +82,7 @@ Feature: Conversation View
     Given <Name> is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I tap on text input
@@ -98,7 +98,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -114,7 +114,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -130,7 +130,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -146,7 +146,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -162,7 +162,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
@@ -173,17 +173,19 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message                     |
       | user1Email | user1Password | user1Name | user2Name | 畑 はたけ hatake field of crops |
       
-  @id163 @staging
-  Scenario Outline: Send image using existing camera rolls (portrait) in group chat
+  @id163 @regression
+  Scenario Outline: Send image using existing camera rolls (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
     And I press Add Picture button
     And I press "Gallery" button
+    And I rotate UI to portrait
+    And I wait for 1 second
     And I select picture for dialog
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -192,18 +194,19 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id162 @staging
+  @id162 @regression
   Scenario Outline: Send image using existing camera rolls (landscape) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
     And I press Add Picture button
     And I press "Gallery" button
     When I rotate UI to landscape
+    And I wait for 1 second
     And I select picture for dialog
     And I press "Confirm" button
     Then I see new photo in the dialog
@@ -217,7 +220,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe on text input
@@ -240,7 +243,7 @@ Feature: Conversation View
     And I press "Image Close" button
     Then I rotate UI to portrait
     And I navigate back from dialog page
-    And I see Contact list with my name <Name>
+    And I see Contact list
     
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -251,7 +254,7 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact1>
     And I see dialog page
     And Contact <Contact1> send message to user <Name>
@@ -269,6 +272,7 @@ Feature: Conversation View
     And Contact <Contact1> send message to user <Name>
     And I tap on text input
     And I input <SoudCloudLink> message and send it
+    And I swipe down on dialog page
     And Contact <Contact1> send message to user <Name>
     And I tap Dialog page bottom
     And I press PlayPause media item button
@@ -289,12 +293,44 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see Contact list with my name <Name>
+    Given I see Contact list
     When I tap on contact name <Contact>
+    And I open the gallery application
     And I share image from Gallery to Wire
     Then I see new photo in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+ @id2084 @staging
+  Scenario Outline: I want to share a URL on Wire
+    Given There is 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list
+    And I tap on contact name <Contact>
+    And I share URL from native browser app to Wire with contact <Contact>
+    And I see URL in the dialog
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
+ @id170 @staging
+  Scenario Outline: Verify you can send and play youtube link
+    Given There are 3 users where <Name> is me
+    Given <Name> is connected to <Contact1>
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap on text input
+    And I input <YoutubeLink> message and send it
+    And I press play on youtube container
+    Then I am taken out of Wire and into the native browser app
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | YoutubeLink                                    |
+      | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs    |
       

@@ -1,44 +1,58 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
-import org.json.JSONException;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.pages.InvitationCodePage;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
+import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.collections.IteratorUtils;
+
+import static org.junit.Assert.assertTrue;
 
 public class CommonWebAppSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -60,13 +74,7 @@ public class CommonWebAppSteps {
 				"warn");
 	}
 
-	private static String getBrowser() throws Exception {
-		return WebCommonUtils
-				.getWebAppBrowserNameFromConfig(CommonWebAppSteps.class);
-	}
-
-	private static void setCustomChromeProfile(
-			DesiredCapabilities capabilities, String browserPlatform)
+	private static void setCustomChromeProfile(DesiredCapabilities capabilities)
 			throws Exception {
 		ChromeOptions options = new ChromeOptions();
 		// simulate a fake webcam and mic for testing
@@ -76,10 +84,9 @@ public class CommonWebAppSteps {
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 	}
 
-	private static void setCustomOperaProfile(DesiredCapabilities capabilities,
-			String browserPlatform) throws Exception {
-		final String userProfileRoot = WebCommonUtils
-				.getOperaProfileRoot(browserPlatform);
+	private static void setCustomOperaProfile(DesiredCapabilities capabilities)
+			throws Exception {
+		final String userProfileRoot = WebCommonUtils.getOperaProfileRoot();
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("user-data-dir=" + userProfileRoot);
 		// simulate a fake webcam and mic for testing
@@ -125,49 +132,101 @@ public class CommonWebAppSteps {
 				+ "'");
 	}
 
-	private ZetaWebAppDriver resetWebAppDriver(String url) throws Exception {
-		final String browser = getBrowser();
-		final DesiredCapabilities capabilities;
-		final String webPlatformName = WebCommonUtils
-				.getPlatformNameFromConfig(WebPage.class);
-		switch (browser) {
-		case "chrome":
-			capabilities = DesiredCapabilities.chrome();
-			if (webPlatformName.toLowerCase().contains("opera")) {
-				// This is to fix Desktop Notifications alerts appearance in
-				// Opera
-				setCustomOperaProfile(capabilities, webPlatformName);
-			} else {
-				setCustomChromeProfile(capabilities, webPlatformName);
+	private final static int MAX_TRIES = 5;
+
+	private void navigateToStartPage(RemoteWebDriver drv) {
+		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
+			// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
+			drv.manage()
+					.window()
+					.setSize(
+							new Dimension(
+									WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
+									WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
+		} else {
+			drv.manage().window().maximize();
+		}
+
+		try {
+			drv.navigate()
+					.to(CommonUtils
+							.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class));
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		// FIXME: I'm not sure whether white page instead of sign in is
+		// Amazon issue or webapp issue,
+		// but since this happens randomly in different browsers, then I can
+		// assume this issue has something to do to the hosting and/or
+		// Selenium driver
+		int ntry = 0;
+		while (ntry < MAX_TRIES) {
+			try {
+				if (DriverUtils
+						.waitUntilLocatorIsDisplayed(
+								drv,
+								By.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons),
+								5)
+						|| DriverUtils
+								.waitUntilLocatorIsDisplayed(
+										drv,
+										By.xpath(WebAppLocators.RegistrationPage.xpathRootForm),
+										5)) {
+					break;
+				} else {
+					log.error(String
+							.format("Start page has failed to load. Trying to refresh (%s of %s)...",
+									ntry + 1, MAX_TRIES));
+					drv.navigate().to(drv.getCurrentUrl());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+			ntry++;
+		}
+	}
+
+	private Future<ZetaWebAppDriver> resetWebAppDriver(String url)
+			throws Exception {
+		final DesiredCapabilities capabilities;
+		switch (WebAppExecutionContext.getCurrentBrowser()) {
+		case Chrome:
+			capabilities = DesiredCapabilities.chrome();
+			setCustomChromeProfile(capabilities);
 			break;
-		case "firefox":
+		case Opera:
+			capabilities = DesiredCapabilities.chrome();
+			setCustomOperaProfile(capabilities);
+			break;
+		case Firefox:
 			capabilities = DesiredCapabilities.firefox();
-			// This is to fix Desktop Notifications alert appearance in
-			// Firefox
 			setCustomFirefoxProfile(capabilities);
 			break;
-		case "safari":
+		case Safari:
 			capabilities = DesiredCapabilities.safari();
 			setCustomSafariProfile(capabilities);
 			break;
-		case "ie":
+		case InternetExplorer:
 			capabilities = DesiredCapabilities.internetExplorer();
 			break;
 		default:
 			throw new NotImplementedException(
 					"Incorrect browser name is set - "
-							+ browser
+							+ WebAppExecutionContext.getCurrentBrowser()
+									.toString()
 							+ ". Please choose one of the following: chrome | firefox | safari | ie");
 		}
-		if (webPlatformName.length() > 0) {
+		if (WebAppExecutionContext.getCurrentPlatform().length() > 0) {
 			// Use undocumented grid property to match platforms
 			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
-			capabilities.setCapability("applicationName", webPlatformName);
+			capabilities.setCapability("applicationName",
+					WebAppExecutionContext.getCurrentPlatform());
 		}
 
-		if (!browser.equalsIgnoreCase("ie")) {
-			// Logging feature crashes IE }:@
+		if (WebAppExecutionContext.LoggingManagement
+				.isSupportedInCurrentBrowser()) {
 			setExtendedLoggingLevel(capabilities,
 					WebCommonUtils.getExtendedLoggingLevelInConfig(getClass()));
 		}
@@ -177,64 +236,48 @@ public class CommonWebAppSteps {
 		// default one
 		// setCustomOperaProfile(capabilities, "win7_opera");
 
-		capabilities.setCapability("platformName", Platform.Web.getName());
-		final ZetaWebAppDriver webDriver = (ZetaWebAppDriver) PlatformDrivers
-				.getInstance().resetDriver(url, capabilities);
-		webDriver.setFileDetector(new LocalFileDetector());
-		return webDriver;
+		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+		@SuppressWarnings("unchecked")
+		final Future<ZetaWebAppDriver> lazyWebDriver = (Future<ZetaWebAppDriver>) PlatformDrivers
+				.getInstance().resetDriver(url, capabilities,
+						MAX_DRIVER_CREATION_RETRIES, this::navigateToStartPage);
+		return lazyWebDriver;
 	}
 
 	@Before("~@performance")
 	public void setUp() throws Exception {
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
 		final String url = CommonUtils
 				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
 		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
-		WebAppExecutionContext.browserName = getBrowser();
-		int tryNum = 1;
-		ZetaWebAppDriver webDriver;
-		WebDriverWait wait;
-		do {
-			try {
-				webDriver = resetWebAppDriver(url);
-				wait = PlatformDrivers.createDefaultExplicitWait(webDriver);
-				webDriver.manage().window().maximize();
-
-				PagesCollection.invitationCodePage = new InvitationCodePage(
-						webDriver, wait, path);
-				PagesCollection.invitationCodePage.navigateTo();
-				break;
-			} catch (WebDriverException e) {
-				log.debug(String
-						.format("Driver initialization failed. Trying to recreate (%d of %d)...",
-								tryNum, MAX_DRIVER_CREATION_RETRIES));
-				e.printStackTrace();
-				if (tryNum >= MAX_DRIVER_CREATION_RETRIES) {
-					throw e;
-				} else {
-					tryNum++;
-				}
-			}
-		} while (tryNum <= MAX_DRIVER_CREATION_RETRIES);
-		ZetaFormatter.setDriver(PagesCollection.invitationCodePage.getDriver());
-
-		// put AppleScript for execution to Selenium node
-		if (WebAppExecutionContext.browserName
-				.equals(WebAppConstants.Browser.SAFARI)) {
-			try {
-				WebAppExecutionContext.seleniumNodeIp = WebCommonUtils
-						.getNodeIp(PagesCollection.invitationCodePage
-								.getDriver());
-			} catch (JSONException e) {
-				log.debug("It seems that Safari driver is not part of a grid. Setting node IP to localhost...");
-			}
-		}
+		final Future<ZetaWebAppDriver> lazyWebDriver = resetWebAppDriver(url);
+		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
+				path);
+		PagesCollection.loginPage = new LoginPage(lazyWebDriver, path);
+		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
 
-	@Given("^my browser supports calling$")
+	/**
+	 * This step will throw special PendingException if the current browser does
+	 * not support calling. This will cause Cucumber interpreter to skip the
+	 * current test instead of failing it
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^My browser supports calling$")
 	public void MyBrowserSupportsCalling() throws Exception {
-		if (!getBrowser().equals("chrome") && !getBrowser().equals("firefox")) {
-			throw new PendingException("Browser " + getBrowser()
+		if (!WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
+			throw new PendingException("Browser "
+					+ WebAppExecutionContext.getCurrentBrowser().toString()
 					+ " does not support calling.");
 		}
 	}
@@ -255,8 +298,32 @@ public class CommonWebAppSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+				myNameAlias);
 		IChangeUserAvatarPicture(myNameAlias, "default");
+	}
+
+	/**
+	 * Changes the accent color settings of the given user
+	 *
+	 *
+	 * @step. ^User (\\w+) change accent color to
+	 *        (StrongBlue|StrongLimeGreen|BrightYellow
+	 *        |VividRed|BrightOrange|SoftPink|Violet)$
+	 *
+	 * @param userNameAlias
+	 *            alias of the user where the accent color will be changed
+	 * @param newColor
+	 *            one of possible accent colors:
+	 *            StrongBlue|StrongLimeGreen|BrightYellow
+	 *            |VividRed|BrightOrange|SoftPink|Violet
+	 *
+	 * @throws Exception
+	 */
+	@Given("^User (\\w+) change accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
+	public void IChangeAccentColor(String userNameAlias, String newColor)
+			throws Exception {
+		commonSteps.IChangeUserAccentColor(userNameAlias, newColor);
 	}
 
 	/**
@@ -276,7 +343,8 @@ public class CommonWebAppSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
 	public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
 			String myNameAlias) throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+				myNameAlias);
 	}
 
 	/**
@@ -308,7 +376,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Creates connection between to users
 	 * 
-	 * @step. ^(.*) is connected to (.*)
+	 * @step. ^(\\w+) is connected to (.*)$
 	 * 
 	 * @param userFromNameAlias
 	 *            user which sends connection request
@@ -317,10 +385,28 @@ public class CommonWebAppSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(.*) is connected to (.*)")
+	@Given("^(\\w+) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
 		commonSteps.UserIsConnectedTo(userFromNameAlias, usersToNameAliases);
+	}
+
+	/**
+	 * Blocks a user
+	 *
+	 * @step. ^(\\w+) blocked (\\w+)$
+	 *
+	 * @param userAsNameAlias
+	 *            user which wants to block another
+	 * @param userToBlockNameAlias
+	 *            user to block
+	 *
+	 * @throws Exception
+	 */
+	@Given("^(\\w+) blocked (\\w+)$")
+	public void UserBlocks(String userAsNameAlias, String userToBlockNameAlias)
+			throws Exception {
+		commonSteps.BlockContact(userAsNameAlias, userToBlockNameAlias);
 	}
 
 	/**
@@ -363,9 +449,25 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * Sets self user to be the current user. Avatar picture for this user is
+	 * NOT set automatically
+	 * 
+	 * @step. ^User (\\w+) is [Mm]e without avatar$
+	 * 
+	 * @param nameAlias
+	 *            user to be set as self user
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^User (\\w+) is [Mm]e without avatar$")
+	public void UserXIsMeWithoutAvatar(String nameAlias) throws Exception {
+		commonSteps.UserXIsMe(nameAlias);
+	}
+
+	/**
 	 * Sends connection request by one user to another
 	 * 
-	 * @step. ^(.*) (?:has|have) sent connection request to (.*)
+	 * @step. ^(.*) sent connection request to (.*)
 	 * 
 	 * @param userFromNameAlias
 	 *            user that sends connection request
@@ -374,7 +476,7 @@ public class CommonWebAppSteps {
 	 *
 	 * @throws Exception
 	 */
-	@Given("^(.*) (?:has|have) sent connection request to (.*)")
+	@Given("^(.*) sent connection request to (.*)")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
 			String usersToNameAliases) throws Throwable {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
@@ -382,51 +484,35 @@ public class CommonWebAppSteps {
 	}
 
 	/**
-	 * TODO
-	 */
-	@Given("^(.*) is waiting for call to accept it$")
-	public void GivenContactIsWaitingForCallToAcceptIt(String userNameAlias)
-			throws Throwable {
-		commonSteps.waitForCallToAccept(userNameAlias);
-	}
-
-	/**
 	 * Pings BackEnd until user is indexed and avialable in search
 	 * 
-	 * @step. ^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend
-	 *        search results$
+	 * @step. ^(\\w+) waits? until (.*) exists in backend search results$
 	 * 
 	 * @param searchByNameAlias
 	 *            user name to search string
-	 * 
-	 * @param timeout
-	 *            max ping timeout in sec
 	 * 
 	 * @param query
 	 *            querry string
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^(\\w+) waits? up to (\\d+) seconds? until (.*) exists in backend search results$")
+	@Given("^(\\w+) waits? until (.*) exists in backend search results$")
 	public void UserWaitsUntilContactExistsInHisSearchResults(
-			String searchByNameAlias, int timeout, String query)
-			throws Exception {
-		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query,
-				timeout);
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
 	/**
 	 * Wait for specified amount of seconds
 	 * 
-	 * @step. ^I wait for (.*) seconds?$
+	 * @step. ^I wait for (\\d+) seconds?$
 	 * 
 	 * @param seconds
 	 * @throws NumberFormatException
 	 * @throws InterruptedException
 	 */
-	@When("^I wait for (.*) seconds?$")
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
+	@When("^I wait for (\\d+) seconds?$")
+	public void WaitForTime(int seconds) throws Exception {
 		commonSteps.WaitForTime(seconds);
 	}
 
@@ -448,10 +534,46 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * Archive conversation on the backend
+	 * 
+	 * @step. ^(.*) archived conversation with (.*)$
+	 * 
+	 * @param userToNameAlias
+	 *            the name/alias of conversations list owner
+	 * @param archivedUserNameAlias
+	 *            the name of conversation to archive
+	 * @throws Exception
+	 */
+	@When("^(.*) archived conversation with (.*)$")
+	public void ArchiveConversationWithUser(String userToNameAlias,
+			String archivedUserNameAlias) throws Exception {
+		commonSteps.ArchiveConversationWithUser(userToNameAlias,
+				archivedUserNameAlias);
+	}
+
+	/**
+	 * Send Ping into a conversation using the backend
+	 * 
+	 * @step. ^(.*) pinged conversation with (.*)$
+	 * 
+	 * @param pingFromUserNameAlias
+	 *            conversations list owner name/alias
+	 * @param dstConversationName
+	 *            the name of conversation to send ping to
+	 * @throws Exception
+	 */
+	@When("^(.*) pinged the conversation with (.*)$")
+	public void UserPingedConversation(String pingFromUserNameAlias,
+			String dstConversationName) throws Exception {
+		commonSteps.UserPingedConversation(pingFromUserNameAlias,
+				dstConversationName);
+	}
+
+	/**
 	 * Send message to a conversation
 	 * 
 	 * @step. ^User (.*) sent message (.*) to conversation (.*)
-	 * @param userToNameAlias
+	 * @param userFromNameAlias
 	 *            user who want to mute conversation
 	 * @param message
 	 *            message to send
@@ -487,29 +609,139 @@ public class CommonWebAppSteps {
 				conversationName);
 	}
 
-	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
-		log.debug("BROWSER CONSOLE LOGS:");
-		LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
-		for (LogEntry logEntry : logEntries) {
-			log.debug(logEntry.getMessage());
+	/**
+	 * Forces the current test to be skipped if current browser does not support
+	 * fast location by XPath
+	 * 
+	 * @step. ^My browser supports fast location by XPath$
+	 * 
+	 */
+	@Given("^My browser supports fast location by XPath$")
+	public void MyBrowserSupportsFastLocationByXpath() {
+		if (WebAppExecutionContext.SlowXPathLocation.existsInCurrentBrowser()) {
+			throw new PendingException();
 		}
+	}
+
+	/**
+	 * Record SHA256-hash of current user profile picture
+	 * 
+	 * @step. (.*) takes? snapshot of current profile picture$
+	 * 
+	 * @param asUser
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@Given("(.*) takes? snapshot of current profile picture$")
+	public void UserXTakesSnapshotOfProfilePicture(String asUser)
+			throws Exception {
+		commonSteps.UserXTakesSnapshotOfProfilePicture(asUser);
+	}
+
+	/**
+	 * Verify whether current user picture is changed since the last snapshot
+	 * was made
+	 * 
+	 * @step. ^I verify that current profile picture snapshot of (.*) differs?
+	 *        from the previous one$
+	 * 
+	 * @param userNameAlias
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@Then("^I verify that current profile picture snapshot of (.*) differs? from the previous one$")
+	public void UserXVerifiesSnapshotOfProfilePictureIsDifferent(
+			String userNameAlias) throws Exception {
+		commonSteps
+				.UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias);
+	}
+
+	/**
+	 * Will throw PendingException if the current browser does not support
+	 * synthetic drag and drop
+	 * 
+	 * @step. ^My browser supports synthetic drag and drop$
+	 * 
+	 */
+	@Given("^My browser supports synthetic drag and drop$")
+	public void MyBrowserSupportsSyntheticDragDrop() {
+		if (!WebAppExecutionContext.SyntheticDragAndDrop
+				.isSupportedInCurrentBrowser()) {
+			throw new PendingException();
+		}
+	}
+
+	/**
+	 * Verifies whether current browser log is empty or not
+	 *
+	 * @step. ^I verify browser log is empty$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I verify browser log is empty$")
+	public void VerifyBrowserLogIsEmpty() throws Exception {
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			try {
+				if (WebAppExecutionContext.LoggingManagement
+						.isSupportedInCurrentBrowser()) {
+					List<LogEntry> browserLog = getBrowserLog(PlatformDrivers
+							.getInstance()
+							.getDriver(CURRENT_PLATFORM)
+							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+									TimeUnit.MILLISECONDS));
+					assertTrue(browserLog.isEmpty());
+				}
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
+		return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs()
+				.get(LogType.BROWSER).iterator());
+	}
+
+	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
+		List<LogEntry> logEntries = getBrowserLog(driver);
+		if (!logEntries.isEmpty()) {
+			log.debug("BROWSER CONSOLE LOGS:");
+			for (LogEntry logEntry : logEntries) {
+				log.debug(logEntry.getMessage());
+			}
+		}
+
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		if (PagesCollection.invitationCodePage != null) {
-			PagesCollection.invitationCodePage.close();
+		try {
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
 		}
 
 		WebPage.clearPagesCollection();
 
-		if (!getBrowser().equalsIgnoreCase("ie")) {
-			writeBrowserLogsIntoMainLog(PlatformDrivers.getInstance()
-					.getDriver(CURRENT_PLATFORM));
-		}
-
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+			try {
+				if (WebAppExecutionContext.LoggingManagement
+						.isSupportedInCurrentBrowser()) {
+					writeBrowserLogsIntoMainLog(PlatformDrivers
+							.getInstance()
+							.getDriver(CURRENT_PLATFORM)
+							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+									TimeUnit.MILLISECONDS));
+				}
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			} finally {
+				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+			}
 		}
 
 		commonSteps.getUserManager().resetUsers();

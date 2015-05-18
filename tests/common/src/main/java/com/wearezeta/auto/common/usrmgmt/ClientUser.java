@@ -5,18 +5,20 @@ import java.util.Set;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.AccentColor;
-import com.wearezeta.auto.common.email.IMAPSMailbox;
+import com.wearezeta.auto.common.email.MessagingUtils;
 
 public class ClientUser {
 	private String name = null;
 
-	public ClientUser(String email, String password, String name, UserState state) {
+	public ClientUser(String email, String password, PhoneNumber phoneNumber,
+			String name, UserState state) {
 		this.email = email;
 		this.password = password;
+		this.phoneNumber = phoneNumber;
 		this.name = name;
 		this.userState = state;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -149,12 +151,40 @@ public class ClientUser {
 		return this.accentColor;
 	}
 
+	private PhoneNumber phoneNumber;
+
+	public PhoneNumber getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(PhoneNumber phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	private Set<String> phoneNumberAliases = new HashSet<String>();
+
+	public Set<String> getPhoneNumberAliases() {
+		return new HashSet<String>(this.phoneNumberAliases);
+	}
+
+	public void addPhoneNumberAlias(String alias) {
+		this.phoneNumberAliases.add(alias);
+	}
+
+	public void removePhoneNumberAlias(String alias) {
+		this.phoneNumberAliases.remove(alias);
+	}
+
+	public void clearPhoneNumberAliases() {
+		this.phoneNumberAliases.clear();
+	}
+	
 	private static String generateUniqName() {
-		return CommonUtils.generateGUID().replace("-", "");
+		return CommonUtils.generateGUID().replace("-", "").substring(0, 8);
 	}
 
 	public static String generateEmail(String suffix) throws Exception {
-		return generateEmail(IMAPSMailbox.getName(), suffix);
+		return generateEmail(MessagingUtils.getAccountName(), suffix);
 	}
 
 	private static String generateEmail(String basemail, String suffix) {
@@ -165,6 +195,7 @@ public class ClientUser {
 
 	public ClientUser() throws Exception {
 		this.name = generateUniqName();
+		this.phoneNumber = new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX);
 		this.password = CommonUtils
 				.getDefaultPasswordFromConfig(ClientUser.class);
 		this.email = generateEmail(name);
