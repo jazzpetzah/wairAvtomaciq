@@ -43,6 +43,7 @@ Feature: Calling
     Then I see the call lock screen
     And I see a call from <Contact> in the call lock screen
     And I answer the call from the lock screen
+    And I wait for call message changes from CONNECTING for 30 seconds
     Then I see started call message for contact <Contact>
 
     Examples: 
@@ -60,6 +61,7 @@ Feature: Calling
     Then I see the call lock screen
     And I see a call from <Contact> in the call lock screen
     And I answer the call from the lock screen
+    And I wait for call message changes from CONNECTING for 30 seconds
     Then I see started call message for contact <Contact>
 
     Examples: 

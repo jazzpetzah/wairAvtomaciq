@@ -63,6 +63,22 @@ public class CallingPageSteps {
 	}
 
 	/**
+	 * Wait for call message changes
+	 * 
+	 * @step. ^I wait for call message changes from (.*) for (.*) seconds$
+	 * @param oldMessage
+	 *            call message that should disappear 
+	 * @param sec timeout
+	 * @throws InterruptedException
+	 */
+	@When("^I wait for call message changes from (.*) for (.*) seconds$")
+	public void IWaitFormCallMessageChanges(String oldMessage, int sec)
+			throws InterruptedException {
+		PagesCollection.callingOverlayPage.waitForCallersNameChanges(
+				oldMessage, sec);
+	}
+
+	/**
 	 * Checks to see that the call bar is not visible
 	 * 
 	 * @step. ^I cannot see the call bar$
