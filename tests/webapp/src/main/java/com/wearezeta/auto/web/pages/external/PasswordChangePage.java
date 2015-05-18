@@ -8,13 +8,14 @@ import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.web.locators.ExternalLocators;
 import com.wearezeta.auto.web.pages.WebPage;
 
 public class PasswordChangePage extends WebPage {
-	@FindBy(id = "password")
+	@FindBy(id = ExternalLocators.PasswordChangePage.idPasswordInput)
 	private WebElement passwordField;
 
-	@FindBy(xpath = "//button[@type='submit']")
+	@FindBy(xpath = ExternalLocators.PasswordChangePage.xpathSubmitButton)
 	private WebElement changePasswordButton;
 
 	public PasswordChangePage(Future<ZetaWebAppDriver> lazyDriver)
@@ -40,7 +41,7 @@ public class PasswordChangePage extends WebPage {
 
 	public void waitUntilVisible(int timeoutSeconds) throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id("password")) : "Password Change page has not been displayed within "
+				By.id(ExternalLocators.PasswordChangePage.idPasswordInput)) : "Password Change page has not been displayed within "
 				+ timeoutSeconds + " seconds";
 	}
 }
