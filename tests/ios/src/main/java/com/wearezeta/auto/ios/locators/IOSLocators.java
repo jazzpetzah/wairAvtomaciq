@@ -446,7 +446,7 @@ public final class IOSLocators {
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[%d]";
 	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
 	public static final String nameShareButton = "SHARE CONTACTS";
-	public static final String nameContinueUploadButton = "SHARE";
+	public static final String nameContinueUploadButton = "SHARE CONTACTS";
 	public static final String namePeopleYouMayKnowLabel = "CONNECT";
 	public static final String nameHideSuggestedContactButton = "HIDE";
 	public static final String xpathSendAnInviteButton = "//UIACollectionCell[@name='Send an invitation']";
@@ -562,6 +562,10 @@ public final class IOSLocators {
 	
 	public final class LoginPage {
 		public static final String namePhoneLoginButton = "PHONE SIGN IN";
+	}
+	
+	public final class PeoplePickerPage {
+		public static final String nameLaterButton = "MAYBE LATER";
 	}
 	
 	/////////////
