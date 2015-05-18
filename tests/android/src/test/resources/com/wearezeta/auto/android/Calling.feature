@@ -90,11 +90,11 @@ Feature: Calling
     Then I see new photo in the dialog
     When I swipe on text input
     And I press Ping button
-    Then I see Hello-Hey message <SystemMessage> with <Action> in the dialog
+    Then I see Ping message <Msg> in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Message                   | SystemMessage | Action |
-      | user1Email | user1Password | user1Name | user2Name | autocall    | simple message in english | YOU           | PINGED |
+      | Login      | Password      | Name      | Contact   | CallBackend | Message                   | Msg        |
+      | user1Email | user1Password | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
   @id2210 @regression
   Scenario Outline: Calling bar buttons are clickable and change its state

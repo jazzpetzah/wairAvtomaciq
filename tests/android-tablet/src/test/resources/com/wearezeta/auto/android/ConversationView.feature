@@ -28,11 +28,11 @@ Feature: Conversation View
     And I see dialog page
     And I swipe on text input
     And I press Ping button
-    Then I see Hello-Hey message <Message> with <Action> in the dialog
+    Then I see Ping message <Message> in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message | Action |
-      | user1Email | user1Password | user1Name | user2Name | YOU     | PINGED |
+      | Login      | Password      | Name      | Contact   | Message    |
+      | user1Email | user1Password | user1Name | user2Name | YOU PINGED |
 
   @id2254 @staging
   Scenario Outline: Send Camera picture to contact in portrait mode
@@ -126,11 +126,11 @@ Feature: Conversation View
     And I see dialog page
     And I swipe on text input
     And I press Ping button
-    Then I see Hello-Hey message <Message> with <Action> in the dialog
+    Then I see Ping message <Message> in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message | Action |
-      | user1Email | user1Password | user1Name | user2Name | YOU     | PINGED |
+      | Login      | Password      | Name      | Contact   | Message    |
+      | user1Email | user1Password | user1Name | user2Name | YOU PINGED |
 
   @id2240 @staging
   Scenario Outline: Send Camera picture to contact in landscape mode

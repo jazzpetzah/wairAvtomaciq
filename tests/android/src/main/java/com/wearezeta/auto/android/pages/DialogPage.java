@@ -56,14 +56,14 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.DialogPage.idCursorFrame)
 	private WebElement cursurFrame;
 
-	@FindBy(id = AndroidLocators.DialogPage.idKnockMessage)
-	private WebElement knockMessage;
+	@FindBy(id = AndroidLocators.DialogPage.idPingMessage)
+	private List<WebElement> pingMessages;
 
-	@FindBy(id = AndroidLocators.DialogPage.idKnockAction)
-	private WebElement knockAction;
+	@FindBy(xpath = AndroidLocators.DialogPage.xpathLastPingMessage)
+	private WebElement lastPingMessage;
 
-	@FindBy(id = AndroidLocators.DialogPage.idKnockIcon)
-	private WebElement knockIcon;
+	@FindBy(id = AndroidLocators.DialogPage.idPingIcon)
+	private WebElement pingIcon;
 
 	@FindBy(id = AndroidLocators.DialogPage.idDialogTakePhotoButton)
 	private WebElement takePhotoButton;
@@ -367,8 +367,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public Boolean isKnockIconVisible() throws Exception {
-		this.getWait().until(ExpectedConditions.visibilityOf(knockIcon));
-		return DriverUtils.isElementPresentAndDisplayed(knockIcon);
+		this.getWait().until(ExpectedConditions.visibilityOf(pingIcon));
+		return DriverUtils.isElementPresentAndDisplayed(pingIcon);
 	}
 
 	public String getConnectRequestChatLabel() throws Exception {
@@ -588,7 +588,7 @@ public class DialogPage extends AndroidPage {
 
 	public double checkPingIcon(String label) throws Exception {
 		String path = null;
-		BufferedImage pingImage = getElementScreenshot(knockIcon);
+		BufferedImage pingImage = getElementScreenshot(pingIcon);
 		if (label.equals(PING_LABEL)) {
 			path = CommonUtils.getPingIconPath(DialogPage.class);
 		} else if (label.equals(HOT_PING_LABEL)) {
@@ -599,19 +599,9 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
-	public String getKnockText() throws Exception {
-		return knockMessage.getText() + " " + knockAction.getText();
+	public String getLastPingText() {
+		return lastPingMessage.getText();
 	}
-
-//	public Boolean isKnockText(String message, String action) throws Exception {
-//		List<WebElement> messageElement = this.getDriver().findElements(
-//				By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage,
-//						message.trim())));
-//		List<WebElement> actionElement = this.getDriver().findElements(
-//				By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage,
-//						action.trim())));
-//		return (!messageElement.isEmpty() && !actionElement.isEmpty());
-//	}
 
 	public boolean isGroupChatDialogContainsNames(List<String> names) {
 		final String convoText = lastConversationMessage.getText();

@@ -7,6 +7,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.en.Then;
@@ -219,7 +220,7 @@ public class OtherUserPersonalInfoPageSteps {
 			// Ignore silently
 		}
 		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
-				.tapOnContact(contact);
+				.tapOnParticipant(contact);
 		if (PagesCollection.androidPage instanceof OtherUserPersonalInfoPage) {
 			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
 		}
@@ -319,7 +320,7 @@ public class OtherUserPersonalInfoPageSteps {
 	public void WhenISelectContact(String name) throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
-				.tapOnContact(name);
+				.tapOnParticipant(name);
 	}
 
 	/**
@@ -349,18 +350,12 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I see the correct participant (.*) and (.*) avatars$")
 	public void ISeeCorrectParticipantAvatars(String contact1, String contact2)
 			throws Exception {
-		try {
-			contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
+		for (String contactName : new String[] { contact1, contact2 }) {
+			contactName = usrMgr.replaceAliasesOccurences(contact1,
+					FindBy.NAME_ALIAS);
+			Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
+					.isParticipantAvatarVisible(contactName));
 		}
-		try {
-			contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isParticipantAvatars(contact1, contact2));
 	}
 
 	/**
@@ -394,7 +389,7 @@ public class OtherUserPersonalInfoPageSteps {
 			throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertFalse(PagesCollection.otherUserPersonalInfoPage
-				.isContactExists(contact));
+				.isParticipantExists(contact));
 	}
 
 	/**

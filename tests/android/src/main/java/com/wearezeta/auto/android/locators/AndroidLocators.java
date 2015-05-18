@@ -284,13 +284,11 @@ public final class AndroidLocators {
 
 		public static final String idAddParticipants = "gtv__cursor_participants";
 
-		public static final String idKnockMessage = "ttv__row_conversation__knock_message";
-
-		public static final String idKnockAction = "ttv__row_conversation__action_text";
+		public static final String idPingMessage = "ttv__row_conversation__ping_message";
 
 		public static final String idCursorFrame = "cv";
 
-		public static final String idKnockIcon = "gtv__knock_icon";
+		public static final String idPingIcon = "gtv__knock_icon";
 
 		public static final String idMessage = "ltv__row_conversation__message";
 
@@ -342,7 +340,7 @@ public final class AndroidLocators {
 
 		public static final String xpathCursorFrame42 = "//android.support.v4.view.ViewPager/android.widget.ListView/android.widget.FrameLayout";
 
-		public static final String xpathConnectRequestChatLabel42 = "//android.widget.TextView[contains(@text, 'Connected to')]";
+		public static final String xpathConnectRequestChatLabel42 = "//*[contains(@text, 'Connected to')]";
 
 		public static final String xpathConnectRequestChatUserName42 = "//android.widget.TextView[preceding-sibling::android.widget.TextView[@text='Connected to ']]";
 
@@ -350,7 +348,7 @@ public final class AndroidLocators {
 
 		public static final String xpathDialogChangeCameraButton42 = "//android.widget.FrameLayout[child::android.widget.ViewAnimator]/android.widget.FrameLayout/android.widget.TextView[2]";
 
-		public static final String xpathConfirmButton42 = "//android.widget.TextView[@text='OK']";
+		public static final String xpathConfirmButton42 = "//*[@value='OK']";
 
 		public static final String xpathDialogImages42 = "//android.widget.FrameLayout//android.widget.ImageView";
 
@@ -359,6 +357,8 @@ public final class AndroidLocators {
 						text);
 
 		public static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
+
+		public static final String xpathLastPingMessage = "(//*[@id=ttv__row_conversation__ping_message])[last()]";
 
 		public static By getByForDialogPageImage() throws Exception {
 			return AndroidExecutionContext.isLocationByIdSupported() ? By
@@ -411,6 +411,10 @@ public final class AndroidLocators {
 		public static final String idLeaveButton = "ttv__conversation_settings__leave";
 
 		public static final String idBlockButton = "ttv__conversation_settings__block";
+
+		public static final Function<String, String> xpathParticipantAvatarByName = name -> String
+				.format("//*[@id='pfac__participants']//ChatheadWithTextFooter[.//*[@value='%s']]",
+						name.toUpperCase());
 
 		public static final String xpathOtherUserPersonalInfoSingleName42 = "//android.widget.LinearLayout[child::android.widget.TextView]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.TextView";
 

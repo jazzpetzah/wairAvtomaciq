@@ -28,11 +28,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 	public static final String LEAVE_CONVERSATION_BUTTON = "Leave conversation";
 	public static final String LEAVE_BUTTON = "LEAVE";
-	private static final String AVATAR_WITH_IMAGE = "avatarPictureTestAndroid.png";
-	private static final String AVATAR_NO_IMAGE = "avatarTestAndroid.png";
-
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.OtherUserPersonalInfoPage.classNameGridView)
-	private WebElement groupChatUsersGrid;
 
 	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeader)
 	private WebElement groupChatName;
@@ -257,10 +252,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
 	}
 
-	public boolean isContactExists(String contact) throws Exception {
+	public boolean isParticipantExists(String name) throws Exception {
 		final By locator = By
-				.xpath(AndroidLocators.ContactListPage.xpathContactByName
-						.apply(contact));
+				.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathParticipantAvatarByName
+						.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
@@ -272,17 +267,17 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		groupChatNameEditable.sendKeys(chatName + "\n");
 	}
 
-	public AndroidPage tapOnContact(String contact) throws Exception {
+	public AndroidPage tapOnParticipant(String name) throws Exception {
 		this.getWait().until(ExpectedConditions.visibilityOf(groupChatName));
 		try {
 			final By nameLocator = By
-					.xpath(AndroidLocators.ContactListPage.xpathContactByName
-							.apply(contact.toUpperCase()));
+					.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathParticipantAvatarByName
+							.apply(name));
 			assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 					nameLocator);
 			this.getDriver().findElement(nameLocator).click();
 		} catch (Exception e) {
-			log.debug("Failed to find contact with name " + contact
+			log.debug("Failed to find contact with name " + name
 					+ "\n. Page source: " + this.getDriver().getPageSource());
 			throw e;
 		}
@@ -306,48 +301,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return new DialogPage(this.getLazyDriver());
 	}
 
-	public boolean isParticipantAvatars(String contact1, String contact2)
-			throws Exception {
-		boolean flag1 = false;
-		boolean flag2 = false;
-		BufferedImage avatarIcon = null;
-		String path = CommonUtils.getImagesPath(CommonUtils.class);
-		for (int i = 1; i < linearLayout.size() + 1; i++) {
-			avatarIcon = getElementScreenshot(this
-					.getDriver()
-					.findElement(
-							By.xpath(String
-									.format(AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayoutId,
-											i))));
-			String avatarName = this
-					.getDriver()
-					.findElement(
-							By.xpath(String
-									.format(AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoContacts,
-											i))).getText();
-			if (avatarName.equalsIgnoreCase(contact1)) {
-				BufferedImage realImage = ImageUtil.readImageFromFile(path
-						+ AVATAR_WITH_IMAGE);
-				double score = ImageUtil.getOverlapScore(realImage, avatarIcon,
-						ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
-					return false;
-				}
-				flag1 = true;
-			}
-			if (contact2.toLowerCase().startsWith(avatarName.toLowerCase())) {
-				// must be a yellow user with initials AT
-				BufferedImage realImage = ImageUtil.readImageFromFile(path
-						+ AVATAR_NO_IMAGE);
-				double score = ImageUtil.getOverlapScore(realImage, avatarIcon,
-						ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
-					return false;
-				}
-				flag2 = true;
-			}
-		}
-		return (flag1 && flag2);
+	public boolean isParticipantAvatarVisible(String name) throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathParticipantAvatarByName
+						.apply(name));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 5);
 	}
-
 }

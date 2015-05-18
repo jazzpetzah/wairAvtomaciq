@@ -9,7 +9,7 @@ import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
 import cucumber.api.java.en.*;
 
@@ -419,22 +419,17 @@ public class DialogPageSteps {
 	 * Used to check that a ping has been sent Not very clear what this step
 	 * does
 	 * 
-	 * @step. ^I see Hello-Hey message (.*) with (.*) in the dialog$
+	 * @step. ^I see Ping message (.*) in the dialog$
 	 * 
 	 * @param message
-	 * @param action
 	 * @throws Exception
 	 */
-	@Then("^I see Hello-Hey message (.*) with (.*) in the dialog$")
-	public void ThenISeeHelloHeyMessageInTheDialog(String message, String action)
+	@Then("^I see Ping message (.*) in the dialog$")
+	public void ThenISeeHelloHeyMessageInTheDialog(String message)
 			throws Exception {
-		try {
-			message = usrMgr.findUserByNameOrNameAlias(message).getName();
-		} catch (NoSuchUserException ex) {
-			// Ignore silently
-		}
-		Assert.assertTrue(PagesCollection.dialogPage.isKnockText(message,
-				action));
+		message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
+		Assert.assertTrue(PagesCollection.dialogPage.getLastPingText().equals(
+				message));
 	}
 
 	/**
