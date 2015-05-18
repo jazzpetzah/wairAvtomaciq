@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
@@ -15,8 +14,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class LoginPage extends AndroidPage {
@@ -24,46 +21,46 @@ public class LoginPage extends AndroidPage {
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 			.getSimpleName());
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignInButton")
+	@FindBy(id = AndroidLocators.LoginPage.idSignInButton)
 	private WebElement signInButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeSlogan")
+	@FindBy(id = AndroidLocators.LoginPage.idWelcomeSlogan)
 	private WebElement welcomeSlogan;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idSignUpButton")
+	@FindBy(id = AndroidLocators.LoginPage.idSignUpButton)
 	protected WebElement signUpButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idForgotPass")
+	@FindBy(id = AndroidLocators.LoginPage.idForgotPass)
 	private WebElement forgotPasswordButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginButton")
+	@FindBy(id = AndroidLocators.LoginPage.idLoginButton)
 	protected WebElement confirmSignInButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idSelfUserAvatar")
+	@FindBy(id = AndroidLocators.ContactListPage.idSelfUserAvatar)
 	protected WebElement selfUserAvatar;
 
-	@FindBy(xpath = AndroidLocators.LoginPage.xpathLoginInput)
+	@FindBy(id = AndroidLocators.LoginPage.idLoginInput)
 	private WebElement loginInput;
 
-	@FindBy(xpath = AndroidLocators.LoginPage.xpathPasswordInput)
+	@FindBy(id = AndroidLocators.LoginPage.idPasswordInput)
 	private WebElement passwordInput;
 
 	@FindBy(className = AndroidLocators.CommonLocators.classEditText)
 	private List<WebElement> editText;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idLoginError")
+	@FindBy(id = AndroidLocators.LoginPage.idLoginError)
 	private WebElement loginError;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LoginPage.CLASS_NAME, locatorKey = "idWelcomeSlogan")
+	@FindBy(id = AndroidLocators.LoginPage.idWelcomeSlogan)
 	private List<WebElement> welcomeSloganContainer;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
+	@FindBy(id = AndroidLocators.ContactListPage.idContactListNames)
 	private WebElement contactListNames;
 
-	@FindBy(how = How.XPATH, using = AndroidLocators.CommonLocators.xpathDismissUpdateButton)
+	@FindBy(id = AndroidLocators.CommonLocators.xpathDismissUpdateButton)
 	private WebElement dismissUpdateButton;
 
 	private static final String LOGIN_ERROR_TEXT = "WRONG ADDRESS OR PASSWORD.\nPLEASE TRY AGAIN.";

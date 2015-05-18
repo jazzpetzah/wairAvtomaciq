@@ -2,48 +2,45 @@ package com.wearezeta.auto.android.pages;
 
 import java.util.concurrent.Future;
 
-import org.openqa.selenium.*;
-
-import com.wearezeta.auto.common.locators.ZetaHow;
-
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
 
 public class ConnectToPage extends AndroidPage {
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
+	@FindBy(id = AndroidLocators.ConnectToPage.idConnectToHeader)
 	protected WebElement connectToHeader;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectRequestAccept")
+	@FindBy(id = AndroidLocators.ConnectToPage.idConnectRequestAccept)
 	private WebElement connectAcceptBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectRequestIgnore")
+	@FindBy(id = AndroidLocators.ConnectToPage.idConnectRequestIgnore)
 	private WebElement connectIgnoreBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idPaticipantsPendingLabel")
+	@FindBy(id = AndroidLocators.ConnectToPage.idPaticipantsPendingLabel)
 	private WebElement pendingText;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idConnectionRequiesMessage")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idConnectionRequiesMessage)
 	private WebElement connectionRequestMessage;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idSendConnectionRequestButton")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idSendConnectionRequestButton)
 	private WebElement sendConnectionRequestButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToCharCounter")
+	@FindBy(id = AndroidLocators.ConnectToPage.idConnectToCharCounter)
 	private WebElement connectCharCounter;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idParticipantsClose")
+	@FindBy(id= AndroidLocators.PeoplePickerPage.idParticipantsClose)
 	private WebElement closeButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRightActionButton")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idRightActionButton)
 	private WebElement blockButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
+	@FindBy(id = AndroidLocators.CommonLocators.idConfirmBtn)
 	private WebElement confirmBtn;
 
 	public ConnectToPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {

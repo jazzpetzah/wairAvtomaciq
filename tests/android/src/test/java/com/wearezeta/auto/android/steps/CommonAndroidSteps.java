@@ -93,6 +93,11 @@ public class CommonAndroidSteps {
 				CommonUtils.getAndroidActivityFromConfig(cls));
 		capabilities.setCapability("appWaitActivity",
 				CommonUtils.getAndroidActivityFromConfig(cls));
+		capabilities.setCapability("applicationName",
+				"selendroid");
+		capabilities.setCapability("automationName",
+				"selendroid");		
+		
 		if (isUnicode) {
 			capabilities.setCapability("unicodeKeyboard", true);
 			capabilities.setCapability("resetKeyboard", true);

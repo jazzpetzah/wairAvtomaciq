@@ -3,47 +3,46 @@ package com.wearezeta.auto.android.pages;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class CallingOverlayPage extends AndroidPage {
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idCallingOverlayContainer")
+	@FindBy(id = AndroidLocators.CallingOverlayPage.idCallingOverlayContainer)
 	private WebElement callingOverlayContainer;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idOngoingCallMicrobar")
+	@FindBy(id = AndroidLocators.CallingOverlay.idOngoingCallMicrobar)
 	private WebElement ongoingCallMicrobar;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idOngoingCallMinibar")
+	@FindBy(id = AndroidLocators.CallingOverlay.idOngoingCallMinibar)
 	private WebElement ongoingCallMinibar;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idIncominCallerAvatar")
+	@FindBy(id = AndroidLocators.CallingOverlay.idIncominCallerAvatar)
 	private WebElement incominCallerAvatar;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idIgnoreButton")
+	@FindBy(id = AndroidLocators.CallingOverlayPage.idIgnoreButton)
 	private WebElement ignoreButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idAcceptButton")
+	@FindBy(id = AndroidLocators.CallingOverlayPage.idAcceptButton)
 	private WebElement acceptButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idCallingUsersName")
+	@FindBy(id = AndroidLocators.CallingOverlayPage.idCallingUsersName)
 	private WebElement callingUsersName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idCallMessage")
+	@FindBy(id = AndroidLocators.CallingOverlay.idCallMessage)
 	private WebElement callMessage;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idCallingDismiss")
+	@FindBy(id = AndroidLocators.CallingOverlay.idCallingDismiss)
 	private WebElement callingDismiss;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idCallingSpeaker")
+	@FindBy(id = AndroidLocators.CallingOverlay.idCallingSpeaker)
 	private WebElement callingSpeaker;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idCallingMicMute")
+	@FindBy(id = AndroidLocators.CallingOverlay.idCallingMicMute)
 	private WebElement callingMicMute;
 
 	public CallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver)

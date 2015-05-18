@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import io.appium.java_client.pagefactory.AndroidFindBy;
-
 import java.awt.image.BufferedImage;
 import java.util.*;
 import java.util.concurrent.Future;
@@ -9,10 +7,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.*;
-import org.openqa.selenium.support.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import android.graphics.Point;
 import android.view.KeyEvent;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
@@ -21,8 +24,6 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 
@@ -46,115 +47,112 @@ public class DialogPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.Browsers.xpathNativeBrowserURLBar)
 	private WebElement nativeBrowserURL;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
+	@FindBy(id = AndroidLocators.DialogPage.idMessage)
 	private List<WebElement> messagesList;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
-	private WebElement messageInList;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMissedCallMesage")
-	private WebElement missedCallMessage;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCursorFrame")
-	private WebElement cursurFrame;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockMessage")
-	private WebElement knockMessage;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockAction")
-	private WebElement knockAction;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockIcon")
-	private WebElement knockIcon;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
-	private WebElement takePhotoButton;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogChangeCameraButton")
-	private WebElement changeCameraButton;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
-	private WebElement okButton;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogImages")
-	private WebElement image;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogImages")
-	private List<WebElement> imageList;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestDialog")
-	private WebElement connectRequestDialog;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idAddParticipants")
-	private WebElement addParticipant;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
+	@FindBy(id = AndroidLocators.DialogPage.idMessage)
 	private WebElement conversationMessage;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestMessage")
+	@FindBy(id = AndroidLocators.DialogPage.idMissedCallMesage)
+	private WebElement missedCallMessage;
+
+	@FindBy(id = AndroidLocators.DialogPage.idCursorFrame)
+	private WebElement cursurFrame;
+
+	@FindBy(id = AndroidLocators.DialogPage.idKnockMessage)
+	private WebElement knockMessage;
+
+	@FindBy(id = AndroidLocators.DialogPage.idKnockAction)
+	private WebElement knockAction;
+
+	@FindBy(id = AndroidLocators.DialogPage.idKnockIcon)
+	private WebElement knockIcon;
+
+	@FindBy(id = AndroidLocators.DialogPage.idDialogTakePhotoButton)
+	private WebElement takePhotoButton;
+
+	@FindBy(id = AndroidLocators.DialogPage.idDialogChangeCameraButton)
+	private WebElement changeCameraButton;
+
+	@FindBy(id = AndroidLocators.DialogPage.idConfirmButton)
+	private WebElement okButton;
+
+	@FindBy(id = AndroidLocators.DialogPage.idDialogImages)
+	private WebElement image;
+
+	@FindBy(id = AndroidLocators.DialogPage.idDialogImages)
+	private List<WebElement> imageList;
+
+	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestDialog)
+	private WebElement connectRequestDialog;
+
+	@FindBy(id = AndroidLocators.DialogPage.idAddParticipants)
+	private WebElement addParticipant;
+
+	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestMessage)
 	private WebElement connectRequestMessage;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestConnectTo")
+	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestConnectTo)
 	private WebElement connectRequestConnectTo;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogPageBottomFrameLayout")
+	@FindBy(id = AndroidLocators.DialogPage.idDialogPageBottomFrameLayout)
 	private WebElement dialogPageBottomFrameLayout;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idBackgroundOverlay")
+	@FindBy(id = AndroidLocators.DialogPage.idBackgroundOverlay)
 	private WebElement backgroundOverlay;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestChatLabel")
+	@FindBy(id= AndroidLocators.DialogPage.idConnectRequestChatLabel)
 	private WebElement connectRequestChatLabel;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestChatUserName")
+	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestChatUserName)
 	private WebElement connectRequestChatUserName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idGalleryBtn")
+	@FindBy(id = AndroidLocators.CommonLocators.idGalleryBtn)
 	private WebElement galleryBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
+	@FindBy(id = AndroidLocators.CommonLocators.idSearchHintClose)
 	private WebElement closeHintBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idCloseImageBtn")
+	@FindBy(id = AndroidLocators.CommonLocators.idCloseImageBtn)
 	private WebElement closeImageBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPlayPauseMedia")
+	@FindBy(id = AndroidLocators.DialogPage.idPlayPauseMedia)
 	private WebElement playPauseBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idYoutubePlayButton")
+	@FindBy(id = AndroidLocators.DialogPage.idYoutubePlayButton)
 	private WebElement playYoutubeBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMediaBarControl")
+	@FindBy(id = AndroidLocators.DialogPage.idMediaBarControl)
 	private WebElement mediaBarControl;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idAddPicture")
+	@FindBy(id = AndroidLocators.DialogPage.idAddPicture)
 	private WebElement addPictureBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPing")
+	@FindBy(id = AndroidLocators.DialogPage.idPing)
 	private WebElement pingBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCallingMessage")
+	@FindBy(id = AndroidLocators.DialogPage.idCallingMessage)
 	private WebElement callingMessageText;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCall")
+	@FindBy(id = AndroidLocators.DialogPage.idCall)
 	private WebElement callBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMute")
+	@FindBy(id = AndroidLocators.DialogPage.idMute)
 	private WebElement muteBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idSpeaker")
+	@FindBy(id = AndroidLocators.DialogPage.idSpeaker)
 	private WebElement speakerBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCancelCall")
+	@FindBy(id = AndroidLocators.DialogPage.idCancelCall)
 	private WebElement cancelCallBtn;
 
-	@AndroidFindBy(xpath = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
+	@FindBy(xpath = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
 	private List<WebElement> linearLayout;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogPageBottom")
+	@FindBy(id = AndroidLocators.DialogPage.idDialogPageBottom)
 	private WebElement dialogPageBottom;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idNewConversationNameMessage")
+	@FindBy(id = AndroidLocators.DialogPage.idNewConversationNameMessage)
 	private WebElement newConversationNameMessage;
 
 	private int initMessageCount = 0;
@@ -170,7 +168,8 @@ public class DialogPage extends AndroidPage {
 	public void waitForCursorInputVisible() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.className(AndroidLocators.CommonLocators.classEditText), 5);
-		if (DriverUtils.isElementPresentAndDisplayed(messageInList)) {
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idMessage))) {
 			initMessageCount = messagesList.size();
 		}
 	}

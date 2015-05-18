@@ -14,8 +14,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class CommonAndroidPage extends AndroidPage {
 
@@ -30,13 +28,13 @@ public class CommonAndroidPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.Gmail.idBoby)
 	private WebElement gmailContent;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Browsers.CLASS_NAME, locatorKey = "idFirefoxUrlBar")
+	@FindBy(id = AndroidLocators.Browsers.idFirefoxUrlBar)
 	private WebElement urlBar;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Browsers.CLASS_NAME, locatorKey = "idFirefoxUrlBarEditText")
+	@FindBy(id = AndroidLocators.Browsers.idFirefoxUrlBarEditText)
 	private WebElement urlBarEditText;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.Browsers.CLASS_NAME, locatorKey = "idUrlBar")
+	@FindBy(id = AndroidLocators.Browsers.idUrlBar)
 	private WebElement chromeUrlBar;
 
 	@FindBy(xpath = AndroidLocators.Browsers.ForgotPasswordPage.xpathEmailEditField)

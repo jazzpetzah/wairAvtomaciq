@@ -4,22 +4,21 @@ import java.io.IOException;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class UnknownUserDetailsPage extends AndroidPage {
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserDetailsPage.CLASS_NAME, locatorKey = "idOtherUsersName")
+	@FindBy(id = AndroidLocators.UnknownUserDetailsPage.idOtherUsersName)
 	private WebElement otherUsersName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserDetailsPage.CLASS_NAME, locatorKey = "idConnectButton")
+	@FindBy(id = AndroidLocators.UnknownUserDetailsPage.idConnectButton)
 	private WebElement connectAndPendingButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserDetailsPage.CLASS_NAME, locatorKey = "idCommonUsersLabel")
+	@FindBy(id = AndroidLocators.UnknownUserDetailsPage.idCommonUsersLabel)
 	private WebElement commonUsersLabel;
 
 	public UnknownUserDetailsPage(Future<ZetaAndroidDriver> lazyDriver)

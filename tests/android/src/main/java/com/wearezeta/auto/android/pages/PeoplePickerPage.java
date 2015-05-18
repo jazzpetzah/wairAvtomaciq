@@ -14,8 +14,6 @@ import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class PeoplePickerPage extends AndroidPage {
@@ -24,61 +22,61 @@ public class PeoplePickerPage extends AndroidPage {
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearchUsers")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerSearchUsers)
 	private List<WebElement> pickerSearchUsers;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearchUsers")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerSearchUsers)
 	private WebElement pickerSearchUser;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerTopPeopleHeader")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerTopPeopleHeader)
 	private WebElement pickerTopPeopleHeader;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerUserSlidingRow")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerUserSlidingRow)
 	private List<WebElement> pickerUserSlidingRow;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerSerchConversations")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPeoplePickerSerchConversations)
 	private List<WebElement> pickerSearchConversations;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerRows")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerRows)
 	private List<WebElement> pickerSearchRows;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerUserHideMenu")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerUserHideMenu)
 	private WebElement pickerUserHideMenu;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerUsersUnselected")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerUsersUnselected)
 	private List<WebElement> pickerUsersUnselected;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearch")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerSearch)
 	private WebElement pickerSearch;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerSearch")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerSearch)
 	private List<WebElement> pickerSearchList;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerGrid")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerGrid)
 	private WebElement pickerGrid;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerBtnDone")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerBtnDone)
 	private WebElement addToConversationsButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idCreateConversationIcon")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idCreateConversationIcon)
 	private WebElement createConversation;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idNoResultsFound")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idNoResultsFound)
 	private WebElement noResults;
 
-	@ZetaFindBy(how = ZetaHow.XPATH, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "xpathSendInvitationFrame")
+	@FindBy(xpath = AndroidLocators.PeoplePickerPage.xpathSendInvitationFrame)
 	private WebElement sendInvitationFrame;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerListContainer")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerListContainer)
 	private WebElement content;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
+	@FindBy(id = AndroidLocators.ConnectToPage.idConnectToHeader)
 	private List<WebElement> connectToHeader;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerRecomendedName")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerRecomendedName)
 	private WebElement recommendedName;
 
 	@FindBy(xpath = AndroidLocators.PeoplePickerPage.xpathGmailLink)

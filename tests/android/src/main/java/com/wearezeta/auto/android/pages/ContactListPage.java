@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.locators.ZetaHow;
 
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -18,21 +17,20 @@ import com.wearezeta.auto.android.locators.AndroidLocators.CommonLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class ContactListPage extends AndroidPage {
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPeoplePickerClearbtn")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConversationListFrame")
+	@FindBy(id = AndroidLocators.ContactListPage.idConversationListFrame)
 	private WebElement contactListFrame;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idMissedCallIcon")
+	@FindBy(id = AndroidLocators.ContactListPage.idMissedCallIcon)
 	private WebElement missedCallIcon;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idContactListNames")
+	@FindBy(id = AndroidLocators.ContactListPage.idContactListNames)
 	private List<WebElement> contactListNames;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
@@ -41,49 +39,49 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private List<WebElement> frameLayout;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
+	@FindBy(id = AndroidLocators.PersonalInfoPage.idProfileOptionsButton)
 	private WebElement laterButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idOpenStartUIButton")
+	@FindBy(id = AndroidLocators.ContactListPage.idOpenStartUIButton)
 	private WebElement openStartUIButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
+	@FindBy(id = AndroidLocators.PersonalInfoPage.idNameField)
 	private WebElement selfUserName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idSelfUserAvatar")
+	@FindBy(id = AndroidLocators.ContactListPage.idSelfUserAvatar)
 	protected WebElement selfUserAvatar;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButton")
+	@FindBy(id = AndroidLocators.ContactListPage.idConfirmCancelButton)
 	private List<WebElement> laterBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConfirmCancelButtonPicker")
+	@FindBy(id = AndroidLocators.ContactListPage.idConfirmCancelButtonPicker)
 	private List<WebElement> laterBtnPicker;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idPlayPauseMedia")
+	@FindBy(id = AndroidLocators.ContactListPage.idPlayPauseMedia)
 	private WebElement playPauseMedia;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idMutedIcon")
+	@FindBy(id = AndroidLocators.ContactListPage.idMutedIcon)
 	private WebElement mutedIcon;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idConvList")
+	@FindBy(id = AndroidLocators.ContactListPage.idConvList)
 	private WebElement convList;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
 	private WebElement mainControl;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
+	@FindBy(id = AndroidLocators.ConnectToPage.idConnectToHeader)
 	private WebElement connectToHeader;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
+	@FindBy(id = AndroidLocators.CommonLocators.idSearchHintClose)
 	private WebElement closeHintBtn;
 
 	@FindBy(xpath = AndroidLocators.CommonLocators.xpathGalleryCameraAlbum)
 	private WebElement galleryCameraAlbumButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConversationSendOption")
+	@FindBy(id = AndroidLocators.CommonLocators.idConversationSendOption)
 	private WebElement conversationShareOption;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
+	@FindBy(id = AndroidLocators.CommonLocators.idConfirmBtn)
 	private WebElement confirmShareButton;
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
