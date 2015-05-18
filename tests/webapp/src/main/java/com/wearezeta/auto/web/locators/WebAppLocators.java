@@ -302,4 +302,19 @@ public final class WebAppLocators {
 
 		public static String cssDropZone = "#self-upload .self-upload-center";
 	}
+
+	public static final class WarningPage {
+
+		private static final String xpathRootDiv = "//div[@id='warnings']";
+
+		public static final String xpathWarning = xpathRootDiv
+				+ "//div[@class='warning']";
+
+		public static final String xpathWarningClose = xpathRootDiv
+				+ "//span[contains(@class, 'warning-bar-close')]";
+
+		public static final Function<String, String> xpathLinkByCaption = (name) -> String
+				.format("%s//div[contains(@class, 'warning-bar-message')]//a[text()='%s']",
+						xpathRootDiv, name);
+	}
 }

@@ -364,6 +364,26 @@ public class ConversationPageSteps {
 	}
 
 	/**
+	 * Verifies whether calling button is visible or not.
+	 *
+	 * @param doNot
+	 *            is set to null if "do not" part does not exist
+	 * 
+	 * @step. ^I can see calling button$
+	 * @throws java.lang.Exception
+	 */
+	@Then("^I( do not)? see calling button$")
+	public void ISeeCallButton(String doNot) throws Exception {
+		if (doNot == null) {
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isCallButtonVisible());
+		} else {
+			Assert.assertFalse(PagesCollection.conversationPage
+					.isCallButtonVisible());
+		}
+	}
+
+	/**
 	 * @step. ^I see the calling bar$
 	 *
 	 * @throws Exception

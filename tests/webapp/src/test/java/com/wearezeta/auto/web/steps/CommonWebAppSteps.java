@@ -267,18 +267,34 @@ public class CommonWebAppSteps {
 	}
 
 	/**
-	 * This step will throw special PendingException if the current browser does
-	 * not support calling. This will cause Cucumber interpreter to skip the
-	 * current test instead of failing it
-	 * 
+	 * This step will throw special PendingException whether the current browser
+	 * does support calling or not. This will cause Cucumber interpreter to skip
+	 * the current test instead of failing it.
+	 *
+	 *
+	 * @step. ^My browser( does not)? support[s] calling$
+	 * @param doesNot
+	 *            is set to null if "does not" part does not exist
 	 * @throws Exception
 	 */
-	@Given("^My browser supports calling$")
-	public void MyBrowserSupportsCalling() throws Exception {
-		if (!WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
-			throw new PendingException("Browser "
-					+ WebAppExecutionContext.getCurrentBrowser().toString()
-					+ " does not support calling.");
+	@Given("^My browser( does not)? support[s]? calling$")
+	public void MyBrowserSupportsCalling(String doesNot) throws Exception {
+		if (doesNot == null) {
+			// should support calling
+			if (!WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
+				throw new PendingException("Browser "
+						+ WebAppExecutionContext.getCurrentBrowser().toString()
+						+ " does not support calling.");
+			}
+		} else {
+			// should not support calling
+			if (WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
+				throw new PendingException(
+						"Browser "
+								+ WebAppExecutionContext.getCurrentBrowser()
+										.toString()
+								+ " does support calling but this test is just for browsers without support.");
+			}
 		}
 	}
 

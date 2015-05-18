@@ -72,7 +72,32 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+	 | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+
+@staging @id1839 @torun
+   Scenario Outline: Verify calling not supported in webapp (no calling support)
+      Given My browser does not support calling
+      Given There are 2 users where <Name> is me
+      Given Myself is connected to <Contact>
+      Given I Sign in using login <Login> and password <Password>
+      Then I see my name on top of Contact list
+      When I open conversation with <Contact>
+      When <Contact> calls me using <CallBackend>
+      Then I do not see the calling bar
+      And I wait for 3 seconds
+      And I see a warning
+      And I see "Learn more" link in warning
+      When I close the warning
+      Then I do not see a warning
+      And I see calling button
+      When I call
+      Then I see a warning
+      And I see "Learn more" link in warning
+      And I verify browser log is empty
+
+      Examples: 
+	 | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+	 | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
   # This has to work even in browsers, which don't support calling
   @regression @id2014

@@ -43,4 +43,6 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static PasswordChangePage passwordChangePage = null;
 
 	public static PasswordChangeSuccessfullPage passwordChangeSuccessfullPage = null;
+
+	public static WarningPage warningPage = null;
 }
