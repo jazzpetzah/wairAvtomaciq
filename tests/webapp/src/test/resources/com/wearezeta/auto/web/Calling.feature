@@ -74,6 +74,24 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
+  @staging @id2013
+  Scenario Outline: Missed call notification (caller)
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    When I open conversation with <Contact>
+    And I call
+    And I wait for 2 seconds
+    And I end the call
+    When I open conversation with <Contact>
+    Then I see conversation with my missed call
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
   # This has to work even in browsers, which don't support calling
   @regression @id2014
   Scenario Outline: Missed call notification (adressee)
