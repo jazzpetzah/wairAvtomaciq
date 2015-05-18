@@ -93,9 +93,9 @@ public class PersonalInfoPageSteps {
 
 	@When("^I return to personal page$")
 	public void IReturnToPersonalPage() throws Throwable {
-
+		Thread.sleep(4000);//wait for picture to load on simulator
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
-		Thread.sleep(4000);
+		Thread.sleep(2000);//wait for picture to load on simulator
 		referenceImage = PagesCollection.personalInfoPage.takeScreenshot();
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
 
@@ -107,7 +107,6 @@ public class PersonalInfoPageSteps {
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + filename);
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
-		System.out.print("SCORE: " + score);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= 0.65, current = "
 						+ score, score >= 0.65d);
