@@ -224,7 +224,7 @@ Feature: Connect
 
   @staging @id2317
   Scenario Outline: Verify you can dismiss user suggestion in PYMK list
-    Given There is 3 user where <Me> is me
+    Given There are 3 users where <Me> is me
     Given User <Contact1> has contact <MyEmail> in address book
     Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact2>
@@ -242,7 +242,7 @@ Feature: Connect
 
   @staging @id2318
   Scenario Outline: Verify you can add a user from PYMK list
-    Given There is 3 user where <Me> is me
+    Given There are 3 users where <Me> is me
     Given User <Contact1> has contact <MyEmail> in address book
     Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact2>
