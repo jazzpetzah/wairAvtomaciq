@@ -29,7 +29,7 @@ public abstract class AndroidPage extends BasePage {
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
 
-	@AndroidFindBy(className = AndroidLocators.CommonLocators.classNameLoginPage)
+	@AndroidFindBy(className = AndroidLocators.CommonLocators.classPager)
 	private WebElement content;
 
 	@AndroidFindBy(className = AndroidLocators.CommonLocators.classListView)

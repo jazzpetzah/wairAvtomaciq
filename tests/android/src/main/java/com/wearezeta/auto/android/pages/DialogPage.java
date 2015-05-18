@@ -143,9 +143,6 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.DialogPage.idCancelCall)
 	private WebElement cancelCallBtn;
 
-	@FindBy(xpath = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
-	private List<WebElement> linearLayout;
-
 	@FindBy(id = AndroidLocators.DialogPage.idDialogPageBottom)
 	private WebElement dialogPageBottom;
 
@@ -606,15 +603,15 @@ public class DialogPage extends AndroidPage {
 		return knockMessage.getText() + " " + knockAction.getText();
 	}
 
-	public Boolean isKnockText(String message, String action) throws Exception {
-		List<WebElement> messageElement = this.getDriver().findElements(
-				By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage,
-						message.trim())));
-		List<WebElement> actionElement = this.getDriver().findElements(
-				By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage,
-						action.trim())));
-		return (!messageElement.isEmpty() && !actionElement.isEmpty());
-	}
+//	public Boolean isKnockText(String message, String action) throws Exception {
+//		List<WebElement> messageElement = this.getDriver().findElements(
+//				By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage,
+//						message.trim())));
+//		List<WebElement> actionElement = this.getDriver().findElements(
+//				By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage,
+//						action.trim())));
+//		return (!messageElement.isEmpty() && !actionElement.isEmpty());
+//	}
 
 	public boolean isGroupChatDialogContainsNames(List<String> names) {
 		final String convoText = lastConversationMessage.getText();

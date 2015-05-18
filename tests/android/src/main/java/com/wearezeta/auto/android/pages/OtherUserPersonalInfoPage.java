@@ -31,9 +31,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	private static final String AVATAR_WITH_IMAGE = "avatarPictureTestAndroid.png";
 	private static final String AVATAR_NO_IMAGE = "avatarTestAndroid.png";
 
-	@FindBy(how = How.XPATH, using = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
-	private List<WebElement> linearLayout;
-
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.OtherUserPersonalInfoPage.classNameGridView)
 	private WebElement groupChatUsersGrid;
 
@@ -85,7 +82,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private WebElement frameLayout;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classPager)
 	private WebElement backGround;
 
 	@FindBy(id = AndroidLocators.CommonLocators.idConfirmBtn)
@@ -263,36 +260,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public boolean isContactExists(String contact) throws Exception {
 		final By locator = By
 				.xpath(AndroidLocators.ContactListPage.xpathContactByName
-						.apply(contact.toUpperCase()));
+						.apply(contact));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-	}
-
-	// FIXME: need better (faster) locator for user name
-	public AndroidPage selectContactByName(String contactName)
-			throws Exception, InterruptedException {
-		boolean isNameElementFound = false;
-		for (WebElement user : linearLayout) {
-			List<WebElement> elements = user
-					.findElements(By
-							.className(AndroidLocators.CommonLocators.classNameTextView));
-			for (WebElement element : elements) {
-				if (element.getText() != null
-						&& element.getText()
-								.equals((contactName.toUpperCase()))) {
-					user.click();
-					isNameElementFound = true;
-					break;
-				}
-			}
-			if (isNameElementFound) {
-				break;
-			}
-		}
-		if (connectToHeader.size() > 0) {
-			return new ConnectToPage(this.getLazyDriver());
-		} else {
-			return new OtherUserPersonalInfoPage(this.getLazyDriver());
-		}
 	}
 
 	public void tapOnParticipantsHeader() {

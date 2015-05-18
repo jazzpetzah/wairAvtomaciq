@@ -59,7 +59,7 @@ public class PersonalInfoPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PersonalInfoPage.idSelfProfileClose)
 	private WebElement selfProfileClose;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classPager)
 	private WebElement page;
 
 	@FindBy(id = AndroidLocators.PersonalInfoPage.idSignOutBtn)

@@ -435,10 +435,6 @@ public class DialogPageSteps {
 		}
 		Assert.assertTrue(PagesCollection.dialogPage.isKnockText(message,
 				action));
-		/*
-		 * Assert.assertEquals("Ping message compare", message + " " +
-		 * action.trim(), PagesCollection.dialogPage.getKnockText());
-		 */
 	}
 
 	/**

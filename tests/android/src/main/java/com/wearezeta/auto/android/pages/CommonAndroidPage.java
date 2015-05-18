@@ -9,8 +9,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import android.view.KeyEvent;
 
+import com.wearezeta.auto.android.common.AndroidExecutionContext;
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -42,7 +42,7 @@ public class CommonAndroidPage extends AndroidPage {
 
 	@FindBy(xpath = AndroidLocators.Browsers.ForgotPasswordPage.xpathEnterNewPasswordEditField)
 	private WebElement enterNewPasswordEditField;
-	
+
 	@FindBy(xpath = AndroidLocators.Browsers.ForgotPasswordPage.xpathChangePasswordButton)
 	private WebElement changePassswordButton;
 
@@ -70,8 +70,8 @@ public class CommonAndroidPage extends AndroidPage {
 	}
 
 	public void requestResetPassword(String email) throws Exception {
-		this.getWait()
-				.until(ExpectedConditions.elementToBeClickable(emailEditField));
+		this.getWait().until(
+				ExpectedConditions.elementToBeClickable(emailEditField));
 		setChromeBrowserURL(SERVER_URL);
 		this.getWait().until(ExpectedConditions.visibilityOf(emailEditField));
 		emailEditField.click();
@@ -95,7 +95,7 @@ public class CommonAndroidPage extends AndroidPage {
 	}
 
 	private void setChromeBrowserURL(String link) throws Exception {
-		if (CommonUtils.getAndroidApiLvl(RegistrationPage.class) < 43) {
+		if (AndroidExecutionContext.getOSVersion() < 43) {
 			int ln = chromeUrlBar.getText().length();
 			chromeUrlBar.click();
 			for (int i = 0; i < ln; i++) {

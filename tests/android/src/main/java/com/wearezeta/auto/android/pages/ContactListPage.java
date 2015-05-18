@@ -65,7 +65,7 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.ContactListPage.idConvList)
 	private WebElement convList;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
+	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classPager)
 	private WebElement mainControl;
 
 	@FindBy(id = AndroidLocators.ConnectToPage.idConnectToHeader)
@@ -150,13 +150,14 @@ public class ContactListPage extends AndroidPage {
 
 	public AndroidPage swipeRightOnContact(int time, String contact)
 			throws Exception {
-		WebElement el = this.getDriver().findElementByXPath(
-				String.format(
-						AndroidLocators.ContactListPage.xpathContactFrame,
-						contact));
+		WebElement el = this
+				.getDriver()
+				.findElementByXPath(
+						AndroidLocators.ContactListPage.xpathContactListArchiveUnarchiveByName
+								.apply(contact));
 		elementSwipeRight(el, time);
 		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idEditText), 2)) {
+				By.id(AndroidLocators.CommonLocators.idEditText))) {
 			return new ContactListPage(this.getLazyDriver());
 		} else {
 			return new DialogPage(this.getLazyDriver());
@@ -166,12 +167,11 @@ public class ContactListPage extends AndroidPage {
 	public AndroidPage swipeOnArchiveUnarchive(String contact) throws Exception {
 		WebElement el = getDriver()
 				.findElementByXPath(
-						String.format(
-								AndroidLocators.ContactListPage.xpathContactListArchiveUnarchive,
-								contact));
+						AndroidLocators.ContactListPage.xpathContactListArchiveUnarchiveByName
+								.apply(contact));
 		DriverUtils.swipeRight(this.getDriver(), el, 1000);
 		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idEditText), 2)) {
+				By.id(AndroidLocators.CommonLocators.idEditText))) {
 			return new ContactListPage(this.getLazyDriver());
 		} else {
 			return new DialogPage(this.getLazyDriver());
@@ -243,8 +243,7 @@ public class ContactListPage extends AndroidPage {
 				new ConnectToPage(this.getLazyDriver()));
 		pageMapping.put(By.id(AndroidLocators.PersonalInfoPage.idNameField),
 				new PersonalInfoPage(this.getLazyDriver()));
-		pageMapping.put(
-				By.id(AndroidLocators.CommonLocators.idEditText),
+		pageMapping.put(By.id(AndroidLocators.CommonLocators.idEditText),
 				new DialogPage(this.getLazyDriver()));
 		for (Map.Entry<By, AndroidPage> entry : pageMapping.entrySet()) {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),

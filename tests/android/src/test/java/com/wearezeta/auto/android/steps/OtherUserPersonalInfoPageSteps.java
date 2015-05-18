@@ -319,7 +319,7 @@ public class OtherUserPersonalInfoPageSteps {
 	public void WhenISelectContact(String name) throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
-				.selectContactByName(name);
+				.tapOnContact(name);
 	}
 
 	/**
