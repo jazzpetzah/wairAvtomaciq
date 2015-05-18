@@ -448,17 +448,16 @@ public class ConversationPageSteps {
 		Assert.assertEquals(contact + " CALLED",
 				PagesCollection.conversationPage.getMissedCallMessage());
 	}
-	
+
 	/**
 	 * Verify that conversation contains my missed call
 	 * 
 	 * @step. ^I see conversation with my missed call$
-	 * 
-	 * @throws NoSuchUserException
+	 *
+	 * @throws Exception
 	 */
 	@Then("^I see conversation with my missed call$")
-	public void ThenISeeConversationWithMyMissedCall()
-			throws NoSuchUserException {
+	public void ThenISeeConversationWithMyMissedCall() throws Exception {
 		Assert.assertEquals("YOU CALLED",
 				PagesCollection.conversationPage.getMissedCallMessage());
 	}
