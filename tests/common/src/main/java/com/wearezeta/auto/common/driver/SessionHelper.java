@@ -1,22 +1,17 @@
 package com.wearezeta.auto.common.driver;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-final class SessionHelpers {
-	private RemoteWebDriver wrappedDriver;
-
-	public SessionHelpers(RemoteWebDriver wrappedDriver) {
-		this.wrappedDriver = wrappedDriver;
-	}
-
-	private static final Logger log = ZetaLogger.getLog(SessionHelpers.class
+final class SessionHelper {
+	private static final Logger log = ZetaLogger.getLog(SessionHelper.class
 			.getSimpleName());
 
 	private boolean isSessionLost = false;
@@ -31,10 +26,10 @@ final class SessionHelpers {
 		return sb.toString();
 	}
 
-	public List<WebElement> findElements(By by) {
+	public List<WebElement> wrappedFindElements(Function<By, List<WebElement>> f, By by) {
 		List<WebElement> result = null;
 		try {
-			result = wrappedDriver.findElements(by);
+			result = f.apply(by);
 		} catch (org.openqa.selenium.remote.UnreachableBrowserException ex) {
 			log.error("Setting isSessionLost=true");
 			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
@@ -48,10 +43,10 @@ final class SessionHelpers {
 		return result;
 	}
 
-	public WebElement findElement(By by) {
+	public WebElement wrappedFindElement(Function<By, WebElement> f, By by) {
 		WebElement result = null;
 		try {
-			result = wrappedDriver.findElement(by);
+			result = f.apply(by);
 		} catch (org.openqa.selenium.remote.UnreachableBrowserException ex) {
 			log.error("Setting isSessionLost=true");
 			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
@@ -65,9 +60,9 @@ final class SessionHelpers {
 		return result;
 	}
 
-	public void close() {
+	public void wrappedClose(Supplier<Void> f) {
 		try {
-			wrappedDriver.close();
+			f.get();
 		} catch (org.openqa.selenium.remote.SessionNotFoundException ex) {
 			log.error("Setting isSessionLost=true");
 			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
@@ -75,9 +70,9 @@ final class SessionHelpers {
 		}
 	}
 
-	public void quit() {
+	public void wrappedQuit(Supplier<Void> f) {
 		try {
-			wrappedDriver.quit();
+			f.get();
 		} catch (org.openqa.selenium.remote.SessionNotFoundException ex) {
 			log.error("Setting isSessionLost=true");
 			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));

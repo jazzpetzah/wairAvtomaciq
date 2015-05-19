@@ -27,7 +27,7 @@ public class ZetaWebAppDriver extends RemoteWebDriver implements ZetaDriver {
 			.getSimpleName());
 
 	private String nodeIp = "127.0.0.1";
-	private SessionHelpers wrappedDriver;
+	private SessionHelper sessionHelper;
 
 	public ZetaWebAppDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
@@ -40,34 +40,44 @@ public class ZetaWebAppDriver extends RemoteWebDriver implements ZetaDriver {
 		}
 		log.debug(String.format("Current Selenium node ip address is '%s'",
 				this.nodeIp));
-		wrappedDriver = new SessionHelpers(this);
+		sessionHelper = new SessionHelper();
 	}
 
 	@Override
 	public List<WebElement> findElements(By by) {
-		return this.wrappedDriver.findElements(by);
+		return this.sessionHelper.wrappedFindElements(super::findElements, by);
 	}
 
 	@Override
 	public WebElement findElement(By by) {
-		return this.wrappedDriver.findElement(by);
+		return this.sessionHelper.wrappedFindElement(super::findElement, by);
+	}
+
+	private Void closeDriver() {
+		super.close();
+		return null;
 	}
 
 	@Override
 	public void close() {
-		this.wrappedDriver.close();
+		this.sessionHelper.wrappedClose(this::closeDriver);
+	}
+
+	private Void quitDriver() {
+		super.quit();
+		return null;
 	}
 
 	@Override
 	public void quit() {
-		this.wrappedDriver.quit();
+		this.sessionHelper.wrappedQuit(this::quitDriver);
 	}
 
 	@Override
 	public boolean isSessionLost() {
-		return this.wrappedDriver.isSessionLost();
+		return this.sessionHelper.isSessionLost();
 	}
-	
+
 	private void initNodeIp(URL remoteAddress) throws Exception {
 		HttpHost host = new HttpHost(remoteAddress.getHost(),
 				remoteAddress.getPort());

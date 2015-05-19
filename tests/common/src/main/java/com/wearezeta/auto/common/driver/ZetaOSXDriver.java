@@ -10,39 +10,48 @@ import org.openqa.selenium.WebElement;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 
-public class ZetaOSXDriver extends AppiumDriver implements
-		ZetaDriver {
+public class ZetaOSXDriver extends AppiumDriver implements ZetaDriver {
 
-	private SessionHelpers wrappedDriver;
+	private SessionHelper sessionHelper;
 
 	public ZetaOSXDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
-		wrappedDriver = new SessionHelpers(this);
+		sessionHelper = new SessionHelper();
 	}
 
 	@Override
 	public List<WebElement> findElements(By by) {
-		return this.wrappedDriver.findElements(by);
+		return this.sessionHelper.wrappedFindElements(super::findElements, by);
 	}
 
 	@Override
 	public WebElement findElement(By by) {
-		return this.wrappedDriver.findElement(by);
+		return this.sessionHelper.wrappedFindElement(super::findElement, by);
+	}
+
+	private Void closeDriver() {
+		super.close();
+		return null;
 	}
 
 	@Override
 	public void close() {
-		this.wrappedDriver.close();
+		this.sessionHelper.wrappedClose(this::closeDriver);
+	}
+
+	private Void quitDriver() {
+		super.quit();
+		return null;
 	}
 
 	@Override
 	public void quit() {
-		this.wrappedDriver.quit();
+		this.sessionHelper.wrappedQuit(this::quitDriver);
 	}
 
 	@Override
 	public boolean isSessionLost() {
-		return this.wrappedDriver.isSessionLost();
+		return this.sessionHelper.isSessionLost();
 	}
 
 	@Override
