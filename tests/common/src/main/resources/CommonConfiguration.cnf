@@ -4,7 +4,7 @@ defaultPassword=aqa123456
 defaultEmailServer=imap.gmail.com
 defaultBackEndUrl=https://staging-nginz-https.zinfra.io
 #staging, production, edge
-backendType=${backendType}
+backendType=staging
 jenkinsSuLogin=jenkins
 jenkinsSuPassword=123456
 jenkinsProjectDir=/Project/
