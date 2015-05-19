@@ -694,6 +694,10 @@ public final class AndroidLocators {
 		public static final String idPeoplePickerSerchConversations = LOCATORS_PACKAGE
 				+ ":id/ttv_pickuser_searchconversation_name";
 
+		public static final String idSendInvitationFrame = LOCATORS_PACKAGE + ":id/ll_pickuser__error_invite";
+		
+		public static final String idSendInvitationBubble = LOCATORS_PACKAGE + ":id/fl_pickuser__invite__bubble";
+
 		public static final String xpathOtherText = "//android.widget.ListView/android.widget.LinearLayout/android.widget.TextView[@text='OTHERS']";
 
 		public static final String xpathSendInvitationFrame = "//android.widget.LinearLayout[child::android.widget.FrameLayout[@resource-id='"
