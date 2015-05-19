@@ -74,7 +74,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
 	 | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-@staging @id1839 @torun
+@staging @id1839
    Scenario Outline: Verify calling not supported in webapp (no calling support)
       Given My browser does not support calling
       Given There are 2 users where <Name> is me
