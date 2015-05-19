@@ -65,7 +65,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1742
+  @regression @id1742
   Scenario Outline: Verify possibility of invitation accepting
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
