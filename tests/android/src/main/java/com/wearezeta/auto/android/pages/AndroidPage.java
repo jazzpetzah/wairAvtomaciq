@@ -15,6 +15,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.support.FindBy;
 
+import android.view.KeyEvent;
+
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidKeyEvent;
 import com.wearezeta.auto.android.locators.AndroidLocators;
@@ -72,7 +74,15 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void hideKeyboard() throws Exception {
-		this.getDriver().hideKeyboard();
+		try {
+			this.getDriver().hideKeyboard();
+		} catch (WebDriverException e) {
+			log.debug("The keyboard seems to be already hidden.");
+		}
+	}
+
+	protected void pressEnter() throws Exception {
+		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 	}
 
 	public AndroidPage navigateBack() throws Exception {

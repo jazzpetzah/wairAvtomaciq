@@ -223,11 +223,7 @@ public class PeoplePickerPage extends AndroidPage {
 	public AndroidPage tapCreateConversation() throws Exception {
 		final By locator = By
 				.id(AndroidLocators.PeoplePickerPage.idCreateConversationIcon);
-		try {
-			this.getDriver().hideKeyboard();
-		} catch (Exception ex) {
-			// pass silently
-		}
+		this.hideKeyboard();
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 		createConversation.click();
 		return new DialogPage(this.getLazyDriver());

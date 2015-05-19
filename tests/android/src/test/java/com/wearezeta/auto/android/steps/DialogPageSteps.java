@@ -1,13 +1,14 @@
 package com.wearezeta.auto.android.steps;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
@@ -21,7 +22,17 @@ public class DialogPageSteps {
 			+ "Fusce cursus neque at posuere viverra. Duis ultricies ipsum ac leo mattis, a aliquet neque consequat. "
 			+ "Vestibulum ut eros eu risus mattis iaculis quis ac eros. Nam sit amet venenatis felis. "
 			+ "Vestibulum blandit nisi felis, id hendrerit quam viverra at. Curabitur nec facilisis felis.";
-	private String message;
+	private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
+
+	private static String expandMessage(String message) {
+		final Map<String, String> specialStrings = new HashMap<String, String>();
+		specialStrings.put(LONG_MESSAGE_ALIAS, ANDROID_LONG_MESSAGE);
+		if (specialStrings.containsKey(message)) {
+			return specialStrings.get(message);
+		} else {
+			return message;
+		}
+	}
 
 	/**
 	 * Waits for the dialog page to appear This step makes no assertions and
@@ -56,44 +67,31 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I type the message \"(.*)\" and send it$
 	 * 
+	 * @param msg
+	 *            message to type. There are several special shortcuts:
+	 *            LONG_MESSAGE - to type long message
+	 * 
 	 * @throws Exception
 	 */
 	@When("^I type the message \"(.*)\" and send it$")
-	public void WhenITypeRandomMessageAndSendIt(String msg) throws Exception {
-		PagesCollection.dialogPage.typeAndSendMessage(msg);
-	}
-
-	/**
-	 * Inputs a custom message and sends it
-	 * 
-	 * @step. ^I input (.*) message and send it$
-	 * 
-	 * @param myMessage
-	 *            the message to send
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I input (.*) message and send it$")
-	public void ITypeTheMessageAndSendIt(String myMessage) throws Exception {
-		message = myMessage;
-
-		PagesCollection.dialogPage.typeAndSendMessage(myMessage);
+	public void ITypeMessageAndSendIt(String msg) throws Exception {
+		PagesCollection.dialogPage.typeAndSendMessage(expandMessage(msg));
 	}
 
 	/**
 	 * Inputs a custom message and does NOT send it
 	 * 
-	 * @step. ^I input (.*) message and send it$
+	 * @step. ^I type the message \"(.*)\"$
 	 * 
-	 * @param myMessage
-	 *            the message to send
+	 * @param msg
+	 *            message to type. There are several special shortcuts:
+	 *            LONG_MESSAGE - to type long message
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I input (.*) message$")
-	public void ITypeInAMessage(String myMessage) throws Exception {
-		message = myMessage;
-		PagesCollection.dialogPage.typeMessage(myMessage);
+	@When("^I type the message \"(.*)\"$")
+	public void ITypeMessage(String msg) throws Exception {
+		PagesCollection.dialogPage.typeMessage(expandMessage(msg));
 	}
 
 	/**
@@ -106,34 +104,6 @@ public class DialogPageSteps {
 	@When("^I send the message$")
 	public void ISendTheMessage() throws Exception {
 		PagesCollection.dialogPage.pressKeyboardSendButton();
-	}
-
-	/**
-	 * Types in and sends the default long message
-	 * 
-	 * @step. ^I type long message and send it$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I type long message and send it$")
-	public void WhenITypeLongMessageAndSendIt() throws Throwable {
-		message = ANDROID_LONG_MESSAGE;
-		PagesCollection.dialogPage.typeAndSendMessage(message);
-	}
-
-	/**
-	 * Types in an message of 5 random lower case leters and 5 random upper case
-	 * letters, and then sends it
-	 * 
-	 * @step. ^I type Upper/Lower case message and send it$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I type Upper/Lower case message and send it$")
-	public void WhenITypeUpperLowerCaseAndSendIt() throws Throwable {
-		message = CommonUtils.generateRandomString(5).toLowerCase() + " "
-				+ CommonUtils.generateRandomString(5).toUpperCase();
-		PagesCollection.dialogPage.typeAndSendMessage(message);
 	}
 
 	/**
@@ -386,8 +356,6 @@ public class DialogPageSteps {
 	public void WhenIPressButton(String buttonName) throws Throwable {
 		switch (buttonName.toLowerCase()) {
 		case "take photo":
-			// Temp fix for Moto
-			// PagesCollection.dialogPage.changeCamera();
 			Thread.sleep(1000);
 			PagesCollection.dialogPage.takePhoto();
 			break;
@@ -408,10 +376,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I select picture for dialog$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I select picture for dialog$")
-	public void WhenISelectPicture() throws Throwable {
+	public void WhenISelectPicture() throws Exception {
 		PagesCollection.dialogPage.selectPhoto();
 	}
 
@@ -438,11 +406,11 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I see my message \"(.*)\" in the dialog$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see my message \"(.*)\" in the dialog$")
-	public void ThenISeeMyMessageInTheDialog(String msg) throws Throwable {
-		PagesCollection.dialogPage.waitForMessage(msg);
+	public void ThenISeeMyMessageInTheDialog(String msg) throws Exception {
+		PagesCollection.dialogPage.waitForMessage(expandMessage(msg));
 	}
 
 	/**
@@ -450,11 +418,11 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I see URL in the dialog$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@Then("^I see URL in the dialog$")
-	public void ThenISeeURLInDialog() throws Throwable {
+	public void ThenISeeURLInDialog() throws Exception {
 		// FIXME: Magic string
 		PagesCollection.dialogPage.waitForMessage("www.google.com");
 	}

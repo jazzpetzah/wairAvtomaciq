@@ -79,9 +79,8 @@ Feature: Calling
     And I answer the call from the overlay bar
     And I see started call message for contact <Contact>
     And I tap on text input
-    And I input <Message> message
-    And I send the message
-    Then I see my message in the dialog
+    And I type the message "<Message>" and send it
+    Then I see my message "<Message>" in the dialog
     When I press back button
     And I swipe on text input
     And I press Add Picture button

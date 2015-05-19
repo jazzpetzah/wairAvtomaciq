@@ -1,7 +1,11 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,7 +20,6 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import android.graphics.Point;
-import android.view.KeyEvent;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
@@ -174,8 +177,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void sendMessageInInput() throws Exception {
-		this.getDriver().hideKeyboard();
-		Thread.sleep(2000);
+		this.hideKeyboard();
 		cursorInput.sendKeys("\\n");
 	}
 
@@ -250,21 +252,16 @@ public class DialogPage extends AndroidPage {
 
 	public void typeAndSendMessage(String message) throws Exception {
 		cursorInput.sendKeys(message);
-		getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
-		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
-		try {
-			this.getDriver().hideKeyboard();
-		} catch (Exception ex) {
-
-		}
+		this.pressEnter();
+		this.hideKeyboard();
 	}
 
 	public void typeMessage(String message) throws Exception {
 		cursorInput.sendKeys(message);
 		try {
-			this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
-		} catch (Exception ex) {
-			// ignore silently
+			this.pressEnter();
+		} catch (WebDriverException ex) {
+			// don't fail if Enter is already pressed
 		}
 	}
 
@@ -428,7 +425,7 @@ public class DialogPage extends AndroidPage {
 			SwipeOnCursorInput();
 			tapAddPictureBtn();
 			try {
-				this.getDriver().hideKeyboard();
+				this.hideKeyboard();
 				SwipeOnCursorInput();
 				tapAddPictureBtn();
 				log.debug("Fix for opened keyboard #1");
@@ -443,7 +440,7 @@ public class DialogPage extends AndroidPage {
 			SwipeOnCursorInput();
 			tapAddPictureBtn();
 			try {
-				this.getDriver().hideKeyboard();
+				this.hideKeyboard();
 				SwipeOnCursorInput();
 				tapAddPictureBtn();
 				log.debug("Fix for opened keyboard #2");
@@ -533,11 +530,7 @@ public class DialogPage extends AndroidPage {
 
 	public List<MessageEntry> listAllMessages(boolean checkTime)
 			throws Exception {
-		try {
-			this.getDriver().hideKeyboard();
-		} catch (WebDriverException e) {
-			log.debug("No keyboard visible. Nothing to hide.");
-		}
+		this.hideKeyboard();
 
 		String lastMessage = messagesList.get(messagesList.size() - 1)
 				.getText();

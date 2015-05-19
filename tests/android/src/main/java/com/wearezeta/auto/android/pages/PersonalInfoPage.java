@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.List;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -90,25 +89,19 @@ public class PersonalInfoPage extends AndroidPage {
 		DriverUtils.androidMultiTap(this.getDriver(), page, 1, 0.2);
 	}
 
-	public void tapChangePhotoButton() throws Throwable {
+	public void tapChangePhotoButton() throws Exception {
 		changePhotoBtn.click();
 		Thread.sleep(1000); // fix for animation
 	}
 
-	public void tapGalleryButton() throws Throwable {
+	public void tapGalleryButton() throws Exception {
 		galleryBtn.click();
 		Thread.sleep(3000); // fix for animation
 	}
 
-	public void tapConfirmButton() throws IOException, Throwable {
-		Thread.sleep(1000); // fix for animation
-		try {
-			this.getDriver().hideKeyboard();
-		} catch (Exception ex) {
-			// ignore silently
-		}
+	public void tapConfirmButton() throws Exception {
+		this.hideKeyboard();
 		confirmBtn.click();
-		Thread.sleep(1000); // fix for animation
 	}
 
 	public void tapSignOutBtn() throws Exception {

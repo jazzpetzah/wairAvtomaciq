@@ -458,8 +458,7 @@ Feature: Connect
     Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I input <Message> message and send it
-    And I wait for 5 seconds
+    And I type the message "<Message>" and send it
     And User <Name> blocks user <Contact>
     And Contact <Contact> sends image <Picture> to single user conversation <Name>
     And Contact <Contact> send message to user <Name>

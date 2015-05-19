@@ -76,7 +76,7 @@ public class CommonAndroidPage extends AndroidPage {
 		this.getWait().until(ExpectedConditions.visibilityOf(emailEditField));
 		emailEditField.click();
 		emailEditField.sendKeys(email);
-		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
+		this.pressEnter();
 	}
 
 	public PeoplePickerPage resetByLink(String link, String newPass)
@@ -84,7 +84,7 @@ public class CommonAndroidPage extends AndroidPage {
 		setChromeBrowserURL(link);
 		enterNewPasswordEditField.click();
 		enterNewPasswordEditField.sendKeys(newPass);
-		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
+		this.pressEnter();
 		return null;
 	}
 
@@ -105,7 +105,7 @@ public class CommonAndroidPage extends AndroidPage {
 			chromeUrlBar.clear();
 		}
 		chromeUrlBar.sendKeys(link);
-		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
+		this.pressEnter();
 	}
 
 	private void setFirefoxBrowserURL(String link) throws Exception {
@@ -116,7 +116,7 @@ public class CommonAndroidPage extends AndroidPage {
 			this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_DEL);
 		}
 		urlBarEditText.sendKeys(link);
-		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
+		this.pressEnter();
 	}
 
 	public String getGmailSubject() throws Exception {
