@@ -3,6 +3,7 @@ package com.wearezeta.auto.common.driver;
 import java.net.URL;
 import java.util.concurrent.Callable;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Point;
@@ -23,19 +24,30 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 	private Platform platform;
 	private int maxRetryCount;
 	private Consumer<RemoteWebDriver> initCompletedCallback;
+	private Supplier<Boolean> beforeInitCallback;
 
 	public LazyDriverInitializer(Platform platform, String url,
 			DesiredCapabilities capabilities, int maxRetryCount,
-			Consumer<RemoteWebDriver> initCompletedCallback) {
+			Consumer<RemoteWebDriver> initCompletedCallback,
+			Supplier<Boolean> beforeInitCallback) {
 		this.url = url;
 		this.capabilities = capabilities;
 		this.platform = platform;
 		this.maxRetryCount = maxRetryCount;
 		this.initCompletedCallback = initCompletedCallback;
+		this.beforeInitCallback = beforeInitCallback;
 	}
 
 	@Override
 	public RemoteWebDriver call() throws Exception {
+		if (this.beforeInitCallback != null) {
+			log.debug("Invoking driver preinitialization callback...");
+			if (!beforeInitCallback.get()) {
+				log.error("Driver preinitialization callback returned False. Will skip driver initialization!");
+				return null;
+			}
+			log.debug("Driver preinitialization callback has been successfully invoked");
+		}
 		int ntry = 1;
 		do {
 			log.debug(String.format(

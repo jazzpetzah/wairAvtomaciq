@@ -56,9 +56,9 @@ public class CommonAndroidSteps {
 				"org.apache.commons.logging.simplelog.log.org.apache.http",
 				"warn");
 	}
-	
-	private static final Logger log = ZetaLogger.getLog(CommonAndroidSteps.class
-			.getSimpleName());
+
+	private static final Logger log = ZetaLogger
+			.getLog(CommonAndroidSteps.class.getSimpleName());
 
 	public static LogcatListener listener = new LogcatListener();
 
@@ -109,7 +109,23 @@ public class CommonAndroidSteps {
 		}
 
 		return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-				.resetDriver(url, capabilities, 1, this::onDriverInitFinished);
+				.resetDriver(url, capabilities, 1, this::onDriverInitFinished,
+						this::onDriverInitStarted);
+	}
+
+	private Boolean onDriverInitStarted() {
+		try {
+			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
+			AndroidCommonUtils.disableHints();
+			AndroidCommonUtils.disableHockeyUpdates();
+			String backendJSON = AndroidCommonUtils
+					.createBackendJSON(CommonUtils.getBackendType(this
+							.getClass()));
+			AndroidCommonUtils.deployBackendFile(backendJSON);
+		} catch (Exception e) {
+			Throwables.propagate(e);
+		}
+		return true;
 	}
 
 	private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
@@ -119,11 +135,13 @@ public class CommonAndroidSteps {
 		final By locator = By
 				.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton);
 		final long millisecondsStarted = System.currentTimeMillis();
+		WebDriverException savedException = null;
 		do {
 			try {
 				DriverUtils.waitUntilLocatorIsDisplayed(drv, locator, 1);
 				break;
 			} catch (WebDriverException e) {
+				savedException = e;
 				log.debug("Waiting 1 second for the views to initialize properly...");
 				try {
 					Thread.sleep(1000);
@@ -131,17 +149,21 @@ public class CommonAndroidSteps {
 					return;
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
 				Throwables.propagate(e);
 			}
 		} while (System.currentTimeMillis() - millisecondsStarted <= INERFACE_INIT_TIMEOUT_MILLISECONDS);
+		if (System.currentTimeMillis() - millisecondsStarted > INERFACE_INIT_TIMEOUT_MILLISECONDS) {
+			log.error(String
+					.format("UI views have not been initialized properly after %s seconds",
+							INERFACE_INIT_TIMEOUT_MILLISECONDS));
+			throw savedException;
+		}
 		try {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
 					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
 				drv.findElement(locator).click();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			Throwables.propagate(e);
 		}
 	}
@@ -238,24 +260,6 @@ public class CommonAndroidSteps {
 			CommonCallingSteps.getInstance().cleanupCalls();
 		} catch (Exception e) {
 			// do not fail if smt fails here
-			e.printStackTrace();
-		}
-
-		try {
-			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
-		} catch (Exception ex) {
-			System.out.println("Failed to deploy pictures into simulator");
-		}
-
-		try {
-			AndroidCommonUtils.disableHints();
-			AndroidCommonUtils.disableHockeyUpdates();
-			String backendJSON = AndroidCommonUtils
-					.createBackendJSON(CommonUtils.getBackendType(this
-							.getClass()));
-			AndroidCommonUtils.deployBackendFile(backendJSON);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
