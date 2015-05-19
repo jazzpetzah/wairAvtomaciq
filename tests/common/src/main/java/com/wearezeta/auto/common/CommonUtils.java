@@ -114,7 +114,7 @@ public class CommonUtils {
 	}
 
 	public static String getBackendType(Class<?> c) throws Exception {
-		return getValueFromCommonConfig(c, "backendType");
+		return getValueFromConfig(c, "backendType");
 	}
 
 	public static String getDeviceName(Class<?> c) throws Exception {
@@ -274,7 +274,18 @@ public class CommonUtils {
 
 	public static String getDefaultBackEndUrlFromConfig(Class<?> c)
 			throws Exception {
-		return getValueFromCommonConfig(c, "defaultBackEndUrl");
+		final String currentBackendType = getBackendType(c);
+		switch (currentBackendType.toLowerCase()) {
+		case "edge":
+			return getValueFromCommonConfig(c, "edgeBackendUrl");
+		case "staging":
+			return getValueFromCommonConfig(c, "stagingBackendUrl");
+		case "production":
+			return getValueFromCommonConfig(c, "productionBackendUrl");
+		default:
+			throw new RuntimeException(String.format(
+					"Non supported backend type '%s'", currentBackendType));
+		}
 	}
 
 	public static String getOsxAppiumUrlFromConfig(Class<?> c) throws Exception {

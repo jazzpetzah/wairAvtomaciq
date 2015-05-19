@@ -28,6 +28,7 @@
 		<androidLogs>false</androidLogs>
 		<resourceFilePath>/Project/</resourceFilePath>
 		<resultsPath>/results/</resultsPath>
+		<backendType>staging</backendType>
 	</properties>
 
 	<dependencies>

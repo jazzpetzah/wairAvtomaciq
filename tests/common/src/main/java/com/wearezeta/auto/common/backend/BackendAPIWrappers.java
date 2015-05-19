@@ -29,6 +29,8 @@ import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.onboarding.AddressBook;
+import com.wearezeta.auto.common.onboarding.Card;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
@@ -175,24 +177,27 @@ public final class BackendAPIWrappers {
 		return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString(
 				"code");
 	}
-	
-	public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber) throws Exception {
+
+	public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber)
+			throws Exception {
 		String code = null;
-		int count = 0; Exception ex = null;
+		int count = 0;
+		Exception ex = null;
 		while (code == null && count < 10) {
-			count ++;
+			count++;
 			try {
-				code = BackendREST.getLoginCodeViaBackdoor(phoneNumber).getString("code");
+				code = BackendREST.getLoginCodeViaBackdoor(phoneNumber)
+						.getString("code");
 			} catch (Exception e) {
 				code = null;
 				ex = e;
-				Thread.sleep(500);
+				Thread.sleep(1000);
 			}
 		}
 		if (code == null) {
-			throw ex; 
+			throw ex;
 		}
-			
+
 		return code;
 	}
 
@@ -637,6 +642,35 @@ public final class BackendAPIWrappers {
 		tryLoginByUser(userFrom);
 		BackendREST.sendConversationMessage(generateAuthToken(userFrom),
 				convId, message);
+	}
+
+	public static void uploadAddressBookWithContacts(ClientUser user,
+			List<String> emailsToAdd) throws Exception {
+		AddressBook addressBook = new AddressBook();
+		for (String email : emailsToAdd) {
+			Card card = new Card();
+			card.addContact(email);
+			addressBook.addCard(card);
+		}
+		BackendREST.uploadAddressBook(generateAuthToken(user), addressBook);
+	}
+
+	public static void waitUntilSuggestionFound(ClientUser userFrom, int timeout)
+			throws Exception {
+		long startTimestamp = (new Date()).getTime();
+		while ((new Date()).getTime() <= startTimestamp + timeout * 1000) {
+			final JSONObject suggestions = BackendREST
+					.getSuggestions(generateAuthToken(userFrom));
+			log.debug("Suggestions: " + suggestions.toString());
+			if (suggestions.getInt("returned") > 0) {
+				return;
+			}
+			Thread.sleep(1000);
+		}
+		throw new NoContactsFoundException(
+				String.format(
+						"%s contact(s) '%s' were not found within %s second(s) timeout",
+						timeout));
 	}
 
 	public static String sendConversationPing(ClientUser userFrom, String convId)

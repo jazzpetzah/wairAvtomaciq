@@ -13,6 +13,8 @@ import com.wearezeta.auto.web.pages.SelfProfilePage;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ContactListPageSteps {
 
@@ -411,6 +413,35 @@ public class ContactListPageSteps {
 		} else {
 			PagesCollection.contactListPage
 					.waitUntilArhiveButtonIsNotVisible(ARCHIVE_BTN_VISILITY_TIMEOUT);
+		}
+	}
+
+	/**
+	 * Verify whether missed call notification is present for the given
+	 * conversation.
+	 *
+	 * @param conversationName
+	 *            name of the conversation
+	 * @step. I( do not)? see missed call notification for conversation (.*)
+	 *
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist in the step
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see missed call notification for conversation (.*)$")
+	public void isCallMissedVisibleForContact(String shouldNotBeVisible,
+			String conversationName) throws Exception {
+		try {
+			conversationName = usrMgr.replaceAliasesOccurences(
+					conversationName, FindBy.NAME_ALIAS);
+		} catch (Exception e) {
+		}
+		if (shouldNotBeVisible == null) {
+			assertTrue(PagesCollection.contactListPage
+					.isMissedCallVisibleForContact(conversationName));
+		} else {
+			assertFalse(PagesCollection.contactListPage
+					.isMissedCallVisibleForContact(conversationName));
 		}
 	}
 }

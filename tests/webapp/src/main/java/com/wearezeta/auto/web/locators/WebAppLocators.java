@@ -93,6 +93,12 @@ public final class WebAppLocators {
 						xpathParentContactListItem, name);
 
 		public static final String cssOpenPeoplePickerButton = "[data-uie-name=go-search]";
+
+		public static final Function<String, String> xpathMissedCallNotificationByContactName = (
+				name) -> String
+				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]/div/*[local-name() = 'svg' and @data-uie-name='status-unread']",
+						name);
+
 	}
 
 	public static final class SettingsPage {
@@ -224,6 +230,13 @@ public final class WebAppLocators {
 
 		public static final String xpathCloseSearchButton = xpathRoot
 				+ "//div[contains(@class,'search-close')]";
+
+		public static final Function<String, String> cssRemoveIconByName = (
+				name) -> String.format(
+				"div[data-uie-value='%s'] span.icon-remove", name);
+
+		public static final Function<String, String> cssAddIconByName = (name) -> String
+				.format("div[data-uie-value='%s'] span.icon-add", name);
 
 		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 

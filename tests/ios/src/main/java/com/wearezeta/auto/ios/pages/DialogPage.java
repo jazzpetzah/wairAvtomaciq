@@ -176,6 +176,11 @@ public class DialogPage extends IOSPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.name(IOSLocators.nameConversationCursorInput), 10);
 	}
+	
+	public boolean waitForCursorInputNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.name(IOSLocators.nameConversationCursorInput), 3);
+	}
 
 	public void waitForYouAddedCellVisible() throws Exception {
 		this.getWait().until(
