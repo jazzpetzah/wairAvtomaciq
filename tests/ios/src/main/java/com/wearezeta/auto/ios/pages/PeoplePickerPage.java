@@ -396,7 +396,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public boolean isUploadDialogShown() throws Exception {
 		boolean isLaterBtnVisible = DriverUtils.waitUntilLocatorIsDisplayed(
-				this.getDriver(), By.name(IOSLocators.nameShareButton));
+				this.getDriver(), By.name(IOSLocators.nameShareButton), 2);
 		return isLaterBtnVisible;
 	}
 

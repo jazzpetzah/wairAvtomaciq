@@ -155,6 +155,31 @@ public class CommonIOSSteps {
 	public void IDismissAlert() throws Exception {
 		PagesCollection.loginPage.dismissAlert();
 	}
+	
+	/**
+	 * Hide keyboard using mobile command
+	 * 
+	 * @step ^I hide keyboard$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I hide keyboard$")
+	public void IHideKeyboard() throws Exception {
+		PagesCollection.loginPage.hideKeyboard();
+	}
+	
+	/**
+	 * Hide keyboard by click on hide keyboard button
+	 * 
+	 * @step ^I click hide keyboard button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click hide keyboard button$")
+	public void IClickHideKeyboardBtn() throws Exception {
+		PagesCollection.loginPage.clickHideKeyboarButton();
+	}
+	
 
 	/**
 	 * Closes the app for a certain amount of time in seconds

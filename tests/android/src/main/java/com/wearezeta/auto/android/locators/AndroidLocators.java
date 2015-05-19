@@ -62,7 +62,7 @@ public final class AndroidLocators {
 
 			public static final String xpathEmailEditField = "//android.widget.EditText[@content-desc='Email']";
 
-			public static final String xpathEnterNewPasswordEditField = "//android.widget.EditText[@content-desc='Enter new password']";
+			public static final String xpathEnterNewPasswordEditField = "//android.widget.EditText[following-sibling::android.widget.Button[@content-desc='CHANGE PASSWORD']]";
 
 			public static final String xpathChangePasswordButton = "//android.widget.Button[@content-desc='CHANGE PASSWORD']";
 		}

@@ -191,7 +191,7 @@ public final class BackendAPIWrappers {
 			} catch (Exception e) {
 				code = null;
 				ex = e;
-				Thread.sleep(500);
+				Thread.sleep(1000);
 			}
 		}
 		if (code == null) {
