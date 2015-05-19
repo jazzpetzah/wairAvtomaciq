@@ -109,11 +109,13 @@ public class CommonAndroidSteps {
 	}
 
 	private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
+	private static final long INERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
 	private void onDriverInitFinished(RemoteWebDriver drv) {
 		final By locator = By
 				.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton);
-		while (true) {
+		final long millisecondsStarted = System.currentTimeMillis();
+		do {
 			try {
 				DriverUtils.waitUntilLocatorIsDisplayed(drv, locator, 1);
 				break;
@@ -128,7 +130,7 @@ public class CommonAndroidSteps {
 				e.printStackTrace();
 				Throwables.propagate(e);
 			}
-		}
+		} while (System.currentTimeMillis() - millisecondsStarted <= INERFACE_INIT_TIMEOUT_MILLISECONDS);
 		try {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
 					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
