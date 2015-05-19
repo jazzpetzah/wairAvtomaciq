@@ -137,7 +137,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
       | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
       
-  @regression @id1563
+  @torun @id1563
   Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
