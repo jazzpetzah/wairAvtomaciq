@@ -107,20 +107,6 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Taps twice on the cursor input
-	 * 
-	 * -unused
-	 * 
-	 * @step. ^I multi tap on text input$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I multi tap on text input$")
-	public void WhenIMultiTapOnTextInput() throws Throwable {
-		PagesCollection.dialogPage.multiTapOnCursorInput();
-	}
-
-	/**
 	 * Swipes the text input area to reveal the different input options
 	 * 
 	 * @step. ^I swipe on text input$
@@ -129,19 +115,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I swipe on text input$")
 	public void WhenISwipeOnTextInput() throws Exception {
-		PagesCollection.dialogPage.SwipeOnCursorInput();
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I swipe on text input$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I swipe left on text input$")
-	public void WhenISwipeLeftOnTextInput() throws Exception {
-		PagesCollection.dialogPage.SwipeLeftOnCursorInput();
+		PagesCollection.dialogPage.swipeOnCursorInput();
 	}
 
 	/**
@@ -149,10 +123,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press Add Picture button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Add Picture button$")
-	public void WhenIPressAddPictureButton() throws Throwable {
+	public void WhenIPressAddPictureButton() throws Exception {
 		PagesCollection.dialogPage.tapAddPictureBtn();
 	}
 
@@ -161,10 +135,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press Ping button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Ping button$")
-	public void WhenIPressPButton() throws Throwable {
+	public void WhenIPressPButton() throws Exception {
 		PagesCollection.dialogPage.tapPingBtn();
 	}
 
@@ -173,10 +147,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press Call button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Call button$")
-	public void WhenIPressCallButton() throws Throwable {
+	public void WhenIPressCallButton() throws Exception {
 		PagesCollection.dialogPage.tapCallBtn();
 	}
 
@@ -185,10 +159,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press Mute button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Mute button$")
-	public void WhenIPressMuteButton() throws Throwable {
+	public void WhenIPressMuteButton() throws Exception {
 		PagesCollection.dialogPage.tapMuteBtn();
 	}
 
@@ -197,10 +171,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press Speaker button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Speaker button$")
-	public void WhenIPressSpeakerButton() throws Throwable {
+	public void WhenIPressSpeakerButton() throws Exception {
 		PagesCollection.dialogPage.tapSpeakerBtn();
 	}
 
@@ -209,10 +183,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press Cancel call button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Cancel call button$")
-	public void WhenIPressCancelCallButton() throws Throwable {
+	public void WhenIPressCancelCallButton() throws Exception {
 		PagesCollection.dialogPage.tapCancelCallBtn();
 	}
 
@@ -224,12 +198,12 @@ public class DialogPageSteps {
 	 * @param buttonName
 	 *            the name of the calling button to check
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see (.*) calling button is pressed$")
-	public void WhenIPressCancelCallButton(String buttonName) throws Throwable {
-		double score = PagesCollection.dialogPage
-				.checkCallingButton(buttonName);
+	public void WhenIPressCancelCallButton(String buttonName) throws Exception {
+		final double score = PagesCollection.dialogPage
+				.getExpectedButtonStateOverlapScore(buttonName);
 		Assert.assertTrue(
 				"Calling button not present or not clicked. Expected >= 0.95, current = "
 						+ score, score >= 0.95d);
@@ -239,27 +213,21 @@ public class DialogPageSteps {
 	 * Checks to see if call overlay is present
 	 * 
 	 * @step. ^I see call overlay$
+	 * @param shouldNotSee
+	 *            is set to null if " do not" part does not exist
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
-	@Then("^I see call overlay$")
-	public void WhenISeeCallOverlay() throws Throwable {
-		Assert.assertTrue("Call overlay not visible",
-				PagesCollection.dialogPage.checkCallingOverlay());
-	}
-
-	/**
-	 * Checks to see if call overlay IS NOT present
-	 * 
-	 * @step. ^I do not see call overlay$
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I do not see call overlay$")
-	public void WhenIDoNotSeeCallOverlay() throws Throwable {
-		Assert.assertTrue(
-				"Call overlay is visible, it should have been dismissed",
-				PagesCollection.dialogPage.checkNoCallingOverlay());
+	@Then("^I( do not)? see call overlay$")
+	public void WhenISeeCallOverlay(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("Call overlay not visible",
+					PagesCollection.dialogPage.checkCallingOverlay());
+		} else {
+			Assert.assertTrue(
+					"Call overlay is visible, it should have been dismissed",
+					PagesCollection.dialogPage.checkNoCallingOverlay());
+		}
 	}
 
 	/**
@@ -267,11 +235,11 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I tap Dialog page bottom$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I tap Dialog page bottom$")
-	public void WhenITapOnDialogPageBottom() throws Throwable {
+	public void WhenITapOnDialogPageBottom() throws Exception {
 		PagesCollection.dialogPage.tapDialogPageBottom();
 	}
 
@@ -280,11 +248,11 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I tap conversation details button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I tap conversation details button$")
-	public void WhenITapConversationDetailsBottom() throws Throwable {
+	public void WhenITapConversationDetailsBottom() throws Exception {
 		PagesCollection.otherUserPersonalInfoPage = ((DialogPage) PagesCollection.androidPage)
 				.tapConversationDetailsButton();
 	}
@@ -294,11 +262,11 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press PlayPause media item button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I press PlayPause media item button$")
-	public void WhenIPressPlayPauseButton() throws Throwable {
+	public void WhenIPressPlayPauseButton() throws Exception {
 		PagesCollection.dialogPage.tapPlayPauseBtn();
 	}
 
@@ -307,11 +275,11 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press play on youtube container$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I press play on youtube container$")
-	public void WhenIPressPlayOnYoutubeContainer() throws Throwable {
+	public void WhenIPressPlayOnYoutubeContainer() throws Exception {
 		PagesCollection.dialogPage.tapYouTubePlay();
 	}
 
@@ -334,11 +302,11 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press PlayPause on Mediabar button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I press PlayPause on Mediabar button$")
-	public void WhenIPressPlayPauseOnMediaBarButton() throws Throwable {
+	public void WhenIPressPlayPauseOnMediaBarButton() throws Exception {
 		PagesCollection.dialogPage.tapPlayPauseMediaBarBtn();
 	}
 
@@ -393,8 +361,7 @@ public class DialogPageSteps {
 	 * @throws Exception
 	 */
 	@Then("^I see Ping message (.*) in the dialog$")
-	public void ThenISeeHelloHeyMessageInTheDialog(String message)
-			throws Exception {
+	public void ThenISeePingMessageInTheDialog(String message) throws Exception {
 		message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
 		Assert.assertTrue(PagesCollection.dialogPage.getLastPingText().equals(
 				message));
@@ -550,7 +517,7 @@ public class DialogPageSteps {
 	@Then("^I see group chat page with users (.*)$")
 	public void ThenISeeGroupChatPage(String participantNameAliases)
 			throws Exception {
-		PagesCollection.dialogPage.isDialogVisible();
+		assert PagesCollection.dialogPage.isDialogVisible() : "Group chat view is not visible";
 		List<String> participantNames = new ArrayList<String>();
 		for (String nameAlias : CommonSteps
 				.splitAliases(participantNameAliases)) {
@@ -571,7 +538,7 @@ public class DialogPageSteps {
 	 * @param contact
 	 * @throws Exception
 	 */
-	@Then("^I see  message (.*) contact (.*) on group page$")
+	@Then("^I see message (.*) contact (.*) on group page$")
 	public void ThenISeeMessageContactOnGroupPage(String message, String contact)
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
@@ -625,7 +592,7 @@ public class DialogPageSteps {
 	@Then("^I see (.*) on Mediabar$")
 	public void ThenIseeOnMediaBar(String iconLabel) throws Exception {
 		double score = PagesCollection.dialogPage
-				.checkMediaBarControlIcon(iconLabel);
+				.getMediaBarControlIconOverlapScore(iconLabel);
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.75, current = "
 						+ score, score >= 0.75d);
@@ -642,7 +609,7 @@ public class DialogPageSteps {
 	@Then("^I see (.*) button in Media$")
 	public void ThenISeeButtonInMedia(String iconLabel) throws Exception {
 		double score = PagesCollection.dialogPage
-				.checkMediaControlIcon(iconLabel);
+				.getMediaControlIconOverlapScore(iconLabel);
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.72, current = "
 						+ score, score >= 0.72d);

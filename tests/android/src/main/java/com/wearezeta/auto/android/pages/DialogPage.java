@@ -185,11 +185,10 @@ public class DialogPage extends AndroidPage {
 		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 0.2);
 	}
 
-	public void SwipeOnCursorInput() throws Exception {
+	public void swipeOnCursorInput() throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorInput));
 		DriverUtils.swipeRight(this.getDriver(), cursorInput,
 				DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); // fix for animation
 	}
 
 	public void SwipeLeftOnCursorInput() throws Exception {
@@ -200,17 +199,14 @@ public class DialogPage extends AndroidPage {
 	public void tapAddPictureBtn() throws Exception {
 		this.getWait().until(ExpectedConditions.visibilityOf(addPictureBtn));
 		addPictureBtn.click();
-		Thread.sleep(1000); // fix for animation
 	}
 
 	public void tapPingBtn() throws Exception {
 		pingBtn.click();
-		Thread.sleep(1000);
 	}
 
 	public void tapCallBtn() throws Exception {
 		callBtn.click();
-		Thread.sleep(1000);
 	}
 
 	public void tapMuteBtn() throws Exception {
@@ -223,10 +219,10 @@ public class DialogPage extends AndroidPage {
 
 	public void tapCancelCallBtn() throws Exception {
 		cancelCallBtn.click();
-		Thread.sleep(1000);
 	}
 
-	public double checkCallingButton(String label) throws Exception {
+	public double getExpectedButtonStateOverlapScore(String label)
+			throws Exception {
 		String path = null;
 		BufferedImage callingButtonImage = null;
 		if (label.equals(MUTE_BUTTON_LABEL)) {
@@ -334,23 +330,15 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void takePhoto() throws Exception {
-		try {
-			getWait().until(ExpectedConditions.visibilityOf(takePhotoButton));
-			takePhotoButton.click();
-		} catch (Exception e) {
-			log.debug("Can't find element.\n" + e.getMessage());
-			log.debug(this.getPageSource());
-			throw e;
-		}
-		Thread.sleep(1000); // fix for animation
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.id(AndroidLocators.DialogPage.idDialogTakePhotoButton));
+		takePhotoButton.click();
 	}
 
 	public void changeCamera() throws Exception {
-		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.idDialogChangeCameraButton))) {
-			changeCameraButton.click();
-			Thread.sleep(1000); // fix for animation
-		}
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.id(AndroidLocators.DialogPage.idDialogChangeCameraButton));
+		changeCameraButton.click();
 	}
 
 	public boolean isConnectMessageVisible() {
@@ -422,11 +410,11 @@ public class DialogPage extends AndroidPage {
 
 	public void sendFrontCameraImage() throws Exception {
 		if (DriverUtils.isElementPresentAndDisplayed(addParticipant)) {
-			SwipeOnCursorInput();
+			swipeOnCursorInput();
 			tapAddPictureBtn();
 			try {
 				this.hideKeyboard();
-				SwipeOnCursorInput();
+				swipeOnCursorInput();
 				tapAddPictureBtn();
 				log.debug("Fix for opened keyboard #1");
 			} catch (WebDriverException e) {
@@ -437,11 +425,11 @@ public class DialogPage extends AndroidPage {
 		} else {
 			cursurFrame.click();
 			Thread.sleep(1000); // fix for scrolling animation
-			SwipeOnCursorInput();
+			swipeOnCursorInput();
 			tapAddPictureBtn();
 			try {
 				this.hideKeyboard();
-				SwipeOnCursorInput();
+				swipeOnCursorInput();
 				tapAddPictureBtn();
 				log.debug("Fix for opened keyboard #2");
 			} catch (WebDriverException e) {
@@ -616,17 +604,16 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void tapDialogPageBottom() throws Exception {
-		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(AndroidLocators.DialogPage.idAddParticipants))) {
-			dialogPageBottom.click();
-		}
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idDialogPageBottom));
+		dialogPageBottom.click();
 	}
 
 	public void tapYouTubePlay() throws Exception {
 		playYoutubeBtn.click();
 	}
 
-	public double checkMediaBarControlIcon(String label) throws Exception {
+	public double getMediaBarControlIconOverlapScore(String label) throws Exception {
 		String path = null;
 		BufferedImage mediaImage = getElementScreenshot(mediaBarControl);
 		if (label.equals(MEDIA_PLAY)) {
@@ -639,7 +626,7 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
-	public double checkMediaControlIcon(String label) throws Exception {
+	public double getMediaControlIconOverlapScore(String label) throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(playPauseBtn));
 		String path = null;
 		BufferedImage mediaImage = getElementScreenshot(playPauseBtn);
@@ -655,7 +642,6 @@ public class DialogPage extends AndroidPage {
 
 	public void tapPlayPauseMediaBarBtn() throws Exception {
 		mediaBarControl.click();
-
 	}
 
 	public String getMissedCallMessage() throws Exception {

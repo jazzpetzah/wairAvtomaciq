@@ -58,7 +58,7 @@ Feature: People View
     Then I do not see <Contact2> on group chat info page
     And I return to group chat page
     And I see dialog page
-    Then I see  message <Message> contact <Contact2> on group page
+    Then I see message <Message> contact <Contact2> on group page
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
