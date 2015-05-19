@@ -259,3 +259,16 @@ Feature: Connect
     Examples: 
       | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
       | user1Name | user1Email | user1Password | user2Name | user3Name |
+
+  @staging @id2318 @torun
+  Scenario Outline: Auto-Connect
+    Given There is 2 user where <Me> is me
+    Given User <Me> has contact <ContactEmail> in address book
+    Given User <Contact> has contact <MyEmail> in address book
+    Given I Sign in using login <MyEmail> and password <MyPassword>
+    And I see my name on top of Contact list
+    And I wait for 250 seconds
+
+    Examples: 
+      | Me        | MyEmail    | MyPassword    | Contact   | ContactEmail |
+      | user1Name | user1Email | user1Password | user2Name | user2Email   |
