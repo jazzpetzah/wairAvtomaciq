@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -155,5 +156,37 @@ public class PeoplePickerPage extends WebPage {
 
 	public int getNumberOfSuggestions() {
 		return suggestions.size();
+	}
+
+	public void clickRemoveButtonOnSuggestion(String user) throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
+						.apply(user));
+		try {
+			DriverUtils.moveMouserOver(this.getDriver(), getDriver()
+					.findElement(locator));
+		} catch (WebDriverException e) {
+			// Safari workaround
+		}
+		getDriver()
+				.findElement(
+						By.cssSelector(WebAppLocators.PeoplePickerPage.cssRemoveIconByName
+								.apply(user))).click();
+	}
+	
+	public void clickPlusButtonOnSuggestion(String user) throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
+						.apply(user));
+		try {
+			DriverUtils.moveMouserOver(this.getDriver(), getDriver()
+					.findElement(locator));
+		} catch (WebDriverException e) {
+			// Safari workaround
+		}
+		getDriver()
+				.findElement(
+						By.cssSelector(WebAppLocators.PeoplePickerPage.cssAddIconByName
+								.apply(user))).click();
 	}
 }

@@ -51,16 +51,68 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Verify if user is found by Search in People Picker
 	 * 
-	 * @step. I see user (.*) found in People Picker
+	 * @step. ^I( do not)? see user (.*) found in People Picker$
 	 * 
+	 * @param donot
+	 *            if null method returns true if found otherwise true if not
+	 *            found
 	 * @param name
 	 *            user name string
 	 * @throws Exception
 	 */
-	@When("I see user (.*) found in People Picker")
-	public void ISeeUserFoundInPeoplePicker(String name) throws Exception {
+	@When("^I( do not)? see user (.*) found in People Picker$")
+	public void ISeeUserFoundInPeoplePicker(String donot, String name)
+			throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.peoplePickerPage.isUserFound(name));
+
+		if (donot == null) {
+			Assert.assertTrue(PagesCollection.peoplePickerPage
+					.isUserFound(name));
+		} else {
+			Assert.assertFalse(PagesCollection.peoplePickerPage
+					.isUserFound(name));
+		}
+	}
+
+	/**
+	 * Click on the X button next to the suggested contact
+	 * 
+	 * @step. ^I remove user (.*) from suggestions in People Picker$
+	 * 
+	 * @param contact
+	 *            name of contact
+	 * @throws Exception
+	 */
+	@When("^I remove user (.*) from suggestions in People Picker$")
+	public void IClickRemoveButton(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		PagesCollection.peoplePickerPage.clickRemoveButtonOnSuggestion(contact);
+	}
+
+	/**
+	 * Click on the + button next to the suggested contact
+	 * 
+	 * @step. ^I make a connection request for user (.*) directly from People
+	 *        Picker$
+	 * 
+	 * @param contact
+	 *            name of contact
+	 * @throws Exception
+	 */
+	@When("^I make a connection request for user (.*) directly from People Picker$")
+	public void IClickPlusButton(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		PagesCollection.peoplePickerPage.clickPlusButtonOnSuggestion(contact);
+	}
+
+	/**
+	 * Close search
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I close People Picker$")
+	public void IClosePeoplePicker() throws Exception {
+		PagesCollection.peoplePickerPage.closeSearch();
 	}
 
 	/**

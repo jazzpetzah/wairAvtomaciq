@@ -225,6 +225,13 @@ public final class WebAppLocators {
 		public static final String xpathCloseSearchButton = xpathRoot
 				+ "//div[contains(@class,'search-close')]";
 
+		public static final Function<String, String> cssRemoveIconByName = (
+				name) -> String.format(
+				"div[data-uie-value='%s'] span.icon-remove", name);
+
+		public static final Function<String, String> cssAddIconByName = (name) -> String
+				.format("div[data-uie-value='%s'] span.icon-add", name);
+
 		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 
 		public static final String xpathSendInvitationButton = xpathRoot
