@@ -717,7 +717,16 @@ public class CommonWebAppSteps {
 							.getDriver(CURRENT_PLATFORM)
 							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 									TimeUnit.MILLISECONDS));
-					assertTrue(browserLog.isEmpty());
+
+					StringBuilder bLog = new StringBuilder("\n");
+					browserLog.stream().forEach(
+							(entry) -> {
+								bLog.append(entry.getLevel()).append(":")
+										.append(entry.getMessage())
+										.append("\n");
+							});
+					assertTrue("BrowserLog is not empty: " + bLog.toString(),
+							browserLog.isEmpty());
 				}
 			} catch (ExecutionException e) {
 				e.printStackTrace();
