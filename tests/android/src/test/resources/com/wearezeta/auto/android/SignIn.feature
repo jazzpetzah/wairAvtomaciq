@@ -60,7 +60,8 @@ Feature: Sign In
     When I press Sign in button
     And I press FORGOT PASSWORD button
     And I request reset password for <Login>
-    Then I reset <Name> password by URL to new <NewPassword>
+    And I get new <Name> password link
+    Then I reset password by URL to new <NewPassword>
     When I restore the application
     And I wait for 2 seconds
     And I minimize the application
