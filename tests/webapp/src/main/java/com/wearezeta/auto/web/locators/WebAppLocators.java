@@ -226,6 +226,9 @@ public final class WebAppLocators {
 				+ "//div[contains(@class,'search-close')]";
 
 		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
+
+		public static final String xpathSendInvitationButton = xpathRoot
+				+ "//*[@id='invite-button']";
 	}
 
 	public static final class RegistrationPage {

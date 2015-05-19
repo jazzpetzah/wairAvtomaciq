@@ -332,7 +332,7 @@ Feature: Connect
     And I swipe up on dialog page
     And I press options menu button
     And I Press Block button
-    #And I confirm block
+    And I confirm block
     Then I do not see Contact list with name <Contact>
     And I swipe down contact list
     And I see People picker page

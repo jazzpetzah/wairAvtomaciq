@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.web.locators.ExternalLocators;
 import com.wearezeta.auto.web.pages.WebPage;
 
 public class PasswordChangeSuccessfullPage extends WebPage {
@@ -17,15 +18,11 @@ public class PasswordChangeSuccessfullPage extends WebPage {
 	}
 
 	public void waitUntilVisible(int timeoutSeconds) throws Exception {
-		try {
-			assert DriverUtils.waitUntilLocatorIsDisplayed(
-					getDriver(),
-					By.xpath("//*[contains(text(),'" + CONFIRMATION_TEXT
-							+ "')]"), timeoutSeconds) : "Password change confirmation page has not been shown after "
-					+ timeoutSeconds + " seconds";
-		} catch (Exception e) {
-			System.out.println(getDriver().getPageSource());
-			throw e;
-		}
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.xpath(ExternalLocators.PasswordChangeSuccessfullPage.xpathLabelByText
+								.apply(CONFIRMATION_TEXT)), timeoutSeconds) : "Password change confirmation page has not been shown after "
+				+ timeoutSeconds + " seconds";
 	}
 }
