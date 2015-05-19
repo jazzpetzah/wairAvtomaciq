@@ -74,7 +74,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-  @staging @id2013
+  @regression @id2013
   Scenario Outline: Missed call notification (caller)
     Given My browser supports calling
     Given There are 2 users where <Name> is me

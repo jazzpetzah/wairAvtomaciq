@@ -517,6 +517,32 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * Open Firefox browser
+	 * 
+	 * @step. ^I open Firefox$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I open Firefox$")
+	public void WhenIOpenFirefox() throws Exception {
+		PagesCollection.commonAndroidPage.openFirefoxBrowser();
+	}
+
+	/**
+	 * Wait for Firefox Url bar
+	 * 
+	 * @step. ^I wait for Firefox Url bar$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I wait for Firefox Url bar$")
+	public void WhenIWaitForFirefoxUrlBar() throws Exception {
+		PagesCollection.commonAndroidPage.waitForFireFoxUrlBar();
+	}
+
+	/**
 	 * Verifies that user A is connected to a given list of users
 	 * 
 	 * @step. ^(.*) is connected to (.*)$
