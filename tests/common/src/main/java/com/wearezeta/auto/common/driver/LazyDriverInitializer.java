@@ -41,12 +41,12 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 	@Override
 	public RemoteWebDriver call() throws Exception {
 		if (this.beforeInitCallback != null) {
-			log.debug("Invoking driver preinitialization callback...");
+			log.debug("Invoking driver pre-initialization callback...");
 			if (!beforeInitCallback.get()) {
-				log.error("Driver preinitialization callback returned False. Will skip driver initialization!");
+				log.error("Driver pre-initialization callback returned False. Will skip driver initialization!");
 				return null;
 			}
-			log.debug("Driver preinitialization callback has been successfully invoked");
+			log.debug("Driver pre-initialization callback has been successfully invoked");
 		}
 		int ntry = 1;
 		do {
@@ -91,9 +91,9 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 				}
 			}
 			if (initCompletedCallback != null) {
-				log.debug("Invoking driver initialization callback...");
+				log.debug("Invoking driver post-initialization callback...");
 				initCompletedCallback.accept(platformDriver);
-				log.debug("Driver initialization callback has been successfully invoked");
+				log.debug("Driver post-initialization callback has been successfully invoked");
 			}
 			log.debug(String.format(
 					"Successfully created driver instance for platform '%s'",

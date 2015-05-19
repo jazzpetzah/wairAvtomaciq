@@ -276,7 +276,7 @@ public class ContactListPage extends AndroidPage {
 	private void waitForContacListLoading() throws Exception {
 		final By locator = By
 				.xpath(AndroidLocators.ContactListPage.xpathLoadingContactListItem);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
 				CONTACT_LIST_ITEMS_LOAD_TIMEOUT_SECONDS) : String
 				.format("Not all conversation list items were loaded within %s seconds",
 						CONTACT_LIST_ITEMS_LOAD_TIMEOUT_SECONDS);
