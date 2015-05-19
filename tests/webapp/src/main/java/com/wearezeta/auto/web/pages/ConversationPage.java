@@ -31,6 +31,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 public class ConversationPage extends WebPage {
+
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 
@@ -259,6 +260,19 @@ public class ConversationPage extends WebPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
 				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been shown within "
+				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
+	}
+
+	public void waitForCallingBarToBeDisplayedWithName(String name)
+			throws Exception {
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRootByName
+								.apply(name)),
+						MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar with name "
+				+ name
+				+ " has not been shown within "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
 	}
 

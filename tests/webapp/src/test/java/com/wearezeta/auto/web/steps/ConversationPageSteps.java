@@ -378,6 +378,24 @@ public class ConversationPageSteps {
 	}
 
 	/**
+	 *
+	 * @step. ^I see the calling bar from user (.*)$
+	 * @param username
+	 *            the name of the user currently calling
+	 * @throws Exception
+	 */
+	@Then("^I see the calling bar from user (.*)$")
+	public void IWaitForCallingBar(String username) throws Exception {
+		if (PagesCollection.conversationPage == null) {
+			PagesCollection.conversationPage = (ConversationPage) PagesCollection.loginPage
+					.instantiatePage(ConversationPage.class);
+		}
+		username = usrMgr.findUserByNameOrNameAlias(username).getName();
+		PagesCollection.conversationPage
+				.waitForCallingBarToBeDisplayedWithName(username);
+	}
+
+	/**
 	 * Verifies whether calling bar is not visible anymore
 	 *
 	 * @step. ^I do not see the calling bar$

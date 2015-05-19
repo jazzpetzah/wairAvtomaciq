@@ -183,6 +183,10 @@ public final class WebAppLocators {
 
 		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls')]";
 
+		public static final Function<String, String> xpathCallingBarRootByName = text -> String
+				.format("//div[contains(@class, 'call-controls') and div/div/span[text()='%s']]",
+						text);
+
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-check')]";
 
