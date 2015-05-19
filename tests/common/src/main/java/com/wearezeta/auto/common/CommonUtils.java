@@ -114,7 +114,7 @@ public class CommonUtils {
 	}
 
 	public static String getBackendType(Class<?> c) throws Exception {
-		return getValueFromCommonConfig(c, "backendType");
+		return getValueFromConfig(c, "backendType");
 	}
 
 	public static String getDeviceName(Class<?> c) throws Exception {

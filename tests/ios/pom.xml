@@ -28,6 +28,7 @@
 		<deviceName>iPhone 6</deviceName>
 		<perfDuration>1</perfDuration> <!-- Performance test duration, minutes -->
 		<perfUsersCount>11</perfUsersCount> <!-- The number of contacts for perf test -->
+		<backendType>staging</backendType>
 	</properties>
 
 	<dependencies>
