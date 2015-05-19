@@ -110,6 +110,12 @@ public class ConnectToPage extends AndroidPage {
 		sendConnectionRequestButton.click();
 		return new ContactListPage(this.getLazyDriver());
 	}
+	
+	public void waitUntilIgnoreButtonIsVisible() throws Exception {
+		this.getWait().until(
+				ExpectedConditions
+						.elementToBeClickable(connectIgnoreBtn));
+	}
 
 	public boolean getConnectButtonState() {
 		String state = sendConnectionRequestButton.getAttribute("enabled");
