@@ -16,3 +16,4 @@ androidVersion=${androidVersion}
 androidLogs=${androidLogs}
 resourceFilePath=${resourceFilePath}
 resultsPath=${resultsPath}
+backendType=${backendType}

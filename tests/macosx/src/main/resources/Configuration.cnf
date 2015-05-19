@@ -9,4 +9,4 @@ osxClientInfoPlist=${osxClientInfoPlist}
 defaultEmail=${defaultEmail}
 defaultImagesPath=${Root}/${defaultImagesPath}
 wireConfigDomain=${wireConfigDomain}
-
+backendType=${backendType}

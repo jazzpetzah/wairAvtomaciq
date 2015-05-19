@@ -93,7 +93,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name |
 
   # This has to work even in browsers, which don't support calling
-  @regression @id2014
+  @staging @id2014
   Scenario Outline: Missed call notification (adressee)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
