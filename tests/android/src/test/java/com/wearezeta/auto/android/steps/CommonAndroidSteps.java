@@ -8,13 +8,16 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
+import org.jfree.util.Log;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.reporter.LogcatListener;
 import com.wearezeta.auto.android.locators.AndroidLocators;
@@ -110,6 +113,22 @@ public class CommonAndroidSteps {
 	private void onDriverInitFinished(RemoteWebDriver drv) {
 		final By locator = By
 				.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton);
+		while (true) {
+			try {
+				DriverUtils.waitUntilLocatorIsDisplayed(drv, locator, 1);
+				break;
+			} catch (WebDriverException e) {
+				Log.debug("Waiting 1 second for the views to initialize properly...");
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e1) {
+					return;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				Throwables.propagate(e);
+			}
+		}
 		try {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
 					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
@@ -117,7 +136,7 @@ public class CommonAndroidSteps {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException(e);
+			Throwables.propagate(e);
 		}
 	}
 

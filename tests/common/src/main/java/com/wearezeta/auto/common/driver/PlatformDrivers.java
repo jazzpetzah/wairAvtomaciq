@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.driver;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -103,10 +102,6 @@ public final class PlatformDrivers {
 		return drivers.get(platform);
 	}
 
-	public Collection<Future<? extends RemoteWebDriver>> getRegisteredDrivers() {
-		return drivers.values();
-	}
-
 	public static WebDriverWait createDefaultExplicitWait(RemoteWebDriver driver)
 			throws Exception {
 		return new WebDriverWait(driver, Integer.parseInt(CommonUtils
@@ -137,7 +132,7 @@ public final class PlatformDrivers {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
-				for (Future<? extends RemoteWebDriver> driver : getRegisteredDrivers()) {
+				for (Future<? extends RemoteWebDriver> driver : drivers.values()) {
 					try {
 						driver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 								TimeUnit.MILLISECONDS).quit();
