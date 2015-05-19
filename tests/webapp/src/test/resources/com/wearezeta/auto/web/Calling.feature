@@ -93,7 +93,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name |
 
   # This has to work even in browsers, which don't support calling
-  @regression @id2014 @torun
+  @regression @id2014
   Scenario Outline: Missed call notification (adressee)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
@@ -106,6 +106,7 @@ Feature: Calling
     And I wait for 1 seconds
     Then I see missed call notification for conversation <Contact>
     When I open conversation with <Contact>
+    Then I do not see missed call notification for conversation <Contact>
     Then I see conversation with missed call from <Contact>
 
     Examples: 
