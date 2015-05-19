@@ -93,6 +93,12 @@ public final class WebAppLocators {
 						xpathParentContactListItem, name);
 
 		public static final String cssOpenPeoplePickerButton = "[data-uie-name=go-search]";
+
+		public static final Function<String, String> xpathMissedCallNotificationByContactName = (
+				name) -> String
+				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]/div/*[local-name() = 'svg' and @data-uie-name='status-unread']",
+						name);
+
 	}
 
 	public static final class SettingsPage {

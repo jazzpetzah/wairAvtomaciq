@@ -99,10 +99,14 @@ Feature: Calling
     Given <Contact> is connected to Me
     Given I Sign in using login <Login> and password <Password>
     And I see my name on top of Contact list
+    When I open self profile
     When <Contact> calls me using <CallBackend>
-    And I wait for 5 seconds
+    And I wait for 1 seconds
     And <Contact> stops all calls to me
+    And I wait for 1 seconds
+    Then I see missed call notification for conversation <Contact>
     When I open conversation with <Contact>
+    Then I do not see missed call notification for conversation <Contact>
     Then I see conversation with missed call from <Contact>
 
     Examples: 
