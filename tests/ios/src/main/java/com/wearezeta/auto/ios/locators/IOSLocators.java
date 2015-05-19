@@ -473,6 +473,10 @@ public final class IOSLocators {
 	public static final String nameKeyboardDeleteButton = "Delete";
 	public static final String nameKeyboardReturnButton = "Send";
 	
+	public static final class KeyboardButtons {
+		public static final String nameHideKeyboardButton = "Hide keyboard";
+	}
+	
 	////////////////
 	//Tutorial
 	////////////////
@@ -566,6 +570,7 @@ public final class IOSLocators {
 	
 	public final class PeoplePickerPage {
 		public static final String nameLaterButton = "MAYBE LATER";
+		public static final String nameContinueUploadButton = "SHARE";
 	}
 	
 	/////////////
