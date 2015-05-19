@@ -67,7 +67,6 @@ public class CommonAndroidPage extends AndroidPage {
 	}
 
 	public void ConnectByInvitationLink(String link) throws Exception {
-		openFirefoxBrowser();
 		setFirefoxBrowserURL("wire://connect?code=" + link);
 	}
 
@@ -90,7 +89,7 @@ public class CommonAndroidPage extends AndroidPage {
 		return null;
 	}
 
-	private void openFirefoxBrowser() throws Exception {
+	public void openFirefoxBrowser() throws Exception {
 		this.getDriver().startActivity("org.mozilla.firefox",
 				"org.mozilla.firefox.App", "org.mozilla.firefox",
 				"org.mozilla.firefox.App");
@@ -110,9 +109,7 @@ public class CommonAndroidPage extends AndroidPage {
 		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 	}
 
-	private void setFirefoxBrowserURL(String link) throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.Browsers.idFirefoxUrlBar));
+	public void setFirefoxBrowserURL(String link) throws Exception {
 		urlBar.click();
 		for (int i = 0; i < 10; i++) {
 			this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_DEL);
@@ -130,4 +127,8 @@ public class CommonAndroidPage extends AndroidPage {
 		return gmailContent.getText().contains(email);
 	}
 
+	public void waitForFireFoxUrlBar() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.id(AndroidLocators.Browsers.idFirefoxUrlBar));
+	}
 }

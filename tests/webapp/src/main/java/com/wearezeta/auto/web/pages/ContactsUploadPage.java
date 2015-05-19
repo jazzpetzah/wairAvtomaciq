@@ -18,6 +18,9 @@ public class ContactsUploadPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactsUploadPage.xpathCloseButton)
 	private WebElement closeButton;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.ContactsUploadPage.xpathShowSearchButton)
+	private WebElement xpathShowSearchButton;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactsUploadPage.xpathShareContactsButton)
 	private WebElement shareContactsButton;
 
@@ -37,6 +40,11 @@ public class ContactsUploadPage extends WebPage {
 
 	public void close() {
 		closeButton.click();
+	}
+
+	public PeoplePickerPage clickShowSearchButton() throws Exception {
+		xpathShowSearchButton.click();
+		return new PeoplePickerPage(getLazyDriver());
 	}
 
 	public void clickShareContactsButton() {

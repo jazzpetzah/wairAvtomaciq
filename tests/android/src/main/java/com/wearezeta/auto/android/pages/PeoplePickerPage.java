@@ -69,8 +69,11 @@ public class PeoplePickerPage extends AndroidPage {
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idNoResultsFound")
 	private WebElement noResults;
 
-	@ZetaFindBy(how = ZetaHow.XPATH, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "xpathSendInvitationFrame")
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idSendInvitationFrame")
 	private WebElement sendInvitationFrame;
+
+	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idSendInvitationBubble")
+	private WebElement sendInvitationBubble;
 
 	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idPickerListContainer")
 	private WebElement content;
@@ -268,7 +271,11 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public void tapOnSendInvitation() throws Exception {
-		sendInvitationFrame.click();
+		try {
+			sendInvitationBubble.click();
+		} catch (NoSuchElementException ex) {
+			sendInvitationFrame.click();
+		}
 	}
 
 	// FIXME: Unexpected method behavior

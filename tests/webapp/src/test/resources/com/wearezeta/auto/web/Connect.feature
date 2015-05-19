@@ -13,27 +13,27 @@ Feature: Connect
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
-	 | user1Email | user1Password | user1Name | user2Name |
+      | user1Email | user1Password | user1Name | user2Name |
 
-   @regression @id1546
-   Scenario Outline: Verify pending user profiles contain all the info required by spec
-      Given There are 2 users where <Name> is me
-      Given <UnknownContact> sent connection request to me
-      Given I Sign in using login <Login> and password <Password>
-      Given User me change accent color to VividRed
-      Then I see connection request from one user
-      When I open the list of incoming connection requests
-      Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
-      And I see connection message "Hello!" in connection request from user <UnknownContact>
-      And I see avatar in connection request from user <UnknownContact>
-      And I see accept button in connection request from user <UnknownContact>
-      And I see ignore button in connection request from user <UnknownContact>
-      And I see correct color for accept button in connection request from user <UnknownContact>
-      And I see correct color for ignore button in connection request from user <UnknownContact>
+  @regression @id1546
+  Scenario Outline: Verify pending user profiles contain all the info required by spec
+    Given There are 2 users where <Name> is me
+    Given <UnknownContact> sent connection request to me
+    Given I Sign in using login <Login> and password <Password>
+    Given User me change accent color to VividRed
+    Then I see connection request from one user
+    When I open the list of incoming connection requests
+    Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
+    And I see connection message "Hello!" in connection request from user <UnknownContact>
+    And I see avatar in connection request from user <UnknownContact>
+    And I see accept button in connection request from user <UnknownContact>
+    And I see ignore button in connection request from user <UnknownContact>
+    And I see correct color for accept button in connection request from user <UnknownContact>
+    And I see correct color for ignore button in connection request from user <UnknownContact>
 
-      Examples:
-	 | Login      | Password      | Name      | UnknownContact  | UnknownContactMail | Message   |
-	 | user1Email | user1Password | user1Name | user2Name       | user2Email         | YOU ADDED |
+    Examples: 
+      | Login      | Password      | Name      | UnknownContact | UnknownContactMail | Message   |
+      | user1Email | user1Password | user1Name | user2Name      | user2Email         | YOU ADDED |
 
   @smoke @id1571
   Scenario Outline: Verify sending a connection request to user chosen from search
@@ -221,3 +221,41 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | ChatName                 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat | user2Email | user2Password | user2Name | GroupChatWithBlockedUser |
+
+  @staging @id2317
+  Scenario Outline: Verify you can dismiss user suggestion in PYMK list
+    Given There are 3 users where <Me> is me
+    Given User <Contact1> has contact <MyEmail> in address book
+    Given <Contact1> is connected to <Contact2>
+    Given Myself is connected to <Contact2>
+    Given There are suggestions for user <Me> on backend
+    Given I Sign in using login <MyEmail> and password <MyPassword>
+    And I see my name on top of Contact list
+    When I open People Picker from Contact List
+    And I see user <Contact1> found in People Picker
+    And I remove user <Contact1> from suggestions in People Picker
+    And I do not see user <Contact1> found in People Picker
+
+    Examples: 
+      | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
+      | user1Name | user1Email | user1Password | user2Name | user3Name |
+
+  @staging @id2318
+  Scenario Outline: Verify you can add a user from PYMK list
+    Given There are 3 users where <Me> is me
+    Given User <Contact1> has contact <MyEmail> in address book
+    Given <Contact1> is connected to <Contact2>
+    Given Myself is connected to <Contact2>
+    Given There are suggestions for user <Me> on backend
+    Given I Sign in using login <MyEmail> and password <MyPassword>
+    Given I see my name on top of Contact list
+    When I open People Picker from Contact List
+    Then I see user <Contact1> found in People Picker
+    When I make a connection request for user <Contact1> directly from People Picker
+    And I close People Picker
+    And I open conversation with <Contact1>
+    Then I see CONNECTING TO action for <Contact1> in conversation
+
+    Examples: 
+      | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
+      | user1Name | user1Email | user1Password | user2Name | user3Name |

@@ -106,6 +106,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact2>
     And I tap on user name found on People picker page <Contact2>
+    And I swipe up on connect page
     And I see connect to <Contact2> dialog
     And I Connect with contact by pressing button
     And I wait for 5 seconds
@@ -332,7 +333,7 @@ Feature: Connect
     And I swipe up on dialog page
     And I press options menu button
     And I Press Block button
-    #And I confirm block
+    And I confirm block
     Then I do not see Contact list with name <Contact>
     And I swipe down contact list
     And I see People picker page

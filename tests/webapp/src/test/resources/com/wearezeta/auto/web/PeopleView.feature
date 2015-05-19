@@ -269,7 +269,7 @@ Feature: People View
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | UnknownContactMail | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | user3Email         | PeoplePopoverGroupChat | YOU ADDED |
 
- @staging @id1700
+   @regression @id1700
    Scenario Outline: Verify users can properly leave a group conversation on the other end
       Given There are 4 users where <Name> is me
       Given Myself is connected to <KnownContact>
