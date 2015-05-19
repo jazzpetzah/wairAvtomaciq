@@ -8,7 +8,7 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -35,7 +35,7 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -60,7 +60,7 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -80,7 +80,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I call
     And I wait for 2 seconds
@@ -98,7 +98,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open self profile
     When <Contact> calls me using <CallBackend>
     And I wait for 1 seconds

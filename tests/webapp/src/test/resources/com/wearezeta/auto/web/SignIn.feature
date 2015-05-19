@@ -11,7 +11,7 @@ Feature: Sign In
     Then I am signed in properly
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
 
     Examples: 
       | Email      | Password      | Name      |

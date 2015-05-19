@@ -134,38 +134,11 @@ public class ContactListPage extends WebPage {
 
 	}
 
-	public boolean isSelfNameEntryExist() throws Exception {
+	public void waitForSelfProfileAvatar() throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, 5);
-		log.debug(String.format("Looking for self name entry '%s'...", usrMgr
-				.getSelfUserOrThrowError().getName()));
-
-		final String selfNameElementText = getSelfName(locator);
-		log.debug(String.format("Result self name is '%s'.",
-				selfNameElementText));
-		return selfNameElementText.equals(usrMgr.getSelfUserOrThrowError()
-				.getName());
-	}
-
-	private String getSelfName(By locator) throws Exception {
-		String name = "";
-		for (int i = 1; i < 6; i++) {
-			name = getDriver().findElement(locator).getText();
-			if (!name.equals("")) {
-				break;
-			} else {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		return name;
-
 	}
 
 	public boolean isConvoListEntryWithNameExist(String name) throws Exception {

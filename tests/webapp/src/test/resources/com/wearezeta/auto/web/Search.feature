@@ -5,7 +5,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open People Picker from Contact List
     And I wait until <Contact1> exists in backend search results
     And I type <Contact1> in search field of People Picker
@@ -14,7 +14,7 @@ Feature: Search
     And I type <Contact2> in search field of People Picker
     And I select <Contact2> from People Picker results
     And I choose to create conversation from People Picker
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     Then I see Contact list with name <Contact1>,<Contact2>
     And I open self profile
     And I click gear button on self profile page
@@ -23,7 +23,7 @@ Feature: Search
     And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Contact1Email> and password <Contact1Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     Then I see Contact list with name <Name>,<Contact2>
     And I open self profile
     And I click gear button on self profile page
@@ -32,7 +32,7 @@ Feature: Search
     And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Contact2Email> and password <Contact2Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     Then I see Contact list with name <Name>,<Contact1>
 
     Examples: 
@@ -44,7 +44,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I click People button in one to one conversation
     Then I see Single User Profile popover

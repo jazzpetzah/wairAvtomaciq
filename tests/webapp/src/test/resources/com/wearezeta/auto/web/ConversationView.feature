@@ -5,7 +5,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I write random message
     And I send message
@@ -21,7 +21,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -32,7 +32,7 @@ Feature: Conversation View
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     Then I see sent picture <PictureName> in the conversation view
 
@@ -46,7 +46,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     When I write random message
     And I send message
@@ -61,7 +61,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -75,7 +75,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I write message <Youtubelink1>
     And I send message
@@ -100,7 +100,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view

@@ -5,7 +5,7 @@ Feature: Archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
     Given I Sign in using login <Email> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I archive conversation <Contact>
     Then I do not see Contact list with name <Contact>
     When User <Contact> sent message <Message> to conversation <Contact>
@@ -21,7 +21,7 @@ Feature: Archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
     Given I Sign in using login <Email> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I do not see Archive button at the bottom of my Contact list
     When I archive conversation <Contact>
     And I archive conversation <Contact2>
@@ -41,7 +41,7 @@ Feature: Archive
     Given Myself is connected to <Contact>
     Given I muted conversation with <Contact>
     Given I Sign in using login <Email> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I archive conversation <Contact>
     And <Contact> pinged the conversation with me 
     Then I do not see Contact list with name <Contact>
@@ -57,7 +57,7 @@ Feature: Archive
     Given Myself is connected to <Contact>
     Given I muted conversation with <Contact>
     Given I Sign in using login <Email> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I archive conversation <Contact>
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
@@ -74,7 +74,7 @@ Feature: Archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Email> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I archive conversation <Contact>
     And <Contact> pinged the conversation with me 
     Then I see Contact list with name <Contact>
@@ -89,7 +89,7 @@ Feature: Archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Email> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I archive conversation <Contact>
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds

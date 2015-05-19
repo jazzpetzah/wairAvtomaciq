@@ -5,7 +5,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I see connection request from one user
     And I open the list of incoming connection requests
     And I accept connection request from user <Contact>
@@ -41,7 +41,7 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I wait until <Contact> exists in backend search results
     When I open People Picker from Contact List
     And I type <Contact> in search field of People Picker
@@ -61,7 +61,7 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
     When I open People Picker from Contact List
     And I type <Login2> in search field of People Picker
@@ -77,7 +77,7 @@ Feature: Connect
     And I switch to Sign In page
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I see connection request from one user
     And I open the list of incoming connection requests
     And I accept connection request from user <Name>
@@ -89,7 +89,7 @@ Feature: Connect
     And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     Then I see Contact list with name <Name2>
     And I open conversation with <Name2>
     And I see <Message> action for <Name2> in conversation
@@ -102,7 +102,7 @@ Feature: Connect
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
     When I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -120,7 +120,7 @@ Feature: Connect
     And I switch to Sign In page
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I see connection request from one user
     And I open the list of incoming connection requests
     And I ignore connection request from user <Name>
@@ -132,7 +132,7 @@ Feature: Connect
     And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     Then I see Contact list with name <Name2>
 
     Examples: 
@@ -144,7 +144,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I click People button in one to one conversation
     Then I see Single User Profile popover
@@ -166,7 +166,7 @@ Feature: Connect
     Given <Contact> has group chat <ChatName> with Me,<Contact2>
     Given I sent connection request to <Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -186,7 +186,7 @@ Feature: Connect
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open conversation with <Contact1>
     And I click People button in one to one conversation
     And I see Single User Profile popover
@@ -203,7 +203,7 @@ Feature: Connect
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     Then I see random message in conversation
     And I write random message
@@ -230,7 +230,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given There are suggestions for user <Me> on backend
     Given I Sign in using login <MyEmail> and password <MyPassword>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open People Picker from Contact List
     And I see user <Contact1> found in People Picker
     And I remove user <Contact1> from suggestions in People Picker
@@ -248,7 +248,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given There are suggestions for user <Me> on backend
     Given I Sign in using login <MyEmail> and password <MyPassword>
-    Given I see my name on top of Contact list
+    Given I see my avatar on top of Contact list
     When I open People Picker from Contact List
     Then I see user <Contact1> found in People Picker
     When I make a connection request for user <Contact1> directly from People Picker

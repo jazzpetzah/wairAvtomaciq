@@ -6,7 +6,7 @@ Feature: Sign Out
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -16,7 +16,7 @@ Feature: Sign Out
     And I Sign in using login <Login2> and password <Password2>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     And I open self profile
     And I see user name on self profile page <Name2>
     And I see user email on self profile page <Login2>
