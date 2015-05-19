@@ -213,6 +213,16 @@ public class ContactListPage extends WebPage {
 		return getDriver().findElement(By.cssSelector(locator));
 	}
 
+	public boolean isMissedCallVisibleForContact(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
+				.apply(conversationName);
+		List<WebElement> missedCallNotification = getDriver().findElements(
+				By.xpath(locator));
+		return missedCallNotification.size() > 0;
+	}
+
 	public void openArchive() throws Exception {
 		this.getWait().until(
 				ExpectedConditions
