@@ -25,7 +25,7 @@ import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.GenerateWebLink;
+import com.wearezeta.auto.common.InvitationLinkGenerator;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
@@ -512,7 +512,7 @@ public class CommonAndroidSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		String link = GenerateWebLink.getInvitationToken(name);
+		String link = InvitationLinkGenerator.getInvitationToken(name);
 		PagesCollection.commonAndroidPage.ConnectByInvitationLink(link);
 
 	}

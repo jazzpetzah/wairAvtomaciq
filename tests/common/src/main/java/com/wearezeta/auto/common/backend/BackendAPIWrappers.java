@@ -51,6 +51,7 @@ public final class BackendAPIWrappers {
 	private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
 	private static final int AUTH_FAILED_ERROR = 403;
 	private static final int SERVER_SIDE_ERROR = 500;
+	private static final int PHONE_NUMBER_ALREADY_REGISTERED_ERROR = 409;
 	private static final int MAX_BACKEND_RETRIES = 5;
 
 	private static final long MAX_MSG_DELIVERY_OFFSET = 10000; // milliseconds
@@ -110,10 +111,34 @@ public final class BackendAPIWrappers {
 			BackendREST.registerNewUser(user.getEmail(), user.getName(),
 					user.getPassword());
 			activateRegisteredUserByEmail(activationMessage);
-			attachUserPhoneNumber(user);
+			while (true) {
+				try {
+					attachUserPhoneNumber(user);
+					break;
+				} catch (BackendRequestException e) {
+					if (e.getReturnCode() == PHONE_NUMBER_ALREADY_REGISTERED_ERROR) {
+						user.setPhoneNumber(new PhoneNumber(
+								PhoneNumber.WIRE_COUNTRY_PREFIX));
+					} else {
+						throw e;
+					}
+				}
+			}
 			break;
 		case ByPhoneNumber:
-			BackendREST.bookPhoneNumber(user.getPhoneNumber());
+			while (true) {
+				try {
+					BackendREST.bookPhoneNumber(user.getPhoneNumber());
+					break;
+				} catch (BackendRequestException e) {
+					if (e.getReturnCode() == PHONE_NUMBER_ALREADY_REGISTERED_ERROR) {
+						user.setPhoneNumber(new PhoneNumber(
+								PhoneNumber.WIRE_COUNTRY_PREFIX));
+					} else {
+						throw e;
+					}
+				}
+			}
 			final String activationCode = getActivationCodeForBookedPhoneNumber(user
 					.getPhoneNumber());
 			activateRegisteredUserByPhoneNumber(user.getPhoneNumber(),
