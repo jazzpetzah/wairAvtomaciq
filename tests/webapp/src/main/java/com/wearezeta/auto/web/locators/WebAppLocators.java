@@ -92,7 +92,7 @@ public final class WebAppLocators {
 				.format("%s//*[@data-uie-name='item-conversation-archived' and ./ancestor-or-self::*[@data-uie-value='%s']]",
 						xpathParentContactListItem, name);
 
-		public static final String cssOpenPeoplePickerButton = "[data-uie-name=go-search]";
+		public static final String cssOpenPeoplePickerButton = "[data-uie-name=enter-search]";
 
 		public static final Function<String, String> xpathMissedCallNotificationByContactName = (
 				name) -> String
@@ -218,7 +218,7 @@ public final class WebAppLocators {
 
 		public static final String xpathRoot = "//div[@id='people-picker']";
 
-		public static final String cssNameSearchInput = "div#people-picker input";
+		public static final String cssNameSearchInput = "[data-uie-name='enter-users']";
 
 		public static final String xpathNameCreateConversationButton = xpathRoot
 				+ "//div[contains(@class, 'search-button-add')]";
