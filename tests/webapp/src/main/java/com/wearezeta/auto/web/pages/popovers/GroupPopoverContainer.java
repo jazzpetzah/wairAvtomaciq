@@ -146,6 +146,10 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		this.addPeoplePopoverPage.selectUserFromSearchResult(name);
 	}
 
+	public void selectUsersFromSearchResult(int amount) throws Exception {
+		this.addPeoplePopoverPage.selectUsersFromSearchResult(amount);
+	}
+
 	public void confirmAddPeople() throws Exception {
 		this.addPeopleConfirmationPopoverPage.clickContinueButton();
 	}

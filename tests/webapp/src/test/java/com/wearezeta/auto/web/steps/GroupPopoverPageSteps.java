@@ -430,16 +430,32 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Select user found in search results
 	 *
-	 * @step. ^I select (.*) from Group Participants popover search results$
+	 * @step. ^I select user (.*) from Group Participants popover search
+	 *        results$
 	 *
 	 * @param user
 	 * @throws Exception
 	 */
-	@When("^I select (.*) from Group Participants popover search results$")
+	@When("^I select user (.*) from Group Participants popover search results$")
 	public void ISelectUserFromSearchResults(String user) throws Exception {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.selectUserFromSearchResult(user);
+	}
+
+	/**
+	 * Select X users that were found in search results
+	 *
+	 * @step. ^I select the first (\\d+) participants from Group Participants
+	 *        popover search results$
+	 *
+	 * @param user
+	 * @throws Exception
+	 */
+	@When("^I select the first (\\d+) participants from Group Participants popover search results$")
+	public void ISelectFirstUsersFromSearchResults(int amount) throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.selectUsersFromSearchResult(amount);
 	}
 
 	/**

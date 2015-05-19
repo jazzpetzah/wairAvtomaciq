@@ -1,7 +1,9 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -52,5 +54,13 @@ class AddPeoplePopoverPage extends AbstractPopoverPage {
 
 	public void selectUserFromSearchResult(String name) throws Exception {
 		this.getFoundItemElement(name).click();
+	}
+
+	public void selectUsersFromSearchResult(int amount) throws Exception {
+		List<WebElement> elements = getDriver().findElements(
+				By.cssSelector(PopoverLocators.Shared.cssSearchResultItems));
+		for (int i = 0; i < amount; i++) {
+			elements.get(i).click();
+		}
 	}
 }
