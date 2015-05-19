@@ -146,14 +146,8 @@ Feature: Conversation View
     And I open conversation with <Contact>
     When I write message <Message1>
     And I send message
-    Then I see message <Message1>more than 200 chars in conversation - new lines are stripped 
-    When I write message more than 200 chars containing multiple new lines at the end 	
-    And I send message
-    Then I see message more than 200 chars in conversation - new lines are stripped 
-    When I write message more than 200 chars containing 5 new lines in a row between text
-    And I send message
-    Then I see message more than 200 chars in conversation - the lines are not stripped
+    #Then I see message <Message1> parsed
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Message1                                      |
+      | user1Email | user1Password | user1Name | user2Name | qqq('a' * 100)eee('\n' * 10)rrr('b' * 100)ttt |
