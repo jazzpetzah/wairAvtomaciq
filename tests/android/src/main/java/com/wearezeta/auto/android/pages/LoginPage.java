@@ -119,10 +119,8 @@ public class LoginPage extends AndroidPage {
 	}
 
 	public boolean waitForLogin() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorDissapears(this.getDriver(),
-						AndroidLocators.LoginPage
-								.getByForLoginPageRegistrationButton(), 40);
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.id(AndroidLocators.LoginPage.idSignUpButton), 40);
 	}
 
 	public Boolean isLoginFinished() throws Exception {
@@ -151,10 +149,8 @@ public class LoginPage extends AndroidPage {
 
 	public RegistrationPage join() throws Exception {
 		signUpButton.click();
-		assert DriverUtils
-				.waitUntilLocatorDissapears(this.getDriver(),
-						AndroidLocators.LoginPage
-								.getByForLoginPageRegistrationButton());
+		assert DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.id(AndroidLocators.LoginPage.idLoginProgressViewContainer));
 		return new RegistrationPage(this.getLazyDriver());
 	}
 

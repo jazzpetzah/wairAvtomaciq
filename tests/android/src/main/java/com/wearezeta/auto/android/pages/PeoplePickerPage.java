@@ -67,7 +67,7 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idNoResultsFound)
 	private WebElement noResults;
 
-	@FindBy(xpath = AndroidLocators.PeoplePickerPage.xpathSendInvitationFrame)
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idSendInvitationFrame)
 	private WebElement sendInvitationFrame;
 
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerListContainer)
@@ -128,15 +128,15 @@ public class PeoplePickerPage extends AndroidPage {
 		try {
 			if (this.getDriver()
 					.findElements(
-							AndroidLocators.OtherUserPersonalInfoPage
-									.getByForOtherUserPersonalInfoUnlockButton())
+							By.id(AndroidLocators.OtherUserPersonalInfoPage.idUnblockBtn))
 					.size() > 0) {
 				return new OtherUserPersonalInfoPage(this.getLazyDriver());
+
 			} else if (this
 					.getDriver()
 					.findElements(
-							AndroidLocators.ConnectToPage
-									.getByForConnectToPageHeader()).size() > 0) {
+							By.id(AndroidLocators.ConnectToPage.idConnectToHeader))
+					.size() > 0) {
 				return new ConnectToPage(this.getLazyDriver());
 			} else if (DriverUtils
 					.isElementPresentAndDisplayed(addToConversationsButton)) {

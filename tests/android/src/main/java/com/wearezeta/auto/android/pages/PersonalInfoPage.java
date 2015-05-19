@@ -134,14 +134,14 @@ public class PersonalInfoPage extends AndroidPage {
 		this.getWait().until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
 		if (!DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				AndroidLocators.PersonalInfoPage.getByForNameEditField())) {
+				By.id(AndroidLocators.PersonalInfoPage.idNameEdit))) {
 			DriverUtils.mobileTapByCoordinates(getDriver(), nameField);
 		}
 	}
 
 	public boolean isNameEditVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				AndroidLocators.PersonalInfoPage.getByForNameEditField());
+				By.id(AndroidLocators.PersonalInfoPage.idNameEdit));
 	}
 
 	public boolean isNameEditCanBeCleaned() throws Exception {

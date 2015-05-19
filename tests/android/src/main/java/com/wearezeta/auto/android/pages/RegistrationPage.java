@@ -97,8 +97,8 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public boolean isPictureSelected() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				AndroidLocators.DialogPage.getByForDialogConfirmImageButtn());
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.id(AndroidLocators.DialogPage.idConfirmButton));
 	}
 
 	public void confirmPicture() throws Exception {

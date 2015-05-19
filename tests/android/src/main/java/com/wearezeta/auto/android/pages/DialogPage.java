@@ -44,9 +44,6 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.CommonLocators.idEditText)
 	private WebElement cursorInput;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.DialogPage.xpathCloseCursor)
-	private WebElement closeCursor;
-
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.Browsers.xpathNativeBrowserURLBar)
 	private WebElement nativeBrowserURL;
 
@@ -191,11 +188,6 @@ public class DialogPage extends AndroidPage {
 				DEFAULT_SWIPE_TIME);
 	}
 
-	public void SwipeLeftOnCursorInput() throws Exception {
-		DriverUtils
-				.swipeLeft(this.getDriver(), closeCursor, DEFAULT_SWIPE_TIME);
-	}
-
 	public void tapAddPictureBtn() throws Exception {
 		this.getWait().until(ExpectedConditions.visibilityOf(addPictureBtn));
 		addPictureBtn.click();
@@ -321,7 +313,7 @@ public class DialogPage extends AndroidPage {
 
 	public boolean isImageExists() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				AndroidLocators.DialogPage.getByForDialogPageImage());
+				By.id(AndroidLocators.DialogPage.idDialogImages));
 	}
 
 	public void confirm() throws Exception {
@@ -613,7 +605,8 @@ public class DialogPage extends AndroidPage {
 		playYoutubeBtn.click();
 	}
 
-	public double getMediaBarControlIconOverlapScore(String label) throws Exception {
+	public double getMediaBarControlIconOverlapScore(String label)
+			throws Exception {
 		String path = null;
 		BufferedImage mediaImage = getElementScreenshot(mediaBarControl);
 		if (label.equals(MEDIA_PLAY)) {
@@ -626,7 +619,8 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
-	public double getMediaControlIconOverlapScore(String label) throws Exception {
+	public double getMediaControlIconOverlapScore(String label)
+			throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(playPauseBtn));
 		String path = null;
 		BufferedImage mediaImage = getElementScreenshot(playPauseBtn);

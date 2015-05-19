@@ -7,8 +7,4 @@ public final class AndroidExecutionContext {
 		return Integer.parseInt(CommonUtils.getValueFromConfig(
 				AndroidExecutionContext.class, "androidVersion"));
 	}
-
-	public static boolean isLocationByIdSupported() throws Exception {
-		return getOSVersion() > 42;
-	}
 }
