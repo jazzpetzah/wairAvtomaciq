@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
-import org.jfree.util.Log;
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriverException;
@@ -37,6 +37,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -55,6 +56,9 @@ public class CommonAndroidSteps {
 				"org.apache.commons.logging.simplelog.log.org.apache.http",
 				"warn");
 	}
+	
+	private static final Logger log = ZetaLogger.getLog(CommonAndroidSteps.class
+			.getSimpleName());
 
 	public static LogcatListener listener = new LogcatListener();
 
@@ -120,7 +124,7 @@ public class CommonAndroidSteps {
 				DriverUtils.waitUntilLocatorIsDisplayed(drv, locator, 1);
 				break;
 			} catch (WebDriverException e) {
-				Log.debug("Waiting 1 second for the views to initialize properly...");
+				log.debug("Waiting 1 second for the views to initialize properly...");
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e1) {
