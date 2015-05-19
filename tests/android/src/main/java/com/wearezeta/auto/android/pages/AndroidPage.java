@@ -12,12 +12,10 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.support.FindBy;
 
 import android.view.KeyEvent;
 
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidKeyEvent;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
@@ -120,17 +118,6 @@ public abstract class AndroidPage extends BasePage {
 			// do nothing, sometimes after restoring the app we have this
 			// exception, Appium bug
 		}
-	}
-
-	@Override
-	public void close() throws Exception {
-		showLogs();
-		try {
-			AndroidCommonUtils.killAndroidClient();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		super.close();
 	}
 
 	public abstract AndroidPage returnBySwipe(SwipeDirection direction)
@@ -302,15 +289,5 @@ public abstract class AndroidPage extends BasePage {
 	public static void clearPagesCollection() throws IllegalArgumentException,
 			IllegalAccessException {
 		clearPagesCollection(PagesCollection.class, AndroidPage.class);
-	}
-
-	private void showLogs() throws Exception {
-		if (CommonUtils.getAndroidLogs(AndroidPage.class)) {
-			List<LogEntry> logEntries = this.getDriver().manage().logs()
-					.get("logcat").getAll();
-			for (LogEntry entry : logEntries) {
-				log.error(entry.getMessage().toString());
-			}
-		}
 	}
 }
