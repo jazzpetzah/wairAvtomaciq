@@ -91,12 +91,10 @@ public class PersonalInfoPage extends AndroidPage {
 
 	public void tapChangePhotoButton() throws Exception {
 		changePhotoBtn.click();
-		Thread.sleep(1000); // fix for animation
 	}
 
 	public void tapGalleryButton() throws Exception {
 		galleryBtn.click();
-		Thread.sleep(3000); // fix for animation
 	}
 
 	public void tapConfirmButton() throws Exception {
@@ -141,8 +139,8 @@ public class PersonalInfoPage extends AndroidPage {
 		}
 	}
 
-	public boolean isNameEditShowed() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+	public boolean isNameEditVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				AndroidLocators.PersonalInfoPage.getByForNameEditField());
 	}
 
@@ -190,14 +188,9 @@ public class PersonalInfoPage extends AndroidPage {
 		return DriverUtils.isElementPresentAndDisplayed(settingBox);
 	}
 
-	public boolean isOptionsMenuReachable() throws Exception {
-		try {
-			optionsButton.click();
-			return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-					By.id(AndroidLocators.PersonalInfoPage.idAboutButton), 10);
-		} catch (Exception e) {
-			return false;
-		}
+	public boolean waitForOptionsMenuToDisappear() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.id(AndroidLocators.PersonalInfoPage.idAboutButton), 10);
 	}
 
 	public boolean waitForSettingsDissapear() throws Exception {

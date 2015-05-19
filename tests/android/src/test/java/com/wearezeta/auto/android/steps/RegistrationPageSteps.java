@@ -33,9 +33,9 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I press Camera button twice$")
 	public void WhenIPressCameraButton() throws Exception {
-		PagesCollection.registrationPage.takePhoto();
+		PagesCollection.registrationPage.clickCameraButton();
 		Thread.sleep(2000);
-		PagesCollection.registrationPage.takePhoto();
+		PagesCollection.registrationPage.clickCameraButton();
 	}
 
 	/**

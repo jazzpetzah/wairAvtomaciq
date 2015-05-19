@@ -73,7 +73,7 @@ public class RegistrationPage extends AndroidPage {
 		return null;
 	}
 
-	public void takePhoto() throws Exception {
+	public void clickCameraButton() throws Exception {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(cameraButton));
 		cameraButton.click();
