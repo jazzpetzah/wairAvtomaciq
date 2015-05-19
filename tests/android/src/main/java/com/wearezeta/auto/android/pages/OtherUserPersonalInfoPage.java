@@ -227,11 +227,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return text.toLowerCase().equals(mail.toLowerCase());
 	}
 
-	public boolean isRemoveFromConversationAlertVisible() {
+	public boolean isConversationAlertVisible() {
 		return DriverUtils.isElementPresentAndDisplayed(confirmMenu);
 	}
 
-	public OtherUserPersonalInfoPage pressRemoveConfirmBtn() throws Exception {
+	public OtherUserPersonalInfoPage pressConfirmBtn() throws Exception {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
@@ -289,7 +289,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public String getSubHeader() {
-		return participantsSubHeader.getText().toLowerCase();
+		return participantsSubHeader.getText();
 	}
 
 	public String getConversationName() throws Exception {

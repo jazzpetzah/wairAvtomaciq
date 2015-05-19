@@ -40,39 +40,14 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * -unused
-	 * 
-	 * @step. ^I swipe down other user profile page$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I swipe down other user profile page$")
-	public void WhenISwipeDownOtherUserProfilePage() throws Exception {
-		PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.otherUserPersonalInfoPage
-				.swipeDown(1000);
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I swipe up on other user profile page$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I swipe up on other user profile page$")
-	public void WhenISwipeUpOnOtherUserProfilePage() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.swipeUp(500);
-	}
-
-	/**
 	 * Removes a contact from a group conversation
 	 * 
 	 * @step. ^I click Remove$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I click Remove$")
-	public void WhenIClickRemove() throws Throwable {
+	public void WhenIClickRemove() throws Exception {
 		// TODO: check for native button click
 		PagesCollection.otherUserPersonalInfoPage.pressOptionsMenuButton();
 	}
@@ -82,12 +57,12 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I see warning message$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I see warning message$")
-	public void WhenISeeWarningMessage() throws Throwable {
+	public void WhenISeeWarningMessage() throws Exception {
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isRemoveFromConversationAlertVisible());
+				.isConversationAlertVisible());
 	}
 
 	/**
@@ -95,23 +70,23 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I confirm remove$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I confirm remove$")
-	public void WhenIConfirmRemove() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.pressRemoveConfirmBtn();
+	public void WhenIConfirmRemove() throws Exception {
+		PagesCollection.otherUserPersonalInfoPage.pressConfirmBtn();
 	}
 
 	/**
 	 * Confirms the block of another user when they send a connection request
 	 * 
-	 * @step. ^I confirm remove$
+	 * @step. ^I confirm block$
 	 * 
 	 * @throws Throwable
 	 */
 	@When("^I confirm block$")
 	public void WhenIConfirmBlock() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.pressRemoveConfirmBtn();
+		PagesCollection.otherUserPersonalInfoPage.pressConfirmBtn();
 	}
 
 	/**
@@ -305,7 +280,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I confirm leaving$")
 	public void WhenIConfirmLeaving() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.pressRemoveConfirmBtn();
+		PagesCollection.otherUserPersonalInfoPage.pressConfirmBtn();
 	}
 
 	/**
@@ -370,9 +345,9 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I see the correct number of participants in the title (.*)$")
 	public void IVerifyParticipantNumber(String realNumberOfParticipants)
 			throws IOException {
-		Assert.assertEquals(
-				PagesCollection.otherUserPersonalInfoPage.getSubHeader(),
-				realNumberOfParticipants + " people");
+		Assert.assertEquals(PagesCollection.otherUserPersonalInfoPage
+				.getSubHeader().toLowerCase(), realNumberOfParticipants
+				+ " people");
 	}
 
 	/**

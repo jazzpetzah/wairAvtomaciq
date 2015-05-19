@@ -94,7 +94,7 @@ public class PeoplePickerPage extends AndroidPage {
 	public void tapOnContactInTopPeoples(String name) throws Exception {
 		final By locator = By
 				.xpath(AndroidLocators.PeoplePickerPage.xpathTopConversationContactByName
-						.apply(name.toUpperCase()));
+						.apply(name));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 		this.getDriver().findElement(locator).click();
 	}

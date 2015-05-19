@@ -5,22 +5,19 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-import io.appium.java_client.AppiumDriver;
-
 final class SessionHelpers {
-	private AppiumDriver wrappedDriver;
+	private RemoteWebDriver wrappedDriver;
 
-	public SessionHelpers(AppiumDriver wrappedDriver) {
+	public SessionHelpers(RemoteWebDriver wrappedDriver) {
 		this.wrappedDriver = wrappedDriver;
 	}
 
 	private static final Logger log = ZetaLogger.getLog(SessionHelpers.class
 			.getSimpleName());
-
-	public final long INIT_TIMEOUT_MILLISECONDS = 1000 * 60 * 3;
 
 	private boolean isSessionLost = false;
 

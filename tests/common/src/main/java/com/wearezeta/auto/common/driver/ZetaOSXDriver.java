@@ -40,6 +40,7 @@ public class ZetaOSXDriver extends AppiumDriver implements
 		this.wrappedDriver.quit();
 	}
 
+	@Override
 	public boolean isSessionLost() {
 		return this.wrappedDriver.isSessionLost();
 	}

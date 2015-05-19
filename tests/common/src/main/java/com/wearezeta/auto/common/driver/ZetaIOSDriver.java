@@ -38,6 +38,7 @@ public class ZetaIOSDriver extends IOSDriver implements ZetaDriver {
 		this.wrappedDriver.quit();
 	}
 
+	@Override
 	public boolean isSessionLost() {
 		return this.wrappedDriver.isSessionLost();
 	}

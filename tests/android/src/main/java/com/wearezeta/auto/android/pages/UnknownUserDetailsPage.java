@@ -33,15 +33,15 @@ public class UnknownUserDetailsPage extends AndroidPage {
 	}
 
 	public boolean isConnectButtonVisible() throws Exception {
-		final String BUTTON_TEXT = "Connect";
-		String connectButtonText = connectAndPendingButton.getText();
-		return connectButtonText.equals(BUTTON_TEXT);
+		final String expectedText = "Connect";
+		String buttonText = connectAndPendingButton.getText();
+		return buttonText.equals(expectedText);
 	}
 
 	public boolean isPendingButtonVisible() throws Exception {
-		final String BUTTON_TEXT = "Pending";
-		String connectButtonText = connectAndPendingButton.getText();
-		return connectButtonText.equals(BUTTON_TEXT);
+		final String expectedText = "Pending";
+		String buttonText = connectAndPendingButton.getText();
+		return buttonText.equals(expectedText);
 	}
 
 	public String getOtherUsersName() {

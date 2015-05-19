@@ -121,12 +121,10 @@ public class PersonalInfoPage extends AndroidPage {
 
 	public void tapOptionsButton() throws Exception {
 		optionsButton.click();
-		Thread.sleep(1000); // fix for animation
 	}
 
 	public SettingsPage tapSettingsButton() throws Exception {
 		settingsButton.click();
-		Thread.sleep(1000); // fix for animation
 		return new SettingsPage(this.getLazyDriver());
 	}
 

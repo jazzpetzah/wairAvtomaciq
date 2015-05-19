@@ -37,6 +37,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver {
 		this.wrappedDriver.quit();
 	}
 
+	@Override
 	public boolean isSessionLost() {
 		return this.wrappedDriver.isSessionLost();
 	}

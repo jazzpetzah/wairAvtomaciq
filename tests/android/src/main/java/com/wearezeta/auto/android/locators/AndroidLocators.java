@@ -453,7 +453,7 @@ public final class AndroidLocators {
 	public static final class PeoplePickerPage {
 
 		public static final Function<String, String> xpathTopConversationContactByName = name -> String
-				.format("//*[@value='%s']", name);
+				.format("//*[@value='%s']", name.toUpperCase());
 
 		public static final String xpathGmailLink = "//*[@value='Gmail']";
 

@@ -65,8 +65,8 @@ public class LoginPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public Boolean isVisible() {
-		return welcomeSlogan != null;
+	public boolean isVisible() {
+		return DriverUtils.isElementPresentAndDisplayed(welcomeSlogan);
 	}
 
 	public Boolean isLoginError() {
