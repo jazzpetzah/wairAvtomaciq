@@ -159,7 +159,7 @@ public class CommonIOSSteps {
 	/**
 	 * Hide keyboard using mobile command
 	 * 
-	 * @step ^I hide keyboard$
+	 * @step. ^I hide keyboard$
 	 * 
 	 * @throws Exception
 	 */
@@ -171,7 +171,7 @@ public class CommonIOSSteps {
 	/**
 	 * Hide keyboard by click on hide keyboard button
 	 * 
-	 * @step ^I click hide keyboard button$
+	 * @step. ^I click hide keyboard button$
 	 * 
 	 * @throws Exception
 	 */
