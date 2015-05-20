@@ -127,9 +127,8 @@ Feature: Calling
       Then I see the calling bar from user <Contact>
       When I call
       Then I see the calling bar from user <Contact>
-      When I end the call
+      When I silence the incoming call
       Then I do not see the calling bar
-      And <Contact> stops all waiting instances
 
       Examples: 
          | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
