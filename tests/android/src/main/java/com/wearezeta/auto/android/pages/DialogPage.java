@@ -189,27 +189,34 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void tapAddPictureBtn() throws Exception {
-		this.getWait().until(ExpectedConditions.visibilityOf(addPictureBtn));
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), addPictureBtn);
 		addPictureBtn.click();
 	}
 
 	public void tapPingBtn() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), pingBtn);
 		pingBtn.click();
 	}
 
 	public void tapCallBtn() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), callBtn);
 		callBtn.click();
 	}
 
 	public void tapMuteBtn() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), muteBtn);
 		muteBtn.click();
 	}
 
 	public void tapSpeakerBtn() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), speakerBtn);
 		speakerBtn.click();
 	}
 
 	public void tapCancelCallBtn() throws Exception {
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), cancelCallBtn);
 		cancelCallBtn.click();
 	}
 
@@ -317,19 +324,23 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void confirm() throws Exception {
-		getWait().until(ExpectedConditions.visibilityOf(okButton));
+		assert DriverUtils.waitUntilElementClickable(getDriver(), okButton);
 		okButton.click();
 	}
 
 	public void takePhoto() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.id(AndroidLocators.DialogPage.idDialogTakePhotoButton));
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				takePhotoButton);
 		takePhotoButton.click();
 	}
 
 	public void changeCamera() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.id(AndroidLocators.DialogPage.idDialogChangeCameraButton));
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				changeCameraButton);
 		changeCameraButton.click();
 	}
 
@@ -344,8 +355,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public Boolean isKnockIconVisible() throws Exception {
-		this.getWait().until(ExpectedConditions.visibilityOf(pingIcon));
-		return DriverUtils.isElementPresentAndDisplayed(pingIcon);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idPingIcon));
 	}
 
 	public String getConnectRequestChatLabel() throws Exception {
@@ -382,20 +393,26 @@ public class DialogPage extends AndroidPage {
 				By.id(AndroidLocators.CommonLocators.idSearchHintClose));
 	}
 
-	public void closeHint() {
+	public void closeHint() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), closeHintBtn);
 		closeHintBtn.click();
 	}
 
 	public void openGallery() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
 		galleryBtn.click();
 	}
 
 	public void closeFullScreenImage() throws Exception {
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), closeImageBtn);
 		closeImageBtn.click();
 	}
 
 	public OtherUserPersonalInfoPage tapConversationDetailsButton()
 			throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				addParticipant);
 		addParticipant.click();
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}
@@ -592,16 +609,21 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void tapPlayPauseBtn() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), playPauseBtn);
 		playPauseBtn.click();
 	}
 
 	public void tapDialogPageBottom() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(AndroidLocators.DialogPage.idDialogPageBottom));
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				dialogPageBottom);
 		dialogPageBottom.click();
 	}
 
 	public void tapYouTubePlay() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				playYoutubeBtn);
 		playYoutubeBtn.click();
 	}
 
@@ -635,6 +657,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void tapPlayPauseMediaBarBtn() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				mediaBarControl);
 		mediaBarControl.click();
 	}
 

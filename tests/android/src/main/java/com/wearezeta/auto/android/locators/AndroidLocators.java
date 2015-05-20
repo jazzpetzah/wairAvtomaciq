@@ -265,7 +265,7 @@ public final class AndroidLocators {
 
 		public static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
 
-		public static final String xpathLastPingMessage = "(//*[@id=ttv__row_conversation__ping_message])[last()]";
+		public static final String xpathLastPingMessage = "(//*[@id='ttv__row_conversation__ping_message'])[last()]";
 	}
 
 	public static final class LockscreenCallingPage {
