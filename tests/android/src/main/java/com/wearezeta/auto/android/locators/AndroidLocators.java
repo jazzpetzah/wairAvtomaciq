@@ -226,6 +226,8 @@ public final class AndroidLocators {
 		public static final String idDialogChangeCameraButton = "gtv__camera__top_control__back_camera";
 
 		public static final String idConfirmButton = "ttv__confirmation__confirm";
+		
+		public static final String xpathConfirmOKButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
 
 		public static final String idDialogImages = "iv__row_conversation__message_image";
 

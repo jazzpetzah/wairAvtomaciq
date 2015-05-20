@@ -71,7 +71,7 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.DialogPage.idDialogChangeCameraButton)
 	private WebElement changeCameraButton;
 
-	@FindBy(id = AndroidLocators.DialogPage.idConfirmButton)
+	@FindBy(xpath = AndroidLocators.DialogPage.xpathConfirmOKButton)
 	private WebElement okButton;
 
 	@FindBy(id = AndroidLocators.DialogPage.idDialogImages)
