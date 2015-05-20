@@ -19,7 +19,7 @@ Feature: Connect
     And I press Connect button
     And I see People picker page
     And I press Clear button
-    Then I see contact list loaded with User name <Contact>
+    Then I see contact list loaded with name <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact1  | Message       |
@@ -43,7 +43,7 @@ Feature: Connect
     And I press Connect button
     And I see People picker page
     And I navigate back to Conversations List
-    Then I see contact list loaded with User name <Contact>
+    Then I see contact list loaded with name <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Contact1  | Message       |

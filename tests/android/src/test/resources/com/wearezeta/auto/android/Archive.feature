@@ -6,11 +6,11 @@ Feature: Archive
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    And I see contact list loaded with User name <Contact1>
+    And I see contact list with name <Contact1>
     When I swipe right on a <Contact1>
-    Then Contact name <Contact> is not in list
+    Then I do not see contact list with name <Contact1>
     And I swipe up contact list
-    And I see contact list loaded with User name <Contact1>
+    And I see contact list with name <Contact1>
     And I swipe right on a <Contact1>
     And I see dialog page
 
@@ -25,11 +25,11 @@ Feature: Archive
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    And I see contact list loaded with User name <GroupChatName>
+    And I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
-    Then Contact name <GroupChatName> is not in list
+    Then I do not see contact list with name <GroupChatName>
     And I swipe up contact list
-    And I see contact list loaded with User name <GroupChatName>
+    And I see contact list with name <GroupChatName>
     And I swipe right on a <GroupChatName>
     And I see dialog page
 

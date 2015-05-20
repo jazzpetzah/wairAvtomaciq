@@ -155,7 +155,7 @@ public class CommonAndroidSteps {
 		} while (System.currentTimeMillis() - millisecondsStarted <= INERFACE_INIT_TIMEOUT_MILLISECONDS);
 		if (System.currentTimeMillis() - millisecondsStarted > INERFACE_INIT_TIMEOUT_MILLISECONDS) {
 			log.error(String
-					.format("UI views have not been initialized properly after %s seconds",
+					.format("UI views have not been initialized properly after %s seconds. Restarting Selendroid usually helps ;-)",
 							INERFACE_INIT_TIMEOUT_MILLISECONDS));
 			throw savedException;
 		}
@@ -971,8 +971,7 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Then("^I reset password by URL to new (.*)$")
-	public void WhenIResetPasswordByUrl(String newPass)
-			throws Exception {
+	public void WhenIResetPasswordByUrl(String newPass) throws Exception {
 		PagesCollection.peoplePickerPage = PagesCollection.commonAndroidPage
 				.resetByLink(link, newPass);
 	}
@@ -983,7 +982,7 @@ public class CommonAndroidSteps {
 	 * @step. ^I get new password link$
 	 * 
 	 * @param name
-	 *            the name of the user for which you want to reset the password. 
+	 *            the name of the user for which you want to reset the password.
 	 * @throws Exception
 	 */
 	@Then("^I get new (.*) password link$")
@@ -1005,7 +1004,7 @@ public class CommonAndroidSteps {
 		link = BackendAPIWrappers
 				.getPasswordResetLink(this.passwordResetMessage);
 	}
-	
+
 	/**
 	 * Activates user using browser by URL from mail
 	 * 

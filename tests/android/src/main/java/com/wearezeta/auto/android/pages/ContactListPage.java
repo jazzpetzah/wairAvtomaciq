@@ -117,6 +117,7 @@ public class ContactListPage extends AndroidPage {
 
 	public void waitForConversationListLoad() throws Exception {
 		getWait().until(ExpectedConditions.visibilityOf(contactListFrame));
+		verifyContactListIsFullyLoaded();
 	}
 
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
@@ -149,11 +150,9 @@ public class ContactListPage extends AndroidPage {
 
 	public AndroidPage swipeRightOnContact(int time, String contact)
 			throws Exception {
-		WebElement el = this
-				.getDriver()
-				.findElementByXPath(
-						AndroidLocators.ContactListPage.xpathContactListArchiveUnarchiveByName
-								.apply(contact));
+		WebElement el = this.getDriver().findElementByXPath(
+				AndroidLocators.ContactListPage.xpathContactByName
+						.apply(contact));
 		elementSwipeRight(el, time);
 		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(AndroidLocators.CommonLocators.idEditText))) {
@@ -164,13 +163,12 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public AndroidPage swipeOnArchiveUnarchive(String contact) throws Exception {
-		WebElement el = getDriver()
-				.findElementByXPath(
-						AndroidLocators.ContactListPage.xpathContactListArchiveUnarchiveByName
-								.apply(contact));
+		WebElement el = getDriver().findElementByXPath(
+				AndroidLocators.ContactListPage.xpathContactByName
+						.apply(contact));
 		DriverUtils.swipeRight(this.getDriver(), el, 1000);
 		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idEditText))) {
+				By.id(AndroidLocators.CommonLocators.idEditText), 2)) {
 			return new ContactListPage(this.getLazyDriver());
 		} else {
 			return new DialogPage(this.getLazyDriver());
@@ -237,6 +235,13 @@ public class ContactListPage extends AndroidPage {
 		return findInContactList(name, 0) != null;
 	}
 
+	public boolean waitUntilContactDisappears(String name) throws Exception {
+		final By nameLocator = By
+				.xpath(AndroidLocators.ContactListPage.xpathContactByName
+						.apply(name));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLocator);
+	}
+
 	public boolean isContactExists(String name, int cycles) throws Exception {
 		return findInContactList(name, cycles) != null;
 	}
@@ -265,15 +270,9 @@ public class ContactListPage extends AndroidPage {
 				By.id(AndroidLocators.ContactListPage.idPlayPauseMedia));
 	}
 
-	public void waitForContactListLoadFinished() throws Exception {
-		if (contactListNames.size() > 0) {
-			waitForContacListLoading();
-		}
-	}
-
 	private static final int CONTACT_LIST_ITEMS_LOAD_TIMEOUT_SECONDS = 60;
 
-	private void waitForContacListLoading() throws Exception {
+	public void verifyContactListIsFullyLoaded() throws Exception {
 		final By locator = By
 				.xpath(AndroidLocators.ContactListPage.xpathLoadingContactListItem);
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,

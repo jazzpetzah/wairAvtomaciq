@@ -11,5 +11,3 @@ tests/webapp/nbactions.xml
 tests/tools/jenkins_controller/.idea
 customBackend.json
 
-#repository safe template of the config file
-tests/android/src/main/resources/Configuration.cnf

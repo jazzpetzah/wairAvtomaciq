@@ -9,8 +9,8 @@ Feature: People View
     Given <Contact1> has a name <Contact1NewName>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list
-    And I see contact list loaded with User name <Contact1>
-    And I see contact list loaded with User name <Contact2>
+    And I see contact list with name <Contact1>
+    And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I swipe up on dialog page
@@ -47,8 +47,8 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    And I see contact list loaded with User name <Contact1>
-    And I see contact list loaded with User name <Contact2>
+    And I see contact list with name <Contact1>
+    And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I swipe up on dialog page
@@ -76,8 +76,8 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    And I see contact list loaded with User name <Contact1>
-    And I see contact list loaded with User name <Contact2>
+    And I see contact list with name <Contact1>
+    And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I swipe up on dialog page
@@ -131,7 +131,7 @@ Feature: People View
     And I return to group chat page
     Then I see a message informing me that I renamed the conversation to <NewConversationName>
     And I navigate back from dialog page
-    And I see contact list loaded with User name <NewConversationName>
+    And I see contact list with name <NewConversationName>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |

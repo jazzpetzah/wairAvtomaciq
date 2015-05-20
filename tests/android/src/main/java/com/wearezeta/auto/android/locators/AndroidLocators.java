@@ -142,10 +142,6 @@ public final class AndroidLocators {
 
 		public static final String xpathLoadingContactListItem = "//*[@id='tv_conv_list_topic' and contains(@value, '…')]";
 
-		public static final Function<String, String> xpathContactListArchiveUnarchiveByName = name -> String
-				.format("//*[@value='%s']/preceding::*[@id='tv_conv_list_menu_archive' or @id='tv_conv_list_menu_unarchive']",
-						name);
-
 		public static final String idConfirmCancelButton = "cancel";
 
 		public static final String idPlayPauseMedia = "tv_conv_list_media_player";

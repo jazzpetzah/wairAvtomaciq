@@ -37,27 +37,7 @@ public class ContactListPageSteps {
 	@Given("^I see Contact list$")
 	public void GivenISeeContactList() throws Throwable {
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
-		PagesCollection.contactListPage.waitForContactListLoadFinished();
-	}
-
-	/**
-	 * Checks to see that a user does not exist in the conversation list
-	 * 
-	 * @step. ^I do not see Contact list with name (.*)$
-	 * 
-	 * @param selfContactName
-	 *            the name of the contact to check
-	 * @throws Exception
-	 */
-	@Given("^I do not see Contact list with name (.*)$")
-	public void GivenIDoNotSeeContactListWithName(String name) throws Exception {
-		try {
-			name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertFalse(PagesCollection.contactListPage
-				.isContactExists(name));
+		PagesCollection.contactListPage.verifyContactListIsFullyLoaded();
 	}
 
 	/**
@@ -191,13 +171,15 @@ public class ContactListPageSteps {
 	/**
 	 * Check to see that a given username appears in the contact list
 	 * 
-	 * @step. ^I see contact list loaded with User name (.*)$
+	 * @step. ^I( do not)? see contact list with name (.*)$
 	 * @param userName
 	 *            the username to check for in the contact list
+	 * @param shouldNotSee
+	 *            equals to null if "do not" part does not exist
 	 * @throws Exception
 	 */
-	@Then("^I see contact list loaded with User name (.*)$")
-	public void ISeeUserNameFirstInContactList(String userName)
+	@Then("^I( do not)? see contact list with name (.*)$")
+	public void ISeeUserNameInContactList(String shouldNotSee, String userName)
 			throws Exception {
 		try {
 			userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
@@ -205,8 +187,13 @@ public class ContactListPageSteps {
 			// Ignore silently
 		}
 		PagesCollection.contactListPage.waitForConversationListLoad();
-		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(
-				userName, 5));
+		if (shouldNotSee == null) {
+			Assert.assertTrue(PagesCollection.contactListPage.isContactExists(
+					userName, 1));
+		} else {
+			Assert.assertTrue(PagesCollection.contactListPage
+					.waitUntilContactDisappears(userName));
+		}
 	}
 
 	/**
