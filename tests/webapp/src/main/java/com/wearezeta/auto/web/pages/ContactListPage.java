@@ -25,7 +25,6 @@ import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
@@ -34,8 +33,6 @@ public class ContactListPage extends WebPage {
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
-
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
 	private List<WebElement> contactListEntries;
@@ -367,8 +364,7 @@ public class ContactListPage extends WebPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Self profile entry has not been found within "
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
-		selectEntryWithRetry(entryLocator,
-				WebAppLocators.ContactListPage.cssSelfProfileEntry);
+		this.getDriver().findElement(entryLocator).click();
 		return new SelfProfilePage(this.getLazyDriver());
 	}
 
