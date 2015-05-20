@@ -91,7 +91,7 @@ public class CallingOverlayPage extends AndroidPage {
 		}
 	}
 
-	public void acceptCall() {
+	public DialogPage acceptCall() throws Exception {
 		acceptButton.click();
 		return new DialogPage(getLazyDriver());
 	}

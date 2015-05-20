@@ -365,13 +365,7 @@ public final class AndroidLocators {
 
 		public static final String xpathOtherText = "//*[@value='OTHERS']";
 
-		public static final String idSendInvitationFrame = "fl_pickuser__invite__bubble";
-
-		public static final String idSendInvitationFrame = "ll_pickuser__error_invite";
-		
 		public static final String idSendInvitationBubble = "fl_pickuser__invite__bubble";
-
-		public static final String xpathOtherText = "//*[@value='OTHERS']";
 
 		public static final String xpathSendInvitationFrame = "//LinearLayout[.//FrameLayout[@id='fl_pickuser__invite__bubble']]";
 

@@ -67,7 +67,7 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idNoResultsFound)
 	private WebElement noResults;
 
-	@FindBy(id = AndroidLocators.PeoplePickerPage.idSendInvitationFrame)
+	@FindBy(xpath = AndroidLocators.PeoplePickerPage.xpathSendInvitationFrame)
 	private WebElement sendInvitationFrame;
 
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idSendInvitationBubble)
