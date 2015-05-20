@@ -312,4 +312,12 @@ public abstract class IOSPage extends BasePage {
 	public ScreenOrientation getOrientation() throws Exception {
 		return this.getDriver().getOrientation();
 	}
+	
+	public void tapOnCenterOfScreen() throws Exception {
+		DriverUtils.genericTap(this.getDriver());
+	}
+	
+	public void tapOnTopLeftScreen() throws Exception {
+		DriverUtils.genericTap(this.getDriver(), 1, 1);
+	}
 }
