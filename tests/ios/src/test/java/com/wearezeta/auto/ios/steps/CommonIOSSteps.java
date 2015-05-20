@@ -474,11 +474,11 @@ public class CommonIOSSteps {
 	/**
 	 * Tap in center of the screen
 	 * 
-	 * @step I tap on center of the screen
+	 * @step. ^I tap on center of the screen$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I tap on center of the screen")
+	@When("^I tap on center of the screen$")
 	public void ITapOnCenterOfTheScreen() throws Exception {
 		PagesCollection.loginPage.tapOnCenterOfScreen();
 	}
@@ -486,11 +486,11 @@ public class CommonIOSSteps {
 	/**
 	 * Tap in top left corner of the screen
 	 * 
-	 * @step I tap on top left corner of the screen
+	 * @step. ^I tap on top left corner of the screen$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I tap on top left corner of the screen")
+	@When("^I tap on top left corner of the screen$")
 	public void ITapOnTopLeftCornerOfTheScreen() throws Exception {
 		PagesCollection.loginPage.tapOnTopLeftScreen();
 	}
