@@ -112,3 +112,24 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
+
+  @staging @id1882
+   Scenario Outline: People trying to call me while I'm not signed in
+      Given My browser supports calling
+      Given There are 2 users where <Name> is me
+      Given Myself is connected to <Contact>
+      When <Contact> calls me using <CallBackend>
+      Given I Sign in using login <Login> and password <Password>
+      And I see my name on top of Contact list
+      And I open conversation with <Contact>
+      # wait 5 seconds to catch up the actual call
+      And I refresh page      
+      And I wait for 5 seconds
+      Then I see the calling bar from user <Contact>
+      And <Contact> stops all calls to me
+      Then I see missed call notification for conversation <Contact>
+
+      Examples: 
+         | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+         | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+
