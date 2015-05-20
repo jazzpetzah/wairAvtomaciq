@@ -6,7 +6,7 @@ Feature: Sign In
     Given I switch to sign in page
     Given I see Sign In page
     When I enter email <Email>
-    And I enter password <Password>
+    And I enter password "<Password>"
     And I press Sign In button
     Then I am signed in properly
     And I see Contacts Upload dialog
