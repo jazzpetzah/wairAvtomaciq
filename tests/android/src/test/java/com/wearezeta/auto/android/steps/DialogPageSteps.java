@@ -420,7 +420,7 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.clickLastImageFromDialog();
 	}
 
-	private static final int SWIPE_DURATION_MILLISECONDS = 2000;
+	private static final int SWIPE_DURATION_MILLISECONDS = 1000;
 	
 	/**
 	 * 

@@ -233,11 +233,11 @@ public class ContactListPage extends AndroidPage {
 		return this;
 	}
 
-	public Boolean isContactExists(String name) throws Exception {
+	public boolean isContactExists(String name) throws Exception {
 		return findInContactList(name, 0) != null;
 	}
 
-	public Boolean isContactExists(String name, int cycles) throws Exception {
+	public boolean isContactExists(String name, int cycles) throws Exception {
 		return findInContactList(name, cycles) != null;
 	}
 

@@ -67,7 +67,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		return (int) Math.round(startC + (endC - startC) / duration * current);
 	}
 
-	private final static int SWIPE_STEP_DURATION_MILLISECONDS = 500;
+	private final static int SWIPE_STEP_DURATION_MILLISECONDS = 50;
 
 	@Override
 	public void swipe(int startx, int starty, int endx, int endy,

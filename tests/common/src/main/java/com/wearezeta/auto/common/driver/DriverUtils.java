@@ -346,7 +346,7 @@ public class DriverUtils {
 		}
 	}
 
-	public static final int DEFAULT_SWIPE_DURATION = 2000; // milliseconds
+	public static final int DEFAULT_SWIPE_DURATION = 1000; // milliseconds
 	public static final int DEFAULT_FINGERS = 1;
 
 	public static void genericTap(AppiumDriver driver) {
