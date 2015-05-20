@@ -85,7 +85,7 @@ Feature: Search
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @torun @id1721
+  @smoke @id1721
   Scenario Outline: Verify you can add new user from search results
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
