@@ -420,6 +420,8 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.clickLastImageFromDialog();
 	}
 
+	private static final int SWIPE_DURATION_MILLISECONDS = 2000;
+	
 	/**
 	 * 
 	 * @step. ^I swipe up on dialog page
@@ -432,7 +434,7 @@ public class DialogPageSteps {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
-				.swipeUp(1000);
+				.swipeUp(SWIPE_DURATION_MILLISECONDS);
 	}
 
 	/**
@@ -448,7 +450,7 @@ public class DialogPageSteps {
 		if (PagesCollection.dialogPage == null) {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
-		PagesCollection.dialogPage.swipeDown(1000);
+		PagesCollection.dialogPage.swipeDown(SWIPE_DURATION_MILLISECONDS);
 	}
 
 	/**

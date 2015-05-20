@@ -77,7 +77,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private WebElement frameLayout;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classPager)
+	@FindBy(id = AndroidLocators.CommonLocators.idPager)
 	private WebElement backGround;
 
 	@FindBy(id = AndroidLocators.CommonLocators.idConfirmBtn)

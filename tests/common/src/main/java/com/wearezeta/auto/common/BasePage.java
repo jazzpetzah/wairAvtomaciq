@@ -1,7 +1,6 @@
 package com.wearezeta.auto.common;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -93,13 +92,13 @@ public abstract class BasePage {
 		return screenshot;
 	}
 
-	public abstract BasePage swipeLeft(int time) throws IOException, Exception;;
+	public abstract BasePage swipeLeft(int time) throws Exception;;
 
-	public abstract BasePage swipeRight(int time) throws IOException, Exception;
+	public abstract BasePage swipeRight(int time) throws Exception;
 
-	public abstract BasePage swipeUp(int time) throws IOException, Exception;
+	public abstract BasePage swipeUp(int time) throws Exception;
 
-	public abstract BasePage swipeDown(int time) throws IOException, Exception;
+	public abstract BasePage swipeDown(int time) throws Exception;
 
 	protected static void clearPagesCollection(
 			Class<? extends AbstractPagesCollection> collection,

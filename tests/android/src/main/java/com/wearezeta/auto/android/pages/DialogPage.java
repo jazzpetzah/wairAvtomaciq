@@ -149,7 +149,7 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.DialogPage.idNewConversationNameMessage)
 	private WebElement newConversationNameMessage;
 
-	@FindBy(id = AndroidLocators.DialogPage.xpathLastConversationMessage)
+	@FindBy(xpath = AndroidLocators.DialogPage.xpathLastConversationMessage)
 	private WebElement lastConversationMessage;
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
@@ -277,15 +277,13 @@ public class DialogPage extends AndroidPage {
 
 	@Override
 	public AndroidPage swipeUp(int time) throws Exception {
-		dialogsPagesSwipeUp(time);// TODO workaround
-		Thread.sleep(1000);
+		dialogsPagesSwipeUp(time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
-		dialogsPagesSwipeDown(time);// TODO workaround
-		Thread.sleep(1000);
+		dialogsPagesSwipeDown(time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
@@ -593,7 +591,11 @@ public class DialogPage extends AndroidPage {
 		return lastPingMessage.getText();
 	}
 
-	public boolean isGroupChatDialogContainsNames(List<String> names) {
+	public boolean isGroupChatDialogContainsNames(List<String> names) throws Exception {
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.xpath(AndroidLocators.DialogPage.xpathLastConversationMessage));
 		final String convoText = lastConversationMessage.getText();
 		for (String name : names) {
 			if (!convoText.toLowerCase().contains(name.toLowerCase())) {

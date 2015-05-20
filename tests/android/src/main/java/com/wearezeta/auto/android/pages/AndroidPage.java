@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import io.appium.java_client.pagefactory.AndroidFindBy;
-
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -29,10 +27,10 @@ public abstract class AndroidPage extends BasePage {
 	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
 
-	@AndroidFindBy(className = AndroidLocators.CommonLocators.classPager)
+	@FindBy(id = AndroidLocators.CommonLocators.idPager)
 	private WebElement content;
 
-	@AndroidFindBy(className = AndroidLocators.CommonLocators.classListView)
+	@FindBy(className = AndroidLocators.CommonLocators.classListView)
 	private WebElement container;
 
 	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
@@ -178,89 +176,91 @@ public abstract class AndroidPage extends BasePage {
 		}
 	}
 
-	public void dialogsPagesSwipeUp(int time) {
+	public void dialogsPagesSwipeUp(int durationMilliseconds) throws Exception {
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();
-		try {
-			this.getDriver().swipe(coords.x + elementSize.width / 2,
-					coords.y + elementSize.height - 300,
-					coords.x + elementSize.width / 2, coords.y + 50, time);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+		this.getDriver().swipe(coords.x + elementSize.width / 2,
+				coords.y + elementSize.height - 300,
+				coords.x + elementSize.width / 2, coords.y + 50,
+				durationMilliseconds);
 	}
 
-	public void dialogsPagesSwipeDown(int time) {
+	public void dialogsPagesSwipeDown(int durationMilliseconds)
+			throws Exception {
 		Point coords = content.getLocation();
 		Dimension elementSize = content.getSize();
-		try {
-			this.getDriver().swipe(coords.x + elementSize.width / 2,
-					coords.y + 50, coords.x + elementSize.width / 2,
-					coords.y + elementSize.height - 300, time);
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y + 50,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height - 300, durationMilliseconds);
 	}
 
 	@Override
-	public AndroidPage swipeDown(int time) throws Exception {
-		DriverUtils.swipeDown(this.getDriver(), content, time);
+	public AndroidPage swipeDown(int durationMilliseconds) throws Exception {
+		DriverUtils.swipeDown(this.getDriver(), content, durationMilliseconds);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public AndroidPage swipeRightCoordinates(int time) throws Exception {
-		DriverUtils.swipeRightCoordinates(this.getDriver(), time);
+	public AndroidPage swipeRightCoordinates(int durationMilliseconds)
+			throws Exception {
+		DriverUtils.swipeRightCoordinates(this.getDriver(),
+				durationMilliseconds);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
-	public AndroidPage swipeRightCoordinates(int time, int horizontalPercent)
-			throws Exception {
-		DriverUtils.swipeRightCoordinates(this.getDriver(), time,
-				horizontalPercent);
+	public AndroidPage swipeRightCoordinates(int durationMilliseconds,
+			int horizontalPercent) throws Exception {
+		DriverUtils.swipeRightCoordinates(this.getDriver(),
+				durationMilliseconds, horizontalPercent);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
-	public AndroidPage swipeLeftCoordinates(int time) throws Exception {
-		DriverUtils.swipeLeftCoordinates(this.getDriver(), time);
+	public AndroidPage swipeLeftCoordinates(int durationMilliseconds)
+			throws Exception {
+		DriverUtils
+				.swipeLeftCoordinates(this.getDriver(), durationMilliseconds);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
-	public AndroidPage swipeLeftCoordinates(int time, int horizontalPercent)
-			throws Exception {
-		DriverUtils.swipeLeftCoordinates(this.getDriver(), time,
-				horizontalPercent);
+	public AndroidPage swipeLeftCoordinates(int durationMilliseconds,
+			int horizontalPercent) throws Exception {
+		DriverUtils.swipeLeftCoordinates(this.getDriver(),
+				durationMilliseconds, horizontalPercent);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
-	public AndroidPage swipeUpCoordinates(int time) throws Exception {
-		DriverUtils.swipeUpCoordinates(this.getDriver(), time);
+	public AndroidPage swipeUpCoordinates(int durationMilliseconds)
+			throws Exception {
+		DriverUtils.swipeUpCoordinates(this.getDriver(), durationMilliseconds);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	public AndroidPage swipeUpCoordinates(int time, int verticalPercent)
-			throws Exception {
-		DriverUtils.swipeUpCoordinates(this.getDriver(), time, verticalPercent);
+	public AndroidPage swipeUpCoordinates(int durationMilliseconds,
+			int verticalPercent) throws Exception {
+		DriverUtils.swipeUpCoordinates(this.getDriver(), durationMilliseconds,
+				verticalPercent);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	public AndroidPage swipeByCoordinates(int time, int widthStartPercent,
-			int hightStartPercent, int widthEndPercent, int hightEndPercent)
-			throws Exception {
-		DriverUtils.swipeByCoordinates(this.getDriver(), time,
+	public AndroidPage swipeByCoordinates(int durationMilliseconds,
+			int widthStartPercent, int hightStartPercent, int widthEndPercent,
+			int hightEndPercent) throws Exception {
+		DriverUtils.swipeByCoordinates(this.getDriver(), durationMilliseconds,
 				widthStartPercent, hightStartPercent, widthEndPercent,
 				hightEndPercent);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public AndroidPage swipeDownCoordinates(int time) throws Exception {
-		DriverUtils.swipeDownCoordinates(this.getDriver(), time);
+	public AndroidPage swipeDownCoordinates(int durationMilliseconds)
+			throws Exception {
+		DriverUtils
+				.swipeDownCoordinates(this.getDriver(), durationMilliseconds);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public AndroidPage swipeDownCoordinates(int time, int verticalPercent)
-			throws Exception {
-		DriverUtils.swipeDownCoordinates(this.getDriver(), time,
-				verticalPercent);
+	public AndroidPage swipeDownCoordinates(int durationMilliseconds,
+			int verticalPercent) throws Exception {
+		DriverUtils.swipeDownCoordinates(this.getDriver(),
+				durationMilliseconds, verticalPercent);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 

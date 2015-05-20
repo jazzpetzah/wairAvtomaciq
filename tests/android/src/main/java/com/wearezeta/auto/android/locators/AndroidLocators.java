@@ -173,7 +173,7 @@ public final class AndroidLocators {
 
 		public static final String classListView = "SwipeListView";
 
-		public static final String classPager = "ConversationViewPager";
+		public static final String idPager = "conversation_pager";
 
 		public static final String idConfirmBtn = "confirm";
 

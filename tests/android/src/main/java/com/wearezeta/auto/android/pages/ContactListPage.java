@@ -65,7 +65,7 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.ContactListPage.idConvList)
 	private WebElement convList;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classPager)
+	@FindBy(id = AndroidLocators.CommonLocators.idPager)
 	private WebElement mainControl;
 
 	@FindBy(id = AndroidLocators.ConnectToPage.idConnectToHeader)
