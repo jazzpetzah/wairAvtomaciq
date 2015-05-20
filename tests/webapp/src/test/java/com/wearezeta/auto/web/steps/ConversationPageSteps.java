@@ -334,10 +334,11 @@ public class ConversationPageSteps {
 	 * @param message
 	 * @throws Exception
 	 */
-	@Then("^I do not see text message (.*)")
+	@Then("^I do not see text message ?(.*)$")
 	public void IDontSeeTextMessage(String message) throws Exception {
-		Assert.assertFalse(PagesCollection.conversationPage
-				.isTextMessageVisible(message));
+		Assert.assertFalse("Saw text message " + message,
+				PagesCollection.conversationPage
+						.isTextMessageVisible(message == null ? "" : message));
 	}
 
 	/**
