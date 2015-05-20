@@ -269,7 +269,7 @@ Feature: People View
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | UnknownContactMail | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | user3Email         | PeoplePopoverGroupChat | YOU ADDED |
 
- @staging @id1700
+   @regression @id1700
    Scenario Outline: Verify users can properly leave a group conversation on the other end
       Given There are 4 users where <Name> is me
       Given Myself is connected to <KnownContact>
@@ -401,3 +401,25 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Message                         | Message2                    |
       | user1Email | user1Password | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH |
+
+  @staging @id1557
+  Scenario Outline: Verify you can unblock someone from a group conversation 
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given Myself blocked <Contact1>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my name on top of Contact list
+    When I open conversation with <ChatName>
+    When I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact1> on Group Participants popover
+    Then I see username <Contact1> on Group Participants popover
+    And I see Unblock button on Group Participants popover
+    When I click Unblock button on Group Participants popover
+    And I confirm Unblock from group chat on Group Participants popover
+    Then I see Contact list with name <Contact1>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | PeoplePopoverGroupChat |

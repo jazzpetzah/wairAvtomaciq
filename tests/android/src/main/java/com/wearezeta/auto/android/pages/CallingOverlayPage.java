@@ -80,7 +80,18 @@ public class CallingOverlayPage extends AndroidPage {
 		return callingUsersName.getText();
 	}
 
-	public DialogPage acceptCall() throws Exception {
+	public void waitForCallersNameChanges(String name, int sec)
+			throws InterruptedException {
+		if (sec > 0 && callingUsersName.getText().equals(name)) {
+			Thread.sleep(1000);
+			sec--;
+			waitForCallersNameChanges(name, sec);
+		} else {
+			return;
+		}
+	}
+
+	public void acceptCall() {
 		acceptButton.click();
 		return new DialogPage(getLazyDriver());
 	}

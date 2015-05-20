@@ -70,6 +70,9 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idSendInvitationFrame)
 	private WebElement sendInvitationFrame;
 
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idSendInvitationBubble)
+	private WebElement sendInvitationBubble;
+
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerListContainer)
 	private WebElement content;
 
@@ -262,7 +265,11 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public void tapOnSendInvitation() throws Exception {
-		sendInvitationFrame.click();
+		try {
+			sendInvitationBubble.click();
+		} catch (NoSuchElementException ex) {
+			sendInvitationFrame.click();
+		}
 	}
 
 	// FIXME: Unexpected method behavior

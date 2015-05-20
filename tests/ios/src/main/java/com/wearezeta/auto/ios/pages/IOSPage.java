@@ -57,6 +57,9 @@ public abstract class IOSPage extends BasePage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardReturnButton)
 	private WebElement keyboardReturnBtn;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameHideKeyboardButton)
+	private WebElement keyboardHideBtn;
 
 	private static String imagesPath = "";
 
@@ -228,6 +231,10 @@ public abstract class IOSPage extends BasePage {
 	public void clickKeyboardReturnButton() {
 		keyboardReturnBtn.click();
 	}
+	
+	public void clickHideKeyboarButton() {
+		keyboardHideBtn.click();
+	}
 
 	public static Object executeScript(String script) throws Exception {
 		return PlatformDrivers.getInstance().getDriver(Platform.iOS).get()
@@ -304,5 +311,13 @@ public abstract class IOSPage extends BasePage {
 
 	public ScreenOrientation getOrientation() throws Exception {
 		return this.getDriver().getOrientation();
+	}
+	
+	public void tapOnCenterOfScreen() throws Exception {
+		DriverUtils.genericTap(this.getDriver());
+	}
+	
+	public void tapOnTopLeftScreen() throws Exception {
+		DriverUtils.genericTap(this.getDriver(), 1, 1);
 	}
 }

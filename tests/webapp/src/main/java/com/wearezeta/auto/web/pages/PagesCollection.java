@@ -6,6 +6,7 @@ import com.wearezeta.auto.web.pages.external.PasswordChangePage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestSuccessfullPage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeSuccessfullPage;
+import com.wearezeta.auto.web.pages.external.YouAreInvitedPage;
 import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
 
 public class PagesCollection extends AbstractPagesCollection {
@@ -43,4 +44,6 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static PasswordChangePage passwordChangePage = null;
 
 	public static PasswordChangeSuccessfullPage passwordChangeSuccessfullPage = null;
+	
+	public static YouAreInvitedPage youAreInvitedPage = null;
 }

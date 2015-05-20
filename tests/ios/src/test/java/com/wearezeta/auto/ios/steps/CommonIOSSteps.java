@@ -155,6 +155,31 @@ public class CommonIOSSteps {
 	public void IDismissAlert() throws Exception {
 		PagesCollection.loginPage.dismissAlert();
 	}
+	
+	/**
+	 * Hide keyboard using mobile command
+	 * 
+	 * @step ^I hide keyboard$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I hide keyboard$")
+	public void IHideKeyboard() throws Exception {
+		PagesCollection.loginPage.hideKeyboard();
+	}
+	
+	/**
+	 * Hide keyboard by click on hide keyboard button
+	 * 
+	 * @step ^I click hide keyboard button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click hide keyboard button$")
+	public void IClickHideKeyboardBtn() throws Exception {
+		PagesCollection.loginPage.clickHideKeyboarButton();
+	}
+	
 
 	/**
 	 * Closes the app for a certain amount of time in seconds
@@ -444,6 +469,30 @@ public class CommonIOSSteps {
 			throws Exception {
 		PagesCollection.loginPage.rotateScreen(orientation);
 		Thread.sleep(1000); // fix for animation
+	}
+	
+	/**
+	 * Tap in center of the screen
+	 * 
+	 * @step I tap on center of the screen
+	 * 
+	 * @throws Exception
+	 */
+	@When("I tap on center of the screen")
+	public void ITapOnCenterOfTheScreen() throws Exception {
+		PagesCollection.loginPage.tapOnCenterOfScreen();
+	}
+	
+	/**
+	 * Tap in top left corner of the screen
+	 * 
+	 * @step I tap on top left corner of the screen
+	 * 
+	 * @throws Exception
+	 */
+	@When("I tap on top left corner of the screen")
+	public void ITapOnTopLeftCornerOfTheScreen() throws Exception {
+		PagesCollection.loginPage.tapOnTopLeftScreen();
 	}
 
 }

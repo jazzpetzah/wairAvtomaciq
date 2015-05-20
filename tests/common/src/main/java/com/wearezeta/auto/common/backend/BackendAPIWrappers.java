@@ -29,6 +29,8 @@ import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.onboarding.AddressBook;
+import com.wearezeta.auto.common.onboarding.Card;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
@@ -49,6 +51,7 @@ public final class BackendAPIWrappers {
 	private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
 	private static final int AUTH_FAILED_ERROR = 403;
 	private static final int SERVER_SIDE_ERROR = 500;
+	private static final int PHONE_NUMBER_ALREADY_REGISTERED_ERROR = 409;
 	private static final int MAX_BACKEND_RETRIES = 5;
 
 	private static final long MAX_MSG_DELIVERY_OFFSET = 10000; // milliseconds
@@ -108,10 +111,34 @@ public final class BackendAPIWrappers {
 			BackendREST.registerNewUser(user.getEmail(), user.getName(),
 					user.getPassword());
 			activateRegisteredUserByEmail(activationMessage);
-			attachUserPhoneNumber(user);
+			while (true) {
+				try {
+					attachUserPhoneNumber(user);
+					break;
+				} catch (BackendRequestException e) {
+					if (e.getReturnCode() == PHONE_NUMBER_ALREADY_REGISTERED_ERROR) {
+						user.setPhoneNumber(new PhoneNumber(
+								PhoneNumber.WIRE_COUNTRY_PREFIX));
+					} else {
+						throw e;
+					}
+				}
+			}
 			break;
 		case ByPhoneNumber:
-			BackendREST.bookPhoneNumber(user.getPhoneNumber());
+			while (true) {
+				try {
+					BackendREST.bookPhoneNumber(user.getPhoneNumber());
+					break;
+				} catch (BackendRequestException e) {
+					if (e.getReturnCode() == PHONE_NUMBER_ALREADY_REGISTERED_ERROR) {
+						user.setPhoneNumber(new PhoneNumber(
+								PhoneNumber.WIRE_COUNTRY_PREFIX));
+					} else {
+						throw e;
+					}
+				}
+			}
 			final String activationCode = getActivationCodeForBookedPhoneNumber(user
 					.getPhoneNumber());
 			activateRegisteredUserByPhoneNumber(user.getPhoneNumber(),
@@ -175,24 +202,27 @@ public final class BackendAPIWrappers {
 		return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString(
 				"code");
 	}
-	
-	public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber) throws Exception {
+
+	public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber)
+			throws Exception {
 		String code = null;
-		int count = 0; Exception ex = null;
+		int count = 0;
+		Exception ex = null;
 		while (code == null && count < 10) {
-			count ++;
+			count++;
 			try {
-				code = BackendREST.getLoginCodeViaBackdoor(phoneNumber).getString("code");
+				code = BackendREST.getLoginCodeViaBackdoor(phoneNumber)
+						.getString("code");
 			} catch (Exception e) {
 				code = null;
 				ex = e;
-				Thread.sleep(500);
+				Thread.sleep(1000);
 			}
 		}
 		if (code == null) {
-			throw ex; 
+			throw ex;
 		}
-			
+
 		return code;
 	}
 
@@ -637,6 +667,35 @@ public final class BackendAPIWrappers {
 		tryLoginByUser(userFrom);
 		BackendREST.sendConversationMessage(generateAuthToken(userFrom),
 				convId, message);
+	}
+
+	public static void uploadAddressBookWithContacts(ClientUser user,
+			List<String> emailsToAdd) throws Exception {
+		AddressBook addressBook = new AddressBook();
+		for (String email : emailsToAdd) {
+			Card card = new Card();
+			card.addContact(email);
+			addressBook.addCard(card);
+		}
+		BackendREST.uploadAddressBook(generateAuthToken(user), addressBook);
+	}
+
+	public static void waitUntilSuggestionFound(ClientUser userFrom, int timeout)
+			throws Exception {
+		long startTimestamp = (new Date()).getTime();
+		while ((new Date()).getTime() <= startTimestamp + timeout * 1000) {
+			final JSONObject suggestions = BackendREST
+					.getSuggestions(generateAuthToken(userFrom));
+			log.debug("Suggestions: " + suggestions.toString());
+			if (suggestions.getInt("returned") > 0) {
+				return;
+			}
+			Thread.sleep(1000);
+		}
+		throw new NoContactsFoundException(
+				String.format(
+						"%s contact(s) '%s' were not found within %s second(s) timeout",
+						timeout));
 	}
 
 	public static String sendConversationPing(ClientUser userFrom, String convId)

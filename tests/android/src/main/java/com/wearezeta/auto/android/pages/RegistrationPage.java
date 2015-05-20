@@ -109,7 +109,7 @@ public class RegistrationPage extends AndroidPage {
 
 	public void setName(String name) throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				confirmImageButton);
+				nameField);
 		// TABLET fix
 		if (nameField.getText().toLowerCase().contains(YOUR_NAME)) {
 			nameField.sendKeys(name);
