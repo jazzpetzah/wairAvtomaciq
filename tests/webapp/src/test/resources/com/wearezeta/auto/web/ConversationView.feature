@@ -136,34 +136,3 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
       | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
-      
-  @torun @id1563
-  Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    And Contact <Contact> sends image <Picture> to single user conversation <Name>
-    And Contact <Contact> sends message <Message1> to user <Name>
-    And User <Name> blocks user <Contact>
-    And Contact <Contact> sends image <Picture2> to single user conversation <Name>
-    And Contact <Contact> send message <Message2> to user <Name>
-    Then Last message is <Message1>
-
-    And I Sign in using login <ContactEmail> and password <ContactPassword>
-    Then I see my name on top of Contact list
-    When I open conversation with <Name>
-    Then I see text message <Message2>
-    When I open self profile
-    And I click gear button on self profile page
-    And I select Sign out menu item on self profile page
-    
-    And User <Name> unblocks user <Contact>
-
-    And I Sign in using login <Login> and password <Password>
-    Then I see my name is selected on top of Contact list
-    Then I see Contact list with name <Contact>
-    When I open conversation with <Contact>
-    Then I see text message <Message2>
-
-    Examples: 
-      | Name      | Contact  | ContactEmail | ContactPassword | Msg1FromUserA | Msg2FromUserA | Msg3FromUserB |
-      | user1Name | user2Name | user2Email    | user2Password | Message1      | Message2      | Message3      |

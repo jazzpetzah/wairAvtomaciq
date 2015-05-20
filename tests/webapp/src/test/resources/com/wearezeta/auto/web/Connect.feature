@@ -221,3 +221,43 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | ChatName                 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat | user2Email | user2Password | user2Name | GroupChatWithBlockedUser |
+
+  @torun @id1563
+  Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
+    Given There are 2 users where <User1> is me
+    Given Myself is connected to <User2>
+    #And Contact <Contact> sends image <Picture1> to conversation <Name>
+    And <User2> pinged the conversation with <User1>
+    And User <User2> sent message <Msg1> to conversation <User1>
+    And I Sign in using login <User1> and password <User1Password>
+    Then I see my name on top of Contact list
+    When I open conversation with <User2>
+    Then I see text message <Msg1>
+    And <User1> blocked <User2>
+    #And Contact <Contact> sends image <Picture2> to conversation <Name>
+    And <User2> pinged the conversation with <User1>
+    And User <User2> sent message <Msg2> to conversation <User1>
+    And I do not see Contact list with name <Name>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And User <User2> is me
+    And I Sign in using login <User2Email> and password <User2Password>
+    Then I see my name on top of Contact list
+    When I open conversation with <User1>
+    Then I see text message <Msg2>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And <User1> unblocks user <User2>
+    And User <User1> is me
+    And I Sign in using login <User1Email> and password <User1Password>
+    Then I see my name is selected on top of Contact list
+    Then I see Contact list with name <User2>
+    When I open conversation with <User2>
+    Then I see text message <Msg2>
+
+    Examples: 
+      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1       | Msg2     | Msg3FromUserB | Picture1                  |
+      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1   | Message2 | Message3      | userpicture_landscape.jpg |
+  
