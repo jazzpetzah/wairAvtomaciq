@@ -261,7 +261,7 @@ Feature: Connect
       | user1Name | user1Email | user1Password | user2Name | user3Name |
 
   @staging @id2548
-  Scenario Outline: Auto-Connect
+  Scenario Outline: Verify you get auto-connected to people on sign-in
     Given There is 2 user where <Me> is me
     Given User <Me> has contact <Contact> in address book
     Given User <Contact> has contact <Me> in address book
