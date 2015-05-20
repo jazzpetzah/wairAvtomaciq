@@ -24,6 +24,9 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 	@FindBy(how = How.XPATH, using = PopoverLocators.GroupPopover.ParticipantsListPage.xpathLeaveGroupChat)
 	private WebElement leaveButton;
 
+	@FindBy(how = How.CSS, using = PopoverLocators.GroupPopover.ParticipantsListPage.cssPeopleCount)
+	private WebElement peopleCount;
+
 	public ParticipantsListPopoverPage(Future<ZetaWebAppDriver> lazyDriver,
 			PeoplePopoverContainer container) throws Exception {
 		super(lazyDriver, container);
@@ -95,5 +98,16 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 
 	public String getLeaveGroupChatButtonToolTip() {
 		return leaveButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
+	}
+
+	public String getPeopleCountInfo() {
+		return peopleCount.getText();
+	}
+
+	public int getPeopleCount() throws Exception {
+		final By locator = By
+				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
+						.apply(""));
+		return this.getDriver().findElements(locator).size();
 	}
 }

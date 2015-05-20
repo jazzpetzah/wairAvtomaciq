@@ -10,6 +10,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.util.List;
 import org.junit.Assert;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 public class GroupPopoverPageSteps {
 
@@ -396,6 +398,16 @@ public class GroupPopoverPageSteps {
 	public void IClickAddPeopleButton() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.clickAddPeopleButton();
+	}
+
+	@Then("I see (\\d+) participants in the Group Participants popover")
+	public void ISeeXParticipants(int amount) throws Exception {
+		assertThat("People information under conversation name",
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getPeopleCountInfo(), equalTo(amount));
+		assertThat("Actual amount of people in popover",
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getPeopleCount(), equalTo(amount));
 	}
 
 	/**

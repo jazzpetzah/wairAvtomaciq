@@ -76,6 +76,14 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		this.participantsListPopoverPage.clickLeaveGroupChat();
 	}
 
+	public String getPeopleCountInfo() {
+		return this.participantsListPopoverPage.getPeopleCountInfo();
+	}
+
+	public int getPeopleCount() throws Exception {
+		return this.participantsListPopoverPage.getPeopleCount();
+	}
+
 	public void confirmLeaveGroupChat() throws Exception {
 		this.leaveGroupConfirmationPopoverPage.confirmLeaveGroupChat();
 	}

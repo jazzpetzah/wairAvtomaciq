@@ -97,6 +97,8 @@ public final class PopoverLocators {
 					name) -> String.format(
 					"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 					xpathRootLocator + xpathPageRootLocator, name);
+
+			public static final String cssPeopleCount = ".participants-group-header .people span";
 		}
 
 		public static final class LeaveGroupConfirmationPage {

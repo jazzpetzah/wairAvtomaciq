@@ -153,6 +153,8 @@ Feature: Conversation View
     And I confirm add to chat on Group Participants popover
     And I select the first 125 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
+    When I click People button in group conversation
+    Then I see 128 participants in the Group Participants popover
 
     Examples: 
       | Login                                                              | Password  | Contact1                         | Contact2                         |
