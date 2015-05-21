@@ -22,16 +22,16 @@ public class RegistrationPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.RegistrationPage.idRegistrationBack)
 	private WebElement backButton;
 
-	@FindBy(id = AndroidLocators.DialogPage.idConfirmButton)
+	@FindBy(xpath = AndroidLocators.DialogPage.xpathConfirmOKButton)
 	private WebElement confirmImageButton;
 
 	@FindBy(id = AndroidLocators.RegistrationPage.idSignUpGalleryIcon)
 	protected WebElement signUpGalleryIcon;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathNameEdit)
+	@FindBy(xpath = AndroidLocators.RegistrationPage.xpathNameField)
 	protected WebElement nameField;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathEmailField)
+	@FindBy(xpath = AndroidLocators.RegistrationPage.xpathEmailField)
 	private WebElement emailField;
 
 	@FindBy(id = AndroidLocators.RegistrationPage.idNewPasswordField)
@@ -57,9 +57,6 @@ public class RegistrationPage extends AndroidPage {
 
 	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImage)
 	private List<WebElement> image;
-
-	private static final String YOUR_NAME = "your full name";
-	private static final String EMAIL = "email";
 
 	public RegistrationPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
@@ -108,34 +105,30 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void setName(String name) throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				nameField);
-		// TABLET fix
-		if (nameField.getText().toLowerCase().contains(YOUR_NAME)) {
-			nameField.sendKeys(name);
-			this.getWait().until(
-					ExpectedConditions.elementToBeClickable(nextArrow));
-			nextArrow.click();
-		}
+		assert DriverUtils.isElementPresentAndDisplayed(nameField);
+		nameField.sendKeys(name);
+		this.getWait()
+				.until(ExpectedConditions.elementToBeClickable(nextArrow));
+		nextArrow.click();
 	}
 
 	public void setEmail(String email) throws Exception {
-		// TABLET fix
-		if (nameField.getText().toLowerCase().contains(EMAIL)) {
-			nameField.sendKeys(email);
-			this.getWait().until(
-					ExpectedConditions.elementToBeClickable(nextArrow));
-			nextArrow.click();
-		}
+		assert DriverUtils.isElementPresentAndDisplayed(emailField);
+		emailField.sendKeys(email);
+		this.getWait()
+				.until(ExpectedConditions.elementToBeClickable(nextArrow));
+		nextArrow.click();
 	}
 
 	public void setPassword(String password) throws Exception {
+		assert DriverUtils.isElementPresentAndDisplayed(passwordField);
 		passwordField.sendKeys(password);
 	}
 
-	public void createAccount() {
+	public void createAccount() throws Exception {
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), createUserBtn);
 		createUserBtn.click();
-
 	}
 
 	public boolean isConfirmationVisible() throws Exception {
@@ -150,6 +143,7 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void pressBackButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), backButton);
 		backButton.click();
 	}
 

@@ -421,7 +421,13 @@ public final class AndroidLocators {
 	}
 
 	public static final class RegistrationPage {
-		public static final String idNameEdit = "tet__profile__guided";
+		private static final String xpathParentSignUpContainer = "//*[@id='fl__sign_up__main_container']";
+
+		public static final String xpathNameField = "("
+				+ xpathParentSignUpContainer + "//*[@id='tet__profile__guided'])[1]";
+
+		public static final String xpathEmailField = "("
+				+ xpathParentSignUpContainer + "//*[@id='tet__profile__guided'])[2]";
 
 		public static final String idRegistrationBack = "gtv__sign_up__previous";
 

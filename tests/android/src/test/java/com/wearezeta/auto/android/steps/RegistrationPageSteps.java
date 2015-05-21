@@ -29,7 +29,7 @@ public class RegistrationPageSteps {
 	 * a picture
 	 * 
 	 * @step. ^I press Camera button twice$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I press Camera button twice$")
 	public void WhenIPressCameraButton() throws Exception {
@@ -54,7 +54,7 @@ public class RegistrationPageSteps {
 	 * Selects the first photo in the phone's stored photos
 	 * 
 	 * @step. ^I choose photo from album$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I choose photo from album$")
 	public void WhenIPressChoosePhoto() throws Exception {
@@ -78,7 +78,7 @@ public class RegistrationPageSteps {
 	 * Presses the confirm button to confirm the selected picture
 	 * 
 	 * @step. ^I confirm selection$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I confirm selection$")
 	public void IConfirmSelection() throws Exception {
@@ -90,7 +90,7 @@ public class RegistrationPageSteps {
 	 * available at all steps of the process
 	 * 
 	 * @step. ^I press Registration back button$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I press Registration back button$")
@@ -187,10 +187,11 @@ public class RegistrationPageSteps {
 	public void ISubmitRegistrationData() throws Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+		PagesCollection.registrationPage.createAccount();
+		// FIXME: activation message should be received in another step!
 		RegistrationPageSteps.activationMessage = IMAPSMailbox.getInstance()
 				.getMessage(expectedHeaders,
 						BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
-		PagesCollection.registrationPage.createAccount();
 	}
 
 	/**
