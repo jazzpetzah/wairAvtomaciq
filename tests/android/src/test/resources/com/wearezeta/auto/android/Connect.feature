@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id191 @id193 @smoke @regression 
+  @id191 @id193 @smoke @regression
   Scenario Outline: Send connection request from search
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -158,9 +158,10 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
-    Then I see dialog page
-    And I see Connect to <Contact> Dialog page
+    Then I see contact list loaded with User name <Contact>
 
+    #Then I see dialog page
+    #And I see Connect to <Contact> Dialog page
     Examples: 
       | Login      | Password      | Name      | Contact   | WaitingMess      |
       | user1Email | user1Password | user1Name | user2Name | 1 person waiting |
@@ -242,7 +243,7 @@ Feature: Connect
     When I minimize the application
     And <Contact> sent connection request to Me
     And I restore the application
-    #And I press back button
+    And I see Contact list
     And I see contact list loaded with User name <WaitingMess>
     And I tap on contact name <WaitingMess>
     Then I see connect to <Contact> dialog
@@ -471,7 +472,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Message          | Picture     |
       | user1Email | user1Password | user1Name | user2Name | Hello my friend! | testing.jpg |
 
-  @id2215 @staging 
+  @id2215 @staging
   Scenario Outline: I can connect to someone from PYMK by clicking +
     Given I see sign in screen
     Given I press Join button
@@ -486,14 +487,14 @@ Feature: Connect
     When I wait for PYMK for 30 secs
     And I hide keyboard
     And I press + button on a random Connect
-  	And I press Clear button
+    And I press Clear button
     Then I see Contact list
     And I see contact list loaded with PeoplePicker Random Connect
 
     Examples: 
       | Email      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
-      
+
   @id2216 @staging
   Scenario Outline: I can connect to someone from PYMK by tap and typing connect message
     Given I see sign in screen
@@ -508,7 +509,7 @@ Feature: Connect
     Given I verify registration address
     When I wait for PYMK for 30 secs
     And I hide keyboard
-    And I tap on a random contact from PYMK and set it name to <Contact1> 
+    And I tap on a random contact from PYMK and set it name to <Contact1>
     And I see connect to <Contact1> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
@@ -516,7 +517,7 @@ Feature: Connect
     And I see People picker page
     And I navigate back to Conversations List
     Then I see contact list loaded with User name <Contact1>
-    
+
     Examples: 
       | Email      | Password      | Name      | Contact1  | Message       |
       | user1Email | user1Password | user1Name | user2Name | Hellow friend |
