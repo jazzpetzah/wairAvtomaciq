@@ -15,3 +15,4 @@ resultImage=/Project/Screens/
 androidVersion=44
 androidLogs=/Project/Screens/
 androidAppiumUrl=http://127.0.0.1:4723/wd/hub
+backendType=${backendType}

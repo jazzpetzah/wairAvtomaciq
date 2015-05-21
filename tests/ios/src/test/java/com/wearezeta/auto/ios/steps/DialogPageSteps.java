@@ -365,9 +365,15 @@ public class DialogPageSteps {
 
 	@When("I swipe right on Dialog page")
 	public void ISwipeRightOnDialogPage() throws Exception {
-		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-				.swipeRight(1000,
-						DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 28);
+		
+		for (int i = 0; i < 3; i++) {
+			PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
+					.swipeRight(1000,
+							DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 28);
+			if (PagesCollection.dialogPage.waitForCursorInputNotVisible()) {
+				break;
+			}
+		}
 	}
 
 	@When("I send long message")

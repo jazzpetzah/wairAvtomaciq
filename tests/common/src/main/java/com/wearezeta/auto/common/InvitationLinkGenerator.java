@@ -9,7 +9,7 @@ import javax.crypto.*;
 import javax.crypto.spec.*;
 import org.apache.commons.codec.binary.Base64;
 
-public class GenerateWebLink {
+public class InvitationLinkGenerator {
 	private final static String BASEURL = "https://staging-website.wire.com/c/";
 	private static Long TimeZero = 1388534400000L; // 2014.1.1 00:00:00 UTC
 	private static byte Secret[] = { 0x64, 0x68, (byte) 0xca, (byte) 0xee,
@@ -66,11 +66,11 @@ public class GenerateWebLink {
 			NoSuchPaddingException, InvalidAlgorithmParameterException {
 		return BASEURL + encodeToken(uuid);
 	}
-	
+
 	public static String getInvitationToken(String uuid)
 			throws InvalidKeyException, IllegalBlockSizeException,
 			BadPaddingException, NoSuchAlgorithmException,
 			NoSuchPaddingException, InvalidAlgorithmParameterException {
-		return  encodeToken(uuid);
+		return encodeToken(uuid);
 	}
 }

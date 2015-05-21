@@ -13,3 +13,5 @@ browserName=${browser}
 platformName=${platform}
 webappImagesPath=${webappImagesPath}
 extendedLoggingLevel=${extendedLoggingLevel}
+#staging, production, edge
+backendType=${backendType}

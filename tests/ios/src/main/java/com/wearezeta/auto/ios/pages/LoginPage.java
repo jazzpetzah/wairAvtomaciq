@@ -99,6 +99,9 @@ public class LoginPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangedPasswordConfirmationText)
 	private WebElement changedPasswordPageConfirmation;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.namePhoneLoginButton)
+	private WebElement phoneLoginButton;
 
 	private String login;
 
@@ -118,6 +121,10 @@ public class LoginPage extends IOSPage {
 
 		signInButton.click();
 		return this;
+	}
+	
+	public void clickPhoneLogin() {
+		phoneLoginButton.click();
 	}
 
 	public void waitForLaterButton(int time) throws Exception {
@@ -139,17 +146,22 @@ public class LoginPage extends IOSPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameProfileName));
 	}
-
-	public IOSPage login() throws Exception {
-
-		confirmSignInButton.click();
-
+	
+	public ContactListPage waitForLoginToFinish() throws Exception {
+		
 		if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(IOSLocators.xpathLoginButton), 40)) {
 			return new ContactListPage(this.getLazyDriver());
 		} else {
 			return null;
 		}
+	}
+
+	public IOSPage login() throws Exception {
+
+		confirmSignInButton.click();
+
+		return waitForLoginToFinish();
 	}
 
 	public void clickLoginButton() {

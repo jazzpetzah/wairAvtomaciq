@@ -62,7 +62,7 @@ public final class AndroidLocators {
 
 			public static final String xpathEmailEditField = "//android.widget.EditText[@content-desc='Email']";
 
-			public static final String xpathEnterNewPasswordEditField = "//android.widget.EditText[@content-desc='Enter new password']";
+			public static final String xpathEnterNewPasswordEditField = "//android.widget.EditText[following-sibling::android.widget.Button[@content-desc='CHANGE PASSWORD']]";
 
 			public static final String xpathChangePasswordButton = "//android.widget.Button[@content-desc='CHANGE PASSWORD']";
 		}
@@ -693,6 +693,10 @@ public final class AndroidLocators {
 
 		public static final String idPeoplePickerSerchConversations = LOCATORS_PACKAGE
 				+ ":id/ttv_pickuser_searchconversation_name";
+
+		public static final String idSendInvitationFrame = LOCATORS_PACKAGE + ":id/ll_pickuser__error_invite";
+		
+		public static final String idSendInvitationBubble = LOCATORS_PACKAGE + ":id/fl_pickuser__invite__bubble";
 
 		public static final String xpathOtherText = "//android.widget.ListView/android.widget.LinearLayout/android.widget.TextView[@text='OTHERS']";
 

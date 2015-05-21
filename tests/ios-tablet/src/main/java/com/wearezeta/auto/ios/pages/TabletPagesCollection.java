@@ -5,5 +5,6 @@ public class TabletPagesCollection extends PagesCollection {
 	public static CameraRollTabletPopoverPage cameraRolliPadPopoverPage = null;
 	public static TabletDialogPage tabletDialogPage = null;
 	public static TabletContactListPage tabletContactListPage = null;
+	public static TabletLoginPage tabletLoginPage = null;
 
 }

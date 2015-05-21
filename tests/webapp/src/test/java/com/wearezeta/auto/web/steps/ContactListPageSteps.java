@@ -13,6 +13,8 @@ import com.wearezeta.auto.web.pages.SelfProfilePage;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ContactListPageSteps {
 
@@ -76,6 +78,34 @@ public class ContactListPageSteps {
 		for (int i = 0; i < 5; i++) {
 			if (PagesCollection.contactListPage
 					.isConvoListEntryWithNameExist(name)) {
+				return;
+			}
+			Thread.sleep(1000);
+		}
+		throw new AssertionError("Conversation list entry '" + name
+				+ "' is not visible after timeout expired");
+	}
+
+	/**
+	 * Checks that we can see conversation with specified name in archive List
+	 *
+	 * @step. I see archive list with name (.*)
+	 *
+	 * @param name
+	 *            conversation name string
+	 *
+	 * @throws Exception
+	 *             if conversation name does not appear in archive List
+	 */
+	@Given("I see archive list with name (.*)")
+	public void GivenISeeArchiveListWithName(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		log.debug("Looking for contact with name " + name);
+		Assert.assertTrue("No contact list loaded.",
+				PagesCollection.contactListPage.waitForContactListVisible());
+		for (int i = 0; i < 5; i++) {
+			if (PagesCollection.contactListPage
+					.isArchiveListEntryWithNameExist(name)) {
 				return;
 			}
 			Thread.sleep(1000);
@@ -383,6 +413,35 @@ public class ContactListPageSteps {
 		} else {
 			PagesCollection.contactListPage
 					.waitUntilArhiveButtonIsNotVisible(ARCHIVE_BTN_VISILITY_TIMEOUT);
+		}
+	}
+
+	/**
+	 * Verify whether missed call notification is present for the given
+	 * conversation.
+	 *
+	 * @param conversationName
+	 *            name of the conversation
+	 * @step. I( do not)? see missed call notification for conversation (.*)
+	 *
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist in the step
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see missed call notification for conversation (.*)$")
+	public void isCallMissedVisibleForContact(String shouldNotBeVisible,
+			String conversationName) throws Exception {
+		try {
+			conversationName = usrMgr.replaceAliasesOccurences(
+					conversationName, FindBy.NAME_ALIAS);
+		} catch (Exception e) {
+		}
+		if (shouldNotBeVisible == null) {
+			assertTrue(PagesCollection.contactListPage
+					.isMissedCallVisibleForContact(conversationName));
+		} else {
+			assertFalse(PagesCollection.contactListPage
+					.isMissedCallVisibleForContact(conversationName));
 		}
 	}
 }

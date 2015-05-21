@@ -25,7 +25,7 @@ import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.GenerateWebLink;
+import com.wearezeta.auto.common.InvitationLinkGenerator;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
@@ -53,6 +53,7 @@ public class CommonAndroidSteps {
 				"warn");
 	}
 
+	private static String link = null;
 	public static LogcatListener listener = new LogcatListener();
 
 	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
@@ -511,9 +512,35 @@ public class CommonAndroidSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		String link = GenerateWebLink.getInvitationToken(name);
+		String link = InvitationLinkGenerator.getInvitationToken(name);
 		PagesCollection.commonAndroidPage.ConnectByInvitationLink(link);
 
+	}
+
+	/**
+	 * Open Firefox browser
+	 * 
+	 * @step. ^I open Firefox$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I open Firefox$")
+	public void WhenIOpenFirefox() throws Exception {
+		PagesCollection.commonAndroidPage.openFirefoxBrowser();
+	}
+
+	/**
+	 * Wait for Firefox Url bar
+	 * 
+	 * @step. ^I wait for Firefox Url bar$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I wait for Firefox Url bar$")
+	public void WhenIWaitForFirefoxUrlBar() throws Exception {
+		PagesCollection.commonAndroidPage.waitForFireFoxUrlBar();
 	}
 
 	/**
@@ -924,17 +951,30 @@ public class CommonAndroidSteps {
 	 * 
 	 * @step. ^I reset (.*) password by URL to new (.*)$
 	 * 
-	 * @param name
-	 *            the name of the user for which you want to reset the password.
 	 * @param newPass
 	 *            the new password.
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@Then("^I reset (.*) password by URL to new (.*)$")
-	public void WhenIResetPasswordByUrl(String name, String newPass)
+	@Then("^I reset password by URL to new (.*)$")
+	public void WhenIResetPasswordByUrl(String newPass)
 			throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.commonAndroidPage
+				.resetByLink(link, newPass);
+	}
+
+	/**
+	 * Get new password link from mail
+	 * 
+	 * @step. ^I get new password link$
+	 * 
+	 * @param name
+	 *            the name of the user for which you want to reset the password. 
+	 * @throws Exception
+	 */
+	@Then("^I get new (.*) password link$")
+	public void ThenIGetNewPaswordLink(String name) throws Exception {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchUserException e) {
@@ -949,12 +989,10 @@ public class CommonAndroidSteps {
 		this.passwordResetMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 
-		String link = BackendAPIWrappers
+		link = BackendAPIWrappers
 				.getPasswordResetLink(this.passwordResetMessage);
-		PagesCollection.peoplePickerPage = PagesCollection.commonAndroidPage
-				.resetByLink(link, newPass);
 	}
-
+	
 	/**
 	 * Activates user using browser by URL from mail
 	 * 

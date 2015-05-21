@@ -84,11 +84,18 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultContainer)
 	private WebElement searchResultContainer;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameLaterButton)
+	private WebElement maybeLaterButton;
 
 	private int numberTopSelected = 0;
 
 	public PeoplePickerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
+	}
+	
+	public void clickMaybeLaterButton() {
+		maybeLaterButton.click();
 	}
 
 	public void clickLaterButton() throws Exception {
@@ -389,7 +396,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public boolean isUploadDialogShown() throws Exception {
 		boolean isLaterBtnVisible = DriverUtils.waitUntilLocatorIsDisplayed(
-				this.getDriver(), By.name(IOSLocators.nameShareButton));
+				this.getDriver(), By.name(IOSLocators.nameShareButton), 2);
 		return isLaterBtnVisible;
 	}
 

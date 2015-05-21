@@ -51,6 +51,13 @@ public class CommonUtils {
 	public static String getOsName() {
 		return System.getProperty("os.name");
 	}
+	
+	public static boolean trueInPercents(int percent) {
+		Random rand = new Random();
+		int nextInt = rand.nextInt(100);
+		if (nextInt < percent) return true;
+		else return false;
+	}
 
 	public static int executeOsXCommand(String[] cmd) throws Exception {
 		Process process = Runtime.getRuntime().exec(cmd);
@@ -107,7 +114,7 @@ public class CommonUtils {
 	}
 
 	public static String getBackendType(Class<?> c) throws Exception {
-		return getValueFromCommonConfig(c, "backendType");
+		return getValueFromConfig(c, "backendType");
 	}
 
 	public static String getDeviceName(Class<?> c) throws Exception {
@@ -267,7 +274,18 @@ public class CommonUtils {
 
 	public static String getDefaultBackEndUrlFromConfig(Class<?> c)
 			throws Exception {
-		return getValueFromCommonConfig(c, "defaultBackEndUrl");
+		final String currentBackendType = getBackendType(c);
+		switch (currentBackendType.toLowerCase()) {
+		case "edge":
+			return getValueFromCommonConfig(c, "edgeBackendUrl");
+		case "staging":
+			return getValueFromCommonConfig(c, "stagingBackendUrl");
+		case "production":
+			return getValueFromCommonConfig(c, "productionBackendUrl");
+		default:
+			throw new RuntimeException(String.format(
+					"Non supported backend type '%s'", currentBackendType));
+		}
 	}
 
 	public static String getOsxAppiumUrlFromConfig(Class<?> c) throws Exception {

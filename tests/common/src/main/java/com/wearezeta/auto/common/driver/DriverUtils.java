@@ -593,6 +593,10 @@ public class DriverUtils {
 	}
 
 	public static void moveMouserOver(RemoteWebDriver driver, WebElement element) {
+		/**
+		 * Method seems to work for Chrome and FireFox but is not working for
+		 * Safari <= 8. https://code.google.com/p/selenium/issues/detail?id=4136
+		 */
 		Actions action = new Actions(driver);
 		action.moveToElement(element);
 		action.perform();

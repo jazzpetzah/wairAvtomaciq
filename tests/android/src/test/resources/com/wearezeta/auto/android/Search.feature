@@ -88,13 +88,15 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I minimize the application
+    And I open Firefox
+    And I wait for Firefox Url bar
     Then I connect using invitation link from <Contact2>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @id1517 @regression 
+  @id1517 @regression
   Scenario Outline: Verify you can send an invite
     Given There is 2 users where <Name> is me
     Given Myself is connected to <Contact1>

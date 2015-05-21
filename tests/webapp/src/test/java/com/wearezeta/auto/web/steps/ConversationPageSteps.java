@@ -334,10 +334,11 @@ public class ConversationPageSteps {
 	 * @param message
 	 * @throws Exception
 	 */
-	@Then("^I do not see text message (.*)")
+	@Then("^I do not see text message ?(.*)$")
 	public void IDontSeeTextMessage(String message) throws Exception {
-		Assert.assertFalse(PagesCollection.conversationPage
-				.isTextMessageVisible(message));
+		Assert.assertFalse("Saw text message " + message,
+				PagesCollection.conversationPage
+						.isTextMessageVisible(message == null ? "" : message));
 	}
 
 	/**
@@ -361,6 +362,26 @@ public class ConversationPageSteps {
 	@When("^I call$")
 	public void ICallUser() throws Throwable {
 		PagesCollection.conversationPage.clickCallButton();
+	}
+
+	/**
+	 * Verifies whether calling button is visible or not.
+	 *
+	 * @param doNot
+	 *            is set to null if "do not" part does not exist
+	 * 
+	 * @step. ^I can see calling button$
+	 * @throws java.lang.Exception
+	 */
+	@Then("^I( do not)? see calling button$")
+	public void ISeeCallButton(String doNot) throws Exception {
+		if (doNot == null) {
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isCallButtonVisible());
+		} else {
+			Assert.assertFalse(PagesCollection.conversationPage
+					.isCallButtonVisible());
+		}
 	}
 
 	/**
@@ -446,6 +467,19 @@ public class ConversationPageSteps {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
 				.toUpperCase();
 		Assert.assertEquals(contact + " CALLED",
+				PagesCollection.conversationPage.getMissedCallMessage());
+	}
+
+	/**
+	 * Verify that conversation contains my missed call
+	 * 
+	 * @step. ^I see conversation with my missed call$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see conversation with my missed call$")
+	public void ThenISeeConversationWithMyMissedCall() throws Exception {
+		Assert.assertEquals("YOU CALLED",
 				PagesCollection.conversationPage.getMissedCallMessage());
 	}
 }

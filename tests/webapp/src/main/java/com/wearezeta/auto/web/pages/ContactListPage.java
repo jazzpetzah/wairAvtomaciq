@@ -137,7 +137,8 @@ public class ContactListPage extends WebPage {
 	public boolean isSelfNameEntryExist() throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 5);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 5);
 		log.debug(String.format("Looking for self name entry '%s'...", usrMgr
 				.getSelfUserOrThrowError().getName()));
 
@@ -179,6 +180,19 @@ public class ContactListPage extends WebPage {
 				By.cssSelector(locator), 5);
 	}
 
+	public boolean isArchiveListEntryWithNameExist(String name)
+			throws Exception {
+		log.debug("Looking for contact with name '" + name + "'");
+		name = fixDefaultGroupConvoName(name, true, false);
+		if (name == null) {
+			return false;
+		}
+		final String locator = WebAppLocators.ContactListPage.cssArchiveListEntryByName
+				.apply(name);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.cssSelector(locator), 5);
+	}
+
 	public boolean isConvoListEntryNotVisible(String name) throws Exception {
 		log.debug("Looking for contact with name '" + name + "'");
 		name = fixDefaultGroupConvoName(name, false, false);
@@ -197,6 +211,16 @@ public class ContactListPage extends WebPage {
 		final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
 				.apply(name);
 		return getDriver().findElement(By.cssSelector(locator));
+	}
+
+	public boolean isMissedCallVisibleForContact(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
+				.apply(conversationName);
+		List<WebElement> missedCallNotification = getDriver().findElements(
+				By.xpath(locator));
+		return missedCallNotification.size() > 0;
 	}
 
 	public void openArchive() throws Exception {
@@ -245,10 +269,9 @@ public class ContactListPage extends WebPage {
 				archiveLocator);
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				archiveButton);
-		assert (DriverUtils
-				.waitUntilLocatorIsDisplayed(this.getDriver(), muteLocator, 3) && DriverUtils
-				.waitUntilElementClickable(this.getDriver(), this.getDriver()
-						.findElement(muteLocator), 3))
+		assert (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				muteLocator, 3) && DriverUtils.waitUntilElementClickable(
+				this.getDriver(), this.getDriver().findElement(muteLocator), 3))
 				|| (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 						unmuteLocator, 3) && DriverUtils
 						.waitUntilElementClickable(this.getDriver(), this
@@ -282,12 +305,14 @@ public class ContactListPage extends WebPage {
 		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName
 				.apply(conversationName);
 		final By locator = By.cssSelector(cssOptionsButtonLocator);
-		if (!DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 5)) {
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator,
+				5)) {
 			// Safari workaround
 			final String showOptionsButtonJScript = "$(\""
 					+ cssOptionsButtonLocator + "\").css({'opacity': '100'})";
 			this.getDriver().executeScript(showOptionsButtonJScript);
-			assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+			assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+					locator);
 		}
 		final WebElement optionsButton = getDriver().findElement(locator);
 		optionsButton.click();
@@ -341,8 +366,8 @@ public class ContactListPage extends WebPage {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
 						.apply(conversationName));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), entryLocator,
-				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation item '"
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation item '"
 				+ conversationName
 				+ "' has not been found in the conversations list within "
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
@@ -355,8 +380,8 @@ public class ContactListPage extends WebPage {
 	public PendingConnectionsPage openConnectionRequestsList() throws Exception {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), entryLocator,
-				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Incoming connection requests entry has not been found within "
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Incoming connection requests entry has not been found within "
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
 		selectEntryWithRetry(entryLocator,
 				WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
@@ -366,8 +391,8 @@ public class ContactListPage extends WebPage {
 	public SelfProfilePage openSelfProfile() throws Exception {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), entryLocator,
-				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Self profile entry has not been found within "
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Self profile entry has not been found within "
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
 		selectEntryWithRetry(entryLocator,
 				WebAppLocators.ContactListPage.cssSelfProfileEntry);
@@ -399,7 +424,8 @@ public class ContactListPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.ContactListPage.xpathUnmuteButtonByContactName
 						.apply(conversationName));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 5);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 5);
 		final WebElement unmuteButton = this.getDriver().findElement(locator);
 		unmuteButton.click();
 	}
@@ -431,15 +457,16 @@ public class ContactListPage extends WebPage {
 	public String getIncomingPendingItemText() throws Exception {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
-		assert DriverUtils
-				.waitUntilLocatorIsDisplayed(this.getDriver(), entryLocator, 3) : "There are no visible incoming pending connections in the conversations list";
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				entryLocator, 3) : "There are no visible incoming pending connections in the conversations list";
 		return getDriver().findElement(entryLocator).getText();
 	}
 
 	public boolean isSelfNameEntrySelected() throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
 		final WebElement entry = getDriver().findElement(locator);
 		try {
 			waitUtilEntryIsSelected(entry);
@@ -454,7 +481,8 @@ public class ContactListPage extends WebPage {
 		final By locator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
 						.apply(convoName));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
 		final WebElement entryElement = getDriver().findElement(locator);
 		try {
 			waitUtilEntryIsSelected(entryElement);

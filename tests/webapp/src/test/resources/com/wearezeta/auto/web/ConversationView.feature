@@ -123,7 +123,7 @@ Feature: Conversation View
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Leave button on Group Participants popover
-    And I confirm leave group conversation on Group Participants popover
+    And I click confirm leave group conversation on Group Participants popover
     Then I do not see Contact list with name <ChatName>
     And User <Name> sent message <Msg2FromUserA> to conversation <ChatName>
     When I open archive
