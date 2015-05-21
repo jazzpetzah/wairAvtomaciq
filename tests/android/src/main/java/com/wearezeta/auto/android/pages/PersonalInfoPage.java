@@ -10,8 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import android.view.KeyEvent;
-
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -20,6 +18,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class PersonalInfoPage extends AndroidPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
@@ -156,23 +155,8 @@ public class PersonalInfoPage extends AndroidPage {
 				By.xpath(AndroidLocators.PersonalInfoPage.xpathNameEdit));
 	}
 
-	public boolean isNameEditCanBeCleaned() throws Exception {
+	public void clearSelfName() {
 		nameEdit.clear();
-		if (!nameEdit.getText().equals(EMPTY_NAME)) {
-			log.debug("Text in name field is not as expected, trying to clean by KEYCODE commands");
-			int stringLength = nameEdit.getText().length();
-			for (int i = 0; i < stringLength; i++) {
-				this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_DPAD_RIGHT);
-				this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_DEL);
-			}
-		} else {
-			return true;
-		}
-		if (!nameEdit.getText().equals(EMPTY_NAME)) {
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 	public void changeName(String name, String newName) throws Exception {

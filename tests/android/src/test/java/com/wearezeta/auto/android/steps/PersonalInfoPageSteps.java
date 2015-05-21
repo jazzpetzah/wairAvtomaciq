@@ -263,23 +263,22 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I see edit name field$
 	 *
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see edit name field$")
-	public void ThenISeeEditNameField() throws Throwable {
+	public void ThenISeeEditNameField() throws Exception {
 		Assert.assertTrue(PagesCollection.personalInfoPage.isNameEditVisible());
 	}
 
 	/**
-	 * Trying to clean self name and check empty name string
+	 * Clear self name edit field
 	 * 
-	 * @step. ^Edit name field can be cleaned in expected way$
+	 * @step. ^I clear name field$
 	 *
-	 * @throws Throwable
+	 * @throws Exception
 	 */
-	@When("^Edit name field can be cleaned in expected way$")
-	public void WhenNameEditFieldCleaned() throws Throwable {
-		Assert.assertTrue(PagesCollection.personalInfoPage
-				.isNameEditCanBeCleaned());
+	@When("^I clear name field$")
+	public void IClearNameField() throws Exception {
+		PagesCollection.personalInfoPage.clearSelfName();
 	}
 }
