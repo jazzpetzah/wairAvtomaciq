@@ -226,10 +226,10 @@ Feature: Connect
   Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <User1> is me
     Given Myself is connected to <User2>
-    And Contact <User2> sends image <Picture1> to single user conversation <User1>
-    And <User2> pinged the conversation with <User1>
-    And User <User2> sent message <Msg1> to conversation <User1>
-    And I Sign in using login <User1> and password <User1Password>
+    Given Contact <User2> sends image <Picture1> to single user conversation <User1>
+    Given <User2> pinged the conversation with <User1>
+    Given User <User2> sent message <Msg1> to conversation <User1>
+    When I Sign in using login <User1> and password <User1Password>
     Then I see my name on top of Contact list
     When I open conversation with <User2>
     Then I see text message <Msg1>
@@ -250,7 +250,6 @@ Feature: Connect
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And <User1> unblocks user <User2>
-    #And I wait for 15 seconds
     And User <User1> is me
     And I Sign in using login <User1Email> and password <User1Password>
     Then I see Contact list with name <User2>
