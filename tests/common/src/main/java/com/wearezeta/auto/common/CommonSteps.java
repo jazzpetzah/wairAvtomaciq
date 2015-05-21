@@ -419,6 +419,16 @@ public final class CommonSteps {
 	}
 
 	public void UserXHasContactsInAddressBook(String userAsNameAlias,
+			String contacts) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		for (String contact : splitAliases(contacts)) {
+			sb.append(usrMgr.findUserByNameOrNameAlias(contact).getEmail());
+			sb.append(ALIASES_SEPARATOR);
+		}
+		this.UserXHasEmailsInAddressBook(userAsNameAlias, sb.toString());
+	}
+
+	public void UserXHasEmailsInAddressBook(String userAsNameAlias,
 			String emails) throws Exception {
 		final ClientUser userAs = usrMgr
 				.findUserByNameOrNameAlias(userAsNameAlias);

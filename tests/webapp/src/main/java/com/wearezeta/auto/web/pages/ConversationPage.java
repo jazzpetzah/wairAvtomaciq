@@ -225,8 +225,30 @@ public class ConversationPage extends WebPage {
 				WebAppLocators.ConversationPage.classPingMessage).size() - 1;
 	}
 
+	public boolean isCallButtonVisible() throws Exception {
+		try {
+			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
+		} catch (WebDriverException e) {
+			// (safari workaround)
+			final String showImageLabelJScript = "$(\""
+					+ WebAppLocators.ConversationPage.cssRightControlsPanel
+					+ "\").css({'opacity': '100'});";
+			this.getDriver().executeScript(showImageLabelJScript);
+		}
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.xpath(WebAppLocators.ConversationPage.xpathCallButton), 5);
+	}
+
 	public void clickCallButton() throws Exception {
-		DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
+		try {
+			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
+		} catch (WebDriverException e) {
+			// (safari workaround)
+			final String showImageLabelJScript = "$(\""
+					+ WebAppLocators.ConversationPage.cssRightControlsPanel
+					+ "\").css({'opacity': '100'});";
+			this.getDriver().executeScript(showImageLabelJScript);
+		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(WebAppLocators.ConversationPage.xpathCallButton), 5);
 		callButton.click();

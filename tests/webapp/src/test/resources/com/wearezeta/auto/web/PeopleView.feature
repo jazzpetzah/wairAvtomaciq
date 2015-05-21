@@ -402,7 +402,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | Message                         | Message2                    |
       | user1Email | user1Password | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH |
 
-  @staging @id1557
+  @regression @id1557
   Scenario Outline: Verify you can unblock someone from a group conversation 
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
