@@ -222,7 +222,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | ChatName                 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat | user2Email | user2Password | user2Name | GroupChatWithBlockedUser |
 
-  @torun @id1563
+  @staging @id1563
   Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <User1> is me
     Given Myself is connected to <User2>
@@ -250,7 +250,7 @@ Feature: Connect
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And <User1> unblocks user <User2>
-    And I wait for 15 seconds
+    #And I wait for 15 seconds
     And User <User1> is me
     And I Sign in using login <User1Email> and password <User1Password>
     Then I see Contact list with name <User2>
@@ -258,6 +258,5 @@ Feature: Connect
     Then I see text message <Msg2>
 
     Examples: 
-      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1       | Msg2     | Picture1                  | Picture2                 |
-      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1   | Message2 | userpicture_landscape.jpg | userpicture_portrait.jpg |
-  
+      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1       | Msg2     | Picture1 | Picture2    |
+      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1   | Message2 | cat.jpg  | puppies.jpg |
