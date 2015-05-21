@@ -490,6 +490,13 @@ public class DriverUtils {
 		Runtime.getRuntime().exec(
 				"/usr/bin/open -a Terminal " + scriptPath + "Down.py");
 	}
+	
+	public static void iOSSimulatorSwipeRight(String scriptPath)
+			throws Exception {
+
+		Runtime.getRuntime().exec(
+				"/usr/bin/open -a Terminal " + scriptPath + "Right.py");
+	}
 
 	public static void iOSSimulatorSwipeDialogPageDown(String scriptPath)
 			throws Exception {
@@ -593,6 +600,10 @@ public class DriverUtils {
 	}
 
 	public static void moveMouserOver(RemoteWebDriver driver, WebElement element) {
+		/**
+		 * Method seems to work for Chrome and FireFox but is not working for
+		 * Safari <= 8. https://code.google.com/p/selenium/issues/detail?id=4136
+		 */
 		Actions action = new Actions(driver);
 		action.moveToElement(element);
 		action.perform();

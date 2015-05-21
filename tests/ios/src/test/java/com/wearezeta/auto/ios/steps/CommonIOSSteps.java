@@ -159,7 +159,7 @@ public class CommonIOSSteps {
 	/**
 	 * Hide keyboard using mobile command
 	 * 
-	 * @step ^I hide keyboard$
+	 * @step. ^I hide keyboard$
 	 * 
 	 * @throws Exception
 	 */
@@ -171,7 +171,7 @@ public class CommonIOSSteps {
 	/**
 	 * Hide keyboard by click on hide keyboard button
 	 * 
-	 * @step ^I click hide keyboard button$
+	 * @step. ^I click hide keyboard button$
 	 * 
 	 * @throws Exception
 	 */
@@ -193,6 +193,18 @@ public class CommonIOSSteps {
 	@When("^I close the app for (.*) seconds$")
 	public void ICloseApp(int seconds) throws Exception {
 		PagesCollection.iOSPage.minimizeApplication(seconds);
+	}
+	
+	/**
+	 * Locks screen for a certain amount of time in seconds
+	 * @param seconds
+	 * 			time in seconds to lock screen
+	 * @step.^I lock screen for (.*) seconds$
+	 * @throws Exception
+	 */
+	@When("^I lock screen for (.*) seconds$")
+	public void ILockScreen(int seconds) throws Exception {
+		PagesCollection.loginPage.lockScreen(seconds);
 	}
 
 	@Given("^(.*) sent connection request to (.*)$")
@@ -474,11 +486,11 @@ public class CommonIOSSteps {
 	/**
 	 * Tap in center of the screen
 	 * 
-	 * @step I tap on center of the screen
+	 * @step. ^I tap on center of the screen$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I tap on center of the screen")
+	@When("^I tap on center of the screen$")
 	public void ITapOnCenterOfTheScreen() throws Exception {
 		PagesCollection.loginPage.tapOnCenterOfScreen();
 	}
@@ -486,11 +498,11 @@ public class CommonIOSSteps {
 	/**
 	 * Tap in top left corner of the screen
 	 * 
-	 * @step I tap on top left corner of the screen
+	 * @step. ^I tap on top left corner of the screen$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I tap on top left corner of the screen")
+	@When("^I tap on top left corner of the screen$")
 	public void ITapOnTopLeftCornerOfTheScreen() throws Exception {
 		PagesCollection.loginPage.tapOnTopLeftScreen();
 	}

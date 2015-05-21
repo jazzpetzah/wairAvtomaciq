@@ -320,4 +320,16 @@ public abstract class IOSPage extends BasePage {
 	public void tapOnTopLeftScreen() throws Exception {
 		DriverUtils.genericTap(this.getDriver(), 1, 1);
 	}
+	
+	public void lockScreen(int seconds) throws Exception {
+		this.getDriver().lockScreen(seconds);
+		//check if the screen is unlocked
+		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), 
+				By.name(IOSLocators.CommonIOSLocators.nameLockScreenMessage), 5)) {
+		
+			DriverUtils.iOSSimulatorSwipeRight(CommonUtils
+					.getSwipeScriptPath(IOSPage.class));
+			Thread.sleep(SWIPE_DELAY);
+		}
+	}
 }
