@@ -109,9 +109,6 @@ public class PersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathWireWebsitePageText)
 	private WebElement wireWebsitePageText;
-	
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathWireWebsitePageUrlValue)
-	private WebElement wireWebsitePageUrlValue;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutPageWireLogo)
 	private WebElement aboutPageWireLogo;

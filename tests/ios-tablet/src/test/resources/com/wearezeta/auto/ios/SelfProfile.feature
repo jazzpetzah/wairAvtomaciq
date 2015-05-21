@@ -24,8 +24,8 @@ Feature: Self Profile
     And I close legal page
     Then I see About page
     And I open WireWebsite
-	Then I see WireWebsitePage
-	
+    Then I see WireWebsitePage
+    
     Examples: 
       | Login      | Password      | Name      | Contact   | Color  |
       | user1Email | user1Password | user1Name | user2Name | Violet |
@@ -55,8 +55,8 @@ Feature: Self Profile
     And I close legal page
     Then I see About page
     And I open WireWebsite
-	Then I see WireWebsitePage
-
+    Then I see WireWebsitePage
+    
     Examples: 
       | Login      | Password      | Name      | Contact   | Color  |
       | user1Email | user1Password | user1Name | user2Name | Violet |
