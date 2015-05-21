@@ -96,7 +96,7 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathMissedCallNotificationByContactName = (
 				name) -> String
-				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]/div/*[local-name() = 'svg' and @data-uie-name='status-unread']",
+				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[local-name() = 'svg' and @data-uie-name='status-unread']",
 						name);
 
 	}
