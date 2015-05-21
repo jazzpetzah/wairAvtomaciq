@@ -2,8 +2,11 @@ package com.wearezeta.auto.ios.pages;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.List;
 import java.util.concurrent.Future;
+
+import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -145,10 +148,10 @@ public class PeoplePickerPage extends IOSPage {
 			throws Exception {
 		return getScreenshotByCoordinates(
 				searchResultCell.getLocation().x,
-				searchResultCell.getLocation().y / 3
-						+ searchResultContainer.getLocation().y,
-				searchResultCell.getSize().width / 2,
-				searchResultCell.getSize().height * 3);
+				searchResultCell.getLocation().y*2,
+				searchResultCell.getSize().height*5/2,
+				searchResultCell.getLocation().y +
+				searchResultCell.getSize().height*4/5);
 	}
 
 	public void fillTextInPeoplePickerSearch(String text) {
