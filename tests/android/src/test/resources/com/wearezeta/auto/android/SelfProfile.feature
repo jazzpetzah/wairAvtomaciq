@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @id205 @smoke @regression
+  @id205 @smoke
   Scenario Outline: Change user picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
