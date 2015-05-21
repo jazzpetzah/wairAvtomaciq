@@ -663,7 +663,7 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * User A blocks user B
+	 * User A accepts all requests
 	 * 
 	 * @step. ^(.*) accept all requests$
 	 * 
@@ -684,7 +684,7 @@ public class CommonAndroidSteps {
 	 * @param pingFromUserNameAlias
 	 *            The user to do the pinging
 	 * @param dstConversationName
-	 *            the target converation to send the ping to
+	 *            the target conversation to send the ping to
 	 * 
 	 * @throws Exception
 	 * 
