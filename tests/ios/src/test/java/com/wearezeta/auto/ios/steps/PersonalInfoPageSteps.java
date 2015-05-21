@@ -69,10 +69,76 @@ public class PersonalInfoPageSteps {
 		PagesCollection.personalInfoPage.clickOnAboutButton();
 	}
 
+
+
 	@Then("I see About page")
 	public void ThenISeeAboutPAge() {
 		Assert.assertTrue(PagesCollection.personalInfoPage.isAboutPageVisible());
 	}
+
+	@Then("I see that the About page is colored (.*)")
+	public void AboutPageIsColor(String color) throws Exception {
+		//only takes violet color
+		Assert.assertTrue(PagesCollection.personalInfoPage.isAboutPageCertainColor(color));
+	}
+	
+	@Then("I see WireWebsiteButton")
+	public void ThenISeeWireWebsiteButton() {
+		Assert.assertTrue(PagesCollection.personalInfoPage.isWireWebsiteButtonVisible());
+	}
+
+	@Then("I see TermsButton")
+	public void ThenISeeTermsButton() {
+		Assert.assertTrue(PagesCollection.personalInfoPage.isTermsButtonVisible());
+	}
+
+	@Then("I see PrivacyPolicyButton")
+	public void ThenISeePrivacyPolicyButton() {
+		Assert.assertTrue(PagesCollection.personalInfoPage.isPrivacyPolicyButtonVisible());
+	}
+
+	@Then("I see BuildNumberText")
+	public void ThenISeeBuildNumberText() {
+		Assert.assertTrue(PagesCollection.personalInfoPage.isBuildNumberTextVisible());
+	}
+
+	@When("I open TermsOfUsePage")
+	public void IClickOnTermsOfUse() {
+		PagesCollection.personalInfoPage.openTermsOfUsePage();
+	}
+
+	@When("I open PrivacyPolicyPage")
+	public void IClickOnPrivacyPolicy() {
+		PagesCollection.personalInfoPage.openPrivacyPolicyPage();
+	}
+
+	@When("I open WireWebsite")
+	public void IClickOnWireWebsite() {
+		PagesCollection.personalInfoPage.openWireWebsite();
+	}
+
+	@Then("I see WireWebsitePage")
+	public void ThenISeeWireWebsite() {
+		Assert.assertTrue(PagesCollection.personalInfoPage.isWireWebsitePageVisible());
+	}
+	
+	@When("I close legal page")
+	public void IClickToCloseLegalPage() {
+		PagesCollection.personalInfoPage.closeLegalPage();
+	}
+
+	@Then("I see TermsOfUsePage")
+	public void ThenISeeTermsOfUsePage() {
+		Assert.assertTrue(PagesCollection.personalInfoPage.isTermsOfUsePageVisible());
+	}
+
+	@Then("I see PrivacyPolicyPage")
+	public void ThenISeePrivacyPolicyPage() {
+		Assert.assertTrue(PagesCollection.personalInfoPage.isPrivacyPolicyPageVisible());
+	}
+
+
+
 
 	@When("I click Sign out button from personal page")
 	public void IClickSignOutButtonFromPersonalPage() throws Exception {
