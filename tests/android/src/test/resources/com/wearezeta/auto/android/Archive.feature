@@ -2,8 +2,8 @@ Feature: Archive
 
   @id1511 @regression
   Scenario Outline: Verify you can archive and unarchive
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     And I see contact list with name <Contact1>
@@ -15,8 +15,8 @@ Feature: Archive
     And I see dialog page
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Login      | Password      | Name      | Contact1  |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @id1512 @regression 
   Scenario Outline: Verify you can archive and unarchive group conversation
