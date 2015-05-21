@@ -21,7 +21,7 @@ public class TabletPersonalInfoPage extends PersonalInfoPage {
 	@FindBy(id = AndroidLocators.ContactListPage.idYourName)
 	private WebElement profileLink;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idProfileOptionsButton)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathProfileOptionsButton)
 	private WebElement optionsButton;
 
 	@FindBy(id = TabletAndroidLocators.TabletPersonalInfoPage.idSelfForm)

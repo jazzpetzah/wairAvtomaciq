@@ -222,7 +222,7 @@ public final class AndroidLocators {
 		public static final String idDialogChangeCameraButton = "gtv__camera__top_control__back_camera";
 
 		public static final String idConfirmButton = "ttv__confirmation__confirm";
-		
+
 		public static final String xpathConfirmOKButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
 
 		public static final String idDialogImages = "iv__row_conversation__message_image";
@@ -375,30 +375,45 @@ public final class AndroidLocators {
 	}
 
 	public static final class PersonalInfoPage {
+		// TODO: There should be only one button. Post a bug to AN project to
+		// remove extra view
+
+		private static final String xpathParentSelfProfileOverlay = "//*[@id='fl__conversation_list__profile_overlay']";
 
 		public static final String idBackgroundOverlay = "v_background_dark_overlay";
 
-		public static final String idSettingsBox = "ll__settings_box_container";
+		public static final String xpathSettingsBox = xpathParentSelfProfileOverlay
+				+ "//*[@id='ll__settings_box_container']";
 
-		public static final String idEmailField = "ttv__profile__email";
+		public static final String xpathEmailField = xpathParentSelfProfileOverlay
+				+ "//*[@id='ttv__profile__email']";
 
-		public static final String idNameField = "ttv__profile__name";
+		public static final String xpathNameField = xpathParentSelfProfileOverlay
+				+ "//*[@id='ttv__profile__name']";
 
-		public static final String idNameEdit = "tet__profile__guided";
+		public static final String xpathNameEdit = xpathParentSelfProfileOverlay
+				+ "//*[@id='tet__profile__guided']";
 
-		public static final String idSettingsBtn = "ttv__profile__settings_box__settings";
+		public static final String xpathChangePhotoBtn = xpathParentSelfProfileOverlay
+				+ "//*[@id='gtv__camera_control__change_image_source']";
 
-		public static final String idChangePhotoBtn = "gtv__camera_control__change_image_source";
+		public static final String xpathGalleryBtn = xpathParentSelfProfileOverlay
+				+ "//*[@id='gtv__camera_control__pick_from_gallery']";
 
-		public static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";
+		public static final String xpathSettingsBtn = xpathParentSelfProfileOverlay
+				+ "//*[@id='ttv__profile__settings_box__settings']";
 
-		public static final String idProfileOptionsButton = "gtv__profile__settings_button";
+		public static final String xpathProfileOptionsButton = xpathParentSelfProfileOverlay
+				+ "//*[@id='gtv__profile__settings_button']";
 
-		public static final String idAboutButton = "ttv__profile__settings_box__about";
+		public static final String xpathAboutButton = xpathParentSelfProfileOverlay
+				+ "//*[@id='ttv__profile__settings_box__about']";
 
-		public static final String idSignOutBtn = "ttv__profile__settings_box__signout";
+		public static final String xpathSignOutBtn = xpathParentSelfProfileOverlay
+				+ "//*[@id='ttv__profile__settings_box__signout']";
 
-		public static final String idSelfProfileClose = "gtv__profile__close_button";
+		public static final String xpathSelfProfileClose = xpathParentSelfProfileOverlay
+				+ "//*[@id='gtv__profile__close_button']";
 
 		public static final String idOpenFrom = "tiles";
 	}

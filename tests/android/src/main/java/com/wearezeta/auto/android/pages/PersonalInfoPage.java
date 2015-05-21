@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -25,22 +26,22 @@ public class PersonalInfoPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PersonalInfoPage.idBackgroundOverlay)
 	private WebElement backgroundOverlay;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idSettingsBox)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathSettingsBox)
 	private WebElement settingBox;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idEmailField)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathEmailField)
 	private WebElement emailField;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idNameField)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathNameField)
 	private WebElement nameField;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idSettingsBtn)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathSettingsBtn)
 	private WebElement settingsButton;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idNameEdit)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathNameEdit)
 	private WebElement nameEdit;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idChangePhotoBtn)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathChangePhotoBtn)
 	private WebElement changePhotoBtn;
 
 	@FindBy(id = AndroidLocators.CommonLocators.idGalleryBtn)
@@ -49,26 +50,23 @@ public class PersonalInfoPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.DialogPage.idConfirmButton)
 	private WebElement confirmBtn;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idProfileOptionsButton)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathProfileOptionsButton)
 	private WebElement optionsButton;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idAboutButton)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathAboutButton)
 	private WebElement aboutButton;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idSelfProfileClose)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathSelfProfileClose)
 	private WebElement selfProfileClose;
 
 	@FindBy(id = AndroidLocators.CommonLocators.idPager)
 	private WebElement page;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idSignOutBtn)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathSignOutBtn)
 	private WebElement signOutBtn;
 
-	@FindBy(how = How.ID, using = AndroidLocators.PersonalInfoPage.idOpenFrom)
+	@FindBy(id = AndroidLocators.PersonalInfoPage.idOpenFrom)
 	private List<WebElement> openFrom;
-
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idProfileOptionsButton)
-	private List<WebElement> settingsButtonList;
 
 	private static final String EMPTY_NAME = "Your name";
 
@@ -90,19 +88,24 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public void tapChangePhotoButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				changePhotoBtn);
 		changePhotoBtn.click();
 	}
 
 	public void tapGalleryButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
 		galleryBtn.click();
 	}
 
 	public void tapConfirmButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), confirmBtn);
 		this.hideKeyboard();
 		confirmBtn.click();
 	}
 
 	public void tapSignOutBtn() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), signOutBtn);
 		signOutBtn.click();
 	}
 
@@ -118,10 +121,19 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public void tapOptionsButton() throws Exception {
-		optionsButton.click();
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), optionsButton);
+		try {
+			optionsButton.click();
+		} catch (ElementNotVisibleException e) {
+			// pass silently, this throws exception due to some internal
+			// Selendroid (or AUT %) ) issue
+		}
 	}
 
 	public SettingsPage tapSettingsButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				settingsButton);
 		settingsButton.click();
 		return new SettingsPage(this.getLazyDriver());
 	}
@@ -134,14 +146,14 @@ public class PersonalInfoPage extends AndroidPage {
 		this.getWait().until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
 		if (!DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.PersonalInfoPage.idNameEdit))) {
+				By.xpath(AndroidLocators.PersonalInfoPage.xpathNameEdit))) {
 			DriverUtils.mobileTapByCoordinates(getDriver(), nameField);
 		}
 	}
 
 	public boolean isNameEditVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.id(AndroidLocators.PersonalInfoPage.idNameEdit));
+				By.xpath(AndroidLocators.PersonalInfoPage.xpathNameEdit));
 	}
 
 	public boolean isNameEditCanBeCleaned() throws Exception {
@@ -164,7 +176,6 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public void changeName(String name, String newName) throws Exception {
-
 		nameEdit.sendKeys(newName);
 		this.getDriver().navigate().back();
 	}
@@ -180,6 +191,7 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public AboutPage tapAboutButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), aboutButton);
 		aboutButton.click();
 		return new AboutPage(this.getLazyDriver());
 	}
@@ -189,16 +201,23 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean waitForOptionsMenuToDisappear() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.PersonalInfoPage.idAboutButton), 10);
+		return DriverUtils
+				.waitUntilLocatorDissapears(
+						this.getDriver(),
+						By.xpath(AndroidLocators.PersonalInfoPage.xpathAboutButton),
+						10);
 	}
 
 	public boolean waitForSettingsDissapear() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
+		return DriverUtils
+				.waitUntilLocatorDissapears(
+						this.getDriver(),
+						By.xpath(AndroidLocators.PersonalInfoPage.xpathProfileOptionsButton));
 	}
 
 	public ContactListPage pressCloseButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				selfProfileClose);
 		selfProfileClose.click();
 		return new ContactListPage(getLazyDriver());
 	}

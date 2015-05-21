@@ -28,10 +28,10 @@ public class RegistrationPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.RegistrationPage.idSignUpGalleryIcon)
 	protected WebElement signUpGalleryIcon;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idNameEdit)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathNameEdit)
 	protected WebElement nameField;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idEmailField)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathEmailField)
 	private WebElement emailField;
 
 	@FindBy(id = AndroidLocators.RegistrationPage.idNewPasswordField)

@@ -38,13 +38,10 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private List<WebElement> frameLayout;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idProfileOptionsButton)
-	private WebElement laterButton;
-
 	@FindBy(id = AndroidLocators.ContactListPage.idOpenStartUIButton)
 	private WebElement openStartUIButton;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idNameField)
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathNameField)
 	private WebElement selfUserName;
 
 	@FindBy(id = AndroidLocators.ContactListPage.idSelfUserAvatar)
@@ -250,7 +247,8 @@ public class ContactListPage extends AndroidPage {
 		final Map<By, AndroidPage> pageMapping = new HashMap<By, AndroidPage>();
 		pageMapping.put(By.id(AndroidLocators.ConnectToPage.idConnectToHeader),
 				new ConnectToPage(this.getLazyDriver()));
-		pageMapping.put(By.id(AndroidLocators.PersonalInfoPage.idNameField),
+		pageMapping.put(
+				By.xpath(AndroidLocators.PersonalInfoPage.xpathNameField),
 				new PersonalInfoPage(this.getLazyDriver()));
 		pageMapping.put(By.id(AndroidLocators.CommonLocators.idEditText),
 				new DialogPage(this.getLazyDriver()));
@@ -345,6 +343,8 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public PersonalInfoPage tapOnMyAvatar() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				selfUserAvatar);
 		selfUserAvatar.click();
 		return new PersonalInfoPage(getLazyDriver());
 	}
