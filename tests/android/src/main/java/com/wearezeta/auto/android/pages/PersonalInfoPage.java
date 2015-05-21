@@ -67,8 +67,6 @@ public class PersonalInfoPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PersonalInfoPage.idOpenFrom)
 	private List<WebElement> openFrom;
 
-	private static final String EMPTY_NAME = "Your name";
-
 	public PersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
