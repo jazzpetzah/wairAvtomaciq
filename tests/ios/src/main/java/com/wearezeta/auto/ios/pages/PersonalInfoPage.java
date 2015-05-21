@@ -1,18 +1,14 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.*;
 import java.util.concurrent.Future;
-
-import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -95,44 +91,41 @@ public class PersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameWireWebsiteButton)
 	private WebElement wireWebsiteButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.namePrivacyPolicyButton)
 	private WebElement privacyPolicyButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathBuildNumberText)
 	private WebElement buildNumberText;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameCloseLegalPageButton)
 	private WebElement closeLegalPageButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathTermsOfUsePageText)
 	private WebElement termsOfUsePageText;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPrivacyPolicyPageText)
 	private WebElement privacyPolicyPageText;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathWireWebsitePageText)
 	private WebElement wireWebsitePageText;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameWireWebsitePageUrl)
-	private WebElement wireWebsitePageUrl;
-	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathWireWebsitePageUrlValue)
 	private WebElement wireWebsitePageUrlValue;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutPageWireLogo)
 	private WebElement aboutPageWireLogo;
-	
+
+	public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
+	}
+
 	final String WIRE_WEBSITE_PAGE_VALUE = "Great conversations";
 	final String TERMS_OF_USE_PAGE_VALUE = "PLEASE READ THIS AGREEMENT CAREFULLY; THIS IS A BINDING CONTRACT.";
 	final String PRIVACY_POLICY_PAGE_VALUE = "Our Privacy Commitment";
 	final String ABOUT_LOGO_IMAGE = "about_page_logo.png";
-	
+
 	final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
-	
-	public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
-	}
 
 	public String getUserNameValue() {
 		String name = profileNameEditField.getText();
@@ -159,78 +152,71 @@ public class PersonalInfoPage extends IOSPage {
 		return this;
 	}
 
-	
-	
-	
-	
 	public boolean isAboutPageVisible() {
 		return termsOfUseButton.isDisplayed();
 	}
 
 	public boolean isAboutPageCertainColor(String color) throws Exception {
-		if(!color.equals("Violet")){
+		if (!color.equals("Violet")) {
 			return false;
 		}
 		BufferedImage coloredLogoImage = getElementScreenshot(aboutPageWireLogo);
-		System.out.println(CommonUtils
-				.getImagesPath(CommonUtils.class) + ABOUT_LOGO_IMAGE);
-		BufferedImage realLogoImage = ImageUtil.readImageFromFile(CommonUtils
-				.getImagesPath(CommonUtils.class) + ABOUT_LOGO_IMAGE);
-		double score = ImageUtil.getOverlapScore(realLogoImage, coloredLogoImage,
+		System.out.println(IOSPage.getImagesPath() + ABOUT_LOGO_IMAGE);
+		BufferedImage realLogoImage = ImageUtil.readImageFromFile(IOSPage
+				.getImagesPath() + ABOUT_LOGO_IMAGE);
+		double score = ImageUtil.getOverlapScore(realLogoImage,
+				coloredLogoImage,
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 		return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
 	}
-	
+
 	public boolean isWireWebsiteButtonVisible() {
 		return wireWebsiteButton.isDisplayed();
 	}
-	
+
 	public boolean isTermsButtonVisible() {
 		return termsOfUseButton.isDisplayed();
 	}
-	
+
 	public boolean isPrivacyPolicyButtonVisible() {
 		return privacyPolicyButton.isDisplayed();
 	}
-	
+
 	public boolean isBuildNumberTextVisible() {
 		return buildNumberText.isDisplayed();
 	}
-	
+
 	public void openTermsOfUsePage() {
 		termsOfUseButton.click();
 	}
-	
+
 	public void openPrivacyPolicyPage() {
 		privacyPolicyButton.click();
 	}
-	
+
 	public void openWireWebsite() {
 		wireWebsiteButton.click();
 	}
-	
+
 	public boolean isWireWebsitePageVisible() {
-		return wireWebsitePageText.getAttribute("name").equals(WIRE_WEBSITE_PAGE_VALUE);
+		return wireWebsitePageText.getAttribute("name").equals(
+				WIRE_WEBSITE_PAGE_VALUE);
 	}
-	
+
 	public void closeLegalPage() {
 		closeLegalPageButton.click();
 	}
-	
+
 	public boolean isTermsOfUsePageVisible() {
-		return termsOfUsePageText.getAttribute("name").equals(TERMS_OF_USE_PAGE_VALUE);
+		return termsOfUsePageText.getAttribute("name").equals(
+				TERMS_OF_USE_PAGE_VALUE);
 	}
-	
+
 	public boolean isPrivacyPolicyPageVisible() {
-		return privacyPolicyPageText.getAttribute("name").equals(PRIVACY_POLICY_PAGE_VALUE);
+		return privacyPolicyPageText.getAttribute("name").equals(
+				PRIVACY_POLICY_PAGE_VALUE);
 	}
-	
-	
-	
-	
-	
-	
-	
+
 	public boolean isResetPasswordPageVisible() {
 		return changePasswordPageChangePasswordButton.isDisplayed();
 	}

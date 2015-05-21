@@ -30,7 +30,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | Contact   | Color  |
       | user1Email | user1Password | user1Name | user2Name | Violet |
 
-  @staging @id731 @torun
+  @staging @id731
   Scenario Outline: Verify about screen contains all the required information [LANDSCAPE]
     Given There are 1 users where <Name> is me
     Given User me change accent color to <Color>

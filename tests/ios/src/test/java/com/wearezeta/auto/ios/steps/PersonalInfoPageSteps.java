@@ -68,77 +68,179 @@ public class PersonalInfoPageSteps {
 	public void WhenIClickOnAboutButtonOnPersonalPage() {
 		PagesCollection.personalInfoPage.clickOnAboutButton();
 	}
-
-
-
-	@Then("I see About page")
-	public void ThenISeeAboutPAge() {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isAboutPageVisible());
-	}
-
-	@Then("I see that the About page is colored (.*)")
-	public void AboutPageIsColor(String color) throws Exception {
-		//only takes violet color
-		Assert.assertTrue(PagesCollection.personalInfoPage.isAboutPageCertainColor(color));
-	}
 	
-	@Then("I see WireWebsiteButton")
+	/**
+	 * Verifies the about page in settings is shown
+	 * 
+	 * @step. ^I see About page
+	 * 
+	 * @throws AssertionError
+	 *             about page is not shown
+	 */
+	@Then("^I see About page$")
+	public void ThenISeeAboutPage() {
+		Assert.assertTrue("About page not shown",
+				PagesCollection.personalInfoPage.isAboutPageVisible());
+	}
+
+	/**
+	 * Verifies the about page is Violet
+	 * 
+	 * @step. ^I see that the About page is colored (.*)$
+	 * 
+	 * @param color
+	 *            the color the about page should be (Violet)
+	 * 
+	 * @throws AssertionError
+	 *             the about page is not Violet
+	 */
+	@Then("^I see that the About page is colored (.*)$")
+	public void AboutPageIsColor(String color) throws Exception {
+		// only takes violet color
+		Assert.assertTrue("About page is not Violet",
+				PagesCollection.personalInfoPage.isAboutPageCertainColor(color));
+	}
+
+	/**
+	 * Verifies the wire.com button is shown
+	 * 
+	 * @step. ^I see WireWebsiteButton$
+	 * 
+	 * @throws AssertionError
+	 *             the wire.com button is not shown
+	 */
+	@Then("^I see WireWebsiteButton$")
 	public void ThenISeeWireWebsiteButton() {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isWireWebsiteButtonVisible());
+		Assert.assertTrue("wire.com button on \"about\" page is missing",
+				PagesCollection.personalInfoPage.isWireWebsiteButtonVisible());
 	}
 
-	@Then("I see TermsButton")
+	/**
+	 * Verifies the terms of use button is shown
+	 * 
+	 * @step. ^I see TermsButton$
+	 * 
+	 * @throws AssertionError
+	 *             the terms of use button is not shown
+	 */
+	@Then("^I see TermsButton$")
 	public void ThenISeeTermsButton() {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isTermsButtonVisible());
+		Assert.assertTrue("Terms of use button missing",
+				PagesCollection.personalInfoPage.isTermsButtonVisible());
 	}
 
-	@Then("I see PrivacyPolicyButton")
+	/**
+	 * Verifies the privacy policy button is shown
+	 * 
+	 * @step. ^I see PrivacyPolicyButton$
+	 * 
+	 * @throws AssertionError
+	 *             the privacy policy button is not shown
+	 */
+	@Then("^I see PrivacyPolicyButton$")
 	public void ThenISeePrivacyPolicyButton() {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isPrivacyPolicyButtonVisible());
+		Assert.assertTrue("Privacy policy button missing",
+				PagesCollection.personalInfoPage.isPrivacyPolicyButtonVisible());
 	}
 
-	@Then("I see BuildNumberText")
+	/**
+	 * Verifies the build number text is shown
+	 * 
+	 * @step. ^I see BuildNumberText$
+	 * 
+	 * @throws AssertionError
+	 *             the build number info is not shown
+	 */
+	@Then("^I see BuildNumberText$")
 	public void ThenISeeBuildNumberText() {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isBuildNumberTextVisible());
+		Assert.assertTrue("Build number info not shown",
+				PagesCollection.personalInfoPage.isBuildNumberTextVisible());
 	}
 
-	@When("I open TermsOfUsePage")
+	/**
+	 * Opens the terms of use page from the about page
+	 * 
+	 * @step. ^I open TermsOfUsePage$
+	 */
+	@When("^I open TermsOfUsePage$")
 	public void IClickOnTermsOfUse() {
 		PagesCollection.personalInfoPage.openTermsOfUsePage();
 	}
 
-	@When("I open PrivacyPolicyPage")
+	/**
+	 * Opens the privacy policy page from the about page
+	 * 
+	 * @step. ^I open PrivacyPolicyPage$
+	 */
+	@When("^I open PrivacyPolicyPage$")
 	public void IClickOnPrivacyPolicy() {
 		PagesCollection.personalInfoPage.openPrivacyPolicyPage();
 	}
 
-	@When("I open WireWebsite")
+	/**
+	 * Opens the wire.com website from the about page
+	 * 
+	 * @step. ^I open WireWebsite$
+	 */
+	@When("^I open WireWebsite$")
 	public void IClickOnWireWebsite() {
 		PagesCollection.personalInfoPage.openWireWebsite();
 	}
 
-	@Then("I see WireWebsitePage")
+	/**
+	 * Verifies that wire.com website is shown
+	 * 
+	 * @step. ^I see WireWebsitePage$
+	 * 
+	 * @throws AssertionError
+	 *             the wire.com website is not shown
+	 */
+	@Then("^I see WireWebsitePage$")
 	public void ThenISeeWireWebsite() {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isWireWebsitePageVisible());
+		Assert.assertTrue(
+				"wire.com is not shown or website element has changed",
+				PagesCollection.personalInfoPage.isWireWebsitePageVisible());
 	}
-	
-	@When("I close legal page")
+
+	/**
+	 * Closes a legal page from the about page
+	 * 
+	 * @step. ^I close legal page$
+	 */
+	@When("^I close legal page$")
 	public void IClickToCloseLegalPage() {
 		PagesCollection.personalInfoPage.closeLegalPage();
 	}
 
-	@Then("I see TermsOfUsePage")
+	/**
+	 * Verifies the terms of use page is shown
+	 * 
+	 * @step. ^I see TermsOfUsePage$
+	 * 
+	 * @throws AssertionError
+	 *             the terms of use page is not shown
+	 */
+	@Then("^I see TermsOfUsePage$")
 	public void ThenISeeTermsOfUsePage() {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isTermsOfUsePageVisible());
+		Assert.assertTrue(
+				"Terms of use page not visible or text element has changed",
+				PagesCollection.personalInfoPage.isTermsOfUsePageVisible());
 	}
 
-	@Then("I see PrivacyPolicyPage")
+	/**
+	 * Verifies the privacy policy page is shown
+	 * 
+	 * @step. ^I see PrivacyPolicyPage$
+	 * 
+	 * @throws AssertionError
+	 *             the privacy policy page is not shown
+	 */
+	@Then("^I see PrivacyPolicyPage$")
 	public void ThenISeePrivacyPolicyPage() {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isPrivacyPolicyPageVisible());
+		Assert.assertTrue(
+				"Privacy Policy page is not visible or text element has changed",
+				PagesCollection.personalInfoPage.isPrivacyPolicyPageVisible());
 	}
-
-
-
 
 	@When("I click Sign out button from personal page")
 	public void IClickSignOutButtonFromPersonalPage() throws Exception {
