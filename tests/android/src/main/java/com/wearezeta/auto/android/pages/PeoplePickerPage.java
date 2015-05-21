@@ -28,7 +28,7 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerSearchUsers)
 	private WebElement pickerSearchUser;
 
-	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerTopPeopleHeader)
+	@FindBy(xpath = AndroidLocators.PeoplePickerPage.xpathPickerTopPeopleHeader)
 	private WebElement pickerTopPeopleHeader;
 
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerUserSlidingRow)
@@ -121,7 +121,7 @@ public class PeoplePickerPage extends AndroidPage {
 		return DriverUtils.isElementPresentAndDisplayed(noResults);
 	}
 
-	public Boolean ispTopPeopleHeaderVisible() throws Exception {
+	public boolean isTopPeopleHeaderVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(pickerTopPeopleHeader);
 	}
 

@@ -23,7 +23,7 @@ public class ContactListPageSteps {
 	 * @throws Exception
 	 */
 	@Given("^I see Contact list with no contacts$")
-	public void GivenISeeContactListWithNoContacts() throws Throwable {
+	public void GivenISeeContactListWithNoContacts() throws Exception {
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
 	}
 
@@ -37,7 +37,7 @@ public class ContactListPageSteps {
 	 * @throws Exception
 	 */
 	@Given("^I see Contact list$")
-	public void GivenISeeContactList() throws Throwable {
+	public void GivenISeeContactList() throws Exception {
 		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
 		PagesCollection.contactListPage.verifyContactListIsFullyLoaded();
 	}
@@ -243,25 +243,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Check to see whether a given user appears in the contact list.
-	 * 
-	 * @step. ^Contact name (.*) is not in list$
-	 * @param userName
-	 *            The user to ensure doesn't exist in the contact list.
-	 * @throws Exception
-	 */
-	@Then("^Contact name (.*) is not in list$")
-	public void ThenContactNameIsNotInList(String userName) throws Exception {
-		try {
-			userName = usrMgr.findUserByNameOrNameAlias(userName).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertFalse(PagesCollection.contactListPage
-				.isContactExists(userName));
-	}
-
-	/**
 	 * Verify that Play/Pause media content button is visible in Conversation
 	 * List
 	 * 
@@ -269,9 +250,22 @@ public class ContactListPageSteps {
 	 * 
 	 */
 	@Then("^I see PlayPause media content button in Conversations List$")
-	public void ThenISeePlayPauseMediaContentButtonInConvLst()
-			throws NumberFormatException, Exception {
+	public void ThenISeePlayPauseMediaContentButtonInConvLst() throws Exception {
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isPlayPauseMediaButtonVisible());
+	}
+
+	/**
+	 * Open People Picker by clicking the Search button in the right top corner
+	 * of convo list
+	 * 
+	 * @step. ^I open People Picker$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I open People Picker$")
+	public void IOpenPeoplePicker() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+				.openPeoplePicker();
 	}
 }

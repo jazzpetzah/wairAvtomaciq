@@ -76,6 +76,9 @@ public class ContactListPage extends AndroidPage {
 
 	@FindBy(id = AndroidLocators.CommonLocators.idConfirmBtn)
 	private WebElement confirmShareButton;
+	
+	@FindBy(id = AndroidLocators.ContactListPage.idSearchButton) 
+	private WebElement searchButton;
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
@@ -350,6 +353,12 @@ public class ContactListPage extends AndroidPage {
 				selfUserAvatar);
 		selfUserAvatar.click();
 		return new PersonalInfoPage(getLazyDriver());
+	}
+	
+	public PeoplePickerPage openPeoplePicker() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), searchButton);
+		searchButton.click();
+		return new PeoplePickerPage(getLazyDriver());
 	}
 
 }

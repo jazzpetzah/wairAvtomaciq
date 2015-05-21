@@ -164,6 +164,8 @@ public final class AndroidLocators {
 		public static final Function<String, String> xpathMutedIconByName = name -> String
 				.format("//*[@id='tv_conv_list_topic' and @value='%s']/following-sibling::"
 						+ "*//*[@id='tv_conv_list_voice_muted']", name);
+
+		public static final String idSearchButton = "gtv_pickuser__searchbutton";
 	}
 
 	public static final class CommonLocators {
@@ -323,7 +325,10 @@ public final class AndroidLocators {
 
 		public static final String idParticipantsClose = "gtv__participants__close";
 
-		public static final String idPickerTopPeopleHeader = "ttv_pickuser__list_header_title";
+		private static final String xpathTopPeopleRoot = "//*[@id='fl__conversation_list_main']";
+
+		public static final String xpathPickerTopPeopleHeader = xpathTopPeopleRoot
+				+ "//*[@id='ttv_pickuser__list_header_title']";
 
 		public static final String idPickerUserSlidingRow = "ll__pickuser__sliding_row";
 
@@ -424,10 +429,12 @@ public final class AndroidLocators {
 		private static final String xpathParentSignUpContainer = "//*[@id='fl__sign_up__main_container']";
 
 		public static final String xpathNameField = "("
-				+ xpathParentSignUpContainer + "//*[@id='tet__profile__guided'])[1]";
+				+ xpathParentSignUpContainer
+				+ "//*[@id='tet__profile__guided'])[1]";
 
 		public static final String xpathEmailField = "("
-				+ xpathParentSignUpContainer + "//*[@id='tet__profile__guided'])[2]";
+				+ xpathParentSignUpContainer
+				+ "//*[@id='tet__profile__guided'])[2]";
 
 		public static final String idRegistrationBack = "gtv__sign_up__previous";
 
