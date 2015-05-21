@@ -590,6 +590,10 @@ public final class IOSLocators {
 		public static final String nameContinueUploadButton = "SHARE";
 	}
 	
+	public final class CommonIOSLocators {
+		public static final String nameLockScreenMessage = "SlideToUnlock";
+	}
+	
 	/////////////
 	//Chathead
 	/////////////

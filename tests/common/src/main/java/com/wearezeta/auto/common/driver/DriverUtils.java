@@ -490,6 +490,13 @@ public class DriverUtils {
 		Runtime.getRuntime().exec(
 				"/usr/bin/open -a Terminal " + scriptPath + "Down.py");
 	}
+	
+	public static void iOSSimulatorSwipeRight(String scriptPath)
+			throws Exception {
+
+		Runtime.getRuntime().exec(
+				"/usr/bin/open -a Terminal " + scriptPath + "Right.py");
+	}
 
 	public static void iOSSimulatorSwipeDialogPageDown(String scriptPath)
 			throws Exception {
