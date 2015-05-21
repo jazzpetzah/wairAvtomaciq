@@ -56,9 +56,6 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.ContactListPage.idPlayPauseMedia)
 	private WebElement playPauseMedia;
 
-	@FindBy(id = AndroidLocators.ContactListPage.idMutedIcon)
-	private WebElement mutedIcon;
-
 	@FindBy(id = AndroidLocators.ContactListPage.idConvList)
 	private WebElement convList;
 
@@ -172,14 +169,20 @@ public class ContactListPage extends AndroidPage {
 		}
 	}
 
-	public boolean isContactMuted() throws Exception {
+	public boolean isContactMuted(String name) throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.ContactListPage.xpathMutedIconByName
+						.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.id(AndroidLocators.ContactListPage.idMutedIcon));
+				locator);
 	}
 
-	public boolean waitUntilContactNotMuted() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.ContactListPage.idMutedIcon));
+	public boolean waitUntilContactNotMuted(String name) throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.ContactListPage.xpathMutedIconByName
+						.apply(name));
+		return DriverUtils
+				.waitUntilLocatorDissapears(this.getDriver(), locator);
 	}
 
 	public boolean isHintVisible() throws Exception {

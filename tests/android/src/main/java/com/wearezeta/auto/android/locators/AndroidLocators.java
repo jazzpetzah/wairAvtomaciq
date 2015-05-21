@@ -161,7 +161,9 @@ public final class AndroidLocators {
 
 		public static final String idSimpleDialogPageText = "ttv__simple_dialog__text";
 
-		public static final String idMutedIcon = "tv_conv_list_voice_muted";
+		public static final Function<String, String> xpathMutedIconByName = name -> String
+				.format("//*[@id='tv_conv_list_topic' and @value='%s']/following-sibling::"
+						+ "*//*[@id='tv_conv_list_voice_muted']", name);
 	}
 
 	public static final class CommonLocators {

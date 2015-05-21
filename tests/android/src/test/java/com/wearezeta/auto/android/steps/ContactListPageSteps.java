@@ -1,9 +1,11 @@
 package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
+
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -219,7 +221,9 @@ public class ContactListPageSteps {
 	 */
 	@Then("^Contact (.*) is muted$")
 	public void ContactIsMuted(String contact) throws Exception {
-		Assert.assertTrue(PagesCollection.contactListPage.isContactMuted());
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isContactMuted(contact));
 	}
 
 	/**
@@ -233,8 +237,9 @@ public class ContactListPageSteps {
 	 */
 	@Then("^Contact (.*) is not muted$")
 	public void ThenContactIsNotMuted(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		Assert.assertTrue(PagesCollection.contactListPage
-				.waitUntilContactNotMuted());
+				.waitUntilContactNotMuted(contact));
 	}
 
 	/**
