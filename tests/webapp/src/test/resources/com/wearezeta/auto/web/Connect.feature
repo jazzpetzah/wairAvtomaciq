@@ -230,7 +230,7 @@ Feature: Connect
     Given <User2> pinged the conversation with <User1>
     Given User <User2> sent message <Msg1> to conversation <User1>
     When I Sign in using login <User1> and password <User1Password>
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     When I open conversation with <User2>
     Then I see text message <Msg1>
     And <User1> blocked <User2>
@@ -243,7 +243,7 @@ Feature: Connect
     And I select Sign out menu item on self profile page
     And User <User2> is me
     And I Sign in using login <User2Email> and password <User2Password>
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     When I open conversation with <User1>
     Then I see text message <Msg2>
     When I open self profile
@@ -304,7 +304,7 @@ Feature: Connect
     Given User <Me> has contact <Contact> in address book
     Given User <Contact> has contact <Me> in address book
     Given I Sign in using login <MyEmail> and password <MyPassword>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     Then I see CONNECTED TO action for <Contact> in conversation
     Then I see START A CONVERSATION action for <Contact> in conversation

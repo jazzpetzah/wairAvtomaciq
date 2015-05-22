@@ -89,7 +89,7 @@ Feature: Search
   Scenario Outline: Verify you can add new user from search results
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    When I see my name on top of Contact list
+    When I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -107,7 +107,7 @@ Feature: Search
     And I switch to Sign In page
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I see connection request from one user
     And I open the list of incoming connection requests
     When I accept connection request from user <Name>
@@ -119,7 +119,7 @@ Feature: Search
     And I switch to Sign In page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I see Contact list with name <Name2>
     And I open conversation with <Name2>
 

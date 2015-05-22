@@ -80,7 +80,7 @@ Feature: Calling
       Given There are 2 users where <Name> is me
       Given Myself is connected to <Contact>
       Given I Sign in using login <Login> and password <Password>
-      When I see my name on top of Contact list
+      When I see my avatar on top of Contact list
       And I open conversation with <Contact>
       And <Contact> calls me using <CallBackend>
       Then I do not see the calling bar

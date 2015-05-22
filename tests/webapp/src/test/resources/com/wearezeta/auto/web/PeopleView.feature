@@ -409,7 +409,7 @@ Feature: People View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given Myself blocked <Contact1>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
