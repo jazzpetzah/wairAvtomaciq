@@ -175,7 +175,7 @@ Feature: Search
     And I see message with max number of characters
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
-    When I swipe down contact list
+    When I open search by clicking plus button
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>

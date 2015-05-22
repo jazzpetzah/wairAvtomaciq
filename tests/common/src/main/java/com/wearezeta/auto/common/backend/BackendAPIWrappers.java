@@ -51,6 +51,7 @@ public final class BackendAPIWrappers {
 	private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
 	private static final int AUTH_FAILED_ERROR = 403;
 	private static final int SERVER_SIDE_ERROR = 500;
+	private static final int PHONE_NUMBER_ALREADY_REGISTERED_ERROR = 409;
 	private static final int MAX_BACKEND_RETRIES = 5;
 
 	private static final long MAX_MSG_DELIVERY_OFFSET = 10000; // milliseconds
@@ -110,10 +111,34 @@ public final class BackendAPIWrappers {
 			BackendREST.registerNewUser(user.getEmail(), user.getName(),
 					user.getPassword());
 			activateRegisteredUserByEmail(activationMessage);
-			attachUserPhoneNumber(user);
+			while (true) {
+				try {
+					attachUserPhoneNumber(user);
+					break;
+				} catch (BackendRequestException e) {
+					if (e.getReturnCode() == PHONE_NUMBER_ALREADY_REGISTERED_ERROR) {
+						user.setPhoneNumber(new PhoneNumber(
+								PhoneNumber.WIRE_COUNTRY_PREFIX));
+					} else {
+						throw e;
+					}
+				}
+			}
 			break;
 		case ByPhoneNumber:
-			BackendREST.bookPhoneNumber(user.getPhoneNumber());
+			while (true) {
+				try {
+					BackendREST.bookPhoneNumber(user.getPhoneNumber());
+					break;
+				} catch (BackendRequestException e) {
+					if (e.getReturnCode() == PHONE_NUMBER_ALREADY_REGISTERED_ERROR) {
+						user.setPhoneNumber(new PhoneNumber(
+								PhoneNumber.WIRE_COUNTRY_PREFIX));
+					} else {
+						throw e;
+					}
+				}
+			}
 			final String activationCode = getActivationCodeForBookedPhoneNumber(user
 					.getPhoneNumber());
 			activateRegisteredUserByPhoneNumber(user.getPhoneNumber(),
@@ -178,27 +203,27 @@ public final class BackendAPIWrappers {
 				"code");
 	}
 
+	private final static int MAX_LOGIN_CODE_QUERIES = 5;
+
 	public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber)
 			throws Exception {
-		String code = null;
 		int count = 0;
-		Exception ex = null;
-		while (code == null && count < 10) {
+		Exception savedException = null;
+		while (count < MAX_LOGIN_CODE_QUERIES) {
 			count++;
 			try {
-				code = BackendREST.getLoginCodeViaBackdoor(phoneNumber)
+				return BackendREST.getLoginCodeViaBackdoor(phoneNumber)
 						.getString("code");
-			} catch (Exception e) {
-				code = null;
-				ex = e;
-				Thread.sleep(1000);
+			} catch (BackendRequestException e) {
+				log.error(String
+						.format("Failed to get login code for phone number '%s'. Retrying (%s of %s)...",
+								phoneNumber.toString(), count,
+								MAX_LOGIN_CODE_QUERIES));
+				savedException = e;
+				Thread.sleep(2000 * count);
 			}
 		}
-		if (code == null) {
-			throw ex;
-		}
-
-		return code;
+		throw savedException;
 	}
 
 	public static void attachUserPhoneNumber(ClientUser user) throws Exception {

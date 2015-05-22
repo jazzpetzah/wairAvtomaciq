@@ -10,7 +10,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    When I call
+    And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
     And I end the call
@@ -37,7 +37,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    When I call
+    And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
     And I end the call
@@ -62,7 +62,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    When I call
+    And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 900 seconds
     And I see the calling bar
@@ -72,7 +72,32 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+	 | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+
+@staging @id1839
+   Scenario Outline: Verify calling not supported in webapp (no calling support)
+      Given My browser does not support calling
+      Given There are 2 users where <Name> is me
+      Given Myself is connected to <Contact>
+      Given I Sign in using login <Login> and password <Password>
+      When I see my name on top of Contact list
+      And I open conversation with <Contact>
+      And <Contact> calls me using <CallBackend>
+      Then I do not see the calling bar
+      And I wait for 3 seconds
+      And I see a warning
+      And I see "Learn more" link in warning
+      When I close the warning
+      Then I do not see a warning
+      And I see calling button
+      When I call
+      Then I see a warning
+      And I see "Learn more" link in warning
+      And I verify browser log is empty
+
+      Examples: 
+	 | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+	 | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
   @regression @id2013
   Scenario Outline: Missed call notification (caller)
@@ -83,7 +108,7 @@ Feature: Calling
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I call
-    And I wait for 2 seconds
+    Then I wait for 2 seconds
     And I end the call
     When I open conversation with <Contact>
     Then I see conversation with my missed call
@@ -93,7 +118,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name |
 
   # This has to work even in browsers, which don't support calling
-  @regression @id2014
+  @staging @id2014
   Scenario Outline: Missed call notification (adressee)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me

@@ -346,17 +346,17 @@ public class DriverUtils {
 		}
 	}
 
-	public static final int DEFAULT_TIME = 500; // milliseconds
+	public static final int DEFAULT_SWIPE_DURATION = 1000; // milliseconds
 	public static final int DEFAULT_FINGERS = 1;
 
 	public static void genericTap(AppiumDriver driver) {
-		genericTap(driver, DEFAULT_TIME, DEFAULT_FINGERS, DEFAULT_PERCENTAGE,
+		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, DEFAULT_PERCENTAGE,
 				DEFAULT_PERCENTAGE);
 	}
 
 	public static void genericTap(AppiumDriver driver, int percentX,
 			int percentY) {
-		genericTap(driver, DEFAULT_TIME, DEFAULT_FINGERS, percentX, percentY);
+		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, percentX, percentY);
 	}
 
 	public static void genericTap(AppiumDriver driver, int time, int percentX,
@@ -490,6 +490,13 @@ public class DriverUtils {
 		Runtime.getRuntime().exec(
 				"/usr/bin/open -a Terminal " + scriptPath + "Down.py");
 	}
+	
+	public static void iOSSimulatorSwipeRight(String scriptPath)
+			throws Exception {
+
+		Runtime.getRuntime().exec(
+				"/usr/bin/open -a Terminal " + scriptPath + "Right.py");
+	}
 
 	public static void iOSSimulatorSwipeDialogPageDown(String scriptPath)
 			throws Exception {
@@ -593,6 +600,10 @@ public class DriverUtils {
 	}
 
 	public static void moveMouserOver(RemoteWebDriver driver, WebElement element) {
+		/**
+		 * Method seems to work for Chrome and FireFox but is not working for
+		 * Safari <= 8. https://code.google.com/p/selenium/issues/detail?id=4136
+		 */
 		Actions action = new Actions(driver);
 		action.moveToElement(element);
 		action.perform();

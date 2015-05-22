@@ -182,6 +182,20 @@ public class DialogPageSteps {
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
 				.openConversationDetailsClick();
 	}
+	
+	/**
+	 * Click open conversation details button in 1:1 dialog with Pending user
+	 * 
+	 * @step. ^I open pending user conversation details$
+	 * 
+	 * @throws Exception
+	 *             if other user personal profile page was not created
+	 */
+	@When("^I open pending user conversation details$")
+	public void IOpenPendingConversationDetails() throws Exception {
+		PagesCollection.otherUserOnPendingProfilePage = PagesCollection.dialogPage
+				.clickConversationDeatailForPendingUser();
+	}
 
 	@When("^I send the message$")
 	public void WhenISendTheMessage() throws Throwable {

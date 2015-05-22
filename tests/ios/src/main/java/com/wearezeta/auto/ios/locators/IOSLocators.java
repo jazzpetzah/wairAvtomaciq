@@ -80,6 +80,8 @@ public final class IOSLocators {
 	
 	public static final String nameConnectOtherUserButton = "CONNECT";
 	
+	public static final String xpathConnectOtherUserButton = "//UIAButton[@name='CONNECT']";
+	
 	public static final String nameIgnoreOtherUserButton = "IGNORE";
 	
 	public static final String clasNameConnectDialogLabel = "UIATextField";
@@ -264,6 +266,23 @@ public final class IOSLocators {
 	
 	public static final String nameSettingsDoneButton = "Done";
 
+	public static final String xpathAboutPageWireLogo = "//UIAApplication[1]/UIAWindow[2]/UIAImage[1]";
+	
+	public static final String nameWireWebsiteButton = "wire.com";
+	
+	public static final String xpathWireWebsitePageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[1]";
+	
+	public static final String xpathWireWebsitePageUrlValue = "//UIAApplication[1]/UIAWindow[2]/UIAButton[2]/UIAStaticText[2]";
+	
+	public static final String namePrivacyPolicyButton = "Privacy Policy";
+	
+	public static final String xpathBuildNumberText = "//UIAApplication[1]/UIAWindow[2]/UIAStaticText[1]";
+	
+	public static final String nameCloseLegalPageButton = "WebViewCloseButton";
+	
+	public static final String xpathTermsOfUsePageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[3]";
+	
+	public static final String xpathPrivacyPolicyPageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIALink[1]/UIAStaticText[1]";
 	
 	///////////////////////
 	//Other User Profile
@@ -473,6 +492,10 @@ public final class IOSLocators {
 	public static final String nameKeyboardDeleteButton = "Delete";
 	public static final String nameKeyboardReturnButton = "Send";
 	
+	public static final class KeyboardButtons {
+		public static final String nameHideKeyboardButton = "Hide keyboard";
+	}
+	
 	////////////////
 	//Tutorial
 	////////////////
@@ -566,6 +589,11 @@ public final class IOSLocators {
 	
 	public final class PeoplePickerPage {
 		public static final String nameLaterButton = "MAYBE LATER";
+		public static final String nameContinueUploadButton = "SHARE";
+	}
+	
+	public final class CommonIOSLocators {
+		public static final String nameLockScreenMessage = "SlideToUnlock";
 	}
 	
 	/////////////

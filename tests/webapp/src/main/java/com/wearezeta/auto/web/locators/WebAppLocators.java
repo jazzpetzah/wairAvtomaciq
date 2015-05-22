@@ -96,7 +96,7 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathMissedCallNotificationByContactName = (
 				name) -> String
-				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]/div/*[local-name() = 'svg' and @data-uie-name='status-unread']",
+				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[local-name() = 'svg' and @data-uie-name='status-unread']",
 						name);
 
 	}
@@ -317,5 +317,20 @@ public final class WebAppLocators {
 				+ "//*[@data-uie-name='do-set-picture']";
 
 		public static String cssDropZone = "#self-upload .self-upload-center";
+	}
+
+	public static final class WarningPage {
+
+		private static final String xpathRootDiv = "//div[@id='warnings']";
+
+		public static final String xpathWarning = xpathRootDiv
+				+ "//div[@class='warning']";
+
+		public static final String xpathWarningClose = xpathRootDiv
+				+ "//span[contains(@class, 'warning-bar-close')]";
+
+		public static final Function<String, String> xpathLinkByCaption = (name) -> String
+				.format("%s//div[contains(@class, 'warning-bar-message')]//a[text()='%s']",
+						xpathRootDiv, name);
 	}
 }

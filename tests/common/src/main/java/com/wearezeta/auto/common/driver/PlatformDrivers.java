@@ -1,6 +1,5 @@
 package com.wearezeta.auto.common.driver;
 
-import java.util.Collection;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.ConcurrentHashMap;
@@ -9,6 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -57,7 +57,8 @@ public final class PlatformDrivers {
 
 	public synchronized Future<? extends RemoteWebDriver> resetDriver(
 			String url, DesiredCapabilities capabilities, int maxRetryCount,
-			Consumer<RemoteWebDriver> initCompletedCallback) throws Exception {
+			Consumer<RemoteWebDriver> initCompletedCallback,
+			Supplier<Boolean> beforeInitCallback) throws Exception {
 		final Platform platformInCapabilities = Platform
 				.getByName((String) capabilities.getCapability("platformName"));
 		if (this.hasDriver(platformInCapabilities)) {
@@ -65,7 +66,7 @@ public final class PlatformDrivers {
 		}
 		final LazyDriverInitializer initializer = new LazyDriverInitializer(
 				platformInCapabilities, url, capabilities, maxRetryCount,
-				initCompletedCallback);
+				initCompletedCallback, beforeInitCallback);
 		Future<RemoteWebDriver> driverBeingCreated = pool.submit(initializer);
 		drivers.put(platformInCapabilities, driverBeingCreated);
 		return driverBeingCreated;
@@ -74,12 +75,12 @@ public final class PlatformDrivers {
 	public synchronized Future<? extends RemoteWebDriver> resetDriver(
 			String url, DesiredCapabilities capabilities, int maxRetryCount)
 			throws Exception {
-		return resetDriver(url, capabilities, maxRetryCount, null);
+		return resetDriver(url, capabilities, maxRetryCount, null, null);
 	}
 
 	public Future<? extends RemoteWebDriver> resetDriver(String url,
 			DesiredCapabilities capabilities) throws Exception {
-		return resetDriver(url, capabilities, 1, null);
+		return resetDriver(url, capabilities, 1, null, null);
 	}
 
 	public static void setImplicitWaitTimeout(RemoteWebDriver driver,
@@ -101,10 +102,6 @@ public final class PlatformDrivers {
 					platform.name()));
 		}
 		return drivers.get(platform);
-	}
-
-	public Collection<Future<? extends RemoteWebDriver>> getRegisteredDrivers() {
-		return drivers.values();
 	}
 
 	public static WebDriverWait createDefaultExplicitWait(RemoteWebDriver driver)
@@ -137,7 +134,8 @@ public final class PlatformDrivers {
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
-				for (Future<? extends RemoteWebDriver> driver : getRegisteredDrivers()) {
+				for (Future<? extends RemoteWebDriver> driver : drivers
+						.values()) {
 					try {
 						driver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 								TimeUnit.MILLISECONDS).quit();

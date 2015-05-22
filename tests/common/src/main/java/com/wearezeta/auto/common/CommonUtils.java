@@ -101,12 +101,6 @@ public class CommonUtils {
 		stream.close();
 	}
 
-	public static int getAndroidApiLvl(Class<?> c) throws Exception {
-		String androidVersion = "44";
-		androidVersion = getValueFromConfig(c, "androidVersion");
-		return Integer.parseInt(androidVersion);
-	}
-
 	public static Boolean getAndroidLogs(Class<?> c) throws Exception {
 		Boolean androidlogs = false;
 		androidlogs = Boolean.valueOf(getValueFromConfig(c, "androidLogs"));
