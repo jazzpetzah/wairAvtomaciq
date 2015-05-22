@@ -24,8 +24,8 @@ public class ConnectToPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectButton)
 	private WebElement sendConnectButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameConnectOtherUserButton)
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectOtherUserButton)
 	private WebElement connectOtherUserButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameIgnoreOtherUserButton)

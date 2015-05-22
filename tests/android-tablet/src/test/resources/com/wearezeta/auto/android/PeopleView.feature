@@ -28,8 +28,8 @@ Feature: People View
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
     And I see Contact list
-    And I see contact list loaded with User name <Contact1>
-    And I see contact list loaded with User name <Contact2>
+    And I see contact list loaded with name <Contact1>
+    And I see contact list loaded with name <Contact2>
     When I tap on tablet contact name <GroupChatName>
     And I see tablet dialog page
     And I tap on profile button
@@ -39,7 +39,7 @@ Feature: People View
     Then I do not see <Contact2> on group chat info page
     And I return to group chat page
     And I see tablet dialog page
-    Then I see  message <Message> contact <Contact2> on group page
+    Then I see message <Message> contact <Contact2> on group page
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
@@ -93,8 +93,8 @@ Feature: People View
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
     And I see Contact list
-    And I see contact list loaded with User name <Contact1>
-    And I see contact list loaded with User name <Contact2>
+    And I see contact list loaded with name <Contact1>
+    And I see contact list loaded with name <Contact2>
     When I tap on tablet contact name <GroupChatName>
     And I see tablet dialog page
     And I tap on profile button
@@ -104,7 +104,7 @@ Feature: People View
     Then I do not see <Contact2> on group chat info page
     And I return to group chat page
     And I see tablet dialog page
-    Then I see  message <Message> contact <Contact2> on group page
+    Then I see message <Message> contact <Contact2> on group page
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName       | Message     |

@@ -145,10 +145,10 @@ public class PeoplePickerPage extends IOSPage {
 			throws Exception {
 		return getScreenshotByCoordinates(
 				searchResultCell.getLocation().x,
-				searchResultCell.getLocation().y / 3
-						+ searchResultContainer.getLocation().y,
-				searchResultCell.getSize().width / 2,
-				searchResultCell.getSize().height * 3);
+				searchResultCell.getLocation().y*2,
+				searchResultCell.getSize().height*5/2,
+				searchResultCell.getLocation().y +
+				searchResultCell.getSize().height*4/5);
 	}
 
 	public void fillTextInPeoplePickerSearch(String text) {

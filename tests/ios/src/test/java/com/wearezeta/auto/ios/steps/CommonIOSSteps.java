@@ -194,6 +194,18 @@ public class CommonIOSSteps {
 	public void ICloseApp(int seconds) throws Exception {
 		PagesCollection.iOSPage.minimizeApplication(seconds);
 	}
+	
+	/**
+	 * Locks screen for a certain amount of time in seconds
+	 * @param seconds
+	 * 			time in seconds to lock screen
+	 * @step.^I lock screen for (.*) seconds$
+	 * @throws Exception
+	 */
+	@When("^I lock screen for (.*) seconds$")
+	public void ILockScreen(int seconds) throws Exception {
+		PagesCollection.loginPage.lockScreen(seconds);
+	}
 
 	@Given("^(.*) sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
