@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @id205 @smoke @regression
+  @id205 @smoke
   Scenario Outline: Change user picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -35,7 +35,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id328 @smoke @regression
+  @id328 @smoke
   Scenario Outline: I can change my name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -45,7 +45,7 @@ Feature: Self Profile
     And I see personal info page
     And I tap on my name
     Then I see edit name field
-    When Edit name field can be cleaned in expected way
+    When I clear name field 
     And I change <Name> to <NewName>
     Then I see my new name <NewName>
 

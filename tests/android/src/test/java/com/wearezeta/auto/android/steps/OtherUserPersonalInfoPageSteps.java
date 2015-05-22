@@ -7,6 +7,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.en.Then;
@@ -39,39 +40,14 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * -unused
-	 * 
-	 * @step. ^I swipe down other user profile page$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I swipe down other user profile page$")
-	public void WhenISwipeDownOtherUserProfilePage() throws Exception {
-		PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.otherUserPersonalInfoPage
-				.swipeDown(1000);
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I swipe up on other user profile page$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I swipe up on other user profile page$")
-	public void WhenISwipeUpOnOtherUserProfilePage() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.swipeUp(500);
-	}
-
-	/**
 	 * Removes a contact from a group conversation
 	 * 
 	 * @step. ^I click Remove$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I click Remove$")
-	public void WhenIClickRemove() throws Throwable {
+	public void WhenIClickRemove() throws Exception {
 		// TODO: check for native button click
 		PagesCollection.otherUserPersonalInfoPage.pressOptionsMenuButton();
 	}
@@ -81,12 +57,12 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I see warning message$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I see warning message$")
-	public void WhenISeeWarningMessage() throws Throwable {
+	public void WhenISeeWarningMessage() throws Exception {
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isRemoveFromConversationAlertVisible());
+				.isConversationAlertVisible());
 	}
 
 	/**
@@ -94,23 +70,23 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I confirm remove$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I confirm remove$")
-	public void WhenIConfirmRemove() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.pressRemoveConfirmBtn();
+	public void WhenIConfirmRemove() throws Exception {
+		PagesCollection.otherUserPersonalInfoPage.pressConfirmBtn();
 	}
 
 	/**
 	 * Confirms the block of another user when they send a connection request
 	 * 
-	 * @step. ^I confirm remove$
+	 * @step. ^I confirm block$
 	 * 
 	 * @throws Throwable
 	 */
 	@When("^I confirm block$")
 	public void WhenIConfirmBlock() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.pressRemoveConfirmBtn();
+		PagesCollection.otherUserPersonalInfoPage.pressConfirmBtn();
 	}
 
 	/**
@@ -219,7 +195,7 @@ public class OtherUserPersonalInfoPageSteps {
 			// Ignore silently
 		}
 		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
-				.tapOnContact(contact);
+				.tapOnParticipant(contact);
 		if (PagesCollection.androidPage instanceof OtherUserPersonalInfoPage) {
 			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
 		}
@@ -304,7 +280,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I confirm leaving$")
 	public void WhenIConfirmLeaving() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.pressRemoveConfirmBtn();
+		PagesCollection.otherUserPersonalInfoPage.pressConfirmBtn();
 	}
 
 	/**
@@ -319,7 +295,7 @@ public class OtherUserPersonalInfoPageSteps {
 	public void WhenISelectContact(String name) throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
-				.selectContactByName(name);
+				.tapOnParticipant(name);
 	}
 
 	/**
@@ -349,18 +325,12 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I see the correct participant (.*) and (.*) avatars$")
 	public void ISeeCorrectParticipantAvatars(String contact1, String contact2)
 			throws Exception {
-		try {
-			contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
+		for (String contactName : new String[] { contact1, contact2 }) {
+			contactName = usrMgr.replaceAliasesOccurences(contact1,
+					FindBy.NAME_ALIAS);
+			Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
+					.isParticipantAvatarVisible(contactName));
 		}
-		try {
-			contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isParticipantAvatars(contact1, contact2));
 	}
 
 	/**
@@ -375,9 +345,9 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I see the correct number of participants in the title (.*)$")
 	public void IVerifyParticipantNumber(String realNumberOfParticipants)
 			throws IOException {
-		Assert.assertEquals(
-				PagesCollection.otherUserPersonalInfoPage.getSubHeader(),
-				realNumberOfParticipants + " people");
+		Assert.assertEquals(PagesCollection.otherUserPersonalInfoPage
+				.getSubHeader().toLowerCase(), realNumberOfParticipants
+				+ " people");
 	}
 
 	/**
@@ -394,7 +364,7 @@ public class OtherUserPersonalInfoPageSteps {
 			throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertFalse(PagesCollection.otherUserPersonalInfoPage
-				.isContactExists(contact));
+				.isParticipantExists(contact));
 	}
 
 	/**

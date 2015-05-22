@@ -1,15 +1,16 @@
 package com.wearezeta.auto.android.steps;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
 import cucumber.api.java.en.*;
 
@@ -21,7 +22,17 @@ public class DialogPageSteps {
 			+ "Fusce cursus neque at posuere viverra. Duis ultricies ipsum ac leo mattis, a aliquet neque consequat. "
 			+ "Vestibulum ut eros eu risus mattis iaculis quis ac eros. Nam sit amet venenatis felis. "
 			+ "Vestibulum blandit nisi felis, id hendrerit quam viverra at. Curabitur nec facilisis felis.";
-	private String message;
+	private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
+
+	private static String expandMessage(String message) {
+		final Map<String, String> specialStrings = new HashMap<String, String>();
+		specialStrings.put(LONG_MESSAGE_ALIAS, ANDROID_LONG_MESSAGE);
+		if (specialStrings.containsKey(message)) {
+			return specialStrings.get(message);
+		} else {
+			return message;
+		}
+	}
 
 	/**
 	 * Waits for the dialog page to appear This step makes no assertions and
@@ -34,7 +45,8 @@ public class DialogPageSteps {
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
 		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.loginPage
+					.instantiatePage(DialogPage.class);
 		}
 		PagesCollection.dialogPage.waitForCursorInputVisible();
 	}
@@ -52,49 +64,35 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Generates a random message and sends it in the chat
+	 * Send message to the chat
 	 * 
-	 * @step. ^I type the message and send it$
+	 * @step. ^I type the message \"(.*)\" and send it$
 	 * 
-	 * @throws Exception
-	 */
-	@When("^I type the message and send it$")
-	public void WhenITypeRandomMessageAndSendIt() throws Exception {
-		message = CommonUtils.generateGUID();
-		PagesCollection.dialogPage.typeAndSendMessage(message);
-	}
-
-	/**
-	 * Inputs a custom message and sends it
-	 * 
-	 * @step. ^I input (.*) message and send it$
-	 * 
-	 * @param myMessage
-	 *            the message to send
+	 * @param msg
+	 *            message to type. There are several special shortcuts:
+	 *            LONG_MESSAGE - to type long message
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I input (.*) message and send it$")
-	public void ITypeTheMessageAndSendIt(String myMessage) throws Exception {
-		message = myMessage;
-
-		PagesCollection.dialogPage.typeAndSendMessage(myMessage);
+	@When("^I type the message \"(.*)\" and send it$")
+	public void ITypeMessageAndSendIt(String msg) throws Exception {
+		PagesCollection.dialogPage.typeAndSendMessage(expandMessage(msg));
 	}
 
 	/**
 	 * Inputs a custom message and does NOT send it
 	 * 
-	 * @step. ^I input (.*) message and send it$
+	 * @step. ^I type the message \"(.*)\"$
 	 * 
-	 * @param myMessage
-	 *            the message to send
+	 * @param msg
+	 *            message to type. There are several special shortcuts:
+	 *            LONG_MESSAGE - to type long message
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I input (.*) message$")
-	public void ITypeInAMessage(String myMessage) throws Exception {
-		message = myMessage;
-		PagesCollection.dialogPage.typeMessage(myMessage);
+	@When("^I type the message \"(.*)\"$")
+	public void ITypeMessage(String msg) throws Exception {
+		PagesCollection.dialogPage.typeMessage(expandMessage(msg));
 	}
 
 	/**
@@ -110,48 +108,6 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Types in and sends the default long message
-	 * 
-	 * @step. ^I type long message and send it$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I type long message and send it$")
-	public void WhenITypeLongMessageAndSendIt() throws Throwable {
-		message = ANDROID_LONG_MESSAGE;
-		PagesCollection.dialogPage.typeAndSendMessage(message);
-	}
-
-	/**
-	 * Types in an message of 5 random lower case leters and 5 random upper case
-	 * letters, and then sends it
-	 * 
-	 * @step. ^I type Upper/Lower case message and send it$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I type Upper/Lower case message and send it$")
-	public void WhenITypeUpperLowerCaseAndSendIt() throws Throwable {
-		message = CommonUtils.generateRandomString(5).toLowerCase() + " "
-				+ CommonUtils.generateRandomString(5).toUpperCase();
-		PagesCollection.dialogPage.typeAndSendMessage(message);
-	}
-
-	/**
-	 * Taps twice on the cursor input
-	 * 
-	 * -unused
-	 * 
-	 * @step. ^I multi tap on text input$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I multi tap on text input$")
-	public void WhenIMultiTapOnTextInput() throws Throwable {
-		PagesCollection.dialogPage.multiTapOnCursorInput();
-	}
-
-	/**
 	 * Swipes the text input area to reveal the different input options
 	 * 
 	 * @step. ^I swipe on text input$
@@ -160,19 +116,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I swipe on text input$")
 	public void WhenISwipeOnTextInput() throws Exception {
-		PagesCollection.dialogPage.SwipeOnCursorInput();
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I swipe on text input$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I swipe left on text input$")
-	public void WhenISwipeLeftOnTextInput() throws Exception {
-		PagesCollection.dialogPage.SwipeLeftOnCursorInput();
+		PagesCollection.dialogPage.swipeOnCursorInput();
 	}
 
 	/**
@@ -180,10 +124,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press Add Picture button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Add Picture button$")
-	public void WhenIPressAddPictureButton() throws Throwable {
+	public void WhenIPressAddPictureButton() throws Exception {
 		PagesCollection.dialogPage.tapAddPictureBtn();
 	}
 
@@ -192,10 +136,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press Ping button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Ping button$")
-	public void WhenIPressPButton() throws Throwable {
+	public void WhenIPressPButton() throws Exception {
 		PagesCollection.dialogPage.tapPingBtn();
 	}
 
@@ -204,10 +148,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press Call button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Call button$")
-	public void WhenIPressCallButton() throws Throwable {
+	public void WhenIPressCallButton() throws Exception {
 		PagesCollection.dialogPage.tapCallBtn();
 	}
 
@@ -216,10 +160,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press Mute button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Mute button$")
-	public void WhenIPressMuteButton() throws Throwable {
+	public void WhenIPressMuteButton() throws Exception {
 		PagesCollection.dialogPage.tapMuteBtn();
 	}
 
@@ -228,10 +172,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press Speaker button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Speaker button$")
-	public void WhenIPressSpeakerButton() throws Throwable {
+	public void WhenIPressSpeakerButton() throws Exception {
 		PagesCollection.dialogPage.tapSpeakerBtn();
 	}
 
@@ -240,10 +184,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press Cancel call button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Cancel call button$")
-	public void WhenIPressCancelCallButton() throws Throwable {
+	public void WhenIPressCancelCallButton() throws Exception {
 		PagesCollection.dialogPage.tapCancelCallBtn();
 	}
 
@@ -255,12 +199,12 @@ public class DialogPageSteps {
 	 * @param buttonName
 	 *            the name of the calling button to check
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see (.*) calling button is pressed$")
-	public void WhenIPressCancelCallButton(String buttonName) throws Throwable {
-		double score = PagesCollection.dialogPage
-				.checkCallingButton(buttonName);
+	public void WhenIPressCancelCallButton(String buttonName) throws Exception {
+		final double score = PagesCollection.dialogPage
+				.getExpectedButtonStateOverlapScore(buttonName);
 		Assert.assertTrue(
 				"Calling button not present or not clicked. Expected >= 0.95, current = "
 						+ score, score >= 0.95d);
@@ -270,27 +214,21 @@ public class DialogPageSteps {
 	 * Checks to see if call overlay is present
 	 * 
 	 * @step. ^I see call overlay$
+	 * @param shouldNotSee
+	 *            is set to null if " do not" part does not exist
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
-	@Then("^I see call overlay$")
-	public void WhenISeeCallOverlay() throws Throwable {
-		Assert.assertTrue("Call overlay not visible",
-				PagesCollection.dialogPage.checkCallingOverlay());
-	}
-
-	/**
-	 * Checks to see if call overlay IS NOT present
-	 * 
-	 * @step. ^I do not see call overlay$
-	 * 
-	 * @throws Throwable
-	 */
-	@Then("^I do not see call overlay$")
-	public void WhenIDoNotSeeCallOverlay() throws Throwable {
-		Assert.assertTrue(
-				"Call overlay is visible, it should have been dismissed",
-				PagesCollection.dialogPage.checkNoCallingOverlay());
+	@Then("^I( do not)? see call overlay$")
+	public void WhenISeeCallOverlay(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("Call overlay not visible",
+					PagesCollection.dialogPage.checkCallingOverlay());
+		} else {
+			Assert.assertTrue(
+					"Call overlay is visible, it should have been dismissed",
+					PagesCollection.dialogPage.checkNoCallingOverlay());
+		}
 	}
 
 	/**
@@ -298,11 +236,11 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I tap Dialog page bottom$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I tap Dialog page bottom$")
-	public void WhenITapOnDialogPageBottom() throws Throwable {
+	public void WhenITapOnDialogPageBottom() throws Exception {
 		PagesCollection.dialogPage.tapDialogPageBottom();
 	}
 
@@ -311,11 +249,11 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I tap conversation details button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I tap conversation details button$")
-	public void WhenITapConversationDetailsBottom() throws Throwable {
+	public void WhenITapConversationDetailsBottom() throws Exception {
 		PagesCollection.otherUserPersonalInfoPage = ((DialogPage) PagesCollection.androidPage)
 				.tapConversationDetailsButton();
 	}
@@ -325,11 +263,11 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press PlayPause media item button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I press PlayPause media item button$")
-	public void WhenIPressPlayPauseButton() throws Throwable {
+	public void WhenIPressPlayPauseButton() throws Exception {
 		PagesCollection.dialogPage.tapPlayPauseBtn();
 	}
 
@@ -338,11 +276,11 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press play on youtube container$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I press play on youtube container$")
-	public void WhenIPressPlayOnYoutubeContainer() throws Throwable {
+	public void WhenIPressPlayOnYoutubeContainer() throws Exception {
 		PagesCollection.dialogPage.tapYouTubePlay();
 	}
 
@@ -365,11 +303,11 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I press PlayPause on Mediabar button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I press PlayPause on Mediabar button$")
-	public void WhenIPressPlayPauseOnMediaBarButton() throws Throwable {
+	public void WhenIPressPlayPauseOnMediaBarButton() throws Exception {
 		PagesCollection.dialogPage.tapPlayPauseMediaBarBtn();
 	}
 
@@ -387,8 +325,6 @@ public class DialogPageSteps {
 	public void WhenIPressButton(String buttonName) throws Throwable {
 		switch (buttonName.toLowerCase()) {
 		case "take photo":
-			// Temp fix for Moto
-			// PagesCollection.dialogPage.changeCamera();
 			Thread.sleep(1000);
 			PagesCollection.dialogPage.takePhoto();
 			break;
@@ -409,10 +345,10 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I select picture for dialog$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I select picture for dialog$")
-	public void WhenISelectPicture() throws Throwable {
+	public void WhenISelectPicture() throws Exception {
 		PagesCollection.dialogPage.selectPhoto();
 	}
 
@@ -420,41 +356,29 @@ public class DialogPageSteps {
 	 * Used to check that a ping has been sent Not very clear what this step
 	 * does
 	 * 
-	 * @step. ^I see Hello-Hey message (.*) with (.*) in the dialog$
+	 * @step. ^I see Ping message (.*) in the dialog$
 	 * 
 	 * @param message
-	 * @param action
 	 * @throws Exception
 	 */
-	@Then("^I see Hello-Hey message (.*) with (.*) in the dialog$")
-	public void ThenISeeHelloHeyMessageInTheDialog(String message, String action)
-			throws Exception {
-		try {
-			message = usrMgr.findUserByNameOrNameAlias(message).getName();
-		} catch (NoSuchUserException ex) {
-			// Ignore silently
-		}
-		Assert.assertTrue(PagesCollection.dialogPage.isKnockText(message,
-				action));
-		/*
-		 * Assert.assertEquals("Ping message compare", message + " " +
-		 * action.trim(), PagesCollection.dialogPage.getKnockText());
-		 */
+	@Then("^I see Ping message (.*) in the dialog$")
+	public void ThenISeePingMessageInTheDialog(String message) throws Exception {
+		message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
+		Assert.assertTrue(PagesCollection.dialogPage.getLastPingText().equals(
+				message));
 	}
 
 	/**
 	 * Checks to see that a message that has been sent appears in the chat
 	 * history
 	 * 
-	 * @step. ^I see my message in the dialog$
+	 * @step. ^I see my message \"(.*)\" in the dialog$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
-	@Then("^I see my message in the dialog$")
-	public void ThenISeeMyMessageInTheDialog() throws Throwable {
-		PagesCollection.dialogPage.waitForMessage();
-		String lastMess = PagesCollection.dialogPage.getLastMessageFromDialog();
-		Assert.assertTrue(lastMess.equals(message.trim()));
+	@Then("^I see my message \"(.*)\" in the dialog$")
+	public void ThenISeeMyMessageInTheDialog(String msg) throws Exception {
+		PagesCollection.dialogPage.waitForMessage(expandMessage(msg));
 	}
 
 	/**
@@ -462,14 +386,13 @@ public class DialogPageSteps {
 	 * 
 	 * @step. ^I see URL in the dialog$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@Then("^I see URL in the dialog$")
-	public void ThenISeeURLInDialog() throws Throwable {
-		PagesCollection.dialogPage.waitForMessage();
-		String lastMess = PagesCollection.dialogPage.getLastMessageFromDialog();
-		Assert.assertTrue(lastMess.contains("www.google.com"));
+	public void ThenISeeURLInDialog() throws Exception {
+		// FIXME: Magic string
+		PagesCollection.dialogPage.waitForMessage("www.google.com");
 	}
 
 	/**
@@ -498,6 +421,8 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.clickLastImageFromDialog();
 	}
 
+	private static final int SWIPE_DURATION_MILLISECONDS = 1000;
+	
 	/**
 	 * 
 	 * @step. ^I swipe up on dialog page
@@ -510,7 +435,7 @@ public class DialogPageSteps {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
-				.swipeUp(1000);
+				.swipeUp(SWIPE_DURATION_MILLISECONDS);
 	}
 
 	/**
@@ -526,7 +451,7 @@ public class DialogPageSteps {
 		if (PagesCollection.dialogPage == null) {
 			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
 		}
-		PagesCollection.dialogPage.swipeDown(1000);
+		PagesCollection.dialogPage.swipeDown(SWIPE_DURATION_MILLISECONDS);
 	}
 
 	/**
@@ -593,7 +518,7 @@ public class DialogPageSteps {
 	@Then("^I see group chat page with users (.*)$")
 	public void ThenISeeGroupChatPage(String participantNameAliases)
 			throws Exception {
-		PagesCollection.dialogPage.isDialogVisible();
+		assert PagesCollection.dialogPage.isDialogVisible() : "Group chat view is not visible";
 		List<String> participantNames = new ArrayList<String>();
 		for (String nameAlias : CommonSteps
 				.splitAliases(participantNameAliases)) {
@@ -614,13 +539,12 @@ public class DialogPageSteps {
 	 * @param contact
 	 * @throws Exception
 	 */
-	@Then("^I see  message (.*) contact (.*) on group page$")
+	@Then("^I see message (.*) contact (.*) on group page$")
 	public void ThenISeeMessageContactOnGroupPage(String message, String contact)
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
 				.toUpperCase();
-		Assert.assertTrue(PagesCollection.dialogPage.isMessageExists(message
-				+ " " + contact));
+		PagesCollection.dialogPage.waitForMessage(message + " " + contact);
 	}
 
 	/**
@@ -669,7 +593,7 @@ public class DialogPageSteps {
 	@Then("^I see (.*) on Mediabar$")
 	public void ThenIseeOnMediaBar(String iconLabel) throws Exception {
 		double score = PagesCollection.dialogPage
-				.checkMediaBarControlIcon(iconLabel);
+				.getMediaBarControlIconOverlapScore(iconLabel);
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.75, current = "
 						+ score, score >= 0.75d);
@@ -686,7 +610,7 @@ public class DialogPageSteps {
 	@Then("^I see (.*) button in Media$")
 	public void ThenISeeButtonInMedia(String iconLabel) throws Exception {
 		double score = PagesCollection.dialogPage
-				.checkMediaControlIcon(iconLabel);
+				.getMediaControlIconOverlapScore(iconLabel);
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.72, current = "
 						+ score, score >= 0.72d);

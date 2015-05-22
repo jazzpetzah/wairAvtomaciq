@@ -3,23 +3,23 @@ package com.wearezeta.auto.android.pages;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
+
 
 public class CallingLockscreenPage extends AndroidPage {
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LockscreenCallingPage.CLASS_NAME, locatorKey = "idLockScreenLogo")
+	@FindBy(id = AndroidLocators.LockscreenCallingPage.idLockScreenLogo)
 	private WebElement lockScreenLogo;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LockscreenCallingPage.CLASS_NAME, locatorKey = "idCallingUserName")
+	@FindBy(id = AndroidLocators.LockscreenCallingPage.idCallingUserName)
 	private WebElement callingUsersName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.LockscreenCallingPage.CLASS_NAME, locatorKey = "idIncomingCallChathead")
+	@FindBy(id = AndroidLocators.LockscreenCallingPage.idIncomingCallChathead)
 	private WebElement incomingCallChathead;
 
 	public CallingLockscreenPage(Future<ZetaAndroidDriver> lazyDriver)

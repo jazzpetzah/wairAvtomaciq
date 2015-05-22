@@ -80,6 +80,8 @@ public final class IOSLocators {
 	
 	public static final String nameConnectOtherUserButton = "CONNECT";
 	
+	public static final String xpathConnectOtherUserButton = "//UIAButton[@name='CONNECT']";
+	
 	public static final String nameIgnoreOtherUserButton = "IGNORE";
 	
 	public static final String clasNameConnectDialogLabel = "UIATextField";

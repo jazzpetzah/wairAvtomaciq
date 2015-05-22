@@ -9,8 +9,8 @@ Feature: People View
     Given <Contact1> has a name <Contact1NewName>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list
-    And I see contact list loaded with User name <Contact1>
-    And I see contact list loaded with User name <Contact2>
+    And I see contact list with name <Contact1>
+    And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I swipe up on dialog page
@@ -21,7 +21,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
 
-  @id321 @smoke @regression
+  @id321 @smoke
   Scenario Outline: Leave group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -40,15 +40,15 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @id322 @smoke @regression
+  @id322 @smoke
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    And I see contact list loaded with User name <Contact1>
-    And I see contact list loaded with User name <Contact2>
+    And I see contact list with name <Contact1>
+    And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I swipe up on dialog page
@@ -58,7 +58,7 @@ Feature: People View
     Then I do not see <Contact2> on group chat info page
     And I return to group chat page
     And I see dialog page
-    Then I see  message <Message> contact <Contact2> on group page
+    Then I see message <Message> contact <Contact2> on group page
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
@@ -76,8 +76,8 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    And I see contact list loaded with User name <Contact1>
-    And I see contact list loaded with User name <Contact2>
+    And I see contact list with name <Contact1>
+    And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I swipe up on dialog page
@@ -93,7 +93,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
       | user1Email | user1Password | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatar TestContact |
 
-  @id1395 @smoke @regression
+  @id1395 @smoke
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -101,15 +101,8 @@ Feature: People View
     Given Contact <Name> send message to user <Contact1>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I wait for 30 seconds
-    #fix for first login
-    And I minimize the application
-    And I wait for 5 seconds
-    And I restore the application
-    #end of fix for first login
-    And I wait for 25 seconds
-    When I swipe down contact list
-    And I see People picker page
+    When I open People Picker
+    And I wait until Top People list appears
     And I tap on <Contact1> in Top People
     And I tap on create conversation
     Then I see dialog page
@@ -131,7 +124,7 @@ Feature: People View
     And I return to group chat page
     Then I see a message informing me that I renamed the conversation to <NewConversationName>
     And I navigate back from dialog page
-    And I see contact list loaded with User name <NewConversationName>
+    And I see contact list with name <NewConversationName>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |

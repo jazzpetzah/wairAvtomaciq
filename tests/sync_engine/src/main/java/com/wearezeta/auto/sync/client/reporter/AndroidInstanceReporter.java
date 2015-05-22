@@ -1,7 +1,5 @@
 package com.wearezeta.auto.sync.client.reporter;
 
-import java.io.IOException;
-
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
@@ -24,9 +22,7 @@ public class AndroidInstanceReporter extends InstanceReporter {
 		ClientDeviceInfo deviceInfo = new ClientDeviceInfo();
 		try {
 			deviceInfo = AndroidCommonUtils.readDeviceInfo();
-		} catch (InterruptedException iex) {
-			log.error(iex.getMessage());
-		} catch (IOException ioex) {
+		} catch (Exception ioex) {
 			log.error(ioex.getMessage());
 		}
 		return deviceInfo;

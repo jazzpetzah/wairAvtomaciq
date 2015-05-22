@@ -240,7 +240,7 @@ public class CommonWebAppSteps {
 		@SuppressWarnings("unchecked")
 		final Future<ZetaWebAppDriver> lazyWebDriver = (Future<ZetaWebAppDriver>) PlatformDrivers
 				.getInstance().resetDriver(url, capabilities,
-						MAX_DRIVER_CREATION_RETRIES, this::navigateToStartPage);
+						MAX_DRIVER_CREATION_RETRIES, this::navigateToStartPage, null);
 		return lazyWebDriver;
 	}
 

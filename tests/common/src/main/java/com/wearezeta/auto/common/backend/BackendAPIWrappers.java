@@ -203,27 +203,27 @@ public final class BackendAPIWrappers {
 				"code");
 	}
 
+	private final static int MAX_LOGIN_CODE_QUERIES = 5;
+
 	public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber)
 			throws Exception {
-		String code = null;
 		int count = 0;
-		Exception ex = null;
-		while (code == null && count < 10) {
+		Exception savedException = null;
+		while (count < MAX_LOGIN_CODE_QUERIES) {
 			count++;
 			try {
-				code = BackendREST.getLoginCodeViaBackdoor(phoneNumber)
+				return BackendREST.getLoginCodeViaBackdoor(phoneNumber)
 						.getString("code");
-			} catch (Exception e) {
-				code = null;
-				ex = e;
-				Thread.sleep(1000);
+			} catch (BackendRequestException e) {
+				log.error(String
+						.format("Failed to get login code for phone number '%s'. Retrying (%s of %s)...",
+								phoneNumber.toString(), count,
+								MAX_LOGIN_CODE_QUERIES));
+				savedException = e;
+				Thread.sleep(2000 * count);
 			}
 		}
-		if (code == null) {
-			throw ex;
-		}
-
-		return code;
+		throw savedException;
 	}
 
 	public static void attachUserPhoneNumber(ClientUser user) throws Exception {

@@ -1,9 +1,6 @@
 package com.wearezeta.auto.common;
 
-import io.appium.java_client.pagefactory.AppiumFieldDecorator;
-
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -17,13 +14,12 @@ import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.pagefactory.DefaultElementLocatorFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaDriver;
-import com.wearezeta.auto.common.locators.ZetaElementLocatorFactory;
-import com.wearezeta.auto.common.locators.ZetaFieldDecorator;
 import com.wearezeta.auto.common.locators.ZetaSearchContext;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -58,17 +54,12 @@ public abstract class BasePage {
 
 	private static final Logger log = ZetaLogger.getLog(BasePage.class
 			.getSimpleName());
-	private ZetaElementLocatorFactory zetaLocatorFactory;
 
 	public BasePage(Future<? extends RemoteWebDriver> lazyDriver)
 			throws Exception {
 		this.lazyDriver = lazyDriver;
-		this.zetaLocatorFactory = new ZetaElementLocatorFactory(
-				new ZetaSearchContext(lazyDriver), Long.parseLong(CommonUtils
-						.getDriverTimeoutFromConfig(getClass())),
-				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
-		PageFactory.initElements(new ZetaFieldDecorator(zetaLocatorFactory),
-				this);
+		PageFactory.initElements(new DefaultElementLocatorFactory(
+				new ZetaSearchContext(lazyDriver)), this);
 	}
 
 	public void close() throws Exception {
@@ -101,13 +92,13 @@ public abstract class BasePage {
 		return screenshot;
 	}
 
-	public abstract BasePage swipeLeft(int time) throws IOException, Exception;;
+	public abstract BasePage swipeLeft(int time) throws Exception;;
 
-	public abstract BasePage swipeRight(int time) throws IOException, Exception;
+	public abstract BasePage swipeRight(int time) throws Exception;
 
-	public abstract BasePage swipeUp(int time) throws IOException, Exception;
+	public abstract BasePage swipeUp(int time) throws Exception;
 
-	public abstract BasePage swipeDown(int time) throws IOException, Exception;
+	public abstract BasePage swipeDown(int time) throws Exception;
 
 	protected static void clearPagesCollection(
 			Class<? extends AbstractPagesCollection> collection,
@@ -123,11 +114,6 @@ public abstract class BasePage {
 
 	public String getPageSource() throws Exception {
 		return this.getDriver().getPageSource();
-	}
-
-	public void changeZetaLocatorTimeout(long seconds) {
-		zetaLocatorFactory.resetImplicitlyWaitTimeOut(seconds,
-				AppiumFieldDecorator.DEFAULT_TIMEUNIT);
 	}
 
 	/**
