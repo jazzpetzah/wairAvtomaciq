@@ -76,11 +76,11 @@ public final class AndroidLocators {
 
 	public static final class LoginPage {
 
-		public static final String idSignInButton = "ttv__welcome__sign_in";
+		public static final String idSignInButton = "zb__welcome__sign_in";
 
 		public static final String idSignUpButton = "ttv__welcome__create_account";
 
-		public static final String idLoginButton = "zb__sign_in__button";
+		public static final String idLoginButton = "pcb__signin__email";
 
 		public static final String idForgotPass = "ttv_signin_forgot_password";
 

@@ -73,7 +73,7 @@ public class CommonAndroidSteps {
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	public static final int DEFAULT_SWIPE_TIME = 500;
-
+	private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
 	private static String getUrl() throws Exception {
 		return CommonUtils
 				.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
@@ -804,15 +804,15 @@ public class CommonAndroidSteps {
 	 *            the number of users to make
 	 * @param myNameAlias
 	 *            the name of the user to set as the current user
-	 * 
-	 * @throws Exception
+	 * @throws Throwable 
 	 * 
 	 */
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
-			throws Exception {
+			throws Throwable {
 		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
 				myNameAlias);
+		GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
 	}
 
 	/**
