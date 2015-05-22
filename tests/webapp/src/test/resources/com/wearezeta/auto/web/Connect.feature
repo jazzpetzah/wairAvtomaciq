@@ -313,3 +313,23 @@ Feature: Connect
     Examples:
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
+
+  @torun @id1564 
+  Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search view)
+    Given There are 2 users where <Name> is me
+    Given I sent connection request to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    When I open People Picker from Contact List
+    And I wait for 3 seconds
+    And I type <Contact> in search field of People Picker
+    Then I see user <Contact> found in People Picker
+    When I click on not connected user <Contact> found in People Picker
+    And I see Connect To popover
+    And I see Single User Profile popover
+    And I see Pending button on Single Participant popover
+    #When I click Pending button on Single Participant popover
+    #Then I see conversation with <Contact2> is selected in conversations list
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
