@@ -5,7 +5,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I archive conversation <Contact>
     Then I do not see Contact list with name <Contact>
     When I open archive
@@ -21,7 +21,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I set muted state for conversation <Contact>
     And I open self profile
     Then I see that conversation <Contact> is muted
@@ -36,7 +36,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact>
     Given I muted conversation with <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I see that conversation <Contact> is muted
     When I set unmuted state for conversation <Contact>
     And I open self profile

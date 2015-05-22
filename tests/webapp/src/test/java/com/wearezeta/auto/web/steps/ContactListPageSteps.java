@@ -24,19 +24,20 @@ public class ContactListPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Checks that we can see signed in user on top of Contact List
+	 * Checks that contact list is loaded and waits for profile avatar to be
+	 * shown
 	 * 
-	 * @step. ^I see my name on top of Contact list$
+	 * @step. ^I see my avatar on top of Contact list$
 	 * 
 	 * @throws AssertionError
-	 *             if self user name does not appear at the top of Contact List
+	 *             if contact list is not loaded or avatar does not appear at
+	 *             the top of Contact List
 	 */
-	@Given("^I see my name on top of Contact list$")
+	@Given("^I see my avatar on top of Contact list$")
 	public void ISeeMyNameOnTopOfContactList() throws Exception {
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isSelfNameEntryExist());
+		PagesCollection.contactListPage.waitForSelfProfileAvatar();
 	}
 
 	/**

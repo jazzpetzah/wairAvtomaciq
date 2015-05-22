@@ -5,12 +5,12 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open self profile
     And I see user name on self profile page <Name>
     And I change username to <NewName>
     Then I see user name on self profile page <NewName>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
 
     Examples: 
       | Login      | Password      | Name      | NewName     | Contact   |
@@ -22,7 +22,7 @@ Feature: Self Profile
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open self profile
     And I set my accent color to <ColorName>
     And I click gear button on self profile page
@@ -32,7 +32,7 @@ Feature: Self Profile
     And I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open self profile
     Then I verify my accent color in color picker is set to <ColorName> color
     Then I verify my name color is the same as in color picker
@@ -49,7 +49,7 @@ Feature: Self Profile
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open self profile
     And I click camera button
     And I see profile picture dialog
