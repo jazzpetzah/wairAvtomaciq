@@ -5,7 +5,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -13,6 +13,7 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
@@ -20,7 +21,6 @@ import com.wearezeta.auto.web.pages.popovers.SendInvitationPopoverContainer;
 
 public class PeoplePickerPage extends WebPage {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
@@ -162,11 +162,15 @@ public class PeoplePickerPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(user));
-		try {
+		if (this.getDriver().getCapabilities().getBrowserName()
+				.equals(Browser.Safari.toString())) {
+			log.debug("Using workaround for safari:");
+			JavascriptExecutor js = (JavascriptExecutor) this.getDriver();
+			js.executeScript("arguments[0].setAttribute('class','');", this
+					.getDriver().findElement(locator));
+		} else {
 			DriverUtils.moveMouserOver(this.getDriver(), getDriver()
 					.findElement(locator));
-		} catch (WebDriverException e) {
-			// Safari workaround
 		}
 		getDriver()
 				.findElement(
@@ -178,11 +182,15 @@ public class PeoplePickerPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(user));
-		try {
+		if (this.getDriver().getCapabilities().getBrowserName()
+				.equals(Browser.Safari.toString())) {
+			log.debug("Using workaround for safari:");
+			JavascriptExecutor js = (JavascriptExecutor) this.getDriver();
+			js.executeScript("arguments[0].setAttribute('class','');", this
+					.getDriver().findElement(locator));
+		} else {
 			DriverUtils.moveMouserOver(this.getDriver(), getDriver()
 					.findElement(locator));
-		} catch (WebDriverException e) {
-			// Safari workaround
 		}
 		getDriver()
 				.findElement(
