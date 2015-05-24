@@ -119,16 +119,15 @@ Feature: Connect
 
   @id540 @regression
   Scenario Outline: I can ignore a connect request and reconnect later
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to me
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    And I see contact list with name <WaitingMess>
-    Given <Contact> sent connection request to <Name>
     When I see contact list with name <WaitingMess>
     And I tap on contact name <WaitingMess>
     And I press Ignore connect button
-    And I see contact list with name <WaitingMess>
+    And I do not see contact list with name <WaitingMess>
+    And I wait until <Contact> exists in backend search results
     And I swipe down contact list
     And I see People picker page
     And I tap on Search input on People picker page
@@ -137,12 +136,10 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
     Then I see Connect to <Contact> Dialog page
-    And I navigate back from dialog page
-    And I do not see contact list with name <WaitingMess>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact1  | WaitingMess      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | 1 person waiting |
+      | Login      | Password      | Name      | Contact   | WaitingMess      |
+      | user1Email | user1Password | user1Name | user2Name | 1 person waiting |
 
   @id542 @regression
   Scenario Outline: Accept incoming connection request from search
