@@ -76,7 +76,7 @@ public final class WebAppLocators {
 		public static final Function<String, String> cssOptionsButtonByContactName = (
 				name) -> String.format("%s + div [data-uie-name=go-options]",
 				cssContactListEntryByName.apply(name));
-				
+
 		public static final String cssSelfProfileAvatar = "[data-uie-name=go-self-profile]";
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
@@ -220,8 +220,7 @@ public final class WebAppLocators {
 
 		public static final String cssNameSearchInput = "[data-uie-name='enter-users']";
 
-		public static final String xpathNameCreateConversationButton = xpathRoot
-				+ "//div[contains(@class, 'search-button-add')]";
+		public static final String xpathNameCreateConversationButton = "//*[@data-uie-name='do-add-create']";
 
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
