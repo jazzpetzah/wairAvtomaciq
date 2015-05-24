@@ -40,9 +40,6 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchivedContactListEntries)
 	private List<WebElement> archivedContactListEntries;
 
-	@FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileEntry)
-	private WebElement selfName;
-
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton)
 	private WebElement openArchivedConvosButton;
 
@@ -133,7 +130,7 @@ public class ContactListPage extends WebPage {
 
 	public void waitForSelfProfileAvatar() throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, 5);
 	}
@@ -250,9 +247,12 @@ public class ContactListPage extends WebPage {
 
 	public boolean isConversationMuted(String conversationName)
 			throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		// moving focus from contact - to now show ... button
 		try {
-			DriverUtils.moveMouserOver(this.getDriver(), selfName);
+			DriverUtils.moveMouserOver(this.getDriver(), this.getDriver()
+					.findElement(locator));
 		} catch (WebDriverException e) {
 			// do nothing (safari workaround)
 		}
@@ -360,7 +360,7 @@ public class ContactListPage extends WebPage {
 
 	public SelfProfilePage openSelfProfile() throws Exception {
 		final By entryLocator = By
-				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Self profile entry has not been found within "
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
@@ -381,10 +381,6 @@ public class ContactListPage extends WebPage {
 			openPeoplePickerButton.click();
 		}
 		return new PeoplePickerPage(this.getLazyDriver());
-	}
-
-	public String getSelfNameColor() {
-		return selfName.getCssValue("color");
 	}
 
 	public void clickUnmuteConversationForContact(String conversationName)
@@ -433,7 +429,7 @@ public class ContactListPage extends WebPage {
 
 	public boolean isSelfNameEntrySelected() throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, 3);
 		final WebElement entry = getDriver().findElement(locator);

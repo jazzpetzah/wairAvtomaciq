@@ -35,7 +35,6 @@ Feature: Self Profile
     And I see my avatar on top of Contact list
     When I open self profile
     Then I verify my accent color in color picker is set to <ColorName> color
-    Then I verify my name color is the same as in color picker
 
     Examples: 
       | Login      | Password      | Name      | ColorName    |

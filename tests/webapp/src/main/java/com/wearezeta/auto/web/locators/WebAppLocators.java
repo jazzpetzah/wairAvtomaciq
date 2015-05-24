@@ -63,8 +63,6 @@ public final class WebAppLocators {
 				"//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following::"
 						+ "*[@data-uie-name='status-silence']", name);
 
-		public static final String cssSelfProfileEntry = "[data-uie-name=go-self-profile]";
-
 		public static final Function<String, String> cssContactListEntryByName = (
 				name) -> String.format(
 				"%s div[data-uie-name=item-conversation][data-uie-value='%s']",
@@ -78,6 +76,8 @@ public final class WebAppLocators {
 		public static final Function<String, String> cssOptionsButtonByContactName = (
 				name) -> String.format("%s + div [data-uie-name=go-options]",
 				cssContactListEntryByName.apply(name));
+				
+		public static final String cssSelfProfileAvatar = "[data-uie-name=go-self-profile]";
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "//*[@data-uie-name='item-conversation']";

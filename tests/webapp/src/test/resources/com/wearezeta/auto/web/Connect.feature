@@ -69,6 +69,7 @@ Feature: Connect
     And I click on not connected user <Name2> found in People Picker
     And I see Connect To popover
     And I click Connect button on Connect To popover
+    And I close People Picker
     And I see Contact list with name <Name2>
     And I open self profile
     And I click gear button on self profile page
@@ -153,7 +154,6 @@ Feature: Connect
     And I confirm user blocking on Single User Profile popover
     Then I do not see Contact list with name <Contact>
     Then I do not see Single User Profile popover
-    Then I see my name is selected on top of Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact   |

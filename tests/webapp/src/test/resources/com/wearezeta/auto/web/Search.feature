@@ -53,7 +53,6 @@ Feature: Search
     And I confirm user blocking on Single User Profile popover
     Then I do not see Contact list with name <Contact>
     Then I do not see Single User Profile popover
-    Then I see my name is selected on top of Contact list
     When I open People Picker from Contact List
     And I type <Contact> in search field of People Picker
     And I select <Contact> from People Picker results
