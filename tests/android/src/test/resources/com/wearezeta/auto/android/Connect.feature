@@ -233,8 +233,7 @@ Feature: Connect
 
   @id541 @regression
   Scenario Outline: I can receive new connection request when app in background
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I minimize the application
@@ -248,13 +247,12 @@ Feature: Connect
     And I press Ignore connect button
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact1  | WaitingMess      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | 1 person waiting |
+      | Login      | Password      | Name      | Contact   | WaitingMess      |
+      | user1Email | user1Password | user1Name | user2Name | 1 person waiting |
 
   @id553 @regression
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I swipe down contact list
@@ -274,13 +272,12 @@ Feature: Connect
     And I see Connect to <Contact> Dialog page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact1  | Message |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | Test    |
+      | Login      | Password      | Name      | Contact   | Message |
+      | user1Email | user1Password | user1Name | user2Name | Test    |
 
   @id552 @regression
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I swipe down contact list
@@ -294,8 +291,8 @@ Feature: Connect
     And I see People picker page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @id550 @regression
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
@@ -347,8 +344,7 @@ Feature: Connect
 
   @id680 @regressionko
   Scenario Outline: I want to see user has been blocked within the Start UI
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
+    Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I swipe down contact list
@@ -378,8 +374,8 @@ Feature: Connect
     And I click Unblock button
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact1  | Message      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | Hello friend |
+      | Login      | Password      | Name      | Contact   | Message      |
+      | user1Email | user1Password | user1Name | user2Name | Hello friend |
 
   @regression_off @id720 @mute
   Scenario Outline: I do not want to be seen in the search results of someone I blocked
