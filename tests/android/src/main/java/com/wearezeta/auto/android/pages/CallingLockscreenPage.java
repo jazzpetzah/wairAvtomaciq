@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.pages;
 
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -9,7 +10,6 @@ import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-
 
 public class CallingLockscreenPage extends AndroidPage {
 
@@ -33,7 +33,9 @@ public class CallingLockscreenPage extends AndroidPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(lockScreenLogo);
+		final By locator = By
+				.id(AndroidLocators.LockscreenCallingPage.idLockScreenLogo);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public String getCallersName() throws Exception {
