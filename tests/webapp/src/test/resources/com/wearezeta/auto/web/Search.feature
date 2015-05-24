@@ -98,6 +98,7 @@ Feature: Search
     When I click on not connected user <Name2> found in People Picker
     And I see Connect To popover
     And I click Connect button on Connect To popover
+    And I close People Picker
     Then I see Contact list with name <Name2>
     And I open self profile
     And I click gear button on self profile page
@@ -110,6 +111,7 @@ Feature: Search
     And I see connection request from one user
     And I open the list of incoming connection requests
     When I accept connection request from user <Name>
+    And I close People Picker
     Then I see conversation with <Name> is selected in conversations list
     And I open self profile
     And I click gear button on self profile page

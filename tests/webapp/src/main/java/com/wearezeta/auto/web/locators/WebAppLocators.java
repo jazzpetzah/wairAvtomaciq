@@ -227,8 +227,7 @@ public final class WebAppLocators {
 				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 				xpathRoot, name);
 
-		public static final String xpathCloseSearchButton = xpathRoot
-				+ "//div[contains(@class,'search-close')]";
+		public static final String xpathCloseSearchButton = "//*[@data-uie-name='do-close']";
 
 		public static final Function<String, String> cssRemoveIconByName = (
 				name) -> String.format(
