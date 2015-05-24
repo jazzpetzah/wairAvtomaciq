@@ -67,12 +67,11 @@ Feature: Calling
     And I wait for 900 seconds
     And I see the calling bar
     And I end the call
-    And I verify browser log is empty
     And <Contact> stops all waiting instances
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-	 | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+     | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+     | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
 @staging @id1839
    Scenario Outline: Verify calling not supported in webapp (no calling support)
