@@ -134,7 +134,7 @@ Feature: Calling
     Then I see calling overlay Big bar
     And I navigate back from dialog page
     And I see Contact list
-    And I swipe down contact list
+    And I press Open StartUI
     And I see People picker page
     And I see calling overlay Micro bar
     And I press Clear button

@@ -112,16 +112,16 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Presses on the open start UI button (the "+" symbol in the conversation
-	 * list) Sets the people picker page
+	 * Presses on search bar in the conversation List  to open start UI
+	 *  Sets the people picker page
 	 * 
-	 * @step. ^I press Open StartUI Button$
+	 * @step. ^I press Open StartUI$
 	 * @throws Exception
 	 */
-	@When("^I press Open StartUI Button")
-	public void WhenIPressOpenStartUIButton() throws Exception {
+	@When("^I press Open StartUI")
+	public void WhenIPressOpenStartUI() throws Exception {
 		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
-				.pressOpenStartUIButton();
+				.pressOpenStartUI();
 	}
 
 	/**

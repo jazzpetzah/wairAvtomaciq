@@ -13,7 +13,7 @@ Feature: People View
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
     And I see dialog page
-    And I swipe up on dialog page
+    And I tap conversation details button
     And I tap on group chat contact <Contact1NewName>
     Then I see <Contact1> user name and email
 
@@ -30,7 +30,7 @@ Feature: People View
     Given I see Contact list
     When I tap on contact name <GroupChatName>
     And I see dialog page
-    And I swipe up on dialog page
+    And I tap conversation details button
     And I press options menu button
     And I press Leave conversation button
     And I confirm leaving
@@ -51,7 +51,7 @@ Feature: People View
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
     And I see dialog page
-    And I swipe up on dialog page
+    And I tap conversation details button
     And I tap on group chat contact <Contact2>
     And I click Remove
     And I confirm remove
@@ -80,7 +80,7 @@ Feature: People View
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
     And I see dialog page
-    And I swipe up on dialog page
+    And I tap conversation details button
     Then I see that the conversation name is <GroupChatName>
     And I see the correct number of participants in the title <ParticipantNumber>
     And I return to group chat page
@@ -179,11 +179,11 @@ Feature: People View
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I press Clear button
     And I wait for 30 seconds
-    And I swipe down contact list
+    And I press Open StartUI
     And I see People picker page
     And I swipe on random connect
     And I click on PYMK hide button
@@ -199,11 +199,11 @@ Feature: People View
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I press Clear button
     And I wait for 30 seconds
-    And I swipe down contact list
+    And I press Open StartUI
     And I see People picker page
     And I swipe on random connect
     And I hide random connect by swipe

@@ -8,7 +8,7 @@ Feature: Conversation List
     Given I see Contact list
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I swipe up on dialog page
+    And I tap conversation details button
     And I press options menu button
     And I press Silence conversation button
     #And I return to group chat page
@@ -56,12 +56,12 @@ Feature: Conversation List
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I press Clear button
     Then I see Contact list
     And I do not see TOP PEOPLE
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I swipe down people picker
     Then I see Contact list
@@ -81,7 +81,7 @@ Feature: Conversation List
     Given Contact <Contact1> is muted
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I swipe up on dialog page
+    And I tap conversation details button
     And I press options menu button
     And I press Notify conversation button
     And I press back button
