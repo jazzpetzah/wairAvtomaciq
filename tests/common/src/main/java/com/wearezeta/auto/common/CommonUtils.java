@@ -39,6 +39,7 @@ public class CommonUtils {
 	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image.png";
 	private static final String MEDIA_PLAY_IMAGE = "android_media_play_image.png";
 	private static final String MEDIA_PAUSE_IMAGE = "android_media_pause_image.png";
+	private static final String ALPHANUMERIC_PLUS_SYMBOLS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
 
 	private static final Random rand = new Random();
 	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
@@ -388,6 +389,21 @@ public class CommonUtils {
 
 	public static String generateRandomString(int lengh) {
 		return RandomStringUtils.randomAlphanumeric(lengh);
+	}
+	
+	private static String generateRandomStringFromTargetStringSetWithLengh(int numberOfCharacters, String characters) {
+		StringBuilder result = new StringBuilder();
+		while (numberOfCharacters > 0) {
+			Random rand = new Random();
+			result.append(characters.charAt(rand.nextInt(characters.length())));
+			numberOfCharacters--;
+		}
+		String text = result.toString();
+		return text;
+	}
+	
+	public static String generateRandomStringFromAlphanumericPlusSymbolsWithLengh(int numberOfCharacters) {
+		return generateRandomStringFromTargetStringSetWithLengh(numberOfCharacters, ALPHANUMERIC_PLUS_SYMBOLS);
 	}
 
 	public static String getAndroidDeviceNameFromConfig(Class<?> c)
