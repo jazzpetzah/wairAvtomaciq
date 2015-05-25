@@ -36,10 +36,10 @@ public class LoginPage extends OSXPage {
 	private WebElement signInButton;
 
 	@FindBy(how = How.CSS, using = OSXLocators.LoginPage.relativePathEmailField)
-	private WebElement emailField;
+	private WebElement passwordField;//emailField;
 
 	@FindBy(how = How.ID, using = OSXLocators.LoginPage.idPasswordField)
-	private WebElement passwordField;
+	private WebElement emailField;
 
 	@FindBy(how = How.XPATH, using = OSXLocators.LoginPage.xpathWrongCredentialsMessage)
 	private WebElement wrongCredentialsMessage;
