@@ -38,8 +38,8 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private List<WebElement> frameLayout;
 
-	@FindBy(id = AndroidLocators.ContactListPage.idOpenStartUIButton)
-	private WebElement openStartUIButton;
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerSearch)
+	private WebElement openStartUI;
 
 	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathNameField)
 	private WebElement selfUserName;
@@ -203,8 +203,8 @@ public class ContactListPage extends AndroidPage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public PeoplePickerPage pressOpenStartUIButton() throws Exception {
-		openStartUIButton.click();
+	public PeoplePickerPage pressOpenStartUI() throws Exception {
+		openStartUI.click();
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
 

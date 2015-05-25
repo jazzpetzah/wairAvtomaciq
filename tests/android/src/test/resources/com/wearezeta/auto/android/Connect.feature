@@ -6,7 +6,7 @@ Feature: Connect
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -73,7 +73,7 @@ Feature: Connect
     And <Contact3> sent connection request to <Name>
     And <Contact4> sent connection request to <Name>
     And I see contact list with name <WaitingMess3>
-    And I swipe down contact list
+    And I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact3>
@@ -101,7 +101,7 @@ Feature: Connect
     Given I see Contact list
     Given <Contact2> sent connection request to <Name>
     When I see contact list with name <WaitingMess1>
-    And I swipe down contact list
+    And I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact2>
@@ -128,7 +128,7 @@ Feature: Connect
     And I press Ignore connect button
     And I do not see contact list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
-    And I swipe down contact list
+    And I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -148,7 +148,7 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I see contact list with name <WaitingMess>
-    And I swipe down contact list
+    And I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -169,7 +169,7 @@ Feature: Connect
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -192,7 +192,7 @@ Feature: Connect
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -213,7 +213,7 @@ Feature: Connect
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -255,7 +255,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -280,7 +280,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -303,7 +303,7 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I tap on contact name <ChatName>
-    And I swipe up on dialog page
+    And I tap conversation details button
     And I tap on group chat contact <Contact2>
     And I see connect to <Contact2> dialog
     And I tap on edit connect request field
@@ -325,12 +325,12 @@ Feature: Connect
     Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I swipe up on dialog page
+    And I tap conversation details button
     And I press options menu button
     And I Press Block button
     And I confirm block
     Then I do not see contact list with name <Contact>
-    And I swipe down contact list
+    And I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -347,7 +347,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -364,7 +364,7 @@ Feature: Connect
     And I confirm block on connect to page
     And I wait for 5 seconds
     Then I do not see contact list with name <Contact>
-    And I swipe down contact list
+    And I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -385,7 +385,7 @@ Feature: Connect
     Given I see Contact list
     When User <Contact> blocks user <Name>
     And I wait for 120 seconds
-    And I swipe down contact list
+    And I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
@@ -404,7 +404,7 @@ Feature: Connect
     And I wait for 120 seconds
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list
-    And I swipe down contact list
+    And I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact1>
@@ -426,14 +426,14 @@ Feature: Connect
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I press Connect button
-    #And I swipe down contact list
+    #And I press Open StartUI
     And I see People picker page
     #And I tap on Search input on People picker page
     #And I input in search field user name to connect to <Contact>
