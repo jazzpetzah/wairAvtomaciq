@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -318,9 +319,16 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void selectUser(String name) throws Exception {
-		WebElement el = getDriver().findElement(By.name(name));
-		DriverUtils.waitUntilElementClickable(this.getDriver(), el);
-		el.click();
+		List<WebElement> el = getDriver().findElements(By.name(name));
+		if (el.size() == 0) {
+			throw new NoSuchElementException("Element not found");
+		}
+		for (int i = 0; i < el.size(); i ++) {
+			if (el.get(i).isDisplayed() && el.get(i).isEnabled()) {
+				DriverUtils.mobileTapByCoordinates(getDriver(), el.get(i));
+				break;
+			}
+		}
 	}
 
 	public void tapNumberOfTopConnections(int numberToTap) throws Exception {
