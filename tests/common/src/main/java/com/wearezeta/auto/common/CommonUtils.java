@@ -23,7 +23,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CommonUtils {
 	public static final String OS_NAME_WINDOWS = "Windows";
-	
+
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
 
 	private static final String USER_IMAGE = "userpicture_landscape.jpg";
@@ -51,12 +51,14 @@ public class CommonUtils {
 	public static String getOsName() {
 		return System.getProperty("os.name");
 	}
-	
+
 	public static boolean trueInPercents(int percent) {
 		Random rand = new Random();
 		int nextInt = rand.nextInt(100);
-		if (nextInt < percent) return true;
-		else return false;
+		if (nextInt < percent)
+			return true;
+		else
+			return false;
 	}
 
 	public static int executeOsXCommand(String[] cmd) throws Exception {
@@ -141,18 +143,20 @@ public class CommonUtils {
 				+ IOS_HOT_PING_IMAGE;
 		return path;
 	}
+
 	public static String getCallingMuteButtonPath(Class<?> c) throws Exception {
 		String path = getValueFromConfig(c, "defaultImagesPath")
 				+ CALLING_MUTE_BUTTON_IMAGE;
 		return path;
 	}
-	
-	public static String getCallingSpeakerButtonPath(Class<?> c) throws Exception {
+
+	public static String getCallingSpeakerButtonPath(Class<?> c)
+			throws Exception {
 		String path = getValueFromConfig(c, "defaultImagesPath")
 				+ CALLING_SPEAKER_BUTTON_IMAGE;
 		return path;
 	}
-	
+
 	public static String getAvatarWithClockIconPathIOS(Class<?> c)
 			throws Exception {
 		String path = getValueFromConfig(c, "iosImagesPath")
@@ -344,6 +348,11 @@ public class CommonUtils {
 		return getValueFromConfig(c, "activity");
 	}
 
+	public static String getAndroidWaitActivitiesFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "waitActivities");
+	}
+
 	public static String getSimulatorImagesPathFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "iosImagesPath");
@@ -498,12 +507,12 @@ public class CommonUtils {
 		final byte[] digest = md.digest();
 		return Base64.encodeBase64String(digest);
 	}
-	
+
 	public static String getDefaultEmailListenerServiceHostFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "defaultEmailListenerServiceHost");
 	}
-	
+
 	public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");

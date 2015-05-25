@@ -63,8 +63,6 @@ public final class WebAppLocators {
 				"//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following::"
 						+ "*[@data-uie-name='status-silence']", name);
 
-		public static final String cssSelfProfileEntry = "[data-uie-name=go-self-profile]";
-
 		public static final Function<String, String> cssContactListEntryByName = (
 				name) -> String.format(
 				"%s div[data-uie-name=item-conversation][data-uie-value='%s']",
@@ -79,6 +77,8 @@ public final class WebAppLocators {
 				name) -> String.format("%s + div [data-uie-name=go-options]",
 				cssContactListEntryByName.apply(name));
 
+		public static final String cssSelfProfileAvatar = "[data-uie-name=go-self-profile]";
+
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "//*[@data-uie-name='item-conversation']";
 		public static final Function<Integer, String> xpathContactListEntryByIndex = (
@@ -92,7 +92,7 @@ public final class WebAppLocators {
 				.format("%s//*[@data-uie-name='item-conversation-archived' and ./ancestor-or-self::*[@data-uie-value='%s']]",
 						xpathParentContactListItem, name);
 
-		public static final String cssOpenPeoplePickerButton = "[data-uie-name=go-search]";
+		public static final String cssOpenPeoplePickerButton = "[data-uie-name=enter-search]";
 
 		public static final Function<String, String> xpathMissedCallNotificationByContactName = (
 				name) -> String
@@ -218,18 +218,16 @@ public final class WebAppLocators {
 
 		public static final String xpathRoot = "//div[@id='people-picker']";
 
-		public static final String cssNameSearchInput = "div#people-picker input";
+		public static final String cssNameSearchInput = "[data-uie-name='enter-users']";
 
-		public static final String xpathNameCreateConversationButton = xpathRoot
-				+ "//div[contains(@class, 'search-button-add')]";
+		public static final String xpathNameCreateConversationButton = "//*[@data-uie-name='do-add-create']";
 
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
 				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 				xpathRoot, name);
 
-		public static final String xpathCloseSearchButton = xpathRoot
-				+ "//div[contains(@class,'search-close')]";
+		public static final String xpathCloseSearchButton = "//*[@data-uie-name='do-close']";
 
 		public static final Function<String, String> cssRemoveIconByName = (
 				name) -> String.format(
