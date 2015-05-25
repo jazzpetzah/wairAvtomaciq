@@ -358,7 +358,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public boolean isTopPeopleLabelVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.NamePeoplePickerTopPeopleLabel));
+				By.name(IOSLocators.NamePeoplePickerTopPeopleLabel), 2);
 	}
 
 	public boolean isConnectLabelVisible() throws Exception {
