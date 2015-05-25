@@ -142,7 +142,7 @@ public final class OSXLocators {
 		public static final String appleScriptPasswordFieldPath = "text field 1 of window 1";
 
 		public static final String relativePathEmailField = "id,"
-				+ idPasswordField + ",center,0,-52";
+				+ idPasswordField + ",center,0,-40";
 
 		public static final String nameSignInButton = "SIGN IN";
 
