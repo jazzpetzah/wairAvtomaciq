@@ -328,8 +328,7 @@ public final class AndroidLocators {
 
 		private static final String xpathTopPeopleRoot = "//*[@id='fl__conversation_list_main']";
 
-		public static final String xpathPickerTopPeopleHeader = xpathTopPeopleRoot
-				+ "//*[@id='ttv_pickuser__list_header_title']";
+		public static final String idPickerTopPeopleHeader = "ttv_pickuser__list_header_title";
 
 		public static final String idPickerUserSlidingRow = "ll__pickuser__sliding_row";
 

@@ -69,7 +69,6 @@ Feature: Connect
     And I click on not connected user <Name2> found in People Picker
     And I see Connect To popover
     And I click Connect button on Connect To popover
-    And I close People Picker
     And I see Contact list with name <Name2>
     And I open self profile
     And I click gear button on self profile page
@@ -114,7 +113,6 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
-    And I close People Picker
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -127,7 +125,6 @@ Feature: Connect
     And I open the list of incoming connection requests
     And I ignore connection request from user <Name>
     And I do not see Contact list with name <Name>
-    And I close People Picker
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page

@@ -32,25 +32,19 @@ Feature: Conversation List
     Given I see Contact list
     When I tap on contact name <Contact1>
     And I see dialog page
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
-    And I swipe down on dialog page
-    And Contact <Contact1> send message to user <Name>
-    And I tap Dialog page bottom
+    And I type the message "Test" and send it
     And I press PlayPause media item button
-    And I swipe down on dialog page
     And I navigate back from dialog page
+    And I see Contact list
     Then I see PlayPause media content button in Conversations List
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
       | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id2177 @regression
+  @id2177 @regression 
   Scenario Outline: I can open and close people picker by UI button or swipe
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>

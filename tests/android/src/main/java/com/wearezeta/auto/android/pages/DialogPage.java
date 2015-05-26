@@ -377,7 +377,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public ContactListPage navigateBack() throws Exception {
-		swipeRightCoordinates(1000);
+		getDriver().navigate().back();
 		return new ContactListPage(this.getLazyDriver());
 	}
 
