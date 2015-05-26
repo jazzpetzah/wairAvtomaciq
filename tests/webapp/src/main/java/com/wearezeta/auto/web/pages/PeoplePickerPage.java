@@ -178,7 +178,7 @@ public class PeoplePickerPage extends WebPage {
 						By.cssSelector(WebAppLocators.PeoplePickerPage.cssRemoveIconByName
 								.apply(user))).click();
 	}
-	
+
 	public void clickPlusButtonOnSuggestion(String user) throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
@@ -193,10 +193,9 @@ public class PeoplePickerPage extends WebPage {
 			DriverUtils.moveMouserOver(this.getDriver(), getDriver()
 					.findElement(locator));
 		}
-		getDriver()
-				.findElement(
-						By.cssSelector(WebAppLocators.PeoplePickerPage.cssAddIconByName
-								.apply(user))).click();
+		getDriver().findElement(
+				By.cssSelector(WebAppLocators.PeoplePickerPage.cssAddIconByName
+						.apply(user))).click();
 	}
 
 	public ConnectToPopoverContainer clickPendingUserName(String name)
@@ -205,8 +204,8 @@ public class PeoplePickerPage extends WebPage {
 		PagesCollection.popoverPage = new ConnectToPopoverContainer(
 				this.getLazyDriver());
 		return (ConnectToPopoverContainer) PagesCollection.popoverPage;
-		}
-	
+	}
+
 	private void clickPendingUser(String name) throws Exception {
 		String foundPendingUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchPendingResultByName
 				.apply(name);
