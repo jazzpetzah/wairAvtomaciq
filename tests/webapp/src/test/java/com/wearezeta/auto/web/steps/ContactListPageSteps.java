@@ -8,7 +8,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
-import com.wearezeta.auto.web.pages.SelfProfilePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -24,38 +23,20 @@ public class ContactListPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Checks that we can see signed in user on top of Contact List
+	 * Checks that contact list is loaded and waits for profile avatar to be
+	 * shown
 	 * 
-	 * @step. ^I see my name on top of Contact list$
+	 * @step. ^I see my avatar on top of Contact list$
 	 * 
 	 * @throws AssertionError
-	 *             if self user name does not appear at the top of Contact List
+	 *             if contact list is not loaded or avatar does not appear at
+	 *             the top of Contact List
 	 */
-	@Given("^I see my name on top of Contact list$")
+	@Given("^I see my avatar on top of Contact list$")
 	public void ISeeMyNameOnTopOfContactList() throws Exception {
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isSelfNameEntryExist());
-	}
-
-	/**
-	 * Verify whether self name entry is selected in the convo list
-	 * 
-	 * @step. ^I see my name is selected on top of Contact list$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I see my name is selected on top of Contact list$")
-	public void ISeeMyNameIsSelectedOnTopOfContactList() throws Exception {
-		Assert.assertTrue("No contact list loaded.",
-				PagesCollection.contactListPage.waitForContactListVisible());
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isSelfNameEntrySelected());
-		if (PagesCollection.selfProfilePage == null) {
-			PagesCollection.selfProfilePage = (SelfProfilePage) PagesCollection.contactListPage
-					.instantiatePage(SelfProfilePage.class);
-		}
+		PagesCollection.contactListPage.waitForSelfProfileAvatar();
 	}
 
 	/**
@@ -347,24 +328,6 @@ public class ContactListPageSteps {
 
 		Assert.assertFalse(PagesCollection.contactListPage
 				.isConversationMuted(contact));
-	}
-
-	/**
-	 * Verify that my name color is the same as in color picker
-	 * 
-	 * @step. ^I verify my name color is the same as in color picker$
-	 * @throws Exception
-	 * 
-	 */
-	@Then("^I verify my name color is the same as in color picker$")
-	public void IVerifyMyNameColor() throws Exception {
-		final String selfNameColor = PagesCollection.contactListPage
-				.getSelfNameColor();
-		final String colorInColorPicker = PagesCollection.selfProfilePage
-				.getCurrentAccentColor();
-		Assert.assertTrue("Colors are not the same",
-				colorInColorPicker.equalsIgnoreCase(selfNameColor));
-
 	}
 
 	/**

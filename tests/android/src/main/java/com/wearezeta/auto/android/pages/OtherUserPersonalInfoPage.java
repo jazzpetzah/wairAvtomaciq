@@ -17,8 +17,6 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
@@ -30,79 +28,71 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 	public static final String LEAVE_CONVERSATION_BUTTON = "Leave conversation";
 	public static final String LEAVE_BUTTON = "LEAVE";
-	private static final String AVATAR_WITH_IMAGE = "avatarPictureTestAndroid.png";
-	private static final String AVATAR_NO_IMAGE = "avatarTestAndroid.png";
 
-	@FindBy(how = How.XPATH, using = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
-	private List<WebElement> linearLayout;
-
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.OtherUserPersonalInfoPage.classNameGridView)
-	private WebElement groupChatUsersGrid;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeader)
 	private WebElement groupChatName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeaderEditable")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeaderEditable)
 	private WebElement groupChatNameEditable;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeader)
 	private List<WebElement> otherUserName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsSubHeader)
 	private List<WebElement> otherUserMail;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleName")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idOtherUserPersonalInfoSingleName)
 	private List<WebElement> otherUserSingleName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idOtherUserPersonalInfoSingleMail")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idOtherUserPersonalInfoSingleMail)
 	private List<WebElement> otherUserSingleMail;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUserProfileConfirmationMenu")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idUserProfileConfirmationMenu)
 	private WebElement confirmMenu;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idBlockButton")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idBlockButton)
 	private WebElement blockButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRightActionButton")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idRightActionButton)
 	private WebElement rightConversationButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idRenameButton")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idRenameButton)
 	private WebElement renameButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idArchiveButton")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idArchiveButton)
 	private WebElement archiveButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idLeaveButton")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idLeaveButton)
 	private WebElement leaveButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idSilenceButton")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idSilenceButton)
 	private WebElement silenceButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idUnblockBtn")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idUnblockBtn)
 	private WebElement unblockButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PeoplePickerPage.CLASS_NAME, locatorKey = "idParticipantsClose")
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idParticipantsClose)
 	private WebElement closeButton;
 
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
 	private WebElement frameLayout;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
+	@FindBy(id = AndroidLocators.CommonLocators.idPager)
 	private WebElement backGround;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idConfirmBtn")
+	@FindBy(id = AndroidLocators.CommonLocators.idConfirmBtn)
 	private WebElement confirmBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idLeftActionButton")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idLeftActionButton)
 	private WebElement addContactBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idLeftActionLabel")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idLeftActionLabel)
 	private WebElement addContactLabel;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsSubHeader")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsSubHeader)
 	private WebElement participantsSubHeader;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ConnectToPage.CLASS_NAME, locatorKey = "idConnectToHeader")
+	@FindBy(id = AndroidLocators.ConnectToPage.idConnectToHeader)
 	private List<WebElement> connectToHeader;
 
 	public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
@@ -237,11 +227,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return text.toLowerCase().equals(mail.toLowerCase());
 	}
 
-	public boolean isRemoveFromConversationAlertVisible() {
+	public boolean isConversationAlertVisible() {
 		return DriverUtils.isElementPresentAndDisplayed(confirmMenu);
 	}
 
-	public OtherUserPersonalInfoPage pressRemoveConfirmBtn() throws Exception {
+	public OtherUserPersonalInfoPage pressConfirmBtn() throws Exception {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
@@ -262,39 +252,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
 	}
 
-	public boolean isContactExists(String contact) throws Exception {
+	public boolean isParticipantExists(String name) throws Exception {
 		final By locator = By
-				.xpath(AndroidLocators.ContactListPage.xpathContactByName
-						.apply(contact.toUpperCase()));
+				.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathParticipantAvatarByName
+						.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-	}
-
-	// FIXME: need better (faster) locator for user name
-	public AndroidPage selectContactByName(String contactName)
-			throws Exception, InterruptedException {
-		boolean isNameElementFound = false;
-		for (WebElement user : linearLayout) {
-			List<WebElement> elements = user
-					.findElements(By
-							.className(AndroidLocators.CommonLocators.classNameTextView));
-			for (WebElement element : elements) {
-				if (element.getText() != null
-						&& element.getText()
-								.equals((contactName.toUpperCase()))) {
-					user.click();
-					isNameElementFound = true;
-					break;
-				}
-			}
-			if (isNameElementFound) {
-				break;
-			}
-		}
-		if (connectToHeader.size() > 0) {
-			return new ConnectToPage(this.getLazyDriver());
-		} else {
-			return new OtherUserPersonalInfoPage(this.getLazyDriver());
-		}
 	}
 
 	public void tapOnParticipantsHeader() {
@@ -305,17 +267,17 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		groupChatNameEditable.sendKeys(chatName + "\n");
 	}
 
-	public AndroidPage tapOnContact(String contact) throws Exception {
+	public AndroidPage tapOnParticipant(String name) throws Exception {
 		this.getWait().until(ExpectedConditions.visibilityOf(groupChatName));
 		try {
 			final By nameLocator = By
-					.xpath(AndroidLocators.ContactListPage.xpathContactByName
-							.apply(contact.toUpperCase()));
+					.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathParticipantAvatarByName
+							.apply(name));
 			assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 					nameLocator);
 			this.getDriver().findElement(nameLocator).click();
 		} catch (Exception e) {
-			log.debug("Failed to find contact with name " + contact
+			log.debug("Failed to find contact with name " + name
 					+ "\n. Page source: " + this.getDriver().getPageSource());
 			throw e;
 		}
@@ -327,7 +289,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public String getSubHeader() {
-		return participantsSubHeader.getText().toLowerCase();
+		return participantsSubHeader.getText();
 	}
 
 	public String getConversationName() throws Exception {
@@ -339,48 +301,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return new DialogPage(this.getLazyDriver());
 	}
 
-	public boolean isParticipantAvatars(String contact1, String contact2)
-			throws Exception {
-		boolean flag1 = false;
-		boolean flag2 = false;
-		BufferedImage avatarIcon = null;
-		String path = CommonUtils.getImagesPath(CommonUtils.class);
-		for (int i = 1; i < linearLayout.size() + 1; i++) {
-			avatarIcon = getElementScreenshot(this
-					.getDriver()
-					.findElement(
-							By.xpath(String
-									.format(AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayoutId,
-											i))));
-			String avatarName = this
-					.getDriver()
-					.findElement(
-							By.xpath(String
-									.format(AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoContacts,
-											i))).getText();
-			if (avatarName.equalsIgnoreCase(contact1)) {
-				BufferedImage realImage = ImageUtil.readImageFromFile(path
-						+ AVATAR_WITH_IMAGE);
-				double score = ImageUtil.getOverlapScore(realImage, avatarIcon,
-						ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
-					return false;
-				}
-				flag1 = true;
-			}
-			if (contact2.toLowerCase().startsWith(avatarName.toLowerCase())) {
-				// must be a yellow user with initials AT
-				BufferedImage realImage = ImageUtil.readImageFromFile(path
-						+ AVATAR_NO_IMAGE);
-				double score = ImageUtil.getOverlapScore(realImage, avatarIcon,
-						ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-				if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
-					return false;
-				}
-				flag2 = true;
-			}
-		}
-		return (flag1 && flag2);
+	public boolean isParticipantAvatarVisible(String name) throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathParticipantAvatarByName
+						.apply(name));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 5);
 	}
-
 }

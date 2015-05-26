@@ -17,7 +17,7 @@ Feature: Registration
     And I confirm picture selection on Self Picture Upload dialog
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     When I open self profile
     Then I see user name on self profile page <Name>
     Then I see user email on self profile page <Email>
@@ -37,7 +37,7 @@ Feature: Registration
     And I confirm picture selection on Self Picture Upload dialog
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -60,7 +60,7 @@ Feature: Registration
     And I confirm picture selection on Self Picture Upload dialog
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page

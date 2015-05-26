@@ -205,10 +205,10 @@ public class ConnectToPageSteps {
 	 * 
 	 * @step. ^I confirm block on connect to page$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I confirm block on connect to page$")
-	public void WhenIConfirmBlock() throws Throwable {
+	public void WhenIConfirmBlock() throws Exception {
 		PagesCollection.connectToPage.pressConfirmBtn();
 	}
 

@@ -138,7 +138,7 @@ public class DialogPage extends IOSPage {
 	private WebElement chatheadAvatarImage;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
-	private String connectingLabel = "CONNECTING TO %s";
+	private String connectingLabel = "CONNECTING TO %s. START A CONVERSATION";
 
 	public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -371,7 +371,12 @@ public class DialogPage extends IOSPage {
 
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}
-
+	
+	public OtherUserOnPendingProfilePage clickConversationDeatailForPendingUser() throws Exception {
+		openConversationDetails.click();
+		return new OtherUserOnPendingProfilePage(this.getLazyDriver());
+	}
+	
 	@Override
 	public IOSPage swipeUp(int time) throws Exception {
 		WebElement element = this.getDriver().findElement(

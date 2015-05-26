@@ -178,7 +178,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * -duplicate of WhenIInputInPeoplePickerSearchFieldUserName(String)
+	 * Adds user name to search field (existing content is not cleaned)
 	 * 
 	 * @step. ^I add in search field user name to connect to (.*)$
 	 * 
@@ -292,7 +292,7 @@ public class PeoplePickerPageSteps {
 	 * Tap on Send an invitation
 	 * 
 	 * @step. ^I tap on Send an invitation$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I tap on Send an invitation$")
@@ -443,7 +443,7 @@ public class PeoplePickerPageSteps {
 	 * @param contact
 	 * @throws Throwable
 	 */
-	@Then("^I see user (.*)  in People picker$")
+	@Then("^I see user (.*) in People picker$")
 	public void ThenISeeUserInPeoplePicker(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.peoplePickerPage
@@ -458,7 +458,7 @@ public class PeoplePickerPageSteps {
 	 * @param contact
 	 * @throws Throwable
 	 */
-	@Then("^I see group (.*)  in People picker$")
+	@Then("^I see group (.*) in People picker$")
 	public void ThenISeeGroupInPeoplePicker(String contact) throws Throwable {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
@@ -479,7 +479,7 @@ public class PeoplePickerPageSteps {
 	@Then("^I see TOP PEOPLE$")
 	public void ThenISeeTopPeople() throws Exception {
 		Assert.assertTrue(PagesCollection.peoplePickerPage
-				.ispTopPeopleHeaderVisible());
+				.isTopPeopleHeaderVisible());
 	}
 
 	/**
@@ -492,7 +492,7 @@ public class PeoplePickerPageSteps {
 	@Then("^I do not see TOP PEOPLE$")
 	public void ThenIDontSeeTopPeople() throws Exception {
 		Assert.assertFalse(PagesCollection.peoplePickerPage
-				.ispTopPeopleHeaderVisible());
+				.isTopPeopleHeaderVisible());
 	}
 
 	/**
@@ -510,4 +510,36 @@ public class PeoplePickerPageSteps {
 				.waitForPYMKForSecs(time));
 	}
 
+	private static final long TOP_PEOPLE_VISIBILITY_TIMEOUT_MILLISECONDS = 120 * 1000;
+
+	/**
+	 * Wait for Top People list to appear in People picker
+	 * 
+	 * @step. ^I wait until Top People list appears$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I wait until Top People list appears$")
+	public void WaitForTopPeople() throws Exception {
+		if (!PagesCollection.peoplePickerPage.isTopPeopleHeaderVisible()) {
+			// FIXME: Workaround for bug where Top People is sometimes not shown
+			// if sign in for the first time
+			PagesCollection.contactListPage = PagesCollection.peoplePickerPage
+					.tapClearButton();
+			PagesCollection.personalInfoPage = PagesCollection.contactListPage
+					.tapOnMyAvatar();
+			PagesCollection.personalInfoPage.tapOptionsButton();
+			PagesCollection.personalInfoPage.tapSignOutBtn();
+			new LoginPageSteps().GivenISignIn(usrMgr.getSelfUser().getEmail(),
+					usrMgr.getSelfUser().getPassword());
+			new ContactListPageSteps().GivenISeeContactList();
+			PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+					.openPeoplePicker();
+		}
+		if (!PagesCollection.peoplePickerPage.isTopPeopleHeaderVisible()) {
+			throw new AssertionError(String.format(
+					"Top People list has not been shown after %s seconds",
+					TOP_PEOPLE_VISIBILITY_TIMEOUT_MILLISECONDS / 1000));
+		}
+	}
 }

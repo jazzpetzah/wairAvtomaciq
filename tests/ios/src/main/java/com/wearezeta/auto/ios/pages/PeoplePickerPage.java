@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -145,10 +146,10 @@ public class PeoplePickerPage extends IOSPage {
 			throws Exception {
 		return getScreenshotByCoordinates(
 				searchResultCell.getLocation().x,
-				searchResultCell.getLocation().y / 3
-						+ searchResultContainer.getLocation().y,
-				searchResultCell.getSize().width / 2,
-				searchResultCell.getSize().height * 3);
+				searchResultCell.getLocation().y*2,
+				searchResultCell.getSize().height*5/2,
+				searchResultCell.getLocation().y +
+				searchResultCell.getSize().height*4/5);
 	}
 
 	public void fillTextInPeoplePickerSearch(String text) {
@@ -318,9 +319,16 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void selectUser(String name) throws Exception {
-		WebElement el = getDriver().findElement(By.name(name));
-		DriverUtils.waitUntilElementClickable(this.getDriver(), el);
-		el.click();
+		List<WebElement> el = getDriver().findElements(By.name(name));
+		if (el.size() == 0) {
+			throw new NoSuchElementException("Element not found");
+		}
+		for (int i = 0; i < el.size(); i ++) {
+			if (el.get(i).isDisplayed() && el.get(i).isEnabled()) {
+				DriverUtils.mobileTapByCoordinates(getDriver(), el.get(i));
+				break;
+			}
+		}
 	}
 
 	public void tapNumberOfTopConnections(int numberToTap) throws Exception {
@@ -350,7 +358,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public boolean isTopPeopleLabelVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.NamePeoplePickerTopPeopleLabel));
+				By.name(IOSLocators.NamePeoplePickerTopPeopleLabel), 2);
 	}
 
 	public boolean isConnectLabelVisible() throws Exception {
