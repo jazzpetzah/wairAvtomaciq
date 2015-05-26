@@ -8,5 +8,11 @@ public final class IOSTabletLocators {
 		public static final String xpathIPADCameraLibraryFirtImage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIACollectionView[1]/UIACollectionCell[1]";
 		public static final String xpathIPADCameraLibraryConfirmButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAButton[@name='OK']";
 	}
+	
+	public static final class TabletPendingUserPopoverPage {
+		public static final String xpathUserName = "//UIAPopover/UIAStaticText[contains(@name, '%s')]";
+	}
+	
+	
 
 }

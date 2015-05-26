@@ -14,11 +14,11 @@ public class AboutPageSteps {
 	 * 
 	 * @step. ^I tap on About page$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I tap on About page$")
-	public void WhenITapOnAboutPage() throws Throwable {
+	public void WhenITapOnAboutPage() throws Exception {
 		PagesCollection.personalInfoPage = PagesCollection.aboutPage.tapOnVersion();
 	}
 	
@@ -27,11 +27,11 @@ public class AboutPageSteps {
 	 * 
 	 * @step. ^I see About page$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@Then("^I see About page$")
-	public void ThenISeeAboutPage() throws Throwable {
+	public void ThenISeeAboutPage() throws Exception {
 	   Assert.assertTrue(PagesCollection.aboutPage.aboutLogoIsVisible());
 	}
 }

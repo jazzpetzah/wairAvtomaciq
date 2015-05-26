@@ -4,7 +4,7 @@ Feature: Conversation View
   Scenario Outline: Verify swipe right tutorial appearance
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -18,7 +18,7 @@ Feature: Conversation View
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -35,7 +35,7 @@ Feature: Conversation View
   Scenario Outline: Send Hello to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -55,7 +55,7 @@ Feature: Conversation View
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -74,7 +74,7 @@ Feature: Conversation View
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I create group chat with <Contact1> and <Contact2>
     And I type the message
@@ -89,7 +89,7 @@ Feature: Conversation View
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -116,7 +116,7 @@ Feature: Conversation View
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -138,7 +138,7 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -161,7 +161,7 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -183,7 +183,7 @@ Feature: Conversation View
   Scenario Outline: Tap the cursor to get to the end of the conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -200,7 +200,7 @@ Feature: Conversation View
   Scenario Outline: Send Message to contact after navigating away from chat page
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -220,7 +220,7 @@ Feature: Conversation View
   Scenario Outline: Send more than 200 chars message
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -235,7 +235,7 @@ Feature: Conversation View
   Scenario Outline: Send one line message with lower case and upper case
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -251,7 +251,7 @@ Feature: Conversation View
   Scenario Outline: Send special chars (German)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -292,7 +292,7 @@ Feature: Conversation View
   Scenario Outline: Send a text containing spaces
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -313,7 +313,7 @@ Feature: Conversation View
   Scenario Outline: Keyboard up and navigate to main convo list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -330,7 +330,7 @@ Feature: Conversation View
   Scenario Outline: Verify you can see conversation images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -360,7 +360,7 @@ Feature: Conversation View
   Scenario Outline: I can send and play inline youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -510,7 +510,7 @@ Feature: Conversation View
   Scenario Outline: Verify you can play/pause media from the Media Bar - YouTube
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -537,7 +537,7 @@ Feature: Conversation View
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation - SoundCloud
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -570,7 +570,7 @@ Feature: Conversation View
   Scenario Outline: Verify appearance of title bar for conversation, restored from background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -587,7 +587,7 @@ Feature: Conversation View
   	Given User <Contact> change name to <NewName>
     Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And Contact <Contact> sends image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -605,7 +605,7 @@ Feature: Conversation View
   Scenario Outline: Verify archiving conversation from ellipsis menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -626,7 +626,7 @@ Feature: Conversation View
     Given User <Contact2> change avatar picture to <Picture>
     Given User <Contact2> change name to <NewName>
     Given Myself is connected to <Contact>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -645,7 +645,7 @@ Feature: Conversation View
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page

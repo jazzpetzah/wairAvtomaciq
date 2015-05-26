@@ -6,7 +6,7 @@ Feature: Conversation List
     Given Myself is connected to <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
     And I wait for 30 seconds
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I open archived conversations
     And I tap on contact name <ArchivedUser>
@@ -21,7 +21,7 @@ Feature: Conversation List
   Scenario Outline: Verify archive a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     And I archive conversation <Contact>
@@ -43,7 +43,7 @@ Feature: Conversation List
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
     Given Contact <Contact> send number <Number2> of message to user <Name>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I see unread <DotSizeSmall> messages dot for <Contact>
     When I tap on contact name <Contact>
@@ -67,7 +67,7 @@ Feature: Conversation List
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     When I swipe right on a <GroupChatName>
     And I archive conversation <GroupChatName>
@@ -85,7 +85,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given Myself archived conversation having groupname <GroupChatName>
-    And I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I open archived conversations
     And I tap on contact name <GroupChatName>
@@ -102,7 +102,7 @@ Feature: Conversation List
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When Contact <Contact> ping conversation <Name>
     And I wait for 10 seconds

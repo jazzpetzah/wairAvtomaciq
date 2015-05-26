@@ -182,6 +182,20 @@ public class DialogPageSteps {
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
 				.openConversationDetailsClick();
 	}
+	
+	/**
+	 * Click open conversation details button in 1:1 dialog with Pending user
+	 * 
+	 * @step. ^I open pending user conversation details$
+	 * 
+	 * @throws Exception
+	 *             if other user personal profile page was not created
+	 */
+	@When("^I open pending user conversation details$")
+	public void IOpenPendingConversationDetails() throws Exception {
+		PagesCollection.otherUserOnPendingProfilePage = PagesCollection.dialogPage
+				.clickConversationDeatailForPendingUser();
+	}
 
 	@When("^I send the message$")
 	public void WhenISendTheMessage() throws Throwable {
@@ -365,9 +379,15 @@ public class DialogPageSteps {
 
 	@When("I swipe right on Dialog page")
 	public void ISwipeRightOnDialogPage() throws Exception {
-		PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-				.swipeRight(1000,
-						DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 28);
+		
+		for (int i = 0; i < 3; i++) {
+			PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
+					.swipeRight(1000,
+							DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 28);
+			if (PagesCollection.dialogPage.waitForCursorInputNotVisible()) {
+				break;
+			}
+		}
 	}
 
 	@When("I send long message")

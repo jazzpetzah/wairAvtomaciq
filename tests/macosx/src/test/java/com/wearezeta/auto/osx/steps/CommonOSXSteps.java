@@ -95,7 +95,7 @@ public class CommonOSXSteps {
 
 		return (Future<ZetaOSXDriver>) PlatformDrivers.getInstance()
 				.resetDriver(url, capabilities, MAX_DRIVER_CREATION_RETRIES,
-						this::startApp);
+						this::startApp, null);
 	}
 
 	private void startApp(RemoteWebDriver drv) {

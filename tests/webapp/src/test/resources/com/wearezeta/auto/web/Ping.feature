@@ -8,7 +8,7 @@ Feature: Ping
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I click ping button  
     Then I see ping message <PING>
@@ -25,7 +25,7 @@ Feature: Ping
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I click ping button
     Then I see ping message <PING>

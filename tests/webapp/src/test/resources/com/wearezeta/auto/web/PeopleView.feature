@@ -5,7 +5,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact2> exists in backend search results
     When I open People Picker from Contact List
@@ -14,7 +14,7 @@ Feature: People View
     And I type <Contact2> in search field of People Picker
     And I select <Contact2> from People Picker results
     And I choose to create conversation from People Picker
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     Then I see Contact list with name <Contact1>,<Contact2>
 
     Examples: 
@@ -26,7 +26,7 @@ Feature: People View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I click People button in one to one conversation
     Then I see Single User Profile popover
@@ -44,7 +44,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -66,7 +66,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -88,7 +88,7 @@ Feature: People View
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given I sent connection request to <UnknownContact>
     Given I Sign in using login <Login> and password <Password>
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
@@ -116,7 +116,7 @@ Feature: People View
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given <UnknownContact> sent connection request to Myself
     Given I Sign in using login <Login> and password <Password>
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
@@ -146,7 +146,7 @@ Feature: People View
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given I Sign in using login <Login> and password <Password>
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
@@ -170,7 +170,7 @@ Feature: People View
     Given Myself blocked <KnownContact>
     Given I sent connection request to <UnknownContact>
     Given I Sign in using login <Login> and password <Password>
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
@@ -199,7 +199,7 @@ Feature: People View
     Given Myself blocked <KnownContact>
     Given I sent connection request to <UnknownContact>
     Given I Sign in using login <Login> and password <Password>
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
@@ -227,7 +227,7 @@ Feature: People View
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given Myself sent connection request to <UnknownContact>
     Given I Sign in using login <Login> and password <Password>
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
@@ -252,7 +252,7 @@ Feature: People View
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given <UnknownContact> sent connection request to me
     Given I Sign in using login <Login> and password <Password>
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     When I click People button in group conversation
     Then I see Group Participants popover
@@ -269,7 +269,7 @@ Feature: People View
 	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | UnknownContactMail | ChatName               | Message   |
 	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | user3Email         | PeoplePopoverGroupChat | YOU ADDED |
 
- @staging @id1700
+   @regression @id1700
    Scenario Outline: Verify users can properly leave a group conversation on the other end
       Given There are 4 users where <Name> is me
       Given Myself is connected to <KnownContact>
@@ -278,7 +278,7 @@ Feature: People View
       Given User <KnownContact> changes avatar picture to default
       Given <UnknownContact> sent connection request to me
       Given I Sign in using login <Login> and password <Password>
-      Then I see my name on top of Contact list
+      Then I see my avatar on top of Contact list
       When I open conversation with <ChatName>
       When I click People button in group conversation
       Then I see Group Participants popover
@@ -311,7 +311,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -347,7 +347,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -364,7 +364,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact1>
     And I click People button in one to one conversation
     And I see Single User Profile popover
@@ -383,7 +383,7 @@ Feature: People View
     And I see Sign In page
     And User <Contact1> is me
     And I Sign in using login <Contact1> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I see Contact list with name <Name>,<Contact2>
     And I open conversation with <Name>,<Contact2>
     And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
@@ -394,10 +394,32 @@ Feature: People View
     And I see Sign In page
     And User <Contact2> is me
     And I Sign in using login <Contact2> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I see Contact list with name <Name>,<Contact1>
     And I see user <Name> action <Message2> for <Contact2>,<Contact1> in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Message                         | Message2                    |
       | user1Email | user1Password | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH |
+
+  @regression @id1557
+  Scenario Outline: Verify you can unblock someone from a group conversation 
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given Myself blocked <Contact1>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open conversation with <ChatName>
+    When I click People button in group conversation
+    Then I see Group Participants popover
+    When I click on participant <Contact1> on Group Participants popover
+    Then I see username <Contact1> on Group Participants popover
+    And I see Unblock button on Group Participants popover
+    When I click Unblock button on Group Participants popover
+    And I confirm Unblock from group chat on Group Participants popover
+    Then I see Contact list with name <Contact1>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | PeoplePopoverGroupChat |

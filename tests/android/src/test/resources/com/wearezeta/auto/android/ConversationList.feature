@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @id324 @smoke @regression 
+  @id324 @smoke
   Scenario Outline: Mute conversation
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -8,11 +8,16 @@ Feature: Conversation List
     Given I see Contact list
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I swipe up on dialog page
+    And I tap conversation details button
     And I press options menu button
     And I press Silence conversation button
-    And I return to group chat page
-    And I navigate back from dialog page
+    #And I return to group chat page
+    #Some elements seem to be missing (e.g. "X" button) so
+    #Instead of searching for elements, it works perfectly fine (and faster) just to press back 3 times
+    And I press back button
+    And I press back button
+    And I press back button
+    #And I navigate back from dialog page
     Then Contact <Contact1> is muted
 
     Examples: 
@@ -32,7 +37,7 @@ Feature: Conversation List
     And Contact <Contact1> send message to user <Name>
     And Contact <Contact1> send message to user <Name>
     And I tap on text input
-    And I input <SoudCloudLink> message and send it
+    And I type the message "<SoudCloudLink>" and send it
     And I swipe down on dialog page
     And Contact <Contact1> send message to user <Name>
     And I tap Dialog page bottom
@@ -51,12 +56,12 @@ Feature: Conversation List
     Given <Contact1> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I press Clear button
     Then I see Contact list
     And I do not see TOP PEOPLE
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I swipe down people picker
     Then I see Contact list
@@ -76,7 +81,7 @@ Feature: Conversation List
     Given Contact <Contact1> is muted
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I swipe up on dialog page
+    And I tap conversation details button
     And I press options menu button
     And I press Notify conversation button
     And I press back button

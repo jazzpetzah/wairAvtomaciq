@@ -24,7 +24,7 @@ public class ConnectToPageSteps {
 
 	@When("^I input message in connect to dialog$")
 	public void WhenIInputMessageInConnectToDialog() {
-		PagesCollection.connectToPage.fillTextInConnectDialog();
+		PagesCollection.connectToPage.fillHelloTextInConnectDialog();
 	}
 
 	/**
@@ -77,20 +77,33 @@ public class ConnectToPageSteps {
 	}
 
 	/**
-	 * Inputs a message with a certain number of random characters
+	 * Inputs a message with a certain number of random characters by script
 	 * 
 	 * @step. I input message in connect dialog with (.*) characters
 	 * 
 	 * @param characters
 	 *            number of characters to input into dialog
-	 * 
-	 * @throws IOException
+	 * @throws Exception 
 	 */
 
 	@When("^I input message in connect dialog with (.*) characters$")
-	public void IInputMessageWithLength(int characters) throws IOException {
-		PagesCollection.connectToPage.enterCharactersIntoDialog(characters);
-		;
+	public void IInputMessageWithLength(int characters) throws Exception {
+		PagesCollection.connectToPage.inputCharactersIntoConnectDialogByScript(characters);
+	}
+	
+	/**
+	 * Inputs a message with a certain number of random characters from keyboard
+	 * 
+	 * @step. I input message in connect dialog with (.*) characters
+	 * 
+	 * @param characters
+	 *            number of characters to input into dialog
+	 * @throws Exception 
+	 */
+
+	@When("^I fill in (.*) characters in connect dialog$")
+	public void IFillInCharsInConnectDialog(int characters) throws Exception {
+		PagesCollection.connectToPage.fillTextInConnectDialogWithLengh(characters);
 	}
 
 	/**

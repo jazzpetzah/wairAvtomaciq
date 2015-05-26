@@ -4,7 +4,7 @@ Feature: Connect
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I open search by clicking plus button
     And I see People picker page
@@ -30,7 +30,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
@@ -51,7 +51,7 @@ Feature: Connect
     Given Myself is connected to <GroupCreator>
     Given <GroupCreator> is connected to <UnconnectedUser>
     Given <GroupCreator> has group chat <GroupChatName> with <UnconnectedUser>,Myself
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I swipe up on group chat page
@@ -150,7 +150,7 @@ Feature: Connect
     Given <Contact2> sent connection request to me
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
@@ -176,7 +176,7 @@ Feature: Connect
     Given <Contact2> sent connection request to me
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
@@ -195,7 +195,7 @@ Feature: Connect
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I open search by clicking plus button
     And I see People picker page
@@ -221,7 +221,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When Contact <Contact> sends image <Picture> to single user conversation <Name>
     And Contact <Contact> ping conversation <Name>
@@ -251,7 +251,7 @@ Feature: Connect
   @regression @id596
   Scenario Outline: Verify you cannot send the invitation message twice
     Given There are 2 users where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I open search by clicking plus button
     And I see People picker page
@@ -281,7 +281,7 @@ Feature: Connect
   Scenario Outline: Verify you can send an invitation via mail
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I open search by clicking plus button
     And I see People picker page
@@ -307,7 +307,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
     Given User <Name> change accent color to <Color>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page

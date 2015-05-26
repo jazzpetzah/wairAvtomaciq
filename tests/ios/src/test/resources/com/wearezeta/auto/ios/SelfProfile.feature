@@ -4,7 +4,7 @@ Feature: Self Profile
   Scenario Outline: Change your profile picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap on personal screen
@@ -22,7 +22,7 @@ Feature: Self Profile
   Scenario Outline: Attempt to enter a name with 0 chars
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
@@ -39,7 +39,7 @@ Feature: Self Profile
   Scenario Outline: Attempt to enter a name with 1 char
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
@@ -56,7 +56,7 @@ Feature: Self Profile
   Scenario Outline: Verify name change
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
@@ -77,7 +77,7 @@ Feature: Self Profile
   	Given There are 1 users where <Name> is me
   	Given User <Name> change name to <NewName>
   	Given User <Name> change accent color to <Color>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I change my accent color via the colorpicker

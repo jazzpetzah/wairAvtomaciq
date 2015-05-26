@@ -43,6 +43,22 @@ public class ConnectToPageSteps {
 		Assert.assertTrue(PagesCollection.connectToPage
 				.isIgnoreConnectButtonVisible());
 	}
+	
+	/**
+	 * Swipe Up on Connect Page
+	 * 
+	 * @step. ^I swipe up on connect page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I swipe up on connect page$")
+	public void ISwipeUpOnConnectPage() throws Exception {
+		if (PagesCollection.connectToPage == null) {
+			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
+		}
+		PagesCollection.connectToPage.waitUntilIgnoreButtonIsVisible();
+		PagesCollection.connectToPage.swipeUpCoordinates(1000,90);
+	}
 
 	/**
 	 * Presses the accept connection request button from within the dialog of a user who has sent you a connection request.
@@ -189,10 +205,10 @@ public class ConnectToPageSteps {
 	 * 
 	 * @step. ^I confirm block on connect to page$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I confirm block on connect to page$")
-	public void WhenIConfirmBlock() throws Throwable {
+	public void WhenIConfirmBlock() throws Exception {
 		PagesCollection.connectToPage.pressConfirmBtn();
 	}
 

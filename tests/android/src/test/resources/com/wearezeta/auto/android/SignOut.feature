@@ -2,8 +2,7 @@ Feature: Sign Out
 
   @id329 @smoke
   Scenario Outline: Sign out from ZClient
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I tap on my avatar
@@ -12,5 +11,5 @@ Feature: Sign Out
     Then I see welcome screen
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

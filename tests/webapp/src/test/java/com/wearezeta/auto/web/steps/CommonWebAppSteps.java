@@ -240,7 +240,7 @@ public class CommonWebAppSteps {
 		@SuppressWarnings("unchecked")
 		final Future<ZetaWebAppDriver> lazyWebDriver = (Future<ZetaWebAppDriver>) PlatformDrivers
 				.getInstance().resetDriver(url, capabilities,
-						MAX_DRIVER_CREATION_RETRIES, this::navigateToStartPage);
+						MAX_DRIVER_CREATION_RETRIES, this::navigateToStartPage, null);
 		return lazyWebDriver;
 	}
 
@@ -267,18 +267,34 @@ public class CommonWebAppSteps {
 	}
 
 	/**
-	 * This step will throw special PendingException if the current browser does
-	 * not support calling. This will cause Cucumber interpreter to skip the
-	 * current test instead of failing it
-	 * 
+	 * This step will throw special PendingException whether the current browser
+	 * does support calling or not. This will cause Cucumber interpreter to skip
+	 * the current test instead of failing it.
+	 *
+	 *
+	 * @step. ^My browser( does not)? support[s] calling$
+	 * @param doesNot
+	 *            is set to null if "does not" part does not exist
 	 * @throws Exception
 	 */
-	@Given("^My browser supports calling$")
-	public void MyBrowserSupportsCalling() throws Exception {
-		if (!WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
-			throw new PendingException("Browser "
-					+ WebAppExecutionContext.getCurrentBrowser().toString()
-					+ " does not support calling.");
+	@Given("^My browser( does not)? support[s]? calling$")
+	public void MyBrowserSupportsCalling(String doesNot) throws Exception {
+		if (doesNot == null) {
+			// should support calling
+			if (!WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
+				throw new PendingException("Browser "
+						+ WebAppExecutionContext.getCurrentBrowser().toString()
+						+ " does not support calling.");
+			}
+		} else {
+			// should not support calling
+			if (WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
+				throw new PendingException(
+						"Browser "
+								+ WebAppExecutionContext.getCurrentBrowser()
+										.toString()
+								+ " does support calling but this test is just for browsers without support.");
+			}
 		}
 	}
 
@@ -610,6 +626,34 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * Wait until suggestions are in the backend for a certain user
+	 * 
+	 * @param userNameAlias
+	 *            the name of the user
+	 * @throws Exception
+	 */
+	@Given("^There are suggestions for user (.*) on backend$")
+	public void suggestions(String userNameAlias) throws Exception {
+		commonSteps.WaitUntilSuggestionFound(userNameAlias);
+	}
+
+	/**
+	 * Add email(s) into address book of a user and upload address book in
+	 * backend
+	 * 
+	 * @param asUser
+	 *            name of the user where the address book is uploaded
+	 * @param emails
+	 *            list of email addresses seperated by comma
+	 * @throws Exception
+	 */
+	@Given("^User (.*) has contacts? (.*) in address book")
+	public void UserXHasContactsInAddressBook(String asUser, String emails)
+			throws Exception {
+		commonSteps.UserXHasContactsInAddressBook(asUser, emails);
+	}
+
+	/**
 	 * Forces the current test to be skipped if current browser does not support
 	 * fast location by XPath
 	 * 
@@ -689,7 +733,16 @@ public class CommonWebAppSteps {
 							.getDriver(CURRENT_PLATFORM)
 							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 									TimeUnit.MILLISECONDS));
-					assertTrue(browserLog.isEmpty());
+
+					StringBuilder bLog = new StringBuilder("\n");
+					browserLog.stream().forEach(
+							(entry) -> {
+								bLog.append(entry.getLevel()).append(":")
+										.append(entry.getMessage())
+										.append("\n");
+							});
+					assertTrue("BrowserLog is not empty: " + bLog.toString(),
+							browserLog.isEmpty());
 				}
 			} catch (ExecutionException e) {
 				e.printStackTrace();
@@ -743,7 +796,63 @@ public class CommonWebAppSteps {
 				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 			}
 		}
-
 		commonSteps.getUserManager().resetUsers();
 	}
+	
+	/**
+	 * Sends an image from one user to a conversation
+	 * 
+	 * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
+	 * 
+	 * @param imageSenderUserNameAlias
+	 *            the user to sending the image
+	 * @param imageFileName
+	 *            the file path name of the image to send. The path name is
+	 *            defined relative to the image file defined in
+	 *            Configuration.cnf.
+	 * @param conversationType
+	 *            "single user" or "group" conversation.
+	 * @param dstConversationName
+	 *            the name of the conversation to send the image to.
+	 *
+	 * @throws Exception
+	 * 
+	 */
+	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
+	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+			String imageFileName, String conversationType,
+			String dstConversationName) throws Exception {
+		String imagePath = WebCommonUtils
+				.getFullPicturePath(imageFileName);
+		Boolean isGroup = null;
+		if (conversationType.equals("single user")) {
+			isGroup = false;
+		} else if (conversationType.equals("group")) {
+			isGroup = true;
+		}
+		if (isGroup == null) {
+			throw new Exception(
+					"Incorrect type of conversation specified (single user | group) expected.");
+		}
+		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
+				imagePath, dstConversationName, isGroup);
+	}
+	/**
+	 * Unblocks user
+	 *
+	 * @step. ^(\\w+) unblocks (\\w+)$
+	 *
+	 * @param userAsNameAlias
+	 *            user which wants to unblock another
+	 * @param userToBlockNameAlias
+	 *            user to unblock
+	 *
+	 * @throws Exception
+	 */
+	@Given("^(\\w+) unblocks user (\\w+)$")
+	public void UserUnblocks(String userAsNameAlias, String userToBlockNameAlias)
+			throws Exception {
+		commonSteps.UnblockContact(userAsNameAlias, userToBlockNameAlias);
+	}
+
 }

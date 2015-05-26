@@ -25,7 +25,6 @@ import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
@@ -35,16 +34,11 @@ public class ContactListPage extends WebPage {
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
 	private List<WebElement> contactListEntries;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchivedContactListEntries)
 	private List<WebElement> archivedContactListEntries;
-
-	@FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileEntry)
-	private WebElement selfName;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton)
 	private WebElement openArchivedConvosButton;
@@ -134,38 +128,11 @@ public class ContactListPage extends WebPage {
 
 	}
 
-	public boolean isSelfNameEntryExist() throws Exception {
+	public void waitForSelfProfileAvatar() throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, 5);
-		log.debug(String.format("Looking for self name entry '%s'...", usrMgr
-				.getSelfUserOrThrowError().getName()));
-
-		final String selfNameElementText = getSelfName(locator);
-		log.debug(String.format("Result self name is '%s'.",
-				selfNameElementText));
-		return selfNameElementText.equals(usrMgr.getSelfUserOrThrowError()
-				.getName());
-	}
-
-	private String getSelfName(By locator) throws Exception {
-		String name = "";
-		for (int i = 1; i < 6; i++) {
-			name = getDriver().findElement(locator).getText();
-			if (!name.equals("")) {
-				break;
-			} else {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		return name;
-
 	}
 
 	public boolean isConvoListEntryWithNameExist(String name) throws Exception {
@@ -211,6 +178,16 @@ public class ContactListPage extends WebPage {
 		final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
 				.apply(name);
 		return getDriver().findElement(By.cssSelector(locator));
+	}
+
+	public boolean isMissedCallVisibleForContact(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
+				.apply(conversationName);
+		List<WebElement> missedCallNotification = getDriver().findElements(
+				By.xpath(locator));
+		return missedCallNotification.size() > 0;
 	}
 
 	public void openArchive() throws Exception {
@@ -270,9 +247,12 @@ public class ContactListPage extends WebPage {
 
 	public boolean isConversationMuted(String conversationName)
 			throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		// moving focus from contact - to now show ... button
 		try {
-			DriverUtils.moveMouserOver(this.getDriver(), selfName);
+			DriverUtils.moveMouserOver(this.getDriver(), this.getDriver()
+					.findElement(locator));
 		} catch (WebDriverException e) {
 			// do nothing (safari workaround)
 		}
@@ -380,12 +360,11 @@ public class ContactListPage extends WebPage {
 
 	public SelfProfilePage openSelfProfile() throws Exception {
 		final By entryLocator = By
-				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Self profile entry has not been found within "
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
-		selectEntryWithRetry(entryLocator,
-				WebAppLocators.ContactListPage.cssSelfProfileEntry);
+		this.getDriver().findElement(entryLocator).click();
 		return new SelfProfilePage(this.getLazyDriver());
 	}
 
@@ -402,10 +381,6 @@ public class ContactListPage extends WebPage {
 			openPeoplePickerButton.click();
 		}
 		return new PeoplePickerPage(this.getLazyDriver());
-	}
-
-	public String getSelfNameColor() {
-		return selfName.getCssValue("color");
 	}
 
 	public void clickUnmuteConversationForContact(String conversationName)
@@ -454,7 +429,7 @@ public class ContactListPage extends WebPage {
 
 	public boolean isSelfNameEntrySelected() throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, 3);
 		final WebElement entry = getDriver().findElement(locator);

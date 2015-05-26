@@ -40,5 +40,4 @@ public abstract class AbstractPopoverContainer extends WebPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(this.getXpathLocator()));
 	}
-
 }

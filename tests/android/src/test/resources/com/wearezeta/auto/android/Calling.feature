@@ -43,6 +43,7 @@ Feature: Calling
     Then I see the call lock screen
     And I see a call from <Contact> in the call lock screen
     And I answer the call from the lock screen
+    And I wait for call message changes from CONNECTING for 30 seconds
     Then I see started call message for contact <Contact>
 
     Examples: 
@@ -60,6 +61,7 @@ Feature: Calling
     Then I see the call lock screen
     And I see a call from <Contact> in the call lock screen
     And I answer the call from the lock screen
+    And I wait for call message changes from CONNECTING for 30 seconds
     Then I see started call message for contact <Contact>
 
     Examples: 
@@ -79,9 +81,8 @@ Feature: Calling
     And I answer the call from the overlay bar
     And I see started call message for contact <Contact>
     And I tap on text input
-    And I input <Message> message
-    And I send the message
-    Then I see my message in the dialog
+    And I type the message "<Message>" and send it
+    Then I see my message "<Message>" in the dialog
     When I press back button
     And I swipe on text input
     And I press Add Picture button
@@ -90,11 +91,11 @@ Feature: Calling
     Then I see new photo in the dialog
     When I swipe on text input
     And I press Ping button
-    Then I see Hello-Hey message <SystemMessage> with <Action> in the dialog
+    Then I see Ping message <Msg> in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Message                   | SystemMessage | Action |
-      | user1Email | user1Password | user1Name | user2Name | autocall    | simple message in english | YOU           | PINGED |
+      | Login      | Password      | Name      | Contact   | CallBackend | Message                   | Msg        |
+      | user1Email | user1Password | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
   @id2210 @regression
   Scenario Outline: Calling bar buttons are clickable and change its state
@@ -133,7 +134,7 @@ Feature: Calling
     Then I see calling overlay Big bar
     And I navigate back from dialog page
     And I see Contact list
-    And I swipe down contact list
+    And I press Open StartUI
     And I see People picker page
     And I see calling overlay Micro bar
     And I press Clear button

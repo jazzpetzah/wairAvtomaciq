@@ -15,13 +15,11 @@ public class LoginPageSteps {
 	/**
 	 * Checks to see if the sign in screen appears
 	 * 
-	 * -unnecessary the next step would fail if this page wasn't visible?
-	 * 
 	 * @step. ^I see sign in screen$
 	 */
 	@Given("^I see sign in screen$")
 	public void GiveniSeeSignInScreen() {
-		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
+		Assert.assertTrue(PagesCollection.loginPage.isVisible());
 	}
 
 	/**
