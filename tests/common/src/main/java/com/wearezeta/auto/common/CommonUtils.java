@@ -23,7 +23,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CommonUtils {
 	public static final String OS_NAME_WINDOWS = "Windows";
-	
+
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
 
 	private static final String USER_IMAGE = "userpicture_landscape.jpg";
@@ -39,6 +39,7 @@ public class CommonUtils {
 	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image.png";
 	private static final String MEDIA_PLAY_IMAGE = "android_media_play_image.png";
 	private static final String MEDIA_PAUSE_IMAGE = "android_media_pause_image.png";
+	private static final String ALPHANUMERIC_PLUS_SYMBOLS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
 
 	private static final Random rand = new Random();
 	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
@@ -51,12 +52,14 @@ public class CommonUtils {
 	public static String getOsName() {
 		return System.getProperty("os.name");
 	}
-	
+
 	public static boolean trueInPercents(int percent) {
 		Random rand = new Random();
 		int nextInt = rand.nextInt(100);
-		if (nextInt < percent) return true;
-		else return false;
+		if (nextInt < percent)
+			return true;
+		else
+			return false;
 	}
 
 	public static int executeOsXCommand(String[] cmd) throws Exception {
@@ -141,18 +144,20 @@ public class CommonUtils {
 				+ IOS_HOT_PING_IMAGE;
 		return path;
 	}
+
 	public static String getCallingMuteButtonPath(Class<?> c) throws Exception {
 		String path = getValueFromConfig(c, "defaultImagesPath")
 				+ CALLING_MUTE_BUTTON_IMAGE;
 		return path;
 	}
-	
-	public static String getCallingSpeakerButtonPath(Class<?> c) throws Exception {
+
+	public static String getCallingSpeakerButtonPath(Class<?> c)
+			throws Exception {
 		String path = getValueFromConfig(c, "defaultImagesPath")
 				+ CALLING_SPEAKER_BUTTON_IMAGE;
 		return path;
 	}
-	
+
 	public static String getAvatarWithClockIconPathIOS(Class<?> c)
 			throws Exception {
 		String path = getValueFromConfig(c, "iosImagesPath")
@@ -344,6 +349,11 @@ public class CommonUtils {
 		return getValueFromConfig(c, "activity");
 	}
 
+	public static String getAndroidWaitActivitiesFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "waitActivities");
+	}
+
 	public static String getSimulatorImagesPathFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "iosImagesPath");
@@ -379,6 +389,21 @@ public class CommonUtils {
 
 	public static String generateRandomString(int lengh) {
 		return RandomStringUtils.randomAlphanumeric(lengh);
+	}
+	
+	private static String generateRandomStringFromTargetStringSetWithLengh(int numberOfCharacters, String characters) {
+		StringBuilder result = new StringBuilder();
+		while (numberOfCharacters > 0) {
+			Random rand = new Random();
+			result.append(characters.charAt(rand.nextInt(characters.length())));
+			numberOfCharacters--;
+		}
+		String text = result.toString();
+		return text;
+	}
+	
+	public static String generateRandomStringFromAlphanumericPlusSymbolsWithLengh(int numberOfCharacters) {
+		return generateRandomStringFromTargetStringSetWithLengh(numberOfCharacters, ALPHANUMERIC_PLUS_SYMBOLS);
 	}
 
 	public static String getAndroidDeviceNameFromConfig(Class<?> c)
@@ -498,12 +523,12 @@ public class CommonUtils {
 		final byte[] digest = md.digest();
 		return Base64.encodeBase64String(digest);
 	}
-	
+
 	public static String getDefaultEmailListenerServiceHostFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "defaultEmailListenerServiceHost");
 	}
-	
+
 	public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");

@@ -373,11 +373,11 @@ public final class AndroidLocators {
 		public static final String xpathSendInvitationFrame = "//LinearLayout[.//FrameLayout[@id='fl_pickuser__invite__bubble']]";
 
 		public static final Function<String, String> xpathPeoplePickerGroupByName = name -> String
-				.format("//android.widget.TextView[@id='ttv_pickuser_searchconversation_name' and @text='%s']",
+				.format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']",
 						name);
 
 		public static final Function<String, String> xpathPeoplePickerContactByName = name -> String
-				.format("//android.widget.TextView[@id='ttv_pickuser__searchuser_name' and @text='%s']",
+				.format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']",
 						name);
 	}
 

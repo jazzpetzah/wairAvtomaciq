@@ -90,6 +90,10 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 					ntry++;
 				}
 			}
+			if (platformDriver == null) {
+				throw new WebDriverException(
+						"Selenium driver initialization failed (instance is null). Please make sure that the corresponding node is up and running.");
+			}
 			if (initCompletedCallback != null) {
 				log.debug("Invoking driver post-initialization callback...");
 				initCompletedCallback.accept(platformDriver);

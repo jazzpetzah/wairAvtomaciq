@@ -1,6 +1,8 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Future;
 
@@ -127,29 +129,27 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public AndroidPage selectContact(String contactName) throws Exception {
 		pickerSearchUser.click();
-		DriverUtils.turnOffImplicitWait(this.getDriver());
-		try {
-			if (this.getDriver()
-					.findElements(
-							By.id(AndroidLocators.OtherUserPersonalInfoPage.idUnblockBtn))
-					.size() > 0) {
-				return new OtherUserPersonalInfoPage(this.getLazyDriver());
-
-			} else if (this
-					.getDriver()
-					.findElements(
-							By.id(AndroidLocators.ConnectToPage.idConnectToHeader))
-					.size() > 0) {
-				return new ConnectToPage(this.getLazyDriver());
-			} else if (DriverUtils
-					.isElementPresentAndDisplayed(addToConversationsButton)) {
-				return this;
-			} else {
-				return new DialogPage(this.getLazyDriver());
+		final Map<By, AndroidPage> pagesMapping = new HashMap<By, AndroidPage>();
+		pagesMapping.put(
+				By.id(AndroidLocators.OtherUserPersonalInfoPage.idUnblockBtn),
+				new OtherUserPersonalInfoPage(this.getLazyDriver()));
+		pagesMapping.put(
+				By.id(AndroidLocators.ConnectToPage.idConnectToHeader),
+				new ConnectToPage(this.getLazyDriver()));
+		pagesMapping.put(
+				By.id(AndroidLocators.PeoplePickerPage.idPickerBtnDone), this);
+		final int maxScanTries = 3;
+		int scanTry = 1;
+		while (scanTry <= maxScanTries) {
+			for (Map.Entry<By, AndroidPage> entry : pagesMapping.entrySet()) {
+				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						entry.getKey(), 1)) {
+					return entry.getValue();
+				}
 			}
-		} finally {
-			DriverUtils.restoreImplicitWait(this.getDriver());
+			scanTry++;
 		}
+		return new DialogPage(this.getLazyDriver()); 
 	}
 
 	public AndroidPage selectGroup(String contactName) throws Exception {

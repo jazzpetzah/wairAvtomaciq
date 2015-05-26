@@ -28,7 +28,7 @@ Feature: Self Profile
     Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
-    And I swipe up on dialog page
+    And I tap conversation details button
     Then I see <Contact> user name and email
 
     Examples: 

@@ -74,6 +74,7 @@ public class CommonAndroidSteps {
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	public static final int DEFAULT_SWIPE_TIME = 500;
 	private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
+
 	private static String getUrl() throws Exception {
 		return CommonUtils
 				.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
@@ -100,7 +101,7 @@ public class CommonAndroidSteps {
 		capabilities.setCapability("appActivity",
 				CommonUtils.getAndroidActivityFromConfig(cls));
 		capabilities.setCapability("appWaitActivity",
-				CommonUtils.getAndroidActivityFromConfig(cls));
+				CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
 		capabilities.setCapability("applicationName", "selendroid");
 		capabilities.setCapability("automationName", "selendroid");
 
@@ -804,7 +805,7 @@ public class CommonAndroidSteps {
 	 *            the number of users to make
 	 * @param myNameAlias
 	 *            the name of the user to set as the current user
-	 * @throws Throwable 
+	 * @throws Throwable
 	 * 
 	 */
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")

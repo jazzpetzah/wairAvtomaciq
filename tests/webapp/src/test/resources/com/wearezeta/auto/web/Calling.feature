@@ -8,7 +8,7 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I Sign in using login <Login> and password <Password>
-    When I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -35,7 +35,7 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I Sign in using login <Login> and password <Password>
-    When I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -60,19 +60,18 @@ Feature: Calling
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I Sign in using login <Login> and password <Password>
-    When I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 900 seconds
     And I see the calling bar
     And I end the call
-    And I verify browser log is empty
     And <Contact> stops all waiting instances
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-	 | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+     | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+     | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
 @staging @id1839
    Scenario Outline: Verify calling not supported in webapp (no calling support)
@@ -80,7 +79,7 @@ Feature: Calling
       Given There are 2 users where <Name> is me
       Given Myself is connected to <Contact>
       Given I Sign in using login <Login> and password <Password>
-      When I see my name on top of Contact list
+      When I see my avatar on top of Contact list
       And I open conversation with <Contact>
       And <Contact> calls me using <CallBackend>
       Then I do not see the calling bar
@@ -105,8 +104,8 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I Sign in using login <Login> and password <Password>
-    When I see my name on top of Contact list
-    And I open conversation with <Contact>
+    And I see my avatar on top of Contact list
+    When I open conversation with <Contact>
     And I call
     Then I wait for 2 seconds
     And I end the call
@@ -123,11 +122,11 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
     Given I Sign in using login <Login> and password <Password>
-    When I see my name on top of Contact list
-    And I open self profile
-    And <Contact> calls me using <CallBackend>
-    Then I wait for 1 seconds
-    When <Contact> stops all calls to me
+    And I see my avatar on top of Contact list
+    When I open self profile
+    When <Contact> calls me using <CallBackend>
+    And I wait for 1 seconds
+    And <Contact> stops all calls to me
     And I wait for 1 seconds
     Then I see missed call notification for conversation <Contact>
     When I open conversation with <Contact>

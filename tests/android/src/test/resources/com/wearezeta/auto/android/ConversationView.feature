@@ -58,7 +58,7 @@ Feature: Conversation View
     Given I see Contact list
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I swipe up on dialog page
+    And I tap conversation details button
     And I see <Contact1> user profile page
     And I press add contact button
     And I see People picker page
@@ -231,7 +231,7 @@ Feature: Conversation View
     Then I see new photo in the dialog
     And I select last photo in dialog
     And I rotate UI to landscape
-    And I swipe up on dialog page
+    And I tap conversation details button
     And I rotate UI to portrait
     Then I select last photo in dialog
     And I rotate UI to landscape

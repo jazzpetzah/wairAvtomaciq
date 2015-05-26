@@ -19,7 +19,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @regression @id2067
+  @regression @id2067 @id909
   Scenario Outline: Verify starting and ending outgoing call by same person
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -119,7 +119,6 @@ Feature: Calling
     And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
-    And I see calling message for contact <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I wait for 900 seconds
     And I see mute call, end call and speakers buttons

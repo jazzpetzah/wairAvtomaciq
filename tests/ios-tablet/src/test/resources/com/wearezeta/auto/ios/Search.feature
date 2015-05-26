@@ -122,7 +122,7 @@ Feature: Search
 
     Examples: 
       | Login      | Password      | Name      | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | 7         | user2Name |
+      | user1Email | user1Password | user1Name | 2         | user2Name |
 
   @staging @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections [LANDSCAPE]
@@ -146,7 +146,7 @@ Feature: Search
 
     Examples: 
       | Login      | Password      | Name      | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | 7         | user2Name |
+      | user1Email | user1Password | user1Name | 2         | user2Name |
 
   @staging @id1150
   Scenario Outline: Start group chat with users from Top Connections [PORTRAIT]
@@ -156,7 +156,7 @@ Feature: Search
     Given Contact <Name> send message to user <Contact>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I wait for 30 seconds
+    #And I wait for 30 seconds
     And I open search by clicking plus button
     And I see People picker page
     And I re-enter the people picker if top people list is not there
@@ -172,7 +172,7 @@ Feature: Search
 
     Examples: 
       | Login      | Password      | Name      | ConvoName    | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | TopGroupTest | 7         | user2Name |
+      | user1Email | user1Password | user1Name | TopGroupTest | 3         | user2Name |
 
   @staging @id1150
   Scenario Outline: Start group chat with users from Top Connections [LANDSCAPE]
@@ -183,7 +183,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I wait for 30 seconds
+    #And I wait for 30 seconds
     And I open search by clicking plus button
     And I see People picker page
     And I re-enter the people picker if top people list is not there
@@ -200,7 +200,7 @@ Feature: Search
 
     Examples: 
       | Login      | Password      | Name      | ConvoName    | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | TopGroupTest | 7         | user2Name |
+      | user1Email | user1Password | user1Name | TopGroupTest | 3         | user2Name |
 
   @staging @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search [PORTRAIT]
@@ -217,6 +217,7 @@ Feature: Search
     And I delete all connect message content
     And I see that connect button is disabled
     And I input message in connect dialog with <NumOfMessageChars> characters
+    And I fill in 3 characters in connect dialog
     And I see message with max number of characters
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
@@ -233,7 +234,7 @@ Feature: Search
 
     Examples: 
       | Login      | Password      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
-      | user1Email | user1Password | user1Name | user2Name       | user2Email   | 141               | T           | BrightOrange |
+      | user1Email | user1Password | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
 
   @staging @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search [LANDSCAPE]
@@ -251,6 +252,7 @@ Feature: Search
     And I delete all connect message content
     And I see that connect button is disabled
     And I input message in connect dialog with <NumOfMessageChars> characters
+    And I fill in 3 characters in connect dialog
     And I see message with max number of characters
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
@@ -267,4 +269,4 @@ Feature: Search
 
     Examples: 
       | Login      | Password      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
-      | user1Email | user1Password | user1Name | user2Name       | user2Email   | 141               | T           | BrightOrange |
+      | user1Email | user1Password | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
