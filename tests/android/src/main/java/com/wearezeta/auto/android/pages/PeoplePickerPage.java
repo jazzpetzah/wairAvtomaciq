@@ -30,7 +30,7 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerSearchUsers)
 	private WebElement pickerSearchUser;
 
-	@FindBy(xpath = AndroidLocators.PeoplePickerPage.xpathPickerTopPeopleHeader)
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerTopPeopleHeader)
 	private WebElement pickerTopPeopleHeader;
 
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerUserSlidingRow)
