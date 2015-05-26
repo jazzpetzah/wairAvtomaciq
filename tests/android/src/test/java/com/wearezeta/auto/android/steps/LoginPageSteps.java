@@ -67,7 +67,7 @@ public class LoginPageSteps {
 	 * button used for signing in once details have been placed in.
 	 * 
 	 * @step. ^I press Sign in button$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("I press Sign in button")
 	public void WhenIPressSignInButton() throws Exception {
@@ -151,7 +151,7 @@ public class LoginPageSteps {
 	 * Checks to see that the welcome screen is visible
 	 * 
 	 * @step. ^I see sign in and join buttons$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Then("^I see welcome screen$")
 	public void ThenISeeWelcomeScreen() throws Exception {
@@ -160,33 +160,18 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Checks to see the login error message appears for false credentials
-	 * 
-	 * @step. ^I see sign in and join buttons$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^Login error message appears$")
-	public void LoginErrorMessage() throws Exception {
-		PagesCollection.loginPage.waitForLogin();
-		Assert.assertTrue("Error message not shown",
-				PagesCollection.loginPage.isLoginError());
-	}
-
-	/**
 	 * Checks to see that the login error message contains the correct text
 	 * 
-	 * -unnecessary should perhaps be combined with LoginErrorMessage()
-	 * 
-	 * @step. ^Contains wrong name or password text$
+	 * @step. ^I see error message \"(.*)\"$
+	 * @param expectedMsg
+	 *            the expected error message
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^Contains wrong name or password text$")
-	public void LoginErrorMessageText() throws Exception {
+	@Then("^I see error message \"(.*)\"$")
+	public void ISeeErrorMessage(String expectedMsg) throws Exception {
 		PagesCollection.loginPage.waitForLogin();
-		Assert.assertTrue("Text in error message is not as expected",
-				PagesCollection.loginPage.isLoginErrorTextOk());
+		PagesCollection.loginPage.verifyErrorMessageText(expectedMsg);
 	}
 
 }

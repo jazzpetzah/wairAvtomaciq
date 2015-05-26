@@ -47,9 +47,6 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.LoginPage.idPasswordInput)
 	private WebElement passwordInput;
 
-	@FindBy(id = AndroidLocators.LoginPage.idLoginError)
-	private WebElement loginError;
-
 	@FindBy(id = AndroidLocators.LoginPage.idWelcomeSlogan)
 	private List<WebElement> welcomeSloganContainer;
 
@@ -59,22 +56,12 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.CommonLocators.xpathDismissUpdateButton)
 	private WebElement dismissUpdateButton;
 
-	private static final String LOGIN_ERROR_TEXT = "WRONG ADDRESS OR PASSWORD.\nPLEASE TRY AGAIN.";
-
 	public LoginPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 
 	public boolean isVisible() {
 		return DriverUtils.isElementPresentAndDisplayed(welcomeSlogan);
-	}
-
-	public Boolean isLoginError() {
-		return DriverUtils.isElementPresentAndDisplayed(loginError);
-	}
-
-	public Boolean isLoginErrorTextOk() {
-		return loginError.getText().equals(LOGIN_ERROR_TEXT);
 	}
 
 	public LoginPage SignIn() throws Exception {
@@ -169,5 +156,14 @@ public class LoginPage extends AndroidPage {
 				.waitUntilLocatorAppears(
 						this.getDriver(),
 						By.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton));
+	}
+
+	public void verifyErrorMessageText(String expectedMsg) throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.LoginPage.xpathLoginMessageByText
+						.apply(expectedMsg));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("Error message '%s' is not visible on the screen",
+						expectedMsg);
 	}
 }
