@@ -119,19 +119,27 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Clicks on user found by search to open connect dialog
 	 * 
-	 * @step. I click on not connected user (.*) found in People Picker
+	 * @step. ^I click on (not connected|pending) user (.*) found in People
+	 *        Picker$
 	 * 
+	 * @param userType
+	 *            either "not connected" or "pending"
 	 * @param name
 	 *            user name string
 	 * 
 	 * @throws Exception
 	 */
-	@When("I click on not connected user (.*) found in People Picker")
-	public void IClickNotConnecteUserFoundInPeoplePicker(String name)
-			throws Exception {
+	@When("^I click on (not connected|pending) user (.*) found in People Picker$")
+	public void IClickNotConnecteUserFoundInPeoplePicker(String userType,
+			String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		PagesCollection.popoverPage = PagesCollection.peoplePickerPage
-				.clickNotConnectedUserName(name);
+		if (userType.equalsIgnoreCase("not connected")) {
+			PagesCollection.popoverPage = PagesCollection.peoplePickerPage
+					.clickNotConnectedUserName(name);
+		} else if (userType.equalsIgnoreCase("pending")) {
+			PagesCollection.popoverPage = PagesCollection.peoplePickerPage
+					.clickPendingUserName(name);
+		}
 	}
 
 	/**
