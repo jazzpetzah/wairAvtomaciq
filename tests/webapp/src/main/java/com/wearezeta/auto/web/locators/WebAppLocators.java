@@ -140,6 +140,8 @@ public final class WebAppLocators {
 
 		public static final String xpathNameSelfUserMail = "//*[@data-uie-name='enter-email']";
 
+		public static final String xpathNameSelfUserPhoneNumber = "//*[@data-uie-name='enter-phone']";
+
 		public static final String xpathCameraButton = "//*[@data-uie-name='go-profile-picture-selection']";
 	}
 
@@ -240,6 +242,11 @@ public final class WebAppLocators {
 
 		public static final String xpathSendInvitationButton = xpathRoot
 				+ "//*[@id='invite-button']";
+		
+		public static final Function<String, String> xpathSearchPendingResultByName = (
+				name) -> String.format(
+				"%s//*[@data-uie-name='item-user' and .//*[text()='%s'] and .//div[contains(@class,'checkmark icon-check')]]",
+				xpathRoot, name);
 	}
 
 	public static final class RegistrationPage {

@@ -32,6 +32,9 @@ public class SelfProfilePage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathNameSelfUserMail)
 	private WebElement userMail;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathNameSelfUserPhoneNumber)
+	private WebElement userPhoneNumber;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.SelfProfilePage.xpathAccentColorPickerChildren)
 	private List<WebElement> colorsInColorPicker;
 
@@ -81,6 +84,10 @@ public class SelfProfilePage extends WebPage {
 
 	public String getUserMail() {
 		return userMail.getText();
+	}
+
+	public String getUserPhoneNumber() {
+		return userPhoneNumber.getText();
 	}
 
 	public void setUserName(String name) {
