@@ -24,7 +24,7 @@ public class ContactListPageSteps {
 	 */
 	@Given("^I see Contact list with no contacts$")
 	public void GivenISeeContactListWithNoContacts() throws Exception {
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
+		PagesCollection.loginPage.verifyLoginFinished();
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class ContactListPageSteps {
 	 */
 	@Given("^I see Contact list$")
 	public void GivenISeeContactList() throws Exception {
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
+		PagesCollection.loginPage.verifyLoginFinished();
 		PagesCollection.contactListPage.verifyContactListIsFullyLoaded();
 	}
 
@@ -112,8 +112,8 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Presses on search bar in the conversation List  to open start UI
-	 *  Sets the people picker page
+	 * Presses on search bar in the conversation List to open start UI Sets the
+	 * people picker page
 	 * 
 	 * @step. ^I press Open StartUI$
 	 * @throws Exception
@@ -155,19 +155,6 @@ public class ContactListPageSteps {
 				.isContactExists(contact1 + ", " + contact2)
 				|| PagesCollection.contactListPage.isContactExists(contact2
 						+ ", " + contact1));
-	}
-
-	/**
-	 * Check to see that the current user's name appears at the top of the
-	 * contact list
-	 * 
-	 * @step. ^Contact list appears$
-	 *
-	 * @throws Exception
-	 */
-	@Then("Contact list appears$")
-	public void ThenContactListAppears() throws Exception {
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
 	}
 
 	/**

@@ -9,7 +9,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Log in button
-    Then Contact list appears
+    Then I see Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -70,7 +70,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <NewPassword>
     And I press Log in button
-    Then Contact list appears
+    Then I see Contact list
 
     Examples: 
       | Login      | Password      | Name      | NewPassword | Contact   |
