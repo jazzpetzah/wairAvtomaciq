@@ -94,7 +94,8 @@ public final class AndroidLocators {
 
 		public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
 
-		public static final String idLoginError = "ttv__sign_in__login_failed__guidance";
+		public static final Function<String, String> xpathLoginMessageByText = text -> String
+				.format("//*[@id='message' and @value='%s']", text);
 	}
 
 	public static final class AboutPage {

@@ -45,12 +45,11 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Log in button
-    Then Login error message appears
-    And Contains wrong name or password text
+    Then I see error message "<ErrMessage>"
 
     Examples: 
-      | Login   | Password |
-      | aaa 	| aaa 	   |
+      | Login   | Password | ErrMessage                          |
+      | aaa 	| aaa 	   | Please enter a valid email address. |
       
   @id2020 @regression
   Scenario Outline: Verify possibility of reseting password from sign in
