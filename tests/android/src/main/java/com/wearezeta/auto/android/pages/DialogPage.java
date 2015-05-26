@@ -591,7 +591,8 @@ public class DialogPage extends AndroidPage {
 		return lastPingMessage.getText();
 	}
 
-	public boolean isGroupChatDialogContainsNames(List<String> names) throws Exception {
+	public boolean isGroupChatDialogContainsNames(List<String> names)
+			throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
@@ -613,6 +614,9 @@ public class DialogPage extends AndroidPage {
 	public void tapPlayPauseBtn() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), playPauseBtn);
 		playPauseBtn.click();
+		// FIXME: Find a way to detect that Play/Pause button state has been
+		// really changed
+		Thread.sleep(2000);
 	}
 
 	public void tapDialogPageBottom() throws Exception {

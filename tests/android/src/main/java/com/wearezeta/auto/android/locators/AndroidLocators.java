@@ -145,8 +145,6 @@ public final class AndroidLocators {
 
 		public static final String idConfirmCancelButton = "cancel";
 
-		public static final String idPlayPauseMedia = "tv_conv_list_media_player";
-
 		public static final String idYourName = "ttv__conversation_list__sticky_menu__profile_link";
 
 		public static final String idConvList = "pv__conv_list";
@@ -162,11 +160,15 @@ public final class AndroidLocators {
 
 		public static final String idSimpleDialogPageText = "ttv__simple_dialog__text";
 
-		public static final Function<String, String> xpathMutedIconByName = name -> String
-				.format("//*[@id='tv_conv_list_topic' and @value='%s']/following-sibling::"
-						+ "*//*[@id='tv_conv_list_voice_muted']", name);
+		public static final Function<String, String> xpathMutedIconByConvoName = convoName -> String
+				.format("%s/parent::*//*[@id='tv_conv_list_voice_muted']",
+						xpathContactByName.apply(convoName));
 
 		public static final String idSearchButton = "gtv_pickuser__searchbutton";
+
+		public static final Function<String, String> xpathPlayPauseButtonByConvoName = convoName -> String
+				.format("%s/parent::*//*[@id='tv_conv_list_media_player']",
+						xpathContactByName.apply(convoName));
 	}
 
 	public static final class CommonLocators {

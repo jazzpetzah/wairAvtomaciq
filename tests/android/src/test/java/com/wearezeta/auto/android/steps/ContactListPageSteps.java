@@ -233,13 +233,18 @@ public class ContactListPageSteps {
 	 * Verify that Play/Pause media content button is visible in Conversation
 	 * List
 	 * 
-	 * @step. ^I see PlayPause media content button in Conversations List$
+	 * @step. ^I see PlayPause media content button for conversation (.*)
+	 * @param convoName
+	 *            conversation name for which button presence is checked
 	 * 
 	 */
-	@Then("^I see PlayPause media content button in Conversations List$")
-	public void ThenISeePlayPauseMediaContentButtonInConvLst() throws Exception {
+	@Then("^I see PlayPause media content button for conversation (.*)")
+	public void ThenISeePlayPauseButtonForConvo(String convoName)
+			throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
 		Assert.assertTrue(PagesCollection.contactListPage
-				.isPlayPauseMediaButtonVisible());
+				.isPlayPauseMediaButtonVisible(convoName));
 	}
 
 	/**
