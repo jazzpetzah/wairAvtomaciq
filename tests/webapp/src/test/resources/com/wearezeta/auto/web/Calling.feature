@@ -41,7 +41,7 @@ Feature: Calling
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
     And I end the call
-    Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+	  Then <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
