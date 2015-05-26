@@ -40,7 +40,7 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    Then Contact list appears
+    And I see Contact list
     When I tap on my avatar
     And I see personal info page
     And I tap on my name
