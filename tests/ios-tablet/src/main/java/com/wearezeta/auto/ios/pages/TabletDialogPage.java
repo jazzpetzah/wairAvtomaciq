@@ -16,6 +16,9 @@ public class TabletDialogPage extends DialogPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
 	private WebElement addPictureButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
+	protected WebElement openConversationDetails;
+	
 	public TabletDialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -26,6 +29,13 @@ public class TabletDialogPage extends DialogPage {
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathCameraLibraryButton));
 		page = new CameraRollTabletPopoverPage(this.getLazyDriver());
+		return page;
+	}
+	
+	public TabletConversationDetailPopoverPage pressConversationDetailiPadButton() throws Exception{
+		TabletConversationDetailPopoverPage page;
+		openConversationDetails.click();
+		page = new TabletConversationDetailPopoverPage(this.getLazyDriver());
 		return page;
 	}
 
