@@ -4,7 +4,9 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.web.locators.PopoverLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -187,4 +189,5 @@ public class PendingConnectionsPageSteps {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		PagesCollection.pendingConnectionsPage.ignoreRequestFromUser(user);
 	}
+	
 }

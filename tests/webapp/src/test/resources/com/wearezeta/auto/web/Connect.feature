@@ -320,15 +320,15 @@ Feature: Connect
     Given I sent connection request to <Contact>
     Given I Sign in using login <Login> and password <Password>
     When I open People Picker from Contact List
-    And I wait for 3 seconds
+    And I wait for 2 seconds
     And I type <Contact> in search field of People Picker
     Then I see user <Contact> found in People Picker
-    When I click on not connected user <Contact> found in People Picker
+    When I click on pending user <Contact> found in People Picker
     And I see Connect To popover
-    And I see Single User Profile popover
-    And I see Pending button on Single Participant popover
-    #When I click Pending button on Single Participant popover
-    #Then I see conversation with <Contact2> is selected in conversations list
+    #And I see Pending Outgoing Connection popover
+    And I see Pending button on Pending Outgoing Connection popover
+    When I click Pending button on Pending Outgoing Connection popover
+    Then I see conversation with <Contact2> is selected in conversations list
 
     Examples: 
       | Login      | Password      | Name      | Contact   |

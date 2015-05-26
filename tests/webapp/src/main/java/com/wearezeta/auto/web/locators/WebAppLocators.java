@@ -242,6 +242,11 @@ public final class WebAppLocators {
 
 		public static final String xpathSendInvitationButton = xpathRoot
 				+ "//*[@id='invite-button']";
+		
+		public static final Function<String, String> xpathSearchPendingResultByName = (
+				name) -> String.format(
+				"%s//*[@data-uie-name='item-user' and .//*[text()='%s'] and .//div[contains(@class,'checkmark icon-check')]]",
+				xpathRoot, name);
 	}
 
 	public static final class RegistrationPage {

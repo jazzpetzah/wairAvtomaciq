@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SendInvitationPopoverContainer;
 
@@ -58,7 +59,7 @@ public class PeoplePickerPage extends WebPage {
 		foundUserElement.click();
 	}
 
-	public ConnectToPopoverContainer clickNotConnectedUserName(String name)
+	public AbstractPopoverContainer clickNotConnectedUserName(String name)
 			throws Exception {
 		clickNotConnectedUser(name);
 		PagesCollection.popoverPage = new ConnectToPopoverContainer(
@@ -188,5 +189,21 @@ public class PeoplePickerPage extends WebPage {
 				.findElement(
 						By.cssSelector(WebAppLocators.PeoplePickerPage.cssAddIconByName
 								.apply(user))).click();
+	}
+
+	public ConnectToPopoverContainer clickPendingUserName(String name)
+			throws Exception {
+		clickPendingUser(name);
+		PagesCollection.popoverPage = new ConnectToPopoverContainer(
+				this.getLazyDriver());
+		return (ConnectToPopoverContainer) PagesCollection.popoverPage;
+		}
+	
+	private void clickPendingUser(String name) throws Exception {
+		String foundPendingUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchPendingResultByName
+				.apply(name);
+		WebElement foundPendingUserElement = getDriver().findElement(
+				By.xpath(foundPendingUserXpath));
+		foundPendingUserElement.click();
 	}
 }

@@ -30,4 +30,5 @@ public class ConnectToPopoverPageSteps {
 		((ConnectToPopoverContainer) PagesCollection.popoverPage)
 				.waitUntilVisibleOrThrowException();
 	}
+	
 }
