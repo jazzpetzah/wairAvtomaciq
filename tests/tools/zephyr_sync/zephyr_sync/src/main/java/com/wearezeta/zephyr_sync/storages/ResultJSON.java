@@ -53,7 +53,7 @@ public class ResultJSON extends TestcasesStorage {
 
 	private static boolean parseIsFailed(JSONArray steps) {
 		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
-			JSONObject step = steps.getJSONObject(stepIdx);
+			final JSONObject step = steps.getJSONObject(stepIdx);
 			if (getStepStatus(step).equals("failed")) {
 				// Don't fail the test case if test setup failed
 				if (!isGivenStepType(step)) {
@@ -66,7 +66,7 @@ public class ResultJSON extends TestcasesStorage {
 
 	private static boolean parseIsSkipped(JSONArray steps) {
 		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
-			JSONObject step = steps.getJSONObject(stepIdx);
+			final JSONObject step = steps.getJSONObject(stepIdx);
 			if (!getStepStatus(step).equals("skipped")) {
 				return false;
 			}
