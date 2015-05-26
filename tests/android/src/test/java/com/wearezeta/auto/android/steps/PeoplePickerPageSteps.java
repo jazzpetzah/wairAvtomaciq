@@ -443,7 +443,7 @@ public class PeoplePickerPageSteps {
 	 * @param contact
 	 * @throws Throwable
 	 */
-	@Then("^I see user (.*)  in People picker$")
+	@Then("^I see user (.*) in People picker$")
 	public void ThenISeeUserInPeoplePicker(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.peoplePickerPage
@@ -458,7 +458,7 @@ public class PeoplePickerPageSteps {
 	 * @param contact
 	 * @throws Throwable
 	 */
-	@Then("^I see group (.*)  in People picker$")
+	@Then("^I see group (.*) in People picker$")
 	public void ThenISeeGroupInPeoplePicker(String contact) throws Throwable {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();

@@ -119,7 +119,6 @@ Feature: Calling
     And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
-    And I see calling message for contact <Contact>
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I wait for 900 seconds
     And I see mute call, end call and speakers buttons

@@ -10,7 +10,7 @@ Feature: Search
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
-    Then I see user <Contact>  in People picker
+    Then I see user <Contact> in People picker
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -27,7 +27,7 @@ Feature: Search
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <GroupChatName>
-    Then I see group <GroupChatName>  in People picker
+    Then I see group <GroupChatName> in People picker
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName          |
@@ -43,7 +43,7 @@ Feature: Search
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field part <Size> of user name to connect to <Contact>
-    Then I see user <Contact>  in People picker
+    Then I see user <Contact> in People picker
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Size |
@@ -60,7 +60,7 @@ Feature: Search
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field part <Size> of user name to connect to <GroupChatName>
-    Then I see group <GroupChatName>  in People picker
+    Then I see group <GroupChatName> in People picker
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName           | Size |
