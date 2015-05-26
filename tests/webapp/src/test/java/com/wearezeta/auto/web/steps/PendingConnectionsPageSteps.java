@@ -188,5 +188,5 @@ public class PendingConnectionsPageSteps {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		PagesCollection.pendingConnectionsPage.ignoreRequestFromUser(user);
 	}
-	
+
 }
