@@ -2,8 +2,7 @@ Feature: Sign In
 
   @id326 @smoke
   Scenario Outline: Sign in to ZClient
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     Given I see sign in screen
     When I press Sign in button
     And I have entered login <Login>
@@ -12,8 +11,8 @@ Feature: Sign In
     Then I see Contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   #@id209 @smoke
   #Scenario Outline: I can change sign in user
@@ -53,8 +52,7 @@ Feature: Sign In
       
   @id2020 @regression
   Scenario Outline: Verify possibility of reseting password from sign in
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     Given I see sign in screen
     When I press Sign in button
     And I press FORGOT PASSWORD button
@@ -72,5 +70,5 @@ Feature: Sign In
     Then I see Contact list
 
     Examples: 
-      | Login      | Password      | Name      | NewPassword | Contact   |
-      | user1Email | user1Password | user1Name | qatest1234  | user2Name |
+      | Login      | Password      | Name      | NewPassword |
+      | user1Email | user1Password | user1Name | qatest1234  |

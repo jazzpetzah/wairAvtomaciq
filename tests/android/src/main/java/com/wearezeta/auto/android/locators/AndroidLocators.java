@@ -326,6 +326,7 @@ public final class AndroidLocators {
 
 		public static final String idParticipantsClose = "gtv__participants__close";
 
+		@SuppressWarnings("unused")
 		private static final String xpathTopPeopleRoot = "//*[@id='fl__conversation_list_main']";
 
 		public static final String idPickerTopPeopleHeader = "ttv_pickuser__list_header_title";
