@@ -21,16 +21,31 @@ public class ResultJSON extends TestcasesStorage {
 		this.path = path;
 	}
 
+	private static String getStepStatus(final JSONObject step) {
+		return step.getJSONObject("result").getString("status");
+	}
+
+	private static boolean isGivenStepType(final JSONObject step) {
+		return step.has("keyword")
+				&& step.getString("keyword").trim().toLowerCase()
+						.equals("given");
+	}
+
 	private static boolean parseIsPassed(JSONArray steps) {
+		boolean isPending = false;
 		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
-			if (steps.getJSONObject(stepIdx).getJSONObject("result")
-					.getString("status").equals("pending")) {
+			final JSONObject step = steps.getJSONObject(stepIdx);
+			if (getStepStatus(step).equals("pending")) {
 				// Parse test cases with pending steps as passed by default
-				return true;
-			}
-			if (!steps.getJSONObject(stepIdx).getJSONObject("result")
-					.getString("status").equals("passed")) {
+				isPending = true;
+			} else if (!getStepStatus(step).equals("passed") && !isPending) {
 				return false;
+			} else if (isPending) {
+				if (getStepStatus(step).equals("failed")) {
+					if (!isGivenStepType(step)) {
+						return false;
+					}
+				}
 			}
 		}
 		return true;
@@ -39,14 +54,9 @@ public class ResultJSON extends TestcasesStorage {
 	private static boolean parseIsFailed(JSONArray steps) {
 		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
 			JSONObject step = steps.getJSONObject(stepIdx);
-			if (step.getJSONObject("result").getString("status")
-					.equals("failed")) {
-				if (step.has("keyword")
-						&& !step.getString("keyword").trim().toLowerCase()
-								.equals("given")) {
-					// Don't fail the test case if test setup failed
-					return true;
-				} else if (!step.has("keyword")) {
+			if (getStepStatus(step).equals("failed")) {
+				// Don't fail the test case if test setup failed
+				if (!isGivenStepType(step)) {
 					return true;
 				}
 			}
@@ -56,8 +66,8 @@ public class ResultJSON extends TestcasesStorage {
 
 	private static boolean parseIsSkipped(JSONArray steps) {
 		for (int stepIdx = 0; stepIdx < steps.length(); stepIdx++) {
-			if (!steps.getJSONObject(stepIdx).getJSONObject("result")
-					.getString("status").equals("skipped")) {
+			JSONObject step = steps.getJSONObject(stepIdx);
+			if (!getStepStatus(step).equals("skipped")) {
 				return false;
 			}
 		}
