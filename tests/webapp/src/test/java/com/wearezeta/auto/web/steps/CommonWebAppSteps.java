@@ -750,6 +750,32 @@ public class CommonWebAppSteps {
 		}
 	}
 
+	/**
+	 * Refreshes page by getting and setting the current URL. Note: Alternative
+	 * 'WebDriver.navigate().refresh()' hangs with Firefox.
+	 *
+	 * @step. ^I refresh page$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I refresh page$")
+	public void IRefreshPage() throws Exception {
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			try {
+				if (WebAppExecutionContext.LoggingManagement
+						.isSupportedInCurrentBrowser()) {
+					WebCommonUtils.refreshPage(PlatformDrivers
+							.getInstance()
+							.getDriver(CURRENT_PLATFORM)
+							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+									TimeUnit.MILLISECONDS));
+				}
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
 		return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs()
