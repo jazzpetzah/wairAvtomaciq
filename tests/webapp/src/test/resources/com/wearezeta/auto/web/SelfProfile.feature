@@ -16,7 +16,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewUserName | user2Name |
 
-  @smoke @id1744 @torun
+  @smoke @id1744
   Scenario Outline: Verify you can access your profile information
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Email> and password <Password>
