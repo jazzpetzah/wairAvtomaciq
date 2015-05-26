@@ -122,7 +122,6 @@ Feature: Calling
       Given I Sign in using login <Login> and password <Password>
       And I see my name on top of Contact list
       And I open conversation with <Contact>
-      # wait 5 seconds to catch up the actual call
       And I refresh page      
       And I wait for 5 seconds
       Then I see the calling bar from user <Contact>
