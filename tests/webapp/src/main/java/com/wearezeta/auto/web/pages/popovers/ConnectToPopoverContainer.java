@@ -16,18 +16,7 @@ public class ConnectToPopoverContainer extends AbstractPopoverContainer {
 		this.pendingOutgoingConnectionPopoverPage = new PendingOutgoingConnectionPopoverPage(
 				lazyDriver, this);
 	}
-	private AbstractPopoverPage getCurrentPage()
-			throws Exception {
-		if (this.connectToPopoverPage.isCurrent()) {
-			return this.connectToPopoverPage;
-		} else if (this.pendingOutgoingConnectionPopoverPage.isCurrent()) {
-			return this.pendingOutgoingConnectionPopoverPage;
-		} else {
-			throw new RuntimeException(
-					"The current popover page is unknown.");
-		}
-	}
-	
+
 	@Override
 	protected String getXpathLocator() {
 		return PopoverLocators.ConnectToPopover.xpathRootLocator;
@@ -38,4 +27,7 @@ public class ConnectToPopoverContainer extends AbstractPopoverContainer {
 		this.connectToPopoverPage.clickConnectButton();
 	}
 
+	public void clickPendingButton() throws Exception {
+		this.pendingOutgoingConnectionPopoverPage.clickPendingButton();
+	}
 }

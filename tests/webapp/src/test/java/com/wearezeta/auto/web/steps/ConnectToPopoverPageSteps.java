@@ -21,7 +21,7 @@ public class ConnectToPopoverPageSteps {
 	}
 
 	/**
-	 * Verified whether Connect To popoup is displayed within some timeout
+	 * Verified whether Connect To popover is displayed within some timeout
 	 * 
 	 * @throws Exception
 	 */
@@ -29,6 +29,30 @@ public class ConnectToPopoverPageSteps {
 	public void ISeeConnectToPopover() throws Exception {
 		((ConnectToPopoverContainer) PagesCollection.popoverPage)
 				.waitUntilVisibleOrThrowException();
+	}
+	
+	/**
+	 * Verified whether Pending Outgoing Connection popover is displayed within some timeout
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I see Pending Outgoing Connection popover$")
+	public void ISeePendingOutgoingConnectionPopover() throws Exception {
+		((ConnectToPopoverContainer) PagesCollection.popoverPage)
+				.waitUntilVisibleOrThrowException();
+	}
+	
+	/**
+	 * Clicks Pending button on Pending Outgoing Connection popover
+	 * 
+	 * @step. ^I click Pending button on Pending Outgoing Connection popover$
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I click Pending button on Pending Outgoing Connection popover$")
+	public void IClickPendingButtonOnPendingOutgoingConnectionPopover() throws Exception {
+		((ConnectToPopoverContainer) PagesCollection.popoverPage)
+				.clickPendingButton();
 	}
 	
 }

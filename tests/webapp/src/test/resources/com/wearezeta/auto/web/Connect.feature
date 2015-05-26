@@ -326,11 +326,9 @@ Feature: Connect
     And I type <Contact> in search field of People Picker
     Then I see user <Contact> found in People Picker
     When I click on pending user <Contact> found in People Picker
-    And I see Connect To popover
-    #And I see Pending Outgoing Connection popover
-    And I see Pending button on Pending Outgoing Connection popover
+    And I see Pending Outgoing Connection popover
     When I click Pending button on Pending Outgoing Connection popover
-    Then I see conversation with <Contact2> is selected in conversations list
+    Then I see conversation with <Contact> is selected in conversations list
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
