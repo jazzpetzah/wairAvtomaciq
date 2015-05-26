@@ -11,6 +11,9 @@ import com.wearezeta.auto.web.pages.PagesCollection;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
 public class SelfProfilePageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -58,6 +61,24 @@ public class SelfProfilePageSteps {
 		boolean nameCorrect = PagesCollection.selfProfilePage
 				.checkNameInSelfProfile(name);
 		Assert.assertTrue(nameCorrect);
+	}
+
+	/**
+	 * Verifies that correct phone number is shown on self profile page
+	 * 
+	 * @step. ^I see user phone number on self profile page (.*)$
+	 * 
+	 * @param phoneNumber
+	 *            phone number of the user
+	 * @throws Exception
+	 */
+	@And("^I see user phone number on self profile page (.*)$")
+	public void ISeeUserPhoneNumberOnSelfProfilePage(String phoneNumber)
+			throws Exception {
+		phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber,
+				FindBy.PHONENUMBER_ALIAS);
+		assertThat(PagesCollection.selfProfilePage.getUserPhoneNumber(),
+				equalTo(phoneNumber));
 	}
 
 	/**

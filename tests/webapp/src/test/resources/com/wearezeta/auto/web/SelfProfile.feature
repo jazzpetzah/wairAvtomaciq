@@ -16,6 +16,22 @@ Feature: Self Profile
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewUserName | user2Name |
 
+  @smoke @id1744 @torun
+  Scenario Outline: Verify you can access your profile information
+    Given There is 1 user where <Name> is me
+    Given I Sign in using login <Email> and password <Password>
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
+    And I see my avatar on top of Contact list
+    When I open self profile
+    Then I see user name on self profile page <Name>
+    And I see user email on self profile page <Email>
+    And I see user phone number on self profile page <PhoneNumber>
+
+    Examples: 
+      | Email      | Password      | Name      | PhoneNumber      |
+      | user1Email | user1Password | user1Name | user1PhoneNumber |
+
   @smoke @id1753
   Scenario Outline: Verify correct accent color showing after sign out and sign in
     Given There is 1 user where <Name> is me
@@ -58,5 +74,5 @@ Feature: Self Profile
     Then I verify that current profile picture snapshot of Myself differs from the previous one
 
     Examples: 
-      | Login      | Password      | Name      | PictureName               |
-      | user1Email | user1Password | user1Name | userpicture_portrait.jpg  |
+      | Login      | Password      | Name      | PictureName              |
+      | user1Email | user1Password | user1Name | userpicture_portrait.jpg |
