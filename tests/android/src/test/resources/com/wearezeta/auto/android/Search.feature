@@ -75,7 +75,7 @@ Feature: Search
     When I press Open StartUI
     And I see People picker page
     And I press Clear button
-    Then Contact list appears
+    Then I see Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact   |

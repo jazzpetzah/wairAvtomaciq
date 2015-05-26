@@ -123,17 +123,27 @@ public class LoginPage extends AndroidPage {
 				By.id(AndroidLocators.LoginPage.idSignUpButton), 40);
 	}
 
-	public Boolean isLoginFinished() throws Exception {
-		// some workarounds for AN-1973
-		try {
-			this.getWait().until(
-					ExpectedConditions.visibilityOf(pickerClearBtn));
-			pickerClearBtn.click();
-		} catch (Exception ex) {
-			this.getWait().until(
-					ExpectedConditions.visibilityOf(selfUserAvatar));
-		}
-		return DriverUtils.isElementPresentAndDisplayed(selfUserAvatar);
+	private static final int SIGN_IN_TIMEOUT_SECONDS = 60;
+
+	public void verifyLoginFinished() throws Exception {
+		final By clearBtnLocator = By
+				.id(AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn);
+		final By selfAvatarLocator = By
+				.id(AndroidLocators.ContactListPage.idSelfUserAvatar);
+		final long millisecondsStarted = System.currentTimeMillis();
+		do {
+			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					clearBtnLocator, 1)) {
+				pickerClearBtn.click();
+			}
+			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					selfAvatarLocator, 1)) {
+				return;
+			}
+		} while (System.currentTimeMillis() - millisecondsStarted <= SIGN_IN_TIMEOUT_SECONDS * 1000);
+		assert false : String.format(
+				"Sign in is still in progress after %s seconds",
+				SIGN_IN_TIMEOUT_SECONDS);
 	}
 
 	public Boolean isWelcomeButtonsExist() throws Exception {
