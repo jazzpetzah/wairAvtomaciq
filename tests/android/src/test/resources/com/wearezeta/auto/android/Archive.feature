@@ -2,7 +2,7 @@ Feature: Archive
 
   @id1511 @regression
   Scenario Outline: Verify you can archive and unarchive
-    Given There are 3 users where <Name> is me
+    Given There are 3 users where <Name> is me # is required because of AA-239 that never be fixed
     Given Myself is connected to <Contact1>
     Given Myself is connected to <Contact2>
     Given I Sign in using login <Login> and password <Password>
