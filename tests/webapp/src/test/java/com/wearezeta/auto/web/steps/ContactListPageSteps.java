@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.steps;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -406,5 +407,24 @@ public class ContactListPageSteps {
 			assertFalse(PagesCollection.contactListPage
 					.isMissedCallVisibleForContact(conversationName));
 		}
+	}
+
+	/*
+	 * Verify if ping icon in contact list is colored to expected accent color
+	 * 
+	 * @step. "^I verify ping icon is (\\w+) color$"
+	 * 
+	 * @param colorName one of these colors: StrongBlue, StrongLimeGreen,
+	 * BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I verify ping icon is (\\w+) color$")
+	public void IVerifyPingIconColor(String colorName) throws Exception {
+		final AccentColor expectedColor = AccentColor.getByName(colorName);
+		final AccentColor pingColor = PagesCollection.contactListPage
+				.getCurrentPingIconAccentColor();
+		Assert.assertTrue("my avatar background accent color is not set",
+				pingColor == expectedColor);
 	}
 }
