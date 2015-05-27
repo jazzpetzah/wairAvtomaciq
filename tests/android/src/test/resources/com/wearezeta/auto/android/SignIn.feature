@@ -3,7 +3,7 @@ Feature: Sign In
   @id326 @smoke
   Scenario Outline: Sign in to ZClient
     Given There is 1 user where <Name> is me
-    Given I see sign in screen
+    Given I see welcome screen
     When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
@@ -39,7 +39,7 @@ Feature: Sign In
 
   @id1413 @regression
   Scenario Outline: Negative case for sign in
-    Given I see sign in screen
+    Given I see welcome screen
     When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
@@ -53,7 +53,7 @@ Feature: Sign In
   @id2020 @regression
   Scenario Outline: Verify possibility of reseting password from sign in
     Given There is 1 user where <Name> is me
-    Given I see sign in screen
+    Given I see welcome screen
     When I switch to email sign in screen
     And I press FORGOT PASSWORD button
     And I request reset password for <Login>

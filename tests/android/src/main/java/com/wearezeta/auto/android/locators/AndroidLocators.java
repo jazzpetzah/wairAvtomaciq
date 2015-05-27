@@ -135,6 +135,8 @@ public final class AndroidLocators {
 	}
 
 	public static final class ContactListPage {
+		public static final String xpathConversationListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
+
 		public static final String idConversationListFrame = "pfac__conversation_list";
 
 		public static final String idOpenStartUIButton = "gtv__conversation_list__sticky_menu__trigger_startui";
@@ -182,10 +184,6 @@ public final class AndroidLocators {
 
 		public static final String idEditText = "cet__cursor_view";
 
-		public static final String xpathImagesFrameLayout = "//*[@id='grid']/FrameLayout";
-
-		public static final String xpathImage = "//android.widget.LinearLayout/android.view.View";
-
 		public static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";
 
 		public static final String idCloseImageBtn = "gtv__single_image_message__close";
@@ -227,8 +225,6 @@ public final class AndroidLocators {
 		public static final String idDialogTakePhotoButton = "gtv__camera_control__take_a_picture";
 
 		public static final String idDialogChangeCameraButton = "gtv__camera__top_control__back_camera";
-
-		public static final String idConfirmButton = "ttv__confirmation__confirm";
 
 		public static final String xpathConfirmOKButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
 
@@ -404,11 +400,9 @@ public final class AndroidLocators {
 		public static final String xpathNameEdit = xpathParentSelfProfileOverlay
 				+ "//*[@id='tet__profile__guided']";
 
-		public static final String xpathChangePhotoBtn = xpathParentSelfProfileOverlay
-				+ "//*[@id='gtv__camera_control__change_image_source']";
+		public static final String idChangePhotoBtn = "gtv__camera_control__change_image_source";
 
-		public static final String xpathGalleryBtn = xpathParentSelfProfileOverlay
-				+ "//*[@id='gtv__camera_control__pick_from_gallery']";
+		public static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";
 
 		public static final String xpathSettingsBtn = xpathParentSelfProfileOverlay
 				+ "//*[@id='ttv__profile__settings_box__settings']";

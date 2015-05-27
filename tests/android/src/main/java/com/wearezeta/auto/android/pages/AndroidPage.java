@@ -14,6 +14,7 @@ import org.openqa.selenium.support.FindBy;
 
 import android.view.KeyEvent;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidKeyEvent;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
@@ -33,12 +34,6 @@ public abstract class AndroidPage extends BasePage {
 	@FindBy(className = AndroidLocators.CommonLocators.classListView)
 	private WebElement container;
 
-	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
-	private List<WebElement> frameLayouts;
-
-	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImage)
-	private List<WebElement> image;
-
 	@Override
 	protected ZetaAndroidDriver getDriver() throws Exception {
 		return (ZetaAndroidDriver) super.getDriver();
@@ -54,19 +49,13 @@ public abstract class AndroidPage extends BasePage {
 		super(lazyDriver);
 	}
 
-	public void selectPhoto() throws Exception {
-		try {
-			frameLayouts.get(0).click();
-			return;
-		} catch (Exception ex) {
-			// ignore silently
-		}
-		try {
-			image.get(0).click();
-			return;
-		} catch (Exception ex) {
-			// ignore silently
-		}
+	public void selectFirstGalleryPhoto() throws Exception {
+		final Dimension screenDimension = getDriver().manage().window()
+				.getSize();
+		// Selendroid workaround
+		// Cannot handle external apps properly :-(
+		AndroidCommonUtils.genericScreenTap(screenDimension.width / 4,
+				screenDimension.height / 4);
 	}
 
 	public void hideKeyboard() throws Exception {
@@ -122,55 +111,56 @@ public abstract class AndroidPage extends BasePage {
 			throws Exception;
 
 	@Override
-	public AndroidPage swipeLeft(int time) throws Exception {
-		DriverUtils.swipeLeft(this.getDriver(), content, time);
+	public AndroidPage swipeLeft(int durationMilliseconds) throws Exception {
+		DriverUtils.swipeLeft(this.getDriver(), content, durationMilliseconds);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
 	@Override
-	public AndroidPage swipeRight(int time) throws Exception {
-		DriverUtils.swipeRight(this.getDriver(), content, time);
+	public AndroidPage swipeRight(int durationMilliseconds) throws Exception {
+		DriverUtils.swipeRight(this.getDriver(), content, durationMilliseconds);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
 	@Override
-	public AndroidPage swipeUp(int time) throws Exception {
-		DriverUtils.swipeUp(this.getDriver(), content, time);
+	public AndroidPage swipeUp(int durationMilliseconds) throws Exception {
+		DriverUtils.swipeUp(this.getDriver(), content, durationMilliseconds);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	public void elementSwipeRight(WebElement el, int time) {
+	public void elementSwipeRight(WebElement el, int durationMilliseconds) {
 		Point coords = el.getLocation();
 		Dimension elementSize = el.getSize();
 		try {
 			this.getDriver().swipe(coords.x + 30,
 					coords.y + elementSize.height / 2,
 					coords.x + elementSize.width - 10,
-					coords.y + elementSize.height / 2, time);
+					coords.y + elementSize.height / 2, durationMilliseconds);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public void elementSwipeUp(WebElement el, int time) {
+	public void elementSwipeUp(WebElement el, int durationMilliseconds) {
 		Point coords = el.getLocation();
 		Dimension elementSize = el.getSize();
 		try {
 			this.getDriver().swipe(coords.x + elementSize.width / 2,
 					coords.y + elementSize.height - 50,
-					coords.x + elementSize.width / 2, coords.y, time);
+					coords.x + elementSize.width / 2, coords.y,
+					durationMilliseconds);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public void elementSwipeDown(WebElement el, int time) {
+	public void elementSwipeDown(WebElement el, int durationMilliseconds) {
 		Point coords = el.getLocation();
 		Dimension elementSize = el.getSize();
 		try {
 			this.getDriver().swipe(coords.x + elementSize.width / 2,
 					coords.y + 50, coords.x + elementSize.width / 2,
-					coords.y + elementSize.height - 300, time);
+					coords.y + elementSize.height - 300, durationMilliseconds);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

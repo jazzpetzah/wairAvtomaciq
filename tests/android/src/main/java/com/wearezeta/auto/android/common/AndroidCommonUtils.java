@@ -51,6 +51,10 @@ public class AndroidCommonUtils extends CommonUtils {
 		executeAdb("shell am start -t image/* -a android.intent.action.VIEW");
 	}
 
+	public static void genericScreenTap(int x, int y) throws Exception {
+		executeAdb(String.format("shell input tap %d %d", x, y));
+	}
+
 	public static void openBroswerApplication() throws Exception {
 		executeAdb("shell am start -a android.intent.action.VIEW -d http://www.google.com");
 	}

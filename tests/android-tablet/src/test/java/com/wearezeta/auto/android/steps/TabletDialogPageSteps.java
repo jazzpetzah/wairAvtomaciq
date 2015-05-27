@@ -18,7 +18,7 @@ public class TabletDialogPageSteps {
 	@When("^I swipe up on tablet dialog page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
 		if (TabletPagesCollection.dialogPage == null) {
-			TabletPagesCollection.dialogPage = (TabletDialogPage) TabletPagesCollection.androidPage;
+			TabletPagesCollection.dialogPage = (TabletDialogPage) TabletPagesCollection.currentPage;
 		}
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) TabletPagesCollection.dialogPage
 				.swipeUp(1000);

@@ -13,13 +13,13 @@ public class LoginPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Checks to see if the start screen appears
+	 * Verify whether Welcome screen is visible
 	 * 
-	 * @step. ^I see start screen$
+	 * @step. ^I see [Ww]elcome screen$
 	 * @throws Exception
 	 */
-	@Given("^I see start screen$")
-	public void GiveniSeeSignInScreen() throws Exception {
+	@Given("^I see [Ww]elcome screen$")
+	public void GivenISeeWelcomeScreen() throws Exception {
 		Assert.assertTrue(PagesCollection.loginPage.waitForInitialScreen());
 	}
 
@@ -147,18 +147,6 @@ public class LoginPageSteps {
 			// Ignore silently
 		}
 		PagesCollection.loginPage.setPassword(password);
-	}
-
-	/**
-	 * Checks to see that the welcome screen is visible
-	 * 
-	 * @step. ^I see sign in and join buttons$
-	 * @throws Exception
-	 */
-	@Then("^I see welcome screen$")
-	public void ThenISeeWelcomeScreen() throws Exception {
-		Assert.assertTrue("We don't see welcome buttons",
-				PagesCollection.loginPage.waitForInitialScreen());
 	}
 
 	/**

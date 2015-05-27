@@ -4,7 +4,7 @@ Feature: Sign In
   Scenario Outline: Sign in to ZClient in portrait mode
     Given There is 1 user where <Name> is me
     And I rotate UI to portrait
-    Given I see sign in screen
+    Given I see welcome screen
     When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
@@ -17,7 +17,7 @@ Feature: Sign In
 
   @id2284 @staging
   Scenario Outline: Negative case for sign in portrait mode
-    Given I see sign in screen
+    Given I see welcome screen
     And I rotate UI to portrait
     When I switch to email sign in screen
     And I have entered login <Login>
@@ -34,7 +34,7 @@ Feature: Sign In
   Scenario Outline: Sign in to ZClient in landscape mode
     Given There is 1 user where <Name> is me
     And I rotate UI to landscape
-    Given I see sign in screen
+    Given I see welcome screen
     When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
@@ -47,7 +47,7 @@ Feature: Sign In
 
   @id2285 @staging
   Scenario Outline: Negative case for sign in landscape mode
-    Given I see sign in screen
+    Given I see welcome screen
     And I rotate UI to landscape
     When I switch to email sign in screen
     And I have entered login <Login>

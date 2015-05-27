@@ -157,7 +157,8 @@ public class PersonalInfoPage extends IOSPage {
 		if (!color.equals("Violet")) {
 			return false;
 		}
-		BufferedImage coloredLogoImage = getElementScreenshot(aboutPageWireLogo);
+		BufferedImage coloredLogoImage = getElementScreenshot(aboutPageWireLogo)
+				.orElseThrow(IllegalStateException::new);
 		System.out.println(IOSPage.getImagesPath() + ABOUT_LOGO_IMAGE);
 		BufferedImage realLogoImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + ABOUT_LOGO_IMAGE);

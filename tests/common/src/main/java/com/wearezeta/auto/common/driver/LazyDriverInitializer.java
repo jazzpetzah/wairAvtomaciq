@@ -79,6 +79,15 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 					throw new RuntimeException(String.format(
 							"Platform '%s' is unknown", this.platform.name()));
 				}
+				if (initCompletedCallback != null) {
+					log.debug("Invoking driver post-initialization callback...");
+					initCompletedCallback.accept(platformDriver);
+					log.debug("Driver post-initialization callback has been successfully invoked");
+				}
+				log.debug(String
+						.format("Successfully created driver instance for platform '%s'",
+								this.platform.name()));
+				return platformDriver;
 			} catch (WebDriverException e) {
 				log.debug(String
 						.format("Driver initialization failed. Trying to recreate (%d of %d)...",
@@ -90,19 +99,8 @@ final class LazyDriverInitializer implements Callable<RemoteWebDriver> {
 					ntry++;
 				}
 			}
-			if (platformDriver == null) {
-				throw new WebDriverException(
-						"Selenium driver initialization failed (instance is null). Please make sure that the corresponding node is up and running.");
-			}
-			if (initCompletedCallback != null) {
-				log.debug("Invoking driver post-initialization callback...");
-				initCompletedCallback.accept(platformDriver);
-				log.debug("Driver post-initialization callback has been successfully invoked");
-			}
-			log.debug(String.format(
-					"Successfully created driver instance for platform '%s'",
-					this.platform.name()));
-			return platformDriver;
 		} while (ntry <= this.maxRetryCount);
+		throw new WebDriverException(
+				"Selenium driver initialization failed. Please make sure that the corresponding node is up and running.");
 	}
 }

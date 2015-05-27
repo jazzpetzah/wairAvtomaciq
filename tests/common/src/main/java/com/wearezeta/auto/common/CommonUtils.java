@@ -390,8 +390,9 @@ public class CommonUtils {
 	public static String generateRandomString(int lengh) {
 		return RandomStringUtils.randomAlphanumeric(lengh);
 	}
-	
-	private static String generateRandomStringFromTargetStringSetWithLengh(int numberOfCharacters, String characters) {
+
+	private static String generateRandomStringFromTargetStringSetWithLengh(
+			int numberOfCharacters, String characters) {
 		StringBuilder result = new StringBuilder();
 		while (numberOfCharacters > 0) {
 			Random rand = new Random();
@@ -401,9 +402,11 @@ public class CommonUtils {
 		String text = result.toString();
 		return text;
 	}
-	
-	public static String generateRandomStringFromAlphanumericPlusSymbolsWithLengh(int numberOfCharacters) {
-		return generateRandomStringFromTargetStringSetWithLengh(numberOfCharacters, ALPHANUMERIC_PLUS_SYMBOLS);
+
+	public static String generateRandomStringFromAlphanumericPlusSymbolsWithLengh(
+			int numberOfCharacters) {
+		return generateRandomStringFromTargetStringSetWithLengh(
+				numberOfCharacters, ALPHANUMERIC_PLUS_SYMBOLS);
 	}
 
 	public static String getAndroidDeviceNameFromConfig(Class<?> c)
@@ -434,25 +437,31 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "defaultCallingServicePort");
 	}
 
-	public static BufferedImage getElementScreenshot(WebElement element,
-			AppiumDriver driver) throws IOException {
+	public static Optional<BufferedImage> getElementScreenshot(
+			WebElement element, AppiumDriver driver) throws IOException {
 		return getElementScreenshot(element, driver, "iPhone 6");
 	}
 
-	public static BufferedImage getElementScreenshot(WebElement element,
-			AppiumDriver driver, String deviceName) throws IOException {
+	public static Optional<BufferedImage> getElementScreenshot(
+			WebElement element, AppiumDriver driver, String deviceName)
+			throws IOException {
 		int multiply = 3;
 		if (deviceName.equals("iPhone 6")) {
 			multiply = 2;
 		}
-
-		BufferedImage screenshot = DriverUtils
-				.takeScreenshot((ZetaDriver) driver);
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
-		return screenshot.getSubimage(elementLocation.x * multiply,
-				elementLocation.y * multiply, elementSize.width * multiply,
-				elementSize.height * multiply);
+		final Optional<BufferedImage> screenshot = DriverUtils
+				.takeScreenshot((ZetaDriver) driver);
+		if (screenshot.isPresent()) {
+			return Optional.of(screenshot.get()
+					.getSubimage(elementLocation.x * multiply,
+							elementLocation.y * multiply,
+							elementSize.width * multiply,
+							elementSize.height * multiply));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	public static String getContactName(String login) {

@@ -140,12 +140,12 @@ public class ContactListPage extends AndroidPage {
 		return null;
 	}
 
-	public AndroidPage swipeRightOnContact(int time, String contact)
-			throws Exception {
+	public AndroidPage swipeRightOnContact(int durationMilliseconds,
+			String contact) throws Exception {
 		WebElement el = this.getDriver().findElementByXPath(
 				AndroidLocators.ContactListPage.xpathContactByName
 						.apply(contact));
-		elementSwipeRight(el, time);
+		elementSwipeRight(el, durationMilliseconds);
 		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(AndroidLocators.CommonLocators.idEditText))) {
 			return new ContactListPage(this.getLazyDriver());
@@ -272,15 +272,22 @@ public class ContactListPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	private static final int CONTACT_LIST_ITEMS_LOAD_TIMEOUT_SECONDS = 60;
+	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
-		final By locator = By
+		final By convoListLoadingProgressLocator = By
+				.xpath(AndroidLocators.ContactListPage.xpathConversationListLoadingIndicator);
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				convoListLoadingProgressLocator,
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String.format(
+				"Conversation list has not been loaded within %s seconds",
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+		final By loadingItemLocator = By
 				.xpath(AndroidLocators.ContactListPage.xpathLoadingContactListItem);
-		assert DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
-				CONTACT_LIST_ITEMS_LOAD_TIMEOUT_SECONDS) : String
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				loadingItemLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
 				.format("Not all conversation list items were loaded within %s seconds",
-						CONTACT_LIST_ITEMS_LOAD_TIMEOUT_SECONDS);
+						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {

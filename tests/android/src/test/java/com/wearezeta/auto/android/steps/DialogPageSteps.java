@@ -254,7 +254,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap conversation details button$")
 	public void WhenITapConversationDetailsBottom() throws Exception {
-		PagesCollection.otherUserPersonalInfoPage = ((DialogPage) PagesCollection.androidPage)
+		PagesCollection.otherUserPersonalInfoPage = ((DialogPage) PagesCollection.currentPage)
 				.tapConversationDetailsButton();
 	}
 
@@ -349,7 +349,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I select picture for dialog$")
 	public void WhenISelectPicture() throws Exception {
-		PagesCollection.dialogPage.selectPhoto();
+		PagesCollection.dialogPage.selectFirstGalleryPhoto();
 	}
 
 	/**
@@ -432,7 +432,7 @@ public class DialogPageSteps {
 	@When("^I swipe up on dialog page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
 		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.currentPage;
 		}
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
 				.swipeUp(SWIPE_DURATION_MILLISECONDS);
@@ -449,7 +449,7 @@ public class DialogPageSteps {
 	@When("^I swipe down on dialog page$")
 	public void WhenISwipedownOnDialogPage() throws Exception {
 		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.currentPage;
 		}
 		PagesCollection.dialogPage.swipeDown(SWIPE_DURATION_MILLISECONDS);
 	}
@@ -480,7 +480,7 @@ public class DialogPageSteps {
 	@Then("^I see Connect to (.*) Dialog page$")
 	public void ThenIseeConnectToDialogPage(String contact) throws Exception {
 		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.currentPage;
 		}
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.dialogPage

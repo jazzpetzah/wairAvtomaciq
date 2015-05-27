@@ -179,7 +179,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void multiTapOnCursorInput() throws Exception {
-		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 0.2);
+		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 500);
 	}
 
 	public void swipeOnCursorInput() throws Exception {
@@ -225,10 +225,13 @@ public class DialogPage extends AndroidPage {
 		String path = null;
 		BufferedImage callingButtonImage = null;
 		if (label.equals(MUTE_BUTTON_LABEL)) {
-			callingButtonImage = getElementScreenshot(muteBtn);
+			callingButtonImage = getElementScreenshot(muteBtn).orElseThrow(
+					IllegalStateException::new);
+
 			path = CommonUtils.getCallingMuteButtonPath(DialogPage.class);
 		} else if (label.equals(SPEAKER_BUTTON_LABEL)) {
-			callingButtonImage = getElementScreenshot(speakerBtn);
+			callingButtonImage = getElementScreenshot(speakerBtn).orElseThrow(
+					IllegalStateException::new);
 			path = CommonUtils.getCallingSpeakerButtonPath(DialogPage.class);
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
@@ -449,7 +452,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean dialogImageCompare() throws Exception {
-		BufferedImage dialogImage = getElementScreenshot(image);
+		BufferedImage dialogImage = getElementScreenshot(image).orElseThrow(
+				IllegalStateException::new);
 		BufferedImage realImage = ImageUtil.readImageFromFile(CommonUtils
 				.getImagesPath(CommonUtils.class) + DIALOG_IMAGE);
 		double score = ImageUtil.getOverlapScore(realImage, dialogImage,
@@ -576,7 +580,8 @@ public class DialogPage extends AndroidPage {
 
 	public double checkPingIcon(String label) throws Exception {
 		String path = null;
-		BufferedImage pingImage = getElementScreenshot(pingIcon);
+		BufferedImage pingImage = getElementScreenshot(pingIcon).orElseThrow(
+				IllegalStateException::new);
 		if (label.equals(PING_LABEL)) {
 			path = CommonUtils.getPingIconPath(DialogPage.class);
 		} else if (label.equals(HOT_PING_LABEL)) {
@@ -636,7 +641,8 @@ public class DialogPage extends AndroidPage {
 	public double getMediaBarControlIconOverlapScore(String label)
 			throws Exception {
 		String path = null;
-		BufferedImage mediaImage = getElementScreenshot(mediaBarControl);
+		BufferedImage mediaImage = getElementScreenshot(mediaBarControl)
+				.orElseThrow(IllegalStateException::new);
 		if (label.equals(MEDIA_PLAY)) {
 			path = CommonUtils.getMediaBarPlayIconPath(DialogPage.class);
 		} else if (label.equals(MEDIA_PAUSE)) {
@@ -651,7 +657,8 @@ public class DialogPage extends AndroidPage {
 			throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(playPauseBtn));
 		String path = null;
-		BufferedImage mediaImage = getElementScreenshot(playPauseBtn);
+		BufferedImage mediaImage = getElementScreenshot(playPauseBtn)
+				.orElseThrow(IllegalStateException::new);
 		if (label.equals(MEDIA_PLAY)) {
 			path = CommonUtils.getMediaPlayIconPath(DialogPage.class);
 		} else if (label.equals(MEDIA_PAUSE)) {

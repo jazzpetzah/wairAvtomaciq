@@ -24,7 +24,7 @@ public class TabletConnectToPageSteps {
 	@When("^I see tablet connect to (.*) dialog$")
 	public void WhenISeeTabletConnectToUserDialog(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
+		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
 
 		Assert.assertTrue(TabletPagesCollection.connectToPage.connectToHeaderContains(contact));
 	}
