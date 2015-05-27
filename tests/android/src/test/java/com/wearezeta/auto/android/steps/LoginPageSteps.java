@@ -16,7 +16,7 @@ public class LoginPageSteps {
 	 * Checks to see if the start screen appears
 	 * 
 	 * @step. ^I see start screen$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Given("^I see start screen$")
 	public void GiveniSeeSignInScreen() throws Exception {
@@ -51,7 +51,8 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertNotNull(PagesCollection.loginPage.waitForInitialScreen());
+		Assert.assertTrue("Welcome page is not visible",
+				PagesCollection.loginPage.waitForInitialScreen());
 		PagesCollection.loginPage.switchToEmailSignIn();
 		PagesCollection.loginPage.setLogin(login);
 		PagesCollection.loginPage.setPassword(password);
