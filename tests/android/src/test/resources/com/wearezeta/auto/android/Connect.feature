@@ -466,7 +466,7 @@ Feature: Connect
 
   @id2215 @staging
   Scenario Outline: I can connect to someone from PYMK by clicking +
-    Given I see sign in screen
+    Given I see welcome screen
     Given I press Join button
     Given I press Camera button twice
     Given I confirm selection
@@ -489,7 +489,7 @@ Feature: Connect
 
   @id2216 @staging
   Scenario Outline: I can connect to someone from PYMK by tap and typing connect message
-    Given I see sign in screen
+    Given I see welcome screen
     Given I press Join button
     Given I press Camera button twice
     Given I confirm selection

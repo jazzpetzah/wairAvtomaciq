@@ -13,12 +13,12 @@ public class LoginPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Checks to see if the start screen appears
+	 * Verify whether Welcome screen is visible
 	 * 
-	 * @step. ^I see start screen$
+	 * @step. ^I see [Ww]elcome screen$
 	 * @throws Exception
 	 */
-	@Given("^I see start screen$")
+	@Given("^I see [Ww]elcome screen$")
 	public void GiveniSeeSignInScreen() throws Exception {
 		Assert.assertTrue(PagesCollection.loginPage.waitForInitialScreen());
 	}

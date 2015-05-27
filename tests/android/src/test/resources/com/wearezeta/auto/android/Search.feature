@@ -116,7 +116,7 @@ Feature: Search
       
   @id2214 @staging
   Scenario Outline: I can dismiss PYMK by Hide button
-    Given I see sign in screen
+    Given I see welcome screen
     Given I press Join button
     Given I press Camera button twice
     Given I confirm selection
@@ -138,7 +138,7 @@ Feature: Search
 
   @id2213 @staging
   Scenario Outline: I can dismiss PYMK by swipe
-    Given I see sign in screen
+    Given I see welcome screen
     Given I press Join button
     Given I press Camera button twice
     Given I confirm selection
