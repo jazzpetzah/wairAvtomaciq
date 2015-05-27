@@ -349,7 +349,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I select picture for dialog$")
 	public void WhenISelectPicture() throws Exception {
-		PagesCollection.dialogPage.selectPhoto();
+		PagesCollection.dialogPage.selectFirstGalleryPhoto();
 	}
 
 	/**

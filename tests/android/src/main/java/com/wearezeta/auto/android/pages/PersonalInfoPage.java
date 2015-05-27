@@ -46,7 +46,7 @@ public class PersonalInfoPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.CommonLocators.idGalleryBtn)
 	private WebElement galleryBtn;
 
-	@FindBy(id = AndroidLocators.DialogPage.idConfirmButton)
+	@FindBy(xpath = AndroidLocators.DialogPage.xpathConfirmOKButton)
 	private WebElement confirmBtn;
 
 	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathProfileOptionsButton)

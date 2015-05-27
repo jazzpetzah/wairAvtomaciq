@@ -14,6 +14,7 @@ import org.openqa.selenium.support.FindBy;
 
 import android.view.KeyEvent;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidKeyEvent;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.*;
@@ -33,12 +34,6 @@ public abstract class AndroidPage extends BasePage {
 	@FindBy(className = AndroidLocators.CommonLocators.classListView)
 	private WebElement container;
 
-	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
-	private List<WebElement> frameLayouts;
-
-	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImage)
-	private List<WebElement> image;
-
 	@Override
 	protected ZetaAndroidDriver getDriver() throws Exception {
 		return (ZetaAndroidDriver) super.getDriver();
@@ -54,19 +49,13 @@ public abstract class AndroidPage extends BasePage {
 		super(lazyDriver);
 	}
 
-	public void selectPhoto() throws Exception {
-		try {
-			frameLayouts.get(0).click();
-			return;
-		} catch (Exception ex) {
-			// ignore silently
-		}
-		try {
-			image.get(0).click();
-			return;
-		} catch (Exception ex) {
-			// ignore silently
-		}
+	public void selectFirstGalleryPhoto() throws Exception {
+		final Dimension screenDimension = getDriver().manage().window()
+				.getSize();
+		// Selendroid workaround
+		// Cannot handle external apps properly :-(
+		AndroidCommonUtils.genericScreenTap(screenDimension.width / 4,
+				screenDimension.height / 4);
 	}
 
 	public void hideKeyboard() throws Exception {

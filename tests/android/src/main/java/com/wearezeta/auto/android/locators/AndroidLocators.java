@@ -182,10 +182,6 @@ public final class AndroidLocators {
 
 		public static final String idEditText = "cet__cursor_view";
 
-		public static final String xpathImagesFrameLayout = "//*[@id='grid']/FrameLayout";
-
-		public static final String xpathImage = "//android.widget.LinearLayout/android.view.View";
-
 		public static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";
 
 		public static final String idCloseImageBtn = "gtv__single_image_message__close";
@@ -227,8 +223,6 @@ public final class AndroidLocators {
 		public static final String idDialogTakePhotoButton = "gtv__camera_control__take_a_picture";
 
 		public static final String idDialogChangeCameraButton = "gtv__camera__top_control__back_camera";
-
-		public static final String idConfirmButton = "ttv__confirmation__confirm";
 
 		public static final String xpathConfirmOKButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
 

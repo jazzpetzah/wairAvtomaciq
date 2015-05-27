@@ -6,7 +6,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -126,7 +125,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I select picture$")
 	public void WhenISelectPicture() throws Exception {
-		PagesCollection.personalInfoPage.selectPhoto();
+		PagesCollection.personalInfoPage.selectFirstGalleryPhoto();
 	}
 
 	/**
@@ -209,28 +208,6 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
-	 * Checks to see that the user's profile picture has been changed to some
-	 * new picture The image to be checked should be placed in the default
-	 * images path
-	 * 
-	 * @step. ^I see changed user picture$
-	 *
-	 * @throws Exception
-	 */
-	@Then("I see changed user picture")
-	public void ThenISeeChangedUserPicture() throws Exception {
-		BufferedImage referenceImage = PagesCollection.personalInfoPage
-				.takeScreenshot().orElseThrow(AssertionError::new);
-		String path = CommonUtils
-				.getResultImagePath(PersonalInfoPageSteps.class);
-		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
-		Assert.assertTrue(
-				"Overlap between two images has not enough score. Expected >= 0.75, current = "
-						+ score, score >= 0.75d);
-	}
-
-	/**
 	 * Verify that Settings page is visible
 	 * 
 	 * @step. ^I see Settings$
@@ -280,5 +257,56 @@ public class PersonalInfoPageSteps {
 	@When("^I clear name field$")
 	public void IClearNameField() throws Exception {
 		PagesCollection.personalInfoPage.clearSelfName();
+	}
+
+	private BufferedImage previousProfilePicture = null;
+
+	/**
+	 * Takes the screenshot of current screen and saves it to the internal
+	 * variable
+	 * 
+	 * @step. ^I remember my current profile picture$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I remember my current profile picture$")
+	public void IRememberCurrentPicture() throws Exception {
+		previousProfilePicture = PagesCollection.personalInfoPage
+				.takeScreenshot().orElseThrow(AssertionError::new);
+	}
+
+	private static final int PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS = 60;
+	private static final double MAX_OVERLAP_SCORE = 0.50;
+
+	/**
+	 * Verify that profile picture is different from the previously snapshotted
+	 * one within the predefined timeout (use special step to create a snapshot)
+	 * 
+	 * @step. ^I verify that my current profile picture is different from the
+	 *        previous one$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I verify that my current profile picture is different from the previous one$")
+	public void IVerifyMyCurrentPuictureIsDifferent() throws Exception {
+		if (previousProfilePicture == null) {
+			throw new IllegalStateException(
+					"This step requires to remember the previous profile picture first!");
+		}
+		final long millisecondsStarted = System.currentTimeMillis();
+		double score = -1;
+		do {
+			final BufferedImage currentProfilePicture = PagesCollection.personalInfoPage
+					.takeScreenshot().orElseThrow(AssertionError::new);
+			score = ImageUtil.getOverlapScore(currentProfilePicture,
+					previousProfilePicture);
+			Thread.sleep(3000);
+		} while (score > MAX_OVERLAP_SCORE
+				&& System.currentTimeMillis() - millisecondsStarted <= PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS * 1000);
+		Assert.assertTrue(
+				String.format(
+						"Profile picture has not been updated properly after %s seconds timeout (current overlap score value is %2.2f)",
+						PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS, score),
+				score <= MAX_OVERLAP_SCORE);
 	}
 }
