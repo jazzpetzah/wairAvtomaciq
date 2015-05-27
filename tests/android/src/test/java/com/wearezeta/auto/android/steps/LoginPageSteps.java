@@ -19,7 +19,7 @@ public class LoginPageSteps {
 	 * @throws Exception
 	 */
 	@Given("^I see [Ww]elcome screen$")
-	public void GiveniSeeSignInScreen() throws Exception {
+	public void GivenISeeWelcomeScreen() throws Exception {
 		Assert.assertTrue(PagesCollection.loginPage.waitForInitialScreen());
 	}
 

@@ -135,6 +135,8 @@ public final class AndroidLocators {
 	}
 
 	public static final class ContactListPage {
+		public static final String idConversationListLoadingIndicator = "lbv__conversation_list__loading_indicator";
+
 		public static final String idConversationListFrame = "pfac__conversation_list";
 
 		public static final String idOpenStartUIButton = "gtv__conversation_list__sticky_menu__trigger_startui";

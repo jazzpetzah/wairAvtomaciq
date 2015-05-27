@@ -111,55 +111,56 @@ public abstract class AndroidPage extends BasePage {
 			throws Exception;
 
 	@Override
-	public AndroidPage swipeLeft(int time) throws Exception {
-		DriverUtils.swipeLeft(this.getDriver(), content, time);
+	public AndroidPage swipeLeft(int durationMilliseconds) throws Exception {
+		DriverUtils.swipeLeft(this.getDriver(), content, durationMilliseconds);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
 	@Override
-	public AndroidPage swipeRight(int time) throws Exception {
-		DriverUtils.swipeRight(this.getDriver(), content, time);
+	public AndroidPage swipeRight(int durationMilliseconds) throws Exception {
+		DriverUtils.swipeRight(this.getDriver(), content, durationMilliseconds);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
 	@Override
-	public AndroidPage swipeUp(int time) throws Exception {
-		DriverUtils.swipeUp(this.getDriver(), content, time);
+	public AndroidPage swipeUp(int durationMilliseconds) throws Exception {
+		DriverUtils.swipeUp(this.getDriver(), content, durationMilliseconds);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	public void elementSwipeRight(WebElement el, int time) {
+	public void elementSwipeRight(WebElement el, int durationMilliseconds) {
 		Point coords = el.getLocation();
 		Dimension elementSize = el.getSize();
 		try {
 			this.getDriver().swipe(coords.x + 30,
 					coords.y + elementSize.height / 2,
 					coords.x + elementSize.width - 10,
-					coords.y + elementSize.height / 2, time);
+					coords.y + elementSize.height / 2, durationMilliseconds);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public void elementSwipeUp(WebElement el, int time) {
+	public void elementSwipeUp(WebElement el, int durationMilliseconds) {
 		Point coords = el.getLocation();
 		Dimension elementSize = el.getSize();
 		try {
 			this.getDriver().swipe(coords.x + elementSize.width / 2,
 					coords.y + elementSize.height - 50,
-					coords.x + elementSize.width / 2, coords.y, time);
+					coords.x + elementSize.width / 2, coords.y,
+					durationMilliseconds);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public void elementSwipeDown(WebElement el, int time) {
+	public void elementSwipeDown(WebElement el, int durationMilliseconds) {
 		Point coords = el.getLocation();
 		Dimension elementSize = el.getSize();
 		try {
 			this.getDriver().swipe(coords.x + elementSize.width / 2,
 					coords.y + 50, coords.x + elementSize.width / 2,
-					coords.y + elementSize.height - 300, time);
+					coords.y + elementSize.height - 300, durationMilliseconds);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
