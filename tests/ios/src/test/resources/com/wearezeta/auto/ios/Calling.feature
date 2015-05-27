@@ -152,4 +152,29 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
-  
+
+  @calling_basic @id2645
+  Scenario Outline: 3rd person tries to call me after I initate a call to somebody
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Contact1> starts waiting instance using <CallBackend>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I press call button
+    And I see mute call, end call and speakers buttons
+    And <Contact2> calls me using <CallBackend2>
+    And I dont see incoming calling message from contact <Contact2>
+    And <Contact1> accepts next incoming call automatically
+    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see mute call, end call and speakers buttons
+    And I end started call
+    Then I see missed call from contact <Contact2>
+    And I swipe right on Dialog page
+    And I see missed call indicator in list for contact <Contact2>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | webdriver   | autocall     | 120     |
