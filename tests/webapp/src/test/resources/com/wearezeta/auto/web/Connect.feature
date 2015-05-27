@@ -69,7 +69,6 @@ Feature: Connect
     And I click on not connected user <Name2> found in People Picker
     And I see Connect To popover
     And I click Connect button on Connect To popover
-    And I close People Picker
     And I see Contact list with name <Name2>
     And I open self profile
     And I click gear button on self profile page
@@ -114,7 +113,6 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
-    And I close People Picker
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -127,7 +125,6 @@ Feature: Connect
     And I open the list of incoming connection requests
     And I ignore connection request from user <Name>
     And I do not see Contact list with name <Name>
-    And I close People Picker
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -315,3 +312,21 @@ Feature: Connect
     Examples:
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
+
+  @staging @id1564 
+  Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search view)
+    Given There are 2 users where <Name> is me
+    Given I sent connection request to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    When I open People Picker from Contact List
+    And I wait for 2 seconds
+    And I type <Contact> in search field of People Picker
+    Then I see user <Contact> found in People Picker
+    When I click on pending user <Contact> found in People Picker
+    And I see Pending Outgoing Connection popover
+    When I click Pending button on Pending Outgoing Connection popover
+    Then I see conversation with <Contact> is selected in conversations list
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

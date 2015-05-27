@@ -23,11 +23,8 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
-	@FindBy(id = AndroidLocators.LoginPage.idSignInButton)
-	private WebElement signInButton;
-
-	@FindBy(id = AndroidLocators.LoginPage.idWelcomeSlogan)
-	private WebElement welcomeSlogan;
+	@FindBy(id = AndroidLocators.LoginPage.idIHaveAccountButton)
+	private WebElement iHaveAccountButton;
 
 	@FindBy(id = AndroidLocators.LoginPage.idSignUpButton)
 	protected WebElement signUpButton;
@@ -47,9 +44,6 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.LoginPage.idPasswordInput)
 	private WebElement passwordInput;
 
-	@FindBy(id = AndroidLocators.LoginPage.idLoginError)
-	private WebElement loginError;
-
 	@FindBy(id = AndroidLocators.LoginPage.idWelcomeSlogan)
 	private List<WebElement> welcomeSloganContainer;
 
@@ -59,26 +53,17 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.CommonLocators.xpathDismissUpdateButton)
 	private WebElement dismissUpdateButton;
 
-	private static final String LOGIN_ERROR_TEXT = "WRONG ADDRESS OR PASSWORD.\nPLEASE TRY AGAIN.";
-
 	public LoginPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 
-	public boolean isVisible() {
-		return DriverUtils.isElementPresentAndDisplayed(welcomeSlogan);
-	}
-
-	public Boolean isLoginError() {
-		return DriverUtils.isElementPresentAndDisplayed(loginError);
-	}
-
-	public Boolean isLoginErrorTextOk() {
-		return loginError.getText().equals(LOGIN_ERROR_TEXT);
-	}
-
-	public LoginPage SignIn() throws Exception {
-		signInButton.click();
+	public LoginPage switchToEmailSignIn() throws Exception {
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.LoginPage.idIHaveAccountButton))) {
+			iHaveAccountButton.click();
+		}
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.LoginPage.idLoginInput));
 		return this;
 	}
 
@@ -123,20 +108,30 @@ public class LoginPage extends AndroidPage {
 				By.id(AndroidLocators.LoginPage.idSignUpButton), 40);
 	}
 
-	public Boolean isLoginFinished() throws Exception {
-		// some workarounds for AN-1973
-		try {
-			this.getWait().until(
-					ExpectedConditions.visibilityOf(pickerClearBtn));
-			pickerClearBtn.click();
-		} catch (Exception ex) {
-			this.getWait().until(
-					ExpectedConditions.visibilityOf(selfUserAvatar));
-		}
-		return DriverUtils.isElementPresentAndDisplayed(selfUserAvatar);
+	private static final int SIGN_IN_TIMEOUT_SECONDS = 60;
+
+	public void verifyLoginFinished() throws Exception {
+		final By clearBtnLocator = By
+				.id(AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn);
+		final By selfAvatarLocator = By
+				.id(AndroidLocators.ContactListPage.idSelfUserAvatar);
+		final long millisecondsStarted = System.currentTimeMillis();
+		do {
+			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					clearBtnLocator, 1)) {
+				pickerClearBtn.click();
+			}
+			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					selfAvatarLocator, 1)) {
+				return;
+			}
+		} while (System.currentTimeMillis() - millisecondsStarted <= SIGN_IN_TIMEOUT_SECONDS * 1000);
+		assert false : String.format(
+				"Sign in is still in progress after %s seconds",
+				SIGN_IN_TIMEOUT_SECONDS);
 	}
 
-	public Boolean isWelcomeButtonsExist() throws Exception {
+	public boolean waitForInitialScreen() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idWelcomeSlogan));
 	}
@@ -159,5 +154,14 @@ public class LoginPage extends AndroidPage {
 				.waitUntilLocatorAppears(
 						this.getDriver(),
 						By.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton));
+	}
+
+	public void verifyErrorMessageText(String expectedMsg) throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.LoginPage.xpathLoginMessageByText
+						.apply(expectedMsg));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("Error message '%s' is not visible on the screen",
+						expectedMsg);
 	}
 }

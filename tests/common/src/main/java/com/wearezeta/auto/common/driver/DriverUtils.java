@@ -22,6 +22,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -86,7 +87,8 @@ public class DriverUtils {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
+					.ignoring(NoSuchElementException.class)
+					.ignoring(StaleElementReferenceException.class);
 			try {
 				return wait.until(drv -> {
 					return (drv.findElements(by).size() > 0)
@@ -350,13 +352,14 @@ public class DriverUtils {
 	public static final int DEFAULT_FINGERS = 1;
 
 	public static void genericTap(AppiumDriver driver) {
-		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, DEFAULT_PERCENTAGE,
-				DEFAULT_PERCENTAGE);
+		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS,
+				DEFAULT_PERCENTAGE, DEFAULT_PERCENTAGE);
 	}
 
 	public static void genericTap(AppiumDriver driver, int percentX,
 			int percentY) {
-		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, percentX, percentY);
+		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, percentX,
+				percentY);
 	}
 
 	public static void genericTap(AppiumDriver driver, int time, int percentX,
@@ -490,7 +493,7 @@ public class DriverUtils {
 		Runtime.getRuntime().exec(
 				"/usr/bin/open -a Terminal " + scriptPath + "Down.py");
 	}
-	
+
 	public static void iOSSimulatorSwipeRight(String scriptPath)
 			throws Exception {
 

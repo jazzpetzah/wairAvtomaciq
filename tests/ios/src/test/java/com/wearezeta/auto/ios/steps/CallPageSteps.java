@@ -19,108 +19,140 @@ public class CallPageSteps {
 	 * 
 	 * @step. ^I see calling message for contact (.*)$
 	 * @param contact
-	 * 		User name whom we call
+	 *            User name whom we call
 	 * @throws Exception
 	 */
 	@When("^I see calling message for contact (.*)$")
 	public void ISeeCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(((StartedCallPage)PagesCollection.callPage).isIncomingCallMessageVisible(contact.toUpperCase()));
+		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
+				.isIncomingCallMessageVisible(contact.toUpperCase()));
 	}
-	
+
 	/**
 	 * 
 	 * Verify that calling UI buttons are visible
+	 * 
 	 * @step. ^I see mute call, end call and speakers buttons$
 	 * @throws Exception
 	 */
 	@When("^I see mute call, end call and speakers buttons$")
 	public void ISeeCallingPageButtons() throws Exception {
 
-		Assert.assertTrue(((StartedCallPage)PagesCollection.callPage).isEndCallVisible());
-		Assert.assertTrue(((StartedCallPage)PagesCollection.callPage).isMuteCallVisible());
-		Assert.assertTrue(((StartedCallPage)PagesCollection.callPage).isSpeakersVisible());
+		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
+				.isEndCallVisible());
+		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
+				.isMuteCallVisible());
+		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
+				.isSpeakersVisible());
 	}
-	
+
 	/**
 	 * Click on end call button
+	 * 
 	 * @step. ^I end started call$
 	 * @throws Exception
 	 */
 	@When("^I end started call$")
 	public void IEndStartedCall() throws Exception {
 
-		((StartedCallPage)PagesCollection.callPage).clickEndCallButton();
+		((StartedCallPage) PagesCollection.callPage).clickEndCallButton();
 	}
-	
+
 	/**
 	 * Verify that calling page is not visible
+	 * 
 	 * @step. ^I dont see calling page$
 	 * @throws Exception
 	 */
 	@When("^I dont see calling page$")
 	public void IDontSeeCallPage() throws Exception {
 
-		Assert.assertFalse(((StartedCallPage)PagesCollection.callPage).isCallingMessageVisible());
+		Assert.assertFalse(((StartedCallPage) PagesCollection.callPage)
+				.isCallingMessageVisible());
 	}
-	
+
 	/**
 	 * Verify that incoming call page is not visible
+	 * 
 	 * @step. ^I dont see incoming call page$
 	 * @throws Exception
 	 */
 	@When("^I dont see incoming call page$")
 	public void IDontSeeIncomingCallPage() throws Exception {
 
-		Assert.assertFalse(((IncomingCallPage)PagesCollection.callPage).isCallingMessageVisible());
+		Assert.assertFalse(((IncomingCallPage) PagesCollection.callPage)
+				.isCallingMessageVisible());
 	}
-	
+
 	/**
 	 * Verify that incoming calling UI is visible
 	 * 
 	 * @step. ^I see incoming calling message for contact (.*)$
 	 * @param contact
-	 * 		User name who calls
+	 *            User name who calls
 	 * @throws Exception
 	 */
 	@When("^I see incoming calling message for contact (.*)$")
 	public void ISeeIncomingCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(((IncomingCallPage)PagesCollection.callPage).isCallingMessageVisible(contact.toUpperCase()));
+		Assert.assertTrue(((IncomingCallPage) PagesCollection.callPage)
+				.isCallingMessageVisible(contact.toUpperCase()));
 	}
-	
+
+	/**
+	 * Verify that incoming calling from User is NOT visible
+	 * 
+	 * @step. ^I dont see incoming calling message from contact (.*)$
+	 * @param contact
+	 *            User name who calls
+	 * @throws Exception
+	 */
+	@When("^I dont see incoming calling message from contact (.*)$")
+	public void IDontSeeIncomingCallingMesage(String contact) throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertFalse("User " + contact + " calling UI is shown",
+				((IncomingCallPage) PagesCollection.callPage)
+						.isUserCallingMessageShown(contact.toUpperCase()));
+	}
+
 	/**
 	 * Click on end incoming call button
+	 * 
 	 * @step. ^I end incoming call$
 	 * @throws Exception
 	 */
 	@When("^I end incoming call$")
 	public void IEndIncomingCall() throws Exception {
 
-		((IncomingCallPage)PagesCollection.callPage).endIncomingCallClick();
+		((IncomingCallPage) PagesCollection.callPage).endIncomingCallClick();
 	}
-	
+
 	/**
 	 * Accept incoming call by clicking accept button
+	 * 
 	 * @step. ^I accept incoming call$
 	 * @throws Exception
 	 */
 	@When("^I accept incoming call$")
 	public void IAcceptIncomingCall() throws Exception {
 
-		PagesCollection.callPage = ((IncomingCallPage)PagesCollection.callPage).acceptIncomingCallClick();
+		PagesCollection.callPage = ((IncomingCallPage) PagesCollection.callPage)
+				.acceptIncomingCallClick();
 	}
-	
+
 	/**
 	 * Verify that started call message is visible
+	 * 
 	 * @step. ^I see started call message for contact (.*)$
 	 * @param contact
-	 * 			contact name with whom you have a call
+	 *            contact name with whom you have a call
 	 * @throws Exception
 	 */
 	@When("^I see started call message for contact (.*)$")
 	public void ISeeStartedCallMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(((StartedCallPage)PagesCollection.callPage).isStartedCallMessageVisible(contact.toUpperCase()));
+		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
+				.isStartedCallMessageVisible(contact.toUpperCase()));
 	}
 }

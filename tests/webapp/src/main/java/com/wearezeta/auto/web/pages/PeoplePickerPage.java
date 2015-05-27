@@ -16,6 +16,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SendInvitationPopoverContainer;
 
@@ -58,7 +59,7 @@ public class PeoplePickerPage extends WebPage {
 		foundUserElement.click();
 	}
 
-	public ConnectToPopoverContainer clickNotConnectedUserName(String name)
+	public AbstractPopoverContainer clickNotConnectedUserName(String name)
 			throws Exception {
 		clickNotConnectedUser(name);
 		PagesCollection.popoverPage = new ConnectToPopoverContainer(
@@ -177,7 +178,7 @@ public class PeoplePickerPage extends WebPage {
 						By.cssSelector(WebAppLocators.PeoplePickerPage.cssRemoveIconByName
 								.apply(user))).click();
 	}
-	
+
 	public void clickPlusButtonOnSuggestion(String user) throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
@@ -192,9 +193,24 @@ public class PeoplePickerPage extends WebPage {
 			DriverUtils.moveMouserOver(this.getDriver(), getDriver()
 					.findElement(locator));
 		}
-		getDriver()
-				.findElement(
-						By.cssSelector(WebAppLocators.PeoplePickerPage.cssAddIconByName
-								.apply(user))).click();
+		getDriver().findElement(
+				By.cssSelector(WebAppLocators.PeoplePickerPage.cssAddIconByName
+						.apply(user))).click();
+	}
+
+	public ConnectToPopoverContainer clickPendingUserName(String name)
+			throws Exception {
+		clickPendingUser(name);
+		PagesCollection.popoverPage = new ConnectToPopoverContainer(
+				this.getLazyDriver());
+		return (ConnectToPopoverContainer) PagesCollection.popoverPage;
+	}
+
+	private void clickPendingUser(String name) throws Exception {
+		String foundPendingUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchPendingResultByName
+				.apply(name);
+		WebElement foundPendingUserElement = getDriver().findElement(
+				By.xpath(foundPendingUserXpath));
+		foundPendingUserElement.click();
 	}
 }

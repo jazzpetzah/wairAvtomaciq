@@ -76,7 +76,7 @@ public final class AndroidLocators {
 
 	public static final class LoginPage {
 
-		public static final String idSignInButton = "zb__welcome__sign_in";
+		public static final String idIHaveAccountButton = "zb__welcome__sign_in";
 
 		public static final String idSignUpButton = "ttv__welcome__create_account";
 
@@ -94,7 +94,8 @@ public final class AndroidLocators {
 
 		public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
 
-		public static final String idLoginError = "ttv__sign_in__login_failed__guidance";
+		public static final Function<String, String> xpathLoginMessageByText = text -> String
+				.format("//*[@id='message' and @value='%s']", text);
 	}
 
 	public static final class AboutPage {
@@ -144,8 +145,6 @@ public final class AndroidLocators {
 
 		public static final String idConfirmCancelButton = "cancel";
 
-		public static final String idPlayPauseMedia = "tv_conv_list_media_player";
-
 		public static final String idYourName = "ttv__conversation_list__sticky_menu__profile_link";
 
 		public static final String idConvList = "pv__conv_list";
@@ -161,11 +160,15 @@ public final class AndroidLocators {
 
 		public static final String idSimpleDialogPageText = "ttv__simple_dialog__text";
 
-		public static final Function<String, String> xpathMutedIconByName = name -> String
-				.format("//*[@id='tv_conv_list_topic' and @value='%s']/following-sibling::"
-						+ "*//*[@id='tv_conv_list_voice_muted']", name);
+		public static final Function<String, String> xpathMutedIconByConvoName = convoName -> String
+				.format("%s/parent::*//*[@id='tv_conv_list_voice_muted']",
+						xpathContactByName.apply(convoName));
 
 		public static final String idSearchButton = "gtv_pickuser__searchbutton";
+
+		public static final Function<String, String> xpathPlayPauseButtonByConvoName = convoName -> String
+				.format("%s/parent::*//*[@id='tv_conv_list_media_player']",
+						xpathContactByName.apply(convoName));
 	}
 
 	public static final class CommonLocators {
@@ -325,10 +328,10 @@ public final class AndroidLocators {
 
 		public static final String idParticipantsClose = "gtv__participants__close";
 
+		@SuppressWarnings("unused")
 		private static final String xpathTopPeopleRoot = "//*[@id='fl__conversation_list_main']";
 
-		public static final String xpathPickerTopPeopleHeader = xpathTopPeopleRoot
-				+ "//*[@id='ttv_pickuser__list_header_title']";
+		public static final String idPickerTopPeopleHeader = "ttv_pickuser__list_header_title";
 
 		public static final String idPickerUserSlidingRow = "ll__pickuser__sliding_row";
 

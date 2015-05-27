@@ -22,7 +22,7 @@ Feature: Settings
   Scenario Outline: Can not open Settings page when editing user name
     Given There are 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    Then Contact list appears
+    And I see Contact list
     When I tap on my avatar
     And I tap on my name
     Then Menu options are unreachable
@@ -68,7 +68,7 @@ Feature: Settings
     And I wait for 2 seconds
     And I minimize the application
     And I restore the application
-    And I press Sign in button
+    And I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <NewPassword>
     And I press Log in button

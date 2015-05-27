@@ -694,8 +694,11 @@ public class DialogPageSteps {
 		String username = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		String expectedCallMessage = username.toUpperCase() + " CALLED";
 		if (PagesCollection.dialogPage != null) {
-			Assert.assertTrue(PagesCollection.dialogPage
+			Assert.assertTrue(username + " called message is missing in dialog", PagesCollection.dialogPage
 					.isMessageVisible(expectedCallMessage));
+		}
+		else {
+			Assert.fail("This method is for dialog page and current page is not or is no initiated");
 		}
 	}
 
