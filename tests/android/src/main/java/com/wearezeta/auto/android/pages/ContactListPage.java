@@ -276,13 +276,12 @@ public class ContactListPage extends AndroidPage {
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
 		final By convoListLoadingProgressLocator = By
-				.id(AndroidLocators.ContactListPage.idConversationListLoadingIndicator);
-		assert DriverUtils
-				.waitUntilLocatorDissapears(getDriver(),
-						convoListLoadingProgressLocator,
-						CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
-				.format("Conversation list has not been loaded within %s seconds",
-						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+				.xpath(AndroidLocators.ContactListPage.xpathConversationListLoadingIndicator);
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				convoListLoadingProgressLocator,
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String.format(
+				"Conversation list has not been loaded within %s seconds",
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
 		final By loadingItemLocator = By
 				.xpath(AndroidLocators.ContactListPage.xpathLoadingContactListItem);
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),

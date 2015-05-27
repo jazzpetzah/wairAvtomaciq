@@ -135,7 +135,7 @@ public final class AndroidLocators {
 	}
 
 	public static final class ContactListPage {
-		public static final String idConversationListLoadingIndicator = "lbv__conversation_list__loading_indicator";
+		public static final String xpathConversationListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
 
 		public static final String idConversationListFrame = "pfac__conversation_list";
 
