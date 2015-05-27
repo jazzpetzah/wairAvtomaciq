@@ -23,8 +23,8 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
-	@FindBy(id = AndroidLocators.LoginPage.idSignInButton)
-	private WebElement signInButton;
+	@FindBy(id = AndroidLocators.LoginPage.idIHaveAccountButton)
+	private WebElement iHaveAccountButton;
 
 	@FindBy(id = AndroidLocators.LoginPage.idWelcomeSlogan)
 	private WebElement welcomeSlogan;
@@ -64,8 +64,13 @@ public class LoginPage extends AndroidPage {
 		return DriverUtils.isElementPresentAndDisplayed(welcomeSlogan);
 	}
 
-	public LoginPage SignIn() throws Exception {
-		signInButton.click();
+	public LoginPage switchToEmailSignIn() throws Exception {
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.LoginPage.idIHaveAccountButton))) {
+			iHaveAccountButton.click();
+		}
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.LoginPage.idLoginInput));
 		return this;
 	}
 

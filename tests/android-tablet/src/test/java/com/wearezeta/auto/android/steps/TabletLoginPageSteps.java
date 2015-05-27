@@ -27,7 +27,7 @@ public class TabletLoginPageSteps {
 			// Ignore silently
 		}
 		Assert.assertNotNull(TabletPagesCollection.loginPage.isVisible());
-		TabletPagesCollection.loginPage.SignIn();
+		TabletPagesCollection.loginPage.switchToEmailSignIn();
 		TabletPagesCollection.loginPage.setLogin(login);
 		TabletPagesCollection.loginPage.setPassword(password);
 		try {
@@ -69,7 +69,7 @@ public class TabletLoginPageSteps {
 			// Ignore silently
 		}
 		Assert.assertNotNull(TabletPagesCollection.loginPage.isVisible());
-		TabletPagesCollection.loginPage.SignIn();
+		TabletPagesCollection.loginPage.switchToEmailSignIn();
 		TabletPagesCollection.loginPage.setLogin(login);
 		TabletPagesCollection.loginPage.setPassword(password);
 		try {

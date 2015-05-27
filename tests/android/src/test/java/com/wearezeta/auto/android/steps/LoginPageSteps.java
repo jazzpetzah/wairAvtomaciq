@@ -51,7 +51,7 @@ public class LoginPageSteps {
 			// Ignore silently
 		}
 		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
-		PagesCollection.loginPage.SignIn();
+		PagesCollection.loginPage.switchToEmailSignIn();
 		PagesCollection.loginPage.setLogin(login);
 		PagesCollection.loginPage.setPassword(password);
 		PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
@@ -63,15 +63,15 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Presses the sign in button on the welcome page. Note, this is not the
-	 * button used for signing in once details have been placed in.
+	 * Press the "I have an account" button on the welcome page. to switch to
+	 * sign in using email address
 	 * 
-	 * @step. ^I press Sign in button$
+	 * @step. ^I switch to email sign in screen$
 	 * @throws Exception
 	 */
-	@When("I press Sign in button")
-	public void WhenIPressSignInButton() throws Exception {
-		PagesCollection.loginPage.SignIn();
+	@When("^I switch to email sign in screen$")
+	public void ISwitchToEmailSignIn() throws Exception {
+		PagesCollection.loginPage.switchToEmailSignIn();
 	}
 
 	/**

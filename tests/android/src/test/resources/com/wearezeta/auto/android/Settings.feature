@@ -68,7 +68,7 @@ Feature: Settings
     And I wait for 2 seconds
     And I minimize the application
     And I restore the application
-    And I press Sign in button
+    And I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <NewPassword>
     And I press Log in button

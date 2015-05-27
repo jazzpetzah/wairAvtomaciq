@@ -76,7 +76,7 @@ public final class AndroidLocators {
 
 	public static final class LoginPage {
 
-		public static final String idSignInButton = "zb__welcome__sign_in";
+		public static final String idIHaveAccountButton = "zb__welcome__sign_in";
 
 		public static final String idSignUpButton = "ttv__welcome__create_account";
 

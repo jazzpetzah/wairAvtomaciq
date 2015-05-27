@@ -4,7 +4,7 @@ Feature: Sign In
   Scenario Outline: Sign in to ZClient
     Given There is 1 user where <Name> is me
     Given I see sign in screen
-    When I press Sign in button
+    When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Log in button
@@ -27,7 +27,7 @@ Feature: Sign In
     #And I tap options button
     #And I tap sign out button
     #And I see sign in and join buttons
-    #And I press Sign in button
+    #And I switch to email sign in screen
     #And I have entered login <Login2>
     #And I have entered password <Password>
     #And I press Log in button
@@ -40,7 +40,7 @@ Feature: Sign In
   @id1413 @regression
   Scenario Outline: Negative case for sign in
     Given I see sign in screen
-    When I press Sign in button
+    When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Log in button
@@ -54,7 +54,7 @@ Feature: Sign In
   Scenario Outline: Verify possibility of reseting password from sign in
     Given There is 1 user where <Name> is me
     Given I see sign in screen
-    When I press Sign in button
+    When I switch to email sign in screen
     And I press FORGOT PASSWORD button
     And I request reset password for <Login>
     And I get new <Name> password link
@@ -63,7 +63,7 @@ Feature: Sign In
     And I wait for 2 seconds
     And I minimize the application
     And I restore the application
-    And I press Sign in button
+    And I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <NewPassword>
     And I press Log in button
