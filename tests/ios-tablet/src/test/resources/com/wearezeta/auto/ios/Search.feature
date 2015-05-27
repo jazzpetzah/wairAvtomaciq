@@ -62,7 +62,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id299 @noAcceptAlert
+  @staging @id2531 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
@@ -81,7 +81,7 @@ Feature: Search
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id299 @noAcceptAlert
+  @staging @id2531 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -101,7 +101,7 @@ Feature: Search
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id1394
+  @staging @id2656
   Scenario Outline: Start 1:1 chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -124,7 +124,7 @@ Feature: Search
       | Login      | Password      | Name      | UserCount | Contact   |
       | user1Email | user1Password | user1Name | 2         | user2Name |
 
-  @staging @id1394
+  @staging @id2656
   Scenario Outline: Start 1:1 chat with users from Top Connections [LANDSCAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -148,7 +148,7 @@ Feature: Search
       | Login      | Password      | Name      | UserCount | Contact   |
       | user1Email | user1Password | user1Name | 2         | user2Name |
 
-  @staging @id1150
+  @staging @id2550
   Scenario Outline: Start group chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -174,7 +174,7 @@ Feature: Search
       | Login      | Password      | Name      | ConvoName    | UserCount | Contact   |
       | user1Email | user1Password | user1Name | TopGroupTest | 3         | user2Name |
 
-  @staging @id1150
+  @staging @id2550
   Scenario Outline: Start group chat with users from Top Connections [LANDSCAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -201,72 +201,3 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | ConvoName    | UserCount | Contact   |
       | user1Email | user1Password | user1Name | TopGroupTest | 3         | user2Name |
-
-  @staging @id1454
-  Scenario Outline: Verify sending a connection request to user chosen from search [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given User <UnconnectedUser> name starts with <StartLetter>
-    Given User <Name> change accent color to <Color>
-    Given I Sign in using login <Login> and password <Password>
-    When I see Contact list with my name <Name>
-    And I open search by clicking plus button
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I search for user name <UnconnectedUser> and tap on it on People picker page
-    And I see connect to <UnconnectedUser> dialog
-    And I delete all connect message content
-    And I see that connect button is disabled
-    And I input message in connect dialog with <NumOfMessageChars> characters
-    And I fill in 3 characters in connect dialog
-    And I see message with max number of characters
-    And I click Connect button on connect to dialog
-    And I click close button to dismiss people view
-    And I swipe down contact list on iPad
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in People picker search field user email <ContactEmail>
-    Then I see the user <UnconnectedUser> avatar with a clock
-    And I click close button to dismiss people view
-    And I see conversation with not connected user <UnconnectedUser>
-    And I tap on contact name <UnconnectedUser>
-    And I open pending user conversation details
-    And I see <UnconnectedUser> user pending profile popover on iPad
-
-    Examples: 
-      | Login      | Password      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
-      | user1Email | user1Password | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
-
-  @staging @id1454
-  Scenario Outline: Verify sending a connection request to user chosen from search [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given User <UnconnectedUser> name starts with <StartLetter>
-    Given User <Name> change accent color to <Color>
-    Given I rotate UI to landscape
-    Given I Sign in using login <Login> and password <Password>
-    When I see Contact list with my name <Name>
-    And I open search by clicking plus button
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I search for user name <UnconnectedUser> and tap on it on People picker page
-    And I see connect to <UnconnectedUser> dialog
-    And I delete all connect message content
-    And I see that connect button is disabled
-    And I input message in connect dialog with <NumOfMessageChars> characters
-    And I fill in 3 characters in connect dialog
-    And I see message with max number of characters
-    And I click Connect button on connect to dialog
-    And I click close button to dismiss people view
-    And I swipe down contact list on iPad
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in People picker search field user email <ContactEmail>
-    Then I see the user <UnconnectedUser> avatar with a clock
-    And I click close button to dismiss people view
-    And I see conversation with not connected user <UnconnectedUser>
-    And I tap on contact name <UnconnectedUser>
-    And I open pending user conversation details
-    And I see <UnconnectedUser> user pending profile popover on iPad
-
-    Examples: 
-      | Login      | Password      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
-      | user1Email | user1Password | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
