@@ -404,11 +404,9 @@ public final class AndroidLocators {
 		public static final String xpathNameEdit = xpathParentSelfProfileOverlay
 				+ "//*[@id='tet__profile__guided']";
 
-		public static final String xpathChangePhotoBtn = xpathParentSelfProfileOverlay
-				+ "//*[@id='gtv__camera_control__change_image_source']";
+		public static final String idChangePhotoBtn = "gtv__camera_control__change_image_source";
 
-		public static final String xpathGalleryBtn = xpathParentSelfProfileOverlay
-				+ "//*[@id='gtv__camera_control__pick_from_gallery']";
+		public static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";
 
 		public static final String xpathSettingsBtn = xpathParentSelfProfileOverlay
 				+ "//*[@id='ttv__profile__settings_box__settings']";

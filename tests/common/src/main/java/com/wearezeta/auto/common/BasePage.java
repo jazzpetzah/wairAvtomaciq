@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -65,31 +66,39 @@ public abstract class BasePage {
 	public void close() throws Exception {
 	}
 
-	public BufferedImage takeScreenshot() throws Exception {
+	public Optional<BufferedImage> takeScreenshot() throws Exception {
 		return DriverUtils.takeScreenshot((ZetaDriver) this.getDriver());
 	}
 
-	public BufferedImage getElementScreenshot(WebElement element)
+	public Optional<BufferedImage> getElementScreenshot(WebElement element)
 			throws Exception {
-		BufferedImage screenshot = takeScreenshot();
 		Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
 		int x = elementLocation.x;
 		int y = elementLocation.y;
 		int w = elementSize.width;
 		int h = elementSize.height;
-		return screenshot.getSubimage(x, y, w, h);
+		final Optional<BufferedImage> screenshot = takeScreenshot();
+		if (screenshot.isPresent()) {
+			return Optional.of(screenshot.get().getSubimage(x, y, w, h));
+		} else {
+			return Optional.empty();
+		}
 	}
 
-	public BufferedImage getScreenshotByCoordinates(int x, int y, int w, int h)
-			throws Exception {
-		BufferedImage screenshot = takeScreenshot();
-		try {
-			screenshot = screenshot.getSubimage(x, y, w, h);
-		} catch (Exception e) {
-			log.debug("Screenshot object is out of borders");
+	public Optional<BufferedImage> getScreenshotByCoordinates(int x, int y,
+			int w, int h) throws Exception {
+		final Optional<BufferedImage> screenshot = takeScreenshot();
+		if (screenshot.isPresent()) {
+			try {
+				return Optional.of(screenshot.get().getSubimage(x, y, w, h));
+			} catch (Exception e) {
+				log.debug("Screenshot object is out of borders");
+			}
+			return screenshot;
+		} else {
+			return Optional.empty();
 		}
-		return screenshot;
 	}
 
 	public abstract BasePage swipeLeft(int time) throws Exception;;

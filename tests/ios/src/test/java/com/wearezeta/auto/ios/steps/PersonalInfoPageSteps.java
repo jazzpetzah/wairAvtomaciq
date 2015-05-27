@@ -68,7 +68,7 @@ public class PersonalInfoPageSteps {
 	public void WhenIClickOnAboutButtonOnPersonalPage() {
 		PagesCollection.personalInfoPage.clickOnAboutButton();
 	}
-	
+
 	/**
 	 * Verifies the about page in settings is shown
 	 * 
@@ -261,10 +261,11 @@ public class PersonalInfoPageSteps {
 
 	@When("^I return to personal page$")
 	public void IReturnToPersonalPage() throws Throwable {
-		Thread.sleep(4000);//wait for picture to load on simulator
+		Thread.sleep(4000);// wait for picture to load on simulator
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
-		Thread.sleep(2000);//wait for picture to load on simulator
-		referenceImage = PagesCollection.personalInfoPage.takeScreenshot();
+		Thread.sleep(2000);// wait for picture to load on simulator
+		referenceImage = PagesCollection.personalInfoPage.takeScreenshot()
+				.orElseThrow(AssertionError::new);
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
 
 	}
@@ -284,7 +285,7 @@ public class PersonalInfoPageSteps {
 	public void ThenISeeProfileImageIsSameAsSelected(String filename)
 			throws Exception {
 		BufferedImage profileImage = PagesCollection.personalInfoPage
-				.takeScreenshot();
+				.takeScreenshot().orElseThrow(AssertionError::new);
 		double score = ImageUtil.getOverlapScore(
 				RegistrationPageSteps.basePhoto, profileImage);
 		System.out.println("SCORE: " + score);

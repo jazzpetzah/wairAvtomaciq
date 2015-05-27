@@ -40,7 +40,7 @@ public class PersonalInfoPage extends AndroidPage {
 	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathNameEdit)
 	private WebElement nameEdit;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathChangePhotoBtn)
+	@FindBy(id = AndroidLocators.PersonalInfoPage.idChangePhotoBtn)
 	private WebElement changePhotoBtn;
 
 	@FindBy(id = AndroidLocators.CommonLocators.idGalleryBtn)
@@ -80,8 +80,8 @@ public class PersonalInfoPage extends AndroidPage {
 		this.getWait().until(ExpectedConditions.visibilityOf(emailField));
 	}
 
-	public void clickOnPage() throws Exception {
-		DriverUtils.androidMultiTap(this.getDriver(), page, 1, 0.2);
+	public void tapOnPage() throws Exception {
+		DriverUtils.androidMultiTap(this.getDriver(), page, 1, 500);
 	}
 
 	public void tapChangePhotoButton() throws Exception {
@@ -96,8 +96,8 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public void tapConfirmButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), confirmBtn);
 		this.hideKeyboard();
+		assert DriverUtils.waitUntilElementClickable(getDriver(), confirmBtn);
 		confirmBtn.click();
 	}
 

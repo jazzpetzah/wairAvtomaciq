@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
@@ -371,7 +372,14 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I take screenshot$")
 	public void WhenITake1stScreenshot() throws Exception {
-		images.add(PagesCollection.loginPage.takeScreenshot());
+		final Optional<BufferedImage> screenshot = PagesCollection.loginPage
+				.takeScreenshot();
+		if (screenshot.isPresent()) {
+			images.add(screenshot.get());
+		} else {
+			throw new RuntimeException(
+					"Selenium has failed to take the screenshot from current page");
+		}
 	}
 
 	/**

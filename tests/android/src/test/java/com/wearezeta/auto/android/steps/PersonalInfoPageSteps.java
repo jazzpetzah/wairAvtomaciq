@@ -89,7 +89,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I tap on personal info screen$")
 	public void WhenITapOnPersonalInfoScreen() throws Exception {
-		PagesCollection.personalInfoPage.clickOnPage();
+		PagesCollection.personalInfoPage.tapOnPage();
 	}
 
 	/**
@@ -220,7 +220,7 @@ public class PersonalInfoPageSteps {
 	@Then("I see changed user picture")
 	public void ThenISeeChangedUserPicture() throws Exception {
 		BufferedImage referenceImage = PagesCollection.personalInfoPage
-				.takeScreenshot();
+				.takeScreenshot().orElseThrow(AssertionError::new);
 		String path = CommonUtils
 				.getResultImagePath(PersonalInfoPageSteps.class);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);

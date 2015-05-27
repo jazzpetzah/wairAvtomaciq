@@ -67,12 +67,12 @@ public class TabletPersonalInfoPage extends PersonalInfoPage {
 		}
 	}
 
-	public void clickOnPage() throws Exception {
-		DriverUtils.androidMultiTap(this.getDriver(), page, 1, 0.2);
+	public void tapOnPage() throws Exception {
+		DriverUtils.androidMultiTap(this.getDriver(), page, 1, 500);
 	}
 
 	public boolean isOptionsButtonVisible() throws Exception {
-		return profileLink.isDisplayed();
+		return DriverUtils.isElementPresentAndDisplayed(profileLink);
 	}
 
 }

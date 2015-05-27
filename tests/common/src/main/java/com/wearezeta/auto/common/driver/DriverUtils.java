@@ -7,10 +7,10 @@ import io.appium.java_client.android.AndroidDriver;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
@@ -169,8 +169,8 @@ public class DriverUtils {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
-
+					.ignoring(NoSuchElementException.class)
+					.ignoring(StaleElementReferenceException.class);
 			wait.until(ExpectedConditions.elementToBeClickable(element));
 			return true;
 		} catch (TimeoutException e) {
@@ -441,23 +441,10 @@ public class DriverUtils {
 	}
 
 	public static void androidMultiTap(AppiumDriver driver, WebElement element,
-			int tapNumber, double duration) throws InterruptedException {
-		Point coords = element.getLocation();
-		Dimension elementSize = element.getSize();
-
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		HashMap<String, Double> tapObject = new HashMap<String, Double>();
-		tapObject.put("tapCount", (double) 1);
-		tapObject.put("touchCount", (double) 1);
-		tapObject.put("duration", duration);
-		tapObject.put("x", (double) (coords.x + elementSize.width / 2));
-		tapObject.put("y", (double) (coords.y + elementSize.height / 2));
-
+			int tapNumber, int millisecondsDuration) {
 		for (int i = 0; i < tapNumber; i++) {
-			js.executeScript("mobile: tap", tapObject);
-			Thread.sleep(100);
+			driver.tap(1, element, millisecondsDuration);
 		}
-
 	}
 
 	public static void mobileTapByCoordinates(AppiumDriver driver,
@@ -576,17 +563,20 @@ public class DriverUtils {
 		PlatformDrivers.setDefaultImplicitWaitTimeout(driver);
 	}
 
-	public static BufferedImage takeScreenshot(ZetaDriver driver)
-			throws IOException {
-		if (!driver.isSessionLost()) {
-			byte[] scrImage = ((TakesScreenshot) driver)
-					.getScreenshotAs(OutputType.BYTES);
-			InputStream in = new ByteArrayInputStream(scrImage);
-			BufferedImage bImageFromConvert = ImageIO.read(in);
-			return bImageFromConvert;
-		} else {
-			return null;
+	public static Optional<BufferedImage> takeScreenshot(ZetaDriver driver) {
+		try {
+			if (!driver.isSessionLost()) {
+				byte[] scrImage = ((TakesScreenshot) driver)
+						.getScreenshotAs(OutputType.BYTES);
+				InputStream in = new ByteArrayInputStream(scrImage);
+				BufferedImage bImageFromConvert = ImageIO.read(in);
+				return Optional.of(bImageFromConvert);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("Selenium driver has failed to take the screenshot of the current screen!");
 		}
+		return Optional.empty();
 	}
 
 	public static void ToggleNetworkConnectionAndroid(AndroidDriver driver,

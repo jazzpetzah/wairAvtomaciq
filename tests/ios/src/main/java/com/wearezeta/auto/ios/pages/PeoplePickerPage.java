@@ -85,7 +85,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultContainer)
 	private WebElement searchResultContainer;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameLaterButton)
 	private WebElement maybeLaterButton;
 
@@ -94,7 +94,7 @@ public class PeoplePickerPage extends IOSPage {
 	public PeoplePickerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
-	
+
 	public void clickMaybeLaterButton() {
 		maybeLaterButton.click();
 	}
@@ -146,10 +146,11 @@ public class PeoplePickerPage extends IOSPage {
 			throws Exception {
 		return getScreenshotByCoordinates(
 				searchResultCell.getLocation().x,
-				searchResultCell.getLocation().y*2,
-				searchResultCell.getSize().height*5/2,
-				searchResultCell.getLocation().y +
-				searchResultCell.getSize().height*4/5);
+				searchResultCell.getLocation().y * 2,
+				searchResultCell.getSize().height * 5 / 2,
+				searchResultCell.getLocation().y
+						+ searchResultCell.getSize().height * 4 / 5)
+				.orElseThrow(IllegalStateException::new);
 	}
 
 	public void fillTextInPeoplePickerSearch(String text) {
@@ -323,7 +324,7 @@ public class PeoplePickerPage extends IOSPage {
 		if (el.size() == 0) {
 			throw new NoSuchElementException("Element not found");
 		}
-		for (int i = 0; i < el.size(); i ++) {
+		for (int i = 0; i < el.size(); i++) {
 			if (el.get(i).isDisplayed() && el.get(i).isEnabled()) {
 				DriverUtils.mobileTapByCoordinates(getDriver(), el.get(i));
 				break;

@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
@@ -167,7 +168,14 @@ public class ZetaFormatter implements Formatter, Reporter {
 					// suite execution
 					return;
 				}
-				BufferedImage image = DriverUtils.takeScreenshot(driver);
+				final Optional<BufferedImage> image = DriverUtils
+						.takeScreenshot(driver);
+				if (!image.isPresent()) {
+					log.info(String
+							.format("No screenshot could be taken for the step '%s' (skipped)",
+									currentStep));
+					return;
+				}
 				String picturePath = CommonUtils
 						.getPictureResultsPathFromConfig(this.getClass());
 				// FIXME: some characters in steps/captions may not be
@@ -178,7 +186,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 				if (!outputfile.getParentFile().exists()) {
 					outputfile.getParentFile().mkdirs();
 				}
-				ImageIO.write(image, "png", outputfile);
+				ImageIO.write(image.get(), "png", outputfile);
 			} else {
 				log.debug(String
 						.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
@@ -196,8 +204,9 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	private static ZetaDriver getDriver(boolean forceWait) throws Exception {
 		if (lazyDriver.isDone() || forceWait) {
-			return (ZetaDriver) lazyDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-					TimeUnit.MILLISECONDS);
+			return (ZetaDriver) lazyDriver
+					.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+							TimeUnit.MILLISECONDS);
 		} else {
 			return null;
 		}

@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.steps;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
@@ -201,7 +202,8 @@ public class CommonOSXSteps {
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+				myNameAlias);
 	}
 
 	@When("^(.*) ignore all requests$")
@@ -384,8 +386,14 @@ public class CommonOSXSteps {
 	@When("^I take fullscreen shot and save it as (.*)$")
 	public void ITakeFullscreenShotAndSaveItAsAlias(String screenshotAlias)
 			throws Exception {
-		BufferedImage shot = PagesCollection.mainMenuPage.takeScreenshot();
-		OSXExecutionContext.screenshots.put(screenshotAlias, shot);
+		final Optional<BufferedImage> shot = PagesCollection.mainMenuPage
+				.takeScreenshot();
+		if (shot.isPresent()) {
+			OSXExecutionContext.screenshots.put(screenshotAlias, shot.get());
+		} else {
+			throw new RuntimeException(
+					"Selenium has failed to take screenshot of the current page");
+		}
 	}
 
 	/**

@@ -111,7 +111,7 @@ public class GroupChatInfoPage extends IOSPage {
 		boolean flag = false;
 		for (WebElement avatar : participantAvatars) {
 			avatarIcon = CommonUtils.getElementScreenshot(avatar,
-					this.getDriver());
+					this.getDriver()).orElseThrow(IllegalStateException::new);
 			List<WebElement> avatarText = avatar.findElements(By
 					.className("UIAStaticText"));
 
@@ -319,7 +319,8 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public BufferedImage takeScreenShot() throws Exception {
-		return DriverUtils.takeScreenshot(this.getDriver());
+		return DriverUtils.takeScreenshot(this.getDriver()).orElseThrow(
+				IllegalStateException::new);
 	}
 
 	public void clickOnAddButton() {
@@ -327,7 +328,8 @@ public class GroupChatInfoPage extends IOSPage {
 	}
 
 	public boolean isAddDialogHeaderVisible() throws Exception {
-		boolean flag = DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+		boolean flag = DriverUtils.waitUntilLocatorIsDisplayed(
+				this.getDriver(),
 				By.name(IOSLocators.nameAddPeopleDialogHeader));
 		return flag;
 	}

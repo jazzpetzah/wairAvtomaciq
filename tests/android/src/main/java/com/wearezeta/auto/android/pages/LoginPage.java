@@ -74,7 +74,7 @@ public class LoginPage extends AndroidPage {
 		Thread.sleep(2000);
 		if (DriverUtils.isElementPresentAndDisplayed(forgotPasswordButton)) {
 			DriverUtils.androidMultiTap(this.getDriver(), forgotPasswordButton,
-					1, 50);
+					1, 500);
 		}
 		return new CommonAndroidPage(this.getLazyDriver());
 	}

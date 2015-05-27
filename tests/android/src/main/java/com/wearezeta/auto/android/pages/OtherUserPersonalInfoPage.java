@@ -244,7 +244,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isBackGroundImageCorrect(String imageName) throws Exception {
-		final BufferedImage bgImage = getElementScreenshot(backGround);
+		final BufferedImage bgImage = getElementScreenshot(backGround)
+				.orElseThrow(IllegalStateException::new);
 		String path = CommonUtils.getImagesPath(CommonUtils.class);
 		BufferedImage realImage = ImageUtil.readImageFromFile(path + imageName);
 		double score = ImageUtil.getOverlapScore(realImage, bgImage);

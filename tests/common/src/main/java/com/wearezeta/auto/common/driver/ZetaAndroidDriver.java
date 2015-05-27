@@ -93,6 +93,26 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		ta.up(endx, endy).perform();
 	}
 
+	@SuppressWarnings("deprecation")
+	@Override
+	public void tap(int fingers, WebElement element, int durationMilliseconds) {
+		final TouchActions ta = new TouchActions(this);
+		for (int i = 0; i < fingers; i++) {
+			ta.singleTap(element).pause(durationMilliseconds);
+		}
+		ta.perform();
+	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public void tap(int fingers, int x, int y, int durationMilliseconds) {
+		final TouchActions ta = new TouchActions(this);
+		for (int i = 0; i < fingers; i++) {
+			((TouchScreen) ta.down(x, y).pause(durationMilliseconds)).up(x, y);
+		}
+		ta.perform();
+	}
+
 	@Override
 	public TouchScreen getTouch() {
 		return this.touch;
