@@ -58,7 +58,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.androidPage = PagesCollection.contactListPage
+		PagesCollection.currentPage = PagesCollection.contactListPage
 				.tapOnName(contactName);
 	}
 

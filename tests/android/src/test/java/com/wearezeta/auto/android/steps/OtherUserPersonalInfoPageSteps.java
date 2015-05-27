@@ -29,7 +29,7 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I see (.*) user profile page$")
 	public void WhenISeeOherUserProfilePage(String name) throws Exception {
 		if (PagesCollection.otherUserPersonalInfoPage == null) {
-			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
+			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.currentPage;
 		}
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
@@ -157,7 +157,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I click Unblock button$")
 	public void IClickUnblockButton() throws Throwable {
-		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
+		PagesCollection.currentPage = PagesCollection.otherUserPersonalInfoPage
 				.clickUnblockBtn();
 	}
 
@@ -194,14 +194,14 @@ public class OtherUserPersonalInfoPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
+		PagesCollection.currentPage = PagesCollection.otherUserPersonalInfoPage
 				.tapOnParticipant(contact);
-		if (PagesCollection.androidPage instanceof OtherUserPersonalInfoPage) {
-			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
+		if (PagesCollection.currentPage instanceof OtherUserPersonalInfoPage) {
+			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.currentPage;
 		}
 
 		// This needs to be moved eventually
-		PagesCollection.unknownUserDetailsPage = (UnknownUserDetailsPage) PagesCollection.androidPage
+		PagesCollection.unknownUserDetailsPage = (UnknownUserDetailsPage) PagesCollection.currentPage
 				.instantiatePage(UnknownUserDetailsPage.class);
 	}
 
@@ -294,7 +294,7 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I select contact (.*)$")
 	public void WhenISelectContact(String name) throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
+		PagesCollection.currentPage = PagesCollection.otherUserPersonalInfoPage
 				.tapOnParticipant(name);
 	}
 
@@ -463,7 +463,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I do small swipe down")
 	public void IDoSmallSwipeDown() throws Exception {
-		PagesCollection.androidPage.swipeByCoordinates(2000, 50, 50, 50, 53);
+		PagesCollection.currentPage.swipeByCoordinates(2000, 50, 50, 50, 53);
 	}
 
 	/**
