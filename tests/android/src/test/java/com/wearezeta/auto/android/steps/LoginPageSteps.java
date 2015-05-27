@@ -13,13 +13,14 @@ public class LoginPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Checks to see if the sign in screen appears
+	 * Checks to see if the start screen appears
 	 * 
-	 * @step. ^I see sign in screen$
+	 * @step. ^I see start screen$
+	 * @throws Exception 
 	 */
-	@Given("^I see sign in screen$")
-	public void GiveniSeeSignInScreen() {
-		Assert.assertTrue(PagesCollection.loginPage.isVisible());
+	@Given("^I see start screen$")
+	public void GiveniSeeSignInScreen() throws Exception {
+		Assert.assertTrue(PagesCollection.loginPage.waitForInitialScreen());
 	}
 
 	/**
@@ -50,7 +51,7 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
+		Assert.assertNotNull(PagesCollection.loginPage.waitForInitialScreen());
 		PagesCollection.loginPage.switchToEmailSignIn();
 		PagesCollection.loginPage.setLogin(login);
 		PagesCollection.loginPage.setPassword(password);
@@ -156,7 +157,7 @@ public class LoginPageSteps {
 	@Then("^I see welcome screen$")
 	public void ThenISeeWelcomeScreen() throws Exception {
 		Assert.assertTrue("We don't see welcome buttons",
-				PagesCollection.loginPage.isWelcomeButtonsExist());
+				PagesCollection.loginPage.waitForInitialScreen());
 	}
 
 	/**

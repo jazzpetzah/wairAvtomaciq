@@ -26,7 +26,7 @@ public class TabletLoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertNotNull(TabletPagesCollection.loginPage.isVisible());
+		Assert.assertNotNull(TabletPagesCollection.loginPage.waitForInitialScreen());
 		TabletPagesCollection.loginPage.switchToEmailSignIn();
 		TabletPagesCollection.loginPage.setLogin(login);
 		TabletPagesCollection.loginPage.setPassword(password);
@@ -68,7 +68,7 @@ public class TabletLoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertNotNull(TabletPagesCollection.loginPage.isVisible());
+		Assert.assertNotNull(TabletPagesCollection.loginPage.waitForInitialScreen());
 		TabletPagesCollection.loginPage.switchToEmailSignIn();
 		TabletPagesCollection.loginPage.setLogin(login);
 		TabletPagesCollection.loginPage.setPassword(password);

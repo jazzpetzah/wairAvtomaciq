@@ -26,9 +26,6 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.LoginPage.idIHaveAccountButton)
 	private WebElement iHaveAccountButton;
 
-	@FindBy(id = AndroidLocators.LoginPage.idWelcomeSlogan)
-	private WebElement welcomeSlogan;
-
 	@FindBy(id = AndroidLocators.LoginPage.idSignUpButton)
 	protected WebElement signUpButton;
 
@@ -58,10 +55,6 @@ public class LoginPage extends AndroidPage {
 
 	public LoginPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
-	}
-
-	public boolean isVisible() {
-		return DriverUtils.isElementPresentAndDisplayed(welcomeSlogan);
 	}
 
 	public LoginPage switchToEmailSignIn() throws Exception {
@@ -138,7 +131,7 @@ public class LoginPage extends AndroidPage {
 				SIGN_IN_TIMEOUT_SECONDS);
 	}
 
-	public Boolean isWelcomeButtonsExist() throws Exception {
+	public boolean waitForInitialScreen() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idWelcomeSlogan));
 	}
