@@ -150,18 +150,6 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Checks to see that the welcome screen is visible
-	 * 
-	 * @step. ^I see sign in and join buttons$
-	 * @throws Exception
-	 */
-	@Then("^I see welcome screen$")
-	public void ThenISeeWelcomeScreen() throws Exception {
-		Assert.assertTrue("We don't see welcome buttons",
-				PagesCollection.loginPage.waitForInitialScreen());
-	}
-
-	/**
 	 * Checks to see that the login error message contains the correct text
 	 * 
 	 * @step. ^I see error message \"(.*)\"$

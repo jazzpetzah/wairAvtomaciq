@@ -449,8 +449,7 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
-	@SuppressWarnings("unused")
-	private static JSONObject getActivationDataViaBackdoor(String email)
+	public static JSONObject getActivationDataViaBackdoor(String email)
 			throws Exception {
 		Builder webResource = buildDefaultRequest(
 				String.format("i/users/activation-code?email=%s",
@@ -468,6 +467,18 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
+		requestBody.put("code", code);
+		requestBody.put("dryrun", isDryRun);
+		httpPost(webResource, requestBody.toString(),
+				new int[] { HttpStatus.SC_OK });
+	}
+
+	public static void activateNewUser(String email, String code,
+			boolean isDryRun) throws Exception {
+		Builder webResource = buildDefaultRequest("activate",
+				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+		JSONObject requestBody = new JSONObject();
+		requestBody.put("email", email);
 		requestBody.put("code", code);
 		requestBody.put("dryrun", isDryRun);
 		httpPost(webResource, requestBody.toString(),
