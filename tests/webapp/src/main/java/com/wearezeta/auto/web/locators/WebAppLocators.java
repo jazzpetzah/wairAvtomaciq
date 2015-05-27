@@ -143,6 +143,8 @@ public final class WebAppLocators {
 		public static final String xpathNameSelfUserPhoneNumber = "//*[@data-uie-name='enter-phone']";
 
 		public static final String xpathCameraButton = "//*[@data-uie-name='go-profile-picture-selection']";
+
+		public static final String xpathBackgroundAvatarAccentColor = "//div[contains(@class, 'background-accent bg-theme')]";
 	}
 
 	public static final class ConversationPage {

@@ -76,3 +76,20 @@ Feature: Self Profile
     Examples: 
       | Login      | Password      | Name      | PictureName              |
       | user1Email | user1Password | user1Name | userpicture_portrait.jpg |
+
+  @torun @id1747
+  Scenario Outline: Verify you can change your accent color
+    Given There is 3 users where <Name> is me
+    Given User me change accent color to <ColorName>
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given <Contact1> pinged the conversation with <Name>
+    Given User <Contact2> sent message <Msg1> to conversation <Name>
+    When I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    Then I verify my accent color in color picker is set to <ColorName> color
+    And I verify  my avatar background color is set to <ColorName> color
+    #Then I verify my accent color in color picker is set to <ColorName> color
+
+    Examples: 
+      | Login      | Password      | Name      | ColorName | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | SoftPink  | user2Name | user3Name |
