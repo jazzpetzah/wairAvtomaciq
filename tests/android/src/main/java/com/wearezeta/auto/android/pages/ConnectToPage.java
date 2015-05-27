@@ -76,11 +76,15 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public DialogPage pressAcceptConnectButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				connectAcceptBtn);
 		connectAcceptBtn.click();
 		return new DialogPage(this.getLazyDriver());
 	}
 
 	public ContactListPage pressIgnoreButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				connectIgnoreBtn);
 		connectIgnoreBtn.click();
 		return new ContactListPage(this.getLazyDriver());
 	}
@@ -90,7 +94,7 @@ public class ConnectToPage extends AndroidPage {
 				&& DriverUtils.isElementPresentAndDisplayed(connectAcceptBtn);
 	}
 
-	public boolean isPending() throws NumberFormatException, Exception {
+	public boolean isPending() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(pendingText);
 	}
 
