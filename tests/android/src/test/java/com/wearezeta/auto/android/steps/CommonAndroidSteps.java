@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -111,9 +112,20 @@ public class CommonAndroidSteps {
 			capabilities.setCapability("resetKeyboard", true);
 		}
 
-		return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-				.resetDriver(url, capabilities, 1, this::onDriverInitFinished,
-						this::onDriverInitStarted);
+		try {
+			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
+					.resetDriver(url, capabilities, 1,
+							this::onDriverInitFinished,
+							this::onDriverInitStarted);
+		} catch (SessionNotCreatedException e) {
+			// Unlock the screen and retry
+			AndroidCommonUtils.unlockScreen();
+			Thread.sleep(5000);
+			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
+					.resetDriver(url, capabilities, 1,
+							this::onDriverInitFinished,
+							this::onDriverInitStarted);
+		}
 	}
 
 	private Boolean onDriverInitStarted() {
