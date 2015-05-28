@@ -249,7 +249,6 @@ public class DialogPage extends AndroidPage {
 		if (label.equals(MUTE_BUTTON_LABEL)) {
 			callingButtonImage = getElementScreenshot(muteBtn).orElseThrow(
 					IllegalStateException::new);
-
 			path = CommonUtils.getCallingMuteButtonPath(DialogPage.class);
 		} else if (label.equals(SPEAKER_BUTTON_LABEL)) {
 			callingButtonImage = getElementScreenshot(speakerBtn).orElseThrow(
