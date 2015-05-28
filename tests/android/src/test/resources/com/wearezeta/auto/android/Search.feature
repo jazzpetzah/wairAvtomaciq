@@ -81,20 +81,21 @@ Feature: Search
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1494 @regression
-  Scenario Outline: Verify possibility of invitation accepting
-    Given There is 3 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    When I minimize the application
-    And I open Firefox
-    And I wait for Firefox Url bar
-    Then I connect using invitation link from <Contact2>
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+# Selendroid does not support interaction with external applications 
+  # @id1494 @regression
+  # Scenario Outline: Verify possibility of invitation accepting
+  #  Given There is 3 users where <Name> is me
+  #  Given Myself is connected to <Contact1>
+  #  Given I Sign in using login <Login> and password <Password>
+  #  Given I see Contact list
+  #  When I minimize the application
+  #  And I open Firefox
+  #  And I wait for Firefox Url bar
+  #  Then I connect using invitation link from <Contact2>
+  #
+  #  Examples: 
+  #    | Login      | Password      | Name      | Contact1  | Contact2  |
+  #    | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @id1517 @regression
   Scenario Outline: Verify you can send an invite
