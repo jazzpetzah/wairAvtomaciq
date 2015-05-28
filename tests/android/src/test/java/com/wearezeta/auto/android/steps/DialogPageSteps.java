@@ -364,8 +364,8 @@ public class DialogPageSteps {
 	@Then("^I see Ping message (.*) in the dialog$")
 	public void ThenISeePingMessageInTheDialog(String message) throws Exception {
 		message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.dialogPage.getLastPingText().equals(
-				message));
+		Assert.assertTrue(PagesCollection.dialogPage.getLastPingText()
+				.toUpperCase().equals(message.toUpperCase()));
 	}
 
 	/**
@@ -422,7 +422,7 @@ public class DialogPageSteps {
 	}
 
 	private static final int SWIPE_DURATION_MILLISECONDS = 1000;
-	
+
 	/**
 	 * 
 	 * @step. ^I swipe up on dialog page
