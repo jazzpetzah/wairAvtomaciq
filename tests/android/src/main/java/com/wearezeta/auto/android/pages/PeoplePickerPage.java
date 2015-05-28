@@ -128,6 +128,8 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public AndroidPage selectContact(String contactName) throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				pickerSearchUser);
 		pickerSearchUser.click();
 		final Map<By, AndroidPage> pagesMapping = new HashMap<By, AndroidPage>();
 		pagesMapping.put(
@@ -149,7 +151,7 @@ public class PeoplePickerPage extends AndroidPage {
 			}
 			scanTry++;
 		}
-		return new DialogPage(this.getLazyDriver()); 
+		return new DialogPage(this.getLazyDriver());
 	}
 
 	public AndroidPage selectGroup(String contactName) throws Exception {

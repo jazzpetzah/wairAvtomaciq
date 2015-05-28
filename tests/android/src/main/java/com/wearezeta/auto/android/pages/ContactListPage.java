@@ -272,7 +272,7 @@ public class ContactListPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
+	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 120;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
 		final By convoListLoadingProgressLocator = By
