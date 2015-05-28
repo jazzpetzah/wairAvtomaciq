@@ -108,19 +108,25 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public ContactListPage pressLeaveButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), leaveButton);
 		leaveButton.click();
 		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public void pressSilenceButton() throws Exception {
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), silenceButton);
 		silenceButton.click();
 	}
 
 	public void clickBlockBtn() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), blockButton);
 		blockButton.click();
 	}
 
 	public AndroidPage clickUnblockBtn() throws Exception {
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), unblockButton);
 		unblockButton.click();
 		return new DialogPage(this.getLazyDriver());
 	}

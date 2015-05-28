@@ -61,6 +61,9 @@ public class ConnectToPageSteps {
 		}
 		PagesCollection.connectToPage.waitUntilIgnoreButtonIsVisible();
 		PagesCollection.connectToPage.swipeUpCoordinates(1000, 90);
+		// It is very hard to detect whehn swipe animation is finished that is
+		// why this hardcoded sleep is needed here
+		Thread.sleep(5000);
 	}
 
 	/**
