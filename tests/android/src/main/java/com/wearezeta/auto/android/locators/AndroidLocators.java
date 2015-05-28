@@ -280,13 +280,25 @@ public final class AndroidLocators {
 	public static final class OtherUserPersonalInfoPage {
 		public static final String idParticipantsHeader = "ttv__participants__header";
 
+		public static final Function<String, String> xpathPartcipantNameByText = text -> String
+				.format("//*[@id='ttv__participants__header' and @value='%s']",
+						text);
+
+		public static final Function<String, String> xpathPartcipantEmailByText = text -> String
+				.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
+						text);
+
+		public static final Function<String, String> xpathSingleParticipantNameByText = text -> String
+				.format("//*[@id='ttv__single_participants__header' and @value='%s']",
+						text);
+
+		public static final Function<String, String> xpathSingleParticipantEmailByText = text -> String
+				.format("//*[@id='ttv__single_participants__sub_header' and @value='%s']",
+						text);
+
 		public static final String idParticipantsHeaderEditable = "taet__participants__header__editable";
 
 		public static final String idParticipantsSubHeader = "ttv__participants__sub_header";
-
-		public static final String idOtherUserPersonalInfoSingleName = "ttv__single_participants__header";
-
-		public static final String idOtherUserPersonalInfoSingleMail = "ttv__single_participants__sub_header";
 
 		public static final String idUserProfileConfirmationMenu = "user_profile_confirmation_menu";
 
