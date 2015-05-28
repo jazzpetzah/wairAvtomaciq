@@ -272,16 +272,18 @@ public class ContactListPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 120;
+	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 90;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
 		final By convoListLoadingProgressLocator = By
 				.xpath(AndroidLocators.ContactListPage.xpathConversationListLoadingIndicator);
-		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				convoListLoadingProgressLocator,
-				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String.format(
-				"Conversation list has not been loaded within %s seconds",
-				CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
+			log.warn(String
+					.format("It seems that conversation list has not been loaded within %s seconds (progress bar is still visible)",
+							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
+		}
 		final By loadingItemLocator = By
 				.xpath(AndroidLocators.ContactListPage.xpathLoadingContactListItem);
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
