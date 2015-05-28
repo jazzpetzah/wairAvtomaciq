@@ -410,21 +410,48 @@ public class ContactListPageSteps {
 	}
 
 	/*
-	 * Verify if ping icon in contact list is colored to expected accent color
+	 * Verify if ping icon in contact list in conversation with user is colored
+	 * to expected accent color
 	 * 
-	 * @step. "^I verify ping icon is (\\w+) color$"
+	 * @step.
+	 * "^I verify ping icon in conversation with (\\w+) has (\\w+) color$"
 	 * 
 	 * @param colorName one of these colors: StrongBlue, StrongLimeGreen,
 	 * BrightYellow, VividRed, BrightOrange, SoftPink, Violet
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^I verify ping icon is (\\w+) color$")
-	public void IVerifyPingIconColor(String colorName) throws Exception {
+	@Given("^I verify ping icon in conversation with (\\w+) has (\\w+) color$")
+	public void IVerifyPingIconColor(String conversationName, String colorName)
+			throws Exception {
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
 		final AccentColor expectedColor = AccentColor.getByName(colorName);
-		final AccentColor pingColor = PagesCollection.contactListPage
-				.getCurrentPingIconAccentColor();
-		Assert.assertTrue("my avatar background accent color is not set",
-				pingColor == expectedColor);
+		final AccentColor pingIconColor = PagesCollection.contactListPage
+				.getCurrentPingIconAccentColor(conversationName);
+		Assert.assertEquals(expectedColor, pingIconColor);
+	}
+
+	/*
+	 * Verify if unread dot in contact list in conversation with user is colored
+	 * to expected accent color
+	 * 
+	 * @step.
+	 * "^I verify unread dot in conversation with (\\w+) has (\\w+) color$"
+	 * 
+	 * @param colorName one of these colors: StrongBlue, StrongLimeGreen,
+	 * BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I verify unread dot in conversation with (\\w+) has (\\w+) color$")
+	public void IVerifyUnreadDotColor(String conversationName, String colorName)
+			throws Exception {
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
+		final AccentColor expectedColor = AccentColor.getByName(colorName);
+		final AccentColor unreadDotColor = PagesCollection.contactListPage
+				.getCurrentUnreadDotAccentColor(conversationName);
+		Assert.assertEquals(expectedColor, unreadDotColor);
 	}
 }

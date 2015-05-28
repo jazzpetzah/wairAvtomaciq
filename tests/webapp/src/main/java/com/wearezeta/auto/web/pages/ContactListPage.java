@@ -47,9 +47,6 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathPingIconByContactName)
-	private WebElement PingIcon;
-
 	public ContactListPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -510,6 +507,17 @@ public class ContactListPage extends WebPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, 3);
 		final WebElement entry = getDriver().findElement(locator);
-		return AccentColor.getByRgba(((PingIcon) locator).getCssValue("color"));
+		return AccentColor.getByRgba(entry.getCssValue("color"));
+	}
+
+	public AccentColor getCurrentUnreadDotAccentColor(String name)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName
+						.apply(name));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
+		final WebElement entry = getDriver().findElement(locator);
+		return AccentColor.getByRgba(entry.getCssValue("background-color"));
 	}
 }

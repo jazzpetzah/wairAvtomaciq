@@ -89,8 +89,8 @@ Feature: Self Profile
     And I verify my avatar background color is set to <ColorName> color
     Given <Contact1> pinged the conversation with <Name>
     Given User <Contact2> sent message <Msg1> to conversation <Name>
-    Then I verify ping icon is <ColorName> color
-    And I verify unread dot is <ColorName> color
+    Then I verify ping icon in conversation with <Contact1> has <ColorName> color
+    And I verify unread dot in conversation with <Contact2> has <ColorName> color
 
     Examples: 
       | Login      | Password      | Name      | ColorName | Contact1  | Contact2  |

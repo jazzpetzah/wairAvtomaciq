@@ -104,6 +104,12 @@ public final class WebAppLocators {
 				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
 						+ "*//*[@data-uie-name='status-unread' and contains(@class, 'icon-ping')]",
 						name);
+
+		public static final Function<String, String> xpathUnreadDotByContactName = (
+				name) -> String
+				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
+						+ "*//*[@data-uie-name='status-unread' and contains(@class, 'conversation-list')]",
+						name);
 	}
 
 	public static final class SettingsPage {
