@@ -97,24 +97,6 @@ Feature: Search
   #    | Login      | Password      | Name      | Contact1  | Contact2  |
   #    | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @id1517 @regression
-  Scenario Outline: Verify you can send an invite
-    Given There is 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    When I press Open StartUI
-    And I see People picker page
-    And I hide keyboard
-    And I tap on Send an invitation
-    And I tap on Gmail link
-    Then mail subject is <Subject>
-    And mail content contains my <Login>
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Subject               |
-      | user1Email | user1Password | user1Name | user2Name | Connect to me on Wire |
-      
   @id2214 @staging
   Scenario Outline: I can dismiss PYMK by Hide button
     Given I see welcome screen

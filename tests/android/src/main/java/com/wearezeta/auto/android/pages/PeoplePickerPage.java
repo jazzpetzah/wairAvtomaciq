@@ -3,13 +3,14 @@ package com.wearezeta.auto.android.pages;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.common.KeyboardMapper;
 import com.wearezeta.auto.android.locators.AndroidLocators;
@@ -83,9 +84,6 @@ public class PeoplePickerPage extends AndroidPage {
 
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerRecomendedName)
 	private WebElement recommendedName;
-
-	@FindBy(xpath = AndroidLocators.PeoplePickerPage.xpathGmailLink)
-	private WebElement gmailLink;
 
 	public PeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
@@ -279,24 +277,6 @@ public class PeoplePickerPage extends AndroidPage {
 		} catch (NoSuchElementException ex) {
 			sendInvitationFrame.click();
 		}
-	}
-
-	// FIXME: Unexpected method behavior
-	public CommonAndroidPage tapOnGmailLink() throws Exception {
-		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(AndroidLocators.PeoplePickerPage.xpathGmailLink))) {
-			DriverUtils
-					.swipeUp(
-							this.getDriver(),
-							this.getDriver()
-									.findElementByXPath(
-											AndroidLocators.PeoplePickerPage.xpathDestinationFrame),
-							500, 50, 50);
-			this.getWait().until(
-					ExpectedConditions.elementToBeClickable(gmailLink));
-		}
-		gmailLink.click();
-		return new CommonAndroidPage(this.getLazyDriver());
 	}
 
 	public WebElement selectRandomConnect() throws Exception {

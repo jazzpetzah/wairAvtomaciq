@@ -1037,42 +1037,6 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Verify mail subject
-	 * 
-	 * @step. ^mail subject is (.*)$
-	 * 
-	 * @param subject
-	 *            the email subject header to check
-	 * @throws Exception
-	 * 
-	 */
-	@Then("^mail subject is (.*)$")
-	public void ThenMailSubjectIs(String subject) throws Exception {
-		Assert.assertEquals(subject,
-				PagesCollection.commonAndroidPage.getGmailSubject());
-	}
-
-	/**
-	 * Verify that the open email message contains the given email address
-	 * somewhere within
-	 * 
-	 * @step. ^mail content contains my $
-	 * 
-	 * @param email
-	 *            the email to check for within the open message
-	 * 
-	 */
-	@Then("^mail content contains my (.*)$")
-	public void ThenMailContentContains(String email) {
-		try {
-			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertTrue(PagesCollection.commonAndroidPage.mailContains(email));
-	}
-
-	/**
 	 * Rotate device to landscape
 	 * 
 	 * @step. ^I rotate UI to landscape$
