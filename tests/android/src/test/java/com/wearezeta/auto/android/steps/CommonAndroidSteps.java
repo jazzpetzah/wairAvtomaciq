@@ -144,7 +144,7 @@ public class CommonAndroidSteps {
 	}
 
 	private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
-	private static final long INERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
+	private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
 	private void onDriverInitFinished(RemoteWebDriver drv) {
 		final By locator = By
@@ -157,20 +157,15 @@ public class CommonAndroidSteps {
 				break;
 			} catch (WebDriverException e) {
 				savedException = e;
-				log.debug("Waiting 1 second for the views to initialize properly...");
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-					return;
-				}
+				log.debug("Waiting for the views to initialize properly...");
 			} catch (Exception e) {
 				Throwables.propagate(e);
 			}
-		} while (System.currentTimeMillis() - millisecondsStarted <= INERFACE_INIT_TIMEOUT_MILLISECONDS);
-		if (System.currentTimeMillis() - millisecondsStarted > INERFACE_INIT_TIMEOUT_MILLISECONDS) {
+		} while (System.currentTimeMillis() - millisecondsStarted <= INTERFACE_INIT_TIMEOUT_MILLISECONDS);
+		if (System.currentTimeMillis() - millisecondsStarted > INTERFACE_INIT_TIMEOUT_MILLISECONDS) {
 			log.error(String
 					.format("UI views have not been initialized properly after %s seconds. Restarting Selendroid usually helps ;-)",
-							INERFACE_INIT_TIMEOUT_MILLISECONDS));
+							INTERFACE_INIT_TIMEOUT_MILLISECONDS));
 			throw savedException;
 		}
 		try {

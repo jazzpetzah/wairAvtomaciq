@@ -182,10 +182,32 @@ public class DialogPage extends AndroidPage {
 		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 500);
 	}
 
+	private static final int MAX_CURSOR_SWIPE_TRIES = 5;
+
 	public void swipeOnCursorInput() throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorInput));
-		DriverUtils.swipeRight(this.getDriver(), cursorInput,
-				DEFAULT_SWIPE_TIME);
+		final By fakeCursorLocator = By
+				.id(AndroidLocators.DialogPage.idFakeCursor);
+		int ntry = 1;
+		do {
+			final int initialCursorOffset = getDriver()
+					.findElement(fakeCursorLocator).getLocation().getX();
+			DriverUtils.swipeRight(this.getDriver(), cursorInput,
+					DEFAULT_SWIPE_TIME);
+			if (getDriver().findElement(fakeCursorLocator).getLocation().getX() > initialCursorOffset) {
+				return;
+			}
+			ntry++;
+			log.debug(String.format(
+					"Failed to swipe the text cursor. Retrying (%s of %s)...",
+					ntry, MAX_CURSOR_SWIPE_TRIES));
+			this.hideKeyboard();
+			Thread.sleep(1000);
+		} while (ntry <= MAX_CURSOR_SWIPE_TRIES);
+		throw new RuntimeException(
+				String.format(
+						"Failed to swipe the text cursor on input field after %s retries!",
+						MAX_CURSOR_SWIPE_TRIES));
 	}
 
 	public void tapAddPictureBtn() throws Exception {
