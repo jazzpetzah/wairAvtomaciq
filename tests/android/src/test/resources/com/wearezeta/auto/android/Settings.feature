@@ -2,8 +2,7 @@ Feature: Settings
 
   @id67 @id68 @regression
   Scenario Outline: Open and Close settings page
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I tap on my avatar
@@ -15,8 +14,8 @@ Feature: Settings
     Then I see personal info page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @id71 @regression
   Scenario Outline: Can not open Settings page when editing user name
@@ -35,8 +34,7 @@ Feature: Settings
 
   @id90 @id91 @id92 @regression
   Scenario Outline: Open Close About page from Settings page
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I tap on my avatar
@@ -47,8 +45,8 @@ Feature: Settings
     Then I see personal info page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
 # Selendroid cannot interact with external apps
   # @id863 @regression
