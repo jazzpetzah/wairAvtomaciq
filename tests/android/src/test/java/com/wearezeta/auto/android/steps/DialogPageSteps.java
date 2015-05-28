@@ -325,7 +325,6 @@ public class DialogPageSteps {
 	public void WhenIPressButton(String buttonName) throws Throwable {
 		switch (buttonName.toLowerCase()) {
 		case "take photo":
-			Thread.sleep(1000);
 			PagesCollection.dialogPage.takePhoto();
 			break;
 		case "confirm":
