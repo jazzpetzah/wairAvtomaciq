@@ -25,7 +25,9 @@ Feature: Settings
     And I see Contact list
     When I tap on my avatar
     And I tap on my name
-    Then Menu options are unreachable
+    And I tap options button
+    And I tap about button
+    Then I do not see About page
 
     Examples: 
       | Login      | Password      | Name      |

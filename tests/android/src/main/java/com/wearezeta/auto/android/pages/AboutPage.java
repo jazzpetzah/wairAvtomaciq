@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -28,13 +29,18 @@ public class AboutPage extends AndroidPage {
 		throw new RuntimeException("Swipe is not supported on About page");
 	}
 
-	public boolean aboutLogoIsVisible() throws Exception {
+	public boolean isVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(aboutLogo);
 	}
 
 	public PersonalInfoPage tapOnVersion() throws Exception {
 		aboutClose.click();
 		return new PersonalInfoPage(this.getLazyDriver());
+	}
+
+	public boolean isInvisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(AndroidLocators.AboutPage.xpathAboutClose));
 	}
 
 }
