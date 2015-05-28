@@ -88,6 +88,8 @@ public class ContactListPage extends AndroidPage {
 	public AndroidPage tapOnName(String name) throws Exception {
 		AndroidPage page = null;
 		findInContactList(name, 5).click();
+		// Wait for the animation, no way to workaround this :-(
+		Thread.sleep(1000);
 		try {
 			page = detectCurrentPage();
 		} catch (WebDriverException e) {

@@ -162,7 +162,7 @@ public class DialogPage extends AndroidPage {
 
 	public void waitForCursorInputVisible() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idEditText), 5);
+				By.id(AndroidLocators.CommonLocators.idEditText));
 	}
 
 	public void tapOnCursorInput() {
