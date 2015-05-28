@@ -125,6 +125,10 @@ public final class AndroidLocators {
 	public static final class ConnectToPage {
 		public static final String idConnectToHeader = "taet__participants__header";
 
+		public static final Function<String, String> xpathConnectToHeaderByText = text -> String
+				.format("//*[@id='taet__participants__header' and @value='%s']",
+						text);
+
 		public static final String idConnectToCharCounter = "ttv__send_connect_request__connect_button__character_counter";
 
 		public static final String idConnectRequestAccept = "zb__connect_request__accept_button";

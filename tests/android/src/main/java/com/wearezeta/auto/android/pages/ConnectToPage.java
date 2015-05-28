@@ -13,10 +13,6 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ConnectToPage extends AndroidPage {
-
-	@FindBy(id = AndroidLocators.ConnectToPage.idConnectToHeader)
-	protected WebElement connectToHeader;
-
 	@FindBy(id = AndroidLocators.ConnectToPage.idConnectRequestAccept)
 	private WebElement connectAcceptBtn;
 
@@ -69,10 +65,11 @@ public class ConnectToPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public String getConnectToHeader() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.ConnectToPage.idConnectToHeader));
-		return connectToHeader.getText();
+	public boolean isConnectToHeaderVisible(String text) throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.ConnectToPage.xpathConnectToHeaderByText
+						.apply(text));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public DialogPage pressAcceptConnectButton() throws Exception {

@@ -28,9 +28,11 @@ public class ConnectToPageSteps {
 		if (PagesCollection.connectToPage == null) {
 			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
 		}
-		Assert.assertEquals(contact.toLowerCase(),
-				PagesCollection.connectToPage.getConnectToHeader()
-						.toLowerCase());
+		Assert.assertTrue(
+				String.format(
+						"Connect To header with text '%s' is not visible, but should be",
+						contact), PagesCollection.connectToPage
+						.isConnectToHeaderVisible(contact));
 	}
 
 	/**
