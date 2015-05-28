@@ -470,29 +470,27 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * checks to see that the top people section is visible
+	 * Check to see that the top people section is visible or not
 	 * 
-	 * @step. ^I see TOP PEOPLE$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I see TOP PEOPLE$")
-	public void ThenISeeTopPeople() throws Exception {
-		Assert.assertTrue(PagesCollection.peoplePickerPage
-				.isTopPeopleHeaderVisible());
-	}
-
-	/**
-	 * checks to see that the top people section is NOT visible
-	 * 
-	 * @step. ^I see TOP PEOPLE$
+	 * @step. ^I( do not)? see TOP PEOPLE$
+	 * @param shouldNotBeVisible
+	 *            is set to null is "do not" part does not exist in the step
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I do not see TOP PEOPLE$")
-	public void ThenIDontSeeTopPeople() throws Exception {
-		Assert.assertFalse(PagesCollection.peoplePickerPage
-				.isTopPeopleHeaderVisible());
+	@Then("^I( do not)? see TOP PEOPLE$")
+	public void ThenIDontSeeTopPeople(String shouldNotBeVisible)
+			throws Exception {
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue(
+					"TOP PEOPLE overlay is hidden, but it should be visible",
+					PagesCollection.peoplePickerPage.isTopPeopleHeaderVisible());
+		} else {
+			Assert.assertTrue(
+					"TOP PEOPLE overlay is visible, but it should be hidden",
+					PagesCollection.peoplePickerPage
+							.waitUntilTopPeopleHeaderInvisible());
+		}
 	}
 
 	/**

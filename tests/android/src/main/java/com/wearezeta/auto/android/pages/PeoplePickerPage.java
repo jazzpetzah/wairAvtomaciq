@@ -127,6 +127,13 @@ public class PeoplePickerPage extends AndroidPage {
 		return DriverUtils.isElementPresentAndDisplayed(pickerTopPeopleHeader);
 	}
 
+	public boolean waitUntilTopPeopleHeaderInvisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorDissapears(
+						getDriver(),
+						By.id(AndroidLocators.PeoplePickerPage.idPickerTopPeopleHeader));
+	}
+
 	public AndroidPage selectContact(String contactName) throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				pickerSearchUser);
