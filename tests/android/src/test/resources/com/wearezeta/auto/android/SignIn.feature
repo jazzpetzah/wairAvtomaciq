@@ -49,26 +49,27 @@ Feature: Sign In
     Examples: 
       | Login   | Password | ErrMessage                          |
       | aaa 	| aaa 	   | Please enter a valid email address. |
-      
-  @id2020 @regression
-  Scenario Outline: Verify possibility of reseting password from sign in
-    Given There is 1 user where <Name> is me
-    Given I see welcome screen
-    When I switch to email sign in screen
-    And I press FORGOT PASSWORD button
-    And I request reset password for <Login>
-    And I get new <Name> password link
-    Then I reset password by URL to new <NewPassword>
-    When I restore the application
-    And I wait for 2 seconds
-    And I minimize the application
-    And I restore the application
-    And I switch to email sign in screen
-    And I have entered login <Login>
-    And I have entered password <NewPassword>
-    And I press Log in button
-    Then I see Contact list
 
-    Examples: 
-      | Login      | Password      | Name      | NewPassword |
-      | user1Email | user1Password | user1Name | qatest1234  |
+# Selendroid cannot interact with external apps
+  # @id2020 @regression
+  # Scenario Outline: Verify possibility of reseting password from sign in
+  #  Given There is 1 user where <Name> is me
+  #  Given I see welcome screen
+  #  When I switch to email sign in screen
+  #  And I press FORGOT PASSWORD button
+  #  And I request reset password for <Login>
+  #  And I get new <Name> password link
+  #  Then I reset password by URL to new <NewPassword>
+  #  When I restore the application
+  #  And I wait for 2 seconds
+  #  And I minimize the application
+  #  And I restore the application
+  #  And I switch to email sign in screen
+  #  And I have entered login <Login>
+  #  And I have entered password <NewPassword>
+  #  And I press Log in button
+  #  Then I see Contact list
+  #
+  #  Examples: 
+  #    | Login      | Password      | Name      | NewPassword |
+  #    | user1Email | user1Password | user1Name | qatest1234  |
