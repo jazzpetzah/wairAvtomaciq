@@ -565,15 +565,13 @@ public class DriverUtils {
 
 	public static Optional<BufferedImage> takeScreenshot(ZetaDriver driver) {
 		try {
-			if (!driver.isSessionLost()) {
-				byte[] scrImage = ((TakesScreenshot) driver)
-						.getScreenshotAs(OutputType.BYTES);
-				InputStream in = new ByteArrayInputStream(scrImage);
-				BufferedImage bImageFromConvert = ImageIO.read(in);
-				return Optional.of(bImageFromConvert);
-			}
+			byte[] scrImage = ((TakesScreenshot) driver)
+					.getScreenshotAs(OutputType.BYTES);
+			InputStream in = new ByteArrayInputStream(scrImage);
+			BufferedImage bImageFromConvert = ImageIO.read(in);
+			return Optional.of(bImageFromConvert);
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 			log.error("Selenium driver has failed to take the screenshot of the current screen!");
 		}
 		return Optional.empty();

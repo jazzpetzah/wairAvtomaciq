@@ -182,14 +182,6 @@ public class PersonalInfoPage extends AndroidPage {
 		return DriverUtils.isElementPresentAndDisplayed(settingBox);
 	}
 
-	public boolean waitForOptionsMenuToDisappear() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorDissapears(
-						this.getDriver(),
-						By.xpath(AndroidLocators.PersonalInfoPage.xpathAboutButton),
-						10);
-	}
-
 	public boolean waitForSettingsDissapear() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorDissapears(

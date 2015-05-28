@@ -87,7 +87,7 @@ Feature: People View
     When I navigate back from dialog page
     And I tap on contact name <GroupChatName>
     And I tap conversation details button
-    Then I see the correct participant <Contact1NewName> and <Contact2NewName> avatars
+    Then I see the correct participant avatars for <Contact1NewName>,<Contact2NewName>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
@@ -155,19 +155,16 @@ Feature: People View
     Then I see profile page
     And I do not see 1:1 options menu
     When I press options menu button
-    Then I do not see profile page
     And I see correct 1:1 options menu
     When I do small swipe down
     Then I do not see 1:1 options menu
     And I see profile page
     When I press options menu button
     Then I see correct 1:1 options menu
-    And I do not see profile page
     When I swipe left
     And I swipe right
     And I swipe up
     Then I see correct 1:1 options menu
-    And I do not see profile page
 
     Examples: 
       | Login      | Password      | Name      | Contact   |

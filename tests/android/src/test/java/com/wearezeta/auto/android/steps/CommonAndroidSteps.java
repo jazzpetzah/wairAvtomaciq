@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -111,9 +112,20 @@ public class CommonAndroidSteps {
 			capabilities.setCapability("resetKeyboard", true);
 		}
 
-		return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-				.resetDriver(url, capabilities, 1, this::onDriverInitFinished,
-						this::onDriverInitStarted);
+		try {
+			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
+					.resetDriver(url, capabilities, 1,
+							this::onDriverInitFinished,
+							this::onDriverInitStarted);
+		} catch (SessionNotCreatedException e) {
+			// Unlock the screen and retry
+			AndroidCommonUtils.unlockScreen();
+			Thread.sleep(5000);
+			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
+					.resetDriver(url, capabilities, 1,
+							this::onDriverInitFinished,
+							this::onDriverInitStarted);
+		}
 	}
 
 	private Boolean onDriverInitStarted() {
@@ -132,7 +144,7 @@ public class CommonAndroidSteps {
 	}
 
 	private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
-	private static final long INERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
+	private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
 	private void onDriverInitFinished(RemoteWebDriver drv) {
 		final By locator = By
@@ -145,20 +157,15 @@ public class CommonAndroidSteps {
 				break;
 			} catch (WebDriverException e) {
 				savedException = e;
-				log.debug("Waiting 1 second for the views to initialize properly...");
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e1) {
-					return;
-				}
+				log.debug("Waiting for the views to initialize properly...");
 			} catch (Exception e) {
 				Throwables.propagate(e);
 			}
-		} while (System.currentTimeMillis() - millisecondsStarted <= INERFACE_INIT_TIMEOUT_MILLISECONDS);
-		if (System.currentTimeMillis() - millisecondsStarted > INERFACE_INIT_TIMEOUT_MILLISECONDS) {
+		} while (System.currentTimeMillis() - millisecondsStarted <= INTERFACE_INIT_TIMEOUT_MILLISECONDS);
+		if (System.currentTimeMillis() - millisecondsStarted > INTERFACE_INIT_TIMEOUT_MILLISECONDS) {
 			log.error(String
 					.format("UI views have not been initialized properly after %s seconds. Restarting Selendroid usually helps ;-)",
-							INERFACE_INIT_TIMEOUT_MILLISECONDS));
+							INTERFACE_INIT_TIMEOUT_MILLISECONDS));
 			throw savedException;
 		}
 		try {
@@ -1027,42 +1034,6 @@ public class CommonAndroidSteps {
 				.getUserActivationLink(RegistrationPageSteps.activationMessage);
 		PagesCollection.peoplePickerPage = PagesCollection.commonAndroidPage
 				.activateByLink(link);
-	}
-
-	/**
-	 * Verify mail subject
-	 * 
-	 * @step. ^mail subject is (.*)$
-	 * 
-	 * @param subject
-	 *            the email subject header to check
-	 * @throws Exception
-	 * 
-	 */
-	@Then("^mail subject is (.*)$")
-	public void ThenMailSubjectIs(String subject) throws Exception {
-		Assert.assertEquals(subject,
-				PagesCollection.commonAndroidPage.getGmailSubject());
-	}
-
-	/**
-	 * Verify that the open email message contains the given email address
-	 * somewhere within
-	 * 
-	 * @step. ^mail content contains my $
-	 * 
-	 * @param email
-	 *            the email to check for within the open message
-	 * 
-	 */
-	@Then("^mail content contains my (.*)$")
-	public void ThenMailContentContains(String email) {
-		try {
-			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertTrue(PagesCollection.commonAndroidPage.mailContains(email));
 	}
 
 	/**

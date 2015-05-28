@@ -35,18 +35,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeaderEditable)
 	private WebElement groupChatNameEditable;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeader)
-	private List<WebElement> otherUserName;
-
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsSubHeader)
-	private List<WebElement> otherUserMail;
-
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idOtherUserPersonalInfoSingleName)
-	private List<WebElement> otherUserSingleName;
-
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idOtherUserPersonalInfoSingleMail)
-	private List<WebElement> otherUserSingleMail;
-
 	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idUserProfileConfirmationMenu)
 	private WebElement confirmMenu;
 
@@ -108,19 +96,25 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public ContactListPage pressLeaveButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), leaveButton);
 		leaveButton.click();
 		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public void pressSilenceButton() throws Exception {
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), silenceButton);
 		silenceButton.click();
 	}
 
 	public void clickBlockBtn() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), blockButton);
 		blockButton.click();
 	}
 
 	public AndroidPage clickUnblockBtn() throws Exception {
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), unblockButton);
 		unblockButton.click();
 		return new DialogPage(this.getLazyDriver());
 	}
@@ -199,32 +193,31 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		}
 	}
 
-	public boolean isOtherUserNameVisible(String name) throws Exception {
-		String text;
-		if (otherUserName.size() > 0) {
-			text = otherUserName.get(0).getText();
-		} else {
-			try {
-				text = otherUserSingleName.get(0).getText();
-			} catch (Exception ex) {
-				text = "NONE";
-			}
-		}
-		return text.toLowerCase().equals(name.toLowerCase());
+	public boolean isOtherUserNameVisible(String expectedName) throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathPartcipantNameByText
+								.apply(expectedName)), 1)
+				|| DriverUtils
+						.waitUntilLocatorIsDisplayed(
+								getDriver(),
+								By.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathSingleParticipantNameByText
+										.apply(expectedName)), 1);
 	}
 
-	public boolean isOtherUserMailVisible(String mail) throws Exception {
-		String text;
-		if (otherUserName.size() > 0) {
-			text = otherUserMail.get(0).getText();
-		} else {
-			try {
-				text = otherUserSingleMail.get(0).getText();
-			} catch (Exception ex) {
-				text = "NONE";
-			}
-		}
-		return text.toLowerCase().equals(mail.toLowerCase());
+	public boolean isOtherUserMailVisible(String expectedEmail)
+			throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathPartcipantEmailByText
+								.apply(expectedEmail)), 1)
+				|| DriverUtils
+						.waitUntilLocatorIsDisplayed(
+								getDriver(),
+								By.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathSingleParticipantEmailByText
+										.apply(expectedEmail)), 1);
 	}
 
 	public boolean isConversationAlertVisible() {
@@ -306,6 +299,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		final By locator = By
 				.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathParticipantAvatarByName
 						.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 5);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 }

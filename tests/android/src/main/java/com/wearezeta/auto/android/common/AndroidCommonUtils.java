@@ -51,6 +51,10 @@ public class AndroidCommonUtils extends CommonUtils {
 		executeAdb("shell am start -t image/* -a android.intent.action.VIEW");
 	}
 
+	public static void unlockScreen() throws Exception {
+		executeAdb("shell am start -n io.appium.unlock/.Unlock");
+	}
+
 	public static void genericScreenTap(int x, int y) throws Exception {
 		executeAdb(String.format("shell input tap %d %d", x, y));
 	}

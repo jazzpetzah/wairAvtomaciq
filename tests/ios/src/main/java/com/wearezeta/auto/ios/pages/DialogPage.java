@@ -138,7 +138,7 @@ public class DialogPage extends IOSPage {
 	private WebElement chatheadAvatarImage;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
-	private String connectingLabel = "CONNECTING TO %s. START A CONVERSATION";
+	private String connectingLabel = "CONNECTING TO %s.";
 
 	public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);

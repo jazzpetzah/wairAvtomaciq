@@ -125,6 +125,10 @@ public final class AndroidLocators {
 	public static final class ConnectToPage {
 		public static final String idConnectToHeader = "taet__participants__header";
 
+		public static final Function<String, String> xpathConnectToHeaderByText = text -> String
+				.format("//*[@id='taet__participants__header' and @value='%s']",
+						text);
+
 		public static final String idConnectToCharCounter = "ttv__send_connect_request__connect_button__character_counter";
 
 		public static final String idConnectRequestAccept = "zb__connect_request__accept_button";
@@ -267,6 +271,8 @@ public final class AndroidLocators {
 		public static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
 
 		public static final String xpathLastPingMessage = "(//*[@id='ttv__row_conversation__ping_message'])[last()]";
+		
+		public static final String idFakeCursor = "v__cursor__fake_cursor";
 	}
 
 	public static final class LockscreenCallingPage {
@@ -280,13 +286,25 @@ public final class AndroidLocators {
 	public static final class OtherUserPersonalInfoPage {
 		public static final String idParticipantsHeader = "ttv__participants__header";
 
+		public static final Function<String, String> xpathPartcipantNameByText = text -> String
+				.format("//*[@id='ttv__participants__header' and @value='%s']",
+						text);
+
+		public static final Function<String, String> xpathPartcipantEmailByText = text -> String
+				.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
+						text);
+
+		public static final Function<String, String> xpathSingleParticipantNameByText = text -> String
+				.format("//*[@id='ttv__single_participants__header' and @value='%s']",
+						text);
+
+		public static final Function<String, String> xpathSingleParticipantEmailByText = text -> String
+				.format("//*[@id='ttv__single_participants__sub_header' and @value='%s']",
+						text);
+
 		public static final String idParticipantsHeaderEditable = "taet__participants__header__editable";
 
 		public static final String idParticipantsSubHeader = "ttv__participants__sub_header";
-
-		public static final String idOtherUserPersonalInfoSingleName = "ttv__single_participants__header";
-
-		public static final String idOtherUserPersonalInfoSingleMail = "ttv__single_participants__sub_header";
 
 		public static final String idUserProfileConfirmationMenu = "user_profile_confirmation_menu";
 
@@ -308,17 +326,16 @@ public final class AndroidLocators {
 
 		public static final String idBlockButton = "ttv__conversation_settings__block";
 
+		// Names on avatars are in uppercase and only the first part is visible
 		public static final Function<String, String> xpathParticipantAvatarByName = name -> String
-				.format("//*[@id='pfac__participants']//ChatheadWithTextFooter[.//*[@value='%s']]",
-						name.toUpperCase());
+				.format("//ChatheadWithTextFooter[.//*[@value='%s']]", name
+						.toUpperCase().split("\\s+")[0]);
 	}
 
 	public static final class PeoplePickerPage {
 
 		public static final Function<String, String> xpathTopConversationContactByName = name -> String
 				.format("//*[@value='%s']", name.toUpperCase());
-
-		public static final String xpathGmailLink = "//*[@value='Gmail']";
 
 		public static final String xpathDestinationFrame = "//*[@id='resolver_grid' or @id='resolver_list']";
 

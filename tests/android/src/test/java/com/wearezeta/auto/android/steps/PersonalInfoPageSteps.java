@@ -220,22 +220,6 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
-	 * Checks that app menu options are not reachable after the user taps on
-	 * self name
-	 * 
-	 * @step. ^Menu options are unreachable$
-	 *
-	 * @throws Exception
-	 */
-	@Then("^Menu options are unreachable$")
-	public void ThenMenuOptionsAreUnreachable() throws Exception {
-		PagesCollection.personalInfoPage.tapOptionsButton();
-		Assert.assertTrue("Options menu still exists",
-				PagesCollection.personalInfoPage
-						.waitForOptionsMenuToDisappear());
-	}
-
-	/**
 	 * Checks that self name edit field is showed
 	 * 
 	 * @step. ^I see edit name field$

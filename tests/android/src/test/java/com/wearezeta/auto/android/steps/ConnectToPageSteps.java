@@ -28,9 +28,11 @@ public class ConnectToPageSteps {
 		if (PagesCollection.connectToPage == null) {
 			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
 		}
-		Assert.assertEquals(contact.toLowerCase(),
-				PagesCollection.connectToPage.getConnectToHeader()
-						.toLowerCase());
+		Assert.assertTrue(
+				String.format(
+						"Connect To header with text '%s' is not visible, but should be",
+						contact), PagesCollection.connectToPage
+						.isConnectToHeaderVisible(contact));
 	}
 
 	/**
@@ -61,6 +63,9 @@ public class ConnectToPageSteps {
 		}
 		PagesCollection.connectToPage.waitUntilIgnoreButtonIsVisible();
 		PagesCollection.connectToPage.swipeUpCoordinates(1000, 90);
+		// It is very hard to detect whehn swipe animation is finished that is
+		// why this hardcoded sleep is needed here
+		Thread.sleep(5000);
 	}
 
 	/**

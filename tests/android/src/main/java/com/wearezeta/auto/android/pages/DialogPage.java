@@ -162,7 +162,7 @@ public class DialogPage extends AndroidPage {
 
 	public void waitForCursorInputVisible() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idEditText), 5);
+				By.id(AndroidLocators.CommonLocators.idEditText));
 	}
 
 	public void tapOnCursorInput() {
@@ -182,10 +182,32 @@ public class DialogPage extends AndroidPage {
 		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 500);
 	}
 
+	private static final int MAX_CURSOR_SWIPE_TRIES = 5;
+
 	public void swipeOnCursorInput() throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorInput));
-		DriverUtils.swipeRight(this.getDriver(), cursorInput,
-				DEFAULT_SWIPE_TIME);
+		final By fakeCursorLocator = By
+				.id(AndroidLocators.DialogPage.idFakeCursor);
+		int ntry = 1;
+		do {
+			final int initialCursorOffset = getDriver()
+					.findElement(fakeCursorLocator).getLocation().getX();
+			DriverUtils.swipeRight(this.getDriver(), cursorInput,
+					DEFAULT_SWIPE_TIME);
+			if (getDriver().findElement(fakeCursorLocator).getLocation().getX() > initialCursorOffset) {
+				return;
+			}
+			ntry++;
+			log.debug(String.format(
+					"Failed to swipe the text cursor. Retrying (%s of %s)...",
+					ntry, MAX_CURSOR_SWIPE_TRIES));
+			this.hideKeyboard();
+			Thread.sleep(1000);
+		} while (ntry <= MAX_CURSOR_SWIPE_TRIES);
+		throw new RuntimeException(
+				String.format(
+						"Failed to swipe the text cursor on input field after %s retries!",
+						MAX_CURSOR_SWIPE_TRIES));
 	}
 
 	public void tapAddPictureBtn() throws Exception {
@@ -227,7 +249,6 @@ public class DialogPage extends AndroidPage {
 		if (label.equals(MUTE_BUTTON_LABEL)) {
 			callingButtonImage = getElementScreenshot(muteBtn).orElseThrow(
 					IllegalStateException::new);
-
 			path = CommonUtils.getCallingMuteButtonPath(DialogPage.class);
 		} else if (label.equals(SPEAKER_BUTTON_LABEL)) {
 			callingButtonImage = getElementScreenshot(speakerBtn).orElseThrow(
@@ -239,13 +260,18 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
+	private static final int CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS = 15;
+
 	public boolean checkNoCallingOverlay() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.idCallingMessage), 20);
+				By.id(AndroidLocators.DialogPage.idCallingMessage),
+				CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public boolean checkCallingOverlay() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(callingMessageText);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idCallingMessage),
+				CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public void typeAndSendMessage(String message) throws Exception {
@@ -327,6 +353,7 @@ public class DialogPage extends AndroidPage {
 	public void confirm() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), okButton);
 		okButton.click();
+		this.verifyDriverIsAvailableAfterTimeout();
 	}
 
 	public void takePhoto() throws Exception {
