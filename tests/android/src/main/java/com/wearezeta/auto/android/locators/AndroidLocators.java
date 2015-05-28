@@ -320,9 +320,10 @@ public final class AndroidLocators {
 
 		public static final String idBlockButton = "ttv__conversation_settings__block";
 
+		// Names on avatars are in uppercase and only the first part is visible
 		public static final Function<String, String> xpathParticipantAvatarByName = name -> String
-				.format("//*[@id='pfac__participants']//ChatheadWithTextFooter[.//*[@value='%s']]",
-						name.toUpperCase());
+				.format("//ChatheadWithTextFooter[.//*[@value='%s']]", name
+						.toUpperCase().split("\\s+")[0]);
 	}
 
 	public static final class PeoplePickerPage {

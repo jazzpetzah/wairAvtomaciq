@@ -87,7 +87,7 @@ Feature: People View
     When I navigate back from dialog page
     And I tap on contact name <GroupChatName>
     And I tap conversation details button
-    Then I see the correct participant <Contact1NewName> and <Contact2NewName> avatars
+    Then I see the correct participant avatars for <Contact1NewName>,<Contact2NewName>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |

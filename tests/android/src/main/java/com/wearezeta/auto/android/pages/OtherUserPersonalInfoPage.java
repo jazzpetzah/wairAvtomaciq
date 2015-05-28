@@ -299,6 +299,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		final By locator = By
 				.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathParticipantAvatarByName
 						.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 5);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 }
