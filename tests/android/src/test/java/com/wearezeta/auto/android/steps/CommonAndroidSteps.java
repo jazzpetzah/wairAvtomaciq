@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -73,7 +74,7 @@ public class CommonAndroidSteps {
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
-	public static final int DEFAULT_SWIPE_TIME = 500;
+	public static final int DEFAULT_SWIPE_TIME = 1500;
 	private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
 
 	private static String getUrl() throws Exception {
@@ -111,9 +112,20 @@ public class CommonAndroidSteps {
 			capabilities.setCapability("resetKeyboard", true);
 		}
 
-		return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-				.resetDriver(url, capabilities, 1, this::onDriverInitFinished,
-						this::onDriverInitStarted);
+		try {
+			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
+					.resetDriver(url, capabilities, 1,
+							this::onDriverInitFinished,
+							this::onDriverInitStarted);
+		} catch (SessionNotCreatedException e) {
+			// Unlock the screen and retry
+			AndroidCommonUtils.unlockScreen();
+			Thread.sleep(5000);
+			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
+					.resetDriver(url, capabilities, 1,
+							this::onDriverInitFinished,
+							this::onDriverInitStarted);
+		}
 	}
 
 	private Boolean onDriverInitStarted() {
@@ -238,22 +250,22 @@ public class CommonAndroidSteps {
 
 	@When("^I swipe right$")
 	public void ISwipeRight() throws Exception {
-		PagesCollection.androidPage.swipeRightCoordinates(DEFAULT_SWIPE_TIME);
+		PagesCollection.currentPage.swipeRightCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe left$")
 	public void ISwipeLeft() throws Exception {
-		PagesCollection.androidPage.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
+		PagesCollection.currentPage.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe up$")
 	public void ISwipeUp() throws Exception {
-		PagesCollection.androidPage.swipeUpCoordinates(DEFAULT_SWIPE_TIME);
+		PagesCollection.currentPage.swipeUpCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe down$")
 	public void ISwipeDown() throws Exception {
-		PagesCollection.androidPage.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
+		PagesCollection.currentPage.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	public void commonBefore() throws Exception {
@@ -357,7 +369,7 @@ public class CommonAndroidSteps {
 		IOpenBrowserApp();
 		PagesCollection.contactListPage.shareURLFromNativeBrowser();
 		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.currentPage;
 		}
 		Thread.sleep(5000);
 		PagesCollection.dialogPage.sendMessageInInput();
@@ -392,7 +404,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I tap on center of screen")
 	public void WhenITapOnCenterOfScreen() throws Throwable {
-		PagesCollection.androidPage.tapOnCenterOfScreen();
+		PagesCollection.currentPage.tapOnCenterOfScreen();
 	}
 
 	/**

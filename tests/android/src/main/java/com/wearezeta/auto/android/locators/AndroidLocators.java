@@ -135,7 +135,7 @@ public final class AndroidLocators {
 	}
 
 	public static final class ContactListPage {
-		public static final String idConversationListLoadingIndicator = "lbv__conversation_list__loading_indicator";
+		public static final String xpathConversationListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
 
 		public static final String idConversationListFrame = "pfac__conversation_list";
 
@@ -280,13 +280,25 @@ public final class AndroidLocators {
 	public static final class OtherUserPersonalInfoPage {
 		public static final String idParticipantsHeader = "ttv__participants__header";
 
+		public static final Function<String, String> xpathPartcipantNameByText = text -> String
+				.format("//*[@id='ttv__participants__header' and @value='%s']",
+						text);
+
+		public static final Function<String, String> xpathPartcipantEmailByText = text -> String
+				.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
+						text);
+
+		public static final Function<String, String> xpathSingleParticipantNameByText = text -> String
+				.format("//*[@id='ttv__single_participants__header' and @value='%s']",
+						text);
+
+		public static final Function<String, String> xpathSingleParticipantEmailByText = text -> String
+				.format("//*[@id='ttv__single_participants__sub_header' and @value='%s']",
+						text);
+
 		public static final String idParticipantsHeaderEditable = "taet__participants__header__editable";
 
 		public static final String idParticipantsSubHeader = "ttv__participants__sub_header";
-
-		public static final String idOtherUserPersonalInfoSingleName = "ttv__single_participants__header";
-
-		public static final String idOtherUserPersonalInfoSingleMail = "ttv__single_participants__sub_header";
 
 		public static final String idUserProfileConfirmationMenu = "user_profile_confirmation_menu";
 
@@ -308,9 +320,10 @@ public final class AndroidLocators {
 
 		public static final String idBlockButton = "ttv__conversation_settings__block";
 
+		// Names on avatars are in uppercase and only the first part is visible
 		public static final Function<String, String> xpathParticipantAvatarByName = name -> String
-				.format("//*[@id='pfac__participants']//ChatheadWithTextFooter[.//*[@value='%s']]",
-						name.toUpperCase());
+				.format("//ChatheadWithTextFooter[.//*[@value='%s']]", name
+						.toUpperCase().split("\\s+")[0]);
 	}
 
 	public static final class PeoplePickerPage {

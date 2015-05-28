@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.pages;
 
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -34,7 +35,7 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.ConnectToPage.idConnectToCharCounter)
 	private WebElement connectCharCounter;
 
-	@FindBy(id= AndroidLocators.PeoplePickerPage.idParticipantsClose)
+	@FindBy(id = AndroidLocators.PeoplePickerPage.idParticipantsClose)
 	private WebElement closeButton;
 
 	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idRightActionButton)
@@ -69,16 +70,21 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public String getConnectToHeader() throws Exception {
-		this.getWait().until(ExpectedConditions.visibilityOf(connectToHeader));
-		return connectToHeader.getText().toLowerCase();
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.ConnectToPage.idConnectToHeader));
+		return connectToHeader.getText();
 	}
 
 	public DialogPage pressAcceptConnectButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				connectAcceptBtn);
 		connectAcceptBtn.click();
 		return new DialogPage(this.getLazyDriver());
 	}
 
 	public ContactListPage pressIgnoreButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				connectIgnoreBtn);
 		connectIgnoreBtn.click();
 		return new ContactListPage(this.getLazyDriver());
 	}
@@ -88,7 +94,7 @@ public class ConnectToPage extends AndroidPage {
 				&& DriverUtils.isElementPresentAndDisplayed(connectAcceptBtn);
 	}
 
-	public boolean isPending() throws NumberFormatException, Exception {
+	public boolean isPending() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(pendingText);
 	}
 
@@ -107,11 +113,10 @@ public class ConnectToPage extends AndroidPage {
 		sendConnectionRequestButton.click();
 		return new ContactListPage(this.getLazyDriver());
 	}
-	
+
 	public void waitUntilIgnoreButtonIsVisible() throws Exception {
 		this.getWait().until(
-				ExpectedConditions
-						.elementToBeClickable(connectIgnoreBtn));
+				ExpectedConditions.elementToBeClickable(connectIgnoreBtn));
 	}
 
 	public boolean getConnectButtonState() {

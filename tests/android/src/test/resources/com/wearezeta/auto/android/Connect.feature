@@ -377,7 +377,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Message      |
       | user1Email | user1Password | user1Name | user2Name | Hello friend |
 
-  @regression_off @id720 @mute
+  @regression @id720
   Scenario Outline: I do not want to be seen in the search results of someone I blocked
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -398,10 +398,8 @@ Feature: Connect
   @id723 @regression
   Scenario Outline: I want to unblock someone from their Profile view
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given <Contact2> is connected to <Name>
+    Given Myself is connected to <Contact1>,<Contact2>
     Given User <Name> blocks user <Contact1>
-    And I wait for 120 seconds
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list
     And I press Open StartUI
@@ -423,7 +421,7 @@ Feature: Connect
   @id1405 @regression
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
+    Given <Contact1> is connected to me
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I press Open StartUI
