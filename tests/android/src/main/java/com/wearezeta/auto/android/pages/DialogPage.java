@@ -261,13 +261,18 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
+	private static final int CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS = 15;
+
 	public boolean checkNoCallingOverlay() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.idCallingMessage), 20);
+				By.id(AndroidLocators.DialogPage.idCallingMessage),
+				CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public boolean checkCallingOverlay() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(callingMessageText);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idCallingMessage),
+				CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public void typeAndSendMessage(String message) throws Exception {

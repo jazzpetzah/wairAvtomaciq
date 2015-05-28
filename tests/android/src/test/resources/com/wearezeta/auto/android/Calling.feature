@@ -110,9 +110,9 @@ Feature: Calling
     And I see call overlay
     And I answer the call from the overlay bar
     When I press Mute button
-    Then I see MUTE calling button is pressed
+    Then I see MUTE button is pressed
     When I press Speaker button
-    Then I see SPEAKER calling button is pressed
+    Then I see SPEAKER button is pressed
     When I press Cancel call button
     Then I do not see call overlay
     And <Contact> stops all calls to me

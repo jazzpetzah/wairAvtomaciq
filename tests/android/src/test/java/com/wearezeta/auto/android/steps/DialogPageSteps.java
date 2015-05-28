@@ -194,20 +194,21 @@ public class DialogPageSteps {
 	/**
 	 * Checks to see if a certain calling button is pressed
 	 * 
-	 * @step. ^I see (.*) calling button is pressed$
+	 * @step. ^I see (.*) button is pressed$
 	 * 
 	 * @param buttonName
 	 *            the name of the calling button to check
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see (.*) calling button is pressed$")
-	public void WhenIPressCancelCallButton(String buttonName) throws Exception {
+	@Then("^I see (.*) button is pressed$")
+	public void ICheckButtonIsPressed(String buttonName) throws Exception {
 		final double score = PagesCollection.dialogPage
 				.getExpectedButtonStateOverlapScore(buttonName);
 		Assert.assertTrue(
-				"Calling button not present or not clicked. Expected >= 0.95, current = "
-						+ score, score >= 0.95d);
+				String.format(
+						"'%s' button not present or not clicked. Expected >= 0.95, current = %.2f",
+						buttonName, score), score >= 0.95d);
 	}
 
 	/**
