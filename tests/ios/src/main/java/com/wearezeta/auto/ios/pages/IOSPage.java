@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import javax.script.ScriptEngine;
@@ -57,7 +58,7 @@ public abstract class IOSPage extends BasePage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardReturnButton)
 	private WebElement keyboardReturnBtn;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameHideKeyboardButton)
 	private WebElement keyboardHideBtn;
 
@@ -189,20 +190,24 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	@Override
-	public BufferedImage getElementScreenshot(WebElement element)
+	public Optional<BufferedImage> getElementScreenshot(WebElement element)
 			throws Exception {
-		BufferedImage screenshot = takeScreenshot();
 		Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
 		int x = elementLocation.x * 2;
 		int y = elementLocation.y * 2;
 		int w = elementSize.width * 2;
-		if (x + w > screenshot.getWidth())
-			w = screenshot.getWidth() - x;
-		int h = elementSize.height * 2;
-		if (y + h > screenshot.getHeight())
-			h = screenshot.getHeight() - y;
-		return screenshot.getSubimage(x, y, w, h);
+		Optional<BufferedImage> screenshot = takeScreenshot();
+		if (screenshot.isPresent()) {
+			if (x + w > screenshot.get().getWidth())
+				w = screenshot.get().getWidth() - x;
+			int h = elementSize.height * 2;
+			if (y + h > screenshot.get().getHeight())
+				h = screenshot.get().getHeight() - y;
+			return Optional.of(screenshot.get().getSubimage(x, y, w, h));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	public void pasteStringToInput(WebElement element, String text)
@@ -218,10 +223,7 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	public boolean isKeyboardVisible() throws Exception {
-		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.className(IOSLocators.classNameKeyboard));
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.className(IOSLocators.classNameKeyboard));
+		return DriverUtils.isElementPresentAndDisplayed(keyboard);
 	}
 
 	public void clickKeyboardDeleteButton() {
@@ -231,7 +233,7 @@ public abstract class IOSPage extends BasePage {
 	public void clickKeyboardReturnButton() {
 		keyboardReturnBtn.click();
 	}
-	
+
 	public void clickHideKeyboarButton() {
 		keyboardHideBtn.click();
 	}
@@ -311,5 +313,28 @@ public abstract class IOSPage extends BasePage {
 
 	public ScreenOrientation getOrientation() throws Exception {
 		return this.getDriver().getOrientation();
+	}
+
+	public void tapOnCenterOfScreen() throws Exception {
+		DriverUtils.genericTap(this.getDriver());
+	}
+
+	public void tapOnTopLeftScreen() throws Exception {
+		DriverUtils.genericTap(this.getDriver(), 1, 1);
+	}
+
+	public void lockScreen(int seconds) throws Exception {
+		this.getDriver().lockScreen(seconds);
+		// check if the screen is unlocked
+		if (!DriverUtils
+				.waitUntilLocatorDissapears(
+						getDriver(),
+						By.name(IOSLocators.CommonIOSLocators.nameLockScreenMessage),
+						5)) {
+
+			DriverUtils.iOSSimulatorSwipeRight(CommonUtils
+					.getSwipeScriptPath(IOSPage.class));
+			Thread.sleep(SWIPE_DELAY);
+		}
 	}
 }

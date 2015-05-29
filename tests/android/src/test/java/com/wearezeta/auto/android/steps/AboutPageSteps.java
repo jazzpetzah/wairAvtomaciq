@@ -14,24 +14,31 @@ public class AboutPageSteps {
 	 * 
 	 * @step. ^I tap on About page$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I tap on About page$")
-	public void WhenITapOnAboutPage() throws Throwable {
-		PagesCollection.personalInfoPage = PagesCollection.aboutPage.tapOnVersion();
+	public void WhenITapOnAboutPage() throws Exception {
+		PagesCollection.personalInfoPage = PagesCollection.aboutPage
+				.tapOnVersion();
 	}
-	
+
 	/**
-	 * Confirms the about page has been seen
+	 * Confirms the about page is visible or not
 	 * 
-	 * @step. ^I see About page$
+	 * @step. ^I( do not)? see [Aa]bout page$"
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part is not present
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
-	@Then("^I see About page$")
-	public void ThenISeeAboutPage() throws Throwable {
-	   Assert.assertTrue(PagesCollection.aboutPage.aboutLogoIsVisible());
+	@Then("^I( do not)? see [Aa]bout page$")
+	public void ThenISeeAboutPage(String shouldNotBeVisible) throws Exception {
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue(PagesCollection.aboutPage.isVisible());
+		} else {
+			Assert.assertTrue(PagesCollection.aboutPage.isInvisible());
+		}
 	}
 }

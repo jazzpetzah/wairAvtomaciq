@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -28,7 +29,7 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I see (.*) user profile page$")
 	public void WhenISeeOherUserProfilePage(String name) throws Exception {
 		if (PagesCollection.otherUserPersonalInfoPage == null) {
-			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
+			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.currentPage;
 		}
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
@@ -39,39 +40,14 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * -unused
-	 * 
-	 * @step. ^I swipe down other user profile page$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I swipe down other user profile page$")
-	public void WhenISwipeDownOtherUserProfilePage() throws Exception {
-		PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.otherUserPersonalInfoPage
-				.swipeDown(1000);
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I swipe up on other user profile page$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I swipe up on other user profile page$")
-	public void WhenISwipeUpOnOtherUserProfilePage() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.swipeUp(500);
-	}
-
-	/**
 	 * Removes a contact from a group conversation
 	 * 
 	 * @step. ^I click Remove$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I click Remove$")
-	public void WhenIClickRemove() throws Throwable {
+	public void WhenIClickRemove() throws Exception {
 		// TODO: check for native button click
 		PagesCollection.otherUserPersonalInfoPage.pressOptionsMenuButton();
 	}
@@ -81,12 +57,12 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I see warning message$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I see warning message$")
-	public void WhenISeeWarningMessage() throws Throwable {
+	public void WhenISeeWarningMessage() throws Exception {
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isRemoveFromConversationAlertVisible());
+				.isConversationAlertVisible());
 	}
 
 	/**
@@ -94,23 +70,23 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I confirm remove$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I confirm remove$")
-	public void WhenIConfirmRemove() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.pressRemoveConfirmBtn();
+	public void WhenIConfirmRemove() throws Exception {
+		PagesCollection.otherUserPersonalInfoPage.pressConfirmBtn();
 	}
 
 	/**
 	 * Confirms the block of another user when they send a connection request
 	 * 
-	 * @step. ^I confirm remove$
+	 * @step. ^I confirm block$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I confirm block$")
-	public void WhenIConfirmBlock() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.pressRemoveConfirmBtn();
+	public void WhenIConfirmBlock() throws Exception {
+		PagesCollection.otherUserPersonalInfoPage.pressConfirmBtn();
 	}
 
 	/**
@@ -164,10 +140,10 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^User info should be shown with Block button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^User info should be shown with Block button$")
-	public void UserShouldBeShownWithUnBlockButton() throws Throwable {
+	public void UserShouldBeShownWithUnBlockButton() throws Exception {
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
 				.isUnblockBtnVisible());
 	}
@@ -177,11 +153,11 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I click Unblock button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I click Unblock button$")
-	public void IClickUnblockButton() throws Throwable {
-		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
+	public void IClickUnblockButton() throws Exception {
+		PagesCollection.currentPage = PagesCollection.otherUserPersonalInfoPage
 				.clickUnblockBtn();
 	}
 
@@ -190,10 +166,10 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I see correct background image$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see correct background image$")
-	public void ThenISeeCorrectBackgroundImage() throws Throwable {
+	public void ThenISeeCorrectBackgroundImage() throws Exception {
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
 				.isBackGroundImageCorrect(BG_IMAGE_NAME));
 	}
@@ -209,37 +185,24 @@ public class OtherUserPersonalInfoPageSteps {
 	 * @step. ^I tap on group chat contact (.*)$
 	 * 
 	 * @param contact
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I tap on group chat contact (.*)$")
-	public void WhenITapOnGroupChatContact(String contact) throws Throwable {
+	public void WhenITapOnGroupChatContact(String contact) throws Exception {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
-				.tapOnContact(contact);
-		if (PagesCollection.androidPage instanceof OtherUserPersonalInfoPage) {
-			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
+		PagesCollection.currentPage = PagesCollection.otherUserPersonalInfoPage
+				.tapOnParticipant(contact);
+		if (PagesCollection.currentPage instanceof OtherUserPersonalInfoPage) {
+			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.currentPage;
 		}
 
 		// This needs to be moved eventually
-		PagesCollection.unknownUserDetailsPage = (UnknownUserDetailsPage) PagesCollection.androidPage
+		PagesCollection.unknownUserDetailsPage = (UnknownUserDetailsPage) PagesCollection.currentPage
 				.instantiatePage(UnknownUserDetailsPage.class);
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I swipe right on other user profile page$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I swipe right on other user profile page$")
-	public void WhenISwipeRightOnGroupChatInfoPage() throws Throwable {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.otherUserPersonalInfoPage
-				.swipeRight(500);
 	}
 
 	/**
@@ -248,10 +211,10 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I press Right conversation button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press options menu button$")
-	public void WhenIPressOptionsMenuButton() throws Throwable {
+	public void WhenIPressOptionsMenuButton() throws Exception {
 		PagesCollection.otherUserPersonalInfoPage.pressOptionsMenuButton();
 	}
 
@@ -261,10 +224,10 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I press Leave conversation button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Leave conversation button$")
-	public void WhenIPressLeaveConversationButton() throws Throwable {
+	public void WhenIPressLeaveConversationButton() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.otherUserPersonalInfoPage
 				.pressLeaveButton();
 	}
@@ -275,10 +238,10 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I press Silence conversation button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Silence conversation button$")
-	public void WhenIPressSilenceConversationButton() throws Throwable {
+	public void WhenIPressSilenceConversationButton() throws Exception {
 		PagesCollection.otherUserPersonalInfoPage.pressSilenceButton();
 	}
 
@@ -288,10 +251,10 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I press Notify conversation button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Notify conversation button$")
-	public void WhenIPressNotifyConversationButton() throws Throwable {
+	public void WhenIPressNotifyConversationButton() throws Exception {
 		WhenIPressSilenceConversationButton();
 	}
 
@@ -300,11 +263,11 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I confirm leaving$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I confirm leaving$")
-	public void WhenIConfirmLeaving() throws Throwable {
-		PagesCollection.otherUserPersonalInfoPage.pressRemoveConfirmBtn();
+	public void WhenIConfirmLeaving() throws Exception {
+		PagesCollection.otherUserPersonalInfoPage.pressConfirmBtn();
 	}
 
 	/**
@@ -313,13 +276,13 @@ public class OtherUserPersonalInfoPageSteps {
 	 * @step. ^I select contact (.*)$
 	 * 
 	 * @param name
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I select contact (.*)$")
-	public void WhenISelectContact(String name) throws Throwable {
+	public void WhenISelectContact(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		PagesCollection.androidPage = PagesCollection.otherUserPersonalInfoPage
-				.selectContactByName(name);
+		PagesCollection.currentPage = PagesCollection.otherUserPersonalInfoPage
+				.tapOnParticipant(name);
 	}
 
 	/**
@@ -338,29 +301,24 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Checks to see that correct avatars for 2 given users appear -outofplace
+	 * Checks to see that correct avatars for given users appear
 	 * 
-	 * @step. ^I see the correct participant (.*) and (.*) avatars$
+	 * @step. ^I see the correct participant avatars for (.*)
 	 * 
-	 * @param contact1
-	 * @param contact2
+	 * @param contacts
+	 *            one or more contacs separated by comma
 	 * @throws Exception
 	 */
-	@Then("^I see the correct participant (.*) and (.*) avatars$")
-	public void ISeeCorrectParticipantAvatars(String contact1, String contact2)
-			throws Exception {
-		try {
-			contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
+	@Then("^I see the correct participant avatars for (.*)")
+	public void ISeeCorrectParticipantAvatars(String contacts) throws Exception {
+		for (String contactName : CommonSteps.splitAliases(contacts)) {
+			contactName = usrMgr.findUserByNameOrNameAlias(contactName)
+					.getName();
+			Assert.assertTrue(String.format(
+					"The avatar for '%s' is not visible", contactName),
+					PagesCollection.otherUserPersonalInfoPage
+							.isParticipantAvatarVisible(contactName));
 		}
-		try {
-			contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isParticipantAvatars(contact1, contact2));
 	}
 
 	/**
@@ -375,9 +333,9 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I see the correct number of participants in the title (.*)$")
 	public void IVerifyParticipantNumber(String realNumberOfParticipants)
 			throws IOException {
-		Assert.assertEquals(
-				PagesCollection.otherUserPersonalInfoPage.getSubHeader(),
-				realNumberOfParticipants + " people");
+		Assert.assertEquals(PagesCollection.otherUserPersonalInfoPage
+				.getSubHeader().toLowerCase(), realNumberOfParticipants
+				+ " people");
 	}
 
 	/**
@@ -387,14 +345,14 @@ public class OtherUserPersonalInfoPageSteps {
 	 * @step. ^I do not see (.*) on group chat info page$
 	 * 
 	 * @param contact
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I do not see (.*) on group chat info page$")
 	public void ThenIDoNotSeeOnGroupChatInfoPage(String contact)
-			throws Throwable {
+			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertFalse(PagesCollection.otherUserPersonalInfoPage
-				.isContactExists(contact));
+				.isParticipantExists(contact));
 	}
 
 	/**
@@ -402,10 +360,10 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I return to group chat page$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I return to group chat page$")
-	public void ThenIReturnToGroupChatPage() throws Throwable {
+	public void ThenIReturnToGroupChatPage() throws Exception {
 		PagesCollection.dialogPage = (DialogPage) PagesCollection.otherUserPersonalInfoPage
 				.tabBackButton();
 	}
@@ -418,11 +376,11 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @param newConversationName
 	 *            the new conversation name
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I rename group conversation to (.*)$")
 	public void ThenIRenameGroupConversationTo(String newConversationName)
-			throws Throwable {
+			throws Exception {
 		PagesCollection.otherUserPersonalInfoPage.tapOnParticipantsHeader();
 		PagesCollection.otherUserPersonalInfoPage
 				.renameGroupChat(newConversationName);
@@ -433,10 +391,10 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I see correct 1:1 options menu$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see correct 1:1 options menu$")
-	public void ThenISeeOneToOneOptionsMenu() throws Throwable {
+	public void ThenISeeOneToOneOptionsMenu() throws Exception {
 		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
 				.areOneToOneMenuOptionsVisible());
 	}
@@ -461,10 +419,10 @@ public class OtherUserPersonalInfoPageSteps {
 	 * 
 	 * @step. ^I do not see 1:1 options menu$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I do not see 1:1 options menu$")
-	public void ThenIDoNotSeeOptionsMenu() throws Throwable {
+	public void ThenIDoNotSeeOptionsMenu() throws Exception {
 		Assert.assertTrue(
 				"1on1 options menu is visible, but expected not to be.",
 				PagesCollection.otherUserPersonalInfoPage
@@ -493,7 +451,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I do small swipe down")
 	public void IDoSmallSwipeDown() throws Exception {
-		PagesCollection.androidPage.swipeByCoordinates(2000, 50, 50, 50, 53);
+		PagesCollection.currentPage.swipeByCoordinates(2000, 50, 50, 50, 53);
 	}
 
 	/**

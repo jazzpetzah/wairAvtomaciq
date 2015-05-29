@@ -13,15 +13,14 @@ public class LoginPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Checks to see if the sign in screen appears
+	 * Verify whether Welcome screen is visible
 	 * 
-	 * -unnecessary the next step would fail if this page wasn't visible?
-	 * 
-	 * @step. ^I see sign in screen$
+	 * @step. ^I see [Ww]elcome screen$
+	 * @throws Exception
 	 */
-	@Given("^I see sign in screen$")
-	public void GiveniSeeSignInScreen() {
-		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
+	@Given("^I see [Ww]elcome screen$")
+	public void GivenISeeWelcomeScreen() throws Exception {
+		Assert.assertTrue(PagesCollection.loginPage.waitForInitialScreen());
 	}
 
 	/**
@@ -52,12 +51,16 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
-		PagesCollection.loginPage.SignIn();
+		Assert.assertTrue("Welcome page is not visible",
+				PagesCollection.loginPage.waitForInitialScreen());
+		PagesCollection.loginPage.switchToEmailSignIn();
 		PagesCollection.loginPage.setLogin(login);
 		PagesCollection.loginPage.setPassword(password);
 		PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
 				.LogIn());
+		if (PagesCollection.loginPage.waitForAddPhoneNumberAppear()) {
+			PagesCollection.loginPage.notNowButtonClick();
+		}
 		Assert.assertTrue("Login in progress",
 				PagesCollection.loginPage.waitForLoginScreenDisappear());
 		Assert.assertTrue("Login finished",
@@ -65,15 +68,15 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Presses the sign in button on the welcome page. Note, this is not the
-	 * button used for signing in once details have been placed in.
+	 * Press the "I have an account" button on the welcome page. to switch to
+	 * sign in using email address
 	 * 
-	 * @step. ^I press Sign in button$
-	 * @throws Exception 
+	 * @step. ^I switch to email sign in screen$
+	 * @throws Exception
 	 */
-	@When("I press Sign in button")
-	public void WhenIPressSignInButton() throws Exception {
-		PagesCollection.loginPage.SignIn();
+	@When("^I switch to email sign in screen$")
+	public void ISwitchToEmailSignIn() throws Exception {
+		PagesCollection.loginPage.switchToEmailSignIn();
 	}
 
 	/**
@@ -150,45 +153,18 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Checks to see that the welcome screen is visible
-	 * 
-	 * @step. ^I see sign in and join buttons$
-	 * @throws Exception 
-	 */
-	@Then("^I see welcome screen$")
-	public void ThenISeeWelcomeScreen() throws Exception {
-		Assert.assertTrue("We don't see welcome buttons",
-				PagesCollection.loginPage.isWelcomeButtonsExist());
-	}
-
-	/**
-	 * Checks to see the login error message appears for false credentials
-	 * 
-	 * @step. ^I see sign in and join buttons$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^Login error message appears$")
-	public void LoginErrorMessage() throws Exception {
-		PagesCollection.loginPage.waitForLogin();
-		Assert.assertTrue("Error message not shown",
-				PagesCollection.loginPage.isLoginError());
-	}
-
-	/**
 	 * Checks to see that the login error message contains the correct text
 	 * 
-	 * -unnecessary should perhaps be combined with LoginErrorMessage()
-	 * 
-	 * @step. ^Contains wrong name or password text$
+	 * @step. ^I see error message \"(.*)\"$
+	 * @param expectedMsg
+	 *            the expected error message
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^Contains wrong name or password text$")
-	public void LoginErrorMessageText() throws Exception {
+	@Then("^I see error message \"(.*)\"$")
+	public void ISeeErrorMessage(String expectedMsg) throws Exception {
 		PagesCollection.loginPage.waitForLogin();
-		Assert.assertTrue("Text in error message is not as expected",
-				PagesCollection.loginPage.isLoginErrorTextOk());
+		PagesCollection.loginPage.verifyErrorMessageText(expectedMsg);
 	}
 
 }

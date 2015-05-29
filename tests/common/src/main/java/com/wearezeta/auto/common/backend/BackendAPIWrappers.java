@@ -13,14 +13,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonSteps;
@@ -51,6 +49,7 @@ public final class BackendAPIWrappers {
 	private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
 	private static final int AUTH_FAILED_ERROR = 403;
 	private static final int SERVER_SIDE_ERROR = 500;
+	private static final int PHONE_NUMBER_ALREADY_REGISTERED_ERROR = 409;
 	private static final int MAX_BACKEND_RETRIES = 5;
 
 	private static final long MAX_MSG_DELIVERY_OFFSET = 10000; // milliseconds
@@ -71,6 +70,7 @@ public final class BackendAPIWrappers {
 		return user;
 	}
 
+	@SuppressWarnings("unused")
 	private static Future<String> initMessageListener(
 			ClientUser userToActivate, int retryNumber) throws Exception {
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
@@ -103,38 +103,51 @@ public final class BackendAPIWrappers {
 	 */
 	public static ClientUser createUser(ClientUser user, int retryNumber,
 			RegistrationStrategy strategy) throws Exception {
+		String activationCode;
 		switch (strategy) {
 		case ByEmail:
-			final Future<String> activationMessage = initMessageListener(user,
-					retryNumber);
 			BackendREST.registerNewUser(user.getEmail(), user.getName(),
 					user.getPassword());
-			activateRegisteredUserByEmail(activationMessage);
-			attachUserPhoneNumber(user);
+			activationCode = getActivationCodeForRegisteredEmail(user
+					.getEmail());
+			activateRegisteredEmailByBackdoorCade(user.getEmail(),
+					activationCode, false);
+			while (true) {
+				try {
+					attachUserPhoneNumber(user);
+					break;
+				} catch (BackendRequestException e) {
+					if (e.getReturnCode() == PHONE_NUMBER_ALREADY_REGISTERED_ERROR) {
+						user.setPhoneNumber(new PhoneNumber(
+								PhoneNumber.WIRE_COUNTRY_PREFIX));
+					} else {
+						throw e;
+					}
+				}
+			}
 			break;
 		case ByPhoneNumber:
-			BackendREST.bookPhoneNumber(user.getPhoneNumber());
-			final String activationCode = getActivationCodeForBookedPhoneNumber(user
+			while (true) {
+				try {
+					BackendREST.bookPhoneNumber(user.getPhoneNumber());
+					break;
+				} catch (BackendRequestException e) {
+					if (e.getReturnCode() == PHONE_NUMBER_ALREADY_REGISTERED_ERROR) {
+						user.setPhoneNumber(new PhoneNumber(
+								PhoneNumber.WIRE_COUNTRY_PREFIX));
+					} else {
+						throw e;
+					}
+				}
+			}
+			activationCode = getActivationCodeForBookedPhoneNumber(user
 					.getPhoneNumber());
 			activateRegisteredUserByPhoneNumber(user.getPhoneNumber(),
 					activationCode, true);
 			BackendREST.registerNewUser(user.getPhoneNumber(), user.getName(),
 					activationCode);
 			changeUserPassword(user, null, user.getPassword());
-			final int maxAttachRetries = 2;
-			for (int tryNum = 1; tryNum <= maxAttachRetries; tryNum++) {
-				try {
-					log.debug(String
-							.format("Trying to attach email address '%s' to the newly created user (retry %s of %s)...",
-									user.getEmail(), tryNum, maxAttachRetries));
-					attachUserEmail(user, tryNum);
-					break;
-				} catch (ExecutionException e) {
-					if (tryNum >= maxAttachRetries) {
-						throw e;
-					}
-				}
-			}
+			attachUserEmailUsingBackdoor(user);
 			break;
 		default:
 			throw new RuntimeException(String.format(
@@ -158,8 +171,20 @@ public final class BackendAPIWrappers {
 				registrationInfo.getDeliveredToEmail()));
 	}
 
+	private static void activateRegisteredEmailByBackdoorCade(String email,
+			String code, boolean isDryRun) throws Exception {
+		BackendREST.activateNewUser(email, code, isDryRun);
+		log.debug(String.format("User '%s' is successfully activated", email));
+	}
+
+	private static String getActivationCodeForRegisteredEmail(String email)
+			throws Exception {
+		return BackendREST.getActivationDataViaBackdoor(email)
+				.getString("code");
+	}
+
 	public static String getActivationCodeForBookedPhoneNumber(
-			PhoneNumber phoneNumber) throws JSONException, Exception {
+			PhoneNumber phoneNumber) throws Exception {
 		return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString(
 				"code");
 	}
@@ -178,27 +203,27 @@ public final class BackendAPIWrappers {
 				"code");
 	}
 
+	private final static int MAX_LOGIN_CODE_QUERIES = 5;
+
 	public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber)
 			throws Exception {
-		String code = null;
 		int count = 0;
-		Exception ex = null;
-		while (code == null && count < 10) {
+		Exception savedException = null;
+		while (count < MAX_LOGIN_CODE_QUERIES) {
 			count++;
 			try {
-				code = BackendREST.getLoginCodeViaBackdoor(phoneNumber)
+				return BackendREST.getLoginCodeViaBackdoor(phoneNumber)
 						.getString("code");
-			} catch (Exception e) {
-				code = null;
-				ex = e;
-				Thread.sleep(1000);
+			} catch (BackendRequestException e) {
+				log.error(String
+						.format("Failed to get login code for phone number '%s'. Retrying (%s of %s)...",
+								phoneNumber.toString(), count,
+								MAX_LOGIN_CODE_QUERIES));
+				savedException = e;
+				Thread.sleep(2000 * count);
 			}
 		}
-		if (code == null) {
-			throw ex;
-		}
-
-		return code;
+		throw savedException;
 	}
 
 	public static void attachUserPhoneNumber(ClientUser user) throws Exception {
@@ -220,7 +245,7 @@ public final class BackendAPIWrappers {
 	 * @param newPassword
 	 * @throws Exception
 	 */
-	public static void changeUserPassword(ClientUser user, String oldPassword,
+	private static void changeUserPassword(ClientUser user, String oldPassword,
 			String newPassword) throws Exception {
 		user = tryLoginByUser(user);
 		BackendREST.updateSelfPassword(generateAuthToken(user), oldPassword,
@@ -228,13 +253,14 @@ public final class BackendAPIWrappers {
 		user.setPassword(newPassword);
 	}
 
-	public static void attachUserEmail(ClientUser user, int retryNumber)
+	private static void attachUserEmailUsingBackdoor(ClientUser user)
 			throws Exception {
-		final Future<String> activationMessage = initMessageListener(user,
-				retryNumber);
 		user = tryLoginByUser(user);
 		BackendREST.updateSelfEmail(generateAuthToken(user), user.getEmail());
-		activateRegisteredUserByEmail(activationMessage);
+		final String activationCode = getActivationCodeForRegisteredEmail(user
+				.getEmail());
+		activateRegisteredEmailByBackdoorCade(user.getEmail(), activationCode,
+				false);
 	}
 
 	public static String getUserActivationLink(Future<String> activationMessage)

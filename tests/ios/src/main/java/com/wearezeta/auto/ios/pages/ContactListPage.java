@@ -345,8 +345,8 @@ public class ContactListPage extends IOSPage {
 
 	public boolean isTutorialShown() throws Exception {
 		// this.refreshUITree();
-		return DriverUtils.waitUntilLocatorIsDisplayed(
-				this.getDriver(), By.name(IOSLocators.nameTutorialView), 10);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameTutorialView), 10);
 	}
 
 	public void dismissTutorial() throws Exception {
@@ -369,7 +369,8 @@ public class ContactListPage extends IOSPage {
 			log.debug(contacts.get(index).getAttribute("name"));
 			contacts.get(index).click();
 		} catch (WebDriverException e) {
-			BufferedImage im = DriverUtils.takeScreenshot(this.getDriver());
+			BufferedImage im = DriverUtils.takeScreenshot(this.getDriver())
+					.orElseThrow(IllegalStateException::new);
 			ImageUtil.storeImageToFile(im, "/Project/ios_crash.jpg");
 			log.debug("Can't select contact by index " + index
 					+ ". Page source: " + this.getDriver().getPageSource());
@@ -414,7 +415,8 @@ public class ContactListPage extends IOSPage {
 		BufferedImage referenceImage = null;
 		WebElement element = findCellInContactList(conversation);
 		silencedConversation = CommonUtils.getElementScreenshot(element,
-				this.getDriver(), CommonUtils.getDeviceName(this.getClass()));
+				this.getDriver(), CommonUtils.getDeviceName(this.getClass()))
+				.orElseThrow(IllegalStateException::new);
 		if (deviceType.equals("iPhone 6 Plus") && isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "silenceiPhone6plus.png");
@@ -443,7 +445,8 @@ public class ContactListPage extends IOSPage {
 		BufferedImage referenceImage = null;
 		WebElement element = findCellInContactList(conversation);
 		silencedConversation = CommonUtils.getElementScreenshot(element,
-				this.getDriver(), CommonUtils.getDeviceName(this.getClass()));
+				this.getDriver(), CommonUtils.getDeviceName(this.getClass()))
+				.orElseThrow(IllegalStateException::new);
 		if (deviceType.equals("iPhone 6 Plus")) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "unsilenceTestiPhone6plus.png");
@@ -473,7 +476,8 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = findCellInContactList(conversation);
 		unreadDot = getScreenshotByCoordinates(contact.getLocation().x,
 				contact.getLocation().y + contactListContainer.getLocation().y,
-				contact.getSize().width / 4, contact.getSize().height * 2);
+				contact.getSize().width / 4, contact.getSize().height * 2)
+				.orElseThrow(IllegalStateException::new);
 		if (visible == true && bigUnreadDot == true) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "new_unreadDot.png");
@@ -505,7 +509,8 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = findCellInContactList(conversation);
 		pingSymbol = getScreenshotByCoordinates(contact.getLocation().x,
 				contact.getLocation().y + contactListContainer.getLocation().y,
-				contact.getSize().width / 4, contact.getSize().height * 2);
+				contact.getSize().width / 4, contact.getSize().height * 2)
+				.orElseThrow(IllegalStateException::new);
 		if (visible == true && hotPing == true) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "contact_list_hotping.png");
@@ -538,9 +543,11 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = findCellInContactList(conversation);
 		if (isFirstInList) {
 			missedCallIndicator = getScreenshotByCoordinates(
-					contact.getLocation().x, contact.getLocation().y
+					contact.getLocation().x,
+					contact.getLocation().y
 							+ contactListContainer.getLocation().y / 2,
-					contact.getSize().width / 4, contact.getSize().height * 2);
+					contact.getSize().width / 4, contact.getSize().height * 2)
+					.orElseThrow(IllegalStateException::new);
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "missedCallIndicator.png");
 
@@ -552,9 +559,11 @@ public class ContactListPage extends IOSPage {
 			}
 		} else {
 			missedCallIndicator = getScreenshotByCoordinates(
-					contact.getLocation().x, contact.getLocation().y
+					contact.getLocation().x,
+					contact.getLocation().y
 							+ contactListContainer.getLocation().y * 2,
-					contact.getSize().width / 3, contact.getSize().height);
+					contact.getSize().width / 3, contact.getSize().height)
+					.orElseThrow(IllegalStateException::new);
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "missedCallIndicator2.png");
 
@@ -575,7 +584,8 @@ public class ContactListPage extends IOSPage {
 		double score = 0;
 		WebElement el = this.getDriver().findElementByXPath(
 				String.format(IOSLocators.xpathSelfName, name));
-		changedAccentColorImage = getElementScreenshot(el);
+		changedAccentColorImage = getElementScreenshot(el).orElseThrow(
+				IllegalStateException::new);
 		referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
 				+ "changedAccentColor.png");
 		score = ImageUtil.getOverlapScore(referenceImage,

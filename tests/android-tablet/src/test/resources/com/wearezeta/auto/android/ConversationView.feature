@@ -10,12 +10,12 @@ Feature: Conversation View
     When I tap on tablet contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I type the message and send it
-    Then I see my message in the dialog
+    And I type the message "<Message>" and send it
+    Then I see my message "<Message>" in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Message |
+      | user1Email | user1Password | user1Name | user2Name | Yo      |
 
   @id2253 @staging
   Scenario Outline: Send Hello and Hey to contact in portrait mode
@@ -28,11 +28,11 @@ Feature: Conversation View
     And I see dialog page
     And I swipe on text input
     And I press Ping button
-    Then I see Hello-Hey message <Message> with <Action> in the dialog
+    Then I see Ping message <Message> in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message | Action |
-      | user1Email | user1Password | user1Name | user2Name | YOU     | PINGED |
+      | Login      | Password      | Name      | Contact   | Message    |
+      | user1Email | user1Password | user1Name | user2Name | YOU PINGED |
 
   @id2254 @staging
   Scenario Outline: Send Camera picture to contact in portrait mode
@@ -91,12 +91,12 @@ Feature: Conversation View
     When I tap on tablet contact name <GroupChatName>
     And I see tablet dialog page
     And I tap on text input
-    And I type the message and send it
-    Then I see my message in the dialog
+    And I type the message "<Message>" and send it
+    Then I see my message "<Message>" in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName     |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessGroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName     | Message |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
   @id2238 @staging
   Scenario Outline: Send Message to contact in landscape mode
@@ -108,12 +108,12 @@ Feature: Conversation View
     When I tap on tablet contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I type the message and send it
-    Then I see my message in the dialog
+    And I type the message "<Message>" and send it
+    Then I see my message "<Message>" in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Message |
+      | user1Email | user1Password | user1Name | user2Name | Yo      |
 
   @id2239 @staging
   Scenario Outline: Send Hello and Hey to contact in landscape mode
@@ -126,11 +126,11 @@ Feature: Conversation View
     And I see dialog page
     And I swipe on text input
     And I press Ping button
-    Then I see Hello-Hey message <Message> with <Action> in the dialog
+    Then I see Ping message <Message> in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message | Action |
-      | user1Email | user1Password | user1Name | user2Name | YOU     | PINGED |
+      | Login      | Password      | Name      | Contact   | Message    |
+      | user1Email | user1Password | user1Name | user2Name | YOU PINGED |
 
   @id2240 @staging
   Scenario Outline: Send Camera picture to contact in landscape mode
@@ -189,12 +189,12 @@ Feature: Conversation View
     When I tap on tablet contact name <GroupChatName>
     And I see tablet dialog page
     And I tap on text input
-    And I type the message and send it
-    Then I see my message in the dialog
+    And I type the message "<Message>" and send it
+    Then I see my message "<Message>" in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName     |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessGroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName     | Message |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
   @id2047 @staging
   Scenario Outline: See one-to-one pop-over

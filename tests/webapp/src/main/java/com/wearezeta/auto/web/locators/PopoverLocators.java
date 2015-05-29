@@ -30,6 +30,12 @@ public final class PopoverLocators {
 			public static final String xpathConnectButton = xpathRootLocator
 					+ "//*[@data-uie-name='do-connect']";
 		}
+		
+		public static final class PendingOutgoingConnectionPage {
+
+			public static final String xpathPendingConnectionButton = xpathRootLocator
+					+ "//*[@data-uie-name='go-conversation']";
+		}
 	}
 
 	public static final class SendInvitationPopover {
@@ -173,5 +179,4 @@ public final class PopoverLocators {
 					+ "//*[@data-uie-name='do-unblock']";
 		}
 	}
-
 }

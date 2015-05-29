@@ -2,25 +2,24 @@ Feature: Sign In
 
  @id2262 @staging
   Scenario Outline: Sign in to ZClient in portrait mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     And I rotate UI to portrait
-    Given I see sign in screen
-    When I press Sign in button
+    Given I see welcome screen
+    When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
     And I attempt to press Login button
     Then I see personal info page loaded with my name <Name>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @id2284 @staging
   Scenario Outline: Negative case for sign in portrait mode
-    Given I see sign in screen
+    Given I see welcome screen
     And I rotate UI to portrait
-    When I press Sign in button
+    When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
     And I attempt to press Login button
@@ -33,25 +32,24 @@ Feature: Sign In
 
  @id2248 @staging
   Scenario Outline: Sign in to ZClient in landscape mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     And I rotate UI to landscape
-    Given I see sign in screen
-    When I press Sign in button
+    Given I see welcome screen
+    When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
     And I attempt to press Login button
     Then I see personal info page loaded with my name <Name>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @id2285 @staging
   Scenario Outline: Negative case for sign in landscape mode
-    Given I see sign in screen
+    Given I see welcome screen
     And I rotate UI to landscape
-    When I press Sign in button
+    When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
     And I attempt to press Login button

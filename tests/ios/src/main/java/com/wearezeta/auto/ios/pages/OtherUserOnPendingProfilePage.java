@@ -36,7 +36,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 
 	public boolean isPendingLabelVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
-				.name(IOSLocators.nameOtherProfilePageStartConversationButton));
+				.name(IOSLocators.nameOtherProfilePagePendingLabel));
 	}
 
 	public void clickStartConversationButton() {

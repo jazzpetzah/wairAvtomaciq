@@ -70,42 +70,40 @@ Feature: Self Profile
 
   @id2288 @staging
   Scenario Outline: Change user picture in portrait mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
     And I see Contact list
-    When  I tap on my avatar
+    When I tap on my avatar
     And I tap on tablet personal info screen
+    And I remember my current profile picture
     And I tap change photo button
     And I press Gallery button
     And I select picture
     And I press Confirm button
-    And I wait for 120 seconds
     And I tap on tablet personal info screen
-    Then I see changed user picture
+    Then I verify that my current profile picture is different from the previous one
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @id2289 @staging
   Scenario Outline: Change user picture in landscape mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
     And I see Contact list
-    When  I tap on my avatar
+    When I tap on my avatar
     And I tap on tablet personal info screen
+    And I remember my current profile picture
     And I tap change photo button
     And I press Gallery button
     And I select picture
     And I press Confirm button
-    And I wait for 120 seconds
     And I tap on tablet personal info screen
-    Then I see changed user picture
+    Then I verify that my current profile picture is different from the previous one
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

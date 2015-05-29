@@ -11,11 +11,12 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class TabletLoginPageSteps {
-	
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	
+
 	@Given("^I Sign in on tablet using login (.*) and password (.*)$")
-	public void GivenISignInOnTablet(String login, String password) throws Exception {
+	public void GivenISignInOnTablet(String login, String password)
+			throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
@@ -26,22 +27,26 @@ public class TabletLoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertNotNull(TabletPagesCollection.loginPage.isVisible());
-		TabletPagesCollection.loginPage.SignIn();
+		Assert.assertTrue("Welcome screen is not visible",
+				TabletPagesCollection.loginPage.waitForInitialScreen());
+		TabletPagesCollection.loginPage.switchToEmailSignIn();
 		TabletPagesCollection.loginPage.setLogin(login);
 		TabletPagesCollection.loginPage.setPassword(password);
 		try {
 			TabletPagesCollection.loginPage.doLogIn();
-			TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage.initProfilePage();
+			TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage
+					.initProfilePage();
 			PagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
-			TabletPagesCollection.contactListPage = TabletPagesCollection.loginPage.initContactListPage();
+			TabletPagesCollection.contactListPage = TabletPagesCollection.loginPage
+					.initContactListPage();
 			PagesCollection.contactListPage = TabletPagesCollection.contactListPage;
 		} catch (Exception e) {
 			// Ignore silently
 		}
-		Assert.assertNotNull("Login not passed", TabletPagesCollection.personalInfoPage);
+		Assert.assertNotNull("Login not passed",
+				TabletPagesCollection.personalInfoPage);
 	}
-	
+
 	/**
 	 * Enter user email and password into corresponding fields on sign in screen
 	 * then taps "Sign In" button
@@ -57,7 +62,8 @@ public class TabletLoginPageSteps {
 	 *             if login operation was unsuccessful
 	 */
 	@Given("^I Sign in to self profile using login (.*) and password (.*)$")
-	public void GivenISignInToProfile(String login, String password) throws Exception {
+	public void GivenISignInToProfile(String login, String password)
+			throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
@@ -68,20 +74,23 @@ public class TabletLoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertNotNull(TabletPagesCollection.loginPage.isVisible());
-		TabletPagesCollection.loginPage.SignIn();
+		Assert.assertTrue("Welcome page is not visible",
+				TabletPagesCollection.loginPage.waitForInitialScreen());
+		TabletPagesCollection.loginPage.switchToEmailSignIn();
 		TabletPagesCollection.loginPage.setLogin(login);
 		TabletPagesCollection.loginPage.setPassword(password);
 		try {
 			TabletPagesCollection.loginPage.doLogIn();
-			TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage.initProfilePage();
+			TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage
+					.initProfilePage();
 			PagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
 		} catch (Exception e) {
 			// Ignore silently
 		}
-		Assert.assertNotNull("Login not passed", TabletPagesCollection.personalInfoPage);
+		Assert.assertNotNull("Login not passed",
+				TabletPagesCollection.personalInfoPage);
 	}
-	
+
 	/**
 	 * Taps Login button on the corresponding screen
 	 * 
@@ -92,12 +101,13 @@ public class TabletLoginPageSteps {
 	@When("I attempt to press Login button")
 	public void WhenIPressTabletLogInButton() throws Exception {
 		TabletPagesCollection.loginPage.doLogIn();
-		TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage.initProfilePage();
+		TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage
+				.initProfilePage();
 		PagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
 		Assert.assertTrue("Login finished",
 				TabletPagesCollection.loginPage.waitForLogin());
 	}
-	
+
 	/**
 	 * Taps Join button on Welcome page
 	 * 
@@ -107,7 +117,8 @@ public class TabletLoginPageSteps {
 	 */
 	@When("I press tablet Join button")
 	public void WhenIPressJoinButton() throws Exception {
-		TabletPagesCollection.registrationPage = TabletPagesCollection.loginPage.tabletJoin();
+		TabletPagesCollection.registrationPage = TabletPagesCollection.loginPage
+				.tabletJoin();
 		PagesCollection.registrationPage = TabletPagesCollection.registrationPage;
 	}
 }
