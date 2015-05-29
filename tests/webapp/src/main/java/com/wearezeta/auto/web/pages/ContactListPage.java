@@ -22,6 +22,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -496,5 +497,27 @@ public class ContactListPage extends WebPage {
 						By.xpath(WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton),
 						archiveBtnVisilityTimeout) : "Open Archive button is not visible after "
 				+ archiveBtnVisilityTimeout + " second(s)";
+	}
+
+	public AccentColor getCurrentPingIconAccentColor(String name)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathPingIconByContactName
+						.apply(name));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
+		final WebElement entry = getDriver().findElement(locator);
+		return AccentColor.getByRgba(entry.getCssValue("color"));
+	}
+
+	public AccentColor getCurrentUnreadDotAccentColor(String name)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName
+						.apply(name));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
+		final WebElement entry = getDriver().findElement(locator);
+		return AccentColor.getByRgba(entry.getCssValue("background-color"));
 	}
 }
