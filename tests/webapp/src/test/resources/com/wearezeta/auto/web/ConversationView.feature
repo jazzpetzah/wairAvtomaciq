@@ -142,6 +142,7 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
     When I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
