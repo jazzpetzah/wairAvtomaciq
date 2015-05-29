@@ -77,7 +77,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | PictureName              |
       | user1Email | user1Password | user1Name | userpicture_portrait.jpg |
 
-  @torun @id1747
+  @staging @id1747
   Scenario Outline: Verify you can change your accent color
     Given There is 3 users where <Name> is me
     Given User me change accent color to <ColorName>
@@ -87,8 +87,8 @@ Feature: Self Profile
     And I open self profile
     Then I verify my accent color in color picker is set to <ColorName> color
     And I verify my avatar background color is set to <ColorName> color
-    Given <Contact1> pinged the conversation with <Name>
-    Given User <Contact2> sent message <Msg1> to conversation <Name>
+    When <Contact1> pinged the conversation with <Name>
+    And User <Contact2> sent message <Msg1> to conversation <Name>
     Then I verify ping icon in conversation with <Contact1> has <ColorName> color
     And I verify unread dot in conversation with <Contact2> has <ColorName> color
 
