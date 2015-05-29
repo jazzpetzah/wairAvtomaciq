@@ -15,8 +15,8 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id1617 
-  Scenario Outline: Verify you can see image on the second end in a group conversation 
+  @smoke @id1617
+  Scenario Outline: Verify you can see image on the second end in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
@@ -136,3 +136,18 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
       | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
+
+  @torun @id2279
+  Scenario Outline: Send a long message containing new lines in 1on1
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I write template message <ActualMessage>
+    And I send message
+    Then I verify the last text message equals to <ExpectedMessage>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | ActualMessage                                           | ExpectedMessage                      |
+      | user1Email | user1Password | user1Name | user2Name | ('LF' * 10)('a' * 100)('LF' * 10)('b' * 100)('LF' * 10) | ('a' * 100)('LF' * 10)('b' * 100) |
