@@ -29,9 +29,6 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.LoginPage.idForgotPass)
 	private WebElement forgotPasswordButton;
 
-	@FindBy(id = AndroidLocators.LoginPage.idLoginButton)
-	protected WebElement confirmSignInButton;
-
 	@FindBy(id = AndroidLocators.ContactListPage.idSelfUserAvatar)
 	protected WebElement selfUserAvatar;
 
@@ -46,23 +43,6 @@ public class LoginPage extends AndroidPage {
 
 	public LoginPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
-	}
-
-	public CommonAndroidPage forgotPassword() throws Exception {
-		this.getWait().until(
-				ExpectedConditions.elementToBeClickable(forgotPasswordButton));
-		forgotPasswordButton.click();
-		Thread.sleep(2000);
-		if (DriverUtils.isElementPresentAndDisplayed(forgotPasswordButton)) {
-			DriverUtils.androidMultiTap(this.getDriver(), forgotPasswordButton,
-					1, 500);
-		}
-		return new CommonAndroidPage(this.getLazyDriver());
-	}
-
-	public ContactListPage LogIn() throws Exception {
-		confirmSignInButton.click();
-		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public boolean waitForLoginScreenDisappear() throws Exception {

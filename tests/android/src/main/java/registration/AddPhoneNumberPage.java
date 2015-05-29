@@ -11,6 +11,14 @@ import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
+/**
+ * The page that appears directly after a user logs in using an email
+ * and password, IF that user has not already attached a phone number
+ * to their account.
+ * @author deancook
+ *
+ */
+
 public class AddPhoneNumberPage extends AndroidPage {
 
 	@FindBy(id = AndroidLocators.AddPhoneNumberPage.idNotNowButton)

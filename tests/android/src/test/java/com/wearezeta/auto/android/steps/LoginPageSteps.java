@@ -24,19 +24,6 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Presses the "forgot password" button
-	 * 
-	 * @step. ^I press FORGOT PASSWORD button$
-	 * 
-	 * @throws Exception
-	 */
-	@When("I press FORGOT PASSWORD button")
-	public void WhenIPressForgotPasswordButton() throws Exception {
-		PagesCollection.commonAndroidPage = PagesCollection.loginPage
-				.forgotPassword();
-	}
-
-	/**
 	 * Presses the Join button to begin the registration process
 	 * 
 	 * @step. ^I press Join button$

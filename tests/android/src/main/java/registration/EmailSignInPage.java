@@ -9,6 +9,7 @@ import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -34,6 +35,9 @@ public class EmailSignInPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.EmailSignInPage.idPasswordInput)
 	private WebElement passwordInput;
 	
+	@FindBy(id = AndroidLocators.LoginPage.idLoginButton)
+	protected WebElement confirmSignInButton;
+	
 	public EmailSignInPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -50,5 +54,10 @@ public class EmailSignInPage extends AndroidPage {
 	public void setPassword(String password) throws Exception {
 		passwordInput.click();
 		passwordInput.sendKeys(password);
+	}
+	
+	public ContactListPage LogIn() throws Exception {
+		confirmSignInButton.click();
+		return new ContactListPage(this.getLazyDriver());
 	}
 }
