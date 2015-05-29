@@ -37,20 +37,6 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Presses the Log in Button underneath the email and password fields
-	 * 
-	 * @step. ^I press FORGOT PASSWORD button$
-	 * 
-	 * @throws Exception
-	 */
-	@When("I press Log in button")
-	public void WhenIPressLogInButton() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.loginPage.LogIn();
-		Assert.assertTrue("Login finished",
-				PagesCollection.loginPage.waitForLogin());
-	}
-
-	/**
 	 * Presses the Join button to begin the registration process
 	 * 
 	 * @step. ^I press Join button$

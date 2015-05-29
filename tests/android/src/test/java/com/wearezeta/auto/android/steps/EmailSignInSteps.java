@@ -93,4 +93,18 @@ public class EmailSignInSteps {
 		}
 		PagesCollection.emailSignInPage.setPassword(password);
 	}
+	
+	/**
+	 * Presses the Log in Button underneath the email and password fields
+	 * 
+	 * @step. ^I press Log in button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("I press Log in button")
+	public void WhenIPressLogInButton() throws Exception {
+		PagesCollection.contactListPage = PagesCollection.loginPage.LogIn();
+		Assert.assertTrue("Login finished",
+				PagesCollection.loginPage.waitForLogin());
+	}
 }

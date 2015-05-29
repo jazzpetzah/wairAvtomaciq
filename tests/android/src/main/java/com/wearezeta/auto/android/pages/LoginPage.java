@@ -35,10 +35,6 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.ContactListPage.idSelfUserAvatar)
 	protected WebElement selfUserAvatar;
 
-	@FindBy(id = AndroidLocators.LoginPage.idNotNowButton)
-	private WebElement notNowButton;
-	
-
 	@FindBy(id = AndroidLocators.LoginPage.idWelcomeSlogan)
 	private List<WebElement> welcomeSloganContainer;
 
@@ -74,15 +70,6 @@ public class LoginPage extends AndroidPage {
 				By.id(AndroidLocators.LoginPage.idLoginButton), 40);
 	}
 	
-	public boolean waitForAddPhoneNumberAppear() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.LoginPage.idNotNowButton), 20);
-	}
-	
-	public void notNowButtonClick() throws Exception {
-		notNowButton.click();
-	}
-
 	public boolean waitForLogin() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idSignUpButton), 40);
