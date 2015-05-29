@@ -32,8 +32,6 @@ public class CommonUtils {
 	private static final String HOT_PING_IMAGE = "hot_ping_image.png";
 	private static final String IOS_PING_IMAGE = "ios_ping_image.png";
 	private static final String IOS_HOT_PING_IMAGE = "ios_hot_ping_image.png";
-	private static final String CALLING_MUTE_BUTTON_IMAGE = "mutebtn_pressed.png";
-	private static final String CALLING_SPEAKER_BUTTON_IMAGE = "speakerbtn_pressed.png";
 	private static final String IOS_AVATAR_CLOCK_IMAGE = "new_avatarclock.png";
 	private static final String MEDIABAR_PLAY_IMAGE = "android_mediabar_play_image.png";
 	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image.png";
@@ -142,19 +140,6 @@ public class CommonUtils {
 	public static String getHotPingIconPathIOS(Class<?> c) throws Exception {
 		String path = getValueFromConfig(c, "iosImagesPath")
 				+ IOS_HOT_PING_IMAGE;
-		return path;
-	}
-
-	public static String getCallingMuteButtonPath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ CALLING_MUTE_BUTTON_IMAGE;
-		return path;
-	}
-
-	public static String getCallingSpeakerButtonPath(Class<?> c)
-			throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ CALLING_SPEAKER_BUTTON_IMAGE;
 		return path;
 	}
 

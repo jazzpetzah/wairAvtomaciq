@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -242,22 +243,25 @@ public class DialogPage extends AndroidPage {
 		cancelCallBtn.click();
 	}
 
-	public double getExpectedButtonStateOverlapScore(String label)
-			throws Exception {
-		String path = null;
-		BufferedImage callingButtonImage = null;
-		if (label.equals(MUTE_BUTTON_LABEL)) {
-			callingButtonImage = getElementScreenshot(muteBtn).orElseThrow(
-					IllegalStateException::new);
-			path = CommonUtils.getCallingMuteButtonPath(DialogPage.class);
-		} else if (label.equals(SPEAKER_BUTTON_LABEL)) {
-			callingButtonImage = getElementScreenshot(speakerBtn).orElseThrow(
-					IllegalStateException::new);
-			path = CommonUtils.getCallingSpeakerButtonPath(DialogPage.class);
+	private WebElement getButtonElementByName(String name) {
+		final String uppercaseName = name.toUpperCase();
+		switch (uppercaseName) {
+		case "MUTE":
+			return muteBtn;
+		case "SPEAKER":
+			return speakerBtn;
+		default:
+			throw new NoSuchElementException(String.format(
+					"Button '%s' is unknown", name));
 		}
-		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(callingButtonImage, templateImage,
-				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+	}
+
+	public BufferedImage getCurrentButtonStateScreenshot(String name)
+			throws Exception {
+		final WebElement dstButton = getButtonElementByName(name);
+		assert DriverUtils.waitUntilElementClickable(getDriver(), dstButton);
+		return getElementScreenshot(dstButton).orElseThrow(
+				IllegalStateException::new);
 	}
 
 	private static final int CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS = 15;
