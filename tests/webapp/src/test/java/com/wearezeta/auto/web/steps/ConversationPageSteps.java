@@ -55,7 +55,7 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Write text message with line breaks in the currently opened conversation
+	 * Write template text message in the currently opened conversation
 	 *
 	 * @step. ^I write template message (.*)
 	 *
@@ -63,7 +63,7 @@ public class ConversationPageSteps {
 	 *            text message
 	 */
 	@When("^I write template message (.*)")
-	public void IWriteMessageWithLineBreaks(String message) {
+	public void IWriteTemplateMessage(String message) {
 		PagesCollection.conversationPage.writeNewMessage(expandPattern(message)
 				.replace("\n", Keys.chord(Keys.SHIFT, Keys.ENTER)));
 	}
@@ -378,7 +378,7 @@ public class ConversationPageSteps {
 	 * @throws Exception
 	 */
 	@Then("^I verify the last text message equals to (.*)")
-	public void ISeeLastTextMessage(String expectedMessage) throws Exception {
+	public void IVerifyLastTextMessage(String expectedMessage) throws Exception {
 		Assert.assertEquals(
 				PagesCollection.conversationPage.getLastTextMessage(),
 				expandPattern(expectedMessage));
