@@ -9,6 +9,7 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 
 public final class ZetaSearchContext implements SearchContext {
@@ -23,9 +24,9 @@ public final class ZetaSearchContext implements SearchContext {
 			return lazyDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 					TimeUnit.MILLISECONDS);
 		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
+			Throwables.propagate(e);
 		}
+		return null;
 	}
 
 	public ZetaSearchContext(Future<? extends RemoteWebDriver> lazyDriver) {

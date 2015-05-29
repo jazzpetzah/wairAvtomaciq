@@ -221,7 +221,8 @@ public class OSXCommonUtils extends CommonUtils {
 
 	public static NSPoint calculateScreenResolution(ZetaDriver driver)
 			throws IOException {
-		BufferedImage im = DriverUtils.takeScreenshot(driver);
+		BufferedImage im = DriverUtils.takeScreenshot(driver).orElseThrow(
+				IllegalStateException::new);
 		return new NSPoint(im.getWidth(), im.getHeight());
 	}
 
@@ -253,8 +254,8 @@ public class OSXCommonUtils extends CommonUtils {
 			AppiumDriver driver) throws IOException {
 		int multiply = screenPixelsMultiplier(driver);
 
-		BufferedImage screenshot = DriverUtils
-				.takeScreenshot((ZetaDriver) driver);
+		BufferedImage screenshot = DriverUtils.takeScreenshot(
+				(ZetaDriver) driver).orElseThrow(IllegalStateException::new);
 		NSPoint elementLocation = NSPoint.fromString(element
 				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		NSPoint elementSize = NSPoint.fromString(element

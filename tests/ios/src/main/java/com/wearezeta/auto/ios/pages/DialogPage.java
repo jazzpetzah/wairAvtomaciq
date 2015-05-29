@@ -138,7 +138,7 @@ public class DialogPage extends IOSPage {
 	private WebElement chatheadAvatarImage;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
-	private String connectingLabel = "CONNECTING TO %s";
+	private String connectingLabel = "CONNECTING TO %s.";
 
 	public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -176,7 +176,7 @@ public class DialogPage extends IOSPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.name(IOSLocators.nameConversationCursorInput), 10);
 	}
-	
+
 	public boolean waitForCursorInputNotVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.name(IOSLocators.nameConversationCursorInput), 3);
@@ -370,6 +370,12 @@ public class DialogPage extends IOSPage {
 		}
 
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
+	}
+
+	public OtherUserOnPendingProfilePage clickConversationDeatailForPendingUser()
+			throws Exception {
+		openConversationDetails.click();
+		return new OtherUserOnPendingProfilePage(this.getLazyDriver());
 	}
 
 	@Override
@@ -571,7 +577,8 @@ public class DialogPage extends IOSPage {
 
 	public BufferedImage takeImageScreenshot() throws Throwable {
 		BufferedImage image;
-		image = getElementScreenshot(imageCell);
+		image = getElementScreenshot(imageCell).orElseThrow(
+				IllegalStateException::new);
 		if (image.getHeight() > IMAGE_IN_CONVERSATION_HEIGHT) {
 			image = image.getSubimage(0, image.getHeight()
 					- IMAGE_CONTROL_IN_CONVERSATION_HEIGHT, image.getWidth(),
@@ -815,7 +822,8 @@ public class DialogPage extends IOSPage {
 		int y = (elementLocation.y - PING_ICON_Y_OFFSET) * 2;
 		int w = PING_ICON_WIDTH;
 		int h = PING_ICON_HEIGHT;
-		return getScreenshotByCoordinates(x, y, w, h);
+		return getScreenshotByCoordinates(x, y, w, h).orElseThrow(
+				IllegalStateException::new);
 	}
 
 	private BufferedImage getPingAgainIconScreenShot() throws Exception {
@@ -825,7 +833,8 @@ public class DialogPage extends IOSPage {
 		int y = (elementLocation.y - PING_ICON_Y_OFFSET) * 2;
 		int w = PING_ICON_WIDTH;
 		int h = PING_ICON_HEIGHT;
-		return getScreenshotByCoordinates(x, y, w, h);
+		return getScreenshotByCoordinates(x, y, w, h).orElseThrow(
+				IllegalStateException::new);
 	}
 
 	public void waitPingAnimation() throws InterruptedException {

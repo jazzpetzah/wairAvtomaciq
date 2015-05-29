@@ -4,7 +4,7 @@ import com.wearezeta.auto.common.AbstractPagesCollection;
 
 
 public class PagesCollection extends AbstractPagesCollection{
-	public static AndroidPage androidPage = null;
+	public static AndroidPage currentPage = null;
 	public static LoginPage loginPage = null;
 	public static CallingOverlayPage callingOverlayPage = null;
 	public static CallingLockscreenPage callingLockscreenPage = null;

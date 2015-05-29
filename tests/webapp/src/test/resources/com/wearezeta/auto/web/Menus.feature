@@ -6,7 +6,7 @@ Feature: Menus
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open self profile
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -22,7 +22,7 @@ Feature: Menus
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open self profile
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -36,7 +36,7 @@ Feature: Menus
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page
     And I select Settings menu item on self profile page
@@ -51,7 +51,7 @@ Feature: Menus
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open self profile
     And I click gear button on self profile page
     And I select Settings menu item on self profile page

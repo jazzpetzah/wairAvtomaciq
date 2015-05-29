@@ -2,7 +2,7 @@ Feature: Registration
 
   @id2286 @staging
   Scenario Outline: Register new user using front camera in landscape mode
-    Given I see sign in screen
+    Given I see welcome screen
     And I rotate UI to landscape
     When I press tablet Join button
     And I press Camera button twice
@@ -23,7 +23,7 @@ Feature: Registration
 
   @id2287 @staging
   Scenario Outline: Register new user using front camera in portrait mode
-    Given I see sign in screen
+    Given I see welcome screen
     And I rotate UI to portrait
     When I press tablet Join button
     And I press Camera button twice

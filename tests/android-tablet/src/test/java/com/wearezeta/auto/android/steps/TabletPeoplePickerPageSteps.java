@@ -44,11 +44,11 @@ public class TabletPeoplePickerPageSteps {
 			// Ignore silently
 		}
 		// PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
-		PagesCollection.androidPage = PagesCollection.peoplePickerPage
+		PagesCollection.currentPage = PagesCollection.peoplePickerPage
 				.selectContact(contact);
 		TabletPagesCollection.connectToPage = TabletPagesCollection.peoplePickerPage.initConnectToPage();
-		if (PagesCollection.androidPage instanceof OtherUserPersonalInfoPage) {
-			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
+		if (PagesCollection.currentPage instanceof OtherUserPersonalInfoPage) {
+			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.currentPage;
 		}
 	}
 	

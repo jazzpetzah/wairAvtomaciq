@@ -6,7 +6,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -22,10 +21,10 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I tap options button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I tap options button$")
-	public void WhenITapOptionsButton() throws Throwable {
+	public void WhenITapOptionsButton() throws Exception {
 		PagesCollection.personalInfoPage.tapOptionsButton();
 	}
 
@@ -34,10 +33,10 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I tap on my name$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I tap on my name$")
-	public void WhenITapOnMyName() throws Throwable {
+	public void WhenITapOnMyName() throws Exception {
 		PagesCollection.personalInfoPage.tapOnMyName();
 	}
 
@@ -46,10 +45,10 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I tap sign out button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I tap sign out button$")
-	public void WhenITapSignOutButton() throws Throwable {
+	public void WhenITapSignOutButton() throws Exception {
 		PagesCollection.personalInfoPage.tapSignOutBtn();
 	}
 
@@ -58,10 +57,10 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I tap settings button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I tap settings button$")
-	public void WhenITapSettingsButton() throws Throwable {
+	public void WhenITapSettingsButton() throws Exception {
 		PagesCollection.settingsPage = PagesCollection.personalInfoPage
 				.tapSettingsButton();
 	}
@@ -71,10 +70,10 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I swipe right to contact list$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I tap about button$")
-	public void WhenITapAboutButton() throws Throwable {
+	public void WhenITapAboutButton() throws Exception {
 		PagesCollection.aboutPage = PagesCollection.personalInfoPage
 				.tapAboutButton();
 	}
@@ -85,11 +84,11 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I tap on personal info screen$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I tap on personal info screen$")
-	public void WhenITapOnPersonalInfoScreen() throws Throwable {
-		PagesCollection.personalInfoPage.clickOnPage();
+	public void WhenITapOnPersonalInfoScreen() throws Exception {
+		PagesCollection.personalInfoPage.tapOnPage();
 	}
 
 	/**
@@ -98,10 +97,10 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I tap change photo button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I tap change photo button$")
-	public void WhenITapChangePhotoButton() throws Throwable {
+	public void WhenITapChangePhotoButton() throws Exception {
 		PagesCollection.personalInfoPage.tapChangePhotoButton();
 	}
 
@@ -110,10 +109,10 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I press Gallery button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Gallery button$")
-	public void WhenIPressGalleryButton() throws Throwable {
+	public void WhenIPressGalleryButton() throws Exception {
 		PagesCollection.personalInfoPage.tapGalleryButton();
 	}
 
@@ -122,11 +121,11 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I select picture$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I select picture$")
-	public void WhenISelectPicture() throws Throwable {
-		PagesCollection.personalInfoPage.selectPhoto();
+	public void WhenISelectPicture() throws Exception {
+		PagesCollection.personalInfoPage.selectFirstGalleryPhoto();
 	}
 
 	/**
@@ -134,10 +133,10 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I press Confirm button$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I press Confirm button$")
-	public void WhenIPressConfirmButton() throws Throwable {
+	public void WhenIPressConfirmButton() throws Exception {
 		PagesCollection.personalInfoPage.tapConfirmButton();
 	}
 
@@ -152,10 +151,10 @@ public class PersonalInfoPageSteps {
 	 *            id that can find the current name no matter what it is?)
 	 * @param newName
 	 *            the new name for the current user
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I change (.*) to (.*)$")
-	public void IChangeNameTo(String name, String newName) throws Throwable {
+	public void IChangeNameTo(String name, String newName) throws Exception {
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
@@ -174,7 +173,6 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I close Personal Info Page$")
 	public void IClosePersonalInfoPage() throws Exception {
-
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.personalInfoPage
 				.pressCloseButton();
 	}
@@ -188,10 +186,10 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @param name
 	 *            The current (newly given) name of the current user
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see my new name (.*)$")
-	public void ISeeMyNewName(String name) throws Throwable {
+	public void ISeeMyNewName(String name) throws Exception {
 		Assert.assertTrue(name.equals(PagesCollection.personalInfoPage
 				.getUserName()));
 	}
@@ -210,51 +208,15 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
-	 * Checks to see that the user's profile picture has been changed to some
-	 * new picture The image to be checked should be placed in the default
-	 * images path
-	 * 
-	 * @step. ^I see changed user picture$
-	 *
-	 * @throws Exception
-	 */
-	@Then("I see changed user picture")
-	public void ThenISeeChangedUserPicture() throws Exception {
-		BufferedImage referenceImage = PagesCollection.personalInfoPage
-				.takeScreenshot();
-		String path = CommonUtils
-				.getResultImagePath(PersonalInfoPageSteps.class);
-		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
-		Assert.assertTrue(
-				"Overlap between two images has not enough score. Expected >= 0.75, current = "
-						+ score, score >= 0.75d);
-	}
-
-	/**
-	 * -unused
+	 * Verify that Settings page is visible
 	 * 
 	 * @step. ^I see Settings$
 	 *
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see Settings$")
-	public void ThenISeeSettings() throws Throwable {
+	public void ThenISeeSettings() throws Exception {
 		Assert.assertTrue(PagesCollection.personalInfoPage.isSettingsVisible());
-	}
-
-	/**
-	 * Checks that app menu options are not reachable after the user taps on
-	 * self name
-	 * 
-	 * @step. ^Menu options are unreachable$
-	 *
-	 * @throws Throwable
-	 */
-	@Then("^Menu options are unreachable$")
-	public void ThenMenuOptionsAreUnreachable() throws Throwable {
-		Assert.assertFalse(PagesCollection.personalInfoPage
-				.isOptionsMenuReachable());
 	}
 
 	/**
@@ -262,22 +224,73 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I see edit name field$
 	 *
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^I see edit name field$")
-	public void ThenISeeEditNameField() throws Throwable {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isNameEditShowed());
+	public void ThenISeeEditNameField() throws Exception {
+		Assert.assertTrue(PagesCollection.personalInfoPage.isNameEditVisible());
 	}
-	
+
 	/**
-	 * Trying to clean self name and check empty name string
+	 * Clear self name edit field
 	 * 
-	 * @step. ^Edit name field can be cleaned in expected way$
+	 * @step. ^I clear name field$
 	 *
-	 * @throws Throwable
+	 * @throws Exception
 	 */
-	@When("^Edit name field can be cleaned in expected way$")
-	public void WhenNameEditFieldCleaned() throws Throwable {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isNameEditCanBeCleaned());
+	@When("^I clear name field$")
+	public void IClearNameField() throws Exception {
+		PagesCollection.personalInfoPage.clearSelfName();
+	}
+
+	private BufferedImage previousProfilePicture = null;
+
+	/**
+	 * Takes the screenshot of current screen and saves it to the internal
+	 * variable
+	 * 
+	 * @step. ^I remember my current profile picture$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I remember my current profile picture$")
+	public void IRememberCurrentPicture() throws Exception {
+		previousProfilePicture = PagesCollection.personalInfoPage
+				.takeScreenshot().orElseThrow(AssertionError::new);
+	}
+
+	private static final int PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS = 60;
+	private static final double MAX_OVERLAP_SCORE = 0.50;
+
+	/**
+	 * Verify that profile picture is different from the previously snapshotted
+	 * one within the predefined timeout (use special step to create a snapshot)
+	 * 
+	 * @step. ^I verify that my current profile picture is different from the
+	 *        previous one$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I verify that my current profile picture is different from the previous one$")
+	public void IVerifyMyCurrentPuictureIsDifferent() throws Exception {
+		if (previousProfilePicture == null) {
+			throw new IllegalStateException(
+					"This step requires to remember the previous profile picture first!");
+		}
+		final long millisecondsStarted = System.currentTimeMillis();
+		double score = -1;
+		do {
+			final BufferedImage currentProfilePicture = PagesCollection.personalInfoPage
+					.takeScreenshot().orElseThrow(AssertionError::new);
+			score = ImageUtil.getOverlapScore(currentProfilePicture,
+					previousProfilePicture);
+			Thread.sleep(3000);
+		} while (score > MAX_OVERLAP_SCORE
+				&& System.currentTimeMillis() - millisecondsStarted <= PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS * 1000);
+		Assert.assertTrue(
+				String.format(
+						"Profile picture has not been updated properly after %s seconds timeout (current overlap score value is %2.2f)",
+						PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS, score),
+				score <= MAX_OVERLAP_SCORE);
 	}
 }

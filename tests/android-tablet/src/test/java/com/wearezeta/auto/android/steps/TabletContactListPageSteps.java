@@ -66,13 +66,13 @@ public class TabletContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.androidPage = TabletPagesCollection.contactListPage
+		PagesCollection.currentPage = TabletPagesCollection.contactListPage
 				.tapOnName(value);
-		if (PagesCollection.androidPage instanceof PersonalInfoPage) {
-			 PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.androidPage;
+		if (PagesCollection.currentPage instanceof PersonalInfoPage) {
+			 PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.currentPage;
 			TabletPagesCollection.personalInfoPage = (TabletPersonalInfoPage) PagesCollection.personalInfoPage;
-		} else if (PagesCollection.androidPage instanceof DialogPage) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+		} else if (PagesCollection.currentPage instanceof DialogPage) {
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.currentPage;
 			TabletPagesCollection.dialogPage = TabletPagesCollection.contactListPage.initDialogPage();
 		}
 	}

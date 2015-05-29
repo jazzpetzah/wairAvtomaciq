@@ -4,8 +4,8 @@ Feature: Performance Tests
   Scenario Outline: Normal usage
     Given There are <UsersNumber> shared users with name prefix <UserNamePrefix>
     Given User <Name> is Me
-    Given Myself is connected to all other users
     Given I Sign in using login <Login> and password <Password>
+    Given Myself is connected to all other users
     Given I see Contact list
     When I test conversation loading time for conversation with 300 messages and 30 images
     When I start test cycle for <Time> minutes

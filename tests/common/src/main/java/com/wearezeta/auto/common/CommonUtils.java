@@ -23,7 +23,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CommonUtils {
 	public static final String OS_NAME_WINDOWS = "Windows";
-	
+
 	public static final int MAX_PARALLEL_USER_CREATION_TASKS = 25;
 
 	private static final String USER_IMAGE = "userpicture_landscape.jpg";
@@ -32,13 +32,12 @@ public class CommonUtils {
 	private static final String HOT_PING_IMAGE = "hot_ping_image.png";
 	private static final String IOS_PING_IMAGE = "ios_ping_image.png";
 	private static final String IOS_HOT_PING_IMAGE = "ios_hot_ping_image.png";
-	private static final String CALLING_MUTE_BUTTON_IMAGE = "mutebtn_pressed.png";
-	private static final String CALLING_SPEAKER_BUTTON_IMAGE = "speakerbtn_pressed.png";
 	private static final String IOS_AVATAR_CLOCK_IMAGE = "new_avatarclock.png";
 	private static final String MEDIABAR_PLAY_IMAGE = "android_mediabar_play_image.png";
 	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image.png";
 	private static final String MEDIA_PLAY_IMAGE = "android_media_play_image.png";
 	private static final String MEDIA_PAUSE_IMAGE = "android_media_pause_image.png";
+	private static final String ALPHANUMERIC_PLUS_SYMBOLS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
 
 	private static final Random rand = new Random();
 	public static final int BACKEND_SYNC_TIMEOUT = 5000 + rand.nextInt(4000); // milliseconds
@@ -51,12 +50,14 @@ public class CommonUtils {
 	public static String getOsName() {
 		return System.getProperty("os.name");
 	}
-	
+
 	public static boolean trueInPercents(int percent) {
 		Random rand = new Random();
 		int nextInt = rand.nextInt(100);
-		if (nextInt < percent) return true;
-		else return false;
+		if (nextInt < percent)
+			return true;
+		else
+			return false;
 	}
 
 	public static int executeOsXCommand(String[] cmd) throws Exception {
@@ -101,12 +102,6 @@ public class CommonUtils {
 		stream.close();
 	}
 
-	public static int getAndroidApiLvl(Class<?> c) throws Exception {
-		String androidVersion = "44";
-		androidVersion = getValueFromConfig(c, "androidVersion");
-		return Integer.parseInt(androidVersion);
-	}
-
 	public static Boolean getAndroidLogs(Class<?> c) throws Exception {
 		Boolean androidlogs = false;
 		androidlogs = Boolean.valueOf(getValueFromConfig(c, "androidLogs"));
@@ -147,18 +142,7 @@ public class CommonUtils {
 				+ IOS_HOT_PING_IMAGE;
 		return path;
 	}
-	public static String getCallingMuteButtonPath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ CALLING_MUTE_BUTTON_IMAGE;
-		return path;
-	}
-	
-	public static String getCallingSpeakerButtonPath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ CALLING_SPEAKER_BUTTON_IMAGE;
-		return path;
-	}
-	
+
 	public static String getAvatarWithClockIconPathIOS(Class<?> c)
 			throws Exception {
 		String path = getValueFromConfig(c, "iosImagesPath")
@@ -350,6 +334,11 @@ public class CommonUtils {
 		return getValueFromConfig(c, "activity");
 	}
 
+	public static String getAndroidWaitActivitiesFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "waitActivities");
+	}
+
 	public static String getSimulatorImagesPathFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "iosImagesPath");
@@ -387,6 +376,24 @@ public class CommonUtils {
 		return RandomStringUtils.randomAlphanumeric(lengh);
 	}
 
+	private static String generateRandomStringFromTargetStringSetWithLengh(
+			int numberOfCharacters, String characters) {
+		StringBuilder result = new StringBuilder();
+		while (numberOfCharacters > 0) {
+			Random rand = new Random();
+			result.append(characters.charAt(rand.nextInt(characters.length())));
+			numberOfCharacters--;
+		}
+		String text = result.toString();
+		return text;
+	}
+
+	public static String generateRandomStringFromAlphanumericPlusSymbolsWithLengh(
+			int numberOfCharacters) {
+		return generateRandomStringFromTargetStringSetWithLengh(
+				numberOfCharacters, ALPHANUMERIC_PLUS_SYMBOLS);
+	}
+
 	public static String getAndroidDeviceNameFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "deviceName");
@@ -415,25 +422,31 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "defaultCallingServicePort");
 	}
 
-	public static BufferedImage getElementScreenshot(WebElement element,
-			AppiumDriver driver) throws IOException {
+	public static Optional<BufferedImage> getElementScreenshot(
+			WebElement element, AppiumDriver driver) throws IOException {
 		return getElementScreenshot(element, driver, "iPhone 6");
 	}
 
-	public static BufferedImage getElementScreenshot(WebElement element,
-			AppiumDriver driver, String deviceName) throws IOException {
+	public static Optional<BufferedImage> getElementScreenshot(
+			WebElement element, AppiumDriver driver, String deviceName)
+			throws IOException {
 		int multiply = 3;
 		if (deviceName.equals("iPhone 6")) {
 			multiply = 2;
 		}
-
-		BufferedImage screenshot = DriverUtils
-				.takeScreenshot((ZetaDriver) driver);
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
-		return screenshot.getSubimage(elementLocation.x * multiply,
-				elementLocation.y * multiply, elementSize.width * multiply,
-				elementSize.height * multiply);
+		final Optional<BufferedImage> screenshot = DriverUtils
+				.takeScreenshot((ZetaDriver) driver);
+		if (screenshot.isPresent()) {
+			return Optional.of(screenshot.get()
+					.getSubimage(elementLocation.x * multiply,
+							elementLocation.y * multiply,
+							elementSize.width * multiply,
+							elementSize.height * multiply));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	public static String getContactName(String login) {
@@ -504,12 +517,12 @@ public class CommonUtils {
 		final byte[] digest = md.digest();
 		return Base64.encodeBase64String(digest);
 	}
-	
+
 	public static String getDefaultEmailListenerServiceHostFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "defaultEmailListenerServiceHost");
 	}
-	
+
 	public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");

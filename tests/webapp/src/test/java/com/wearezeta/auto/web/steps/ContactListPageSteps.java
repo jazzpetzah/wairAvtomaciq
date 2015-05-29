@@ -3,12 +3,12 @@ package com.wearezeta.auto.web.steps;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
-import com.wearezeta.auto.web.pages.SelfProfilePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -24,38 +24,20 @@ public class ContactListPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Checks that we can see signed in user on top of Contact List
+	 * Checks that contact list is loaded and waits for profile avatar to be
+	 * shown
 	 * 
-	 * @step. ^I see my name on top of Contact list$
+	 * @step. ^I see my avatar on top of Contact list$
 	 * 
 	 * @throws AssertionError
-	 *             if self user name does not appear at the top of Contact List
+	 *             if contact list is not loaded or avatar does not appear at
+	 *             the top of Contact List
 	 */
-	@Given("^I see my name on top of Contact list$")
+	@Given("^I see my avatar on top of Contact list$")
 	public void ISeeMyNameOnTopOfContactList() throws Exception {
 		Assert.assertTrue("No contact list loaded.",
 				PagesCollection.contactListPage.waitForContactListVisible());
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isSelfNameEntryExist());
-	}
-
-	/**
-	 * Verify whether self name entry is selected in the convo list
-	 * 
-	 * @step. ^I see my name is selected on top of Contact list$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I see my name is selected on top of Contact list$")
-	public void ISeeMyNameIsSelectedOnTopOfContactList() throws Exception {
-		Assert.assertTrue("No contact list loaded.",
-				PagesCollection.contactListPage.waitForContactListVisible());
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isSelfNameEntrySelected());
-		if (PagesCollection.selfProfilePage == null) {
-			PagesCollection.selfProfilePage = (SelfProfilePage) PagesCollection.contactListPage
-					.instantiatePage(SelfProfilePage.class);
-		}
+		PagesCollection.contactListPage.waitForSelfProfileAvatar();
 	}
 
 	/**
@@ -350,24 +332,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Verify that my name color is the same as in color picker
-	 * 
-	 * @step. ^I verify my name color is the same as in color picker$
-	 * @throws Exception
-	 * 
-	 */
-	@Then("^I verify my name color is the same as in color picker$")
-	public void IVerifyMyNameColor() throws Exception {
-		final String selfNameColor = PagesCollection.contactListPage
-				.getSelfNameColor();
-		final String colorInColorPicker = PagesCollection.selfProfilePage
-				.getCurrentAccentColor();
-		Assert.assertTrue("Colors are not the same",
-				colorInColorPicker.equalsIgnoreCase(selfNameColor));
-
-	}
-
-	/**
 	 * Verify whether the particular conversations list item has expected index
 	 * 
 	 * @step. ^I verify that (.*) index in Contact list is (\\d+)$
@@ -443,5 +407,51 @@ public class ContactListPageSteps {
 			assertFalse(PagesCollection.contactListPage
 					.isMissedCallVisibleForContact(conversationName));
 		}
+	}
+
+	/*
+	 * Verify if ping icon in contact list in conversation with user is colored
+	 * to expected accent color
+	 * 
+	 * @step.
+	 * "^I verify ping icon in conversation with (\\w+) has (\\w+) color$"
+	 * 
+	 * @param colorName one of these colors: StrongBlue, StrongLimeGreen,
+	 * BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I verify ping icon in conversation with (\\w+) has (\\w+) color$")
+	public void IVerifyPingIconColor(String conversationName, String colorName)
+			throws Exception {
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
+		final AccentColor expectedColor = AccentColor.getByName(colorName);
+		final AccentColor pingIconColor = PagesCollection.contactListPage
+				.getCurrentPingIconAccentColor(conversationName);
+		Assert.assertEquals(expectedColor, pingIconColor);
+	}
+
+	/*
+	 * Verify if unread dot in contact list in conversation with user is colored
+	 * to expected accent color
+	 * 
+	 * @step.
+	 * "^I verify unread dot in conversation with (\\w+) has (\\w+) color$"
+	 * 
+	 * @param colorName one of these colors: StrongBlue, StrongLimeGreen,
+	 * BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I verify unread dot in conversation with (\\w+) has (\\w+) color$")
+	public void IVerifyUnreadDotColor(String conversationName, String colorName)
+			throws Exception {
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
+		final AccentColor expectedColor = AccentColor.getByName(colorName);
+		final AccentColor unreadDotColor = PagesCollection.contactListPage
+				.getCurrentUnreadDotAccentColor(conversationName);
+		Assert.assertEquals(expectedColor, unreadDotColor);
 	}
 }

@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
-public class CameraRollTabletPopoverPage extends IOSPage{
+public class CameraRollTabletPopoverPage extends CameraRollPage{
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathCameraLibraryButton)
 	private WebElement cameraLibraryButton;
@@ -23,7 +23,7 @@ public class CameraRollTabletPopoverPage extends IOSPage{
 	@FindBy(how = How.XPATH, using = IOSTabletLocators.CameraRollTabletPopoverPage.xpathIPADCameraLibraryFirtImage)
 	private WebElement ipadPopoverLibraryFirstPicture;
 	
-	@FindBy(how = How.NAME, using = IOSLocators.nameConfirmPictureButton)
+	@FindBy(how = How.XPATH, using = IOSTabletLocators.CameraRollTabletPopoverPage.xpathIPADCameraLibraryConfirmButton)
 	private WebElement confirmPictureButton;
 	
 	public CameraRollTabletPopoverPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -32,8 +32,6 @@ public class CameraRollTabletPopoverPage extends IOSPage{
 		
 
 	public void pressSelectFromLibraryButtoniPad() throws Exception {
-//		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-//				By.xpath(IOSLocators.xpathCameraLibraryButton));
 		cameraLibraryButton.click();
 	}
 
@@ -48,20 +46,14 @@ public class CameraRollTabletPopoverPage extends IOSPage{
 	}
 
 	public void clickFirstLibraryFolderiPad() throws Exception {
-//		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-//				By.xpath(IOSLocators.xpathCameraLibraryFirstFolder));
 		cameraLibraryFirstFolderiPadPopover.click();
 	}
 
 	public void clickFirstImage() throws Exception {
-//		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-//				By.xpath(IOSLocators.xpathLibraryFirstPicture));
 		ipadPopoverLibraryFirstPicture.click();
 	}
 
 	public void pressConfirmButtoniPad() throws Exception {
-//		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-//				By.name(IOSLocators.nameConfirmPictureButton));
 		confirmPictureButton.click();
 	}
 

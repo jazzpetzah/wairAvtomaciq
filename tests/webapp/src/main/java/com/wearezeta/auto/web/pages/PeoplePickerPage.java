@@ -5,7 +5,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -13,14 +13,15 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SendInvitationPopoverContainer;
 
 public class PeoplePickerPage extends WebPage {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
@@ -58,7 +59,7 @@ public class PeoplePickerPage extends WebPage {
 		foundUserElement.click();
 	}
 
-	public ConnectToPopoverContainer clickNotConnectedUserName(String name)
+	public AbstractPopoverContainer clickNotConnectedUserName(String name)
 			throws Exception {
 		clickNotConnectedUser(name);
 		PagesCollection.popoverPage = new ConnectToPopoverContainer(
@@ -162,31 +163,54 @@ public class PeoplePickerPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(user));
-		try {
+		if (this.getDriver().getCapabilities().getBrowserName()
+				.equals(Browser.Safari.toString())) {
+			log.debug("Using workaround for safari:");
+			JavascriptExecutor js = (JavascriptExecutor) this.getDriver();
+			js.executeScript("arguments[0].setAttribute('class','');", this
+					.getDriver().findElement(locator));
+		} else {
 			DriverUtils.moveMouserOver(this.getDriver(), getDriver()
 					.findElement(locator));
-		} catch (WebDriverException e) {
-			// Safari workaround
 		}
 		getDriver()
 				.findElement(
 						By.cssSelector(WebAppLocators.PeoplePickerPage.cssRemoveIconByName
 								.apply(user))).click();
 	}
-	
+
 	public void clickPlusButtonOnSuggestion(String user) throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(user));
-		try {
+		if (this.getDriver().getCapabilities().getBrowserName()
+				.equals(Browser.Safari.toString())) {
+			log.debug("Using workaround for safari:");
+			JavascriptExecutor js = (JavascriptExecutor) this.getDriver();
+			js.executeScript("arguments[0].setAttribute('class','');", this
+					.getDriver().findElement(locator));
+		} else {
 			DriverUtils.moveMouserOver(this.getDriver(), getDriver()
 					.findElement(locator));
-		} catch (WebDriverException e) {
-			// Safari workaround
 		}
-		getDriver()
-				.findElement(
-						By.cssSelector(WebAppLocators.PeoplePickerPage.cssAddIconByName
-								.apply(user))).click();
+		getDriver().findElement(
+				By.cssSelector(WebAppLocators.PeoplePickerPage.cssAddIconByName
+						.apply(user))).click();
+	}
+
+	public ConnectToPopoverContainer clickPendingUserName(String name)
+			throws Exception {
+		clickPendingUser(name);
+		PagesCollection.popoverPage = new ConnectToPopoverContainer(
+				this.getLazyDriver());
+		return (ConnectToPopoverContainer) PagesCollection.popoverPage;
+	}
+
+	private void clickPendingUser(String name) throws Exception {
+		String foundPendingUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchPendingResultByName
+				.apply(name);
+		WebElement foundPendingUserElement = getDriver().findElement(
+				By.xpath(foundPendingUserXpath));
+		foundPendingUserElement.click();
 	}
 }

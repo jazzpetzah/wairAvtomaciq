@@ -6,11 +6,11 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact>
-    Then I see user <Contact>  in People picker
+    Then I see user <Contact> in People picker
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -23,11 +23,11 @@ Feature: Search
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <GroupChatName>
-    Then I see group <GroupChatName>  in People picker
+    Then I see group <GroupChatName> in People picker
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName          |
@@ -39,11 +39,11 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field part <Size> of user name to connect to <Contact>
-    Then I see user <Contact>  in People picker
+    Then I see user <Contact> in People picker
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Size |
@@ -56,11 +56,11 @@ Feature: Search
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field part <Size> of user name to connect to <GroupChatName>
-    Then I see group <GroupChatName>  in People picker
+    Then I see group <GroupChatName> in People picker
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName           | Size |
@@ -72,51 +72,34 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I press Clear button
-    Then Contact list appears
+    Then I see Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1494 @regression
-  Scenario Outline: Verify possibility of invitation accepting
-    Given There is 3 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    When I minimize the application
-    And I open Firefox
-    And I wait for Firefox Url bar
-    Then I connect using invitation link from <Contact2>
+# Selendroid does not support interaction with external applications 
+  # @id1494 @regression
+  # Scenario Outline: Verify possibility of invitation accepting
+  #  Given There is 3 users where <Name> is me
+  #  Given Myself is connected to <Contact1>
+  #  Given I Sign in using login <Login> and password <Password>
+  #  Given I see Contact list
+  #  When I minimize the application
+  #  And I open Firefox
+  #  And I wait for Firefox Url bar
+  #  Then I connect using invitation link from <Contact2>
+  #
+  #  Examples: 
+  #    | Login      | Password      | Name      | Contact1  | Contact2  |
+  #    | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
-
-  @id1517 @regression
-  Scenario Outline: Verify you can send an invite
-    Given There is 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    When I swipe down contact list
-    And I see People picker page
-    And I hide keyboard
-    And I tap on Send an invitation
-    And I tap on Gmail link
-    Then mail subject is <Subject>
-    And mail content contains my <Login>
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Subject               |
-      | user1Email | user1Password | user1Name | user2Name | Connect to me on Wire |
-      
   @id2214 @staging
   Scenario Outline: I can dismiss PYMK by Hide button
-    Given I see sign in screen
+    Given I see welcome screen
     Given I press Join button
     Given I press Camera button twice
     Given I confirm selection
@@ -138,7 +121,7 @@ Feature: Search
 
   @id2213 @staging
   Scenario Outline: I can dismiss PYMK by swipe
-    Given I see sign in screen
+    Given I see welcome screen
     Given I press Join button
     Given I press Camera button twice
     Given I confirm selection
@@ -164,7 +147,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I swipe down contact list
+    When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field user name to connect to <Contact1>
