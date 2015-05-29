@@ -99,6 +99,8 @@ public final class PopoverLocators {
 			public static final String xpathLeaveGroupChat = xpathRootLocator
 					+ xpathPageRootLocator + "//*[@data-uie-name='do-leave']";
 
+			public static final String cssParticipants = "[@data-uie-name='item-user']";
+
 			public static final Function<String, String> xpathParticipantByName = (
 					name) -> String.format(
 					"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
