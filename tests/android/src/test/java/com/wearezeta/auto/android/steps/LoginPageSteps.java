@@ -24,16 +24,6 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Presses the Join button to begin the registration process
-	 * 
-	 * @step. ^I press Join button$
-	 */
-	@When("I press Join button")
-	public void WhenIPressJoinButton() throws Exception {
-		PagesCollection.registrationPage = PagesCollection.loginPage.join();
-	}
-
-	/**
 	 * Checks to see that the login error message contains the correct text
 	 * 
 	 * @step. ^I see error message \"(.*)\"$
