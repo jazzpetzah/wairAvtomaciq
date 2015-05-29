@@ -4,11 +4,23 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.PagesCollection;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class WelcomePageSteps {
 
+	/**
+	 * Verify whether Welcome screen is visible
+	 * 
+	 * @step. ^I see [Ww]elcome screen$
+	 * @throws Exception
+	 */
+	@Given("^I see [Ww]elcome screen$")
+	public void GivenISeeWelcomeScreen() throws Exception {
+		Assert.assertTrue(PagesCollection.welcomePage.waitForInitialScreen());
+	}
+	
 	/**
 	 * Checks to see that the settings page is visible
 	 * 

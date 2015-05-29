@@ -32,9 +32,6 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.ContactListPage.idSelfUserAvatar)
 	protected WebElement selfUserAvatar;
 
-	@FindBy(id = AndroidLocators.LoginPage.idWelcomeSlogan)
-	private List<WebElement> welcomeSloganContainer;
-
 	@FindBy(id = AndroidLocators.ContactListPage.idContactListNames)
 	private WebElement contactListNames;
 
@@ -76,11 +73,6 @@ public class LoginPage extends AndroidPage {
 		assert false : String.format(
 				"Sign in is still in progress after %s seconds",
 				SIGN_IN_TIMEOUT_SECONDS);
-	}
-
-	public boolean waitForInitialScreen() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.LoginPage.idWelcomeSlogan));
 	}
 
 	public RegistrationPage join() throws Exception {

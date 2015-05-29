@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class EmailSignInSteps {
@@ -103,8 +104,24 @@ public class EmailSignInSteps {
 	 */
 	@When("I press Log in button")
 	public void WhenIPressLogInButton() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.loginPage.LogIn();
+		PagesCollection.contactListPage = PagesCollection.emailSignInPage.LogIn();
 		Assert.assertTrue("Login finished",
 				PagesCollection.loginPage.waitForLogin());
+	}
+	
+	/**
+	 * Checks to see that the login error message contains the correct text
+	 * After providing a false email address or password
+	 * 
+	 * @step. ^I see error message \"(.*)\"$
+	 * @param expectedMsg
+	 *            the expected error message
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see error message \"(.*)\"$")
+	public void ISeeErrorMessage(String expectedMsg) throws Exception {
+		PagesCollection.loginPage.waitForLogin();
+		PagesCollection.loginPage.verifyErrorMessageText(expectedMsg);
 	}
 }

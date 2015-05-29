@@ -1,5 +1,6 @@
 package registration;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -29,30 +30,32 @@ public class WelcomePage extends AndroidPage {
 	@FindBy(id = AndroidLocators.WelcomePage.phoneInputField)
 	private WebElement phoneInputField;
 
-	@FindBy(id = AndroidLocators.LoginPage.idHaveAccountButton)
+	@FindBy(id = AndroidLocators.WelcomePage.idHaveAccountButton)
 	protected WebElement haveAccountButton;
+
+	@FindBy(id = AndroidLocators.WelcomePage.idWelcomeSlogan)
+	private List<WebElement> welcomeSloganContainer;
 	
 	public WelcomePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 	
 	public void inputPhoneNumber(String phoneNumber) {
-		
+		//TODO implement
 	}
 	
 	public EmailSignInPage clickIHaveAnAccount() throws Exception {
 		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-			By.id(AndroidLocators.LoginPage.idHaveAccountButton))) {
+			By.id(AndroidLocators.WelcomePage.idHaveAccountButton))) {
 			haveAccountButton.click();
 		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(AndroidLocators.EmailSignInPage.idLoginInput));
 		return new EmailSignInPage(this.getLazyDriver());
 	}
-
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	
+	public boolean waitForInitialScreen() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.id(AndroidLocators.WelcomePage.idWelcomeSlogan));
 	}
 }

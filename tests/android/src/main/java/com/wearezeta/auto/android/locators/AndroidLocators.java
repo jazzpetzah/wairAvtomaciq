@@ -78,8 +78,6 @@ public final class AndroidLocators {
 
 
 		public static final String idSignUpButton = "ttv__welcome__create_account";
-		
-		public static final String idHaveAccountButton = "zb__welcome__sign_in";
 
 		public static final String idLoginButton = "pcb__signin__email";
 
@@ -88,8 +86,6 @@ public final class AndroidLocators {
 		public static final String idLoginProgressViewContainer = "fl__sign_in__progress_view__container";
 
 		public static final String idWelcomeButtonsContainer = "cm__choose";
-
-		public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
 		
 
 		public static final Function<String, String> xpathLoginMessageByText = text -> String
@@ -471,10 +467,16 @@ public final class AndroidLocators {
 
 	}
 	
+	/*
+	 * Registration classes
+	 */
+	
 	public static final class WelcomePage {
 		public static final String phoneInputField = "et__reg__phone";
 
-		public static final String idIHaveAccountButton = "zb__welcome__sign_in";
+		public static final String idHaveAccountButton = "zb__welcome__sign_in";
+		
+		public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
 	}
 	
 	public static final class EmailSignInPage {
