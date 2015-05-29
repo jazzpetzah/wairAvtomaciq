@@ -218,7 +218,7 @@ public final class AndroidLocators {
 
 		public static final String idPlayPauseMedia = "gtv__media_play";
 
-		public static final String idAddParticipants = "gtv__cursor_participants";
+		public static final String idParticipantsBtn = "gtv__cursor_participants";
 
 		public static final String idPingMessage = "ttv__row_conversation__ping_message";
 
@@ -243,10 +243,6 @@ public final class AndroidLocators {
 		public static final String idConnectRequestConnectTo = "user_name";
 
 		public static final String idNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
-
-		public static final String idDialogPageBottomFrameLayout = "cv";
-
-		public static final String idDialogPageBottom = "fl__cursor__user_avatar_container";
 
 		public static final String idConnectRequestChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
 
