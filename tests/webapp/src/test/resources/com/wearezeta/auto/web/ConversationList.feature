@@ -48,8 +48,7 @@ Feature: Conversation List
 
   @staging @id1720
   Scenario Outline: Verify Ping icon in the conversation list
-    Given There is 2 users where <Name> is me
-    Given User me change accent color to <ColorName>
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     When I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -59,5 +58,5 @@ Feature: Conversation List
     Then I verify ping icon in conversation with <Contact> has <ColorName> color
 
     Examples: 
-      | Login      | Password      | Name      | ColorName    | Contact   |
-      | user1Email | user1Password | user1Name | BrightOrange | user2Name |
+      | Login      | Password      | Name      | ColorName  | Contact   |
+      | user1Email | user1Password | user1Name | StrongBlue | user2Name |
