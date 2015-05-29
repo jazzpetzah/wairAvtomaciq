@@ -23,14 +23,8 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
-	@FindBy(id = AndroidLocators.LoginPage.idIHaveAccountButton)
-	private WebElement iHaveAccountButton;
-
 	@FindBy(id = AndroidLocators.LoginPage.idSignUpButton)
 	protected WebElement signUpButton;
-	
-	@FindBy(id = AndroidLocators.LoginPage.idHaveAccountButton)
-	protected WebElement haveAccountButton;
 
 	@FindBy(id = AndroidLocators.LoginPage.idForgotPass)
 	private WebElement forgotPasswordButton;
@@ -61,16 +55,6 @@ public class LoginPage extends AndroidPage {
 
 	public LoginPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
-	}
-
-	public LoginPage switchToEmailSignIn() throws Exception {
-		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.LoginPage.idIHaveAccountButton))) {
-			iHaveAccountButton.click();
-		}
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.LoginPage.idLoginInput));
-		return this;
 	}
 
 	public CommonAndroidPage forgotPassword() throws Exception {
