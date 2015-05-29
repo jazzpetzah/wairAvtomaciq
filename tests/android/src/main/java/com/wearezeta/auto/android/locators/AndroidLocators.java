@@ -93,6 +93,8 @@ public final class AndroidLocators {
 		public static final String idWelcomeButtonsContainer = "cm__choose";
 
 		public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
+		
+		public static final String idNotNowButton = "ttv__not_now";
 
 		public static final Function<String, String> xpathLoginMessageByText = text -> String
 				.format("//*[@id='message' and @value='%s']", text);
