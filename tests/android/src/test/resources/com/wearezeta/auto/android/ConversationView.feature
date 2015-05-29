@@ -299,25 +299,25 @@ Feature: Conversation View
   #  And I open the gallery application
   #  And I share image from Gallery to Wire
   #  Then I see new photo in the dialog
+  #
+  #  Examples: 
+  #    | Login      | Password      | Name      | Contact   |
+  #    | user1Email | user1Password | user1Name | user2Name |
+  #
+  # @id2084 @staging
+  # Scenario Outline: I want to share a URL on Wire
+  #  Given There is 2 users where <Name> is me
+  #  Given <Contact> is connected to <Name>
+  #  Given I Sign in using login <Login> and password <Password>
+  #  Given I see Contact list
+  #  And I tap on contact name <Contact>
+  #  And I share URL from native browser app to Wire with contact <Contact>
+  #  And I see URL in the dialog
+  #
+  #  Examples: 
+  #   | Login      | Password      | Name      | Contact   |
+  #   | user1Email | user1Password | user1Name | user2Name |
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
-      
- @id2084 @staging
-  Scenario Outline: I want to share a URL on Wire
-    Given There is 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    And I tap on contact name <Contact>
-    And I share URL from native browser app to Wire with contact <Contact>
-    And I see URL in the dialog
-    
-    Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
-      
  @id170 @staging
   Scenario Outline: Verify you can send and play youtube link
     Given There are 3 users where <Name> is me
