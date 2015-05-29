@@ -287,17 +287,18 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
       | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
-      
-@id2085 @staging
-  Scenario Outline: I want to share a picture to wire
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    When I tap on contact name <Contact>
-    And I open the gallery application
-    And I share image from Gallery to Wire
-    Then I see new photo in the dialog
+
+# Disabled since Selendroid cannot interact with external apps
+  # @id2085 @staging
+  # Scenario Outline: I want to share a picture to wire
+  #  Given There are 2 users where <Name> is me
+  #  Given <Contact> is connected to <Name>
+  #  Given I Sign in using login <Login> and password <Password>
+  #  Given I see Contact list
+  #  When I tap on contact name <Contact>
+  #  And I open the gallery application
+  #  And I share image from Gallery to Wire
+  #  Then I see new photo in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
