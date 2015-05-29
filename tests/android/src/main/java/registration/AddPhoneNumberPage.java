@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
@@ -29,13 +30,9 @@ public class AddPhoneNumberPage extends AndroidPage {
 		super(lazyDriver);
 	}
 	
-	public boolean waitForAddPhoneNumberAppear() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.AddPhoneNumberPage.idNotNowButton), 20);
-	}
-	
-	public void notNowButtonClick() throws Exception {
+	public ContactListPage notNowButtonClick() throws Exception {
 		notNowButton.click();
+		return new ContactListPage(this.getLazyDriver());
 	}
 
 }

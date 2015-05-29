@@ -2,6 +2,9 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
+import registration.AddPhoneNumberPage;
+
+import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -46,11 +49,20 @@ public class EmailSignInSteps {
 		(new WelcomePageSteps()).ISwitchToEmailSignIn();
 		PagesCollection.emailSignInPage.setLogin(login);
 		PagesCollection.emailSignInPage.setPassword(password);
-		PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
-				.LogIn());
-		if (PagesCollection.loginPage.waitForAddPhoneNumberAppear()) {
-			PagesCollection.loginPage.notNowButtonClick();
+		
+		AndroidPage returnedPage = PagesCollection.emailSignInPage
+			.logIn();
+		
+		// We want to skip the "AddPhoneNumber page if it is presented to us
+		ContactListPage contactListPage;
+		if (returnedPage instanceof AddPhoneNumberPage) {
+			contactListPage = ((AddPhoneNumberPage) returnedPage).notNowButtonClick();
+		} else {
+			contactListPage = (ContactListPage) returnedPage;
 		}
+		
+		PagesCollection.contactListPage = contactListPage;
+		
 		Assert.assertTrue("Login in progress",
 				PagesCollection.loginPage.waitForLoginScreenDisappear());
 		Assert.assertTrue("Login finished",
@@ -104,7 +116,7 @@ public class EmailSignInSteps {
 	 */
 	@When("I press Log in button")
 	public void WhenIPressLogInButton() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.emailSignInPage.LogIn();
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.emailSignInPage.logIn();
 		Assert.assertTrue("Login finished",
 				PagesCollection.loginPage.waitForLogin());
 	}

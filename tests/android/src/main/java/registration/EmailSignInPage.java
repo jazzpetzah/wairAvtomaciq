@@ -3,6 +3,7 @@ package registration;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
+import org.apache.xpath.operations.And;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -56,8 +57,25 @@ public class EmailSignInPage extends AndroidPage {
 		passwordInput.sendKeys(password);
 	}
 	
-	public ContactListPage LogIn() throws Exception {
+	/**
+	 * If the user already has a phone number attached to their account,
+	 * this page will go directly to the start UI, or else it will return
+	 * a page in which the user is asked to add a phone number
+	 * @return either a {@link AddPhoneNumberPage} or {@link ContactListPage}
+	 * @throws Exception
+	 */
+	public AndroidPage logIn() throws Exception {
 		confirmSignInButton.click();
-		return new ContactListPage(this.getLazyDriver());
+		
+		if (waitForAddPhoneNumberAppear()) {
+			return new AddPhoneNumberPage(this.getLazyDriver());
+		} else {
+			return new ContactListPage(this.getLazyDriver());
+		}
+	}
+	
+	private boolean waitForAddPhoneNumberAppear() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.id(AndroidLocators.AddPhoneNumberPage.idNotNowButton), 20);
 	}
 }
