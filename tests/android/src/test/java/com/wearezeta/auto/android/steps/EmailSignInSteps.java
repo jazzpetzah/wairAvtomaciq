@@ -2,27 +2,22 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
+import registration.AddPhoneNumberPage;
+
+import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
-import cucumber.api.java.en.*;
+import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
-public class LoginPageSteps {
+public class EmailSignInSteps {
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-	/**
-	 * Verify whether Welcome screen is visible
-	 * 
-	 * @step. ^I see [Ww]elcome screen$
-	 * @throws Exception
-	 */
-	@Given("^I see [Ww]elcome screen$")
-	public void GivenISeeWelcomeScreen() throws Exception {
-		Assert.assertTrue(PagesCollection.loginPage.waitForInitialScreen());
-	}
-
+	
 	/**
 	 * Inputs the login details for the given user and then clicks the sign in
 	 * button Also sets the contactList page in the pagesObject
@@ -51,71 +46,29 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertTrue("Welcome page is not visible",
-				PagesCollection.loginPage.waitForInitialScreen());
-		PagesCollection.loginPage.switchToEmailSignIn();
-		PagesCollection.loginPage.setLogin(login);
-		PagesCollection.loginPage.setPassword(password);
-		PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
-				.LogIn());
-		if (PagesCollection.loginPage.waitForAddPhoneNumberAppear()) {
-			PagesCollection.loginPage.notNowButtonClick();
+		(new WelcomePageSteps()).ISwitchToEmailSignIn();
+		PagesCollection.emailSignInPage.setLogin(login);
+		PagesCollection.emailSignInPage.setPassword(password);
+		
+		AndroidPage returnedPage = PagesCollection.emailSignInPage
+			.logIn();
+		
+		// We want to skip the "AddPhoneNumber page if it is presented to us
+		ContactListPage contactListPage;
+		if (returnedPage instanceof AddPhoneNumberPage) {
+			contactListPage = ((AddPhoneNumberPage) returnedPage).notNowButtonClick();
+		} else {
+			contactListPage = (ContactListPage) returnedPage;
 		}
+		
+		PagesCollection.contactListPage = contactListPage;
+		
 		Assert.assertTrue("Login in progress",
 				PagesCollection.loginPage.waitForLoginScreenDisappear());
 		Assert.assertTrue("Login finished",
 				PagesCollection.loginPage.waitForLogin());
 	}
-
-	/**
-	 * Press the "I have an account" button on the welcome page. to switch to
-	 * sign in using email address
-	 * 
-	 * @step. ^I switch to email sign in screen$
-	 * @throws Exception
-	 */
-	@When("^I switch to email sign in screen$")
-	public void ISwitchToEmailSignIn() throws Exception {
-		PagesCollection.loginPage.switchToEmailSignIn();
-	}
-
-	/**
-	 * Presses the "forgot password" button
-	 * 
-	 * @step. ^I press FORGOT PASSWORD button$
-	 * 
-	 * @throws Exception
-	 */
-	@When("I press FORGOT PASSWORD button")
-	public void WhenIPressForgotPasswordButton() throws Exception {
-		PagesCollection.commonAndroidPage = PagesCollection.loginPage
-				.forgotPassword();
-	}
-
-	/**
-	 * Presses the Log in Button underneath the email and password fields
-	 * 
-	 * @step. ^I press FORGOT PASSWORD button$
-	 * 
-	 * @throws Exception
-	 */
-	@When("I press Log in button")
-	public void WhenIPressLogInButton() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.loginPage.LogIn();
-		Assert.assertTrue("Login finished",
-				PagesCollection.loginPage.waitForLogin());
-	}
-
-	/**
-	 * Presses the Join button to begin the registration process
-	 * 
-	 * @step. ^I press Join button$
-	 */
-	@When("I press Join button")
-	public void WhenIPressJoinButton() throws Exception {
-		PagesCollection.registrationPage = PagesCollection.loginPage.join();
-	}
-
+	
 	/**
 	 * Types an email address into the email login field
 	 * 
@@ -131,8 +84,10 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.loginPage.setLogin(login);
+		PagesCollection.emailSignInPage.setLogin(login);
 	}
+	
+
 
 	/**
 	 * Enters a password into the password login field
@@ -149,11 +104,26 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.loginPage.setPassword(password);
+		PagesCollection.emailSignInPage.setPassword(password);
 	}
-
+	
+	/**
+	 * Presses the Log in Button underneath the email and password fields
+	 * 
+	 * @step. ^I press Log in button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("I press Log in button")
+	public void WhenIPressLogInButton() throws Exception {
+		PagesCollection.contactListPage = (ContactListPage) PagesCollection.emailSignInPage.logIn();
+		Assert.assertTrue("Login finished",
+				PagesCollection.loginPage.waitForLogin());
+	}
+	
 	/**
 	 * Checks to see that the login error message contains the correct text
+	 * After providing a false email address or password
 	 * 
 	 * @step. ^I see error message \"(.*)\"$
 	 * @param expectedMsg
@@ -166,5 +136,4 @@ public class LoginPageSteps {
 		PagesCollection.loginPage.waitForLogin();
 		PagesCollection.loginPage.verifyErrorMessageText(expectedMsg);
 	}
-
 }

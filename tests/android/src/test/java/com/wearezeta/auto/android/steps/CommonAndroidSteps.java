@@ -19,6 +19,8 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import registration.WelcomePage;
+
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.reporter.LogcatListener;
@@ -187,7 +189,9 @@ public class CommonAndroidSteps {
 	private void initFirstPage(boolean isUnicode) throws Exception {
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
 				getUrl(), getPath(), isUnicode, this.getClass());
+		//TODO steadily remove this
 		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		PagesCollection.welcomePage = new WelcomePage(lazyDriver);
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 

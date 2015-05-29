@@ -125,8 +125,10 @@ public abstract class AndroidPage extends BasePage {
 		}
 	}
 
-	public abstract AndroidPage returnBySwipe(SwipeDirection direction)
-			throws Exception;
+	public AndroidPage returnBySwipe(SwipeDirection direction)
+			throws Exception {
+		return null;
+	};
 
 	@Override
 	public AndroidPage swipeLeft(int durationMilliseconds) throws Exception {

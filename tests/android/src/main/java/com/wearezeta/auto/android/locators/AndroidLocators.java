@@ -76,7 +76,6 @@ public final class AndroidLocators {
 
 	public static final class LoginPage {
 
-		public static final String idIHaveAccountButton = "zb__welcome__sign_in";
 
 		public static final String idSignUpButton = "ttv__welcome__create_account";
 
@@ -84,17 +83,9 @@ public final class AndroidLocators {
 
 		public static final String idForgotPass = "ttv_signin_forgot_password";
 
-		public static final String idLoginInput = "get__sign_in__email";
-
-		public static final String idPasswordInput = "get__sign_in__password";
-
 		public static final String idLoginProgressViewContainer = "fl__sign_in__progress_view__container";
 
 		public static final String idWelcomeButtonsContainer = "cm__choose";
-
-		public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
-
-		public static final String idNotNowButton = "ttv__not_now";
 
 		public static final Function<String, String> xpathLoginMessageByText = text -> String
 				.format("//*[@id='message' and @value='%s']", text);
@@ -472,5 +463,27 @@ public final class AndroidLocators {
 
 		public static final String idCommonUsersLabel = "ttv__connect_request__common_users__label";
 
+	}
+	
+	/*
+	 * Registration classes
+	 */
+	
+	public static final class WelcomePage {
+		public static final String phoneInputField = "et__reg__phone";
+
+		public static final String idHaveAccountButton = "zb__welcome__sign_in";
+		
+		public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
+	}
+	
+	public static final class EmailSignInPage {
+		public static final String idLoginInput = "get__sign_in__email";
+
+		public static final String idPasswordInput = "get__sign_in__password";
+	}
+	
+	public static final class AddPhoneNumberPage {
+		public static final String idNotNowButton = "ttv__not_now";
 	}
 }

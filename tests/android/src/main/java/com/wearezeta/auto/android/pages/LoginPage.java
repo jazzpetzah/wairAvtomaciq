@@ -23,32 +23,14 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
-	@FindBy(id = AndroidLocators.LoginPage.idIHaveAccountButton)
-	private WebElement iHaveAccountButton;
-
 	@FindBy(id = AndroidLocators.LoginPage.idSignUpButton)
 	protected WebElement signUpButton;
 
 	@FindBy(id = AndroidLocators.LoginPage.idForgotPass)
 	private WebElement forgotPasswordButton;
 
-	@FindBy(id = AndroidLocators.LoginPage.idLoginButton)
-	protected WebElement confirmSignInButton;
-
 	@FindBy(id = AndroidLocators.ContactListPage.idSelfUserAvatar)
 	protected WebElement selfUserAvatar;
-
-	@FindBy(id = AndroidLocators.LoginPage.idLoginInput)
-	private WebElement loginInput;
-
-	@FindBy(id = AndroidLocators.LoginPage.idNotNowButton)
-	private WebElement notNowButton;
-	
-	@FindBy(id = AndroidLocators.LoginPage.idPasswordInput)
-	private WebElement passwordInput;
-
-	@FindBy(id = AndroidLocators.LoginPage.idWelcomeSlogan)
-	private List<WebElement> welcomeSloganContainer;
 
 	@FindBy(id = AndroidLocators.ContactListPage.idContactListNames)
 	private WebElement contactListNames;
@@ -60,61 +42,11 @@ public class LoginPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public LoginPage switchToEmailSignIn() throws Exception {
-		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.LoginPage.idIHaveAccountButton))) {
-			iHaveAccountButton.click();
-		}
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.LoginPage.idLoginInput));
-		return this;
-	}
-
-	public CommonAndroidPage forgotPassword() throws Exception {
-		this.getWait().until(
-				ExpectedConditions.elementToBeClickable(forgotPasswordButton));
-		forgotPasswordButton.click();
-		Thread.sleep(2000);
-		if (DriverUtils.isElementPresentAndDisplayed(forgotPasswordButton)) {
-			DriverUtils.androidMultiTap(this.getDriver(), forgotPasswordButton,
-					1, 500);
-		}
-		return new CommonAndroidPage(this.getLazyDriver());
-	}
-
-	public ContactListPage LogIn() throws Exception {
-		confirmSignInButton.click();
-		return new ContactListPage(this.getLazyDriver());
-	}
-
-	public void setLogin(String login) throws Exception {
-		try {
-			loginInput.sendKeys(login);
-		} catch (Exception e) {
-			log.debug(this.getDriver().getPageSource());
-			throw e;
-		}
-	}
-
-	public void setPassword(String password) throws Exception {
-		passwordInput.click();
-		passwordInput.sendKeys(password);
-	}
-
 	public boolean waitForLoginScreenDisappear() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idLoginButton), 40);
 	}
 	
-	public boolean waitForAddPhoneNumberAppear() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.LoginPage.idNotNowButton), 20);
-	}
-	
-	public void notNowButtonClick() throws Exception {
-		notNowButton.click();
-	}
-
 	public boolean waitForLogin() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idSignUpButton), 40);
@@ -141,17 +73,6 @@ public class LoginPage extends AndroidPage {
 		assert false : String.format(
 				"Sign in is still in progress after %s seconds",
 				SIGN_IN_TIMEOUT_SECONDS);
-	}
-
-	public boolean waitForInitialScreen() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.LoginPage.idWelcomeSlogan));
-	}
-
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) {
-		// no need to swipe
-		return null;
 	}
 
 	public RegistrationPage join() throws Exception {
