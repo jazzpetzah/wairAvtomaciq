@@ -63,40 +63,40 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void writeNewMessage(String message) {
-		conversationInput.sendKeys(message);
-	}
-	
-	private static String expandPattern(final String originalStr) {
-	    final Pattern p = Pattern
-	            .compile("\\(\\s*'(.+|\\n+)'\\s*\\*\\s*([0-9]+)\\s*\\)");
-	    final Matcher m = p.matcher(originalStr);
-	    final StringBuilder result = new StringBuilder();
-	    int lastPosInOriginalString = 0;
-	    while (m.find()) {
-	        if (m.start() > lastPosInOriginalString) {
-	            result.append(originalStr.substring(lastPosInOriginalString,
-	                    m.start()));
-	        }
-	        final String toAdd = m.group(1);
-	        final int times = Integer.parseInt(m.group(2));
-	        for (int i = 0; i < times; i++) {
-	            result.append(toAdd);
-	        }
-	        lastPosInOriginalString = m.end();
-	    }
-	    if (lastPosInOriginalString < originalStr.length()) {
-	        result.append(originalStr.substring(lastPosInOriginalString,
-	                originalStr.length()));
-	    }
-	    return result.toString();
+		conversationInput.sendKeys(expandPattern(message));
 	}
 
-	
-	public static void main(String[] args) throws Exception {
-	    final String Message1 = "qqq('a' * 100)eee('\n' * 10)rrr('b' * 100)ttt";
-	    System.out.println(expandPattern(Message1));
+	private static String expandPattern(final String originalStr) {
+		final String lineBreak = "break";
+		final Pattern p = Pattern
+				.compile("\\(\\s*'(.+)'\\s*\\*\\s*([0-9]+)\\s*\\)");
+		final Matcher m = p.matcher(originalStr);
+		final StringBuilder result = new StringBuilder();
+		int lastPosInOriginalString = 0;
+		while (m.find()) {
+			if (m.start() > lastPosInOriginalString) {
+				result.append(originalStr.substring(lastPosInOriginalString,
+						m.start()));
+			}
+			final String toAdd = m.group(1).replace(lineBreak, "\n");
+			final int times = Integer.parseInt(m.group(2));
+			for (int i = 0; i < times; i++) {
+				result.append(toAdd);
+			}
+			lastPosInOriginalString = m.end();
+		}
+		if (lastPosInOriginalString < originalStr.length()) {
+			result.append(originalStr.substring(lastPosInOriginalString,
+					originalStr.length()));
+		}
+		return result.toString();
 	}
-	
+
+	public static void main(String[] args) throws Exception {
+		final String Message1 = "qqq('a' * 100)eee('\n' * 10)rrr('b' * 100)ttt";
+		System.out.println(expandPattern(Message1));
+	}
+
 	public void sendNewMessage() {
 		conversationInput.sendKeys(Keys.ENTER);
 	}
@@ -290,7 +290,7 @@ public class ConversationPage extends WebPage {
 	public boolean isTextMessageVisible(String message) throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.textMessageByText
-						.apply(message));
+						.apply(expandPattern(message)));
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
 	}

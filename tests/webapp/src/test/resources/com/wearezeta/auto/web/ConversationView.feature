@@ -142,12 +142,12 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    When I write message <Message1>
+    When I write message <ActualMessage>
     And I send message
-    #Then I see message <Message1> parsed
+    Then I see text message <ExpectedMessage>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message1                                      |
-      | user1Email | user1Password | user1Name | user2Name | qqq('a' * 100)eee('\n' * 10)rrr('b' * 100)ttt |
+      | Login      | Password      | Name      | Contact   | ActualMessage                                                    | ExpectedMessage                      |
+      | user1Email | user1Password | user1Name | user2Name | ('break' * 10)('a' * 100)('break' * 10)('b' * 100)('break' * 10) | ('a' * 100)('break' * 10)('b' * 100) |
