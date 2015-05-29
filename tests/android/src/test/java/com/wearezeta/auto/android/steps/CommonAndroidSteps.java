@@ -864,8 +864,9 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^User (\\w+) is [Mm]e$")
-	public void UserXIsMe(String nameAlias) throws Exception {
+	public void UserXIsMe(String nameAlias) throws Throwable {
 		commonSteps.UserXIsMe(nameAlias);
+		GivenUserHasAnAvatarPicture(nameAlias, DEFAULT_USER_AVATAR);
 	}
 
 	/**

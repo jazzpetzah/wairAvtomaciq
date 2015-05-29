@@ -58,6 +58,9 @@ public class LoginPageSteps {
 		PagesCollection.loginPage.setPassword(password);
 		PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
 				.LogIn());
+		if (PagesCollection.loginPage.waitForAddPhoneNumberAppear()) {
+			PagesCollection.loginPage.notNowButtonClick();
+		}
 		Assert.assertTrue("Login in progress",
 				PagesCollection.loginPage.waitForLoginScreenDisappear());
 		Assert.assertTrue("Login finished",
