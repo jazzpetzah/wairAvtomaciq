@@ -137,7 +137,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
       | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
 
-  @staging @id1688 @torun
+  @staging @id1688
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
     Given I Sign in using login <Login> and password <Password>
     When I open People Picker from Contact List
