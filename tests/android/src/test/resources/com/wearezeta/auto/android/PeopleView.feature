@@ -210,25 +210,24 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1509 @staging
+  @id1509 @regression
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given <Contact1> is connected to <Contact2>
-    Given <Contact1> has group chat <OldGroupChatName> with <Name>,<Contact2>
+    Given <Contact1> is connected to <Name>,<Contact2>
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
-    When I tap on contact name <OldGroupChatName>
+    When I tap on contact name <GroupChatName>
     And I tap conversation details button
     And I tap on group chat contact <Contact2>
-    Then I see connect to unconnected user page with user <Contact2>
-    When I click on the unconnected user page connect or pending button
-    And I press Connect button
+    Then I see user name <Contact2> on non connected user page
+    When I click Connect button on non connected user page
+    And I click Connect button on connect to page
     And I tap on group chat contact <Contact2>
-    Then I see connect to unconnected user page pending button
-    When I click on the unconnected user page connect or pending button
-    Then I see connect to unconnected user page pending button
+    Then I see Pending button on pending user page
+    When I click Pending button on pending user page
+    Then I see Pending button on pending user page
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     |

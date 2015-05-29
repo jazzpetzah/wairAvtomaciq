@@ -143,7 +143,7 @@ public class CommonAndroidSteps {
 		return true;
 	}
 
-	private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
+	// private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
 	private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
 	private void onDriverInitFinished(RemoteWebDriver drv) {
@@ -158,6 +158,11 @@ public class CommonAndroidSteps {
 			} catch (WebDriverException e) {
 				savedException = e;
 				log.debug("Waiting for the views to initialize properly...");
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e1) {
+					Throwables.propagate(e);
+				}
 			} catch (Exception e) {
 				Throwables.propagate(e);
 			}
@@ -168,14 +173,15 @@ public class CommonAndroidSteps {
 							INTERFACE_INIT_TIMEOUT_MILLISECONDS));
 			throw savedException;
 		}
-		try {
-			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
-					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
-				drv.findElement(locator).click();
-			}
-		} catch (Exception e) {
-			Throwables.propagate(e);
-		}
+		// Uncomment this if disable updates thing is broken again
+		// try {
+		// if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
+		// UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
+		// drv.findElement(locator).click();
+		// }
+		// } catch (Exception e) {
+		// Throwables.propagate(e);
+		// }
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {

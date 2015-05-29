@@ -14,7 +14,7 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
-    And I press Connect button
+    And I click Connect button on connect to page
     And I see People picker page
     And I navigate back to Conversations List
     Then I see contact list with name <Contact>
@@ -221,7 +221,7 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
-    And I press Connect button
+    And I click Connect button on connect to page
     When <Contact> ignore all requests
     And I press Clear button
     Then I tap on contact name <Contact>
@@ -263,7 +263,7 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
-    And I press Connect button
+    And I click Connect button on connect to page
     When <Contact> accept all requests
     And I wait for 2 seconds
     And I press Clear button
@@ -308,7 +308,7 @@ Feature: Connect
     And I see connect to <Contact2> dialog
     And I tap on edit connect request field
     And I type Connect request "Message"
-    And I press Connect button
+    And I click Connect button on connect to page
     And I return to group chat page
     And I navigate back from dialog page
     And I see contact list with name <Contact2>
@@ -355,12 +355,12 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
-    And I press Connect button
+    And I click Connect button on connect to page
     And I press Clear button
     And I see contact list with name <Contact>
     When I tap on contact name <Contact>
     And I see that connection is pending
-    And I Press Block button on connect to page
+    And I click Block button on connect to page
     And I confirm block on connect to page
     And I wait for 5 seconds
     Then I do not see contact list with name <Contact>
@@ -430,11 +430,8 @@ Feature: Connect
     And I input in search field user name to connect to <Contact>
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
-    And I press Connect button
-    #And I press Open StartUI
+    And I click Connect button on connect to page
     And I see People picker page
-    #And I tap on Search input on People picker page
-    #And I input in search field user name to connect to <Contact>
     And I see user <Contact> found on People picker page
     And I tap on user name found on People picker page <Contact>
     Then I see that connection is pending
@@ -503,7 +500,7 @@ Feature: Connect
     And I see connect to <Contact1> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
-    And I press Connect button
+    And I click Connect button on connect to page
     And I see People picker page
     And I navigate back to Conversations List
     Then I see contact list with name <Contact1>

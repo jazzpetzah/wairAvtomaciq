@@ -93,7 +93,7 @@ public final class AndroidLocators {
 		public static final String idWelcomeButtonsContainer = "cm__choose";
 
 		public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
-		
+
 		public static final String idNotNowButton = "ttv__not_now";
 
 		public static final Function<String, String> xpathLoginMessageByText = text -> String
@@ -273,7 +273,7 @@ public final class AndroidLocators {
 		public static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
 
 		public static final String xpathLastPingMessage = "(//*[@id='ttv__row_conversation__ping_message'])[last()]";
-		
+
 		public static final String idFakeCursor = "v__cursor__fake_cursor";
 	}
 
@@ -330,7 +330,7 @@ public final class AndroidLocators {
 
 		// Names on avatars are in uppercase and only the first part is visible
 		public static final Function<String, String> xpathParticipantAvatarByName = name -> String
-				.format("//ChatheadWithTextFooter[.//*[@value='%s']]", name
+				.format("//*[@value='%s']/parent::*/parent::*", name
 						.toUpperCase().split("\\s+")[0]);
 	}
 
@@ -467,9 +467,12 @@ public final class AndroidLocators {
 	}
 
 	public static final class UnknownUserDetailsPage {
-		public static final String idOtherUsersName = "taet__participants__header";
+		public static final Function<String, String> xpathHeaderByUserName = name -> String
+				.format("//*[@id='taet__participants__header']", name);
 
-		public static final String idConnectButton = "ttv__participants__left_label";
+		public static final String xpathConnectButton = "//*[@id='ttv__participants__left_label' and @value='Connect']";
+
+		public static final String xpathPendingButton = "//*[@id='ttv__participants__left_label' and @value='Pending']";
 
 		public static final String idCommonUsersLabel = "ttv__connect_request__common_users__label";
 

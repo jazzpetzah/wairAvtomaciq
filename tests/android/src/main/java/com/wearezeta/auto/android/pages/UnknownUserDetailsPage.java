@@ -3,20 +3,21 @@ package com.wearezeta.auto.android.pages;
 import java.io.IOException;
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class UnknownUserDetailsPage extends AndroidPage {
+	@FindBy(xpath = AndroidLocators.UnknownUserDetailsPage.xpathConnectButton)
+	private WebElement connectButton;
 
-	@FindBy(id = AndroidLocators.UnknownUserDetailsPage.idOtherUsersName)
-	private WebElement otherUsersName;
-
-	@FindBy(id = AndroidLocators.UnknownUserDetailsPage.idConnectButton)
-	private WebElement connectAndPendingButton;
+	@FindBy(xpath = AndroidLocators.UnknownUserDetailsPage.xpathPendingButton)
+	private WebElement pendingButton;
 
 	@FindBy(id = AndroidLocators.UnknownUserDetailsPage.idCommonUsersLabel)
 	private WebElement commonUsersLabel;
@@ -33,27 +34,34 @@ public class UnknownUserDetailsPage extends AndroidPage {
 	}
 
 	public boolean isConnectButtonVisible() throws Exception {
-		final String expectedText = "Connect";
-		String buttonText = connectAndPendingButton.getText();
-		return buttonText.equals(expectedText);
+		final By locator = By
+				.xpath(AndroidLocators.UnknownUserDetailsPage.xpathConnectButton);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public boolean isPendingButtonVisible() throws Exception {
-		final String expectedText = "Pending";
-		String buttonText = connectAndPendingButton.getText();
-		return buttonText.equals(expectedText);
+		final By locator = By
+				.xpath(AndroidLocators.UnknownUserDetailsPage.xpathPendingButton);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public String getOtherUsersName() {
-		return otherUsersName.getText();
+	public boolean isNameExistInHeader(String expectedName) throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.UnknownUserDetailsPage.xpathHeaderByUserName
+						.apply(expectedName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public ConnectToPage tapConnectAndPendingButton() throws Exception {
-		if (isConnectButtonVisible()) {
-			connectAndPendingButton.click();
-			return new ConnectToPage(this.getLazyDriver());
-		}
-		throw new RuntimeException(
-				"Connect button is not visible after timeout expired");
+	public ConnectToPage tapConnectButton() throws Exception {
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), connectButton);
+		connectButton.click();
+		return new ConnectToPage(this.getLazyDriver());
+	}
+
+	public void tapPendingButton() throws Exception {
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), pendingButton);
+		pendingButton.click();
 	}
 }
