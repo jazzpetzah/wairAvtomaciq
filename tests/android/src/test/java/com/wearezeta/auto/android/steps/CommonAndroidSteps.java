@@ -19,6 +19,8 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import registration.WelcomePage;
+
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.reporter.LogcatListener;
@@ -143,7 +145,7 @@ public class CommonAndroidSteps {
 		return true;
 	}
 
-	private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
+	// private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
 	private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
 	private void onDriverInitFinished(RemoteWebDriver drv) {
@@ -158,6 +160,11 @@ public class CommonAndroidSteps {
 			} catch (WebDriverException e) {
 				savedException = e;
 				log.debug("Waiting for the views to initialize properly...");
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e1) {
+					Throwables.propagate(e);
+				}
 			} catch (Exception e) {
 				Throwables.propagate(e);
 			}
@@ -168,20 +175,23 @@ public class CommonAndroidSteps {
 							INTERFACE_INIT_TIMEOUT_MILLISECONDS));
 			throw savedException;
 		}
-		try {
-			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
-					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
-				drv.findElement(locator).click();
-			}
-		} catch (Exception e) {
-			Throwables.propagate(e);
-		}
+		// Uncomment this if disable updates thing is broken again
+		// try {
+		// if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
+		// UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
+		// drv.findElement(locator).click();
+		// }
+		// } catch (Exception e) {
+		// Throwables.propagate(e);
+		// }
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
 				getUrl(), getPath(), isUnicode, this.getClass());
+		//TODO steadily remove this
 		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		PagesCollection.welcomePage = new WelcomePage(lazyDriver);
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
@@ -864,8 +874,9 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^User (\\w+) is [Mm]e$")
-	public void UserXIsMe(String nameAlias) throws Exception {
+	public void UserXIsMe(String nameAlias) throws Throwable {
 		commonSteps.UserXIsMe(nameAlias);
+		GivenUserHasAnAvatarPicture(nameAlias, DEFAULT_USER_AVATAR);
 	}
 
 	/**

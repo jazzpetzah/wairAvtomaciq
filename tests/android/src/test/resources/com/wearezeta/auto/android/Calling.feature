@@ -98,10 +98,9 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
   @id2210 @regression
-  Scenario Outline: Calling bar buttons are clickable and change its state
+  Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given <Name> has an accent color <AccentColor>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I tap on contact name <Contact>
@@ -109,17 +108,19 @@ Feature: Calling
     And <Contact> calls me using <CallBackend>
     And I see call overlay
     And I answer the call from the overlay bar
-    When I press Mute button
-    Then I see MUTE button is pressed
-    When I press Speaker button
-    Then I see SPEAKER button is pressed
+    When I remember the current state of <MuteBtnName> button
+    And I press <MuteBtnName> button
+    Then I see <MuteBtnName> button state is changed
+    When I remember the current state of <SpeakerBtnName> button
+    And I press <SpeakerBtnName> button
+    Then I see <SpeakerBtnName> button state is changed
     When I press Cancel call button
     Then I do not see call overlay
     And <Contact> stops all calls to me
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | AccentColor | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | StrongBlue  | autocall    |
+      | Login      | Password      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
+      | user1Email | user1Password | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
   @id2212 @staging
   Scenario Outline: Correct calling bar in different places

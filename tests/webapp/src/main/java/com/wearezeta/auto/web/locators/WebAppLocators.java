@@ -99,6 +99,17 @@ public final class WebAppLocators {
 				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[local-name() = 'svg' and @data-uie-name='status-unread']",
 						name);
 
+		public static final Function<String, String> xpathPingIconByContactName = (
+				name) -> String
+				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
+						+ "*//*[@data-uie-name='status-unread' and contains(@class, 'icon-ping')]",
+						name);
+
+		public static final Function<String, String> xpathUnreadDotByContactName = (
+				name) -> String
+				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
+						+ "*//*[@data-uie-name='status-unread' and contains(@class, 'conversation-list')]",
+						name);
 	}
 
 	public static final class SettingsPage {
@@ -143,6 +154,8 @@ public final class WebAppLocators {
 		public static final String xpathNameSelfUserPhoneNumber = "//*[@data-uie-name='enter-phone']";
 
 		public static final String xpathCameraButton = "//*[@data-uie-name='go-profile-picture-selection']";
+
+		public static final String xpathBackgroundAvatarAccentColor = "//div[contains(@class, 'background-accent bg-theme')]";
 	}
 
 	public static final class ConversationPage {
@@ -180,6 +193,8 @@ public final class WebAppLocators {
 		public static final Function<String, String> textMessageByText = text -> String
 				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
 						text);
+
+		public static final String xpathLastTextMessage = "(//*[@data-uie-name='item-message']//*[contains(@class, 'text-inner')])[last()]";
 
 		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
 
@@ -242,11 +257,11 @@ public final class WebAppLocators {
 
 		public static final String xpathSendInvitationButton = xpathRoot
 				+ "//*[@id='invite-button']";
-		
+
 		public static final Function<String, String> xpathSearchPendingResultByName = (
-				name) -> String.format(
-				"%s//*[@data-uie-name='item-user' and .//*[text()='%s'] and .//div[contains(@class,'checkmark icon-check')]]",
-				xpathRoot, name);
+				name) -> String
+				.format("%s//*[@data-uie-name='item-user' and .//*[text()='%s'] and .//div[contains(@class,'checkmark icon-check')]]",
+						xpathRoot, name);
 	}
 
 	public static final class RegistrationPage {

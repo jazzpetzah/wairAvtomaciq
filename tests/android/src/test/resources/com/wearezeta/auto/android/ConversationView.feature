@@ -214,8 +214,8 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-      
-  @id2078 @staging
+
+  @id2078 @regression
   Scenario Outline: I want to exit fullscreen view in landscape (rotations)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -287,36 +287,37 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
       | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
-      
-@id2085 @staging
-  Scenario Outline: I want to share a picture to wire
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    When I tap on contact name <Contact>
-    And I open the gallery application
-    And I share image from Gallery to Wire
-    Then I see new photo in the dialog
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
-      
- @id2084 @staging
-  Scenario Outline: I want to share a URL on Wire
-    Given There is 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    And I tap on contact name <Contact>
-    And I share URL from native browser app to Wire with contact <Contact>
-    And I see URL in the dialog
-    
-    Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
-      
+# Disabled since Selendroid cannot interact with external apps
+  # @id2085 @staging
+  # Scenario Outline: I want to share a picture to wire
+  #  Given There are 2 users where <Name> is me
+  #  Given <Contact> is connected to <Name>
+  #  Given I Sign in using login <Login> and password <Password>
+  #  Given I see Contact list
+  #  When I tap on contact name <Contact>
+  #  And I open the gallery application
+  #  And I share image from Gallery to Wire
+  #  Then I see new photo in the dialog
+  #
+  #  Examples: 
+  #    | Login      | Password      | Name      | Contact   |
+  #    | user1Email | user1Password | user1Name | user2Name |
+  #
+  # @id2084 @staging
+  # Scenario Outline: I want to share a URL on Wire
+  #  Given There is 2 users where <Name> is me
+  #  Given <Contact> is connected to <Name>
+  #  Given I Sign in using login <Login> and password <Password>
+  #  Given I see Contact list
+  #  And I tap on contact name <Contact>
+  #  And I share URL from native browser app to Wire with contact <Contact>
+  #  And I see URL in the dialog
+  #
+  #  Examples: 
+  #   | Login      | Password      | Name      | Contact   |
+  #   | user1Email | user1Password | user1Name | user2Name |
+
  @id170 @staging
   Scenario Outline: Verify you can send and play youtube link
     Given There are 3 users where <Name> is me

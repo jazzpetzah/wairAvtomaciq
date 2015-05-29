@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.steps;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -406,5 +407,66 @@ public class ContactListPageSteps {
 			assertFalse(PagesCollection.contactListPage
 					.isMissedCallVisibleForContact(conversationName));
 		}
+	}
+
+	/*
+	 * Verify if ping icon in contact list in conversation with user is colored
+	 * to expected accent color
+	 * 
+	 * @step.
+	 * "^I verify ping icon in conversation with (\\w+) has (\\w+) color$"
+	 * 
+	 * @param colorName one of these colors: StrongBlue, StrongLimeGreen,
+	 * BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I verify ping icon in conversation with (\\w+) has (\\w+) color$")
+	public void IVerifyPingIconColor(String conversationName, String colorName)
+			throws Exception {
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
+		final AccentColor expectedColor = AccentColor.getByName(colorName);
+		final AccentColor pingIconColor = PagesCollection.contactListPage
+				.getCurrentPingIconAccentColor(conversationName);
+		Assert.assertEquals(expectedColor, pingIconColor);
+	}
+
+	/*
+	 * Verify if unread dot in contact list in conversation with user is colored
+	 * to expected accent color
+	 * 
+	 * @step.
+	 * "^I verify unread dot in conversation with (\\w+) has (\\w+) color$"
+	 * 
+	 * @param colorName one of these colors: StrongBlue, StrongLimeGreen,
+	 * BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I verify unread dot in conversation with (\\w+) has (\\w+) color$")
+	public void IVerifyUnreadDotColor(String conversationName, String colorName)
+			throws Exception {
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
+		final AccentColor expectedColor = AccentColor.getByName(colorName);
+		final AccentColor unreadDotColor = PagesCollection.contactListPage
+				.getCurrentUnreadDotAccentColor(conversationName);
+		Assert.assertEquals(expectedColor, unreadDotColor);
+	}
+
+	/*
+	 * Verify if there is a ping icon in contact list in conversation with user
+	 * 
+	 * @step. "^I see ping icon in conversation with (\\w+)"
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I see ping icon in conversation with (\\w+)")
+	public void ISeePingIcon(String conversationName) throws Exception {
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue("No ping visible.", PagesCollection.contactListPage
+				.isPingIconVisibleForConversation(conversationName));
 	}
 }
