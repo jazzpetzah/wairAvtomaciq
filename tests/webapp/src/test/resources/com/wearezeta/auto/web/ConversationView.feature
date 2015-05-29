@@ -139,10 +139,7 @@ Feature: Conversation View
 
   @staging @id1688 @torun
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
     When I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
@@ -158,7 +155,14 @@ Feature: Conversation View
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
     Then I see 128 participants in the Group Participants popover
+    When I click Add People button on Group Participants popover
+    And I see Add People message on Group Participants popover
+    And I confirm add to chat on Group Participants popover
+    And I select the first 1 participants from Group Participants popover search results
+    And I choose to create group conversation from Group Participants popover
+    When I click People button in group conversation
+    Then I see 128 participants in the Group Participants popover
 
     Examples: 
-      | Name      | Login      | Password      | Contact1  | Contact2  |
-      | user1Name | user1Email | user1Password | user2Name | user3Name |
+      | Login                                                              | Password  | Contact1                         | Contact2                         |
+      | smoketester.android+b5731febcd2448c68b5307b9bb860b4a@wearezeta.com | aqa123456 | 0139faca30ee45d28794f4d46211f984 | 01edc0159cc047018d9bf8e1a20ea9a8 |
