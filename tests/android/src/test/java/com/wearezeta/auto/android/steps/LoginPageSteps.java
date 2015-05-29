@@ -68,18 +68,6 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Press the "I have an account" button on the welcome page. to switch to
-	 * sign in using email address
-	 * 
-	 * @step. ^I switch to email sign in screen$
-	 * @throws Exception
-	 */
-	@When("^I switch to email sign in screen$")
-	public void ISwitchToEmailSignIn() throws Exception {
-		PagesCollection.loginPage.switchToEmailSignIn();
-	}
-
-	/**
 	 * Presses the "forgot password" button
 	 * 
 	 * @step. ^I press FORGOT PASSWORD button$

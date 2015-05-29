@@ -20,4 +20,16 @@ public class WelcomePageSteps {
 	public void IInputANewPhoneNumber() throws Throwable {
 		
 	}
+	
+	/**
+	 * Press the "I have an account" button on the welcome page. to switch to
+	 * sign in using email address
+	 * 
+	 * @step. ^I switch to email sign in screen$
+	 * @throws Exception
+	 */
+	@When("^I switch to email sign in screen$")
+	public void ISwitchToEmailSignIn() throws Exception {
+		PagesCollection.welcomePage.clickIHaveAnAccount();
+	}
 }

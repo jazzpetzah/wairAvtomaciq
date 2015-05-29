@@ -40,7 +40,6 @@ public class WelcomePage extends AndroidPage {
 		
 	}
 	
-	//TODO will eventually return an "EmailSignInPage"
 	public EmailSignInPage clickIHaveAnAccount() throws Exception {
 		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 			By.id(AndroidLocators.LoginPage.idHaveAccountButton))) {
