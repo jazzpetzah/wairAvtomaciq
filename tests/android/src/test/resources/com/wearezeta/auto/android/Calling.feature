@@ -108,19 +108,19 @@ Feature: Calling
     And <Contact> calls me using <CallBackend>
     And I see call overlay
     And I answer the call from the overlay bar
-    When I remember the current state of MUTE button
-    And I press Mute button
-    Then I see MUTE button state is changed
-    When I remember the current state of SPEAKER button
-    And I press Speaker button
-    Then I see SPEAKER button state is changed
+    When I remember the current state of <MuteBtnName> button
+    And I press <MuteBtnName> button
+    Then I see <MuteBtnName> button state is changed
+    When I remember the current state of <SpeakerBtnName> button
+    And I press <SpeakerBtnName> button
+    Then I see <SpeakerBtnName> button state is changed
     When I press Cancel call button
     Then I do not see call overlay
     And <Contact> stops all calls to me
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | AccentColor | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | StrongBlue  | autocall    |
+      | Login      | Password      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
+      | user1Email | user1Password | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
   @id2212 @staging
   Scenario Outline: Correct calling bar in different places
