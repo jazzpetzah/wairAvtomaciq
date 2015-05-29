@@ -106,8 +106,7 @@ class ParticipantsListPopoverPage extends AbstractPopoverPage {
 
 	public int getPeopleCount() throws Exception {
 		final By locator = By
-				.xpath(PopoverLocators.GroupPopover.ParticipantsListPage.xpathParticipantByName
-						.apply(""));
+				.cssSelector(PopoverLocators.GroupPopover.ParticipantsListPage.cssParticipants);
 		return this.getDriver().findElements(locator).size();
 	}
 }
