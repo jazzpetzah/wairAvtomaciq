@@ -57,6 +57,9 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
 	private WebElement pingMessage;
 
+	@FindBy(xpath = WebAppLocators.ConversationPage.xpathLastTextMessage)
+	private WebElement lastConversationMessage;
+
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -316,5 +319,11 @@ public class ConversationPage extends WebPage {
 				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
 				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been hidden within "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
+	}
+
+	public String getLastTextMessage() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(WebAppLocators.ConversationPage.xpathLastTextMessage));
+		return lastConversationMessage.getText();
 	}
 }
