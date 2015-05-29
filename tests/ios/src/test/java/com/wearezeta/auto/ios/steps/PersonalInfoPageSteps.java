@@ -69,9 +69,177 @@ public class PersonalInfoPageSteps {
 		PagesCollection.personalInfoPage.clickOnAboutButton();
 	}
 
-	@Then("I see About page")
-	public void ThenISeeAboutPAge() {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isAboutPageVisible());
+	/**
+	 * Verifies the about page in settings is shown
+	 * 
+	 * @step. ^I see About page
+	 * 
+	 * @throws AssertionError
+	 *             about page is not shown
+	 */
+	@Then("^I see About page$")
+	public void ThenISeeAboutPage() {
+		Assert.assertTrue("About page not shown",
+				PagesCollection.personalInfoPage.isAboutPageVisible());
+	}
+
+	/**
+	 * Verifies the about page is Violet
+	 * 
+	 * @step. ^I see that the About page is colored (.*)$
+	 * 
+	 * @param color
+	 *            the color the about page should be (Violet)
+	 * 
+	 * @throws AssertionError
+	 *             the about page is not Violet
+	 */
+	@Then("^I see that the About page is colored (.*)$")
+	public void AboutPageIsColor(String color) throws Exception {
+		// only takes violet color
+		Assert.assertTrue("About page is not Violet",
+				PagesCollection.personalInfoPage.isAboutPageCertainColor(color));
+	}
+
+	/**
+	 * Verifies the wire.com button is shown
+	 * 
+	 * @step. ^I see WireWebsiteButton$
+	 * 
+	 * @throws AssertionError
+	 *             the wire.com button is not shown
+	 */
+	@Then("^I see WireWebsiteButton$")
+	public void ThenISeeWireWebsiteButton() {
+		Assert.assertTrue("wire.com button on \"about\" page is missing",
+				PagesCollection.personalInfoPage.isWireWebsiteButtonVisible());
+	}
+
+	/**
+	 * Verifies the terms of use button is shown
+	 * 
+	 * @step. ^I see TermsButton$
+	 * 
+	 * @throws AssertionError
+	 *             the terms of use button is not shown
+	 */
+	@Then("^I see TermsButton$")
+	public void ThenISeeTermsButton() {
+		Assert.assertTrue("Terms of use button missing",
+				PagesCollection.personalInfoPage.isTermsButtonVisible());
+	}
+
+	/**
+	 * Verifies the privacy policy button is shown
+	 * 
+	 * @step. ^I see PrivacyPolicyButton$
+	 * 
+	 * @throws AssertionError
+	 *             the privacy policy button is not shown
+	 */
+	@Then("^I see PrivacyPolicyButton$")
+	public void ThenISeePrivacyPolicyButton() {
+		Assert.assertTrue("Privacy policy button missing",
+				PagesCollection.personalInfoPage.isPrivacyPolicyButtonVisible());
+	}
+
+	/**
+	 * Verifies the build number text is shown
+	 * 
+	 * @step. ^I see BuildNumberText$
+	 * 
+	 * @throws AssertionError
+	 *             the build number info is not shown
+	 */
+	@Then("^I see BuildNumberText$")
+	public void ThenISeeBuildNumberText() {
+		Assert.assertTrue("Build number info not shown",
+				PagesCollection.personalInfoPage.isBuildNumberTextVisible());
+	}
+
+	/**
+	 * Opens the terms of use page from the about page
+	 * 
+	 * @step. ^I open TermsOfUsePage$
+	 */
+	@When("^I open TermsOfUsePage$")
+	public void IClickOnTermsOfUse() {
+		PagesCollection.personalInfoPage.openTermsOfUsePage();
+	}
+
+	/**
+	 * Opens the privacy policy page from the about page
+	 * 
+	 * @step. ^I open PrivacyPolicyPage$
+	 */
+	@When("^I open PrivacyPolicyPage$")
+	public void IClickOnPrivacyPolicy() {
+		PagesCollection.personalInfoPage.openPrivacyPolicyPage();
+	}
+
+	/**
+	 * Opens the wire.com website from the about page
+	 * 
+	 * @step. ^I open WireWebsite$
+	 */
+	@When("^I open WireWebsite$")
+	public void IClickOnWireWebsite() {
+		PagesCollection.personalInfoPage.openWireWebsite();
+	}
+
+	/**
+	 * Verifies that wire.com website is shown
+	 * 
+	 * @step. ^I see WireWebsitePage$
+	 * 
+	 * @throws AssertionError
+	 *             the wire.com website is not shown
+	 */
+	@Then("^I see WireWebsitePage$")
+	public void ThenISeeWireWebsite() {
+		Assert.assertTrue(
+				"wire.com is not shown or website element has changed",
+				PagesCollection.personalInfoPage.isWireWebsitePageVisible());
+	}
+
+	/**
+	 * Closes a legal page from the about page
+	 * 
+	 * @step. ^I close legal page$
+	 */
+	@When("^I close legal page$")
+	public void IClickToCloseLegalPage() {
+		PagesCollection.personalInfoPage.closeLegalPage();
+	}
+
+	/**
+	 * Verifies the terms of use page is shown
+	 * 
+	 * @step. ^I see TermsOfUsePage$
+	 * 
+	 * @throws AssertionError
+	 *             the terms of use page is not shown
+	 */
+	@Then("^I see TermsOfUsePage$")
+	public void ThenISeeTermsOfUsePage() {
+		Assert.assertTrue(
+				"Terms of use page not visible or text element has changed",
+				PagesCollection.personalInfoPage.isTermsOfUsePageVisible());
+	}
+
+	/**
+	 * Verifies the privacy policy page is shown
+	 * 
+	 * @step. ^I see PrivacyPolicyPage$
+	 * 
+	 * @throws AssertionError
+	 *             the privacy policy page is not shown
+	 */
+	@Then("^I see PrivacyPolicyPage$")
+	public void ThenISeePrivacyPolicyPage() {
+		Assert.assertTrue(
+				"Privacy Policy page is not visible or text element has changed",
+				PagesCollection.personalInfoPage.isPrivacyPolicyPageVisible());
 	}
 
 	@When("I click Sign out button from personal page")
@@ -93,10 +261,11 @@ public class PersonalInfoPageSteps {
 
 	@When("^I return to personal page$")
 	public void IReturnToPersonalPage() throws Throwable {
-
+		Thread.sleep(4000);// wait for picture to load on simulator
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
-		Thread.sleep(4000);
-		referenceImage = PagesCollection.personalInfoPage.takeScreenshot();
+		Thread.sleep(2000);// wait for picture to load on simulator
+		referenceImage = PagesCollection.personalInfoPage.takeScreenshot()
+				.orElseThrow(AssertionError::new);
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
 
 	}
@@ -107,7 +276,6 @@ public class PersonalInfoPageSteps {
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + filename);
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
-		System.out.print("SCORE: " + score);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= 0.65, current = "
 						+ score, score >= 0.65d);
@@ -117,7 +285,7 @@ public class PersonalInfoPageSteps {
 	public void ThenISeeProfileImageIsSameAsSelected(String filename)
 			throws Exception {
 		BufferedImage profileImage = PagesCollection.personalInfoPage
-				.takeScreenshot();
+				.takeScreenshot().orElseThrow(AssertionError::new);
 		double score = ImageUtil.getOverlapScore(
 				RegistrationPageSteps.basePhoto, profileImage);
 		System.out.println("SCORE: " + score);

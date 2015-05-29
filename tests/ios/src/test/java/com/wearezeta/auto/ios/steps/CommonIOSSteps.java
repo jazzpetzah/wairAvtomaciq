@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
@@ -19,6 +20,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.RegistrationPage;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 
@@ -31,7 +33,7 @@ public class CommonIOSSteps {
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(CommonIOSSteps.class
 			.getSimpleName());
-	
+
 	private static boolean skipBeforeAfter = false;
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -46,7 +48,7 @@ public class CommonIOSSteps {
 	}
 
 	public static final Platform CURRENT_PLATFORM = Platform.iOS;
-	public static final String PLATFORM_VERSION = "8.1";
+	public static final String PLATFORM_VERSION = "8.3";
 
 	private static String getUrl() throws Exception {
 		return CommonUtils.getIosAppiumUrlFromConfig(CommonIOSSteps.class);
@@ -56,7 +58,7 @@ public class CommonIOSSteps {
 		return CommonUtils
 				.getIosApplicationPathFromConfig(CommonIOSSteps.class);
 	}
-	
+
 	public boolean isSkipBeforeAfter() {
 		return skipBeforeAfter;
 	}
@@ -106,8 +108,7 @@ public class CommonIOSSteps {
 		commonBefore(resetIOSDriver(false));
 	}
 
-	public void commonBefore(Future<ZetaIOSDriver> lazyDriver)
-			throws Exception {
+	public void commonBefore(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps.getInstance().cleanupWaitingInstances();
@@ -121,6 +122,7 @@ public class CommonIOSSteps {
 				.readClientVersionFromPlist().getClientBuildNumber());
 
 		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		PagesCollection.registrationPage = new RegistrationPage(lazyDriver);
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
@@ -153,6 +155,31 @@ public class CommonIOSSteps {
 	public void IDismissAlert() throws Exception {
 		PagesCollection.loginPage.dismissAlert();
 	}
+	
+	/**
+	 * Hide keyboard using mobile command
+	 * 
+	 * @step. ^I hide keyboard$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I hide keyboard$")
+	public void IHideKeyboard() throws Exception {
+		PagesCollection.loginPage.hideKeyboard();
+	}
+	
+	/**
+	 * Hide keyboard by click on hide keyboard button
+	 * 
+	 * @step. ^I click hide keyboard button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click hide keyboard button$")
+	public void IClickHideKeyboardBtn() throws Exception {
+		PagesCollection.loginPage.clickHideKeyboarButton();
+	}
+	
 
 	/**
 	 * Closes the app for a certain amount of time in seconds
@@ -166,6 +193,18 @@ public class CommonIOSSteps {
 	@When("^I close the app for (.*) seconds$")
 	public void ICloseApp(int seconds) throws Exception {
 		PagesCollection.iOSPage.minimizeApplication(seconds);
+	}
+	
+	/**
+	 * Locks screen for a certain amount of time in seconds
+	 * @param seconds
+	 * 			time in seconds to lock screen
+	 * @step.^I lock screen for (.*) seconds$
+	 * @throws Exception
+	 */
+	@When("^I lock screen for (.*) seconds$")
+	public void ILockScreen(int seconds) throws Exception {
+		PagesCollection.loginPage.lockScreen(seconds);
 	}
 
 	@Given("^(.*) sent connection request to (.*)$")
@@ -191,13 +230,14 @@ public class CommonIOSSteps {
 
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
-		commonSteps.ThereAreNUsers(Platform.iOS, count);
+		commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
 	}
 
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(Platform.iOS, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+				myNameAlias);
 	}
 
 	@When("^(.*) ignore all requests$")
@@ -206,9 +246,8 @@ public class CommonIOSSteps {
 		commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
 	}
 
-	@When("^I wait for (.*) seconds$")
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
+	@When("^I wait for (\\d+) seconds?$")
+	public void WaitForTime(int seconds) throws Exception {
 		commonSteps.WaitForTime(seconds);
 	}
 
@@ -404,9 +443,12 @@ public class CommonIOSSteps {
 		IOSPage.clearPagesCollection();
 		IOSKeyboard.dispose();
 
-		if (CommonUtils.getIsSimulatorFromConfig(getClass()) && !skipBeforeAfter) {
-			IOSCommonUtils.collectSimulatorLogs(
-					CommonUtils.getDeviceName(getClass()), getTestStartedDate());
+		if (CommonUtils.getIsSimulatorFromConfig(getClass())
+				&& !skipBeforeAfter) {
+			IOSCommonUtils
+					.collectSimulatorLogs(
+							CommonUtils.getDeviceName(getClass()),
+							getTestStartedDate());
 		}
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
@@ -423,4 +465,46 @@ public class CommonIOSSteps {
 	public void setTestStartedDate(Date testStartedDate) {
 		this.testStartedDate = testStartedDate;
 	}
+
+	/**
+	 * Rotate device to landscape
+	 * 
+	 * @step. ^I rotate UI to (landscape|portrait)$
+	 * 
+	 * @param orientation
+	 *            must be landscape or portrait
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I rotate UI to (landscape|portrait)$")
+	public void WhenIRotateUILandscape(ScreenOrientation orientation)
+			throws Exception {
+		PagesCollection.loginPage.rotateScreen(orientation);
+		Thread.sleep(1000); // fix for animation
+	}
+	
+	/**
+	 * Tap in center of the screen
+	 * 
+	 * @step. ^I tap on center of the screen$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap on center of the screen$")
+	public void ITapOnCenterOfTheScreen() throws Exception {
+		PagesCollection.loginPage.tapOnCenterOfScreen();
+	}
+	
+	/**
+	 * Tap in top left corner of the screen
+	 * 
+	 * @step. ^I tap on top left corner of the screen$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap on top left corner of the screen$")
+	public void ITapOnTopLeftCornerOfTheScreen() throws Exception {
+		PagesCollection.loginPage.tapOnTopLeftScreen();
+	}
+
 }

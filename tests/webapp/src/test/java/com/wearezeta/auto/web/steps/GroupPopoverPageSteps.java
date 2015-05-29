@@ -16,7 +16,7 @@ public class GroupPopoverPageSteps {
 	private static final String MAILTO = "mailto:";
 	private static final String CAPTION_OPEN_CONVERSATION = "OPEN CONVERSATION";
 	private static final String CAPTION_PENDING = "PENDING";
-	private static final String CAPTION_UNBLOCK = "BLOCKED";
+	private static final String CAPTION_UNBLOCK = "UNBLOCK";
 	private static final String CAPTION_PROFILE = "PROFILE";
 	private static final String TOOLTIP_REMOVE_FROM_CONVERSATION = "Remove from conversation";
 	private static final String TOOLTIP_LEAVE_CONVERSATION = "Leave conversation";
@@ -67,11 +67,12 @@ public class GroupPopoverPageSteps {
 	 * Confirm leaving group chat by clicking LEAVE button on Group Participants
 	 * popover
 	 *
-	 * @step. ^I confirm leave group conversation on Group Participants popover$
+	 * @step. ^I click confirm leave group conversation on Group Participants
+	 *        popover$
 	 * @throws Exception
 	 *
 	 */
-	@When("^I confirm leave group conversation on Group Participants popover$")
+	@When("^I click confirm leave group conversation on Group Participants popover$")
 	public void IClickConfirmLeaveGroupChat() throws Exception {
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.confirmLeaveGroupChat();

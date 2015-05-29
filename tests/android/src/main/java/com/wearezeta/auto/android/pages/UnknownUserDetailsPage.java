@@ -4,22 +4,21 @@ import java.io.IOException;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class UnknownUserDetailsPage extends AndroidPage {
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserDetailsPage.CLASS_NAME, locatorKey = "idOtherUsersName")
+	@FindBy(id = AndroidLocators.UnknownUserDetailsPage.idOtherUsersName)
 	private WebElement otherUsersName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserDetailsPage.CLASS_NAME, locatorKey = "idConnectButton")
+	@FindBy(id = AndroidLocators.UnknownUserDetailsPage.idConnectButton)
 	private WebElement connectAndPendingButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.UnknownUserDetailsPage.CLASS_NAME, locatorKey = "idCommonUsersLabel")
+	@FindBy(id = AndroidLocators.UnknownUserDetailsPage.idCommonUsersLabel)
 	private WebElement commonUsersLabel;
 
 	public UnknownUserDetailsPage(Future<ZetaAndroidDriver> lazyDriver)
@@ -34,17 +33,15 @@ public class UnknownUserDetailsPage extends AndroidPage {
 	}
 
 	public boolean isConnectButtonVisible() throws Exception {
-		refreshUITree();
-		final String BUTTON_TEXT = "Connect";
-		String connectButtonText = connectAndPendingButton.getText();
-		return connectButtonText.equals(BUTTON_TEXT);
+		final String expectedText = "Connect";
+		String buttonText = connectAndPendingButton.getText();
+		return buttonText.equals(expectedText);
 	}
 
 	public boolean isPendingButtonVisible() throws Exception {
-		refreshUITree();
-		final String BUTTON_TEXT = "Pending";
-		String connectButtonText = connectAndPendingButton.getText();
-		return connectButtonText.equals(BUTTON_TEXT);
+		final String expectedText = "Pending";
+		String buttonText = connectAndPendingButton.getText();
+		return buttonText.equals(expectedText);
 	}
 
 	public String getOtherUsersName() {
@@ -52,11 +49,11 @@ public class UnknownUserDetailsPage extends AndroidPage {
 	}
 
 	public ConnectToPage tapConnectAndPendingButton() throws Exception {
-		refreshUITree();
 		if (isConnectButtonVisible()) {
 			connectAndPendingButton.click();
 			return new ConnectToPage(this.getLazyDriver());
 		}
-		return null;
+		throw new RuntimeException(
+				"Connect button is not visible after timeout expired");
 	}
 }

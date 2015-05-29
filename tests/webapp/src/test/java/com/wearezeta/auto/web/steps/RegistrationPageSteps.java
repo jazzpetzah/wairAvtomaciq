@@ -20,6 +20,9 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+
 public class RegistrationPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -89,13 +92,13 @@ public class RegistrationPageSteps {
 	/**
 	 * Enter user password into registration form
 	 * 
-	 * @step. ^I enter user password (.*) on Registration page$
+	 * @step. ^I enter user password \"(.*)\" on Registration page$
 	 * 
 	 * @param password
 	 *            user password/alias
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	@When("^I enter user password (.*) on Registration page$")
+	@When("^I enter user password \"(.*)\" on Registration page$")
 	public void IEnterPassword(String password) throws Exception {
 		try {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
@@ -154,6 +157,40 @@ public class RegistrationPageSteps {
 	}
 
 	/**
+	 * Verify whether I see an error message on the verification page
+	 *
+	 * @step. ^I see error \"(.*)\" on [Vv]erification page$
+	 *
+	 * @param message
+	 *            expected error message
+	 * @throws NoSuchUserException
+	 */
+	@Then("^I see error \"(.*)\" on [Vv]erification page$")
+	public void ISeeErrorMessageOnVerificationPage(String message)
+			throws Throwable {
+		assertThat(PagesCollection.registrationPage.getErrorMessage(),
+				equalTo(message));
+	}
+
+	/**
+	 * Checks if a red dot is shown inside the email field on the registration
+	 * form
+	 *
+	 * @step. ^I verify that a red dot is shown inside the email field on the registration
+	 *        form$
+	 */
+	@Then("^I verify that a red dot is( not)? shown inside the email field on the registration form$")
+	public void ARedDotIsShownOnTheEmailField(String not) {
+		if (not == null) {
+			assertThat("Red dot on email field",
+					PagesCollection.registrationPage.isRedDotOnEmailField());
+		} else {
+			assertThat("Red dot on email field",
+					!PagesCollection.registrationPage.isRedDotOnEmailField());
+		}
+	}
+
+	/**
 	 * Activate newly registered user on the backend. Don't forget to call the
 	 * 'I start activation email monitoring' step before this one
 	 * 
@@ -163,7 +200,8 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I verify registration email$")
 	public void IVerifyRegistrationEmail() throws Exception {
-		BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
+		BackendAPIWrappers
+				.activateRegisteredUserByEmail(this.activationMessage);
 		userToRegister.setUserState(UserState.Created);
 	}
 

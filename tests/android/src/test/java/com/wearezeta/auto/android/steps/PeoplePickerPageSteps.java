@@ -178,7 +178,7 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * -duplicate of WhenIInputInPeoplePickerSearchFieldUserName(String)
+	 * Adds user name to search field (existing content is not cleaned)
 	 * 
 	 * @step. ^I add in search field user name to connect to (.*)$
 	 * 
@@ -237,11 +237,11 @@ public class PeoplePickerPageSteps {
 			// Ignore silently
 		}
 		// PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
-		PagesCollection.androidPage = PagesCollection.peoplePickerPage
+		PagesCollection.currentPage = PagesCollection.peoplePickerPage
 				.selectContact(contact);
 
-		if (PagesCollection.androidPage instanceof OtherUserPersonalInfoPage) {
-			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.androidPage;
+		if (PagesCollection.currentPage instanceof OtherUserPersonalInfoPage) {
+			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.currentPage;
 		}
 	}
 
@@ -261,21 +261,6 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Tap on Gmail link
-	 * 
-	 * @step. ^I tap on Gmail link$
-	 * 
-	 * @throws Exception
-	 * @throws NumberFormatException
-	 * 
-	 */
-	@When("^I tap on Gmail link$")
-	public void WhenITapOnGmailLink() throws NumberFormatException, Exception {
-		PagesCollection.commonAndroidPage = PagesCollection.peoplePickerPage
-				.tapOnGmailLink();
-	}
-
-	/**
 	 * Checks to see if the add to conversation button is visible
 	 * 
 	 * @step. ^I see Add to conversation button$
@@ -292,10 +277,11 @@ public class PeoplePickerPageSteps {
 	 * Tap on Send an invitation
 	 * 
 	 * @step. ^I tap on Send an invitation$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I tap on Send an invitation$")
-	public void WhenITapOnSendAnInvitation() {
+	public void WhenITapOnSendAnInvitation() throws Exception {
 		PagesCollection.peoplePickerPage.tapOnSendInvitation();
 	}
 
@@ -442,7 +428,7 @@ public class PeoplePickerPageSteps {
 	 * @param contact
 	 * @throws Throwable
 	 */
-	@Then("^I see user (.*)  in People picker$")
+	@Then("^I see user (.*) in People picker$")
 	public void ThenISeeUserInPeoplePicker(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.peoplePickerPage
@@ -457,7 +443,7 @@ public class PeoplePickerPageSteps {
 	 * @param contact
 	 * @throws Throwable
 	 */
-	@Then("^I see group (.*)  in People picker$")
+	@Then("^I see group (.*) in People picker$")
 	public void ThenISeeGroupInPeoplePicker(String contact) throws Throwable {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
@@ -469,29 +455,27 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * checks to see that the top people section is visible
+	 * Check to see that the top people section is visible or not
 	 * 
-	 * @step. ^I see TOP PEOPLE$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I see TOP PEOPLE$")
-	public void ThenISeeTopPeople() throws Exception {
-		Assert.assertTrue(PagesCollection.peoplePickerPage
-				.ispTopPeopleHeaderVisible());
-	}
-
-	/**
-	 * checks to see that the top people section is NOT visible
-	 * 
-	 * @step. ^I see TOP PEOPLE$
+	 * @step. ^I( do not)? see TOP PEOPLE$
+	 * @param shouldNotBeVisible
+	 *            is set to null is "do not" part does not exist in the step
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I do not see TOP PEOPLE$")
-	public void ThenIDontSeeTopPeople() throws Exception {
-		Assert.assertFalse(PagesCollection.peoplePickerPage
-				.ispTopPeopleHeaderVisible());
+	@Then("^I( do not)? see TOP PEOPLE$")
+	public void ThenIDontSeeTopPeople(String shouldNotBeVisible)
+			throws Exception {
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue(
+					"TOP PEOPLE overlay is hidden, but it should be visible",
+					PagesCollection.peoplePickerPage.isTopPeopleHeaderVisible());
+		} else {
+			Assert.assertTrue(
+					"TOP PEOPLE overlay is visible, but it should be hidden",
+					PagesCollection.peoplePickerPage
+							.waitUntilTopPeopleHeaderInvisible());
+		}
 	}
 
 	/**
@@ -509,4 +493,36 @@ public class PeoplePickerPageSteps {
 				.waitForPYMKForSecs(time));
 	}
 
+	private static final long TOP_PEOPLE_VISIBILITY_TIMEOUT_MILLISECONDS = 120 * 1000;
+
+	/**
+	 * Wait for Top People list to appear in People picker
+	 * 
+	 * @step. ^I wait until Top People list appears$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I wait until Top People list appears$")
+	public void WaitForTopPeople() throws Exception {
+		if (!PagesCollection.peoplePickerPage.isTopPeopleHeaderVisible()) {
+			// FIXME: Workaround for bug where Top People is sometimes not shown
+			// if sign in for the first time
+			PagesCollection.contactListPage = PagesCollection.peoplePickerPage
+					.tapClearButton();
+			PagesCollection.personalInfoPage = PagesCollection.contactListPage
+					.tapOnMyAvatar();
+			PagesCollection.personalInfoPage.tapOptionsButton();
+			PagesCollection.personalInfoPage.tapSignOutBtn();
+			new LoginPageSteps().GivenISignIn(usrMgr.getSelfUser().getEmail(),
+					usrMgr.getSelfUser().getPassword());
+			new ContactListPageSteps().GivenISeeContactList();
+			PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+					.openPeoplePicker();
+		}
+		if (!PagesCollection.peoplePickerPage.isTopPeopleHeaderVisible()) {
+			throw new AssertionError(String.format(
+					"Top People list has not been shown after %s seconds",
+					TOP_PEOPLE_VISIBILITY_TIMEOUT_MILLISECONDS / 1000));
+		}
+	}
 }

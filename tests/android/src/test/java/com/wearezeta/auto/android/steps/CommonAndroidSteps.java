@@ -5,16 +5,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.SessionNotCreatedException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.reporter.LogcatListener;
 import com.wearezeta.auto.android.locators.AndroidLocators;
@@ -25,7 +30,7 @@ import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.GenerateWebLink;
+import com.wearezeta.auto.common.InvitationLinkGenerator;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
@@ -34,6 +39,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -53,6 +59,10 @@ public class CommonAndroidSteps {
 				"warn");
 	}
 
+	private static final Logger log = ZetaLogger
+			.getLog(CommonAndroidSteps.class.getSimpleName());
+
+	private static String link = null;
 	public static LogcatListener listener = new LogcatListener();
 
 	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
@@ -64,7 +74,8 @@ public class CommonAndroidSteps {
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
-	public static final int DEFAULT_SWIPE_TIME = 500;
+	public static final int DEFAULT_SWIPE_TIME = 1500;
+	private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
 
 	private static String getUrl() throws Exception {
 		return CommonUtils
@@ -92,29 +103,78 @@ public class CommonAndroidSteps {
 		capabilities.setCapability("appActivity",
 				CommonUtils.getAndroidActivityFromConfig(cls));
 		capabilities.setCapability("appWaitActivity",
-				CommonUtils.getAndroidActivityFromConfig(cls));
+				CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
+		capabilities.setCapability("applicationName", "selendroid");
+		capabilities.setCapability("automationName", "selendroid");
+
 		if (isUnicode) {
 			capabilities.setCapability("unicodeKeyboard", true);
 			capabilities.setCapability("resetKeyboard", true);
 		}
 
-		return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-				.resetDriver(url, capabilities, 1, this::onDriverInitFinished);
+		try {
+			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
+					.resetDriver(url, capabilities, 1,
+							this::onDriverInitFinished,
+							this::onDriverInitStarted);
+		} catch (SessionNotCreatedException e) {
+			// Unlock the screen and retry
+			AndroidCommonUtils.unlockScreen();
+			Thread.sleep(5000);
+			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
+					.resetDriver(url, capabilities, 1,
+							this::onDriverInitFinished,
+							this::onDriverInitStarted);
+		}
+	}
+
+	private Boolean onDriverInitStarted() {
+		try {
+			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
+			AndroidCommonUtils.disableHints();
+			AndroidCommonUtils.disableHockeyUpdates();
+			String backendJSON = AndroidCommonUtils
+					.createBackendJSON(CommonUtils.getBackendType(this
+							.getClass()));
+			AndroidCommonUtils.deployBackendFile(backendJSON);
+		} catch (Exception e) {
+			Throwables.propagate(e);
+		}
+		return true;
 	}
 
 	private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
+	private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
 	private void onDriverInitFinished(RemoteWebDriver drv) {
 		final By locator = By
 				.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton);
+		final long millisecondsStarted = System.currentTimeMillis();
+		WebDriverException savedException = null;
+		do {
+			try {
+				DriverUtils.waitUntilLocatorIsDisplayed(drv, locator, 1);
+				break;
+			} catch (WebDriverException e) {
+				savedException = e;
+				log.debug("Waiting for the views to initialize properly...");
+			} catch (Exception e) {
+				Throwables.propagate(e);
+			}
+		} while (System.currentTimeMillis() - millisecondsStarted <= INTERFACE_INIT_TIMEOUT_MILLISECONDS);
+		if (System.currentTimeMillis() - millisecondsStarted > INTERFACE_INIT_TIMEOUT_MILLISECONDS) {
+			log.error(String
+					.format("UI views have not been initialized properly after %s seconds. Restarting Selendroid usually helps ;-)",
+							INTERFACE_INIT_TIMEOUT_MILLISECONDS));
+			throw savedException;
+		}
 		try {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
 					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
 				drv.findElement(locator).click();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
+			Throwables.propagate(e);
 		}
 	}
 
@@ -168,9 +228,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I press back button$")
 	public void PressBackButton() throws Exception {
-		if (PagesCollection.loginPage != null) {
-			PagesCollection.loginPage.navigateBack();
-		}
+		PagesCollection.loginPage.navigateBack();
 	}
 
 	/**
@@ -179,41 +237,30 @@ public class CommonAndroidSteps {
 	 * @step. ^I hide keyboard$
 	 * @throws Exception
 	 * 
-	 * 
 	 */
 	@When("^I hide keyboard$")
 	public void IHideKeyboard() throws Exception {
-		if (PagesCollection.loginPage != null) {
-			try {
-				PagesCollection.loginPage.hideKeyboard();
-			} catch (Exception ex) {
-				// ignore silently
-			}
-		}
+		PagesCollection.loginPage.hideKeyboard();
 	}
 
 	@When("^I swipe right$")
 	public void ISwipeRight() throws Exception {
-		PagesCollection.androidPage.swipeRightCoordinates(DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); // fix for animation
+		PagesCollection.currentPage.swipeRightCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe left$")
 	public void ISwipeLeft() throws Exception {
-		PagesCollection.androidPage.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); // fix for animation
+		PagesCollection.currentPage.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe up$")
 	public void ISwipeUp() throws Exception {
-		PagesCollection.androidPage.swipeUpCoordinates(DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); // fix for animation
+		PagesCollection.currentPage.swipeUpCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe down$")
 	public void ISwipeDown() throws Exception {
-		PagesCollection.androidPage.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); // fix for animation
+		PagesCollection.currentPage.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	public void commonBefore() throws Exception {
@@ -223,24 +270,6 @@ public class CommonAndroidSteps {
 			CommonCallingSteps.getInstance().cleanupCalls();
 		} catch (Exception e) {
 			// do not fail if smt fails here
-			e.printStackTrace();
-		}
-
-		try {
-			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
-		} catch (Exception ex) {
-			System.out.println("Failed to deploy pictures into simulator");
-		}
-
-		try {
-			AndroidCommonUtils.disableHints();
-			AndroidCommonUtils.disableHockeyUpdates();
-			String backendJSON = AndroidCommonUtils
-					.createBackendJSON(CommonUtils.getBackendType(this
-							.getClass()));
-			AndroidCommonUtils.deployBackendFile(backendJSON);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -258,10 +287,8 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I minimize the application$")
 	public void IMimizeApllication() throws Exception {
-		if (PagesCollection.loginPage != null) {
-			PagesCollection.commonAndroidPage = PagesCollection.loginPage
-					.minimizeApplication();
-		}
+		PagesCollection.commonAndroidPage = PagesCollection.loginPage
+				.minimizeApplication();
 	}
 
 	/**
@@ -274,9 +301,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I lock the device$")
 	public void ILockTheDevice() throws Exception {
-		if (PagesCollection.loginPage != null) {
-			PagesCollection.loginPage.lockScreen();
-		}
+		PagesCollection.loginPage.lockScreen();
 	}
 
 	/**
@@ -321,7 +346,6 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I share image from Gallery to Wire$")
 	public void IShareImageFromGallery() throws Exception {
-		IOpenGalleryApp();
 		PagesCollection.contactListPage.shareImageToWireFromGallery();
 	}
 
@@ -340,7 +364,7 @@ public class CommonAndroidSteps {
 		IOpenBrowserApp();
 		PagesCollection.contactListPage.shareURLFromNativeBrowser();
 		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.currentPage;
 		}
 		Thread.sleep(5000);
 		PagesCollection.dialogPage.sendMessageInInput();
@@ -355,7 +379,14 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I take screenshot$")
 	public void WhenITake1stScreenshot() throws Exception {
-		images.add(PagesCollection.loginPage.takeScreenshot());
+		final Optional<BufferedImage> screenshot = PagesCollection.loginPage
+				.takeScreenshot();
+		if (screenshot.isPresent()) {
+			images.add(screenshot.get());
+		} else {
+			throw new RuntimeException(
+					"Selenium has failed to take the screenshot from current page");
+		}
 	}
 
 	/**
@@ -368,7 +399,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I tap on center of screen")
 	public void WhenITapOnCenterOfScreen() throws Throwable {
-		PagesCollection.androidPage.tapOnCenterOfScreen();
+		PagesCollection.currentPage.tapOnCenterOfScreen();
 	}
 
 	/**
@@ -393,9 +424,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I restore the application$")
 	public void IRestoreApllication() throws Exception {
-		if (PagesCollection.loginPage != null) {
-			PagesCollection.loginPage.restoreApplication();
-		}
+		PagesCollection.loginPage.restoreApplication();
 	}
 
 	/**
@@ -512,9 +541,35 @@ public class CommonAndroidSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		String link = GenerateWebLink.getInvitationToken(name);
+		String link = InvitationLinkGenerator.getInvitationToken(name);
 		PagesCollection.commonAndroidPage.ConnectByInvitationLink(link);
 
+	}
+
+	/**
+	 * Open Firefox browser
+	 * 
+	 * @step. ^I open Firefox$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I open Firefox$")
+	public void WhenIOpenFirefox() throws Exception {
+		PagesCollection.commonAndroidPage.openFirefoxBrowser();
+	}
+
+	/**
+	 * Wait for Firefox Url bar
+	 * 
+	 * @step. ^I wait for Firefox Url bar$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I wait for Firefox Url bar$")
+	public void WhenIWaitForFirefoxUrlBar() throws Exception {
+		PagesCollection.commonAndroidPage.waitForFireFoxUrlBar();
 	}
 
 	/**
@@ -609,14 +664,11 @@ public class CommonAndroidSteps {
 	 * 
 	 * @param seconds
 	 *            The number of seconds to wait
-	 * 
-	 * @throws NumberFormatException
-	 *             , InterruptedException
+	 * @throws Exception
 	 * 
 	 */
-	@When("^I wait for (.*) second[s]*$")
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
+	@When("^I wait for (\\d+) seconds?$")
+	public void WaitForTime(int seconds) throws Exception {
 		commonSteps.WaitForTime(seconds);
 	}
 
@@ -640,7 +692,7 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * User A blocks user B
+	 * User A accepts all requests
 	 * 
 	 * @step. ^(.*) accept all requests$
 	 * 
@@ -661,7 +713,7 @@ public class CommonAndroidSteps {
 	 * @param pingFromUserNameAlias
 	 *            The user to do the pinging
 	 * @param dstConversationName
-	 *            the target converation to send the ping to
+	 *            the target conversation to send the ping to
 	 * 
 	 * @throws Exception
 	 * 
@@ -755,7 +807,7 @@ public class CommonAndroidSteps {
 	 */
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
-		commonSteps.ThereAreNUsers(Platform.Android, count);
+		commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
 	}
 
 	/**
@@ -768,14 +820,15 @@ public class CommonAndroidSteps {
 	 *            the number of users to make
 	 * @param myNameAlias
 	 *            the name of the user to set as the current user
-	 * 
-	 * @throws Exception
+	 * @throws Throwable
 	 * 
 	 */
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
-			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Android, count, myNameAlias);
+			throws Throwable {
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+				myNameAlias);
+		GivenUserHasAnAvatarPicture(myNameAlias, DEFAULT_USER_AVATAR);
 	}
 
 	/**
@@ -927,17 +980,29 @@ public class CommonAndroidSteps {
 	 * 
 	 * @step. ^I reset (.*) password by URL to new (.*)$
 	 * 
-	 * @param name
-	 *            the name of the user for which you want to reset the password.
 	 * @param newPass
 	 *            the new password.
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@Then("^I reset (.*) password by URL to new (.*)$")
-	public void WhenIResetPasswordByUrl(String name, String newPass)
-			throws Exception {
+	@Then("^I reset password by URL to new (.*)$")
+	public void WhenIResetPasswordByUrl(String newPass) throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.commonAndroidPage
+				.resetByLink(link, newPass);
+	}
+
+	/**
+	 * Get new password link from mail
+	 * 
+	 * @step. ^I get new password link$
+	 * 
+	 * @param name
+	 *            the name of the user for which you want to reset the password.
+	 * @throws Exception
+	 */
+	@Then("^I get new (.*) password link$")
+	public void ThenIGetNewPaswordLink(String name) throws Exception {
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchUserException e) {
@@ -952,10 +1017,8 @@ public class CommonAndroidSteps {
 		this.passwordResetMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 
-		String link = BackendAPIWrappers
+		link = BackendAPIWrappers
 				.getPasswordResetLink(this.passwordResetMessage);
-		PagesCollection.peoplePickerPage = PagesCollection.commonAndroidPage
-				.resetByLink(link, newPass);
 	}
 
 	/**
@@ -974,42 +1037,6 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Verify mail subject
-	 * 
-	 * @step. ^mail subject is (.*)$
-	 * 
-	 * @param subject
-	 *            the email subject header to check
-	 * @throws Exception
-	 * 
-	 */
-	@Then("^mail subject is (.*)$")
-	public void ThenMailSubjectIs(String subject) throws Exception {
-		Assert.assertEquals(subject,
-				PagesCollection.commonAndroidPage.getGmailSubject());
-	}
-
-	/**
-	 * Verify that the open email message contains the given email address
-	 * somewhere within
-	 * 
-	 * @step. ^mail content contains my $
-	 * 
-	 * @param email
-	 *            the email to check for within the open message
-	 * 
-	 */
-	@Then("^mail content contains my (.*)$")
-	public void ThenMailContentContains(String email) {
-		try {
-			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertTrue(PagesCollection.commonAndroidPage.mailContains(email));
-	}
-
-	/**
 	 * Rotate device to landscape
 	 * 
 	 * @step. ^I rotate UI to landscape$
@@ -1019,7 +1046,6 @@ public class CommonAndroidSteps {
 	@When("^I rotate UI to landscape$")
 	public void WhenIRotateUILandscape() throws Exception {
 		PagesCollection.loginPage.rotateLandscape();
-		Thread.sleep(1000); // fix for animation
 	}
 
 	/**
@@ -1032,7 +1058,6 @@ public class CommonAndroidSteps {
 	@When("^I rotate UI to portrait$")
 	public void WhenIRotateUIPortrait() throws Exception {
 		PagesCollection.loginPage.rotatePortrait();
-		Thread.sleep(1000); // fix for animation
 	}
 
 }

@@ -5,7 +5,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I see connection request from one user
     And I open the list of incoming connection requests
     And I accept connection request from user <Contact>
@@ -13,27 +13,27 @@ Feature: Connect
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
-	 | user1Email | user1Password | user1Name | user2Name |
+      | user1Email | user1Password | user1Name | user2Name |
 
-@staging @id1546
-   Scenario Outline: Verify pending user profiles contain all the info required by spec
-      Given There are 2 users where <Name> is me
-      Given <UnknownContact> sent connection request to me
-      Given I Sign in using login <Login> and password <Password>
-      Given User me change accent color to VividRed
-      Then I see connection request from one user
-      When I open the list of incoming connection requests
-      Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
-      And I see connection message "Hello!" in connection request from user <UnknownContact>
-      And I see avatar in connection request from user <UnknownContact>
-      And I see accept button in connection request from user <UnknownContact>
-      And I see ignore button in connection request from user <UnknownContact>
-      And I see correct color for accept button in connection request from user <UnknownContact>
-      And I see correct color for ignore button in connection request from user <UnknownContact>
+  @regression @id1546
+  Scenario Outline: Verify pending user profiles contain all the info required by spec
+    Given There are 2 users where <Name> is me
+    Given <UnknownContact> sent connection request to me
+    Given I Sign in using login <Login> and password <Password>
+    Given User me change accent color to VividRed
+    Then I see connection request from one user
+    When I open the list of incoming connection requests
+    Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
+    And I see connection message "Hello!" in connection request from user <UnknownContact>
+    And I see avatar in connection request from user <UnknownContact>
+    And I see accept button in connection request from user <UnknownContact>
+    And I see ignore button in connection request from user <UnknownContact>
+    And I see correct color for accept button in connection request from user <UnknownContact>
+    And I see correct color for ignore button in connection request from user <UnknownContact>
 
-      Examples:
-	 | Login      | Password      | Name      | UnknownContact  | UnknownContactMail | Message   |
-	 | user1Email | user1Password | user1Name | user2Name       | user2Email         | YOU ADDED |
+    Examples: 
+      | Login      | Password      | Name      | UnknownContact | UnknownContactMail | Message   |
+      | user1Email | user1Password | user1Name | user2Name      | user2Email         | YOU ADDED |
 
   @smoke @id1571
   Scenario Outline: Verify sending a connection request to user chosen from search
@@ -41,7 +41,7 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I wait until <Contact> exists in backend search results
     When I open People Picker from Contact List
     And I type <Contact> in search field of People Picker
@@ -61,7 +61,7 @@ Feature: Connect
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
     When I open People Picker from Contact List
     And I type <Login2> in search field of People Picker
@@ -77,7 +77,7 @@ Feature: Connect
     And I switch to Sign In page
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I see connection request from one user
     And I open the list of incoming connection requests
     And I accept connection request from user <Name>
@@ -89,7 +89,7 @@ Feature: Connect
     And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     Then I see Contact list with name <Name2>
     And I open conversation with <Name2>
     And I see <Message> action for <Name2> in conversation
@@ -102,7 +102,7 @@ Feature: Connect
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
     When I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -120,7 +120,7 @@ Feature: Connect
     And I switch to Sign In page
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I see connection request from one user
     And I open the list of incoming connection requests
     And I ignore connection request from user <Name>
@@ -132,7 +132,7 @@ Feature: Connect
     And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     Then I see Contact list with name <Name2>
 
     Examples: 
@@ -144,7 +144,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I click People button in one to one conversation
     Then I see Single User Profile popover
@@ -153,7 +153,6 @@ Feature: Connect
     And I confirm user blocking on Single User Profile popover
     Then I do not see Contact list with name <Contact>
     Then I do not see Single User Profile popover
-    Then I see my name is selected on top of Contact list
 
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -166,7 +165,7 @@ Feature: Connect
     Given <Contact> has group chat <ChatName> with Me,<Contact2>
     Given I sent connection request to <Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     And I click People button in group conversation
     And I see Group Participants popover
@@ -186,7 +185,7 @@ Feature: Connect
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open conversation with <Contact1>
     And I click People button in one to one conversation
     And I see Single User Profile popover
@@ -203,7 +202,7 @@ Feature: Connect
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     Then I see random message in conversation
     And I write random message
@@ -221,3 +220,113 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | ChatName                 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat | user2Email | user2Password | user2Name | GroupChatWithBlockedUser |
+
+  @staging @id1563
+  Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
+    Given There are 2 users where <User1> is me
+    Given Myself is connected to <User2>
+    Given Contact <User2> sends image <Picture1> to single user conversation <User1>
+    Given <User2> pinged the conversation with <User1>
+    Given User <User2> sent message <Msg1> to conversation <User1>
+    When I Sign in using login <User1> and password <User1Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <User2>
+    Then I see text message <Msg1>
+    And <User1> blocked <User2>
+    And Contact <User2> sends image <Picture2> to single user conversation <User1>
+    And <User2> pinged the conversation with <User1>
+    And User <User2> sent message <Msg2> to conversation <User1>
+    And I do not see Contact list with name <Name>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And User <User2> is me
+    And I Sign in using login <User2Email> and password <User2Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <User1>
+    Then I see text message <Msg2>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And <User1> unblocks user <User2>
+    And User <User1> is me
+    And I Sign in using login <User1Email> and password <User1Password>
+    Then I see Contact list with name <User2>
+    When I open conversation with <User2>
+    Then I see text message <Msg2>
+
+    Examples: 
+      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1       | Msg2     | Picture1 | Picture2    |
+      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1   | Message2 | cat.jpg  | puppies.jpg |
+
+  @staging @id2317
+  Scenario Outline: Verify you can dismiss user suggestion in PYMK list
+    Given There are 3 users where <Me> is me
+    Given User <Contact1> has contact <Me> in address book
+    Given <Contact1> is connected to <Contact2>
+    Given Myself is connected to <Contact2>
+    Given There are suggestions for user <Me> on backend
+    Given I Sign in using login <MyEmail> and password <MyPassword>
+    And I see my avatar on top of Contact list
+    When I open People Picker from Contact List
+    And I see user <Contact1> found in People Picker
+    And I remove user <Contact1> from suggestions in People Picker
+    And I do not see user <Contact1> found in People Picker
+
+    Examples: 
+      | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
+      | user1Name | user1Email | user1Password | user2Name | user3Name |
+
+  @staging @id2318
+  Scenario Outline: Verify you can add a user from PYMK list
+    Given There are 3 users where <Me> is me
+    Given User <Contact1> has contact <Me> in address book
+    Given <Contact1> is connected to <Contact2>
+    Given Myself is connected to <Contact2>
+    Given There are suggestions for user <Me> on backend
+    Given I Sign in using login <MyEmail> and password <MyPassword>
+    Given I see my avatar on top of Contact list
+    When I open People Picker from Contact List
+    Then I see user <Contact1> found in People Picker
+    When I make a connection request for user <Contact1> directly from People Picker
+    And I close People Picker
+    And I open conversation with <Contact1>
+    Then I see CONNECTING TO action for <Contact1> in conversation
+
+    Examples: 
+      | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
+      | user1Name | user1Email | user1Password | user2Name | user3Name |
+
+  @regression @id2548
+  Scenario Outline: Verify you get auto-connected to people on sign-in
+    Given There is 2 user where <Me> is me
+    Given User <Me> has contact <Contact> in address book
+    Given User <Contact> has contact <Me> in address book
+    Given I Sign in using login <MyEmail> and password <MyPassword>
+    And I see my avatar on top of Contact list
+    When I open conversation with <Contact>
+    Then I see CONNECTED TO action for <Contact> in conversation
+    Then I see START A CONVERSATION action for <Contact> in conversation
+    Then I do not see text message
+
+    Examples:
+      | Me        | MyEmail    | MyPassword    | Contact   |
+      | user1Name | user1Email | user1Password | user2Name |
+
+  @regression @id1564
+  Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search view)
+    Given There are 2 users where <Name> is me
+    Given I sent connection request to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    When I open People Picker from Contact List
+    And I wait for 2 seconds
+    And I type <Contact> in search field of People Picker
+    Then I see user <Contact> found in People Picker
+    When I click on pending user <Contact> found in People Picker
+    And I see Pending Outgoing Connection popover
+    When I click Pending button on Pending Outgoing Connection popover
+    Then I see conversation with <Contact> is selected in conversations list
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

@@ -7,10 +7,10 @@ import io.appium.java_client.android.AndroidDriver;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
@@ -22,6 +22,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -34,14 +35,19 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class DriverUtils {
 	public static final int DEFAULT_PERCENTAGE = 50;
-	private static final int DEFAULT_LOOKUP_TIMEOUT_SECONDS = 10;
 
 	private static final Logger log = ZetaLogger.getLog(DriverUtils.class
 			.getSimpleName());
+
+	private static int getDefaultLookupTimeoutSeconds() throws Exception {
+		return Integer.parseInt(CommonUtils
+				.getDriverTimeoutFromConfig(DriverUtils.class));
+	}
 
 	public static boolean isNullOrEmpty(String s) {
 		return s == null || s.length() == 0;
@@ -49,6 +55,13 @@ public class DriverUtils {
 
 	/**
 	 * https://code.google.com/p/selenium/issues/detail?id=1880
+	 * 
+	 * DO NOT use this method if you want to check whether the element is NOT
+	 * visible, because it will wait at least "imlicitTimeout" seconds until the
+	 * actual result is returned. This slows down automated tests!
+	 * 
+	 * Use "waitUntilLocatorDissapears" method instead. That's quick and does
+	 * exactly what you need
 	 * 
 	 * @param element
 	 * @return
@@ -64,7 +77,7 @@ public class DriverUtils {
 	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
 			By by) throws Exception {
 		return waitUntilLocatorIsDisplayed(driver, by,
-				DEFAULT_LOOKUP_TIMEOUT_SECONDS);
+				getDefaultLookupTimeoutSeconds());
 	}
 
 	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
@@ -74,7 +87,8 @@ public class DriverUtils {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
+					.ignoring(NoSuchElementException.class)
+					.ignoring(StaleElementReferenceException.class);
 			try {
 				return wait.until(drv -> {
 					return (drv.findElements(by).size() > 0)
@@ -91,7 +105,7 @@ public class DriverUtils {
 	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
 			final By by) throws Exception {
 		return waitUntilLocatorDissapears(driver, by,
-				DEFAULT_LOOKUP_TIMEOUT_SECONDS);
+				getDefaultLookupTimeoutSeconds());
 	}
 
 	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
@@ -121,7 +135,7 @@ public class DriverUtils {
 	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
 			final By locator) throws Exception {
 		return waitUntilLocatorAppears(driver, locator,
-				DEFAULT_LOOKUP_TIMEOUT_SECONDS);
+				getDefaultLookupTimeoutSeconds());
 	}
 
 	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
@@ -145,7 +159,7 @@ public class DriverUtils {
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
 			final WebElement element) throws Exception {
 		return waitUntilElementClickable(driver, element,
-				DEFAULT_LOOKUP_TIMEOUT_SECONDS);
+				getDefaultLookupTimeoutSeconds());
 	}
 
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
@@ -155,8 +169,8 @@ public class DriverUtils {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
-
+					.ignoring(NoSuchElementException.class)
+					.ignoring(StaleElementReferenceException.class);
 			wait.until(ExpectedConditions.elementToBeClickable(element));
 			return true;
 		} catch (TimeoutException e) {
@@ -278,7 +292,10 @@ public class DriverUtils {
 			driver.swipe(coords.x + xOffset, coords.y + yOffset, coords.x
 					+ xOffset, coords.y, time);
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			log.debug(String.format("Failed to swipe up using params: "
+					+ "{startx: %s; starty: %s; endx: %s; endy: %s; time: %s}",
+					coords.x + xOffset, coords.y + yOffset, coords.x + xOffset,
+					coords.y, time));
 		}
 	}
 
@@ -331,17 +348,18 @@ public class DriverUtils {
 		}
 	}
 
-	public static final int DEFAULT_TIME = 500; // milliseconds
+	public static final int DEFAULT_SWIPE_DURATION = 1000; // milliseconds
 	public static final int DEFAULT_FINGERS = 1;
 
 	public static void genericTap(AppiumDriver driver) {
-		genericTap(driver, DEFAULT_TIME, DEFAULT_FINGERS, DEFAULT_PERCENTAGE,
-				DEFAULT_PERCENTAGE);
+		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS,
+				DEFAULT_PERCENTAGE, DEFAULT_PERCENTAGE);
 	}
 
 	public static void genericTap(AppiumDriver driver, int percentX,
 			int percentY) {
-		genericTap(driver, DEFAULT_TIME, DEFAULT_FINGERS, percentX, percentY);
+		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, percentX,
+				percentY);
 	}
 
 	public static void genericTap(AppiumDriver driver, int time, int percentX,
@@ -423,23 +441,10 @@ public class DriverUtils {
 	}
 
 	public static void androidMultiTap(AppiumDriver driver, WebElement element,
-			int tapNumber, double duration) throws InterruptedException {
-		Point coords = element.getLocation();
-		Dimension elementSize = element.getSize();
-
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		HashMap<String, Double> tapObject = new HashMap<String, Double>();
-		tapObject.put("tapCount", (double) 1);
-		tapObject.put("touchCount", (double) 1);
-		tapObject.put("duration", duration);
-		tapObject.put("x", (double) (coords.x + elementSize.width / 2));
-		tapObject.put("y", (double) (coords.y + elementSize.height / 2));
-
+			int tapNumber, int millisecondsDuration) {
 		for (int i = 0; i < tapNumber; i++) {
-			js.executeScript("mobile: tap", tapObject);
-			Thread.sleep(100);
+			driver.tap(1, element, millisecondsDuration);
 		}
-
 	}
 
 	public static void mobileTapByCoordinates(AppiumDriver driver,
@@ -474,6 +479,13 @@ public class DriverUtils {
 		// "python", scriptPath,"0.65", "0.1", "0.65", "0.7"});
 		Runtime.getRuntime().exec(
 				"/usr/bin/open -a Terminal " + scriptPath + "Down.py");
+	}
+
+	public static void iOSSimulatorSwipeRight(String scriptPath)
+			throws Exception {
+
+		Runtime.getRuntime().exec(
+				"/usr/bin/open -a Terminal " + scriptPath + "Right.py");
 	}
 
 	public static void iOSSimulatorSwipeDialogPageDown(String scriptPath)
@@ -551,17 +563,18 @@ public class DriverUtils {
 		PlatformDrivers.setDefaultImplicitWaitTimeout(driver);
 	}
 
-	public static BufferedImage takeScreenshot(ZetaDriver driver)
-			throws IOException {
-		if (!driver.isSessionLost()) {
+	public static Optional<BufferedImage> takeScreenshot(ZetaDriver driver) {
+		try {
 			byte[] scrImage = ((TakesScreenshot) driver)
 					.getScreenshotAs(OutputType.BYTES);
 			InputStream in = new ByteArrayInputStream(scrImage);
 			BufferedImage bImageFromConvert = ImageIO.read(in);
-			return bImageFromConvert;
-		} else {
-			return null;
+			return Optional.of(bImageFromConvert);
+		} catch (Exception e) {
+			// e.printStackTrace();
+			log.error("Selenium driver has failed to take the screenshot of the current screen!");
 		}
+		return Optional.empty();
 	}
 
 	public static void ToggleNetworkConnectionAndroid(AndroidDriver driver,
@@ -578,6 +591,10 @@ public class DriverUtils {
 	}
 
 	public static void moveMouserOver(RemoteWebDriver driver, WebElement element) {
+		/**
+		 * Method seems to work for Chrome and FireFox but is not working for
+		 * Safari <= 8. https://code.google.com/p/selenium/issues/detail?id=4136
+		 */
 		Actions action = new Actions(driver);
 		action.moveToElement(element);
 		action.perform();

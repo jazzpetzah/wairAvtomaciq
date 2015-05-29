@@ -7,10 +7,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ContactListPage;
@@ -55,6 +57,17 @@ public class LoginPageSteps {
 	 */
 	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void GivenISignIn(String login, String password) throws Exception {
+		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
+		PagesCollection.loginPage = (LoginPage) (PagesCollection.loginPage
+				.signIn());
+
+		emailLoginSequence(login, password);
+
+		Assert.assertNotNull("Login not passed",
+				PagesCollection.contactListPage);
+	}
+	
+	private void emailLoginSequence(String login, String password) throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
@@ -65,13 +78,57 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
-		PagesCollection.loginPage = (LoginPage) (PagesCollection.loginPage
-				.signIn());
+		
 		PagesCollection.loginPage.setLogin(login);
 		PagesCollection.loginPage.setPassword(password);
 		PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
 				.login());
+	}
+	
+	private void phoneLoginSequence(String login) throws Exception {
+		String number = "";
+		try {
+			number = usrMgr.findUserByEmailOrEmailAlias(login).getPhoneNumber().toString();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		
+		PagesCollection.loginPage.clickPhoneLogin();
+		
+		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
+		PagesCollection.registrationPage.inputPhoneNumber(number, PhoneNumber.WIRE_COUNTRY_PREFIX);
+		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(usrMgr.findUserByEmailOrEmailAlias(login).getPhoneNumber());
+		
+		PagesCollection.registrationPage.inputActivationCode(code);
+		
+		PagesCollection.contactListPage = PagesCollection.loginPage
+				.waitForLoginToFinish();
+	}
+	
+	/**
+	 * Sign in with email/password (20%) or phone number (80%)
+	 * 
+	 * @step. ^I Sign in using phone number or login (.*) and password (.*)$
+	 * @param login
+	 *            user login string
+	 * @param password
+	 *            user password string
+	 * 
+	 * @throws AssertionError
+	 *             if login operation was unsuccessful
+	 */
+	@Given("^I Sign in using phone number or login (.*) and password (.*)$")
+	public void GivenISignInWithPhone(String login, String password) throws Exception {
+
+		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
+		PagesCollection.loginPage = (LoginPage) (PagesCollection.loginPage
+				.signIn());
+		
+		if (CommonUtils.trueInPercents(80)) {
+			phoneLoginSequence(login); 
+		} else {
+			emailLoginSequence(login, password);
+		}
 
 		Assert.assertNotNull("Login not passed",
 				PagesCollection.contactListPage);
@@ -111,18 +168,6 @@ public class LoginPageSteps {
 	@When("I attempt to press Login button")
 	public void IAttemptToPressLoginButton() {
 		PagesCollection.loginPage.clickLoginButton();
-	}
-
-	/**
-	 * Taps Join button on Welcome page
-	 * 
-	 * @step. I press Join button
-	 * 
-	 * @throws IOException
-	 */
-	@When("I press Join button")
-	public void WhenIPressJoinButton() throws Exception {
-		PagesCollection.registrationPage = PagesCollection.loginPage.join();
 	}
 
 	/**

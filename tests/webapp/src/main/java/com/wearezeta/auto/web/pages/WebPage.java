@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.pages;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.Alert;
@@ -54,7 +55,7 @@ public class WebPage extends BasePage {
 		}
 	}
 
-	public BufferedImage takeScreenshot() throws Exception {
+	public Optional<BufferedImage> takeScreenshot() throws Exception {
 		return DriverUtils.takeScreenshot(this.getDriver());
 	}
 

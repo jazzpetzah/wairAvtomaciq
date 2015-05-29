@@ -4,7 +4,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.CallingLockscreenPage;
 import com.wearezeta.auto.android.pages.CallingOverlayPage;
-import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
@@ -63,6 +62,22 @@ public class CallingPageSteps {
 	}
 
 	/**
+	 * Wait for call message changes
+	 * 
+	 * @step. ^I wait for call message changes from (.*) for (.*) seconds$
+	 * @param oldMessage
+	 *            call message that should disappear 
+	 * @param sec timeout
+	 * @throws InterruptedException
+	 */
+	@When("^I wait for call message changes from (.*) for (.*) seconds$")
+	public void IWaitFormCallMessageChanges(String oldMessage, int sec)
+			throws InterruptedException {
+		PagesCollection.callingOverlayPage.waitForCallersNameChanges(
+				oldMessage, sec);
+	}
+
+	/**
 	 * Checks to see that the call bar is not visible
 	 * 
 	 * @step. ^I cannot see the call bar$
@@ -71,7 +86,8 @@ public class CallingPageSteps {
 	 */
 	@When("^I cannot see the call bar$")
 	public void ICannotSeeTheCallBar() throws Exception {
-		Assert.assertFalse(PagesCollection.callingOverlayPage.isVisible());
+		Assert.assertTrue(PagesCollection.callingOverlayPage
+				.waitUntilNotVisible());
 	}
 
 	/**
@@ -86,7 +102,7 @@ public class CallingPageSteps {
 	public void ISeeTheCallLockScreen() throws Exception {
 		PagesCollection.callingLockscreenPage = (CallingLockscreenPage) PagesCollection.loginPage
 				.instantiatePage(CallingLockscreenPage.class);
-		Assert.assertFalse(PagesCollection.callingOverlayPage.isVisible());
+		Assert.assertTrue(PagesCollection.callingLockscreenPage.isVisible());
 	}
 
 	/**
@@ -119,9 +135,8 @@ public class CallingPageSteps {
 	public void IAnswerCallFromTheOverlayBar() throws Exception {
 		PagesCollection.callingOverlayPage = (CallingOverlayPage) PagesCollection.loginPage
 				.instantiatePage(CallingOverlayPage.class);
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.loginPage
-				.instantiatePage(DialogPage.class);
-		PagesCollection.callingOverlayPage.acceptCall();
+		PagesCollection.dialogPage = PagesCollection.callingOverlayPage
+				.acceptCall();
 	}
 
 	/**
@@ -137,6 +152,8 @@ public class CallingPageSteps {
 		PagesCollection.callingOverlayPage = PagesCollection.callingLockscreenPage
 				.acceptCall();
 	}
+
+	// FIXME: replace multiple assertTrue calls with loops
 
 	/**
 	 * Check calling Big bar

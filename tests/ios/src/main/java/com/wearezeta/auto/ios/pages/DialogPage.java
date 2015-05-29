@@ -23,6 +23,7 @@ import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.ScreenOrientation;
 
 import com.wearezeta.auto.common.*;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -137,7 +138,7 @@ public class DialogPage extends IOSPage {
 	private WebElement chatheadAvatarImage;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
-	private String connectingLabel = "CONNECTING TO %s";
+	private String connectingLabel = "CONNECTING TO %s.";
 
 	public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -153,7 +154,8 @@ public class DialogPage extends IOSPage {
 
 	public boolean isMessageVisible(String msg) throws Exception {
 
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(msg));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.name(msg));
 	}
 
 	public boolean isPingButtonVisible() throws Exception {
@@ -173,6 +175,11 @@ public class DialogPage extends IOSPage {
 	public boolean waitForCursorInputVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.name(IOSLocators.nameConversationCursorInput), 10);
+	}
+
+	public boolean waitForCursorInputNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.name(IOSLocators.nameConversationCursorInput), 3);
 	}
 
 	public void waitForYouAddedCellVisible() throws Exception {
@@ -268,7 +275,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void startMediaContent() throws Exception {
-		boolean flag = DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+		boolean flag = DriverUtils.waitUntilLocatorIsDisplayed(
+				this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell));
 		if (flag) {
 			mediaLinkCell.click();
@@ -362,6 +370,12 @@ public class DialogPage extends IOSPage {
 		}
 
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
+	}
+
+	public OtherUserOnPendingProfilePage clickConversationDeatailForPendingUser()
+			throws Exception {
+		openConversationDetails.click();
+		return new OtherUserOnPendingProfilePage(this.getLazyDriver());
 	}
 
 	@Override
@@ -563,7 +577,8 @@ public class DialogPage extends IOSPage {
 
 	public BufferedImage takeImageScreenshot() throws Throwable {
 		BufferedImage image;
-		image = getElementScreenshot(imageCell);
+		image = getElementScreenshot(imageCell).orElseThrow(
+				IllegalStateException::new);
 		if (image.getHeight() > IMAGE_IN_CONVERSATION_HEIGHT) {
 			image = image.getSubimage(0, image.getHeight()
 					- IMAGE_CONTROL_IN_CONVERSATION_HEIGHT, image.getWidth(),
@@ -778,12 +793,19 @@ public class DialogPage extends IOSPage {
 	public double checkPingIcon(String label) throws Exception {
 		String path = null;
 		BufferedImage pingImage = null;
+		ScreenOrientation orient = getOrientation();
 		if (label.equals(PING_LABEL)) {
 			pingImage = getPingIconScreenShot();
 			path = CommonUtils.getPingIconPathIOS(GroupChatPage.class);
+			if (orient == ScreenOrientation.LANDSCAPE) {
+				path = path.replace(".png", "_landscape.png");
+			}
 		} else if (label.equals(HOT_PING_LABEL)) {
 			pingImage = getPingAgainIconScreenShot();
 			path = CommonUtils.getHotPingIconPathIOS(GroupChatPage.class);
+			if (orient == ScreenOrientation.LANDSCAPE) {
+				path = path.replace(".png", "_landscape.png");
+			}
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		return ImageUtil.getOverlapScore(pingImage, templateImage);
@@ -800,7 +822,8 @@ public class DialogPage extends IOSPage {
 		int y = (elementLocation.y - PING_ICON_Y_OFFSET) * 2;
 		int w = PING_ICON_WIDTH;
 		int h = PING_ICON_HEIGHT;
-		return getScreenshotByCoordinates(x, y, w, h);
+		return getScreenshotByCoordinates(x, y, w, h).orElseThrow(
+				IllegalStateException::new);
 	}
 
 	private BufferedImage getPingAgainIconScreenShot() throws Exception {
@@ -810,7 +833,8 @@ public class DialogPage extends IOSPage {
 		int y = (elementLocation.y - PING_ICON_Y_OFFSET) * 2;
 		int w = PING_ICON_WIDTH;
 		int h = PING_ICON_HEIGHT;
-		return getScreenshotByCoordinates(x, y, w, h);
+		return getScreenshotByCoordinates(x, y, w, h).orElseThrow(
+				IllegalStateException::new);
 	}
 
 	public void waitPingAnimation() throws InterruptedException {

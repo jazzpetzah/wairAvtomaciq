@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
@@ -12,19 +13,17 @@ import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.locators.TabletAndroidLocators;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class TabletContactListPage extends ContactListPage {
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idYourName")
+	@FindBy(id = AndroidLocators.ContactListPage.idYourName)
 	private WebElement profileLink;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.ContactListPage.CLASS_NAME, locatorKey = "idOpenStartUIButton")
+	@FindBy(id = AndroidLocators.ContactListPage.idOpenStartUIButton)
 	private WebElement peoplePickerButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = TabletAndroidLocators.TabletContactListPage.CLASS_NAME, locatorKey = "idRootLeftView")
+	@FindBy(id = TabletAndroidLocators.TabletContactListPage.idRootLeftView)
 	private WebElement rootLeftView;
 
 	@SuppressWarnings("unused")
@@ -55,7 +54,6 @@ public class TabletContactListPage extends ContactListPage {
 
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
-		refreshUITree();
 		elementSwipeDown(rootLeftView, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}

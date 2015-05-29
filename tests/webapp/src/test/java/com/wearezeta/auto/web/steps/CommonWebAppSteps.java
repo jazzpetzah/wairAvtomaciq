@@ -11,7 +11,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
-import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.logging.LogEntry;
 import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
@@ -47,6 +46,13 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.apache.commons.collections.IteratorUtils;
+
+import static org.junit.Assert.assertTrue;
 
 public class CommonWebAppSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -230,11 +236,11 @@ public class CommonWebAppSteps {
 		// default one
 		// setCustomOperaProfile(capabilities, "win7_opera");
 
-		capabilities.setCapability("platformName", Platform.Web.getName());
+		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 		@SuppressWarnings("unchecked")
 		final Future<ZetaWebAppDriver> lazyWebDriver = (Future<ZetaWebAppDriver>) PlatformDrivers
 				.getInstance().resetDriver(url, capabilities,
-						MAX_DRIVER_CREATION_RETRIES, this::navigateToStartPage);
+						MAX_DRIVER_CREATION_RETRIES, this::navigateToStartPage, null);
 		return lazyWebDriver;
 	}
 
@@ -261,18 +267,34 @@ public class CommonWebAppSteps {
 	}
 
 	/**
-	 * This step will throw special PendingException if the current browser does
-	 * not support calling. This will cause Cucumber interpreter to skip the
-	 * current test instead of failing it
-	 * 
+	 * This step will throw special PendingException whether the current browser
+	 * does support calling or not. This will cause Cucumber interpreter to skip
+	 * the current test instead of failing it.
+	 *
+	 *
+	 * @step. ^My browser( does not)? support[s] calling$
+	 * @param doesNot
+	 *            is set to null if "does not" part does not exist
 	 * @throws Exception
 	 */
-	@Given("^My browser supports calling$")
-	public void MyBrowserSupportsCalling() throws Exception {
-		if (!WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
-			throw new PendingException("Browser "
-					+ WebAppExecutionContext.getCurrentBrowser().toString()
-					+ " does not support calling.");
+	@Given("^My browser( does not)? support[s]? calling$")
+	public void MyBrowserSupportsCalling(String doesNot) throws Exception {
+		if (doesNot == null) {
+			// should support calling
+			if (!WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
+				throw new PendingException("Browser "
+						+ WebAppExecutionContext.getCurrentBrowser().toString()
+						+ " does not support calling.");
+			}
+		} else {
+			// should not support calling
+			if (WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
+				throw new PendingException(
+						"Browser "
+								+ WebAppExecutionContext.getCurrentBrowser()
+										.toString()
+								+ " does support calling but this test is just for browsers without support.");
+			}
 		}
 	}
 
@@ -292,7 +314,8 @@ public class CommonWebAppSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Web, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+				myNameAlias);
 		IChangeUserAvatarPicture(myNameAlias, "default");
 	}
 
@@ -336,7 +359,8 @@ public class CommonWebAppSteps {
 	@Given("^There (?:is|are) (\\d+) users? where (.*) is me without avatar picture$")
 	public void ThereAreNUsersWhereXIsMeWithoutAvatar(int count,
 			String myNameAlias) throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Web, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+				myNameAlias);
 	}
 
 	/**
@@ -497,15 +521,14 @@ public class CommonWebAppSteps {
 	/**
 	 * Wait for specified amount of seconds
 	 * 
-	 * @step. ^I wait for (.*) seconds?$
+	 * @step. ^I wait for (\\d+) seconds?$
 	 * 
 	 * @param seconds
 	 * @throws NumberFormatException
 	 * @throws InterruptedException
 	 */
-	@When("^I wait for (.*) seconds?$")
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
+	@When("^I wait for (\\d+) seconds?$")
+	public void WaitForTime(int seconds) throws Exception {
 		commonSteps.WaitForTime(seconds);
 	}
 
@@ -603,6 +626,34 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * Wait until suggestions are in the backend for a certain user
+	 * 
+	 * @param userNameAlias
+	 *            the name of the user
+	 * @throws Exception
+	 */
+	@Given("^There are suggestions for user (.*) on backend$")
+	public void suggestions(String userNameAlias) throws Exception {
+		commonSteps.WaitUntilSuggestionFound(userNameAlias);
+	}
+
+	/**
+	 * Add email(s) into address book of a user and upload address book in
+	 * backend
+	 * 
+	 * @param asUser
+	 *            name of the user where the address book is uploaded
+	 * @param emails
+	 *            list of email addresses seperated by comma
+	 * @throws Exception
+	 */
+	@Given("^User (.*) has contacts? (.*) in address book")
+	public void UserXHasContactsInAddressBook(String asUser, String emails)
+			throws Exception {
+		commonSteps.UserXHasContactsInAddressBook(asUser, emails);
+	}
+
+	/**
 	 * Forces the current test to be skipped if current browser does not support
 	 * fast location by XPath
 	 * 
@@ -664,12 +715,82 @@ public class CommonWebAppSteps {
 		}
 	}
 
-	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
-		log.debug("BROWSER CONSOLE LOGS:");
-		LogEntries logEntries = driver.manage().logs().get(LogType.BROWSER);
-		for (LogEntry logEntry : logEntries) {
-			log.debug(logEntry.getMessage());
+	/**
+	 * Verifies whether current browser log is empty or not
+	 *
+	 * @step. ^I verify browser log is empty$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I verify browser log is empty$")
+	public void VerifyBrowserLogIsEmpty() throws Exception {
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			try {
+				if (WebAppExecutionContext.LoggingManagement
+						.isSupportedInCurrentBrowser()) {
+					List<LogEntry> browserLog = getBrowserLog(PlatformDrivers
+							.getInstance()
+							.getDriver(CURRENT_PLATFORM)
+							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+									TimeUnit.MILLISECONDS));
+
+					StringBuilder bLog = new StringBuilder("\n");
+					browserLog.stream().forEach(
+							(entry) -> {
+								bLog.append(entry.getLevel()).append(":")
+										.append(entry.getMessage())
+										.append("\n");
+							});
+					assertTrue("BrowserLog is not empty: " + bLog.toString(),
+							browserLog.isEmpty());
+				}
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
 		}
+	}
+
+	/**
+	 * Refreshes page by getting and setting the current URL. Note: Alternative
+	 * 'WebDriver.navigate().refresh()' hangs with Firefox.
+	 *
+	 * @step. ^I refresh page$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I refresh page$")
+	public void IRefreshPage() throws Exception {
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			try {
+				if (WebAppExecutionContext.LoggingManagement
+						.isSupportedInCurrentBrowser()) {
+					WebCommonUtils.refreshPage(PlatformDrivers
+							.getInstance()
+							.getDriver(CURRENT_PLATFORM)
+							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+									TimeUnit.MILLISECONDS));
+				}
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<LogEntry> getBrowserLog(RemoteWebDriver driver) {
+		return IteratorUtils.toList((Iterator<LogEntry>) driver.manage().logs()
+				.get(LogType.BROWSER).iterator());
+	}
+
+	private void writeBrowserLogsIntoMainLog(RemoteWebDriver driver) {
+		List<LogEntry> logEntries = getBrowserLog(driver);
+		if (!logEntries.isEmpty()) {
+			log.debug("BROWSER CONSOLE LOGS:");
+			for (LogEntry logEntry : logEntries) {
+				log.debug(logEntry.getMessage());
+			}
+		}
+
 	}
 
 	@After
@@ -701,7 +822,63 @@ public class CommonWebAppSteps {
 				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 			}
 		}
-
 		commonSteps.getUserManager().resetUsers();
 	}
+	
+	/**
+	 * Sends an image from one user to a conversation
+	 * 
+	 * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
+	 * 
+	 * @param imageSenderUserNameAlias
+	 *            the user to sending the image
+	 * @param imageFileName
+	 *            the file path name of the image to send. The path name is
+	 *            defined relative to the image file defined in
+	 *            Configuration.cnf.
+	 * @param conversationType
+	 *            "single user" or "group" conversation.
+	 * @param dstConversationName
+	 *            the name of the conversation to send the image to.
+	 *
+	 * @throws Exception
+	 * 
+	 */
+	@When("^Contact (.*) sends image (.*) to (.*) conversation (.*)")
+	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+			String imageFileName, String conversationType,
+			String dstConversationName) throws Exception {
+		String imagePath = WebCommonUtils
+				.getFullPicturePath(imageFileName);
+		Boolean isGroup = null;
+		if (conversationType.equals("single user")) {
+			isGroup = false;
+		} else if (conversationType.equals("group")) {
+			isGroup = true;
+		}
+		if (isGroup == null) {
+			throw new Exception(
+					"Incorrect type of conversation specified (single user | group) expected.");
+		}
+		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
+				imagePath, dstConversationName, isGroup);
+	}
+	/**
+	 * Unblocks user
+	 *
+	 * @step. ^(\\w+) unblocks (\\w+)$
+	 *
+	 * @param userAsNameAlias
+	 *            user which wants to unblock another
+	 * @param userToBlockNameAlias
+	 *            user to unblock
+	 *
+	 * @throws Exception
+	 */
+	@Given("^(\\w+) unblocks user (\\w+)$")
+	public void UserUnblocks(String userAsNameAlias, String userToBlockNameAlias)
+			throws Exception {
+		commonSteps.UnblockContact(userAsNameAlias, userToBlockNameAlias);
+	}
+
 }

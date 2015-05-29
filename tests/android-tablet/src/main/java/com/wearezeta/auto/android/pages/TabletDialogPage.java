@@ -3,30 +3,30 @@ package com.wearezeta.auto.android.pages;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.locators.TabletAndroidLocators;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class TabletDialogPage extends DialogPage {
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = TabletAndroidLocators.TabletDialogPage.CLASS_NAME, locatorKey = "idProfileIcon")
+	@FindBy(id = TabletAndroidLocators.TabletDialogPage.idProfileIcon)
 	private WebElement profileButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = TabletAndroidLocators.TabletDialogPage.CLASS_NAME, locatorKey = "idParticipantsClose")
+	@FindBy(id = TabletAndroidLocators.TabletDialogPage.idParticipantsClose)
 	private WebElement participantsClose;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = TabletAndroidLocators.TabletDialogPage.CLASS_NAME, locatorKey = "idRootParticipantContainer")
+	@FindBy(id = TabletAndroidLocators.TabletDialogPage.idRootParticipantContainer)
 	private WebElement participantContainer;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idParticipantsHeader")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeader)
 	private WebElement otherUserName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.OtherUserPersonalInfoPage.CLASS_NAME, locatorKey = "idLeftActionButton")
+	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idLeftActionButton)
 	private WebElement addContactBtn;
 
 	public TabletDialogPage(Future<ZetaAndroidDriver> lazyDriver)
@@ -35,9 +35,8 @@ public class TabletDialogPage extends DialogPage {
 	}
 
 	public boolean isProfileButtonDisplayed() throws Exception {
-		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(profileButton));
-		return isVisible(profileButton);
+		return DriverUtils.isElementPresentAndDisplayed(profileButton);
 	}
 
 	public void tapOnProfileButton() throws Exception {
@@ -56,12 +55,9 @@ public class TabletDialogPage extends DialogPage {
 	}
 
 	public boolean isPopOverDisplayed() throws Exception {
-		if (isVisible(profileButton) && isVisible(otherUserName)
-				&& isVisible(addContactBtn)) {
-			return true;
-		} else {
-			return false;
-		}
+		return (DriverUtils.isElementPresentAndDisplayed(profileButton)
+				&& DriverUtils.isElementPresentAndDisplayed(otherUserName) && DriverUtils
+					.isElementPresentAndDisplayed(addContactBtn));
 	}
 
 	@Override

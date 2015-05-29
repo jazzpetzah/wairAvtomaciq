@@ -22,10 +22,10 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
@@ -35,16 +35,11 @@ public class ContactListPage extends WebPage {
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathContactListEntries)
 	private List<WebElement> contactListEntries;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathArchivedContactListEntries)
 	private List<WebElement> archivedContactListEntries;
-
-	@FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssSelfProfileEntry)
-	private WebElement selfName;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton)
 	private WebElement openArchivedConvosButton;
@@ -134,37 +129,11 @@ public class ContactListPage extends WebPage {
 
 	}
 
-	public boolean isSelfNameEntryExist() throws Exception {
+	public void waitForSelfProfileAvatar() throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 5);
-		log.debug(String.format("Looking for self name entry '%s'...", usrMgr
-				.getSelfUserOrThrowError().getName()));
-
-		final String selfNameElementText = getSelfName(locator);
-		log.debug(String.format("Result self name is '%s'.",
-				selfNameElementText));
-		return selfNameElementText.equals(usrMgr.getSelfUserOrThrowError()
-				.getName());
-	}
-
-	private String getSelfName(By locator) throws Exception {
-		String name = "";
-		for (int i = 1; i < 6; i++) {
-			name = getDriver().findElement(locator).getText();
-			if (!name.equals("")) {
-				break;
-			} else {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		return name;
-
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 5);
 	}
 
 	public boolean isConvoListEntryWithNameExist(String name) throws Exception {
@@ -174,6 +143,19 @@ public class ContactListPage extends WebPage {
 			return false;
 		}
 		final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
+				.apply(name);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.cssSelector(locator), 5);
+	}
+
+	public boolean isArchiveListEntryWithNameExist(String name)
+			throws Exception {
+		log.debug("Looking for contact with name '" + name + "'");
+		name = fixDefaultGroupConvoName(name, true, false);
+		if (name == null) {
+			return false;
+		}
+		final String locator = WebAppLocators.ContactListPage.cssArchiveListEntryByName
 				.apply(name);
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.cssSelector(locator), 5);
@@ -197,6 +179,16 @@ public class ContactListPage extends WebPage {
 		final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
 				.apply(name);
 		return getDriver().findElement(By.cssSelector(locator));
+	}
+
+	public boolean isMissedCallVisibleForContact(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
+				.apply(conversationName);
+		List<WebElement> missedCallNotification = getDriver().findElements(
+				By.xpath(locator));
+		return missedCallNotification.size() > 0;
 	}
 
 	public void openArchive() throws Exception {
@@ -245,10 +237,9 @@ public class ContactListPage extends WebPage {
 				archiveLocator);
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				archiveButton);
-		assert (DriverUtils
-				.waitUntilLocatorIsDisplayed(this.getDriver(), muteLocator, 3) && DriverUtils
-				.waitUntilElementClickable(this.getDriver(), this.getDriver()
-						.findElement(muteLocator), 3))
+		assert (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				muteLocator, 3) && DriverUtils.waitUntilElementClickable(
+				this.getDriver(), this.getDriver().findElement(muteLocator), 3))
 				|| (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 						unmuteLocator, 3) && DriverUtils
 						.waitUntilElementClickable(this.getDriver(), this
@@ -257,9 +248,12 @@ public class ContactListPage extends WebPage {
 
 	public boolean isConversationMuted(String conversationName)
 			throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		// moving focus from contact - to now show ... button
 		try {
-			DriverUtils.moveMouserOver(this.getDriver(), selfName);
+			DriverUtils.moveMouserOver(this.getDriver(), this.getDriver()
+					.findElement(locator));
 		} catch (WebDriverException e) {
 			// do nothing (safari workaround)
 		}
@@ -282,12 +276,14 @@ public class ContactListPage extends WebPage {
 		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName
 				.apply(conversationName);
 		final By locator = By.cssSelector(cssOptionsButtonLocator);
-		if (!DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 5)) {
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator,
+				5)) {
 			// Safari workaround
 			final String showOptionsButtonJScript = "$(\""
 					+ cssOptionsButtonLocator + "\").css({'opacity': '100'})";
 			this.getDriver().executeScript(showOptionsButtonJScript);
-			assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator);
+			assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+					locator);
 		}
 		final WebElement optionsButton = getDriver().findElement(locator);
 		optionsButton.click();
@@ -341,8 +337,8 @@ public class ContactListPage extends WebPage {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
 						.apply(conversationName));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), entryLocator,
-				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation item '"
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation item '"
 				+ conversationName
 				+ "' has not been found in the conversations list within "
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
@@ -355,8 +351,8 @@ public class ContactListPage extends WebPage {
 	public PendingConnectionsPage openConnectionRequestsList() throws Exception {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), entryLocator,
-				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Incoming connection requests entry has not been found within "
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Incoming connection requests entry has not been found within "
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
 		selectEntryWithRetry(entryLocator,
 				WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
@@ -365,12 +361,11 @@ public class ContactListPage extends WebPage {
 
 	public SelfProfilePage openSelfProfile() throws Exception {
 		final By entryLocator = By
-				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), entryLocator,
-				OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Self profile entry has not been found within "
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Self profile entry has not been found within "
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
-		selectEntryWithRetry(entryLocator,
-				WebAppLocators.ContactListPage.cssSelfProfileEntry);
+		this.getDriver().findElement(entryLocator).click();
 		return new SelfProfilePage(this.getLazyDriver());
 	}
 
@@ -389,17 +384,14 @@ public class ContactListPage extends WebPage {
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
-	public String getSelfNameColor() {
-		return selfName.getCssValue("color");
-	}
-
 	public void clickUnmuteConversationForContact(String conversationName)
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final By locator = By
 				.xpath(WebAppLocators.ContactListPage.xpathUnmuteButtonByContactName
 						.apply(conversationName));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 5);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 5);
 		final WebElement unmuteButton = this.getDriver().findElement(locator);
 		unmuteButton.click();
 	}
@@ -431,15 +423,16 @@ public class ContactListPage extends WebPage {
 	public String getIncomingPendingItemText() throws Exception {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
-		assert DriverUtils
-				.waitUntilLocatorIsDisplayed(this.getDriver(), entryLocator, 3) : "There are no visible incoming pending connections in the conversations list";
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				entryLocator, 3) : "There are no visible incoming pending connections in the conversations list";
 		return getDriver().findElement(entryLocator).getText();
 	}
 
 	public boolean isSelfNameEntrySelected() throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileEntry);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
+				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
 		final WebElement entry = getDriver().findElement(locator);
 		try {
 			waitUtilEntryIsSelected(entry);
@@ -454,7 +447,8 @@ public class ContactListPage extends WebPage {
 		final By locator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssContactListEntryByName
 						.apply(convoName));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 3);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
 		final WebElement entryElement = getDriver().findElement(locator);
 		try {
 			waitUtilEntryIsSelected(entryElement);
@@ -503,5 +497,27 @@ public class ContactListPage extends WebPage {
 						By.xpath(WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton),
 						archiveBtnVisilityTimeout) : "Open Archive button is not visible after "
 				+ archiveBtnVisilityTimeout + " second(s)";
+	}
+
+	public AccentColor getCurrentPingIconAccentColor(String name)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathPingIconByContactName
+						.apply(name));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
+		final WebElement entry = getDriver().findElement(locator);
+		return AccentColor.getByRgba(entry.getCssValue("color"));
+	}
+
+	public AccentColor getCurrentUnreadDotAccentColor(String name)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName
+						.apply(name));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
+		final WebElement entry = getDriver().findElement(locator);
+		return AccentColor.getByRgba(entry.getCssValue("background-color"));
 	}
 }

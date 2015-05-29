@@ -3,6 +3,7 @@ package com.wearezeta.auto.osx.steps;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.Future;
 
@@ -56,6 +57,8 @@ public class CommonOSXSteps {
 
 	private long startupTime = -1;
 
+	private static boolean backendSet = false;
+
 	public long getStartupTime() {
 		return this.startupTime;
 	}
@@ -67,15 +70,19 @@ public class CommonOSXSteps {
 		CommonUtils.disableSeleniumLogs();
 	}
 
-	public static void resetBackendSettingsIfOverwritten() throws IOException,
-			Exception {
+	public static boolean resetBackendSettingsIfOverwritten()
+			throws IOException, Exception {
+		OSXCommonUtils.resetOSXPrefsDaemon();
 		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
 				.getBackendType(CommonOSXSteps.class))) {
 			log.debug("Backend setting were overwritten. Trying to restart app.");
-			PagesCollection.mainMenuPage.quitWire();
+			OSXCommonUtils.killWireIfStuck();
 			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
 					.getBackendType(CommonOSXSteps.class));
-			PagesCollection.mainMenuPage.startApp();
+			OSXCommonUtils.resetOSXPrefsDaemon();
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -89,11 +96,47 @@ public class CommonOSXSteps {
 
 		return (Future<ZetaOSXDriver>) PlatformDrivers.getInstance()
 				.resetDriver(url, capabilities, MAX_DRIVER_CREATION_RETRIES,
-						this::startApp);
+						this::startApp, null);
 	}
 
 	private void startApp(RemoteWebDriver drv) {
+		try {
+			CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
+		} catch (Exception e) {
+		}
+		try {
+			OSXCommonUtils.deleteWireLoginFromKeychain();
+		} catch (Exception e) {
+		}
+		try {
+			OSXCommonUtils.deletePreferencesFile();
+		} catch (Exception e) {
+		}
+		try {
+			OSXCommonUtils.deleteCacheFolder();
+		} catch (Exception e) {
+		}
+
+		if (!backendSet) {
+			try {
+				OSXCommonUtils.removeAllZClientSettingsFromDefaults();
+			} catch (Exception e) {
+			}
+			try {
+				OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
+						.getBackendType(this.getClass()));
+			} catch (Exception e) {
+			}
+			backendSet = true;
+		}
 		drv.navigate().to(OSXExecutionContext.wirePath);
+
+		try {
+			if (resetBackendSettingsIfOverwritten()) {
+				drv.navigate().to(OSXExecutionContext.wirePath);
+			}
+		} catch (Exception e) {
+		}
 	}
 
 	private void commonBefore() throws Exception {
@@ -122,32 +165,12 @@ public class CommonOSXSteps {
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
-		CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
-		OSXCommonUtils.deleteWireLoginFromKeychain();
-		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-		OSXCommonUtils.deleteCacheFolder();
-
-		OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-				.getBackendType(this.getClass()));
-
 		commonBefore();
-
-		resetBackendSettingsIfOverwritten();
 	}
 
 	@Before("~@performance")
 	public void setUp() throws Exception {
-		CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
-		OSXCommonUtils.deleteWireLoginFromKeychain();
-		OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-		OSXCommonUtils.deleteCacheFolder();
-
-		OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-				.getBackendType(this.getClass()));
-
 		commonBefore();
-
-		resetBackendSettingsIfOverwritten();
 	}
 
 	@Given("^(.*) sent connection request to (.*)$")
@@ -173,13 +196,14 @@ public class CommonOSXSteps {
 
 	@Given("^There \\w+ (\\d+) user[s]*$")
 	public void ThereAreNUsers(int count) throws Exception {
-		commonSteps.ThereAreNUsers(Platform.Mac, count);
+		commonSteps.ThereAreNUsers(CURRENT_PLATFORM, count);
 	}
 
 	@Given("^There \\w+ (\\d+) user[s]* where (.*) is me$")
 	public void ThereAreNUsersWhereXIsMe(int count, String myNameAlias)
 			throws Exception {
-		commonSteps.ThereAreNUsersWhereXIsMe(Platform.Mac, count, myNameAlias);
+		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
+				myNameAlias);
 	}
 
 	@When("^(.*) ignore all requests$")
@@ -188,9 +212,8 @@ public class CommonOSXSteps {
 		commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
 	}
 
-	@When("^I wait for (.*) seconds$")
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
+	@When("^I wait for (\\d+) seconds?$")
+	public void WaitForTime(int seconds) throws Exception {
 		commonSteps.WaitForTime(seconds);
 	}
 
@@ -363,8 +386,14 @@ public class CommonOSXSteps {
 	@When("^I take fullscreen shot and save it as (.*)$")
 	public void ITakeFullscreenShotAndSaveItAsAlias(String screenshotAlias)
 			throws Exception {
-		BufferedImage shot = PagesCollection.mainMenuPage.takeScreenshot();
-		OSXExecutionContext.screenshots.put(screenshotAlias, shot);
+		final Optional<BufferedImage> shot = PagesCollection.mainMenuPage
+				.takeScreenshot();
+		if (shot.isPresent()) {
+			OSXExecutionContext.screenshots.put(screenshotAlias, shot.get());
+		} else {
+			throw new RuntimeException(
+					"Selenium has failed to take screenshot of the current page");
+		}
 	}
 
 	/**

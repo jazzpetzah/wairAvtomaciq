@@ -1,20 +1,26 @@
 package com.wearezeta.auto.android.pages;
 
-import io.appium.java_client.pagefactory.AndroidFindBy;
-
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.*;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.support.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import android.view.KeyEvent;
+import android.graphics.Point;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
@@ -22,8 +28,6 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 
@@ -38,127 +42,117 @@ public class DialogPage extends AndroidPage {
 	public static final String SPEAKER_BUTTON_LABEL = "SPEAKER";
 	public static final String I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classEditText)
+	@FindBy(id = AndroidLocators.CommonLocators.idEditText)
 	private WebElement cursorInput;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.DialogPage.xpathCloseCursor)
-	private WebElement closeCursor;
-	
 	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.Browsers.xpathNativeBrowserURLBar)
 	private WebElement nativeBrowserURL;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
+	@FindBy(id = AndroidLocators.DialogPage.idMessage)
 	private List<WebElement> messagesList;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
-	private WebElement messageInList;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMissedCallMesage")
+	@FindBy(id = AndroidLocators.DialogPage.idMissedCallMesage)
 	private WebElement missedCallMessage;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCursorFrame")
+	@FindBy(id = AndroidLocators.DialogPage.idCursorFrame)
 	private WebElement cursurFrame;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockMessage")
-	private WebElement knockMessage;
+	@FindBy(id = AndroidLocators.DialogPage.idPingMessage)
+	private List<WebElement> pingMessages;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockAction")
-	private WebElement knockAction;
+	@FindBy(xpath = AndroidLocators.DialogPage.xpathLastPingMessage)
+	private WebElement lastPingMessage;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idKnockIcon")
-	private WebElement knockIcon;
+	@FindBy(id = AndroidLocators.DialogPage.idPingIcon)
+	private WebElement pingIcon;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogTakePhotoButton")
+	@FindBy(id = AndroidLocators.DialogPage.idDialogTakePhotoButton)
 	private WebElement takePhotoButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogChangeCameraButton")
+	@FindBy(id = AndroidLocators.DialogPage.idDialogChangeCameraButton)
 	private WebElement changeCameraButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
+	@FindBy(xpath = AndroidLocators.DialogPage.xpathConfirmOKButton)
 	private WebElement okButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogImages")
+	@FindBy(id = AndroidLocators.DialogPage.idDialogImages)
 	private WebElement image;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogImages")
+	@FindBy(id = AndroidLocators.DialogPage.idDialogImages)
 	private List<WebElement> imageList;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestDialog")
+	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestDialog)
 	private WebElement connectRequestDialog;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idAddParticipants")
+	@FindBy(id = AndroidLocators.DialogPage.idAddParticipants)
 	private WebElement addParticipant;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMessage")
-	private WebElement conversationMessage;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestMessage")
+	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestMessage)
 	private WebElement connectRequestMessage;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestConnectTo")
+	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestConnectTo)
 	private WebElement connectRequestConnectTo;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogPageBottomFrameLayout")
+	@FindBy(id = AndroidLocators.DialogPage.idDialogPageBottomFrameLayout)
 	private WebElement dialogPageBottomFrameLayout;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idBackgroundOverlay")
+	@FindBy(id = AndroidLocators.DialogPage.idBackgroundOverlay)
 	private WebElement backgroundOverlay;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestChatLabel")
+	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestChatLabel)
 	private WebElement connectRequestChatLabel;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConnectRequestChatUserName")
+	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestChatUserName)
 	private WebElement connectRequestChatUserName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idGalleryBtn")
+	@FindBy(id = AndroidLocators.CommonLocators.idGalleryBtn)
 	private WebElement galleryBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idSearchHintClose")
+	@FindBy(id = AndroidLocators.CommonLocators.idSearchHintClose)
 	private WebElement closeHintBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idCloseImageBtn")
+	@FindBy(id = AndroidLocators.CommonLocators.idCloseImageBtn)
 	private WebElement closeImageBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPlayPauseMedia")
+	@FindBy(id = AndroidLocators.DialogPage.idPlayPauseMedia)
 	private WebElement playPauseBtn;
-	
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idYoutubePlayButton")
+
+	@FindBy(id = AndroidLocators.DialogPage.idYoutubePlayButton)
 	private WebElement playYoutubeBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMediaBarControl")
+	@FindBy(id = AndroidLocators.DialogPage.idMediaBarControl)
 	private WebElement mediaBarControl;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idAddPicture")
+	@FindBy(id = AndroidLocators.DialogPage.idAddPicture)
 	private WebElement addPictureBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idPing")
+	@FindBy(id = AndroidLocators.DialogPage.idPing)
 	private WebElement pingBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCallingMessage")
+	@FindBy(id = AndroidLocators.DialogPage.idCallingMessage)
 	private WebElement callingMessageText;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCall")
+	@FindBy(id = AndroidLocators.DialogPage.idCall)
 	private WebElement callBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idMute")
+	@FindBy(id = AndroidLocators.DialogPage.idMute)
 	private WebElement muteBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idSpeaker")
+	@FindBy(id = AndroidLocators.DialogPage.idSpeaker)
 	private WebElement speakerBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idCancelCall")
+	@FindBy(id = AndroidLocators.DialogPage.idCancelCall)
 	private WebElement cancelCallBtn;
 
-	@AndroidFindBy(xpath = AndroidLocators.OtherUserPersonalInfoPage.xpathGroupChatInfoLinearLayout)
-	private List<WebElement> linearLayout;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idDialogPageBottom")
+	@FindBy(id = AndroidLocators.DialogPage.idDialogPageBottom)
 	private WebElement dialogPageBottom;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idNewConversationNameMessage")
+	@FindBy(id = AndroidLocators.DialogPage.idNewConversationNameMessage)
 	private WebElement newConversationNameMessage;
 
-	private int initMessageCount = 0;
+	@FindBy(xpath = AndroidLocators.DialogPage.xpathLastConversationMessage)
+	private WebElement lastConversationMessage;
+
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 	private final String DIALOG_IMAGE = "android_dialog_sendpicture_result.png";
 	private static final int DEFAULT_SWIPE_TIME = 500;
@@ -168,18 +162,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void waitForCursorInputVisible() throws Exception {
-		refreshUITree();
-		int counter = 0;
-		while (!isVisible(cursorInput)) {
-			Thread.sleep(500);
-			counter++;
-			if (counter == 10) {
-				break;
-			}
-		}
-		if (isVisible(messageInList)) {
-			initMessageCount = messagesList.size();
-		}
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.CommonLocators.idEditText));
 	}
 
 	public void tapOnCursorInput() {
@@ -191,104 +175,121 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void sendMessageInInput() throws Exception {
-		this.getDriver().hideKeyboard();
-		Thread.sleep(2000);
+		this.hideKeyboard();
 		cursorInput.sendKeys("\\n");
 	}
 
 	public void multiTapOnCursorInput() throws Exception {
-		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 0.2);
+		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 500);
 	}
 
-	public void SwipeOnCursorInput() throws Exception {
+	private static final int MAX_CURSOR_SWIPE_TRIES = 5;
+
+	public void swipeOnCursorInput() throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorInput));
-		DriverUtils.swipeRight(this.getDriver(), cursorInput, DEFAULT_SWIPE_TIME);
-		Thread.sleep(1000); //fix for animation
-	}
-
-	public void SwipeLeftOnCursorInput() throws Exception {
-		DriverUtils.swipeLeft(this.getDriver(), closeCursor, DEFAULT_SWIPE_TIME);
+		final By fakeCursorLocator = By
+				.id(AndroidLocators.DialogPage.idFakeCursor);
+		int ntry = 1;
+		do {
+			final int initialCursorOffset = getDriver()
+					.findElement(fakeCursorLocator).getLocation().getX();
+			DriverUtils.swipeRight(this.getDriver(), cursorInput,
+					DEFAULT_SWIPE_TIME);
+			if (getDriver().findElement(fakeCursorLocator).getLocation().getX() > initialCursorOffset) {
+				return;
+			}
+			ntry++;
+			log.debug(String.format(
+					"Failed to swipe the text cursor. Retrying (%s of %s)...",
+					ntry, MAX_CURSOR_SWIPE_TRIES));
+			this.hideKeyboard();
+			Thread.sleep(1000);
+		} while (ntry <= MAX_CURSOR_SWIPE_TRIES);
+		throw new RuntimeException(
+				String.format(
+						"Failed to swipe the text cursor on input field after %s retries!",
+						MAX_CURSOR_SWIPE_TRIES));
 	}
 
 	public void tapAddPictureBtn() throws Exception {
-		refreshUITree();
-		this.getWait().until(ExpectedConditions.visibilityOf(addPictureBtn));
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), addPictureBtn);
 		addPictureBtn.click();
-		Thread.sleep(1000); //fix for animation
 	}
 
 	public void tapPingBtn() throws Exception {
-		refreshUITree();
+		assert DriverUtils.waitUntilElementClickable(getDriver(), pingBtn);
 		pingBtn.click();
-		Thread.sleep(1000);
 	}
 
 	public void tapCallBtn() throws Exception {
-		refreshUITree();
+		assert DriverUtils.waitUntilElementClickable(getDriver(), callBtn);
 		callBtn.click();
-		Thread.sleep(1000);
 	}
 
 	public void tapMuteBtn() throws Exception {
-		refreshUITree();
+		assert DriverUtils.waitUntilElementClickable(getDriver(), muteBtn);
 		muteBtn.click();
 	}
 
 	public void tapSpeakerBtn() throws Exception {
-		refreshUITree();
+		assert DriverUtils.waitUntilElementClickable(getDriver(), speakerBtn);
 		speakerBtn.click();
 	}
 
 	public void tapCancelCallBtn() throws Exception {
-		refreshUITree();
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), cancelCallBtn);
 		cancelCallBtn.click();
-		Thread.sleep(1000);
 	}
 
-	public double checkCallingButton(String label) throws Exception {
-		refreshUITree();
-		String path = null;
-		BufferedImage callingButtonImage = null;
-		if (label.equals(MUTE_BUTTON_LABEL)) {
-			callingButtonImage = getElementScreenshot(muteBtn);
-			path = CommonUtils.getCallingMuteButtonPath(DialogPage.class);
-		} else if (label.equals(SPEAKER_BUTTON_LABEL)) {
-			callingButtonImage = getElementScreenshot(speakerBtn);
-			path = CommonUtils.getCallingSpeakerButtonPath(DialogPage.class);
+	private WebElement getButtonElementByName(String name) {
+		final String uppercaseName = name.toUpperCase();
+		switch (uppercaseName) {
+		case "MUTE":
+			return muteBtn;
+		case "SPEAKER":
+			return speakerBtn;
+		default:
+			throw new NoSuchElementException(String.format(
+					"Button '%s' is unknown", name));
 		}
-		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(callingButtonImage, templateImage,
-				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
+
+	public BufferedImage getCurrentButtonStateScreenshot(String name)
+			throws Exception {
+		final WebElement dstButton = getButtonElementByName(name);
+		assert DriverUtils.waitUntilElementClickable(getDriver(), dstButton);
+		return getElementScreenshot(dstButton).orElseThrow(
+				IllegalStateException::new);
+	}
+
+	private static final int CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS = 15;
 
 	public boolean checkNoCallingOverlay() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.idCallingMessage), 20);
+				By.id(AndroidLocators.DialogPage.idCallingMessage),
+				CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public boolean checkCallingOverlay() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(callingMessageText);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idCallingMessage),
+				CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public void typeAndSendMessage(String message) throws Exception {
-		refreshUITree();
 		cursorInput.sendKeys(message);
-		getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
-		// DriverUtils.mobileTapByCoordinates(driver, backgroundOverlay);
-		try {
-			this.getDriver().hideKeyboard();
-		} catch (Exception ex) {
-
-		}
+		this.pressEnter();
+		this.hideKeyboard();
 	}
 
 	public void typeMessage(String message) throws Exception {
-		refreshUITree();
 		cursorInput.sendKeys(message);
 		try {
-			this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
-		} catch (Exception ex) {
-			// ignore silently
+			this.pressEnter();
+		} catch (WebDriverException ex) {
+			// don't fail if Enter is already pressed
 		}
 	}
 
@@ -297,10 +298,6 @@ public class DialogPage extends AndroidPage {
 		int sendKeyYPosPercentage = 95;
 		DriverUtils.genericTap(this.getDriver(), 200, sendKeyXPosPercentage,
 				sendKeyYPosPercentage);
-	}
-
-	public String getLastMessageFromDialog() {
-		return messagesList.get(messagesList.size() - 1).getText();
 	}
 
 	public void clickLastImageFromDialog() {
@@ -313,103 +310,89 @@ public class DialogPage extends AndroidPage {
 
 	@Override
 	public AndroidPage swipeUp(int time) throws Exception {
-		dialogsPagesSwipeUp(time);// TODO workaround
-		Thread.sleep(1000);
+		dialogsPagesSwipeUp(time);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
 	@Override
 	public AndroidPage swipeDown(int time) throws Exception {
-		dialogsPagesSwipeDown(time);// TODO workaround
-		Thread.sleep(1000);
+		dialogsPagesSwipeDown(time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		AndroidPage page = null;
 		switch (direction) {
-		case DOWN: {
-			page = this;
-			break;
-		}
 		case UP: {
-			page = new OtherUserPersonalInfoPage(this.getLazyDriver());
-			break;
-		}
-		case LEFT: {
-			break;
+			return new OtherUserPersonalInfoPage(this.getLazyDriver());
 		}
 		case RIGHT: {
-			page = new ContactListPage(this.getLazyDriver());
-			break;
+			return new ContactListPage(this.getLazyDriver());
 		}
+		default:
+			return null;
 		}
-		return page;
 	}
 
-	public void waitForMessage() throws InterruptedException {
-		for (int i = 0; i < 10; i++) {
-			if (initMessageCount < messagesList.size()) {
-				break;
-			}
-			Thread.sleep(200);
+	private static final int MSG_DELIVERY_TIMEOUT_SECONDS = 4;
+
+	public void waitForMessage(String text) throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.DialogPage.xpathConversationMessageByText
+						.apply(text));
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
+				MSG_DELIVERY_TIMEOUT_SECONDS)) {
+			throw new RuntimeException(
+					String.format(
+							"Message '%s' has not been displayed after '%s' seconds timeout",
+							text, MSG_DELIVERY_TIMEOUT_SECONDS));
 		}
 	}
 
 	public boolean isImageExists() throws Exception {
-		refreshUITree();// TODO workaround
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				AndroidLocators.DialogPage.getByForDialogPageImage());
+				By.id(AndroidLocators.DialogPage.idDialogImages));
 	}
 
 	public void confirm() throws Exception {
-		refreshUITree();// TODO workaround
-		getWait().until(ExpectedConditions.visibilityOf(okButton));
+		assert DriverUtils.waitUntilElementClickable(getDriver(), okButton);
 		okButton.click();
+		this.verifyDriverIsAvailableAfterTimeout();
 	}
 
 	public void takePhoto() throws Exception {
-		refreshUITree();// TODO workaround
-		try {
-			getWait().until(ExpectedConditions.visibilityOf(takePhotoButton));
-			takePhotoButton.click();
-		} catch (Exception e) {
-			log.debug("Can't find element.\n" + e.getMessage());
-			log.debug(this.getPageSource());
-			throw e;
-		}
-		Thread.sleep(1000); // fix for animation
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.id(AndroidLocators.DialogPage.idDialogTakePhotoButton));
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				takePhotoButton);
+		takePhotoButton.click();
 	}
 
 	public void changeCamera() throws Exception {
-		refreshUITree();// TODO workaround
-		if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.idDialogChangeCameraButton))) {
-			changeCameraButton.click();
-			Thread.sleep(1000); // fix for animation
-		}
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.id(AndroidLocators.DialogPage.idDialogChangeCameraButton));
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				changeCameraButton);
+		changeCameraButton.click();
 	}
 
 	public boolean isConnectMessageVisible() {
-		return conversationMessage.isDisplayed();
+		return DriverUtils
+				.isElementPresentAndDisplayed(lastConversationMessage);
 	}
 
 	public boolean isConnectMessageValid(String message) {
-
-		return conversationMessage.getText().toLowerCase()
+		return lastConversationMessage.getText().toLowerCase()
 				.contains(message.toLowerCase());
 	}
 
 	public Boolean isKnockIconVisible() throws Exception {
-		refreshUITree();
-		this.getWait().until(ExpectedConditions.visibilityOf(knockIcon));
-		return knockIcon.isDisplayed();
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idPingIcon));
 	}
 
 	public String getConnectRequestChatLabel() throws Exception {
 		if (isConnectRequestChatLabelVisible()) {
-			refreshUITree();
 			this.getWait().until(
 					ExpectedConditions.visibilityOf(connectRequestChatLabel));
 			return connectRequestChatLabel.getText().toLowerCase().trim();
@@ -419,19 +402,16 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean isConnectRequestChatLabelVisible() throws Exception {
-		refreshUITree();
-		this.getWait().until(
-				ExpectedConditions.visibilityOf(connectRequestChatLabel));
-		return isVisible(connectRequestChatLabel);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idConnectRequestChatLabel));
 	}
 
 	public String getConnectRequestChatUserName() {
-
 		return connectRequestChatUserName.getText().toLowerCase();
 	}
 
 	public ContactListPage navigateBack() throws Exception {
-		swipeRightCoordinates(1000);
+		getDriver().navigate().back();
 		return new ContactListPage(this.getLazyDriver());
 	}
 
@@ -441,43 +421,41 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean isHintVisible() throws Exception {
-		refreshUITree();// TODO workaround
-		try {
-			this.getWait().until(
-					ExpectedConditions.elementToBeClickable(closeHintBtn));
-		} catch (NoSuchElementException e) {
-			return false;
-		}
-		return closeHintBtn.isEnabled();
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.CommonLocators.idSearchHintClose));
 	}
 
-	public void closeHint() {
+	public void closeHint() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), closeHintBtn);
 		closeHintBtn.click();
 	}
 
 	public void openGallery() throws Exception {
-		refreshUITree();
+		assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
 		galleryBtn.click();
 	}
 
 	public void closeFullScreenImage() throws Exception {
-		refreshUITree();
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), closeImageBtn);
 		closeImageBtn.click();
 	}
 
 	public OtherUserPersonalInfoPage tapConversationDetailsButton()
 			throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				addParticipant);
 		addParticipant.click();
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}
 
 	public void sendFrontCameraImage() throws Exception {
-		if (isVisible(addParticipant)) {
-			SwipeOnCursorInput();
+		if (DriverUtils.isElementPresentAndDisplayed(addParticipant)) {
+			swipeOnCursorInput();
 			tapAddPictureBtn();
 			try {
-				this.getDriver().hideKeyboard();
-				SwipeOnCursorInput();
+				this.hideKeyboard();
+				swipeOnCursorInput();
 				tapAddPictureBtn();
 				log.debug("Fix for opened keyboard #1");
 			} catch (WebDriverException e) {
@@ -488,11 +466,11 @@ public class DialogPage extends AndroidPage {
 		} else {
 			cursurFrame.click();
 			Thread.sleep(1000); // fix for scrolling animation
-			SwipeOnCursorInput();
+			swipeOnCursorInput();
 			tapAddPictureBtn();
 			try {
-				this.getDriver().hideKeyboard();
-				SwipeOnCursorInput();
+				this.hideKeyboard();
+				swipeOnCursorInput();
 				tapAddPictureBtn();
 				log.debug("Fix for opened keyboard #2");
 			} catch (WebDriverException e) {
@@ -505,42 +483,35 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean dialogImageCompare() throws Exception {
-		boolean flag = false;
-		BufferedImage dialogImage = getElementScreenshot(image);
+		BufferedImage dialogImage = getElementScreenshot(image).orElseThrow(
+				IllegalStateException::new);
 		BufferedImage realImage = ImageUtil.readImageFromFile(CommonUtils
 				.getImagesPath(CommonUtils.class) + DIALOG_IMAGE);
 		double score = ImageUtil.getOverlapScore(realImage, dialogImage,
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
-		if (score >= MIN_ACCEPTABLE_IMAGE_VALUE) {
-			flag = true;
-		}
-
-		return flag;
+		return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
 	}
 
 	private static final String TEXT_MESSAGE_PATTERN = "<android.widget.TextView[^>]*text=\"([^\"]*)\"[^>]*/>";
 	private static final int TIMES_TO_SCROLL = 100;
 
 	private String tryGetPageSourceFewTimes(int times) throws Exception {
-		String source = null;
 		int tries = 0;
-		boolean isPageSourceRetrieved = true;
+		WebDriverException savedException = null;
 		do {
-			tries++;
 			try {
-				source = this.getDriver().getPageSource();
+				return this.getDriver().getPageSource();
 			} catch (WebDriverException e) {
+				savedException = e;
 				log.debug("Error while getting source code for Android. Trying again.");
-				isPageSourceRetrieved = false;
+				tries++;
 			}
-		} while (!isPageSourceRetrieved && tries < times);
-		return source;
+		} while (tries < times);
+		throw savedException;
 	}
 
 	public boolean swipeAndCheckMessageFound(String direction, String pattern)
 			throws Exception {
-		boolean result = false;
-
 		Point coords = new Point(0, 0);
 		Dimension elementSize = this.getDriver().manage().window().getSize();
 		switch (direction) {
@@ -556,7 +527,8 @@ public class DialogPage extends AndroidPage {
 					coords.y + elementSize.height - 200, DEFAULT_SWIPE_TIME);
 			break;
 		default:
-			log.fatal("Unknown direction");
+			throw new RuntimeException(String.format("Unknown direction '%s'",
+					direction));
 		}
 		String source = tryGetPageSourceFewTimes(5);
 		Pattern messagesPattern = Pattern.compile(TEXT_MESSAGE_PATTERN);
@@ -566,12 +538,13 @@ public class DialogPage extends AndroidPage {
 			Pattern messagePattern = Pattern.compile(pattern);
 			Matcher messageMatcher = messagePattern.matcher(message);
 			if (messageMatcher.find()) {
-				result = true;
+				return true;
 			}
 		}
-		return result;
+		return false;
 	}
 
+	// FIXME: Handle situation when message is not reached
 	public void swipeTillTextMessageWithPattern(String direction, String pattern)
 			throws Exception {
 		boolean isAddedMessage = false;
@@ -585,20 +558,16 @@ public class DialogPage extends AndroidPage {
 	private static final String UUID_TEXT_MESSAGE_PATTERN = "<android.widget.TextView[^>]*text=\"([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\"[^>]*/>";
 	private static final String DIALOG_START_MESSAGE_PATTERN = "^(.*)\\sADDED\\s(.*)$";
 
-	public ArrayList<MessageEntry> listAllMessages(boolean checkTime)
+	public List<MessageEntry> listAllMessages(boolean checkTime)
 			throws Exception {
-		try {
-			this.getDriver().hideKeyboard();
-		} catch (WebDriverException e) {
-			log.debug("No keyboard visible. Nothing to hide.");
-		}
+		this.hideKeyboard();
 
 		String lastMessage = messagesList.get(messagesList.size() - 1)
 				.getText();
 
 		swipeTillTextMessageWithPattern("down", DIALOG_START_MESSAGE_PATTERN);
 
-		LinkedHashMap<String, MessageEntry> messages = new LinkedHashMap<String, MessageEntry>();
+		Map<String, MessageEntry> messages = new LinkedHashMap<String, MessageEntry>();
 
 		boolean lastMessageAppears = false;
 		boolean temp = false;
@@ -611,7 +580,7 @@ public class DialogPage extends AndroidPage {
 			Pattern pattern = Pattern.compile(UUID_TEXT_MESSAGE_PATTERN);
 			Matcher matcher = pattern.matcher(source);
 			while (matcher.find()) {
-				if (messages.get(matcher.group(1)) == null) {
+				if (!messages.containsKey(matcher.group(1))) {
 					messages.put(matcher.group(1), new MessageEntry("text",
 							matcher.group(1), receivedDate, checkTime));
 				}
@@ -621,8 +590,7 @@ public class DialogPage extends AndroidPage {
 			}
 		} while (!lastMessageAppears && i < TIMES_TO_SCROLL);
 
-		ArrayList<MessageEntry> listResult = new ArrayList<MessageEntry>();
-
+		List<MessageEntry> listResult = new ArrayList<MessageEntry>();
 		for (Map.Entry<String, MessageEntry> mess : messages.entrySet()) {
 			listResult.add(mess.getValue());
 		}
@@ -631,20 +599,20 @@ public class DialogPage extends AndroidPage {
 
 	public MessageEntry receiveMessage(String message, boolean checkTime)
 			throws Exception {
-		WebElement messageElement = this.getDriver().findElement(
-				By.xpath(String.format(
-						AndroidLocators.DialogPage.xpathFormatSpecificMessage,
-						message)));
-		if (messageElement != null) {
+		if (DriverUtils
+				.waitUntilLocatorAppears(
+						getDriver(),
+						By.xpath(AndroidLocators.DialogPage.xpathConversationMessageByText
+								.apply(message)))) {
 			return new MessageEntry("text", message, new Date(), checkTime);
 		}
 		return null;
 	}
 
 	public double checkPingIcon(String label) throws Exception {
-		refreshUITree();
 		String path = null;
-		BufferedImage pingImage = getElementScreenshot(knockIcon);
+		BufferedImage pingImage = getElementScreenshot(pingIcon).orElseThrow(
+				IllegalStateException::new);
 		if (label.equals(PING_LABEL)) {
 			path = CommonUtils.getPingIconPath(DialogPage.class);
 		} else if (label.equals(HOT_PING_LABEL)) {
@@ -655,41 +623,17 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
-	public String getKnockText() throws Exception {
-		refreshUITree();
-		return knockMessage.getText() + " " + knockAction.getText();
+	public String getLastPingText() {
+		return lastPingMessage.getText();
 	}
 
-	public Boolean isKnockText(String message, String action) throws Exception {
-		Boolean flag = false;
-		refreshUITree();
-		List<WebElement> messageElement = this.getDriver().findElements(
-				By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage,
-						message.trim())));
-		List<WebElement> actionElement = this.getDriver().findElements(
-				By.xpath(String.format(AndroidLocators.DialogPage.xpathMessage,
-						action.trim())));
-		if (!messageElement.isEmpty() && !actionElement.isEmpty()) {
-			flag = true;
-		}
-		return flag;
-	}
-
-	public boolean isMessageExists(String messageText) throws Exception {
-		boolean flag = false;
-		refreshUITree();
-		for (WebElement element : messagesList) {
-			String text = element.getText();
-			if (text.equals(messageText)) {
-				flag = true;
-				break;
-			}
-		}
-		return flag;
-	}
-
-	public boolean isGroupChatDialogContainsNames(List<String> names) {
-		final String convoText = conversationMessage.getText();
+	public boolean isGroupChatDialogContainsNames(List<String> names)
+			throws Exception {
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.xpath(AndroidLocators.DialogPage.xpathLastConversationMessage));
+		final String convoText = lastConversationMessage.getText();
 		for (String name : names) {
 			if (!convoText.toLowerCase().contains(name.toLowerCase())) {
 				return false;
@@ -704,26 +648,32 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void tapPlayPauseBtn() throws Exception {
-		refreshUITree();
+		assert DriverUtils.waitUntilElementClickable(getDriver(), playPauseBtn);
 		playPauseBtn.click();
+		// FIXME: Find a way to detect that Play/Pause button state has been
+		// really changed
+		Thread.sleep(2000);
 	}
 
-	public void tapDialogPageBottom() throws NumberFormatException, Exception {
-		refreshUITree();
-		if (!isVisible(addParticipant)) {
-			dialogPageBottom.click();
-		}
+	public void tapDialogPageBottom() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idDialogPageBottom));
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				dialogPageBottom);
+		dialogPageBottom.click();
 	}
 
 	public void tapYouTubePlay() throws Exception {
-		refreshUITree();
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				playYoutubeBtn);
 		playYoutubeBtn.click();
 	}
 
-	public double checkMediaBarControlIcon(String label) throws Exception {
-		refreshUITree();
+	public double getMediaBarControlIconOverlapScore(String label)
+			throws Exception {
 		String path = null;
-		BufferedImage mediaImage = getElementScreenshot(mediaBarControl);
+		BufferedImage mediaImage = getElementScreenshot(mediaBarControl)
+				.orElseThrow(IllegalStateException::new);
 		if (label.equals(MEDIA_PLAY)) {
 			path = CommonUtils.getMediaBarPlayIconPath(DialogPage.class);
 		} else if (label.equals(MEDIA_PAUSE)) {
@@ -734,11 +684,12 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
-	public double checkMediaControlIcon(String label) throws Exception {
-		refreshUITree();
+	public double getMediaControlIconOverlapScore(String label)
+			throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(playPauseBtn));
 		String path = null;
-		BufferedImage mediaImage = getElementScreenshot(playPauseBtn);
+		BufferedImage mediaImage = getElementScreenshot(playPauseBtn)
+				.orElseThrow(IllegalStateException::new);
 		if (label.equals(MEDIA_PLAY)) {
 			path = CommonUtils.getMediaPlayIconPath(DialogPage.class);
 		} else if (label.equals(MEDIA_PAUSE)) {
@@ -750,18 +701,21 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void tapPlayPauseMediaBarBtn() throws Exception {
-		refreshUITree();
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				mediaBarControl);
 		mediaBarControl.click();
-
 	}
 
 	public String getMissedCallMessage() throws Exception {
-		refreshUITree();
 		return missedCallMessage.getText();
 	}
 
 	public boolean isNativeBrowserURLVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(AndroidLocators.Browsers.xpathNativeBrowserURLBar));
+	}
+
+	public String getLastMessageFromDialog() {
+		return lastConversationMessage.getText();
 	}
 }

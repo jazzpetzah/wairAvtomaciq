@@ -3,7 +3,8 @@ package com.wearezeta.auto.common.calling.models;
 import java.util.NoSuchElementException;
 
 public enum CallingServiceStatus {
-	Starting("starting"), Waiting("waiting"), Active("active"), ActiveMuted(
+
+	Starting("starting"), Ready("ready"), Active("active"), ActiveMuted(
 			"active_muted"), Stopping("stopping"), Inactive("inactive");
 
 	private final String stringRepresentation;

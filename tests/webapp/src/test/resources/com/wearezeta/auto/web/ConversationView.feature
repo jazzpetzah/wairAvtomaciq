@@ -5,7 +5,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I write random message
     And I send message
@@ -15,13 +15,13 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id1617 
-  Scenario Outline: Verify you can see image on the second end in a group conversation 
+  @smoke @id1617
+  Scenario Outline: Verify you can see image on the second end in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -32,7 +32,7 @@ Feature: Conversation View
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
-    Then I see my name on top of Contact list
+    Then I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     Then I see sent picture <PictureName> in the conversation view
 
@@ -46,7 +46,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     When I write random message
     And I send message
@@ -61,7 +61,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -70,12 +70,12 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @regression @id1585
+  @regression @id2319
   Scenario Outline: Able to send and play youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I write message <Youtubelink1>
     And I send message
@@ -100,7 +100,7 @@ Feature: Conversation View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
@@ -123,7 +123,7 @@ Feature: Conversation View
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Leave button on Group Participants popover
-    And I confirm leave group conversation on Group Participants popover
+    And I click confirm leave group conversation on Group Participants popover
     Then I do not see Contact list with name <ChatName>
     And User <Name> sent message <Msg2FromUserA> to conversation <ChatName>
     When I open archive
@@ -136,7 +136,7 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
       | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
-  
+
   @torun @id2279
   Scenario Outline: Send a long message containing new lines in 1on1
     Given There are 2 users where <Name> is me

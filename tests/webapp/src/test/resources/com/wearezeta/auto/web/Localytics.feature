@@ -8,7 +8,7 @@ Feature: Localytics
     Given I take snapshot of <AttrName> attribute count
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
-    And I enter user password <Password> on Registration page 
+    And I enter user password "<Password>" on Registration page 
     And I submit registration form
     And I wait for 5 seconds
 
@@ -98,7 +98,7 @@ Feature: Localytics
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I wait until <ContactEmail> exists in backend search results
     When I open People Picker from Contact List
     And I type <ContactEmail> in search field of People Picker
@@ -119,7 +119,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given I sent connection request to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I see Contact list with name <Contact>
     And I wait for 65 seconds
 
@@ -133,7 +133,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I see connection request from one user
     And I wait for 65 seconds
 
@@ -147,7 +147,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I see connection request from one user
     And I open the list of incoming connection requests
     And I accept connection request from user <Contact>
@@ -164,7 +164,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I click ping button  
     Then I see ping message <PING>
@@ -180,7 +180,7 @@ Feature: Localytics
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I wait for 65 seconds
 
     Examples: 
@@ -193,7 +193,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I write random message
     And I send message
@@ -224,7 +224,7 @@ Feature: Localytics
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given Myself has group chat <ChatName2> with <Contact2>,<Contact3>
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     And I wait for 65 seconds
 
     Examples: 
@@ -237,7 +237,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When <Contact> calls me using <CallBackend>
     Then I see the calling bar
     And I silence the incoming call
@@ -255,7 +255,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When <Contact> calls me using <CallBackend>
     Then I see the calling bar
     And I accept the incoming call
@@ -271,7 +271,7 @@ Feature: Localytics
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I call
     Then I see the calling bar
@@ -296,7 +296,7 @@ Feature: Localytics
     Given I take snapshot of <EventName> event count
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
-    And I enter user password <Password> on Registration page
+    And I enter user password "<Password>" on Registration page
     And I submit registration form
     And I wait for 5 seconds
 
@@ -321,7 +321,7 @@ Feature: Localytics
     Given <Contact> starts waiting instance using <OutCallBackend>
     Given <Contact> accepts next incoming call automatically
     Given I Sign in using login <Login> and password <Password>
-    And I see my name on top of Contact list
+    And I see my avatar on top of Contact list
     When I open conversation with <Contact>
     And I call
     When <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds

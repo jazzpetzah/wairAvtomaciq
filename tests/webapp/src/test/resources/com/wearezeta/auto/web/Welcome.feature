@@ -1,6 +1,6 @@
 Feature: Welcome
 
-  @staging @id1777
+  @regression @id1777
   Scenario Outline: Verify possibility of reseting password
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -17,12 +17,12 @@ Feature: Welcome
     Then I see Password Change Succeeded page
     Given I switch to sign in page
     When I enter email <Email>
-    And I enter password <OldPassword>
+    And I enter password "<OldPassword>"
     And I press Sign In button
     Then I see login error "<LoginErr>"
     Given I switch to sign in page
     When I enter email <Email>
-    And I enter password <NewPassword>
+    And I enter password "<NewPassword>"
     And I press Sign In button
     And I see Contacts Upload dialog
 

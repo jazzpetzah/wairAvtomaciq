@@ -124,7 +124,7 @@ public class ClientUsersManager {
 	public static enum FindBy {
 		NAME("Name"), PASSWORD("Password"), EMAIL("Email"), NAME_ALIAS(
 				"Name Alias(es)"), PASSWORD_ALIAS("Password Alias(es)"), EMAIL_ALIAS(
-				"Email Alias(es)");
+				"Email Alias(es)"), PHONENUMBER_ALIAS("Phone Number Alias(es)");
 
 		private final String name;
 
@@ -221,6 +221,9 @@ public class ClientUsersManager {
 			} else if (findByAliasType == FindBy.PASSWORD_ALIAS) {
 				aliases = dstUser.getPasswordAliases();
 				replacement = dstUser.getPassword();
+			} else if (findByAliasType == FindBy.PHONENUMBER_ALIAS) {
+				aliases = dstUser.getPhoneNumberAliases();
+				replacement = dstUser.getPhoneNumber().toString();
 			} else {
 				throw new RuntimeException(String.format(
 						"Unsupported FindBy criteria '%s'", findByAliasType));

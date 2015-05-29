@@ -26,8 +26,8 @@ import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import com.wearezeta.auto.osx.util.NSPoint;
 
 public class OSXCommonUtils extends CommonUtils {
+
 	private static final int PREFS_DAEMON_RESTART_TIMEOUT = 1000;
-	private static final String[] BACKEND_TYPE_DOMAIN_NAMES = ConfigurationDomainEnum.domainsList;
 
 	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class
 			.getSimpleName());
@@ -89,8 +89,17 @@ public class OSXCommonUtils extends CommonUtils {
 
 	public static void deleteCacheFolder() throws Exception {
 		String command = String.format(
-				"rm -rf %s/Library/Containers/com.wearezeta.zclient.mac*",
-				System.getProperty("user.home"));
+				"rm -rf %s/Library/Containers/%s/Data/Library/Caches",
+				System.getProperty("user.home"),
+				OSXExecutionContext.wireConfigDomain);
+		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
+	}
+
+	public static void deletePreferencesFile() throws Exception {
+		String command = String.format(
+				"rm -rf %s/Library/Preferences/%s.plist",
+				System.getProperty("user.home"),
+				OSXExecutionContext.wireConfigDomain);
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
 
@@ -109,22 +118,18 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static void removeAllZClientSettingsFromDefaults() throws Exception {
+		removeZClientDomain(OSXExecutionContext.wireConfigDomain);
 		resetOSXPrefsDaemon();
-		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
-			removeZClientDomain(domain);
-		}
 	}
 
 	public static void setZClientBackendAndDisableStartUI(String bt)
 			throws Exception {
+		setZClientBackendForDomain(OSXExecutionContext.wireConfigDomain, bt);
+		disableStartUIOnFirstLogin(OSXExecutionContext.wireConfigDomain);
 		resetOSXPrefsDaemon();
-		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
-			setZClientBackendForDomain(domain, bt);
-			disableStartUIOnFirstLogin(domain);
-		}
 	}
 
-	private static void resetOSXPrefsDaemon() throws Exception {
+	public static void resetOSXPrefsDaemon() throws Exception {
 		executeOsXCommand(new String[] { "/usr/bin/killall", "-SIGTERM",
 				"cfprefsd" });
 		Thread.sleep(PREFS_DAEMON_RESTART_TIMEOUT);
@@ -151,10 +156,8 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static boolean isBackendTypeSet(String bt) throws Exception {
-		for (String domain : BACKEND_TYPE_DOMAIN_NAMES) {
-			if (!isBackendTypeSetForDomain(domain, bt)) {
-				return false;
-			}
+		if (!isBackendTypeSetForDomain(OSXExecutionContext.wireConfigDomain, bt)) {
+			return false;
 		}
 		return true;
 	}
@@ -208,11 +211,6 @@ public class OSXCommonUtils extends CommonUtils {
 		return result;
 	}
 
-	public static String getOsxClientInfoPlistFromConfig(Class<?> c)
-			throws Exception {
-		return CommonUtils.getValueFromConfig(c, "osxClientInfoPlist");
-	}
-
 	public static void killWireIfStuck() {
 		try {
 			executeOsXCommand(new String[] { "/bin/bash", "-c",
@@ -223,7 +221,8 @@ public class OSXCommonUtils extends CommonUtils {
 
 	public static NSPoint calculateScreenResolution(ZetaDriver driver)
 			throws IOException {
-		BufferedImage im = DriverUtils.takeScreenshot(driver);
+		BufferedImage im = DriverUtils.takeScreenshot(driver).orElseThrow(
+				IllegalStateException::new);
 		return new NSPoint(im.getWidth(), im.getHeight());
 	}
 
@@ -255,8 +254,8 @@ public class OSXCommonUtils extends CommonUtils {
 			AppiumDriver driver) throws IOException {
 		int multiply = screenPixelsMultiplier(driver);
 
-		BufferedImage screenshot = DriverUtils
-				.takeScreenshot((ZetaDriver) driver);
+		BufferedImage screenshot = DriverUtils.takeScreenshot(
+				(ZetaDriver) driver).orElseThrow(IllegalStateException::new);
 		NSPoint elementLocation = NSPoint.fromString(element
 				.getAttribute(OSXConstants.Attributes.AXPOSITION));
 		NSPoint elementSize = NSPoint.fromString(element
@@ -282,5 +281,15 @@ public class OSXCommonUtils extends CommonUtils {
 										+ " | grep -Ei '(%s)'", logStartTime,
 								logEndTime, LOG_FILTER_REGEX) });
 		log.debug(collectedLogEntries);
+	}
+
+	public static String getOsxClientInfoPlistFromConfig(Class<?> c)
+			throws Exception {
+		return CommonUtils.getValueFromConfig(c, "osxClientInfoPlist");
+	}
+
+	public static String getWireConfigDomainFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "wireConfigDomain");
 	}
 }

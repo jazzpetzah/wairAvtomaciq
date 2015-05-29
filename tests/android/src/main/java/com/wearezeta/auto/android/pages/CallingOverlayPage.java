@@ -2,48 +2,48 @@ package com.wearezeta.auto.android.pages;
 
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
 
 public class CallingOverlayPage extends AndroidPage {
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idCallingOverlayContainer")
+	@FindBy(id = AndroidLocators.CallingOverlayPage.idCallingOverlayContainer)
 	private WebElement callingOverlayContainer;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idOngoingCallMicrobar")
+	@FindBy(id = AndroidLocators.CallingOverlay.idOngoingCallMicrobar)
 	private WebElement ongoingCallMicrobar;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idOngoingCallMinibar")
+	@FindBy(id = AndroidLocators.CallingOverlay.idOngoingCallMinibar)
 	private WebElement ongoingCallMinibar;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idIncominCallerAvatar")
+	@FindBy(id = AndroidLocators.CallingOverlay.idIncominCallerAvatar)
 	private WebElement incominCallerAvatar;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idIgnoreButton")
+	@FindBy(id = AndroidLocators.CallingOverlayPage.idIgnoreButton)
 	private WebElement ignoreButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idAcceptButton")
+	@FindBy(id = AndroidLocators.CallingOverlayPage.idAcceptButton)
 	private WebElement acceptButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlayPage.CLASS_NAME, locatorKey = "idCallingUsersName")
+	@FindBy(id = AndroidLocators.CallingOverlayPage.idCallingUsersName)
 	private WebElement callingUsersName;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idCallMessage")
+	@FindBy(id = AndroidLocators.CallingOverlay.idCallMessage)
 	private WebElement callMessage;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idCallingDismiss")
+	@FindBy(id = AndroidLocators.CallingOverlay.idCallingDismiss)
 	private WebElement callingDismiss;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idCallingSpeaker")
+	@FindBy(id = AndroidLocators.CallingOverlay.idCallingSpeaker)
 	private WebElement callingSpeaker;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CallingOverlay.CLASS_NAME, locatorKey = "idCallingMicMute")
+	@FindBy(id = AndroidLocators.CallingOverlay.idCallingMicMute)
 	private WebElement callingMicMute;
 
 	public CallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver)
@@ -56,9 +56,20 @@ public class CallingOverlayPage extends AndroidPage {
 		return null;
 	}
 
+	private static final int VISIBILITY_TIMEOUT_SECONDS = 5;
+
 	public boolean isVisible() throws Exception {
-		return DriverUtils
-				.isElementPresentAndDisplayed(callingOverlayContainer);
+		final By locator = By
+				.id(AndroidLocators.CallingOverlayPage.idCallingOverlayContainer);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
+				VISIBILITY_TIMEOUT_SECONDS);
+	}
+
+	public boolean waitUntilNotVisible() throws Exception {
+		final By locator = By
+				.id(AndroidLocators.CallingOverlayPage.idCallingOverlayContainer);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
+				VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public void muteConversation() {
@@ -69,47 +80,52 @@ public class CallingOverlayPage extends AndroidPage {
 		return callingUsersName.getText();
 	}
 
-	public void acceptCall() {
+	public void waitForCallersNameChanges(String name, int sec)
+			throws InterruptedException {
+		if (sec > 0 && callingUsersName.getText().equals(name)) {
+			Thread.sleep(1000);
+			sec--;
+			waitForCallersNameChanges(name, sec);
+		} else {
+			return;
+		}
+	}
+
+	public DialogPage acceptCall() throws Exception {
 		acceptButton.click();
+		return new DialogPage(getLazyDriver());
 	}
 
 	public boolean incominCallerAvatarIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(callMessage);
+		return DriverUtils.isElementPresentAndDisplayed(callMessage);
 	}
 
 	public boolean callingMessageIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(callMessage);
+		return DriverUtils.isElementPresentAndDisplayed(callMessage);
 	}
 
 	public boolean callingDismissIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(callingDismiss);
+		return DriverUtils.isElementPresentAndDisplayed(callingDismiss);
 	}
 
 	public boolean callingSpeakerIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(callingSpeaker);
+		return DriverUtils.isElementPresentAndDisplayed(callingSpeaker);
 	}
 
 	public boolean callingMicMuteIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(callingMicMute);
+		return DriverUtils.isElementPresentAndDisplayed(callingMicMute);
 	}
 
 	public boolean callingOverlayIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(callingOverlayContainer);
+		return DriverUtils
+				.isElementPresentAndDisplayed(callingOverlayContainer);
 	}
 
 	public boolean ongoingCallMicrobarIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(ongoingCallMicrobar);
+		return DriverUtils.isElementPresentAndDisplayed(ongoingCallMicrobar);
 	}
 
 	public boolean ongoingCallMinibarIsVisible() throws Exception {
-		refreshUITree();
-		return isVisible(ongoingCallMinibar);
+		return DriverUtils.isElementPresentAndDisplayed(ongoingCallMinibar);
 	}
 }

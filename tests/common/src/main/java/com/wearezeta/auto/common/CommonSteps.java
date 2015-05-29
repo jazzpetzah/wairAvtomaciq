@@ -13,9 +13,11 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.backend.ConnectionStatus;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.OSXAddressBookHelpers;
 import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 
@@ -23,6 +25,7 @@ public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
 	public static final String CONNECTION_MESSAGE = "Hello!";
 	private static final int BACKEND_USER_SYNC_TIMEOUT = 15; // seconds
+	private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 90; // seconds
 
 	private String pingId = null;
 
@@ -105,14 +108,14 @@ public final class CommonSteps {
 
 	public void ThereAreNUsers(Platform currentPlatform, int count)
 			throws Exception {
-		usrMgr.createUsersOnBackend(count,
-				RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
+		usrMgr.createUsersOnBackend(count, RegistrationStrategy
+				.getRegistrationStrategyForPlatform(currentPlatform));
 	}
 
 	public void ThereAreNUsersWhereXIsMe(Platform currentPlatform, int count,
 			String myNameAlias) throws Exception {
-		usrMgr.createUsersOnBackend(count,
-				RegistrationStrategy.getRegistrationStrategyForPlatform(currentPlatform));
+		usrMgr.createUsersOnBackend(count, RegistrationStrategy
+				.getRegistrationStrategyForPlatform(currentPlatform));
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
@@ -122,9 +125,32 @@ public final class CommonSteps {
 		BackendAPIWrappers.ignoreAllConnections(userTo);
 	}
 
-	public void WaitForTime(String seconds) throws NumberFormatException,
-			InterruptedException {
-		Thread.sleep(Integer.parseInt(seconds) * 1000);
+	private static final int DRIVER_PING_INTERVAL_SECONDS = 60;
+
+	public void WaitForTime(int seconds) throws Exception {
+		final Thread pingThread = new Thread() {
+			public void run() {
+				do {
+					try {
+						Thread.sleep(DRIVER_PING_INTERVAL_SECONDS * 1000);
+					} catch (InterruptedException e) {
+						return;
+					}
+					try {
+						PlatformDrivers.getInstance().pingDrivers();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				} while (!isInterrupted());
+			}
+		};
+		pingThread.start();
+		try {
+			Thread.sleep(seconds * 1000);
+		} finally {
+			pingThread.interrupt();
+		}
 	}
 
 	public void BlockContact(String blockAsUserNameAlias,
@@ -317,6 +343,13 @@ public final class CommonSteps {
 		CommonUtils.enableTcpForAppName(appName);
 	}
 
+	public void WaitUntilSuggestionFound(String userAsNameAlias)
+			throws NoSuchUserException, Exception {
+		BackendAPIWrappers.waitUntilSuggestionFound(
+				usrMgr.findUserByNameOrNameAlias(userAsNameAlias),
+				BACKEND_SUGGESTIONS_SYNC_TIMEOUT);
+	}
+
 	public void WaitUntilContactIsFoundInSearch(String searchByNameAlias,
 			String contactAlias) throws Exception {
 		String query = usrMgr.replaceAliasesOccurences(contactAlias,
@@ -383,5 +416,26 @@ public final class CommonSteps {
 			String userNameAlias) throws Exception {
 		UserXVerifiesSnapshotOfProfilePictureIsDifferent(userNameAlias,
 				PICTURE_CHANGE_TIMEOUT);
+	}
+
+	public void UserXHasContactsInAddressBook(String userAsNameAlias,
+			String contacts) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		for (String contact : splitAliases(contacts)) {
+			sb.append(usrMgr.findUserByNameOrNameAlias(contact).getEmail());
+			sb.append(ALIASES_SEPARATOR);
+		}
+		this.UserXHasEmailsInAddressBook(userAsNameAlias, sb.toString());
+	}
+
+	public void UserXHasEmailsInAddressBook(String userAsNameAlias,
+			String emails) throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userAsNameAlias);
+		List<String> emailsToAdd = new ArrayList<String>();
+		for (String email : splitAliases(emails)) {
+			emailsToAdd.add(email);
+		}
+		BackendAPIWrappers.uploadAddressBookWithContacts(userAs, emailsToAdd);
 	}
 }

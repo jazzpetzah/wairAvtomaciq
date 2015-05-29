@@ -12,6 +12,6 @@ public class AndroidSender extends WireSender {
 	@Override
 	protected void sendTextMessageClient(String message) throws Exception {
 		DialogPageSteps steps = new DialogPageSteps();
-		steps.ITypeTheMessageAndSendIt(message);
+		steps.ITypeMessageAndSendIt(message);
 	}
 }

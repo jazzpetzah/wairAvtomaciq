@@ -28,7 +28,8 @@ public class ImageFullScreenPageSteps {
 
 	@When("I see expected image in fullscreen (.*)")
 	public void ISeeExpectedImageInFullScreen(String filename) throws Throwable {
-		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot();
+		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot()
+				.orElseThrow(AssertionError::new);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + filename);
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
@@ -111,7 +112,8 @@ public class ImageFullScreenPageSteps {
 	public void IRotateImageInFullscreenMode() throws Exception {
 		PagesCollection.imageFullScreenPage.rotateSimulatorLeft();
 		Thread.sleep(2000);
-		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot();
+		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot()
+				.orElseThrow(AssertionError::new);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "rotatedFullscreenImage.png");
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,

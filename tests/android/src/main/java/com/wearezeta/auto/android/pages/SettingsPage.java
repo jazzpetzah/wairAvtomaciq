@@ -34,7 +34,7 @@ public class SettingsPage extends AndroidPage {
 	}
 
 	public boolean isChangePasswordVisible() throws Exception {
-		return isVisible(settingsChangePassword);
+		return DriverUtils.isElementPresentAndDisplayed(settingsChangePassword);
 	}
 
 	public CommonAndroidPage clickChangePassword() throws Exception {

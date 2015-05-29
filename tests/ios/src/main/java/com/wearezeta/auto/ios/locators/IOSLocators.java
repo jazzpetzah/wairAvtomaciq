@@ -18,7 +18,7 @@ public final class IOSLocators {
 	
 	public static final String nameErrorMailNotification = "PLEASE PROVIDE A VALID EMAIL ADDRESS";
 	
-	public static final String nameWrongCredentialsNotification = "WRONG ADDRESS OR PASSWORD.  PLEASE TRY AGAIN.";
+	public static final String nameWrongCredentialsNotification = "Please verify your details and try again.";
 	
 	public static final String nameIgnoreUpdateButton = "Ignore";
 
@@ -80,6 +80,8 @@ public final class IOSLocators {
 	
 	public static final String nameConnectOtherUserButton = "CONNECT";
 	
+	public static final String xpathConnectOtherUserButton = "//UIAButton[@name='CONNECT']";
+	
 	public static final String nameIgnoreOtherUserButton = "IGNORE";
 	
 	public static final String clasNameConnectDialogLabel = "UIATextField";
@@ -128,17 +130,17 @@ public final class IOSLocators {
 	
 	public static final String xpathNameMediaContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String namePhotoButton = "PhotoLibraryButton";
+	public static final String xpathPhotoButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[4]";
 	
 	public static final String nameAlbum = "Saved Photos";
 	
 	public static final String classNamePhotos = "UIACollectionCell";
 	
-	public static final String nameConfirmImageButton = "ImageConfirmerConfirmButton";
+	public static final String nameConfirmImageButton = "OK";
 	
-	public static final String nameCancelImageButton = "ImageConfirmerCancelButton";
+	public static final String nameCancelImageButton = "CANCEL";
 	
-	public static final String xpathYourName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAElement[1]/UIATextView[1]";
+	public static final String xpathYourName = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[@value='YOUR FULL NAME']";
 	
 	public static final String nameYourEmail = "RegistrationEmailField";
 	
@@ -264,6 +266,23 @@ public final class IOSLocators {
 	
 	public static final String nameSettingsDoneButton = "Done";
 
+	public static final String xpathAboutPageWireLogo = "//UIAApplication[1]/UIAWindow[2]/UIAImage[1]";
+	
+	public static final String nameWireWebsiteButton = "wire.com";
+	
+	public static final String xpathWireWebsitePageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[1]";
+	
+	public static final String xpathWireWebsitePageUrlValue = "//UIAApplication[1]/UIAWindow[2]/UIAButton[2]/UIAStaticText[2]";
+	
+	public static final String namePrivacyPolicyButton = "Privacy Policy";
+	
+	public static final String xpathBuildNumberText = "//UIAApplication[1]/UIAWindow[2]/UIAStaticText[1]";
+	
+	public static final String nameCloseLegalPageButton = "WebViewCloseButton";
+	
+	public static final String xpathTermsOfUsePageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[3]";
+	
+	public static final String xpathPrivacyPolicyPageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIALink[1]/UIAStaticText[1]";
 	
 	///////////////////////
 	//Other User Profile
@@ -444,9 +463,9 @@ public final class IOSLocators {
 	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[%d]";
-	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
+	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell";
 	public static final String nameShareButton = "SHARE CONTACTS";
-	public static final String nameContinueUploadButton = "SHARE";
+	public static final String nameContinueUploadButton = "SHARE CONTACTS";
 	public static final String namePeopleYouMayKnowLabel = "CONNECT";
 	public static final String nameHideSuggestedContactButton = "HIDE";
 	public static final String xpathSendAnInviteButton = "//UIACollectionCell[@name='Send an invitation']";
@@ -462,7 +481,7 @@ public final class IOSLocators {
 	//////////////////
 	
 	public static final String nameSendConnectionInputField = "SendConnectionRequestMessageView";
-	
+	public static final String scriptSendConnectionInput = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].popover().textViews()[\"SendConnectionRequestMessageView\"]";
 	
 	//////////////////
 	//Keyboard
@@ -472,6 +491,10 @@ public final class IOSLocators {
 	
 	public static final String nameKeyboardDeleteButton = "Delete";
 	public static final String nameKeyboardReturnButton = "Send";
+	
+	public static final class KeyboardButtons {
+		public static final String nameHideKeyboardButton = "Hide keyboard";
+	}
 	
 	////////////////
 	//Tutorial
@@ -547,6 +570,30 @@ public final class IOSLocators {
 	
 	public final class ContactListPage {
 		public static final String nameOpenStartUI = "OpenStartUI";
+	}
+	
+	public final class RegistrationPage {
+		public static final String xpathCountryList = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
+		public static final String xpathCountry = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[1]";
+		public static final String xpathPhoneNumber = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]";
+		public static final String xpathActivationCode = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]";
+		public static final String xpathConfirmPhoneNumber = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]/UIAButton[1]";
+		public static final String nameAgreeButton = "I AGREE";
+		
+		public static final String nameSelectPictureButton = "SET A PICTURE";
+	}
+	
+	public final class LoginPage {
+		public static final String namePhoneLoginButton = "PHONE SIGN IN";
+	}
+	
+	public final class PeoplePickerPage {
+		public static final String nameLaterButton = "MAYBE LATER";
+		public static final String nameContinueUploadButton = "SHARE";
+	}
+	
+	public final class CommonIOSLocators {
+		public static final String nameLockScreenMessage = "SlideToUnlock";
 	}
 	
 	/////////////

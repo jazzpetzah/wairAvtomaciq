@@ -1,10 +1,11 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.List;
 import java.util.concurrent.Future;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -13,57 +14,58 @@ import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.locators.ZetaFindBy;
-import com.wearezeta.auto.common.locators.ZetaHow;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class PersonalInfoPage extends AndroidPage {
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idBackgroundOverlay")
+
+	@SuppressWarnings("unused")
+	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
+			.getSimpleName());
+
+	@FindBy(id = AndroidLocators.PersonalInfoPage.idBackgroundOverlay)
 	private WebElement backgroundOverlay;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idSettingsBox")
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathSettingsBox)
 	private WebElement settingBox;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idEmailField")
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathEmailField)
 	private WebElement emailField;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameField")
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathNameField)
 	private WebElement nameField;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idSettingsBtn")
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathSettingsBtn)
 	private WebElement settingsButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idNameEdit")
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathNameEdit)
 	private WebElement nameEdit;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idChangePhotoBtn")
+	@FindBy(id = AndroidLocators.PersonalInfoPage.idChangePhotoBtn)
 	private WebElement changePhotoBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.CommonLocators.CLASS_NAME, locatorKey = "idGalleryBtn")
+	@FindBy(id = AndroidLocators.CommonLocators.idGalleryBtn)
 	private WebElement galleryBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.DialogPage.CLASS_NAME, locatorKey = "idConfirmButton")
+	@FindBy(xpath = AndroidLocators.DialogPage.xpathConfirmOKButton)
 	private WebElement confirmBtn;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathProfileOptionsButton)
 	private WebElement optionsButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idAboutButton")
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathAboutButton)
 	private WebElement aboutButton;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idSelfProfileClose")
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathSelfProfileClose)
 	private WebElement selfProfileClose;
-	
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameLoginPage)
+
+	@FindBy(id = AndroidLocators.CommonLocators.idPager)
 	private WebElement page;
 
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idSignOutBtn")
+	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathSignOutBtn)
 	private WebElement signOutBtn;
 
-	@FindBy(how = How.ID, using = AndroidLocators.PersonalInfoPage.idOpenFrom)
+	@FindBy(id = AndroidLocators.PersonalInfoPage.idOpenFrom)
 	private List<WebElement> openFrom;
-
-	@ZetaFindBy(how = ZetaHow.ID, locatorsDb = AndroidLocators.PersonalInfoPage.CLASS_NAME, locatorKey = "idProfileOptionsButton")
-	private List<WebElement> settingsButtonList;
 
 	public PersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
@@ -71,77 +73,65 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isPersonalInfoVisible() throws Exception {
-		refreshUITree();
-		return isVisible(emailField);
+		return DriverUtils.isElementPresentAndDisplayed(emailField);
 	}
 
 	public void waitForEmailFieldVisible() throws Exception {
 		this.getWait().until(ExpectedConditions.visibilityOf(emailField));
 	}
 
-	public void clickOnPage() throws Exception {
-		DriverUtils.androidMultiTap(this.getDriver(), page, 1, 0.2);
+	public void tapOnPage() throws Exception {
+		DriverUtils.androidMultiTap(this.getDriver(), page, 1, 500);
 	}
 
-	public void tapChangePhotoButton() throws Throwable {
+	public void tapChangePhotoButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				changePhotoBtn);
 		changePhotoBtn.click();
-		Thread.sleep(1000); // fix for animation
 	}
 
-	public void tapGalleryButton() throws Throwable {
+	public void tapGalleryButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), galleryBtn);
 		galleryBtn.click();
-		Thread.sleep(3000); // fix for animation
 	}
 
-	public void tapConfirmButton() throws IOException, Throwable {
-		Thread.sleep(1000); // fix for animation
-		try {
-			this.getDriver().hideKeyboard();
-		} catch (Exception ex) {
-			//ignore silently
-		}
+	public void tapConfirmButton() throws Exception {
+		this.hideKeyboard();
+		assert DriverUtils.waitUntilElementClickable(getDriver(), confirmBtn);
 		confirmBtn.click();
-		Thread.sleep(1000); // fix for animation
 	}
 
 	public void tapSignOutBtn() throws Exception {
-		refreshUITree();
+		assert DriverUtils.waitUntilElementClickable(getDriver(), signOutBtn);
 		signOutBtn.click();
 	}
 
 	@Override
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-
-		AndroidPage page = null;
 		switch (direction) {
-		case DOWN: {
-			break;
-		}
-		case UP: {
-			page = this;
-			break;
-		}
-		case LEFT: {
-			break;
-		}
 		case RIGHT: {
-			page = new ContactListPage(this.getLazyDriver());
-			break;
+			return new ContactListPage(this.getLazyDriver());
 		}
+		default:
+			return null;
 		}
-		return page;
 	}
 
 	public void tapOptionsButton() throws Exception {
-		refreshUITree();
-		optionsButton.click();
-		Thread.sleep(1000); // fix for animation
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), optionsButton);
+		try {
+			optionsButton.click();
+		} catch (ElementNotVisibleException e) {
+			// pass silently, this throws exception due to some internal
+			// Selendroid (or AUT %) ) issue
+		}
 	}
 
 	public SettingsPage tapSettingsButton() throws Exception {
-		refreshUITree();
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				settingsButton);
 		settingsButton.click();
-		Thread.sleep(1000); // fix for animation
 		return new SettingsPage(this.getLazyDriver());
 	}
 
@@ -150,46 +140,26 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public void tapOnMyName() throws Exception {
-		refreshUITree();
 		this.getWait().until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
-		Thread.sleep(2000); // fix for animation
-		refreshUITree();
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				AndroidLocators.PersonalInfoPage.getByForNameEditField());
-		if (!isVisible(nameEdit)) {
+		if (!DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(AndroidLocators.PersonalInfoPage.xpathNameEdit))) {
 			DriverUtils.mobileTapByCoordinates(getDriver(), nameField);
 		}
 	}
 
+	public boolean isNameEditVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.xpath(AndroidLocators.PersonalInfoPage.xpathNameEdit));
+	}
+
+	public void clearSelfName() {
+		nameEdit.clear();
+	}
+
 	public void changeName(String name, String newName) throws Exception {
-		refreshUITree();
-		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.PersonalInfoPage.idNameField));
-		refreshUITree();
-		this.getWait().until(ExpectedConditions.visibilityOf(nameEdit));
-
-		try {
-			nameEdit.clear();
-		} catch (Exception ex) {
-			// ignore silently
-		}
-/*
-		// FIX if nameEdit.clear() failed to clear text
-		int stringLength = nameEdit.getText().length();
-		if (stringLength > 0) {
-			for (int i = 0; i < stringLength; i++) {
-				this.getDriver().sendKeyEvent(22); // "KEYCODE_DPAD_RIGHT"
-			}
-
-			for (int i = 0; i < stringLength; i++) {
-				this.getDriver().sendKeyEvent(67); // "KEYCODE_DEL"
-			}
-		}
-*/
 		nameEdit.sendKeys(newName);
 		this.getDriver().navigate().back();
-		Thread.sleep(1000);
 	}
 
 	@Override
@@ -199,41 +169,29 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public String getUserName() throws Exception {
-		refreshUITree();
 		return nameField.getText();
 	}
 
 	public AboutPage tapAboutButton() throws Exception {
-		refreshUITree();
+		assert DriverUtils.waitUntilElementClickable(getDriver(), aboutButton);
 		aboutButton.click();
 		return new AboutPage(this.getLazyDriver());
 	}
 
 	public boolean isSettingsVisible() {
-
-		return settingBox.isDisplayed();
-	}
-
-	public boolean isSettingsButtonNotVisible() throws Exception {
-		boolean flag = false;
-		refreshUITree();
-		DriverUtils
-				.waitUntilLocatorDissapears(this.getDriver(),
-						AndroidLocators.PersonalInfoPage
-								.getByForProfileOptionsButton());
-		if (!isVisible(settingsButton)) {
-			flag = true;
-		}
-		return flag;
+		return DriverUtils.isElementPresentAndDisplayed(settingBox);
 	}
 
 	public boolean waitForSettingsDissapear() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.PersonalInfoPage.idProfileOptionsButton));
+		return DriverUtils
+				.waitUntilLocatorDissapears(
+						this.getDriver(),
+						By.xpath(AndroidLocators.PersonalInfoPage.xpathProfileOptionsButton));
 	}
 
 	public ContactListPage pressCloseButton() throws Exception {
-		refreshUITree();
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				selfProfileClose);
 		selfProfileClose.click();
 		return new ContactListPage(getLazyDriver());
 	}

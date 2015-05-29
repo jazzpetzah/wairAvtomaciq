@@ -26,7 +26,7 @@ abstract class AbstractPopoverPage extends WebPage {
 
 	public boolean isCurrent() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(getXpathLocator()));
+				By.xpath(getXpathLocator()), 1);
 	}
 
 	protected WebElement getSharedElement(String relativeXpath)

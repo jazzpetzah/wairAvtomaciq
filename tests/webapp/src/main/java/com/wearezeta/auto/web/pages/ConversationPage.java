@@ -133,7 +133,8 @@ public class ConversationPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathMessageEntryByText
 						.apply(message));
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 5);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 5);
 	}
 
 	public boolean isYoutubeVideoEmbedded(String url) throws Exception {
@@ -146,7 +147,8 @@ public class ConversationPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById
 						.apply(id));
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 5);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 5);
 	}
 
 	public PeoplePopoverContainer clickPeopleButton(boolean isGroup)
@@ -230,7 +232,8 @@ public class ConversationPage extends WebPage {
 		}
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathPingButton);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator, 2) : "Ping button has not been shown after 2 seconds";
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 2) : "Ping button has not been shown after 2 seconds";
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				pingButton) : "Ping button has to be clickable";
 		pingButton.click();
@@ -241,8 +244,8 @@ public class ConversationPage extends WebPage {
 	public boolean isPingMessageVisible(String message) throws Exception {
 		final By locator = By
 				.className(WebAppLocators.ConversationPage.classPingMessage);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator,
-				PING_MESSAGE_TIMEOUT) : "Ping message has not been shown within "
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, PING_MESSAGE_TIMEOUT) : "Ping message has not been shown within "
 				+ PING_MESSAGE_TIMEOUT + " second(s) timeout";
 		return pingMessage.getText().toLowerCase()
 				.contains(message.toLowerCase());
@@ -253,8 +256,30 @@ public class ConversationPage extends WebPage {
 				WebAppLocators.ConversationPage.classPingMessage).size() - 1;
 	}
 
+	public boolean isCallButtonVisible() throws Exception {
+		try {
+			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
+		} catch (WebDriverException e) {
+			// (safari workaround)
+			final String showImageLabelJScript = "$(\""
+					+ WebAppLocators.ConversationPage.cssRightControlsPanel
+					+ "\").css({'opacity': '100'});";
+			this.getDriver().executeScript(showImageLabelJScript);
+		}
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.xpath(WebAppLocators.ConversationPage.xpathCallButton), 5);
+	}
+
 	public void clickCallButton() throws Exception {
-		DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
+		try {
+			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
+		} catch (WebDriverException e) {
+			// (safari workaround)
+			final String showImageLabelJScript = "$(\""
+					+ WebAppLocators.ConversationPage.cssRightControlsPanel
+					+ "\").css({'opacity': '100'});";
+			this.getDriver().executeScript(showImageLabelJScript);
+		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(WebAppLocators.ConversationPage.xpathCallButton), 5);
 		callButton.click();
@@ -266,8 +291,8 @@ public class ConversationPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.textMessageByText
 						.apply(message));
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator,
-				TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	private static final int MISSED_CALL_MSG_TIMOEUT = 15;
@@ -275,8 +300,8 @@ public class ConversationPage extends WebPage {
 	public String getMissedCallMessage() throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathMissedCallAction);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator,
-				MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
 				+ MISSED_CALL_MSG_TIMOEUT + " second(s) timeout";
 		return getDriver().findElement(locator).getText();
 	}
@@ -293,8 +318,8 @@ public class ConversationPage extends WebPage {
 	public void clickAcceptCallButton() throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathAcceptCallButton);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator,
-				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Accept call button has not been shown after "
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Accept call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
 		getDriver().findElement(locator).click();
 	}
@@ -302,8 +327,8 @@ public class ConversationPage extends WebPage {
 	public void clickEndCallButton() throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathEndCallButton);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator,
-				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "End call button has not been shown after "
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "End call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
 		getDriver().findElement(locator).click();
 	}
@@ -311,8 +336,8 @@ public class ConversationPage extends WebPage {
 	public void clickSilenceCallButton() throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathSilenceIncomingCallButton);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator,
-				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Silence call button has not been shown after "
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Silence call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
 		getDriver().findElement(locator).click();
 	}

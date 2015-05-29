@@ -13,26 +13,31 @@ public class ConnectToPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Verifies that the current screen shows the connect to dialog with a user you have not yet connected with
+	 * Verifies that the current screen shows the connect to dialog with a user
+	 * you have not yet connected with
 	 * 
 	 * @step. ^I see connect to (.*) dialog$
 	 * 
 	 * @param contact
-	 * 		The name of the user with whom you are not yet connected.
+	 *            The name of the user with whom you are not yet connected.
 	 * @throws Throwable
 	 */
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		if (PagesCollection.connectToPage == null) {
-			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
+			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
 		}
-		Assert.assertEquals(contact.toLowerCase(),
-				PagesCollection.connectToPage.getConnectToHeader());
+		Assert.assertTrue(
+				String.format(
+						"Connect To header with text '%s' is not visible, but should be",
+						contact), PagesCollection.connectToPage
+						.isConnectToHeaderVisible(contact));
 	}
 
 	/**
-	 * Verifies that the connect and ignore buttons are visible when viewing the dialog of a user who has sent you a connection request.
+	 * Verifies that the connect and ignore buttons are visible when viewing the
+	 * dialog of a user who has sent you a connection request.
 	 * 
 	 * @step. ^I see Accept and Ignore buttons$
 	 * 
@@ -45,7 +50,27 @@ public class ConnectToPageSteps {
 	}
 
 	/**
-	 * Presses the accept connection request button from within the dialog of a user who has sent you a connection request.
+	 * Swipe Up on Connect Page
+	 * 
+	 * @step. ^I swipe up on connect page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I swipe up on connect page$")
+	public void ISwipeUpOnConnectPage() throws Exception {
+		if (PagesCollection.connectToPage == null) {
+			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
+		}
+		PagesCollection.connectToPage.waitUntilIgnoreButtonIsVisible();
+		PagesCollection.connectToPage.swipeUpCoordinates(1000, 90);
+		// It is very hard to detect whehn swipe animation is finished that is
+		// why this hardcoded sleep is needed here
+		Thread.sleep(5000);
+	}
+
+	/**
+	 * Presses the accept connection request button from within the dialog of a
+	 * user who has sent you a connection request.
 	 * 
 	 * @step. ^I Connect with contact by pressing button$
 	 * 
@@ -58,7 +83,8 @@ public class ConnectToPageSteps {
 	}
 
 	/**
-	 * Presses the ignore connection request button from within the dialog of a user who has sent you a connection request.
+	 * Presses the ignore connection request button from within the dialog of a
+	 * user who has sent you a connection request.
 	 * 
 	 * @step. ^I press Ignore connect button$
 	 * 
@@ -67,7 +93,7 @@ public class ConnectToPageSteps {
 	@When("^I press Ignore connect button$")
 	public void WhenIPressIgnoreConnectButton() throws Exception {
 		if (PagesCollection.connectToPage == null) {
-			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
+			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
 		}
 		PagesCollection.contactListPage = PagesCollection.connectToPage
 				.pressIgnoreButton();
@@ -98,31 +124,31 @@ public class ConnectToPageSteps {
 	public void ThenConnectionIsPending() throws NumberFormatException,
 			Exception {
 		if (PagesCollection.connectToPage == null) {
-			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
+			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
 		}
 		Assert.assertTrue(PagesCollection.connectToPage.isPending());
 	}
 
 	/**
-	 * Taps on the connection request message to put it in focus.
-	 * Note: The message is also cleared (method name does not suggest this).
+	 * Taps on the connection request message to put it in focus. Note: The
+	 * message is also cleared (method name does not suggest this).
 	 * 
 	 * @step. ^I tap on edit connect request field$
-	 * @throws Exception 
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I tap on edit connect request field$")
 	public void WhenITapOnEditConnectRequestField() throws Exception {
 		PagesCollection.connectToPage.tapEditConnectionRequest();
 	}
-	
+
 	/**
 	 * Types a message into the connect message input area
 	 * 
 	 * @step. ^I type Connect request \"(.*)\"$
 	 * 
 	 * @param message
-	 * 		The message to be sent
+	 *            The message to be sent
 	 * @throws Exception
 	 */
 	@When("^I type Connect request \"(.*)\"$")
@@ -131,7 +157,8 @@ public class ConnectToPageSteps {
 	}
 
 	/**
-	 * Checks to see if the connect button is either enabled or disabled (true or false)
+	 * Checks to see if the connect button is either enabled or disabled (true
+	 * or false)
 	 * 
 	 * @step. ^I see connect button enabled state is (.*)$
 	 * 
@@ -145,7 +172,8 @@ public class ConnectToPageSteps {
 	}
 
 	/**
-	 * Checks to see that the counter value has a given number of remaining characters
+	 * Checks to see that the counter value has a given number of remaining
+	 * characters
 	 * 
 	 * @step. ^I see counter value (.*)$
 	 * 
@@ -184,20 +212,21 @@ public class ConnectToPageSteps {
 	}
 
 	/**
-	 * Presses the "Confirm Block" button that appears after pressing the block button
-	 * (Should the two steps be merged?)
+	 * Presses the "Confirm Block" button that appears after pressing the block
+	 * button (Should the two steps be merged?)
 	 * 
 	 * @step. ^I confirm block on connect to page$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@When("^I confirm block on connect to page$")
-	public void WhenIConfirmBlock() throws Throwable {
+	public void WhenIConfirmBlock() throws Exception {
 		PagesCollection.connectToPage.pressConfirmBtn();
 	}
 
 	/**
-	 * Closes the connect to dialog by pressing the cross in the connect to dialog
+	 * Closes the connect to dialog by pressing the cross in the connect to
+	 * dialog
 	 * 
 	 * @step. ^I close Connect To dialog$
 	 * 
