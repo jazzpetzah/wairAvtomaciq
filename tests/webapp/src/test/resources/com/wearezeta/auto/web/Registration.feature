@@ -28,7 +28,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id2064
+  @regression @id2064 @torun
   Scenario Outline: Photo selection dialogue - choose picture from library
     Given There is 1 user where <Name> is me without avatar picture
     And I Sign in using login <Login> and password <Password>
