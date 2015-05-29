@@ -161,6 +161,21 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        | ContactName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |
+      
+  @staging @id2669 @deployPictures
+  Scenario Outline: Receive a camera roll picture from user from contact list [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Picture | ConversationType | 
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user | 
 
   @staging @id2670 @deployPictures
   Scenario Outline: Receive a camera roll picture from user from contact list [LANDSCAPE]
