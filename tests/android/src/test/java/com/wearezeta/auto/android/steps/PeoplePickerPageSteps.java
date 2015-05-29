@@ -3,6 +3,8 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
+import registration.EmailSignInPage;
+
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -513,7 +515,7 @@ public class PeoplePickerPageSteps {
 					.tapOnMyAvatar();
 			PagesCollection.personalInfoPage.tapOptionsButton();
 			PagesCollection.personalInfoPage.tapSignOutBtn();
-			new LoginPageSteps().GivenISignIn(usrMgr.getSelfUser().getEmail(),
+			new EmailSignInSteps().GivenISignIn(usrMgr.getSelfUser().getEmail(),
 					usrMgr.getSelfUser().getPassword());
 			new ContactListPageSteps().GivenISeeContactList();
 			PagesCollection.peoplePickerPage = PagesCollection.contactListPage

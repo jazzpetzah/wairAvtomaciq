@@ -61,42 +61,6 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Types an email address into the email login field
-	 * 
-	 * @step. ^I have entered login (.*)$
-	 * 
-	 * @param login
-	 * @throws Exception
-	 */
-	@When("^I have entered login (.*)$")
-	public void WhenIHaveEnteredLogin(String login) throws Exception {
-		try {
-			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		PagesCollection.loginPage.setLogin(login);
-	}
-
-	/**
-	 * Enters a password into the password login field
-	 * 
-	 * @step. ^I have entered password (.*)$
-	 * 
-	 * @param password
-	 * @throws Exception
-	 */
-	@When("I have entered password (.*)")
-	public void WhenIHaveEnteredPassword(String password) throws Exception {
-		try {
-			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		PagesCollection.loginPage.setPassword(password);
-	}
-
-	/**
 	 * Checks to see that the login error message contains the correct text
 	 * 
 	 * @step. ^I see error message \"(.*)\"$

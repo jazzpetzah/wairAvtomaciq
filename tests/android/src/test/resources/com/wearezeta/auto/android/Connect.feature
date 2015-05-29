@@ -462,7 +462,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Message          | Picture     |
       | user1Email | user1Password | user1Name | user2Name | Hello my friend! | testing.jpg |
 
-  @id2215 @staging @torun
+  @id2215 @staging
   Scenario Outline: I can connect to someone from PYMK by clicking +
     Given I see welcome screen
     Given I input a new phone number

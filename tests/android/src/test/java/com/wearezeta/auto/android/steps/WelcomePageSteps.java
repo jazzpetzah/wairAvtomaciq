@@ -1,4 +1,4 @@
-package registration;
+package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
@@ -18,9 +18,9 @@ public class WelcomePageSteps {
 	 */
 	@When("^I input a new phone number$")
 	public void IInputANewPhoneNumber() throws Throwable {
-		
+		//TODO implement phone number input method
 	}
-	
+
 	/**
 	 * Press the "I have an account" button on the welcome page. to switch to
 	 * sign in using email address
@@ -30,6 +30,7 @@ public class WelcomePageSteps {
 	 */
 	@When("^I switch to email sign in screen$")
 	public void ISwitchToEmailSignIn() throws Exception {
-		PagesCollection.welcomePage.clickIHaveAnAccount();
+		PagesCollection.emailSignInPage = PagesCollection.welcomePage
+			.clickIHaveAnAccount();
 	}
 }

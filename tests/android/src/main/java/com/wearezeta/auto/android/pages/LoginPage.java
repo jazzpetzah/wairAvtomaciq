@@ -116,12 +116,6 @@ public class LoginPage extends AndroidPage {
 				By.id(AndroidLocators.LoginPage.idWelcomeSlogan));
 	}
 
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) {
-		// no need to swipe
-		return null;
-	}
-
 	public RegistrationPage join() throws Exception {
 		signUpButton.click();
 		assert DriverUtils.waitUntilLocatorDissapears(this.getDriver(),

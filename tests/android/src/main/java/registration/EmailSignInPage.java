@@ -15,6 +15,15 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
+/**
+ * This page represents the email sign in screen, which you can reach
+ * from the welcome screen. From here, you can choose to go to the phone
+ * signin page, go back to the welcome screen, or log in with an existing
+ * email and password
+ * 
+ * @author deancook
+ *
+ */
 public class EmailSignInPage extends AndroidPage {
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 		.getSimpleName());
