@@ -35,14 +35,9 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.ContactListPage.idSelfUserAvatar)
 	protected WebElement selfUserAvatar;
 
-	@FindBy(id = AndroidLocators.LoginPage.idLoginInput)
-	private WebElement loginInput;
-
 	@FindBy(id = AndroidLocators.LoginPage.idNotNowButton)
 	private WebElement notNowButton;
 	
-	@FindBy(id = AndroidLocators.LoginPage.idPasswordInput)
-	private WebElement passwordInput;
 
 	@FindBy(id = AndroidLocators.LoginPage.idWelcomeSlogan)
 	private List<WebElement> welcomeSloganContainer;
@@ -72,20 +67,6 @@ public class LoginPage extends AndroidPage {
 	public ContactListPage LogIn() throws Exception {
 		confirmSignInButton.click();
 		return new ContactListPage(this.getLazyDriver());
-	}
-
-	public void setLogin(String login) throws Exception {
-		try {
-			loginInput.sendKeys(login);
-		} catch (Exception e) {
-			log.debug(this.getDriver().getPageSource());
-			throw e;
-		}
-	}
-
-	public void setPassword(String password) throws Exception {
-		passwordInput.click();
-		passwordInput.sendKeys(password);
 	}
 
 	public boolean waitForLoginScreenDisappear() throws Exception {

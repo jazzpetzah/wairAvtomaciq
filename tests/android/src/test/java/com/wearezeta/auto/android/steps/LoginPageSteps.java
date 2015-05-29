@@ -24,50 +24,6 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Inputs the login details for the given user and then clicks the sign in
-	 * button Also sets the contactList page in the pagesObject
-	 * 
-	 * Should perhaps be broken into smaller steps?
-	 * 
-	 * @see #WhenIHaveEnteredPassword(String)
-	 * @see #WhenIHaveEnteredLogin(String)
-	 * @see #WhenIPressLogInButton()
-	 * 
-	 * @step. ^I Sign in using login (.*) and password (.*)$
-	 * 
-	 * @param login
-	 * @param password
-	 * @throws Exception
-	 */
-	@Given("^I Sign in using login (.*) and password (.*)$")
-	public void GivenISignIn(String login, String password) throws Exception {
-		try {
-			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		try {
-			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertTrue("Welcome page is not visible",
-				PagesCollection.loginPage.waitForInitialScreen());
-		PagesCollection.loginPage.switchToEmailSignIn();
-		PagesCollection.loginPage.setLogin(login);
-		PagesCollection.loginPage.setPassword(password);
-		PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
-				.LogIn());
-		if (PagesCollection.loginPage.waitForAddPhoneNumberAppear()) {
-			PagesCollection.loginPage.notNowButtonClick();
-		}
-		Assert.assertTrue("Login in progress",
-				PagesCollection.loginPage.waitForLoginScreenDisappear());
-		Assert.assertTrue("Login finished",
-				PagesCollection.loginPage.waitForLogin());
-	}
-
-	/**
 	 * Presses the "forgot password" button
 	 * 
 	 * @step. ^I press FORGOT PASSWORD button$

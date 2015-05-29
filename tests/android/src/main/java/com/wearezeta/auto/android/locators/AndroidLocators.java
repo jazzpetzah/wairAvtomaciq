@@ -85,10 +85,6 @@ public final class AndroidLocators {
 
 		public static final String idForgotPass = "ttv_signin_forgot_password";
 
-		public static final String idLoginInput = "get__sign_in__email";
-
-		public static final String idPasswordInput = "get__sign_in__password";
-
 		public static final String idLoginProgressViewContainer = "fl__sign_in__progress_view__container";
 
 		public static final String idWelcomeButtonsContainer = "cm__choose";
@@ -474,6 +470,12 @@ public final class AndroidLocators {
 
 		public static final String idCommonUsersLabel = "ttv__connect_request__common_users__label";
 
+	}
+	
+	public static final class EmailSignInPage {
+		public static final String idLoginInput = "get__sign_in__email";
+
+		public static final String idPasswordInput = "get__sign_in__password";
 	}
 	
 	public static final class WelcomePage {

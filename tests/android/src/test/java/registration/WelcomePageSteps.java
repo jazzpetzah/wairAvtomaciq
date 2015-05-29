@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android.steps;
+package registration;
 
 import org.junit.Assert;
 

@@ -46,7 +46,7 @@ public class WelcomePage extends AndroidPage {
 			haveAccountButton.click();
 		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.LoginPage.idLoginInput));
+				By.id(AndroidLocators.EmailSignInPage.idLoginInput));
 		return new EmailSignInPage(this.getLazyDriver());
 	}
 

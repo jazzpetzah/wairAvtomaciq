@@ -19,13 +19,27 @@ public class EmailSignInPage extends AndroidPage {
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 		.getSimpleName());
 	
+	@FindBy(id = AndroidLocators.EmailSignInPage.idLoginInput)
+	private WebElement loginInput;
+	
+	@FindBy(id = AndroidLocators.EmailSignInPage.idPasswordInput)
+	private WebElement passwordInput;
+	
 	public EmailSignInPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 	
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public void setLogin(String login) throws Exception {
+		try {
+			loginInput.sendKeys(login);
+		} catch (Exception e) {
+			log.debug(this.getDriver().getPageSource());
+			throw e;
+		}
+	}
+
+	public void setPassword(String password) throws Exception {
+		passwordInput.click();
+		passwordInput.sendKeys(password);
 	}
 }
