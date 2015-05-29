@@ -1,22 +1,20 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.List;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class LoginPage extends AndroidPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 			.getSimpleName());
 
@@ -80,13 +78,6 @@ public class LoginPage extends AndroidPage {
 		assert DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idLoginProgressViewContainer));
 		return new RegistrationPage(this.getLazyDriver());
-	}
-
-	public boolean isDismissUpdateVisible() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorAppears(
-						this.getDriver(),
-						By.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton));
 	}
 
 	public void verifyErrorMessageText(String expectedMsg) throws Exception {
