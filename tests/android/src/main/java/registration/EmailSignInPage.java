@@ -76,6 +76,6 @@ public class EmailSignInPage extends AndroidPage {
 	
 	private boolean waitForAddPhoneNumberAppear() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.AddPhoneNumberPage.idNotNowButton), 20);
+				By.id(AndroidLocators.AddPhoneNumberPage.idNotNowButton), 2);
 	}
 }

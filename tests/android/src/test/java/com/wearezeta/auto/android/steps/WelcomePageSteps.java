@@ -20,18 +20,6 @@ public class WelcomePageSteps {
 	public void GivenISeeWelcomeScreen() throws Exception {
 		Assert.assertTrue(PagesCollection.welcomePage.waitForInitialScreen());
 	}
-	
-	/**
-	 * Checks to see that the settings page is visible
-	 * 
-	 * @step. ^I see settings page$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I input a new phone number$")
-	public void IInputANewPhoneNumber() throws Throwable {
-		//TODO implement phone number input method
-	}
 
 	/**
 	 * Press the "I have an account" button on the welcome page. to switch to
