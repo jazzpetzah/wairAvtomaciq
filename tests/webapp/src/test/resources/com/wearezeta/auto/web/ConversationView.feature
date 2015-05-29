@@ -144,10 +144,10 @@ Feature: Conversation View
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    When I write message <ActualMessage>
+    When I write template message <ActualMessage>
     And I send message
-    Then I see text message <ExpectedMessage>
+    Then I verify the last text message equals to <ExpectedMessage>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | ActualMessage                                                    | ExpectedMessage                      |
-      | user1Email | user1Password | user1Name | user2Name | ('break' * 10)('a' * 100)('break' * 10)('b' * 100)('break' * 10) | ('a' * 100)('break' * 10)('b' * 100) |
+      | Login      | Password      | Name      | Contact   | ActualMessage                                           | ExpectedMessage                      |
+      | user1Email | user1Password | user1Name | user2Name | ('LF' * 10)('a' * 100)('LF' * 10)('b' * 100)('LF' * 10) | ('a' * 100)('LF' * 10)('b' * 100) |

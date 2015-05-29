@@ -57,44 +57,16 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
 	private WebElement pingMessage;
 
+	@FindBy(xpath = WebAppLocators.ConversationPage.xpathLastTextMessage)
+	private WebElement lastConversationMessage;
+
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
 	}
 
 	public void writeNewMessage(String message) {
-		conversationInput.sendKeys(expandPattern(message));
-	}
-
-	private static String expandPattern(final String originalStr) {
-		final String lineBreak = "break";
-		final Pattern p = Pattern
-				.compile("\\(\\s*'(.+)'\\s*\\*\\s*([0-9]+)\\s*\\)");
-		final Matcher m = p.matcher(originalStr);
-		final StringBuilder result = new StringBuilder();
-		int lastPosInOriginalString = 0;
-		while (m.find()) {
-			if (m.start() > lastPosInOriginalString) {
-				result.append(originalStr.substring(lastPosInOriginalString,
-						m.start()));
-			}
-			final String toAdd = m.group(1).replace(lineBreak, "\n");
-			final int times = Integer.parseInt(m.group(2));
-			for (int i = 0; i < times; i++) {
-				result.append(toAdd);
-			}
-			lastPosInOriginalString = m.end();
-		}
-		if (lastPosInOriginalString < originalStr.length()) {
-			result.append(originalStr.substring(lastPosInOriginalString,
-					originalStr.length()));
-		}
-		return result.toString();
-	}
-
-	public static void main(String[] args) throws Exception {
-		final String Message1 = "qqq('a' * 100)eee('\n' * 10)rrr('b' * 100)ttt";
-		System.out.println(expandPattern(Message1));
+		conversationInput.sendKeys(message);
 	}
 
 	public void sendNewMessage() {
@@ -290,7 +262,7 @@ public class ConversationPage extends WebPage {
 	public boolean isTextMessageVisible(String message) throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.textMessageByText
-						.apply(expandPattern(message)));
+						.apply(message));
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
 	}
@@ -347,5 +319,11 @@ public class ConversationPage extends WebPage {
 				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
 				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been hidden within "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
+	}
+
+	public String getLastTextMessage() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(WebAppLocators.ConversationPage.xpathLastTextMessage));
+		return lastConversationMessage.getText();
 	}
 }
