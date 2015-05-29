@@ -46,7 +46,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @torun @staging @id1720
+  @staging @id1720
   Scenario Outline: Verify Ping icon in the conversation list
     Given There is 2 users where <Name> is me
     Given User me change accent color to <ColorName>
