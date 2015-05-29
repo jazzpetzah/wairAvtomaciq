@@ -28,6 +28,9 @@ public class LoginPage extends AndroidPage {
 
 	@FindBy(id = AndroidLocators.LoginPage.idSignUpButton)
 	protected WebElement signUpButton;
+	
+	@FindBy(id = AndroidLocators.LoginPage.idHaveAccountButton)
+	protected WebElement haveAccountButton;
 
 	@FindBy(id = AndroidLocators.LoginPage.idForgotPass)
 	private WebElement forgotPasswordButton;

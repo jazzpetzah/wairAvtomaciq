@@ -462,18 +462,12 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   | Message          | Picture     |
       | user1Email | user1Password | user1Name | user2Name | Hello my friend! | testing.jpg |
 
-  @id2215 @staging
+  @id2215 @staging @torun
   Scenario Outline: I can connect to someone from PYMK by clicking +
     Given I see welcome screen
-    Given I press Join button
-    Given I press Camera button twice
-    Given I confirm selection
+    Given I input a new phone number
+    Given I input a valid verification number
     Given I enter name <Name>
-    Given I enter email <Email>
-    Given I enter password <Password>
-    Given I submit registration data
-    Given I see confirmation page
-    Given I verify registration address
     When I wait for PYMK for 30 secs
     And I hide keyboard
     And I press + button on a random Connect

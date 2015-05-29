@@ -79,6 +79,8 @@ public final class AndroidLocators {
 		public static final String idIHaveAccountButton = "zb__welcome__sign_in";
 
 		public static final String idSignUpButton = "ttv__welcome__create_account";
+		
+		public static final String idHaveAccountButton = "zb__welcome__sign_in";
 
 		public static final String idLoginButton = "pcb__signin__email";
 
@@ -471,5 +473,9 @@ public final class AndroidLocators {
 
 		public static final String idCommonUsersLabel = "ttv__connect_request__common_users__label";
 
+	}
+	
+	public static final class WelcomePage {
+		public static final String phoneInputField = "et__reg__phone";
 	}
 }
