@@ -2,6 +2,8 @@ package com.wearezeta.auto.web.steps;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -16,6 +18,7 @@ import cucumber.api.java.en.When;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.Keys;
 
 public class ConversationPageSteps {
 
@@ -49,6 +52,20 @@ public class ConversationPageSteps {
 	@When("^I write message (.*)$")
 	public void IWriteMessage(String message) {
 		PagesCollection.conversationPage.writeNewMessage(message);
+	}
+
+	/**
+	 * Write template text message in the currently opened conversation
+	 *
+	 * @step. ^I write template message (.*)
+	 *
+	 * @param message
+	 *            text message
+	 */
+	@When("^I write template message (.*)")
+	public void IWriteTemplateMessage(String message) {
+		PagesCollection.conversationPage.writeNewMessage(expandPattern(message)
+				.replace("\n", Keys.chord(Keys.SHIFT, Keys.ENTER)));
 	}
 
 	/**
@@ -325,6 +342,46 @@ public class ConversationPageSteps {
 	public void ISeeTextMessage(String message) throws Exception {
 		Assert.assertTrue(PagesCollection.conversationPage
 				.isTextMessageVisible(message));
+	}
+
+	private static String expandPattern(final String originalStr) {
+		final String lineBreak = "LF";
+		final Pattern p = Pattern
+				.compile("\\(\\s*'(\\w+)'\\s*\\*\\s*([0-9]+)\\s*\\)");
+		final Matcher m = p.matcher(originalStr);
+		final StringBuilder result = new StringBuilder();
+		int lastPosInOriginalString = 0;
+		while (m.find()) {
+			if (m.start() > lastPosInOriginalString) {
+				result.append(originalStr.substring(lastPosInOriginalString,
+						m.start()));
+			}
+			final String toAdd = m.group(1).replace(lineBreak, "\n");
+			final int times = Integer.parseInt(m.group(2));
+			for (int i = 0; i < times; i++) {
+				result.append(toAdd);
+			}
+			lastPosInOriginalString = m.end();
+		}
+		if (lastPosInOriginalString < originalStr.length()) {
+			result.append(originalStr.substring(lastPosInOriginalString,
+					originalStr.length()));
+		}
+		return result.toString();
+	}
+
+	/**
+	 * Verify the text of the message in conversation
+	 *
+	 * @step. ^I verify the last text message equals to (.*)
+	 * @param message
+	 * @throws Exception
+	 */
+	@Then("^I verify the last text message equals to (.*)")
+	public void IVerifyLastTextMessage(String expectedMessage) throws Exception {
+		Assert.assertEquals(
+				PagesCollection.conversationPage.getLastTextMessage(),
+				expandPattern(expectedMessage));
 	}
 
 	/**

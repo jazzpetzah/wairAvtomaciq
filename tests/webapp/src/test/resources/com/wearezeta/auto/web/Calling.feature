@@ -73,7 +73,7 @@ Feature: Calling
      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-@staging @id1839
+   @regression @id1839
    Scenario Outline: Verify calling not supported in webapp (no calling support)
       Given My browser does not support calling
       Given There are 2 users where <Name> is me
@@ -117,7 +117,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name |
 
   # This has to work even in browsers, which don't support calling
-  @staging @id2014
+  @regression @id2014
   Scenario Outline: Missed call notification (adressee)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
@@ -137,14 +137,14 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @staging @id1882
+   @staging @id1882
    Scenario Outline: People trying to call me while I'm not signed in
       Given My browser supports calling
       Given There are 2 users where <Name> is me
       Given Myself is connected to <Contact>
       When <Contact> calls me using <CallBackend>
       Given I Sign in using login <Login> and password <Password>
-      And I see my name on top of Contact list
+      And I see my avatar on top of Contact list
       And I open conversation with <Contact>
       And I refresh page      
       And I wait for 5 seconds

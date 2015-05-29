@@ -261,21 +261,6 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Tap on Gmail link
-	 * 
-	 * @step. ^I tap on Gmail link$
-	 * 
-	 * @throws Exception
-	 * @throws NumberFormatException
-	 * 
-	 */
-	@When("^I tap on Gmail link$")
-	public void WhenITapOnGmailLink() throws NumberFormatException, Exception {
-		PagesCollection.commonAndroidPage = PagesCollection.peoplePickerPage
-				.tapOnGmailLink();
-	}
-
-	/**
 	 * Checks to see if the add to conversation button is visible
 	 * 
 	 * @step. ^I see Add to conversation button$

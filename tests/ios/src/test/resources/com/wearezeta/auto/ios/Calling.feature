@@ -153,7 +153,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-  @calling_basic @id2645
+  @calling_basic @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -201,3 +201,52 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+
+  @calling_basic @id2627
+  Scenario Outline: I want to accept a call through the incoming voice dialogue (Button)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts waiting instance using <CallBackend>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And <Contact> calls me using <CallBackend2>
+    And I see incoming calling message for contact <Contact>
+    And I accept incoming call
+    Then I see mute call, end call and speakers buttons
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | webdriver   | autocall     | 120     |
+
+  @calling_basic @id2624
+  Scenario Outline: I want to end the call from the ongoing voice overlay
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> accepts next incoming call automatically
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I press call button
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I end started call
+    Then I dont see calling page
+    And <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
+    And <Contact> calls me using <CallBackend2>
+    And I see incoming calling message for contact <Contact>
+    And I accept incoming call
+    And I see mute call, end call and speakers buttons
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And <Contact> stops all calls to me
+    And I dont see calling page
+    And <Contact> verifies that call status to me is changed to inactive in <Timeout> seconds
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | webdriver   | autocall     | 120     |

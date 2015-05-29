@@ -52,10 +52,28 @@ public abstract class AndroidPage extends BasePage {
 	public void selectFirstGalleryPhoto() throws Exception {
 		final Dimension screenDimension = getDriver().manage().window()
 				.getSize();
-		// Selendroid workaround
-		// Cannot handle external apps properly :-(
-		AndroidCommonUtils.genericScreenTap(screenDimension.width / 4,
-				screenDimension.height / 4);
+		int ntry = 1;
+		do {
+			// Selendroid workaround
+			// Cannot handle external apps properly :-(
+			AndroidCommonUtils.genericScreenTap(screenDimension.width / 2
+					- ntry * (screenDimension.width / 10),
+					screenDimension.height / 2 - ntry
+							* (screenDimension.height / 10));
+			try {
+				if (DriverUtils
+						.waitUntilLocatorIsDisplayed(
+								getDriver(),
+								By.xpath(AndroidLocators.DialogPage.xpathConfirmOKButton),
+								2)) {
+					return;
+				}
+			} catch (WebDriverException e) {
+				// ignore silently
+			}
+			ntry++;
+		} while (ntry <= 5);
+		throw new RuntimeException("Failed to tap the first gallery image!");
 	}
 
 	public void hideKeyboard() throws Exception {
@@ -279,5 +297,29 @@ public abstract class AndroidPage extends BasePage {
 	public static void clearPagesCollection() throws IllegalArgumentException,
 			IllegalAccessException {
 		clearPagesCollection(PagesCollection.class, AndroidPage.class);
+	}
+
+	private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 10000;
+
+	/**
+	 * Sometimes we may get WebDriverException if some long transition/animation
+	 * is performed on the device's screen. This method is created to avoid such
+	 * situations and prevent hardcoded sleeps
+	 * 
+	 * @throws Exception
+	 */
+	protected void verifyDriverIsAvailableAfterTimeout() throws Exception {
+		final long milliscondsStarted = System.currentTimeMillis();
+		do {
+			try {
+				getDriver().getPageSource();
+				return;
+			} catch (WebDriverException e) {
+				Thread.sleep(300);
+			}
+		} while (System.currentTimeMillis() - milliscondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS);
+		throw new RuntimeException(String.format(
+				"Selenium driver is still not avilable after %s seconds timeout",
+				DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS));
 	}
 }
