@@ -44,7 +44,7 @@ public class LoginPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idLoginButton), 40);
 	}
-	
+
 	public boolean waitForLogin() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idSignUpButton), 40);
@@ -57,6 +57,7 @@ public class LoginPage extends AndroidPage {
 				.id(AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn);
 		final By selfAvatarLocator = By
 				.id(AndroidLocators.ContactListPage.idSelfUserAvatar);
+		this.verifyDriverIsAvailableAfterTimeout();
 		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
