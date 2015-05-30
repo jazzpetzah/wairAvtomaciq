@@ -2,21 +2,30 @@ package com.wearezeta.auto.common.driver;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.HasTouchScreen;
 import org.openqa.selenium.interactions.TouchScreen;
 import org.openqa.selenium.interactions.touch.TouchActions;
+import org.openqa.selenium.remote.DriverCommand;
 import org.openqa.selenium.remote.RemoteTouchScreen;
+import org.openqa.selenium.remote.Response;
 
 import com.google.common.base.Throwables;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 import io.appium.java_client.android.AndroidDriver;
 
 public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		HasTouchScreen {
+
+	private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
+			.getSimpleName());
 
 	private SessionHelper sessionHelper;
 	private RemoteTouchScreen touch;
@@ -124,5 +133,48 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	@Override
 	public TouchScreen getTouch() {
 		return this.touch;
+	}
+
+	private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 1000;
+	private static final String SERVER_SIDE_ERROR_SIGNATURE = "unknown server-side error";
+
+	/**
+	 * This is workaround for some Selendroid issues when driver just generates
+	 * unknown error when some transition in AUT is currently in progress. Retry
+	 * helps
+	 * 
+	 * @param driverCommand
+	 * @param parameters
+	 * @return
+	 */
+	@Override
+	public Response execute(String driverCommand, Map<String, ?> parameters) {
+		try {
+			return super.execute(driverCommand, parameters);
+		} catch (WebDriverException e) {
+			if (e.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)
+					&& !driverCommand.equals(DriverCommand.SCREENSHOT)) {
+				final long milliscondsStarted = System.currentTimeMillis();
+				while (System.currentTimeMillis() - milliscondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e1) {
+						Throwables.propagate(e1);
+					}
+					try {
+						return super.execute(driverCommand, parameters);
+					} catch (WebDriverException e1) {
+						if (!e.getMessage().contains(
+								SERVER_SIDE_ERROR_SIGNATURE)) {
+							throw e1;
+						}
+					}
+				}
+				log.error(String
+						.format("Android driver is still not avilable after '%s' seconds timeout",
+								DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000));
+			}
+			throw e;
+		}
 	}
 }

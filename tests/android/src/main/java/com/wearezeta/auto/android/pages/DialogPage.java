@@ -359,7 +359,6 @@ public class DialogPage extends AndroidPage {
 	public void confirm() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), okButton);
 		okButton.click();
-		this.verifyDriverIsAvailableAfterTimeout();
 	}
 
 	public void takePhoto() throws Exception {

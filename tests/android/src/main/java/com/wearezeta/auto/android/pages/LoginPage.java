@@ -44,7 +44,7 @@ public class LoginPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idLoginButton), 40);
 	}
-	
+
 	public boolean waitForLogin() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idSignUpButton), 40);

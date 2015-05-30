@@ -88,7 +88,6 @@ public class ContactListPage extends AndroidPage {
 	public AndroidPage tapOnName(String name) throws Exception {
 		AndroidPage page = null;
 		findInContactList(name, 5).click();
-		this.verifyDriverIsAvailableAfterTimeout();
 		try {
 			page = detectCurrentPage();
 		} catch (WebDriverException e) {
