@@ -13,6 +13,8 @@ public class CallingPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	private static final long CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS = 5000;
+
 	/**
 	 * Ignores an incoming call
 	 * 
@@ -38,11 +40,24 @@ public class CallingPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I see incoming calling message for contact (.*)$")
-	public void ISeeIncomingCallingMesage(String contact) throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		String callersName = PagesCollection.callingOverlayPage
-				.getCallersName();
-		Assert.assertEquals(contact, callersName);
+	public void ISeeIncomingCallingMesage(String expectedCallerName)
+			throws Exception {
+		expectedCallerName = usrMgr.findUserByNameOrNameAlias(
+				expectedCallerName).getName();
+		final long millisecondsStarted = System.currentTimeMillis();
+		String actualCallerName;
+		do {
+			Thread.sleep(500);
+			actualCallerName = PagesCollection.callingOverlayPage
+					.getCallersName();
+		} while (System.currentTimeMillis() - millisecondsStarted <= CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS
+				&& !actualCallerName.equals(expectedCallerName));
+		Assert.assertEquals(
+				String.format(
+						"The current caller name '%s' differs from the expected value '%s' after %s seconds timeout",
+						actualCallerName, expectedCallerName,
+						CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS / 1000),
+				expectedCallerName, actualCallerName);
 	}
 
 	/**
@@ -106,8 +121,6 @@ public class CallingPageSteps {
 		Assert.assertTrue(PagesCollection.callingLockscreenPage.isVisible());
 	}
 
-	private static final long CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS = 15000;
-
 	/**
 	 * Checks to see that the user calling in the lock screen is the correct
 	 * user
@@ -134,8 +147,9 @@ public class CallingPageSteps {
 				&& !actualCallerName.equals(expectedCallerName));
 		Assert.assertEquals(
 				String.format(
-						"The current caller name '%s' differs from the expected value '%s'",
-						actualCallerName, expectedCallerName),
+						"The current caller name '%s' differs from the expected value '%s' after %s seconds timeout",
+						actualCallerName, expectedCallerName,
+						CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS / 1000),
 				expectedCallerName, actualCallerName);
 	}
 
