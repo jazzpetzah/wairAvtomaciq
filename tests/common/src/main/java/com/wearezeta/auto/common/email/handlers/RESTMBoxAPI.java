@@ -11,10 +11,11 @@ import org.jboss.netty.handler.timeout.ReadTimeoutException;
 import org.json.JSONArray;
 
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.rest.CommonRESTHandlers;
+import com.wearezeta.auto.common.rest.RESTError;
 
 final class RESTMBoxAPI {
 	private static final Logger log = ZetaLogger.getLog(RESTMBoxAPI.class
@@ -37,33 +38,19 @@ final class RESTMBoxAPI {
 		}
 	}
 
+	private static final CommonRESTHandlers restHandlers = new CommonRESTHandlers(
+			RESTMBoxAPI::verifyRequestResult);
+
 	private static void verifyRequestResult(int currentResponseCode,
 			int[] acceptableResponseCodes) throws RESTMBoxException {
 		if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
 			throw new RESTMBoxException(
 					String.format(
-							"Backend request failed. Request return code is: %d. Expected codes are: %s",
+							"Mailbox service API request failed. Request return code is: %d. Expected codes are: %s",
 							currentResponseCode,
 							Arrays.toString(acceptableResponseCodes)),
 					currentResponseCode);
 		}
-	}
-
-	private static final int MAX_RESPONSE_LENGTH = 80;
-
-	private static String httpGet(Builder webResource,
-			int[] acceptableResponseCodes) throws RESTMBoxException {
-		ClientResponse response = webResource.get(ClientResponse.class);
-		final String responseString = response.getEntity(String.class);
-		if (responseString != null
-				&& responseString.length() > MAX_RESPONSE_LENGTH) {
-			log.debug("HTTP GET request.\nResponse: "
-					+ responseString.substring(0, MAX_RESPONSE_LENGTH) + "...");
-		} else {
-			log.debug("HTTP GET request.\nResponse: " + responseString);
-		}
-		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return responseString;
 	}
 
 	private static Builder buildDefaultRequest(String restAction,
@@ -77,12 +64,12 @@ final class RESTMBoxAPI {
 	}
 
 	public static JSONArray getRecentEmailsForUser(String email, int minCount,
-			int maxCount, int timeoutMilliseconds) throws RESTMBoxException {
+			int maxCount, int timeoutMilliseconds) throws RESTError {
 		Builder webResource = buildDefaultRequest(String.format(
 				"recent_emails/%s/%s/%s", email, maxCount, minCount),
 				timeoutMilliseconds);
 		try {
-			final String output = httpGet(webResource,
+			final String output = restHandlers.httpGet(webResource,
 					new int[] { HttpStatus.SC_OK });
 			return new JSONArray(output);
 		} catch (ReadTimeoutException e) {

@@ -10,16 +10,16 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.calling.models.CallingServiceBackend;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.rest.CommonRESTHandlers;
+import com.wearezeta.auto.common.rest.RESTError;
 
-final class CallingSericeREST {
-	private static final Logger log = ZetaLogger.getLog(CallingSericeREST.class
-			.getSimpleName());
+final class CallingServiceREST {
+	private static final Logger log = ZetaLogger
+			.getLog(CallingServiceREST.class.getSimpleName());
 
 	private static final String URL_PROTOCOL = "http://";
 
@@ -29,14 +29,17 @@ final class CallingSericeREST {
 					.format("%s%s:%s",
 							URL_PROTOCOL,
 							CommonUtils
-									.getDefaultCallingServiceHostFromConfig(CallingSericeREST.class),
+									.getDefaultCallingServiceHostFromConfig(CallingServiceREST.class),
 							CommonUtils
-									.getDefaultCallingServicePortFromConfig(CallingSericeREST.class));
+									.getDefaultCallingServicePortFromConfig(CallingServiceREST.class));
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
 		}
 	}
+
+	private static final CommonRESTHandlers restHandlers = new CommonRESTHandlers(
+			CallingServiceREST::verifyRequestResult);
 
 	private static Client client = Client.create();
 
@@ -45,46 +48,11 @@ final class CallingSericeREST {
 		if (!ArrayUtils.contains(acceptableResponseCodes, currentResponseCode)) {
 			throw new CallingServiceException(
 					String.format(
-							"Backend request failed. Request return code is: %d. Expected codes are: %s",
+							"The request to calling service failed. Request return code is: %d. Expected codes are: %s",
 							currentResponseCode,
 							Arrays.toString(acceptableResponseCodes)),
 					currentResponseCode);
 		}
-	}
-
-	private static String httpPost(Builder webResource, Object entity,
-			int[] acceptableResponseCodes) throws CallingServiceException {
-		final ClientResponse response = webResource.post(ClientResponse.class,
-				entity);
-		final String responseString = response.getEntity(String.class);
-		log.debug("HTTP POST request.\nInput data: " + entity.toString()
-				+ "\nResponse: " + responseString);
-		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return responseString;
-	}
-
-	private static String httpPut(Builder webResource, Object entity,
-			int[] acceptableResponseCodes) throws CallingServiceException {
-		ClientResponse response = webResource.put(ClientResponse.class, entity);
-		log.debug("HTTP PUT request.\nInput data: " + entity.toString());
-		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		try {
-			final String responseString = response.getEntity(String.class);
-			log.debug("Response: " + responseString);
-			return responseString;
-		} catch (UniformInterfaceException e) {
-			log.debug("Response: <EMPTY>");
-			return "";
-		}
-	}
-
-	private static String httpGet(Builder webResource,
-			int[] acceptableResponseCodes) throws CallingServiceException {
-		ClientResponse response = webResource.get(ClientResponse.class);
-		final String responseString = response.getEntity(String.class);
-		log.debug("HTTP GET request.\nResponse: " + responseString);
-		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return responseString;
 	}
 
 	private static Builder buildDefaultRequest(String restAction, String accept) {
@@ -100,7 +68,7 @@ final class CallingSericeREST {
 
 	public static JSONObject makeCall(String email, String password,
 			String conversationId, String backend,
-			CallingServiceBackend callBackend) throws CallingServiceException {
+			CallingServiceBackend callBackend) throws RESTError {
 		Builder webResource = buildDefaultRequest("api/call");
 		final JSONObject requestBody = new JSONObject();
 		requestBody.put("email", email);
@@ -108,93 +76,89 @@ final class CallingSericeREST {
 		requestBody.put("conversationId", conversationId);
 		requestBody.put("backend", backend);
 		requestBody.put("callBackend", callBackend.toString());
-		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_OK,
+						HttpStatus.SC_CREATED });
 		return new JSONObject(output);
 	}
 
-	public static JSONObject getCallStatus(String id)
-			throws CallingServiceException {
+	public static JSONObject getCallStatus(String id) throws RESTError {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/call/%s/status", id));
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
 
-	public static void muteCall(String id) throws CallingServiceException {
+	public static void muteCall(String id) throws RESTError {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/call/%s/mute", id));
-		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+		restHandlers.httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
 				HttpStatus.SC_NO_CONTENT });
 	}
 
-	public static void unmuteCall(String id) throws CallingServiceException {
+	public static void unmuteCall(String id) throws RESTError {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/call/%s/unmute", id));
-		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+		restHandlers.httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
 				HttpStatus.SC_NO_CONTENT });
 	}
 
-	public static void stopCall(String id) throws CallingServiceException {
+	public static void stopCall(String id) throws RESTError {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/call/%s/stop", id));
-		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+		restHandlers.httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
 				HttpStatus.SC_NO_CONTENT });
 	}
 
 	public static JSONObject makeWaitingInstance(String email, String password,
-			String backend, CallingServiceBackend callBackend)
-			throws CallingServiceException {
+			String backend, CallingServiceBackend callBackend) throws RESTError {
 		Builder webResource = buildDefaultRequest("api/waitingInstance");
 		final JSONObject requestBody = new JSONObject();
 		requestBody.put("email", email);
 		requestBody.put("password", password);
 		requestBody.put("backend", backend);
 		requestBody.put("callBackend", callBackend.toString());
-		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_OK,
+						HttpStatus.SC_CREATED });
 		return new JSONObject(output);
 	}
 
 	public static JSONObject getWaitingInstanceStatus(String id)
-			throws CallingServiceException {
+			throws RESTError {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/waitingInstance/%s/status", id));
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
 
-	public static void muteWaitingInstance(String id)
-			throws CallingServiceException {
+	public static void muteWaitingInstance(String id) throws RESTError {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/waitingInstance/%s/mute", id));
-		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+		restHandlers.httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
 				HttpStatus.SC_NO_CONTENT });
 	}
 
-	public static void acceptNextIncomingCall(String id)
-			throws CallingServiceException {
+	public static void acceptNextIncomingCall(String id) throws RESTError {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/waitingInstance/%s/accept", id));
-		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+		restHandlers.httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
 				HttpStatus.SC_NO_CONTENT });
 	}
 
-	public static void unmuteWaitingInstance(String id)
-			throws CallingServiceException {
+	public static void unmuteWaitingInstance(String id) throws RESTError {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/waitingInstance/%s/unmute", id));
-		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+		restHandlers.httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
 				HttpStatus.SC_NO_CONTENT });
 	}
 
-	public static void stopWaitingInstance(String id)
-			throws CallingServiceException {
+	public static void stopWaitingInstance(String id) throws RESTError {
 		Builder webResource = buildDefaultRequest(String.format(
 				"api/waitingInstance/%s/stop", id));
-		httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
+		restHandlers.httpPut(webResource, "", new int[] { HttpStatus.SC_OK,
 				HttpStatus.SC_NO_CONTENT });
 	}
 

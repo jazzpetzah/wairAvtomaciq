@@ -253,8 +253,8 @@ public class ClientUsersManager {
 					do {
 						long sleepInterval = 1000;
 						try {
-							BackendAPIWrappers.createUser(userToCreate,
-									retryNumber, strategy);
+							BackendAPIWrappers.createUserViaBackdoor(
+									userToCreate, retryNumber, strategy);
 							createdClientsCount.incrementAndGet();
 							return;
 						} catch (BackendRequestException e) {
@@ -286,13 +286,13 @@ public class ClientUsersManager {
 		final int usersCreationTimeout = BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT
 				* usersToCreate.size() * NUMBER_OF_REGISTRATION_RETRIES * 3;
 		if (!executor.awaitTermination(usersCreationTimeout, TimeUnit.SECONDS)) {
-			throw new BackendRequestException(
+			throw new RuntimeException(
 					String.format(
 							"The backend has failed to prepare predefined users within %d seconds timeout",
 							usersCreationTimeout));
 		}
 		if (createdClientsCount.get() != usersToCreate.size()) {
-			throw new BackendRequestException(
+			throw new RuntimeException(
 					"Failed to create new users or contacts on the backend");
 		}
 	}
