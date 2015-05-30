@@ -137,7 +137,6 @@ public class ConnectToPage extends AndroidPage {
 				.getSize();
 		AndroidCommonUtils.genericScreenTap(screenDimension.getWidth() / 2,
 				screenDimension.getHeight() / 20);
-		this.verifyDriverIsAvailableAfterTimeout();
 		return new ContactListPage(this.getLazyDriver());
 	}
 

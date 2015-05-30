@@ -122,7 +122,6 @@ public abstract class AndroidPage extends BasePage {
 			// do nothing, sometimes after restoring the app we have this
 			// exception, Appium bug
 		}
-		this.verifyDriverIsAvailableAfterTimeout();
 	}
 
 	public AndroidPage returnBySwipe(SwipeDirection direction)
@@ -299,29 +298,5 @@ public abstract class AndroidPage extends BasePage {
 	public static void clearPagesCollection() throws IllegalArgumentException,
 			IllegalAccessException {
 		clearPagesCollection(PagesCollection.class, AndroidPage.class);
-	}
-
-	private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 10000;
-
-	/**
-	 * Sometimes we may get WebDriverException if some long transition/animation
-	 * is performed on the device's screen. This method is created to avoid such
-	 * situations and prevent hardcoded sleeps
-	 * 
-	 * @throws Exception
-	 */
-	protected void verifyDriverIsAvailableAfterTimeout() throws Exception {
-		final long milliscondsStarted = System.currentTimeMillis();
-		do {
-			try {
-				getDriver().getPageSource();
-				return;
-			} catch (WebDriverException e) {
-				Thread.sleep(300);
-			}
-		} while (System.currentTimeMillis() - milliscondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS);
-		throw new RuntimeException(String.format(
-				"Selenium driver is still not avilable after %s seconds timeout",
-				DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS));
 	}
 }

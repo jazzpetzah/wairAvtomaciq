@@ -57,7 +57,6 @@ public class LoginPage extends AndroidPage {
 				.id(AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn);
 		final By selfAvatarLocator = By
 				.id(AndroidLocators.ContactListPage.idSelfUserAvatar);
-		this.verifyDriverIsAvailableAfterTimeout();
 		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
