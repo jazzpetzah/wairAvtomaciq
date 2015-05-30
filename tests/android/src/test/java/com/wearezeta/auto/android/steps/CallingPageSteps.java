@@ -66,8 +66,9 @@ public class CallingPageSteps {
 	 * 
 	 * @step. ^I wait for call message changes from (.*) for (.*) seconds$
 	 * @param oldMessage
-	 *            call message that should disappear 
-	 * @param sec timeout
+	 *            call message that should disappear
+	 * @param sec
+	 *            timeout
 	 * @throws InterruptedException
 	 */
 	@When("^I wait for call message changes from (.*) for (.*) seconds$")
@@ -105,23 +106,37 @@ public class CallingPageSteps {
 		Assert.assertTrue(PagesCollection.callingLockscreenPage.isVisible());
 	}
 
+	private static final long CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS = 15000;
+
 	/**
 	 * Checks to see that the user calling in the lock screen is the correct
 	 * user
 	 * 
 	 * @step. ^I see a call from (.*) in the call lock screen$
 	 * 
-	 * @param contact
+	 * @param expectedCallerName
 	 *            The username to compare the "is calling" message to.
 	 * 
 	 * @throws Exception
 	 */
 	@When("I see a call from (.*) in the call lock screen$")
-	public void ISeeACallFromUserInLockScreen(String contact) throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		String callersName = PagesCollection.callingLockscreenPage
-				.getCallersName();
-		Assert.assertEquals(contact, callersName);
+	public void ISeeACallFromUserInLockScreen(String expectedCallerName)
+			throws Exception {
+		expectedCallerName = usrMgr.findUserByNameOrNameAlias(
+				expectedCallerName).getName();
+		final long millisecondsStarted = System.currentTimeMillis();
+		String actualCallerName;
+		do {
+			Thread.sleep(500);
+			actualCallerName = PagesCollection.callingLockscreenPage
+					.getCallersName();
+		} while (System.currentTimeMillis() - millisecondsStarted <= CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS
+				&& !actualCallerName.equals(expectedCallerName));
+		Assert.assertEquals(
+				String.format(
+						"The current caller name '%s' differs from the expected value '%s'",
+						actualCallerName, expectedCallerName),
+				expectedCallerName, actualCallerName);
 	}
 
 	/**
