@@ -270,16 +270,6 @@ public class CommonOSXSteps {
 				imagePath, dstConversationName, isGroup);
 	}
 
-	@When("^I add contacts list users to Mac contacts$")
-	public void AddContactsUsersToMacContacts() throws Exception {
-		commonSteps.AddContactsUsersToMacContacts();
-	}
-
-	@When("^I remove contacts list users from Mac contacts$")
-	public void IRemoveContactsListUsersFromMacContact() throws Exception {
-		commonSteps.IRemoveContactsListUsersFromMacContact();
-	}
-
 	@When("^I change user (.*) avatar picture from file (.*)$")
 	public void IChangeUserAvatarPictureFromFile(String user, String picture)
 			throws Exception {

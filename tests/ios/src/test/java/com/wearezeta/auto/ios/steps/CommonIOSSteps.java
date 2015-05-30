@@ -341,16 +341,6 @@ public class CommonIOSSteps {
 				dstConversationName);
 	}
 
-	@When("^I add contacts list users to Mac contacts$")
-	public void AddContactsUsersToMacContacts() throws Exception {
-		commonSteps.AddContactsUsersToMacContacts();
-	}
-
-	@When("^I remove contacts list users from Mac contacts$")
-	public void IRemoveContactsListUsersFromMacContact() throws Exception {
-		commonSteps.IRemoveContactsListUsersFromMacContact();
-	}
-
 	@When("^User (\\w+) change avatar picture to (.*)$")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
