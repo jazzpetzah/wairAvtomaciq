@@ -118,11 +118,11 @@ public abstract class AndroidPage extends BasePage {
 	public void restoreApplication() throws Exception {
 		try {
 			this.getDriver().runAppInBackground(10);
-			Thread.sleep(1000);
 		} catch (WebDriverException ex) {
 			// do nothing, sometimes after restoring the app we have this
 			// exception, Appium bug
 		}
+		this.verifyDriverIsAvailableAfterTimeout();
 	}
 
 	public AndroidPage returnBySwipe(SwipeDirection direction)
