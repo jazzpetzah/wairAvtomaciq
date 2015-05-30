@@ -200,7 +200,7 @@ Feature: Conversation View
   Scenario Outline: See one-to-one pop-over
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in to self profile using login <Login> and password <Password>
+    Given I Sign in on tablet using login <Login> and password <Password>
     When I swipe right to tablet contact list
     And I see conversation list loaded with my name <Name>
     And I tap on tablet contact name <Contact>
@@ -222,7 +222,7 @@ Feature: Conversation View
   Scenario Outline: One-to-one pop-over hidden after rotations
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in to self profile using login <Login> and password <Password>
+    Given I Sign in on tablet using login <Login> and password <Password>
     When I swipe right to tablet contact list
     And I see conversation list loaded with my name <Name>
     And I tap on tablet contact name <Contact>

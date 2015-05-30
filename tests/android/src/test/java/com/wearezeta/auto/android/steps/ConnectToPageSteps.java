@@ -189,12 +189,12 @@ public class ConnectToPageSteps {
 	/**
 	 * Taps the connect button to send a connection request
 	 * 
-	 * @step. ^I press Connect button$
+	 * @step. ^I click [Cc]onnect button on connect to page$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I press Connect button$")
-	public void WhenIPressConnectButton() throws Exception {
+	@When("^I click [Cc]onnect button on connect to page$")
+	public void WhenIClickConnectButton() throws Exception {
 		PagesCollection.contactListPage = PagesCollection.connectToPage
 				.pressConnectButton();
 	}
@@ -202,11 +202,11 @@ public class ConnectToPageSteps {
 	/**
 	 * Blocks an incoming connection request
 	 * 
-	 * @step. ^I Press Block button on connect to page$
+	 * @step. ^I click Block button on connect to page$
 	 * 
 	 */
-	@When("^I Press Block button on connect to page$")
-	public void IPressBlockButton() {
+	@When("^I click Block button on connect to page$")
+	public void IClickBlockButton() {
 		PagesCollection.connectToPage.clickBlockBtn();
 
 	}
@@ -236,5 +236,22 @@ public class ConnectToPageSteps {
 	public void ThenCloseConnectToDialog() throws Exception {
 		PagesCollection.peoplePickerPage = PagesCollection.connectToPage
 				.clickCloseButton();
+	}
+
+	/**
+	 * Tap connection notification on Home Screen
+	 * 
+	 * @step. ^I tap connection notification on Home Screen$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I tap connection notification on Home Screen$")
+	public void TapConnectionNotification() throws Exception {
+		if (PagesCollection.connectToPage == null) {
+			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.loginPage
+					.instantiatePage(ConnectToPage.class);
+		}
+		PagesCollection.contactListPage = PagesCollection.connectToPage
+				.tapConnectNotification();
 	}
 }

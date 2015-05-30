@@ -76,7 +76,6 @@ public final class AndroidLocators {
 
 	public static final class LoginPage {
 
-		public static final String idIHaveAccountButton = "zb__welcome__sign_in";
 
 		public static final String idSignUpButton = "ttv__welcome__create_account";
 
@@ -84,17 +83,9 @@ public final class AndroidLocators {
 
 		public static final String idForgotPass = "ttv_signin_forgot_password";
 
-		public static final String idLoginInput = "get__sign_in__email";
-
-		public static final String idPasswordInput = "get__sign_in__password";
-
 		public static final String idLoginProgressViewContainer = "fl__sign_in__progress_view__container";
 
 		public static final String idWelcomeButtonsContainer = "cm__choose";
-
-		public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
-		
-		public static final String idNotNowButton = "ttv__not_now";
 
 		public static final Function<String, String> xpathLoginMessageByText = text -> String
 				.format("//*[@id='message' and @value='%s']", text);
@@ -218,7 +209,7 @@ public final class AndroidLocators {
 
 		public static final String idPlayPauseMedia = "gtv__media_play";
 
-		public static final String idAddParticipants = "gtv__cursor_participants";
+		public static final String idParticipantsBtn = "gtv__cursor_participants";
 
 		public static final String idPingMessage = "ttv__row_conversation__ping_message";
 
@@ -243,10 +234,6 @@ public final class AndroidLocators {
 		public static final String idConnectRequestConnectTo = "user_name";
 
 		public static final String idNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
-
-		public static final String idDialogPageBottomFrameLayout = "cv";
-
-		public static final String idDialogPageBottom = "fl__cursor__user_avatar_container";
 
 		public static final String idConnectRequestChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
 
@@ -273,7 +260,7 @@ public final class AndroidLocators {
 		public static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
 
 		public static final String xpathLastPingMessage = "(//*[@id='ttv__row_conversation__ping_message'])[last()]";
-		
+
 		public static final String idFakeCursor = "v__cursor__fake_cursor";
 	}
 
@@ -330,7 +317,7 @@ public final class AndroidLocators {
 
 		// Names on avatars are in uppercase and only the first part is visible
 		public static final Function<String, String> xpathParticipantAvatarByName = name -> String
-				.format("//ChatheadWithTextFooter[.//*[@value='%s']]", name
+				.format("//*[@value='%s']/parent::*/parent::*", name
 						.toUpperCase().split("\\s+")[0]);
 	}
 
@@ -467,11 +454,36 @@ public final class AndroidLocators {
 	}
 
 	public static final class UnknownUserDetailsPage {
-		public static final String idOtherUsersName = "taet__participants__header";
+		public static final Function<String, String> xpathHeaderByUserName = name -> String
+				.format("//*[@id='taet__participants__header']", name);
 
-		public static final String idConnectButton = "ttv__participants__left_label";
+		public static final String xpathConnectButton = "//*[@id='ttv__participants__left_label' and @value='Connect']";
+
+		public static final String xpathPendingButton = "//*[@id='ttv__participants__left_label' and @value='Pending']";
 
 		public static final String idCommonUsersLabel = "ttv__connect_request__common_users__label";
 
+	}
+	
+	/*
+	 * Registration classes
+	 */
+	
+	public static final class WelcomePage {
+		public static final String phoneInputField = "et__reg__phone";
+
+		public static final String idHaveAccountButton = "zb__welcome__sign_in";
+		
+		public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
+	}
+	
+	public static final class EmailSignInPage {
+		public static final String idLoginInput = "get__sign_in__email";
+
+		public static final String idPasswordInput = "get__sign_in__password";
+	}
+	
+	public static final class AddPhoneNumberPage {
+		public static final String idNotNowButton = "ttv__not_now";
 	}
 }

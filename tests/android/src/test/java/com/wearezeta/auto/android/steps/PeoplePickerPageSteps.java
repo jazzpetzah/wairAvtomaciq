@@ -513,7 +513,7 @@ public class PeoplePickerPageSteps {
 					.tapOnMyAvatar();
 			PagesCollection.personalInfoPage.tapOptionsButton();
 			PagesCollection.personalInfoPage.tapSignOutBtn();
-			new LoginPageSteps().GivenISignIn(usrMgr.getSelfUser().getEmail(),
+			new EmailSignInSteps().GivenISignIn(usrMgr.getSelfUser().getEmail(),
 					usrMgr.getSelfUser().getPassword());
 			new ContactListPageSteps().GivenISeeContactList();
 			PagesCollection.peoplePickerPage = PagesCollection.contactListPage

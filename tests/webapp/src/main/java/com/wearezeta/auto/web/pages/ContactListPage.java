@@ -520,4 +520,13 @@ public class ContactListPage extends WebPage {
 		final WebElement entry = getDriver().findElement(locator);
 		return AccentColor.getByRgba(entry.getCssValue("background-color"));
 	}
+
+	public boolean isPingIconVisibleForConversation(String conversationName)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathPingIconByContactName
+						.apply(conversationName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
+	}
 }

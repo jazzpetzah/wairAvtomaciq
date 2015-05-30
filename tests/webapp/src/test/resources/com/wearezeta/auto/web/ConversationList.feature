@@ -12,7 +12,7 @@ Feature: Conversation List
     And I unarchive conversation <Contact>
     Then I see Contact list with name <Contact>
 
-    Examples:
+    Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
@@ -45,3 +45,18 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id1720
+  Scenario Outline: Verify Ping icon in the conversation list
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    When I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open self profile
+    When <Contact> pinged the conversation with <Name>
+    And I see ping icon in conversation with <Contact>
+    Then I verify ping icon in conversation with <Contact> has <ColorName> color
+
+    Examples: 
+      | Login      | Password      | Name      | ColorName  | Contact   |
+      | user1Email | user1Password | user1Name | StrongBlue | user2Name |

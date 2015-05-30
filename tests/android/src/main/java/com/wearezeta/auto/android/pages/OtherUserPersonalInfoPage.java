@@ -257,7 +257,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		groupChatName.click();
 	}
 
-	public void renameGroupChat(String chatName) {
+	public void renameGroupChat(String chatName) throws Exception {
+		groupChatNameEditable.clear();
 		groupChatNameEditable.sendKeys(chatName + "\n");
 	}
 
@@ -291,6 +292,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public DialogPage tabBackButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), closeButton);
 		closeButton.click();
 		return new DialogPage(this.getLazyDriver());
 	}
