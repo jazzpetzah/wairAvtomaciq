@@ -122,7 +122,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
       | user1Email | user1Password | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
-  @id2212 @staging
+  @id2212 @regression
   Scenario Outline: Correct calling bar in different places
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
