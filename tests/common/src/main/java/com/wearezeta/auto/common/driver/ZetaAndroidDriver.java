@@ -192,7 +192,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		} catch (WebDriverException e) {
 			if (e.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
 				if (driverCommand.equals(DriverCommand.SCREENSHOT)) {
-					log.warn("Selenium has failed to take a screenshot using the standard instrumentation. Trying ADB workaround...");
+					log.warn("Trying ADB workaround to take a full screen shot...");
 					return this.takeFullScreenShotWithAdb();
 				} else {
 					final long milliscondsStarted = System.currentTimeMillis();

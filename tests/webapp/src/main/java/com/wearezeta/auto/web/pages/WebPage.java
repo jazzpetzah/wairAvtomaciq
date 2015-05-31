@@ -1,14 +1,11 @@
 package com.wearezeta.auto.web.pages;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.Alert;
 
 import com.wearezeta.auto.common.BasePage;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 
 public class WebPage extends BasePage {
@@ -53,10 +50,6 @@ public class WebPage extends BasePage {
 							"'%s' page does not support direct navigation and can be loaded from other pages only",
 							this.getClass().getSimpleName()));
 		}
-	}
-
-	public Optional<BufferedImage> takeScreenshot() throws Exception {
-		return DriverUtils.takeFullScreenShot(this.getDriver());
 	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException,
