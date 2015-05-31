@@ -1,10 +1,14 @@
 package com.wearezeta.auto.common.driver;
 
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.jetty.http.HttpStatus;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebDriverException;
@@ -17,6 +21,7 @@ import org.openqa.selenium.remote.RemoteTouchScreen;
 import org.openqa.selenium.remote.Response;
 
 import com.google.common.base.Throwables;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import io.appium.java_client.android.AndroidDriver;
@@ -135,7 +140,40 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		return this.touch;
 	}
 
-	private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 1000;
+	/**
+	 * Workaround for selendroid when it cannot take a screenshot of the screen
+	 * if main app is not in foreground
+	 * 
+	 * @return Selenium Response instance
+	 */
+	private Response takeFullScreenShotWithAdb() {
+		final Response result = new Response();
+		File tmpScreenshot = null;
+		try {
+			tmpScreenshot = File.createTempFile("tmp", ".png", null);
+			final String adbCommandsChain = String.format(
+					"adb shell screencap -p /sdcard/fullscreen.png; "
+							+ "adb pull /sdcard/fullscreen.png %s; "
+							+ "adb shell rm /sdcard/fullscreen.png",
+					tmpScreenshot.getCanonicalPath());
+			CommonUtils.executeOsXCommand(new String[] { "/bin/bash", "-c",
+					adbCommandsChain });
+			final byte[] output = FileUtils.readFileToByteArray(tmpScreenshot);
+			result.setSessionId(this.getSessionId().toString());
+			result.setStatus(HttpStatus.OK_200);
+			result.setValue(Base64.encodeBase64(output));
+			return result;
+		} catch (Exception e) {
+			// Wrap generic error into WebDriverException
+			throw new WebDriverException(e.getMessage(), e);
+		} finally {
+			if (tmpScreenshot != null) {
+				tmpScreenshot.delete();
+			}
+		}
+	}
+
+	private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 3000;
 	private static final String SERVER_SIDE_ERROR_SIGNATURE = "unknown server-side error";
 
 	/**
@@ -152,28 +190,32 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		try {
 			return super.execute(driverCommand, parameters);
 		} catch (WebDriverException e) {
-			if (e.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)
-					&& !driverCommand.equals(DriverCommand.SCREENSHOT)) {
-				final long milliscondsStarted = System.currentTimeMillis();
-				while (System.currentTimeMillis() - milliscondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
-					try {
-						Thread.sleep(200);
-					} catch (InterruptedException e1) {
-						Throwables.propagate(e1);
-					}
-					try {
-						return super.execute(driverCommand, parameters);
-					} catch (WebDriverException e1) {
-						if (!e.getMessage().contains(
-								SERVER_SIDE_ERROR_SIGNATURE)) {
-							throw e1;
+			if (e.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
+				if (driverCommand.equals(DriverCommand.SCREENSHOT)) {
+					log.warn("Selenium has failed to take a screenshot using the standard instrumentation. Trying ADB workaround...");
+					return this.takeFullScreenShotWithAdb();
+				} else {
+					final long milliscondsStarted = System.currentTimeMillis();
+					while (System.currentTimeMillis() - milliscondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
+						try {
+							Thread.sleep(200);
+						} catch (InterruptedException e1) {
+							Throwables.propagate(e1);
 						}
-					}
-				}
-				log.error(String
-						.format("Android driver is still not avilable after '%s' seconds timeout",
-								DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000));
-			}
+						try {
+							return super.execute(driverCommand, parameters);
+						} catch (WebDriverException e1) {
+							if (!e.getMessage().contains(
+									SERVER_SIDE_ERROR_SIGNATURE)) {
+								throw e1;
+							}
+						}
+					} // while have time
+				} // if command is screenshot
+			} // if getMessage contains
+			log.error(String
+					.format("Android driver is still not avilable after '%s' seconds timeout",
+							DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000));
 			throw e;
 		}
 	}

@@ -49,7 +49,7 @@ public abstract class OSXPage extends BasePage {
 	}
 
 	public Optional<BufferedImage> takeScreenshot() throws Exception {
-		return DriverUtils.takeScreenshot(this.getDriver());
+		return DriverUtils.takeFullScreenShot(this.getDriver());
 	}
 
 	public void startApp() throws Exception {

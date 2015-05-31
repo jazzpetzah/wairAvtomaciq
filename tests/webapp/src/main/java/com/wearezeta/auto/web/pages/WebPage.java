@@ -56,7 +56,7 @@ public class WebPage extends BasePage {
 	}
 
 	public Optional<BufferedImage> takeScreenshot() throws Exception {
-		return DriverUtils.takeScreenshot(this.getDriver());
+		return DriverUtils.takeFullScreenShot(this.getDriver());
 	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException,

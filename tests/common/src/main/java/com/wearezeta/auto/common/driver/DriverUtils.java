@@ -563,14 +563,15 @@ public class DriverUtils {
 		PlatformDrivers.setDefaultImplicitWaitTimeout(driver);
 	}
 
-	public static Optional<BufferedImage> takeScreenshot(ZetaDriver driver) {
+	public static Optional<BufferedImage> takeFullScreenShot(ZetaDriver driver)
+			throws Exception {
 		try {
-			byte[] scrImage = ((TakesScreenshot) driver)
+			final byte[] scrImage = ((TakesScreenshot) driver)
 					.getScreenshotAs(OutputType.BYTES);
-			InputStream in = new ByteArrayInputStream(scrImage);
-			BufferedImage bImageFromConvert = ImageIO.read(in);
+			final BufferedImage bImageFromConvert = ImageIO
+					.read(new ByteArrayInputStream(scrImage));
 			return Optional.of(bImageFromConvert);
-		} catch (Exception e) {
+		} catch (WebDriverException e) {
 			// e.printStackTrace();
 			log.error("Selenium driver has failed to take the screenshot of the current screen!");
 		}
@@ -579,10 +580,8 @@ public class DriverUtils {
 
 	public static void ToggleNetworkConnectionAndroid(AndroidDriver driver,
 			boolean airplane, boolean wifi, boolean data) {
-
 		NetworkConnectionSetting connection = new NetworkConnectionSetting(
 				airplane, wifi, data);
-
 		driver.setNetworkConnection(connection);
 	}
 

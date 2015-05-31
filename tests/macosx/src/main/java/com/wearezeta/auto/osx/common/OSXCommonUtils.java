@@ -220,13 +220,13 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static NSPoint calculateScreenResolution(ZetaDriver driver)
-			throws IOException {
-		BufferedImage im = DriverUtils.takeScreenshot(driver).orElseThrow(
-				IllegalStateException::new);
+			throws Exception {
+		BufferedImage im = DriverUtils.takeFullScreenShot(driver)
+				.orElseThrow(IllegalStateException::new);
 		return new NSPoint(im.getWidth(), im.getHeight());
 	}
 
-	public static boolean isRetinaDisplay(ZetaDriver driver) throws IOException {
+	public static boolean isRetinaDisplay(ZetaDriver driver) throws Exception {
 		NSPoint size = calculateScreenResolution(driver);
 		return isRetinaDisplay(size.x(), size.y());
 	}
@@ -245,16 +245,16 @@ public class OSXCommonUtils extends CommonUtils {
 	}
 
 	public static int screenPixelsMultiplier(AppiumDriver driver)
-			throws IOException {
+			throws Exception {
 		return (isRetinaDisplay((ZetaDriver) driver)) ? OSXConstants.Common.SIZE_MULTIPLIER_RETINA
 				: OSXConstants.Common.SIZE_MULTIPLIER_NO_RETINA;
 	}
 
 	public static BufferedImage takeElementScreenshot(WebElement element,
-			AppiumDriver driver) throws IOException {
+			AppiumDriver driver) throws Exception {
 		int multiply = screenPixelsMultiplier(driver);
 
-		BufferedImage screenshot = DriverUtils.takeScreenshot(
+		BufferedImage screenshot = DriverUtils.takeFullScreenShot(
 				(ZetaDriver) driver).orElseThrow(IllegalStateException::new);
 		NSPoint elementLocation = NSPoint.fromString(element
 				.getAttribute(OSXConstants.Attributes.AXPOSITION));
