@@ -76,7 +76,6 @@ public final class AndroidLocators {
 
 	public static final class LoginPage {
 
-
 		public static final String idSignUpButton = "ttv__welcome__create_account";
 
 		public static final String idLoginButton = "pcb__signin__email";
@@ -330,18 +329,26 @@ public final class AndroidLocators {
 
 		public static final String idParticipantsClose = "gtv__participants__close";
 
-		@SuppressWarnings("unused")
-		private static final String xpathTopPeopleRoot = "//*[@id='fl__conversation_list_main']";
-
 		public static final String idPickerTopPeopleHeader = "ttv_pickuser__list_header_title";
 
-		public static final String idPickerUserSlidingRow = "ll__pickuser__sliding_row";
+		// numbering starts from 1
+		public static final Function<Integer, String> xpathPYMKItemByIdx = idx -> String
+				.format("(//*[@id='ll__pickuser__sliding_row'])[%d]", idx);
+		public static final Function<Integer, String> xpathPYMKItemByIdxLabel = idx -> String
+				.format("%s//*[@id='ttv_pickuser__recommended_name']",
+						xpathPYMKItemByIdx.apply(idx));
+		public static final Function<Integer, String> xpathPYMKItemByIdxPlusButton = idx -> String
+				.format("%s//*[@id='gtv__pickuser__recommended__quick_add']",
+						xpathPYMKItemByIdx.apply(idx));
+		public static final Function<Integer, String> xpathPYMKItemByIdxHideButton = idx -> String
+				.format("%s/parent::*//*[@value='HIDE']",
+						xpathPYMKItemByIdx.apply(idx));
 
-		public static final String idPickerUserHideMenu = "hrum__pickuser__hide_menu";
+		public static final Function<String, String> xpathPYMKItemByName = name -> String
+				.format("//*[@id='ll__pickuser__sliding_row' and .//*[@value='%s']]",
+						name);
 
 		public static final String idPickerRecomendedName = "ttv_pickuser__recommended_name";
-
-		public static final String idPickerRecomendedQuickAdd = "gtv__pickuser__recommended__quick_add";
 
 		public static final String idPickerUsersUnselected = "pick_user_chathead_unselected";
 
@@ -464,25 +471,25 @@ public final class AndroidLocators {
 		public static final String idCommonUsersLabel = "ttv__connect_request__common_users__label";
 
 	}
-	
+
 	/*
 	 * Registration classes
 	 */
-	
+
 	public static final class WelcomePage {
 		public static final String phoneInputField = "et__reg__phone";
 
 		public static final String idHaveAccountButton = "zb__welcome__sign_in";
-		
+
 		public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
 	}
-	
+
 	public static final class EmailSignInPage {
 		public static final String idLoginInput = "get__sign_in__email";
 
 		public static final String idPasswordInput = "get__sign_in__password";
 	}
-	
+
 	public static final class AddPhoneNumberPage {
 		public static final String idNotNowButton = "ttv__not_now";
 	}
