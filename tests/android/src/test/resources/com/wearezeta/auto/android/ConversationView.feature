@@ -318,9 +318,9 @@ Feature: Conversation View
   #   | Login      | Password      | Name      | Contact   |
   #   | user1Email | user1Password | user1Name | user2Name |
 
- @id170 @staging
+ @id170 @regression
   Scenario Outline: Verify you can send and play youtube link
-    Given There are 3 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact1>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
