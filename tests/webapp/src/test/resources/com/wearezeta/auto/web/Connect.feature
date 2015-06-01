@@ -19,8 +19,8 @@ Feature: Connect
   Scenario Outline: Verify pending user profiles contain all the info required by spec
     Given There are 2 users where <Name> is me
     Given <UnknownContact> sent connection request to me
-    Given I Sign in using login <Login> and password <Password>
     Given User me change accent color to VividRed
+    Given I Sign in using login <Login> and password <Password>
     Then I see connection request from one user
     When I open the list of incoming connection requests
     Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
@@ -259,7 +259,7 @@ Feature: Connect
       | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1     | Msg2     | Picture1                  | Picture2                 |
       | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1 | Message2 | userpicture_landscape.jpg | userpicture_portrait.jpg |
 
-  @staging @id2317
+  @regression @id2317
   Scenario Outline: Verify you can dismiss user suggestion in PYMK list
     Given There are 3 users where <Me> is me
     Given User <Contact1> has contact <Me> in address book
@@ -277,7 +277,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
       | user1Name | user1Email | user1Password | user2Name | user3Name |
 
-  @staging @id2318
+  @regression @id2318
   Scenario Outline: Verify you can add a user from PYMK list
     Given There are 3 users where <Me> is me
     Given User <Contact1> has contact <Me> in address book
