@@ -6,18 +6,9 @@ Feature: Registration
     And I input a new phone number for user <Name>
     And I input the verification code
     And I input my name
-    #And I press Camera button twice
-    #And I See selected picture
-    #And I confirm selection
-    #And I enter name <Name>
-    #And I enter email <Email>
-    #And I enter password <Password>
-    #And I submit registration data
-    #Then I see confirmation page
-    #And I minimize the application
-    #And I activate user by URL
-    #And I wait for 10 seconds
-    #And I see Contact list with no contacts
+    And I press Camera button twice
+    And I confirm selection
+    And I see Contact list with no contacts
 
     Examples: 
       | AreaCode 	| Name      |

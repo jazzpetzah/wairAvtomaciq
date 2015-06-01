@@ -35,9 +35,9 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I press Camera button twice$")
 	public void WhenIPressCameraButton() throws Exception {
-		PagesCollection.registrationPage.clickCameraButton();
+		PagesCollection.profilePicturePage.clickCameraButton();
 		Thread.sleep(2000);
-		PagesCollection.registrationPage.clickCameraButton();
+		PagesCollection.profilePicturePage.clickCameraButton();
 	}
 
 	/**
@@ -64,19 +64,6 @@ public class RegistrationPageSteps {
 	}
 
 	/**
-	 * Checks to see that a picture has been selected from either the gallery or
-	 * the camera
-	 * 
-	 * @step. ^I See selected picture$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I See selected picture$")
-	public void ISeeSelectedPicture() throws Exception {
-		Assert.assertTrue(PagesCollection.registrationPage.isPictureSelected());
-	}
-
-	/**
 	 * Presses the confirm button to confirm the selected picture
 	 * 
 	 * @step. ^I confirm selection$
@@ -84,29 +71,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I confirm selection$")
 	public void IConfirmSelection() throws Exception {
-		PagesCollection.registrationPage.confirmPicture();
-	}
-
-	/**
-	 * Enters a name in the input field in the registration process
-	 * 
-	 * @step. ^I enter name (.*)$
-	 * 
-	 * @param name
-	 * @throws Exception
-	 */
-	@When("^I enter name (.*)$")
-	public void IEnterName(String name) throws Exception {
-		try {
-			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-		} catch (NoSuchUserException e) {
-			if (this.userToRegister == null) {
-				this.userToRegister = new ClientUser();
-			}
-			this.userToRegister.setName(name);
-			this.userToRegister.addNameAlias(name);
-		}
-		PagesCollection.registrationPage.setName(this.userToRegister.getName());
+		PagesCollection.contactListPage = PagesCollection.profilePicturePage.confirmPicture();
 	}
 
 	/**

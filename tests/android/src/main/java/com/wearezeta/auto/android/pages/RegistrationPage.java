@@ -13,12 +13,6 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class RegistrationPage extends AndroidPage {
 
-	@FindBy(id = AndroidLocators.DialogPage.idDialogTakePhotoButton)
-	private WebElement cameraButton;
-
-	@FindBy(xpath = AndroidLocators.DialogPage.xpathConfirmOKButton)
-	private WebElement confirmImageButton;
-
 	@FindBy(id = AndroidLocators.RegistrationPage.idSignUpGalleryIcon)
 	protected WebElement signUpGalleryIcon;
 
@@ -45,25 +39,8 @@ public class RegistrationPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public void clickCameraButton() throws Exception {
-		this.getWait().until(
-				ExpectedConditions.elementToBeClickable(cameraButton));
-		cameraButton.click();
-	}
-
 	public void selectPicture() {
 		signUpGalleryIcon.click();
-	}
-
-	public boolean isPictureSelected() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.xpathConfirmOKButton));
-	}
-
-	public void confirmPicture() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				confirmImageButton);
-		confirmImageButton.click();
 	}
 
 	public void setName(String name) throws Exception {

@@ -30,7 +30,7 @@ public class WelcomePageSteps {
 	}
 
 	/**
-	 * Press the "I have an account" button on the welcome page. to switch to
+	 * Press the "I have an account" button on the welcome page to switch to
 	 * sign in using email address
 	 * 
 	 * @step. ^I switch to email sign in screen$
