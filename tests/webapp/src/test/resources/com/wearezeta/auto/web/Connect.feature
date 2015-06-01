@@ -256,8 +256,8 @@ Feature: Connect
     Then I see text message <Msg2>
 
     Examples: 
-      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1       | Msg2     | Picture1 | Picture2    |
-      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1   | Message2 | cat.jpg  | puppies.jpg |
+      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1     | Msg2     | Picture1                  | Picture2                 |
+      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1 | Message2 | userpicture_landscape.jpg | userpicture_portrait.jpg |
 
   @staging @id2317
   Scenario Outline: Verify you can dismiss user suggestion in PYMK list
@@ -309,7 +309,7 @@ Feature: Connect
     Then I see START A CONVERSATION action for <Contact> in conversation
     Then I do not see text message
 
-    Examples:
+    Examples: 
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
