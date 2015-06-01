@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import com.wearezeta.auto.android.locators.AndroidLocators.AddPhoneNumberPage;
+import com.wearezeta.auto.android.pages.registration.AreaCodePage;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.AbstractPagesCollection;
@@ -28,4 +29,5 @@ public class PagesCollection extends AbstractPagesCollection{
 	public static WelcomePage welcomePage = null;
 	public static EmailSignInPage emailSignInPage = null;
 	public static AddPhoneNumberPage addPhoneNumberPage = null;
+	public static AreaCodePage areaCodePage = null;
 }

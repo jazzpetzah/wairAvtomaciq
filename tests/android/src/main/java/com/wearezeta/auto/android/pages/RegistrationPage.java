@@ -18,9 +18,6 @@ public class RegistrationPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.DialogPage.idDialogTakePhotoButton)
 	private WebElement cameraButton;
 
-	@FindBy(id = AndroidLocators.RegistrationPage.idRegistrationBack)
-	private WebElement backButton;
-
 	@FindBy(xpath = AndroidLocators.DialogPage.xpathConfirmOKButton)
 	private WebElement confirmImageButton;
 
@@ -29,12 +26,6 @@ public class RegistrationPage extends AndroidPage {
 
 	@FindBy(xpath = AndroidLocators.RegistrationPage.xpathNameField)
 	protected WebElement nameField;
-
-	@FindBy(xpath = AndroidLocators.RegistrationPage.xpathEmailField)
-	private WebElement emailField;
-
-	@FindBy(id = AndroidLocators.RegistrationPage.idNewPasswordField)
-	private WebElement passwordField;
 
 	@FindBy(id = AndroidLocators.RegistrationPage.idCreateUserBtn)
 	private WebElement createUserBtn;
@@ -91,20 +82,7 @@ public class RegistrationPage extends AndroidPage {
 				.until(ExpectedConditions.elementToBeClickable(nextArrow));
 		nextArrow.click();
 	}
-
-	public void setEmail(String email) throws Exception {
-		assert DriverUtils.isElementPresentAndDisplayed(emailField);
-		emailField.sendKeys(email);
-		this.getWait()
-				.until(ExpectedConditions.elementToBeClickable(nextArrow));
-		nextArrow.click();
-	}
-
-	public void setPassword(String password) throws Exception {
-		assert DriverUtils.isElementPresentAndDisplayed(passwordField);
-		passwordField.sendKeys(password);
-	}
-
+	
 	public void createAccount() throws Exception {
 		assert DriverUtils
 				.waitUntilElementClickable(getDriver(), createUserBtn);
@@ -120,11 +98,6 @@ public class RegistrationPage extends AndroidPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(AndroidLocators.PeoplePickerPage.idPickerSearch));
 		return new PeoplePickerPage(this.getLazyDriver());
-	}
-
-	public void pressBackButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), backButton);
-		backButton.click();
 	}
 
 }

@@ -86,19 +86,6 @@ public class RegistrationPageSteps {
 	}
 
 	/**
-	 * Goes backwards one step in the registration process. This button is
-	 * available at all steps of the process
-	 * 
-	 * @step. ^I press Registration back button$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I press Registration back button$")
-	public void IPressRegistrationBackButton() throws Exception {
-		PagesCollection.registrationPage.pressBackButton();
-	}
-
-	/**
 	 * Enters a name in the input field in the registration process
 	 * 
 	 * @step. ^I enter name (.*)$
@@ -118,60 +105,6 @@ public class RegistrationPageSteps {
 			this.userToRegister.addNameAlias(name);
 		}
 		PagesCollection.registrationPage.setName(this.userToRegister.getName());
-	}
-
-	/**
-	 * Inputs an email address into the email input field (could these not be
-	 * replaced by a general "input" step?)
-	 * 
-	 * @step. ^I enter email (.*)$
-	 * 
-	 * @param email
-	 * @throws Exception
-	 */
-	@When("^I enter email (.*)$")
-	public void IEnterEmail(String email) throws Exception {
-		try {
-			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
-					.getEmail();
-			this.userToRegister.setEmail(realEmail);
-		} catch (NoSuchUserException e) {
-			if (this.userToRegister == null) {
-				this.userToRegister = new ClientUser();
-			}
-			this.userToRegister.setEmail(email);
-		}
-		this.userToRegister.clearEmailAliases();
-		this.userToRegister.addEmailAlias(email);
-		PagesCollection.registrationPage.setEmail(this.userToRegister
-				.getEmail());
-	}
-
-	/**
-	 * Inputs a password into the password input field (could these not be
-	 * replaced by a general "input" step?)
-	 * 
-	 * @step. ^I enter password (.*)$
-	 * 
-	 * @param password
-	 * @throws Exception
-	 */
-	@When("^I enter password (.*)$")
-	public void IEnterPassword(String password) throws Exception {
-		try {
-			String realPassword = usrMgr.findUserByPasswordAlias(password)
-					.getPassword();
-			this.userToRegister.setPassword(realPassword);
-		} catch (NoSuchUserException e) {
-			if (this.userToRegister == null) {
-				this.userToRegister = new ClientUser();
-			}
-			this.userToRegister.setPassword(password);
-		}
-		this.userToRegister.clearPasswordAliases();
-		this.userToRegister.addPasswordAlias(password);
-		PagesCollection.registrationPage.setPassword(this.userToRegister
-				.getPassword());
 	}
 
 	/**

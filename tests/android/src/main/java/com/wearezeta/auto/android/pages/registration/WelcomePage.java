@@ -36,6 +36,8 @@ public class WelcomePage extends AndroidPage {
 	@FindBy(id = AndroidLocators.WelcomePage.idWelcomeSlogan)
 	private List<WebElement> welcomeSloganContainer;
 	
+	public static final String areaCodeSelector = "tv__country_code";
+	
 	public WelcomePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -57,5 +59,10 @@ public class WelcomePage extends AndroidPage {
 	public boolean waitForInitialScreen() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(AndroidLocators.WelcomePage.idWelcomeSlogan));
+	}
+
+	public AreaCodePage clickAreaCodeSelector() throws Exception {
+		this.getDriver().findElementById(areaCodeSelector).click();
+		return new AreaCodePage(this.getLazyDriver());
 	}
 }
