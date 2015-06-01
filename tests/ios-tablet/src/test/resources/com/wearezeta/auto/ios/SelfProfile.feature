@@ -64,7 +64,6 @@ Feature: Self Profile
   @staging @id1054 @id1060    
   Scenario Outline: I verify I am unable to enter a name using only spaces or more than 80 chars [PORTRAIT]
     Given There are 1 users where <Name> is me
-    Given User me change accent color to <Color>
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -77,7 +76,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2054 @id1060
+  @staging @id1054 @id1060
   Scenario Outline: I verify I am unable to enter a name using only spaces or more than 80 chars [LANDSCAPE]
     Given There are 1 users where <Name> is me
     Given I rotate UI to landscape
