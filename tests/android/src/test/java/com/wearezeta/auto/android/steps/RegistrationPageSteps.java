@@ -11,16 +11,11 @@ import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 
 import cucumber.api.java.en.*;
 
 public class RegistrationPageSteps {
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	
-	private ClientUser user;
-
 	private ClientUser userToRegister = null;
 
 	public static Future<String> activationMessage;

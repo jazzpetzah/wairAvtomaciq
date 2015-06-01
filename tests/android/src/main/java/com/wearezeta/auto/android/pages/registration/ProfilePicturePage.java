@@ -2,15 +2,11 @@ package com.wearezeta.auto.android.pages.registration;
 
 import java.util.concurrent.Future;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.ContactListPage;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ProfilePicturePage extends AndroidPage{

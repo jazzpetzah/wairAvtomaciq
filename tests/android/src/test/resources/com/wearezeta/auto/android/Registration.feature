@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @id9 @id30 @smoke @torun
+  @id9 @id30 @smoke
   Scenario Outline: Register new user using front camera
     Given I see welcome screen
     And I input a new phone number for user <Name>
