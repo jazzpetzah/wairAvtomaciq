@@ -198,7 +198,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					final long milliscondsStarted = System.currentTimeMillis();
 					while (System.currentTimeMillis() - milliscondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
 						try {
-							Thread.sleep(200);
+							Thread.sleep(300);
 						} catch (InterruptedException e1) {
 							Throwables.propagate(e1);
 						}
