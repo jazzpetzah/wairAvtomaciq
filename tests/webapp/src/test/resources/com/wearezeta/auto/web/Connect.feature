@@ -19,8 +19,8 @@ Feature: Connect
   Scenario Outline: Verify pending user profiles contain all the info required by spec
     Given There are 2 users where <Name> is me
     Given <UnknownContact> sent connection request to me
-    Given I Sign in using login <Login> and password <Password>
     Given User me change accent color to VividRed
+    Given I Sign in using login <Login> and password <Password>
     Then I see connection request from one user
     When I open the list of incoming connection requests
     Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
