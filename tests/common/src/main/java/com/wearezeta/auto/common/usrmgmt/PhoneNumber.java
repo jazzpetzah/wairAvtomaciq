@@ -5,6 +5,8 @@ import java.util.Random;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.base.Throwables;
+
 public final class PhoneNumber {
 	private static final int MAX_NUMBER_LENGTH = 16;
 	private static final int MIN_NUMBER_LENGTH = 9;
@@ -15,6 +17,21 @@ public final class PhoneNumber {
 	@Override
 	public String toString() {
 		return this.number;
+	}
+
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof String) {
+			try {
+				return this.number.equals(new PhoneNumber("", (String) other)
+						.toString());
+			} catch (IncorrectPhoneNumberException e) {
+				Throwables.propagate(e);
+			}
+		} else if (other instanceof PhoneNumber) {
+			return this.number.equals(((PhoneNumber) other).number);
+		}
+		return false;
 	}
 
 	public static class IncorrectPhoneNumberException extends Exception {

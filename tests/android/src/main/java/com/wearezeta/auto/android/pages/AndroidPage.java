@@ -124,8 +124,7 @@ public abstract class AndroidPage extends BasePage {
 		}
 	}
 
-	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws Exception {
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 		return null;
 	};
 

@@ -46,7 +46,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1720
+  @regression @id1720
   Scenario Outline: Verify Ping icon in the conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

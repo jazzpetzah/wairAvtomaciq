@@ -198,7 +198,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					final long milliscondsStarted = System.currentTimeMillis();
 					while (System.currentTimeMillis() - milliscondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
 						try {
-							Thread.sleep(200);
+							Thread.sleep(300);
 						} catch (InterruptedException e1) {
 							Throwables.propagate(e1);
 						}
@@ -214,7 +214,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 				} // if command is screenshot
 			} // if getMessage contains
 			log.error(String
-					.format("Android driver is still not avilable after '%s' seconds timeout",
+					.format("Android driver is still not available after %s seconds timeout",
 							DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000));
 			throw e;
 		}
