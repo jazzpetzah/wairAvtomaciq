@@ -9,7 +9,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -213,4 +212,22 @@ public class PeoplePickerPage extends WebPage {
 				By.xpath(foundPendingUserXpath));
 		foundPendingUserElement.click();
 	}
+
+	public boolean isTopPeopleLabelVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.className(WebAppLocators.PeoplePickerPage.xpathTopPeopleVisible));
+	}
+
+	public void tapNumberOfTopConnections(int numberToTap) throws Exception {
+		int numberTopSelected = 0;
+		for (int i = 1; i < numberToTap + 1; i++) {
+			numberTopSelected++;
+			assert DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+					By.xpath(xpathTopPeopleListById, i))
+
+		}
+	}
+
 }

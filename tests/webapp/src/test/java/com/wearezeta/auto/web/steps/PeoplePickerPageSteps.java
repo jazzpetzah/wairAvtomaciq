@@ -186,4 +186,24 @@ public class PeoplePickerPageSteps {
 				.clickSendInvitationButton();
 	}
 
+	/**
+	 * Verify Top People list is visible on People Picker page
+	 * 
+	 * @step. ^I see Top People list on People Picker page$
+	 * 
+	 * @throws Exception
+	 */
+
+	@When("^I see Top People list on People picker page$")
+	public void ISeeTopPeopleListOnPeoplePickerPage() throws Exception {
+		Assert.assertTrue("Top People list is not shown",
+				PagesCollection.peoplePickerPage.isTopPeopleLabelVisible());
+	}
+
+	@Then("^I tap on (.*) top connections$")
+	public void WhenITapOnTopConnections(int numberOfTopConnections)
+			throws Exception {
+		PagesCollection.peoplePickerPage
+				.tapNumberOfTopConnections(numberOfTopConnections);
+	}
 }

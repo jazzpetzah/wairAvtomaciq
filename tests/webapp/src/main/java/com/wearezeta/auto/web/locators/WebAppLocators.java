@@ -262,6 +262,15 @@ public final class WebAppLocators {
 				name) -> String
 				.format("%s//*[@data-uie-name='item-user' and .//*[text()='%s'] and .//div[contains(@class,'checkmark icon-check')]]",
 						xpathRoot, name);
+
+		public static final String xpathTopPeopleVisible = "[data-uie-name='status-top-people']";
+
+		public static final Function<Integer, String> xpathTopPeopleListById = (
+				id) -> String.format("%s[%s]",
+				"//div[contains(@class, 'search-list search-list-sm')", id);
+
+		public static final String xpathTopPeopleSelected = xpathTopPeopleListById
+				+ "//div[contains(@class, 'selected')";
 	}
 
 	public static final class RegistrationPage {
