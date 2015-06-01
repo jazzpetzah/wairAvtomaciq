@@ -162,7 +162,7 @@ Feature: Calling
       Given There are 3 users where <Name> is me
       Given Myself is connected to <Contact>,<OtherContact>
       Given I Sign in using login <Login> and password <Password>
-      And I see my name on top of Contact list
+      And I see my avatar on top of Contact list
       And I open conversation with <Contact>
       When <Contact> calls me using <CallBackend>
       And I see the calling bar from user <Contact>
@@ -185,7 +185,7 @@ Feature: Calling
       Given <Contact> starts waiting instance using <CallBackend>
       Given <Contact> accepts next incoming call automatically
       Given I Sign in using login <Login> and password <Password>
-      And I see my name on top of Contact list
+      And I see my avatar on top of Contact list
       And I open conversation with <Contact>
       When I call
       Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
