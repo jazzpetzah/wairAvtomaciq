@@ -17,7 +17,7 @@ public class ProfilePicturePage extends AndroidPage{
 
 	public static final String idDialogTakePhotoButton = "gtv__camera_control__take_a_picture";
 	
-	public static final String idConfirmButton = "ttv__confirmation__confirm";
+	public static final String xPathConfirmButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
 	
 	public ProfilePicturePage(Future<ZetaAndroidDriver> lazyDriver)
 		throws Exception {
@@ -32,7 +32,7 @@ public class ProfilePicturePage extends AndroidPage{
 	}
 	
 	public ContactListPage confirmPicture() throws Exception {
-		WebElement confirmImageButton = this.getDriver().findElementById(idConfirmButton);
+		WebElement confirmImageButton = this.getDriver().findElementByXPath(xPathConfirmButton);
 		confirmImageButton.click();
 		return new ContactListPage(this.getLazyDriver());
 	}

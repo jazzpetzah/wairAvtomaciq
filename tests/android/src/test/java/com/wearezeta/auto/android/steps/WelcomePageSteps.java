@@ -2,7 +2,6 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
