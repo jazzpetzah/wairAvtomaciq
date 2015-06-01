@@ -139,9 +139,9 @@ Feature: Search
     When I see my avatar on top of Contact list
     And I open People Picker from Contact List
     Then I see Top People list on People picker page
-    When I tap on 1 top connections
-    And I choose to create conversation from People Picker
-    Then I see Contact list with name <Contact>
+    #When I click on 1 top connections
+    #And I choose to create conversation from People Picker
+    #Then I see Contact list with name <Contact>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Message1 |

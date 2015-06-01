@@ -200,10 +200,10 @@ public class PeoplePickerPageSteps {
 				PagesCollection.peoplePickerPage.isTopPeopleLabelVisible());
 	}
 
-	@Then("^I tap on (.*) top connections$")
-	public void WhenITapOnTopConnections(int numberOfTopConnections)
-			throws Exception {
-		PagesCollection.peoplePickerPage
-				.tapNumberOfTopConnections(numberOfTopConnections);
-	}
+//	@Then("^I click on (.*) top connections$")
+//	public void WhenITapOnTopConnections(int numberOfTopConnections)
+//			throws Exception {
+//		PagesCollection.peoplePickerPage
+//				.clickNumberOfTopConnections(numberOfTopConnections);
+//	}
 }

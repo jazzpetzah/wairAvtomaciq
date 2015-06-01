@@ -220,14 +220,14 @@ public class PeoplePickerPage extends WebPage {
 						By.className(WebAppLocators.PeoplePickerPage.xpathTopPeopleVisible));
 	}
 
-	public void tapNumberOfTopConnections(int numberToTap) throws Exception {
-		int numberTopSelected = 0;
-		for (int i = 1; i < numberToTap + 1; i++) {
-			numberTopSelected++;
-			assert DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-					By.xpath(xpathTopPeopleListById, i))
-
-		}
-	}
+//	public void clickNumberOfTopConnections(int numberToTap) throws Exception {
+//		int numberTopSelected = 0;
+//		for (int i = 1; i < numberToTap + 1; i++) {
+//			numberTopSelected++;
+//			assert DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+//					By.xpath(xpathTopPeopleListById, i))
+//
+//		}
+//	}
 
 }

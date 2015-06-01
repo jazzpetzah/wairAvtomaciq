@@ -263,7 +263,7 @@ public final class WebAppLocators {
 				.format("%s//*[@data-uie-name='item-user' and .//*[text()='%s'] and .//div[contains(@class,'checkmark icon-check')]]",
 						xpathRoot, name);
 
-		public static final String xpathTopPeopleVisible = "[data-uie-name='status-top-people']";
+		public static final String xpathTopPeopleVisible = "//*[data-uie-name='status-top-people']";
 
 		public static final Function<Integer, String> xpathTopPeopleListById = (
 				id) -> String.format("%s[%s]",
