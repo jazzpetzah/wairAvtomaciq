@@ -40,6 +40,9 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathImageMessageEntry)
 	private List<WebElement> imageMessageEntries;
 
+	@FindBy(id = WebAppLocators.ConversationPage.idConversation)
+	private WebElement conversation;
+
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
 
@@ -197,11 +200,8 @@ public class ConversationPage extends WebPage {
 		try {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
 		} catch (WebDriverException e) {
-			// (safari workaround)
-			final String showImageLabelJScript = "$(\""
-					+ WebAppLocators.ConversationPage.cssRightControlsPanel
-					+ "\").css({'opacity': '100'});";
-			this.getDriver().executeScript(showImageLabelJScript);
+			// safari workaround
+			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssPingButton);
@@ -233,11 +233,8 @@ public class ConversationPage extends WebPage {
 		try {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
 		} catch (WebDriverException e) {
-			// (safari workaround)
-			final String showImageLabelJScript = "$(\""
-					+ WebAppLocators.ConversationPage.cssRightControlsPanel
-					+ "\").css({'opacity': '100'});";
-			this.getDriver().executeScript(showImageLabelJScript);
+			// safari workaround
+			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(WebAppLocators.ConversationPage.xpathCallButton), 5);
@@ -247,11 +244,8 @@ public class ConversationPage extends WebPage {
 		try {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
 		} catch (WebDriverException e) {
-			// (safari workaround)
-			final String showImageLabelJScript = "$(\""
-					+ WebAppLocators.ConversationPage.cssRightControlsPanel
-					+ "\").css({'opacity': '100'});";
-			this.getDriver().executeScript(showImageLabelJScript);
+			// safari workaround
+			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(WebAppLocators.ConversationPage.xpathCallButton), 5);
