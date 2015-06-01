@@ -125,3 +125,16 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Name2     | Login2     | Password2     |
       | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password |
+
+  @staging @id1721
+  Scenario Outline: Verify starting 1:1 conversation with a person from Top People
+    Given There are 2 users where <Name> is me
+    Given I Sign in using login <Login> and password <Password>
+    When I see my avatar on top of Contact list
+    And I open People Picker from Contact List
+    And I see top people list on People picker page
+    Then I tap on 2 top connections
+    And I click Create Conversation button on People picker page
+    And I see the group conversation is opened
+    
+    
