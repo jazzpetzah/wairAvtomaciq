@@ -456,12 +456,14 @@ public class GroupPopoverPageSteps {
 	}
 
 	/**
-	 * Select X users that were found in search results
+	 * Selects the first X participants from Group Participants popover search
+	 * results
 	 *
 	 * @step. ^I select the first (\\d+) participants from Group Participants
 	 *        popover search results$
 	 *
-	 * @param user
+	 * @param amount
+	 *            number of participants to select
 	 * @throws Exception
 	 */
 	@When("^I select the first (\\d+) participants from Group Participants popover search results$")
