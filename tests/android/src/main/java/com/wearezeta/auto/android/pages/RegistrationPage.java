@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -10,7 +9,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class RegistrationPage extends AndroidPage {

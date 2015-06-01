@@ -14,17 +14,17 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
  */
 public class AreaCodePage extends AndroidPage {
 	
-	public static final String idCodeName = "ttv_new_reg__signup__phone__country__row";
+	public static final String idCode = "ttv_new_reg__signup__phone__country__row_code";
 	
-	public static final Function<String, String> xpathFindAreaCode = text -> String
-		.format("//*[@id='" + idCodeName + "' and @value='%s']", text);
+	public static final Function<String, String> xpathFindAreaCode = areaCode -> String
+		.format("//*[@id='" + idCode + "' and @value='%s']", areaCode);
 	
 	public AreaCodePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 	
-	public WelcomePage selectAreaCode(String codeName) throws Exception {
-		this.getDriver().findElementByXPath(xpathFindAreaCode.apply(codeName)).click();
+	public WelcomePage selectAreaCode(String areaCode) throws Exception {
+		this.getDriver().findElementByXPath(xpathFindAreaCode.apply(areaCode)).click();
 		return new WelcomePage(this.getLazyDriver());
 	}
 

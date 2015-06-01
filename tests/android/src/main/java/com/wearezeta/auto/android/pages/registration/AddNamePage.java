@@ -8,7 +8,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class AddNamePage extends AndroidPage {
 
 	public static final String idNameInput = "et__reg__name";
-	public static final String idConfirmButton = "pcb__activate";
+	public static final String idConfirmButton = "pcb__signup";
 	
 	public AddNamePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);

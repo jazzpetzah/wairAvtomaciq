@@ -19,6 +19,8 @@ import cucumber.api.java.en.*;
 
 public class RegistrationPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	
+	private ClientUser user;
 
 	private ClientUser userToRegister = null;
 
