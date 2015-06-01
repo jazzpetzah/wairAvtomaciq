@@ -194,11 +194,15 @@ public final class WebAppLocators {
 				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
 						text);
 
-		public static final String xpathLastTextMessage = "(//*[@data-uie-name='item-message']//*[contains(@class, 'text-inner')])[last()]";
+		public static final String cssLastTextMessage = "[data-uie-name='item-message']:last-child .text-inner";
 
 		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
 
 		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls')]";
+
+		public static final Function<String, String> xpathCallingBarRootByName = text -> String
+				.format("//div[contains(@class, 'call-controls') and div/div/span[text()='%s']]",
+						text);
 
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-check')]";
