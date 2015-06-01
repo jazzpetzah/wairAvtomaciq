@@ -238,17 +238,15 @@ Feature: Connect
     Given I see Contact list
     When I minimize the application
     And <Contact> sent connection request to Me
-    And I restore the application
-    And I see Contact list
-    And I see contact list with name <WaitingMess>
-    And I tap on contact name <WaitingMess>
+    And I wait for 2 seconds
+    And I tap connection notification on Home Screen
     Then I see connect to <Contact> dialog
     And I see Accept and Ignore buttons
     And I press Ignore connect button
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | WaitingMess      |
-      | user1Email | user1Password | user1Name | user2Name | 1 person waiting |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @id553 @regression
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view

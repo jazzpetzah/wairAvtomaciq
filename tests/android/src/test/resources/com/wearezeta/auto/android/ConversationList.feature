@@ -65,7 +65,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1514 @staging
+  @id1514 @regression
   Scenario Outline: Verify unsilince the conversation
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>

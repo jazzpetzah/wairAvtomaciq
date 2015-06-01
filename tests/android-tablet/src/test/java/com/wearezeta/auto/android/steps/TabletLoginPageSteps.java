@@ -27,63 +27,17 @@ public class TabletLoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertTrue("Welcome screen is not visible",
-				TabletPagesCollection.loginPage.waitForInitialScreen());
-		TabletPagesCollection.loginPage.switchToEmailSignIn();
-		TabletPagesCollection.loginPage.setLogin(login);
-		TabletPagesCollection.loginPage.setPassword(password);
+		(new WelcomePageSteps()).ISwitchToEmailSignIn();
+		TabletPagesCollection.emailSignInPage.setLogin(login);
+		TabletPagesCollection.emailSignInPage.setPassword(password);
 		try {
-			TabletPagesCollection.loginPage.doLogIn();
+			TabletPagesCollection.emailSignInPage.logIn();
 			TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage
 					.initProfilePage();
 			PagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
 			TabletPagesCollection.contactListPage = TabletPagesCollection.loginPage
 					.initContactListPage();
 			PagesCollection.contactListPage = TabletPagesCollection.contactListPage;
-		} catch (Exception e) {
-			// Ignore silently
-		}
-		Assert.assertNotNull("Login not passed",
-				TabletPagesCollection.personalInfoPage);
-	}
-
-	/**
-	 * Enter user email and password into corresponding fields on sign in screen
-	 * then taps "Sign In" button
-	 * 
-	 * @step. ^I Sign in to self profile using login (.*) and password (.*)$
-	 * 
-	 * @param login
-	 *            user login string
-	 * @param password
-	 *            user password string
-	 * 
-	 * @throws AssertionError
-	 *             if login operation was unsuccessful
-	 */
-	@Given("^I Sign in to self profile using login (.*) and password (.*)$")
-	public void GivenISignInToProfile(String login, String password)
-			throws Exception {
-		try {
-			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		try {
-			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertTrue("Welcome page is not visible",
-				TabletPagesCollection.loginPage.waitForInitialScreen());
-		TabletPagesCollection.loginPage.switchToEmailSignIn();
-		TabletPagesCollection.loginPage.setLogin(login);
-		TabletPagesCollection.loginPage.setPassword(password);
-		try {
-			TabletPagesCollection.loginPage.doLogIn();
-			TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage
-					.initProfilePage();
-			PagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
 		} catch (Exception e) {
 			// Ignore silently
 		}
@@ -100,7 +54,7 @@ public class TabletLoginPageSteps {
 	 */
 	@When("I attempt to press Login button")
 	public void WhenIPressTabletLogInButton() throws Exception {
-		TabletPagesCollection.loginPage.doLogIn();
+		TabletPagesCollection.emailSignInPage.logIn();
 		TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage
 				.initProfilePage();
 		PagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;

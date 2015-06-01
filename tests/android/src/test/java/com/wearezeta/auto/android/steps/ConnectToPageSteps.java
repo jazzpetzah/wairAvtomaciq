@@ -237,4 +237,21 @@ public class ConnectToPageSteps {
 		PagesCollection.peoplePickerPage = PagesCollection.connectToPage
 				.clickCloseButton();
 	}
+
+	/**
+	 * Tap connection notification on Home Screen
+	 * 
+	 * @step. ^I tap connection notification on Home Screen$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I tap connection notification on Home Screen$")
+	public void TapConnectionNotification() throws Exception {
+		if (PagesCollection.connectToPage == null) {
+			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.loginPage
+					.instantiatePage(ConnectToPage.class);
+		}
+		PagesCollection.contactListPage = PagesCollection.connectToPage
+				.tapConnectNotification();
+	}
 }

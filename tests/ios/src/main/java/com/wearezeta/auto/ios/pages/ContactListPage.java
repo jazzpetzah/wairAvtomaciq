@@ -369,7 +369,7 @@ public class ContactListPage extends IOSPage {
 			log.debug(contacts.get(index).getAttribute("name"));
 			contacts.get(index).click();
 		} catch (WebDriverException e) {
-			BufferedImage im = DriverUtils.takeScreenshot(this.getDriver())
+			BufferedImage im = DriverUtils.takeFullScreenShot(this.getDriver())
 					.orElseThrow(IllegalStateException::new);
 			ImageUtil.storeImageToFile(im, "/Project/ios_crash.jpg");
 			log.debug("Can't select contact by index " + index

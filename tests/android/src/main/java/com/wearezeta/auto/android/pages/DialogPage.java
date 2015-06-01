@@ -359,7 +359,6 @@ public class DialogPage extends AndroidPage {
 	public void confirm() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), okButton);
 		okButton.click();
-		this.verifyDriverIsAvailableAfterTimeout();
 	}
 
 	public void takePhoto() throws Exception {
@@ -441,6 +440,15 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void closeFullScreenImage() throws Exception {
+		// Sometimes X button is opened automatically after some timeout
+		final int MAX_TRIES = 4;
+		int ntry = 1;
+		while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.CommonLocators.idCloseImageBtn), 4)
+				&& ntry <= MAX_TRIES) {
+			this.tapOnCenterOfScreen();
+			ntry++;
+		}
 		assert DriverUtils
 				.waitUntilElementClickable(getDriver(), closeImageBtn);
 		closeImageBtn.click();

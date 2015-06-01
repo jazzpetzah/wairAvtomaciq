@@ -55,7 +55,9 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Write template text message in the currently opened conversation
+	 * Write template text message in the currently opened conversation.
+	 * Patterns are allowed, for example ('a' * 100) will print the a character
+	 * 100 times. Line break is equal to LF char sequence.
 	 *
 	 * @step. ^I write template message (.*)
 	 *
@@ -332,7 +334,7 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Verify a text message is visible in conversation
+	 * Verify a text message is visible in conversation.
 	 *
 	 * @step. ^I see text message (.*)
 	 * @param message
@@ -371,10 +373,13 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Verify the text of the message in conversation
+	 * Verify the text of the last text message in conversation. Patterns are
+	 * allowed, for example ('a' * 100) will print the a character 100 times.
+	 * Line break is equal to LF char sequence.
 	 *
 	 * @step. ^I verify the last text message equals to (.*)
-	 * @param message
+	 * @param expectedMessage
+	 *            the expected message
 	 * @throws Exception
 	 */
 	@Then("^I verify the last text message equals to (.*)")
