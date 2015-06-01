@@ -167,6 +167,8 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathEmbeddedYoutubeVideoById = text -> String
 				.format("//iframe[contains(@src, '%s')]", text);
 
+		public static final String idConversation = "conversation";
+
 		public static final String idConversationInput = "conversation-input-text";
 
 		// This is needed for IE workaround
@@ -248,11 +250,11 @@ public final class WebAppLocators {
 				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 				xpathRoot, name);
 
-		public static final String xpathCloseSearchButton = "//*[@data-uie-name='do-close']";
+		public static final String cssCloseSearchButton = ".search-header span[data-uie-name='do-close']";
 
-		public static final Function<String, String> cssRemoveIconByName = (
+		public static final Function<String, String> cssDismissIconByName = (
 				name) -> String.format(
-				"div[data-uie-value='%s'] span.icon-remove", name);
+				"div[data-uie-value='%s'] span.icon-dismiss", name);
 
 		public static final Function<String, String> cssAddIconByName = (name) -> String
 				.format("div[data-uie-value='%s'] span.icon-add", name);

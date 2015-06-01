@@ -548,6 +548,14 @@ public class DriverUtils {
 		driver.tap(fingerNumber, element, 1);
 	}
 
+	public static void addClass(RemoteWebDriver driver, WebElement element,
+			String cssClass) {
+		String addHoverClassScript = "arguments[0].classList.add('" + cssClass
+				+ "');";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(addHoverClassScript, element);
+	}
+
 	public static void turnOffImplicitWait(RemoteWebDriver driver) {
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
 	}
