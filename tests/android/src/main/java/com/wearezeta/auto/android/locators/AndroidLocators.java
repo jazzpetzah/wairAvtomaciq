@@ -272,6 +272,8 @@ public final class AndroidLocators {
 	}
 
 	public static final class OtherUserPersonalInfoPage {
+		public static final String idParticipantAvatarsContainer = "pfac__participants";
+		
 		public static final String idParticipantsHeader = "ttv__participants__header";
 
 		public static final Function<String, String> xpathPartcipantNameByText = text -> String
