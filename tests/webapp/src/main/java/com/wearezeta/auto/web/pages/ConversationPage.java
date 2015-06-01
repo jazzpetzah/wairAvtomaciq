@@ -49,7 +49,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendImageInput)
 	private WebElement imagePathInput;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathPingButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPingButton)
 	private WebElement pingButton;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathCallButton)
@@ -204,7 +204,7 @@ public class ConversationPage extends WebPage {
 			this.getDriver().executeScript(showImageLabelJScript);
 		}
 		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathPingButton);
+				.cssSelector(WebAppLocators.ConversationPage.cssPingButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, 2) : "Ping button has not been shown after 2 seconds";
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
