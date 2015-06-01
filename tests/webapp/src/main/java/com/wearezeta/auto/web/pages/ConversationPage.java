@@ -57,7 +57,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
 	private WebElement pingMessage;
 
-	@FindBy(xpath = WebAppLocators.ConversationPage.xpathLastTextMessage)
+	@FindBy(css = WebAppLocators.ConversationPage.cssLastTextMessage)
 	private WebElement lastConversationMessage;
 
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
@@ -323,7 +323,7 @@ public class ConversationPage extends WebPage {
 
 	public String getLastTextMessage() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathLastTextMessage));
+				By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
 		return lastConversationMessage.getText();
 	}
 }
