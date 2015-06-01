@@ -20,13 +20,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.UniformInterfaceException;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.onboarding.AddressBook;
+import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.image_send.*;
 
@@ -37,13 +35,16 @@ final class BackendREST {
 	private static final Logger log = ZetaLogger.getLog(BackendREST.class
 			.getSimpleName());
 
+	private static final int MAX_REQUEST_RETRY_COUNT = 3;
+
+	private static final CommonRESTHandlers restHandlers = new CommonRESTHandlers(
+			BackendREST::verifyRequestResult, MAX_REQUEST_RETRY_COUNT);
+
 	private static String backendUrl = null;
 	private static Client client = Client.create();
 	static {
 		log.setLevel(Level.DEBUG);
 	}
-
-	private static final int MAX_REQUEST_RETRY_COUNT = 3;
 
 	private static void verifyRequestResult(int currentResponseCode,
 			int[] acceptableResponseCodes) throws BackendRequestException {
@@ -55,152 +56,6 @@ final class BackendREST {
 							Arrays.toString(acceptableResponseCodes)),
 					currentResponseCode);
 		}
-	}
-
-	private static final String EMPTY_LOG_RECORD = "<EMPTY>";
-
-	private static String formatEntity(Object entity) {
-		String result = "<" + entity.getClass().getSimpleName() + ">";
-		if (entity instanceof String) {
-			if (((String) entity).length() == 0) {
-				result = EMPTY_LOG_RECORD;
-			} else {
-				result = entity.toString();
-			}
-		}
-		return result;
-	}
-
-	private static String httpPost(Builder webResource, Object entity,
-			int[] acceptableResponseCodes) throws BackendRequestException {
-		log.debug("PUT REQUEST...");
-		ClientResponse response = null;
-		int tryNum = 0;
-		do {
-			try {
-				response = webResource.post(ClientResponse.class, entity);
-				break;
-			} catch (ClientHandlerException e) {
-				e.printStackTrace();
-				tryNum++;
-			}
-		} while (tryNum < MAX_REQUEST_RETRY_COUNT);
-		String responseStr;
-		try {
-			responseStr = response.getEntity(String.class);
-		} catch (UniformInterfaceException e) {
-			responseStr = "";
-		}
-		log.debug(String.format(" >>> Input data: %s\n >>> Response: %s",
-				formatEntity(entity), (responseStr.length() > 0) ? responseStr
-						: EMPTY_LOG_RECORD));
-		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return responseStr;
-	}
-
-	private static String httpPut(Builder webResource, Object entity,
-			int[] acceptableResponseCodes) throws BackendRequestException {
-		log.debug("PUT REQUEST...");
-		ClientResponse response = null;
-		int tryNum = 0;
-		do {
-			try {
-				response = webResource.put(ClientResponse.class, entity);
-				break;
-			} catch (ClientHandlerException e) {
-				e.printStackTrace();
-				tryNum++;
-			}
-		} while (tryNum < MAX_REQUEST_RETRY_COUNT);
-		String responseStr;
-		try {
-			responseStr = response.getEntity(String.class);
-		} catch (UniformInterfaceException e) {
-			responseStr = "";
-		}
-		log.debug(String.format(" >>> Input data: %s\n >>> Response: %s",
-				formatEntity(entity), (responseStr.length() > 0) ? responseStr
-						: EMPTY_LOG_RECORD));
-		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return responseStr;
-	}
-
-	private static String httpDelete(Builder webResource,
-			int[] acceptableResponseCodes) throws BackendRequestException {
-		log.debug("DELETE REQUEST...");
-		ClientResponse response = null;
-		int tryNum = 0;
-		do {
-			try {
-				response = webResource.delete(ClientResponse.class);
-				break;
-			} catch (ClientHandlerException e) {
-				e.printStackTrace();
-				tryNum++;
-			}
-		} while (tryNum < MAX_REQUEST_RETRY_COUNT);
-		String responseStr;
-		try {
-			responseStr = response.getEntity(String.class);
-		} catch (UniformInterfaceException e) {
-			responseStr = "";
-		}
-		log.debug(String.format(" >>> Response: %s",
-				(responseStr.length() > 0) ? responseStr : EMPTY_LOG_RECORD));
-		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return responseStr;
-	}
-
-	private static Object httpGet(Builder webResource, Class<?> entityClass,
-			int[] acceptableResponseCodes) throws BackendRequestException {
-		log.debug("GET REQUEST...");
-		ClientResponse response = null;
-		int tryNum = 0;
-		do {
-			try {
-				response = webResource.get(ClientResponse.class);
-				break;
-			} catch (ClientHandlerException e) {
-				e.printStackTrace();
-				tryNum++;
-			}
-		} while (tryNum < MAX_REQUEST_RETRY_COUNT);
-		Object responseObj = null;
-		try {
-			responseObj = response.getEntity(entityClass);
-		} catch (UniformInterfaceException e) {
-			// Do nothing
-		}
-		log.debug(String.format(" >>> Response Object: <%s>",
-				entityClass.getName()));
-		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return responseObj;
-	}
-
-	private static String httpGet(Builder webResource,
-			int[] acceptableResponseCodes) throws BackendRequestException {
-		log.debug("GET REQUEST...");
-		ClientResponse response = null;
-		int tryNum = 0;
-		do {
-			try {
-				response = webResource.get(ClientResponse.class);
-				break;
-			} catch (ClientHandlerException e) {
-				e.printStackTrace();
-				tryNum++;
-			}
-		} while (tryNum < MAX_REQUEST_RETRY_COUNT);
-		String responseStr;
-		try {
-			responseStr = response.getEntity(String.class);
-		} catch (UniformInterfaceException e) {
-			responseStr = "";
-		}
-		log.debug(String.format(" >>> Response: %s",
-				(responseStr.length() > 0) ? responseStr : EMPTY_LOG_RECORD));
-		verifyRequestResult(response.getStatus(), acceptableResponseCodes);
-		return responseStr;
 	}
 
 	private static Builder buildDefaultRequest(String restAction, String accept)
@@ -230,8 +85,8 @@ final class BackendREST {
 		requestBody.put("email", email);
 		requestBody.put("password", password);
 		requestBody.put("label", "");
-		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK });
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
 
@@ -242,8 +97,8 @@ final class BackendREST {
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
 		requestBody.put("code", code);
-		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK });
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
 
@@ -251,7 +106,7 @@ final class BackendREST {
 			throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("users/" + id,
 				MediaType.APPLICATION_JSON, token);
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
@@ -259,7 +114,7 @@ final class BackendREST {
 	public static JSONObject getUserInfo(AuthToken token) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("self",
 				MediaType.APPLICATION_JSON, token);
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
@@ -273,8 +128,9 @@ final class BackendREST {
 		requestBody.put("user", toId);
 		requestBody.put("name", connectName);
 		requestBody.put("message", message);
-		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_OK,
+						HttpStatus.SC_CREATED });
 		return new JSONObject(output);
 	}
 
@@ -295,7 +151,7 @@ final class BackendREST {
 		}
 		Builder webResource = buildDefaultRequestWithAuth(requestUri,
 				MediaType.APPLICATION_JSON, token);
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONArray(output);
 	}
@@ -308,7 +164,7 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("status", newStatus.toString());
-		httpPut(webResource, requestBody.toString(), new int[] {
+		restHandlers.httpPut(webResource, requestBody.toString(), new int[] {
 				HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
 	}
 
@@ -319,7 +175,7 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("email", newEmail);
-		httpPut(webResource, requestBody.toString(),
+		restHandlers.httpPut(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_ACCEPTED });
 	}
 
@@ -333,7 +189,7 @@ final class BackendREST {
 			requestBody.put("old_password", oldPassword);
 		}
 		requestBody.put("new_password", newPassword);
-		httpPut(webResource, requestBody.toString(), new int[] {
+		restHandlers.httpPut(webResource, requestBody.toString(), new int[] {
 				HttpStatus.SC_ACCEPTED, HttpStatus.SC_OK });
 	}
 
@@ -341,7 +197,7 @@ final class BackendREST {
 		Builder webResource = buildDefaultRequestWithAuth("self/email",
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);
-		httpDelete(webResource, new int[] { HttpStatus.SC_OK });
+		restHandlers.httpDelete(webResource, new int[] { HttpStatus.SC_OK });
 	}
 
 	public static void updateSelfPhoneNumber(AuthToken token,
@@ -351,7 +207,7 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
-		httpPut(webResource, requestBody.toString(),
+		restHandlers.httpPut(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_ACCEPTED });
 	}
 
@@ -359,7 +215,7 @@ final class BackendREST {
 		Builder webResource = buildDefaultRequestWithAuth("self/phone",
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);
-		httpDelete(webResource, new int[] { HttpStatus.SC_OK });
+		restHandlers.httpDelete(webResource, new int[] { HttpStatus.SC_OK });
 	}
 
 	public static JSONObject registerNewUser(String email, String userName,
@@ -370,22 +226,10 @@ final class BackendREST {
 		requestBody.put("email", email);
 		requestBody.put("name", userName);
 		requestBody.put("password", password);
-		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_CREATED });
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_CREATED });
 		return new JSONObject(output);
 	}
-
-	// public static JSONObject registerNewUser(PhoneNumber phoneNumber,
-	// String userName) throws Exception {
-	// Builder webResource = buildDefaultRequest("register",
-	// MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
-	// JSONObject requestBody = new JSONObject();
-	// requestBody.put("phone", phoneNumber.toString());
-	// requestBody.put("name", userName);
-	// final String output = httpPost(webResource, requestBody.toString(),
-	// new int[] { HttpStatus.SC_CREATED });
-	// return new JSONObject(output);
-	// }
 
 	public static JSONObject registerNewUser(PhoneNumber phoneNumber,
 			String userName, String activationCode) throws Exception {
@@ -395,8 +239,8 @@ final class BackendREST {
 		requestBody.put("phone", phoneNumber.toString());
 		requestBody.put("name", userName);
 		requestBody.put("phone_code", activationCode);
-		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_CREATED });
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_CREATED });
 		return new JSONObject(output);
 	}
 
@@ -405,7 +249,7 @@ final class BackendREST {
 		Builder webResource = buildDefaultRequest(
 				String.format("activate?code=%s&key=%s", code, key),
 				MediaType.APPLICATION_JSON);
-		httpGet(webResource, new int[] { HttpStatus.SC_OK });
+		restHandlers.httpGet(webResource, new int[] { HttpStatus.SC_OK });
 	}
 
 	public static void bookPhoneNumber(PhoneNumber phoneNumber)
@@ -414,7 +258,7 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
-		httpPost(webResource, requestBody.toString(),
+		restHandlers.httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK });
 	}
 
@@ -444,7 +288,7 @@ final class BackendREST {
 						URLEncoder.encode(phoneNumber.toString(), "utf-8")),
 				MediaType.APPLICATION_JSON).header("Authorization",
 				getAuthValue());
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
@@ -456,7 +300,7 @@ final class BackendREST {
 						URLEncoder.encode(email, "utf-8")),
 				MediaType.APPLICATION_JSON).header("Authorization",
 				getAuthValue());
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
@@ -469,7 +313,7 @@ final class BackendREST {
 		requestBody.put("phone", phoneNumber.toString());
 		requestBody.put("code", code);
 		requestBody.put("dryrun", isDryRun);
-		httpPost(webResource, requestBody.toString(),
+		restHandlers.httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK });
 	}
 
@@ -481,7 +325,7 @@ final class BackendREST {
 		requestBody.put("email", email);
 		requestBody.put("code", code);
 		requestBody.put("dryrun", isDryRun);
-		httpPost(webResource, requestBody.toString(),
+		restHandlers.httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK });
 	}
 
@@ -491,7 +335,7 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
-		httpPost(webResource, requestBody.toString(),
+		restHandlers.httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK });
 	}
 
@@ -502,7 +346,7 @@ final class BackendREST {
 						URLEncoder.encode(phoneNumber.toString(), "utf-8")),
 				MediaType.APPLICATION_JSON).header("Authorization",
 				getAuthValue());
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
@@ -516,8 +360,8 @@ final class BackendREST {
 		Builder webResource = buildDefaultRequestWithAuth("conversations",
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);
-		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_CREATED });
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_CREATED });
 		return new JSONObject(output);
 	}
 
@@ -532,8 +376,8 @@ final class BackendREST {
 					.header("Content-Disposition",
 							request.getContentDisposition())
 					.header("Content-Length", request.getContentLength());
-			final String output = httpPost(webResource, request.getPayload(),
-					new int[] { HttpStatus.SC_CREATED });
+			final String output = restHandlers.httpPost(webResource,
+					request.getPayload(), new int[] { HttpStatus.SC_CREATED });
 			final JSONObject jsonOutput = new JSONObject(output);
 			result.put(jsonOutput, request.getAssetDataObject());
 		}
@@ -561,7 +405,7 @@ final class BackendREST {
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("content", message);
 		requestBody.put("nonce", CommonUtils.generateGUID());
-		httpPost(webResource, requestBody.toString(),
+		restHandlers.httpPost(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_CREATED });
 	}
 
@@ -573,8 +417,9 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("nonce", CommonUtils.generateGUID());
-		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_OK,
+						HttpStatus.SC_CREATED });
 		return new JSONObject(output);
 	}
 
@@ -587,8 +432,9 @@ final class BackendREST {
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("ref", refId);
 		requestBody.put("nonce", CommonUtils.generateGUID());
-		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK, HttpStatus.SC_CREATED });
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_OK,
+						HttpStatus.SC_CREATED });
 		return new JSONObject(output);
 	}
 
@@ -596,7 +442,7 @@ final class BackendREST {
 			throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("conversations",
 				MediaType.APPLICATION_JSON, token);
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
@@ -606,7 +452,7 @@ final class BackendREST {
 		Builder webResource = buildDefaultRequestWithAuth(
 				String.format("conversations/%s/events", convId),
 				MediaType.APPLICATION_JSON, token);
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
@@ -615,7 +461,7 @@ final class BackendREST {
 		Builder webResource = buildDefaultRequestWithAuth(
 				String.format("conversations/last-events"),
 				MediaType.APPLICATION_JSON, token);
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
@@ -638,9 +484,9 @@ final class BackendREST {
 		Builder webResource = buildDefaultRequestWithAuth(
 				String.format("assets/%s/?conv_id=%s", assetId, convId),
 				MediaType.MEDIA_TYPE_WILDCARD, token);
-		final BufferedImage assetDownload = (BufferedImage) httpGet(
-				webResource, BufferedImage.class,
-				new int[] { HttpStatus.SC_OK });
+		final BufferedImage assetDownload = (BufferedImage) restHandlers
+				.httpGet(webResource, BufferedImage.class,
+						new int[] { HttpStatus.SC_OK });
 		return assetDownload;
 	}
 
@@ -694,7 +540,7 @@ final class BackendREST {
 		if (name != null) {
 			requestBody.put("name", name);
 		}
-		httpPut(webResource, requestBody.toString(),
+		restHandlers.httpPut(webResource, requestBody.toString(),
 				new int[] { HttpStatus.SC_OK });
 	}
 
@@ -720,7 +566,7 @@ final class BackendREST {
 				requestBody.put("archived", "false");
 			}
 		}
-		httpPut(webResource, requestBody.toString(), new int[] {
+		restHandlers.httpPut(webResource, requestBody.toString(), new int[] {
 				HttpStatus.SC_OK, HttpStatus.SC_CREATED });
 	}
 
@@ -732,7 +578,7 @@ final class BackendREST {
 						URLEncoder.encode(query, "utf-8")),
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
@@ -749,8 +595,9 @@ final class BackendREST {
 			userIds.put(userId);
 		}
 		requestBody.put("users", userIds);
-		final String output = httpPost(webResource, requestBody.toString(),
-				new int[] { HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
+		final String output = restHandlers.httpPost(webResource,
+				requestBody.toString(), new int[] { HttpStatus.SC_OK,
+						HttpStatus.SC_NO_CONTENT });
 		return new JSONObject(output);
 	}
 
@@ -759,8 +606,8 @@ final class BackendREST {
 		Builder webResource = buildDefaultRequestWithAuth("onboarding/v3",
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);
-		final String output = httpPost(webResource, addressBook.asJSONObject()
-				.toString(), new int[] { HttpStatus.SC_OK });
+		final String output = restHandlers.httpPost(webResource, addressBook
+				.asJSONObject().toString(), new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}
 
@@ -768,7 +615,7 @@ final class BackendREST {
 		Builder webResource = buildDefaultRequestWithAuth("search/suggestions",
 				MediaType.APPLICATION_JSON, token).type(
 				MediaType.APPLICATION_JSON);
-		final String output = httpGet(webResource,
+		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
 	}

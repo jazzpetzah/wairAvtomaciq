@@ -168,9 +168,9 @@ public class ZetaFormatter implements Formatter, Reporter {
 					// suite execution
 					return;
 				}
-				final Optional<BufferedImage> image = DriverUtils
-						.takeScreenshot(driver);
-				if (!image.isPresent()) {
+				Optional<BufferedImage> screenshot = DriverUtils
+						.takeFullScreenShot(driver);
+				if (!screenshot.isPresent()) {
 					log.info(String
 							.format("No screenshot could be taken for the step '%s' (skipped)",
 									currentStep));
@@ -186,7 +186,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 				if (!outputfile.getParentFile().exists()) {
 					outputfile.getParentFile().mkdirs();
 				}
-				ImageIO.write(image.get(), "png", outputfile);
+				ImageIO.write(screenshot.get(), "png", outputfile);
 			} else {
 				log.debug(String
 						.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",

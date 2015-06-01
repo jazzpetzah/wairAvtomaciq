@@ -35,7 +35,7 @@ public class CallingPageSteps {
 	 * 
 	 * @step. ^I see incoming calling message for contact (.*)$
 	 * 
-	 * @param contact
+	 * @param expectedCallerName
 	 *            User name who calls
 	 * @throws Exception
 	 */

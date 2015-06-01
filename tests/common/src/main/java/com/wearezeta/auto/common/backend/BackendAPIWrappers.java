@@ -101,7 +101,7 @@ public final class BackendAPIWrappers {
 	 * @return Created ClientUser instance (with id property filled)
 	 * @throws Exception
 	 */
-	public static ClientUser createUser(ClientUser user, int retryNumber,
+	public static ClientUser createUserViaBackdoor(ClientUser user, int retryNumber,
 			RegistrationStrategy strategy) throws Exception {
 		String activationCode;
 		switch (strategy) {

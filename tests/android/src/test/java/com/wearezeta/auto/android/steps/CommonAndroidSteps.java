@@ -756,34 +756,6 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Transfers Wire contacts to Mac (Why is this step in the android step
-	 * files? - dean).
-	 * 
-	 * @step. ^I add contacts list users to Mac contacts$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I add contacts list users to Mac contacts$")
-	public void AddContactsUsersToMacContacts() throws Exception {
-		commonSteps.AddContactsUsersToMacContacts();
-	}
-
-	/**
-	 * Removes Wire contacts from Mac (Why is this step in the android step
-	 * files? - dean).
-	 * 
-	 * @step. ^I remove contacts list users from Mac contacts$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I remove contacts list users from Mac contacts$")
-	public void IRemoveContactsListUsersFromMacContact() throws Exception {
-		commonSteps.IRemoveContactsListUsersFromMacContact();
-	}
-
-	/**
 	 * User A sends a simple text message to user B
 	 * 
 	 * @step. ^Contact (.*) send message to user (.*)$

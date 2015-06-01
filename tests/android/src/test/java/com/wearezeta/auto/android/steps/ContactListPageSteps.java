@@ -186,19 +186,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Check that Conversation List contains Random user from PYMK
-	 * 
-	 * @step. ^I see contact list loaded with PeoplePicker Random Connect$
-	 * 
-	 */
-	@Then("^I see contact list loaded with PeoplePicker Random Connect$")
-	public void ThenISeeContactListLoadedWithPeoplePickerRandomConnect()
-			throws Exception {
-		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(
-				PeoplePickerPageSteps.randomConnectName, 5));
-	}
-
-	/**
 	 * Checks to see that the muted symbol appears. Note, it just checks to see
 	 * that a mute symbol exists, not that one exists next to a given user
 	 * 

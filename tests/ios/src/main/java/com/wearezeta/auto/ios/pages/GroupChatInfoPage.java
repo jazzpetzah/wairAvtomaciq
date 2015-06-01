@@ -318,11 +318,6 @@ public class GroupChatInfoPage extends IOSPage {
 		conversationName = newName;
 	}
 
-	public BufferedImage takeScreenShot() throws Exception {
-		return DriverUtils.takeScreenshot(this.getDriver()).orElseThrow(
-				IllegalStateException::new);
-	}
-
 	public void clickOnAddButton() {
 		addContactButton.click();
 	}

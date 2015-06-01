@@ -423,13 +423,13 @@ public class CommonUtils {
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
-			WebElement element, AppiumDriver driver) throws IOException {
+			WebElement element, AppiumDriver driver) throws Exception {
 		return getElementScreenshot(element, driver, "iPhone 6");
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
 			WebElement element, AppiumDriver driver, String deviceName)
-			throws IOException {
+			throws Exception {
 		int multiply = 3;
 		if (deviceName.equals("iPhone 6")) {
 			multiply = 2;
@@ -437,7 +437,7 @@ public class CommonUtils {
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
 		final Optional<BufferedImage> screenshot = DriverUtils
-				.takeScreenshot((ZetaDriver) driver);
+				.takeFullScreenShot((ZetaDriver) driver);
 		if (screenshot.isPresent()) {
 			return Optional.of(screenshot.get()
 					.getSubimage(elementLocation.x * multiply,

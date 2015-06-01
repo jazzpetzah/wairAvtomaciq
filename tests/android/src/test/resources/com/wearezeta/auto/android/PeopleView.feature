@@ -170,46 +170,6 @@ Feature: People View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id2214 @staging
-  Scenario Outline: I can dismiss PYMK by Hide button
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list
-    When I press Open StartUI
-    And I see People picker page
-    And I press Clear button
-    And I wait for 30 seconds
-    And I press Open StartUI
-    And I see People picker page
-    And I swipe on random connect
-    And I click on PYMK hide button
-    Then I do not see random connect
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name |
-
-  @id2213 @staging
-  Scenario Outline: I can dismiss PYMK by swipe
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list
-    When I press Open StartUI
-    And I see People picker page
-    And I press Clear button
-    And I wait for 30 seconds
-    And I press Open StartUI
-    And I see People picker page
-    And I swipe on random connect
-    And I hide random connect by swipe
-    Then I do not see random connect
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name |
-
   @id1509 @regression
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
