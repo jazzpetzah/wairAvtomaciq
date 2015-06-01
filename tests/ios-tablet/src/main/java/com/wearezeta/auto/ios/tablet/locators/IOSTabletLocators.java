@@ -13,6 +13,4 @@ public final class IOSTabletLocators {
 		public static final String xpathUserName = "//UIAPopover/UIAStaticText[contains(@name, '%s')]";
 	}
 	
-	
-
 }
