@@ -217,7 +217,7 @@ public class PeoplePickerPage extends WebPage {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.className(WebAppLocators.PeoplePickerPage.xpathTopPeopleVisible));
+						By.xpath(WebAppLocators.PeoplePickerPage.xpathTopPeople));
 	}
 
 //	public void clickNumberOfTopConnections(int numberToTap) throws Exception {
