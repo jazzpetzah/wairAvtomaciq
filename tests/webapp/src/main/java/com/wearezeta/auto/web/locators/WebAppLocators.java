@@ -250,7 +250,7 @@ public final class WebAppLocators {
 				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 				xpathRoot, name);
 
-		public static final String xpathCloseSearchButton = "//*[@data-uie-name='do-close']";
+		public static final String cssCloseSearchButton = ".search-header span[data-uie-name='do-close']";
 
 		public static final Function<String, String> cssDismissIconByName = (
 				name) -> String.format(
