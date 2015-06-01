@@ -60,3 +60,36 @@ Feature: Self Profile
     Examples: 
       | Login      | Password      | Name      | Contact   | Color  |
       | user1Email | user1Password | user1Name | user2Name | Violet |
+      
+  @staging @id1054 @id1060    
+  Scenario Outline: Attempt to enter a name using only spaces or more than 80 chars [PORTRAIT]
+    Given There are 1 users where <Name> is me
+    Given User me change accent color to <Color>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I attempt to change name using only spaces
+    And I see error message asking for more characters
+    Then I attempt to enter an 80 char name
+    And New name is only first 64 chars
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Color  |
+      | user1Email | user1Password | user1Name | user2Name | Violet |
+      
+  @staging @id2054 @id1060
+  Scenario Outline: Attempt to enter a name using only spaces or more than 80 chars [LANDSCAPE]
+    Given There are 1 users where <Name> is me
+    Given User me change accent color to <Color>
+    Given I rotate UI to landscape
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I attempt to change name using only spaces
+    And I see error message asking for more characters
+    Then I attempt to enter an 80 char name
+    And New name is only first 64 chars
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Color  |
+      | user1Email | user1Password | user1Name | user2Name | Violet |
