@@ -47,13 +47,6 @@ public class RegistrationPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public void clickCameraButton() throws Exception {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(cameraButton));

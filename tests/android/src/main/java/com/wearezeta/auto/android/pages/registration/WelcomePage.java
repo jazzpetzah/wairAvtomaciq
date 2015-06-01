@@ -38,12 +38,19 @@ public class WelcomePage extends AndroidPage {
 	
 	public static final String areaCodeSelector = "tv__country_code";
 	
+	public static final String phoneConfirmationButton = "pcb__signup";
+	
 	public WelcomePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 	
 	public void inputPhoneNumber(String phoneNumber) {
-		//TODO implement
+		phoneInputField.sendKeys(phoneNumber);
+	}
+	
+	public VerificationPage clickConfirm() throws Exception {
+		this.getDriver().findElementById(phoneConfirmationButton).click();
+		return new VerificationPage(this.getLazyDriver());
 	}
 	
 	public EmailSignInPage clickIHaveAnAccount() throws Exception {

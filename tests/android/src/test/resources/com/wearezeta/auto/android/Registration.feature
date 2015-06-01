@@ -4,6 +4,12 @@ Feature: Registration
   Scenario Outline: Register new user using front camera
     Given I see welcome screen
     When I set the area code to <AreaCode>
+    And I input a new phone number <PhoneNumber>
+    And I confirm the phone number
+    And I input the verification code
+    And I confirm the verification code
+    And I input my name
+    And I confirm my name
     #And I press Camera button twice
     #And I See selected picture
     #And I confirm selection
@@ -18,8 +24,8 @@ Feature: Registration
     #And I see Contact list with no contacts
 
     Examples: 
-      | AreaCode 	| Email      | Password      | Name      |
-      | QA-Shortcut	| user1Email | user1Password | user1Name |
+      | AreaCode 	| PhoneNumber 	| Password      | Name      |
+      | QA-Shortcut	| 0106151249 	| user1Password | user1Name |
 
   @id38 @regression
   Scenario: Verify the taken photo/selected picture could be changed during registration process
