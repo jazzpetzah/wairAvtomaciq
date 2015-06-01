@@ -3,9 +3,8 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
-import registration.EmailSignInPage;
-
 import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;

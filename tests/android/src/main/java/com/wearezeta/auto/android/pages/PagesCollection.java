@@ -1,9 +1,8 @@
 package com.wearezeta.auto.android.pages;
 
-import registration.EmailSignInPage;
-import registration.WelcomePage;
-
 import com.wearezeta.auto.android.locators.AndroidLocators.AddPhoneNumberPage;
+import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
+import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.AbstractPagesCollection;
 
 
