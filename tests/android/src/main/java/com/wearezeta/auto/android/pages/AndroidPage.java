@@ -105,10 +105,9 @@ public abstract class AndroidPage extends BasePage {
 		return this.getDriver().getOrientation();
 	}
 
-	public CommonAndroidPage minimizeApplication() throws Exception {
+	public void minimizeApplication() throws Exception {
 		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_HOME);
 		Thread.sleep(1000);
-		return new CommonAndroidPage(this.getLazyDriver());
 	}
 
 	public void lockScreen() throws Exception {
@@ -296,6 +295,6 @@ public abstract class AndroidPage extends BasePage {
 
 	public static void clearPagesCollection() throws IllegalArgumentException,
 			IllegalAccessException {
-		clearPagesCollection(PagesCollection.class, AndroidPage.class);
+		clearPagesCollection(AndroidPagesCollection.class, AndroidPage.class);
 	}
 }

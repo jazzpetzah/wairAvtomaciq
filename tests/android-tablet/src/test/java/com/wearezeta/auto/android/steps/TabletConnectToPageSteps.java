@@ -3,7 +3,7 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ConnectToPage;
-import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.TabletPagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
@@ -25,11 +25,11 @@ public class TabletConnectToPageSteps {
 	public void WhenISeeTabletConnectToUserDialog(String contact)
 			throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
+		AndroidPagesCollection.connectToPage = (ConnectToPage) AndroidPagesCollection.currentPage;
 		Assert.assertTrue(
 				String.format(
 						"Connect To header with text '%s' is not visible, but should be",
-						contact), TabletPagesCollection.connectToPage
+						contact), AndroidPagesCollection.connectToPage
 						.isConnectToHeaderVisible(contact));
 	}
 

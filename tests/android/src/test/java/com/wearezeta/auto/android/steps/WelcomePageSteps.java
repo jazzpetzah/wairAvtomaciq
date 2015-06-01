@@ -2,12 +2,30 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
+import com.wearezeta.auto.android.pages.registration.WelcomePage;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class WelcomePageSteps {
+
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
+	private WelcomePage getWelcomePage(boolean shouldCreateIfNotExists)
+			throws Exception {
+		if (shouldCreateIfNotExists) {
+			return (WelcomePage) pagesCollection
+					.getPageOrElseInstantiate(WelcomePage.class);
+		} else {
+			return (WelcomePage) pagesCollection.getPage(WelcomePage.class);
+		}
+	}
+
+	private WelcomePage getWelcomePage() throws Exception {
+		return getWelcomePage(false);
+	}
 
 	/**
 	 * Verify whether Welcome screen is visible
@@ -17,7 +35,8 @@ public class WelcomePageSteps {
 	 */
 	@Given("^I see [Ww]elcome screen$")
 	public void GivenISeeWelcomeScreen() throws Exception {
-		Assert.assertTrue(PagesCollection.welcomePage.waitForInitialScreen());
+		Assert.assertTrue("Welcome page is not shown", getWelcomePage(true)
+				.waitForInitialScreen());
 	}
 
 	/**
@@ -29,7 +48,6 @@ public class WelcomePageSteps {
 	 */
 	@When("^I switch to email sign in screen$")
 	public void ISwitchToEmailSignIn() throws Exception {
-		PagesCollection.emailSignInPage = PagesCollection.welcomePage
-			.clickIHaveAnAccount();
+		pagesCollection.setPage(getWelcomePage().clickIHaveAnAccount());
 	}
 }

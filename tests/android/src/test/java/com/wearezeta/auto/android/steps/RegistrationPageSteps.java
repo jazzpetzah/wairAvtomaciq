@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.steps;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -20,6 +19,24 @@ import cucumber.api.java.en.*;
 public class RegistrationPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
+	private RegistrationPage getRegistrationPage(boolean shouldCreateIfNotExists)
+			throws Exception {
+		if (shouldCreateIfNotExists) {
+			return (RegistrationPage) pagesCollection
+					.getPageOrElseInstantiate(RegistrationPage.class);
+		} else {
+			return (RegistrationPage) pagesCollection
+					.getPage(RegistrationPage.class);
+		}
+	}
+
+	private RegistrationPage getRegistrationPage() throws Exception {
+		return getRegistrationPage(false);
+	}
+
 	private ClientUser userToRegister = null;
 
 	public static Future<String> activationMessage;
@@ -33,21 +50,20 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I press Camera button twice$")
 	public void WhenIPressCameraButton() throws Exception {
-		PagesCollection.registrationPage.clickCameraButton();
+		getRegistrationPage().clickCameraButton();
 		Thread.sleep(2000);
-		PagesCollection.registrationPage.clickCameraButton();
+		getRegistrationPage().clickCameraButton();
 	}
 
 	/**
 	 * Presses the camera button to bring up the camera app
 	 * 
 	 * @step. ^I press Picture button$
-	 * 
-	 * @throws IOException
+	 * @throws Exception
 	 */
 	@When("^I press Picture button$")
-	public void WhenIPressPictureButton() throws IOException {
-		PagesCollection.registrationPage.selectPicture();
+	public void WhenIPressPictureButton() throws Exception {
+		getRegistrationPage().selectPicture();
 	}
 
 	/**
@@ -58,7 +74,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I choose photo from album$")
 	public void WhenIPressChoosePhoto() throws Exception {
-		PagesCollection.registrationPage.selectFirstGalleryPhoto();
+		getRegistrationPage().selectFirstGalleryPhoto();
 	}
 
 	/**
@@ -71,7 +87,8 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I See selected picture$")
 	public void ISeeSelectedPicture() throws Exception {
-		Assert.assertTrue(PagesCollection.registrationPage.isPictureSelected());
+		Assert.assertTrue("The picture is not selected", getRegistrationPage()
+				.isPictureSelected());
 	}
 
 	/**
@@ -82,7 +99,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I confirm selection$")
 	public void IConfirmSelection() throws Exception {
-		PagesCollection.registrationPage.confirmPicture();
+		getRegistrationPage().confirmPicture();
 	}
 
 	/**
@@ -95,7 +112,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I press Registration back button$")
 	public void IPressRegistrationBackButton() throws Exception {
-		PagesCollection.registrationPage.pressBackButton();
+		getRegistrationPage().pressBackButton();
 	}
 
 	/**
@@ -117,7 +134,7 @@ public class RegistrationPageSteps {
 			this.userToRegister.setName(name);
 			this.userToRegister.addNameAlias(name);
 		}
-		PagesCollection.registrationPage.setName(this.userToRegister.getName());
+		getRegistrationPage(true).setName(this.userToRegister.getName());
 	}
 
 	/**
@@ -143,8 +160,7 @@ public class RegistrationPageSteps {
 		}
 		this.userToRegister.clearEmailAliases();
 		this.userToRegister.addEmailAlias(email);
-		PagesCollection.registrationPage.setEmail(this.userToRegister
-				.getEmail());
+		getRegistrationPage(true).setEmail(this.userToRegister.getEmail());
 	}
 
 	/**
@@ -170,8 +186,8 @@ public class RegistrationPageSteps {
 		}
 		this.userToRegister.clearPasswordAliases();
 		this.userToRegister.addPasswordAlias(password);
-		PagesCollection.registrationPage.setPassword(this.userToRegister
-				.getPassword());
+		getRegistrationPage(true)
+				.setPassword(this.userToRegister.getPassword());
 	}
 
 	/**
@@ -187,7 +203,7 @@ public class RegistrationPageSteps {
 	public void ISubmitRegistrationData() throws Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		PagesCollection.registrationPage.createAccount();
+		getRegistrationPage(true).createAccount();
 		// FIXME: activation message should be received in another step!
 		RegistrationPageSteps.activationMessage = IMAPSMailbox.getInstance()
 				.getMessage(expectedHeaders,
@@ -204,8 +220,7 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I see confirmation page$")
 	public void ISeeConfirmationPage() throws Exception {
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isConfirmationVisible());
+		Assert.assertTrue(getRegistrationPage().isConfirmationVisible());
 	}
 
 	/**
@@ -221,8 +236,7 @@ public class RegistrationPageSteps {
 		BackendAPIWrappers
 				.activateRegisteredUserByEmail(RegistrationPageSteps.activationMessage);
 		this.userToRegister.setUserState(UserState.Created);
-		PagesCollection.peoplePickerPage = PagesCollection.registrationPage
-				.continueRegistration();
+		pagesCollection.setPage(getRegistrationPage().continueRegistration());
 	}
 
 }

@@ -2,7 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.TabletPagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -34,10 +34,10 @@ public class TabletLoginPageSteps {
 			TabletPagesCollection.emailSignInPage.logIn();
 			TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage
 					.initProfilePage();
-			PagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
+			AndroidPagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
 			TabletPagesCollection.contactListPage = TabletPagesCollection.loginPage
 					.initContactListPage();
-			PagesCollection.contactListPage = TabletPagesCollection.contactListPage;
+			AndroidPagesCollection.contactListPage = TabletPagesCollection.contactListPage;
 		} catch (Exception e) {
 			// Ignore silently
 		}
@@ -57,7 +57,7 @@ public class TabletLoginPageSteps {
 		TabletPagesCollection.emailSignInPage.logIn();
 		TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage
 				.initProfilePage();
-		PagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
+		AndroidPagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
 		Assert.assertTrue("Login finished",
 				TabletPagesCollection.loginPage.waitForLogin());
 	}
@@ -73,6 +73,6 @@ public class TabletLoginPageSteps {
 	public void WhenIPressJoinButton() throws Exception {
 		TabletPagesCollection.registrationPage = TabletPagesCollection.loginPage
 				.tabletJoin();
-		PagesCollection.registrationPage = TabletPagesCollection.registrationPage;
+		AndroidPagesCollection.registrationPage = TabletPagesCollection.registrationPage;
 	}
 }

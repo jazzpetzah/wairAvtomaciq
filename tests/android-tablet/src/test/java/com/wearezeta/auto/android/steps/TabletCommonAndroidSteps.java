@@ -2,7 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.TabletLoginPage;
 import com.wearezeta.auto.android.pages.TabletPagesCollection;
 import com.wearezeta.auto.common.CommonSteps;
@@ -40,10 +40,9 @@ public class TabletCommonAndroidSteps {
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
-		final Future<ZetaAndroidDriver> lazyDriver = steps.resetAndroidDriver(getUrl(),
-				getPath(), isUnicode, this.getClass());
-		TabletPagesCollection.loginPage = new TabletLoginPage(lazyDriver);
-		PagesCollection.loginPage = TabletPagesCollection.loginPage;
+		final Future<ZetaAndroidDriver> lazyDriver = steps.resetAndroidDriver(
+				getUrl(), getPath(), isUnicode, this.getClass());
+		AndroidPagesCollection.loginPage = new TabletLoginPage(lazyDriver);
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 

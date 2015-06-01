@@ -3,9 +3,8 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
-import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.TabletDialogPage;
-import com.wearezeta.auto.android.pages.TabletPagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
@@ -17,13 +16,13 @@ public class TabletDialogPageSteps {
 
 	@When("^I swipe up on tablet dialog page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
-		if (TabletPagesCollection.dialogPage == null) {
-			TabletPagesCollection.dialogPage = (TabletDialogPage) TabletPagesCollection.currentPage;
+		if (AndroidPagesCollection.dialogPage == null) {
+			AndroidPagesCollection.dialogPage = (TabletDialogPage) AndroidPagesCollection.currentPage;
 		}
-		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) TabletPagesCollection.dialogPage
+		AndroidPagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) AndroidPagesCollection.dialogPage
 				.swipeUp(1000);
 	}
-	
+
 	/**
 	 * Checks visibility of dialog page
 	 * 
@@ -33,8 +32,7 @@ public class TabletDialogPageSteps {
 	 */
 	@When("^I see tablet dialog page$")
 	public void WhenISeeTabletDialogPage() throws Exception {
-		Assert.assertTrue(TabletPagesCollection.dialogPage
-				.isProfileButtonDisplayed());
+		Assert.assertTrue(AndroidPagesCollection.dialogPage.isProfileButtonDisplayed());
 	}
 
 	/**
@@ -46,8 +44,8 @@ public class TabletDialogPageSteps {
 	 */
 	@When("^I tap on profile button$")
 	public void WhenITapOnProfileButton() throws Exception {
-		TabletPagesCollection.dialogPage.tapOnProfileButton();
-		PagesCollection.otherUserPersonalInfoPage = TabletPagesCollection.dialogPage
+		AndroidPagesCollection.dialogPage.tapOnProfileButton();
+		AndroidPagesCollection.otherUserPersonalInfoPage = AndroidPagesCollection.dialogPage
 				.initOtherUserPersonalInfoPage();
 	}
 
@@ -62,7 +60,7 @@ public class TabletDialogPageSteps {
 	public void ThenISeeUserPopOver() throws Exception {
 		Assert.assertTrue(TabletPagesCollection.dialogPage.isPopOverDisplayed());
 	}
-	
+
 	/**
 	 * Check that participant pop-over is not visible
 	 * 
@@ -72,7 +70,8 @@ public class TabletDialogPageSteps {
 	 */
 	@Then("^I do not see participant pop-over$")
 	public void ThenIDoNotSeeUserPopOver() throws Exception {
-		Assert.assertFalse(TabletPagesCollection.dialogPage.isPopOverDisplayed());
+		Assert.assertFalse(TabletPagesCollection.dialogPage
+				.isPopOverDisplayed());
 	}
 
 	/**
@@ -91,9 +90,9 @@ public class TabletDialogPageSteps {
 		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
 		contact = dstUser.getName();
 		String email = dstUser.getEmail();
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
+		Assert.assertTrue(AndroidPagesCollection.otherUserPersonalInfoPage
 				.isOtherUserNameVisible(contact));
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
+		Assert.assertTrue(AndroidPagesCollection.otherUserPersonalInfoPage
 				.isOtherUserMailVisible(email));
 	}
 

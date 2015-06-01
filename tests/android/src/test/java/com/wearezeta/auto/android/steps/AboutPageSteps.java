@@ -2,12 +2,19 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.AboutPage;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class AboutPageSteps {
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
+	private AboutPage getAboutPage() throws Exception {
+		return (AboutPage) pagesCollection.getPage(AboutPage.class);
+	}
 
 	/**
 	 * Taps on the about page
@@ -19,8 +26,7 @@ public class AboutPageSteps {
 	 */
 	@When("^I tap on About page$")
 	public void WhenITapOnAboutPage() throws Exception {
-		PagesCollection.personalInfoPage = PagesCollection.aboutPage
-				.tapOnVersion();
+		pagesCollection.setPage(getAboutPage().tapOnVersion());
 	}
 
 	/**
@@ -36,9 +42,11 @@ public class AboutPageSteps {
 	@Then("^I( do not)? see [Aa]bout page$")
 	public void ThenISeeAboutPage(String shouldNotBeVisible) throws Exception {
 		if (shouldNotBeVisible == null) {
-			Assert.assertTrue(PagesCollection.aboutPage.isVisible());
+			Assert.assertTrue("About page is not visible after timeout",
+					getAboutPage().isVisible());
 		} else {
-			Assert.assertTrue(PagesCollection.aboutPage.isInvisible());
+			Assert.assertTrue("About page is still visible after timeout",
+					getAboutPage().isInvisible());
 		}
 	}
 }

@@ -2,7 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
-import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.TabletPagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -21,7 +21,7 @@ public class TabletPeoplePickerPageSteps {
 	 */
 	@When("^I tap on tablet create conversation$")
 	public void WhenITapOnTabletCreateConversation() throws Throwable {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.peoplePickerPage
+		AndroidPagesCollection.dialogPage = (DialogPage) AndroidPagesCollection.peoplePickerPage
 				.tapCreateConversation();
 		TabletPagesCollection.dialogPage = TabletPagesCollection.contactListPage.initDialogPage();
 	}
@@ -44,11 +44,11 @@ public class TabletPeoplePickerPageSteps {
 			// Ignore silently
 		}
 		// PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
-		PagesCollection.currentPage = PagesCollection.peoplePickerPage
+		AndroidPagesCollection.currentPage = AndroidPagesCollection.peoplePickerPage
 				.selectContact(contact);
 		TabletPagesCollection.connectToPage = TabletPagesCollection.peoplePickerPage.initConnectToPage();
-		if (PagesCollection.currentPage instanceof OtherUserPersonalInfoPage) {
-			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.currentPage;
+		if (AndroidPagesCollection.currentPage instanceof OtherUserPersonalInfoPage) {
+			AndroidPagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) AndroidPagesCollection.currentPage;
 		}
 	}
 	

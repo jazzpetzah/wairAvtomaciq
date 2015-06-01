@@ -223,9 +223,6 @@ public class ContactListPage extends AndroidPage {
 
 		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
-		// TODO: we need this as sometimes we see people picker after login
-		PagesCollection.peoplePickerPage = new PeoplePickerPage(
-				this.getLazyDriver());
 		return this;
 	}
 

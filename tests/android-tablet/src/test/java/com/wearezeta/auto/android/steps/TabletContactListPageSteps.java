@@ -21,7 +21,7 @@ public class TabletContactListPageSteps {
 	 */
 	@When("^I tap on profile link$")
 	public void WhenITapOnProfileLink() throws Exception {
-		TabletPagesCollection.contactListPage.tapOnProfileLink();
+		AndroidPagesCollection.contactListPage.tapOnProfileLink();
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class TabletContactListPageSteps {
 	@When("^I see conversation list loaded with my name (.*)$")
 	public void WhenISeeConversationListWithMyName(String name)
 			throws Exception {
-		Assert.assertTrue(TabletPagesCollection.contactListPage
+		Assert.assertTrue(AndroidPagesCollection.contactListPage
 				.isPeoplePickerButtonVisible());
 		String currentName = null;
 		try {
@@ -45,8 +45,8 @@ public class TabletContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			currentName = name;
 		}
-		Assert.assertTrue(currentName
-				.equals(TabletPagesCollection.contactListPage.getSelfName()));
+		Assert.assertTrue(currentName.equals(AndroidPagesCollection.contactListPage
+				.getSelfName()));
 	}
 
 	/**
@@ -66,21 +66,23 @@ public class TabletContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.currentPage = TabletPagesCollection.contactListPage
+		AndroidPagesCollection.currentPage = AndroidPagesCollection.contactListPage
 				.tapOnName(value);
-		if (PagesCollection.currentPage instanceof PersonalInfoPage) {
-			 PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.currentPage;
-			TabletPagesCollection.personalInfoPage = (TabletPersonalInfoPage) PagesCollection.personalInfoPage;
-		} else if (PagesCollection.currentPage instanceof DialogPage) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.currentPage;
-			TabletPagesCollection.dialogPage = TabletPagesCollection.contactListPage.initDialogPage();
+		if (AndroidPagesCollection.currentPage instanceof PersonalInfoPage) {
+			AndroidPagesCollection.personalInfoPage = (PersonalInfoPage) AndroidPagesCollection.currentPage;
+			AndroidPagesCollection.personalInfoPage = (TabletPersonalInfoPage) AndroidPagesCollection.personalInfoPage;
+		} else if (AndroidPagesCollection.currentPage instanceof DialogPage) {
+			AndroidPagesCollection.dialogPage = (DialogPage) AndroidPagesCollection.currentPage;
+			AndroidPagesCollection.dialogPage = AndroidPagesCollection.contactListPage
+					.initDialogPage();
 		}
 	}
-	
+
 	@When("^I swipe down on tablet contact list$")
 	public void ISwipeDownContactList() throws Exception {
-		PagesCollection.peoplePickerPage = (PeoplePickerPage) TabletPagesCollection.contactListPage
+		AndroidPagesCollection.peoplePickerPage = (PeoplePickerPage) AndroidPagesCollection.contactListPage
 				.swipeDown(1000);
-		TabletPagesCollection.peoplePickerPage = TabletPagesCollection.contactListPage.initPeoplePickerPage();
+		AndroidPagesCollection.peoplePickerPage = AndroidPagesCollection.contactListPage
+				.initPeoplePickerPage();
 	}
 }

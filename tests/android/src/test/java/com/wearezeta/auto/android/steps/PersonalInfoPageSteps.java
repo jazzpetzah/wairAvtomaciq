@@ -4,8 +4,8 @@ import java.awt.image.BufferedImage;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.ContactListPage;
-import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.AndroidPagesCollection;
+import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -16,6 +16,24 @@ import cucumber.api.java.en.When;
 public class PersonalInfoPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
+	private PersonalInfoPage getPersonalInfoPage(boolean shouldCreateIfNotExists)
+			throws Exception {
+		if (shouldCreateIfNotExists) {
+			return (PersonalInfoPage) pagesCollection
+					.getPageOrElseInstantiate(PersonalInfoPage.class);
+		} else {
+			return (PersonalInfoPage) pagesCollection
+					.getPage(PersonalInfoPage.class);
+		}
+	}
+
+	private PersonalInfoPage getPersonalInfoPage() throws Exception {
+		return getPersonalInfoPage(false);
+	}
+
 	/**
 	 * Taps on the options button
 	 * 
@@ -25,7 +43,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I tap options button$")
 	public void WhenITapOptionsButton() throws Exception {
-		PagesCollection.personalInfoPage.tapOptionsButton();
+		getPersonalInfoPage().tapOptionsButton();
 	}
 
 	/**
@@ -37,7 +55,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I tap on my name$")
 	public void WhenITapOnMyName() throws Exception {
-		PagesCollection.personalInfoPage.tapOnMyName();
+		getPersonalInfoPage().tapOnMyName();
 	}
 
 	/**
@@ -49,7 +67,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I tap sign out button$")
 	public void WhenITapSignOutButton() throws Exception {
-		PagesCollection.personalInfoPage.tapSignOutBtn();
+		getPersonalInfoPage().tapSignOutBtn();
 	}
 
 	/**
@@ -61,8 +79,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I tap settings button$")
 	public void WhenITapSettingsButton() throws Exception {
-		PagesCollection.settingsPage = PagesCollection.personalInfoPage
-				.tapSettingsButton();
+		pagesCollection.setPage(getPersonalInfoPage().tapSettingsButton());
 	}
 
 	/**
@@ -74,8 +91,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I tap about button$")
 	public void WhenITapAboutButton() throws Exception {
-		PagesCollection.aboutPage = PagesCollection.personalInfoPage
-				.tapAboutButton();
+		pagesCollection.setPage(getPersonalInfoPage().tapAboutButton());
 	}
 
 	/**
@@ -88,7 +104,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I tap on personal info screen$")
 	public void WhenITapOnPersonalInfoScreen() throws Exception {
-		PagesCollection.personalInfoPage.tapOnPage();
+		getPersonalInfoPage().tapOnPage();
 	}
 
 	/**
@@ -101,7 +117,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I tap change photo button$")
 	public void WhenITapChangePhotoButton() throws Exception {
-		PagesCollection.personalInfoPage.tapChangePhotoButton();
+		getPersonalInfoPage().tapChangePhotoButton();
 	}
 
 	/**
@@ -113,7 +129,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I press Gallery button$")
 	public void WhenIPressGalleryButton() throws Exception {
-		PagesCollection.personalInfoPage.tapGalleryButton();
+		getPersonalInfoPage().tapGalleryButton();
 	}
 
 	/**
@@ -125,7 +141,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I select picture$")
 	public void WhenISelectPicture() throws Exception {
-		PagesCollection.personalInfoPage.selectFirstGalleryPhoto();
+		getPersonalInfoPage().selectFirstGalleryPhoto();
 	}
 
 	/**
@@ -137,7 +153,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I press Confirm button$")
 	public void WhenIPressConfirmButton() throws Exception {
-		PagesCollection.personalInfoPage.tapConfirmButton();
+		getPersonalInfoPage().tapConfirmButton();
 	}
 
 	/**
@@ -160,7 +176,7 @@ public class PersonalInfoPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.personalInfoPage.changeName(name, newName);
+		getPersonalInfoPage().changeName(name, newName);
 		usrMgr.getSelfUser().setName(newName);
 	}
 
@@ -173,8 +189,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I close Personal Info Page$")
 	public void IClosePersonalInfoPage() throws Exception {
-		PagesCollection.contactListPage = (ContactListPage) PagesCollection.personalInfoPage
-				.pressCloseButton();
+		pagesCollection.setPage(getPersonalInfoPage().pressCloseButton());
 	}
 
 	/**
@@ -182,7 +197,7 @@ public class PersonalInfoPageSteps {
 	 * back to the old one (Why not reuse the old step IChangeNameTo(String,
 	 * String))
 	 * 
-	 * @step. ^I see my new name (.*) and return old (.*)$
+	 * @step. ^I see my new name (.*)$
 	 * 
 	 * @param name
 	 *            The current (newly given) name of the current user
@@ -190,8 +205,9 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see my new name (.*)$")
 	public void ISeeMyNewName(String name) throws Exception {
-		Assert.assertTrue(name.equals(PagesCollection.personalInfoPage
-				.getUserName()));
+		Assert.assertTrue(
+				String.format("The new name '%s' is not visible", name),
+				name.equals(getPersonalInfoPage().getUserName()));
 	}
 
 	/**
@@ -203,8 +219,8 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see personal info page$")
 	public void ISeePersonalInfoPage() throws Exception {
-		Assert.assertTrue(PagesCollection.personalInfoPage
-				.isPersonalInfoVisible());
+		Assert.assertTrue("Personal info page is not visible",
+				getPersonalInfoPage(true).isPersonalInfoVisible());
 	}
 
 	/**
@@ -216,7 +232,8 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see Settings$")
 	public void ThenISeeSettings() throws Exception {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isSettingsVisible());
+		Assert.assertTrue("Settings are not visible", getPersonalInfoPage()
+				.isSettingsVisible());
 	}
 
 	/**
@@ -228,7 +245,8 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see edit name field$")
 	public void ThenISeeEditNameField() throws Exception {
-		Assert.assertTrue(PagesCollection.personalInfoPage.isNameEditVisible());
+		Assert.assertTrue("Name edit field is not visible",
+				getPersonalInfoPage().isNameEditVisible());
 	}
 
 	/**
@@ -240,7 +258,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I clear name field$")
 	public void IClearNameField() throws Exception {
-		PagesCollection.personalInfoPage.clearSelfName();
+		getPersonalInfoPage().clearSelfName();
 	}
 
 	private BufferedImage previousProfilePicture = null;
@@ -255,8 +273,8 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I remember my current profile picture$")
 	public void IRememberCurrentPicture() throws Exception {
-		previousProfilePicture = PagesCollection.personalInfoPage
-				.takeScreenshot().orElseThrow(AssertionError::new);
+		previousProfilePicture = getPersonalInfoPage().takeScreenshot()
+				.orElseThrow(AssertionError::new);
 	}
 
 	private static final int PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS = 60;
@@ -280,7 +298,7 @@ public class PersonalInfoPageSteps {
 		final long millisecondsStarted = System.currentTimeMillis();
 		double score = -1;
 		do {
-			final BufferedImage currentProfilePicture = PagesCollection.personalInfoPage
+			final BufferedImage currentProfilePicture = getPersonalInfoPage()
 					.takeScreenshot().orElseThrow(AssertionError::new);
 			score = ImageUtil.getOverlapScore(currentProfilePicture,
 					previousProfilePicture);

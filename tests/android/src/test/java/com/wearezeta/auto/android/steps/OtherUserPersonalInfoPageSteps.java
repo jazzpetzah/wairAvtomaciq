@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android.steps;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
@@ -14,6 +12,25 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class OtherUserPersonalInfoPageSteps {
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
+	private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage(
+			boolean shouldCreateIfNotExists) throws Exception {
+		if (shouldCreateIfNotExists) {
+			return (OtherUserPersonalInfoPage) pagesCollection
+					.getPageOrElseInstantiate(OtherUserPersonalInfoPage.class);
+		} else {
+			return (OtherUserPersonalInfoPage) pagesCollection
+					.getPage(OtherUserPersonalInfoPage.class);
+		}
+	}
+
+	private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage()
+			throws Exception {
+		return getOtherUserPersonalInfoPage(false);
+	}
+
 	private final String BG_IMAGE_NAME = "aqaPictureContactBG.png";
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -28,15 +45,12 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I see (.*) user profile page$")
 	public void WhenISeeOherUserProfilePage(String name) throws Exception {
-		if (PagesCollection.otherUserPersonalInfoPage == null) {
-			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.currentPage;
-		}
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.otherUserPersonalInfoPage.isOtherUserNameVisible(name);
+		getOtherUserPersonalInfoPage(true).isOtherUserNameVisible(name);
 	}
 
 	/**
@@ -48,8 +62,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I click Remove$")
 	public void WhenIClickRemove() throws Exception {
-		// TODO: check for native button click
-		PagesCollection.otherUserPersonalInfoPage.pressOptionsMenuButton();
+		getOtherUserPersonalInfoPage().pressOptionsMenuButton();
 	}
 
 	/**
@@ -61,8 +74,8 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I see warning message$")
 	public void WhenISeeWarningMessage() throws Exception {
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isConversationAlertVisible());
+		Assert.assertTrue("Warning message is not shown",
+				getOtherUserPersonalInfoPage().isConversationAlertVisible());
 	}
 
 	/**
@@ -74,7 +87,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I confirm remove$")
 	public void WhenIConfirmRemove() throws Exception {
-		PagesCollection.otherUserPersonalInfoPage.pressConfirmBtn();
+		getOtherUserPersonalInfoPage().pressConfirmBtn();
 	}
 
 	/**
@@ -86,7 +99,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I confirm block$")
 	public void WhenIConfirmBlock() throws Exception {
-		PagesCollection.otherUserPersonalInfoPage.pressConfirmBtn();
+		getOtherUserPersonalInfoPage().pressConfirmBtn();
 	}
 
 	/**
@@ -99,8 +112,8 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I press add contact button$")
 	public void WhenIPressAddContactButton() throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.otherUserPersonalInfoPage
-				.tapAddContactBtn();
+		pagesCollection.setPage(getOtherUserPersonalInfoPage()
+				.tapAddContactBtn());
 	}
 
 	/**
@@ -111,7 +124,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I Press Block button$")
 	public void IPressBlockButton() throws Exception {
-		PagesCollection.otherUserPersonalInfoPage.clickBlockBtn();
+		getOtherUserPersonalInfoPage().clickBlockBtn();
 	}
 
 	/**
@@ -128,10 +141,10 @@ public class OtherUserPersonalInfoPageSteps {
 		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
 		contact = dstUser.getName();
 		String email = dstUser.getEmail();
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isOtherUserNameVisible(contact));
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isOtherUserMailVisible(email));
+		Assert.assertTrue("User name is not visible",
+				getOtherUserPersonalInfoPage().isOtherUserNameVisible(contact));
+		Assert.assertTrue("User email is not visible",
+				getOtherUserPersonalInfoPage().isOtherUserMailVisible(email));
 	}
 
 	/**
@@ -144,8 +157,8 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^User info should be shown with Block button$")
 	public void UserShouldBeShownWithUnBlockButton() throws Exception {
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isUnblockBtnVisible());
+		Assert.assertTrue("Unblock button is not visible",
+				getOtherUserPersonalInfoPage().isUnblockBtnVisible());
 	}
 
 	/**
@@ -157,8 +170,8 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I click Unblock button$")
 	public void IClickUnblockButton() throws Exception {
-		PagesCollection.currentPage = PagesCollection.otherUserPersonalInfoPage
-				.clickUnblockBtn();
+		pagesCollection.setPage(getOtherUserPersonalInfoPage()
+				.clickUnblockBtn());
 	}
 
 	/**
@@ -170,8 +183,10 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I see correct background image$")
 	public void ThenISeeCorrectBackgroundImage() throws Exception {
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isBackGroundImageCorrect(BG_IMAGE_NAME));
+		Assert.assertTrue(
+				"The background image seems to be incorrect",
+				getOtherUserPersonalInfoPage().isBackGroundImageCorrect(
+						BG_IMAGE_NAME));
 	}
 
 	// ------ Group
@@ -194,15 +209,8 @@ public class OtherUserPersonalInfoPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.currentPage = PagesCollection.otherUserPersonalInfoPage
-				.tapOnParticipant(contact);
-		if (PagesCollection.currentPage instanceof OtherUserPersonalInfoPage) {
-			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.currentPage;
-		}
-
-		// This needs to be moved eventually
-		PagesCollection.unknownUserDetailsPage = (UnknownUserDetailsPage) PagesCollection.currentPage
-				.instantiatePage(UnknownUserDetailsPage.class);
+		pagesCollection.setPage(getOtherUserPersonalInfoPage()
+				.tapOnParticipant(contact));
 	}
 
 	/**
@@ -215,7 +223,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I press options menu button$")
 	public void WhenIPressOptionsMenuButton() throws Exception {
-		PagesCollection.otherUserPersonalInfoPage.pressOptionsMenuButton();
+		getOtherUserPersonalInfoPage().pressOptionsMenuButton();
 	}
 
 	/**
@@ -228,8 +236,8 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I press Leave conversation button$")
 	public void WhenIPressLeaveConversationButton() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.otherUserPersonalInfoPage
-				.pressLeaveButton();
+		pagesCollection.setPage(getOtherUserPersonalInfoPage()
+				.pressLeaveButton());
 	}
 
 	/**
@@ -242,7 +250,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I press Silence conversation button$")
 	public void WhenIPressSilenceConversationButton() throws Exception {
-		PagesCollection.otherUserPersonalInfoPage.pressSilenceButton();
+		getOtherUserPersonalInfoPage().pressSilenceButton();
 	}
 
 	/**
@@ -255,6 +263,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I press Notify conversation button$")
 	public void WhenIPressNotifyConversationButton() throws Exception {
+		// FIXME: Notify and Silence menu items should have different locators
 		WhenIPressSilenceConversationButton();
 	}
 
@@ -267,7 +276,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I confirm leaving$")
 	public void WhenIConfirmLeaving() throws Exception {
-		PagesCollection.otherUserPersonalInfoPage.pressConfirmBtn();
+		getOtherUserPersonalInfoPage().pressConfirmBtn();
 	}
 
 	/**
@@ -281,8 +290,8 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I select contact (.*)$")
 	public void WhenISelectContact(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		PagesCollection.currentPage = PagesCollection.otherUserPersonalInfoPage
-				.tapOnParticipant(name);
+		pagesCollection.setPage(getOtherUserPersonalInfoPage()
+				.tapOnParticipant(name));
 	}
 
 	/**
@@ -295,9 +304,8 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I see that the conversation name is (.*)$")
 	public void IVerifyCorrectConversationName(String name) throws Exception {
-		Assert.assertEquals(
-				PagesCollection.otherUserPersonalInfoPage.getConversationName(),
-				name);
+		Assert.assertEquals(getOtherUserPersonalInfoPage()
+				.getConversationName(), name);
 	}
 
 	/**
@@ -314,10 +322,11 @@ public class OtherUserPersonalInfoPageSteps {
 		for (String contactName : CommonSteps.splitAliases(contacts)) {
 			contactName = usrMgr.findUserByNameOrNameAlias(contactName)
 					.getName();
-			Assert.assertTrue(String.format(
-					"The avatar for '%s' is not visible", contactName),
-					PagesCollection.otherUserPersonalInfoPage
-							.isParticipantAvatarVisible(contactName));
+			Assert.assertTrue(
+					String.format("The avatar for '%s' is not visible",
+							contactName),
+					getOtherUserPersonalInfoPage().isParticipantAvatarVisible(
+							contactName));
 		}
 	}
 
@@ -328,14 +337,13 @@ public class OtherUserPersonalInfoPageSteps {
 	 * @step. ^I see the correct number of participants in the title (.*)$
 	 * 
 	 * @param realNumberOfParticipants
-	 * @throws IOException
+	 * @throws Exception
 	 */
 	@Then("^I see the correct number of participants in the title (.*)$")
 	public void IVerifyParticipantNumber(String realNumberOfParticipants)
-			throws IOException {
-		Assert.assertEquals(PagesCollection.otherUserPersonalInfoPage
-				.getSubHeader().toLowerCase(), realNumberOfParticipants
-				+ " people");
+			throws Exception {
+		Assert.assertEquals(getOtherUserPersonalInfoPage().getSubHeader()
+				.toLowerCase(), realNumberOfParticipants + " people");
 	}
 
 	/**
@@ -351,8 +359,8 @@ public class OtherUserPersonalInfoPageSteps {
 	public void ThenIDoNotSeeOnGroupChatInfoPage(String contact)
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertFalse(PagesCollection.otherUserPersonalInfoPage
-				.isParticipantExists(contact));
+		Assert.assertFalse(getOtherUserPersonalInfoPage().isParticipantExists(
+				contact));
 	}
 
 	/**
@@ -364,8 +372,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I return to group chat page$")
 	public void ThenIReturnToGroupChatPage() throws Exception {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.otherUserPersonalInfoPage
-				.tabBackButton();
+		pagesCollection.setPage(getOtherUserPersonalInfoPage().tabBackButton());
 	}
 
 	/**
@@ -381,9 +388,8 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I rename group conversation to (.*)$")
 	public void ThenIRenameGroupConversationTo(String newConversationName)
 			throws Exception {
-		PagesCollection.otherUserPersonalInfoPage.tapOnParticipantsHeader();
-		PagesCollection.otherUserPersonalInfoPage
-				.renameGroupChat(newConversationName);
+		getOtherUserPersonalInfoPage().tapOnParticipantsHeader();
+		getOtherUserPersonalInfoPage().renameGroupChat(newConversationName);
 	}
 
 	/**
@@ -395,7 +401,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I see correct 1:1 options menu$")
 	public void ThenISeeOneToOneOptionsMenu() throws Exception {
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
+		Assert.assertTrue(getOtherUserPersonalInfoPage()
 				.areOneToOneMenuOptionsVisible());
 	}
 
@@ -410,7 +416,7 @@ public class OtherUserPersonalInfoPageSteps {
 	public void IDoNotSeeContactProfile() throws Exception {
 		Assert.assertTrue(
 				"Contact profile page is visible, but expected not to be.",
-				PagesCollection.otherUserPersonalInfoPage
+				getOtherUserPersonalInfoPage()
 						.isOneToOneUserProfileUIContentNotVisible());
 	}
 
@@ -425,7 +431,7 @@ public class OtherUserPersonalInfoPageSteps {
 	public void ThenIDoNotSeeOptionsMenu() throws Exception {
 		Assert.assertTrue(
 				"1on1 options menu is visible, but expected not to be.",
-				PagesCollection.otherUserPersonalInfoPage
+				getOtherUserPersonalInfoPage()
 						.areOneToOneMenuOptionsNotVisible());
 	}
 
@@ -438,7 +444,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I see profile page$")
 	public void ISeeCorrectContactProfile() throws Exception {
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
+		Assert.assertTrue(getOtherUserPersonalInfoPage()
 				.isOneToOneUserProfileUIContentVisible());
 	}
 
@@ -451,7 +457,12 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I do small swipe down")
 	public void IDoSmallSwipeDown() throws Exception {
-		PagesCollection.currentPage.swipeByCoordinates(2000, 50, 50, 50, 53);
+		getOtherUserPersonalInfoPage().swipeByCoordinates(2000, 50, 50, 50, 53);
+	}
+
+	private UnknownUserDetailsPage getUnknownUserDetailsPage() throws Exception {
+		return (UnknownUserDetailsPage) pagesCollection
+				.getPage(UnknownUserDetailsPage.class);
 	}
 
 	/**
@@ -471,8 +482,8 @@ public class OtherUserPersonalInfoPageSteps {
 		username = usrMgr.findUserByNameOrNameAlias(username).getName();
 		Assert.assertTrue(String.format(
 				"User name '%s' does not exist in non connected page header",
-				username), PagesCollection.unknownUserDetailsPage
-				.isNameExistInHeader(username));
+				username),
+				getUnknownUserDetailsPage().isNameExistInHeader(username));
 	}
 
 	/**
@@ -485,8 +496,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I click Connect button on non connected user page$")
 	public void IClickOnUnconnectedUserConnectButton() throws Exception {
-		PagesCollection.connectToPage = PagesCollection.unknownUserDetailsPage
-				.tapConnectButton();
+		pagesCollection.setPage(getUnknownUserDetailsPage().tapConnectButton());
 	}
 
 	/**
@@ -499,7 +509,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I click Pending button on pending user page$")
 	public void IClickPendingButton() throws Exception {
-		PagesCollection.unknownUserDetailsPage.tapPendingButton();
+		getUnknownUserDetailsPage().tapPendingButton();
 	}
 
 	/**
@@ -513,6 +523,6 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I see Pending button on pending user page$")
 	public void ISeePendingButton() throws Exception {
 		Assert.assertTrue("Pending button is not visible, but it should be",
-				PagesCollection.unknownUserDetailsPage.isPendingButtonVisible());
+				getUnknownUserDetailsPage().isPendingButtonVisible());
 	}
 }
