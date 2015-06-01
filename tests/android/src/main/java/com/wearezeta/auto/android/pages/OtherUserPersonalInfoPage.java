@@ -6,11 +6,14 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
@@ -259,7 +262,12 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public void renameGroupChat(String chatName) throws Exception {
 		groupChatNameEditable.clear();
-		groupChatNameEditable.sendKeys(chatName + "\n");
+		groupChatNameEditable.sendKeys(chatName);
+		// FIXME: We need these sleeps because of the bug in the AUT
+		// The app crashes if we apply name changes too quickly too quickly :-@
+		Thread.sleep(1000);
+		groupChatNameEditable.sendKeys("\n");
+		Thread.sleep(1000);
 	}
 
 	public AndroidPage tapOnParticipant(String name) throws Exception {
