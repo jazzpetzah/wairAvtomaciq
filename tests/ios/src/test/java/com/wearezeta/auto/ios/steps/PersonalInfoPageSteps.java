@@ -61,7 +61,7 @@ public class PersonalInfoPageSteps {
 	 * @step. New name is only first 64 chars
 	 * 
 	 */
-	@When("New name is only first 64 chars")
+	@When("I verify my new name is only first 64 chars")
 	public void NewNameIsMaxChars() {
 		Assert.assertTrue("Username is greater than 64 characters", PagesCollection.personalInfoPage.nameIsMaxChars() >= 64);
 	}
