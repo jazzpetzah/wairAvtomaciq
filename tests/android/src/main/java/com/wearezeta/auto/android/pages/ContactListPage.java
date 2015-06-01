@@ -246,11 +246,11 @@ public class ContactListPage extends AndroidPage {
 
 	private AndroidPage detectCurrentPage() throws Exception {
 		final Map<By, AndroidPage> pageMapping = new LinkedHashMap<By, AndroidPage>();
-		pageMapping.put(By.id(AndroidLocators.CommonLocators.idEditText),
-				new DialogPage(this.getLazyDriver()));
 		pageMapping.put(
 				By.xpath(AndroidLocators.PersonalInfoPage.xpathNameField),
 				new PersonalInfoPage(this.getLazyDriver()));
+		pageMapping.put(By.id(AndroidLocators.CommonLocators.idEditText),
+				new DialogPage(this.getLazyDriver()));
 		pageMapping.put(By.id(AndroidLocators.ConnectToPage.idConnectToHeader),
 				new ConnectToPage(this.getLazyDriver()));
 		for (Map.Entry<By, AndroidPage> entry : pageMapping.entrySet()) {
