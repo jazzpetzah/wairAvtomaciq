@@ -31,9 +31,6 @@ public abstract class AndroidPage extends BasePage {
 	@FindBy(id = AndroidLocators.CommonLocators.idPager)
 	private WebElement content;
 
-	@FindBy(className = AndroidLocators.CommonLocators.classListView)
-	private WebElement container;
-
 	@Override
 	protected ZetaAndroidDriver getDriver() throws Exception {
 		return (ZetaAndroidDriver) super.getDriver();
@@ -291,10 +288,5 @@ public abstract class AndroidPage extends BasePage {
 
 	public void tapOnCenterOfScreen() throws Exception {
 		DriverUtils.genericTap(this.getDriver());
-	}
-
-	public static void clearPagesCollection() throws IllegalArgumentException,
-			IllegalAccessException {
-		clearPagesCollection(AndroidPagesCollection.class, AndroidPage.class);
 	}
 }

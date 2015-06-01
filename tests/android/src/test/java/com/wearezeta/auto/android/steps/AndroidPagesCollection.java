@@ -1,9 +1,10 @@
-package com.wearezeta.auto.android.pages;
+package com.wearezeta.auto.android.steps;
 
+import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.AbstractPagesCollection;
 import com.wearezeta.auto.common.BasePage;
 
-public final class AndroidPagesCollection extends AbstractPagesCollection {
+final class AndroidPagesCollection extends AbstractPagesCollection {
 
 	private static AndroidPagesCollection instance = null;
 
@@ -36,4 +37,15 @@ public final class AndroidPagesCollection extends AbstractPagesCollection {
 		return (AndroidPage) super.getPageOrElseInstantiate(pageClass);
 	}
 
+	@Override
+	public void setPage(BasePage page) {
+		if (!(page instanceof AndroidPage)) {
+			throw new IllegalStateException(
+					String.format(
+							"Only instances of '%s' are allowed. '%s' instance has been provided instead",
+							AndroidPage.class.getSimpleName(), page.getClass()
+									.getSimpleName()));
+		}
+		super.setPage((AndroidPage) page);
+	}
 }

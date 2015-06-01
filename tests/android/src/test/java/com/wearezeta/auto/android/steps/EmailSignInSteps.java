@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.AndroidPage;
-import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.registration.AddPhoneNumberPage;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;

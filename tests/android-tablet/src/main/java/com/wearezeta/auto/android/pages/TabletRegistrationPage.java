@@ -4,7 +4,7 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class TabletRegistrationPage extends RegistrationPage {
+public class TabletRegistrationPage extends AndroidTabletPage {
 
 	public TabletRegistrationPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {

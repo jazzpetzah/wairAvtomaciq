@@ -2,7 +2,6 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.TabletPagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -30,7 +29,7 @@ public class TabletPersonalInfoPageSteps {
 		}
 		TabletPagesCollection.contactListPage = TabletPagesCollection.personalInfoPage
 				.initContactListPage();
-		AndroidPagesCollection.contactListPage = TabletPagesCollection.contactListPage;
+		AndroidTabletPagesCollection.contactListPage = TabletPagesCollection.contactListPage;
 	}
 
 	@When("^I tap on tablet personal info screen$")

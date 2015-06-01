@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class TabletDialogPage extends DialogPage {
+public class TabletDialogPage extends AndroidTabletPage {
 
 	@FindBy(id = TabletAndroidLocators.TabletDialogPage.idProfileIcon)
 	private WebElement profileButton;
@@ -61,8 +61,9 @@ public class TabletDialogPage extends DialogPage {
 	}
 
 	@Override
-	public AndroidPage swipeUp(int time) throws Exception {
-		elementSwipeUp(participantContainer, time);// TODO workaround
+	public AndroidTabletPage swipeUp(int time) throws Exception {
+		getAndroidPageInstance(DialogPage.class).elementSwipeUp(
+				participantContainer, time);
 		Thread.sleep(1000);
 		return returnBySwipe(SwipeDirection.UP);
 	}

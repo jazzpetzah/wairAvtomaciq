@@ -6,14 +6,13 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.locators.TabletAndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class TabletPersonalInfoPage extends PersonalInfoPage {
+public class TabletPersonalInfoPage extends AndroidTabletPage {
 
 	@FindBy(id = AndroidLocators.ContactListPage.idOpenStartUIButton)
 	private WebElement peoplePickerButton;
@@ -33,26 +32,18 @@ public class TabletPersonalInfoPage extends PersonalInfoPage {
 	}
 
 	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-
-		AndroidPage page = null;
+	public AndroidTabletPage returnBySwipe(SwipeDirection direction)
+			throws Exception {
 		switch (direction) {
-		case DOWN: {
-			break;
-		}
 		case UP: {
-			page = this;
-			break;
-		}
-		case LEFT: {
-			break;
+			return this;
 		}
 		case RIGHT: {
-			page = new TabletContactListPage(this.getLazyDriver());
-			break;
+			return new TabletContactListPage(this.getLazyDriver());
 		}
+		default:
+			return null;
 		}
-		return page;
 	}
 
 	public TabletContactListPage initContactListPage() throws Exception {

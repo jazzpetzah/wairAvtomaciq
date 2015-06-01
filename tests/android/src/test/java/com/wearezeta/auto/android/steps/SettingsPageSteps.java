@@ -2,7 +2,6 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.SettingsPage;
 
 import cucumber.api.java.en.Then;

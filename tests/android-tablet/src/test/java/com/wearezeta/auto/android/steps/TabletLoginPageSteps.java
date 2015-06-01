@@ -2,8 +2,9 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.AndroidPagesCollection;
-import com.wearezeta.auto.android.pages.TabletPagesCollection;
+import com.wearezeta.auto.android.pages.AboutPage;
+import com.wearezeta.auto.android.pages.LoginPage;
+import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
@@ -11,8 +12,20 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class TabletLoginPageSteps {
-
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
+			.getInstance();
+
+	private LoginPage getLoginPage() throws Exception {
+		return (LoginPage) pagesCollection
+				.getPageOrElseInstantiate(LoginPage.class);
+	}
+
+	private EmailSignInPage getEmailSignInPage() throws Exception {
+		return (EmailSignInPage) pagesCollection
+				.getPageOrElseInstantiate(EmailSignInPage.class);
+	}
 
 	@Given("^I Sign in on tablet using login (.*) and password (.*)$")
 	public void GivenISignInOnTablet(String login, String password)
@@ -28,16 +41,16 @@ public class TabletLoginPageSteps {
 			// Ignore silently
 		}
 		(new WelcomePageSteps()).ISwitchToEmailSignIn();
-		TabletPagesCollection.emailSignInPage.setLogin(login);
-		TabletPagesCollection.emailSignInPage.setPassword(password);
+		getEmailSignInPage().setLogin(login);
+		getEmailSignInPage().setPassword(password);
 		try {
-			TabletPagesCollection.emailSignInPage.logIn();
+			getEmailSignInPage().logIn();
 			TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage
 					.initProfilePage();
-			AndroidPagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
+			AndroidTabletPagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
 			TabletPagesCollection.contactListPage = TabletPagesCollection.loginPage
 					.initContactListPage();
-			AndroidPagesCollection.contactListPage = TabletPagesCollection.contactListPage;
+			AndroidTabletPagesCollection.contactListPage = TabletPagesCollection.contactListPage;
 		} catch (Exception e) {
 			// Ignore silently
 		}
@@ -57,7 +70,7 @@ public class TabletLoginPageSteps {
 		TabletPagesCollection.emailSignInPage.logIn();
 		TabletPagesCollection.personalInfoPage = TabletPagesCollection.loginPage
 				.initProfilePage();
-		AndroidPagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
+		AndroidTabletPagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
 		Assert.assertTrue("Login finished",
 				TabletPagesCollection.loginPage.waitForLogin());
 	}
@@ -73,6 +86,6 @@ public class TabletLoginPageSteps {
 	public void WhenIPressJoinButton() throws Exception {
 		TabletPagesCollection.registrationPage = TabletPagesCollection.loginPage
 				.tabletJoin();
-		AndroidPagesCollection.registrationPage = TabletPagesCollection.registrationPage;
+		AndroidTabletPagesCollection.registrationPage = TabletPagesCollection.registrationPage;
 	}
 }

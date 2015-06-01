@@ -2,9 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.TabletLoginPage;
-import com.wearezeta.auto.android.pages.TabletPagesCollection;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ZetaFormatter;
@@ -21,6 +19,9 @@ public class TabletCommonAndroidSteps {
 				"org.apache.commons.logging.simplelog.log.org.apache.http",
 				"warn");
 	}
+
+	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
+			.getInstance();
 
 	private CommonAndroidSteps steps = new CommonAndroidSteps();
 	{
@@ -42,7 +43,8 @@ public class TabletCommonAndroidSteps {
 	private void initFirstPage(boolean isUnicode) throws Exception {
 		final Future<ZetaAndroidDriver> lazyDriver = steps.resetAndroidDriver(
 				getUrl(), getPath(), isUnicode, this.getClass());
-		AndroidPagesCollection.loginPage = new TabletLoginPage(lazyDriver);
+		pagesCollection.clearAllPages();
+		pagesCollection.setPage(new TabletLoginPage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
@@ -60,7 +62,7 @@ public class TabletCommonAndroidSteps {
 
 	@After
 	public void tabletTearDown() throws Exception {
-		TabletLoginPage.clearPagesCollection();
+		pagesCollection.clearAllPages();
 		commonSteps.getUserManager().resetUsers();
 	}
 }

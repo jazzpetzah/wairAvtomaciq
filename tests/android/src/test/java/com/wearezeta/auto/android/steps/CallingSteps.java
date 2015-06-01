@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
 import com.wearezeta.auto.android.pages.CallingOverlayPage;
-import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.common.CommonCallingSteps;
 
 import cucumber.api.java.en.When;

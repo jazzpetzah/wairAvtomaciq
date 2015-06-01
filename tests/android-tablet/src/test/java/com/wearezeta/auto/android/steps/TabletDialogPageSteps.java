@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
-import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.TabletDialogPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -16,10 +15,10 @@ public class TabletDialogPageSteps {
 
 	@When("^I swipe up on tablet dialog page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
-		if (AndroidPagesCollection.dialogPage == null) {
-			AndroidPagesCollection.dialogPage = (TabletDialogPage) AndroidPagesCollection.currentPage;
+		if (AndroidTabletPagesCollection.dialogPage == null) {
+			AndroidTabletPagesCollection.dialogPage = (TabletDialogPage) AndroidTabletPagesCollection.currentPage;
 		}
-		AndroidPagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) AndroidPagesCollection.dialogPage
+		AndroidTabletPagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) AndroidTabletPagesCollection.dialogPage
 				.swipeUp(1000);
 	}
 
@@ -32,7 +31,7 @@ public class TabletDialogPageSteps {
 	 */
 	@When("^I see tablet dialog page$")
 	public void WhenISeeTabletDialogPage() throws Exception {
-		Assert.assertTrue(AndroidPagesCollection.dialogPage.isProfileButtonDisplayed());
+		Assert.assertTrue(AndroidTabletPagesCollection.dialogPage.isProfileButtonDisplayed());
 	}
 
 	/**
@@ -44,8 +43,8 @@ public class TabletDialogPageSteps {
 	 */
 	@When("^I tap on profile button$")
 	public void WhenITapOnProfileButton() throws Exception {
-		AndroidPagesCollection.dialogPage.tapOnProfileButton();
-		AndroidPagesCollection.otherUserPersonalInfoPage = AndroidPagesCollection.dialogPage
+		AndroidTabletPagesCollection.dialogPage.tapOnProfileButton();
+		AndroidTabletPagesCollection.otherUserPersonalInfoPage = AndroidTabletPagesCollection.dialogPage
 				.initOtherUserPersonalInfoPage();
 	}
 
@@ -90,9 +89,9 @@ public class TabletDialogPageSteps {
 		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
 		contact = dstUser.getName();
 		String email = dstUser.getEmail();
-		Assert.assertTrue(AndroidPagesCollection.otherUserPersonalInfoPage
+		Assert.assertTrue(AndroidTabletPagesCollection.otherUserPersonalInfoPage
 				.isOtherUserNameVisible(contact));
-		Assert.assertTrue(AndroidPagesCollection.otherUserPersonalInfoPage
+		Assert.assertTrue(AndroidTabletPagesCollection.otherUserPersonalInfoPage
 				.isOtherUserMailVisible(email));
 	}
 

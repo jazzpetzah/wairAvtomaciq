@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;

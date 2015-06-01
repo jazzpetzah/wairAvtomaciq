@@ -3,7 +3,7 @@ package com.wearezeta.auto.android.pages;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -11,11 +11,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.locators.TabletAndroidLocators;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-public class TabletContactListPage extends ContactListPage {
+public class TabletContactListPage extends AndroidTabletPage {
 
 	@FindBy(id = AndroidLocators.ContactListPage.idYourName)
 	private WebElement profileLink;
@@ -44,40 +45,28 @@ public class TabletContactListPage extends ContactListPage {
 		return new TabletDialogPage(getLazyDriver());
 	}
 
-	public boolean isPeoplePickerButtonVisible() throws NoSuchElementException {
-		try {
-			return peoplePickerButton.isDisplayed();
-		} catch (NoSuchElementException e) {
-			return false;
-		}
+	public boolean isPeoplePickerButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.ContactListPage.idOpenStartUIButton));
 	}
 
 	@Override
-	public AndroidPage swipeDown(int time) throws Exception {
-		elementSwipeDown(rootLeftView, time);
+	public AndroidTabletPage swipeDown(int time) throws Exception {
+		getAndroidPageInstance(ContactListPage.class).elementSwipeDown(
+				rootLeftView, time);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
 	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
-
-		AndroidPage page = null;
+	public AndroidTabletPage returnBySwipe(SwipeDirection direction)
+			throws Exception {
 		switch (direction) {
 		case DOWN: {
-			page = new PeoplePickerPage(this.getLazyDriver());
-			break;
+			return new TabletPeoplePickerPage(this.getLazyDriver());
 		}
-		case UP: {
-			break;
+		default:
+			return null;
 		}
-		case LEFT: {
-			break;
-		}
-		case RIGHT: {
-			break;
-		}
-		}
-		return page;
 	}
 
 	public String getSelfName() {

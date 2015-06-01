@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.AboutPage;
-import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;

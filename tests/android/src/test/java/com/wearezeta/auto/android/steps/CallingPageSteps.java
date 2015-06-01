@@ -4,7 +4,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.CallingLockscreenPage;
 import com.wearezeta.auto.android.pages.CallingOverlayPage;
-import com.wearezeta.auto.android.pages.AndroidPagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.When;

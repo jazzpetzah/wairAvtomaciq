@@ -4,7 +4,7 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class TabletPeoplePickerPage extends PeoplePickerPage{
+public class TabletPeoplePickerPage extends AndroidTabletPage{
 
 	public TabletPeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {

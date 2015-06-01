@@ -4,7 +4,7 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class TabletConnectToPage extends ConnectToPage {
+public class TabletConnectToPage extends AndroidTabletPage {
 
 	public TabletConnectToPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
