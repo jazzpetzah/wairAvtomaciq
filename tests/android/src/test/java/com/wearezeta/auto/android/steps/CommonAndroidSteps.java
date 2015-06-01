@@ -27,6 +27,7 @@ import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -143,7 +144,7 @@ public class CommonAndroidSteps {
 		return true;
 	}
 
-	private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
+	// private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
 	private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
 	private void onDriverInitFinished(RemoteWebDriver drv) {
@@ -158,6 +159,11 @@ public class CommonAndroidSteps {
 			} catch (WebDriverException e) {
 				savedException = e;
 				log.debug("Waiting for the views to initialize properly...");
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e1) {
+					Throwables.propagate(e);
+				}
 			} catch (Exception e) {
 				Throwables.propagate(e);
 			}
@@ -168,20 +174,23 @@ public class CommonAndroidSteps {
 							INTERFACE_INIT_TIMEOUT_MILLISECONDS));
 			throw savedException;
 		}
-		try {
-			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
-					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
-				drv.findElement(locator).click();
-			}
-		} catch (Exception e) {
-			Throwables.propagate(e);
-		}
+		// Uncomment this if disable updates thing is broken again
+		// try {
+		// if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
+		// UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
+		// drv.findElement(locator).click();
+		// }
+		// } catch (Exception e) {
+		// Throwables.propagate(e);
+		// }
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
 				getUrl(), getPath(), isUnicode, this.getClass());
+		//TODO steadily remove this
 		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		PagesCollection.welcomePage = new WelcomePage(lazyDriver);
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
@@ -743,34 +752,6 @@ public class CommonAndroidSteps {
 			String dstConversationName) throws Exception {
 		commonSteps.UserHotPingedConversation(hotPingFromUserNameAlias,
 				dstConversationName);
-	}
-
-	/**
-	 * Transfers Wire contacts to Mac (Why is this step in the android step
-	 * files? - dean).
-	 * 
-	 * @step. ^I add contacts list users to Mac contacts$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I add contacts list users to Mac contacts$")
-	public void AddContactsUsersToMacContacts() throws Exception {
-		commonSteps.AddContactsUsersToMacContacts();
-	}
-
-	/**
-	 * Removes Wire contacts from Mac (Why is this step in the android step
-	 * files? - dean).
-	 * 
-	 * @step. ^I remove contacts list users from Mac contacts$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I remove contacts list users from Mac contacts$")
-	public void IRemoveContactsListUsersFromMacContact() throws Exception {
-		commonSteps.IRemoveContactsListUsersFromMacContact();
 	}
 
 	/**

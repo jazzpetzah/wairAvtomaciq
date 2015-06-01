@@ -454,4 +454,19 @@ public class ContactListPageSteps {
 				.getCurrentUnreadDotAccentColor(conversationName);
 		Assert.assertEquals(expectedColor, unreadDotColor);
 	}
+
+	/*
+	 * Verify if there is a ping icon in contact list in conversation with user
+	 * 
+	 * @step. "^I see ping icon in conversation with (\\w+)"
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I see ping icon in conversation with (\\w+)")
+	public void ISeePingIcon(String conversationName) throws Exception {
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue("No ping visible.", PagesCollection.contactListPage
+				.isPingIconVisibleForConversation(conversationName));
+	}
 }

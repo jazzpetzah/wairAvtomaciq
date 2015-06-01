@@ -18,7 +18,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.common.usrmgmt.OSXAddressBookHelpers;
 import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 
 public final class CommonSteps {
@@ -281,14 +280,6 @@ public final class CommonSteps {
 			BackendAPIWrappers.sendPictureToChatByName(imageSender,
 					dstConversationName, imagePath);
 		}
-	}
-
-	public void AddContactsUsersToMacContacts() throws Exception {
-		OSXAddressBookHelpers.addUsersToContacts(usrMgr.getCreatedUsers());
-	}
-
-	public void IRemoveContactsListUsersFromMacContact() throws Exception {
-		OSXAddressBookHelpers.removeUsersFromContacts(usrMgr.getCreatedUsers());
 	}
 
 	public void IChangeUserAvatarPicture(String userNameAlias,

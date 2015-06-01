@@ -1,8 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
-import org.openqa.selenium.WebElement;
-
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -13,8 +11,6 @@ import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	public static String randomConnectName = "";
-	private static WebElement randomConnect;
 
 	/**
 	 * Checks to see that the people picker page (search view) is visible
@@ -311,113 +307,80 @@ public class PeoplePickerPageSteps {
 				.navigateBack();
 	}
 
+	private String rememberedPYMKItemName = null;
+
 	/**
-	 * Press + button on Random contact from PYMK
+	 * Saves the name of the first PYMK item into an internal variable
 	 * 
-	 * @step. ^I press \\+ button on a random Connect$
+	 * @step. ^I remember the name of the first PYMK item$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I press \\+ button on a random Connect$")
-	public void WhenIPressPlusButtonOnARandomConnect() throws Exception {
-		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect();
-		randomConnectName = PagesCollection.peoplePickerPage
-				.pressPlusOnContact(randomConnect);
+	@When("^I remember the name of the first PYMK item$")
+	public void IRememeberTheNameOfFirstPYMKItem() throws Exception {
+		rememberedPYMKItemName = PagesCollection.peoplePickerPage
+				.getPYMKItemName(1);
 	}
 
 	/**
-	 * Tap on Random contact from PYMK
+	 * Click + button on the first PYMK item
 	 * 
-	 * @step. ^I tap on a random contact from PYMK$
-	 * 
+	 * @step. ^I click \\+ button on the first PYMK item$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I tap on a random contact from PYMK$")
-	public void WhenITapOnRandomContactFromPYMK() throws Exception {
-		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect();
-		randomConnectName = PagesCollection.peoplePickerPage
-				.getPYMKContactName(randomConnect);
-		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
-				.tapOnPYMKContact(randomConnect);
+	@When("^I click \\+ button on the first PYMK item$")
+	public void IClickPlusButtonOnTheFirstPYMKItem() throws Exception {
+		PagesCollection.peoplePickerPage.clickPlusOnPYMKItem(1);
 	}
 
 	/**
-	 * Tap on Random contact from PYMK and save it name
+	 * Do short or long swipe right the first PYMK entry
 	 * 
-	 * @step. ^I tap on a random contact from PYMK and set it name to (.*)$
-	 * 
-	 * @param contact
+	 * @step. ^I do (short|long) swipe right on the first PYMK item$
+	 * @param swipeType
+	 *            either short or long
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I tap on a random contact from PYMK and set it name to (.*)$")
-	public void WhenITapOnRandomContactFromPYMKAndSetItNameTo(String contact)
+	@When("^I do (short|long) swipe right on the first PYMK item$")
+	public void IDoShortOrLongSwipeRightOnFirstPYMKItem(String swipeType)
 			throws Exception {
-		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect();
-		randomConnectName = PagesCollection.peoplePickerPage
-				.getPYMKContactName(randomConnect);
-		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
-				.tapOnPYMKContact(randomConnect);
-		try {
-			usrMgr.findUserByNameOrNameAlias(contact)
-					.setName(randomConnectName);
-		} catch (NoSuchUserException e) {
-			// Ignore silently
+		if (swipeType.equals("short")) {
+			PagesCollection.peoplePickerPage.shortSwipeRigthOnPYMKItem(1);
+		} else if (swipeType.equals("long")) {
+			PagesCollection.peoplePickerPage.longSwipeRigthOnPYMKItem(1);
 		}
-	}
-
-	/**
-	 * Swipe on Random contact from PYMK
-	 * 
-	 * @step. ^I swipe on random connect$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I swipe on random connect$")
-	public void WhenISwipeOnRandomConnect() throws Exception {
-		randomConnect = PagesCollection.peoplePickerPage.selectRandomConnect();
-		randomConnectName = PagesCollection.peoplePickerPage
-				.swipePYMKContact(randomConnect);
-	}
-
-	/**
-	 * Hide random connect by swipe (not the same as
-	 * "Swipe on Random contact from PYMK")
-	 * 
-	 * @step. ^I hide random connect by swipe$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I hide random connect by swipe$")
-	public void WhenIHideRandomConnectBySwipe() throws Exception {
-		PagesCollection.peoplePickerPage.swipeRightPYMKHideMenu();
 	}
 
 	/**
 	 * Hide random connect by Hide button
 	 * 
-	 * @step. ^I click on PYMK hide button$
+	 * @step. ^I click hide button on the first PYMK item$
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I click on PYMK hide button$")
-	public void WhenIClickOnPYMKHideButton() throws Exception {
-		PagesCollection.peoplePickerPage.clickPYMKHideButton();
+	@When("^I click hide button on the first PYMK item$")
+	public void IClickHideButtonOnTheFirstPYMKItem() throws Exception {
+		PagesCollection.peoplePickerPage.clickHideButtonOnPYMKItem(1);
 	}
 
 	/**
-	 * Verify that random connect is not visible
+	 * Verify that the previously remembered PYMK item is not visible anymore
 	 * 
-	 * @step. ^I do not see random connect$
+	 * @step. ^I do not see the previously remembered PYMK item$
 	 * @throws Exception
 	 * 
 	 */
-	@Then("^I do not see random connect$")
-	public void ThenIDonotSeeRandomConnect() throws Exception {
-		Assert.assertFalse(PagesCollection.peoplePickerPage
-				.pYMKcontactIsVisible(randomConnectName, randomConnect));
+	@Then("^I do not see the previously remembered PYMK item$")
+	public void IDonotSeePreviouslyRememberedPYMKItem() throws Exception {
+		if (rememberedPYMKItemName == null) {
+			throw new IllegalStateException(
+					"Please call the corresponding step to remember PYMK item name first");
+		}
+		Assert.assertTrue(PagesCollection.peoplePickerPage
+				.waitUntilPYMKItemIsInvisible(rememberedPYMKItemName));
 	}
 
 	/**
@@ -478,19 +441,32 @@ public class PeoplePickerPageSteps {
 		}
 	}
 
+	private final static long PYMK_VISIBLITY_TIMEOUT_MILLISECONDS = 120 * 1000;
+
 	/**
-	 * Waiting for PYMK loading
+	 * Reopen People Picker until PYMK appear on the screen
 	 * 
-	 * @step. ^I wait for PYMK for (.*) secs$
-	 * 
-	 * @param time
+	 * @step. ^I keep reopening People Picker until PYMK are visible$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I wait for PYMK for (.*) secs$")
-	public void WhenIWaitForPYMKForSec(int time) throws Exception {
-		Assert.assertTrue(PagesCollection.peoplePickerPage
-				.waitForPYMKForSecs(time));
+	@When("^I keep reopening People Picker until PYMK are visible$")
+	public void ReopenPeoplePickerUntilPYMKAppears() throws Exception {
+		final long millisecondsStarted = System.currentTimeMillis();
+		while (!PagesCollection.peoplePickerPage.waitUntilPYMKItemIsVisible(1)
+				&& System.currentTimeMillis() - millisecondsStarted <= PYMK_VISIBLITY_TIMEOUT_MILLISECONDS) {
+			PagesCollection.contactListPage = PagesCollection.peoplePickerPage
+					.tapClearButton();
+			Thread.sleep(3000);
+			PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+					.openPeoplePicker();
+			PagesCollection.peoplePickerPage.hideKeyboard();
+		}
+		PagesCollection.peoplePickerPage.hideKeyboard();
+		Assert.assertTrue(String.format(
+				"PYMK section has not been shown after %s seconds timeout",
+				PYMK_VISIBLITY_TIMEOUT_MILLISECONDS / 1000),
+				PagesCollection.peoplePickerPage.waitUntilPYMKItemIsVisible(1));
 	}
 
 	private static final long TOP_PEOPLE_VISIBILITY_TIMEOUT_MILLISECONDS = 120 * 1000;
@@ -513,8 +489,9 @@ public class PeoplePickerPageSteps {
 					.tapOnMyAvatar();
 			PagesCollection.personalInfoPage.tapOptionsButton();
 			PagesCollection.personalInfoPage.tapSignOutBtn();
-			new LoginPageSteps().GivenISignIn(usrMgr.getSelfUser().getEmail(),
-					usrMgr.getSelfUser().getPassword());
+			new EmailSignInSteps().GivenISignIn(
+					usrMgr.getSelfUser().getEmail(), usrMgr.getSelfUser()
+							.getPassword());
 			new ContactListPageSteps().GivenISeeContactList();
 			PagesCollection.peoplePickerPage = PagesCollection.contactListPage
 					.openPeoplePicker();

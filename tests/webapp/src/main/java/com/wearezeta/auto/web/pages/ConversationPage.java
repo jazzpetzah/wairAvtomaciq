@@ -31,6 +31,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 public class ConversationPage extends WebPage {
+
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 
@@ -38,6 +39,9 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathImageMessageEntry)
 	private List<WebElement> imageMessageEntries;
+
+	@FindBy(id = WebAppLocators.ConversationPage.idConversation)
+	private WebElement conversation;
 
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
@@ -48,7 +52,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendImageInput)
 	private WebElement imagePathInput;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathPingButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPingButton)
 	private WebElement pingButton;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathCallButton)
@@ -56,6 +60,9 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
 	private WebElement pingMessage;
+
+	@FindBy(css = WebAppLocators.ConversationPage.cssLastTextMessage)
+	private WebElement lastConversationMessage;
 
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -193,14 +200,11 @@ public class ConversationPage extends WebPage {
 		try {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
 		} catch (WebDriverException e) {
-			// (safari workaround)
-			final String showImageLabelJScript = "$(\""
-					+ WebAppLocators.ConversationPage.cssRightControlsPanel
-					+ "\").css({'opacity': '100'});";
-			this.getDriver().executeScript(showImageLabelJScript);
+			// safari workaround
+			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathPingButton);
+				.cssSelector(WebAppLocators.ConversationPage.cssPingButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, 2) : "Ping button has not been shown after 2 seconds";
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
@@ -229,11 +233,8 @@ public class ConversationPage extends WebPage {
 		try {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
 		} catch (WebDriverException e) {
-			// (safari workaround)
-			final String showImageLabelJScript = "$(\""
-					+ WebAppLocators.ConversationPage.cssRightControlsPanel
-					+ "\").css({'opacity': '100'});";
-			this.getDriver().executeScript(showImageLabelJScript);
+			// safari workaround
+			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(WebAppLocators.ConversationPage.xpathCallButton), 5);
@@ -243,11 +244,8 @@ public class ConversationPage extends WebPage {
 		try {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
 		} catch (WebDriverException e) {
-			// (safari workaround)
-			final String showImageLabelJScript = "$(\""
-					+ WebAppLocators.ConversationPage.cssRightControlsPanel
-					+ "\").css({'opacity': '100'});";
-			this.getDriver().executeScript(showImageLabelJScript);
+			// safari workaround
+			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(WebAppLocators.ConversationPage.xpathCallButton), 5);
@@ -284,6 +282,19 @@ public class ConversationPage extends WebPage {
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
 	}
 
+	public void waitForCallingBarToBeDisplayedWithName(String name)
+			throws Exception {
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRootByName
+								.apply(name)),
+						MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar with name "
+				+ name
+				+ " has not been shown within "
+				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
+	}
+
 	public void clickAcceptCallButton() throws Exception {
 		final By locator = By
 				.xpath(WebAppLocators.ConversationPage.xpathAcceptCallButton);
@@ -316,5 +327,11 @@ public class ConversationPage extends WebPage {
 				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
 				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been hidden within "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
+	}
+
+	public String getLastTextMessage() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
+		return lastConversationMessage.getText();
 	}
 }

@@ -458,49 +458,61 @@ public class OtherUserPersonalInfoPageSteps {
 	 * Checks to see that you are on the page to connect with a user who you
 	 * have not yet connected with, but are in a group conversation with
 	 * 
-	 * @step. ^I see connect to unconnected user page with user (.*)$
+	 * @step. ^I see user name (.*) on non connected user page$
 	 * 
 	 * @param username
 	 *            the user who your are not connected to
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see connect to unconnected user page with user (.*)$")
+	@Then("^I see user name (.*) on non connected user page$")
 	public void ISeeConnectToUnconnectedUserPageWithUser(String username)
 			throws Exception {
 		username = usrMgr.findUserByNameOrNameAlias(username).getName();
-
-		Assert.assertTrue(PagesCollection.unknownUserDetailsPage
-				.isConnectButtonVisible());
-		Assert.assertEquals(username,
-				PagesCollection.unknownUserDetailsPage.getOtherUsersName());
+		Assert.assertTrue(String.format(
+				"User name '%s' does not exist in non connected page header",
+				username), PagesCollection.unknownUserDetailsPage
+				.isNameExistInHeader(username));
 	}
 
 	/**
 	 * Clicks on the connect button when viewing the user details of an
 	 * unconnected user from a group chat
 	 * 
-	 * @step. ^I click on the unconnected user page connect or pending button$
+	 * @step. ^I click Connect button on non connected user page$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I click on the unconnected user page connect or pending button$")
+	@Then("^I click Connect button on non connected user page$")
 	public void IClickOnUnconnectedUserConnectButton() throws Exception {
 		PagesCollection.connectToPage = PagesCollection.unknownUserDetailsPage
-				.tapConnectAndPendingButton();
+				.tapConnectButton();
 	}
 
 	/**
-	 * Checks to see that the previous "connect" button is now a pending
-	 * TextView
+	 * Clicks on the pending button when viewing the user details of a pending
+	 * user from a group chat
 	 * 
-	 * @step. ^I see connect to unconnected user page pending button$
+	 * @step. ^I click Pending button on pending user page$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see connect to unconnected user page pending button$")
-	public void ISeeNoEditTexts() throws Exception {
-		Assert.assertTrue(PagesCollection.unknownUserDetailsPage
-				.isPendingButtonVisible());
+	@When("^I click Pending button on pending user page$")
+	public void IClickPendingButton() throws Exception {
+		PagesCollection.unknownUserDetailsPage.tapPendingButton();
+	}
+
+	/**
+	 * Verify whether Pending button is visible on pending user page in a group
+	 * chat
+	 * 
+	 * @step. ^I see Pending button on pending user page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see Pending button on pending user page$")
+	public void ISeePendingButton() throws Exception {
+		Assert.assertTrue("Pending button is not visible, but it should be",
+				PagesCollection.unknownUserDetailsPage.isPendingButtonVisible());
 	}
 }

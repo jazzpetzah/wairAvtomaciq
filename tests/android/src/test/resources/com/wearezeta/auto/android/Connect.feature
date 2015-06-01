@@ -14,7 +14,7 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
-    And I press Connect button
+    And I click Connect button on connect to page
     And I see People picker page
     And I navigate back to Conversations List
     Then I see contact list with name <Contact>
@@ -221,7 +221,7 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
-    And I press Connect button
+    And I click Connect button on connect to page
     When <Contact> ignore all requests
     And I press Clear button
     Then I tap on contact name <Contact>
@@ -238,17 +238,15 @@ Feature: Connect
     Given I see Contact list
     When I minimize the application
     And <Contact> sent connection request to Me
-    And I restore the application
-    And I see Contact list
-    And I see contact list with name <WaitingMess>
-    And I tap on contact name <WaitingMess>
+    And I wait for 2 seconds
+    And I tap connection notification on Home Screen
     Then I see connect to <Contact> dialog
     And I see Accept and Ignore buttons
     And I press Ignore connect button
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | WaitingMess      |
-      | user1Email | user1Password | user1Name | user2Name | 1 person waiting |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @id553 @regression
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
@@ -263,7 +261,7 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
-    And I press Connect button
+    And I click Connect button on connect to page
     When <Contact> accept all requests
     And I wait for 2 seconds
     And I press Clear button
@@ -308,7 +306,7 @@ Feature: Connect
     And I see connect to <Contact2> dialog
     And I tap on edit connect request field
     And I type Connect request "Message"
-    And I press Connect button
+    And I click Connect button on connect to page
     And I return to group chat page
     And I navigate back from dialog page
     And I see contact list with name <Contact2>
@@ -355,12 +353,12 @@ Feature: Connect
     And I see connect to <Contact> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
-    And I press Connect button
+    And I click Connect button on connect to page
     And I press Clear button
     And I see contact list with name <Contact>
     When I tap on contact name <Contact>
     And I see that connection is pending
-    And I Press Block button on connect to page
+    And I click Block button on connect to page
     And I confirm block on connect to page
     And I wait for 5 seconds
     Then I do not see contact list with name <Contact>
@@ -430,11 +428,8 @@ Feature: Connect
     And I input in search field user name to connect to <Contact>
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
-    And I press Connect button
-    #And I press Open StartUI
+    And I click Connect button on connect to page
     And I see People picker page
-    #And I tap on Search input on People picker page
-    #And I input in search field user name to connect to <Contact>
     And I see user <Contact> found on People picker page
     And I tap on user name found on People picker page <Contact>
     Then I see that connection is pending
@@ -465,15 +460,9 @@ Feature: Connect
   @id2215 @staging
   Scenario Outline: I can connect to someone from PYMK by clicking +
     Given I see welcome screen
-    Given I press Join button
-    Given I press Camera button twice
-    Given I confirm selection
+    Given I input a new phone number
+    Given I input a valid verification number
     Given I enter name <Name>
-    Given I enter email <Email>
-    Given I enter password <Password>
-    Given I submit registration data
-    Given I see confirmation page
-    Given I verify registration address
     When I wait for PYMK for 30 secs
     And I hide keyboard
     And I press + button on a random Connect
@@ -503,7 +492,7 @@ Feature: Connect
     And I see connect to <Contact1> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
-    And I press Connect button
+    And I click Connect button on connect to page
     And I see People picker page
     And I navigate back to Conversations List
     Then I see contact list with name <Contact1>

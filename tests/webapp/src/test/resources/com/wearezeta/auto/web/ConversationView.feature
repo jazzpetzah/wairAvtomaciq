@@ -166,3 +166,18 @@ Feature: Conversation View
     Examples: 
       | Login                                                              | Password  | Contact1                         | Contact2                         |
       | smoketester.android+b5731febcd2448c68b5307b9bb860b4a@wearezeta.com | aqa123456 | 0139faca30ee45d28794f4d46211f984 | 01edc0159cc047018d9bf8e1a20ea9a8 |
+
+  @id2279 @staging
+  Scenario Outline: Send a long message containing new lines in 1on1
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I write template message <ActualMessage>
+    And I send message
+    Then I verify the last text message equals to <ExpectedMessage>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | ActualMessage                                           | ExpectedMessage                      |
+      | user1Email | user1Password | user1Name | user2Name | ('LF' * 10)('a' * 100)('LF' * 10)('b' * 100)('LF' * 10) | ('a' * 100)('LF' * 10)('b' * 100) |

@@ -270,21 +270,13 @@ public class ContactListPage extends WebPage {
 			DriverUtils.moveMouserOver(this.getDriver(),
 					getContactWithName(conversationName, false));
 		} catch (WebDriverException e) {
-			// Safari workaround
+			DriverUtils.addClass(this.getDriver(),
+					getContactWithName(conversationName, false), "hover");
 		}
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName
 				.apply(conversationName);
 		final By locator = By.cssSelector(cssOptionsButtonLocator);
-		if (!DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator,
-				5)) {
-			// Safari workaround
-			final String showOptionsButtonJScript = "$(\""
-					+ cssOptionsButtonLocator + "\").css({'opacity': '100'})";
-			this.getDriver().executeScript(showOptionsButtonJScript);
-			assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					locator);
-		}
 		final WebElement optionsButton = getDriver().findElement(locator);
 		optionsButton.click();
 	}
@@ -519,5 +511,14 @@ public class ContactListPage extends WebPage {
 				locator, 3);
 		final WebElement entry = getDriver().findElement(locator);
 		return AccentColor.getByRgba(entry.getCssValue("background-color"));
+	}
+
+	public boolean isPingIconVisibleForConversation(String conversationName)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathPingIconByContactName
+						.apply(conversationName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
 	}
 }
