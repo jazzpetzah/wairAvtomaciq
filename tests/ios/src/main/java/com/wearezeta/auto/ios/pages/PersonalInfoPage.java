@@ -239,22 +239,23 @@ public class PersonalInfoPage extends IOSPage {
 				ExpectedConditions.elementToBeClickable(profileNameEditField));
 		profileNameEditField.click();
 	}
-	
+
 	public void changeNameUsingOnlySpaces() throws Exception {
 		DriverUtils.mobileTapByCoordinates(this.getDriver(),
 				profileNameEditField);
 		profileNameEditField.clear();
 		profileNameEditField.sendKeys("  \n");
 	}
-	
+
 	public void attemptTooLongName() {
 		String name = CommonUtils.generateRandomString(80).toLowerCase();
 		profileNameEditField.sendKeys(name + "\n");
 	}
-	
-	public void nameIsMaxChars() {
+
+	public int nameIsMaxChars() {
 		String name = getUserNameValue();
-		Assert.assertTrue(name.length() <= 64);
+		int nameLength = name.length();
+		return nameLength;
 	}
 
 	public void changeName(String newName) throws Exception {

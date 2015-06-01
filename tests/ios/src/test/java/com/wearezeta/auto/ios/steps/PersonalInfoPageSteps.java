@@ -46,10 +46,10 @@ public class PersonalInfoPageSteps {
 	/**
 	 * Enters an 80 char username 
 	 * 
-	 * @step. I attempt to enter an 80 char name
+	 * @step. ^I attempt to enter an 80 char name$
 	 * 
 	 */
-	@When("I attempt to enter an 80 char name")
+	@When("^I attempt to enter an 80 char name$")
 	public void EnterTooLongName() {
 		PagesCollection.personalInfoPage.clearNameField();
 		PagesCollection.personalInfoPage.attemptTooLongName();
@@ -63,7 +63,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("New name is only first 64 chars")
 	public void NewNameIsMaxChars() {
-		PagesCollection.personalInfoPage.nameIsMaxChars();
+		Assert.assertTrue("Username is greater than 64 characters", PagesCollection.personalInfoPage.nameIsMaxChars() >= 64);
 	}
 
 	@When("I see error message asking for more characters")
