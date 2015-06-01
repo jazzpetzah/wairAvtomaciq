@@ -77,7 +77,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | PictureName              |
       | user1Email | user1Password | user1Name | userpicture_portrait.jpg |
 
-  @staging @id1747
+  @regression @id1747
   Scenario Outline: Verify you can change your accent color
     Given There is 3 users where <Name> is me
     Given User me change accent color to <ColorName>
