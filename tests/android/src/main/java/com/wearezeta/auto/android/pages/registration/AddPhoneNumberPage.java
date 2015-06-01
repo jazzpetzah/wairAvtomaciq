@@ -1,4 +1,4 @@
-package registration;
+package com.wearezeta.auto.android.pages.registration;
 
 import java.util.concurrent.Future;
 

@@ -2,11 +2,10 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
-import registration.AddPhoneNumberPage;
-
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.registration.AddPhoneNumberPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
