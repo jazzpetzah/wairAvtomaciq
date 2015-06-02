@@ -35,4 +35,21 @@ public class TabletContactListPageSteps {
 				.swipeDown(500);
 	}
 	
+	/**
+	 * Opens archived conversations on iPad
+	 * 
+	 * @step ^I open archived conversations on iPad$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I open archived conversations on iPad$")
+	public void IOpenArchivedConvOnIpad() throws Exception {
+		if (TabletPagesCollection.tabletContactListPage == null) {
+			TabletPagesCollection.tabletContactListPage = (TabletContactListPage) PagesCollection.loginPage
+					.instantiatePage(TabletContactListPage.class);
+		}
+		PagesCollection.peoplePickerPage = (PeoplePickerPage) TabletPagesCollection.tabletContactListPage
+				.swipeUp(500);
+	}
+
 }
