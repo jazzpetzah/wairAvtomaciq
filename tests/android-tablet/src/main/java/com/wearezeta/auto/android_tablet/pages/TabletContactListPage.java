@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.android_tablet.locators.TabletAndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -24,7 +23,8 @@ public class TabletContactListPage extends AndroidTabletPage {
 	@FindBy(id = AndroidLocators.ContactListPage.idOpenStartUIButton)
 	private WebElement peoplePickerButton;
 
-	@FindBy(id = TabletAndroidLocators.TabletContactListPage.idRootLeftView)
+	public static final String idRootLeftView = "fl__root__left_view";
+	@FindBy(id = idRootLeftView)
 	private WebElement rootLeftView;
 
 	@SuppressWarnings("unused")

@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @id2252 @staging
+  @id2252 @staging @torun
   Scenario Outline: Send Message to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>

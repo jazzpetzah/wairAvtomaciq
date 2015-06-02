@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.android_tablet.locators.TabletAndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -23,7 +22,8 @@ public class TabletPersonalInfoPage extends AndroidTabletPage {
 	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathProfileOptionsButton)
 	private WebElement optionsButton;
 
-	@FindBy(id = TabletAndroidLocators.TabletPersonalInfoPage.idSelfForm)
+	public static final String idSelfForm = "ll_self_form";
+	@FindBy(id = idSelfForm)
 	private WebElement page;
 
 	public TabletPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
