@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android.locators;
+package com.wearezeta.auto.android_tablet.locators;
 
 public final class TabletAndroidLocators {
 	public static final class TabletCommonLocators {

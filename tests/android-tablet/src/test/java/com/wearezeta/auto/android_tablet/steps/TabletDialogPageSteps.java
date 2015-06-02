@@ -1,29 +1,24 @@
-package com.wearezeta.auto.android.steps;
+package com.wearezeta.auto.android_tablet.steps;
 
-import org.junit.Assert;
-
-import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
-import com.wearezeta.auto.android.pages.PagesCollection;
-import com.wearezeta.auto.android.pages.TabletDialogPage;
-import com.wearezeta.auto.android.pages.TabletPagesCollection;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-
-import cucumber.api.java.en.*;
+import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
 public class TabletDialogPageSteps {
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	// private final ClientUsersManager usrMgr =
+	// ClientUsersManager.getInstance();
 
 	@When("^I swipe up on tablet dialog page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
-		if (TabletPagesCollection.dialogPage == null) {
-			TabletPagesCollection.dialogPage = (TabletDialogPage) TabletPagesCollection.currentPage;
-		}
-		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) TabletPagesCollection.dialogPage
-				.swipeUp(1000);
+		// if (AndroidTabletPagesCollection.dialogPage == null) {
+		// AndroidTabletPagesCollection.dialogPage = (TabletDialogPage)
+		// AndroidTabletPagesCollection.currentPage;
+		// }
+		// AndroidTabletPagesCollection.otherUserPersonalInfoPage =
+		// (OtherUserPersonalInfoPage) AndroidTabletPagesCollection.dialogPage
+		// .swipeUp(1000);
 	}
-	
+
 	/**
 	 * Checks visibility of dialog page
 	 * 
@@ -33,8 +28,7 @@ public class TabletDialogPageSteps {
 	 */
 	@When("^I see tablet dialog page$")
 	public void WhenISeeTabletDialogPage() throws Exception {
-		Assert.assertTrue(TabletPagesCollection.dialogPage
-				.isProfileButtonDisplayed());
+		// Assert.assertTrue(AndroidTabletPagesCollection.dialogPage.isProfileButtonDisplayed());
 	}
 
 	/**
@@ -46,9 +40,10 @@ public class TabletDialogPageSteps {
 	 */
 	@When("^I tap on profile button$")
 	public void WhenITapOnProfileButton() throws Exception {
-		TabletPagesCollection.dialogPage.tapOnProfileButton();
-		PagesCollection.otherUserPersonalInfoPage = TabletPagesCollection.dialogPage
-				.initOtherUserPersonalInfoPage();
+		// AndroidTabletPagesCollection.dialogPage.tapOnProfileButton();
+		// AndroidTabletPagesCollection.otherUserPersonalInfoPage =
+		// AndroidTabletPagesCollection.dialogPage
+		// .initOtherUserPersonalInfoPage();
 	}
 
 	/**
@@ -60,9 +55,9 @@ public class TabletDialogPageSteps {
 	 */
 	@Then("^I see participant pop-over$")
 	public void ThenISeeUserPopOver() throws Exception {
-		Assert.assertTrue(TabletPagesCollection.dialogPage.isPopOverDisplayed());
+		// Assert.assertTrue(TabletPagesCollection.dialogPage.isPopOverDisplayed());
 	}
-	
+
 	/**
 	 * Check that participant pop-over is not visible
 	 * 
@@ -72,7 +67,8 @@ public class TabletDialogPageSteps {
 	 */
 	@Then("^I do not see participant pop-over$")
 	public void ThenIDoNotSeeUserPopOver() throws Exception {
-		Assert.assertFalse(TabletPagesCollection.dialogPage.isPopOverDisplayed());
+		// Assert.assertFalse(TabletPagesCollection.dialogPage
+		// .isPopOverDisplayed());
 	}
 
 	/**
@@ -88,13 +84,13 @@ public class TabletDialogPageSteps {
 	@Then("^I see (.*) name and email in pop-over$")
 	public void ThenISeeUserNameAndMailInPopOver(String contact)
 			throws Exception {
-		ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
-		contact = dstUser.getName();
-		String email = dstUser.getEmail();
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isOtherUserNameVisible(contact));
-		Assert.assertTrue(PagesCollection.otherUserPersonalInfoPage
-				.isOtherUserMailVisible(email));
+		// ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
+		// contact = dstUser.getName();
+		// String email = dstUser.getEmail();
+		// Assert.assertTrue(AndroidTabletPagesCollection.otherUserPersonalInfoPage
+		// .isOtherUserNameVisible(contact));
+		// Assert.assertTrue(AndroidTabletPagesCollection.otherUserPersonalInfoPage
+		// .isOtherUserMailVisible(email));
 	}
 
 	/**
@@ -107,9 +103,9 @@ public class TabletDialogPageSteps {
 	 */
 	@Then("^I can close pop-over by close button$")
 	public void ThenICanClosePopOverByCloseButton() throws Exception {
-		TabletPagesCollection.dialogPage.tapOnParticipantsClose();
-		Assert.assertTrue(!TabletPagesCollection.dialogPage
-				.isPopOverDisplayed());
+		// TabletPagesCollection.dialogPage.tapOnParticipantsClose();
+		// Assert.assertTrue(!TabletPagesCollection.dialogPage
+		// .isPopOverDisplayed());
 	}
 
 	/**
@@ -122,8 +118,8 @@ public class TabletDialogPageSteps {
 	 */
 	@Then("^I can close pop-over by tapping outside$")
 	public void ThenICanClosePopOverByTappingOutside() throws Exception {
-		TabletPagesCollection.dialogPage.tapOnProfileButton();
-		Assert.assertTrue(!TabletPagesCollection.dialogPage
-				.isPopOverDisplayed());
+		// TabletPagesCollection.dialogPage.tapOnProfileButton();
+		// Assert.assertTrue(!TabletPagesCollection.dialogPage
+		// .isPopOverDisplayed());
 	}
 }

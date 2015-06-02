@@ -36,10 +36,4 @@ public class SettingsPage extends AndroidPage {
 	public boolean isChangePasswordVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(settingsChangePassword);
 	}
-
-	public CommonAndroidPage clickChangePassword() throws Exception {
-		settingsChangePassword.click();
-		Thread.sleep(2000); // Fix to pass animation
-		return new CommonAndroidPage(this.getLazyDriver());
-	}
 }

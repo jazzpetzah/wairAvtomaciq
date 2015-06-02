@@ -170,8 +170,6 @@ public final class AndroidLocators {
 	public static final class CommonLocators {
 		public static final String classNameFrameLayout = "FrameLayout";
 
-		public static final String classListView = "SwipeListView";
-
 		public static final String idPager = "conversation_pager";
 
 		public static final String idConfirmBtn = "confirm";

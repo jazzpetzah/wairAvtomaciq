@@ -70,23 +70,16 @@ public final class BackendAPIWrappers {
 		return user;
 	}
 
-	@SuppressWarnings("unused")
-	private static Future<String> initMessageListener(
-			ClientUser userToActivate, int retryNumber) throws Exception {
+	public static Future<String> initMessageListener(ClientUser forUser)
+			throws Exception {
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER,
-				userToActivate.getEmail());
-		if (retryNumber == 1) {
-			return mbox.getMessage(expectedHeaders, BACKEND_ACTIVATION_TIMEOUT);
-		} else {
-			// The MAX_MSG_DELIVERY_OFFSET is necessary because of small
-			// time
-			// difference between
-			// UTC and your local machine
-			return mbox.getMessage(expectedHeaders, BACKEND_ACTIVATION_TIMEOUT,
-					new Date().getTime() - MAX_MSG_DELIVERY_OFFSET);
-		}
+				forUser.getEmail());
+		// The MAX_MSG_DELIVERY_OFFSET is necessary because of small
+		// time difference between UTC and your local machine
+		return mbox.getMessage(expectedHeaders, BACKEND_ACTIVATION_TIMEOUT,
+				new Date().getTime() - MAX_MSG_DELIVERY_OFFSET);
 	}
 
 	/**
@@ -101,8 +94,8 @@ public final class BackendAPIWrappers {
 	 * @return Created ClientUser instance (with id property filled)
 	 * @throws Exception
 	 */
-	public static ClientUser createUserViaBackdoor(ClientUser user, int retryNumber,
-			RegistrationStrategy strategy) throws Exception {
+	public static ClientUser createUserViaBackdoor(ClientUser user,
+			int retryNumber, RegistrationStrategy strategy) throws Exception {
 		String activationCode;
 		switch (strategy) {
 		case ByEmail:

@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android.pages;
+package com.wearezeta.auto.android_tablet.pages;
 
 import java.util.concurrent.Future;
 
@@ -7,12 +7,14 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.android.locators.TabletAndroidLocators;
+import com.wearezeta.auto.android.pages.DialogPage;
+import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
+import com.wearezeta.auto.android_tablet.locators.TabletAndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class TabletDialogPage extends DialogPage {
+public class TabletDialogPage extends AndroidTabletPage {
 
 	@FindBy(id = TabletAndroidLocators.TabletDialogPage.idProfileIcon)
 	private WebElement profileButton;
@@ -61,8 +63,9 @@ public class TabletDialogPage extends DialogPage {
 	}
 
 	@Override
-	public AndroidPage swipeUp(int time) throws Exception {
-		elementSwipeUp(participantContainer, time);// TODO workaround
+	public AndroidTabletPage swipeUp(int time) throws Exception {
+		getAndroidPageInstance(DialogPage.class).elementSwipeUp(
+				participantContainer, time);
 		Thread.sleep(1000);
 		return returnBySwipe(SwipeDirection.UP);
 	}

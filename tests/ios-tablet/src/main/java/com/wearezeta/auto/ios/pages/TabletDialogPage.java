@@ -10,7 +10,6 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
-import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
 public class TabletDialogPage extends DialogPage {
 	

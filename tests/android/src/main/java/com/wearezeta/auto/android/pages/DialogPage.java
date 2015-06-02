@@ -396,13 +396,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public String getConnectRequestChatLabel() throws Exception {
-		if (isConnectRequestChatLabelVisible()) {
-			this.getWait().until(
-					ExpectedConditions.visibilityOf(connectRequestChatLabel));
-			return connectRequestChatLabel.getText().toLowerCase().trim();
-		} else {
-			return "CHAT HEAD NOT FOUND";
-		}
+		assert isConnectRequestChatLabelVisible();
+		return connectRequestChatLabel.getText();
 	}
 
 	public boolean isConnectRequestChatLabelVisible() throws Exception {
