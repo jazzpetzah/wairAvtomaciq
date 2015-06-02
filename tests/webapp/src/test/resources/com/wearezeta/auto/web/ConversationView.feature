@@ -40,7 +40,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat | user2Email | user2Password | user2Name | userpicture_landscape.jpg |
 
-  @smoke @id1628
+  @regression @id1628
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -56,7 +56,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat |
 
-  @smoke @id1612
+  @regression @id1612
   Scenario Outline: Send picture to contact in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -94,7 +94,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Youtubelink1                               | Youtubelink2                                                 | Youtubelink3                          | Youtubelink4                 |
       | user1Email | user1Password | user1Name | user2Name | http://www.youtube.com/watch?v=JOCtdw9FG-s | https://www.youtube.com/watch?v=txqiwrbYGrs&feature=youtu.be | https://www.youtube.com/v/_1w2aASUpWQ | https://youtu.be/QH2-TGUlwu4 |
 
-  @smoke @id1934
+  @regression @id1934
   Scenario Outline: Send Camera picture to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -1,7 +1,7 @@
 Feature: Sign In
 
-  @smoke @id1788
-  Scenario Outline: Sign in to ZClient
+  @regression @id1788
+  Scenario Outline: Sign in to Wire for Web
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
     Given I see Sign In page
@@ -17,7 +17,7 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id1792
+  @smoke @id1792
   Scenario Outline: Verify sign in error appearance in case of wrong credentials
     Given There is 1 user where user1Name is me
     Given I switch to sign in page
