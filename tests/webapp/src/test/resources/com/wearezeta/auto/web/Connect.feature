@@ -19,8 +19,8 @@ Feature: Connect
   Scenario Outline: Verify pending user profiles contain all the info required by spec
     Given There are 2 users where <Name> is me
     Given <UnknownContact> sent connection request to me
-    Given I Sign in using login <Login> and password <Password>
     Given User me change accent color to VividRed
+    Given I Sign in using login <Login> and password <Password>
     Then I see connection request from one user
     When I open the list of incoming connection requests
     Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
@@ -69,7 +69,6 @@ Feature: Connect
     And I click on not connected user <Name2> found in People Picker
     And I see Connect To popover
     And I click Connect button on Connect To popover
-    And I close People Picker
     And I see Contact list with name <Name2>
     And I open self profile
     And I click gear button on self profile page
@@ -114,7 +113,6 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
-    And I close People Picker
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -127,7 +125,6 @@ Feature: Connect
     And I open the list of incoming connection requests
     And I ignore connection request from user <Name>
     And I do not see Contact list with name <Name>
-    And I close People Picker
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -259,10 +256,10 @@ Feature: Connect
     Then I see text message <Msg2>
 
     Examples: 
-      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1       | Msg2     | Picture1 | Picture2    |
-      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1   | Message2 | cat.jpg  | puppies.jpg |
+      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1     | Msg2     | Picture1                  | Picture2                 |
+      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1 | Message2 | userpicture_landscape.jpg | userpicture_portrait.jpg |
 
-  @staging @id2317
+  @regression @id2317
   Scenario Outline: Verify you can dismiss user suggestion in PYMK list
     Given There are 3 users where <Me> is me
     Given User <Contact1> has contact <Me> in address book
@@ -280,7 +277,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
       | user1Name | user1Email | user1Password | user2Name | user3Name |
 
-  @staging @id2318
+  @regression @id2318
   Scenario Outline: Verify you can add a user from PYMK list
     Given There are 3 users where <Me> is me
     Given User <Contact1> has contact <Me> in address book
@@ -312,6 +309,25 @@ Feature: Connect
     Then I see START A CONVERSATION action for <Contact> in conversation
     Then I do not see text message
 
-    Examples:
+    Examples: 
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
+
+  @regression @id1564
+  Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search view)
+    Given There are 3 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    When I open People Picker from Contact List
+    And I wait for 2 seconds
+    And I type <Contact1> in search field of People Picker
+    Then I see user <Contact1> found in People Picker
+    When I click on pending user <Contact1> found in People Picker
+    And I see Pending Outgoing Connection popover
+    When I click Pending button on Pending Outgoing Connection popover
+    Then I see conversation with <Contact1> is selected in conversations list
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |

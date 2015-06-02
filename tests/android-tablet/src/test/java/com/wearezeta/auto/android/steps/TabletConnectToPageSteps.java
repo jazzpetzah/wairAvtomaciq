@@ -11,22 +11,26 @@ import cucumber.api.java.en.When;
 
 public class TabletConnectToPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	
+
 	/**
 	 * Verify that I see tablet connect to contact dialog
 	 * 
 	 * @step. ^I see tablet connect to (.*) dialog$
 	 * 
 	 * @param contact
-	 * 			 contact name
+	 *            contact name
 	 * @throws Throwable
 	 */
 	@When("^I see tablet connect to (.*) dialog$")
-	public void WhenISeeTabletConnectToUserDialog(String contact) throws Throwable {
+	public void WhenISeeTabletConnectToUserDialog(String contact)
+			throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.androidPage;
-
-		Assert.assertTrue(TabletPagesCollection.connectToPage.connectToHeaderContains(contact));
+		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
+		Assert.assertTrue(
+				String.format(
+						"Connect To header with text '%s' is not visible, but should be",
+						contact), TabletPagesCollection.connectToPage
+						.isConnectToHeaderVisible(contact));
 	}
 
 }

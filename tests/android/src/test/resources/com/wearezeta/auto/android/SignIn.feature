@@ -2,18 +2,17 @@ Feature: Sign In
 
   @id326 @smoke
   Scenario Outline: Sign in to ZClient
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I see sign in screen
-    When I press Sign in button
+    Given There is 1 user where <Name> is me
+    Given I see welcome screen
+    When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Log in button
-    Then Contact list appears
+    Then I see Contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   #@id209 @smoke
   #Scenario Outline: I can change sign in user
@@ -28,7 +27,7 @@ Feature: Sign In
     #And I tap options button
     #And I tap sign out button
     #And I see sign in and join buttons
-    #And I press Sign in button
+    #And I switch to email sign in screen
     #And I have entered login <Login2>
     #And I have entered password <Password>
     #And I press Log in button
@@ -40,38 +39,37 @@ Feature: Sign In
 
   @id1413 @regression
   Scenario Outline: Negative case for sign in
-    Given I see sign in screen
-    When I press Sign in button
+    Given I see welcome screen
+    When I switch to email sign in screen
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Log in button
-    Then Login error message appears
-    And Contains wrong name or password text
+    Then I see error message "<ErrMessage>"
 
     Examples: 
-      | Login   | Password |
-      | aaa 	| aaa 	   |
-      
-  @id2020 @regression
-  Scenario Outline: Verify possibility of reseting password from sign in
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I see sign in screen
-    When I press Sign in button
-    And I press FORGOT PASSWORD button
-    And I request reset password for <Login>
-    And I get new <Name> password link
-    Then I reset password by URL to new <NewPassword>
-    When I restore the application
-    And I wait for 2 seconds
-    And I minimize the application
-    And I restore the application
-    And I press Sign in button
-    And I have entered login <Login>
-    And I have entered password <NewPassword>
-    And I press Log in button
-    Then Contact list appears
+      | Login   | Password | ErrMessage                          |
+      | aaa 	| aaa 	   | Please enter a valid email address. |
 
-    Examples: 
-      | Login      | Password      | Name      | NewPassword | Contact   |
-      | user1Email | user1Password | user1Name | qatest1234  | user2Name |
+# Selendroid cannot interact with external apps
+  # @id2020 @regression
+  # Scenario Outline: Verify possibility of reseting password from sign in
+  #  Given There is 1 user where <Name> is me
+  #  Given I see welcome screen
+  #  When I switch to email sign in screen
+  #  And I press FORGOT PASSWORD button
+  #  And I request reset password for <Login>
+  #  And I get new <Name> password link
+  #  Then I reset password by URL to new <NewPassword>
+  #  When I restore the application
+  #  And I wait for 2 seconds
+  #  And I minimize the application
+  #  And I restore the application
+  #  And I switch to email sign in screen
+  #  And I have entered login <Login>
+  #  And I have entered password <NewPassword>
+  #  And I press Log in button
+  #  Then I see Contact list
+  #
+  #  Examples: 
+  #    | Login      | Password      | Name      | NewPassword |
+  #    | user1Email | user1Password | user1Name | qatest1234  |

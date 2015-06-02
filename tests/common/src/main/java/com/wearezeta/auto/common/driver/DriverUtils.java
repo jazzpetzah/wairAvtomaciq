@@ -7,10 +7,10 @@ import io.appium.java_client.android.AndroidDriver;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
@@ -22,6 +22,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
@@ -86,7 +87,8 @@ public class DriverUtils {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
+					.ignoring(NoSuchElementException.class)
+					.ignoring(StaleElementReferenceException.class);
 			try {
 				return wait.until(drv -> {
 					return (drv.findElements(by).size() > 0)
@@ -167,8 +169,8 @@ public class DriverUtils {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
-
+					.ignoring(NoSuchElementException.class)
+					.ignoring(StaleElementReferenceException.class);
 			wait.until(ExpectedConditions.elementToBeClickable(element));
 			return true;
 		} catch (TimeoutException e) {
@@ -350,13 +352,14 @@ public class DriverUtils {
 	public static final int DEFAULT_FINGERS = 1;
 
 	public static void genericTap(AppiumDriver driver) {
-		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, DEFAULT_PERCENTAGE,
-				DEFAULT_PERCENTAGE);
+		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS,
+				DEFAULT_PERCENTAGE, DEFAULT_PERCENTAGE);
 	}
 
 	public static void genericTap(AppiumDriver driver, int percentX,
 			int percentY) {
-		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, percentX, percentY);
+		genericTap(driver, DEFAULT_SWIPE_DURATION, DEFAULT_FINGERS, percentX,
+				percentY);
 	}
 
 	public static void genericTap(AppiumDriver driver, int time, int percentX,
@@ -438,23 +441,10 @@ public class DriverUtils {
 	}
 
 	public static void androidMultiTap(AppiumDriver driver, WebElement element,
-			int tapNumber, double duration) throws InterruptedException {
-		Point coords = element.getLocation();
-		Dimension elementSize = element.getSize();
-
-		JavascriptExecutor js = (JavascriptExecutor) driver;
-		HashMap<String, Double> tapObject = new HashMap<String, Double>();
-		tapObject.put("tapCount", (double) 1);
-		tapObject.put("touchCount", (double) 1);
-		tapObject.put("duration", duration);
-		tapObject.put("x", (double) (coords.x + elementSize.width / 2));
-		tapObject.put("y", (double) (coords.y + elementSize.height / 2));
-
+			int tapNumber, int millisecondsDuration) {
 		for (int i = 0; i < tapNumber; i++) {
-			js.executeScript("mobile: tap", tapObject);
-			Thread.sleep(100);
+			driver.tap(1, element, millisecondsDuration);
 		}
-
 	}
 
 	public static void mobileTapByCoordinates(AppiumDriver driver,
@@ -490,7 +480,7 @@ public class DriverUtils {
 		Runtime.getRuntime().exec(
 				"/usr/bin/open -a Terminal " + scriptPath + "Down.py");
 	}
-	
+
 	public static void iOSSimulatorSwipeRight(String scriptPath)
 			throws Exception {
 
@@ -558,6 +548,14 @@ public class DriverUtils {
 		driver.tap(fingerNumber, element, 1);
 	}
 
+	public static void addClass(RemoteWebDriver driver, WebElement element,
+			String cssClass) {
+		String addHoverClassScript = "arguments[0].classList.add('" + cssClass
+				+ "');";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(addHoverClassScript, element);
+	}
+
 	public static void turnOffImplicitWait(RemoteWebDriver driver) {
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
 	}
@@ -573,25 +571,25 @@ public class DriverUtils {
 		PlatformDrivers.setDefaultImplicitWaitTimeout(driver);
 	}
 
-	public static BufferedImage takeScreenshot(ZetaDriver driver)
-			throws IOException {
-		if (!driver.isSessionLost()) {
-			byte[] scrImage = ((TakesScreenshot) driver)
+	public static Optional<BufferedImage> takeFullScreenShot(ZetaDriver driver)
+			throws Exception {
+		try {
+			final byte[] scrImage = ((TakesScreenshot) driver)
 					.getScreenshotAs(OutputType.BYTES);
-			InputStream in = new ByteArrayInputStream(scrImage);
-			BufferedImage bImageFromConvert = ImageIO.read(in);
-			return bImageFromConvert;
-		} else {
-			return null;
+			final BufferedImage bImageFromConvert = ImageIO
+					.read(new ByteArrayInputStream(scrImage));
+			return Optional.ofNullable(bImageFromConvert);
+		} catch (WebDriverException e) {
+			// e.printStackTrace();
+			log.error("Selenium driver has failed to take the screenshot of the current screen!");
 		}
+		return Optional.empty();
 	}
 
 	public static void ToggleNetworkConnectionAndroid(AndroidDriver driver,
 			boolean airplane, boolean wifi, boolean data) {
-
 		NetworkConnectionSetting connection = new NetworkConnectionSetting(
 				airplane, wifi, data);
-
 		driver.setNetworkConnection(connection);
 	}
 

@@ -310,4 +310,8 @@ public class WebCommonUtils extends CommonUtils {
 			}
 		}
 	}
+
+	public static void refreshPage(RemoteWebDriver driver) {
+		driver.get(driver.getCurrentUrl());
+	}
 }

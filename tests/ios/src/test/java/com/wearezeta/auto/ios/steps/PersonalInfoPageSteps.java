@@ -42,6 +42,29 @@ public class PersonalInfoPageSteps {
 		PagesCollection.personalInfoPage.clearNameField();
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
 	}
+	
+	/**
+	 * Enters an 80 char username 
+	 * 
+	 * @step. ^I attempt to enter an 80 char name$
+	 * 
+	 */
+	@When("^I attempt to enter an 80 char name$")
+	public void EnterTooLongName() {
+		PagesCollection.personalInfoPage.clearNameField();
+		PagesCollection.personalInfoPage.attemptTooLongName();
+	}
+	
+	/**
+	 * Verifies username is no more than 64 chars
+	 * 
+	 * @step. New name is only first 64 chars
+	 * 
+	 */
+	@When("I verify my new name is only first 64 chars")
+	public void NewNameIsMaxChars() {
+		Assert.assertTrue("Username is greater than 64 characters", PagesCollection.personalInfoPage.nameIsMaxChars() >= 64);
+	}
 
 	@When("I see error message asking for more characters")
 	public void ISeeErrorMessageForMoreCharacters() throws Exception {
@@ -68,7 +91,7 @@ public class PersonalInfoPageSteps {
 	public void WhenIClickOnAboutButtonOnPersonalPage() {
 		PagesCollection.personalInfoPage.clickOnAboutButton();
 	}
-	
+
 	/**
 	 * Verifies the about page in settings is shown
 	 * 
@@ -261,10 +284,11 @@ public class PersonalInfoPageSteps {
 
 	@When("^I return to personal page$")
 	public void IReturnToPersonalPage() throws Throwable {
-		Thread.sleep(4000);//wait for picture to load on simulator
+		Thread.sleep(4000);// wait for picture to load on simulator
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
-		Thread.sleep(2000);//wait for picture to load on simulator
-		referenceImage = PagesCollection.personalInfoPage.takeScreenshot();
+		Thread.sleep(2000);// wait for picture to load on simulator
+		referenceImage = PagesCollection.personalInfoPage.takeScreenshot()
+				.orElseThrow(AssertionError::new);
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
 
 	}
@@ -284,7 +308,7 @@ public class PersonalInfoPageSteps {
 	public void ThenISeeProfileImageIsSameAsSelected(String filename)
 			throws Exception {
 		BufferedImage profileImage = PagesCollection.personalInfoPage
-				.takeScreenshot();
+				.takeScreenshot().orElseThrow(AssertionError::new);
 		double score = ImageUtil.getOverlapScore(
 				RegistrationPageSteps.basePhoto, profileImage);
 		System.out.println("SCORE: " + score);
@@ -324,6 +348,17 @@ public class PersonalInfoPageSteps {
 		PagesCollection.personalInfoPage.clearNameField();
 		PagesCollection.personalInfoPage.enterNameInNamefield(username);
 		PagesCollection.personalInfoPage.tapOnPersonalPage();
+	}
+	
+	/**
+	 * Attempt to change name using only spaces
+	 * 
+	 * @step. I attempt to change name using only spaces
+	 * 
+	 */
+	@When("I attempt to change name using only spaces")
+	public void IEnterNameUsingOnlySpaces() throws Exception {
+		PagesCollection.personalInfoPage.changeNameUsingOnlySpaces();
 	}
 
 	@When("I swipe right on the personal page")

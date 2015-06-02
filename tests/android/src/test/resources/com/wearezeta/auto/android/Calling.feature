@@ -68,7 +68,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | autocall    |
 
-  @staging @id347
+  @regression @id347
   Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -80,11 +80,7 @@ Feature: Calling
     And I see incoming calling message for contact <Contact>
     And I answer the call from the overlay bar
     And I see started call message for contact <Contact>
-    And I tap on text input
-    And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
-    When I press back button
-    And I swipe on text input
+    When I swipe on text input
     And I press Add Picture button
     And I press "Take Photo" button
     And I press "Confirm" button
@@ -92,16 +88,20 @@ Feature: Calling
     When I swipe on text input
     And I press Ping button
     Then I see Ping message <Msg> in the dialog
+    # There is some issue in Selendroid - we cannot swipe cursor after the keyboard was hidden once
+    # That is why we send the text after photo and ping and not before
+    And I tap on text input
+    And I type the message "<Message>" and send it
+    Then I see my message "<Message>" in the dialog
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Message                   | Msg        |
       | user1Email | user1Password | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
   @id2210 @regression
-  Scenario Outline: Calling bar buttons are clickable and change its state
+  Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given <Name> has an accent color <AccentColor>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I tap on contact name <Contact>
@@ -109,19 +109,21 @@ Feature: Calling
     And <Contact> calls me using <CallBackend>
     And I see call overlay
     And I answer the call from the overlay bar
-    When I press Mute button
-    Then I see MUTE calling button is pressed
-    When I press Speaker button
-    Then I see SPEAKER calling button is pressed
+    When I remember the current state of <MuteBtnName> button
+    And I press <MuteBtnName> button
+    Then I see <MuteBtnName> button state is changed
+    When I remember the current state of <SpeakerBtnName> button
+    And I press <SpeakerBtnName> button
+    Then I see <SpeakerBtnName> button state is changed
     When I press Cancel call button
     Then I do not see call overlay
     And <Contact> stops all calls to me
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | AccentColor | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | StrongBlue  | autocall    |
+      | Login      | Password      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
+      | user1Email | user1Password | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
-  @id2212 @staging
+  @id2212 @regression
   Scenario Outline: Correct calling bar in different places
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>

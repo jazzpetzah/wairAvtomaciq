@@ -32,8 +32,6 @@ public class CommonUtils {
 	private static final String HOT_PING_IMAGE = "hot_ping_image.png";
 	private static final String IOS_PING_IMAGE = "ios_ping_image.png";
 	private static final String IOS_HOT_PING_IMAGE = "ios_hot_ping_image.png";
-	private static final String CALLING_MUTE_BUTTON_IMAGE = "mutebtn_pressed.png";
-	private static final String CALLING_SPEAKER_BUTTON_IMAGE = "speakerbtn_pressed.png";
 	private static final String IOS_AVATAR_CLOCK_IMAGE = "new_avatarclock.png";
 	private static final String MEDIABAR_PLAY_IMAGE = "android_mediabar_play_image.png";
 	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image.png";
@@ -142,19 +140,6 @@ public class CommonUtils {
 	public static String getHotPingIconPathIOS(Class<?> c) throws Exception {
 		String path = getValueFromConfig(c, "iosImagesPath")
 				+ IOS_HOT_PING_IMAGE;
-		return path;
-	}
-
-	public static String getCallingMuteButtonPath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ CALLING_MUTE_BUTTON_IMAGE;
-		return path;
-	}
-
-	public static String getCallingSpeakerButtonPath(Class<?> c)
-			throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ CALLING_SPEAKER_BUTTON_IMAGE;
 		return path;
 	}
 
@@ -390,8 +375,9 @@ public class CommonUtils {
 	public static String generateRandomString(int lengh) {
 		return RandomStringUtils.randomAlphanumeric(lengh);
 	}
-	
-	private static String generateRandomStringFromTargetStringSetWithLengh(int numberOfCharacters, String characters) {
+
+	private static String generateRandomStringFromTargetStringSetWithLengh(
+			int numberOfCharacters, String characters) {
 		StringBuilder result = new StringBuilder();
 		while (numberOfCharacters > 0) {
 			Random rand = new Random();
@@ -401,9 +387,11 @@ public class CommonUtils {
 		String text = result.toString();
 		return text;
 	}
-	
-	public static String generateRandomStringFromAlphanumericPlusSymbolsWithLengh(int numberOfCharacters) {
-		return generateRandomStringFromTargetStringSetWithLengh(numberOfCharacters, ALPHANUMERIC_PLUS_SYMBOLS);
+
+	public static String generateRandomStringFromAlphanumericPlusSymbolsWithLengh(
+			int numberOfCharacters) {
+		return generateRandomStringFromTargetStringSetWithLengh(
+				numberOfCharacters, ALPHANUMERIC_PLUS_SYMBOLS);
 	}
 
 	public static String getAndroidDeviceNameFromConfig(Class<?> c)
@@ -434,25 +422,31 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "defaultCallingServicePort");
 	}
 
-	public static BufferedImage getElementScreenshot(WebElement element,
-			AppiumDriver driver) throws IOException {
+	public static Optional<BufferedImage> getElementScreenshot(
+			WebElement element, AppiumDriver driver) throws Exception {
 		return getElementScreenshot(element, driver, "iPhone 6");
 	}
 
-	public static BufferedImage getElementScreenshot(WebElement element,
-			AppiumDriver driver, String deviceName) throws IOException {
+	public static Optional<BufferedImage> getElementScreenshot(
+			WebElement element, AppiumDriver driver, String deviceName)
+			throws Exception {
 		int multiply = 3;
 		if (deviceName.equals("iPhone 6")) {
 			multiply = 2;
 		}
-
-		BufferedImage screenshot = DriverUtils
-				.takeScreenshot((ZetaDriver) driver);
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
-		return screenshot.getSubimage(elementLocation.x * multiply,
-				elementLocation.y * multiply, elementSize.width * multiply,
-				elementSize.height * multiply);
+		final Optional<BufferedImage> screenshot = DriverUtils
+				.takeFullScreenShot((ZetaDriver) driver);
+		if (screenshot.isPresent()) {
+			return Optional.of(screenshot.get()
+					.getSubimage(elementLocation.x * multiply,
+							elementLocation.y * multiply,
+							elementSize.width * multiply,
+							elementSize.height * multiply));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	public static String getContactName(String login) {

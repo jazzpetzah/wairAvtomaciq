@@ -58,7 +58,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I choose photo from album$")
 	public void WhenIPressChoosePhoto() throws Exception {
-		PagesCollection.registrationPage.chooseFirstPhoto();
+		PagesCollection.registrationPage.selectFirstGalleryPhoto();
 	}
 
 	/**

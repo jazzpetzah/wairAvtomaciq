@@ -40,6 +40,13 @@ public class IncomingCallPage extends CallPage {
 						contact)).isDisplayed();
 	}
 
+	public boolean isUserCallingMessageShown(String contact) throws Exception {
+		String locator = String.format(
+				IOSLocators.IncomingCallPage.xpathCallingMessageUser, contact);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(locator));
+	}
+
 	public StartedCallPage acceptIncomingCallClick() throws Exception {
 		acceptCallButton.click();
 		return new StartedCallPage(getLazyDriver());

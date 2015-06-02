@@ -67,13 +67,14 @@ public class RegistrationPageSteps {
 	@When("^I take photo by rear camera$")
 	public void WhenITakePhotoByRearCamera() throws Exception {
 		PagesCollection.registrationPage.takePhotoByRearCamera();
-		basePhoto = PagesCollection.registrationPage.takeScreenshot();
+		basePhoto = PagesCollection.registrationPage.takeScreenshot()
+				.orElseThrow(AssertionError::new);
 		Thread.sleep(3000);
 	}
 
 	@When("^I See photo taken$")
 	public void ISeePhotoTaken() throws IOException {
-		
+
 		Assert.assertTrue(PagesCollection.registrationPage.isPictureSelected());
 	}
 
@@ -86,7 +87,8 @@ public class RegistrationPageSteps {
 
 	@When("^I See selected picture$")
 	public void ISeeSelectedPicture() throws Exception {
-		templateImage = PagesCollection.registrationPage.takeScreenshot();
+		templateImage = PagesCollection.registrationPage.takeScreenshot()
+				.orElseThrow(AssertionError::new);
 		Assert.assertTrue(PagesCollection.registrationPage.isPictureSelected());
 	}
 
@@ -152,11 +154,12 @@ public class RegistrationPageSteps {
 	public void ISeeRegistrationNameInput() {
 		Assert.assertTrue(PagesCollection.registrationPage.isNameLabelVisible());
 	}
-	
+
 	/**
 	 * Input fake phone number for given user
+	 * 
 	 * @param name
-	 * 	User name alias
+	 *            User name alias
 	 * @throws Exception
 	 */
 	@When("^I enter phone number for user (.*)$")
@@ -167,13 +170,14 @@ public class RegistrationPageSteps {
 		this.userToRegister.setName(name);
 		this.userToRegister.clearNameAliases();
 		this.userToRegister.addNameAlias(name);
-		
+
 		this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		String number = this.userToRegister.getPhoneNumber().toString();
 		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		PagesCollection.registrationPage.inputPhoneNumber(number, PhoneNumber.WIRE_COUNTRY_PREFIX);
+		PagesCollection.registrationPage.inputPhoneNumber(number,
+				PhoneNumber.WIRE_COUNTRY_PREFIX);
 	}
-	
+
 	/**
 	 * Click on I AGREE button to accept terms of service
 	 */
@@ -181,14 +185,17 @@ public class RegistrationPageSteps {
 	public void IAcceptTermsOfService() {
 		PagesCollection.registrationPage.clickAgreeButton();
 	}
-	
+
 	/**
 	 * Input activation code generated for fake phone number
+	 * 
 	 * @throws Exception
 	 */
 	@When("^I enter activation code$")
 	public void IEnterActivationCode() throws Exception {
-		String code = BackendAPIWrappers.getActivationCodeByPhoneNumber(this.userToRegister.getPhoneNumber());
+		String code = BackendAPIWrappers
+				.getActivationCodeByPhoneNumber(this.userToRegister
+						.getPhoneNumber());
 		PagesCollection.registrationPage.inputActivationCode(code);
 	}
 
@@ -441,7 +448,8 @@ public class RegistrationPageSteps {
 
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Exception {
-		BackendAPIWrappers.activateRegisteredUserByEmail(this.activationMessage);
+		BackendAPIWrappers
+				.activateRegisteredUserByEmail(this.activationMessage);
 		userToRegister.setUserState(UserState.Created);
 	}
 
@@ -453,17 +461,20 @@ public class RegistrationPageSteps {
 
 	@When("^I see selected image set as background$")
 	public void ISeeSelectedImageSetAsBackground() throws Throwable {
-		templateImage = PagesCollection.registrationPage.takeScreenshot();
+		templateImage = PagesCollection.registrationPage.takeScreenshot()
+				.orElseThrow(AssertionError::new);
 	}
 
 	@When("^I see photo set as background$")
 	public void ISeePhotoSetAsBackground() throws Throwable {
-		referenceImage = PagesCollection.registrationPage.takeScreenshot();
+		referenceImage = PagesCollection.registrationPage.takeScreenshot()
+				.orElseThrow(AssertionError::new);
 	}
 
 	@Then("^I see photo is set as profile background$")
 	public void ISeePhotoSetAsProfileBackground() throws Throwable {
-		profileImage = PagesCollection.registrationPage.takeScreenshot();
+		profileImage = PagesCollection.registrationPage.takeScreenshot()
+				.orElseThrow(AssertionError::new);
 	}
 
 	@Then("I see photo image is correct")

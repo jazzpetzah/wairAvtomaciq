@@ -19,19 +19,26 @@ public class AboutPageSteps {
 	 */
 	@When("^I tap on About page$")
 	public void WhenITapOnAboutPage() throws Exception {
-		PagesCollection.personalInfoPage = PagesCollection.aboutPage.tapOnVersion();
+		PagesCollection.personalInfoPage = PagesCollection.aboutPage
+				.tapOnVersion();
 	}
-	
+
 	/**
-	 * Confirms the about page has been seen
+	 * Confirms the about page is visible or not
 	 * 
-	 * @step. ^I see About page$
+	 * @step. ^I( do not)? see [Aa]bout page$"
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part is not present
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@Then("^I see About page$")
-	public void ThenISeeAboutPage() throws Exception {
-	   Assert.assertTrue(PagesCollection.aboutPage.aboutLogoIsVisible());
+	@Then("^I( do not)? see [Aa]bout page$")
+	public void ThenISeeAboutPage(String shouldNotBeVisible) throws Exception {
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue(PagesCollection.aboutPage.isVisible());
+		} else {
+			Assert.assertTrue(PagesCollection.aboutPage.isInvisible());
+		}
 	}
 }

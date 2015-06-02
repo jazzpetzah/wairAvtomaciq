@@ -54,7 +54,6 @@ public class PerformanceSteps {
 							&& counter != 3);
 					visibleContactsList.remove(0);
 					// --
-
 					int randomInt;
 					String convName;
 					do {
@@ -132,7 +131,8 @@ public class PerformanceSteps {
 				isPassed = false;
 				PagesCollection.contactListPage.contactListSwipeUp(1000);
 			}
-			if (isPassed) break;
+			if (isPassed)
+				break;
 		}
 		PagesCollection.dialogPage.isDialogVisible();
 		CommonAndroidSteps.listener.stopListeningLogcat();

@@ -7,11 +7,14 @@ import com.wearezeta.auto.web.locators.PopoverLocators;
 
 public class ConnectToPopoverContainer extends AbstractPopoverContainer {
 	private ConnectToPopoverPage connectToPopoverPage;
+	private PendingOutgoingConnectionPopoverPage pendingOutgoingConnectionPopoverPage;
 
 	public ConnectToPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
 		this.connectToPopoverPage = new ConnectToPopoverPage(lazyDriver, this);
+		this.pendingOutgoingConnectionPopoverPage = new PendingOutgoingConnectionPopoverPage(
+				lazyDriver, this);
 	}
 
 	@Override
@@ -24,4 +27,7 @@ public class ConnectToPopoverContainer extends AbstractPopoverContainer {
 		this.connectToPopoverPage.clickConnectButton();
 	}
 
+	public void clickPendingButton() throws Exception {
+		this.pendingOutgoingConnectionPopoverPage.clickPendingButton();
+	}
 }

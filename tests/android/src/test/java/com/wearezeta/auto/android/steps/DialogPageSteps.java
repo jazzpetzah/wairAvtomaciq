@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
@@ -191,23 +193,68 @@ public class DialogPageSteps {
 		PagesCollection.dialogPage.tapCancelCallBtn();
 	}
 
+	private final Map<String, BufferedImage> savedButtonStates = new HashMap<String, BufferedImage>();
+
 	/**
-	 * Checks to see if a certain calling button is pressed
+	 * Takes screenshot of current button state for the further comparison
 	 * 
-	 * @step. ^I see (.*) calling button is pressed$
+	 * @step. ^I remember the current state of (\\w+) button$
 	 * 
 	 * @param buttonName
-	 *            the name of the calling button to check
+	 *            the name of the button to take screenshot. Available values:
+	 *            MUTE, SPEAKER
+	 * @throws Exception
+	 */
+	@When("^I remember the current state of (\\w+) button$")
+	public void IRememberButtonState(String buttonName) throws Exception {
+		savedButtonStates.put(buttonName, PagesCollection.dialogPage
+				.getCurrentButtonStateScreenshot(buttonName));
+	}
+
+	private static final long BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS = 15000;
+	private static final double BUTTON_STATE_OVERLAP_MAX_SCORE = 0.4d;
+
+	/**
+	 * Checks to see if a certain calling button state is changed. Make sure,
+	 * that the screenshot of previous state is already taken for this
+	 * particular button
+	 * 
+	 * @step. ^I see (\\w+) button state is changed$
+	 * 
+	 * @param buttonName
+	 *            the name of the button to check. Available values: MUTE,
+	 *            SPEAKER
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see (.*) calling button is pressed$")
-	public void WhenIPressCancelCallButton(String buttonName) throws Exception {
-		final double score = PagesCollection.dialogPage
-				.getExpectedButtonStateOverlapScore(buttonName);
-		Assert.assertTrue(
-				"Calling button not present or not clicked. Expected >= 0.95, current = "
-						+ score, score >= 0.95d);
+	@Then("^I see (\\w+) button state is changed$")
+	public void ICheckButtonStateIsChanged(String buttonName) throws Exception {
+		if (!savedButtonStates.containsKey(buttonName)) {
+			throw new IllegalStateException(
+					String.format(
+							"Please call the corresponding step to take the screenshot of previous '%s' button state first",
+							buttonName));
+		}
+		final BufferedImage previousStateScreenshot = savedButtonStates
+				.get(buttonName);
+		final long millisecondsStarted = System.currentTimeMillis();
+		double overlapScore;
+		do {
+			final BufferedImage currentStateScreenshot = PagesCollection.dialogPage
+					.getCurrentButtonStateScreenshot(buttonName);
+			overlapScore = ImageUtil.getOverlapScore(currentStateScreenshot,
+					previousStateScreenshot,
+					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+			if (overlapScore <= BUTTON_STATE_OVERLAP_MAX_SCORE) {
+				return;
+			}
+			Thread.sleep(500);
+		} while (System.currentTimeMillis() - millisecondsStarted <= BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS);
+		throw new AssertionError(
+				String.format(
+						"Button state has not been changed within %s seconds timeout. Current overlap score: %.2f, expected overlap score: <= %.2f",
+						BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS / 1000,
+						overlapScore, BUTTON_STATE_OVERLAP_MAX_SCORE));
 	}
 
 	/**
@@ -254,7 +301,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap conversation details button$")
 	public void WhenITapConversationDetailsBottom() throws Exception {
-		PagesCollection.otherUserPersonalInfoPage = ((DialogPage) PagesCollection.androidPage)
+		PagesCollection.otherUserPersonalInfoPage = ((DialogPage) PagesCollection.currentPage)
 				.tapConversationDetailsButton();
 	}
 
@@ -325,7 +372,6 @@ public class DialogPageSteps {
 	public void WhenIPressButton(String buttonName) throws Throwable {
 		switch (buttonName.toLowerCase()) {
 		case "take photo":
-			Thread.sleep(1000);
 			PagesCollection.dialogPage.takePhoto();
 			break;
 		case "confirm":
@@ -349,7 +395,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I select picture for dialog$")
 	public void WhenISelectPicture() throws Exception {
-		PagesCollection.dialogPage.selectPhoto();
+		PagesCollection.dialogPage.selectFirstGalleryPhoto();
 	}
 
 	/**
@@ -364,8 +410,8 @@ public class DialogPageSteps {
 	@Then("^I see Ping message (.*) in the dialog$")
 	public void ThenISeePingMessageInTheDialog(String message) throws Exception {
 		message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.dialogPage.getLastPingText().equals(
-				message));
+		Assert.assertTrue(PagesCollection.dialogPage.getLastPingText()
+				.toUpperCase().equals(message.toUpperCase()));
 	}
 
 	/**
@@ -422,7 +468,7 @@ public class DialogPageSteps {
 	}
 
 	private static final int SWIPE_DURATION_MILLISECONDS = 1000;
-	
+
 	/**
 	 * 
 	 * @step. ^I swipe up on dialog page
@@ -432,7 +478,7 @@ public class DialogPageSteps {
 	@When("^I swipe up on dialog page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
 		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.currentPage;
 		}
 		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
 				.swipeUp(SWIPE_DURATION_MILLISECONDS);
@@ -449,7 +495,7 @@ public class DialogPageSteps {
 	@When("^I swipe down on dialog page$")
 	public void WhenISwipedownOnDialogPage() throws Exception {
 		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.currentPage;
 		}
 		PagesCollection.dialogPage.swipeDown(SWIPE_DURATION_MILLISECONDS);
 	}
@@ -480,7 +526,7 @@ public class DialogPageSteps {
 	@Then("^I see Connect to (.*) Dialog page$")
 	public void ThenIseeConnectToDialogPage(String contact) throws Exception {
 		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.currentPage;
 		}
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(PagesCollection.dialogPage

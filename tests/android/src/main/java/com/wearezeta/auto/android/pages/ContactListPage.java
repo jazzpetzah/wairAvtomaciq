@@ -1,6 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -53,9 +53,6 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.ContactListPage.idConfirmCancelButtonPicker)
 	private List<WebElement> laterBtnPicker;
 
-	@FindBy(id = AndroidLocators.ContactListPage.idPlayPauseMedia)
-	private WebElement playPauseMedia;
-
 	@FindBy(id = AndroidLocators.ContactListPage.idConvList)
 	private WebElement convList;
 
@@ -76,8 +73,8 @@ public class ContactListPage extends AndroidPage {
 
 	@FindBy(id = AndroidLocators.CommonLocators.idConfirmBtn)
 	private WebElement confirmShareButton;
-	
-	@FindBy(id = AndroidLocators.ContactListPage.idSearchButton) 
+
+	@FindBy(id = AndroidLocators.ContactListPage.idSearchButton)
 	private WebElement searchButton;
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
@@ -90,14 +87,12 @@ public class ContactListPage extends AndroidPage {
 
 	public AndroidPage tapOnName(String name) throws Exception {
 		AndroidPage page = null;
-		WebElement el = findInContactList(name, 5);
-		this.getWait().until(ExpectedConditions.visibilityOf(el));
-		el.click();
+		findInContactList(name, 5).click();
 		try {
 			page = detectCurrentPage();
 		} catch (WebDriverException e) {
 			// workaround for incorrect tap
-			el = findInContactList(name, 1);
+			final WebElement el = findInContactList(name, 1);
 			if (el != null && DriverUtils.isElementPresentAndDisplayed(el)) {
 				this.restoreApplication();
 				el.click();
@@ -145,12 +140,12 @@ public class ContactListPage extends AndroidPage {
 		return null;
 	}
 
-	public AndroidPage swipeRightOnContact(int time, String contact)
-			throws Exception {
+	public AndroidPage swipeRightOnContact(int durationMilliseconds,
+			String contact) throws Exception {
 		WebElement el = this.getDriver().findElementByXPath(
 				AndroidLocators.ContactListPage.xpathContactByName
 						.apply(contact));
-		elementSwipeRight(el, time);
+		elementSwipeRight(el, durationMilliseconds);
 		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(AndroidLocators.CommonLocators.idEditText))) {
 			return new ContactListPage(this.getLazyDriver());
@@ -174,7 +169,7 @@ public class ContactListPage extends AndroidPage {
 
 	public boolean isContactMuted(String name) throws Exception {
 		final By locator = By
-				.xpath(AndroidLocators.ContactListPage.xpathMutedIconByName
+				.xpath(AndroidLocators.ContactListPage.xpathMutedIconByConvoName
 						.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator);
@@ -182,7 +177,7 @@ public class ContactListPage extends AndroidPage {
 
 	public boolean waitUntilContactNotMuted(String name) throws Exception {
 		final By locator = By
-				.xpath(AndroidLocators.ContactListPage.xpathMutedIconByName
+				.xpath(AndroidLocators.ContactListPage.xpathMutedIconByConvoName
 						.apply(name));
 		return DriverUtils
 				.waitUntilLocatorDissapears(this.getDriver(), locator);
@@ -250,14 +245,14 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	private AndroidPage detectCurrentPage() throws Exception {
-		final Map<By, AndroidPage> pageMapping = new HashMap<By, AndroidPage>();
-		pageMapping.put(By.id(AndroidLocators.ConnectToPage.idConnectToHeader),
-				new ConnectToPage(this.getLazyDriver()));
+		final Map<By, AndroidPage> pageMapping = new LinkedHashMap<By, AndroidPage>();
 		pageMapping.put(
 				By.xpath(AndroidLocators.PersonalInfoPage.xpathNameField),
 				new PersonalInfoPage(this.getLazyDriver()));
 		pageMapping.put(By.id(AndroidLocators.CommonLocators.idEditText),
 				new DialogPage(this.getLazyDriver()));
+		pageMapping.put(By.id(AndroidLocators.ConnectToPage.idConnectToHeader),
+				new ConnectToPage(this.getLazyDriver()));
 		for (Map.Entry<By, AndroidPage> entry : pageMapping.entrySet()) {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 					entry.getKey(), 2)) {
@@ -269,20 +264,32 @@ public class ContactListPage extends AndroidPage {
 				"Current page type cannot be detected. Please check locators");
 	}
 
-	public boolean isPlayPauseMediaButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.ContactListPage.idPlayPauseMedia));
+	public boolean isPlayPauseMediaButtonVisible(String convoName)
+			throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.ContactListPage.xpathPlayPauseButtonByConvoName
+						.apply(convoName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	private static final int CONTACT_LIST_ITEMS_LOAD_TIMEOUT_SECONDS = 60;
+	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 90;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
-		final By locator = By
+		final By convoListLoadingProgressLocator = By
+				.xpath(AndroidLocators.ContactListPage.xpathConversationListLoadingIndicator);
+		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				convoListLoadingProgressLocator,
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
+			log.warn(String
+					.format("It seems that conversation list has not been loaded within %s seconds (progress bar is still visible)",
+							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
+		}
+		final By loadingItemLocator = By
 				.xpath(AndroidLocators.ContactListPage.xpathLoadingContactListItem);
-		assert DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
-				CONTACT_LIST_ITEMS_LOAD_TIMEOUT_SECONDS) : String
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				loadingItemLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
 				.format("Not all conversation list items were loaded within %s seconds",
-						CONTACT_LIST_ITEMS_LOAD_TIMEOUT_SECONDS);
+						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {
@@ -354,7 +361,7 @@ public class ContactListPage extends AndroidPage {
 		selfUserAvatar.click();
 		return new PersonalInfoPage(getLazyDriver());
 	}
-	
+
 	public PeoplePickerPage openPeoplePicker() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), searchButton);
 		searchButton.click();

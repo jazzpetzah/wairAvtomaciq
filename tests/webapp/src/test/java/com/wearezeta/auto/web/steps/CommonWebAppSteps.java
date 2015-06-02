@@ -654,20 +654,6 @@ public class CommonWebAppSteps {
 	}
 
 	/**
-	 * Forces the current test to be skipped if current browser does not support
-	 * fast location by XPath
-	 * 
-	 * @step. ^My browser supports fast location by XPath$
-	 * 
-	 */
-	@Given("^My browser supports fast location by XPath$")
-	public void MyBrowserSupportsFastLocationByXpath() {
-		if (WebAppExecutionContext.SlowXPathLocation.existsInCurrentBrowser()) {
-			throw new PendingException();
-		}
-	}
-
-	/**
 	 * Record SHA256-hash of current user profile picture
 	 * 
 	 * @step. (.*) takes? snapshot of current profile picture$
@@ -743,6 +729,32 @@ public class CommonWebAppSteps {
 							});
 					assertTrue("BrowserLog is not empty: " + bLog.toString(),
 							browserLog.isEmpty());
+				}
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	/**
+	 * Refreshes page by getting and setting the current URL. Note: Alternative
+	 * 'WebDriver.navigate().refresh()' hangs with Firefox.
+	 *
+	 * @step. ^I refresh page$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I refresh page$")
+	public void IRefreshPage() throws Exception {
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+			try {
+				if (WebAppExecutionContext.LoggingManagement
+						.isSupportedInCurrentBrowser()) {
+					WebCommonUtils.refreshPage(PlatformDrivers
+							.getInstance()
+							.getDriver(CURRENT_PLATFORM)
+							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+									TimeUnit.MILLISECONDS));
 				}
 			} catch (ExecutionException e) {
 				e.printStackTrace();

@@ -35,7 +35,7 @@ public class TabletPersonalInfoPageSteps {
 
 	@When("^I tap on tablet personal info screen$")
 	public void WhenITapOnPersonalInfoScreen() throws Throwable {
-		TabletPagesCollection.personalInfoPage.clickOnPage();
+		TabletPagesCollection.personalInfoPage.tapOnPage();
 	}
 
 	/**

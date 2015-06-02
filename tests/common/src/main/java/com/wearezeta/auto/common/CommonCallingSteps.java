@@ -74,7 +74,7 @@ public final class CommonCallingSteps {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
 		final String callId = CallingServiceClient.callToUser(userAs, userTo,
 				CallingServiceBackend.fromString(callingServiceBackend),
-				new CallingServiceStatus[] { CallingServiceStatus.Waiting,
+				new CallingServiceStatus[] { CallingServiceStatus.Ready,
 						CallingServiceStatus.Active },
 				CALL_START_TIMEOUT_SECONDS);
 		final String callKey = makeKey(userAs, userTo);
@@ -171,7 +171,7 @@ public final class CommonCallingSteps {
 		final String instanceId = CallingServiceClient.startWaitingInstance(
 				userAs,
 				CallingServiceBackend.fromString(callingServiceBackend),
-				new CallingServiceStatus[] { CallingServiceStatus.Waiting },
+				new CallingServiceStatus[] { CallingServiceStatus.Ready },
 				INSTANCE_START_TIMEOUT_SECONDS);
 		final String instanceKey = makeKey(userAs);
 		if (waitingInstancesMapping.containsKey(instanceKey)) {

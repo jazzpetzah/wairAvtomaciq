@@ -155,7 +155,7 @@ public class ConversationInfoPageSteps {
 			throws Throwable {
 		PagesCollection.conversationInfoPage.openImageInPopup();
 		BufferedImage screen = PagesCollection.conversationInfoPage
-				.takeScreenshot();
+				.takeScreenshot().orElseThrow(AssertionError::new);
 		BufferedImage picture = ImageUtil
 				.readImageFromFile(OSXExecutionContext.userDocuments + "/"
 						+ photo);

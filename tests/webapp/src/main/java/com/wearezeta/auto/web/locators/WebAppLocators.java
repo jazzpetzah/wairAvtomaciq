@@ -99,6 +99,17 @@ public final class WebAppLocators {
 				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[local-name() = 'svg' and @data-uie-name='status-unread']",
 						name);
 
+		public static final Function<String, String> xpathPingIconByContactName = (
+				name) -> String
+				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
+						+ "*//*[@data-uie-name='status-unread' and contains(@class, 'icon-ping')]",
+						name);
+
+		public static final Function<String, String> xpathUnreadDotByContactName = (
+				name) -> String
+				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
+						+ "*//*[@data-uie-name='status-unread' and contains(@class, 'conversation-list')]",
+						name);
 	}
 
 	public static final class SettingsPage {
@@ -140,7 +151,11 @@ public final class WebAppLocators {
 
 		public static final String xpathNameSelfUserMail = "//*[@data-uie-name='enter-email']";
 
+		public static final String xpathNameSelfUserPhoneNumber = "//*[@data-uie-name='enter-phone']";
+
 		public static final String xpathCameraButton = "//*[@data-uie-name='go-profile-picture-selection']";
+
+		public static final String xpathBackgroundAvatarAccentColor = "//div[contains(@class, 'background-accent bg-theme')]";
 	}
 
 	public static final class ConversationPage {
@@ -151,6 +166,8 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathEmbeddedYoutubeVideoById = text -> String
 				.format("//iframe[contains(@src, '%s')]", text);
+
+		public static final String idConversation = "conversation";
 
 		public static final String idConversationInput = "conversation-input-text";
 
@@ -163,13 +180,13 @@ public final class WebAppLocators {
 
 		public static final String cssRightControlsPanel = "div.controls-right";
 
-		public static final String cssSendImageLabel = "label.controls-right-button.icon-library.icon-button";
+		public static final String cssSendImageLabel = "label.controls-right-button.conversation-input-button.icon-camera.icon-button";
 
 		public static final String cssSendImageInput = "input[data-uie-name=do-share-image]";
 
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 
-		public static final String xpathPingButton = "//*[@data-uie-name='do-ping' or @data-uie-name='do-hot-ping']";
+		public static final String cssPingButton = "[data-uie-name='do-ping'], [data-uie-name='do-hot-ping']";
 
 		public static final String xpathCallButton = "//*[@data-uie-name='do-call']";
 
@@ -179,9 +196,15 @@ public final class WebAppLocators {
 				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
 						text);
 
+		public static final String cssLastTextMessage = "[data-uie-name='item-message']:last-child .text-inner";
+
 		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
 
 		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls')]";
+
+		public static final Function<String, String> xpathCallingBarRootByName = text -> String
+				.format("//div[contains(@class, 'call-controls') and div/div/span[text()='%s']]",
+						text);
 
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-check')]";
@@ -227,11 +250,11 @@ public final class WebAppLocators {
 				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 				xpathRoot, name);
 
-		public static final String xpathCloseSearchButton = "//*[@data-uie-name='do-close']";
+		public static final String cssCloseSearchButton = ".search-header span[data-uie-name='do-close']";
 
-		public static final Function<String, String> cssRemoveIconByName = (
+		public static final Function<String, String> cssDismissIconByName = (
 				name) -> String.format(
-				"div[data-uie-value='%s'] span.icon-remove", name);
+				"div[data-uie-value='%s'] span.icon-dismiss", name);
 
 		public static final Function<String, String> cssAddIconByName = (name) -> String
 				.format("div[data-uie-value='%s'] span.icon-add", name);
@@ -240,6 +263,11 @@ public final class WebAppLocators {
 
 		public static final String xpathSendInvitationButton = xpathRoot
 				+ "//*[@id='invite-button']";
+
+		public static final Function<String, String> xpathSearchPendingResultByName = (
+				name) -> String
+				.format("%s//*[@data-uie-name='item-user' and .//*[text()='%s'] and .//div[contains(@class,'checkmark icon-check')]]",
+						xpathRoot, name);
 	}
 
 	public static final class RegistrationPage {

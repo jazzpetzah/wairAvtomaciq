@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @staging @id340
+  @staging @id2607
   Scenario Outline: Sign in to ZClient [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -14,7 +14,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id340
+  @staging @id2607
   Scenario Outline: Sign in to ZClient [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape

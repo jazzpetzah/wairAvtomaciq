@@ -14,6 +14,7 @@ import com.wearezeta.auto.ios.pages.TabletPagesCollection;
 import cucumber.api.java.en.Given;
 
 public class TabletLoginPageSteps {
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
 			.getLog(ContactListPageSteps.class.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();

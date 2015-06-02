@@ -58,7 +58,7 @@ public class SelfProfilePageSteps {
 			throws Exception {
 		PagesCollection.selfProfilePage.openPictureSettings();
 		BufferedImage referenceImage = PagesCollection.selfProfilePage
-				.takeScreenshot();
+				.takeScreenshot().orElseThrow(AssertionError::new);
 
 		final double minOverlapScore = 0.55d;
 		BufferedImage templateImage = ImageUtil
@@ -77,7 +77,8 @@ public class SelfProfilePageSteps {
 		if (userProfileAfter != null) {
 			userProfileBefore = userProfileAfter;
 		}
-		userProfileAfter = PagesCollection.selfProfilePage.takeScreenshot();
+		userProfileAfter = PagesCollection.selfProfilePage.takeScreenshot()
+				.orElseThrow(AssertionError::new);
 
 		final double minOverlapScore = 0.985d;
 		final double score = ImageUtil.getOverlapScore(userProfileAfter,
@@ -110,7 +111,8 @@ public class SelfProfilePageSteps {
 
 	@When("I see photo in User profile")
 	public void ISeePhotoInUserProfile() throws Exception {
-		userProfileBefore = PagesCollection.selfProfilePage.takeScreenshot();
+		userProfileBefore = PagesCollection.selfProfilePage.takeScreenshot()
+				.orElseThrow(IllegalStateException::new);
 	}
 
 	@Then("I see name (.*) in User profile")

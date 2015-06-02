@@ -24,7 +24,7 @@ public class ContactListPageSteps {
 	 */
 	@Given("^I see Contact list with no contacts$")
 	public void GivenISeeContactListWithNoContacts() throws Exception {
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
+		PagesCollection.loginPage.verifyLoginFinished();
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class ContactListPageSteps {
 	 */
 	@Given("^I see Contact list$")
 	public void GivenISeeContactList() throws Exception {
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
+		PagesCollection.loginPage.verifyLoginFinished();
 		PagesCollection.contactListPage.verifyContactListIsFullyLoaded();
 	}
 
@@ -58,7 +58,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.androidPage = PagesCollection.contactListPage
+		PagesCollection.currentPage = PagesCollection.contactListPage
 				.tapOnName(contactName);
 	}
 
@@ -105,15 +105,15 @@ public class ContactListPageSteps {
 			// Ignore silently - seems bad...
 		}
 		AndroidPage page = PagesCollection.contactListPage.swipeRightOnContact(
-				1000, contact);
+				1500, contact);
 		if (page instanceof DialogPage) {
 			PagesCollection.dialogPage = (DialogPage) page;
 		}
 	}
 
 	/**
-	 * Presses on search bar in the conversation List  to open start UI
-	 *  Sets the people picker page
+	 * Presses on search bar in the conversation List to open start UI Sets the
+	 * people picker page
 	 * 
 	 * @step. ^I press Open StartUI$
 	 * @throws Exception
@@ -158,19 +158,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Check to see that the current user's name appears at the top of the
-	 * contact list
-	 * 
-	 * @step. ^Contact list appears$
-	 *
-	 * @throws Exception
-	 */
-	@Then("Contact list appears$")
-	public void ThenContactListAppears() throws Exception {
-		Assert.assertTrue(PagesCollection.loginPage.isLoginFinished());
-	}
-
-	/**
 	 * Check to see that a given username appears in the contact list
 	 * 
 	 * @step. ^I( do not)? see contact list with name (.*)$
@@ -196,19 +183,6 @@ public class ContactListPageSteps {
 			Assert.assertTrue(PagesCollection.contactListPage
 					.waitUntilContactDisappears(userName));
 		}
-	}
-
-	/**
-	 * Check that Conversation List contains Random user from PYMK
-	 * 
-	 * @step. ^I see contact list loaded with PeoplePicker Random Connect$
-	 * 
-	 */
-	@Then("^I see contact list loaded with PeoplePicker Random Connect$")
-	public void ThenISeeContactListLoadedWithPeoplePickerRandomConnect()
-			throws Exception {
-		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(
-				PeoplePickerPageSteps.randomConnectName, 5));
 	}
 
 	/**
@@ -246,13 +220,18 @@ public class ContactListPageSteps {
 	 * Verify that Play/Pause media content button is visible in Conversation
 	 * List
 	 * 
-	 * @step. ^I see PlayPause media content button in Conversations List$
+	 * @step. ^I see PlayPause media content button for conversation (.*)
+	 * @param convoName
+	 *            conversation name for which button presence is checked
 	 * 
 	 */
-	@Then("^I see PlayPause media content button in Conversations List$")
-	public void ThenISeePlayPauseMediaContentButtonInConvLst() throws Exception {
+	@Then("^I see PlayPause media content button for conversation (.*)")
+	public void ThenISeePlayPauseButtonForConvo(String convoName)
+			throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
 		Assert.assertTrue(PagesCollection.contactListPage
-				.isPlayPauseMediaButtonVisible());
+				.isPlayPauseMediaButtonVisible(convoName));
 	}
 
 	/**

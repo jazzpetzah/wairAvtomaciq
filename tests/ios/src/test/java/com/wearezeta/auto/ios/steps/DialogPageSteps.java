@@ -308,9 +308,8 @@ public class DialogPageSteps {
 		String lastMessage = PagesCollection.dialogPage.getConnectionMessage();
 		String expectedConnectMessage = PagesCollection.dialogPage
 				.getExpectedConnectMessage(contact, user);
-		Assert.assertEquals("Expected: " + expectedConnectingLabel
-				+ " | Actual: " + actualConnectingLabel,
-				expectedConnectingLabel, actualConnectingLabel);
+		Assert.assertTrue(actualConnectingLabel.contains(expectedConnectingLabel));
+
 		Assert.assertEquals("Expected: " + expectedConnectMessage
 				+ " | Actual: " + lastMessage,
 				expectedConnectMessage.toLowerCase(), lastMessage.toLowerCase());
@@ -694,8 +693,11 @@ public class DialogPageSteps {
 		String username = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		String expectedCallMessage = username.toUpperCase() + " CALLED";
 		if (PagesCollection.dialogPage != null) {
-			Assert.assertTrue(PagesCollection.dialogPage
+			Assert.assertTrue(username + " called message is missing in dialog", PagesCollection.dialogPage
 					.isMessageVisible(expectedCallMessage));
+		}
+		else {
+			Assert.fail("This method is for dialog page and current page is not or is no initiated");
 		}
 	}
 

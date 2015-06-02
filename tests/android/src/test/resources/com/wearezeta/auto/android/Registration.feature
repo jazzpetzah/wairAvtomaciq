@@ -2,7 +2,7 @@ Feature: Registration
 
   @id9 @id30 @smoke
   Scenario Outline: Register new user using front camera
-    Given I see sign in screen
+    Given I see welcome screen
     When I press Join button
     And I press Camera button twice
     And I See selected picture
@@ -23,7 +23,7 @@ Feature: Registration
 
   @id38 @regression
   Scenario: Verify the taken photo/selected picture could be changed during registration process
-    Given I see sign in screen
+    Given I see welcome screen
     When I press Join button
     And I press Camera button twice
     And I See selected picture

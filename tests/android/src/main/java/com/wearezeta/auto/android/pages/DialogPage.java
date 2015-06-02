@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -83,17 +84,14 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestDialog)
 	private WebElement connectRequestDialog;
 
-	@FindBy(id = AndroidLocators.DialogPage.idAddParticipants)
-	private WebElement addParticipant;
+	@FindBy(id = AndroidLocators.DialogPage.idParticipantsBtn)
+	private WebElement participantsButton;
 
 	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestMessage)
 	private WebElement connectRequestMessage;
 
 	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestConnectTo)
 	private WebElement connectRequestConnectTo;
-
-	@FindBy(id = AndroidLocators.DialogPage.idDialogPageBottomFrameLayout)
-	private WebElement dialogPageBottomFrameLayout;
 
 	@FindBy(id = AndroidLocators.DialogPage.idBackgroundOverlay)
 	private WebElement backgroundOverlay;
@@ -143,9 +141,6 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.DialogPage.idCancelCall)
 	private WebElement cancelCallBtn;
 
-	@FindBy(id = AndroidLocators.DialogPage.idDialogPageBottom)
-	private WebElement dialogPageBottom;
-
 	@FindBy(id = AndroidLocators.DialogPage.idNewConversationNameMessage)
 	private WebElement newConversationNameMessage;
 
@@ -162,7 +157,7 @@ public class DialogPage extends AndroidPage {
 
 	public void waitForCursorInputVisible() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idEditText), 5);
+				By.id(AndroidLocators.CommonLocators.idEditText));
 	}
 
 	public void tapOnCursorInput() {
@@ -173,19 +168,49 @@ public class DialogPage extends AndroidPage {
 		cursurFrame.click();
 	}
 
+	public void tapOnTextInputIfVisible() throws Exception {
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.CommonLocators.idEditText), 5)) {
+			cursorInput.click();
+		}
+	}
+
 	public void sendMessageInInput() throws Exception {
 		this.hideKeyboard();
 		cursorInput.sendKeys("\\n");
 	}
 
 	public void multiTapOnCursorInput() throws Exception {
-		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 0.2);
+		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 500);
 	}
+
+	private static final int MAX_CURSOR_SWIPE_TRIES = 5;
 
 	public void swipeOnCursorInput() throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorInput));
-		DriverUtils.swipeRight(this.getDriver(), cursorInput,
-				DEFAULT_SWIPE_TIME);
+		final By fakeCursorLocator = By
+				.id(AndroidLocators.DialogPage.idFakeCursor);
+		int ntry = 1;
+		do {
+			final int initialCursorOffset = getDriver()
+					.findElement(fakeCursorLocator).getLocation().getX();
+			DriverUtils.swipeRight(this.getDriver(), cursorInput,
+					DEFAULT_SWIPE_TIME);
+			if (getDriver().findElement(fakeCursorLocator).getLocation().getX() > initialCursorOffset) {
+				return;
+			}
+			ntry++;
+			log.debug(String.format(
+					"Failed to swipe the text cursor. Retrying (%s of %s)...",
+					ntry, MAX_CURSOR_SWIPE_TRIES));
+			tapOnTextInputIfVisible();
+			this.hideKeyboard();
+			Thread.sleep(1000);
+		} while (ntry <= MAX_CURSOR_SWIPE_TRIES);
+		throw new RuntimeException(
+				String.format(
+						"Failed to swipe the text cursor on input field after %s retries!",
+						MAX_CURSOR_SWIPE_TRIES));
 	}
 
 	public void tapAddPictureBtn() throws Exception {
@@ -220,29 +245,39 @@ public class DialogPage extends AndroidPage {
 		cancelCallBtn.click();
 	}
 
-	public double getExpectedButtonStateOverlapScore(String label)
-			throws Exception {
-		String path = null;
-		BufferedImage callingButtonImage = null;
-		if (label.equals(MUTE_BUTTON_LABEL)) {
-			callingButtonImage = getElementScreenshot(muteBtn);
-			path = CommonUtils.getCallingMuteButtonPath(DialogPage.class);
-		} else if (label.equals(SPEAKER_BUTTON_LABEL)) {
-			callingButtonImage = getElementScreenshot(speakerBtn);
-			path = CommonUtils.getCallingSpeakerButtonPath(DialogPage.class);
+	private WebElement getButtonElementByName(String name) {
+		final String uppercaseName = name.toUpperCase();
+		switch (uppercaseName) {
+		case "MUTE":
+			return muteBtn;
+		case "SPEAKER":
+			return speakerBtn;
+		default:
+			throw new NoSuchElementException(String.format(
+					"Button '%s' is unknown", name));
 		}
-		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(callingButtonImage, templateImage,
-				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
+
+	public BufferedImage getCurrentButtonStateScreenshot(String name)
+			throws Exception {
+		final WebElement dstButton = getButtonElementByName(name);
+		assert DriverUtils.waitUntilElementClickable(getDriver(), dstButton);
+		return getElementScreenshot(dstButton).orElseThrow(
+				IllegalStateException::new);
+	}
+
+	private static final int CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS = 15;
 
 	public boolean checkNoCallingOverlay() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.idCallingMessage), 20);
+				By.id(AndroidLocators.DialogPage.idCallingMessage),
+				CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public boolean checkCallingOverlay() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(callingMessageText);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idCallingMessage),
+				CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public void typeAndSendMessage(String message) throws Exception {
@@ -332,6 +367,8 @@ public class DialogPage extends AndroidPage {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				takePhotoButton);
 		takePhotoButton.click();
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(AndroidLocators.DialogPage.idDialogTakePhotoButton));
 	}
 
 	public void changeCamera() throws Exception {
@@ -340,6 +377,7 @@ public class DialogPage extends AndroidPage {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				changeCameraButton);
 		changeCameraButton.click();
+		Thread.sleep(2000); // We must wait after camera switch
 	}
 
 	public boolean isConnectMessageVisible() {
@@ -377,7 +415,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public ContactListPage navigateBack() throws Exception {
-		swipeRightCoordinates(1000);
+		getDriver().navigate().back();
 		return new ContactListPage(this.getLazyDriver());
 	}
 
@@ -402,6 +440,15 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void closeFullScreenImage() throws Exception {
+		// Sometimes X button is opened automatically after some timeout
+		final int MAX_TRIES = 4;
+		int ntry = 1;
+		while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.CommonLocators.idCloseImageBtn), 4)
+				&& ntry <= MAX_TRIES) {
+			this.tapOnCenterOfScreen();
+			ntry++;
+		}
 		assert DriverUtils
 				.waitUntilElementClickable(getDriver(), closeImageBtn);
 		closeImageBtn.click();
@@ -410,19 +457,17 @@ public class DialogPage extends AndroidPage {
 	public OtherUserPersonalInfoPage tapConversationDetailsButton()
 			throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				addParticipant);
-		addParticipant.click();
+				participantsButton);
+		participantsButton.click();
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}
 
 	public void sendFrontCameraImage() throws Exception {
-		if (DriverUtils.isElementPresentAndDisplayed(addParticipant)) {
+		if (DriverUtils.isElementPresentAndDisplayed(participantsButton)) {
 			swipeOnCursorInput();
 			tapAddPictureBtn();
 			try {
 				this.hideKeyboard();
-				swipeOnCursorInput();
-				tapAddPictureBtn();
 				log.debug("Fix for opened keyboard #1");
 			} catch (WebDriverException e) {
 				log.debug("No keyboard visible. Nothing to hide #1");
@@ -430,14 +475,12 @@ public class DialogPage extends AndroidPage {
 			changeCamera();
 			takePhoto();
 		} else {
-			cursurFrame.click();
-			Thread.sleep(1000); // fix for scrolling animation
+			this.hideKeyboard();
+			tapDialogPageBottom();
 			swipeOnCursorInput();
 			tapAddPictureBtn();
 			try {
 				this.hideKeyboard();
-				swipeOnCursorInput();
-				tapAddPictureBtn();
 				log.debug("Fix for opened keyboard #2");
 			} catch (WebDriverException e) {
 				log.debug("No keyboard visible. Nothing to hide #2");
@@ -449,7 +492,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean dialogImageCompare() throws Exception {
-		BufferedImage dialogImage = getElementScreenshot(image);
+		BufferedImage dialogImage = getElementScreenshot(image).orElseThrow(
+				IllegalStateException::new);
 		BufferedImage realImage = ImageUtil.readImageFromFile(CommonUtils
 				.getImagesPath(CommonUtils.class) + DIALOG_IMAGE);
 		double score = ImageUtil.getOverlapScore(realImage, dialogImage,
@@ -576,7 +620,8 @@ public class DialogPage extends AndroidPage {
 
 	public double checkPingIcon(String label) throws Exception {
 		String path = null;
-		BufferedImage pingImage = getElementScreenshot(pingIcon);
+		BufferedImage pingImage = getElementScreenshot(pingIcon).orElseThrow(
+				IllegalStateException::new);
 		if (label.equals(PING_LABEL)) {
 			path = CommonUtils.getPingIconPath(DialogPage.class);
 		} else if (label.equals(HOT_PING_LABEL)) {
@@ -591,7 +636,8 @@ public class DialogPage extends AndroidPage {
 		return lastPingMessage.getText();
 	}
 
-	public boolean isGroupChatDialogContainsNames(List<String> names) throws Exception {
+	public boolean isGroupChatDialogContainsNames(List<String> names)
+			throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
@@ -613,14 +659,22 @@ public class DialogPage extends AndroidPage {
 	public void tapPlayPauseBtn() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), playPauseBtn);
 		playPauseBtn.click();
+		// FIXME: Find a way to detect that Play/Pause button state has been
+		// really changed
+		Thread.sleep(2000);
 	}
 
+	// NOTE: This method is required to scroll conversation to the end.
+	// NOTE: Click happens on the text input area if participants button is not
+	// NOTE: visible
 	public void tapDialogPageBottom() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.DialogPage.idDialogPageBottom));
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				dialogPageBottom);
-		dialogPageBottom.click();
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.CommonLocators.idEditText));
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idParticipantsBtn), 5)) {
+			cursorInput.click();
+			Thread.sleep(1000); // fix for scrolling animation
+		}
 	}
 
 	public void tapYouTubePlay() throws Exception {
@@ -632,7 +686,8 @@ public class DialogPage extends AndroidPage {
 	public double getMediaBarControlIconOverlapScore(String label)
 			throws Exception {
 		String path = null;
-		BufferedImage mediaImage = getElementScreenshot(mediaBarControl);
+		BufferedImage mediaImage = getElementScreenshot(mediaBarControl)
+				.orElseThrow(IllegalStateException::new);
 		if (label.equals(MEDIA_PLAY)) {
 			path = CommonUtils.getMediaBarPlayIconPath(DialogPage.class);
 		} else if (label.equals(MEDIA_PAUSE)) {
@@ -647,7 +702,8 @@ public class DialogPage extends AndroidPage {
 			throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(playPauseBtn));
 		String path = null;
-		BufferedImage mediaImage = getElementScreenshot(playPauseBtn);
+		BufferedImage mediaImage = getElementScreenshot(playPauseBtn)
+				.orElseThrow(IllegalStateException::new);
 		if (label.equals(MEDIA_PLAY)) {
 			path = CommonUtils.getMediaPlayIconPath(DialogPage.class);
 		} else if (label.equals(MEDIA_PAUSE)) {

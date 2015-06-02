@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
@@ -25,6 +27,7 @@ import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -72,7 +75,7 @@ public class CommonAndroidSteps {
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
-	public static final int DEFAULT_SWIPE_TIME = 500;
+	public static final int DEFAULT_SWIPE_TIME = 1500;
 	private static final String DEFAULT_USER_AVATAR = "aqaPictureContact600_800.jpg";
 
 	private static String getUrl() throws Exception {
@@ -110,9 +113,20 @@ public class CommonAndroidSteps {
 			capabilities.setCapability("resetKeyboard", true);
 		}
 
-		return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
-				.resetDriver(url, capabilities, 1, this::onDriverInitFinished,
-						this::onDriverInitStarted);
+		try {
+			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
+					.resetDriver(url, capabilities, 1,
+							this::onDriverInitFinished,
+							this::onDriverInitStarted);
+		} catch (SessionNotCreatedException e) {
+			// Unlock the screen and retry
+			AndroidCommonUtils.unlockScreen();
+			Thread.sleep(5000);
+			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
+					.resetDriver(url, capabilities, 1,
+							this::onDriverInitFinished,
+							this::onDriverInitStarted);
+		}
 	}
 
 	private Boolean onDriverInitStarted() {
@@ -130,8 +144,8 @@ public class CommonAndroidSteps {
 		return true;
 	}
 
-	private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
-	private static final long INERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
+	// private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
+	private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
 	private void onDriverInitFinished(RemoteWebDriver drv) {
 		final By locator = By
@@ -144,36 +158,39 @@ public class CommonAndroidSteps {
 				break;
 			} catch (WebDriverException e) {
 				savedException = e;
-				log.debug("Waiting 1 second for the views to initialize properly...");
+				log.debug("Waiting for the views to initialize properly...");
 				try {
-					Thread.sleep(1000);
+					Thread.sleep(500);
 				} catch (InterruptedException e1) {
-					return;
+					Throwables.propagate(e);
 				}
 			} catch (Exception e) {
 				Throwables.propagate(e);
 			}
-		} while (System.currentTimeMillis() - millisecondsStarted <= INERFACE_INIT_TIMEOUT_MILLISECONDS);
-		if (System.currentTimeMillis() - millisecondsStarted > INERFACE_INIT_TIMEOUT_MILLISECONDS) {
+		} while (System.currentTimeMillis() - millisecondsStarted <= INTERFACE_INIT_TIMEOUT_MILLISECONDS);
+		if (System.currentTimeMillis() - millisecondsStarted > INTERFACE_INIT_TIMEOUT_MILLISECONDS) {
 			log.error(String
 					.format("UI views have not been initialized properly after %s seconds. Restarting Selendroid usually helps ;-)",
-							INERFACE_INIT_TIMEOUT_MILLISECONDS));
+							INTERFACE_INIT_TIMEOUT_MILLISECONDS));
 			throw savedException;
 		}
-		try {
-			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
-					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
-				drv.findElement(locator).click();
-			}
-		} catch (Exception e) {
-			Throwables.propagate(e);
-		}
+		// Uncomment this if disable updates thing is broken again
+		// try {
+		// if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
+		// UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
+		// drv.findElement(locator).click();
+		// }
+		// } catch (Exception e) {
+		// Throwables.propagate(e);
+		// }
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
 				getUrl(), getPath(), isUnicode, this.getClass());
+		//TODO steadily remove this
 		PagesCollection.loginPage = new LoginPage(lazyDriver);
+		PagesCollection.welcomePage = new WelcomePage(lazyDriver);
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
@@ -237,22 +254,22 @@ public class CommonAndroidSteps {
 
 	@When("^I swipe right$")
 	public void ISwipeRight() throws Exception {
-		PagesCollection.androidPage.swipeRightCoordinates(DEFAULT_SWIPE_TIME);
+		PagesCollection.currentPage.swipeRightCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe left$")
 	public void ISwipeLeft() throws Exception {
-		PagesCollection.androidPage.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
+		PagesCollection.currentPage.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe up$")
 	public void ISwipeUp() throws Exception {
-		PagesCollection.androidPage.swipeUpCoordinates(DEFAULT_SWIPE_TIME);
+		PagesCollection.currentPage.swipeUpCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe down$")
 	public void ISwipeDown() throws Exception {
-		PagesCollection.androidPage.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
+		PagesCollection.currentPage.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	public void commonBefore() throws Exception {
@@ -356,7 +373,7 @@ public class CommonAndroidSteps {
 		IOpenBrowserApp();
 		PagesCollection.contactListPage.shareURLFromNativeBrowser();
 		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
+			PagesCollection.dialogPage = (DialogPage) PagesCollection.currentPage;
 		}
 		Thread.sleep(5000);
 		PagesCollection.dialogPage.sendMessageInInput();
@@ -371,7 +388,14 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I take screenshot$")
 	public void WhenITake1stScreenshot() throws Exception {
-		images.add(PagesCollection.loginPage.takeScreenshot());
+		final Optional<BufferedImage> screenshot = PagesCollection.loginPage
+				.takeScreenshot();
+		if (screenshot.isPresent()) {
+			images.add(screenshot.get());
+		} else {
+			throw new RuntimeException(
+					"Selenium has failed to take the screenshot from current page");
+		}
 	}
 
 	/**
@@ -384,7 +408,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I tap on center of screen")
 	public void WhenITapOnCenterOfScreen() throws Throwable {
-		PagesCollection.androidPage.tapOnCenterOfScreen();
+		PagesCollection.currentPage.tapOnCenterOfScreen();
 	}
 
 	/**
@@ -731,34 +755,6 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Transfers Wire contacts to Mac (Why is this step in the android step
-	 * files? - dean).
-	 * 
-	 * @step. ^I add contacts list users to Mac contacts$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I add contacts list users to Mac contacts$")
-	public void AddContactsUsersToMacContacts() throws Exception {
-		commonSteps.AddContactsUsersToMacContacts();
-	}
-
-	/**
-	 * Removes Wire contacts from Mac (Why is this step in the android step
-	 * files? - dean).
-	 * 
-	 * @step. ^I remove contacts list users from Mac contacts$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I remove contacts list users from Mac contacts$")
-	public void IRemoveContactsListUsersFromMacContact() throws Exception {
-		commonSteps.IRemoveContactsListUsersFromMacContact();
-	}
-
-	/**
 	 * User A sends a simple text message to user B
 	 * 
 	 * @step. ^Contact (.*) send message to user (.*)$
@@ -849,8 +845,9 @@ public class CommonAndroidSteps {
 	 * 
 	 */
 	@Given("^User (\\w+) is [Mm]e$")
-	public void UserXIsMe(String nameAlias) throws Exception {
+	public void UserXIsMe(String nameAlias) throws Throwable {
 		commonSteps.UserXIsMe(nameAlias);
+		GivenUserHasAnAvatarPicture(nameAlias, DEFAULT_USER_AVATAR);
 	}
 
 	/**
@@ -1019,42 +1016,6 @@ public class CommonAndroidSteps {
 				.getUserActivationLink(RegistrationPageSteps.activationMessage);
 		PagesCollection.peoplePickerPage = PagesCollection.commonAndroidPage
 				.activateByLink(link);
-	}
-
-	/**
-	 * Verify mail subject
-	 * 
-	 * @step. ^mail subject is (.*)$
-	 * 
-	 * @param subject
-	 *            the email subject header to check
-	 * @throws Exception
-	 * 
-	 */
-	@Then("^mail subject is (.*)$")
-	public void ThenMailSubjectIs(String subject) throws Exception {
-		Assert.assertEquals(subject,
-				PagesCollection.commonAndroidPage.getGmailSubject());
-	}
-
-	/**
-	 * Verify that the open email message contains the given email address
-	 * somewhere within
-	 * 
-	 * @step. ^mail content contains my $
-	 * 
-	 * @param email
-	 *            the email to check for within the open message
-	 * 
-	 */
-	@Then("^mail content contains my (.*)$")
-	public void ThenMailContentContains(String email) {
-		try {
-			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertTrue(PagesCollection.commonAndroidPage.mailContains(email));
 	}
 
 	/**
