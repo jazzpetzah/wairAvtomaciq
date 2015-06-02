@@ -1,6 +1,6 @@
-package com.wearezeta.auto.android.steps;
+package com.wearezeta.auto.android_tablet.steps;
 
-import com.wearezeta.auto.android.pages.AndroidTabletPage;
+import com.wearezeta.auto.android_tablet.pages.AndroidTabletPage;
 import com.wearezeta.auto.common.AbstractPagesCollection;
 import com.wearezeta.auto.common.BasePage;
 
@@ -36,8 +36,8 @@ final class AndroidTabletPagesCollection extends AbstractPagesCollection {
 			throw new IllegalStateException(
 					String.format(
 							"Only instances of '%s' are allowed. '%s' instance is provided instead",
-							AndroidTabletPage.class.getSimpleName(), page
-									.getClass().getSimpleName()));
+							this.getClass().getSimpleName(), page.getClass()
+									.getSimpleName()));
 		}
 		super.setFirstPage((AndroidTabletPage) page);
 	}

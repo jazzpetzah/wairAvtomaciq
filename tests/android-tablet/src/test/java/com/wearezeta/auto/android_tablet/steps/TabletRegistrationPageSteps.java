@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android.steps;
+package com.wearezeta.auto.android_tablet.steps;
 
 import cucumber.api.java.en.Then;
 

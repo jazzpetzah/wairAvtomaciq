@@ -36,7 +36,7 @@ final class AndroidPagesCollection extends AbstractPagesCollection {
 			throw new IllegalStateException(
 					String.format(
 							"Only instances of '%s' are allowed. '%s' instance has been provided instead",
-							AndroidPage.class.getSimpleName(), page.getClass()
+							this.getClass().getSimpleName(), page.getClass()
 									.getSimpleName()));
 		}
 		super.setFirstPage((AndroidPage) page);

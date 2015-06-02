@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android;
+package com.wearezeta.auto.android_tablet;
 
 
 import org.junit.runner.RunWith;

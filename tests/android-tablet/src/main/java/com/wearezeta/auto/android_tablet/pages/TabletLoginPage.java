@@ -1,4 +1,4 @@
-package com.wearezeta.auto.android.pages;
+package com.wearezeta.auto.android_tablet.pages;
 
 import java.util.concurrent.Future;
 

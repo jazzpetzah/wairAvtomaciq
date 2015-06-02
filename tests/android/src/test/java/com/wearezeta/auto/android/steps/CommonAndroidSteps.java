@@ -59,7 +59,6 @@ public class CommonAndroidSteps {
 	public static LogcatListener listener = new LogcatListener();
 
 	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-	private static boolean skipBeforeAfter = false;
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
@@ -183,15 +182,10 @@ public class CommonAndroidSteps {
 		// closeUpdateAlertIfAppears(drv, locator);
 	}
 
-	public void initPagesCollection(Future<ZetaAndroidDriver> lazyDriver)
-			throws Exception {
-		pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
-	}
-
 	private void initFirstPage(boolean isUnicode) throws Exception {
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
 				getUrl(), getPath(), isUnicode, this.getClass());
-		this.initPagesCollection(lazyDriver);
+		pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
@@ -199,9 +193,6 @@ public class CommonAndroidSteps {
 	public void setUpPerformance() throws Exception {
 		listener.startListeningLogcat();
 
-		if (this.isSkipBeforeAfter()) {
-			return;
-		}
 		try {
 			AndroidCommonUtils.disableHints();
 		} catch (Exception e) {
@@ -212,18 +203,12 @@ public class CommonAndroidSteps {
 
 	@Before({ "~@unicode", "~@performance" })
 	public void setUp() throws Exception {
-		if (this.isSkipBeforeAfter()) {
-			return;
-		}
 		commonBefore();
 		initFirstPage(false);
 	}
 
 	@Before({ "@unicode", "~@performance" })
 	public void setUpUnicode() throws Exception {
-		if (this.isSkipBeforeAfter()) {
-			return;
-		}
 		commonBefore();
 		initFirstPage(true);
 	}
@@ -844,14 +829,6 @@ public class CommonAndroidSteps {
 		}
 
 		commonSteps.getUserManager().resetUsers();
-	}
-
-	public boolean isSkipBeforeAfter() {
-		return skipBeforeAfter;
-	}
-
-	public void setSkipBeforeAfter(boolean skipBeforeAfter) {
-		CommonAndroidSteps.skipBeforeAfter = skipBeforeAfter;
 	}
 
 	/**

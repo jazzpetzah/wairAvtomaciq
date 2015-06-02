@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @id316 @smoke
+  @id316 @smoke @torun
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>

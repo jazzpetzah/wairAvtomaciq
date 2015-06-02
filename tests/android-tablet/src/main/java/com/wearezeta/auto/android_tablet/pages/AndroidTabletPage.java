@@ -1,25 +1,14 @@
-package com.wearezeta.auto.android.pages;
+package com.wearezeta.auto.android_tablet.pages;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public abstract class AndroidTabletPage extends BasePage {
-
-	@Override
-	protected ZetaAndroidDriver getDriver() throws Exception {
-		return (ZetaAndroidDriver) super.getDriver();
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Future<ZetaAndroidDriver> getLazyDriver() {
-		return (Future<ZetaAndroidDriver>) super.getLazyDriver();
-	}
+public abstract class AndroidTabletPage extends AndroidPage {
 
 	public AndroidTabletPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
@@ -57,6 +46,7 @@ public abstract class AndroidTabletPage extends BasePage {
 		return null;
 	}
 
+	@Override
 	public AndroidTabletPage returnBySwipe(SwipeDirection direction)
 			throws Exception {
 		return null;
