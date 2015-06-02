@@ -5,11 +5,9 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -38,6 +36,7 @@ public class ConnectToPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectionInputField)
 	private WebElement sendConnectionInput;
 	
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ConnectToPage.class
 			.getSimpleName());
 
@@ -66,18 +65,7 @@ public class ConnectToPage extends IOSPage {
 	
 	public void inputCharactersIntoConnectDialogByScript(int numberOfCharacters) throws Exception {
 		String text = CommonUtils.generateRandomStringFromAlphanumericPlusSymbolsWithLengh(numberOfCharacters);
-		scriptInputConnectDialog(text);
-	}
-	
-	private void scriptInputConnectDialog(String text) throws Exception {
-		getWait().until(ExpectedConditions.elementToBeClickable(sendConnectionInput));
-		String script = String.format(IOSLocators.scriptSendConnectionInput
-				+ ".setValue(\"%s\")", text);
-		try {
-			this.getDriver().executeScript(script);
-		} catch (WebDriverException ex) {
-			log.debug("Appium execute script fail. " + ex.getMessage());
-		}
+		sendConnectionInput.sendKeys(text);
 	}
 
 	public boolean isMaxCharactersInMessage() {
