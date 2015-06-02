@@ -309,10 +309,6 @@ public class DialogPageSteps {
 		String expectedConnectMessage = PagesCollection.dialogPage
 				.getExpectedConnectMessage(contact, user);
 		Assert.assertTrue(actualConnectingLabel.contains(expectedConnectingLabel));
-
-		Assert.assertEquals("Expected: " + expectedConnectMessage
-				+ " | Actual: " + lastMessage,
-				expectedConnectMessage.toLowerCase(), lastMessage.toLowerCase());
 	}
 
 	@Then("^I see new photo in the dialog$")
