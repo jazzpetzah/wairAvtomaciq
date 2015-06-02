@@ -9,6 +9,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -214,20 +215,16 @@ public class PeoplePickerPage extends WebPage {
 	}
 
 	public boolean isTopPeopleLabelVisible() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						this.getDriver(),
-						By.xpath(WebAppLocators.PeoplePickerPage.xpathTopPeople));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.xpath(WebAppLocators.PeoplePickerPage.xpathTopPeople));
 	}
 
-//	public void clickNumberOfTopConnections(int numberToTap) throws Exception {
-//		int numberTopSelected = 0;
-//		for (int i = 1; i < numberToTap + 1; i++) {
-//			numberTopSelected++;
-//			assert DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-//					By.xpath(xpathTopPeopleListById, i))
-//
-//		}
-//	}
-
+	public void clickNumberOfTopPeople(int numberToTap) throws Exception {
+		for (int i = 1; i <= numberToTap; i++) {
+			final By topPeopleItemLocator = By
+					.xpath(WebAppLocators.PeoplePickerPage.xpathTopPeopleListByIndex
+							.apply(i));
+			getDriver().findElement(topPeopleItemLocator).click();
+		}
+	}
 }
