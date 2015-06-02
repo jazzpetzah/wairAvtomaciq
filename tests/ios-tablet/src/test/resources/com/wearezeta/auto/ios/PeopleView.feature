@@ -1,6 +1,6 @@
 Feature: People View
 
-  @staging @id
+  @staging @id600
   Scenario Outline: Start group chat with users from contact list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -21,7 +21,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @staging @id
+  @staging @id2594
   Scenario Outline: Start group chat with users from contact list [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
