@@ -13,4 +13,8 @@ public final class IOSTabletLocators {
 		public static final String xpathUserName = "//UIAPopover/UIAStaticText[contains(@name, '%s')]";
 	}
 	
+	public static final class TabletPeoplePickerPage{
+		public static final String nameShareContactsButton = "SHARE CONTACTS";
+		public static final String xpathIPADPeoplePickerResultUserName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[@name='%s']";
+	}
 }
