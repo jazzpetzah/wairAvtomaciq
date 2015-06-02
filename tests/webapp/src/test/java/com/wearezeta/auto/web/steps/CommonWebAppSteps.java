@@ -236,7 +236,6 @@ public class CommonWebAppSteps {
 		// default one
 		// setCustomOperaProfile(capabilities, "win7_opera");
 
-		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 		capabilities.setCapability("platform", "Windows 8.1");
 		capabilities.setCapability("version", "43.0");
 		@SuppressWarnings("unchecked")
