@@ -12,18 +12,8 @@ public class ConnectToPageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
-	private ConnectToPage getConnectToPage(boolean shouldCreateIfNotExists)
-			throws Exception {
-		if (shouldCreateIfNotExists) {
-			return (ConnectToPage) pagesCollection
-					.getPageOrElseInstantiate(ConnectToPage.class);
-		} else {
-			return (ConnectToPage) pagesCollection.getPage(ConnectToPage.class);
-		}
-	}
-
 	private ConnectToPage getConnectToPage() throws Exception {
-		return getConnectToPage(false);
+		return (ConnectToPage) pagesCollection.getPage(ConnectToPage.class);
 	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -44,8 +34,8 @@ public class ConnectToPageSteps {
 		Assert.assertTrue(
 				String.format(
 						"Connect To header with text '%s' is not visible, but should be",
-						contact), getConnectToPage(true)
-						.isConnectToHeaderVisible(contact));
+						contact),
+				getConnectToPage().isConnectToHeaderVisible(contact));
 	}
 
 	/**
@@ -70,7 +60,7 @@ public class ConnectToPageSteps {
 	 */
 	@Then("^I swipe up on connect page$")
 	public void ISwipeUpOnConnectPage() throws Exception {
-		getConnectToPage(true).waitUntilIgnoreButtonIsVisible();
+		getConnectToPage().waitUntilIgnoreButtonIsVisible();
 		getConnectToPage().swipeUpCoordinates(1000, 90);
 		// It is very hard to detect when swipe animation is finished that is
 		// why this hardcoded sleep is needed here
@@ -87,7 +77,7 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I Connect with contact by pressing button$")
 	public void WhenIConnectWithContactByPressionButton() throws Exception {
-		pagesCollection.setPage(getConnectToPage().pressAcceptConnectButton());
+		getConnectToPage().pressAcceptConnectButton();
 	}
 
 	/**
@@ -100,7 +90,7 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I press Ignore connect button$")
 	public void WhenIPressIgnoreConnectButton() throws Exception {
-		pagesCollection.setPage(getConnectToPage().pressIgnoreButton());
+		getConnectToPage().pressIgnoreButton();
 	}
 
 	/**
@@ -112,7 +102,7 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I navigate back from connect page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
-		pagesCollection.setPage(getConnectToPage().navigateBack());
+		getConnectToPage().navigateBack();
 	}
 
 	/**
@@ -127,7 +117,7 @@ public class ConnectToPageSteps {
 	public void ThenConnectionIsPending() throws NumberFormatException,
 			Exception {
 		Assert.assertTrue("Pending connection screen is not visible",
-				getConnectToPage(true).isPending());
+				getConnectToPage().isPending());
 	}
 
 	/**
@@ -194,7 +184,7 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I click [Cc]onnect button on connect to page$")
 	public void WhenIClickConnectButton() throws Exception {
-		pagesCollection.setPage(getConnectToPage().pressConnectButton());
+		getConnectToPage().pressConnectButton();
 	}
 
 	/**
@@ -232,7 +222,7 @@ public class ConnectToPageSteps {
 	 */
 	@Then("I close Connect To dialog")
 	public void ThenCloseConnectToDialog() throws Exception {
-		pagesCollection.setPage(getConnectToPage().clickCloseButton());
+		getConnectToPage().clickCloseButton();
 	}
 
 	/**
@@ -244,7 +234,6 @@ public class ConnectToPageSteps {
 	 */
 	@Then("^I tap connection notification on Home Screen$")
 	public void TapConnectionNotification() throws Exception {
-		pagesCollection
-				.setPage(getConnectToPage(true).tapConnectNotification());
+		getConnectToPage().tapConnectNotification();
 	}
 }

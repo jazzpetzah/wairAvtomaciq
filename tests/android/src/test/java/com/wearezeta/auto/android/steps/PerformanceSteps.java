@@ -69,20 +69,17 @@ public class PerformanceSteps {
 								.nextInt(visibleContactsList.size() - 1);
 						convName = visibleContactsList.get(randomInt).getText();
 					} while (convName.contains("tst"));
-					pagesCollection.setPage(getContactListPage()
-							.tapOnContactByPosition(visibleContactsList,
-									randomInt));
+					getContactListPage().tapOnContactByPosition(
+							visibleContactsList, randomInt);
 					getDialogPage().isDialogVisible();
 					getDialogPage().tapDialogPageBottom();
 					getDialogPage().typeMessage(CommonUtils.generateGUID());
 					Thread.sleep(DEFAULT_WAIT_TIME);
 					if (perfCommon.random.nextBoolean()) {
 						getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
-						pagesCollection.setPage(getDialogPage().navigateBack(
-								DEFAULT_SWIPE_TIME));
-						pagesCollection.setPage(getContactListPage()
-								.tapOnContactByPosition(visibleContactsList,
-										randomInt));
+						getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
+						getContactListPage().tapOnContactByPosition(
+								visibleContactsList, randomInt);
 						getDialogPage().isDialogVisible();
 						getDialogPage().tapDialogPageBottom();
 						Thread.sleep(DEFAULT_WAIT_TIME);
@@ -91,8 +88,7 @@ public class PerformanceSteps {
 					for (int y = 0; y < 2; y++) {
 						getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
 					}
-					pagesCollection.setPage(getDialogPage().navigateBack(
-							DEFAULT_SWIPE_TIME));
+					getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 				}
 
 				/*
@@ -130,7 +126,7 @@ public class PerformanceSteps {
 			count++;
 			boolean isPassed = true;
 			try {
-				pagesCollection.setPage(getContactListPage().tapOnName(conv));
+				getContactListPage().tapOnName(conv);
 			} catch (Exception e) {
 				isPassed = false;
 				getContactListPage().contactListSwipeUp(1000);
@@ -143,8 +139,7 @@ public class PerformanceSteps {
 		for (int y = 0; y < 2; y++) {
 			getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
 		}
-		pagesCollection.setPage(getDialogPage()
-				.navigateBack(DEFAULT_SWIPE_TIME));
+		getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 	}
 
 	/**

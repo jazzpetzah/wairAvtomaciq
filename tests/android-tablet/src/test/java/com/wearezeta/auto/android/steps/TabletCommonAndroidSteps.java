@@ -43,8 +43,7 @@ public class TabletCommonAndroidSteps {
 	private void initFirstPage(boolean isUnicode) throws Exception {
 		final Future<ZetaAndroidDriver> lazyDriver = steps.resetAndroidDriver(
 				getUrl(), getPath(), isUnicode, this.getClass());
-		pagesCollection.clearAllPages();
-		pagesCollection.setPage(new TabletLoginPage(lazyDriver));
+		pagesCollection.setFirstPage(new TabletLoginPage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 

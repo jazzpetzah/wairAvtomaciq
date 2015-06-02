@@ -11,19 +11,8 @@ public class SettingsPageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
-	private SettingsPage getSettingsPage(boolean shouldCreateIfNotExists)
-			throws Exception {
-		if (shouldCreateIfNotExists) {
-			return (SettingsPage) pagesCollection
-					.getPageOrElseInstantiate(SettingsPage.class);
-		} else {
-			return (SettingsPage) pagesCollection.getPage(SettingsPage.class);
-		}
-	}
-
-	@SuppressWarnings("unused")
 	private SettingsPage getSettingsPage() throws Exception {
-		return getSettingsPage(false);
+		return (SettingsPage) pagesCollection.getPage(SettingsPage.class);
 	}
 
 	/**
@@ -35,7 +24,7 @@ public class SettingsPageSteps {
 	 */
 	@Then("^I see settings page$")
 	public void ISeeSettingsPage() throws Throwable {
-		Assert.assertTrue("Settings page is not visible", getSettingsPage(true)
+		Assert.assertTrue("Settings page is not visible", getSettingsPage()
 				.isSettingsPageVisible());
 	}
 
@@ -48,6 +37,6 @@ public class SettingsPageSteps {
 	 */
 	@Then("^I see change password item$")
 	public void ISeeSettingsChangePassword() throws Throwable {
-		Assert.assertTrue(getSettingsPage(true).isChangePasswordVisible());
+		Assert.assertTrue(getSettingsPage().isChangePasswordVisible());
 	}
 }

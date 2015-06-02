@@ -1,6 +1,6 @@
 package com.wearezeta.auto.common;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -12,11 +12,12 @@ public abstract class AbstractPagesCollection {
 	private static final Logger log = ZetaLogger
 			.getLog(AbstractPagesCollection.class.getSimpleName());
 
-	private final Map<Class<? extends BasePage>, BasePage> pagesMapping = new HashMap<Class<? extends BasePage>, BasePage>();
+	private final Map<Class<? extends BasePage>, BasePage> pagesMapping = new LinkedHashMap<Class<? extends BasePage>, BasePage>();
 
 	public BasePage getCommonPage() throws Exception {
 		if (pagesMapping.size() == 0) {
-			throw new IllegalStateException("No pages are created yet!");
+			throw new IllegalStateException(
+					"No pages are created yet! Please set the first page first!");
 		}
 		return pagesMapping.get(pagesMapping.keySet().iterator().next());
 	}
@@ -25,25 +26,10 @@ public abstract class AbstractPagesCollection {
 			throws Exception {
 		if (!pagesMapping.containsKey(pageClass)) {
 			this.printPages();
-			throw new IllegalStateException(String.format(
-					"The page '%s' has not been created yet!",
-					pageClass.getSimpleName()));
-		}
-		return pagesMapping.get(pageClass);
-	}
-
-	public BasePage getPageOrElseInstantiate(Class<? extends BasePage> pageClass)
-			throws Exception {
-		if (!pagesMapping.containsKey(pageClass)) {
-			if (pagesMapping.size() == 0) {
-				throw new IllegalStateException(
-						"No pages are created yet and thus no parent for the new page can be found!");
-			}
 			log.debug(String
 					.format("'%s' page has not been created yet. Trying to instantiate it for the first time...",
 							pageClass.getSimpleName()));
-			final BasePage parent = pagesMapping.get(pagesMapping.keySet()
-					.iterator().next());
+			final BasePage parent = getCommonPage();
 			pagesMapping.put(pageClass, parent.instantiatePage(pageClass));
 		}
 		return pagesMapping.get(pageClass);
@@ -57,7 +43,7 @@ public abstract class AbstractPagesCollection {
 		return true;
 	}
 
-	public boolean isPageCreated(Class<? extends BasePage> pageClass) {
+	public boolean hasPage(Class<? extends BasePage> pageClass) {
 		return this.pagesMapping.containsKey(pageClass);
 	}
 
@@ -65,11 +51,12 @@ public abstract class AbstractPagesCollection {
 		pagesMapping.clear();
 	}
 
-	public void setPage(BasePage page) {
+	public void setFirstPage(BasePage page) {
 		if (page == null) {
 			throw new IllegalStateException(
 					"Page object should be defined! 'null' values are not acceptable.");
 		}
+		this.clearAllPages();
 		pagesMapping.put(page.getClass(), page);
 	}
 

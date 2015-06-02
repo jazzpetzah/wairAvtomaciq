@@ -183,10 +183,15 @@ public class CommonAndroidSteps {
 		// closeUpdateAlertIfAppears(drv, locator);
 	}
 
+	public void initPagesCollection(Future<ZetaAndroidDriver> lazyDriver)
+			throws Exception {
+		pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
+	}
+
 	private void initFirstPage(boolean isUnicode) throws Exception {
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
 				getUrl(), getPath(), isUnicode, this.getClass());
-		pagesCollection.setPage(new WelcomePage(lazyDriver));
+		this.initPagesCollection(lazyDriver);
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 

@@ -18,19 +18,9 @@ public class PersonalInfoPageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
-	private PersonalInfoPage getPersonalInfoPage(boolean shouldCreateIfNotExists)
-			throws Exception {
-		if (shouldCreateIfNotExists) {
-			return (PersonalInfoPage) pagesCollection
-					.getPageOrElseInstantiate(PersonalInfoPage.class);
-		} else {
-			return (PersonalInfoPage) pagesCollection
-					.getPage(PersonalInfoPage.class);
-		}
-	}
-
 	private PersonalInfoPage getPersonalInfoPage() throws Exception {
-		return getPersonalInfoPage(false);
+		return (PersonalInfoPage) pagesCollection
+				.getPage(PersonalInfoPage.class);
 	}
 
 	/**
@@ -78,7 +68,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I tap settings button$")
 	public void WhenITapSettingsButton() throws Exception {
-		pagesCollection.setPage(getPersonalInfoPage().tapSettingsButton());
+		getPersonalInfoPage().tapSettingsButton();
 	}
 
 	/**
@@ -90,7 +80,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I tap about button$")
 	public void WhenITapAboutButton() throws Exception {
-		pagesCollection.setPage(getPersonalInfoPage().tapAboutButton());
+		getPersonalInfoPage().tapAboutButton();
 	}
 
 	/**
@@ -188,7 +178,7 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I close Personal Info Page$")
 	public void IClosePersonalInfoPage() throws Exception {
-		pagesCollection.setPage(getPersonalInfoPage().pressCloseButton());
+		getPersonalInfoPage().pressCloseButton();
 	}
 
 	/**
@@ -219,7 +209,7 @@ public class PersonalInfoPageSteps {
 	@Then("^I see personal info page$")
 	public void ISeePersonalInfoPage() throws Exception {
 		Assert.assertTrue("Personal info page is not visible",
-				getPersonalInfoPage(true).isPersonalInfoVisible());
+				getPersonalInfoPage().isPersonalInfoVisible());
 	}
 
 	/**

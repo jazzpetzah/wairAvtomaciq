@@ -17,19 +17,12 @@ public class EmailSignInSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
-	private EmailSignInPage getEmailSignInPage(boolean shouldCreateIfNotExists)
-			throws Exception {
-		if (shouldCreateIfNotExists) {
-			return (EmailSignInPage) pagesCollection
-					.getPageOrElseInstantiate(EmailSignInPage.class);
-		} else {
-			return (EmailSignInPage) pagesCollection
-					.getPage(EmailSignInPage.class);
-		}
+	private EmailSignInPage getEmailSignInPage() throws Exception {
+		return (EmailSignInPage) pagesCollection.getPage(EmailSignInPage.class);
 	}
 
-	private EmailSignInPage getEmailSignInPage() throws Exception {
-		return getEmailSignInPage(false);
+	private LoginPage getLoginPage() throws Exception {
+		return (LoginPage) pagesCollection.getPage(LoginPage.class);
 	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -63,22 +56,16 @@ public class EmailSignInSteps {
 			// Ignore silently
 		}
 		(new WelcomePageSteps()).ISwitchToEmailSignIn();
-		getEmailSignInPage(true).setLogin(login);
+		getEmailSignInPage().setLogin(login);
 		getEmailSignInPage().setPassword(password);
 		final AndroidPage returnedPage = getEmailSignInPage().logIn();
-		pagesCollection.setPage(returnedPage);
-
 		// We want to skip the "AddPhoneNumber page if it is presented to us
 		if (returnedPage instanceof AddPhoneNumberPage) {
-			pagesCollection.setPage(((AddPhoneNumberPage) returnedPage)
-					.notNowButtonClick());
+			((AddPhoneNumberPage) returnedPage).notNowButtonClick();
 		}
-
-		final LoginPage loginPage = (LoginPage) pagesCollection
-				.getPageOrElseInstantiate(LoginPage.class);
-		Assert.assertTrue("Login in progress",
-				loginPage.waitForLoginScreenDisappear());
-		Assert.assertTrue("Login finished", loginPage.waitForLogin());
+		Assert.assertTrue("Login in progress", getLoginPage()
+				.waitForLoginScreenDisappear());
+		Assert.assertTrue("Login finished", getLoginPage().waitForLogin());
 	}
 
 	/**
@@ -96,7 +83,7 @@ public class EmailSignInSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		getEmailSignInPage(true).setLogin(login);
+		getEmailSignInPage().setLogin(login);
 	}
 
 	/**
@@ -114,7 +101,7 @@ public class EmailSignInSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		getEmailSignInPage(true).setPassword(password);
+		getEmailSignInPage().setPassword(password);
 	}
 
 	/**
@@ -126,9 +113,8 @@ public class EmailSignInSteps {
 	 */
 	@When("I press Log in button")
 	public void WhenIPressLogInButton() throws Exception {
-		pagesCollection.setPage(getEmailSignInPage(true).logIn());
-		Assert.assertTrue("Login finished", ((LoginPage) pagesCollection
-				.getPageOrElseInstantiate(LoginPage.class)).waitForLogin());
+		getEmailSignInPage().logIn();
+		Assert.assertTrue("Login finished", getLoginPage().waitForLogin());
 	}
 
 	/**
@@ -143,9 +129,7 @@ public class EmailSignInSteps {
 	 */
 	@Then("^I see error message \"(.*)\"$")
 	public void ISeeErrorMessage(String expectedMsg) throws Exception {
-		final LoginPage loginPage = (LoginPage) pagesCollection
-				.getPage(LoginPage.class);
-		loginPage.waitForLogin();
-		loginPage.verifyErrorMessageText(expectedMsg);
+		getLoginPage().waitForLogin();
+		getLoginPage().verifyErrorMessageText(expectedMsg);
 	}
 }

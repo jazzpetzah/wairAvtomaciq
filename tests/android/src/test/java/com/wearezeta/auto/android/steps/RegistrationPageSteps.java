@@ -22,19 +22,9 @@ public class RegistrationPageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
-	private RegistrationPage getRegistrationPage(boolean shouldCreateIfNotExists)
-			throws Exception {
-		if (shouldCreateIfNotExists) {
-			return (RegistrationPage) pagesCollection
-					.getPageOrElseInstantiate(RegistrationPage.class);
-		} else {
-			return (RegistrationPage) pagesCollection
-					.getPage(RegistrationPage.class);
-		}
-	}
-
 	private RegistrationPage getRegistrationPage() throws Exception {
-		return getRegistrationPage(false);
+		return (RegistrationPage) pagesCollection
+				.getPage(RegistrationPage.class);
 	}
 
 	private ClientUser userToRegister = null;
@@ -134,7 +124,7 @@ public class RegistrationPageSteps {
 			this.userToRegister.setName(name);
 			this.userToRegister.addNameAlias(name);
 		}
-		getRegistrationPage(true).setName(this.userToRegister.getName());
+		getRegistrationPage().setName(this.userToRegister.getName());
 	}
 
 	/**
@@ -160,7 +150,7 @@ public class RegistrationPageSteps {
 		}
 		this.userToRegister.clearEmailAliases();
 		this.userToRegister.addEmailAlias(email);
-		getRegistrationPage(true).setEmail(this.userToRegister.getEmail());
+		getRegistrationPage().setEmail(this.userToRegister.getEmail());
 	}
 
 	/**
@@ -186,8 +176,7 @@ public class RegistrationPageSteps {
 		}
 		this.userToRegister.clearPasswordAliases();
 		this.userToRegister.addPasswordAlias(password);
-		getRegistrationPage(true)
-				.setPassword(this.userToRegister.getPassword());
+		getRegistrationPage().setPassword(this.userToRegister.getPassword());
 	}
 
 	/**
@@ -203,7 +192,7 @@ public class RegistrationPageSteps {
 	public void ISubmitRegistrationData() throws Exception {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		getRegistrationPage(true).createAccount();
+		getRegistrationPage().createAccount();
 		// FIXME: activation message should be received in another step!
 		RegistrationPageSteps.activationMessage = IMAPSMailbox.getInstance()
 				.getMessage(expectedHeaders,
@@ -236,7 +225,7 @@ public class RegistrationPageSteps {
 		BackendAPIWrappers
 				.activateRegisteredUserByEmail(RegistrationPageSteps.activationMessage);
 		this.userToRegister.setUserState(UserState.Created);
-		pagesCollection.setPage(getRegistrationPage().continueRegistration());
+		getRegistrationPage().continueRegistration();
 	}
 
 }

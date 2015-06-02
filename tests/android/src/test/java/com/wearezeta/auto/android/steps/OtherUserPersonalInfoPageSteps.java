@@ -15,20 +15,10 @@ public class OtherUserPersonalInfoPageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
-	private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage(
-			boolean shouldCreateIfNotExists) throws Exception {
-		if (shouldCreateIfNotExists) {
-			return (OtherUserPersonalInfoPage) pagesCollection
-					.getPageOrElseInstantiate(OtherUserPersonalInfoPage.class);
-		} else {
-			return (OtherUserPersonalInfoPage) pagesCollection
-					.getPage(OtherUserPersonalInfoPage.class);
-		}
-	}
-
 	private OtherUserPersonalInfoPage getOtherUserPersonalInfoPage()
 			throws Exception {
-		return getOtherUserPersonalInfoPage(false);
+		return (OtherUserPersonalInfoPage) pagesCollection
+				.getPage(OtherUserPersonalInfoPage.class);
 	}
 
 	private final String BG_IMAGE_NAME = "aqaPictureContactBG.png";
@@ -50,7 +40,7 @@ public class OtherUserPersonalInfoPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		getOtherUserPersonalInfoPage(true).isOtherUserNameVisible(name);
+		getOtherUserPersonalInfoPage().isOtherUserNameVisible(name);
 	}
 
 	/**
@@ -112,8 +102,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I press add contact button$")
 	public void WhenIPressAddContactButton() throws Exception {
-		pagesCollection.setPage(getOtherUserPersonalInfoPage()
-				.tapAddContactBtn());
+		getOtherUserPersonalInfoPage().tapAddContactBtn();
 	}
 
 	/**
@@ -170,8 +159,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I click Unblock button$")
 	public void IClickUnblockButton() throws Exception {
-		pagesCollection.setPage(getOtherUserPersonalInfoPage()
-				.clickUnblockBtn());
+		getOtherUserPersonalInfoPage().clickUnblockBtn();
 	}
 
 	/**
@@ -209,8 +197,7 @@ public class OtherUserPersonalInfoPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		pagesCollection.setPage(getOtherUserPersonalInfoPage()
-				.tapOnParticipant(contact));
+		getOtherUserPersonalInfoPage().tapOnParticipant(contact);
 	}
 
 	/**
@@ -236,8 +223,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I press Leave conversation button$")
 	public void WhenIPressLeaveConversationButton() throws Exception {
-		pagesCollection.setPage(getOtherUserPersonalInfoPage()
-				.pressLeaveButton());
+		getOtherUserPersonalInfoPage().pressLeaveButton();
 	}
 
 	/**
@@ -290,8 +276,7 @@ public class OtherUserPersonalInfoPageSteps {
 	@When("^I select contact (.*)$")
 	public void WhenISelectContact(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		pagesCollection.setPage(getOtherUserPersonalInfoPage()
-				.tapOnParticipant(name));
+		getOtherUserPersonalInfoPage().tapOnParticipant(name);
 	}
 
 	/**
@@ -372,7 +357,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I return to group chat page$")
 	public void ThenIReturnToGroupChatPage() throws Exception {
-		pagesCollection.setPage(getOtherUserPersonalInfoPage().tabBackButton());
+		getOtherUserPersonalInfoPage().tabBackButton();
 	}
 
 	/**
@@ -496,7 +481,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I click Connect button on non connected user page$")
 	public void IClickOnUnconnectedUserConnectButton() throws Exception {
-		pagesCollection.setPage(getUnknownUserDetailsPage().tapConnectButton());
+		getUnknownUserDetailsPage().tapConnectButton();
 	}
 
 	/**

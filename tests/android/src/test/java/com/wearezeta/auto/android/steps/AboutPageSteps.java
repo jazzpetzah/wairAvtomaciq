@@ -25,7 +25,7 @@ public class AboutPageSteps {
 	 */
 	@When("^I tap on About page$")
 	public void WhenITapOnAboutPage() throws Exception {
-		pagesCollection.setPage(getAboutPage().tapOnVersion());
+		getAboutPage().tapOnVersion();
 	}
 
 	/**

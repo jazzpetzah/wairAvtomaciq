@@ -28,17 +28,10 @@ final class AndroidTabletPagesCollection extends AbstractPagesCollection {
 	public AndroidTabletPage getPage(Class<? extends BasePage> pageClass)
 			throws Exception {
 		return (AndroidTabletPage) super.getPage(pageClass);
-		// return (AndroidTabletPage) super.getPageOrElseInstantiate(pageClass);
 	}
 
 	@Override
-	public AndroidTabletPage getPageOrElseInstantiate(
-			Class<? extends BasePage> pageClass) throws Exception {
-		return (AndroidTabletPage) super.getPageOrElseInstantiate(pageClass);
-	}
-
-	@Override
-	public void setPage(BasePage page) {
+	public void setFirstPage(BasePage page) {
 		if (!(page instanceof AndroidTabletPage)) {
 			throw new IllegalStateException(
 					String.format(
@@ -46,6 +39,6 @@ final class AndroidTabletPagesCollection extends AbstractPagesCollection {
 							AndroidTabletPage.class.getSimpleName(), page
 									.getClass().getSimpleName()));
 		}
-		super.setPage((AndroidTabletPage) page);
+		super.setFirstPage((AndroidTabletPage) page);
 	}
 }

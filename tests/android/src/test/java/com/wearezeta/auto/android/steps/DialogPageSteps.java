@@ -21,18 +21,8 @@ public class DialogPageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
-	private DialogPage getDialogPage(boolean shouldCreateIfNotExists)
-			throws Exception {
-		if (shouldCreateIfNotExists) {
-			return (DialogPage) pagesCollection
-					.getPageOrElseInstantiate(DialogPage.class);
-		} else {
-			return (DialogPage) pagesCollection.getPage(DialogPage.class);
-		}
-	}
-
 	private DialogPage getDialogPage() throws Exception {
-		return getDialogPage(false);
+		return (DialogPage) pagesCollection.getPage(DialogPage.class);
 	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -61,7 +51,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
-		getDialogPage(true).waitForCursorInputVisible();
+		getDialogPage().waitForCursorInputVisible();
 	}
 
 	/**
@@ -312,7 +302,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap conversation details button$")
 	public void WhenITapConversationDetailsBottom() throws Exception {
-		pagesCollection.setPage(getDialogPage().tapConversationDetailsButton());
+		getDialogPage().tapConversationDetailsButton();
 	}
 
 	/**
@@ -474,8 +464,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I swipe up on dialog page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
-		pagesCollection.setPage(getDialogPage().swipeUp(
-				SWIPE_DURATION_MILLISECONDS));
+		getDialogPage().swipeUp(SWIPE_DURATION_MILLISECONDS);
 	}
 
 	/**
@@ -488,8 +477,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I swipe down on dialog page$")
 	public void WhenISwipedownOnDialogPage() throws Exception {
-		pagesCollection.setPage(getDialogPage(true).swipeDown(
-				SWIPE_DURATION_MILLISECONDS));
+		getDialogPage().swipeDown(SWIPE_DURATION_MILLISECONDS);
 	}
 
 	/**
@@ -501,7 +489,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I navigate back from dialog page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
-		pagesCollection.setPage(getDialogPage(true).navigateBack());
+		getDialogPage().navigateBack();
 	}
 
 	/**
@@ -517,8 +505,7 @@ public class DialogPageSteps {
 	@Then("^I see Connect to (.*) Dialog page$")
 	public void ThenIseeConnectToDialogPage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		final String actualLabel = getDialogPage(true)
-				.getConnectRequestChatLabel();
+		final String actualLabel = getDialogPage().getConnectRequestChatLabel();
 		Assert.assertTrue(String.format(
 				"The actual label '%s' does not contain '%s' part",
 				actualLabel, contact),

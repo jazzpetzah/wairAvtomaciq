@@ -12,34 +12,14 @@ public class CallingPageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
-	private CallingOverlayPage getCallingOverlayPage(boolean shouldCreate)
-			throws Exception {
-		if (shouldCreate) {
-			return (CallingOverlayPage) pagesCollection
-					.getPageOrElseInstantiate(CallingOverlayPage.class);
-		} else {
-			return (CallingOverlayPage) pagesCollection
-					.getPage(CallingOverlayPage.class);
-		}
-	}
-
 	private CallingOverlayPage getCallingOverlayPage() throws Exception {
-		return getCallingOverlayPage(false);
-	}
-
-	private CallingLockscreenPage getCallingLockscreenPage(boolean shouldCreate)
-			throws Exception {
-		if (shouldCreate) {
-			return (CallingLockscreenPage) pagesCollection
-					.getPageOrElseInstantiate(CallingLockscreenPage.class);
-		} else {
-			return (CallingLockscreenPage) pagesCollection
-					.getPage(CallingLockscreenPage.class);
-		}
+		return (CallingOverlayPage) pagesCollection
+				.getPage(CallingOverlayPage.class);
 	}
 
 	private CallingLockscreenPage getCallingLockscreenPage() throws Exception {
-		return getCallingLockscreenPage(false);
+		return (CallingLockscreenPage) pagesCollection
+				.getPage(CallingLockscreenPage.class);
 	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -55,7 +35,7 @@ public class CallingPageSteps {
 	 */
 	@When("I click the ignore call button")
 	public void IClickIgnoreCallButton() throws Exception {
-		getCallingOverlayPage(true).muteConversation();
+		getCallingOverlayPage().muteConversation();
 	}
 
 	/**
@@ -143,7 +123,7 @@ public class CallingPageSteps {
 	public void ISeeTheCallLockScreen() throws Exception {
 		Assert.assertTrue(
 				"Calling lockscreen is not visible, but it should be",
-				getCallingLockscreenPage(true).isVisible());
+				getCallingLockscreenPage().isVisible());
 	}
 
 	/**
@@ -186,7 +166,7 @@ public class CallingPageSteps {
 	 */
 	@When("I answer the call from the overlay bar$")
 	public void IAnswerCallFromTheOverlayBar() throws Exception {
-		pagesCollection.setPage(getCallingOverlayPage(true).acceptCall());
+		getCallingOverlayPage().acceptCall();
 	}
 
 	/**
@@ -199,7 +179,7 @@ public class CallingPageSteps {
 	 */
 	@When("I answer the call from the lock screen$")
 	public void IAnswerCallFromTheLockScreen() throws Exception {
-		pagesCollection.setPage(getCallingLockscreenPage().acceptCall());
+		getCallingLockscreenPage().acceptCall();
 	}
 
 	// FIXME: replace multiple assertTrue calls with loops
@@ -213,7 +193,7 @@ public class CallingPageSteps {
 	 */
 	@When("^I see calling overlay Big bar$")
 	public void WhenISeeCallingOverlayBigBar() throws Exception {
-		Assert.assertTrue(getCallingOverlayPage(true).callingOverlayIsVisible());
+		Assert.assertTrue(getCallingOverlayPage().callingOverlayIsVisible());
 		Assert.assertTrue(getCallingOverlayPage()
 				.incominCallerAvatarIsVisible());
 		Assert.assertTrue(getCallingOverlayPage().callingMessageIsVisible());
@@ -233,7 +213,7 @@ public class CallingPageSteps {
 	 */
 	@When("^I see calling overlay Micro bar$")
 	public void WhenISeeCallingOverlayMicroBar() throws Exception {
-		Assert.assertTrue(getCallingOverlayPage(true)
+		Assert.assertTrue(getCallingOverlayPage()
 				.ongoingCallMicrobarIsVisible());
 	}
 
@@ -246,8 +226,7 @@ public class CallingPageSteps {
 	 */
 	@When("^I see calling overlay Mini bar$")
 	public void WhenISeeCallingOverlayMiniBar() throws Exception {
-		Assert.assertTrue(getCallingOverlayPage(true)
-				.ongoingCallMinibarIsVisible());
+		Assert.assertTrue(getCallingOverlayPage().ongoingCallMinibarIsVisible());
 		Assert.assertTrue(getCallingOverlayPage().callingMessageIsVisible());
 		Assert.assertTrue(getCallingOverlayPage().callingDismissIsVisible());
 		Assert.assertFalse(getCallingOverlayPage().callingSpeakerIsVisible());

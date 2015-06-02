@@ -12,18 +12,8 @@ public class WelcomePageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
-	private WelcomePage getWelcomePage(boolean shouldCreateIfNotExists)
-			throws Exception {
-		if (shouldCreateIfNotExists) {
-			return (WelcomePage) pagesCollection
-					.getPageOrElseInstantiate(WelcomePage.class);
-		} else {
-			return (WelcomePage) pagesCollection.getPage(WelcomePage.class);
-		}
-	}
-
 	private WelcomePage getWelcomePage() throws Exception {
-		return getWelcomePage(false);
+		return (WelcomePage) pagesCollection.getPage(WelcomePage.class);
 	}
 
 	/**
@@ -34,7 +24,7 @@ public class WelcomePageSteps {
 	 */
 	@Given("^I see [Ww]elcome screen$")
 	public void GivenISeeWelcomeScreen() throws Exception {
-		Assert.assertTrue("Welcome page is not shown", getWelcomePage(true)
+		Assert.assertTrue("Welcome page is not shown", getWelcomePage()
 				.waitForInitialScreen());
 	}
 
@@ -47,6 +37,6 @@ public class WelcomePageSteps {
 	 */
 	@When("^I switch to email sign in screen$")
 	public void ISwitchToEmailSignIn() throws Exception {
-		pagesCollection.setPage(getWelcomePage().clickIHaveAnAccount());
+		getWelcomePage().clickIHaveAnAccount();
 	}
 }

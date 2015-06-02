@@ -15,19 +15,8 @@ public class ContactListPageSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
-	private ContactListPage getContactListPage(boolean shouldCreateIfNotExists)
-			throws Exception {
-		if (shouldCreateIfNotExists) {
-			return (ContactListPage) pagesCollection
-					.getPageOrElseInstantiate(ContactListPage.class);
-		} else {
-			return (ContactListPage) pagesCollection
-					.getPage(ContactListPage.class);
-		}
-	}
-
 	private ContactListPage getContactListPage() throws Exception {
-		return getContactListPage(false);
+		return (ContactListPage) pagesCollection.getPage(ContactListPage.class);
 	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -59,7 +48,7 @@ public class ContactListPageSteps {
 	public void GivenISeeContactList() throws Exception {
 		((LoginPage) pagesCollection.getPage(LoginPage.class))
 				.verifyLoginFinished();
-		getContactListPage(true).verifyContactListIsFullyLoaded();
+		getContactListPage().verifyContactListIsFullyLoaded();
 	}
 
 	/**
@@ -78,7 +67,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		pagesCollection.setPage(getContactListPage().tapOnName(contactName));
+		getContactListPage().tapOnName(contactName);
 	}
 
 	/**
@@ -90,7 +79,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I tap on my avatar$")
 	public void WhenITapOnMyAvatar() throws Exception {
-		pagesCollection.setPage(getContactListPage().tapOnMyAvatar());
+		getContactListPage().tapOnMyAvatar();
 	}
 
 	/**
@@ -101,7 +90,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Exception {
-		pagesCollection.setPage(getContactListPage().swipeDown(1000));
+		getContactListPage().swipeDown(1000);
 	}
 
 	/**
@@ -121,8 +110,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently - seems bad...
 		}
-		pagesCollection.setPage(getContactListPage().swipeRightOnContact(1500,
-				contact));
+		getContactListPage().swipeRightOnContact(1500, contact);
 	}
 
 	/**
@@ -134,7 +122,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I press Open StartUI")
 	public void WhenIPressOpenStartUI() throws Exception {
-		pagesCollection.setPage(getContactListPage().pressOpenStartUI());
+		getContactListPage().pressOpenStartUI();
 	}
 
 	/**
@@ -254,6 +242,6 @@ public class ContactListPageSteps {
 	 */
 	@When("^I open People Picker$")
 	public void IOpenPeoplePicker() throws Exception {
-		pagesCollection.setPage(getContactListPage().openPeoplePicker());
+		getContactListPage().openPeoplePicker();
 	}
 }
