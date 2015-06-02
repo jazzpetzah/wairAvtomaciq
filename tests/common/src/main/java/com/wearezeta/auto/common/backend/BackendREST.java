@@ -387,7 +387,6 @@ final class BackendREST {
 	public static Map<JSONObject, AssetData> sendPicture(AuthToken token,
 			String convId, byte[] srcImageAsByteArray, String imageMimeType)
 			throws Exception {
-		System.setProperty("java.awt.headless", "true");
 		ImageAssetData srcImgData = new ImageAssetData(convId,
 				srcImageAsByteArray, imageMimeType);
 		srcImgData.setIsPublic(true);
