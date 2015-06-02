@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.LoginPage;
@@ -28,13 +27,16 @@ public class EmailSignInPage extends AndroidPage {
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 		.getSimpleName());
 	
-	@FindBy(id = AndroidLocators.EmailSignInPage.idLoginInput)
+	public static final String idLoginInput = "get__sign_in__email";
+	@FindBy(id = idLoginInput)
 	private WebElement loginInput;
 	
-	@FindBy(id = AndroidLocators.EmailSignInPage.idPasswordInput)
+	public static final String idPasswordInput = "get__sign_in__password";
+	@FindBy(id = idPasswordInput)
 	private WebElement passwordInput;
 	
-	@FindBy(id = AndroidLocators.LoginPage.idLoginButton)
+	public static final String idLoginButton = "pcb__signin__email";
+	@FindBy(id = idLoginButton)
 	protected WebElement confirmSignInButton;
 	
 	public EmailSignInPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -74,6 +76,6 @@ public class EmailSignInPage extends AndroidPage {
 	
 	private boolean waitForAddPhoneNumberAppear() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.AddPhoneNumberPage.idNotNowButton), 2);
+				By.id(AddPhoneNumberPage.idNotNowButton), 2);
 	}
 }

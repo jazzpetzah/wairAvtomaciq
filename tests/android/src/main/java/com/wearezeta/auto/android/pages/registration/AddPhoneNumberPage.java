@@ -5,7 +5,6 @@ import java.util.concurrent.Future;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -20,7 +19,8 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class AddPhoneNumberPage extends AndroidPage {
 
-	@FindBy(id = AndroidLocators.AddPhoneNumberPage.idNotNowButton)
+	public static final String idNotNowButton = "ttv__not_now";
+	@FindBy(id = idNotNowButton)
 	private WebElement notNowButton;
 
 	public AddPhoneNumberPage(Future<ZetaAndroidDriver> lazyDriver)

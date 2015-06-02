@@ -374,6 +374,7 @@ public class CommonIOSSteps {
 			String startLetter) throws Exception {
 		String newName = startLetter.concat(UUID.randomUUID().toString()
 				.replace("-", ""));
+		newName = newName.substring(0, newName.length() / 2 );
 		commonSteps.IChangeUserName(userNameAlias, newName);
 	}
 

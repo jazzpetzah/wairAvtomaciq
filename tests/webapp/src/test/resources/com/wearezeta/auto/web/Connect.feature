@@ -98,7 +98,7 @@ Feature: Connect
       | Login      | Login2     | Password      | Password2     | Name      | Name2     | Message      |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name | CONNECTED TO |
 
-  @smoke @id1553
+  @regression @id1553
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
@@ -277,7 +277,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
       | user1Name | user1Email | user1Password | user2Name | user3Name |
 
-  @regression @id2318
+  @smoke @id2318
   Scenario Outline: Verify you can add a user from PYMK list
     Given There are 3 users where <Me> is me
     Given User <Contact1> has contact <Me> in address book

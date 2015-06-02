@@ -1,7 +1,7 @@
 Feature: Sign Out
 
-  @smoke @id1790
-  Scenario Outline: Change sign-in user
+  @regression @id1790
+  Scenario Outline: Switch signed-in user
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
