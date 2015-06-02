@@ -1,16 +1,10 @@
 package com.wearezeta.auto.android.steps;
 
-import org.junit.Assert;
-
-import com.wearezeta.auto.android.pages.*;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-
 import cucumber.api.java.en.When;
 
 public class TabletContactListPageSteps {
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+//	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
 	 * Taps profile button (SelfName)
@@ -21,7 +15,7 @@ public class TabletContactListPageSteps {
 	 */
 	@When("^I tap on profile link$")
 	public void WhenITapOnProfileLink() throws Exception {
-		AndroidTabletPagesCollection.contactListPage.tapOnProfileLink();
+//		AndroidTabletPagesCollection.contactListPage.tapOnProfileLink();
 	}
 
 	/**
@@ -37,16 +31,16 @@ public class TabletContactListPageSteps {
 	@When("^I see conversation list loaded with my name (.*)$")
 	public void WhenISeeConversationListWithMyName(String name)
 			throws Exception {
-		Assert.assertTrue(AndroidTabletPagesCollection.contactListPage
-				.isPeoplePickerButtonVisible());
-		String currentName = null;
-		try {
-			currentName = usrMgr.findUserByNameOrNameAlias(name).getName();
-		} catch (NoSuchUserException e) {
-			currentName = name;
-		}
-		Assert.assertTrue(currentName.equals(AndroidTabletPagesCollection.contactListPage
-				.getSelfName()));
+//		Assert.assertTrue(AndroidTabletPagesCollection.contactListPage
+//				.isPeoplePickerButtonVisible());
+//		String currentName = null;
+//		try {
+//			currentName = usrMgr.findUserByNameOrNameAlias(name).getName();
+//		} catch (NoSuchUserException e) {
+//			currentName = name;
+//		}
+//		Assert.assertTrue(currentName.equals(AndroidTabletPagesCollection.contactListPage
+//				.getSelfName()));
 	}
 
 	/**
@@ -61,28 +55,28 @@ public class TabletContactListPageSteps {
 	 */
 	@When("^I tap on tablet contact name (.*)$")
 	public void WhenITapOnTabletContactName(String value) throws Exception {
-		try {
-			value = usrMgr.findUserByNameOrNameAlias(value).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		AndroidTabletPagesCollection.currentPage = AndroidTabletPagesCollection.contactListPage
-				.tapOnName(value);
-		if (AndroidTabletPagesCollection.currentPage instanceof PersonalInfoPage) {
-			AndroidTabletPagesCollection.personalInfoPage = (PersonalInfoPage) AndroidTabletPagesCollection.currentPage;
-			AndroidTabletPagesCollection.personalInfoPage = (TabletPersonalInfoPage) AndroidTabletPagesCollection.personalInfoPage;
-		} else if (AndroidTabletPagesCollection.currentPage instanceof DialogPage) {
-			AndroidTabletPagesCollection.dialogPage = (DialogPage) AndroidTabletPagesCollection.currentPage;
-			AndroidTabletPagesCollection.dialogPage = AndroidTabletPagesCollection.contactListPage
-					.initDialogPage();
-		}
+//		try {
+//			value = usrMgr.findUserByNameOrNameAlias(value).getName();
+//		} catch (NoSuchUserException e) {
+//			// Ignore silently
+//		}
+//		AndroidTabletPagesCollection.currentPage = AndroidTabletPagesCollection.contactListPage
+//				.tapOnName(value);
+//		if (AndroidTabletPagesCollection.currentPage instanceof PersonalInfoPage) {
+//			AndroidTabletPagesCollection.personalInfoPage = (PersonalInfoPage) AndroidTabletPagesCollection.currentPage;
+//			AndroidTabletPagesCollection.personalInfoPage = (TabletPersonalInfoPage) AndroidTabletPagesCollection.personalInfoPage;
+//		} else if (AndroidTabletPagesCollection.currentPage instanceof DialogPage) {
+//			AndroidTabletPagesCollection.dialogPage = (DialogPage) AndroidTabletPagesCollection.currentPage;
+//			AndroidTabletPagesCollection.dialogPage = AndroidTabletPagesCollection.contactListPage
+//					.initDialogPage();
+//		}
 	}
 
 	@When("^I swipe down on tablet contact list$")
 	public void ISwipeDownContactList() throws Exception {
-		AndroidTabletPagesCollection.peoplePickerPage = (PeoplePickerPage) AndroidTabletPagesCollection.contactListPage
-				.swipeDown(1000);
-		AndroidTabletPagesCollection.peoplePickerPage = AndroidTabletPagesCollection.contactListPage
-				.initPeoplePickerPage();
+//		AndroidTabletPagesCollection.peoplePickerPage = (PeoplePickerPage) AndroidTabletPagesCollection.contactListPage
+//				.swipeDown(1000);
+//		AndroidTabletPagesCollection.peoplePickerPage = AndroidTabletPagesCollection.contactListPage
+//				.initPeoplePickerPage();
 	}
 }

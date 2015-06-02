@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android.steps;
 
-import com.wearezeta.auto.android.pages.TabletPagesCollection;
-
 import cucumber.api.java.en.Then;
 
 public class TabletRegistrationPageSteps {
@@ -14,7 +12,7 @@ public class TabletRegistrationPageSteps {
 	 */
 	@Then("^I passed login automatically$")
 	public void IPassedLoginAutomatically() throws Throwable {
-		TabletPagesCollection.personalInfoPage = TabletPagesCollection.registrationPage.initProfilePage();
-		AndroidTabletPagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
+//		TabletPagesCollection.personalInfoPage = TabletPagesCollection.registrationPage.initProfilePage();
+//		AndroidTabletPagesCollection.personalInfoPage = TabletPagesCollection.personalInfoPage;
 	}
 }
