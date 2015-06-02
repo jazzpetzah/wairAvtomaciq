@@ -60,7 +60,7 @@ public final class PlatformDrivers {
 			Consumer<RemoteWebDriver> initCompletedCallback,
 			Supplier<Boolean> beforeInitCallback) throws Exception {
 		final Platform platformInCapabilities = Platform
-				.getByName((String) capabilities.getCapability("platformName"));
+				.getByName((String) capabilities.getCapability("platform"));
 		if (this.hasDriver(platformInCapabilities)) {
 			this.quitDriver(platformInCapabilities);
 		}
