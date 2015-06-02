@@ -3,7 +3,7 @@ package com.wearezeta.auto.common;
 import java.util.NoSuchElementException;
 
 public enum Platform {
-	Mac("Mac"), Android("Android"), iOS("iOS"), Web("ANY");
+	Mac("Mac"), Android("Android"), iOS("iOS"), Web("ANY"), Win8_1("WIN8_1");
 
 	private final String name;
 
