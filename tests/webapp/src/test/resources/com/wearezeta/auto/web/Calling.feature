@@ -156,7 +156,7 @@ Feature: Calling
          | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
          | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
-  @staging @id1875
+   @regression @id1875
    Scenario Outline: Already on call and try to make another call (caller)
       Given My browser supports calling
       Given There are 3 users where <Name> is me
@@ -177,7 +177,7 @@ Feature: Calling
          | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
          | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
-  @staging @id2477
+   @regression @id2477
    Scenario Outline: Already on call and try to make another call (adressee)
       Given My browser supports calling
       Given There are 3 users where <Name> is me
