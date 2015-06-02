@@ -305,9 +305,7 @@ public class DialogPageSteps {
 				.getExpectedConnectingLabel(contact);
 		String actualConnectingLabel = PagesCollection.dialogPage
 				.getConnectMessageLabel();
-		String lastMessage = PagesCollection.dialogPage.getConnectionMessage();
-		String expectedConnectMessage = PagesCollection.dialogPage
-				.getExpectedConnectMessage(contact, user);
+
 		Assert.assertTrue(actualConnectingLabel.contains(expectedConnectingLabel));
 	}
 
