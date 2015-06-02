@@ -1,6 +1,10 @@
 package com.wearezeta.auto.web.steps;
 
+import java.net.URL;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -9,6 +13,7 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.logging.LogEntry;
@@ -16,6 +21,7 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
@@ -238,11 +244,23 @@ public class CommonWebAppSteps {
 
 		capabilities.setCapability("platform", "Windows 8.1");
 		capabilities.setCapability("version", "43.0");
-		@SuppressWarnings("unchecked")
-		final Future<ZetaWebAppDriver> lazyWebDriver = (Future<ZetaWebAppDriver>) PlatformDrivers
-				.getInstance().resetDriver(url, capabilities,
-						MAX_DRIVER_CREATION_RETRIES, this::navigateToStartPage, null);
-		return lazyWebDriver;
+
+		final ExecutorService pool = Executors.newFixedThreadPool(1);
+		
+		Callable<ZetaWebAppDriver> callableWebAppDriver = new Callable<ZetaWebAppDriver>() {
+
+			@Override
+			public ZetaWebAppDriver call() throws Exception {
+				final ZetaWebAppDriver lazyWebDriver = new ZetaWebAppDriver(new URL(url),
+						capabilities);
+				lazyWebDriver.setFileDetector(new LocalFileDetector());
+				lazyWebDriver.manage().window()
+						.setPosition(new Point(0, 0));
+				return lazyWebDriver;
+			}
+		};
+
+		return pool.submit(callableWebAppDriver);
 	}
 
 	@Before("~@performance")
