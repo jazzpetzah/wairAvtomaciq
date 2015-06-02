@@ -237,6 +237,8 @@ public class CommonWebAppSteps {
 		// setCustomOperaProfile(capabilities, "win7_opera");
 
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+		capabilities.setCapability("platform", "Windows 8.1");
+		capabilities.setCapability("version", "43.0");
 		@SuppressWarnings("unchecked")
 		final Future<ZetaWebAppDriver> lazyWebDriver = (Future<ZetaWebAppDriver>) PlatformDrivers
 				.getInstance().resetDriver(url, capabilities,
