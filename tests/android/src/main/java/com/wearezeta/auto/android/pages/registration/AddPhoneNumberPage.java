@@ -20,7 +20,8 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class AddPhoneNumberPage extends AndroidPage {
 
-	@FindBy(id = AndroidLocators.AddPhoneNumberPage.idNotNowButton)
+	public static final String idNotNowButton = "ttv__not_now";
+	@FindBy(id = idNotNowButton)
 	private WebElement notNowButton;
 
 	public AddPhoneNumberPage(Future<ZetaAndroidDriver> lazyDriver)

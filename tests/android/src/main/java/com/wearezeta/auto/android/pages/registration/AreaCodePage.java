@@ -17,7 +17,7 @@ public class AreaCodePage extends AndroidPage {
 	public static final String idCode = "ttv_new_reg__signup__phone__country__row_code";
 	
 	public static final Function<String, String> xpathFindAreaCode = areaCode -> String
-		.format("//*[@id='" + idCode + "' and @value='%s']", areaCode);
+		.format("//*[@id='%s' and @value='%s']", idCode, areaCode);
 	
 	public AreaCodePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);

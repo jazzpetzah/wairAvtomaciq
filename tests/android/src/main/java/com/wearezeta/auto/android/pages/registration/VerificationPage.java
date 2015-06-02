@@ -2,6 +2,9 @@ package com.wearezeta.auto.android.pages.registration;
 
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
@@ -16,7 +19,12 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class VerificationPage extends AndroidPage {
 	
 	public static final String idCodeInput = "et__reg__phone";
+	@FindBy(id = idCodeInput)
+	private WebElement codeInput;
+	
 	public static final String idConfirmButton = "pcb__activate";
+	@FindBy(id = idConfirmButton)
+	private WebElement confirmButton;
 
 	public VerificationPage(Future<ZetaAndroidDriver> lazyDriver)
 		throws Exception {
@@ -24,11 +32,11 @@ public class VerificationPage extends AndroidPage {
 	}
 
 	public void inputVerificationCode(String verificationCode) throws Exception {
-		this.getDriver().findElementById(idCodeInput).sendKeys(verificationCode);
+		codeInput.sendKeys(verificationCode);
 	}
 
 	public AddNamePage clickConfirm() throws Exception {
-		this.getDriver().findElementById(idConfirmButton).click();
+		confirmButton.click();
 		return new AddNamePage(this.getLazyDriver());
 	}
  

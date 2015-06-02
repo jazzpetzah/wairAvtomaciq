@@ -1,7 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
-import com.wearezeta.auto.android.locators.AndroidLocators.AddPhoneNumberPage;
 import com.wearezeta.auto.android.pages.registration.AddNamePage;
+import com.wearezeta.auto.android.pages.registration.AddPhoneNumberPage;
 import com.wearezeta.auto.android.pages.registration.AreaCodePage;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.android.pages.registration.ProfilePicturePage;

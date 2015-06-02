@@ -27,18 +27,25 @@ public class WelcomePage extends AndroidPage {
 	private static final Logger log = ZetaLogger.getLog(LoginPage.class
 		.getSimpleName());
 
-	@FindBy(id = AndroidLocators.WelcomePage.phoneInputField)
+	public static final String idphoneInputField = "et__reg__phone";
+	@FindBy(id = idphoneInputField)
 	private WebElement phoneInputField;
 
-	@FindBy(id = AndroidLocators.WelcomePage.idHaveAccountButton)
+	public static final String idHaveAccountButton = "zb__welcome__sign_in";
+	@FindBy(id = idHaveAccountButton)
 	protected WebElement haveAccountButton;
 
-	@FindBy(id = AndroidLocators.WelcomePage.idWelcomeSlogan)
+	public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
+	@FindBy(id = idWelcomeSlogan)
 	private List<WebElement> welcomeSloganContainer;
 	
-	public static final String areaCodeSelector = "tv__country_code";
+	public static final String idAreaCodeSelector = "tv__country_code";
+	@FindBy(id = idAreaCodeSelector)
+	protected WebElement areaCodeSelectorButton;
 	
-	public static final String phoneConfirmationButton = "pcb__signup";
+	public static final String idphoneConfirmationButton = "pcb__signup";
+	@FindBy(id = idphoneConfirmationButton)
+	protected WebElement phoneConfirmationButton;
 	
 	public WelcomePage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -49,27 +56,27 @@ public class WelcomePage extends AndroidPage {
 	}
 	
 	public VerificationPage clickConfirm() throws Exception {
-		this.getDriver().findElementById(phoneConfirmationButton).click();
+		phoneConfirmationButton.click();
 		return new VerificationPage(this.getLazyDriver());
 	}
 	
 	public EmailSignInPage clickIHaveAnAccount() throws Exception {
 		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-			By.id(AndroidLocators.WelcomePage.idHaveAccountButton))) {
+			By.id(idHaveAccountButton))) {
 			haveAccountButton.click();
 		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.EmailSignInPage.idLoginInput));
+				By.id(EmailSignInPage.idLoginInput));
 		return new EmailSignInPage(this.getLazyDriver());
 	}
 	
 	public boolean waitForInitialScreen() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.WelcomePage.idWelcomeSlogan));
+				By.id(idWelcomeSlogan));
 	}
 
 	public AreaCodePage clickAreaCodeSelector() throws Exception {
-		this.getDriver().findElementById(areaCodeSelector).click();
+		areaCodeSelectorButton.click();
 		return new AreaCodePage(this.getLazyDriver());
 	}
 }

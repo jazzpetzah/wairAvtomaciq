@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -42,7 +43,7 @@ public class LoginPage extends AndroidPage {
 
 	public boolean waitForLoginScreenDisappear() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.LoginPage.idLoginButton), 40);
+				By.id(EmailSignInPage.idLoginButton), 40);
 	}
 
 	public boolean waitForLogin() throws Exception {
