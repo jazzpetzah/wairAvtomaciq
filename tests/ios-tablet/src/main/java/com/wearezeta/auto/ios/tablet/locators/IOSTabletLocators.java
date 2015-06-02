@@ -13,4 +13,11 @@ public final class IOSTabletLocators {
 		public static final String xpathUserName = "//UIAPopover/UIAStaticText[contains(@name, '%s')]";
 	}
 	
+	public static final class TabletConversatonListPage {
+		
+		public static final String xpathConversationListPage = "//UIAApplication[1]/UIAWindow[2]/UIACollectionView[1]";
+		
+	}
+	
+	
 }
