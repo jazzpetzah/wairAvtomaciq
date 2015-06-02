@@ -15,7 +15,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id1546
+  @regression @id1546
   Scenario Outline: Verify pending user profiles contain all the info required by spec
     Given There are 2 users where <Name> is me
     Given <UnknownContact> sent connection request to me
@@ -98,7 +98,7 @@ Feature: Connect
       | Login      | Login2     | Password      | Password2     | Name      | Name2     | Message      |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name | CONNECTED TO |
 
-  @smoke @id1553
+  @regression @id1553
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
@@ -277,7 +277,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
       | user1Name | user1Email | user1Password | user2Name | user3Name |
 
-  @regression @id2318
+  @smoke @id2318
   Scenario Outline: Verify you can add a user from PYMK list
     Given There are 3 users where <Me> is me
     Given User <Contact1> has contact <Me> in address book
@@ -315,18 +315,19 @@ Feature: Connect
 
   @regression @id1564
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search view)
-    Given There are 2 users where <Name> is me
-    Given I sent connection request to <Contact>
+    Given There are 3 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given Myself is connected to <Contact2>
     Given I Sign in using login <Login> and password <Password>
     When I open People Picker from Contact List
     And I wait for 2 seconds
-    And I type <Contact> in search field of People Picker
-    Then I see user <Contact> found in People Picker
-    When I click on pending user <Contact> found in People Picker
+    And I type <Contact1> in search field of People Picker
+    Then I see user <Contact1> found in People Picker
+    When I click on pending user <Contact1> found in People Picker
     And I see Pending Outgoing Connection popover
     When I click Pending button on Pending Outgoing Connection popover
-    Then I see conversation with <Contact> is selected in conversations list
+    Then I see conversation with <Contact1> is selected in conversations list
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |

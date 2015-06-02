@@ -69,8 +69,8 @@ Feature: Self Profile
     When I tap on my name <Name>
     And I attempt to change name using only spaces
     And I see error message asking for more characters
-    Then I attempt to enter an 80 char name
-    And New name is only first 64 chars
+    And I attempt to enter an 80 char name
+    Then I verify my new name is only first 64 chars
     
     Examples: 
       | Login      | Password      | Name      | Contact   |
@@ -85,8 +85,8 @@ Feature: Self Profile
     When I tap on my name <Name>
     And I attempt to change name using only spaces
     And I see error message asking for more characters
-    Then I attempt to enter an 80 char name
-    And New name is only first 64 chars
+    And I attempt to enter an 80 char name
+    Then I verify my new name is only first 64 chars
     
     Examples: 
       | Login      | Password      | Name      | Contact   |

@@ -578,7 +578,7 @@ public class DriverUtils {
 					.getScreenshotAs(OutputType.BYTES);
 			final BufferedImage bImageFromConvert = ImageIO
 					.read(new ByteArrayInputStream(scrImage));
-			return Optional.of(bImageFromConvert);
+			return Optional.ofNullable(bImageFromConvert);
 		} catch (WebDriverException e) {
 			// e.printStackTrace();
 			log.error("Selenium driver has failed to take the screenshot of the current screen!");

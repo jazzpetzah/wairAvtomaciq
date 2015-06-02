@@ -10,6 +10,7 @@ public final class PopoverLocators {
 		public static final String xpathUserEmail = "//*[@data-uie-name='status-user-email']";
 		public static final String xpathAddButton = "//*[@data-uie-name='do-add-people']";
 		public static final String xpathSearchInputField = "//input[@type='text' and contains(@class, 'search-input')]";
+		public static final String cssSearchResultItems = ".participants-search .search-list-item";
 		public static final String xpathCreateConversationButton = "//div[contains(@class, 'search-button-add')]";
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
@@ -98,10 +99,14 @@ public final class PopoverLocators {
 			public static final String xpathLeaveGroupChat = xpathRootLocator
 					+ xpathPageRootLocator + "//*[@data-uie-name='do-leave']";
 
+			public static final String cssParticipants = "#participants-bubble [data-uie-name='item-user']";
+
 			public static final Function<String, String> xpathParticipantByName = (
 					name) -> String.format(
 					"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 					xpathRootLocator + xpathPageRootLocator, name);
+
+			public static final String cssPeopleCount = ".participants-group-header .people span";
 		}
 
 		public static final class LeaveGroupConfirmationPage {
