@@ -64,10 +64,9 @@ Feature: People View
     And I see user <Contact3> found on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
-    And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
     And I swipe right on group chat page
-    And I see Contact list with my name <Name>
-    And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  |
@@ -96,8 +95,7 @@ Feature: People View
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
-    And I see Contact list with my name <Name>
-    And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+    Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  |

@@ -30,7 +30,6 @@ public class TabletPeoplePickerPage extends PeoplePickerPage{
 	public boolean isPeoplePickerPageOnPopOverVisible() throws Exception {
 		boolean pickerVisible = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.namePickerClearButton));
-		Thread.sleep(1000);
 		return pickerVisible;
 	}
 
