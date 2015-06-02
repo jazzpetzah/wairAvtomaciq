@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @smoke @id1743
+  @regression @id1743
   Scenario Outline: I can change my name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewUserName | user2Name |
 
-  @smoke @id1744
+  @regression @id1744
   Scenario Outline: Verify you can access your profile information
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Email> and password <Password>
@@ -32,7 +32,7 @@ Feature: Self Profile
       | Email      | Password      | Name      | PhoneNumber      |
       | user1Email | user1Password | user1Name | user1PhoneNumber |
 
-  @smoke @id1753
+  @regression @id1753
   Scenario Outline: Verify correct accent color showing after sign out and sign in
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
@@ -77,7 +77,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | PictureName              |
       | user1Email | user1Password | user1Name | userpicture_portrait.jpg |
 
-  @staging @id1747
+  @regression @id1747
   Scenario Outline: Verify you can change your accent color
     Given There is 3 users where <Name> is me
     Given User me change accent color to <ColorName>

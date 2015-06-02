@@ -31,9 +31,6 @@ public abstract class AndroidPage extends BasePage {
 	@FindBy(id = AndroidLocators.CommonLocators.idPager)
 	private WebElement content;
 
-	@FindBy(className = AndroidLocators.CommonLocators.classListView)
-	private WebElement container;
-
 	@Override
 	protected ZetaAndroidDriver getDriver() throws Exception {
 		return (ZetaAndroidDriver) super.getDriver();
@@ -105,10 +102,9 @@ public abstract class AndroidPage extends BasePage {
 		return this.getDriver().getOrientation();
 	}
 
-	public CommonAndroidPage minimizeApplication() throws Exception {
+	public void minimizeApplication() throws Exception {
 		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_HOME);
 		Thread.sleep(1000);
-		return new CommonAndroidPage(this.getLazyDriver());
 	}
 
 	public void lockScreen() throws Exception {
@@ -124,8 +120,7 @@ public abstract class AndroidPage extends BasePage {
 		}
 	}
 
-	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws Exception {
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 		return null;
 	};
 
@@ -293,10 +288,5 @@ public abstract class AndroidPage extends BasePage {
 
 	public void tapOnCenterOfScreen() throws Exception {
 		DriverUtils.genericTap(this.getDriver());
-	}
-
-	public static void clearPagesCollection() throws IllegalArgumentException,
-			IllegalAccessException {
-		clearPagesCollection(PagesCollection.class, AndroidPage.class);
 	}
 }

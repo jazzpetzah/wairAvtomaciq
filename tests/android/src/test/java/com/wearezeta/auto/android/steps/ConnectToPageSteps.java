@@ -3,13 +3,19 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.ConnectToPage;
-import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ConnectToPageSteps {
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
+	private ConnectToPage getConnectToPage() throws Exception {
+		return (ConnectToPage) pagesCollection.getPage(ConnectToPage.class);
+	}
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
@@ -25,14 +31,11 @@ public class ConnectToPageSteps {
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		if (PagesCollection.connectToPage == null) {
-			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
-		}
 		Assert.assertTrue(
 				String.format(
 						"Connect To header with text '%s' is not visible, but should be",
-						contact), PagesCollection.connectToPage
-						.isConnectToHeaderVisible(contact));
+						contact),
+				getConnectToPage().isConnectToHeaderVisible(contact));
 	}
 
 	/**
@@ -45,8 +48,7 @@ public class ConnectToPageSteps {
 	 */
 	@Then("^I see Accept and Ignore buttons$")
 	public void ISeeConnectAndIgnoreButtons() throws Exception {
-		Assert.assertTrue(PagesCollection.connectToPage
-				.isIgnoreConnectButtonVisible());
+		Assert.assertTrue(getConnectToPage().isIgnoreConnectButtonVisible());
 	}
 
 	/**
@@ -58,12 +60,9 @@ public class ConnectToPageSteps {
 	 */
 	@Then("^I swipe up on connect page$")
 	public void ISwipeUpOnConnectPage() throws Exception {
-		if (PagesCollection.connectToPage == null) {
-			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
-		}
-		PagesCollection.connectToPage.waitUntilIgnoreButtonIsVisible();
-		PagesCollection.connectToPage.swipeUpCoordinates(1000, 90);
-		// It is very hard to detect whehn swipe animation is finished that is
+		getConnectToPage().waitUntilIgnoreButtonIsVisible();
+		getConnectToPage().swipeUpCoordinates(1000, 90);
+		// It is very hard to detect when swipe animation is finished that is
 		// why this hardcoded sleep is needed here
 		Thread.sleep(5000);
 	}
@@ -78,8 +77,7 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I Connect with contact by pressing button$")
 	public void WhenIConnectWithContactByPressionButton() throws Exception {
-		PagesCollection.dialogPage = PagesCollection.connectToPage
-				.pressAcceptConnectButton();
+		getConnectToPage().pressAcceptConnectButton();
 	}
 
 	/**
@@ -92,11 +90,7 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I press Ignore connect button$")
 	public void WhenIPressIgnoreConnectButton() throws Exception {
-		if (PagesCollection.connectToPage == null) {
-			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
-		}
-		PagesCollection.contactListPage = PagesCollection.connectToPage
-				.pressIgnoreButton();
+		getConnectToPage().pressIgnoreButton();
 	}
 
 	/**
@@ -108,8 +102,7 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I navigate back from connect page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.connectToPage
-				.navigateBack();
+		getConnectToPage().navigateBack();
 	}
 
 	/**
@@ -123,10 +116,8 @@ public class ConnectToPageSteps {
 	@Then("^I see that connection is pending$")
 	public void ThenConnectionIsPending() throws NumberFormatException,
 			Exception {
-		if (PagesCollection.connectToPage == null) {
-			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.currentPage;
-		}
-		Assert.assertTrue(PagesCollection.connectToPage.isPending());
+		Assert.assertTrue("Pending connection screen is not visible",
+				getConnectToPage().isPending());
 	}
 
 	/**
@@ -139,7 +130,7 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I tap on edit connect request field$")
 	public void WhenITapOnEditConnectRequestField() throws Exception {
-		PagesCollection.connectToPage.tapEditConnectionRequest();
+		getConnectToPage().tapEditConnectionRequest();
 	}
 
 	/**
@@ -153,7 +144,7 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I type Connect request \"(.*)\"$")
 	public void WhenITypeConnectRequest(String message) throws Exception {
-		PagesCollection.connectToPage.typeConnectionRequies(message);
+		getConnectToPage().typeConnectionRequies(message);
 	}
 
 	/**
@@ -167,8 +158,7 @@ public class ConnectToPageSteps {
 	 */
 	@Then("^I see connect button enabled state is (.*)$")
 	public void ThenISeeConnectButtonIsDisabled(boolean state) throws Throwable {
-		Assert.assertEquals(state,
-				PagesCollection.connectToPage.getConnectButtonState());
+		Assert.assertEquals(state, getConnectToPage().getConnectButtonState());
 	}
 
 	/**
@@ -182,8 +172,7 @@ public class ConnectToPageSteps {
 	 */
 	@Then("^I see counter value (.*)$")
 	public void ThenISeeCounterValue(int value) throws Throwable {
-		Assert.assertEquals(value,
-				PagesCollection.connectToPage.getCharCounterValue());
+		Assert.assertEquals(value, getConnectToPage().getCharCounterValue());
 	}
 
 	/**
@@ -195,20 +184,19 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I click [Cc]onnect button on connect to page$")
 	public void WhenIClickConnectButton() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.connectToPage
-				.pressConnectButton();
+		getConnectToPage().pressConnectButton();
 	}
 
 	/**
 	 * Blocks an incoming connection request
 	 * 
 	 * @step. ^I click Block button on connect to page$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I click Block button on connect to page$")
-	public void IClickBlockButton() {
-		PagesCollection.connectToPage.clickBlockBtn();
-
+	public void IClickBlockButton() throws Exception {
+		getConnectToPage().clickBlockBtn();
 	}
 
 	/**
@@ -221,7 +209,7 @@ public class ConnectToPageSteps {
 	 */
 	@When("^I confirm block on connect to page$")
 	public void WhenIConfirmBlock() throws Exception {
-		PagesCollection.connectToPage.pressConfirmBtn();
+		getConnectToPage().pressConfirmBtn();
 	}
 
 	/**
@@ -234,8 +222,7 @@ public class ConnectToPageSteps {
 	 */
 	@Then("I close Connect To dialog")
 	public void ThenCloseConnectToDialog() throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.connectToPage
-				.clickCloseButton();
+		getConnectToPage().clickCloseButton();
 	}
 
 	/**
@@ -247,11 +234,6 @@ public class ConnectToPageSteps {
 	 */
 	@Then("^I tap connection notification on Home Screen$")
 	public void TapConnectionNotification() throws Exception {
-		if (PagesCollection.connectToPage == null) {
-			PagesCollection.connectToPage = (ConnectToPage) PagesCollection.loginPage
-					.instantiatePage(ConnectToPage.class);
-		}
-		PagesCollection.contactListPage = PagesCollection.connectToPage
-				.tapConnectNotification();
+		getConnectToPage().tapConnectNotification();
 	}
 }

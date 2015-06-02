@@ -76,6 +76,14 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 		this.participantsListPopoverPage.clickLeaveGroupChat();
 	}
 
+	public String getPeopleCountInfo() {
+		return this.participantsListPopoverPage.getPeopleCountInfo();
+	}
+
+	public int getPeopleCount() throws Exception {
+		return this.participantsListPopoverPage.getPeopleCount();
+	}
+
 	public void confirmLeaveGroupChat() throws Exception {
 		this.leaveGroupConfirmationPopoverPage.confirmLeaveGroupChat();
 	}
@@ -144,6 +152,10 @@ public class GroupPopoverContainer extends PeoplePopoverContainer {
 
 	public void selectUserFromSearchResult(String name) throws Exception {
 		this.addPeoplePopoverPage.selectUserFromSearchResult(name);
+	}
+
+	public void selectUsersFromSearchResult(int amount) throws Exception {
+		this.addPeoplePopoverPage.selectUsersFromSearchResult(amount);
 	}
 
 	public void confirmAddPeople() throws Exception {

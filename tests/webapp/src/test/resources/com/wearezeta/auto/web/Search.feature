@@ -1,6 +1,27 @@
 Feature: Search
 
-  @smoke @id1722
+  @smoke @id1691
+  Scenario Outline: Start group chat with users from contact list
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I wait until <Contact1> exists in backend search results
+    And I wait until <Contact2> exists in backend search results
+    When I open People Picker from Contact List
+    And I type <Contact1> in search field of People Picker
+    And I select <Contact1> from People Picker results
+    And I type <Contact2> in search field of People Picker
+    And I select <Contact2> from People Picker results
+    And I choose to create conversation from People Picker
+    And I see my avatar on top of Contact list
+    Then I see Contact list with name <Contact1>,<Contact2>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @regression @id1722
   Scenario Outline: Verify the new conversation is created on the other end (Search UI source)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -84,8 +105,8 @@ Feature: Search
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @smoke @id1721
-  Scenario Outline: Verify you can add new user from search results
+  @regression @id1721
+  Scenario Outline: Verify you can add new user from search results from the other end
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list

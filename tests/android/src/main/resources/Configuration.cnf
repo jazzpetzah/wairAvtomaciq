@@ -1,6 +1,4 @@
-#Configuration file for Android tests
-#Configure before running tests
-androidAppiumUrl=${Url}
+androidAppiumUrl=${url}
 androidApplicationPath=${appPath}
 package=${package}
 activity=${activity}
@@ -8,7 +6,7 @@ waitActivities=${waitActivities}
 generateUsers=${generateUsers}
 driverTimeoutSeconds=${driverTimeoutSeconds}
 resultImage=${resultImage}
-defaultImagesPath=${Root}/${defaultImagesPath}
+defaultImagesPath=${project.build.directory}/../../tools/img/
 pictureResultsPath=${pictureResultsPath}
 androidClientInfoPath=${androidClientInfoPath}
 androidAppiumLogPath=${androidAppiumLogPath}
