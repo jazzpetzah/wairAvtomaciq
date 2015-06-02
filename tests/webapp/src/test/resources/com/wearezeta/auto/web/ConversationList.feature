@@ -30,7 +30,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id1919
+  @regression @id1919
   Scenario Outline: Unmute 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
