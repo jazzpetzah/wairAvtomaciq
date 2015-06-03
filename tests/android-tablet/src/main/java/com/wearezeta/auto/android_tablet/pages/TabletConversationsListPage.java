@@ -40,4 +40,9 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		getContactListPage().waitForConversationListLoad();
 	}
 
+	public TabletSelfProfilePage tapMyAvatar() throws Exception {
+		getContactListPage().tapOnMyAvatar();
+		return new TabletSelfProfilePage(this.getLazyDriver());
+	}
+
 }

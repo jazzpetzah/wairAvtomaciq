@@ -19,7 +19,7 @@ public class TabletConversationsListPageSteps {
 	}
 
 	/**
-	 * Taps profile button (SelfName)
+	 * Wait until conversations list is fully loaded and successful load
 	 * 
 	 * @step. ^I see the [Cc]onversations list$
 	 * 
@@ -29,4 +29,17 @@ public class TabletConversationsListPageSteps {
 	public void ISeeConversationsList() throws Exception {
 		getConversationsListPage().verifyConversationsListIsLoaded();
 	}
+	
+	/**
+	 * Tap my own avatar on top of conversations list
+	 * 
+	 * @step. ^I tap my avatar$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap my avatar$")
+	public void ITapMyAvatar() throws Exception {
+		getConversationsListPage().tapMyAvatar();
+	}
+	
 }

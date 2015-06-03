@@ -6,6 +6,7 @@ import com.wearezeta.auto.android_tablet.pages.TabletSelfProfilePage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
+import cucumber.api.java.en.When;
 
 public class TabletSelfProfilePageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -32,4 +33,31 @@ public class TabletSelfProfilePageSteps {
 				"Self name '%s' is not visible on Self Profile page", name),
 				getSelfProfilePage().isNameVisible(name));
 	}
+
+	/**
+	 * Tap Options button on Self Profile page
+	 * 
+	 * @step. ^I tap Options button$"
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Options button$")
+	public void ITapOptionsButton() throws Exception {
+		getSelfProfilePage().tapOptionsButton();
+	}
+
+	/**
+	 * Select the corresponding item from Options menu
+	 * 
+	 * @step. ^I select \"(.*)\" menu item$"
+	 * @param itemName
+	 *            the name of existing Options menu item
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I select \"(.*)\" menu item$")
+	public void ISelectOptionsMenuItem(String itemName) throws Exception {
+		getSelfProfilePage().selectOptionsMenuItem(itemName);
+	}
+
 }

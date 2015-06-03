@@ -1,33 +1,35 @@
 Feature: Sign Out
 
-  @id2266 @staging
+  @id2266 @smoke
   Scenario Outline: Sign out from ZClient in portrait mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
+    Given I see welcome screen
     Given I rotate UI to portrait
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    When  I tap on my avatar
-    And I tap options button
-    And I tap sign out button
+    And I sign in using my email
+    And I see the Conversations list
+    And I tap my avatar
+    And I see my name on Self Profile page
+    And I tap Options button
+    And I select "SIGN OUT" menu item
     Then I see welcome screen
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      |
+      | user1Name |
 
-  @id2251 @staging
+  @id2251 @smoke
   Scenario Outline: Sign out from ZClient in landscape mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    And I rotate UI to landscape
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    When  I tap on my avatar
-    And I tap options button
-    And I tap sign out button
+    Given There is 1 user where <Name> is me
+    Given I see welcome screen
+    Given I rotate UI to landscape
+    And I sign in using my email
+    And I see the Conversations list
+    And I tap my avatar
+    And I see my name on Self Profile page
+    And I tap Options button
+    And I select "SIGN OUT" menu item
     Then I see welcome screen
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      |
+      | user1Name |
