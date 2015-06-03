@@ -328,7 +328,7 @@ public class CommonWebAppSteps {
 
 		String platform = osName;
 		if (osVersion.isPresent()) {
-			platform = platform + " " + osVersion;
+			platform = platform + " " + osVersion.get();
 		}
 
 		return platform;
