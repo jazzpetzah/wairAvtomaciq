@@ -28,7 +28,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id2064
+  @smoke @id2064
   Scenario Outline: Photo selection dialogue - choose picture from library
     Given There is 1 user where <Name> is me without avatar picture
     And I Sign in using login <Login> and password <Password>
@@ -92,7 +92,7 @@ Feature: Registration
       | Name      | UsedEmail  | UnusedEmail | Password      |
       | user1Name | user1Email | user2Email  | user2Password |
 
-  @regression @id1992
+  @smoke @id1992
   Scenario Outline: I want to see an error screen if the registration fails
     Given I switch to Registration page
     When I enter user name <Name> on Registration page

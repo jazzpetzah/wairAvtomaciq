@@ -18,13 +18,12 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.common.usrmgmt.OSXAddressBookHelpers;
 import com.wearezeta.auto.common.usrmgmt.RegistrationStrategy;
 
 public final class CommonSteps {
 	public static final String CONNECTION_NAME = "CONNECT TO ";
 	public static final String CONNECTION_MESSAGE = "Hello!";
-	private static final int BACKEND_USER_SYNC_TIMEOUT = 15; // seconds
+	private static final int BACKEND_USER_SYNC_TIMEOUT = 45; // seconds
 	private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 90; // seconds
 
 	private String pingId = null;
@@ -283,14 +282,6 @@ public final class CommonSteps {
 		}
 	}
 
-	public void AddContactsUsersToMacContacts() throws Exception {
-		OSXAddressBookHelpers.addUsersToContacts(usrMgr.getCreatedUsers());
-	}
-
-	public void IRemoveContactsListUsersFromMacContact() throws Exception {
-		OSXAddressBookHelpers.removeUsersFromContacts(usrMgr.getCreatedUsers());
-	}
-
 	public void IChangeUserAvatarPicture(String userNameAlias,
 			String picturePath) throws Exception {
 		final ClientUser dstUser = usrMgr
@@ -348,6 +339,16 @@ public final class CommonSteps {
 		BackendAPIWrappers.waitUntilSuggestionFound(
 				usrMgr.findUserByNameOrNameAlias(userAsNameAlias),
 				BACKEND_SUGGESTIONS_SYNC_TIMEOUT);
+	}
+
+	public void WaitUntilContactIsNotFoundInSearch(String searchByNameAlias,
+			String contactAlias, int timeoutSeconds) throws Exception {
+		String query = usrMgr.replaceAliasesOccurences(contactAlias,
+				FindBy.NAME_ALIAS);
+		query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
+		BackendAPIWrappers.waitUntilContactNotFound(
+				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,
+				timeoutSeconds);
 	}
 
 	public void WaitUntilContactIsFoundInSearch(String searchByNameAlias,

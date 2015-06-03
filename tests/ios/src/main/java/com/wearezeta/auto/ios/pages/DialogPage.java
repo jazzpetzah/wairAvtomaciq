@@ -138,7 +138,7 @@ public class DialogPage extends IOSPage {
 	private WebElement chatheadAvatarImage;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
-	private String connectingLabel = "CONNECTING TO %s. START A CONVERSATION";
+	private String connectingLabel = "CONNECTING TO %s.";
 
 	public DialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -208,7 +208,8 @@ public class DialogPage extends IOSPage {
 		DriverUtils.iOSMultiTap(this.getDriver(), conversationInput, 3);
 	}
 
-	public void sendStringToInput(String message) throws InterruptedException {
+	public void sendStringToInput(String message) throws Exception {
+		waitForCursorInputVisible();
 		conversationInput.sendKeys(message);
 	}
 

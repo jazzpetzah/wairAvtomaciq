@@ -55,7 +55,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using phone number or login <Login> and password <Password>
-    When I add contacts list users to Mac contacts
+    # TODO: Address book upload
     And I dismiss alert
     And I open search by clicking plus button
     And I see Upload contacts dialog
@@ -64,7 +64,6 @@ Feature: Search
     Then I see CONNECT label
     And I see user <Contact1> found on People picker page
     And I see user <Contact2> found on People picker page
-    And I remove contacts list users from Mac contacts
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |

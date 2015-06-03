@@ -1,18 +1,18 @@
-#Configuration file for Android tests
-#Configure before running tests
-
-androidApplicationPath=/Project/3375.apk
-package=com.waz.zclient.dev
-defaultImagesPath=/Project/github/tests/tools/img/
-pictureResultsPath=/Project/Screens/
-androidClientInfoPath=/Project/builds_info/classes.dex
-androidAppiumLogPath=/Project/appium_android.log
-defaultEmail=smoketester@wearezeta.com
-activity=com.waz.zclient.MainActivity
-generateUsers=true
-driverTimeoutSeconds=90
-resultImage=/Project/Screens/
-androidVersion=44
-androidLogs=/Project/Screens/
-androidAppiumUrl=http://127.0.0.1:4723/wd/hub
+androidAppiumUrl=${url}
+androidApplicationPath=${appPath}
+package=${package}
+activity=${activity}
+waitActivities=${waitActivities}
+generateUsers=${generateUsers}
+driverTimeoutSeconds=${driverTimeoutSeconds}
+resultImage=${resultImage}
+defaultImagesPath=${project.build.directory}/../../tools/img/
+pictureResultsPath=${pictureResultsPath}
+androidClientInfoPath=${androidClientInfoPath}
+androidAppiumLogPath=${androidAppiumLogPath}
+defaultEmail=${defaultEmail}
+androidVersion=${androidVersion}
+androidLogs=${androidLogs}
+resourceFilePath=${resourceFilePath}
+resultsPath=${resultsPath}
 backendType=${backendType}

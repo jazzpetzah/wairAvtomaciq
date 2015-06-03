@@ -1,12 +1,9 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Optional;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.BasePage;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 
@@ -46,10 +43,6 @@ public abstract class OSXPage extends BasePage {
 	@Override
 	public void close() throws Exception {
 		super.close();
-	}
-
-	public Optional<BufferedImage> takeScreenshot() throws Exception {
-		return DriverUtils.takeScreenshot(this.getDriver());
 	}
 
 	public void startApp() throws Exception {

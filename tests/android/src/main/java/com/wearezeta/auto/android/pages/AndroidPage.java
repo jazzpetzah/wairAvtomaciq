@@ -14,9 +14,11 @@ import org.openqa.selenium.support.FindBy;
 
 import android.view.KeyEvent;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidKeyEvent;
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -29,15 +31,6 @@ public abstract class AndroidPage extends BasePage {
 
 	@FindBy(id = AndroidLocators.CommonLocators.idPager)
 	private WebElement content;
-
-	@FindBy(className = AndroidLocators.CommonLocators.classListView)
-	private WebElement container;
-
-	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
-	private List<WebElement> frameLayouts;
-
-	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImage)
-	private List<WebElement> image;
 
 	@Override
 	protected ZetaAndroidDriver getDriver() throws Exception {
@@ -54,19 +47,31 @@ public abstract class AndroidPage extends BasePage {
 		super(lazyDriver);
 	}
 
-	public void selectPhoto() throws Exception {
-		try {
-			frameLayouts.get(0).click();
-			return;
-		} catch (Exception ex) {
-			// ignore silently
-		}
-		try {
-			image.get(0).click();
-			return;
-		} catch (Exception ex) {
-			// ignore silently
-		}
+	public void selectFirstGalleryPhoto() throws Exception {
+		final Dimension screenDimension = getDriver().manage().window()
+				.getSize();
+		int ntry = 1;
+		do {
+			// Selendroid workaround
+			// Cannot handle external apps properly :-(
+			AndroidCommonUtils.genericScreenTap(screenDimension.width / 2
+					- ntry * (screenDimension.width / 10),
+					screenDimension.height / 2 - ntry
+							* (screenDimension.height / 10));
+			try {
+				if (DriverUtils
+						.waitUntilLocatorIsDisplayed(
+								getDriver(),
+								By.xpath(AndroidLocators.DialogPage.xpathConfirmOKButton),
+								2)) {
+					return;
+				}
+			} catch (WebDriverException e) {
+				// ignore silently
+			}
+			ntry++;
+		} while (ntry <= 5);
+		throw new RuntimeException("Failed to tap the first gallery image!");
 	}
 
 	public void hideKeyboard() throws Exception {
@@ -98,10 +103,8 @@ public abstract class AndroidPage extends BasePage {
 		return this.getDriver().getOrientation();
 	}
 
-	public CommonAndroidPage minimizeApplication() throws Exception {
-		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_HOME);
-		Thread.sleep(1000);
-		return new CommonAndroidPage(this.getLazyDriver());
+	public void minimizeApplication() throws Exception {
+		AndroidCommonUtils.switchToHomeScreen();
 	}
 
 	public void lockScreen() throws Exception {
@@ -109,68 +112,66 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void restoreApplication() throws Exception {
-		try {
-			this.getDriver().runAppInBackground(10);
-			Thread.sleep(1000);
-		} catch (WebDriverException ex) {
-			// do nothing, sometimes after restoring the app we have this
-			// exception, Appium bug
-		}
+		AndroidCommonUtils.switchToApplication(
+				CommonUtils.getAndroidPackageFromConfig(this.getClass()),
+				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
 	}
 
-	public abstract AndroidPage returnBySwipe(SwipeDirection direction)
-			throws Exception;
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
+		return null;
+	};
 
 	@Override
-	public AndroidPage swipeLeft(int time) throws Exception {
-		DriverUtils.swipeLeft(this.getDriver(), content, time);
+	public AndroidPage swipeLeft(int durationMilliseconds) throws Exception {
+		DriverUtils.swipeLeft(this.getDriver(), content, durationMilliseconds);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
 	@Override
-	public AndroidPage swipeRight(int time) throws Exception {
-		DriverUtils.swipeRight(this.getDriver(), content, time);
+	public AndroidPage swipeRight(int durationMilliseconds) throws Exception {
+		DriverUtils.swipeRight(this.getDriver(), content, durationMilliseconds);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
 	@Override
-	public AndroidPage swipeUp(int time) throws Exception {
-		DriverUtils.swipeUp(this.getDriver(), content, time);
+	public AndroidPage swipeUp(int durationMilliseconds) throws Exception {
+		DriverUtils.swipeUp(this.getDriver(), content, durationMilliseconds);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	public void elementSwipeRight(WebElement el, int time) {
+	public void elementSwipeRight(WebElement el, int durationMilliseconds) {
 		Point coords = el.getLocation();
 		Dimension elementSize = el.getSize();
 		try {
 			this.getDriver().swipe(coords.x + 30,
 					coords.y + elementSize.height / 2,
 					coords.x + elementSize.width - 10,
-					coords.y + elementSize.height / 2, time);
+					coords.y + elementSize.height / 2, durationMilliseconds);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public void elementSwipeUp(WebElement el, int time) {
+	public void elementSwipeUp(WebElement el, int durationMilliseconds) {
 		Point coords = el.getLocation();
 		Dimension elementSize = el.getSize();
 		try {
 			this.getDriver().swipe(coords.x + elementSize.width / 2,
 					coords.y + elementSize.height - 50,
-					coords.x + elementSize.width / 2, coords.y, time);
+					coords.x + elementSize.width / 2, coords.y,
+					durationMilliseconds);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	public void elementSwipeDown(WebElement el, int time) {
+	public void elementSwipeDown(WebElement el, int durationMilliseconds) {
 		Point coords = el.getLocation();
 		Dimension elementSize = el.getSize();
 		try {
 			this.getDriver().swipe(coords.x + elementSize.width / 2,
 					coords.y + 50, coords.x + elementSize.width / 2,
-					coords.y + elementSize.height - 300, time);
+					coords.y + elementSize.height - 300, durationMilliseconds);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -284,10 +285,5 @@ public abstract class AndroidPage extends BasePage {
 
 	public void tapOnCenterOfScreen() throws Exception {
 		DriverUtils.genericTap(this.getDriver());
-	}
-
-	public static void clearPagesCollection() throws IllegalArgumentException,
-			IllegalAccessException {
-		clearPagesCollection(PagesCollection.class, AndroidPage.class);
 	}
 }

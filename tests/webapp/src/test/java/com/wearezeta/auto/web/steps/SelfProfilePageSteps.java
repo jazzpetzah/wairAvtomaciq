@@ -10,7 +10,6 @@ import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -165,4 +164,25 @@ public class SelfProfilePageSteps {
 		PagesCollection.profilePicturePage = PagesCollection.selfProfilePage
 				.clickCameraButton();
 	}
+
+	/*
+	 * Verify  my avatar background color is set to expected color
+	 * 
+	 * @step. ^I verify  my avatar background color is set to (\\w+) color$
+	 * 
+	 * @param colorName one of these colors: StrongBlue, StrongLimeGreen,
+	 * BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * 
+	 * @throws Exception
+	 */
+
+	@Then("^I verify my avatar background color is set to (\\w+) color$")
+	public void IVerifyMyAvatarColor(String colorName) throws Exception {
+		final AccentColor expectedColor = AccentColor.getByName(colorName);
+		final AccentColor avatarColor = PagesCollection.selfProfilePage
+				.getCurrentAvatarAccentColor();
+		Assert.assertTrue("my avatar background accent color is not set",
+				avatarColor == expectedColor);
+	}
+
 }

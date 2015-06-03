@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.steps;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,19 +10,25 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
 import cucumber.api.java.en.*;
 
 public class DialogPageSteps {
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
+	private DialogPage getDialogPage() throws Exception {
+		return (DialogPage) pagesCollection.getPage(DialogPage.class);
+	}
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private static final String ANDROID_LONG_MESSAGE = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
-			+ "Maecenas sed lorem dignissim lacus tincidunt scelerisque nec sed sem. Nunc lacinia non tortor a fringilla. "
-			+ "Fusce cursus neque at posuere viverra. Duis ultricies ipsum ac leo mattis, a aliquet neque consequat. "
-			+ "Vestibulum ut eros eu risus mattis iaculis quis ac eros. Nam sit amet venenatis felis. "
-			+ "Vestibulum blandit nisi felis, id hendrerit quam viverra at. Curabitur nec facilisis felis.";
+	private static final String ANDROID_LONG_MESSAGE = CommonUtils
+			.generateRandomString(300);
 	private static final String LONG_MESSAGE_ALIAS = "LONG_MESSAGE";
 
 	private static String expandMessage(String message) {
@@ -44,11 +51,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
-		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.loginPage
-					.instantiatePage(DialogPage.class);
-		}
-		PagesCollection.dialogPage.waitForCursorInputVisible();
+		getDialogPage().waitForCursorInputVisible();
 	}
 
 	/**
@@ -60,7 +63,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap on text input$")
 	public void WhenITapOnTextInput() throws Exception {
-		PagesCollection.dialogPage.tapOnCursorInput();
+		getDialogPage().tapOnCursorInput();
 	}
 
 	/**
@@ -76,7 +79,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I type the message \"(.*)\" and send it$")
 	public void ITypeMessageAndSendIt(String msg) throws Exception {
-		PagesCollection.dialogPage.typeAndSendMessage(expandMessage(msg));
+		getDialogPage().typeAndSendMessage(expandMessage(msg));
 	}
 
 	/**
@@ -92,7 +95,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I type the message \"(.*)\"$")
 	public void ITypeMessage(String msg) throws Exception {
-		PagesCollection.dialogPage.typeMessage(expandMessage(msg));
+		getDialogPage().typeMessage(expandMessage(msg));
 	}
 
 	/**
@@ -104,7 +107,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I send the message$")
 	public void ISendTheMessage() throws Exception {
-		PagesCollection.dialogPage.pressKeyboardSendButton();
+		getDialogPage().pressKeyboardSendButton();
 	}
 
 	/**
@@ -116,7 +119,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I swipe on text input$")
 	public void WhenISwipeOnTextInput() throws Exception {
-		PagesCollection.dialogPage.swipeOnCursorInput();
+		getDialogPage().swipeOnCursorInput();
 	}
 
 	/**
@@ -128,7 +131,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I press Add Picture button$")
 	public void WhenIPressAddPictureButton() throws Exception {
-		PagesCollection.dialogPage.tapAddPictureBtn();
+		getDialogPage().tapAddPictureBtn();
 	}
 
 	/**
@@ -140,7 +143,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I press Ping button$")
 	public void WhenIPressPButton() throws Exception {
-		PagesCollection.dialogPage.tapPingBtn();
+		getDialogPage().tapPingBtn();
 	}
 
 	/**
@@ -152,7 +155,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I press Call button$")
 	public void WhenIPressCallButton() throws Exception {
-		PagesCollection.dialogPage.tapCallBtn();
+		getDialogPage().tapCallBtn();
 	}
 
 	/**
@@ -164,7 +167,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I press Mute button$")
 	public void WhenIPressMuteButton() throws Exception {
-		PagesCollection.dialogPage.tapMuteBtn();
+		getDialogPage().tapMuteBtn();
 	}
 
 	/**
@@ -176,7 +179,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I press Speaker button$")
 	public void WhenIPressSpeakerButton() throws Exception {
-		PagesCollection.dialogPage.tapSpeakerBtn();
+		getDialogPage().tapSpeakerBtn();
 	}
 
 	/**
@@ -188,26 +191,71 @@ public class DialogPageSteps {
 	 */
 	@When("^I press Cancel call button$")
 	public void WhenIPressCancelCallButton() throws Exception {
-		PagesCollection.dialogPage.tapCancelCallBtn();
+		getDialogPage().tapCancelCallBtn();
 	}
 
+	private final Map<String, BufferedImage> savedButtonStates = new HashMap<String, BufferedImage>();
+
 	/**
-	 * Checks to see if a certain calling button is pressed
+	 * Takes screenshot of current button state for the further comparison
 	 * 
-	 * @step. ^I see (.*) calling button is pressed$
+	 * @step. ^I remember the current state of (\\w+) button$
 	 * 
 	 * @param buttonName
-	 *            the name of the calling button to check
+	 *            the name of the button to take screenshot. Available values:
+	 *            MUTE, SPEAKER
+	 * @throws Exception
+	 */
+	@When("^I remember the current state of (\\w+) button$")
+	public void IRememberButtonState(String buttonName) throws Exception {
+		savedButtonStates.put(buttonName, getDialogPage()
+				.getCurrentButtonStateScreenshot(buttonName));
+	}
+
+	private static final long BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS = 15000;
+	private static final double BUTTON_STATE_OVERLAP_MAX_SCORE = 0.4d;
+
+	/**
+	 * Checks to see if a certain calling button state is changed. Make sure,
+	 * that the screenshot of previous state is already taken for this
+	 * particular button
+	 * 
+	 * @step. ^I see (\\w+) button state is changed$
+	 * 
+	 * @param buttonName
+	 *            the name of the button to check. Available values: MUTE,
+	 *            SPEAKER
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see (.*) calling button is pressed$")
-	public void WhenIPressCancelCallButton(String buttonName) throws Exception {
-		final double score = PagesCollection.dialogPage
-				.getExpectedButtonStateOverlapScore(buttonName);
-		Assert.assertTrue(
-				"Calling button not present or not clicked. Expected >= 0.95, current = "
-						+ score, score >= 0.95d);
+	@Then("^I see (\\w+) button state is changed$")
+	public void ICheckButtonStateIsChanged(String buttonName) throws Exception {
+		if (!savedButtonStates.containsKey(buttonName)) {
+			throw new IllegalStateException(
+					String.format(
+							"Please call the corresponding step to take the screenshot of previous '%s' button state first",
+							buttonName));
+		}
+		final BufferedImage previousStateScreenshot = savedButtonStates
+				.get(buttonName);
+		final long millisecondsStarted = System.currentTimeMillis();
+		double overlapScore;
+		do {
+			final BufferedImage currentStateScreenshot = getDialogPage()
+					.getCurrentButtonStateScreenshot(buttonName);
+			overlapScore = ImageUtil.getOverlapScore(currentStateScreenshot,
+					previousStateScreenshot,
+					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+			if (overlapScore <= BUTTON_STATE_OVERLAP_MAX_SCORE) {
+				return;
+			}
+			Thread.sleep(500);
+		} while (System.currentTimeMillis() - millisecondsStarted <= BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS);
+		throw new AssertionError(
+				String.format(
+						"Button state has not been changed within %s seconds timeout. Current overlap score: %.2f, expected overlap score: <= %.2f",
+						BUTTON_STATE_CHANGE_TIMEOUT_MILLISECONDS / 1000,
+						overlapScore, BUTTON_STATE_OVERLAP_MAX_SCORE));
 	}
 
 	/**
@@ -222,12 +270,12 @@ public class DialogPageSteps {
 	@Then("^I( do not)? see call overlay$")
 	public void WhenISeeCallOverlay(String shouldNotSee) throws Exception {
 		if (shouldNotSee == null) {
-			Assert.assertTrue("Call overlay not visible",
-					PagesCollection.dialogPage.checkCallingOverlay());
+			Assert.assertTrue("Call overlay not visible", getDialogPage()
+					.checkCallingOverlay());
 		} else {
 			Assert.assertTrue(
 					"Call overlay is visible, it should have been dismissed",
-					PagesCollection.dialogPage.checkNoCallingOverlay());
+					getDialogPage().checkNoCallingOverlay());
 		}
 	}
 
@@ -241,7 +289,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap Dialog page bottom$")
 	public void WhenITapOnDialogPageBottom() throws Exception {
-		PagesCollection.dialogPage.tapDialogPageBottom();
+		getDialogPage().tapDialogPageBottom();
 	}
 
 	/**
@@ -254,8 +302,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap conversation details button$")
 	public void WhenITapConversationDetailsBottom() throws Exception {
-		PagesCollection.otherUserPersonalInfoPage = ((DialogPage) PagesCollection.androidPage)
-				.tapConversationDetailsButton();
+		getDialogPage().tapConversationDetailsButton();
 	}
 
 	/**
@@ -268,7 +315,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I press PlayPause media item button$")
 	public void WhenIPressPlayPauseButton() throws Exception {
-		PagesCollection.dialogPage.tapPlayPauseBtn();
+		getDialogPage().tapPlayPauseBtn();
 	}
 
 	/**
@@ -281,21 +328,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I press play on youtube container$")
 	public void WhenIPressPlayOnYoutubeContainer() throws Exception {
-		PagesCollection.dialogPage.tapYouTubePlay();
-	}
-
-	/**
-	 * Waits until URL bar is visible to confirm tapping on YouTube link takes
-	 * you out of Wire to view video
-	 * 
-	 * @step. ^I am taken out of Wire and into the native browser app$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I am taken out of Wire and into the native browser app$")
-	public void IPlayYoutubeVideoInNativeBrowser() throws Exception {
-		PagesCollection.dialogPage.isNativeBrowserURLVisible();
+		getDialogPage().tapYouTubePlay();
 	}
 
 	/**
@@ -308,7 +341,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I press PlayPause on Mediabar button$")
 	public void WhenIPressPlayPauseOnMediaBarButton() throws Exception {
-		PagesCollection.dialogPage.tapPlayPauseMediaBarBtn();
+		getDialogPage().tapPlayPauseMediaBarBtn();
 	}
 
 	/**
@@ -325,17 +358,16 @@ public class DialogPageSteps {
 	public void WhenIPressButton(String buttonName) throws Throwable {
 		switch (buttonName.toLowerCase()) {
 		case "take photo":
-			Thread.sleep(1000);
-			PagesCollection.dialogPage.takePhoto();
+			getDialogPage().takePhoto();
 			break;
 		case "confirm":
-			PagesCollection.dialogPage.confirm();
+			getDialogPage().confirm();
 			break;
 		case "gallery":
-			PagesCollection.dialogPage.openGallery();
+			getDialogPage().openGallery();
 			break;
 		case "image close":
-			PagesCollection.dialogPage.closeFullScreenImage();
+			getDialogPage().closeFullScreenImage();
 			break;
 		}
 	}
@@ -349,7 +381,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I select picture for dialog$")
 	public void WhenISelectPicture() throws Exception {
-		PagesCollection.dialogPage.selectPhoto();
+		getDialogPage().selectFirstGalleryPhoto();
 	}
 
 	/**
@@ -364,8 +396,8 @@ public class DialogPageSteps {
 	@Then("^I see Ping message (.*) in the dialog$")
 	public void ThenISeePingMessageInTheDialog(String message) throws Exception {
 		message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.dialogPage.getLastPingText().equals(
-				message));
+		Assert.assertEquals(getDialogPage().getLastPingText().toUpperCase(),
+				message.toUpperCase());
 	}
 
 	/**
@@ -378,21 +410,7 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see my message \"(.*)\" in the dialog$")
 	public void ThenISeeMyMessageInTheDialog(String msg) throws Exception {
-		PagesCollection.dialogPage.waitForMessage(expandMessage(msg));
-	}
-
-	/**
-	 * Verifies the URL is in the chat
-	 * 
-	 * @step. ^I see URL in the dialog$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@Then("^I see URL in the dialog$")
-	public void ThenISeeURLInDialog() throws Exception {
-		// FIXME: Magic string
-		PagesCollection.dialogPage.waitForMessage("www.google.com");
+		getDialogPage().waitForMessage(expandMessage(msg));
 	}
 
 	/**
@@ -405,7 +423,8 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see new photo in the dialog$")
 	public void ThenISeeNewPhotoInTheDialog() throws Throwable {
-		Assert.assertTrue(PagesCollection.dialogPage.isImageExists());
+		Assert.assertTrue("No new photo is present in the chat",
+				getDialogPage().isImageExists());
 	}
 
 	/**
@@ -418,11 +437,11 @@ public class DialogPageSteps {
 	 */
 	@When("^I select last photo in dialog$")
 	public void WhenISelectLastPhotoInDialog() throws Throwable {
-		PagesCollection.dialogPage.clickLastImageFromDialog();
+		getDialogPage().clickLastImageFromDialog();
 	}
 
 	private static final int SWIPE_DURATION_MILLISECONDS = 1000;
-	
+
 	/**
 	 * 
 	 * @step. ^I swipe up on dialog page
@@ -431,11 +450,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I swipe up on dialog page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
-		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
-		}
-		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
-				.swipeUp(SWIPE_DURATION_MILLISECONDS);
+		getDialogPage().swipeUp(SWIPE_DURATION_MILLISECONDS);
 	}
 
 	/**
@@ -448,10 +463,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I swipe down on dialog page$")
 	public void WhenISwipedownOnDialogPage() throws Exception {
-		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
-		}
-		PagesCollection.dialogPage.swipeDown(SWIPE_DURATION_MILLISECONDS);
+		getDialogPage().swipeDown(SWIPE_DURATION_MILLISECONDS);
 	}
 
 	/**
@@ -463,8 +475,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I navigate back from dialog page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.dialogPage
-				.navigateBack();
+		getDialogPage().navigateBack();
 	}
 
 	/**
@@ -479,12 +490,12 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see Connect to (.*) Dialog page$")
 	public void ThenIseeConnectToDialogPage(String contact) throws Exception {
-		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.androidPage;
-		}
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(PagesCollection.dialogPage
-				.getConnectRequestChatLabel().contains(contact.toLowerCase()));
+		final String actualLabel = getDialogPage().getConnectRequestChatLabel();
+		Assert.assertTrue(String.format(
+				"The actual label '%s' does not contain '%s' part",
+				actualLabel, contact),
+				actualLabel.toLowerCase().contains(contact.toLowerCase()));
 	}
 
 	/**
@@ -497,7 +508,7 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see (.*) icon$")
 	public void ThenIseeIcon(String iconLabel) throws Exception {
-		double score = PagesCollection.dialogPage.checkPingIcon(iconLabel);
+		final double score = getDialogPage().checkPingIcon(iconLabel);
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.75, current = "
 						+ score, score >= 0.75d);
@@ -518,15 +529,15 @@ public class DialogPageSteps {
 	@Then("^I see group chat page with users (.*)$")
 	public void ThenISeeGroupChatPage(String participantNameAliases)
 			throws Exception {
-		assert PagesCollection.dialogPage.isDialogVisible() : "Group chat view is not visible";
+		assert getDialogPage().isDialogVisible() : "Group chat view is not visible";
 		List<String> participantNames = new ArrayList<String>();
 		for (String nameAlias : CommonSteps
 				.splitAliases(participantNameAliases)) {
 			participantNames.add(usrMgr.findUserByNameOrNameAlias(nameAlias)
 					.getName());
 		}
-		Assert.assertTrue(PagesCollection.dialogPage
-				.isGroupChatDialogContainsNames(participantNames));
+		Assert.assertTrue(getDialogPage().isGroupChatDialogContainsNames(
+				participantNames));
 	}
 
 	/**
@@ -544,7 +555,7 @@ public class DialogPageSteps {
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
 				.toUpperCase();
-		PagesCollection.dialogPage.waitForMessage(message + " " + contact);
+		getDialogPage().waitForMessage(message + " " + contact);
 	}
 
 	/**
@@ -561,8 +572,7 @@ public class DialogPageSteps {
 	@Then("^I see a message informing me that I renamed the conversation to (.*)$")
 	public void ThenISeeMessageInformingGroupRename(String newConversationName)
 			throws Exception {
-		Assert.assertEquals(
-				PagesCollection.dialogPage.getChangedGroupNameMessage(),
+		Assert.assertEquals(getDialogPage().getChangedGroupNameMessage(),
 				newConversationName);
 	}
 
@@ -574,12 +584,12 @@ public class DialogPageSteps {
 	 * @step. ^Last message is (.*)$
 	 * 
 	 * @param message
+	 * @throws Exception
 	 */
 	@Then("^Last message is (.*)$")
-	public void ThenLastMessageIs(String message) {
-		Assert.assertEquals(message.toLowerCase().trim(),
-				PagesCollection.dialogPage.getLastMessageFromDialog()
-						.toLowerCase().trim());
+	public void ThenLastMessageIs(String message) throws Exception {
+		Assert.assertEquals(message.toLowerCase().trim(), getDialogPage()
+				.getLastMessageFromDialog().toLowerCase().trim());
 	}
 
 	/**
@@ -592,7 +602,7 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see (.*) on Mediabar$")
 	public void ThenIseeOnMediaBar(String iconLabel) throws Exception {
-		double score = PagesCollection.dialogPage
+		final double score = getDialogPage()
 				.getMediaBarControlIconOverlapScore(iconLabel);
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.75, current = "
@@ -609,8 +619,8 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see (.*) button in Media$")
 	public void ThenISeeButtonInMedia(String iconLabel) throws Exception {
-		double score = PagesCollection.dialogPage
-				.getMediaControlIconOverlapScore(iconLabel);
+		final double score = getDialogPage().getMediaControlIconOverlapScore(
+				iconLabel);
 		Assert.assertTrue(
 				"Overlap between two images has not enough score. Expected >= 0.72, current = "
 						+ score, score >= 0.72d);
@@ -629,7 +639,7 @@ public class DialogPageSteps {
 	public void ThenISeeDialogWithMissedCallFrom(String contact)
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertEquals(contact + " CALLED",
-				PagesCollection.dialogPage.getMissedCallMessage());
+		Assert.assertEquals(contact + " CALLED", getDialogPage()
+				.getMissedCallMessage());
 	}
 }

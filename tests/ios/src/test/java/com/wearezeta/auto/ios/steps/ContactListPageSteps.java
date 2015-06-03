@@ -23,28 +23,12 @@ public class ContactListPageSteps {
 
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 
-		boolean loginFinished = PagesCollection.loginPage.isLoginFinished(name);
+		boolean loginFinished = PagesCollection.loginPage.isLoginFinished();
 		if (!loginFinished) {
 			log.debug(PagesCollection.loginPage.getPageSource());
 		}
-		Assert.assertTrue("Username : " + name
-				+ " dind't appear in contact list", loginFinished);
-		/*
-		 * PagesCollection.loginPage.waitForLaterButton(5);
-		 * PagesCollection.peoplePickerPage = PagesCollection.loginPage
-		 * .clickLaterButton(); if (null != PagesCollection.peoplePickerPage) {
-		 * PagesCollection.peoplePickerPage.setLaterClicked(true);
-		 * PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
-		 * steps.WhenISeePeoplePickerPage();
-		 * steps.IClickCloseButtonDismissPeopleView(); // workaround for black
-		 * screen if
-		 * (CommonUtils.getIsSimulatorFromConfig(ContactListPageSteps.class)) {
-		 * PagesCollection.peoplePickerPage.minimizeApplication(2); } if
-		 * (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
-		 * steps.IClickCloseButtonDismissPeopleView(); } }
-		 */
+		Assert.assertTrue("Self profile button dind't appear in contact list", loginFinished);
 	}
 
 	@When("I dismiss tutorial layout")

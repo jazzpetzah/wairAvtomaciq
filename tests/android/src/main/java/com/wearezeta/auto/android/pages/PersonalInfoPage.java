@@ -46,7 +46,7 @@ public class PersonalInfoPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.CommonLocators.idGalleryBtn)
 	private WebElement galleryBtn;
 
-	@FindBy(id = AndroidLocators.DialogPage.idConfirmButton)
+	@FindBy(xpath = AndroidLocators.DialogPage.xpathConfirmOKButton)
 	private WebElement confirmBtn;
 
 	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathProfileOptionsButton)
@@ -180,14 +180,6 @@ public class PersonalInfoPage extends AndroidPage {
 
 	public boolean isSettingsVisible() {
 		return DriverUtils.isElementPresentAndDisplayed(settingBox);
-	}
-
-	public boolean waitForOptionsMenuToDisappear() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorDissapears(
-						this.getDriver(),
-						By.xpath(AndroidLocators.PersonalInfoPage.xpathAboutButton),
-						10);
 	}
 
 	public boolean waitForSettingsDissapear() throws Exception {

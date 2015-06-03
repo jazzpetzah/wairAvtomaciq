@@ -7,13 +7,13 @@ Feature: Self Profile
     Given I see Contact list
     When I tap on my avatar
     And I tap on personal info screen
+    And I remember my current profile picture
     And I tap change photo button
     And I press Gallery button
     And I select picture
     And I press Confirm button
-    And I wait for 60 seconds
     And I tap on personal info screen
-    Then I see changed user picture
+    Then I verify that my current profile picture is different from the previous one
 
     Examples: 
       | Login      | Password      | Name      |

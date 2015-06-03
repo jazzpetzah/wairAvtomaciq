@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -234,6 +235,24 @@ public class PersonalInfoPage extends IOSPage {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(profileNameEditField));
 		profileNameEditField.click();
+	}
+
+	public void changeNameUsingOnlySpaces() throws Exception {
+		DriverUtils.mobileTapByCoordinates(this.getDriver(),
+				profileNameEditField);
+		profileNameEditField.clear();
+		profileNameEditField.sendKeys("  \n");
+	}
+
+	public void attemptTooLongName() {
+		String name = CommonUtils.generateRandomString(80).toLowerCase();
+		profileNameEditField.sendKeys(name + "\n");
+	}
+
+	public int nameIsMaxChars() {
+		String name = getUserNameValue();
+		int nameLength = name.length();
+		return nameLength;
 	}
 
 	public void changeName(String newName) throws Exception {

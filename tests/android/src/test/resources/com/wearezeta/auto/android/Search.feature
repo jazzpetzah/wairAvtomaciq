@@ -6,10 +6,11 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
+    And I wait until <Contact> exists in backend search results
     When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in search field user name to connect to <Contact>
+    And I enter "<Contact>" into Search input on People Picker page
     Then I see user <Contact> in People picker
 
     Examples: 
@@ -26,7 +27,7 @@ Feature: Search
     When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in search field user name to connect to <GroupChatName>
+    And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see group <GroupChatName> in People picker
 
     Examples: 
@@ -81,64 +82,25 @@ Feature: Search
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id1494 @regression
-  Scenario Outline: Verify possibility of invitation accepting
-    Given There is 3 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    When I minimize the application
-    And I open Firefox
-    And I wait for Firefox Url bar
-    Then I connect using invitation link from <Contact2>
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
-
-  @id1517 @regression
-  Scenario Outline: Verify you can send an invite
-    Given There is 2 users where <Name> is me
-    Given Myself is connected to <Contact1>
-    Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
-    When I press Open StartUI
-    And I see People picker page
-    And I hide keyboard
-    And I tap on Send an invitation
-    And I tap on Gmail link
-    Then mail subject is <Subject>
-    And mail content contains my <Login>
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Subject               |
-      | user1Email | user1Password | user1Name | user2Name | Connect to me on Wire |
-      
-  @id2214 @staging
-  Scenario Outline: I can dismiss PYMK by Hide button
-    Given I see sign in screen
-    Given I press Join button
-    Given I press Camera button twice
-    Given I confirm selection
-    Given I enter name <Name>
-    Given I enter email <Email>
-    Given I enter password <Password>
-    Given I submit registration data
-    Given I see confirmation page
-    Given I verify registration address
-    When I wait for PYMK for 30 secs
-    And I hide keyboard
-    And I swipe on random connect
-    And I click on PYMK hide button
-    Then I do not see random connect
-
-    Examples: 
-      | Email      | Password      | Name      | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name |
+# Selendroid does not support interaction with external applications 
+  # @id1494 @regression
+  # Scenario Outline: Verify possibility of invitation accepting
+  #  Given There is 3 users where <Name> is me
+  #  Given Myself is connected to <Contact1>
+  #  Given I Sign in using login <Login> and password <Password>
+  #  Given I see Contact list
+  #  When I minimize the application
+  #  And I open Firefox
+  #  And I wait for Firefox Url bar
+  #  Then I connect using invitation link from <Contact2>
+  #
+  #  Examples: 
+  #    | Login      | Password      | Name      | Contact1  | Contact2  |
+  #    | user1Email | user1Password | user1Name | user2Name | user3Name |
 
   @id2213 @staging
   Scenario Outline: I can dismiss PYMK by swipe
-    Given I see sign in screen
+    Given I see welcome screen
     Given I press Join button
     Given I press Camera button twice
     Given I confirm selection
@@ -167,7 +129,7 @@ Feature: Search
     When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in search field user name to connect to <Contact1>
+    And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I add in search field user name to connect to <Contact2>
     And I tap on user name found on People picker page <Contact2>
@@ -178,3 +140,47 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName           |
       | user1Email | user1Password | user1Name | user3Name | user2Name | PeoplePicker GroupChat2 |
+
+  @id2214 @regression
+  Scenario Outline: I can dismiss PYMK by Hide button
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list
+    When I press Open StartUI
+    And I see People picker page
+    And I keep reopening People Picker until PYMK are visible
+    And I remember the name of the first PYMK item
+    And I do short swipe right on the first PYMK item
+    And I click hide button on the first PYMK item
+    Then I do not see the previously remembered PYMK item
+    When I press Clear button
+    And I press Open StartUI
+    And I keep reopening People Picker until PYMK are visible
+    Then I do not see the previously remembered PYMK item
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @id2213 @regression
+  Scenario Outline: I can dismiss PYMK by swipe
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list
+    When I press Open StartUI
+    And I see People picker page
+    And I keep reopening People Picker until PYMK are visible
+    And I remember the name of the first PYMK item
+    And I do long swipe right on the first PYMK item
+    Then I do not see the previously remembered PYMK item
+    When I press Clear button
+    And I press Open StartUI
+    And I keep reopening People Picker until PYMK are visible
+    Then I do not see the previously remembered PYMK item
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      

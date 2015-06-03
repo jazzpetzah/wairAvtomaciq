@@ -4,11 +4,19 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
+import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
 public class TabletContactListPage extends ContactListPage {
+	
+	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletConversatonListPage.xpathConversationListPage)
+	private WebElement conversationListPage;
 
 	public TabletContactListPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
@@ -26,4 +34,9 @@ public class TabletContactListPage extends ContactListPage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
+	@Override
+	public IOSPage swipeUp(int time) throws Exception {
+		DriverUtils.swipeUp(this.getDriver(), conversationListPage, 500, 50, 75);
+		return returnBySwipe(SwipeDirection.UP);
+	}
 }

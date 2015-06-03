@@ -15,8 +15,8 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id1617 
-  Scenario Outline: Verify you can see image on the second end in a group conversation 
+  @smoke @id1617
+  Scenario Outline: Verify you can see image on the second end in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
@@ -40,7 +40,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat | user2Email | user2Password | user2Name | userpicture_landscape.jpg |
 
-  @smoke @id1628
+  @regression @id1628
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -56,7 +56,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat |
 
-  @smoke @id1612
+  @regression @id1612
   Scenario Outline: Send picture to contact in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -94,7 +94,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Youtubelink1                               | Youtubelink2                                                 | Youtubelink3                          | Youtubelink4                 |
       | user1Email | user1Password | user1Name | user2Name | http://www.youtube.com/watch?v=JOCtdw9FG-s | https://www.youtube.com/watch?v=txqiwrbYGrs&feature=youtu.be | https://www.youtube.com/v/_1w2aASUpWQ | https://youtu.be/QH2-TGUlwu4 |
 
-  @smoke @id1934
+  @regression @id1934
   Scenario Outline: Send Camera picture to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -136,3 +136,48 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
       | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
+
+  @id1688
+  Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
+    Given I Sign in using login <Login> and password <Password>
+    When I open People Picker from Contact List
+    And I type <Contact1> in search field of People Picker
+    And I select <Contact1> from People Picker results
+    And I type <Contact2> in search field of People Picker
+    And I select <Contact2> from People Picker results
+    And I choose to create conversation from People Picker
+    And I open conversation with <Contact1>, <Contact2>
+    And I click People button in group conversation
+    When I click Add People button on Group Participants popover
+    And I see Add People message on Group Participants popover
+    And I confirm add to chat on Group Participants popover
+    And I select the first 125 participants from Group Participants popover search results
+    And I choose to create group conversation from Group Participants popover
+    When I click People button in group conversation
+    Then I see 128 participants in the Group Participants popover
+    When I click Add People button on Group Participants popover
+    And I see Add People message on Group Participants popover
+    And I confirm add to chat on Group Participants popover
+    And I select the first 1 participants from Group Participants popover search results
+    And I choose to create group conversation from Group Participants popover
+    When I click People button in group conversation
+    Then I see 128 participants in the Group Participants popover
+
+    Examples: 
+      | Login                                                              | Password  | Contact1                         | Contact2                         |
+      | smoketester.android+b5731febcd2448c68b5307b9bb860b4a@wearezeta.com | aqa123456 | 0139faca30ee45d28794f4d46211f984 | 01edc0159cc047018d9bf8e1a20ea9a8 |
+
+  @id2279 @staging
+  Scenario Outline: Send a long message containing new lines in 1on1
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I write template message <ActualMessage>
+    And I send message
+    Then I verify the last text message equals to <ExpectedMessage>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | ActualMessage                                           | ExpectedMessage                      |
+      | user1Email | user1Password | user1Name | user2Name | ('LF' * 10)('a' * 100)('LF' * 10)('b' * 100)('LF' * 10) | ('a' * 100)('LF' * 10)('b' * 100) |

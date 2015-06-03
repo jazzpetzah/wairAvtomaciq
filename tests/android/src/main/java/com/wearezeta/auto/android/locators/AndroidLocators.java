@@ -9,43 +9,6 @@ public final class AndroidLocators {
 		public static final String idBoby = "body";
 	}
 
-	public static final class Browsers {
-		public static final String xpathChrome = "//*[@value='Chrome']";
-
-		public static final String xpathFirefox = "//*[@value='Firefox']";
-
-		public static final String xpathConnect = "//android.webkit.WebView/android.view.View[6]";
-
-		public static final String idUrlBar = "url_bar";
-
-		public static final String idFirefoxUrlBar = "url_bar_entry";
-
-		public static final String idFirefoxUrlBarEditText = "url_edit_text";
-
-		public static final String xpathNativeBrowserURLBar = "//android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.widget.RelativeLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.EditText[1]";
-
-		public static final String xpathNativeBrowserMenu = "//android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.widget.RelativeLayout[1]/android.widget.LinearLayout[1]/android.widget.ImageButton[2]";
-
-		public static final String xpathNativeBrowserShareButton = "//android.widget.ListView[1]/android.widget.LinearLayout[5]/android.widget.RelativeLayout[1]/android.widget.TextView[1]";
-
-		public static final String xpathNativeBrowserShareWireButton = "//android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[3]/android.widget.LinearLayout[1]/android.widget.TextView[contains(@text,'Wire')]";
-
-		public static final String nameNativeBrowserMenuButton = "android.widget.ImageButton";
-
-		public static final String nameNativeBrowserMoreOptionsButton = "android.widget.TextView";
-
-		public static final String nameNativeBrowserShareWireButton = "android.widget.TextView";
-
-		public static final class ForgotPasswordPage {
-
-			public static final String xpathEmailEditField = "//android.widget.EditText[@content-desc='Email']";
-
-			public static final String xpathEnterNewPasswordEditField = "//android.widget.EditText[following-sibling::android.widget.Button[@content-desc='CHANGE PASSWORD']]";
-
-			public static final String xpathChangePasswordButton = "//android.widget.Button[@content-desc='CHANGE PASSWORD']";
-		}
-	}
-
 	public static final class CallingOverlay {
 		public static final String idCallingMute = "cib__calling_mute";
 
@@ -76,23 +39,13 @@ public final class AndroidLocators {
 
 	public static final class LoginPage {
 
-		public static final String idIHaveAccountButton = "zb__welcome__sign_in";
-
 		public static final String idSignUpButton = "ttv__welcome__create_account";
 
-		public static final String idLoginButton = "pcb__signin__email";
-
 		public static final String idForgotPass = "ttv_signin_forgot_password";
-
-		public static final String idLoginInput = "get__sign_in__email";
-
-		public static final String idPasswordInput = "get__sign_in__password";
 
 		public static final String idLoginProgressViewContainer = "fl__sign_in__progress_view__container";
 
 		public static final String idWelcomeButtonsContainer = "cm__choose";
-
-		public static final String idWelcomeSlogan = "tv__welcome__terms_of_service";
 
 		public static final Function<String, String> xpathLoginMessageByText = text -> String
 				.format("//*[@id='message' and @value='%s']", text);
@@ -125,6 +78,10 @@ public final class AndroidLocators {
 	public static final class ConnectToPage {
 		public static final String idConnectToHeader = "taet__participants__header";
 
+		public static final Function<String, String> xpathConnectToHeaderByText = text -> String
+				.format("//*[@id='taet__participants__header' and @value='%s']",
+						text);
+
 		public static final String idConnectToCharCounter = "ttv__send_connect_request__connect_button__character_counter";
 
 		public static final String idConnectRequestAccept = "zb__connect_request__accept_button";
@@ -135,6 +92,8 @@ public final class AndroidLocators {
 	}
 
 	public static final class ContactListPage {
+		public static final String xpathConversationListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
+
 		public static final String idConversationListFrame = "pfac__conversation_list";
 
 		public static final String idOpenStartUIButton = "gtv__conversation_list__sticky_menu__trigger_startui";
@@ -174,17 +133,11 @@ public final class AndroidLocators {
 	public static final class CommonLocators {
 		public static final String classNameFrameLayout = "FrameLayout";
 
-		public static final String classListView = "SwipeListView";
-
 		public static final String idPager = "conversation_pager";
 
 		public static final String idConfirmBtn = "confirm";
 
 		public static final String idEditText = "cet__cursor_view";
-
-		public static final String xpathImagesFrameLayout = "//*[@id='grid']/FrameLayout";
-
-		public static final String xpathImage = "//android.widget.LinearLayout/android.view.View";
 
 		public static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";
 
@@ -214,7 +167,7 @@ public final class AndroidLocators {
 
 		public static final String idPlayPauseMedia = "gtv__media_play";
 
-		public static final String idAddParticipants = "gtv__cursor_participants";
+		public static final String idParticipantsBtn = "gtv__cursor_participants";
 
 		public static final String idPingMessage = "ttv__row_conversation__ping_message";
 
@@ -228,8 +181,6 @@ public final class AndroidLocators {
 
 		public static final String idDialogChangeCameraButton = "gtv__camera__top_control__back_camera";
 
-		public static final String idConfirmButton = "ttv__confirmation__confirm";
-
 		public static final String xpathConfirmOKButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
 
 		public static final String idDialogImages = "iv__row_conversation__message_image";
@@ -241,10 +192,6 @@ public final class AndroidLocators {
 		public static final String idConnectRequestConnectTo = "user_name";
 
 		public static final String idNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
-
-		public static final String idDialogPageBottomFrameLayout = "cv";
-
-		public static final String idDialogPageBottom = "fl__cursor__user_avatar_container";
 
 		public static final String idConnectRequestChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
 
@@ -271,6 +218,8 @@ public final class AndroidLocators {
 		public static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
 
 		public static final String xpathLastPingMessage = "(//*[@id='ttv__row_conversation__ping_message'])[last()]";
+
+		public static final String idFakeCursor = "v__cursor__fake_cursor";
 	}
 
 	public static final class LockscreenCallingPage {
@@ -282,15 +231,29 @@ public final class AndroidLocators {
 	}
 
 	public static final class OtherUserPersonalInfoPage {
+		public static final String idParticipantAvatarsContainer = "pfac__participants";
+		
 		public static final String idParticipantsHeader = "ttv__participants__header";
+
+		public static final Function<String, String> xpathPartcipantNameByText = text -> String
+				.format("//*[@id='ttv__participants__header' and @value='%s']",
+						text);
+
+		public static final Function<String, String> xpathPartcipantEmailByText = text -> String
+				.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
+						text);
+
+		public static final Function<String, String> xpathSingleParticipantNameByText = text -> String
+				.format("//*[@id='ttv__single_participants__header' and @value='%s']",
+						text);
+
+		public static final Function<String, String> xpathSingleParticipantEmailByText = text -> String
+				.format("//*[@id='ttv__single_participants__sub_header' and @value='%s']",
+						text);
 
 		public static final String idParticipantsHeaderEditable = "taet__participants__header__editable";
 
 		public static final String idParticipantsSubHeader = "ttv__participants__sub_header";
-
-		public static final String idOtherUserPersonalInfoSingleName = "ttv__single_participants__header";
-
-		public static final String idOtherUserPersonalInfoSingleMail = "ttv__single_participants__sub_header";
 
 		public static final String idUserProfileConfirmationMenu = "user_profile_confirmation_menu";
 
@@ -312,9 +275,10 @@ public final class AndroidLocators {
 
 		public static final String idBlockButton = "ttv__conversation_settings__block";
 
+		// Names on avatars are in uppercase and only the first part is visible
 		public static final Function<String, String> xpathParticipantAvatarByName = name -> String
-				.format("//*[@id='pfac__participants']//ChatheadWithTextFooter[.//*[@value='%s']]",
-						name.toUpperCase());
+				.format("//*[@value='%s']/parent::*/parent::*", name
+						.toUpperCase().split("\\s+")[0]);
 	}
 
 	public static final class PeoplePickerPage {
@@ -322,24 +286,30 @@ public final class AndroidLocators {
 		public static final Function<String, String> xpathTopConversationContactByName = name -> String
 				.format("//*[@value='%s']", name.toUpperCase());
 
-		public static final String xpathGmailLink = "//*[@value='Gmail']";
-
 		public static final String xpathDestinationFrame = "//*[@id='resolver_grid' or @id='resolver_list']";
 
 		public static final String idParticipantsClose = "gtv__participants__close";
 
-		@SuppressWarnings("unused")
-		private static final String xpathTopPeopleRoot = "//*[@id='fl__conversation_list_main']";
-
 		public static final String idPickerTopPeopleHeader = "ttv_pickuser__list_header_title";
 
-		public static final String idPickerUserSlidingRow = "ll__pickuser__sliding_row";
+		// numbering starts from 1
+		public static final Function<Integer, String> xpathPYMKItemByIdx = idx -> String
+				.format("(//*[@id='ll__pickuser__sliding_row'])[%d]", idx);
+		public static final Function<Integer, String> xpathPYMKItemByIdxLabel = idx -> String
+				.format("%s//*[@id='ttv_pickuser__recommended_name']",
+						xpathPYMKItemByIdx.apply(idx));
+		public static final Function<Integer, String> xpathPYMKItemByIdxPlusButton = idx -> String
+				.format("%s//*[@id='gtv__pickuser__recommended__quick_add']",
+						xpathPYMKItemByIdx.apply(idx));
+		public static final Function<Integer, String> xpathPYMKItemByIdxHideButton = idx -> String
+				.format("%s/parent::*//*[@value='HIDE']",
+						xpathPYMKItemByIdx.apply(idx));
 
-		public static final String idPickerUserHideMenu = "hrum__pickuser__hide_menu";
+		public static final Function<String, String> xpathPYMKItemByName = name -> String
+				.format("//*[@id='ll__pickuser__sliding_row' and .//*[@value='%s']]",
+						name);
 
 		public static final String idPickerRecomendedName = "ttv_pickuser__recommended_name";
-
-		public static final String idPickerRecomendedQuickAdd = "gtv__pickuser__recommended__quick_add";
 
 		public static final String idPickerUsersUnselected = "pick_user_chathead_unselected";
 
@@ -452,9 +422,12 @@ public final class AndroidLocators {
 	}
 
 	public static final class UnknownUserDetailsPage {
-		public static final String idOtherUsersName = "taet__participants__header";
+		public static final Function<String, String> xpathHeaderByUserName = name -> String
+				.format("//*[@id='taet__participants__header']", name);
 
-		public static final String idConnectButton = "ttv__participants__left_label";
+		public static final String xpathConnectButton = "//*[@id='ttv__participants__left_label' and @value='Connect']";
+
+		public static final String xpathPendingButton = "//*[@id='ttv__participants__left_label' and @value='Pending']";
 
 		public static final String idCommonUsersLabel = "ttv__connect_request__common_users__label";
 

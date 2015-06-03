@@ -45,5 +45,5 @@ Feature: Ping
 
     # 	And I see <Action2> icon
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName        | Action1     | Action2          |
-      | user1Email | user1Password | user1Name | user3Name | user2Name | ReceivePingGroupChat | YOU PINGED  | YOU PINGED AGAIN |
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName        | Action1           | Action2                |
+      | user1Email | user1Password | user1Name | user3Name | user2Name | ReceivePingGroupChat | user3Name PINGED  | user3Name PINGED AGAIN |

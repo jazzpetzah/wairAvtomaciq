@@ -16,7 +16,7 @@ public class CallingServiceClient {
 
 	public static String callToUser(ClientUser userAs, ClientUser userTo,
 			CallingServiceBackend callBackend) throws Exception {
-		return CallingSericeREST.makeCall(
+		return CallingServiceREST.makeCall(
 				userAs.getEmail(),
 				userAs.getPassword(),
 				BackendAPIWrappers.getConversationIdByName(userAs,
@@ -31,7 +31,7 @@ public class CallingServiceClient {
 		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			final CallingServiceStatus currentStatus = CallingServiceStatus
-					.fromString(CallingSericeREST.getCallStatus(callId)
+					.fromString(CallingServiceREST.getCallStatus(callId)
 							.getString("status"));
 			if (CallingServiceStatus.isSubSetContains(expectedStatuses,
 					currentStatus)) {
@@ -57,12 +57,12 @@ public class CallingServiceClient {
 
 	public static CallingServiceStatus getCallStatus(String instanceId)
 			throws Exception {
-		return CallingServiceStatus.fromString(CallingSericeREST.getCallStatus(
+		return CallingServiceStatus.fromString(CallingServiceREST.getCallStatus(
 				instanceId).getString("status"));
 	}
 
 	public static void stopCall(String callId) throws Exception {
-		CallingSericeREST.stopCall(callId);
+		CallingServiceREST.stopCall(callId);
 	}
 
 	public static void stopCall(String callId,
@@ -76,7 +76,7 @@ public class CallingServiceClient {
 
 	public static String startWaitingInstance(ClientUser userAs,
 			CallingServiceBackend callBackend) throws Exception {
-		return CallingSericeREST.makeWaitingInstance(userAs.getEmail(),
+		return CallingServiceREST.makeWaitingInstance(userAs.getEmail(),
 				userAs.getPassword(),
 				CommonUtils.getBackendType(CallingServiceClient.class),
 				callBackend).getString("id");
@@ -88,7 +88,7 @@ public class CallingServiceClient {
 		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			final CallingServiceStatus currentStatus = CallingServiceStatus
-					.fromString(CallingSericeREST.getWaitingInstanceStatus(
+					.fromString(CallingServiceREST.getWaitingInstanceStatus(
 							instanceId).getString("status"));
 			if (CallingServiceStatus.isSubSetContains(expectedStatuses,
 					currentStatus)) {
@@ -114,11 +114,11 @@ public class CallingServiceClient {
 
 	public static void acceptNextIncomingCall(String instanceId)
 			throws Exception {
-		CallingSericeREST.acceptNextIncomingCall(instanceId);
+		CallingServiceREST.acceptNextIncomingCall(instanceId);
 	}
 
 	public static void stopWaitingInstance(String instanceId) throws Exception {
-		CallingSericeREST.stopWaitingInstance(instanceId);
+		CallingServiceREST.stopWaitingInstance(instanceId);
 	}
 
 	public static void stopWaitingInstance(String instanceId,
@@ -130,7 +130,7 @@ public class CallingServiceClient {
 
 	public static CallingServiceStatus getWaitingInstanceStatus(
 			String instanceId) throws Exception {
-		return CallingServiceStatus.fromString(CallingSericeREST
+		return CallingServiceStatus.fromString(CallingServiceREST
 				.getWaitingInstanceStatus(instanceId).getString("status"));
 	}
 

@@ -22,6 +22,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
 
 import com.google.common.base.Function;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -269,21 +270,13 @@ public class ContactListPage extends WebPage {
 			DriverUtils.moveMouserOver(this.getDriver(),
 					getContactWithName(conversationName, false));
 		} catch (WebDriverException e) {
-			// Safari workaround
+			DriverUtils.addClass(this.getDriver(),
+					getContactWithName(conversationName, false), "hover");
 		}
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName
 				.apply(conversationName);
 		final By locator = By.cssSelector(cssOptionsButtonLocator);
-		if (!DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), locator,
-				5)) {
-			// Safari workaround
-			final String showOptionsButtonJScript = "$(\""
-					+ cssOptionsButtonLocator + "\").css({'opacity': '100'})";
-			this.getDriver().executeScript(showOptionsButtonJScript);
-			assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					locator);
-		}
 		final WebElement optionsButton = getDriver().findElement(locator);
 		optionsButton.click();
 	}
@@ -496,5 +489,36 @@ public class ContactListPage extends WebPage {
 						By.xpath(WebAppLocators.ContactListPage.xpathOpenArchivedConvosButton),
 						archiveBtnVisilityTimeout) : "Open Archive button is not visible after "
 				+ archiveBtnVisilityTimeout + " second(s)";
+	}
+
+	public AccentColor getCurrentPingIconAccentColor(String name)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathPingIconByContactName
+						.apply(name));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
+		final WebElement entry = getDriver().findElement(locator);
+		return AccentColor.getByRgba(entry.getCssValue("color"));
+	}
+
+	public AccentColor getCurrentUnreadDotAccentColor(String name)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName
+						.apply(name));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
+		final WebElement entry = getDriver().findElement(locator);
+		return AccentColor.getByRgba(entry.getCssValue("background-color"));
+	}
+
+	public boolean isPingIconVisibleForConversation(String conversationName)
+			throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ContactListPage.xpathPingIconByContactName
+						.apply(conversationName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 3);
 	}
 }

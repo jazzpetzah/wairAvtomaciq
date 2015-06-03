@@ -73,7 +73,7 @@ public class DialogPageSteps {
 	}
 
 	@When("^I type the message$")
-	public void WhenITypeTheMessage() throws Throwable {
+	public void WhenITypeTheMessage() throws Exception {
 		// message = CommonUtils.generateGUID().replace('-', 'x');
 		message = automationMessage;
 		PagesCollection.dialogPage.sendStringToInput(message);
@@ -305,15 +305,8 @@ public class DialogPageSteps {
 				.getExpectedConnectingLabel(contact);
 		String actualConnectingLabel = PagesCollection.dialogPage
 				.getConnectMessageLabel();
-		String lastMessage = PagesCollection.dialogPage.getConnectionMessage();
-		String expectedConnectMessage = PagesCollection.dialogPage
-				.getExpectedConnectMessage(contact, user);
-		Assert.assertEquals("Expected: " + expectedConnectingLabel
-				+ " | Actual: " + actualConnectingLabel,
-				expectedConnectingLabel, actualConnectingLabel);
-		Assert.assertEquals("Expected: " + expectedConnectMessage
-				+ " | Actual: " + lastMessage,
-				expectedConnectMessage.toLowerCase(), lastMessage.toLowerCase());
+
+		Assert.assertTrue(actualConnectingLabel.contains(expectedConnectingLabel));
 	}
 
 	@Then("^I see new photo in the dialog$")

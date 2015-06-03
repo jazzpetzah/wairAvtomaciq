@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android.pages;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -11,31 +9,15 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class RegistrationPage extends AndroidPage {
-
-	@FindBy(id = AndroidLocators.DialogPage.idDialogTakePhotoButton)
-	private WebElement cameraButton;
-
-	@FindBy(id = AndroidLocators.RegistrationPage.idRegistrationBack)
-	private WebElement backButton;
-
-	@FindBy(xpath = AndroidLocators.DialogPage.xpathConfirmOKButton)
-	private WebElement confirmImageButton;
 
 	@FindBy(id = AndroidLocators.RegistrationPage.idSignUpGalleryIcon)
 	protected WebElement signUpGalleryIcon;
 
 	@FindBy(xpath = AndroidLocators.RegistrationPage.xpathNameField)
 	protected WebElement nameField;
-
-	@FindBy(xpath = AndroidLocators.RegistrationPage.xpathEmailField)
-	private WebElement emailField;
-
-	@FindBy(id = AndroidLocators.RegistrationPage.idNewPasswordField)
-	private WebElement passwordField;
 
 	@FindBy(id = AndroidLocators.RegistrationPage.idCreateUserBtn)
 	private WebElement createUserBtn;
@@ -52,56 +34,13 @@ public class RegistrationPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerSearch)
 	private WebElement pickerSearch;
 
-	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImagesFrameLayout)
-	private List<WebElement> frameLayouts;
-
-	@FindBy(xpath = AndroidLocators.CommonLocators.xpathImage)
-	private List<WebElement> image;
-
 	public RegistrationPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
 	}
 
-	@Override
-	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws IOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public void clickCameraButton() throws Exception {
-		this.getWait().until(
-				ExpectedConditions.elementToBeClickable(cameraButton));
-		cameraButton.click();
-	}
-
 	public void selectPicture() {
 		signUpGalleryIcon.click();
-	}
-
-	public void chooseFirstPhoto() throws Exception {
-		try {
-			frameLayouts.get(0).click();
-			return;
-		} catch (Exception ex) {
-		}
-		try {
-			image.get(0).click();
-			return;
-		} catch (Exception ex) {
-		}
-	}
-
-	public boolean isPictureSelected() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.idConfirmButton));
-	}
-
-	public void confirmPicture() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				confirmImageButton);
-		confirmImageButton.click();
 	}
 
 	public void setName(String name) throws Exception {
@@ -111,20 +50,7 @@ public class RegistrationPage extends AndroidPage {
 				.until(ExpectedConditions.elementToBeClickable(nextArrow));
 		nextArrow.click();
 	}
-
-	public void setEmail(String email) throws Exception {
-		assert DriverUtils.isElementPresentAndDisplayed(emailField);
-		emailField.sendKeys(email);
-		this.getWait()
-				.until(ExpectedConditions.elementToBeClickable(nextArrow));
-		nextArrow.click();
-	}
-
-	public void setPassword(String password) throws Exception {
-		assert DriverUtils.isElementPresentAndDisplayed(passwordField);
-		passwordField.sendKeys(password);
-	}
-
+	
 	public void createAccount() throws Exception {
 		assert DriverUtils
 				.waitUntilElementClickable(getDriver(), createUserBtn);
@@ -140,11 +66,6 @@ public class RegistrationPage extends AndroidPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(AndroidLocators.PeoplePickerPage.idPickerSearch));
 		return new PeoplePickerPage(this.getLazyDriver());
-	}
-
-	public void pressBackButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), backButton);
-		backButton.click();
 	}
 
 }
