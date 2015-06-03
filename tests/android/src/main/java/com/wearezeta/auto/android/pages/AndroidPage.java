@@ -17,7 +17,8 @@ import android.view.KeyEvent;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidKeyEvent;
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -103,8 +104,7 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void minimizeApplication() throws Exception {
-		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_HOME);
-		Thread.sleep(1000);
+		AndroidCommonUtils.switchToHomeScreen();
 	}
 
 	public void lockScreen() throws Exception {
@@ -112,12 +112,9 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void restoreApplication() throws Exception {
-		try {
-			this.getDriver().runAppInBackground(10);
-		} catch (WebDriverException ex) {
-			// do nothing, sometimes after restoring the app we have this
-			// exception, Appium bug
-		}
+		AndroidCommonUtils.switchToApplication(
+				CommonUtils.getAndroidPackageFromConfig(this.getClass()),
+				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
 	}
 
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {

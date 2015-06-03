@@ -2,15 +2,15 @@ Feature: Connect
 
   @id2281 @staging
   Scenario Outline: Send connection request from search in landscape
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
+    Given There are 2 users where <Name> is me
     And I rotate UI to landscape
     Given I Sign in on tablet using login <Login> and password <Password>
     And I see Contact list
+    And I wait until <Contact> exists in backend search results
     When I swipe down on tablet contact list
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in search field user name to connect to <Contact>
+    And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on tablet People picker page <Contact>
     And I wait for 20 seconds
     And I see tablet connect to <Contact> dialog
@@ -22,20 +22,20 @@ Feature: Connect
     Then I see contact list loaded with name <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact1  | Message       |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
+      | Login      | Password      | Name      | Contact   | Message       |
+      | user1Email | user1Password | user1Name | user2Name | Hellow friend |
 
   @id2280 @staging
   Scenario Outline: Send connection request from search in portrait
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Name>
+    Given There are 2 users where <Name> is me
     And I rotate UI to portrait
     Given I Sign in on tablet using login <Login> and password <Password>
     And I see Contact list
+    And I wait until <Contact> exists in backend search results
     When I swipe down on tablet contact list
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in search field user name to connect to <Contact>
+    And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on tablet People picker page <Contact>
     And I see tablet connect to <Contact> dialog
     And I tap on edit connect request field
@@ -46,13 +46,12 @@ Feature: Connect
     Then I see contact list loaded with name <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact1  | Message       |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | Hellow friend |
+      | Login      | Password      | Name      | Contact   | Message       |
+      | user1Email | user1Password | user1Name | user2Name | Hellow friend |
 
   @id2245 @staging 
   Scenario Outline: Accept connection request in landscape mode
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to me
+    Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     And I rotate UI to landscape
     Given I Sign in using login <Login> and password <Password>
@@ -64,13 +63,12 @@ Feature: Connect
     Then I see Connect to <Contact> Dialog page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact1  | WaitingMess      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | 1 person waiting |
+      | Login      | Password      | Name      | Contact   | WaitingMess      |
+      | user1Email | user1Password | user1Name | user2Name | 1 person waiting |
 
   @id2259 @staging
   Scenario Outline: Accept connection request in portrait mode
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to me
+    Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     And I rotate UI to portrait
     Given I Sign in using login <Login> and password <Password>
@@ -82,5 +80,5 @@ Feature: Connect
     Then I see Connect to <Contact> Dialog page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact1  | WaitingMess      |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | 1 person waiting |
+      | Login      | Password      | Name      | Contact   | WaitingMess      |
+      | user1Email | user1Password | user1Name | user2Name | 1 person waiting |

@@ -773,6 +773,33 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * Waits for a given time to verify that another user does not exist in
+	 * search results
+	 * 
+	 * @step. ^(\\w+) waits? until (.*) does not exist in backend search
+	 *        results$
+	 * 
+	 * @param searchByNameAlias
+	 *            the user to search for in the query results.
+	 * @param query
+	 *            the search query to pass to the backend, which will return a
+	 *            list of users.
+	 * @param timeoutSecnds
+	 *            maximum time to wait until the other user disappears from
+	 *            search list
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Given("^(\\w+) waits? (\\d+) seconds? until (.*) does not exist in backend search results$")
+	public void UserWaitsUntilContactDoesNotExistsInHisSearchResults(
+			String searchByNameAlias, int timeoutSeconds, String query)
+			throws Exception {
+		commonSteps.WaitUntilContactIsNotFoundInSearch(searchByNameAlias,
+				query, timeoutSeconds);
+	}
+
+	/**
 	 * Sends an image from one user to a conversation
 	 * 
 	 * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$

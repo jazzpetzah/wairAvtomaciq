@@ -9,20 +9,22 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.android.pages.OtherUserPersonalInfoPage;
-import com.wearezeta.auto.android_tablet.locators.TabletAndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletDialogPage extends AndroidTabletPage {
 
-	@FindBy(id = TabletAndroidLocators.TabletDialogPage.idProfileIcon)
+	public static final String idProfileIcon = "tv__cursor_participants";
+	@FindBy(id = idProfileIcon)
 	private WebElement profileButton;
 
-	@FindBy(id = TabletAndroidLocators.TabletDialogPage.idParticipantsClose)
+	public static final String idParticipantsClose = "gtv__participants__close";
+	@FindBy(id = idParticipantsClose)
 	private WebElement participantsClose;
 
-	@FindBy(id = TabletAndroidLocators.TabletDialogPage.idRootParticipantContainer)
+	public static final String idRootParticipantContainer = "fl__root__participant_container";
+	@FindBy(id = idRootParticipantContainer)
 	private WebElement participantContainer;
 
 	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeader)

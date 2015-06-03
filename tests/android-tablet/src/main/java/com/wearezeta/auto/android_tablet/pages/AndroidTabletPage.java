@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -18,10 +19,14 @@ public abstract class AndroidTabletPage extends AndroidPage {
 	private static Map<Class<? extends AndroidPage>, AndroidPage> connectedPagesMapping = new ConcurrentHashMap<Class<? extends AndroidPage>, AndroidPage>();
 
 	protected AndroidPage getAndroidPageInstance(
-			Class<? extends AndroidPage> pageClass) throws Exception {
+			Class<? extends AndroidPage> pageClass) {
 		if (!connectedPagesMapping.containsKey(pageClass)) {
-			connectedPagesMapping.put(pageClass,
-					(AndroidPage) this.instantiatePage(pageClass));
+			try {
+				connectedPagesMapping.put(pageClass,
+						(AndroidPage) this.instantiatePage(pageClass));
+			} catch (Exception e) {
+				Throwables.propagate(e);
+			}
 		}
 		return connectedPagesMapping.get(pageClass);
 	}
