@@ -12,5 +12,5 @@ iosImagesPath=${Root}/${iosImagesPath}
 iosClientInfoPlist=${iosClientInfoPlist}
 iosAppiumLogPath=${iosAppiumLogPath}
 defaultEmail=${defaultEmail}
-deviceName=${deviceName}
+deviceName=iPad Air
 backendType=${backendType}
