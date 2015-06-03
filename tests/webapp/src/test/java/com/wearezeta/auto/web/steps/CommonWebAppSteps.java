@@ -285,7 +285,8 @@ public class CommonWebAppSteps {
 		log.debug("Unique name for this test: " + uniqueName);
 
 		// get custom capabilities
-		DesiredCapabilities capabilities = getCustomCapabilities(platform, browserName, browserVersion);
+		DesiredCapabilities capabilities = getCustomCapabilities(platform,
+				browserName, browserVersion, uniqueName);
 
 		final String url = CommonUtils
 				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
@@ -336,7 +337,7 @@ public class CommonWebAppSteps {
 	}
 
 	private static DesiredCapabilities getCustomCapabilities(String platform,
-			String browserName, String browserVersion) throws Exception {
+			String browserName, String browserVersion, String uniqueTestName) throws Exception {
 		final DesiredCapabilities capabilities;
 		switch (browserName) {
 		case "Chrome":
@@ -379,6 +380,7 @@ public class CommonWebAppSteps {
 
 		capabilities.setCapability("platform", platform);
 		capabilities.setCapability("version", browserVersion);
+		capabilities.setCapability("name", uniqueTestName);
 
 		return capabilities;
 	}
