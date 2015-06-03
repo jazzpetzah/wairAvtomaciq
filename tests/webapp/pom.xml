@@ -34,10 +34,10 @@
 		<extendedLoggingLevel>SEVERE</extendedLoggingLevel>
 
 		<!-- new -->
-		<os.name>Windows</os.name>
-		<os.version>8.1</os.version>
-		<browser.name>Chrome</browser.name>
-		<browser.version>43.0</browser.version>
+		<com.wire.os.name>Windows</com.wire.os.name>
+		<com.wire.os.version>8.1</com.wire.os.version>
+		<com.wire.browser.name>Chrome</com.wire.browser.name>
+		<com.wire.browser.version>43.0</com.wire.browser.version>
 	</properties>
 
 	<dependencies>
@@ -121,10 +121,10 @@
 					</includes>
 					<argLine>-Djava.library.path=../common/native_lib -Djava.awt.headless=true</argLine>
 					<systemPropertyVariables>
-						<os.name>${os.name}</os.name>
-						<os.version>${os.version}</os.version>
-						<browser.name>${browser.name}</browser.name>
-						<browser.version>${browser.version}</browser.version>
+						<com.wire.os.name>${com.wire.os.name}</com.wire.os.name>
+						<com.wire.os.version>${com.wire.os.version}</com.wire.os.version>
+						<com.wire.browser.name>${com.wire.browser.name}</com.wire.browser.name>
+						<com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>

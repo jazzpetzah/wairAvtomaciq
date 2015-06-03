@@ -277,8 +277,8 @@ public class CommonWebAppSteps {
 		}
 
 		String platform = getPlatform();
-		String browserName = System.getProperty("browser.name");
-		String browserVersion = System.getProperty("browser.version");
+		String browserName = System.getProperty("com.wire.browser.name");
+		String browserVersion = System.getProperty("com.wire.browser.version");
 
 		// create unique name for saucelabs and webdriver instances
 		String uniqueName = getUniqueTestName(scenario);
@@ -314,8 +314,8 @@ public class CommonWebAppSteps {
 	}
 
 	private String getUniqueTestName(Scenario scenario) {
-		String browserName = System.getProperty("browser.name");
-		String browserVersion = System.getProperty("browser.version");
+		String browserName = System.getProperty("com.wire.browser.name");
+		String browserVersion = System.getProperty("com.wire.browser.version");
 		String platform = getPlatform();
 
 		return scenario.getName() + scenario.getId() + platform + browserName
@@ -323,9 +323,9 @@ public class CommonWebAppSteps {
 	}
 
 	private String getPlatform() {
-		String osName = System.getProperty("os.name");
+		String osName = System.getProperty("com.wire.os.name");
 		Optional<String> osVersion = Optional.of(System
-				.getProperty("os.version"));
+				.getProperty("com.wire.os.version"));
 
 		String platform = osName;
 		if (osVersion.isPresent()) {
