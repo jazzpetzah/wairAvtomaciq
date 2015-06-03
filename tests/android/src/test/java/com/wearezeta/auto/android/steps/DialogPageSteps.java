@@ -332,20 +332,6 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Waits until URL bar is visible to confirm tapping on YouTube link takes
-	 * you out of Wire to view video
-	 * 
-	 * @step. ^I am taken out of Wire and into the native browser app$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I am taken out of Wire and into the native browser app$")
-	public void IPlayYoutubeVideoInNativeBrowser() throws Exception {
-		getDialogPage().isNativeBrowserURLVisible();
-	}
-
-	/**
 	 * Tap on Play/Pause button on Media Bar
 	 * 
 	 * @step. ^I press PlayPause on Mediabar button$
