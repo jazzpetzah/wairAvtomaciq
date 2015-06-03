@@ -34,10 +34,10 @@
 		<extendedLoggingLevel>SEVERE</extendedLoggingLevel>
 
 		<!-- new -->
-		<os.name></os.name>
-		<os.version></os.version>
-		<browser.name></browser.name>
-		<browser.version></browser.version>
+		<os.name>Windows</os.name>
+		<os.version>8.1</os.version>
+		<browser.name>Chrome</browser.name>
+		<browser.version>43.0</browser.version>
 	</properties>
 
 	<dependencies>
