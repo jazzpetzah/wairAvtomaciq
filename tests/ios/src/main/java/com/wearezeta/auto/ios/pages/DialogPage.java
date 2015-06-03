@@ -208,7 +208,8 @@ public class DialogPage extends IOSPage {
 		DriverUtils.iOSMultiTap(this.getDriver(), conversationInput, 3);
 	}
 
-	public void sendStringToInput(String message) throws InterruptedException {
+	public void sendStringToInput(String message) throws Exception {
+		waitForCursorInputVisible();
 		conversationInput.sendKeys(message);
 	}
 
