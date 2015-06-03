@@ -201,3 +201,51 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | ConvoName    | UserCount | Contact   |
       | user1Email | user1Password | user1Name | TopGroupTest | 3         | user2Name |
+
+  @staging @id1456 
+  Scenario Outline: Verify you can unblock someone from search list [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Name> blocks user <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I dont see conversation <Contact> in contact list
+    And I wait until <Contact> exists in backend search results
+    And I open search by clicking plus button
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    And I unblock user
+    And I type the message
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id1456
+  Scenario Outline: Verify you can unblock someone from search list [LANDSAPE]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Name> blocks user <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I dont see conversation <Contact> in contact list
+    And I wait until <Contact> exists in backend search results
+    And I open search by clicking plus button
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I click hide keyboard button
+    And I tap on connected user <Contact> on People picker page
+    And I unblock user
+    And I type the message
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
