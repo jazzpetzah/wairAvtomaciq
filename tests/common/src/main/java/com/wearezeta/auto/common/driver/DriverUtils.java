@@ -632,4 +632,16 @@ public class DriverUtils {
 	public static void resetApp(AppiumDriver driver) {
 		driver.resetApp();
 	}
+
+	public static void retryOnWhitePage(ZetaWebAppDriver driver, String url) {
+		if (isWhitePage(driver)) {
+			log.error("White page is shown! Reloading...");
+			driver.get(url);
+		}
+	}
+
+	private static boolean isWhitePage(ZetaWebAppDriver driver) {
+		return driver.findElement(By.cssSelector("body")).getText() == null
+				&& driver.findElement(By.cssSelector("body")).getText() == "";
+	}
 }

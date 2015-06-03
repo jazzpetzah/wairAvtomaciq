@@ -50,6 +50,7 @@ public class RegistrationPage extends WebPage {
 
 	public LoginPage switchToLoginPage() throws Exception {
 		this.getDriver().navigate().to(this.getUrl());
+		DriverUtils.retryOnWhitePage(this.getDriver(), this.getUrl());
 
 		final By signInBtnlocator = By
 				.xpath(WebAppLocators.LoginPage.xpathSignInButton);

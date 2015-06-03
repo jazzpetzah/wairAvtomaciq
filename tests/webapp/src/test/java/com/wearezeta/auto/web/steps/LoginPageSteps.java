@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.steps;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -58,27 +59,11 @@ public class LoginPageSteps {
 		log.debug("Starting to Sign in using login " + login + " and password "
 				+ password);
 
-		// FIXME: Try to reenter login data if signing in fails to
-		// workaround Amazon page load issues
-		int ntry = 0;
-		while (ntry < MAX_LOGIN_RETRIES) {
-			PagesCollection.loginPage = PagesCollection.registrationPage
-					.switchToLoginPage();
-			this.IEnterEmail(login);
-			this.IEnterPassword(password);
-			try {
-				this.IPressSignInButton();
-				break;
-			} catch (AssertionError e) {
-				log.error(String.format(
-						"Failed to sign in. Retrying (%s of %s)...", ntry + 1,
-						MAX_LOGIN_RETRIES));
-				if (ntry + 1 >= MAX_LOGIN_RETRIES) {
-					throw e;
-				}
-			}
-			ntry++;
-		}
+		PagesCollection.loginPage = PagesCollection.registrationPage
+				.switchToLoginPage();
+		this.IEnterEmail(login);
+		this.IEnterPassword(password);
+		this.IPressSignInButton();
 	}
 
 	/**
