@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -58,9 +59,10 @@ public class WebCommonUtils extends CommonUtils {
 		return String.format("%s/Documents", System.getProperty("user.home"));
 	}
 
-	public static String getFullPicturePath(String pictureName) {
-		return String.format("%s/Documents/%s",
-				System.getProperty("user.home"), pictureName);
+	public static String getFullPicturePath(String pictureName) throws URISyntaxException {
+		File file = new File(WebCommonUtils.class.getResource("/images/" + pictureName).toURI());
+		log.debug("Full picture path: " + file.getAbsolutePath());
+		return file.getAbsolutePath();
 	}
 
 	public static void putFileOnExecutionNode(String node, String srcPath,
