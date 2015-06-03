@@ -320,8 +320,8 @@ public class CommonWebAppSteps {
 		String browserVersion = System.getProperty("com.wire.browser.version");
 		String platform = getPlatform();
 
-		return scenario.getName() + scenario.getId() + " on " + platform
-				+ " with " + browserName + " " + browserVersion;
+		return scenario.getName() + " (" + scenario.getId() + ") on "
+				+ platform + " with " + browserName + " " + browserVersion;
 	}
 
 	private String getPlatform() {
