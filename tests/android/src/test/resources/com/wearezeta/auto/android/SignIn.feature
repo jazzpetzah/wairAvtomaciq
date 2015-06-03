@@ -20,10 +20,6 @@ Feature: Sign In
     #Given I Sign in using login <Login1> and password <Password>
     #And I see Contact list with my name <Login1>
     #When I tap on my name <Login1>
-    #workaround
-    #And I minimize the application
-    #And I restore the application
-    #workaround
     #And I tap options button
     #And I tap sign out button
     #And I see sign in and join buttons
@@ -60,10 +56,6 @@ Feature: Sign In
   #  And I request reset password for <Login>
   #  And I get new <Name> password link
   #  Then I reset password by URL to new <NewPassword>
-  #  When I restore the application
-  #  And I wait for 2 seconds
-  #  And I minimize the application
-  #  And I restore the application
   #  And I switch to email sign in screen
   #  And I have entered login <Login>
   #  And I have entered password <NewPassword>

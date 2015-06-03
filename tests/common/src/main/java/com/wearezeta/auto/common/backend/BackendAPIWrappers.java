@@ -70,23 +70,16 @@ public final class BackendAPIWrappers {
 		return user;
 	}
 
-	@SuppressWarnings("unused")
-	private static Future<String> initMessageListener(
-			ClientUser userToActivate, int retryNumber) throws Exception {
+	public static Future<String> initMessageListener(ClientUser forUser)
+			throws Exception {
 		IMAPSMailbox mbox = IMAPSMailbox.getInstance();
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put(MessagingUtils.DELIVERED_TO_HEADER,
-				userToActivate.getEmail());
-		if (retryNumber == 1) {
-			return mbox.getMessage(expectedHeaders, BACKEND_ACTIVATION_TIMEOUT);
-		} else {
-			// The MAX_MSG_DELIVERY_OFFSET is necessary because of small
-			// time
-			// difference between
-			// UTC and your local machine
-			return mbox.getMessage(expectedHeaders, BACKEND_ACTIVATION_TIMEOUT,
-					new Date().getTime() - MAX_MSG_DELIVERY_OFFSET);
-		}
+				forUser.getEmail());
+		// The MAX_MSG_DELIVERY_OFFSET is necessary because of small
+		// time difference between UTC and your local machine
+		return mbox.getMessage(expectedHeaders, BACKEND_ACTIVATION_TIMEOUT,
+				new Date().getTime() - MAX_MSG_DELIVERY_OFFSET);
 	}
 
 	/**
@@ -101,8 +94,8 @@ public final class BackendAPIWrappers {
 	 * @return Created ClientUser instance (with id property filled)
 	 * @throws Exception
 	 */
-	public static ClientUser createUserViaBackdoor(ClientUser user, int retryNumber,
-			RegistrationStrategy strategy) throws Exception {
+	public static ClientUser createUserViaBackdoor(ClientUser user,
+			int retryNumber, RegistrationStrategy strategy) throws Exception {
 		String activationCode;
 		switch (strategy) {
 		case ByEmail:
@@ -857,12 +850,12 @@ public final class BackendAPIWrappers {
 	}
 
 	public static void waitUntilContactsFound(ClientUser searchByUser,
-			String query, int expectedCount, boolean orMore, int timeout)
+			String query, int expectedCount, boolean orMore, int timeoutSeconds)
 			throws Exception {
 		tryLoginByUser(searchByUser);
-		long startTimestamp = (new Date()).getTime();
+		final long startTimestamp = System.currentTimeMillis();
 		int currentCount = -1;
-		while ((new Date()).getTime() <= startTimestamp + timeout * 1000) {
+		while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
 			final JSONObject searchResult = BackendREST.searchForContacts(
 					generateAuthToken(searchByUser), query);
 			if (searchResult.has("documents")
@@ -880,6 +873,29 @@ public final class BackendAPIWrappers {
 		throw new NoContactsFoundException(
 				String.format(
 						"%s contact(s) '%s' were not found within %s second(s) timeout",
-						expectedCount, query, timeout));
+						expectedCount, query, timeoutSeconds));
+	}
+
+	public static void waitUntilContactNotFound(ClientUser searchByUser,
+			String query, int timeoutSeconds) throws Exception {
+		tryLoginByUser(searchByUser);
+		final long startTimestamp = System.currentTimeMillis();
+		int currentCount = 0;
+		do {
+			final JSONObject searchResult = BackendREST.searchForContacts(
+					generateAuthToken(searchByUser), query);
+			if (searchResult.has("documents")
+					&& (searchResult.get("documents") instanceof JSONArray)) {
+				currentCount = searchResult.getJSONArray("documents").length();
+			}
+			if (currentCount <= 0) {
+				return;
+			}
+			Thread.sleep(1000);
+		} while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000);
+		throw new AssertionError(
+				String.format(
+						"%s contact(s) '%s' are still found after %s second(s) timeout",
+						currentCount, query, timeoutSeconds));
 	}
 }

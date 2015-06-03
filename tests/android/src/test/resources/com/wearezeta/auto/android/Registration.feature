@@ -19,7 +19,6 @@ Feature: Registration
     Given I see welcome screen
     When I press Join button
     And I press Camera button twice
-    And I See selected picture
     And I confirm selection
     And I hide keyboard
     And I take screenshot
