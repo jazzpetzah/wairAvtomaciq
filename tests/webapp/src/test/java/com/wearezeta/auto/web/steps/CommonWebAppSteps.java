@@ -47,14 +47,18 @@ import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 
 import cucumber.api.PendingException;
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.collections.IteratorUtils;
 
@@ -65,6 +69,8 @@ public class CommonWebAppSteps {
 
 	public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
 			.getSimpleName());
+
+	public static final Map<String, Future<ZetaWebAppDriver>> webdrivers = new HashMap<>();
 
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
 	private static final int MAX_DRIVER_CREATION_RETRIES = 3;
@@ -242,20 +248,16 @@ public class CommonWebAppSteps {
 		// default one
 		// setCustomOperaProfile(capabilities, "win7_opera");
 
-		capabilities.setCapability("platform", "Windows 8.1");
-		capabilities.setCapability("version", "43.0");
-
 		final ExecutorService pool = Executors.newFixedThreadPool(1);
-		
+
 		Callable<ZetaWebAppDriver> callableWebAppDriver = new Callable<ZetaWebAppDriver>() {
 
 			@Override
 			public ZetaWebAppDriver call() throws Exception {
-				final ZetaWebAppDriver lazyWebDriver = new ZetaWebAppDriver(new URL(url),
-						capabilities);
+				final ZetaWebAppDriver lazyWebDriver = new ZetaWebAppDriver(
+						new URL(url), capabilities);
 				lazyWebDriver.setFileDetector(new LocalFileDetector());
-				lazyWebDriver.manage().window()
-						.setPosition(new Point(0, 0));
+				lazyWebDriver.manage().window().setPosition(new Point(0, 0));
 				return lazyWebDriver;
 			}
 		};
@@ -264,7 +266,7 @@ public class CommonWebAppSteps {
 	}
 
 	@Before("~@performance")
-	public void setUp() throws Exception {
+	public void setUp(Scenario scenario) throws Exception {
 		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps.getInstance().cleanupWaitingInstances();
@@ -274,15 +276,110 @@ public class CommonWebAppSteps {
 			e.printStackTrace();
 		}
 
+		String platform = getPlatform();
+		String browserName = System.getProperty("browser.name");
+		String browserVersion = System.getProperty("browser.version");
+
+		// create unique name for saucelabs and webdriver instances
+		String uniqueName = getUniqueTestName(scenario);
+
+		// get custom capabilities
+		DesiredCapabilities capabilities = getCustomCapabilities(platform, browserName, browserVersion);
+
 		final String url = CommonUtils
 				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
 		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
-		final Future<ZetaWebAppDriver> lazyWebDriver = resetWebAppDriver(url);
+		final ExecutorService pool = Executors.newFixedThreadPool(1);
+
+		Callable<ZetaWebAppDriver> callableWebAppDriver = new Callable<ZetaWebAppDriver>() {
+
+			@Override
+			public ZetaWebAppDriver call() throws Exception {
+				final ZetaWebAppDriver lazyWebDriver = new ZetaWebAppDriver(
+						new URL(url), capabilities);
+				lazyWebDriver.setFileDetector(new LocalFileDetector());
+				lazyWebDriver.manage().window().setPosition(new Point(0, 0));
+				return lazyWebDriver;
+			}
+		};
+
+		final Future<ZetaWebAppDriver> lazyWebDriver = pool.submit(callableWebAppDriver);
+		webdrivers.put(uniqueName, lazyWebDriver);
 		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
 				path);
 		PagesCollection.loginPage = new LoginPage(lazyWebDriver, path);
 		ZetaFormatter.setLazyDriver(lazyWebDriver);
+	}
+
+	private String getUniqueTestName(Scenario scenario) {
+		String browserName = System.getProperty("browser.name");
+		String browserVersion = System.getProperty("browser.version");
+		String platform = getPlatform();
+
+		return scenario.getName() + scenario.getId() + platform + browserName
+				+ browserVersion;
+	}
+
+	private String getPlatform() {
+		String osName = System.getProperty("os.name");
+		Optional<String> osVersion = Optional.of(System
+				.getProperty("os.version"));
+
+		String platform = osName;
+		if (osVersion.isPresent()) {
+			platform = platform + " " + osVersion;
+		}
+
+		return platform;
+	}
+
+	private static DesiredCapabilities getCustomCapabilities(String platform,
+			String browserName, String browserVersion) throws Exception {
+		final DesiredCapabilities capabilities;
+		switch (browserName) {
+		case "Chrome":
+			capabilities = DesiredCapabilities.chrome();
+			setCustomChromeProfile(capabilities);
+			break;
+		case "Opera":
+			capabilities = DesiredCapabilities.chrome();
+			setCustomOperaProfile(capabilities);
+			break;
+		case "Firefox":
+			capabilities = DesiredCapabilities.firefox();
+			setCustomFirefoxProfile(capabilities);
+			break;
+		case "Safari":
+			capabilities = DesiredCapabilities.safari();
+			setCustomSafariProfile(capabilities);
+			break;
+		case "InternetExplorer":
+			capabilities = DesiredCapabilities.internetExplorer();
+			break;
+		default:
+			throw new NotImplementedException(
+					"Incorrect browser name is set: " + browserName);
+		}
+		if (WebAppExecutionContext.getCurrentPlatform().length() > 0) {
+			// Use undocumented grid property to match platforms
+			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
+			capabilities.setCapability("applicationName",
+					WebAppExecutionContext.getCurrentPlatform());
+		}
+
+		if (WebAppExecutionContext.LoggingManagement
+				.isSupportedInCurrentBrowser()) {
+			setExtendedLoggingLevel(
+					capabilities,
+					WebCommonUtils
+							.getExtendedLoggingLevelInConfig(CommonCallingSteps.class));
+		}
+
+		capabilities.setCapability("platform", platform);
+		capabilities.setCapability("version", browserVersion);
+
+		return capabilities;
 	}
 
 	/**
@@ -799,7 +896,7 @@ public class CommonWebAppSteps {
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown(Scenario scenario) throws Exception {
 		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps.getInstance().cleanupWaitingInstances();
@@ -811,25 +908,31 @@ public class CommonWebAppSteps {
 
 		WebPage.clearPagesCollection();
 
-		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+		String uniqueName = getUniqueTestName(scenario);
+
+		if (webdrivers.containsKey(uniqueName)) {
+			Future<ZetaWebAppDriver> webdriver = webdrivers.get(uniqueName);
 			try {
 				if (WebAppExecutionContext.LoggingManagement
 						.isSupportedInCurrentBrowser()) {
-					writeBrowserLogsIntoMainLog(PlatformDrivers
-							.getInstance()
-							.getDriver(CURRENT_PLATFORM)
-							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-									TimeUnit.MILLISECONDS));
+					writeBrowserLogsIntoMainLog(webdriver.get(
+							ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+							TimeUnit.MILLISECONDS));
 				}
+				log.debug("See more information on https://saucelabs.com/jobs/"
+						+ webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+								TimeUnit.MILLISECONDS).getSessionId());
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			} finally {
-				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+				webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+						TimeUnit.MILLISECONDS).quit();
+				webdrivers.remove(uniqueName);
 			}
 		}
 		commonSteps.getUserManager().resetUsers();
 	}
-	
+
 	/**
 	 * Sends an image from one user to a conversation
 	 * 
@@ -853,8 +956,7 @@ public class CommonWebAppSteps {
 	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
 			String imageFileName, String conversationType,
 			String dstConversationName) throws Exception {
-		String imagePath = WebCommonUtils
-				.getFullPicturePath(imageFileName);
+		String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
 		Boolean isGroup = null;
 		if (conversationType.equals("single user")) {
 			isGroup = false;
@@ -868,6 +970,7 @@ public class CommonWebAppSteps {
 		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
 				imagePath, dstConversationName, isGroup);
 	}
+
 	/**
 	 * Unblocks user
 	 *

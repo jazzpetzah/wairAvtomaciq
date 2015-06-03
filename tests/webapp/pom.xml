@@ -32,6 +32,12 @@
 			level OFF that can be used to turn off logging, and a level ALL that can 
 			be used to enable logging of all messages. -->
 		<extendedLoggingLevel>SEVERE</extendedLoggingLevel>
+
+		<!-- new -->
+		<os.name></os.name>
+		<os.version></os.version>
+		<browser.name></browser.name>
+		<browser.version></browser.version>
 	</properties>
 
 	<dependencies>
