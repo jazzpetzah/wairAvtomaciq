@@ -117,7 +117,9 @@ public class LoginPage extends WebPage {
 	}
 
 	public RegistrationPage switchToRegistrationPage() throws Exception {
-		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
+		this.getDriver().navigate().to(this.getUrl());
+		DriverUtils.retryOnWhitePage(this.getDriver(), this.getUrl());
+
 		final By locator = By
 				.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons);
 		if (DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator, 2)) {
