@@ -282,6 +282,7 @@ public class CommonWebAppSteps {
 
 		// create unique name for saucelabs and webdriver instances
 		String uniqueName = getUniqueTestName(scenario);
+		log.debug("Unique name for this test: " + uniqueName);
 
 		// get custom capabilities
 		DesiredCapabilities capabilities = getCustomCapabilities(platform, browserName, browserVersion);
