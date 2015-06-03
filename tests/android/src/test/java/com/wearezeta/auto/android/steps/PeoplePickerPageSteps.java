@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -160,23 +159,24 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * -duplicate of WhenIInputInPeoplePickerSearchFieldUserName(String)
+	 * Enter user name or email into the corresponding People Picker field
 	 * 
-	 * @step. ^I input in search field user name to connect to (.*)$
+	 * @step. ^I enter \"(.*)\" into Search input on People [Pp]icker page$
 	 * 
+	 * @param searchCriteria
+	 *            user name/email/phone number or the corresponding aliases
+	 * @throws Exception
 	 */
-	@When("^I input in search field user name to connect to (.*)$")
-	public void WhenIInputInSearchFieldUserNameToConnectTo(String contact)
-			throws Throwable {
-		// FIXME : ambiguous use of email field when the step states only user
-		// name
-		try {
-			ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
-			contact = dstUser.getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		getPeoplePickerPage().typeTextInPeopleSearch(contact);
+	@When("^I enter \"(.*)\" into Search input on People [Pp]icker page")
+	public void IEnterStringIntoSearchField(String searchCriteria)
+			throws Exception {
+		searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
+				FindBy.EMAIL_ALIAS);
+		searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
+				FindBy.NAME_ALIAS);
+		searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
+				FindBy.PHONENUMBER_ALIAS);
+		getPeoplePickerPage().typeTextInPeopleSearch(searchCriteria);
 	}
 
 	/**

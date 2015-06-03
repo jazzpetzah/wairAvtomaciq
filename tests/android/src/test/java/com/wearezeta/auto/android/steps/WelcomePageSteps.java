@@ -68,7 +68,8 @@ public class WelcomePageSteps {
 	 * 
 	 * @step. ^I input a new phone number (.*)$
 	 * 
-	 * @param phoneNumber
+	 * @param name
+	 *            user name/alias
 	 * @throws Exception
 	 */
 	@When("^I input a new phone number for user (.*)$")
