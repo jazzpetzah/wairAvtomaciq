@@ -9,7 +9,7 @@ import cucumber.api.junit.Cucumber;
 @CucumberOptions(format = { "html:target/report",
 		"json:target/smoke_report.json",
 		"com.wearezeta.auto.common.ZetaFormatter" }, tags = { "~@mute",
-		"~@bug", "@smoke" })
+		"~@bug", "@saucelabs" })
 public class SmokeRun {
 
 }

@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @smoke @id1910
+  @smoke @id1910 @saucelabs
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
