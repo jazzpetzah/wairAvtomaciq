@@ -27,7 +27,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | webdriver   | 120     |
 
-  @smoke @id2237
+  @smoke @id2237 @calling
   Scenario Outline: Call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -73,7 +73,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-  @smoke @id1839
+  @smoke @id1839 @calling
   Scenario Outline: Verify calling not supported in browsers without WebRTC
     Given My browser does not support calling
     Given There are 2 users where <Name> is me
