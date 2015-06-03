@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class TabletEmailSignInPageSteps {
@@ -85,6 +86,21 @@ public class TabletEmailSignInPageSteps {
 	@When("^I click Sign In button$")
 	public void IClickSignInButton() throws Exception {
 		getEmailSignInPage().clickSignInButton();
+	}
+	
+	/**
+	 * Checks to see that the login error message contains the correct text
+	 * After providing a false email address or password
+	 * 
+	 * @step. ^I see error message \"(.*)\"$
+	 * @param expectedMsg
+	 *            the expected error message
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see error message \"(.*)\"$")
+	public void ISeeErrorMessage(String expectedMsg) throws Exception {
+		getEmailSignInPage().verifyErrorMessageText(expectedMsg);
 	}
 
 }
