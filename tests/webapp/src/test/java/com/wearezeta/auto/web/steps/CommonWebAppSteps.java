@@ -319,8 +319,8 @@ public class CommonWebAppSteps {
 		String browserVersion = System.getProperty("com.wire.browser.version");
 		String platform = getPlatform();
 
-		return scenario.getName() + scenario.getId() + platform + browserName
-				+ browserVersion;
+		return scenario.getName() + scenario.getId() + " on " + platform
+				+ " with " + browserName + " " + browserVersion;
 	}
 
 	private String getPlatform() {
@@ -922,9 +922,12 @@ public class CommonWebAppSteps {
 							ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 							TimeUnit.MILLISECONDS));
 				}
-				log.debug("See more information on https://saucelabs.com/jobs/"
+				String info = "See more information on https://saucelabs.com/jobs/"
 						+ webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-								TimeUnit.MILLISECONDS).getSessionId());
+								TimeUnit.MILLISECONDS).getSessionId();
+				log.error("log.error: " + info);
+				System.out.println("out: " + info);
+				System.err.println("err: " + info);
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			} finally {
