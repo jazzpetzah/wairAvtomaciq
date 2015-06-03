@@ -926,6 +926,7 @@ public class CommonWebAppSteps {
 				String link = "https://saucelabs.com/jobs/"
 						+ webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 								TimeUnit.MILLISECONDS).getSessionId();
+				log.debug("See more information on " + link);
 				String html = "<html><body><a id='link' href='"
 						+ link
 						+ "'>See more information on "
