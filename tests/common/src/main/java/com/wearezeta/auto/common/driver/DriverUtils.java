@@ -579,7 +579,7 @@ public class DriverUtils {
 			final BufferedImage bImageFromConvert = ImageIO
 					.read(new ByteArrayInputStream(scrImage));
 			return Optional.ofNullable(bImageFromConvert);
-		} catch (WebDriverException e) {
+		} catch (WebDriverException | NoClassDefFoundError e) {
 			// e.printStackTrace();
 			log.error("Selenium driver has failed to take the screenshot of the current screen!");
 		}
