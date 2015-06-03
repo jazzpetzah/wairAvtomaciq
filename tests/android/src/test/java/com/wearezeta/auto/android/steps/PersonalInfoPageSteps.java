@@ -105,8 +105,19 @@ public class PersonalInfoPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I tap change photo button$")
-	public void WhenITapChangePhotoButton() throws Exception {
-		getPersonalInfoPage().tapChangePhotoButton();
+	public void WhenITapChangePhotoButton() throws Exception {		getPersonalInfoPage().tapChangePhotoButton();
+	}
+	
+	/**
+	 * Takes photo for new avatar. Front camera is opened by default
+	 * 
+	 * @step. ^I take new avatar picture$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I take new avatar picture$")
+	public void ITakePhoto() throws Exception {
+		getPersonalInfoPage().tapTakePhotoButton();
 	}
 
 	/**
