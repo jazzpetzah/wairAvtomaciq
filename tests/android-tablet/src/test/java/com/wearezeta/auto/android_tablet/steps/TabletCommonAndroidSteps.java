@@ -16,7 +16,6 @@ import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.reporter.LogcatListener;
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.android.steps.CommonAndroidSteps;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
@@ -357,34 +356,6 @@ public class TabletCommonAndroidSteps {
 	}
 
 	/**
-	 * Verifies that user A has an avatar matching the picture in file X
-	 * 
-	 * @step. ^(.*) has an avatar picture from file (.*)$
-	 * 
-	 * @param name
-	 *            the user to check
-	 * @param picture
-	 *            the file name of the picture to check against. The file name
-	 *            is relative to the pictures directory as defined in the
-	 *            Configurations.cnf file
-	 * 
-	 * @throws Throwable
-	 * 
-	 */
-	@Given("^(.*) has an avatar picture from file (.*)$")
-	public void GivenUserHasAnAvatarPicture(String name, String picture)
-			throws Throwable {
-		String picturePath = CommonUtils
-				.getImagesPath(CommonAndroidSteps.class) + "/" + picture;
-		try {
-			name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		commonSteps.IChangeUserAvatarPicture(name, picturePath);
-	}
-
-	/**
 	 * Verifies that user A has an accent color C
 	 * 
 	 * @step. ^(.*) has an accent color (.*)$
@@ -680,6 +651,34 @@ public class TabletCommonAndroidSteps {
 	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
 			throws Exception {
 		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
+	}
+
+	/**
+	 * Verifies that user A has an avatar matching the picture in file X
+	 * 
+	 * @step. ^(.*) has an avatar picture from file (.*)$
+	 * 
+	 * @param name
+	 *            the user to check
+	 * @param picture
+	 *            the file name of the picture to check against. The file name
+	 *            is relative to the pictures directory as defined in the
+	 *            Configurations.cnf file
+	 * 
+	 * @throws Throwable
+	 * 
+	 */
+	@Given("^(.*) has an avatar picture from file (.*)$")
+	public void GivenUserHasAnAvatarPicture(String name, String picture)
+			throws Throwable {
+		String picturePath = CommonUtils
+				.getImagesPath(this.getClass()) + "/" + picture;
+		try {
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		commonSteps.IChangeUserAvatarPicture(name, picturePath);
 	}
 
 	/**

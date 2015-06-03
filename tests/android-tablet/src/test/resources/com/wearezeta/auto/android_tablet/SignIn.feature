@@ -1,15 +1,16 @@
 Feature: Sign In
 
- @id2262 @staging
+  @id2262 @smoke
   Scenario Outline: Sign in to ZClient in portrait mode
     Given There is 1 user where <Name> is me
     And I rotate UI to portrait
     Given I see welcome screen
     When I switch to email sign in screen
-    And I have entered login <Login>
-    And I have entered password <Password>
-    And I attempt to press Login button
-    Then I see personal info page loaded with my name <Name>
+    And I enter login "<Login>"
+    And I enter password "<Password>"
+    And I click Sign In button
+    And I see the Conversations list
+    Then I see my name on Self Profile page
 
     Examples: 
       | Login      | Password      | Name      |
