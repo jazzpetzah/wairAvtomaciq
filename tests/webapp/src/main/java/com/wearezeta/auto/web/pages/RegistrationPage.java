@@ -49,6 +49,8 @@ public class RegistrationPage extends WebPage {
 	}
 
 	public LoginPage switchToLoginPage() throws Exception {
+		this.getDriver().navigate().to(this.getUrl());
+
 		final By signInBtnlocator = By
 				.xpath(WebAppLocators.LoginPage.xpathSignInButton);
 		if (DriverUtils.waitUntilElementClickable(this.getDriver(),
