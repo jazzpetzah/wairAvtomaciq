@@ -1,25 +1,23 @@
 Feature: Connect
 
-  @id2281 @staging
+  @id2281 @staging @torun
   Scenario Outline: Send connection request from search in landscape
     Given There are 2 users where <Name> is me
+    Given I Sign in using my email
     And I rotate UI to landscape
-    Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list
+    And I see the Conversations list
     And I wait until <Contact> exists in backend search results
-    When I swipe down on tablet contact list
-    And I see People picker page
-    And I tap on Search input on People picker page
+    When I tap Search input
+    And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page
-    And I tap on user name found on tablet People picker page <Contact>
-    And I wait for 20 seconds
-    And I see tablet connect to <Contact> dialog
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
-    And I press Connect button
-    And I see People picker page
-    And I press Clear button
-    Then I see contact list loaded with name <Contact>
+    And I tap the found item <Contact> on People Picker page
+    And I see Connect To <Contact> page
+    And I tap Edit connection message field
+    And I type connection message "<Message>"
+    And I tap Connect button
+    And I see People Picker page
+    And I close People Picker
+    Then I see the conversation <Contact> in my conversations list
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Message       |

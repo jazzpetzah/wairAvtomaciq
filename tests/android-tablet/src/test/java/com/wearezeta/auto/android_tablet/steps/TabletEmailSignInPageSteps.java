@@ -40,7 +40,7 @@ public class TabletEmailSignInPageSteps {
 		final ClientUser selfUser = usrMgr.getSelfUserOrThrowError();
 		getEmailSignInPage().setLogin(selfUser.getEmail());
 		getEmailSignInPage().setPassword(selfUser.getPassword());
-		getEmailSignInPage().clickSignInButton();
+		getEmailSignInPage().tapSignInButton();
 		Assert.assertTrue("Sign in page is still visible after timeout",
 				getEmailSignInPage().waitUntilNotVisible());
 	}
@@ -77,15 +77,15 @@ public class TabletEmailSignInPageSteps {
 	}
 
 	/**
-	 * Click Sign In button on sign in screen
+	 * Tap Sign In button on sign in screen
 	 * 
-	 * @step. ^I click Sign In button$
+	 * @step. ^I tap Sign In button$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I click Sign In button$")
+	@When("^I tap Sign In button$")
 	public void IClickSignInButton() throws Exception {
-		getEmailSignInPage().clickSignInButton();
+		getEmailSignInPage().tapSignInButton();
 	}
 	
 	/**

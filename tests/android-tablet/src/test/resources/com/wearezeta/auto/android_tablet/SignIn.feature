@@ -8,7 +8,7 @@ Feature: Sign In
     When I switch to email sign in screen
     And I enter login "<Login>"
     And I enter password "<Password>"
-    And I click Sign In button
+    And I tap Sign In button
     And I see the Conversations list
     Then I see my name on Self Profile page
 
@@ -23,7 +23,7 @@ Feature: Sign In
     When I switch to email sign in screen
     And I enter login "<Login>"
     And I enter password "<Password>"
-    And I click Sign In button
+    And I tap Sign In button
     Then I see error message "<ErrMessage>"
 
     Examples: 
@@ -38,7 +38,7 @@ Feature: Sign In
     When I switch to email sign in screen
     And I enter login "<Login>"
     And I enter password "<Password>"
-    And I click Sign In button
+    And I tap Sign In button
     And I see the Conversations list
     Then I see my name on Self Profile page
 
@@ -53,7 +53,7 @@ Feature: Sign In
     When I switch to email sign in screen
     And I enter login "<Login>"
     And I enter password "<Password>"
-    And I click Sign In button
+    And I tap Sign In button
     Then I see error message "<ErrMessage>"
 
     Examples: 

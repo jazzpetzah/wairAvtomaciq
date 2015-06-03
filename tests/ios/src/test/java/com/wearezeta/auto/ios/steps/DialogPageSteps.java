@@ -73,7 +73,7 @@ public class DialogPageSteps {
 	}
 
 	@When("^I type the message$")
-	public void WhenITypeTheMessage() throws Throwable {
+	public void WhenITypeTheMessage() throws Exception {
 		// message = CommonUtils.generateGUID().replace('-', 'x');
 		message = automationMessage;
 		PagesCollection.dialogPage.sendStringToInput(message);

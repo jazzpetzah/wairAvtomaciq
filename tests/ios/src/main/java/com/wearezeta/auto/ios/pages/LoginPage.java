@@ -213,18 +213,18 @@ public class LoginPage extends IOSPage {
 				By.name(IOSLocators.nameLoginField));
 	}
 
-	public Boolean isLoginFinished(String contact) throws Exception {
+	public Boolean isLoginFinished() throws Exception {
 		try {
 			this.getWait().until(
 					ExpectedConditions.presenceOfElementLocated(By
-							.name(contact)));
+							.name(IOSLocators.ContactListPage.nameSelfButton)));
 			this.getWait().until(
 					ExpectedConditions.visibilityOfElementLocated(By
-							.name(contact)));
+							.name(IOSLocators.ContactListPage.nameSelfButton)));
 		} catch (WebDriverException ex) {
 		}
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(contact));
+				By.name(IOSLocators.ContactListPage.nameSelfButton));
 	}
 
 	@Override
