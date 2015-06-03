@@ -850,12 +850,12 @@ public final class BackendAPIWrappers {
 	}
 
 	public static void waitUntilContactsFound(ClientUser searchByUser,
-			String query, int expectedCount, boolean orMore, int timeout)
+			String query, int expectedCount, boolean orMore, int timeoutSeconds)
 			throws Exception {
 		tryLoginByUser(searchByUser);
-		long startTimestamp = (new Date()).getTime();
+		final long startTimestamp = System.currentTimeMillis();
 		int currentCount = -1;
-		while ((new Date()).getTime() <= startTimestamp + timeout * 1000) {
+		while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
 			final JSONObject searchResult = BackendREST.searchForContacts(
 					generateAuthToken(searchByUser), query);
 			if (searchResult.has("documents")
@@ -873,6 +873,29 @@ public final class BackendAPIWrappers {
 		throw new NoContactsFoundException(
 				String.format(
 						"%s contact(s) '%s' were not found within %s second(s) timeout",
-						expectedCount, query, timeout));
+						expectedCount, query, timeoutSeconds));
+	}
+
+	public static void waitUntilContactNotFound(ClientUser searchByUser,
+			String query, int timeoutSeconds) throws Exception {
+		tryLoginByUser(searchByUser);
+		final long startTimestamp = System.currentTimeMillis();
+		int currentCount = 0;
+		do {
+			final JSONObject searchResult = BackendREST.searchForContacts(
+					generateAuthToken(searchByUser), query);
+			if (searchResult.has("documents")
+					&& (searchResult.get("documents") instanceof JSONArray)) {
+				currentCount = searchResult.getJSONArray("documents").length();
+			}
+			if (currentCount <= 0) {
+				return;
+			}
+			Thread.sleep(1000);
+		} while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000);
+		throw new AssertionError(
+				String.format(
+						"%s contact(s) '%s' are still found after %s second(s) timeout",
+						currentCount, query, timeoutSeconds));
 	}
 }
