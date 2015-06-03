@@ -633,15 +633,17 @@ public class DriverUtils {
 		driver.resetApp();
 	}
 
-	public static void retryOnWhitePage(ZetaWebAppDriver driver, String url) {
+	public static void retryOnWhitePage(ZetaWebAppDriver driver, String url)
+			throws Exception {
 		if (isWhitePage(driver)) {
 			log.error("White page is shown! Reloading...");
 			driver.get(url);
 		}
 	}
 
-	private static boolean isWhitePage(ZetaWebAppDriver driver) {
-		return driver.findElement(By.cssSelector("body")).getText() == null
-				&& driver.findElement(By.cssSelector("body")).getText() == "";
+	private static boolean isWhitePage(ZetaWebAppDriver driver)
+			throws Exception {
+		return waitUntilElementClickable(driver,
+				driver.findElement(By.xpath("//body//*")));
 	}
 }
