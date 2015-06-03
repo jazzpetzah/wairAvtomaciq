@@ -124,7 +124,7 @@
 						<os.name>${os.name}</os.name>
 						<os.version>${os.version}</os.version>
 						<browser.name>${browser.name}</browser.name>
-						<browser.version>${browser.name}</browser.version>
+						<browser.version>${browser.version}</browser.version>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
