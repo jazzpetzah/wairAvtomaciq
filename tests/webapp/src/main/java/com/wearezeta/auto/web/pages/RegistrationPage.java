@@ -11,11 +11,11 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(RegistrationPage.class
 			.getSimpleName());
 
@@ -33,6 +33,9 @@ public class RegistrationPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssVerificationEmail)
 	private WebElement verificationEmail;
+	
+	@FindBy(css = WebAppLocators.RegistrationPage.cssSwitchToSignInButton)
+	private WebElement switchToSignInButton;
 
 	@FindBy(css = ".auth-page .has-error .form-control #wire-create-email")
 	private WebElement redDotOnEmailField;
@@ -40,40 +43,17 @@ public class RegistrationPage extends WebPage {
 	@FindBy(xpath = "//*[@data-uie-name='status-error']//div")
 	private WebElement errorMessage;
 
-	private static final int MAX_TRIES = 5;
-
 	public RegistrationPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
 		super(lazyDriver, url);
 	}
 
 	public LoginPage switchToLoginPage() throws Exception {
-		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
 		final By signInBtnlocator = By
 				.xpath(WebAppLocators.LoginPage.xpathSignInButton);
-		final By switchtoSignInBtnlocator = By
-				.xpath(WebAppLocators.RegistrationPage.xpathSwitchToSignInButton);
-		int ntry = 0;
-		// FIXME: temporary workaround for white page instead of landing issue
-		while (ntry < MAX_TRIES) {
-			try {
-				if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-						switchtoSignInBtnlocator, 2)) {
-					getDriver().findElement(switchtoSignInBtnlocator).click();
-				}
-				if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-						signInBtnlocator, 1)) {
-					break;
-				} else {
-					log.debug(String
-							.format("Trying to refresh currupted login page (retry %s of %s)...",
-									ntry + 1, MAX_TRIES));
-					this.getDriver().navigate().to(this.getUrl());
-				}
-			} catch (Exception e) {
-				this.getDriver().navigate().to(this.getUrl());
-			}
-			ntry++;
+		if (DriverUtils.waitUntilElementClickable(this.getDriver(),
+				switchToSignInButton)) {
+			switchToSignInButton.click();
 		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				signInBtnlocator) : "Sign in page is not visible";
