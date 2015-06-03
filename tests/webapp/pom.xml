@@ -120,12 +120,12 @@
 						<include>**/${TestRun}.java</include>
 					</includes>
 					<argLine>-Djava.library.path=../common/native_lib -Djava.awt.headless=true</argLine>
-					<systemPropertyVariable>
+					<systemPropertyVariables>
 						<os.name>${os.name}</os.name>
 						<os.version>${os.version}</os.version>
 						<browser.name>${browser.name}</browser.name>
 						<browser.version>${browser.name}</browser.version>
-					</systemPropertyVariable>
+					</systemPropertyVariables>
 				</configuration>
 			</plugin>
 			<plugin>
