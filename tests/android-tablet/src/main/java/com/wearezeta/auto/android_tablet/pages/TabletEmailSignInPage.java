@@ -29,7 +29,7 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 		getEmailSignInPage().setPassword(password);
 	}
 
-	public TabletConversationsListPage clickSignInButton() throws Exception {
+	public TabletConversationsListPage tapSignInButton() throws Exception {
 		final By loginButtonLocator = By.id(EmailSignInPage.idLoginButton);
 		getDriver().findElement(loginButtonLocator).click();
 		return new TabletConversationsListPage(getLazyDriver());
