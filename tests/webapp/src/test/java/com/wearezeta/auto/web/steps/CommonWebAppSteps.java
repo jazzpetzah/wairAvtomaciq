@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -922,12 +923,16 @@ public class CommonWebAppSteps {
 							ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 							TimeUnit.MILLISECONDS));
 				}
-				String info = "See more information on https://saucelabs.com/jobs/"
+				String link = "https://saucelabs.com/jobs/"
 						+ webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 								TimeUnit.MILLISECONDS).getSessionId();
-				log.error("log.error: " + info);
-				System.out.println("out: " + info);
-				System.err.println("err: " + info);
+				String html = "<html><body><a id='link' href='"
+						+ link
+						+ "'>See more information on "
+						+ link
+						+ "</a><script>window.location.href = document.getElementById('link').getAttribute('href');</script></body></html>";
+				scenario.embed(html.getBytes(Charset.forName("UTF-8")),
+						"text/html");
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			} finally {
