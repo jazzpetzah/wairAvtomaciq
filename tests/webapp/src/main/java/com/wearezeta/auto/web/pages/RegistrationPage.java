@@ -93,8 +93,8 @@ public class RegistrationPage extends WebPage {
 		createAccount.click();
 	}
 
-	public boolean isEnvelopeShown() {
-		return DriverUtils.isElementPresentAndDisplayed(verificationEnvelope);
+	public boolean isEnvelopeShown() throws Exception {
+		return DriverUtils.waitUntilElementClickable(getDriver(), verificationEnvelope);
 	}
 
 	public String getVerificationEmailAddress() {

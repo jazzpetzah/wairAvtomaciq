@@ -19,7 +19,6 @@ import com.wearezeta.auto.web.pages.PagesCollection;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -195,9 +194,10 @@ public class RegistrationPageSteps {
 	 * Checks if an icon is shown
 	 * 
 	 * @step. ^I verify that an envelope icon is shown$
+	 * @throws Exception 
 	 */
 	@Then("^I verify that an envelope icon is shown$")
-	public void IVerifyThatAnEnvelopeIconIsShown() {
+	public void IVerifyThatAnEnvelopeIconIsShown() throws Exception {
 		assertThat("Envelope icon not shown",
 				PagesCollection.registrationPage.isEnvelopeShown());
 	}
