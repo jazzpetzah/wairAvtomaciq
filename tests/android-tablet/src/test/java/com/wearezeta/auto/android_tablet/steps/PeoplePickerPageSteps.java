@@ -9,7 +9,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 
-public class TabletPeoplePickerPageSteps {
+public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection

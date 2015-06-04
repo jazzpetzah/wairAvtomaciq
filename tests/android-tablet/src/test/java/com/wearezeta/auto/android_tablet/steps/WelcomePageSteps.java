@@ -7,7 +7,7 @@ import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
-public class TabletWelcomePageSteps {
+public class WelcomePageSteps {
 	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
 			.getInstance();
 
