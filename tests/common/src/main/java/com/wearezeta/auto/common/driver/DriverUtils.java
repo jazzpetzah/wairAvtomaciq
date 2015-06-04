@@ -643,7 +643,6 @@ public class DriverUtils {
 
 	private static boolean isWhitePage(ZetaWebAppDriver driver)
 			throws Exception {
-		return waitUntilElementClickable(driver,
-				driver.findElement(By.xpath("//body//*")));
+		return driver.findElements(By.xpath("//body//*")).size() != 0;
 	}
 }
