@@ -158,39 +158,42 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 		log.debug(currentStep + " (status: " + arg0.getStatus() + ", time: "
 				+ (endDate - startDate) + "ms)");
+
 		// take screenshot
 		try {
-			final ZetaDriver driver = getDriver(arg0.getStatus().equals(
-					Result.FAILED));
-			if (driver != null) {
-				if (arg0.getStatus().equals(Result.SKIPPED.getStatus())) {
-					// Don't make screenshots for skipped steps to speed up
-					// suite execution
-					return;
-				}
-				Optional<BufferedImage> screenshot = DriverUtils
-						.takeFullScreenShot(driver);
-				if (!screenshot.isPresent()) {
-					log.info(String
-							.format("No screenshot could be taken for the step '%s' (skipped)",
-									currentStep));
-					return;
-				}
-				String picturePath = CommonUtils
-						.getPictureResultsPathFromConfig(this.getClass());
-				// FIXME: some characters in steps/captions may not be
-				// acceptable for file names
-				File outputfile = new File(picturePath + feature + "/"
-						+ scenario + "/" + currentStep + ".png");
+			if (CommonUtils.getMakeScreenshotsFromConfig(this.getClass())) {
+				final ZetaDriver driver = getDriver(arg0.getStatus().equals(
+						Result.FAILED));
+				if (driver != null) {
+					if (arg0.getStatus().equals(Result.SKIPPED.getStatus())) {
+						// Don't make screenshots for skipped steps to speed up
+						// suite execution
+						return;
+					}
+					Optional<BufferedImage> screenshot = DriverUtils
+							.takeFullScreenShot(driver);
+					if (!screenshot.isPresent()) {
+						log.info(String
+								.format("No screenshot could be taken for the step '%s' (skipped)",
+										currentStep));
+						return;
+					}
+					String picturePath = CommonUtils
+							.getPictureResultsPathFromConfig(this.getClass());
+					// FIXME: some characters in steps/captions may not be
+					// acceptable for file names
+					File outputfile = new File(picturePath + feature + "/"
+							+ scenario + "/" + currentStep + ".png");
 
-				if (!outputfile.getParentFile().exists()) {
-					outputfile.getParentFile().mkdirs();
+					if (!outputfile.getParentFile().exists()) {
+						outputfile.getParentFile().mkdirs();
+					}
+					ImageIO.write(screenshot.get(), "png", outputfile);
+				} else {
+					log.debug(String
+							.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
+									currentStep));
 				}
-				ImageIO.write(screenshot.get(), "png", outputfile);
-			} else {
-				log.debug(String
-						.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
-								currentStep));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

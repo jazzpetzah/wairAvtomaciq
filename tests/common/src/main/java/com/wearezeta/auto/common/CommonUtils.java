@@ -527,4 +527,9 @@ public class CommonUtils {
 			throws Exception {
 		return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");
 	}
+
+	public static boolean getMakeScreenshotsFromConfig(Class<?> c)
+			throws Exception {
+		return Boolean.valueOf(getValueFromCommonConfig(c, "makeScreenshots"));
+	}
 }
