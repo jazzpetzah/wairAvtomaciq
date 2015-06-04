@@ -5,7 +5,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
@@ -57,7 +57,7 @@ Feature: Search
     Given I Sign in using phone number or login <Login> and password <Password>
     # TODO: Address book upload
     And I dismiss alert
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I accept alert
@@ -115,7 +115,7 @@ Feature: Search
     Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -138,7 +138,7 @@ Feature: Search
     Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -163,7 +163,7 @@ Feature: Search
     Given User <Name> change accent color to <Color>
     Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
@@ -174,7 +174,7 @@ Feature: Search
     And I see message with max number of characters
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
-    When I open search by clicking plus button
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
@@ -196,7 +196,7 @@ Feature: Search
     Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -218,7 +218,7 @@ Feature: Search
     Given User <Name> blocks user <Contact>
     Given I Sign in using phone number or login <Login> and password <Password>
     When I dont see conversation <Contact> in contact list
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -242,7 +242,7 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend3>
     Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
 	And I see CONNECT label
@@ -264,7 +264,7 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend3>
     Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label
@@ -283,7 +283,7 @@ Feature: Search
     Given User <Contact> change name to <NewName>
     Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I wait until <LastName> exists in backend search results
     And I see People picker page 
     And I tap on Search input on People picker page
@@ -301,7 +301,7 @@ Feature: Search
     Given <Contact1> is connected to <Contact2>
     Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if CONNECT label is not there
     And I see CONNECT label

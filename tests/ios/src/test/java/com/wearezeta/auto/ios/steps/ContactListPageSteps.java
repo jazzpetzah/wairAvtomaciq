@@ -94,13 +94,13 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Open search by clicking plus button next to self name
+	 * Open search by taping on search field
 	 * 
-	 * @step. ^I open search by clicking plus button$
+	 * @step. ^I open search by taping on it$
 	 * @throws Exception
 	 */
-	@When("^I open search by clicking plus button$")
-	public void IOpenSearchByClickingPlus() throws Exception {
+	@When("^I open search by taping on it$")
+	public void IOpenSearchByTap() throws Exception {
 		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
 				.openSearch();
 	}
