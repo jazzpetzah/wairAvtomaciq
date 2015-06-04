@@ -28,7 +28,7 @@ public class ConversationsListPageSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see the [Cc]onversations list$")
+	@When("^I see (?:the )[Cc]onversations list$")
 	public void ISeeConversationsList() throws Exception {
 		getConversationsListPage().verifyConversationsListIsLoaded();
 	}
@@ -58,6 +58,21 @@ public class ConversationsListPageSteps {
 	}
 
 	/**
+	 * Tap the corresponding conversation is the list
+	 * 
+	 * @step. ^I tap conversation (.*)"
+	 * 
+	 * @param name
+	 *            conversation name
+	 * @throws Exception
+	 */
+	@When("^I tap (?:the )conversation (.*)")
+	public void ITapConversation(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		getConversationsListPage().tapConversation(name);
+	}
+
+	/**
 	 * Verify whether the particular conversation is visible in the
 	 * conversations list or not
 	 * 
@@ -69,7 +84,7 @@ public class ConversationsListPageSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I (do not )?see the conversation (.*) in my conversations list$")
+	@Then("^I (do not )?see (?:the )conversation (.*) in my conversations list$")
 	public void ISeeOrNotTheConversation(String shouldNotSee, String name)
 			throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);

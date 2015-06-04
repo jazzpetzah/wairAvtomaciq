@@ -110,12 +110,12 @@ public class CommonAndroidSteps {
 		}
 	}
 
-	private Boolean onDriverInitStarted() {
+	private boolean onDriverInitStarted() {
 		try {
 			AndroidCommonUtils.uploadPhotoToAndroid(PATH_ON_DEVICE);
 			AndroidCommonUtils.disableHints();
 			AndroidCommonUtils.disableHockeyUpdates();
-			String backendJSON = AndroidCommonUtils
+			final String backendJSON = AndroidCommonUtils
 					.createBackendJSON(CommonUtils.getBackendType(this
 							.getClass()));
 			AndroidCommonUtils.deployBackendFile(backendJSON);
@@ -671,8 +671,8 @@ public class CommonAndroidSteps {
 	@Given("^(.*) has an avatar picture from file (.*)$")
 	public void GivenUserHasAnAvatarPicture(String name, String picture)
 			throws Throwable {
-		String picturePath = CommonUtils
-				.getImagesPath(this.getClass()) + "/" + picture;
+		String picturePath = CommonUtils.getImagesPath(this.getClass()) + "/"
+				+ picture;
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
