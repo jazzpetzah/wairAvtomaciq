@@ -32,7 +32,6 @@ Feature: Menus
     And I click close settings page button
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -47,7 +46,6 @@ Feature: Menus
     And I click close settings page button
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
