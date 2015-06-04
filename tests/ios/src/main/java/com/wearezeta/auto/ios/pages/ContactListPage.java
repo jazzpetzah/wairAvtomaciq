@@ -65,6 +65,9 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialView)
 	private WebElement tutorialView;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameSelfButton)
+	private WebElement selfButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstInContactList)
 	private WebElement firstContactInList;
@@ -132,10 +135,8 @@ public class ContactListPage extends IOSPage {
 		element.click();
 	}
 
-	public PersonalInfoPage tapOnMyName(String name) throws Exception {
-		WebElement el = this.getDriver().findElementByXPath(
-				String.format(IOSLocators.xpathSelfName, name));
-		el.click();
+	public PersonalInfoPage tapOnMyName() throws Exception {
+		selfButton.click();
 
 		return new PersonalInfoPage(this.getLazyDriver());
 	}
@@ -579,22 +580,24 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean changeOfAccentColorIsVisible(String name) throws Exception {
-		BufferedImage changedAccentColorImage = null;
-		BufferedImage referenceImage = null;
-		double score = 0;
-		WebElement el = this.getDriver().findElementByXPath(
-				String.format(IOSLocators.xpathSelfName, name));
-		changedAccentColorImage = getElementScreenshot(el).orElseThrow(
-				IllegalStateException::new);
-		referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
-				+ "changedAccentColor.png");
-		score = ImageUtil.getOverlapScore(referenceImage,
-				changedAccentColorImage,
-				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		if (score >= MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE) {
-			return true;
-		}
-		return false;
+		
+		return false; //Needs refactoring, UI have changed
+//		BufferedImage changedAccentColorImage = null;
+//		BufferedImage referenceImage = null;
+//		double score = 0;
+//		WebElement el = this.getDriver().findElementByXPath(
+//				String.format(IOSLocators.xpathSelfName, name));
+//		changedAccentColorImage = getElementScreenshot(el).orElseThrow(
+//				IllegalStateException::new);
+//		referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+//				+ "changedAccentColor.png");
+//		score = ImageUtil.getOverlapScore(referenceImage,
+//				changedAccentColorImage,
+//				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+//		if (score >= MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE) {
+//			return true;
+//		}
+//		return false;
 	}
 
 }

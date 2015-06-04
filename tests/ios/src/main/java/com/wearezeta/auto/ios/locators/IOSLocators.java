@@ -32,7 +32,7 @@ public final class IOSLocators {
 	
 	public static final String xpathContactListCells = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
 	
-	public static final String xpathSelfName = "//UIAStaticText[@name='%s']";
+	public static final String nameSelfButton = "SelfButton";
 	
 	public static final String nameProfileSettingsButton = "SettingsButton";
 
