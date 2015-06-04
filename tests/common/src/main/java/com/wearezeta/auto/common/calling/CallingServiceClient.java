@@ -21,8 +21,8 @@ public class CallingServiceClient {
 				userAs.getPassword(),
 				BackendAPIWrappers.getConversationIdByName(userAs,
 						userTo.getName()),
-				CommonUtils.getBackendType(CallingServiceClient.class),
-				callBackend).getString("id");
+				CommonUtils.getBackendType(CallingServiceClient.class)
+						.toUpperCase(), callBackend).getString("id");
 	}
 
 	private static void waitForCallStatuses(String callId,
@@ -57,8 +57,8 @@ public class CallingServiceClient {
 
 	public static CallingServiceStatus getCallStatus(String instanceId)
 			throws Exception {
-		return CallingServiceStatus.fromString(CallingServiceREST.getCallStatus(
-				instanceId).getString("status"));
+		return CallingServiceStatus.fromString(CallingServiceREST
+				.getCallStatus(instanceId).getString("status"));
 	}
 
 	public static void stopCall(String callId) throws Exception {
@@ -76,10 +76,11 @@ public class CallingServiceClient {
 
 	public static String startWaitingInstance(ClientUser userAs,
 			CallingServiceBackend callBackend) throws Exception {
-		return CallingServiceREST.makeWaitingInstance(userAs.getEmail(),
+		return CallingServiceREST.makeWaitingInstance(
+				userAs.getEmail(),
 				userAs.getPassword(),
-				CommonUtils.getBackendType(CallingServiceClient.class),
-				callBackend).getString("id");
+				CommonUtils.getBackendType(CallingServiceClient.class)
+						.toUpperCase(), callBackend).getString("id");
 	}
 
 	private static void waitForInstanceStatuses(String instanceId,

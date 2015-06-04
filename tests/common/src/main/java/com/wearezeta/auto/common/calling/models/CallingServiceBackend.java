@@ -3,18 +3,7 @@ package com.wearezeta.auto.common.calling.models;
 import java.util.NoSuchElementException;
 
 public enum CallingServiceBackend {
-	Autocall("autocall"), Webdriver("webdriver"), Blender("blender");
-
-	private final String stringRepresentation;
-
-	private CallingServiceBackend(String name) {
-		this.stringRepresentation = name;
-	}
-
-	@Override
-	public String toString() {
-		return this.stringRepresentation;
-	}
+	AUTOCALL, WEBDRIVER, BLENDER;
 
 	public static CallingServiceBackend fromString(String stringRepresentation) {
 		for (CallingServiceBackend backend : CallingServiceBackend.values()) {
