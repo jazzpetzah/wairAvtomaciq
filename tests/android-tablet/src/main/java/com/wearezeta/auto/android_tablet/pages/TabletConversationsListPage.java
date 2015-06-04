@@ -74,4 +74,14 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
+	public void tapConversation(String name) throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.ContactListPage.xpathContactByName
+						.apply(name));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("The conversation '%s' does not exist in the conversations list",
+						name);
+		getDriver().findElement(locator).click();
+	}
+
 }

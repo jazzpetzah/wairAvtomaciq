@@ -44,9 +44,9 @@ public class ContactListPageSteps {
 
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws Exception {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+
 		PagesCollection.personalInfoPage = PagesCollection.contactListPage
-				.tapOnMyName(name);
+				.tapOnMyName();
 
 		PagesCollection.personalInfoPage.waitForEmailFieldVisible();
 	}
