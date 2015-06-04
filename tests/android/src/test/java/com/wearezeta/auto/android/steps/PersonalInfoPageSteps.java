@@ -302,7 +302,10 @@ public class PersonalInfoPageSteps {
 			final BufferedImage currentProfilePicture = getPersonalInfoPage()
 					.takeScreenshot().orElseThrow(AssertionError::new);
 			score = ImageUtil.getOverlapScore(currentProfilePicture,
-					previousProfilePicture);
+					previousProfilePicture, ImageUtil.RESIZE_NORESIZE);
+			if (score <= MAX_OVERLAP_SCORE) {
+				break;
+			}
 			Thread.sleep(3000);
 		} while (score > MAX_OVERLAP_SCORE
 				&& System.currentTimeMillis() - millisecondsStarted <= PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS * 1000);
