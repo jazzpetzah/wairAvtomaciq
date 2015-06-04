@@ -532,4 +532,8 @@ public class CommonUtils {
 			throws Exception {
 		return Boolean.valueOf(getValueFromCommonConfig(c, "makeScreenshots"));
 	}
+
+	public static boolean getInitNoteIpFromConfig(Class<?> c) throws Exception {
+		return Boolean.valueOf(getValueFromCommonConfig(c, "initNodeIp"));
+	}
 }

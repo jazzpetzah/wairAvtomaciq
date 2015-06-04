@@ -18,6 +18,7 @@ import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 @SuppressWarnings("deprecation")
@@ -32,14 +33,17 @@ public class ZetaWebAppDriver extends RemoteWebDriver implements ZetaDriver {
 	public ZetaWebAppDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
 		try {
-			initNodeIp(remoteAddress);
+			if (CommonUtils.getInitNoteIpFromConfig(this.getClass())) {
+				initNodeIp(remoteAddress);
+				log.debug(String
+						.format("Current Selenium node ip address is '%s'",
+								this.nodeIp));
+			}
 		} catch (JSONException e) {
 			// keep node ip unchanged
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		log.debug(String.format("Current Selenium node ip address is '%s'",
-				this.nodeIp));
 		sessionHelper = new SessionHelper();
 	}
 
