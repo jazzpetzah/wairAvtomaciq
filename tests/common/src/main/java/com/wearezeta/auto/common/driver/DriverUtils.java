@@ -640,7 +640,7 @@ public class DriverUtils {
 		driver.resetApp();
 	}
 
-	public static void retryOnWhitePage(ZetaWebAppDriver driver, String url)
+	public static void retryOnWhitePage(RemoteWebDriver driver, String url)
 			throws Exception {
 		if (isWhitePage(driver)) {
 			log.error("White page is shown! Reloading...");
@@ -648,9 +648,27 @@ public class DriverUtils {
 		}
 	}
 
-	private static boolean isWhitePage(ZetaWebAppDriver driver)
+	private static boolean isWhitePage(RemoteWebDriver driver)
 			throws Exception {
 		return driver.findElements(By.xpath("//body//*")).size() != 0;
+	}
+
+	/**
+	 * http://www.obeythetestinggoat.com/how-to-get-selenium-to-wait-for-page-load-after-a-click.html
+	 */
+	public static void waitForPageToLoad(RemoteWebDriver driver)
+			throws Exception {
+		DriverUtils.turnOffImplicitWait(driver);
+		try {
+			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
+					.withTimeout(20, TimeUnit.SECONDS)
+					.pollingEvery(1, TimeUnit.SECONDS)
+					.ignoring(NoSuchElementException.class);
+			wait.until(ExpectedConditions.stalenessOf(driver
+					.findElementByTagName("body")));
+		} finally {
+			restoreImplicitWait(driver);
+		}
 	}
 
 }
