@@ -51,3 +51,21 @@ Feature: Self Profile
     Examples: 
       | Login      | Password      | Name      | NewName     | Contact   |
       | user1Email | user1Password | user1Name | NewTestName | user2Name |
+ 
+  @staging @id201
+  Scenario Outline: Change user picture with front camera
+    Given There is 1 user where <Name> is me
+    Given I Sign in using login <Login> and password <Password>
+    Given I see Contact list
+    When I tap on my avatar
+    And I tap on personal info screen
+    And I remember my current profile picture
+    And I tap change photo button
+    And I take new avatar picture
+    And I press Confirm button
+    And I tap on personal info screen
+    Then I verify that my current profile picture is different from the previous one
+
+    Examples: 
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

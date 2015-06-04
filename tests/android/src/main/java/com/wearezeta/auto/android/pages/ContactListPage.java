@@ -319,37 +319,6 @@ public class ContactListPage extends AndroidPage {
 		confirmShareButton.click();
 	}
 
-	public void shareURLFromNativeBrowser() throws Exception {
-		List<WebElement> imageButtonElements = this.getDriver()
-				.findElementsByClassName(
-						AndroidLocators.Browsers.nameNativeBrowserMenuButton);
-		for (WebElement imageButton : imageButtonElements) {
-			if (imageButton.getAttribute("name").equals("More options")) {
-				imageButton.click();
-			}
-		}
-		List<WebElement> textViewElements = this
-				.getDriver()
-				.findElementsByClassName(
-						AndroidLocators.Browsers.nameNativeBrowserMoreOptionsButton);
-		for (WebElement textView : textViewElements) {
-			if (textView.getAttribute("text").equals("Share page")) {
-				textView.click();
-				break;
-			}
-		}
-		List<WebElement> textElements = this
-				.getDriver()
-				.findElementsByClassName(
-						AndroidLocators.Browsers.nameNativeBrowserShareWireButton);
-		for (WebElement textView : textElements) {
-			if (textView.getAttribute("text").equals("Wire")) {
-				textView.click();
-			}
-		}
-		conversationShareOption.click();
-	}
-
 	public PersonalInfoPage tapOnMyAvatar() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				selfUserAvatar);
