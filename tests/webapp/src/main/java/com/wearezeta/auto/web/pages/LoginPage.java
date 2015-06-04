@@ -136,7 +136,9 @@ public class LoginPage extends WebPage {
 		return new RegistrationPage(this.getLazyDriver(), this.getUrl());
 	}
 
-	public String getErrorMessage() {
+	public String getErrorMessage() throws InterruptedException, Exception {
+		// wait 500 milliseconds because sometimes it takes longer
+		getDriver().wait(500);
 		return loginErrorText.getText();
 	}
 
