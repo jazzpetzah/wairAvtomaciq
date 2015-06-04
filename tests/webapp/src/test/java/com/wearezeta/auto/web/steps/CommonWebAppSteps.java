@@ -312,7 +312,7 @@ public class CommonWebAppSteps {
 		webdrivers.put(uniqueName, lazyWebDriver);
 		lazyWebDriver.get().get(path);
 		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver, path);
-		PagesCollection.registrationPage.switchToLoginPage();
+		PagesCollection.loginPage = PagesCollection.registrationPage.switchToLoginPage();
 		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
 
