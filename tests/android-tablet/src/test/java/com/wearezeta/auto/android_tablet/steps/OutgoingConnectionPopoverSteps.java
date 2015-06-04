@@ -9,7 +9,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class OutgoingPopoverContainerSteps {
+public class OutgoingConnectionPopoverSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection

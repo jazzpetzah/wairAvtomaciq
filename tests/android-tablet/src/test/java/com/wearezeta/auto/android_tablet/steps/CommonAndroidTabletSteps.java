@@ -34,7 +34,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
-public class CommonAndroidSteps {
+public class CommonAndroidTabletSteps {
 	static {
 		System.setProperty("org.apache.commons.logging.Log",
 				"org.apache.commons.logging.impl.SimpleLog");
@@ -47,7 +47,7 @@ public class CommonAndroidSteps {
 			.getInstance();
 
 	private static final Logger log = ZetaLogger
-			.getLog(CommonAndroidSteps.class.getSimpleName());
+			.getLog(CommonAndroidTabletSteps.class.getSimpleName());
 
 	public static LogcatListener listener = new LogcatListener();
 
@@ -61,12 +61,12 @@ public class CommonAndroidSteps {
 
 	private static String getUrl() throws Exception {
 		return CommonUtils
-				.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
+				.getAndroidAppiumUrlFromConfig(CommonAndroidTabletSteps.class);
 	}
 
 	private static String getPath() throws Exception {
 		return CommonUtils
-				.getAndroidApplicationPathFromConfig(CommonAndroidSteps.class);
+				.getAndroidApplicationPathFromConfig(CommonAndroidTabletSteps.class);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -243,6 +243,11 @@ public class CommonAndroidSteps {
 	public void ISwipeRight() throws Exception {
 		pagesCollection.getCommonPage().swipeRightCoordinates(
 				DEFAULT_SWIPE_TIME);
+	}
+
+	@When("^I navigate back$")
+	public void INavigateBack() throws Exception {
+		pagesCollection.getCommonPage().navigateBack();
 	}
 
 	@When("^I swipe left$")
