@@ -49,20 +49,16 @@ public class RegistrationPage extends WebPage {
 	}
 
 	public LoginPage switchToLoginPage() throws Exception {
-		this.getDriver().navigate().to(this.getUrl());
 		DriverUtils.waitForPageToLoad(this.getDriver());
-		DriverUtils.retryOnWhitePage(this.getDriver(), this.getUrl());
 
-		final By signInBtnlocator = By
-				.xpath(WebAppLocators.LoginPage.xpathSignInButton);
 		if (DriverUtils.waitUntilElementClickable(this.getDriver(),
 				switchToSignInButton)) {
 			switchToSignInButton.click();
+		} else {
+			DriverUtils.retryOnWhitePage(this.getDriver(), this.getUrl());
 		}
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				signInBtnlocator) : "Sign in page is not visible";
 
-		return new LoginPage(this.getLazyDriver(), this.getUrl());
+		return new LoginPage(this.getLazyDriver(), this.getDriver().getCurrentUrl());
 	}
 
 	private void removeReadonlyAttr(String cssLocator) throws Exception {

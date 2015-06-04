@@ -58,9 +58,6 @@ public class LoginPageSteps {
 		}
 		log.debug("Starting to Sign in using login " + login + " and password "
 				+ password);
-
-		PagesCollection.loginPage = PagesCollection.registrationPage
-				.switchToLoginPage();
 		this.IEnterEmail(login);
 		this.IEnterPassword(password);
 		this.IPressSignInButton();
