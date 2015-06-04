@@ -142,7 +142,7 @@ public class LoginPage extends WebPage {
 	}
 
 	public String getErrorMessage() throws InterruptedException, Exception {
-		getDriver().findElement(
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.xpath(WebAppLocators.LoginPage.xpathLoginErrorText));
 		return loginErrorText.getText();
 	}
