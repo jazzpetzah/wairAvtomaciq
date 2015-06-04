@@ -34,7 +34,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
-public class TabletCommonAndroidSteps {
+public class CommonAndroidSteps {
 	static {
 		System.setProperty("org.apache.commons.logging.Log",
 				"org.apache.commons.logging.impl.SimpleLog");
@@ -47,7 +47,7 @@ public class TabletCommonAndroidSteps {
 			.getInstance();
 
 	private static final Logger log = ZetaLogger
-			.getLog(TabletCommonAndroidSteps.class.getSimpleName());
+			.getLog(CommonAndroidSteps.class.getSimpleName());
 
 	public static LogcatListener listener = new LogcatListener();
 
@@ -61,12 +61,12 @@ public class TabletCommonAndroidSteps {
 
 	private static String getUrl() throws Exception {
 		return CommonUtils
-				.getAndroidAppiumUrlFromConfig(TabletCommonAndroidSteps.class);
+				.getAndroidAppiumUrlFromConfig(CommonAndroidSteps.class);
 	}
 
 	private static String getPath() throws Exception {
 		return CommonUtils
-				.getAndroidApplicationPathFromConfig(TabletCommonAndroidSteps.class);
+				.getAndroidApplicationPathFromConfig(CommonAndroidSteps.class);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -3,7 +3,7 @@ package com.wearezeta.auto.android_tablet.steps;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class TabletDialogPageSteps {
+public class DialogPageSteps {
 
 	// private final ClientUsersManager usrMgr =
 	// ClientUsersManager.getInstance();

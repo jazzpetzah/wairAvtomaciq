@@ -9,7 +9,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class TabletConversationsListPageSteps {
+public class ConversationsListPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
@@ -24,11 +24,11 @@ public class TabletConversationsListPageSteps {
 	/**
 	 * Wait until conversations list is fully loaded and successful load
 	 * 
-	 * @step. ^I see ?(the )[Cc]onversations list$
+	 * @step. ^I see the [Cc]onversations list$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see ?(the )[Cc]onversations list$")
+	@When("^I see the [Cc]onversations list$")
 	public void ISeeConversationsList() throws Exception {
 		getConversationsListPage().verifyConversationsListIsLoaded();
 	}

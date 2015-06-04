@@ -45,8 +45,13 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 		getAndroidPeoplePickerPage().typeTextInPeopleSearch(searchCriteria);
 	}
 
-	public void tapFoundItem(String item) {
-		// TODO Auto-generated method stub
-		
+	public void tapFoundItem(String item) throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContactByName
+						.apply(item));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("The item '%s' is not visible in People Picker search list after the defualt timeout expired",
+						item);
+		getDriver().findElement(locator).click();
 	}
 }
