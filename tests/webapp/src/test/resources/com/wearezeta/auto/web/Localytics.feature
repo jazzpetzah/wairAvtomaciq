@@ -34,6 +34,7 @@ Feature: Localytics
   Scenario Outline: Verify 'regAddedPicture:source=fromPhotoLibrary' stats
     Given I take snapshot of <AttrName> attribute count
     Given There is 1 user where <Name> is me without avatar picture
+    Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see Self Picture Upload dialog
     And I choose <PictureName> as my self picture on Self Picture Upload dialog
@@ -48,6 +49,7 @@ Feature: Localytics
   Scenario Outline: Verify 'regAddedPicture:source=fromCarousel' stats
     Given I take snapshot of <AttrName> attribute count
     Given There is 1 user where <Name> is me without avatar picture
+    Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see Self Picture Upload dialog
     And I force carousel mode on Self Picture Upload dialog
@@ -71,6 +73,7 @@ Feature: Localytics
   Scenario Outline: Verify 'uploadedContacts:source=Gmail' stats
     Given I take snapshot of <AttrName> attribute count
     Given There is 1 user where <Name> is me without avatar picture
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see Self Picture Upload dialog
     And I choose <PictureName> as my self picture on Self Picture Upload dialog
@@ -97,6 +100,7 @@ Feature: Localytics
   Scenario Outline: Verify 'session:connectRequestsSentActual=1' stats
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I wait until <ContactEmail> exists in backend search results
@@ -118,6 +122,7 @@ Feature: Localytics
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given I sent connection request to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I see Contact list with name <Contact>
@@ -132,6 +137,7 @@ Feature: Localytics
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I see connection request from one user
@@ -146,6 +152,7 @@ Feature: Localytics
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to Me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I see connection request from one user
@@ -163,6 +170,7 @@ Feature: Localytics
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -179,6 +187,7 @@ Feature: Localytics
     Given I take snapshot of <AttrName> attribute count
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I wait for 65 seconds
@@ -192,6 +201,7 @@ Feature: Localytics
     Given I take snapshot of <AttrName> attribute count
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -223,6 +233,7 @@ Feature: Localytics
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
     Given Myself has group chat <ChatName2> with <Contact2>,<Contact3>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I wait for 65 seconds
@@ -236,6 +247,7 @@ Feature: Localytics
     Given I take snapshot of session:incomingCallsMutedActual=1 attribute count
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When <Contact> calls me using <CallBackend>
@@ -254,6 +266,7 @@ Feature: Localytics
     Given I take snapshot of session:incomingCallsAcceptedActual=1 attribute count
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When <Contact> calls me using <CallBackend>
@@ -270,6 +283,7 @@ Feature: Localytics
     Given I take snapshot of session:voiceCallsInitiatedActual=1 attribute count
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
@@ -320,6 +334,7 @@ Feature: Localytics
     Given <Contact> is connected to Me
     Given <Contact> starts waiting instance using <OutCallBackend>
     Given <Contact> accepts next incoming call automatically
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>

@@ -7,6 +7,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -34,6 +35,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -59,6 +61,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -78,6 +81,7 @@ Feature: Calling
     Given My browser does not support calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -103,6 +107,7 @@ Feature: Calling
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
@@ -121,6 +126,7 @@ Feature: Calling
   Scenario Outline: Missed call notification (adressee)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open self profile
@@ -143,6 +149,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     When <Contact> calls me using <CallBackend>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -161,6 +168,7 @@ Feature: Calling
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<OtherContact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -184,6 +192,7 @@ Feature: Calling
     Given Myself is connected to <Contact>,<OtherContact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>

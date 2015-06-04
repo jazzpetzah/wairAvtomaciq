@@ -4,6 +4,7 @@ Feature: Connect
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I see connection request from one user
@@ -20,6 +21,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <UnknownContact> sent connection request to me
     Given User me change accent color to VividRed
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see connection request from one user
     When I open the list of incoming connection requests
@@ -38,6 +40,7 @@ Feature: Connect
   @smoke @id1571
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -58,6 +61,7 @@ Feature: Connect
   @smoke @id2043
   Scenario Outline: Verify 1to1 conversation is successfully created for sender end after connection is accepted
     Given There are 2 users where <Name> is me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -74,7 +78,6 @@ Feature: Connect
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And User <Name2> is me
-    And I switch to Sign In page
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
     And I see my avatar on top of Contact list
@@ -86,7 +89,6 @@ Feature: Connect
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And User <Name> is me
-    And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -101,6 +103,7 @@ Feature: Connect
   @regression @id1553
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
@@ -129,7 +132,6 @@ Feature: Connect
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And User <Name> is me
-    And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -143,6 +145,7 @@ Feature: Connect
   Scenario Outline: Verify you can block a person from profile view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -164,6 +167,7 @@ Feature: Connect
     Given <Contact> is connected to Me,<Contact2>
     Given <Contact> has group chat <ChatName> with Me,<Contact2>
     Given I sent connection request to <Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -184,6 +188,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open conversation with <Contact1>
@@ -198,7 +203,6 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
@@ -210,7 +214,6 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And User <Name> is me
@@ -228,7 +231,8 @@ Feature: Connect
     Given Contact <User2> sends image <Picture1> to single user conversation <User1>
     Given <User2> pinged the conversation with <User1>
     Given User <User2> sent message <Msg1> to conversation <User1>
-    When I Sign in using login <User1> and password <User1Password>
+    Given I switch to Sign In page
+    Given I Sign in using login <User1> and password <User1Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <User2>
     Then I see text message <Msg1>
@@ -266,6 +270,7 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact2>
     Given There are suggestions for user <Me> on backend
+    Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     And I see my avatar on top of Contact list
     When I open People Picker from Contact List
@@ -284,6 +289,7 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact2>
     Given There are suggestions for user <Me> on backend
+    Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     Given I see my avatar on top of Contact list
     When I open People Picker from Contact List
@@ -302,6 +308,7 @@ Feature: Connect
     Given There is 2 user where <Me> is me
     Given User <Me> has contact <Contact> in address book
     Given User <Contact> has contact <Me> in address book
+    Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
@@ -318,6 +325,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
     Given Myself is connected to <Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I open People Picker from Contact List
     And I wait for 2 seconds
