@@ -138,7 +138,7 @@ public class LoginPage extends WebPage {
 
 	public String getErrorMessage() throws InterruptedException, Exception {
 		// wait 500 milliseconds because sometimes it takes longer
-		getDriver().wait(500);
+		Thread.sleep(500);
 		return loginErrorText.getText();
 	}
 
