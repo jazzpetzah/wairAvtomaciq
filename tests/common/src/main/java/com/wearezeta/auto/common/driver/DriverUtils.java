@@ -556,6 +556,13 @@ public class DriverUtils {
 		js.executeScript(addHoverClassScript, element);
 	}
 
+	public static void removeClass(RemoteWebDriver driver, WebElement element,
+			String cssClass) {
+		String script = "arguments[0].classList.remove('" + cssClass + "');";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(script, element);
+	}
+
 	public static void turnOffImplicitWait(RemoteWebDriver driver) {
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
 	}
@@ -645,4 +652,5 @@ public class DriverUtils {
 			throws Exception {
 		return driver.findElements(By.xpath("//body//*")).size() != 0;
 	}
+
 }
