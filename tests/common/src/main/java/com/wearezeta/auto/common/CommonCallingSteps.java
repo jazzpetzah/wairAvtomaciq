@@ -74,8 +74,8 @@ public final class CommonCallingSteps {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
 		final String callId = CallingServiceClient.callToUser(userAs, userTo,
 				CallingServiceBackend.fromString(callingServiceBackend),
-				new CallingServiceStatus[] { CallingServiceStatus.Ready,
-						CallingServiceStatus.Active },
+				new CallingServiceStatus[] { CallingServiceStatus.READY,
+						CallingServiceStatus.ACTIVE },
 				CALL_START_TIMEOUT_SECONDS);
 		final String callKey = makeKey(userAs, userTo);
 		if (callsMapping.containsKey(callKey)) {
@@ -136,7 +136,7 @@ public final class CommonCallingSteps {
 			CallingServiceClient
 					.stopCall(
 							callId,
-							new CallingServiceStatus[] { CallingServiceStatus.Inactive },
+							new CallingServiceStatus[] { CallingServiceStatus.INACTIVE },
 							CALL_END_TIMEOUT_SECONDS);
 		}
 	}
@@ -171,7 +171,7 @@ public final class CommonCallingSteps {
 		final String instanceId = CallingServiceClient.startWaitingInstance(
 				userAs,
 				CallingServiceBackend.fromString(callingServiceBackend),
-				new CallingServiceStatus[] { CallingServiceStatus.Ready },
+				new CallingServiceStatus[] { CallingServiceStatus.READY },
 				INSTANCE_START_TIMEOUT_SECONDS);
 		final String instanceKey = makeKey(userAs);
 		if (waitingInstancesMapping.containsKey(instanceKey)) {
@@ -223,7 +223,7 @@ public final class CommonCallingSteps {
 			CallingServiceClient
 					.stopWaitingInstance(
 							instanceId,
-							new CallingServiceStatus[] { CallingServiceStatus.Inactive },
+							new CallingServiceStatus[] { CallingServiceStatus.INACTIVE },
 							INSTANCE_END_TIMEOUT_SECONDS);
 		}
 	}

@@ -124,7 +124,7 @@ public class Step {
             		Util.result(getStatus())
             			+ "<span class=\"step-keyword\">" + keyword + " </span>"
             			+ "<span class=\"step-name\">" + name + "</span>"
-            			+ (doShowScreenshot?"<a class=\"step-show-screenshot\" onclick=\"javascript:showHide('scr " + getRawName() + "" + screenshotIndex + "', this);\">Show Screenshot</a>":"")
+            			+ (doShowScreenshot?"<a class=\"step-show-screenshot\" onclick=\"javascript:showHide('scr " + getRawName().replaceAll("\\W+", "_") + "" + screenshotIndex + "', this);\">Show Screenshot</a>":"")
             			+ "<span class=\"step-duration\">" + Util.formatDuration(result.getDuration()) + "</span>"
             			+ "<div class=\"step-error-message\"><pre>" + formatError(errorMessage) + "</pre></div>";
             content += Util.closeDiv() + getImageTags();
@@ -155,7 +155,7 @@ public class Step {
             		Util.result(getStatus())
             			+ "<span class=\"step-keyword\">" + keyword + " </span>"
             			+ "<span class=\"step-name\">" + name + "</span>"
-            			+ (doShowScreenshot?"<a class=\"step-show-screenshot\" onclick=\"javascript:showHide('scr " + getRawName() + "" + screenshotIndex + "', this);\">Show Screenshot</a>":"")
+            			+ (doShowScreenshot?"<a class=\"step-show-screenshot\" onclick=\"javascript:showHide('scr " + getRawName().replaceAll("\\W+", "_") + "" + screenshotIndex + "', this);\">Show Screenshot</a>":"")
             			+ "<span class=\"step-duration\">" + Util.formatDuration(result.getDuration()) + "</span>"
             			+ "<div class=\"step-error-message\"><pre>" + formatError(errorMessage) + "</pre>";
             if (doShowScreenshot) {
@@ -176,7 +176,7 @@ public class Step {
         String content = Util.result(getStatus())
                 + "<span class=\"step-keyword\">" + keyword + "</span>"
         		+ "<span class=\"step-name\">" + name + "</span>"
-        		+ "<a class=\"step-show-screenshot\" onclick=\"javascript:showHide('scr " + getRawName() + "" + screenshotIndex + "', this);\">Show Screenshot</a>"
+        		+ "<a class=\"step-show-screenshot\" onclick=\"javascript:showHide('scr " + getRawName().replaceAll("\\W+", "_") + "" + screenshotIndex + "', this);\">Show Screenshot</a>"
                 + "<span class=\"step-duration\">" + Util.formatDuration(result.getDuration()) + "</span>"
                 + Util.closeDiv() + getImageTags();
 
@@ -187,7 +187,7 @@ public class Step {
         String content = Util.result(getStatus())
                 + "<span class=\"step-keyword\">" + keyword + "</span>"
         		+ "<span class=\"step-name\">" + name + "</span>"
-        		+ "<a class=\"step-show-screenshot\" onclick=\"javascript:showHide('scr " + getRawName() + "" + screenshotIndex + "', this);\">Show Screenshot</a>"
+        		+ "<a class=\"step-show-screenshot\" onclick=\"javascript:showHide('scr " + getRawName().replaceAll("\\W+", "_") + "" + screenshotIndex + "', this);\">Show Screenshot</a>"
                 + "<span class=\"step-duration\">" + Util.formatDuration(result.getDuration()) + "</span>"
                 + addScreenshotTags(feature, scenario)
                 + Util.closeDiv() + getImageTags();
@@ -197,9 +197,9 @@ public class Step {
     
     private String addScreenshotTags(String feature, String scenario) {
     	String tags = "";
-    	tags += "<div class=\"step-screenshot\" id=\"scr " + getRawName() + "" + screenshotIndex + "\"><center>"
-    		+ "<a href=\"Images/" + feature + "/" + scenario + "/" + getRawName() + ".png\" target=\"_blank\">"
-    		+ "<img src=\"Images/" + feature + "/" + scenario + "/" + getRawName() + ".png\" width=\"30%\" height=\"30%\" />"
+    	tags += "<div class=\"step-screenshot\" id=\"scr " + getRawName().replaceAll("\\W+", "_") + "" + screenshotIndex + "\"><center>"
+    		+ "<a href=\"Images/" + feature + "/" + scenario + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" target=\"_blank\">"
+    		+ "<img src=\"Images/" + feature + "/" + scenario + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" width=\"30%\" height=\"30%\" />"
     		+ "</a>"
   	  		+ "</center></div>";
   		return tags;

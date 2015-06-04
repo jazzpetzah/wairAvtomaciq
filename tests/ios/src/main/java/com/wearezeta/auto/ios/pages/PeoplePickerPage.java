@@ -26,7 +26,7 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.namePickerSearch)
 	private WebElement peoplePickerSearch;
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePickerClearButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPickerClearButton)
 	private WebElement peoplePickerClearBtn;
 
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameContactListNames)
@@ -58,6 +58,9 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameShareButton)
 	private WebElement shareButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameNotNowButton)
+	private WebElement notNowButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameContinueUploadButton)
 	private WebElement continueButton;
@@ -99,16 +102,20 @@ public class PeoplePickerPage extends IOSPage {
 		maybeLaterButton.click();
 	}
 
+	public void clickNotNowButton() {
+		notNowButton.click();
+	}
+
 	public void clickLaterButton() throws Exception {
 		for (int i = 0; i < 3; i++) {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.nameShareButton), 3)) {
+					By.name(IOSLocators.PeoplePickerPage.nameNotNowButton), 3)) {
 				if (i > 0) {
 					this.minimizeApplication(3);
 				}
 				getWait().until(
-						ExpectedConditions.elementToBeClickable(shareButton));
-				DriverUtils.mobileTapByCoordinates(getDriver(), shareButton);
+						ExpectedConditions.elementToBeClickable(notNowButton));
+				notNowButton.click();
 				break;
 			}
 		}
@@ -116,7 +123,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public Boolean isPeoplePickerPageVisible() throws Exception {
 		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.namePickerClearButton));
+				By.name(IOSLocators.namePickerSearch));
 		Thread.sleep(1000);
 		clickLaterButton();
 		return result;
@@ -197,16 +204,13 @@ public class PeoplePickerPage extends IOSPage {
 
 	public void swipeToRevealHideSuggestedContact(String contact)
 			throws Exception {
-		List<WebElement> collectionElements = this.getDriver()
-				.findElementsByClassName(IOSLocators.nameSuggestedContactType);
-		for (WebElement collectionElement : collectionElements) {
-			if (!collectionElement.findElements(By.name(contact.toLowerCase()))
-					.isEmpty()) {
-				DriverUtils.swipeRight(this.getDriver(), collectionElement,
-						500, 50, 50);
-				break;
-			}
-		}
+		WebElement contactToSwipe = this
+				.getDriver()
+				.findElement(
+						By.xpath(String
+								.format(IOSLocators.PeoplePickerPage.xpathSuggestedContactToSwipe,
+										contact)));
+		DriverUtils.swipeRight(this.getDriver(), contactToSwipe, 500, 50, 50);
 	}
 
 	public void swipeCompletelyToDismissSuggestedContact(String contact)
@@ -223,28 +227,19 @@ public class PeoplePickerPage extends IOSPage {
 		}
 	}
 
-	public void tapHideSuggestedContact() throws Exception {
-		List<WebElement> buttonElements = this.getDriver()
-				.findElementsByClassName(
-						IOSLocators.nameHideSuggestedContactButtonType);
-		for (WebElement buttonElement : buttonElements) {
-			if (buttonElement.getLocation().x > 0
-					&& buttonElement.getAttribute("name").equals(
-							IOSLocators.nameHideSuggestedContactButton)) {
-				buttonElement.click();
-			}
-		}
+	public void tapHideSuggestedContact(String contact) throws Exception {
+		WebElement hideButtonforContact = this.getDriver().findElement(
+				By.xpath(String.format(
+						IOSLocators.PeoplePickerPage.xpathHideButtonForContact,
+						contact)));
+		hideButtonforContact.click();
 	}
 
 	public boolean isSuggestedContactVisible(String contact) throws Exception {
-		List<WebElement> textElements = this.getDriver()
-				.findElementsByClassName("UIAStaticText");
-		for (WebElement textElement : textElements) {
-			if (textElement.getText().toLowerCase().equals(contact)) {
-				return true;
-			}
-		}
-		return false;
+
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(String.format(
+										IOSLocators.PeoplePickerPage.xpathSuggestedContact,
+										contact)), 2);
 	}
 
 	public boolean isAddToConversationBtnVisible() throws Exception {

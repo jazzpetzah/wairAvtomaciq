@@ -6,10 +6,11 @@ Feature: Search
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
+    And I wait until <Contact> exists in backend search results
     When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in search field user name to connect to <Contact>
+    And I enter "<Contact>" into Search input on People Picker page
     Then I see user <Contact> in People picker
 
     Examples: 
@@ -26,7 +27,7 @@ Feature: Search
     When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in search field user name to connect to <GroupChatName>
+    And I enter "<GroupChatName>" into Search input on People Picker page
     Then I see group <GroupChatName> in People picker
 
     Examples: 
@@ -128,7 +129,7 @@ Feature: Search
     When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in search field user name to connect to <Contact1>
+    And I enter "<Contact1>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact1>
     And I add in search field user name to connect to <Contact2>
     And I tap on user name found on People picker page <Contact2>

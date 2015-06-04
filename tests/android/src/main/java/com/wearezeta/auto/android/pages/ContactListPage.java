@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.locators.AndroidLocators.CommonLocators;
@@ -108,7 +107,6 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public void waitForConversationListLoad() throws Exception {
-		getWait().until(ExpectedConditions.visibilityOf(contactListFrame));
 		verifyContactListIsFullyLoaded();
 	}
 
@@ -223,9 +221,6 @@ public class ContactListPage extends AndroidPage {
 
 		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
-		// TODO: we need this as sometimes we see people picker after login
-		PagesCollection.peoplePickerPage = new PeoplePickerPage(
-				this.getLazyDriver());
 		return this;
 	}
 
@@ -322,37 +317,6 @@ public class ContactListPage extends AndroidPage {
 		}
 		conversationShareOption.click();
 		confirmShareButton.click();
-	}
-
-	public void shareURLFromNativeBrowser() throws Exception {
-		List<WebElement> imageButtonElements = this.getDriver()
-				.findElementsByClassName(
-						AndroidLocators.Browsers.nameNativeBrowserMenuButton);
-		for (WebElement imageButton : imageButtonElements) {
-			if (imageButton.getAttribute("name").equals("More options")) {
-				imageButton.click();
-			}
-		}
-		List<WebElement> textViewElements = this
-				.getDriver()
-				.findElementsByClassName(
-						AndroidLocators.Browsers.nameNativeBrowserMoreOptionsButton);
-		for (WebElement textView : textViewElements) {
-			if (textView.getAttribute("text").equals("Share page")) {
-				textView.click();
-				break;
-			}
-		}
-		List<WebElement> textElements = this
-				.getDriver()
-				.findElementsByClassName(
-						AndroidLocators.Browsers.nameNativeBrowserShareWireButton);
-		for (WebElement textView : textElements) {
-			if (textView.getAttribute("text").equals("Wire")) {
-				textView.click();
-			}
-		}
-		conversationShareOption.click();
 	}
 
 	public PersonalInfoPage tapOnMyAvatar() throws Exception {
