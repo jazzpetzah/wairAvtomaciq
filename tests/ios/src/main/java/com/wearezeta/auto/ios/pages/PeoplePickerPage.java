@@ -26,7 +26,7 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.namePickerSearch)
 	private WebElement peoplePickerSearch;
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePickerClearButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPickerClearButton)
 	private WebElement peoplePickerClearBtn;
 
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameContactListNames)
