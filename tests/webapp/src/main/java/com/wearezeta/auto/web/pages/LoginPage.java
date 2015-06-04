@@ -47,6 +47,11 @@ public class LoginPage extends WebPage {
 	@FindBy(css = ".auth-page .has-error .form-control #wire-password")
 	private WebElement redDotOnPasswordField;
 
+	public LoginPage(Future<ZetaWebAppDriver> lazyDriver)
+			throws Exception {
+		super(lazyDriver);
+	}
+
 	public LoginPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
 		super(lazyDriver, url);
