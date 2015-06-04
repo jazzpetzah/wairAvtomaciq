@@ -310,7 +310,8 @@ public class CommonWebAppSteps {
 		final Future<ZetaWebAppDriver> lazyWebDriver = pool
 				.submit(callableWebAppDriver);
 		webdrivers.put(uniqueName, lazyWebDriver);
-		lazyWebDriver.get().get(path);
+		lazyWebDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+				TimeUnit.MILLISECONDS).get(path);
 		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver, path);
 		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
