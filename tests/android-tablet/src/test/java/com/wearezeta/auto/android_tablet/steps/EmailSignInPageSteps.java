@@ -12,7 +12,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class TabletEmailSignInPageSteps {
+public class EmailSignInPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection

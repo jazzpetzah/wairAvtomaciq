@@ -9,43 +9,6 @@ public final class AndroidLocators {
 		public static final String idBoby = "body";
 	}
 
-	public static final class Browsers {
-		public static final String xpathChrome = "//*[@value='Chrome']";
-
-		public static final String xpathFirefox = "//*[@value='Firefox']";
-
-		public static final String xpathConnect = "//android.webkit.WebView/android.view.View[6]";
-
-		public static final String idUrlBar = "url_bar";
-
-		public static final String idFirefoxUrlBar = "url_bar_entry";
-
-		public static final String idFirefoxUrlBarEditText = "url_edit_text";
-
-		public static final String xpathNativeBrowserURLBar = "//android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.widget.RelativeLayout[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[1]/android.widget.EditText[1]";
-
-		public static final String xpathNativeBrowserMenu = "//android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.RelativeLayout[1]/android.widget.RelativeLayout[1]/android.widget.LinearLayout[1]/android.widget.ImageButton[2]";
-
-		public static final String xpathNativeBrowserShareButton = "//android.widget.ListView[1]/android.widget.LinearLayout[5]/android.widget.RelativeLayout[1]/android.widget.TextView[1]";
-
-		public static final String xpathNativeBrowserShareWireButton = "//android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.ListView[1]/android.widget.LinearLayout[3]/android.widget.LinearLayout[1]/android.widget.TextView[contains(@text,'Wire')]";
-
-		public static final String nameNativeBrowserMenuButton = "android.widget.ImageButton";
-
-		public static final String nameNativeBrowserMoreOptionsButton = "android.widget.TextView";
-
-		public static final String nameNativeBrowserShareWireButton = "android.widget.TextView";
-
-		public static final class ForgotPasswordPage {
-
-			public static final String xpathEmailEditField = "//android.widget.EditText[@content-desc='Email']";
-
-			public static final String xpathEnterNewPasswordEditField = "//android.widget.EditText[following-sibling::android.widget.Button[@content-desc='CHANGE PASSWORD']]";
-
-			public static final String xpathChangePasswordButton = "//android.widget.Button[@content-desc='CHANGE PASSWORD']";
-		}
-	}
-
 	public static final class CallingOverlay {
 		public static final String idCallingMute = "cib__calling_mute";
 
@@ -412,6 +375,8 @@ public final class AndroidLocators {
 				+ "//*[@id='tet__profile__guided']";
 
 		public static final String idChangePhotoBtn = "gtv__camera_control__change_image_source";
+		
+		public static final String idTakePhotoButton = "gtv__camera_control__take_a_picture";
 
 		public static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";
 

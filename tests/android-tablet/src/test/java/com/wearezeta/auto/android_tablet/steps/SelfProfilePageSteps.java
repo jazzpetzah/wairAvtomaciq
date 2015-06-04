@@ -8,7 +8,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class TabletSelfProfilePageSteps {
+public class SelfProfilePageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection

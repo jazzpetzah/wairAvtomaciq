@@ -17,7 +17,6 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import android.graphics.Point;
@@ -44,9 +43,6 @@ public class DialogPage extends AndroidPage {
 
 	@FindBy(id = AndroidLocators.CommonLocators.idEditText)
 	private WebElement cursorInput;
-
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.Browsers.xpathNativeBrowserURLBar)
-	private WebElement nativeBrowserURL;
 
 	@FindBy(id = AndroidLocators.DialogPage.idMessage)
 	private List<WebElement> messagesList;
@@ -717,11 +713,6 @@ public class DialogPage extends AndroidPage {
 
 	public String getMissedCallMessage() throws Exception {
 		return missedCallMessage.getText();
-	}
-
-	public boolean isNativeBrowserURLVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(AndroidLocators.Browsers.xpathNativeBrowserURLBar));
 	}
 
 	public String getLastMessageFromDialog() {

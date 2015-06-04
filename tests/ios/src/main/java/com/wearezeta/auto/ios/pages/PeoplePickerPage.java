@@ -26,7 +26,7 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.namePickerSearch)
 	private WebElement peoplePickerSearch;
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePickerClearButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPickerClearButton)
 	private WebElement peoplePickerClearBtn;
 
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameContactListNames)
@@ -116,7 +116,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public Boolean isPeoplePickerPageVisible() throws Exception {
 		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.namePickerClearButton));
+				By.name(IOSLocators.namePickerSearch));
 		Thread.sleep(1000);
 		clickLaterButton();
 		return result;

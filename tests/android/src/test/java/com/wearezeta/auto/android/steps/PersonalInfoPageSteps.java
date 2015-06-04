@@ -110,6 +110,18 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
+	 * Takes photo for new avatar. Front camera is opened by default
+	 * 
+	 * @step. ^I take new avatar picture$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I take new avatar picture$")
+	public void ITakePhoto() throws Exception {
+		getPersonalInfoPage().tapTakePhotoButton();
+	}
+
+	/**
 	 * Presses on the gallery button to select a photo from the phone's storage
 	 * 
 	 * @step. ^I press Gallery button$

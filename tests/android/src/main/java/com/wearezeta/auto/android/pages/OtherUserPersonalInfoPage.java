@@ -263,9 +263,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		groupChatNameEditable.sendKeys(chatName);
 		// FIXME: We need these sleeps because of the bug in the AUT
 		// The app crashes if we apply name changes too quickly too quickly :-@
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 		groupChatNameEditable.sendKeys("\n");
-		Thread.sleep(1000);
+		Thread.sleep(2000);
 	}
 
 	public AndroidPage tapOnParticipant(String name) throws Exception {

@@ -74,7 +74,7 @@ public final class IOSLocators {
 
 	public static final String namePickerSearch = "textViewSearch";
 	
-	public static final String namePickerClearButton = "PeoplePickerClearButton";
+	public static final String xpathPickerClearButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[3]";
 	
 	public static final String nameSendConnectButton = "SEND";
 	
@@ -569,7 +569,7 @@ public final class IOSLocators {
 	}
 	
 	public final class ContactListPage {
-		public static final String nameOpenStartUI = "OpenStartUI";
+		public static final String nameOpenStartUI = "TAP TO START A CONVERSATION";
 		public static final String nameSelfButton = "SelfButton";
 	}
 	
