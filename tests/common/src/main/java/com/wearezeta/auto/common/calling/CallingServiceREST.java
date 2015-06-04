@@ -118,7 +118,7 @@ final class CallingServiceREST {
 		requestBody.put("email", email);
 		requestBody.put("password", password);
 		requestBody.put("backend", backend);
-		requestBody.put("callBackend", callBackend.toString());
+		requestBody.put("callBackend", callBackend);
 		final String output = restHandlers.httpPost(webResource,
 				requestBody.toString(), new int[] { HttpStatus.SC_OK,
 						HttpStatus.SC_CREATED });
