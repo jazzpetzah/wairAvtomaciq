@@ -569,7 +569,7 @@ public final class IOSLocators {
 	}
 	
 	public final class ContactListPage {
-		public static final String nameOpenStartUI = "OpenStartUI";
+		public static final String nameOpenStartUI = "TAP TO START A CONVERSATION";
 		public static final String nameSelfButton = "SelfButton";
 	}
 	

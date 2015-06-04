@@ -116,7 +116,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public Boolean isPeoplePickerPageVisible() throws Exception {
 		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.namePickerClearButton));
+				By.name(IOSLocators.namePickerSearch));
 		Thread.sleep(1000);
 		clickLaterButton();
 		return result;
