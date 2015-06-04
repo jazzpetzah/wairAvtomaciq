@@ -7,7 +7,8 @@ Feature: Registration
     And I enter user password "<Password>" on Registration page
     And I start activation email monitoring
     And I submit registration form
-    Then I see email <Email> on Verification page
+    Then I verify that an envelope icon is shown
+    And I see email <Email> on Verification page
     When I activate user by URL
     And User <Name> is Me without avatar
     And I see Self Picture Upload dialog

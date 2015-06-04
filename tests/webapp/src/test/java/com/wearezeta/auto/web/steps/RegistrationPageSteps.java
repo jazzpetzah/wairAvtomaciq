@@ -192,6 +192,17 @@ public class RegistrationPageSteps {
 	}
 
 	/**
+	 * Checks if an icon is shown
+	 * 
+	 * @step. ^I verify that an envelope icon is shown$
+	 */
+	@Then("^I verify that an envelope icon is shown$")
+	public void IVerifyThatAnEnvelopeIconIsShown() {
+		assertThat("Envelope icon not shown",
+				PagesCollection.registrationPage.isEnvelopeShown());
+	}
+
+	/**
 	 * Activate newly registered user on the backend. Don't forget to call the
 	 * 'I start activation email monitoring' step before this one
 	 * 

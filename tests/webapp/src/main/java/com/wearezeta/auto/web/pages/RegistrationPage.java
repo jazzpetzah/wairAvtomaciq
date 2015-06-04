@@ -37,6 +37,9 @@ public class RegistrationPage extends WebPage {
 	@FindBy(css = WebAppLocators.RegistrationPage.cssSwitchToSignInButton)
 	private WebElement switchToSignInButton;
 
+	@FindBy(css = ".icon-envelope")
+	private WebElement verificationEnvelope;
+
 	@FindBy(css = ".auth-page .has-error .form-control #wire-create-email")
 	private WebElement redDotOnEmailField;
 
@@ -88,6 +91,10 @@ public class RegistrationPage extends WebPage {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				createAccount) : "'Create Account' button is not clickable after timeout";
 		createAccount.click();
+	}
+
+	public boolean isEnvelopeShown() {
+		return DriverUtils.isElementPresentAndDisplayed(verificationEnvelope);
 	}
 
 	public String getVerificationEmailAddress() {
