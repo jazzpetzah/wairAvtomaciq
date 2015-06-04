@@ -152,8 +152,9 @@ public class RegistrationPageSteps {
 	@Then("^I see email (.*) on [Vv]erification page$")
 	public void ISeeVerificationEmail(String email) throws NoSuchUserException {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isVerificationEmailCorrect(email));
+		assertThat(
+				PagesCollection.registrationPage.getVerificationEmailAddress(),
+				equalTo(email));
 	}
 
 	/**

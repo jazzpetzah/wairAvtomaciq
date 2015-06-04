@@ -90,8 +90,8 @@ public class RegistrationPage extends WebPage {
 		createAccount.click();
 	}
 
-	public boolean isVerificationEmailCorrect(String email) {
-		return verificationEmail.getText().equalsIgnoreCase(email);
+	public String getVerificationEmailAddress() {
+		return verificationEmail.getText();
 	}
 
 	public String getErrorMessage() {
