@@ -290,6 +290,8 @@ public class CommonWebAppSteps {
 				browserName, browserVersion, uniqueName);
 
 		final String url = CommonUtils
+				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
+		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
 		final ExecutorService pool = Executors.newFixedThreadPool(1);
 
@@ -308,8 +310,7 @@ public class CommonWebAppSteps {
 		final Future<ZetaWebAppDriver> lazyWebDriver = pool
 				.submit(callableWebAppDriver);
 		webdrivers.put(uniqueName, lazyWebDriver);
-		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
-				url);
+		PagesCollection.loginPage = new LoginPage(lazyWebDriver, path);
 		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
 
