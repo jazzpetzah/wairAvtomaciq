@@ -144,7 +144,7 @@ Feature: Search
   @id2214 @regression
   Scenario Outline: I can dismiss PYMK by Hide button
     Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given I have contact <Contact> in the address book
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list
     When I press Open StartUI
@@ -156,7 +156,6 @@ Feature: Search
     Then I do not see the previously remembered PYMK item
     When I press Clear button
     And I press Open StartUI
-    And I keep reopening People Picker until PYMK are visible
     Then I do not see the previously remembered PYMK item
 
     Examples: 
@@ -166,7 +165,7 @@ Feature: Search
   @id2213 @regression
   Scenario Outline: I can dismiss PYMK by swipe
     Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given I have contact <Contact> in the address book
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list
     When I press Open StartUI
@@ -177,7 +176,6 @@ Feature: Search
     Then I do not see the previously remembered PYMK item
     When I press Clear button
     And I press Open StartUI
-    And I keep reopening People Picker until PYMK are visible
     Then I do not see the previously remembered PYMK item
 
     Examples: 

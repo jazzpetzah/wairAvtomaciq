@@ -120,14 +120,13 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on 1 top connections
-    #And I click Go button to create 1:1 conversation
     And I click Create Conversation button on People picker page
     And I wait for 2 seconds
     And I see dialog page
 
     Examples: 
       | Login      | Password      | Name      | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | 7        | user2Name  |
+      | user1Email | user1Password | user1Name | 4        | user2Name  |
 
   @id1150 @regression
   Scenario Outline: Start group chat with users from Top Connections
@@ -143,7 +142,6 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on 2 top connections
-    #And I click on Go button
     And I click Create Conversation button on People picker page
     And I wait for 2 seconds
     And I swipe up on group chat page
@@ -154,7 +152,7 @@ Feature: Search
 
     Examples: 
       | Login      | Password      | Name      | ConvoName    | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | TopGroupTest | 7        | user2Name  |
+      | user1Email | user1Password | user1Name | TopGroupTest | 4        | user2Name  |
 
   @id1454 @regression
   Scenario Outline: Verify sending a connection request to user chosen from search

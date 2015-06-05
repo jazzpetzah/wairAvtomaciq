@@ -14,7 +14,7 @@ public class TabletWelcomePage extends AndroidTabletPage {
 		super(lazyDriver);
 	}
 
-	private WelcomePage getWelcomePage() {
+	private WelcomePage getWelcomePage() throws Exception {
 		return (WelcomePage) this.getAndroidPageInstance(WelcomePage.class);
 	}
 

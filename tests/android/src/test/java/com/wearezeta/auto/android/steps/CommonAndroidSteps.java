@@ -882,4 +882,20 @@ public class CommonAndroidSteps {
 		pagesCollection.getCommonPage().rotatePortrait();
 	}
 
+	/**
+	 * Add email(s) into address book of a user and upload address book
+	 * 
+	 * @step. ^(.*) (?:has|have) contacts? (.*) in (?:the )address book$
+	 * 
+	 * @param asUser
+	 *            name of the user where the address book is uploaded
+	 * @param emails
+	 *            list of email addresses seperated by comma
+	 * @throws Exception
+	 */
+	@Given("^(.*) (?:has|have) contacts? (.*) in (?:the )address book$")
+	public void UserXHasContactsInAddressBook(String asUser, String emails)
+			throws Exception {
+		commonSteps.UserXHasContactsInAddressBook(asUser, emails);
+	}
 }

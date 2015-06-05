@@ -292,3 +292,120 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+
+  @staging @id2546
+  Scenario Outline: Verify dismissing with one single gesture [PORTRAIT]
+    Given There are 5 users where <Name> is me
+    Given <ContactWithFriends> is connected to <Name>
+    Given <ContactWithFriends> is connected to <Friend1>
+    Given <ContactWithFriends> is connected to <Friend2>
+    Given <ContactWithFriends> is connected to <Friend3>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe completely to dismiss suggested contact <Friend1>
+    Then I do not see suggested contact <Friend1>
+
+    Examples: 
+      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+
+  @staging @id2546
+  Scenario Outline: Verify dismissing with one single gesture [LANDSAPE]
+    Given There are 5 users where <Name> is me
+    Given <ContactWithFriends> is connected to <Name>
+    Given <ContactWithFriends> is connected to <Friend1>
+    Given <ContactWithFriends> is connected to <Friend2>
+    Given <ContactWithFriends> is connected to <Friend3>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe completely to dismiss suggested contact <Friend1>
+    Then I do not see suggested contact <Friend1>
+
+    Examples: 
+      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+
+  @staging @id2118
+  Scenario Outline: Verify sending connection request from PYMK [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I press the instant connect button
+    And I click close button to dismiss people view
+    Then I see first item in contact list named <Contact2>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @staging @id2118
+  Scenario Outline: Verify sending connection request from PYMK [LANDSAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I press the instant connect button
+    And I click close button to dismiss people view
+    Then I see first item in contact list named <Contact2>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @staging @id2149
+  Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I wait until <LastName> exists in backend search results
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <LastName>
+    Then I see user <NewName> found on People picker page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | NewName  | LastName |
+      | user1Email | user1Password | user1Name | user2Name | NEW NAME | NAME     |
+
+  @staging @id2149
+  Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I wait until <LastName> exists in backend search results
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <LastName>
+    Then I see user <NewName> found on People picker page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | NewName  | LastName |
+      | user1Email | user1Password | user1Name | user2Name | NEW NAME | NAME     |

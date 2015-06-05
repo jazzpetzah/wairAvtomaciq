@@ -265,4 +265,12 @@ public class AndroidCommonUtils extends CommonUtils {
 		executeAdb(String.format("shell am start -n %s/%s", packageId,
 				mainActivity));
 	}
+
+	public static void rotateLanscape() throws Exception {
+		executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:1");
+	}
+
+	public static void rotatePortrait() throws Exception {
+		executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:0");
+	}
 }

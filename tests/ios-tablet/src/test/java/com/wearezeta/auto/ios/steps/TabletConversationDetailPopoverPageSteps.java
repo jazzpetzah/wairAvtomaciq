@@ -1,9 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.TabletPagesCollection;
 import com.wearezeta.auto.ios.pages.TabletPeoplePickerPage;
@@ -11,9 +9,6 @@ import com.wearezeta.auto.ios.pages.TabletPeoplePickerPage;
 import cucumber.api.java.en.When;
 
 public class TabletConversationDetailPopoverPageSteps {
-
-	private static final Logger log = ZetaLogger
-			.getLog(ContactListPageSteps.class.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
