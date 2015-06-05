@@ -12,8 +12,8 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class SettingsPage extends WebPage {
@@ -83,7 +83,7 @@ public class SettingsPage extends WebPage {
 
 	public void setSoundAlertsLevel(SoundAlertsLevel newLevel) throws Exception {
 		assert SoundAlertsLevel.values().length > 1;
-		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Firefox) {
+		if (WebAppExecutionContext.getBrowser() == Browser.Firefox) {
 			final Actions builder = new Actions(this.getDriver());
 			final int width = soundAlertsLevel.getSize().width;
 			final int height = soundAlertsLevel.getSize().height;

@@ -17,25 +17,14 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 
 public class WebCommonUtils extends CommonUtils {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(WebCommonUtils.class
 			.getSimpleName());
 
 	// workaround for local executions in case sshpass is not in the PATH
 	private static final String SSHPASS_PREFIX = "/usr/local/bin/";
-
-	public static String getWebAppBrowserNameFromConfig(Class<?> c)
-			throws Exception {
-		return getValueFromConfig(c, "browserName");
-	}
-
-	public static String getPlatformNameFromConfig(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "platformName");
-	}
 
 	public static String getHubHostFromConfig(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "hubHost");
@@ -214,7 +203,7 @@ public class WebCommonUtils extends CommonUtils {
 	public static void openUrlInNewTab(RemoteWebDriver driver, String url,
 			String nodeIp) throws Exception {
 		previousHandles = driver.getWindowHandles();
-		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Safari) {
+		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
 			openNewTabInSafari(url, nodeIp);
 		} else {
 			String script = "var d=document,a=d.createElement('a');a.target='_blank';a.href='%s';a.innerHTML='.';d.body.appendChild(a);return a";

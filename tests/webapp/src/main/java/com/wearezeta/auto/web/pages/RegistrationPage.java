@@ -3,7 +3,6 @@ package com.wearezeta.auto.web.pages;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;

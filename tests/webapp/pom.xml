@@ -20,10 +20,6 @@
 		<url>http://${hubHost}:${hubPort}/wd/hub</url>
 		<driverTimeoutSeconds>7</driverTimeoutSeconds>
 		<defaultEmail>smoketester.webapp@wearezeta.com</defaultEmail>
-		<!-- chrome | firefox | ie | safari -->
-		<browser>chrome</browser>
-		<!-- mavericks | yosemite | win7 | win7_ie10 | win7_ie11 | <empty> -->
-		<platform></platform>
 		<!-- edge | staging | production -->
 		<backendType>staging</backendType>
 		<webappImagesPath>img/</webappImagesPath>
@@ -35,7 +31,7 @@
 
 		<!-- new -->
 		<com.wire.os.name>Windows</com.wire.os.name>
-		<com.wire.os.version>8.1</com.wire.os.version>
+		<com.wire.os.version>7</com.wire.os.version>
 		<com.wire.browser.name>Chrome</com.wire.browser.name>
 		<com.wire.browser.version>43.0</com.wire.browser.version>
 	</properties>

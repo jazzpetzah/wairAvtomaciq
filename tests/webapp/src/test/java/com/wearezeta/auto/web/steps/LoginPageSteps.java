@@ -3,7 +3,6 @@ package com.wearezeta.auto.web.steps;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -21,8 +20,6 @@ public class LoginPageSteps {
 			.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-	private static final int MAX_LOGIN_RETRIES = 3;
 
 	/**
 	 * Enters user email and password into corresponding fields on sign in

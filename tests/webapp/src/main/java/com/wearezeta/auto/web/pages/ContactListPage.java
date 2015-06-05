@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -26,7 +25,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
+import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -244,8 +243,7 @@ public class ContactListPage extends WebPage {
 				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		// moving focus from contact - to now show ... button
 		// do nothing (safari workaround)
-		if (!this.getDriver().getCapabilities().getBrowserName()
-				.equals(Browser.Safari.toString())) {
+		if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), this.getDriver()
 					.findElement(locator));
 		}
@@ -258,9 +256,8 @@ public class ContactListPage extends WebPage {
 
 	public void clickOptionsButtonForContact(String conversationName)
 			throws Exception {
-		if (this.getDriver().getCapabilities().getBrowserName()
-				.equals(Browser.Safari.toString())) {
-			log.debug("safari workaround");
+		if (!WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.addClass(this.getDriver(),
 					getContactWithName(conversationName, false), "hover");
 		} else {
@@ -273,8 +270,8 @@ public class ContactListPage extends WebPage {
 		final By locator = By.cssSelector(cssOptionsButtonLocator);
 		final WebElement optionsButton = getDriver().findElement(locator);
 		optionsButton.click();
-		if (this.getDriver().getCapabilities().getBrowserName()
-				.equals(Browser.Safari.toString())) {
+		if (!WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.removeClass(this.getDriver(),
 					getContactWithName(conversationName, false), "hover");
 		}
@@ -367,7 +364,7 @@ public class ContactListPage extends WebPage {
 						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
 		DriverUtils.waitUntilElementClickable(this.getDriver(),
 				openPeoplePickerButton);
-		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
+		if (WebAppExecutionContext.getBrowser() == Browser.InternetExplorer) {
 			clickWithJS(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton);
 		} else {
 			openPeoplePickerButton.click();
