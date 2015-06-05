@@ -2,7 +2,6 @@ package com.wearezeta.auto.android_tablet.pages;
 
 import java.util.concurrent.Future;
 
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -109,15 +108,4 @@ public abstract class AndroidTabletPage extends AndroidPage {
 		return (AndroidTabletPage) super.swipeDownCoordinates(
 				durationMilliseconds, verticalPercent);
 	}
-
-	@Override
-	public void rotateLandscape() throws Exception {
-		AndroidCommonUtils.rotateLanscape();
-	}
-
-	@Override
-	public void rotatePortrait() throws Exception {
-		AndroidCommonUtils.rotatePortrait();
-	}
-
 }
