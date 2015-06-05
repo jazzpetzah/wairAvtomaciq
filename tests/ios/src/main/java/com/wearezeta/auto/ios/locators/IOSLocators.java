@@ -32,6 +32,8 @@ public final class IOSLocators {
 	
 	public static final String xpathContactListCells = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
 	
+	public static final String xpathFirstContactCell = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]";
+	
 	public static final String nameSelfButton = "SelfButton";
 	
 	public static final String nameProfileSettingsButton = "SettingsButton";

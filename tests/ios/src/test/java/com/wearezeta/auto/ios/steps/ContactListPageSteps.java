@@ -1,12 +1,18 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import cucumber.api.java.en.*;
+
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -17,6 +23,7 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.*;
 
 public class ContactListPageSteps {
+	
 	private static final Logger log = ZetaLogger
 			.getLog(ContactListPageSteps.class.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
@@ -486,6 +493,23 @@ public class ContactListPageSteps {
 		boolean noUnreadDotSeen = PagesCollection.contactListPage
 				.unreadDotIsVisible(false, false, conversation);
 		Assert.assertTrue("Unread dot visible.", noUnreadDotSeen);
+	}
+	
+	private BufferedImage blankReferenceImage = null; 
+	
+	@When("^I remember the state of the first conversation cell$")
+	public void IRememberConversationState() throws Exception {
+		blankReferenceImage = PagesCollection.contactListPage.blankReferenceImageFirstContact();
+		String imgPath = "/Users/Chad/Desktop/zauto";
+		ImageIO.write(blankReferenceImage, "png", new File(imgPath));
+			
+	}
+	
+	@When("^I remember the state of the first conversation cell after first ping$")
+	public void IRememberConversationStateAfterFirstPing() throws Exception {
+		blankReferenceImage = PagesCollection.contactListPage.referenceImageFirstPingState();
+
+			
 	}
 
 	/**

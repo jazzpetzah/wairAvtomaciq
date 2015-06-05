@@ -1,8 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.Future;
+
+import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -28,7 +31,7 @@ public class ContactListPage extends IOSPage {
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
 	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.70;
-	private final double MIN_ACCEPTABLE_IMAGE_PING_VALUE = 0.90;
+	private final double MIN_ACCEPTABLE_IMAGE_PING_VALUE = 0.50;
 
 	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE = 0.80;
 
@@ -37,6 +40,9 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListCells)
 	private List<WebElement> contactListCells;
+	
+	@FindBy( how = How.XPATH, using = IOSLocators.xpathFirstContactCell)
+	private WebElement firstContactCell;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
 	private WebElement profileName;
@@ -500,6 +506,23 @@ public class ContactListPage extends IOSPage {
 
 		return true;
 	}
+	
+	public BufferedImage blankReferenceImageFirstContact() throws Exception {
+		//This takes a screenshot of the area to the left of a contact where ping and unread dot notifications are visible
+		WebElement contact = firstContactCell;
+		return getScreenshotByCoordinates(contact.getLocation().x,
+				contact.getLocation().y + contactListContainer.getLocation().y,
+				contact.getSize().width / 4, contact.getSize().height * 2)
+				.orElseThrow(IllegalStateException::new);
+	}
+	
+	public BufferedImage referenceImageFirstPingState() throws Exception {
+		WebElement contact = firstContactCell;
+		return getScreenshotByCoordinates(contact.getLocation().x,
+				contact.getLocation().y + contactListContainer.getLocation().y,
+				contact.getSize().width / 4, contact.getSize().height * 2)
+				.orElseThrow(IllegalStateException::new);
+	}
 
 	public boolean pingIsVisible(boolean visible, boolean hotPing,
 			String conversation) throws Exception {
@@ -512,23 +535,22 @@ public class ContactListPage extends IOSPage {
 				contact.getSize().width / 4, contact.getSize().height * 2)
 				.orElseThrow(IllegalStateException::new);
 		if (visible == true && hotPing == true) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "contact_list_hotping.png");
+			referenceImage = referenceImageFirstPingState();
 			score = ImageUtil.getOverlapScore(referenceImage, pingSymbol,
-					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+					ImageUtil.RESIZE_NORESIZE);
 		} else if (visible == true && hotPing == false) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "contact_list_ping.png");
+			referenceImage = blankReferenceImageFirstContact();
 			score = ImageUtil.getOverlapScore(referenceImage, pingSymbol,
-					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+					ImageUtil.RESIZE_NORESIZE);
 		} else if (visible == false && hotPing == false) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "no_ping.png");
+			referenceImage = blankReferenceImageFirstContact();
 			score = ImageUtil.getOverlapScore(referenceImage, pingSymbol,
-					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+					ImageUtil.RESIZE_NORESIZE);
 		}
 
 		if (score <= MIN_ACCEPTABLE_IMAGE_PING_VALUE) {
+			String imgPath = "/Users/Chad/Desktop/ZautoPing";
+			ImageIO.write(pingSymbol, "png", new File(imgPath));
 			return false;
 		} else {
 			return true;
