@@ -1,7 +1,5 @@
 package com.wearezeta.auto.web.common;
 
-import java.util.Optional;
-
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -14,12 +12,11 @@ public class WebAppExecutionContext {
 	private static String platform = "";
 	static {
 		String osName = System.getProperty("com.wire.os.name");
-		Optional<String> osVersion = Optional.ofNullable(System
-				.getProperty("com.wire.os.version"));
+		String osVersion = System.getProperty("com.wire.os.version");
 
 		platform = osName;
-		if (osVersion.isPresent()) {
-			platform = platform + " " + osVersion.get();
+		if (osVersion != null && !osVersion.equals("")) {
+			platform = platform + " " + osVersion;
 		}
 	}
 
