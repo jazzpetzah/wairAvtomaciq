@@ -13,4 +13,4 @@ iosClientInfoPlist=${iosClientInfoPlist}
 iosAppiumLogPath=${iosAppiumLogPath}
 defaultEmail=${defaultEmail}
 deviceName=${deviceName}
-backendType=${backendType} 
+backendType=${backendType}
