@@ -58,7 +58,7 @@ public class LoginPage extends WebPage {
 
 	public boolean isVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(WebAppLocators.LoginPage.xpathLoginPage));
+				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
 	}
 
 	public void inputEmail(String email) {
