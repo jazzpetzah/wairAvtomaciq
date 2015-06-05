@@ -292,3 +292,44 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+
+  @staging @id2546
+  Scenario Outline: Verify dismissing with one single gesture [PORTRAIT]
+    Given There are 5 users where <Name> is me
+    Given <ContactWithFriends> is connected to <Name>
+    Given <ContactWithFriends> is connected to <Friend1>
+    Given <ContactWithFriends> is connected to <Friend2>
+    Given <ContactWithFriends> is connected to <Friend3>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe completely to dismiss suggested contact <Friend1>
+    Then I do not see suggested contact <Friend1>
+
+    Examples: 
+      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+
+  @staging @id2546
+  Scenario Outline: Verify dismissing with one single gesture [LANDSAPE]
+    Given There are 5 users where <Name> is me
+    Given <ContactWithFriends> is connected to <Name>
+    Given <ContactWithFriends> is connected to <Friend1>
+    Given <ContactWithFriends> is connected to <Friend2>
+    Given <ContactWithFriends> is connected to <Friend3>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe completely to dismiss suggested contact <Friend1>
+    Then I do not see suggested contact <Friend1>
+
+    Examples: 
+      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
