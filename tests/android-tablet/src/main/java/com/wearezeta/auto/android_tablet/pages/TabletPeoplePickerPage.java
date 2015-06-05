@@ -20,7 +20,7 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 		super(lazyDriver);
 	}
 
-	private PeoplePickerPage getAndroidPeoplePickerPage() {
+	private PeoplePickerPage getAndroidPeoplePickerPage() throws Exception {
 		return (PeoplePickerPage) this
 				.getAndroidPageInstance(PeoplePickerPage.class);
 	}

@@ -2,9 +2,9 @@ Feature: Sign In
 
   @id2262 @smoke
   Scenario Outline: Sign in to ZClient in portrait mode
+    Given I rotate UI to portrait
     Given There is 1 user where <Name> is me
     Given I see welcome screen
-    Given I rotate UI to portrait
     When I switch to email sign in screen
     And I enter login "<Login>"
     And I enter password "<Password>"
@@ -16,10 +16,10 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2284 @smoke
+  @id2284 @smoke @torun
   Scenario Outline: Negative case for sign in portrait mode
-    Given I see welcome screen
     Given I rotate UI to portrait
+    Given I see welcome screen
     When I switch to email sign in screen
     And I enter login "<Login>"
     And I enter password "<Password>"
