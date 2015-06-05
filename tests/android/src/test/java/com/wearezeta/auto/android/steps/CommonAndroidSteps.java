@@ -784,7 +784,7 @@ public class CommonAndroidSteps {
 	 * @param query
 	 *            the search query to pass to the backend, which will return a
 	 *            list of users.
-	 * @param timeoutSecnds
+	 * @param timeoutSeconds
 	 *            maximum time to wait until the other user disappears from
 	 *            search list
 	 * 

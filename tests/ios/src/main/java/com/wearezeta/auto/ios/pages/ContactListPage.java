@@ -31,7 +31,6 @@ public class ContactListPage extends IOSPage {
 	private final double MIN_ACCEPTABLE_IMAGE_PING_VALUE = 0.90;
 
 	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE = 0.80;
-	private final double MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE = 0.90;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;

@@ -84,4 +84,20 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		getDriver().findElement(locator).click();
 	}
 
+	public boolean waitUntilConversationIsSilenced(String name)
+			throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.ContactListPage.xpathMutedIconByConvoName
+						.apply(name));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilConversationIsNotSilenced(String name)
+			throws Exception {
+		final By locator = By
+				.xpath(AndroidLocators.ContactListPage.xpathMutedIconByConvoName
+						.apply(name));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
 }

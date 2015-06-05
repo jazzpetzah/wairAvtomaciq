@@ -101,4 +101,33 @@ public class ConversationsListPageSteps {
 							.waitUntilConversationIsInvisible(name));
 		}
 	}
+
+	/**
+	 * Verify whether the particular conversation name is silenced or not
+	 * 
+	 * @step. ^I see (?:the) conversation (.*) in my conversations list is (not
+	 *        )?silenced$
+	 * 
+	 * @param name
+	 *            conversation name/alias
+	 * @param shouldNotBeSilenced
+	 *            equals to null if the "not" part does not exist in the step
+	 * @throws Exception
+	 */
+	@Then("^I see (?:the) conversation (.*) in my conversations list is (not )?silenced$")
+	public void ISeeConversationSilenced(String name, String shouldNotBeSilenced)
+			throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		if (shouldNotBeSilenced == null) {
+			Assert.assertTrue(
+					String.format("The conversation '%s' is not silenced", name),
+					getConversationsListPage().waitUntilConversationIsSilenced(
+							name));
+		} else {
+			Assert.assertTrue(String.format(
+					"The conversation '%s' should not be silenced", name),
+					getConversationsListPage()
+							.waitUntilConversationIsNotSilenced(name));
+		}
+	}
 }
