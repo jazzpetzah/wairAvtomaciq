@@ -77,7 +77,7 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathInviteCopyButton)
 	private WebElement inviteCopyButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathSendAnInviteButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameSendAnInviteButton)
 	private WebElement sendInviteButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameInstantConnectButton)
@@ -215,16 +215,13 @@ public class PeoplePickerPage extends IOSPage {
 
 	public void swipeCompletelyToDismissSuggestedContact(String contact)
 			throws Exception {
-		List<WebElement> collectionElements = this.getDriver()
-				.findElementsByClassName(IOSLocators.nameSuggestedContactType);
-		for (WebElement collectionElement : collectionElements) {
-			if (!collectionElement.findElements(By.name(contact.toLowerCase()))
-					.isEmpty()) {
-				DriverUtils.swipeRight(this.getDriver(), collectionElement,
-						1000, 100, 50);
-				break;
-			}
-		}
+		WebElement contactToSwipe = this
+				.getDriver()
+				.findElement(
+						By.xpath(String
+								.format(IOSLocators.PeoplePickerPage.xpathSuggestedContactToSwipe,
+										contact)));
+		DriverUtils.swipeRight(this.getDriver(), contactToSwipe, 1000, 100, 50);
 	}
 
 	public void tapHideSuggestedContact(String contact) throws Exception {
