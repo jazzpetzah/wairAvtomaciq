@@ -559,7 +559,7 @@ public final class IOSLocators {
 	}
 	
 	public final class DialogPage {
-		public static final String xpathCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[5]";
+		public static final String xpathCallButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[3]";
 	}
 	
 	public final class DialogInfoPage {
