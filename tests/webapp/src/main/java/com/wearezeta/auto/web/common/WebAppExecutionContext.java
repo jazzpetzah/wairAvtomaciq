@@ -14,7 +14,7 @@ public class WebAppExecutionContext {
 	private static String platform = "";
 	static {
 		String osName = System.getProperty("com.wire.os.name");
-		Optional<String> osVersion = Optional.of(System
+		Optional<String> osVersion = Optional.ofNullable(System
 				.getProperty("com.wire.os.version"));
 
 		platform = osName;
