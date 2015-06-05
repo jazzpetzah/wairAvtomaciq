@@ -54,10 +54,9 @@ public abstract class AndroidPage extends BasePage {
 		do {
 			// Selendroid workaround
 			// Cannot handle external apps properly :-(
-			AndroidCommonUtils.genericScreenTap(screenDimension.width / 2
-					- ntry * (screenDimension.width / 10),
-					screenDimension.height / 2 - ntry
-							* (screenDimension.height / 10));
+			AndroidCommonUtils.genericScreenTap(screenDimension.width - ntry
+					* (screenDimension.width / 10), screenDimension.height / 2
+					- ntry * (screenDimension.height / 15));
 			try {
 				if (DriverUtils
 						.waitUntilLocatorIsDisplayed(
