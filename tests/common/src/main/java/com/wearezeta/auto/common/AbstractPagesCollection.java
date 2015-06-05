@@ -48,7 +48,11 @@ public abstract class AbstractPagesCollection {
 	}
 
 	public void clearAllPages() {
-		pagesMapping.clear();
+		if (pagesMapping.size() > 0) {
+			pagesMapping.clear();
+			log.debug(String.format("Cleaned %d existing page objects",
+					pagesMapping.size()));
+		}
 	}
 
 	public void setFirstPage(BasePage page) {
@@ -57,6 +61,8 @@ public abstract class AbstractPagesCollection {
 					"Page object should be defined! 'null' values are not acceptable.");
 		}
 		this.clearAllPages();
+		log.debug(String.format("Setting the first page object to '%s'", page
+				.getClass().getSimpleName()));
 		pagesMapping.put(page.getClass(), page);
 	}
 

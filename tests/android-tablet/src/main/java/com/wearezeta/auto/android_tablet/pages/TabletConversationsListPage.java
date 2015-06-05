@@ -24,12 +24,12 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		super(lazyDriver);
 	}
 
-	private ContactListPage getContactListPage() {
+	private ContactListPage getContactListPage() throws Exception {
 		return (ContactListPage) this
 				.getAndroidPageInstance(ContactListPage.class);
 	}
 
-	private PeoplePickerPage getPeoplePickerPage() {
+	private PeoplePickerPage getPeoplePickerPage() throws Exception {
 		return (PeoplePickerPage) this
 				.getAndroidPageInstance(PeoplePickerPage.class);
 	}
@@ -55,7 +55,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		return new TabletSelfProfilePage(this.getLazyDriver());
 	}
 
-	public void tapSearchInput() {
+	public void tapSearchInput() throws Exception {
 		getPeoplePickerPage().tapPeopleSearch();
 	}
 

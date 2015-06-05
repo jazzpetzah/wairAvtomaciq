@@ -372,3 +372,40 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @staging @id2149
+  Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I wait until <LastName> exists in backend search results
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <LastName>
+    Then I see user <NewName> found on People picker page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | NewName  | LastName |
+      | user1Email | user1Password | user1Name | user2Name | NEW NAME | NAME     |
+
+  @staging @id2149
+  Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I wait until <LastName> exists in backend search results
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <LastName>
+    Then I see user <NewName> found on People picker page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | NewName  | LastName |
+      | user1Email | user1Password | user1Name | user2Name | NEW NAME | NAME     |

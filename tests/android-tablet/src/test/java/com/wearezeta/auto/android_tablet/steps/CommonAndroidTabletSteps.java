@@ -71,21 +71,22 @@ public class CommonAndroidTabletSteps {
 
 	@SuppressWarnings("unchecked")
 	public Future<ZetaAndroidDriver> resetAndroidDriver(String url,
-			String path, boolean isUnicode, Class<?> cls) throws Exception {
+			String path, boolean isUnicode) throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		LoggingPreferences object = new LoggingPreferences();
 		object.enable("logcat", Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 		capabilities.setCapability("deviceName",
-				CommonUtils.getAndroidDeviceNameFromConfig(cls));
+				CommonUtils.getAndroidDeviceNameFromConfig(this.getClass()));
 		capabilities.setCapability("app", path);
 		capabilities.setCapability("appPackage",
-				CommonUtils.getAndroidPackageFromConfig(cls));
+				CommonUtils.getAndroidPackageFromConfig(this.getClass()));
 		capabilities.setCapability("appActivity",
-				CommonUtils.getAndroidActivityFromConfig(cls));
-		capabilities.setCapability("appWaitActivity",
-				CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
+				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+		capabilities
+				.setCapability("appWaitActivity", CommonUtils
+						.getAndroidWaitActivitiesFromConfig(this.getClass()));
 		capabilities.setCapability("applicationName", "selendroid");
 		capabilities.setCapability("automationName", "selendroid");
 
@@ -176,7 +177,7 @@ public class CommonAndroidTabletSteps {
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
-				getUrl(), getPath(), isUnicode, this.getClass());
+				getUrl(), getPath(), isUnicode);
 		pagesCollection.setFirstPage(new TabletWelcomePage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}

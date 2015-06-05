@@ -214,8 +214,9 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 				} // if command is screenshot
 			} // if getMessage contains
 			log.error(String
-					.format("Android driver is still not available after %s seconds timeout",
-							DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000));
+					.format("Android driver is still not available after %s seconds timeout. The recent webdriver command was '%s'",
+							DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000,
+							driverCommand));
 			throw e;
 		}
 	}
