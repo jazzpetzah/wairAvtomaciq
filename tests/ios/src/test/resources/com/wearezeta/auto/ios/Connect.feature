@@ -228,7 +228,7 @@ Feature: Connect
     And Contact <Contact> sends random message to user <Name>
     And I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
-    When I swipe down contact list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -240,6 +240,8 @@ Feature: Connect
     And I see new photo in the dialog
     And I see message in the dialog
     And I navigate back to conversations view
+    And I see People picker page
+    And I click close button to dismiss people view
     And Contact <Contact> sends random message to user <Name>
     When I tap on contact name <Contact>
     Then I see message in the dialog

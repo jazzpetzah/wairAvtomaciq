@@ -77,7 +77,7 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathInviteCopyButton)
 	private WebElement inviteCopyButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathSendAnInviteButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameSendAnInviteButton)
 	private WebElement sendInviteButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameInstantConnectButton)
