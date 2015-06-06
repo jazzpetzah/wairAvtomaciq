@@ -15,7 +15,6 @@ import org.openqa.selenium.support.FindBy;
 import android.view.KeyEvent;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidKeyEvent;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
@@ -107,7 +106,8 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void lockScreen() throws Exception {
-		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_POWER);
+		// this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_POWER);
+		AndroidCommonUtils.lockScreen();
 	}
 
 	public void restoreApplication() throws Exception {
