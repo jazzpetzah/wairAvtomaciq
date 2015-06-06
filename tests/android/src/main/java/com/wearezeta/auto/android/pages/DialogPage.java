@@ -188,11 +188,12 @@ public class DialogPage extends AndroidPage {
 				.id(AndroidLocators.DialogPage.idFakeCursor);
 		int ntry = 1;
 		do {
-			final int initialCursorOffset = getDriver()
-					.findElement(fakeCursorLocator).getLocation().getX();
 			DriverUtils.swipeRight(this.getDriver(), cursorInput,
 					DEFAULT_SWIPE_TIME);
-			if (getDriver().findElement(fakeCursorLocator).getLocation().getX() > initialCursorOffset) {
+			final int currentCursorOffset = getDriver()
+					.findElement(fakeCursorLocator).getLocation().getX();
+			if (currentCursorOffset > getDriver().manage().window().getSize()
+					.getWidth() / 2) {
 				return;
 			}
 			ntry++;
