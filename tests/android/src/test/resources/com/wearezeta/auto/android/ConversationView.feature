@@ -318,7 +318,7 @@ Feature: Conversation View
   #   | Login      | Password      | Name      | Contact   |
   #   | user1Email | user1Password | user1Name | user2Name |
 
- @id170 @regression
+  @id170 @regression
   Scenario Outline: Verify you can send and play youtube link
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact1>
@@ -328,8 +328,7 @@ Feature: Conversation View
     And I see dialog page
     And I tap on text input
     And I type the message "<YoutubeLink>" and send it
-    And I press play on youtube container
-    Then I am taken out of Wire and into the native browser app
+    Then I see Play button on Youtube container
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | YoutubeLink                                    |
