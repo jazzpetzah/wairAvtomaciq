@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.steps;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -19,6 +20,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidLoggingUtils;
 import com.wearezeta.auto.android.common.reporter.LogcatListener;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
@@ -62,6 +64,7 @@ public class CommonAndroidSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
+	private long testStartedTimestamp = Long.MAX_VALUE;
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	public static final int DEFAULT_SWIPE_TIME = 1500;
@@ -183,6 +186,7 @@ public class CommonAndroidSteps {
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
+		testStartedTimestamp = new Date().getTime();
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
 				getUrl(), getPath(), isUnicode, this.getClass());
 		pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
@@ -854,6 +858,8 @@ public class CommonAndroidSteps {
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
 			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 		}
+
+		AndroidLoggingUtils.writeDeviceLogsToConsole(testStartedTimestamp);
 
 		commonSteps.getUserManager().resetUsers();
 	}

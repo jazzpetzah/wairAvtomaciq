@@ -12,7 +12,6 @@ androidClientInfoPath=${androidClientInfoPath}
 androidAppiumLogPath=${androidAppiumLogPath}
 defaultEmail=${defaultEmail}
 androidVersion=${androidVersion}
-androidLogs=${androidLogs}
 resourceFilePath=${resourceFilePath}
 resultsPath=${resultsPath}
 backendType=${backendType}
