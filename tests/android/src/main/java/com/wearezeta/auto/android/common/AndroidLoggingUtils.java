@@ -2,8 +2,10 @@ package com.wearezeta.auto.android.common;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,6 +20,14 @@ public final class AndroidLoggingUtils {
 
 	public AndroidLoggingUtils() {
 		// TODO Auto-generated constructor stub
+	}
+
+	private static final List<Pattern> patternsToExcludeFromLog = new ArrayList<Pattern>();
+	static {
+		patternsToExcludeFromLog.add(Pattern.compile("/resourcetype",
+				Pattern.CASE_INSENSITIVE));
+		patternsToExcludeFromLog.add(Pattern.compile("/selendroid",
+				Pattern.CASE_INSENSITIVE));
 	}
 
 	/**
@@ -56,7 +66,18 @@ public final class AndroidLoggingUtils {
 			}
 			if (logLineTimestamp > testStartedTimestamp
 					&& logLineTimestamp < testFinsihedTimestamp) {
-				System.out.println(logLine.trim());
+				boolean shouldIncludeLineToLog = true;
+				for (final Pattern excludePattern : patternsToExcludeFromLog) {
+					final Matcher excludeMatcher = excludePattern
+							.matcher(logLine);
+					if (excludeMatcher.find()) {
+						shouldIncludeLineToLog = false;
+						break;
+					}
+				}
+				if (shouldIncludeLineToLog) {
+					System.out.println(logLine.trim());
+				}
 			}
 		}
 		log.debug("===END OF CAPTURED DEVICE LOGS===");

@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -31,8 +32,8 @@ public class CallingOverlayPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.CallingOverlayPage.idAcceptButton)
 	private WebElement acceptButton;
 
-	@FindBy(id = AndroidLocators.CallingOverlayPage.idCallingUsersName)
-	private WebElement callingUsersName;
+	public static final Function<String, String> xpathCallingBarCaptionByName = name -> String
+			.format("//*[@id='ttv__calling__message' and @value = '%s']", name);
 
 	@FindBy(id = AndroidLocators.CallingOverlay.idCallMessage)
 	private WebElement callMessage;
@@ -76,19 +77,10 @@ public class CallingOverlayPage extends AndroidPage {
 		ignoreButton.click();
 	}
 
-	public String getCallersName() {
-		return callingUsersName.getText();
-	}
-
-	public void waitForCallersNameChanges(String name, int sec)
-			throws InterruptedException {
-		if (sec > 0 && callingUsersName.getText().equals(name)) {
-			Thread.sleep(1000);
-			sec--;
-			waitForCallersNameChanges(name, sec);
-		} else {
-			return;
-		}
+	public boolean waitUntilNameAppearsOnCallingBar(String name)
+			throws Exception {
+		final By locator = By.xpath(xpathCallingBarCaptionByName.apply(name));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public DialogPage acceptCall() throws Exception {
