@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android_tablet.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -12,6 +13,10 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletConversationViewPage extends AndroidTabletPage {
 	public static final String idRootLocator = "fl__message_stream_land_container";
+
+	public static final Function<String, String> xpathSystemMessageByContent = content -> String
+			.format("//*[@id='ltv__row_conversation__message' and contains(@value, '%s')]",
+					content.toUpperCase());
 
 	@FindBy(id = AndroidLocators.DialogPage.idParticipantsBtn)
 	private WebElement showDetailsButton;
@@ -28,5 +33,12 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	public void tapShowDetailsButton() throws Exception {
 		showDetailsButton.click();
+	}
+
+	public boolean waitForSystemMessageContains(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathSystemMessageByContent
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 }

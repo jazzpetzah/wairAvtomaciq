@@ -15,7 +15,6 @@ import org.openqa.selenium.support.FindBy;
 import android.view.KeyEvent;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidKeyEvent;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
@@ -56,7 +55,7 @@ public abstract class AndroidPage extends BasePage {
 			// Cannot handle external apps properly :-(
 			AndroidCommonUtils.genericScreenTap(screenDimension.width - ntry
 					* (screenDimension.width / 10), screenDimension.height / 2
-					- ntry * (screenDimension.height / 15));
+					- ntry * (screenDimension.height / 20));
 			try {
 				if (DriverUtils
 						.waitUntilLocatorIsDisplayed(
@@ -69,7 +68,7 @@ public abstract class AndroidPage extends BasePage {
 				// ignore silently
 			}
 			ntry++;
-		} while (ntry <= 5);
+		} while (ntry <= 10);
 		throw new RuntimeException("Failed to tap the first gallery image!");
 	}
 
@@ -107,7 +106,8 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void lockScreen() throws Exception {
-		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_POWER);
+		// this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_POWER);
+		AndroidCommonUtils.lockScreen();
 	}
 
 	public void restoreApplication() throws Exception {
