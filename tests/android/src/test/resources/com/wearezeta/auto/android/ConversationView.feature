@@ -251,42 +251,42 @@ Feature: Conversation View
 
   @id1504 @regression
   Scenario Outline: Verify you can play/pause media from the Media Bar (SoundCloud)
-    Given There are 3 users where <Name> is me
-    Given <Name> is connected to <Contact1>,<Contact2>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I tap on contact name <Contact1>
     And I see dialog page
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
     And I swipe down on dialog page
-    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user Myself
     And I tap Dialog page bottom
     And I press PlayPause media item button
     And I swipe down on dialog page
     And I swipe down on dialog page
     Then I see PAUSE on Mediabar
     And I press PlayPause on Mediabar button
-    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user Myself
     And I tap Dialog page bottom
     And I see PLAY button in Media
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+      | Login      | Password      | Name      | Contact1  | SoudCloudLink                                              |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
 # Disabled since Selendroid cannot interact with external apps
   # @id2085 @staging
