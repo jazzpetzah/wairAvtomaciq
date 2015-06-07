@@ -261,8 +261,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public void renameGroupChat(String chatName) throws Exception {
 		groupChatNameEditable.clear();
 		groupChatNameEditable.sendKeys(chatName);
-		// FIXME: We need these sleeps because of the bug in the AUT
-		// The app crashes if we apply name changes too quickly too quickly :-@
+		// FIXME: The app crashes if we apply name changes too fast :-@
 		groupChatNameEditable.sendKeys("\n");
 	}
 
