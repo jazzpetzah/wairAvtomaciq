@@ -145,7 +145,7 @@ public class PeoplePickerPage extends IOSPage {
 		BufferedImage clockImage = getAvatarClockIconScreenShot(name);
 		path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		double score = ImageUtil.getOverlapScore(clockImage, templateImage);
+		double score = ImageUtil.getOverlapScore(clockImage, templateImage, 1);
 		return score;
 	}
 
