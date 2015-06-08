@@ -57,8 +57,9 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.DialogPage.idPingMessage)
 	private List<WebElement> pingMessages;
 
-	@FindBy(xpath = AndroidLocators.DialogPage.xpathLastPingMessage)
-	private WebElement lastPingMessage;
+	public static final Function<String, String> xpathPingMessageByText = text -> String
+			.format("//*[@id='ttv__row_conversation__ping_message'] and @value='%s']",
+					text);
 
 	@FindBy(id = AndroidLocators.DialogPage.idPingIcon)
 	private WebElement pingIcon;
@@ -645,8 +646,9 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
-	public String getLastPingText() {
-		return lastPingMessage.getText();
+	public boolean waitForPingMessageWithText(String expectedText) throws Exception {
+		final By locator = By.xpath(xpathPingMessageByText.apply(expectedText));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public boolean isGroupChatDialogContainsNames(List<String> names)
