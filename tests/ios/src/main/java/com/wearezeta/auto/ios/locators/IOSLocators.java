@@ -602,6 +602,10 @@ public final class IOSLocators {
 		public static final String nameLockScreenMessage = "SlideToUnlock";
 	}
 	
+	public final class PersonalInfoPage {
+		public static final String nameCloseButton = "CloseButton";
+	}
+	
 	/////////////
 	//Chathead
 	/////////////
