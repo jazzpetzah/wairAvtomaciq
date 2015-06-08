@@ -87,7 +87,7 @@ public class PerformanceSteps {
 						try {
 							getContactListPage().tapOnContactByPosition(
 									visibleContactsList, randomInt);
-						} catch (StaleElementReferenceException e) {
+						} catch (Exception e) {
 							visibleContactsList = resetVisibleContactList();
 							getContactListPage().tapOnContactByPosition(
 									visibleContactsList, randomInt);
@@ -97,7 +97,7 @@ public class PerformanceSteps {
 						Thread.sleep(DEFAULT_WAIT_TIME);
 						try {
 							getDialogPage().sendFrontCameraImage();
-						} catch (RuntimeException e) {
+						} catch (Throwable e) {
 							getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
 							getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 							visibleContactsList = resetVisibleContactList();
