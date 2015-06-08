@@ -37,7 +37,7 @@ public class ClientUsersManager {
 	private static final Logger log = ZetaLogger
 			.getLog(ClientUsersManager.class.getSimpleName());
 
-	private void setClientUserAliases(ClientUser user, String[] nameAliases,
+	public static void setClientUserAliases(ClientUser user, String[] nameAliases,
 			String[] passwordAliases, String[] emailAliases,
 			String[] phoneNumberAliases) {
 		if (nameAliases != null && nameAliases.length > 0) {

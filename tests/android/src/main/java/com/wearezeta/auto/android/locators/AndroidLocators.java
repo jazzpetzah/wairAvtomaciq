@@ -4,6 +4,7 @@ import java.util.function.Function;
 
 public final class AndroidLocators {
 	public static final class Gmail {
+
 		public static final String idSubject = "subject";
 
 		public static final String idBoby = "body";
@@ -230,7 +231,7 @@ public final class AndroidLocators {
 
 	public static final class OtherUserPersonalInfoPage {
 		public static final String idParticipantAvatarsContainer = "pfac__participants";
-		
+
 		public static final String idParticipantsHeader = "ttv__participants__header";
 
 		public static final Function<String, String> xpathPartcipantNameByText = text -> String
@@ -373,7 +374,7 @@ public final class AndroidLocators {
 				+ "//*[@id='tet__profile__guided']";
 
 		public static final String idChangePhotoBtn = "gtv__camera_control__change_image_source";
-		
+
 		public static final String idTakePhotoButton = "gtv__camera_control__take_a_picture";
 
 		public static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";

@@ -19,13 +19,13 @@ public class SingleUserPopoverSteps {
 	/**
 	 * Verifies whether single user popover page is currently visible or not
 	 * 
-	 * @step. ^I (do not )?see (?:the )[Ss]ingle user popover$
+	 * @step. ^I (do not )?see (?:the |\\s*)[Ss]ingle user popover$
 	 * @param shouldNotBeVisible
 	 *            equals to null if "do not" part does not exist in the step
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I (do not )?see (?:the )[Ss]ingle user popover$")
+	@When("^I (do not )?see (?:the |\\s*)[Ss]ingle user popover$")
 	public void ISeeThePopover(String shouldNotBeVisible) throws Exception {
 		if (shouldNotBeVisible == null) {
 			Assert.assertTrue(

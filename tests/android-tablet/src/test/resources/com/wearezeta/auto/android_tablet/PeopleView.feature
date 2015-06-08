@@ -23,7 +23,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  | ItemLeave |
       | user1Name | user2Name | user3Name | LeaveGroupChat | LEAVE     |
 
-  @id2258 @smoke @torun
+  @id2258 @smoke
   Scenario Outline: Remove from group chat in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

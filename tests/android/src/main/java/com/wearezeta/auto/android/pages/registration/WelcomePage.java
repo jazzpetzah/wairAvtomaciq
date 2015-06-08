@@ -59,7 +59,7 @@ public class WelcomePage extends AndroidPage {
 		return new VerificationPage(this.getLazyDriver());
 	}
 
-	public EmailSignInPage clickIHaveAnAccount() throws Exception {
+	public EmailSignInPage tapIHaveAnAccount() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idHaveAccountButton), 30);
 		haveAccountButton.click();

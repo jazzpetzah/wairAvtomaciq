@@ -36,7 +36,7 @@ public class EmailSignInPageSteps {
 	public void ISignInUsingMyEmail() throws Exception {
 		// just to make sure we are on correct page
 		((TabletWelcomePage) pagesCollection.getPage(TabletWelcomePage.class))
-				.clickIHaveAnAccount();
+				.tapIHaveAnAccount();
 		final ClientUser selfUser = usrMgr.getSelfUserOrThrowError();
 		getEmailSignInPage().setLogin(selfUser.getEmail());
 		getEmailSignInPage().setPassword(selfUser.getPassword());
