@@ -168,8 +168,6 @@ public final class AndroidLocators {
 
 		public static final String idParticipantsBtn = "gtv__cursor_participants";
 
-		public static final String idPingMessage = "ttv__row_conversation__ping_message";
-
 		public static final String idCursorFrame = "cv";
 
 		public static final String idPingIcon = "gtv__knock_icon";

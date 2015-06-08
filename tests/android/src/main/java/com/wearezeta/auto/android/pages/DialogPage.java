@@ -52,10 +52,7 @@ public class DialogPage extends AndroidPage {
 	private WebElement missedCallMessage;
 
 	@FindBy(id = AndroidLocators.DialogPage.idCursorFrame)
-	private WebElement cursurFrame;
-
-	@FindBy(id = AndroidLocators.DialogPage.idPingMessage)
-	private List<WebElement> pingMessages;
+	private WebElement cursorFrame;
 
 	public static final Function<String, String> xpathPingMessageByText = text -> String
 			.format("//*[@id='ttv__row_conversation__ping_message'] and @value='%s']",
@@ -166,7 +163,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void tapOnCursorFrame() {
-		cursurFrame.click();
+		cursorFrame.click();
 	}
 
 	public void tapOnTextInputIfVisible() throws Exception {
