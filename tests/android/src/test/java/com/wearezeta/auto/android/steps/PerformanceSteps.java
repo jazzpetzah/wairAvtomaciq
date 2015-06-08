@@ -87,7 +87,7 @@ public class PerformanceSteps {
 						try {
 							getContactListPage().tapOnContactByPosition(
 									visibleContactsList, randomInt);
-						} catch (StaleElementReferenceException e) {
+						} catch (Exception e) {
 							visibleContactsList = resetVisibleContactList();
 							getContactListPage().tapOnContactByPosition(
 									visibleContactsList, randomInt);
