@@ -113,7 +113,13 @@ public class ContactListPage extends AndroidPage {
 
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
 			throws Exception {
-		contacts.get(id).click();
+		try {
+			contacts.get(id).click();
+			log.debug("Trying to open contact " + id + ". It's name: " + contacts.get(id).getAttribute("value"));
+		} catch (Exception e) {
+			log.debug("Failed to find element in contact list.\nPage source: " + getDriver().getPageSource());
+			throw e;
+		}
 		return new DialogPage(this.getLazyDriver());
 	}
 
