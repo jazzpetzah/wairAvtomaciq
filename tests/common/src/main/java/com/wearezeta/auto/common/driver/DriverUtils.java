@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
@@ -88,7 +89,8 @@ public class DriverUtils {
 					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class)
-					.ignoring(StaleElementReferenceException.class);
+					.ignoring(StaleElementReferenceException.class)
+					.ignoring(InvalidElementStateException.class);
 			try {
 				return wait.until(drv -> {
 					return (drv.findElements(by).size() > 0)

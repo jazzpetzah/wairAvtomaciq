@@ -856,9 +856,12 @@ public class CommonAndroidSteps {
 		pagesCollection.clearAllPages();
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+			try {
+				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+			} catch (WebDriverException e) {
+				e.printStackTrace();
+			}
 		}
-
 		AndroidLoggingUtils.writeDeviceLogsToConsole(testStartedTimestamp);
 
 		commonSteps.getUserManager().resetUsers();

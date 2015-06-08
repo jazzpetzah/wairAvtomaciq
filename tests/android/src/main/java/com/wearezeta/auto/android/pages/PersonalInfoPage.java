@@ -165,7 +165,7 @@ public class PersonalInfoPage extends AndroidPage {
 		nameEdit.clear();
 	}
 
-	public void changeName(String name, String newName) throws Exception {
+	public void changeSelfNameTo(String newName) throws Exception {
 		nameEdit.sendKeys(newName);
 		this.getDriver().navigate().back();
 	}

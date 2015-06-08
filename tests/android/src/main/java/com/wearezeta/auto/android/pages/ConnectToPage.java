@@ -99,7 +99,7 @@ public class ConnectToPage extends AndroidPage {
 		connectionRequestMessage.clear();
 	}
 
-	public void typeConnectionRequies(String message) throws Exception {
+	public void typeConnectionRequest(String message) throws Exception {
 		connectionRequestMessage.sendKeys(message);
 	}
 

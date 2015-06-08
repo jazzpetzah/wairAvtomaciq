@@ -311,15 +311,15 @@ Feature: Connect
     And I tap on group chat contact <Contact2>
     And I see connect to <Contact2> dialog
     And I tap on edit connect request field
-    And I type Connect request "Message"
+    And I type Connect request "<Message>"
     And I click Connect button on connect to page
     And I return to group chat page
     And I navigate back from dialog page
     And I see contact list with name <Contact2>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName         |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ContactGroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName         | Message        |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | ContactGroupChat | Yo! What's up! |
 
   @id676 @regression
   Scenario Outline: I want to block a person from 1:1 conversation

@@ -95,7 +95,16 @@ public class PerformanceSteps {
 						getDialogPage().isDialogVisible();
 						getDialogPage().tapDialogPageBottom();
 						Thread.sleep(DEFAULT_WAIT_TIME);
-						getDialogPage().sendFrontCameraImage();
+						try {
+							getDialogPage().sendFrontCameraImage();
+						} catch (RuntimeException e) {
+							getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
+							getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
+							visibleContactsList = resetVisibleContactList();
+							getContactListPage().tapOnContactByPosition(
+									visibleContactsList, randomInt);
+							getDialogPage().sendFrontCameraImage();
+						}
 					}
 					for (int y = 0; y < 2; y++) {
 						getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);

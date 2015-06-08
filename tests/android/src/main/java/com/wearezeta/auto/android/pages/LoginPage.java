@@ -4,6 +4,7 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -62,7 +63,11 @@ public class LoginPage extends AndroidPage {
 		do {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 					clearBtnLocator, 1)) {
-				pickerClearBtn.click();
+				try {
+					pickerClearBtn.click();
+				} catch (ElementNotVisibleException e) {
+					// ignore silently
+				}
 			}
 			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 					selfAvatarLocator, 1)) {
