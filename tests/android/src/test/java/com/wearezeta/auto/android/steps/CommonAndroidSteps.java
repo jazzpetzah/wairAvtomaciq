@@ -858,7 +858,7 @@ public class CommonAndroidSteps {
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
 			try {
 				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
-			} catch (Exception e) {
+			} catch (WebDriverException e) {
 				e.printStackTrace();
 			}
 		}
