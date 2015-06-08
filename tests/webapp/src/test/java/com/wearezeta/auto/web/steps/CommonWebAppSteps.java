@@ -20,6 +20,7 @@ import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.logging.LogEntry;
@@ -785,12 +786,21 @@ public class CommonWebAppSteps {
 		if (webdrivers.containsKey(uniqueName)) {
 			Future<ZetaWebAppDriver> webdriver = webdrivers.get(uniqueName);
 			try {
+				// save browser console if possible
 				if (WebAppExecutionContext.getBrowser()
 						.isSupportingConsoleLogManagement()) {
 					writeBrowserLogsIntoMainLog(webdriver.get(
 							ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 							TimeUnit.MILLISECONDS));
 				}
+
+				// logout with JavaScript because otherwise backend will block
+				// us because of to many login requests
+				String logoutScript = "wire.auth.repository.logout();";
+				JavascriptExecutor js = (JavascriptExecutor) webdriver;
+				js.executeScript(logoutScript);
+
+				// show link to saucelabs
 				String link = "https://saucelabs.com/jobs/"
 						+ webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 								TimeUnit.MILLISECONDS).getSessionId();
