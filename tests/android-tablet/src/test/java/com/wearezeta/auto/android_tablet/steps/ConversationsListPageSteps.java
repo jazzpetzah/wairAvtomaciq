@@ -48,11 +48,11 @@ public class ConversationsListPageSteps {
 	/**
 	 * Tap Search input field on top of Conversations list
 	 * 
-	 * @step. ^I tap Search input$
+	 * @step. ^I tap (?:the |\\s*)Search input$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap Search input$")
+	@When("^I tap (?:the |\\s*)Search input$")
 	public void ITapSearchInput() throws Exception {
 		getConversationsListPage().tapSearchInput();
 	}

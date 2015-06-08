@@ -31,7 +31,7 @@ public class ConversationViewPageSteps {
 	 */
 	@When("^I see (?:the |\\s*)[Cc]onversation view$")
 	public void ISeeConversationView() throws Exception {
-		Assert.assertTrue("The conversation view is not currentyl visible",
+		Assert.assertTrue("The conversation view is not currently visible",
 				getConversationViewPage().waitUntilVisible());
 	}
 
@@ -67,6 +67,28 @@ public class ConversationViewPageSteps {
 						"The system message containing text '%s' is not visible in the conversation view",
 						expectedMessage), getConversationViewPage()
 						.waitForSystemMessageContains(expectedMessage));
+	}
+
+	/**
+	 * Verify the chat header system message contains expected text
+	 * 
+	 * @step. ^I see the chat header message contains \"(.*)\" text on
+	 *        conversation view page$
+	 * 
+	 * @param expectedMessage
+	 *            the message to verify
+	 * @throws Exception
+	 */
+	@Then("^I see the chat header message contains \"(.*)\" text on conversation view page$")
+	public void ISeeChatHeaderSystemMessage(String expectedMessage)
+			throws Exception {
+		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(
+				String.format(
+						"The chat header message containing text '%s' is not visible in the conversation view",
+						expectedMessage), getConversationViewPage()
+						.waitForChatHeaderMessageContains(expectedMessage));
 	}
 
 }

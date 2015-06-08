@@ -2,6 +2,7 @@ package com.wearezeta.auto.android_tablet.steps;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.android_tablet.pages.TabletConversationsListPage;
 import com.wearezeta.auto.android_tablet.pages.TabletPeoplePickerPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -18,6 +19,12 @@ public class PeoplePickerPageSteps {
 	private TabletPeoplePickerPage getPeoplePickerPage() throws Exception {
 		return (TabletPeoplePickerPage) pagesCollection
 				.getPage(TabletPeoplePickerPage.class);
+	}
+
+	private TabletConversationsListPage getConversationsListPage()
+			throws Exception {
+		return (TabletConversationsListPage) pagesCollection
+				.getPage(TabletConversationsListPage.class);
 	}
 
 	/**
@@ -83,4 +90,56 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().tapCloseButton();
 	}
 
+	private static final int TOP_PEOPLE_MAX_RETRIES = 5;
+
+	/**
+	 * Try to reopen People Picker several times until Top People list is
+	 * visible
+	 * 
+	 * @step. ^I keep on reopening People Picker until I see Top People$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I keep on reopening People Picker until I see Top People$")
+	public void IReopenPeoplePickerUntilTopPeopleAppears() throws Exception {
+		int ntry = 1;
+		while (!getPeoplePickerPage().waitUntilTopPeopleIsVisible()
+				&& ntry <= TOP_PEOPLE_MAX_RETRIES) {
+			getPeoplePickerPage().tapCloseButton();
+			Thread.sleep(3000);
+			getConversationsListPage().tapSearchInput();
+			ntry++;
+		}
+		if (ntry >= TOP_PEOPLE_MAX_RETRIES) {
+			throw new AssertionError(String.format(
+					"Top People list was not shown after %s retries", ntry));
+		}
+	}
+
+	/**
+	 * Tap the particular Top People avatar
+	 * 
+	 * @step. ^I tap (.*) avatar in Top People$
+	 * 
+	 * @param name
+	 *            name/alias
+	 * @throws Exception
+	 */
+	@When("^I tap (.*) avatar in Top People$")
+	public void ITapAvatarInTopPeople(String name) throws Exception {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		getPeoplePickerPage().tapTopPeopleAvatar(name);
+	}
+	
+	/**
+	 * Tap the Create Conversation button
+	 * 
+	 * @step. ^I tap Create Conversation button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Create Conversation button$")
+	public void ITapCreateConversationButton() throws Exception {
+		getPeoplePickerPage().tapCreateConversationButton();
+	}
 }

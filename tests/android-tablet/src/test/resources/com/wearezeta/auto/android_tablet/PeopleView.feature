@@ -49,25 +49,24 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName       | Action      |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
 
-  @id2282 @staging
+  @id2282 @smoke
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given Contact <Contact1> send message to user <Name>
-    Given Contact <Name> send message to user <Contact1>
     And I rotate UI to portrait
-    Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list
-    And I wait for 90 seconds
-    When I swipe down contact list
-    And I see People picker page
-    And I tap on <Contact1> in Top People
-    And I tap on tablet create conversation
-    And I see tablet dialog page
+    Given I sign in using my email
+    And I see the conversations list
+    And I tap the Search input
+    And I see People Picker page
+    And I keep on reopening People Picker until I see Top People
+    And I tap <Contact1> avatar in Top People
+    When I tap Create Conversation button
+    Then I see the conversation view
+    And I see the chat header message contains "<Contact1>" text on conversation view page
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id2243 @staging
   Scenario Outline: Leave group conversation in landscape mode
