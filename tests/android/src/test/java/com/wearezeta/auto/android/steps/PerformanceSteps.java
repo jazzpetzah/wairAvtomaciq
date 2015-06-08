@@ -97,7 +97,7 @@ public class PerformanceSteps {
 						Thread.sleep(DEFAULT_WAIT_TIME);
 						try {
 							getDialogPage().sendFrontCameraImage();
-						} catch (RuntimeException e) {
+						} catch (Throwable e) {
 							getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
 							getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 							visibleContactsList = resetVisibleContactList();
