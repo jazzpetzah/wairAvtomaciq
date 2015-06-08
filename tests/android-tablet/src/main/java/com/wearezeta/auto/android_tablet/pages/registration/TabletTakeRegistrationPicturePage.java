@@ -30,7 +30,7 @@ public class TabletTakeRegistrationPicturePage extends AndroidTabletPage {
 
 	public boolean waitUntilVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCameraButton));
+				By.id(idCameraButton), 20);
 	}
 
 	public void tapCameraButton() {
