@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Optional;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.log4j.Logger;
@@ -21,10 +22,12 @@ public class AsyncProcess {
 
 	private String[] cmd;
 	private boolean shouldLogStdOut;
+	private Optional<StringBuilder> stdOut = Optional.empty();
+	private Optional<StringBuilder> stdErr = Optional.empty();
 	private boolean shouldLogStdErr;
-	private Process process = null;
-	private Thread stdOutMonitor = null;
-	private Thread stdErrMonitor = null;
+	private Optional<Process> process = Optional.empty();
+	private Optional<Thread> stdOutMonitor = Optional.empty();
+	private Optional<Thread> stdErrMonitor = Optional.empty();
 
 	public AsyncProcess(String[] cmd, boolean shouldLogStdOut,
 			boolean shouldLogStdErr) {
@@ -43,8 +46,27 @@ public class AsyncProcess {
 						if (reader.ready()) {
 							final String logLine = reader.readLine();
 							if (logLine != null) {
-								log.debug(String.format("%s%s", logPrefix,
-										logLine));
+								if (logPrefix.equals(STDOUT_LOG_PREFIX)) {
+									if (AsyncProcess.this.shouldLogStdOut) {
+										log.debug(String.format("%s%s",
+												logPrefix, logLine));
+									}
+									if (AsyncProcess.this.stdOut.isPresent()) {
+										AsyncProcess.this.stdOut.get().append(
+												logLine + "\n");
+									}
+								}
+								if (logPrefix.equals(STDERR_LOG_PREFIX)) {
+									if (AsyncProcess.this.shouldLogStdErr) {
+										log.debug(String.format("%s%s",
+												logPrefix, logLine));
+									}
+									if (AsyncProcess.this.stdErr.isPresent()) {
+										AsyncProcess.this.stdErr.get().append(
+												logLine + "\n");
+									}
+								}
+
 							}
 						}
 					} catch (IOException e) {
@@ -65,46 +87,63 @@ public class AsyncProcess {
 		};
 	}
 
-	public synchronized void start() throws IOException {
-		process = Runtime.getRuntime().exec(cmd);
-
+	public synchronized void start() throws Exception {
+		if (this.isRunning()) {
+			this.stop(9, new int[] { this.getPid() }, 2000);
+		}
+		this.process = Optional.of(Runtime.getRuntime().exec(cmd));
 		final BufferedReader stdout = new BufferedReader(new InputStreamReader(
-				process.getInputStream()));
-		stdOutMonitor = createListenerThread(stdout, STDOUT_LOG_PREFIX);
-		if (this.shouldLogStdOut) {
-			stdOutMonitor.start();
-		}
+				process.get().getInputStream()));
+		this.stdOut = Optional.of(new StringBuilder());
+		this.stdOutMonitor = Optional.of(createListenerThread(stdout,
+				STDOUT_LOG_PREFIX));
+		this.stdOutMonitor.get().start();
 		final BufferedReader stderr = new BufferedReader(new InputStreamReader(
-				process.getErrorStream()));
-		stdErrMonitor = createListenerThread(stderr, STDERR_LOG_PREFIX);
-		if (this.shouldLogStdErr) {
-			stdErrMonitor.start();
-		}
+				process.get().getErrorStream()));
+		this.stdErr = Optional.of(new StringBuilder());
+		this.stdErrMonitor = Optional.of(createListenerThread(stderr,
+				STDERR_LOG_PREFIX));
+		this.stdErrMonitor.get().start();
 	}
 
 	public boolean isRunning() {
+		if (!this.process.isPresent()) {
+			return false;
+		}
 		try {
-			process.exitValue();
+			this.process.get().exitValue();
 			return false;
 		} catch (IllegalThreadStateException e) {
 			return true;
 		}
 	}
 
-	public synchronized void stop(String signal, int[] pids,
+	/**
+	 * 
+	 * @param signal
+	 *            system signal number, for example 2 is SIGINT. If null then
+	 *            Java will try to kill the process using the standard lib
+	 * @param pids
+	 *            list of system pids to kill
+	 * @param timeoutMilliseconds
+	 *            application termination timeout
+	 * @throws Exception
+	 */
+	public synchronized void stop(Integer signal, int[] pids,
 			long timeoutMilliseconds) throws Exception {
 		try {
-			if (this.isRunning()) {
-				if (signal == null) {
-					process.destroy();
-				} else {
-					for (final int pid : pids) {
-						final String killCmd = String.format("kill -%s %s",
-								signal, pid);
-						log.debug("Executing: " + killCmd);
-						Runtime.getRuntime().exec(
-								new String[] { "/bin/bash", "-c", killCmd });
-					}
+			if (!this.process.isPresent() || !this.isRunning()) {
+				return;
+			}
+			if (signal == null) {
+				process.get().destroy();
+			} else {
+				for (final int pid : pids) {
+					final String killCmd = String.format("kill -%s %s",
+							signal.intValue(), pid);
+					log.debug("Executing: " + killCmd);
+					Runtime.getRuntime().exec(
+							new String[] { "/bin/bash", "-c", killCmd });
 				}
 			}
 			long milliSecondsElapsed = 0;
@@ -123,17 +162,33 @@ public class AsyncProcess {
 					.format("The application %s has been successfully stopped after %s millisecond(s)",
 							Arrays.toString(this.cmd), milliSecondsElapsed));
 		} finally {
-			if (shouldLogStdOut && stdOutMonitor.isAlive()) {
-				stdOutMonitor.interrupt();
+			if (stdOutMonitor.isPresent() && stdOutMonitor.get().isAlive()) {
+				stdOutMonitor.get().interrupt();
 			}
-			if (shouldLogStdErr && stdErrMonitor.isAlive()) {
-				stdErrMonitor.interrupt();
+			if (stdErrMonitor.isPresent() && stdErrMonitor.get().isAlive()) {
+				stdErrMonitor.get().interrupt();
 			}
 		}
 	}
 
 	public void stop(long timeoutMilliseconds) throws Exception {
 		this.stop(null, null, timeoutMilliseconds);
+	}
+
+	public String getStdout() {
+		if (this.stdOut.isPresent()) {
+			return stdOut.get().toString();
+		} else {
+			return "";
+		}
+	}
+
+	public String getStderr() {
+		if (this.stdErr.isPresent()) {
+			return stdErr.get().toString();
+		} else {
+			return "";
+		}
 	}
 
 	/**
@@ -143,13 +198,32 @@ public class AsyncProcess {
 	 * @throws Exception
 	 */
 	public int getPid() throws Exception {
-		if (process.getClass().getName().equals("java.lang.UNIXProcess")) {
-			Field f = process.getClass().getDeclaredField("pid");
+		if (!process.isPresent() || !this.isRunning()) {
+			throw new IllegalStateException(
+					"PID is not available while the process is not running");
+		}
+		if (process.get().getClass().getName().equals("java.lang.UNIXProcess")) {
+			Field f = process.get().getClass().getDeclaredField("pid");
 			f.setAccessible(true);
 			return f.getInt(process);
 		} else {
 			throw new UnsupportedOperationException(
 					"getPid implementation is not available for non-Unix systems");
+		}
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		try {
+			if (this.process.isPresent() && this.isRunning()) {
+				try {
+					this.stop(9, new int[] { this.getPid() }, 2000);
+				} catch (TimeoutException e) {
+					e.printStackTrace();
+				}
+			}
+		} finally {
+			super.finalize();
 		}
 	}
 }

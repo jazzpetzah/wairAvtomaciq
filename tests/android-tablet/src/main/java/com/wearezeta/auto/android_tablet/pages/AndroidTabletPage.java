@@ -1,7 +1,5 @@
 package com.wearezeta.auto.android_tablet.pages;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.android.pages.AndroidPage;
@@ -15,15 +13,9 @@ public abstract class AndroidTabletPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	private static Map<Class<? extends AndroidPage>, AndroidPage> connectedPagesMapping = new ConcurrentHashMap<Class<? extends AndroidPage>, AndroidPage>();
-
 	protected AndroidPage getAndroidPageInstance(
 			Class<? extends AndroidPage> pageClass) throws Exception {
-		if (!connectedPagesMapping.containsKey(pageClass)) {
-			connectedPagesMapping.put(pageClass,
-					(AndroidPage) this.instantiatePage(pageClass));
-		}
-		return connectedPagesMapping.get(pageClass);
+		return (AndroidPage) this.instantiatePage(pageClass);
 	}
 
 	@Override
@@ -116,5 +108,4 @@ public abstract class AndroidTabletPage extends AndroidPage {
 		return (AndroidTabletPage) super.swipeDownCoordinates(
 				durationMilliseconds, verticalPercent);
 	}
-
 }

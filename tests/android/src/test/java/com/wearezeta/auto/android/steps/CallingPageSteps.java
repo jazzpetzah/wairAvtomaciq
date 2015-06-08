@@ -53,19 +53,10 @@ public class CallingPageSteps {
 			throws Exception {
 		expectedCallerName = usrMgr.findUserByNameOrNameAlias(
 				expectedCallerName).getName();
-		final long millisecondsStarted = System.currentTimeMillis();
-		String actualCallerName;
-		do {
-			Thread.sleep(500);
-			actualCallerName = getCallingOverlayPage().getCallersName();
-		} while (System.currentTimeMillis() - millisecondsStarted <= CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS
-				&& !actualCallerName.equals(expectedCallerName));
-		Assert.assertEquals(
-				String.format(
-						"The current caller name '%s' differs from the expected value '%s' after %s seconds timeout",
-						actualCallerName, expectedCallerName,
-						CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS / 1000),
-				expectedCallerName, actualCallerName);
+		Assert.assertTrue(String.format(
+				"The current caller name differs from the expected value '%s'",
+				expectedCallerName), getCallingOverlayPage()
+				.waitUntilNameAppearsOnCallingBar(expectedCallerName));
 	}
 
 	/**
@@ -79,24 +70,11 @@ public class CallingPageSteps {
 	@When("^I see started call message for contact (.*)$")
 	public void ISeeStartedCallMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		String callersName = getCallingOverlayPage().getCallersName();
-		Assert.assertEquals(contact, callersName);
-	}
-
-	/**
-	 * Wait for call message changes
-	 * 
-	 * @step. ^I wait for call message changes from (.*) for (.*) seconds$
-	 * @param oldMessage
-	 *            call message that should disappear
-	 * @param sec
-	 *            timeout
-	 * @throws Exception
-	 */
-	@When("^I wait for call message changes from (.*) for (.*) seconds$")
-	public void IWaitFormCallMessageChanges(String oldMessage, int sec)
-			throws Exception {
-		getCallingOverlayPage().waitForCallersNameChanges(oldMessage, sec);
+		Assert.assertTrue(
+				String.format("'%s' name is not visible on calling bar",
+						contact),
+				getCallingOverlayPage().waitUntilNameAppearsOnCallingBar(
+						contact));
 	}
 
 	/**

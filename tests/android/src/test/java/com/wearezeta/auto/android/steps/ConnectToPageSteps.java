@@ -224,16 +224,4 @@ public class ConnectToPageSteps {
 	public void ThenCloseConnectToDialog() throws Exception {
 		getConnectToPage().clickCloseButton();
 	}
-
-	/**
-	 * Tap connection notification on Home Screen
-	 * 
-	 * @step. ^I tap connection notification on Home Screen$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I tap connection notification on Home Screen$")
-	public void TapConnectionNotification() throws Exception {
-		getConnectToPage().tapConnectNotification();
-	}
 }

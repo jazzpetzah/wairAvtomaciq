@@ -1,61 +1,61 @@
 Feature: Sign In
 
- @id2262 @staging
+  @id2262 @smoke
   Scenario Outline: Sign in to ZClient in portrait mode
     Given There is 1 user where <Name> is me
-    And I rotate UI to portrait
     Given I see welcome screen
+    Given I rotate UI to portrait
     When I switch to email sign in screen
-    And I have entered login <Login>
-    And I have entered password <Password>
-    And I attempt to press Login button
-    Then I see personal info page loaded with my name <Name>
+    And I enter login "<Login>"
+    And I enter password "<Password>"
+    And I tap Sign In button
+    And I see the Conversations list
+    Then I see my name on Self Profile page
 
     Examples: 
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2284 @staging
+  @id2284 @smoke
   Scenario Outline: Negative case for sign in portrait mode
     Given I see welcome screen
-    And I rotate UI to portrait
+    Given I rotate UI to portrait
     When I switch to email sign in screen
-    And I have entered login <Login>
-    And I have entered password <Password>
-    And I attempt to press Login button
-    Then Login error message appears
-    And Contains wrong name or password text
+    And I enter login "<Login>"
+    And I enter password "<Password>"
+    And I tap Sign In button
+    Then I see error message "<ErrMessage>"
 
     Examples: 
-      | Login | Password |
-      | aaa   | aaa      |
+      | Login | Password | ErrMessage                          |
+      | aaa   | aaa      | Please enter a valid email address. |
 
- @id2248 @staging
+ @id2248 @smoke
   Scenario Outline: Sign in to ZClient in landscape mode
     Given There is 1 user where <Name> is me
-    And I rotate UI to landscape
     Given I see welcome screen
+    And I rotate UI to landscape
     When I switch to email sign in screen
-    And I have entered login <Login>
-    And I have entered password <Password>
-    And I attempt to press Login button
-    Then I see personal info page loaded with my name <Name>
+    And I enter login "<Login>"
+    And I enter password "<Password>"
+    And I tap Sign In button
+    And I see the Conversations list
+    Then I see my name on Self Profile page
 
     Examples: 
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2285 @staging
+  @id2285 @smoke
   Scenario Outline: Negative case for sign in landscape mode
     Given I see welcome screen
     And I rotate UI to landscape
     When I switch to email sign in screen
-    And I have entered login <Login>
-    And I have entered password <Password>
-    And I attempt to press Login button
-    Then Login error message appears
-    And Contains wrong name or password text
+    And I enter login "<Login>"
+    And I enter password "<Password>"
+    And I tap Sign In button
+    Then I see error message "<ErrMessage>"
 
     Examples: 
-      | Login | Password |
-      | aaa   | aaa      |
+      | Login | Password | ErrMessage                          |
+      | aaa   | aaa      | Please enter a valid email address. |

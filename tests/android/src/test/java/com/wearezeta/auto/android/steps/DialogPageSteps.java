@@ -319,30 +319,18 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Tap on Play on youtube container
+	 * Verify that Play button is visible on youtube container
 	 * 
-	 * @step. ^I press play on youtube container$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I press play on youtube container$")
-	public void WhenIPressPlayOnYoutubeContainer() throws Exception {
-		getDialogPage().tapYouTubePlay();
-	}
-
-	/**
-	 * Waits until URL bar is visible to confirm tapping on YouTube link takes
-	 * you out of Wire to view video
-	 * 
-	 * @step. ^I am taken out of Wire and into the native browser app$
+	 * @step. ^I see Play button on youtube container$
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I am taken out of Wire and into the native browser app$")
-	public void IPlayYoutubeVideoInNativeBrowser() throws Exception {
-		getDialogPage().isNativeBrowserURLVisible();
+	@When("^I see Play button on [Yy]outube container$")
+	public void ISeePlayButtonOnYoutubeContainer() throws Exception {
+		Assert.assertTrue(
+				"Youtube Play button is not visible, but it should be",
+				getDialogPage().waitUntilYoutubePlayButtonVisible());
 	}
 
 	/**

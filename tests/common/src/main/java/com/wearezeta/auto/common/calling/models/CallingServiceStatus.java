@@ -5,45 +5,30 @@ import java.util.NoSuchElementException;
 public enum CallingServiceStatus {
 	// This state is set when calling/waiting instance just started, but is not
 	// ready to make/accept calls yet
-	Starting("starting"),
+
+	STARTING,
 	// This state is set only for waiting instance when it is already
 	// initialized and is prepared to switch to "waiting for call" state
-	Waiting("waiting"),
+	WAITING,
 	// This state is set for calling/waiting instance when it is successfully
 	// initialized and can make an outgoing/accept an incoming call
-	Ready("ready"),
+	READY,
 	// This state is set for calling/waiting instance when it has successfully
 	// made/accepted a call and this call is still in progress
-	Active("active"),
+	ACTIVE,
 	// This state is set for calling/waiting instance when it has successfully
 	// made/accepted a call and this call is still in progress and is muted
-	ActiveMuted("active_muted"),
+	ACTIVE_MUTED,
 	// This state is set for calling/waiting instance when it has successfully
 	// started and got command to stop, but is not stopped yet
-	Stopping("stopping"),
+	STOPPING,
 	// This state is set for calling/waiting instance when it was stopped (with
 	// a command or because of some failure)
-	Inactive("inactive");
-
-	private final String stringRepresentation;
-
-	public String getStringRepresentation() {
-		return this.stringRepresentation;
-	}
-
-	private CallingServiceStatus(String stringRepresentation) {
-		this.stringRepresentation = stringRepresentation;
-	}
-
-	@Override
-	public String toString() {
-		return this.getStringRepresentation();
-	}
+	INACTIVE;
 
 	public static CallingServiceStatus fromString(String stringRepresentation) {
 		for (CallingServiceStatus status : CallingServiceStatus.values()) {
-			if (status.getStringRepresentation().equalsIgnoreCase(
-					stringRepresentation)) {
+			if (status.toString().equalsIgnoreCase(stringRepresentation)) {
 				return status;
 			}
 		}

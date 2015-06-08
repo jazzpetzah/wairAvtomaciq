@@ -32,7 +32,7 @@ public final class IOSLocators {
 	
 	public static final String xpathContactListCells = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
 	
-	public static final String xpathSelfName = "//UIAStaticText[@name='%s']";
+	public static final String nameSelfButton = "SelfButton";
 	
 	public static final String nameProfileSettingsButton = "SettingsButton";
 
@@ -74,7 +74,7 @@ public final class IOSLocators {
 
 	public static final String namePickerSearch = "textViewSearch";
 	
-	public static final String namePickerClearButton = "PeoplePickerClearButton";
+	public static final String xpathPickerClearButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[3]";
 	
 	public static final String nameSendConnectButton = "SEND";
 	
@@ -462,13 +462,14 @@ public final class IOSLocators {
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
 	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
-	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[%d]";
-	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell";
+	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell[%d]";
+	public static final String xpathPeoplePickerTopConnectionsName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell[%d]/UIAStaticText";
+	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell";
 	public static final String nameShareButton = "SHARE CONTACTS";
 	public static final String nameContinueUploadButton = "SHARE CONTACTS";
 	public static final String namePeopleYouMayKnowLabel = "CONNECT";
 	public static final String nameHideSuggestedContactButton = "HIDE";
-	public static final String xpathSendAnInviteButton = "//UIACollectionCell[@name='Send an invitation']";
+	public static final String nameSendAnInviteButton = "Send an invitation";
 	public static final String xpathInviteCopyButton = "//UIACollectionCell[@name='Copy']";
 	public static final String nameSuggestedContactType = "UIACollectionCell";
 	public static final String nameHideSuggestedContactButtonType = "UIAButton";
@@ -559,7 +560,7 @@ public final class IOSLocators {
 	}
 	
 	public final class DialogPage {
-		public static final String xpathCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[5]";
+		public static final String xpathCallButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[3]";
 	}
 	
 	public final class DialogInfoPage {
@@ -569,7 +570,8 @@ public final class IOSLocators {
 	}
 	
 	public final class ContactListPage {
-		public static final String nameOpenStartUI = "OpenStartUI";
+		public static final String nameOpenStartUI = "TAP TO START A CONVERSATION";
+		public static final String nameSelfButton = "SelfButton";
 	}
 	
 	public final class RegistrationPage {
@@ -590,6 +592,10 @@ public final class IOSLocators {
 	public final class PeoplePickerPage {
 		public static final String nameLaterButton = "MAYBE LATER";
 		public static final String nameContinueUploadButton = "SHARE";
+		public static final String nameNotNowButton = "NOT NOW";
+		public static final String xpathSuggestedContact = "//UIACollectionCell/UIAStaticText[@name='%s']";
+		public static final String xpathSuggestedContactToSwipe = "//UIACollectionCell[descendant::UIAStaticText[@name='%s']]";
+		public static final String xpathHideButtonForContact = "//UIAButton[@name='HIDE'][ancestor::UIACollectionCell[descendant::UIAStaticText[@name='%s']]]";
 	}
 	
 	public final class CommonIOSLocators {

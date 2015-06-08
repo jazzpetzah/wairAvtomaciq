@@ -2,7 +2,7 @@ package com.wearezeta.auto.android_tablet.steps;
 
 import cucumber.api.java.en.Then;
 
-public class TabletRegistrationPageSteps {
+public class RegistrationPageSteps {
 	
 	/**
 	 * Initializes profile page opened after automatic login

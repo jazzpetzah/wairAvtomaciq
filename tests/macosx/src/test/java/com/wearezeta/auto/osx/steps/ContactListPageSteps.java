@@ -197,7 +197,8 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Minimizes Wire window
+	 * Minimizes Wire window. The app could be restored properly with a script
+	 * as well after this step was called
 	 * 
 	 * @step. ^I minimize Wire$
 	 * @throws Exception

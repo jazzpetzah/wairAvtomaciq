@@ -11,8 +11,8 @@ public class TabletRegistrationPage extends AndroidTabletPage {
 		super(lazyDriver);
 	}
 
-	public TabletPersonalInfoPage initProfilePage() throws Exception {
-		return new TabletPersonalInfoPage(getLazyDriver());
+	public TabletSelfProfilePage initProfilePage() throws Exception {
+		return new TabletSelfProfilePage(getLazyDriver());
 	}
 
 }

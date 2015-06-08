@@ -110,6 +110,18 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
+	 * Takes photo for new avatar. Front camera is opened by default
+	 * 
+	 * @step. ^I take new avatar picture$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I take new avatar picture$")
+	public void ITakePhoto() throws Exception {
+		getPersonalInfoPage().tapTakePhotoButton();
+	}
+
+	/**
 	 * Presses on the gallery button to select a photo from the phone's storage
 	 * 
 	 * @step. ^I press Gallery button$
@@ -290,7 +302,10 @@ public class PersonalInfoPageSteps {
 			final BufferedImage currentProfilePicture = getPersonalInfoPage()
 					.takeScreenshot().orElseThrow(AssertionError::new);
 			score = ImageUtil.getOverlapScore(currentProfilePicture,
-					previousProfilePicture);
+					previousProfilePicture, ImageUtil.RESIZE_NORESIZE);
+			if (score <= MAX_OVERLAP_SCORE) {
+				break;
+			}
 			Thread.sleep(3000);
 		} while (score > MAX_OVERLAP_SCORE
 				&& System.currentTimeMillis() - millisecondsStarted <= PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS * 1000);
