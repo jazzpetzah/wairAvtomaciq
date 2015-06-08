@@ -105,7 +105,7 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
-    Then I tap on 2 top connections
+    Then I tap on first 2 top connections
     And I click Create Conversation button on People picker page
     And I wait for 2 seconds
     And I swipe up on group chat page
