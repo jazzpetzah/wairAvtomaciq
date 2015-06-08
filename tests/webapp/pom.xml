@@ -15,10 +15,10 @@
 		<skipTests>false</skipTests>
 		<TestRun>DevRun</TestRun>
 		<pictureResultsPath>/var/tmp/</pictureResultsPath>
-		<hubHost>127.0.0.1</hubHost>
+        <hubHost>192.168.10.44</hubHost>
 		<hubPort>4444</hubPort>
 		<url>http://${hubHost}:${hubPort}/wd/hub</url>
-		<driverTimeoutSeconds>7</driverTimeoutSeconds>
+        <driverTimeoutSeconds>7</driverTimeoutSeconds>
 		<defaultEmail>smoketester.webapp@wearezeta.com</defaultEmail>
 		<!-- edge | staging | production -->
 		<backendType>staging</backendType>
@@ -30,7 +30,8 @@
 		<extendedLoggingLevel>SEVERE</extendedLoggingLevel>
 
 		<!-- new -->
-		<com.wire.os.name>Windows</com.wire.os.name>
+        <com.wire.os.name>Windows</com.wire.os.name>
+        <com.wire.os.version>7</com.wire.os.version>
 		<com.wire.browser.name>Chrome</com.wire.browser.name>
 		<com.wire.browser.version>43.0</com.wire.browser.version>
 	</properties>

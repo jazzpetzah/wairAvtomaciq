@@ -174,8 +174,7 @@ public class CommonWebAppSteps {
 						new URL(url), capabilities);
 				// setup of the browser
 				lazyWebDriver.setFileDetector(new LocalFileDetector());
-				if (WebAppExecutionContext.getBrowser()
-						.hasResizingWindowBug()) {
+				if (WebAppExecutionContext.getBrowser().hasResizingWindowBug()) {
 					// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
 					lazyWebDriver
 							.manage()
@@ -196,7 +195,8 @@ public class CommonWebAppSteps {
 		webdrivers.put(uniqueName, lazyWebDriver);
 		lazyWebDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 				TimeUnit.MILLISECONDS).get(path);
-		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver, path);
+		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
+				path);
 		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
 
@@ -213,7 +213,8 @@ public class CommonWebAppSteps {
 	}
 
 	private static DesiredCapabilities getCustomCapabilities(String platform,
-			String browserName, String browserVersion, String uniqueTestName) throws Exception {
+			String browserName, String browserVersion, String uniqueTestName)
+			throws Exception {
 		final DesiredCapabilities capabilities;
 		Browser browser = Browser.fromString(browserName);
 		switch (browser) {
@@ -786,26 +787,28 @@ public class CommonWebAppSteps {
 		if (webdrivers.containsKey(uniqueName)) {
 			Future<ZetaWebAppDriver> webdriver = webdrivers.get(uniqueName);
 			try {
+				ZetaWebAppDriver driver = webdriver.get(
+						ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+						TimeUnit.MILLISECONDS);
+
 				// save browser console if possible
 				if (WebAppExecutionContext.getBrowser()
 						.isSupportingConsoleLogManagement()) {
-					writeBrowserLogsIntoMainLog(webdriver.get(
-							ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-							TimeUnit.MILLISECONDS));
+					writeBrowserLogsIntoMainLog(driver);
 				}
 
-				// logout with JavaScript because otherwise backend will block
-				// us because of to many login requests
-				String logoutScript = "wire.auth.repository.logout();";
-				JavascriptExecutor js = (JavascriptExecutor) webdriver.get(
-						ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-						TimeUnit.MILLISECONDS);
-				js.executeScript(logoutScript);
+				if (driver instanceof ZetaWebAppDriver) {
+					// logout with JavaScript because otherwise backend will
+					// block
+					// us because of to many login requests
+					String logoutScript = "wire.auth.repository.logout();";
+					JavascriptExecutor js = (JavascriptExecutor) driver;
+					js.executeScript(logoutScript);
+				}
 
 				// show link to saucelabs
 				String link = "https://saucelabs.com/jobs/"
-						+ webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-								TimeUnit.MILLISECONDS).getSessionId();
+						+ driver.getSessionId();
 				log.debug("See more information on " + link);
 				String html = "<html><body><a id='link' href='"
 						+ link
@@ -814,7 +817,7 @@ public class CommonWebAppSteps {
 						+ "</a><script>window.location.href = document.getElementById('link').getAttribute('href');</script></body></html>";
 				scenario.embed(html.getBytes(Charset.forName("UTF-8")),
 						"text/html");
-			} catch (ExecutionException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
