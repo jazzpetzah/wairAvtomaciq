@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
@@ -13,11 +14,16 @@ import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
+
+	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
+			.getSimpleName());
+
 	private static final String RXLOGGER_RESOURCE_FILE_PATH = "/sdcard/RxLogger/Resource0.csv";
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
@@ -98,7 +104,10 @@ public class PerformanceSteps {
 						try {
 							getDialogPage().sendFrontCameraImage();
 						} catch (Throwable e) {
-							getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
+							log.debug("Camera image were not send before. Workaround...");
+							for (int y = 0; y < 2; y++) {
+								getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
+							}
 							getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 							visibleContactsList = resetVisibleContactList();
 							getContactListPage().tapOnContactByPosition(
