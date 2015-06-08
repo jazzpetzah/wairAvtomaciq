@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.steps;
 import java.util.ArrayList;
 
 import org.junit.Assert;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
@@ -33,6 +34,20 @@ public class PerformanceSteps {
 		return (DialogPage) pagesCollection.getPage(DialogPage.class);
 	}
 
+	public ArrayList<WebElement> resetVisibleContactList() throws Exception {
+		ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>();
+		int counter = 0;
+		do {
+			Thread.sleep(DEFAULT_WAIT_TIME);
+			visibleContactsList = new ArrayList<WebElement>(
+					getContactListPage().GetVisibleContacts());
+			counter++;
+		} while ((visibleContactsList.isEmpty() || visibleContactsList == null)
+				&& counter != 3);
+		visibleContactsList.remove(0);
+		return visibleContactsList;
+	}
+
 	/**
 	 * Starts standard actions loop (read messages/send messages) to measure
 	 * application performance
@@ -51,16 +66,7 @@ public class PerformanceSteps {
 				for (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) {
 					// --Get list of visible dialogs visible dialog
 					getContactListPage().waitForConversationListLoad();
-					ArrayList<WebElement> visibleContactsList;
-					int counter = 0;
-					do {
-						Thread.sleep(DEFAULT_WAIT_TIME);
-						visibleContactsList = new ArrayList<WebElement>(
-								getContactListPage().GetVisibleContacts());
-						counter++;
-					} while ((visibleContactsList.isEmpty() || visibleContactsList == null)
-							&& counter != 3);
-					visibleContactsList.remove(0);
+					ArrayList<WebElement> visibleContactsList = resetVisibleContactList();
 					// --
 					int randomInt;
 					String convName;
@@ -78,8 +84,14 @@ public class PerformanceSteps {
 					if (perfCommon.random.nextBoolean()) {
 						getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
 						getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
-						getContactListPage().tapOnContactByPosition(
-								visibleContactsList, randomInt);
+						try {
+							getContactListPage().tapOnContactByPosition(
+									visibleContactsList, randomInt);
+						} catch (StaleElementReferenceException e) {
+							visibleContactsList = resetVisibleContactList();
+							getContactListPage().tapOnContactByPosition(
+									visibleContactsList, randomInt);
+						}
 						getDialogPage().isDialogVisible();
 						getDialogPage().tapDialogPageBottom();
 						Thread.sleep(DEFAULT_WAIT_TIME);

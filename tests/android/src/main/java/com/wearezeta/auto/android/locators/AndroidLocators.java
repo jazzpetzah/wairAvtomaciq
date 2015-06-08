@@ -66,8 +66,6 @@ public final class AndroidLocators {
 
 		public static final String idAcceptButton = "gtv__calling__accept";
 
-		public static final String idCallingUsersName = "ttv__calling__message";
-
 	}
 
 	/**

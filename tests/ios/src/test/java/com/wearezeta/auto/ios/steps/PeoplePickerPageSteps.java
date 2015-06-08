@@ -20,8 +20,8 @@ import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private static final Logger log = ZetaLogger.getLog(PeoplePickerPageSteps.class
-			.getSimpleName());
+	private static final Logger log = ZetaLogger
+			.getLog(PeoplePickerPageSteps.class.getSimpleName());
 
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Exception {
@@ -353,11 +353,36 @@ public class PeoplePickerPageSteps {
 				.dismissPeoplePicker();
 	}
 
-	@Then("I tap on (.*) top connections")
+	/**
+	 * Select pointed amount of contacts from top people in a row starting from
+	 * first
+	 * 
+	 * @param numberOfTopConnections
+	 *            amount of contacts that should be selected
+	 * @throws Exception
+	 */
+	@Then("I tap on first (.*) top connections")
 	public void WhenITapOnTopConnections(int numberOfTopConnections)
 			throws Exception {
 		PagesCollection.peoplePickerPage
 				.tapNumberOfTopConnections(numberOfTopConnections);
+	}
+
+	/**
+	 * Tap on pointed amount of users from top people skipping pointed contact
+	 * 
+	 * @param numberOfTopConnections
+	 *            number of top contacts to tap
+	 * @param contact
+	 *            name of contact that shouldn't be tapped
+	 * @throws Exception
+	 */
+	@Then("I tap on (.*) top connections but not (.*)")
+	public void WhenITapOnTopConnectionsButNotUser(int numberOfTopConnections,
+			String contact) throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		PagesCollection.peoplePickerPage.tapNumberOfTopConnectionsButNotUser(
+				numberOfTopConnections, contact);
 	}
 
 	@When("I click on connected user (.*) avatar on People picker page")

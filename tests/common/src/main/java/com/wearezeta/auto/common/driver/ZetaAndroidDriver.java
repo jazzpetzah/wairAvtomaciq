@@ -27,7 +27,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import io.appium.java_client.android.AndroidDriver;
 
 public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
-		HasTouchScreen {
+		HasTouchScreen, HasParallelScreenshotsFeature {
 
 	private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
 			.getSimpleName());
@@ -38,7 +38,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	public ZetaAndroidDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
 		this.touch = new RemoteTouchScreen(getExecuteMethod());
-		sessionHelper = new SessionHelper();
+		sessionHelper = new SessionHelper(this);
 	}
 
 	@Override
@@ -51,24 +51,14 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		return this.sessionHelper.wrappedFindElement(super::findElement, by);
 	}
 
-	private Void closeDriver() {
-		super.close();
-		return null;
-	}
-
 	@Override
 	public void close() {
-		this.sessionHelper.wrappedClose(this::closeDriver);
-	}
-
-	private Void quitDriver() {
-		super.quit();
-		return null;
+		this.sessionHelper.wrappedClose(super::close);
 	}
 
 	@Override
 	public void quit() {
-		this.sessionHelper.wrappedQuit(this::quitDriver);
+		this.sessionHelper.wrappedQuit(super::quit);
 	}
 
 	@Override
@@ -151,13 +141,16 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		File tmpScreenshot = null;
 		try {
 			tmpScreenshot = File.createTempFile("tmp", ".png", null);
+			final String pathOnPhone = String
+					.format("/sdcard/%s.png", CommonUtils.generateGUID()
+							.replace("-", "").substring(0, 8));
 			final String adbCommandsChain = String.format(
-					"adb shell screencap -p /sdcard/fullscreen.png; "
-							+ "adb pull /sdcard/fullscreen.png %s; "
-							+ "adb shell rm /sdcard/fullscreen.png",
+					"adb shell screencap -p %1$s; " + "adb pull %1$s %2$s; "
+							+ "adb shell rm %1$s", pathOnPhone,
 					tmpScreenshot.getCanonicalPath());
-			CommonUtils.executeOsXCommand(new String[] { "/bin/bash", "-c",
-					adbCommandsChain });
+			Runtime.getRuntime()
+					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
+					.waitFor();
 			final byte[] output = FileUtils.readFileToByteArray(tmpScreenshot);
 			result.setSessionId(this.getSessionId().toString());
 			result.setStatus(HttpStatus.OK_200);
@@ -188,30 +181,28 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	@Override
 	public Response execute(String driverCommand, Map<String, ?> parameters) {
 		try {
+			if (driverCommand.equals(DriverCommand.SCREENSHOT)) {
+				return this.takeFullScreenShotWithAdb();
+			}
 			return super.execute(driverCommand, parameters);
 		} catch (WebDriverException e) {
 			if (e.getMessage().contains(SERVER_SIDE_ERROR_SIGNATURE)) {
-				if (driverCommand.equals(DriverCommand.SCREENSHOT)) {
-					log.warn("Trying ADB workaround to take a full screen shot...");
-					return this.takeFullScreenShotWithAdb();
-				} else {
-					final long milliscondsStarted = System.currentTimeMillis();
-					while (System.currentTimeMillis() - milliscondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
-						try {
-							Thread.sleep(300);
-						} catch (InterruptedException e1) {
-							Throwables.propagate(e1);
+				final long milliscondsStarted = System.currentTimeMillis();
+				while (System.currentTimeMillis() - milliscondsStarted <= DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS) {
+					try {
+						Thread.sleep(300);
+					} catch (InterruptedException e1) {
+						Throwables.propagate(e1);
+					}
+					try {
+						return super.execute(driverCommand, parameters);
+					} catch (WebDriverException e1) {
+						if (!e.getMessage().contains(
+								SERVER_SIDE_ERROR_SIGNATURE)) {
+							throw e1;
 						}
-						try {
-							return super.execute(driverCommand, parameters);
-						} catch (WebDriverException e1) {
-							if (!e.getMessage().contains(
-									SERVER_SIDE_ERROR_SIGNATURE)) {
-								throw e1;
-							}
-						}
-					} // while have time
-				} // if command is screenshot
+					}
+				} // while have time
 			} // if getMessage contains
 			log.error(String
 					.format("Android driver is still not available after %s seconds timeout. The recent webdriver command was '%s'",
@@ -219,5 +210,10 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 							driverCommand));
 			throw e;
 		}
+	}
+
+	@Override
+	public int getMaxScreenshotMakersCount() {
+		return 2;
 	}
 }

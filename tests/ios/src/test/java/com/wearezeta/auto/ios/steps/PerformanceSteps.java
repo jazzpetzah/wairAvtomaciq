@@ -151,7 +151,7 @@ public class PerformanceSteps {
 		// a separate process from the command line that we provide
 		final int monitorPid = this.getPerfMon().getPid() + 1;
 		// Sending SIGINT to properly terminate perf monitor
-		this.getPerfMon().stop("2", new int[] { monitorPid },
+		this.getPerfMon().stop(2, new int[] { monitorPid },
 				PERF_MON_STOP_TIMEOUT);
 	}
 }

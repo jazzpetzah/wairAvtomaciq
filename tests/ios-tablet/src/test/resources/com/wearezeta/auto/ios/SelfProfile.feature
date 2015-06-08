@@ -61,6 +61,25 @@ Feature: Self Profile
       | Login      | Password      | Name      | Contact   | Color  |
       | user1Email | user1Password | user1Name | user2Name | Violet |
       
+  @staging @id2586
+  Scenario Outline: Self profile. Verify max limit in 64 chars [PORTRAIT]
+    Given There are 1 users where <Name> is me
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I tap to edit my name
+    And I change name <Name> to <NewUsername>
+    Then I see my new name <NewUsername1>
+    When I rotate UI to landscape
+    Then I see Contact list with my name <NewUsername1>
+    And I tap to edit my name
+    And I change name <Name> to <NewUsername>
+    Then I see my new name <NewUsername1>
+    
+    Examples: 
+      | Login      | Password      | Name      | NewUsername                                                          | NewUsername1                                                     | Contact   |
+      | user1Email | user1Password | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 | user2Name |
+
   @staging @id1054 @id1060    
   Scenario Outline: I verify I am unable to enter a name using only spaces or more than 80 chars [PORTRAIT]
     Given There are 1 users where <Name> is me

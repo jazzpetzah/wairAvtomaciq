@@ -48,10 +48,11 @@ public abstract class AbstractPagesCollection {
 	}
 
 	public void clearAllPages() {
-		if (pagesMapping.size() > 0) {
+		final int pagesCount = pagesMapping.size();
+		if (pagesCount > 0) {
 			pagesMapping.clear();
 			log.debug(String.format("Cleaned %d existing page objects",
-					pagesMapping.size()));
+					pagesCount));
 		}
 	}
 

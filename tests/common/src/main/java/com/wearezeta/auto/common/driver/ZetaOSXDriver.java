@@ -16,7 +16,7 @@ public class ZetaOSXDriver extends AppiumDriver implements ZetaDriver {
 
 	public ZetaOSXDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
-		sessionHelper = new SessionHelper();
+		sessionHelper = new SessionHelper(this);
 	}
 
 	@Override
@@ -29,24 +29,14 @@ public class ZetaOSXDriver extends AppiumDriver implements ZetaDriver {
 		return this.sessionHelper.wrappedFindElement(super::findElement, by);
 	}
 
-	private Void closeDriver() {
-		super.close();
-		return null;
-	}
-
 	@Override
 	public void close() {
-		this.sessionHelper.wrappedClose(this::closeDriver);
-	}
-
-	private Void quitDriver() {
-		super.quit();
-		return null;
+		this.sessionHelper.wrappedClose(super::close);
 	}
 
 	@Override
 	public void quit() {
-		this.sessionHelper.wrappedQuit(this::quitDriver);
+		this.sessionHelper.wrappedQuit(super::quit);
 	}
 
 	@Override
