@@ -234,9 +234,10 @@ public class PeoplePickerPage extends IOSPage {
 
 	public boolean isSuggestedContactVisible(String contact) throws Exception {
 
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(String.format(
-										IOSLocators.PeoplePickerPage.xpathSuggestedContact,
-										contact)), 2);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
+				.xpath(String.format(
+						IOSLocators.PeoplePickerPage.xpathSuggestedContact,
+						contact)), 2);
 	}
 
 	public boolean isAddToConversationBtnVisible() throws Exception {
@@ -439,6 +440,34 @@ public class PeoplePickerPage extends IOSPage {
 
 	public void pressInstantConnectButton() {
 		instantConnectButton.click();
+	}
+
+	public String getNameOfNuser(int i) throws Exception {
+		return this
+				.getDriver()
+				.findElementByXPath(
+						String.format(
+								IOSLocators.xpathPeoplePickerTopConnectionsName,
+								i)).getAttribute("name");
+	}
+
+	public void tapNumberOfTopConnectionsButNotUser(int numberToTap,
+			String contact) throws Exception {
+		numberTopSelected = 0;
+		for (int i = 1; i < numberToTap + 1; i++) {
+			if (!contact.equals(getNameOfNuser(i).toLowerCase())) {
+				getDriver()
+						.findElement(
+								By.xpath(String
+										.format(IOSLocators.xpathPeoplePickerTopConnectionsAvatar,
+												i))).click();
+				numberTopSelected++;
+			}
+			else {
+				numberToTap++;
+			}
+		}
+
 	}
 
 }
