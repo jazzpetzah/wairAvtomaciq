@@ -100,11 +100,12 @@ public class PerformanceSteps {
 						}
 						getDialogPage().isDialogVisible();
 						getDialogPage().tapDialogPageBottom();
+						/*
 						Thread.sleep(DEFAULT_WAIT_TIME);
 						try {
 							getDialogPage().sendFrontCameraImage();
 						} catch (Throwable e) {
-							log.debug("Camera image were not send before. Workaround...");
+							log.debug("Camera image was not send before. Workaround...");
 							for (int y = 0; y < 2; y++) {
 								getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
 							}
@@ -113,7 +114,7 @@ public class PerformanceSteps {
 							getContactListPage().tapOnContactByPosition(
 									visibleContactsList, randomInt);
 							getDialogPage().sendFrontCameraImage();
-						}
+						}*/
 					}
 					for (int y = 0; y < 2; y++) {
 						getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
