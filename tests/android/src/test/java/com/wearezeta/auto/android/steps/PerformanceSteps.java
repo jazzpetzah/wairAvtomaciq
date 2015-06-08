@@ -98,6 +98,7 @@ public class PerformanceSteps {
 						try {
 							getDialogPage().sendFrontCameraImage();
 						} catch (RuntimeException e) {
+							getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
 							getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 							visibleContactsList = resetVisibleContactList();
 							getContactListPage().tapOnContactByPosition(
