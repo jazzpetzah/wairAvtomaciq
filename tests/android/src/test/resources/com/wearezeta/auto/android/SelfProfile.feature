@@ -51,7 +51,7 @@ Feature: Self Profile
       | Login      | Password      | Name      | NewName     |
       | user1Email | user1Password | user1Name | NewTestName |
  
-  @staging @id201
+  @smoke @id201
   Scenario Outline: Change user picture with front camera
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
