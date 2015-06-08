@@ -204,7 +204,6 @@ public class DialogPage extends AndroidPage {
 					"Failed to swipe the text cursor. Retrying (%s of %s)...",
 					ntry, MAX_CURSOR_SWIPE_TRIES));
 			ntry++;
-			tapDialogPageBottom();
 			tapOnTextInputIfVisible();
 			this.hideKeyboard();
 			Thread.sleep(1000);
