@@ -1,11 +1,11 @@
 Feature: Search
 
-  @staging @id2147
+  @staging @id2147 @torun
   Scenario Outline: Verify search by email [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
@@ -21,7 +21,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
@@ -110,7 +110,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -134,7 +134,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -157,7 +157,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     #And I wait for 30 seconds
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -184,7 +184,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     #And I wait for 30 seconds
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -210,7 +210,7 @@ Feature: Search
     Given I Sign in using phone number or login <Login> and password <Password>
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -234,7 +234,7 @@ Feature: Search
     Given I Sign in using phone number or login <Login> and password <Password>
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
