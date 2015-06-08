@@ -1,42 +1,52 @@
 Feature: Registration
 
-  @id2286 @staging
+  @id2286 @smoke
   Scenario Outline: Register new user using front camera in landscape mode
     Given I see welcome screen
     And I rotate UI to landscape
-    When I press tablet Join button
-    And I press Camera button twice
-    And I See selected picture
-    And I confirm selection
-    And I enter name <Name>
-    And I enter email <Email>
-    And I enter password <Password>
-    And I submit registration data
-    Then I see confirmation page
-    And I verify registration address
-    And I passed login automatically
-    And I see personal info page loaded with my name <Name>
+    And I see welcome screen
+    When I tap Register button
+    And I see the Registration form
+    And I enter the registration name "<Name>"
+    And I enter the registration email "<Email>"  
+    And I enter the registration password "<Password>"
+    And I start listening for registration email
+    And I submit the registration data
+    Then I see the Confirmation page
+    And I see the entered email on the Confirmation page
+    And I verify my registration via email
+    And I see the Take Registration Picture page
+    And I tap Camera button on the Take Registration Picture page
+    And I tap Take Picture button on the Take Registration Picture page
+    And I confirm my picture on the Take Registration Picture page
+    And I see the Conversations list
+    And I see my name on Self Profile page
 
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2287 @staging
+  @id2287 @smoke
   Scenario Outline: Register new user using front camera in portrait mode
     Given I see welcome screen
     And I rotate UI to portrait
-    When I press tablet Join button
-    And I press Camera button twice
-    And I See selected picture
-    And I confirm selection
-    And I enter name <Name>
-    And I enter email <Email>
-    And I enter password <Password>
-    And I submit registration data
-    Then I see confirmation page
-    And I verify registration address
-    And I passed login automatically
-    And I see personal info page loaded with my name <Name>
+    And I see welcome screen
+    When I tap Register button
+    And I see the Registration form
+    And I enter the registration name "<Name>"
+    And I enter the registration email "<Email>"  
+    And I enter the registration password "<Password>"
+    And I start listening for registration email
+    And I submit the registration data
+    Then I see the Confirmation page
+    And I see the entered email on the Confirmation page
+    And I verify my registration via email
+    And I see the Take Registration Picture page
+    And I tap Camera button on the Take Registration Picture page
+    And I tap Take Picture button on the Take Registration Picture page
+    And I confirm my picture on the Take Registration Picture page
+    And I see the Conversations list
+    And I see my name on Self Profile page
 
     Examples: 
       | Email      | Password      | Name      |

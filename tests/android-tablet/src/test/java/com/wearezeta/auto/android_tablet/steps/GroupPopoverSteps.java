@@ -22,13 +22,13 @@ public class GroupPopoverSteps {
 	/**
 	 * Verifies whether group popover page is currently visible or not
 	 * 
-	 * @step. ^I (do not )?see (?:the )[Gg]roup popover$
+	 * @step. ^I (do not )?see (?:the |\\s*)[Gg]roup popover$
 	 * @param shouldNotBeVisible
 	 *            equals to null if "do not" part does not exist in the step
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I (do not )?see (?:the )[Gg]roup popover$")
+	@Then("^I (do not )?see (?:the |\\s*)[Gg]roup popover$")
 	public void ISeeThePopover(String shouldNotBeVisible) throws Exception {
 		if (shouldNotBeVisible == null) {
 			Assert.assertTrue("The group popover is not currently visible",
@@ -70,11 +70,11 @@ public class GroupPopoverSteps {
 	/**
 	 * Tap confirm leave button on the Group popover
 	 * 
-	 * @step. ^I confirm leaving (?:the )group chat on [Gg]roup popover$
+	 * @step. ^I confirm leaving (?:the |\\s*)group chat on [Gg]roup popover$
 	 * 
 	 * @throws Exception
 	 */
-	@And("^I confirm leaving (?:the )group chat on [Gg]roup popover$")
+	@And("^I confirm leaving (?:the |\\s*)group chat on [Gg]roup popover$")
 	public void IConfirmLeave() throws Exception {
 		getGroupPopover().tapConfirmLeaveButton();
 	}

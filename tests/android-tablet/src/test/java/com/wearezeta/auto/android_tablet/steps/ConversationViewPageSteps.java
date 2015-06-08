@@ -25,11 +25,11 @@ public class ConversationViewPageSteps {
 	/**
 	 * Verifies whether conversation view is currently visible
 	 * 
-	 * @step. ^I see (?:the )[Cc]onversation view$
+	 * @step. ^I see (?:the |\\s*)[Cc]onversation view$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see (?:the )[Cc]onversation view$")
+	@When("^I see (?:the |\\s*)[Cc]onversation view$")
 	public void ISeeConversationView() throws Exception {
 		Assert.assertTrue("The conversation view is not currentyl visible",
 				getConversationViewPage().waitUntilVisible());

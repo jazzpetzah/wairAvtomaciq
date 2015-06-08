@@ -22,11 +22,11 @@ public class SelfProfilePageSteps {
 	/**
 	 * Verify that self name is visible on Self Profile page
 	 * 
-	 * @step. ^I see my name on Self Profile page$"
+	 * @step. ^I see my name on (?:the |\\s*)[Ss]elf [Pp]rofile page$"
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see my name on Self Profile page$")
+	@Then("^I see my name on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
 	public void ISeeMyName() throws Exception {
 		final String name = usrMgr.getSelfUserOrThrowError().getName();
 		Assert.assertTrue(String.format(

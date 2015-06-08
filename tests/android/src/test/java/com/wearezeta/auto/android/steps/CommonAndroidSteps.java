@@ -856,9 +856,12 @@ public class CommonAndroidSteps {
 		pagesCollection.clearAllPages();
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+			try {
+				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+			} catch (WebDriverException e) {
+				e.printStackTrace();
+			}
 		}
-
 		AndroidLoggingUtils.writeDeviceLogsToConsole(testStartedTimestamp);
 
 		commonSteps.getUserManager().resetUsers();
@@ -891,7 +894,7 @@ public class CommonAndroidSteps {
 	/**
 	 * Add email(s) into address book of a user and upload address book
 	 * 
-	 * @step. ^(.*) (?:has|have) contacts? (.*) in (?:the )address book$
+	 * @step. ^(.*) (?:has|have) contacts? (.*) in (?:the |\\s*)address book$
 	 * 
 	 * @param asUser
 	 *            name of the user where the address book is uploaded
@@ -899,7 +902,7 @@ public class CommonAndroidSteps {
 	 *            list of email addresses seperated by comma
 	 * @throws Exception
 	 */
-	@Given("^(.*) (?:has|have) contacts? (.*) in (?:the )address book$")
+	@Given("^(.*) (?:has|have) contacts? (.*) in (?:the |\\s*)address book$")
 	public void UserXHasContactsInAddressBook(String asUser, String emails)
 			throws Exception {
 		commonSteps.UserXHasContactsInAddressBook(asUser, emails);

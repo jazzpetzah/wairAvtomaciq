@@ -491,5 +491,15 @@ public class PersonalInfoPageSteps {
 		PagesCollection.personalInfoPage.pressSettingsBackButton();
 		PagesCollection.personalInfoPage.pressSettingsDoneButton();
 	}
+	
+	/**
+	 * Close self profile by pressing X button
+	 * 
+	 * @step. ^I close self profile$
+	 */
+	@When("^I close self profile$")
+	public void ICloseSelfProfile() {
+		PagesCollection.personalInfoPage.closePersonalInfo();
+	}
 
 }

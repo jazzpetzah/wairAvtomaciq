@@ -53,9 +53,10 @@ public abstract class AndroidPage extends BasePage {
 		do {
 			// Selendroid workaround
 			// Cannot handle external apps properly :-(
-			AndroidCommonUtils.genericScreenTap(screenDimension.width - ntry
-					* (screenDimension.width / 10), screenDimension.height / 2
-					- ntry * (screenDimension.height / 20));
+			AndroidCommonUtils.genericScreenTap(screenDimension.width
+					- (ntry % 5) * (screenDimension.width / 6),
+					screenDimension.height / 2 - (ntry / 5 + 1)
+							* (screenDimension.height / 10));
 			try {
 				if (DriverUtils
 						.waitUntilLocatorIsDisplayed(
@@ -68,7 +69,7 @@ public abstract class AndroidPage extends BasePage {
 				// ignore silently
 			}
 			ntry++;
-		} while (ntry <= 10);
+		} while (ntry <= 15);
 		throw new RuntimeException("Failed to tap the first gallery image!");
 	}
 

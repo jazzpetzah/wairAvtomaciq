@@ -12,7 +12,8 @@ public class WelcomePageSteps {
 			.getInstance();
 
 	private TabletWelcomePage getWelcomePage() throws Exception {
-		return (TabletWelcomePage) pagesCollection.getPage(TabletWelcomePage.class);
+		return (TabletWelcomePage) pagesCollection
+				.getPage(TabletWelcomePage.class);
 	}
 
 	/**
@@ -36,6 +37,18 @@ public class WelcomePageSteps {
 	 */
 	@When("^I switch to [Ee]mail [Ss]ign [Ii]n screen$")
 	public void ISwitchToEmailSignIn() throws Exception {
-		getWelcomePage().clickIHaveAnAccount();
+		getWelcomePage().tapIHaveAnAccount();
+	}
+
+	/**
+	 * Tap the Register button on Welcome page
+	 * 
+	 * @step. ^I tap Register button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Register button$")
+	public void ITapRegisterButton() throws Exception {
+		getWelcomePage().tapRegisterButton();
 	}
 }

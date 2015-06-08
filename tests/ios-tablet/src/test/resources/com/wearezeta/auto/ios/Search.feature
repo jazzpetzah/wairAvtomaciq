@@ -409,3 +409,48 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact   | NewName  | LastName |
       | user1Email | user1Password | user1Name | user2Name | NEW NAME | NAME     |
+
+  @staging @id2703
+  Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations [PORTRAIT]
+    Given There are <UserCount> users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I wait until <Contact> exists in backend search results
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 3 top connections but not <Contact>
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    Then I see that <Number> contacts are selected
+
+    Examples: 
+      | Login      | Password      | Name      | UserCount | Contact   | Number |
+      | user1Email | user1Password | user1Name | 7         | user2Name | 4      |
+
+  @staging @id2703
+  Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations [LANDSAPE]
+    Given There are <UserCount> users where <Name> is me
+    Given Myself is connected to all other users
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I wait until <Contact> exists in backend search results
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 3 top connections but not <Contact>
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    Then I see that <Number> contacts are selected
+
+    Examples: 
+      | Login      | Password      | Name      | UserCount | Contact   | Number |
+      | user1Email | user1Password | user1Name | 7         | user2Name | 4      |

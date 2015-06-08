@@ -7,7 +7,6 @@ import org.junit.Assert;
 import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -161,23 +160,15 @@ public class PersonalInfoPageSteps {
 	 * Changes the current user's name to a new one
 	 * 
 	 * 
-	 * @step. ^I change (.*) to (.*)$
+	 * @step. ^I change my name to (.*)$
 	 * 
-	 * @param name
-	 *            the current user's name (is this necessary? - is there not an
-	 *            id that can find the current name no matter what it is?)
 	 * @param newName
 	 *            the new name for the current user
 	 * @throws Exception
 	 */
-	@When("^I change (.*) to (.*)$")
-	public void IChangeNameTo(String name, String newName) throws Exception {
-		try {
-			name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		getPersonalInfoPage().changeName(name, newName);
+	@When("^I change my name to (.*)$")
+	public void IChangeNameTo(String newName) throws Exception {
+		getPersonalInfoPage().changeSelfNameTo(newName);
 		usrMgr.getSelfUser().setName(newName);
 	}
 

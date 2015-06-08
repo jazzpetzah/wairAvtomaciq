@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
@@ -12,11 +13,16 @@ import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
+
+	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
+			.getSimpleName());
+
 	private static final String RXLOGGER_RESOURCE_FILE_PATH = "/sdcard/RxLogger/Resource0.csv";
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
@@ -31,6 +37,20 @@ public class PerformanceSteps {
 
 	private DialogPage getDialogPage() throws Exception {
 		return (DialogPage) pagesCollection.getPage(DialogPage.class);
+	}
+
+	public ArrayList<WebElement> resetVisibleContactList() throws Exception {
+		ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>();
+		int counter = 0;
+		do {
+			Thread.sleep(DEFAULT_WAIT_TIME);
+			visibleContactsList = new ArrayList<WebElement>(
+					getContactListPage().GetVisibleContacts());
+			counter++;
+		} while ((visibleContactsList.isEmpty() || visibleContactsList == null)
+				&& counter != 3);
+		visibleContactsList.remove(0);
+		return visibleContactsList;
 	}
 
 	/**
@@ -51,16 +71,7 @@ public class PerformanceSteps {
 				for (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) {
 					// --Get list of visible dialogs visible dialog
 					getContactListPage().waitForConversationListLoad();
-					ArrayList<WebElement> visibleContactsList;
-					int counter = 0;
-					do {
-						Thread.sleep(DEFAULT_WAIT_TIME);
-						visibleContactsList = new ArrayList<WebElement>(
-								getContactListPage().GetVisibleContacts());
-						counter++;
-					} while ((visibleContactsList.isEmpty() || visibleContactsList == null)
-							&& counter != 3);
-					visibleContactsList.remove(0);
+					ArrayList<WebElement> visibleContactsList = resetVisibleContactList();
 					// --
 					int randomInt;
 					String convName;
@@ -78,12 +89,31 @@ public class PerformanceSteps {
 					if (perfCommon.random.nextBoolean()) {
 						getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
 						getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
-						getContactListPage().tapOnContactByPosition(
-								visibleContactsList, randomInt);
+						try {
+							getContactListPage().tapOnContactByPosition(
+									visibleContactsList, randomInt);
+						} catch (Exception e) {
+							visibleContactsList = resetVisibleContactList();
+							getContactListPage().tapOnContactByPosition(
+									visibleContactsList, randomInt);
+						}
 						getDialogPage().isDialogVisible();
 						getDialogPage().tapDialogPageBottom();
+						/*
 						Thread.sleep(DEFAULT_WAIT_TIME);
-						getDialogPage().sendFrontCameraImage();
+						try {
+							getDialogPage().sendFrontCameraImage();
+						} catch (Throwable e) {
+							log.debug("Camera image was not send before. Workaround...");
+							for (int y = 0; y < 2; y++) {
+								getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
+							}
+							getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
+							visibleContactsList = resetVisibleContactList();
+							getContactListPage().tapOnContactByPosition(
+									visibleContactsList, randomInt);
+							getDialogPage().sendFrontCameraImage();
+						}*/
 					}
 					for (int y = 0; y < 2; y++) {
 						getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
