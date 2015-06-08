@@ -797,7 +797,9 @@ public class CommonWebAppSteps {
 				// logout with JavaScript because otherwise backend will block
 				// us because of to many login requests
 				String logoutScript = "wire.auth.repository.logout();";
-				JavascriptExecutor js = (JavascriptExecutor) webdriver;
+				JavascriptExecutor js = (JavascriptExecutor) webdriver.get(
+						ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+						TimeUnit.MILLISECONDS);
 				js.executeScript(logoutScript);
 
 				// show link to saucelabs
