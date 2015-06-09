@@ -523,7 +523,7 @@ public class ContactListPageSteps {
 	public void ISeePingSymbol() throws Exception {
 		if (blankReferenceImage == null) {
 			throw new IllegalStateException(
-					"This step requires to remember the previous profile picture first!");
+					"This step requires you to remember the initial state of the conversation cell");
 		}
 		double score = -1;
 		final BufferedImage pingSymbol = PagesCollection.contactListPage
