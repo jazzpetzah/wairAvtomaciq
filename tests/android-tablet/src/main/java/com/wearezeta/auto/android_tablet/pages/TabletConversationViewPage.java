@@ -37,10 +37,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
 					value);
 
-	public static final Function<String, String> xpathPingMessageByValue = value -> String
-			.format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']",
-					value);
-
 	public TabletConversationViewPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -102,9 +98,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	public boolean waitUntilPingMessageIsVisible(String expectedMessage)
 			throws Exception {
-		final By locator = By.xpath(xpathPingMessageByValue
-				.apply(expectedMessage));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+		return getDialogPage().waitForPingMessageWithText(expectedMessage);
 	}
 
 	public void tapAddPictureButton() throws Exception {
@@ -113,12 +107,12 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	public void tapTakePhotoButton() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void confirmPicture() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public boolean waitUntilNewPictureAppears() {
