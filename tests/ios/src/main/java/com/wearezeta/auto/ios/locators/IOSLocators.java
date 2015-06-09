@@ -464,18 +464,19 @@ public final class IOSLocators {
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
 	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
-	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[%d]";
-	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell";
+	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell[%d]";
+	public static final String xpathPeoplePickerTopConnectionsName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell[%d]/UIAStaticText";
+	public static final String xpathPeoplePickerAllTopPeople = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell";
 	public static final String nameShareButton = "SHARE CONTACTS";
 	public static final String nameContinueUploadButton = "SHARE CONTACTS";
 	public static final String namePeopleYouMayKnowLabel = "CONNECT";
 	public static final String nameHideSuggestedContactButton = "HIDE";
-	public static final String xpathSendAnInviteButton = "//UIACollectionCell[@name='Send an invitation']";
+	public static final String nameSendAnInviteButton = "Send an invitation";
 	public static final String xpathInviteCopyButton = "//UIACollectionCell[@name='Copy']";
 	public static final String nameSuggestedContactType = "UIACollectionCell";
 	public static final String nameHideSuggestedContactButtonType = "UIAButton";
 	public static final String nameInstantConnectButton = "instantPlusConnectButton";
-	public static final String xpathSearchResultCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]";
+	public static final String xpathSearchResultCell = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]";
 	public static final String xpathSearchResultContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
 	
 	//////////////////
@@ -601,6 +602,10 @@ public final class IOSLocators {
 	
 	public final class CommonIOSLocators {
 		public static final String nameLockScreenMessage = "SlideToUnlock";
+	}
+	
+	public final class PersonalInfoPage {
+		public static final String nameCloseButton = "CloseButton";
 	}
 	
 	/////////////

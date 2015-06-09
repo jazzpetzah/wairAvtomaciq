@@ -1,9 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.TabletPagesCollection;
@@ -11,9 +9,6 @@ import com.wearezeta.auto.ios.pages.TabletPagesCollection;
 import cucumber.api.java.en.When;
 
 public class TabletPeoplePickerPageSteps {
-
-	private static final Logger log = ZetaLogger
-			.getLog(ContactListPageSteps.class.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
@@ -54,7 +49,7 @@ public class TabletPeoplePickerPageSteps {
 			throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		TabletPagesCollection.tabletPeoplePickerPage
-				.fillTextInPeoplePickerSearch(name);
+				.fillTextInTabletPeoplePickerSearchField(name);
 	}
 
 	/**

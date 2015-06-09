@@ -5,6 +5,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.android_tablet.pages.TabletSelfProfilePage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -22,11 +23,11 @@ public class SelfProfilePageSteps {
 	/**
 	 * Verify that self name is visible on Self Profile page
 	 * 
-	 * @step. ^I see my name on Self Profile page$"
+	 * @step. ^I see my name on (?:the |\\s*)[Ss]elf [Pp]rofile page$"
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see my name on Self Profile page$")
+	@Then("^I see my name on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
 	public void ISeeMyName() throws Exception {
 		final String name = usrMgr.getSelfUserOrThrowError().getName();
 		Assert.assertTrue(String.format(
@@ -60,4 +61,30 @@ public class SelfProfilePageSteps {
 		getSelfProfilePage().selectOptionsMenuItem(itemName);
 	}
 
+	/**
+	 * Tap the self name field on Self Profile page
+	 * 
+	 * @step. ^I tap my name field on (?:the |\\s*)[Ss]elf [Pp]rofile page$
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I tap my name field on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
+	public void ITapMyName() throws Exception {
+		getSelfProfilePage().tapSelfNameField();
+	}
+
+	/**
+	 * Change self name to the passed one
+	 * 
+	 * @step. ^I change my name to (.*) on (?:the |\\s*)[Ss]elf [Pp]rofile page$
+	 * 
+	 * @param newName
+	 *            a new name
+	 * @throws Exception
+	 */
+	@And("^I change my name to (.*) on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
+	public void IChangeMyNameTo(String newName) throws Exception {
+		getSelfProfilePage().changeSelfNameTo(newName);
+		usrMgr.getSelfUserOrThrowError().setName(newName);
+	}
 }

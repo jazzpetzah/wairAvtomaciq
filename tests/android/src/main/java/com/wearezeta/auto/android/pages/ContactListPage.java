@@ -12,6 +12,7 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.locators.AndroidLocators.CommonLocators;
+import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -112,7 +113,13 @@ public class ContactListPage extends AndroidPage {
 
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
 			throws Exception {
-		contacts.get(id).click();
+		try {
+			contacts.get(id).click();
+			log.debug("Trying to open contact " + id + ". It's name: " + contacts.get(id).getAttribute("value"));
+		} catch (Exception e) {
+			log.debug("Failed to find element in contact list.\nPage source: " + getDriver().getPageSource());
+			throw e;
+		}
 		return new DialogPage(this.getLazyDriver());
 	}
 
@@ -267,9 +274,14 @@ public class ContactListPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 90;
+	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(EmailSignInPage.idLoginButton),
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
+				.format("It seems that conversation list has not been loaded within %s seconds (login button is still visible)",
+						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
 		final By convoListLoadingProgressLocator = By
 				.xpath(AndroidLocators.ContactListPage.xpathConversationListLoadingIndicator);
 		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),

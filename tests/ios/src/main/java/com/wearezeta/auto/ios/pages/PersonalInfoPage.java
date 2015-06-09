@@ -89,6 +89,9 @@ public class PersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsDoneButton)
 	private WebElement settingsDoneButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.PersonalInfoPage.nameCloseButton)
+	private WebElement closeButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameWireWebsiteButton)
 	private WebElement wireWebsiteButton;
@@ -125,6 +128,11 @@ public class PersonalInfoPage extends IOSPage {
 
 	final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
 
+	
+	public void closePersonalInfo() {
+		closeButton.click();
+	}
+	
 	public String getUserNameValue() {
 		String name = profileNameEditField.getText();
 		return name;
@@ -257,7 +265,7 @@ public class PersonalInfoPage extends IOSPage {
 
 	public void changeName(String newName) throws Exception {
 		profileNameEditField.clear();
-		profileNameEditField.sendKeys(newName);
+		profileNameEditField.sendKeys(newName + "\n");
 	}
 
 	public boolean isTooShortNameErrorMessage() throws Exception {

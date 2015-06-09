@@ -4,40 +4,34 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class SingleConnectedUserDetalsPage extends AbstractPopoverPage {
-	public final static String idOptionsButton = "ll__participants__right__action";
-	@FindBy(id = idOptionsButton)
-	private WebElement optionsButton;
+public class SingleConnectedUserDetalsPage extends
+		AbstractConversationDetailsPage {
+	public final static Function<String, String> xpathNameByValue = value -> String
+			.format("//*[@id='ttv__participants__header' and @value='%s']",
+					value);
 
-	public final static String idOptionsContainer = "ll__settings_box_container";
-	public final static Function<String, String> xpathOptionMenuItemByName = itemName -> String
-			.format("//*[@id='%s']//*[@value='%s']", idOptionsContainer,
-					itemName.toUpperCase());
+	public final static Function<String, String> xpathEmailByValue = value -> String
+			.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
+					value);
 
 	public SingleConnectedUserDetalsPage(Future<ZetaAndroidDriver> lazyDriver,
 			SingleUserPopover container) throws Exception {
 		super(lazyDriver, container);
 	}
 
-	public void tapOptionsButton() {
-		optionsButton.click();
+	public boolean waitUntilUserNameVisible(String expectedName)
+			throws Exception {
+		final By locator = By.xpath(xpathNameByValue.apply(expectedName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public void selectMenuItem(String itemName) throws Exception {
-		final By locator = By.xpath(xpathOptionMenuItemByName.apply(itemName));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-				.format("Options menu item '%s' is not displayed", itemName);
-		getDriver().findElement(locator).click();
-	}
-
-	public boolean isMenuItemVisible(String itemName) throws Exception {
-		final By locator = By.xpath(xpathOptionMenuItemByName.apply(itemName));
+	public boolean waitUntilUserEmailVisible(String expectedEmail)
+			throws Exception {
+		final By locator = By.xpath(xpathEmailByValue.apply(expectedEmail));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 

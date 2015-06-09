@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -51,13 +52,11 @@ public class DialogPage extends AndroidPage {
 	private WebElement missedCallMessage;
 
 	@FindBy(id = AndroidLocators.DialogPage.idCursorFrame)
-	private WebElement cursurFrame;
+	private WebElement cursorFrame;
 
-	@FindBy(id = AndroidLocators.DialogPage.idPingMessage)
-	private List<WebElement> pingMessages;
-
-	@FindBy(xpath = AndroidLocators.DialogPage.xpathLastPingMessage)
-	private WebElement lastPingMessage;
+	public static final Function<String, String> xpathPingMessageByText = text -> String
+			.format("//*[@id='ttv__row_conversation__ping_message'] and @value='%s']",
+					text);
 
 	@FindBy(id = AndroidLocators.DialogPage.idPingIcon)
 	private WebElement pingIcon;
@@ -143,6 +142,9 @@ public class DialogPage extends AndroidPage {
 	@FindBy(xpath = AndroidLocators.DialogPage.xpathLastConversationMessage)
 	private WebElement lastConversationMessage;
 
+	public static Function<String, String> xpathInputFieldByValue = value -> String
+			.format("//*[@value='%s']", value);
+
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 	private final String DIALOG_IMAGE = "android_dialog_sendpicture_result.png";
 	private static final int DEFAULT_SWIPE_TIME = 500;
@@ -161,7 +163,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void tapOnCursorFrame() {
-		cursurFrame.click();
+		cursorFrame.click();
 	}
 
 	public void tapOnTextInputIfVisible() throws Exception {
@@ -188,17 +190,18 @@ public class DialogPage extends AndroidPage {
 				.id(AndroidLocators.DialogPage.idFakeCursor);
 		int ntry = 1;
 		do {
-			final int initialCursorOffset = getDriver()
-					.findElement(fakeCursorLocator).getLocation().getX();
 			DriverUtils.swipeRight(this.getDriver(), cursorInput,
 					DEFAULT_SWIPE_TIME);
-			if (getDriver().findElement(fakeCursorLocator).getLocation().getX() > initialCursorOffset) {
+			final int currentCursorOffset = getDriver()
+					.findElement(fakeCursorLocator).getLocation().getX();
+			if (currentCursorOffset > getDriver().manage().window().getSize()
+					.getWidth() / 2) {
 				return;
 			}
-			ntry++;
 			log.debug(String.format(
 					"Failed to swipe the text cursor. Retrying (%s of %s)...",
 					ntry, MAX_CURSOR_SWIPE_TRIES));
+			ntry++;
 			tapOnTextInputIfVisible();
 			this.hideKeyboard();
 			Thread.sleep(1000);
@@ -277,18 +280,35 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void typeAndSendMessage(String message) throws Exception {
-		cursorInput.sendKeys(message);
+		// FIXME: Find a better solution for text autocorrection issues
+		final int maxTries = 5;
+		int ntry = 0;
+		do {
+			cursorInput.clear();
+			cursorInput.sendKeys(message);
+			ntry++;
+		} while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathInputFieldByValue.apply(message)), 2)
+				&& ntry < maxTries);
+		if (ntry >= maxTries) {
+			throw new IllegalStateException(
+					String.format(
+							"The string '%s' was autocorrected. Please disable autocorrection on the device and restart the test.",
+							message));
+		}
 		this.pressEnter();
 		this.hideKeyboard();
 	}
 
 	public void typeMessage(String message) throws Exception {
 		cursorInput.sendKeys(message);
-		try {
-			this.pressEnter();
-		} catch (WebDriverException ex) {
-			// don't fail if Enter is already pressed
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathInputFieldByValue.apply(message)), 2)) {
+			log.warn(String
+					.format("The message '%s' was autocorrected. This might cause unpredicted test results",
+							message));
 		}
+		this.pressEnter();
 	}
 
 	public void pressKeyboardSendButton() throws Exception {
@@ -415,6 +435,11 @@ public class DialogPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
+	public ContactListPage navigateBackUsingBackButton() throws Exception {
+		getDriver().navigate().back();
+		return new ContactListPage(this.getLazyDriver());
+	}
+	
 	public boolean isHintVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(AndroidLocators.CommonLocators.idSearchHintClose));
@@ -623,8 +648,9 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
-	public String getLastPingText() {
-		return lastPingMessage.getText();
+	public boolean waitForPingMessageWithText(String expectedText) throws Exception {
+		final By locator = By.xpath(xpathPingMessageByText.apply(expectedText));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public boolean isGroupChatDialogContainsNames(List<String> names)
@@ -668,10 +694,9 @@ public class DialogPage extends AndroidPage {
 		}
 	}
 
-	public void tapYouTubePlay() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				playYoutubeBtn);
-		playYoutubeBtn.click();
+	public boolean waitUntilYoutubePlayButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.DialogPage.idYoutubePlayButton));
 	}
 
 	public double getMediaBarControlIconOverlapScore(String label)

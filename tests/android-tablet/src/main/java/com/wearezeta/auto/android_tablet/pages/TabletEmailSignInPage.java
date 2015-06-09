@@ -16,7 +16,7 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 		super(lazyDriver);
 	}
 
-	private EmailSignInPage getEmailSignInPage() {
+	private EmailSignInPage getEmailSignInPage() throws Exception {
 		return (EmailSignInPage) this
 				.getAndroidPageInstance(EmailSignInPage.class);
 	}

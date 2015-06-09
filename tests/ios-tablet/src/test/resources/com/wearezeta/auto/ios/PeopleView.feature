@@ -6,7 +6,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I open search by clicking plus button
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>
@@ -28,7 +28,7 @@ Feature: People View
     Given I rotate UI to landscape
     Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I open search by clicking plus button
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact1>

@@ -36,8 +36,7 @@ Feature: Self Profile
 
   @id328 @smoke
   Scenario Outline: I can change my name
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list
     When I tap on my avatar
@@ -45,14 +44,14 @@ Feature: Self Profile
     And I tap on my name
     Then I see edit name field
     When I clear name field 
-    And I change <Name> to <NewName>
+    And I change my name to <NewName>
     Then I see my new name <NewName>
 
     Examples: 
-      | Login      | Password      | Name      | NewName     | Contact   |
-      | user1Email | user1Password | user1Name | NewTestName | user2Name |
+      | Login      | Password      | Name      | NewName     |
+      | user1Email | user1Password | user1Name | NewTestName |
  
-  @staging @id201
+  @smoke @id201
   Scenario Outline: Change user picture with front camera
     Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>

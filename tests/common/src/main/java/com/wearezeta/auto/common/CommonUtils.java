@@ -102,12 +102,6 @@ public class CommonUtils {
 		stream.close();
 	}
 
-	public static Boolean getAndroidLogs(Class<?> c) throws Exception {
-		Boolean androidlogs = false;
-		androidlogs = Boolean.valueOf(getValueFromConfig(c, "androidLogs"));
-		return androidlogs;
-	}
-
 	public static String getBackendType(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "backendType");
 	}

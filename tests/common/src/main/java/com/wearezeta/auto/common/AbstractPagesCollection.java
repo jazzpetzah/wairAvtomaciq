@@ -26,11 +26,9 @@ public abstract class AbstractPagesCollection {
 			throws Exception {
 		if (!pagesMapping.containsKey(pageClass)) {
 			this.printPages();
-			log.debug(String
-					.format("'%s' page has not been created yet. Trying to instantiate it for the first time...",
-							pageClass.getSimpleName()));
-			final BasePage parent = getCommonPage();
-			pagesMapping.put(pageClass, parent.instantiatePage(pageClass));
+			log.debug(String.format(" > +++ %s", pageClass.getSimpleName()));
+			pagesMapping.put(pageClass,
+					getCommonPage().instantiatePage(pageClass));
 		}
 		return pagesMapping.get(pageClass);
 	}
@@ -48,7 +46,12 @@ public abstract class AbstractPagesCollection {
 	}
 
 	public void clearAllPages() {
-		pagesMapping.clear();
+		final int pagesCount = pagesMapping.size();
+		if (pagesCount > 0) {
+			pagesMapping.clear();
+			log.debug(String.format("Cleaned %d existing page objects",
+					pagesCount));
+		}
 	}
 
 	public void setFirstPage(BasePage page) {
@@ -57,15 +60,17 @@ public abstract class AbstractPagesCollection {
 					"Page object should be defined! 'null' values are not acceptable.");
 		}
 		this.clearAllPages();
+		log.debug(String.format("Setting the first page object to '%s'", page
+				.getClass().getSimpleName()));
 		pagesMapping.put(page.getClass(), page);
 	}
 
 	public void printPages() {
 		if (pagesMapping.size() == 0) {
-			log.info("No pages are currently created");
+			log.debug("No pages are currently created");
 			return;
 		}
-		log.info(String.format("%d pages are currently created:",
+		log.debug(String.format("%d page(s) are currently created:",
 				pagesMapping.size()));
 		for (final Class<? extends BasePage> pageClass : pagesMapping.keySet()) {
 			log.info(" > " + pageClass.getSimpleName());

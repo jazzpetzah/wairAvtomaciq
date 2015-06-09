@@ -24,11 +24,11 @@ public class ConversationsListPageSteps {
 	/**
 	 * Wait until conversations list is fully loaded and successful load
 	 * 
-	 * @step. ^I see the [Cc]onversations list$
+	 * @step. ^I see (?:the |\\s*)[Cc]onversations list$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see (?:the )[Cc]onversations list$")
+	@When("^I see (?:the |\\s*)[Cc]onversations list$")
 	public void ISeeConversationsList() throws Exception {
 		getConversationsListPage().verifyConversationsListIsLoaded();
 	}
@@ -36,11 +36,11 @@ public class ConversationsListPageSteps {
 	/**
 	 * Tap my own avatar on top of conversations list
 	 * 
-	 * @step. ^I tap my avatar$
+	 * @step. ^I tap my avatar on top of (?:the |\\s*)[Cc]onversations list$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap my avatar$")
+	@When("^I tap my avatar on top of (?:the |\\s*)[Cc]onversations list$")
 	public void ITapMyAvatar() throws Exception {
 		getConversationsListPage().tapMyAvatar();
 	}
@@ -48,11 +48,11 @@ public class ConversationsListPageSteps {
 	/**
 	 * Tap Search input field on top of Conversations list
 	 * 
-	 * @step. ^I tap Search input$
+	 * @step. ^I tap (?:the |\\s*)Search input$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap Search input$")
+	@When("^I tap (?:the |\\s*)Search input$")
 	public void ITapSearchInput() throws Exception {
 		getConversationsListPage().tapSearchInput();
 	}
@@ -76,7 +76,8 @@ public class ConversationsListPageSteps {
 	 * Verify whether the particular conversation is visible in the
 	 * conversations list or not
 	 * 
-	 * @step.^I (do not )?see the conversation (.*) in my conversations list$
+	 * @step.^I (do not )?see (?:the |\\s*)conversation (.*) in my
+	 *          conversations list$
 	 * @param shouldNotSee
 	 *            equals to null if "do not" part is not present
 	 * @param name
@@ -84,7 +85,7 @@ public class ConversationsListPageSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I (do not )?see (?:the )conversation (.*) in my conversations list$")
+	@Then("^I (do not )?see (?:the |\\s*)conversation (.*) in my conversations list$")
 	public void ISeeOrNotTheConversation(String shouldNotSee, String name)
 			throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
@@ -130,4 +131,7 @@ public class ConversationsListPageSteps {
 							.waitUntilConversationIsNotSilenced(name));
 		}
 	}
+	
+
+	
 }

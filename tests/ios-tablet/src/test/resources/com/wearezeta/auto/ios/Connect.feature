@@ -7,7 +7,7 @@ Feature: Connect
     Given User <Name> change accent color to <Color>
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
@@ -42,7 +42,7 @@ Feature: Connect
     Given I rotate UI to landscape
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page

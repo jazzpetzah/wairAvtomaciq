@@ -63,7 +63,7 @@ Feature: Self Profile
     And I attempt to input an empty name and press return
     And I see error message asking for more characters
 	And I change name <Name> to <NewUsername>
-	And I swipe right on the personal page
+	And I close self profile
 	And I see Contact list with my name <NewUsername>
 	And I tap on my name <NewUsername>
 	Then I see my new name <NewUsername>
@@ -81,7 +81,7 @@ Feature: Self Profile
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I change my accent color via the colorpicker
-    And I swipe right on the personal page
+    And I close self profile
     Then I see my names <Name> accent color is changed
    
     Examples: 

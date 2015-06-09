@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import java.util.Date;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
@@ -14,6 +15,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidLoggingUtils;
 import com.wearezeta.auto.android.common.reporter.LogcatListener;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
@@ -54,6 +56,7 @@ public class CommonAndroidTabletSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
+	private long testStartedTimestamp = Long.MAX_VALUE;
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	public static final int DEFAULT_SWIPE_TIME = 1500;
@@ -71,21 +74,22 @@ public class CommonAndroidTabletSteps {
 
 	@SuppressWarnings("unchecked")
 	public Future<ZetaAndroidDriver> resetAndroidDriver(String url,
-			String path, boolean isUnicode, Class<?> cls) throws Exception {
+			String path, boolean isUnicode) throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		LoggingPreferences object = new LoggingPreferences();
 		object.enable("logcat", Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 		capabilities.setCapability("deviceName",
-				CommonUtils.getAndroidDeviceNameFromConfig(cls));
+				CommonUtils.getAndroidDeviceNameFromConfig(this.getClass()));
 		capabilities.setCapability("app", path);
 		capabilities.setCapability("appPackage",
-				CommonUtils.getAndroidPackageFromConfig(cls));
+				CommonUtils.getAndroidPackageFromConfig(this.getClass()));
 		capabilities.setCapability("appActivity",
-				CommonUtils.getAndroidActivityFromConfig(cls));
-		capabilities.setCapability("appWaitActivity",
-				CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
+				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+		capabilities
+				.setCapability("appWaitActivity", CommonUtils
+						.getAndroidWaitActivitiesFromConfig(this.getClass()));
 		capabilities.setCapability("applicationName", "selendroid");
 		capabilities.setCapability("automationName", "selendroid");
 
@@ -175,8 +179,9 @@ public class CommonAndroidTabletSteps {
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
+		testStartedTimestamp = new Date().getTime();
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
-				getUrl(), getPath(), isUnicode, this.getClass());
+				getUrl(), getPath(), isUnicode);
 		pagesCollection.setFirstPage(new TabletWelcomePage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
@@ -221,8 +226,14 @@ public class CommonAndroidTabletSteps {
 		pagesCollection.clearAllPages();
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+			try {
+				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+			} catch (WebDriverException e) {
+				e.printStackTrace();
+			}
 		}
+
+		AndroidLoggingUtils.writeDeviceLogsToConsole(testStartedTimestamp);
 
 		commonSteps.getUserManager().resetUsers();
 	}

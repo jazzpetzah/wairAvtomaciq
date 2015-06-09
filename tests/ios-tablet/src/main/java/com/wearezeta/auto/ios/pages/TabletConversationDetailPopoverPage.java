@@ -33,7 +33,7 @@ public class TabletConversationDetailPopoverPage extends OtherUserPersonalInfoPa
 
 	public TabletPeoplePickerPage addContactTo1on1Chat() throws Exception {
 		addPopOverButton.click();
-		catchShareContactsAlert();
+		//catchShareContactsAlert();
 		return new TabletPeoplePickerPage(this.getLazyDriver());
 	}
 

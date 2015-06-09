@@ -319,16 +319,18 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Tap on Play on youtube container
+	 * Verify that Play button is visible on youtube container
 	 * 
-	 * @step. ^I press play on youtube container$
+	 * @step. ^I see Play button on youtube container$
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I press play on youtube container$")
-	public void WhenIPressPlayOnYoutubeContainer() throws Exception {
-		getDialogPage().tapYouTubePlay();
+	@When("^I see Play button on [Yy]outube container$")
+	public void ISeePlayButtonOnYoutubeContainer() throws Exception {
+		Assert.assertTrue(
+				"Youtube Play button is not visible, but it should be",
+				getDialogPage().waitUntilYoutubePlayButtonVisible());
 	}
 
 	/**
@@ -396,8 +398,9 @@ public class DialogPageSteps {
 	@Then("^I see Ping message (.*) in the dialog$")
 	public void ThenISeePingMessageInTheDialog(String message) throws Exception {
 		message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-		Assert.assertEquals(getDialogPage().getLastPingText().toUpperCase(),
-				message.toUpperCase());
+		Assert.assertTrue(String.format(
+				"Ping message '%s' is not visible after the timeout", message),
+				getDialogPage().waitForPingMessageWithText(message));
 	}
 
 	/**
