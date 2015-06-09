@@ -76,7 +76,6 @@ Feature: Registration
   @regression @id1991
   Scenario Outline: I want to be notified if the email address I entered during registration has already been registered
     Given There is 1 user where user1Name is me without avatar picture
-    Given I switch to Registration page
     When I enter user name <Name> on Registration page
     And I enter user email <UsedEmail> on Registration page
     And I enter user password "<NewPassword>" on Registration page
