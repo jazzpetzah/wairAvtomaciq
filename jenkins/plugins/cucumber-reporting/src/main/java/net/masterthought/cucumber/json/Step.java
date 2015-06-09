@@ -198,8 +198,8 @@ public class Step {
     private String addScreenshotTags(String feature, String scenario) {
     	String tags = "";
     	tags += "<div class=\"step-screenshot\" id=\"scr " + getRawName().replaceAll("\\W+", "_") + "" + screenshotIndex + "\"><center>"
-    		+ "<a href=\"Images/" + feature + "/" + scenario + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" target=\"_blank\">"
-    		+ "<img src=\"Images/" + feature + "/" + scenario + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" width=\"30%\" height=\"30%\" />"
+    		+ "<a href=\"Images/" + feature.replaceAll("\\W+", "_") + "/" + scenario.replaceAll("\\W+", "_") + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" target=\"_blank\">"
+    		+ "<img src=\"Images/" + feature.replaceAll("\\W+", "_") + "/" + scenario.replaceAll("\\W+", "_") + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" width=\"30%\" height=\"30%\" />"
     		+ "</a>"
   	  		+ "</center></div>";
   		return tags;
