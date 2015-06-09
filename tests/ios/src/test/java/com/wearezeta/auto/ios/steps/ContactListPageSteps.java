@@ -496,7 +496,7 @@ public class ContactListPageSteps {
 	}
 	
 	private BufferedImage blankReferenceImage = null; 
-	private static final double MAX_OVERLAP_SCORE = 0.50;
+	private static final double MAX_OVERLAP_SCORE = 0.70;
 	
 	/**
 	 * Verifies that a ping symbol is seen in the conversation list
@@ -529,7 +529,7 @@ public class ContactListPageSteps {
 		final BufferedImage pingSymbol = PagesCollection.contactListPage
 				.getScreenshotFirstContact();
 		score = ImageUtil.getOverlapScore(pingSymbol, blankReferenceImage,
-				ImageUtil.RESIZE_NORESIZE);
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		Assert.assertTrue("Ping symbol not visible", score <= MAX_OVERLAP_SCORE);
 
 	}
