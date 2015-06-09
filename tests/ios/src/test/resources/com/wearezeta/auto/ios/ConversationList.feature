@@ -104,12 +104,10 @@ Feature: Conversation List
     Given User <Name> change accent color to <Color>
     Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
+    And I remember the state of the first conversation cell
     When Contact <Contact> ping conversation <Name>
     And I wait for 10 seconds
-    Then I see ping symbol for <Contact>
-    And Contact <Contact> hotping conversation <Name>
-    And I wait for 10 seconds
-    Then I see hotping symbol for <Contact>
+    Then I see ping symbol
 
     Examples: 
       | Login      | Password      | Name      | Contact   | NewName  | Color        |
