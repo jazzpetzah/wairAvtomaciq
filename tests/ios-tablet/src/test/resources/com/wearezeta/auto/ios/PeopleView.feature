@@ -100,8 +100,8 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name |
-      
- @torun @smoke @id2445
+
+  @smoke @id2445
   Scenario Outline: Verify leaving group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -111,15 +111,33 @@ Feature: People View
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And I open group conversation details on iPad
-    And I press conversation menu button on iPad
     And I press leave converstation button on iPad
-    And I see leave conversation alert on iPad
     Then I press leave on iPad
-    And I open archived conversations
-    And I see <Contact1> and <Contact2> chat in contact list
-    And I tap on a group chat with <Contact1> and <Contact2>
-    And I see You Left message in group chat
+    And I open archived conversations on iPad
+    And I tap on group chat with name <GroupChatName>
+    Then I see You Left message in group chat
 
     Examples: 
-      | Login      | Password      | Name      | Contact1    | Contact2   | GroupChatName |
-      | user1Email | user1Password | user1Name | user2Name   | user3Name  | LeaveGroup    |
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroup    |
+
+  @smoke @id2708
+  Scenario Outline: Verify leaving group conversation [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I press leave converstation button on iPad
+    Then I press leave on iPad
+    #And I open archived conversations on iPad
+    #And I tap on group chat with name <GroupChatName>
+    #Then I see You Left message in group chat
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroup    |

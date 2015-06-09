@@ -39,14 +39,6 @@ public class TabletConversationDetailPopoverPageSteps {
 				.addContactTo1on1Chat();
 	}
 	
-	/**
-	 * Opens the ellipses menu on the ipad popover
-	 * @step. ^I press conversation menu button on iPad$
-	 * @throws Throwable
-	 */
-	@When("^I press conversation menu button on iPad$")
-	public void IPressConversationMenuButtonOniPad() throws Throwable {
-		TabletPagesCollection.tabletConversationDetailPopoverPage.openConversationMenu();
-	}
+	
 	
 }
