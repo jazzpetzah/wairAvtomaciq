@@ -96,8 +96,8 @@ public class ReportBuilder {
             }
             generateFeatureOverview();
             generateFeatureReports();
-            generateTagReports();
-            generateTagOverview();
+//            generateTagReports();
+//            generateTagOverview();
         } catch (Exception exception) {
             if (!parsingError) {
                 generateErrorPage(exception);
