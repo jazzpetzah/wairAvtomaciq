@@ -49,7 +49,7 @@ public class TabletPeoplePickerPageSteps {
 			throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		TabletPagesCollection.tabletPeoplePickerPage
-				.fillTextInPeoplePickerSearch(name);
+				.fillTextInTabletPeoplePickerSearchField(name);
 	}
 
 	/**
