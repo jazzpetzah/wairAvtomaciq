@@ -11,7 +11,7 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
-public class TabletConversationDetailPopoverPage extends OtherUserPersonalInfoPage {
+public class TabletConversationDetailPopoverPage extends OtherUserPersonalInfoPage{
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
 	private WebElement addPopOverButton;

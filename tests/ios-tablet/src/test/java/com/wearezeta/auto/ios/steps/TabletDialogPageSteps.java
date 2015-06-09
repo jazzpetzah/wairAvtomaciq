@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.steps;
 import com.wearezeta.auto.ios.pages.CameraRollTabletPopoverPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.TabletConversationDetailPopoverPage;
+import com.wearezeta.auto.ios.pages.TabletGroupConversationDetailPopoverPage;
 import com.wearezeta.auto.ios.pages.TabletPagesCollection;
 import com.wearezeta.auto.ios.pages.TabletDialogPage;
 
@@ -34,6 +35,19 @@ public class TabletDialogPageSteps {
 				.instantiatePage(TabletDialogPage.class);
 		TabletConversationDetailPopoverPage page = TabletPagesCollection.tabletDialogPage.pressConversationDetailiPadButton();
 		TabletPagesCollection.tabletConversationDetailPopoverPage = (TabletConversationDetailPopoverPage) page;
+	}
+	
+	/**
+	 * Presses the conversation detail button on iPad to open a GroupConversationDetailPopoverPage
+	 * @step. ^I open group conversation details on iPad$
+	 * @throws Throwable
+	 */
+	@When("^I open group conversation details on iPad$")
+	public void IOpenGroupConversationDetailsOniPad() throws Throwable {
+		TabletPagesCollection.tabletDialogPage = (TabletDialogPage) PagesCollection.loginPage
+				.instantiatePage(TabletDialogPage.class);
+		TabletGroupConversationDetailPopoverPage page = TabletPagesCollection.tabletDialogPage.pressGroupConversationDetailiPadButton();
+		TabletPagesCollection.tabletGroupConversationDetailPopoverPage = (TabletGroupConversationDetailPopoverPage) page;
 	}
 	
 	

@@ -34,5 +34,10 @@ public class TabletDialogPage extends DialogPage {
 		openConversationDetails.click();
 		return new TabletConversationDetailPopoverPage(this.getLazyDriver());
 	}
+	
+	public TabletGroupConversationDetailPopoverPage pressGroupConversationDetailiPadButton() throws Exception{
+		openConversationDetails.click();
+		return new TabletGroupConversationDetailPopoverPage(this.getLazyDriver());
+	}
 
 }

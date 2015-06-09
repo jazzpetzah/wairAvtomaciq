@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.TabletPagesCollection;
 import com.wearezeta.auto.ios.pages.TabletPeoplePickerPage;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class TabletConversationDetailPopoverPageSteps {
@@ -37,5 +38,15 @@ public class TabletConversationDetailPopoverPageSteps {
 		TabletPagesCollection.tabletPeoplePickerPage = (TabletPeoplePickerPage) TabletPagesCollection.tabletConversationDetailPopoverPage
 				.addContactTo1on1Chat();
 	}
-
+	
+	/**
+	 * Opens the ellipses menu on the ipad popover
+	 * @step. ^I press conversation menu button on iPad$
+	 * @throws Throwable
+	 */
+	@When("^I press conversation menu button on iPad$")
+	public void IPressConversationMenuButtonOniPad() throws Throwable {
+		TabletPagesCollection.tabletConversationDetailPopoverPage.openConversationMenu();
+	}
+	
 }

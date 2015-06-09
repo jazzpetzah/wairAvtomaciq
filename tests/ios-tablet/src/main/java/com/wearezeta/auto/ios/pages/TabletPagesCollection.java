@@ -9,5 +9,6 @@ public class TabletPagesCollection extends PagesCollection {
 	public static TabletPendingUserPopoverPage tabletPendingUserPopoverPage = null;
 	public static TabletConversationDetailPopoverPage tabletConversationDetailPopoverPage = null;
 	public static TabletPeoplePickerPage tabletPeoplePickerPage = null;
+	public static TabletGroupConversationDetailPopoverPage tabletGroupConversationDetailPopoverPage = null;
 
 }
