@@ -5,9 +5,9 @@ import java.util.concurrent.Future;
 import org.junit.Assert;
 
 import com.google.common.base.Throwables;
+import com.wearezeta.auto.android_tablet.pages.camera.RegistrationCameraPage;
 import com.wearezeta.auto.android_tablet.pages.registration.TabletRegisterConfirmationPage;
 import com.wearezeta.auto.android_tablet.pages.registration.TabletRegistrationFormPage;
-import com.wearezeta.auto.android_tablet.pages.registration.TabletTakeRegistrationPicturePage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -36,10 +36,9 @@ public class RegistrationSteps {
 				.getPage(TabletRegisterConfirmationPage.class);
 	}
 
-	private TabletTakeRegistrationPicturePage getTakeRegistrationPicturePage()
-			throws Exception {
-		return (TabletTakeRegistrationPicturePage) pagesCollection
-				.getPage(TabletTakeRegistrationPicturePage.class);
+	private RegistrationCameraPage getRegistrationCameraPage() throws Exception {
+		return (RegistrationCameraPage) pagesCollection
+				.getPage(RegistrationCameraPage.class);
 	}
 
 	private ClientUser userToRegister;
@@ -231,7 +230,7 @@ public class RegistrationSteps {
 	public void ISeeRegistrationPicturePage() throws Exception {
 		Assert.assertTrue(
 				"The Take Picture after registration page has not been shown after timeout",
-				getTakeRegistrationPicturePage().waitUntilVisible());
+				getRegistrationCameraPage().waitUntilVisible());
 	}
 
 	/**
@@ -244,7 +243,7 @@ public class RegistrationSteps {
 	 */
 	@And("^I tap Camera button on (?:the |\\s*)[Tt]ake [Rr]egistration [Pp]icture page$")
 	public void ITapCameraButton() throws Exception {
-		getTakeRegistrationPicturePage().tapCameraButton();
+		getRegistrationCameraPage().tapLensButton();
 	}
 
 	/**
@@ -257,7 +256,7 @@ public class RegistrationSteps {
 	 */
 	@And("^I tap Take Picture button on (?:the |\\s*)[Tt]ake [Rr]egistration [Pp]icture page$")
 	public void ITapTakePictureButton() throws Exception {
-		getTakeRegistrationPicturePage().tapTakePictureButton();
+		getRegistrationCameraPage().tapTakePhotoButton();
 	}
 
 	/**
@@ -271,6 +270,6 @@ public class RegistrationSteps {
 	 */
 	@And("^I confirm my picture on (?:the |\\s*)[Tt]ake [Rr]egistration [Pp]icture page$")
 	public void IConfirmMyPicture() throws Exception {
-		getTakeRegistrationPicturePage().tapOKButton();
+		getRegistrationCameraPage().confirmPictureSelection();
 	}
 }

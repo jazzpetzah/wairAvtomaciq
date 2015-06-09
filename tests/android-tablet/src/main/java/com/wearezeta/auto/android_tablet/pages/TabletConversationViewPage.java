@@ -101,22 +101,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return getDialogPage().waitForPingMessageWithText(expectedMessage);
 	}
 
-	public void tapAddPictureButton() throws Exception {
-		getDialogPage().tapAddPictureBtn();
-	}
-
-	public void tapTakePhotoButton() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void confirmPicture() {
-		// TODO Auto-generated method stub
-
-	}
-
-	public boolean waitUntilNewPictureAppears() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean waitUntilAPictureAppears() throws Exception {
+		final By locator = By.id(AndroidLocators.DialogPage.idDialogImages);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 }

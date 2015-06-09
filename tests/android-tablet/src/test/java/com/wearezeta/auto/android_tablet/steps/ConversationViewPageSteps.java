@@ -3,6 +3,7 @@ package com.wearezeta.auto.android_tablet.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationViewPage;
+import com.wearezeta.auto.android_tablet.pages.camera.ConversationViewCameraPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
@@ -20,6 +21,12 @@ public class ConversationViewPageSteps {
 			throws Exception {
 		return (TabletConversationViewPage) pagesCollection
 				.getPage(TabletConversationViewPage.class);
+	}
+
+	private ConversationViewCameraPage getConversationViewCameraPage()
+			throws Exception {
+		return (ConversationViewCameraPage) pagesCollection
+				.getPage(ConversationViewCameraPage.class);
 	}
 
 	/**
@@ -177,24 +184,24 @@ public class ConversationViewPageSteps {
 
 	@And("^I tap Add Picture button in (?:the |\\s*)[Cc]onversation view$")
 	public void ITapAddPicture() throws Exception {
-		getConversationViewPage().tapAddPictureButton();
+		getConversationViewCameraPage().tapLensButton();
 	}
 
 	@And("^I tap Take Photo button in (?:the |\\s*)[Cc]onversation view$")
 	public void ITapTakePhotoButton() throws Exception {
-		getConversationViewPage().tapTakePhotoButton();
+		getConversationViewCameraPage().tapTakePhotoButton();
 	}
 
 	@When("^I confirm the picture for (?:the |\\s*)[Cc]onversation view$")
 	public void IConfirmPicture() throws Exception {
-		getConversationViewPage().confirmPicture();
+		getConversationViewCameraPage().confirmPictureSelection();
 	}
 
 	@Then("^I see a new picture in (?:the |\\s*)[Cc]onversation view$")
 	public void ISeeNewPicture() throws Exception {
 		Assert.assertTrue(
 				"No new pictures are visible in the conversation view",
-				getConversationViewPage().waitUntilNewPictureAppears());
+				getConversationViewPage().waitUntilAPictureAppears());
 	}
 
 	/**
