@@ -76,7 +76,8 @@ public class ConversationsListPageSteps {
 	 * Verify whether the particular conversation is visible in the
 	 * conversations list or not
 	 * 
-	 * @step.^I (do not )?see (?:the |\\s*) conversation (.*) in my conversations list$
+	 * @step.^I (do not )?see (?:the |\\s*)conversation (.*) in my
+	 *          conversations list$
 	 * @param shouldNotSee
 	 *            equals to null if "do not" part is not present
 	 * @param name
@@ -130,4 +131,5 @@ public class ConversationsListPageSteps {
 							.waitUntilConversationIsNotSilenced(name));
 		}
 	}
+
 }

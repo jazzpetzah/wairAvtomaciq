@@ -81,11 +81,11 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Click the X button to close People Picker
 	 * 
-	 * @step. ^I close People Picker$
+	 * @step. ^I close (?:the |\\s*)People Picker$
 	 * 
 	 * @throws Exception
 	 */
-	@And("^I close People Picker$")
+	@And("^I close (?:the |\\s*)People Picker$")
 	public void IClosePeoplePicker() throws Exception {
 		getPeoplePickerPage().tapCloseButton();
 	}
