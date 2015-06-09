@@ -81,8 +81,14 @@ public class PerformanceSteps {
 								.nextInt(visibleContactsList.size() - 1);
 						convName = visibleContactsList.get(randomInt).getText();
 					} while (convName.contains("tst"));
-					getContactListPage().tapOnContactByPosition(
-							visibleContactsList, randomInt);
+					try {
+						getContactListPage().tapOnContactByPosition(
+								visibleContactsList, randomInt);
+					} catch (Exception e) {
+						visibleContactsList = resetVisibleContactList();
+						getContactListPage().tapOnContactByPosition(
+								visibleContactsList, randomInt);
+					}
 					getDialogPage().isDialogVisible();
 					getDialogPage().tapDialogPageBottom();
 					getDialogPage().typeMessage(CommonUtils.generateGUID());
@@ -100,7 +106,7 @@ public class PerformanceSteps {
 						}
 						getDialogPage().isDialogVisible();
 						getDialogPage().tapDialogPageBottom();
-						/*
+						
 						Thread.sleep(DEFAULT_WAIT_TIME);
 						try {
 							getDialogPage().sendFrontCameraImage();
@@ -109,12 +115,12 @@ public class PerformanceSteps {
 							for (int y = 0; y < 2; y++) {
 								getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
 							}
-							getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
+							getDialogPage().navigateBackUsingBackButton();
 							visibleContactsList = resetVisibleContactList();
 							getContactListPage().tapOnContactByPosition(
 									visibleContactsList, randomInt);
 							getDialogPage().sendFrontCameraImage();
-						}*/
+						}
 					}
 					for (int y = 0; y < 2; y++) {
 						getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
