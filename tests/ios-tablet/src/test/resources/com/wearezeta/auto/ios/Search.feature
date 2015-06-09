@@ -1,6 +1,6 @@
 Feature: Search
 
-  @staging @id2147 @torun
+  @staging @id2147
   Scenario Outline: Verify search by email [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
