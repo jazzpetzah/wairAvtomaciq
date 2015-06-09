@@ -5,11 +5,9 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -37,7 +35,8 @@ public class ConnectToPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectionInputField)
 	private WebElement sendConnectionInput;
-	
+
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(ConnectToPage.class
 			.getSimpleName());
 
