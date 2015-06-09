@@ -3,6 +3,7 @@ package com.wearezeta.auto.ios.pages;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -14,8 +15,11 @@ import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
 public class TabletPeoplePickerPage extends PeoplePickerPage{
 	
-	@FindBy(how = How.NAME, using = IOSLocators.namePickerSearch)
+	@FindBy(how = How.NAME, using = IOSTabletLocators.TabletPeoplePickerPage.nameSearchField)
 	private WebElement searchField;
+	
+	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletPeoplePickerPage.xpathSearchField)
+	private WebElement pickerSearchField;
 	
 	@FindBy(how = How.NAME, using = IOSLocators.namePeoplePickerAddToConversationButton)
 	private WebElement addToConversationButtoniPad;
@@ -33,8 +37,8 @@ public class TabletPeoplePickerPage extends PeoplePickerPage{
 		return pickerVisible;
 	}
 
-	public void pressIntoSearchField() {
-		searchField.click();	
+	public void pressIntoSearchField() {	
+		pickerSearchField.click();
 	}
 
 	public void selectConnectedUser(String name) throws Exception {
@@ -47,6 +51,15 @@ public class TabletPeoplePickerPage extends PeoplePickerPage{
 	public GroupChatPage clickAddToConversationButtonOniPadPopover() throws Throwable {
 		addToConversationButtoniPad.click();
 		return new GroupChatPage(this.getLazyDriver());	
+	}
+	
+	public void fillTextInTabletPeoplePickerSearchField(String text) {
+		try {
+			pickerSearchField.sendKeys(text);
+		} catch (WebDriverException ex) {
+			pickerSearchField.clear();
+			pickerSearchField.sendKeys(text);
+		}
 	}
 
 }
