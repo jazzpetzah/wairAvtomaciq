@@ -149,7 +149,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 				// acceptable for file names
 				final String screenshotPath = String.format("%s/%s/%s/%s.png",
 						CommonUtils.getPictureResultsPathFromConfig(this
-								.getClass()), feature, scenario, currentStep);
+								.getClass()), feature, scenario, currentStep).replaceAll("\\W+", "_");
 				if (screenshotMakers.isPresent()) {
 					final Runnable task = new Thread(() -> storeScreenshot(
 							driver, screenshotPath));
