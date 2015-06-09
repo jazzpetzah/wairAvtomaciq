@@ -109,4 +109,62 @@ Feature: Conversation List
       | Login      | Password      | Name      | ArchivedUser |
       | user1Email | user1Password | user1Name | user2Name    |
       
+  @staging @id2376
+  Scenario Outline: I can open search UI by tapping + button [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by clicking plus button
+    And I see People picker page
+
+    Examples: 
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
       
+  @staging @id2376
+  Scenario Outline: I can open search UI by tapping + button [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to landscape
+    Given I Sign in using login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by clicking plus button
+    And I see People picker page
+
+    Examples: 
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+      
+  @staging @id2369
+  Scenario Outline: Verify Ping animation in the conversations list [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given User <Name> change accent color to <Color>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I remember the state of the first conversation cell
+    When Contact <Contact> ping conversation <Name>
+    And I wait for 10 seconds
+    Then I see ping symbol
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | NewName  | Color        |
+      | user1Email | user1Password | user1Name | user2Name | PING     | BrightOrange |
+      
+  @staging @id2369
+  Scenario Outline: Verify Ping animation in the conversations list [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given User <Name> change accent color to <Color>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I remember the state of the first conversation cell
+    When Contact <Contact> ping conversation <Name>
+    And I wait for 10 seconds
+    Then I see ping symbol
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | NewName  | Color        |
+      | user1Email | user1Password | user1Name | user2Name | PING     | BrightOrange |

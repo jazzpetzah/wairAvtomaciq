@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -8,10 +9,29 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletSelfProfilePage extends AndroidTabletPage {
+	public static final String idSelfNameInput = "tet__profile__guided";
+	@FindBy(id = idSelfNameInput)
+	private WebElement selfNameInput;
+
+	public static final String idSelfProfileView = "ll_self_form";
+	@FindBy(id = idSelfProfileView)
+	private WebElement selfProfileView;
+
+	public static final String idChangePictureButton = "gtv__camera_control__change_image_source";
+	@FindBy(id = idChangePictureButton)
+	private WebElement changePictureButton;
+
+	public static final String idGalleryButton = "gtv__camera_control__pick_from_gallery";
+	@FindBy(id = idGalleryButton)
+	private WebElement galleryButton;
+
+	public static final String xpathConfirmPictureButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
+	@FindBy(xpath = xpathConfirmPictureButton)
+	private WebElement confirmPictureButton;
+
 	public static final Function<String, String> xpathSelfNameByContent = content -> String
 			.format("//*[@id='ttv__profile__name' and @value='%s']", content);
 
@@ -26,21 +46,6 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 	public TabletSelfProfilePage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
-	}
-
-	@Override
-	public AndroidTabletPage returnBySwipe(SwipeDirection direction)
-			throws Exception {
-		switch (direction) {
-		case UP: {
-			return this;
-		}
-		case RIGHT: {
-			return new TabletConversationsListPage(this.getLazyDriver());
-		}
-		default:
-			return null;
-		}
 	}
 
 	public boolean isNameVisible(String name) throws Exception {
@@ -60,5 +65,39 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 				.format("The item '%s' is not present in Options menu",
 						itemName);
 		getDriver().findElement(locator).click();
+	}
+
+	public void tapSelfNameField() throws Exception {
+		assert DriverUtils
+				.waitUntilElementClickable(getDriver(), selfNameInput);
+		selfNameInput.click();
+	}
+
+	public void changeSelfNameTo(String newName) throws Exception {
+		selfNameInput.clear();
+		selfNameInput.sendKeys(newName);
+		this.hideKeyboard();
+	}
+
+	public BufferedImage getScreenshot() throws Exception {
+		return this.getElementScreenshot(selfProfileView).orElseThrow(
+				IllegalStateException::new);
+	}
+
+	public void tapChangePictureButton() {
+		changePictureButton.click();
+	}
+
+	public void tapGalleryButton() {
+		galleryButton.click();
+	}
+
+	public void tapConfirmPictureButton() {
+		confirmPictureButton.click();
+	}
+
+	public void tapInTheCenter() throws Exception {
+		DriverUtils.tapInTheCenterOfTheElement(this.getDriver(),
+				selfProfileView);
 	}
 }

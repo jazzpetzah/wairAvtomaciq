@@ -20,7 +20,6 @@ import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
 			.getSimpleName());
 
@@ -81,8 +80,14 @@ public class PerformanceSteps {
 								.nextInt(visibleContactsList.size() - 1);
 						convName = visibleContactsList.get(randomInt).getText();
 					} while (convName.contains("tst"));
-					getContactListPage().tapOnContactByPosition(
-							visibleContactsList, randomInt);
+					try {
+						getContactListPage().tapOnContactByPosition(
+								visibleContactsList, randomInt);
+					} catch (Exception e) {
+						visibleContactsList = resetVisibleContactList();
+						getContactListPage().tapOnContactByPosition(
+								visibleContactsList, randomInt);
+					}
 					getDialogPage().isDialogVisible();
 					getDialogPage().tapDialogPageBottom();
 					getDialogPage().typeMessage(CommonUtils.generateGUID());
@@ -100,21 +105,26 @@ public class PerformanceSteps {
 						}
 						getDialogPage().isDialogVisible();
 						getDialogPage().tapDialogPageBottom();
-						/*
+						
 						Thread.sleep(DEFAULT_WAIT_TIME);
-						try {
-							getDialogPage().sendFrontCameraImage();
-						} catch (Throwable e) {
-							log.debug("Camera image was not send before. Workaround...");
-							for (int y = 0; y < 2; y++) {
-								getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
+						boolean successful = false;
+						int count = 0;
+						do {
+							try {
+								getDialogPage().sendFrontCameraImage();
+								successful = true;
+							} catch (Throwable e) {
+								log.debug("Camera image was not send before. Workaround...");
+								for (int y = 0; y < 2; y++) {
+									getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
+								}
+								getDialogPage().navigateBackUsingBackButton();
+								visibleContactsList = resetVisibleContactList();
+								getContactListPage().tapOnContactByPosition(
+										visibleContactsList, randomInt);
 							}
-							getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
-							visibleContactsList = resetVisibleContactList();
-							getContactListPage().tapOnContactByPosition(
-									visibleContactsList, randomInt);
-							getDialogPage().sendFrontCameraImage();
-						}*/
+							count++;
+						} while (!successful && count < 2);
 					}
 					for (int y = 0; y < 2; y++) {
 						getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);

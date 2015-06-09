@@ -36,11 +36,11 @@ public class ConversationsListPageSteps {
 	/**
 	 * Tap my own avatar on top of conversations list
 	 * 
-	 * @step. ^I tap my avatar$
+	 * @step. ^I tap my avatar on top of (?:the |\\s*)[Cc]onversations list$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap my avatar$")
+	@When("^I tap my avatar on top of (?:the |\\s*)[Cc]onversations list$")
 	public void ITapMyAvatar() throws Exception {
 		getConversationsListPage().tapMyAvatar();
 	}
@@ -131,5 +131,7 @@ public class ConversationsListPageSteps {
 							.waitUntilConversationIsNotSilenced(name));
 		}
 	}
+	
 
+	
 }

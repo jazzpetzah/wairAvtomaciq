@@ -26,11 +26,9 @@ public abstract class AbstractPagesCollection {
 			throws Exception {
 		if (!pagesMapping.containsKey(pageClass)) {
 			this.printPages();
-			log.debug(String
-					.format("'%s' page has not been created yet. Trying to instantiate it for the first time...",
-							pageClass.getSimpleName()));
-			final BasePage parent = getCommonPage();
-			pagesMapping.put(pageClass, parent.instantiatePage(pageClass));
+			log.debug(String.format(" > +++ %s", pageClass.getSimpleName()));
+			pagesMapping.put(pageClass,
+					getCommonPage().instantiatePage(pageClass));
 		}
 		return pagesMapping.get(pageClass);
 	}
@@ -69,10 +67,10 @@ public abstract class AbstractPagesCollection {
 
 	public void printPages() {
 		if (pagesMapping.size() == 0) {
-			log.info("No pages are currently created");
+			log.debug("No pages are currently created");
 			return;
 		}
-		log.info(String.format("%d pages are currently created:",
+		log.debug(String.format("%d page(s) are currently created:",
 				pagesMapping.size()));
 		for (final Class<? extends BasePage> pageClass : pagesMapping.keySet()) {
 			log.info(" > " + pageClass.getSimpleName());
