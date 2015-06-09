@@ -96,7 +96,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Email | user1Password | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  
+  @staging @id1369
   Scenario Outline: Verify Ping animation in the conversations list
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -107,11 +107,7 @@ Feature: Conversation List
     And I remember the state of the first conversation cell
     When Contact <Contact> ping conversation <Name>
     And I wait for 10 seconds
-    Then I see ping symbol for <Contact>
-    And I remember the state of the first conversation cell after first ping
-    And Contact <Contact> hotping conversation <Name>
-    And I wait for 10 seconds
-    Then I see hotping symbol for <Contact>
+    Then I see ping symbol
 
     Examples: 
       | Login      | Password      | Name      | Contact   | NewName  | Color        |

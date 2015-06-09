@@ -507,54 +507,13 @@ public class ContactListPage extends IOSPage {
 		return true;
 	}
 	
-	public BufferedImage blankReferenceImageFirstContact() throws Exception {
+	public BufferedImage getScreenshotFirstContact() throws Exception {
 		//This takes a screenshot of the area to the left of a contact where ping and unread dot notifications are visible
 		WebElement contact = firstContactCell;
 		return getScreenshotByCoordinates(contact.getLocation().x,
 				contact.getLocation().y + contactListContainer.getLocation().y,
 				contact.getSize().width / 4, contact.getSize().height * 2)
 				.orElseThrow(IllegalStateException::new);
-	}
-	
-	public BufferedImage referenceImageFirstPingState() throws Exception {
-		WebElement contact = firstContactCell;
-		return getScreenshotByCoordinates(contact.getLocation().x,
-				contact.getLocation().y + contactListContainer.getLocation().y,
-				contact.getSize().width / 4, contact.getSize().height * 2)
-				.orElseThrow(IllegalStateException::new);
-	}
-
-	public boolean pingIsVisible(boolean visible, boolean hotPing,
-			String conversation) throws Exception {
-		BufferedImage pingSymbol = null;
-		BufferedImage referenceImage = null;
-		double score = 0;
-		WebElement contact = findCellInContactList(conversation);
-		pingSymbol = getScreenshotByCoordinates(contact.getLocation().x,
-				contact.getLocation().y + contactListContainer.getLocation().y,
-				contact.getSize().width / 4, contact.getSize().height * 2)
-				.orElseThrow(IllegalStateException::new);
-		if (visible == true && hotPing == true) {
-			referenceImage = referenceImageFirstPingState();
-			score = ImageUtil.getOverlapScore(referenceImage, pingSymbol,
-					ImageUtil.RESIZE_NORESIZE);
-		} else if (visible == true && hotPing == false) {
-			referenceImage = blankReferenceImageFirstContact();
-			score = ImageUtil.getOverlapScore(referenceImage, pingSymbol,
-					ImageUtil.RESIZE_NORESIZE);
-		} else if (visible == false && hotPing == false) {
-			referenceImage = blankReferenceImageFirstContact();
-			score = ImageUtil.getOverlapScore(referenceImage, pingSymbol,
-					ImageUtil.RESIZE_NORESIZE);
-		}
-
-		if (score <= MIN_ACCEPTABLE_IMAGE_PING_VALUE) {
-			String imgPath = "/Users/Chad/Desktop/ZautoPing";
-			ImageIO.write(pingSymbol, "png", new File(imgPath));
-			return false;
-		} else {
-			return true;
-		}
 	}
 
 	public boolean missedCallIndicatorIsVisible(boolean isFirstInList,

@@ -13,9 +13,9 @@ import org.junit.Assert;
 
 import cucumber.api.java.en.*;
 
-
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -496,58 +496,42 @@ public class ContactListPageSteps {
 	}
 	
 	private BufferedImage blankReferenceImage = null; 
+	private static final double MAX_OVERLAP_SCORE = 0.50;
 	
+	/**
+	 * Verifies that a ping symbol is seen in the conversation list
+	 * 
+	 * @step. ^I remember the state of the first conversation cell$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
 	@When("^I remember the state of the first conversation cell$")
 	public void IRememberConversationState() throws Exception {
-		blankReferenceImage = PagesCollection.contactListPage.blankReferenceImageFirstContact();
-		String imgPath = "/Users/Chad/Desktop/zauto";
-		ImageIO.write(blankReferenceImage, "png", new File(imgPath));
-			
-	}
-	
-	@When("^I remember the state of the first conversation cell after first ping$")
-	public void IRememberConversationStateAfterFirstPing() throws Exception {
-		blankReferenceImage = PagesCollection.contactListPage.referenceImageFirstPingState();
-
-			
+		blankReferenceImage = PagesCollection.contactListPage.getScreenshotFirstContact();
 	}
 
 	/**
 	 * Verifies that a ping symbol is seen in the conversation list
 	 * 
-	 * @step. ^I see ping symbol for (.*)$
-	 * 
-	 * @param conversation
-	 *            conversation name to check for ping
+	 * @step. ^I see ping symbol$
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@Then("^I see ping symbol for (.*)$")
-	public void ISeePingSymbol(String conversation) throws Exception {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean pingSymbolPresent = PagesCollection.contactListPage
-				.pingIsVisible(true, false, conversation);
-		Assert.assertTrue("No ping symbol visible.", pingSymbolPresent);
-	}
+	@Then("I see ping symbol")
+	public void ISeePingSymbol() throws Exception {
+		if (blankReferenceImage == null) {
+			throw new IllegalStateException(
+					"This step requires to remember the previous profile picture first!");
+		}
+		double score = -1;
+		final BufferedImage pingSymbol = PagesCollection.contactListPage
+				.getScreenshotFirstContact();
+		score = ImageUtil.getOverlapScore(pingSymbol, blankReferenceImage,
+				ImageUtil.RESIZE_NORESIZE);
+		Assert.assertTrue("Ping symbol not visible", score <= MAX_OVERLAP_SCORE);
 
-	/**
-	 * Verifies that a hotping symbol is seen in the conversation list
-	 * 
-	 * @step. ^I see hotping symbol for (.*)$
-	 * 
-	 * @param conversation
-	 *            conversation name to check for ping
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@Then("^I see hotping symbol for (.*)$")
-	public void ISeeHotPingSymbol(String conversation) throws Exception {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean pingSymbolPresent = PagesCollection.contactListPage
-				.pingIsVisible(true, true, conversation);
-		Assert.assertTrue("No hotping symbol visible.", pingSymbolPresent);
 	}
 
 	/**
