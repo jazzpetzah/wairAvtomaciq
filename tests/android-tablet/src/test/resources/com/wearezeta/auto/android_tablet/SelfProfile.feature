@@ -1,40 +1,35 @@
 Feature: Self Profile
 
-  @id2264 @staging
+  @id2264 @smoke
   Scenario Outline: ZClient change name in portrait mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     And I rotate UI to portrait
-    Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list
-    When  I tap on my avatar
-    And I see personal info page
-    And I wait for 10 seconds
-    And I tap on my name
-    And I change <Name> to <NewName>
-    Then I see my new name <NewName>
+    Given I sign in using my email
+    And I see the conversations list
+    When I tap my avatar on top of conversations list
+    And I see my name on Self Profile page
+    And I tap my name field on Self Profile page
+    And I change my name to <NewName> on Self Profile page
+    Then I see my name on Self Profile page
 
     Examples: 
-      | Login      | Password      | Name      | NewName     | Contact   |
-      | user1Email | user1Password | user1Name | NewTestName | user2Name |
+      | Name      | NewName     |
+      | user1Name | NewTestName |
 
-  @id2250 @staging 
+  @id2250 @smoke
   Scenario Outline: ZClient change name in landscape mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There is 1 user where <Name> is me
     And I rotate UI to landscape
-    Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list
-    When  I tap on my avatar
-    And I see personal info page
-    And I wait for 10 seconds
-    And I tap on my name
-    And I change <Name> to <NewName>
-    Then I see my new name <NewName>
+    Given I sign in using my email
+    And I see the conversations list
+    And I see my name on Self Profile page
+    And I tap my name field on Self Profile page
+    And I change my name to <NewName> on Self Profile page
+    Then I see my name on Self Profile page
 
     Examples: 
-      | Login      | Password      | Name      | NewName     | Contact   |
-      | user1Email | user1Password | user1Name | NewTestName | user2Name |
+      | Name      | NewName     |
+      | user1Name | NewTestName |
 
   @id2261 @staging
   Scenario Outline: Check contact personal info in portrait mode
