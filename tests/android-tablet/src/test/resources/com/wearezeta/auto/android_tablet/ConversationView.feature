@@ -37,24 +37,25 @@ Feature: Conversation View
       | Name      | Contact   | Message    |
       | user1Name | user2Name | YOU PINGED |
 
-  @id2254 @staging
+  @id2254 @staging @torun
   Scenario Outline: Send Camera picture to contact in portrait mode
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given Myself is connected to <Contact>
     And I rotate UI to portrait
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe on text input
-    And I press Add Picture button
-    And I press "Take Photo" button
-    And I press "Confirm" button
-    Then I see new photo in the dialog
+    Given I sign in using my email
+    And I see the conversations list
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And I see the conversation view
+    And I swipe left on text input in the conversation view
+    When I tap Add Picture button in the conversation view
+    And I tap Take Photo button in the conversation view
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @id2255 @staging
   Scenario Outline: Add people to 1:1 chat in portrait mode

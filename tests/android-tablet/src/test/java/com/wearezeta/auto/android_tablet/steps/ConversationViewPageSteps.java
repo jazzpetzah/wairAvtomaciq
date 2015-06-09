@@ -175,6 +175,28 @@ public class ConversationViewPageSteps {
 		getConversationViewPage().tapPingButton();
 	}
 
+	@And("^I tap Add Picture button in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapAddPicture() throws Exception {
+		getConversationViewPage().tapAddPictureButton();
+	}
+
+	@And("^I tap Take Photo button in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapTakePhotoButton() throws Exception {
+		getConversationViewPage().tapTakePhotoButton();
+	}
+
+	@When("^I confirm the picture for (?:the |\\s*)[Cc]onversation view$")
+	public void IConfirmPicture() throws Exception {
+		getConversationViewPage().confirmPicture();
+	}
+
+	@Then("^I see a new picture in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeeNewPicture() throws Exception {
+		Assert.assertTrue(
+				"No new pictures are visible in the conversation view",
+				getConversationViewPage().waitUntilNewPictureAppears());
+	}
+
 	/**
 	 * Verify whether ping message is visible in the current conversation view
 	 * 

@@ -106,4 +106,23 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 				.apply(expectedMessage));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
+
+	public void tapAddPictureButton() throws Exception {
+		getDialogPage().tapAddPictureBtn();
+	}
+
+	public void tapTakePhotoButton() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void confirmPicture() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean waitUntilNewPictureAppears() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }
