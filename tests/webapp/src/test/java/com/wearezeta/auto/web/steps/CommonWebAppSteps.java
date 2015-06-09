@@ -160,9 +160,9 @@ public class CommonWebAppSteps {
 		DesiredCapabilities capabilities = getCustomCapabilities(platform,
 				browserName, browserVersion, uniqueName);
 
+		final String hubHost = System.getProperty("hubHost");
+		final String hubPort = System.getProperty("hubPort");
 		final String url = CommonUtils
-				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
-		final String path = CommonUtils
 				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
 		final ExecutorService pool = Executors.newFixedThreadPool(1);
 
@@ -171,7 +171,8 @@ public class CommonWebAppSteps {
 			@Override
 			public ZetaWebAppDriver call() throws Exception {
 				final ZetaWebAppDriver lazyWebDriver = new ZetaWebAppDriver(
-						new URL(url), capabilities);
+						new URL("http://" + hubHost + ":" + hubPort + "/wd/hub"),
+						capabilities);
 				// setup of the browser
 				lazyWebDriver.setFileDetector(new LocalFileDetector());
 				if (WebAppExecutionContext.getBrowser().hasResizingWindowBug()) {
@@ -194,9 +195,9 @@ public class CommonWebAppSteps {
 				.submit(callableWebAppDriver);
 		webdrivers.put(uniqueName, lazyWebDriver);
 		lazyWebDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-				TimeUnit.MILLISECONDS).get(path);
+				TimeUnit.MILLISECONDS).get(url);
 		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
-				path);
+				url);
 		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
 
