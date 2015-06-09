@@ -20,7 +20,6 @@ import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
 			.getSimpleName());
 

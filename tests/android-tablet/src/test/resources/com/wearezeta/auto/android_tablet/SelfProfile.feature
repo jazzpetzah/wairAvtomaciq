@@ -31,37 +31,41 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id2261 @staging
+  @id2261 @smoke
   Scenario Outline: Check contact personal info in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     And I rotate UI to portrait
-    Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list
-    When I tap on tablet contact name <Contact>
-    And I see tablet dialog page
-    And I tap on profile button
-    Then I see <Contact> user name and email
+    Given I sign in using my email
+    And I see the conversations list
+    When I tap the conversation <Contact>
+    And I see the conversation view
+    And I tap Show Details button on conversation view page
+    Then I see the Single user popover
+    And I see the user name <Contact> on Single user popover
+    And I see the user email <ContactEmail> on Single user popover
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   | ContactEmail |
+      | user1Name | user2Name | user2Email   |
 
-  @id2247 @staging
+  @id2247 @smoke
   Scenario Outline: Check contact personal info in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     And I rotate UI to landscape
-    Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list
-    When I tap on tablet contact name <Contact>
-    And I see tablet dialog page
-    And I tap on profile button
-    Then I see <Contact> user name and email
+    Given I sign in using my email
+    And I see the conversations list
+    When I tap the conversation <Contact>
+    And I see the conversation view
+    And I tap Show Details button on conversation view page
+    Then I see the Single user popover
+    And I see the user name <Contact> on Single user popover
+    And I see the user email <ContactEmail> on Single user popover
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   | ContactEmail |
+      | user1Name | user2Name | user2Email   |
 
   @id2288 @staging
   Scenario Outline: Change user picture in portrait mode

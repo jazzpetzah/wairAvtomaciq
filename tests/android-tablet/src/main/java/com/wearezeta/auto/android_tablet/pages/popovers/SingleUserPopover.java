@@ -35,4 +35,16 @@ public class SingleUserPopover extends AbstractPopoverContainer {
 		return this.singleConnectedUserDetalsPage.isMenuItemVisible(itemName);
 	}
 
+	public boolean waitUntilUserNameVisible(String expectedName)
+			throws Exception {
+		return this.singleConnectedUserDetalsPage
+				.waitUntilUserNameVisible(expectedName);
+	}
+
+	public boolean waitUntilUserEmailVisible(String expectedEmail)
+			throws Exception {
+		return this.singleConnectedUserDetalsPage
+				.waitUntilUserEmailVisible(expectedEmail);
+	}
+
 }

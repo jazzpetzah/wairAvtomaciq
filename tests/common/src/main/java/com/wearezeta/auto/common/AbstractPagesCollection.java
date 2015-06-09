@@ -26,7 +26,7 @@ public abstract class AbstractPagesCollection {
 			throws Exception {
 		if (!pagesMapping.containsKey(pageClass)) {
 			this.printPages();
-			log.debug(String.format("> +++ %s", pageClass.getSimpleName()));
+			log.debug(String.format(" > +++ %s", pageClass.getSimpleName()));
 			pagesMapping.put(pageClass,
 					getCommonPage().instantiatePage(pageClass));
 		}
