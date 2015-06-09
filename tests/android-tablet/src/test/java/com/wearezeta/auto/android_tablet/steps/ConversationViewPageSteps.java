@@ -91,4 +91,106 @@ public class ConversationViewPageSteps {
 						.waitForChatHeaderMessageContains(expectedMessage));
 	}
 
+	/**
+	 * Tap the text input field in the conversation view to start typing
+	 * 
+	 * @step. ^I tap (?:the |\\s*)text input in (?:the |\\s*)[Cc]onversation
+	 *        view$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap (?:the |\\s*)text input in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapTheTextInput() throws Exception {
+		getConversationViewPage().tapTextInput();
+	}
+
+	/**
+	 * Type a message into the active conversation. The text input should be
+	 * already active. The message is NOT sent automatically
+	 * 
+	 * @step. ^I type (?:the |\\s*)message \"(.*)\" in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @param message
+	 *            the text to type
+	 * @throws Exception
+	 */
+	@And("^I type (?:the |\\s*)message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
+	public void ITypeMessage(String message) throws Exception {
+		getConversationViewPage().typeMessage(message);
+	}
+
+	/**
+	 * Tap Enter to send the typed message into the conversation
+	 * 
+	 * @step. ^I send the typed message in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I send the typed message in (?:the |\\s*)[Cc]onversation view$")
+	public void ISendMessage() throws Exception {
+		getConversationViewPage().sendMessage();
+	}
+
+	/**
+	 * Verify whether the message is visible in the conversation view
+	 * 
+	 * @step. ^I see the message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @param expectedMessage
+	 *            the message to check
+	 * @throws Exception
+	 */
+	@Then("^I see the message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeeMessage(String expectedMessage) throws Exception {
+		Assert.assertTrue(
+				String.format(
+						"The expected message '%s' is not visible in the conversation view",
+						expectedMessage), getConversationViewPage()
+						.waitUntilMessageIsVisible(expectedMessage));
+	}
+
+	/**
+	 * Swipe on the text input field to show the available instruments
+	 * 
+	 * @step. ^I swipe left on text input in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I swipe left on text input in (?:the |\\s*)[Cc]onversation view$")
+	public void ISwipeLeftOnTextInput() throws Exception {
+		getConversationViewPage().swipeLeftOnTextInput();
+	}
+
+	/**
+	 * Tap the Ping button to send Ping event from the currently opened
+	 * conversation
+	 * 
+	 * @step. ^I tap Ping button in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap Ping button in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapPingButton() throws Exception {
+		getConversationViewPage().tapPingButton();
+	}
+
+	/**
+	 * Verify whether ping message is visible in the current conversation view
+	 * 
+	 * @step. ^I see the [Pp]ing message \"<(.*)>\" in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @param expectedMessage
+	 *            the text of expected ping message
+	 * @throws Exception
+	 */
+	@Then("^I see the [Pp]ing message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeePingMessage(String expectedMessage) throws Exception {
+		Assert.assertTrue(
+				String.format(
+						"The expected ping message '%s' is not visible in the conversation view",
+						expectedMessage), getConversationViewPage()
+						.waitUntilPingMessageIsVisible(expectedMessage));
+	}
 }

@@ -1,38 +1,41 @@
 Feature: Conversation View
 
-  @id2252 @staging
+  @id2252 @smoke
   Scenario Outline: Send Message to contact in portrait mode
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given Myself is connected to <Contact>
     And I rotate UI to portrait
-    Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list
-    When I tap on tablet contact name <Contact>
-    And I see dialog page
-    And I tap on text input
-    And I type the message "<Message>" and send it
-    Then I see my message "<Message>" in the dialog
+    Given I sign in using my email
+    And I see the conversations list
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And I see the conversation view
+    And I tap the text input in the conversation view
+    When I type the message "<Message>" in the conversation view
+    And I send the typed message in the conversation view
+    Then I see the message "<Message>" in the conversation view
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message |
-      | user1Email | user1Password | user1Name | user2Name | Yo      |
+      | Name      | Contact   | Message |
+      | user1Name | user2Name | Yo      |
 
-  @id2253 @staging
+  @id2253 @smoke
   Scenario Outline: Send Hello and Hey to contact in portrait mode
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given Myself is connected to <Contact>
     And I rotate UI to portrait
-    Given I Sign in using login <Login> and password <Password>
-    And I see Contact list
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe on text input
-    And I press Ping button
-    Then I see Ping message <Message> in the dialog
+    Given I sign in using my email
+    And I see the conversations list
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And I see the conversation view
+    And I swipe left on text input in the conversation view
+    When I tap Ping button in the conversation view
+    Then I see the ping message "<Message>" in the conversation view
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message    |
-      | user1Email | user1Password | user1Name | user2Name | YOU PINGED |
+      | Name      | Contact   | Message    |
+      | user1Name | user2Name | YOU PINGED |
 
   @id2254 @staging
   Scenario Outline: Send Camera picture to contact in portrait mode

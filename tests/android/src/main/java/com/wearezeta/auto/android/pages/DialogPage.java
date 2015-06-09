@@ -435,6 +435,11 @@ public class DialogPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
+	public ContactListPage navigateBackUsingBackButton() throws Exception {
+		getDriver().navigate().back();
+		return new ContactListPage(this.getLazyDriver());
+	}
+	
 	public boolean isHintVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(AndroidLocators.CommonLocators.idSearchHintClose));
