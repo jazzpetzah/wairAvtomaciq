@@ -34,6 +34,7 @@ public class ZetaWebAppDriver extends RemoteWebDriver implements ZetaDriver {
 		super(remoteAddress, desiredCapabilities);
 		try {
 			if (CommonUtils.getInitNoteIpFromConfig(this.getClass())) {
+				log.debug("Get current node ip through hub on " + remoteAddress);
 				initNodeIp(remoteAddress);
 				log.debug(String
 						.format("Current Selenium node ip address is '%s'",
