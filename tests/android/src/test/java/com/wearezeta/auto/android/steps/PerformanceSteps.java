@@ -108,19 +108,24 @@ public class PerformanceSteps {
 						getDialogPage().tapDialogPageBottom();
 						
 						Thread.sleep(DEFAULT_WAIT_TIME);
-						try {
-							getDialogPage().sendFrontCameraImage();
-						} catch (Throwable e) {
-							log.debug("Camera image was not send before. Workaround...");
-							for (int y = 0; y < 2; y++) {
-								getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
+						boolean successful = false;
+						int count = 0;
+						do {
+							try {
+								getDialogPage().sendFrontCameraImage();
+								successful = true;
+							} catch (Throwable e) {
+								log.debug("Camera image was not send before. Workaround...");
+								for (int y = 0; y < 2; y++) {
+									getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
+								}
+								getDialogPage().navigateBackUsingBackButton();
+								visibleContactsList = resetVisibleContactList();
+								getContactListPage().tapOnContactByPosition(
+										visibleContactsList, randomInt);
 							}
-							getDialogPage().navigateBackUsingBackButton();
-							visibleContactsList = resetVisibleContactList();
-							getContactListPage().tapOnContactByPosition(
-									visibleContactsList, randomInt);
-							getDialogPage().sendFrontCameraImage();
-						}
+							count++;
+						} while (!successful && count < 2);
 					}
 					for (int y = 0; y < 2; y++) {
 						getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
