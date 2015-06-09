@@ -51,6 +51,11 @@ public class RegistrationPage extends WebPage {
 			throws Exception {
 		super(lazyDriver, url);
 	}
+	
+	public boolean waitForRegistrationPageToFullyLoad() throws Exception {
+		return DriverUtils.waitUntilElementClickable(this.getDriver(),
+				createAccount, TIMEOUT_FOR_FIRST_LOAD_OF_PAGE);
+	}
 
 	public LoginPage switchToLoginPage() throws Exception {
 		if (DriverUtils.waitUntilElementClickable(this.getDriver(),

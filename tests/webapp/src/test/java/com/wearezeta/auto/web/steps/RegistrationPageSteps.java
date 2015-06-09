@@ -41,6 +41,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I enter user name (.*) on Registration page$")
 	public void IEnterName(String name) throws Exception {
+		PagesCollection.registrationPage.waitForRegistrationPageToFullyLoad();
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchUserException e) {
