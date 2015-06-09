@@ -634,4 +634,12 @@ public class DriverUtils {
 	public static void resetApp(AppiumDriver driver) {
 		driver.resetApp();
 	}
+
+	public static void tapInTheCenterOfTheElement(ZetaAndroidDriver driver,
+			WebElement element) {
+		final Point coords = element.getLocation();
+		final Dimension size = element.getSize();
+		driver.tap(1, coords.x + size.getWidth() / 2,
+				coords.y + size.getHeight() / 2, 1);
+	}
 }

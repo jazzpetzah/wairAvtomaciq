@@ -398,8 +398,9 @@ public class DialogPageSteps {
 	@Then("^I see Ping message (.*) in the dialog$")
 	public void ThenISeePingMessageInTheDialog(String message) throws Exception {
 		message = usrMgr.replaceAliasesOccurences(message, FindBy.NAME_ALIAS);
-		Assert.assertEquals(getDialogPage().getLastPingText().toUpperCase(),
-				message.toUpperCase());
+		Assert.assertTrue(String.format(
+				"Ping message '%s' is not visible after the timeout", message),
+				getDialogPage().waitForPingMessageWithText(message));
 	}
 
 	/**

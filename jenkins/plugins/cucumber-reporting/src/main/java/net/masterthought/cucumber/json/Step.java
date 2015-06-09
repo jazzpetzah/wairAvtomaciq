@@ -5,6 +5,7 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.googlecode.totallylazy.Function1;
 import com.googlecode.totallylazy.Sequences;
 import com.googlecode.totallylazy.predicates.LogicalPredicate;
+
 import net.masterthought.cucumber.ConfigurationOptions;
 import net.masterthought.cucumber.util.Util;
 
@@ -25,6 +26,7 @@ public class Step {
     private Object[] embeddings;
     private String[] output;
     private DocString doc_string;
+    private static final String NO_IMAGE_URL="http://www.kalmbachfeeds.com/shopping/App_Themes/Kalmbach/Images/no-image-available.png";
 
     public Step() {
 
@@ -198,8 +200,8 @@ public class Step {
     private String addScreenshotTags(String feature, String scenario) {
     	String tags = "";
     	tags += "<div class=\"step-screenshot\" id=\"scr " + getRawName().replaceAll("\\W+", "_") + "" + screenshotIndex + "\"><center>"
-    		+ "<a href=\"Images/" + feature + "/" + scenario + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" target=\"_blank\">"
-    		+ "<img src=\"Images/" + feature + "/" + scenario + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" width=\"30%\" height=\"30%\" />"
+    		+ "<a href=\"Images/" + feature.replaceAll("\\W+", "_") + "/" + scenario.replaceAll("\\W+", "_") + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" target=\"_blank\">"
+    		+ "<img onerror=\"this.src='" + NO_IMAGE_URL +"';this.width=150;this.height=150\" src=\"Images/" + feature.replaceAll("\\W+", "_") + "/" + scenario.replaceAll("\\W+", "_") + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" width=\"30%\" height=\"30%\" />"
     		+ "</a>"
   	  		+ "</center></div>";
   		return tags;
