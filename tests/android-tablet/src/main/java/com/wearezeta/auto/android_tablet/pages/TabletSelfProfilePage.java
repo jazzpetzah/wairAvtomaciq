@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -14,6 +15,22 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 	public static final String idSelfNameInput = "tet__profile__guided";
 	@FindBy(id = idSelfNameInput)
 	private WebElement selfNameInput;
+
+	public static final String idSelfProfileView = "ll_self_form";
+	@FindBy(id = idSelfProfileView)
+	private WebElement selfProfileView;
+
+	public static final String idChangePictureButton = "gtv__camera_control__change_image_source";
+	@FindBy(id = idChangePictureButton)
+	private WebElement changePictureButton;
+
+	public static final String idGalleryButton = "gtv__camera_control__pick_from_gallery";
+	@FindBy(id = idGalleryButton)
+	private WebElement galleryButton;
+
+	public static final String xpathConfirmPictureButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
+	@FindBy(xpath = xpathConfirmPictureButton)
+	private WebElement confirmPictureButton;
 
 	public static final Function<String, String> xpathSelfNameByContent = content -> String
 			.format("//*[@id='ttv__profile__name' and @value='%s']", content);
@@ -60,5 +77,27 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 		selfNameInput.clear();
 		selfNameInput.sendKeys(newName);
 		this.hideKeyboard();
+	}
+
+	public BufferedImage getScreenshot() throws Exception {
+		return this.getElementScreenshot(selfProfileView).orElseThrow(
+				IllegalStateException::new);
+	}
+
+	public void tapChangePictureButton() {
+		changePictureButton.click();
+	}
+
+	public void tapGalleryButton() {
+		galleryButton.click();
+	}
+
+	public void tapConfirmPictureButton() {
+		confirmPictureButton.click();
+	}
+
+	public void tapInTheCenter() throws Exception {
+		DriverUtils.tapInTheCenterOfTheElement(this.getDriver(),
+				selfProfileView);
 	}
 }

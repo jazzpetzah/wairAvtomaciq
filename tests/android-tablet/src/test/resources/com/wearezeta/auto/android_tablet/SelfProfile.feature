@@ -67,42 +67,43 @@ Feature: Self Profile
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id2288 @staging
+  @id2288 @smoke
   Scenario Outline: Change user picture in portrait mode
     Given There is 1 user where <Name> is me
     And I rotate UI to portrait
-    Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list
-    When I tap on my avatar
-    And I tap on tablet personal info screen
+    Given I sign in using my email
+    And I see the conversations list
+    When I tap my avatar on top of conversations list
+    And I see my name on Self Profile page
+    And I tap in the center of Self Profile page
     And I remember my current profile picture
-    And I tap change photo button
-    And I press Gallery button
-    And I select picture
-    And I press Confirm button
-    And I tap on tablet personal info screen
+    And I tap Change Picture button on Self Profile page
+    And I tap Gallery button on Self Profile page
+    And I select a picture from the Gallery
+    And I confirm my picture on the Self Profile page
+    And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
 
-  @id2289 @staging
+  @id2289 @smoke
   Scenario Outline: Change user picture in landscape mode
     Given There is 1 user where <Name> is me
     And I rotate UI to landscape
-    Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list
-    When I tap on my avatar
-    And I tap on tablet personal info screen
+    Given I sign in using my email
+    And I see the conversations list
+    And I see my name on Self Profile page
+    And I tap in the center of Self Profile page
     And I remember my current profile picture
-    And I tap change photo button
-    And I press Gallery button
-    And I select picture
-    And I press Confirm button
-    And I tap on tablet personal info screen
+    And I tap Change Picture button on Self Profile page
+    And I tap Gallery button on Self Profile page
+    And I select a picture from the Gallery
+    And I confirm my picture on the Self Profile page
+    And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
