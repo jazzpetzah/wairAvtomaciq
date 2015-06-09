@@ -35,7 +35,7 @@ public class ZetaWebAppDriver extends RemoteWebDriver implements ZetaDriver {
 		try {
 			if (CommonUtils.getInitNoteIpFromConfig(this.getClass())) {
 				log.debug("Get current node ip through hub on " + remoteAddress);
-				initNodeIp(remoteAddress);
+				this.nodeIp = initNodeIp(remoteAddress);
 				log.debug(String
 						.format("Current Selenium node ip address is '%s'",
 								this.nodeIp));
@@ -83,7 +83,7 @@ public class ZetaWebAppDriver extends RemoteWebDriver implements ZetaDriver {
 		return this.sessionHelper.isSessionLost();
 	}
 
-	private void initNodeIp(URL remoteAddress) throws Exception {
+	private String initNodeIp(URL remoteAddress) throws Exception {
 		HttpHost host = new HttpHost(remoteAddress.getHost(),
 				remoteAddress.getPort());
 		DefaultHttpClient client = new DefaultHttpClient();
@@ -91,6 +91,7 @@ public class ZetaWebAppDriver extends RemoteWebDriver implements ZetaDriver {
 				"http://%s:%s/grid/api/testsession?session=%s",
 				remoteAddress.getHost(), remoteAddress.getPort(),
 				this.getSessionId());
+		log.debug("Testsession: " + url);
 		URL testSessionApi = new URL(url);
 		BasicHttpEntityEnclosingRequest r = new BasicHttpEntityEnclosingRequest(
 				"POST", testSessionApi.toExternalForm());
@@ -109,8 +110,7 @@ public class ZetaWebAppDriver extends RemoteWebDriver implements ZetaDriver {
 		String hostname = object.getString("proxyId");
 		InetAddress address = InetAddress
 				.getByName(new URL(hostname).getHost());
-		String ip = address.getHostAddress();
-		this.nodeIp = ip;
+		return address.getHostAddress();
 	}
 
 	public String getNodeIp() {
