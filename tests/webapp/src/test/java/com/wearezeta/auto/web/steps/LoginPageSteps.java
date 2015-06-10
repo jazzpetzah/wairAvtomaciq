@@ -21,8 +21,6 @@ public class LoginPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private static final int MAX_LOGIN_RETRIES = 3;
-
 	/**
 	 * Enters user email and password into corresponding fields on sign in
 	 * screen then taps "Sign In" button
@@ -57,28 +55,9 @@ public class LoginPageSteps {
 		}
 		log.debug("Starting to Sign in using login " + login + " and password "
 				+ password);
-
-		// FIXME: Try to reenter login data if signing in fails to
-		// workaround Amazon page load issues
-		int ntry = 0;
-		while (ntry < MAX_LOGIN_RETRIES) {
-			PagesCollection.loginPage = PagesCollection.registrationPage
-					.switchToLoginPage();
-			this.IEnterEmail(login);
-			this.IEnterPassword(password);
-			try {
-				this.IPressSignInButton();
-				break;
-			} catch (AssertionError e) {
-				log.error(String.format(
-						"Failed to sign in. Retrying (%s of %s)...", ntry + 1,
-						MAX_LOGIN_RETRIES));
-				if (ntry + 1 >= MAX_LOGIN_RETRIES) {
-					throw e;
-				}
-			}
-			ntry++;
-		}
+		this.IEnterEmail(login);
+		this.IEnterPassword(password);
+		this.IPressSignInButton();
 	}
 
 	/**
@@ -115,10 +94,12 @@ public class LoginPageSteps {
 	 * @step. ^the sign in error message reads (.*)
 	 * @param message
 	 *            expected error message
+	 * @throws Exception 
+	 * @throws InterruptedException 
 	 * @throws Throwable
 	 */
 	@Then("^the sign in error message reads (.*)")
-	public void TheSignInErrorMessageReads(String message) throws Throwable {
+	public void TheSignInErrorMessageReads(String message) throws InterruptedException, Exception {
 		assertThat("sign in error message",
 				PagesCollection.loginPage.getErrorMessage(), equalTo(message));
 	}
@@ -194,19 +175,6 @@ public class LoginPageSteps {
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
 		Assert.assertTrue(PagesCollection.loginPage.isVisible());
-	}
-
-	/**
-	 * Switch to [Rr]egistration page
-	 * 
-	 * @step. ^I switch to [Rr]egistration page$
-	 * 
-	 * @throws Exception
-	 */
-	@Given("^I switch to [Rr]egistration page$")
-	public void ISwitchToRegistrationPage() throws Exception {
-		PagesCollection.registrationPage = PagesCollection.loginPage
-				.switchToRegistrationPage();
 	}
 
 	/**

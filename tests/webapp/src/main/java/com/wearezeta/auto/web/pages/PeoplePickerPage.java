@@ -12,7 +12,8 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
+import com.wearezeta.auto.web.common.Browser;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
@@ -70,7 +71,7 @@ public class PeoplePickerPage extends WebPage {
 		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 				.apply(name);
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(foundUserXpath), 3);
+				By.xpath(foundUserXpath), 5);
 	}
 
 	public void closeSearch() throws Exception {
@@ -90,7 +91,7 @@ public class PeoplePickerPage extends WebPage {
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(name));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				locator, 3);
+				locator, 5);
 		WebElement participant = getDriver().findElement(locator);
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				participant);
@@ -157,14 +158,14 @@ public class PeoplePickerPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(user));
-		if (this.getDriver().getCapabilities().getBrowserName()
-				.equals(Browser.Safari.toString())) {
-			log.debug("safari workaround");
-			DriverUtils.addClass(this.getDriver(), this
-					.getDriver().findElement(locator), "hover");
-		} else {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), getDriver()
 					.findElement(locator));
+		} else {
+			// safari
+			DriverUtils.addClass(this.getDriver(), this.getDriver()
+					.findElement(locator), "hover");
 		}
 		getDriver()
 				.findElement(
@@ -179,8 +180,8 @@ public class PeoplePickerPage extends WebPage {
 		if (this.getDriver().getCapabilities().getBrowserName()
 				.equals(Browser.Safari.toString())) {
 			log.debug("safari workaround");
-			DriverUtils.addClass(this.getDriver(), this
-					.getDriver().findElement(locator), "hover");
+			DriverUtils.addClass(this.getDriver(), this.getDriver()
+					.findElement(locator), "hover");
 		} else {
 			DriverUtils.moveMouserOver(this.getDriver(), getDriver()
 					.findElement(locator));

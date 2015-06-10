@@ -7,7 +7,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 
 public class ContactsUploadPageSteps {
-	private static final int VISIBILITY_TIMEOUT = 5; // seconds
+	private static final int VISIBILITY_TIMEOUT = 15; // seconds
 
 	/**
 	 * Verify that Contacts Upload dialog is visible

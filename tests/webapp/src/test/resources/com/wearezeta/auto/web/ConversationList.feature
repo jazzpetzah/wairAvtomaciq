@@ -4,6 +4,7 @@ Feature: Conversation List
   Scenario Outline: Archive and unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I archive conversation <Contact>
@@ -20,6 +21,7 @@ Feature: Conversation List
   Scenario Outline: Mute 1on1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I set muted state for conversation <Contact>
@@ -35,6 +37,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I muted conversation with <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I see that conversation <Contact> is muted
@@ -50,6 +53,7 @@ Feature: Conversation List
   Scenario Outline: Verify Ping icon in the conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open self profile

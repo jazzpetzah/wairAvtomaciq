@@ -13,3 +13,5 @@ defaultCallingServicePort=${defaultCallingServicePort}
 mailboxHandlerType=${mailboxHandlerType}
 defaultEmailListenerServiceHost=${defaultEmailListenerServiceHost}
 defaultEmailListenerServicePort=${defaultEmailListenerServicePort}
+makeScreenshots=${makeScreenshots}
+initNodeIp=${initNodeIp}
