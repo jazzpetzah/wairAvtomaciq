@@ -3,12 +3,10 @@ package com.wearezeta.auto.android.pages;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -101,7 +99,7 @@ public class ConnectToPage extends AndroidPage {
 		connectionRequestMessage.clear();
 	}
 
-	public void typeConnectionRequies(String message) throws Exception {
+	public void typeConnectionRequest(String message) throws Exception {
 		connectionRequestMessage.sendKeys(message);
 	}
 
@@ -130,14 +128,6 @@ public class ConnectToPage extends AndroidPage {
 	public PeoplePickerPage clickCloseButton() throws Exception {
 		closeButton.click();
 		return new PeoplePickerPage(this.getLazyDriver());
-	}
-
-	public ContactListPage tapConnectNotification() throws Exception {
-		final Dimension screenDimension = getDriver().manage().window()
-				.getSize();
-		AndroidCommonUtils.genericScreenTap(screenDimension.getWidth() / 2,
-				screenDimension.getHeight() / 20);
-		return new ContactListPage(this.getLazyDriver());
 	}
 
 }

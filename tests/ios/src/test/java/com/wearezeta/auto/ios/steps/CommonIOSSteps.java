@@ -12,6 +12,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -37,6 +38,7 @@ public class CommonIOSSteps {
 	private static boolean skipBeforeAfter = false;
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
+	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
 	private Date testStartedDate;
 
 	static {
@@ -238,6 +240,7 @@ public class CommonIOSSteps {
 			throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
 				myNameAlias);
+		IChangeUserAvatarPicture(myNameAlias, "default");
 	}
 
 	@When("^(.*) ignore all requests$")
@@ -344,10 +347,16 @@ public class CommonIOSSteps {
 	@When("^User (\\w+) change avatar picture to (.*)$")
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
+
+		String avatar = null;
 		String rootPath = CommonUtils
 				.getSimulatorImagesPathFromConfig(getClass());
-		commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath + "/"
-				+ path);
+		if (path.equals("default")) {
+			avatar = DEFAULT_USER_PICTURE;
+		} else {
+			avatar = rootPath + "/" + path;
+		}
+		commonSteps.IChangeUserAvatarPicture(userNameAlias, avatar);
 	}
 
 	@When("^User (\\w+) change name to (.*)$")

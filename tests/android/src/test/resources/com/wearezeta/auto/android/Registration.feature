@@ -13,20 +13,3 @@ Feature: Registration
     Examples: 
       | AreaCode 	| Name      |
       | QA-Shortcut	| user1Name |
-
-  @id38 @regression
-  Scenario: Verify the taken photo/selected picture could be changed during registration process
-    Given I see welcome screen
-    When I press Join button
-    And I press Camera button twice
-    And I See selected picture
-    And I confirm selection
-    And I hide keyboard
-    And I take screenshot
-    And I press Registration back button
-    And I press Picture button
-    And I choose photo from album
-    And I confirm selection
-    And I hide keyboard
-    And I take screenshot
-    Then I compare 1st and 2nd screenshots and they are different

@@ -10,24 +10,29 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
-import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
 public class TabletDialogPage extends DialogPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
 	private WebElement addPictureButton;
 	
+	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
+	protected WebElement openConversationDetails;
+	
 	public TabletDialogPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 	
 	public CameraRollTabletPopoverPage pressAddPictureiPadButton() throws Exception {
-		CameraRollTabletPopoverPage page;
 		addPictureButton.click();
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathCameraLibraryButton));
-		page = new CameraRollTabletPopoverPage(this.getLazyDriver());
-		return page;
+		return new CameraRollTabletPopoverPage(this.getLazyDriver());
+	}
+	
+	public TabletConversationDetailPopoverPage pressConversationDetailiPadButton() throws Exception{
+		openConversationDetails.click();
+		return new TabletConversationDetailPopoverPage(this.getLazyDriver());
 	}
 
 }

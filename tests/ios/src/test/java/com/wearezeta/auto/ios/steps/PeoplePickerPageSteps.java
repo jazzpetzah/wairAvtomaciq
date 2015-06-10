@@ -2,9 +2,11 @@ package com.wearezeta.auto.ios.steps;
 
 import java.awt.datatransfer.UnsupportedFlavorException;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -18,6 +20,8 @@ import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private static final Logger log = ZetaLogger
+			.getLog(PeoplePickerPageSteps.class.getSimpleName());
 
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Exception {
@@ -113,7 +117,7 @@ public class PeoplePickerPageSteps {
 		try {
 			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		} catch (NoSuchUserException e) {
-			// Ignore silently
+			log.debug("No user found. " + e);
 		}
 		PagesCollection.peoplePickerPage
 				.swipeToRevealHideSuggestedContact(contact);
@@ -146,9 +150,14 @@ public class PeoplePickerPageSteps {
 	 * @throws Exception
 	 */
 
-	@When("I tap hide for suggested contact")
-	public void ITapHideSuggestedContact() throws Exception {
-		PagesCollection.peoplePickerPage.tapHideSuggestedContact();
+	@When("I tap hide for suggested contact (.*)")
+	public void ITapHideSuggestedContact(String contact) throws Exception {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+			log.debug("No user found. " + e);
+		}
+		PagesCollection.peoplePickerPage.tapHideSuggestedContact(contact);
 	}
 
 	/**
@@ -344,11 +353,36 @@ public class PeoplePickerPageSteps {
 				.dismissPeoplePicker();
 	}
 
-	@Then("I tap on (.*) top connections")
+	/**
+	 * Select pointed amount of contacts from top people in a row starting from
+	 * first
+	 * 
+	 * @param numberOfTopConnections
+	 *            amount of contacts that should be selected
+	 * @throws Exception
+	 */
+	@Then("I tap on first (.*) top connections")
 	public void WhenITapOnTopConnections(int numberOfTopConnections)
 			throws Exception {
 		PagesCollection.peoplePickerPage
 				.tapNumberOfTopConnections(numberOfTopConnections);
+	}
+
+	/**
+	 * Tap on pointed amount of users from top people skipping pointed contact
+	 * 
+	 * @param numberOfTopConnections
+	 *            number of top contacts to tap
+	 * @param contact
+	 *            name of contact that shouldn't be tapped
+	 * @throws Exception
+	 */
+	@Then("I tap on (.*) top connections but not (.*)")
+	public void WhenITapOnTopConnectionsButNotUser(int numberOfTopConnections,
+			String contact) throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		PagesCollection.peoplePickerPage.tapNumberOfTopConnectionsButNotUser(
+				numberOfTopConnections, contact);
 	}
 
 	@When("I click on connected user (.*) avatar on People picker page")

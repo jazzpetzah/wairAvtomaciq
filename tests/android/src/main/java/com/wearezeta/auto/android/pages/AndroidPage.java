@@ -15,9 +15,9 @@ import org.openqa.selenium.support.FindBy;
 import android.view.KeyEvent;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidKeyEvent;
 import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -30,9 +30,6 @@ public abstract class AndroidPage extends BasePage {
 
 	@FindBy(id = AndroidLocators.CommonLocators.idPager)
 	private WebElement content;
-
-	@FindBy(className = AndroidLocators.CommonLocators.classListView)
-	private WebElement container;
 
 	@Override
 	protected ZetaAndroidDriver getDriver() throws Exception {
@@ -56,9 +53,9 @@ public abstract class AndroidPage extends BasePage {
 		do {
 			// Selendroid workaround
 			// Cannot handle external apps properly :-(
-			AndroidCommonUtils.genericScreenTap(screenDimension.width / 2
-					- ntry * (screenDimension.width / 10),
-					screenDimension.height / 2 - ntry
+			AndroidCommonUtils.genericScreenTap(screenDimension.width
+					- (ntry % 5) * (screenDimension.width / 6),
+					screenDimension.height / 2 - (ntry / 5 + 1)
 							* (screenDimension.height / 10));
 			try {
 				if (DriverUtils
@@ -72,7 +69,7 @@ public abstract class AndroidPage extends BasePage {
 				// ignore silently
 			}
 			ntry++;
-		} while (ntry <= 5);
+		} while (ntry <= 15);
 		throw new RuntimeException("Failed to tap the first gallery image!");
 	}
 
@@ -105,23 +102,19 @@ public abstract class AndroidPage extends BasePage {
 		return this.getDriver().getOrientation();
 	}
 
-	public CommonAndroidPage minimizeApplication() throws Exception {
-		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_HOME);
-		Thread.sleep(1000);
-		return new CommonAndroidPage(this.getLazyDriver());
+	public void minimizeApplication() throws Exception {
+		AndroidCommonUtils.switchToHomeScreen();
 	}
 
 	public void lockScreen() throws Exception {
-		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_POWER);
+		// this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_POWER);
+		AndroidCommonUtils.lockScreen();
 	}
 
 	public void restoreApplication() throws Exception {
-		try {
-			this.getDriver().runAppInBackground(10);
-		} catch (WebDriverException ex) {
-			// do nothing, sometimes after restoring the app we have this
-			// exception, Appium bug
-		}
+		AndroidCommonUtils.switchToApplication(
+				CommonUtils.getAndroidPackageFromConfig(this.getClass()),
+				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
 	}
 
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
@@ -292,10 +285,5 @@ public abstract class AndroidPage extends BasePage {
 
 	public void tapOnCenterOfScreen() throws Exception {
 		DriverUtils.genericTap(this.getDriver());
-	}
-
-	public static void clearPagesCollection() throws IllegalArgumentException,
-			IllegalAccessException {
-		clearPagesCollection(PagesCollection.class, AndroidPage.class);
 	}
 }

@@ -2,7 +2,10 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.registration.AddNamePage;
+import com.wearezeta.auto.android.pages.registration.AreaCodePage;
+import com.wearezeta.auto.android.pages.registration.VerificationPage;
+import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -12,11 +15,30 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
 public class WelcomePageSteps {
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
+	private WelcomePage getWelcomePage() throws Exception {
+		return (WelcomePage) pagesCollection.getPage(WelcomePage.class);
+	}
+
+	private AreaCodePage getAreaCodePage() throws Exception {
+		return (AreaCodePage) pagesCollection.getPage(AreaCodePage.class);
+	}
+
+	private VerificationPage getVerificationPage() throws Exception {
+		return (VerificationPage) pagesCollection
+				.getPage(VerificationPage.class);
+	}
+
+	private AddNamePage getAddNamePage() throws Exception {
+		return (AddNamePage) pagesCollection.getPage(AddNamePage.class);
+	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	
+
 	private ClientUser userToRegister = null;
-	
+
 	/**
 	 * Verify whether Welcome screen is visible
 	 * 
@@ -25,7 +47,8 @@ public class WelcomePageSteps {
 	 */
 	@Given("^I see [Ww]elcome screen$")
 	public void GivenISeeWelcomeScreen() throws Exception {
-		Assert.assertTrue(PagesCollection.welcomePage.waitForInitialScreen());
+		Assert.assertTrue("Welcome page is not shown", getWelcomePage()
+				.waitForInitialScreen());
 	}
 
 	/**
@@ -37,23 +60,23 @@ public class WelcomePageSteps {
 	 */
 	@When("^I switch to email sign in screen$")
 	public void ISwitchToEmailSignIn() throws Exception {
-		PagesCollection.emailSignInPage = PagesCollection.welcomePage
-			.clickIHaveAnAccount();
+		getWelcomePage().tapIHaveAnAccount();
 	}
-	
+
 	/**
 	 * 
 	 * 
 	 * @step. ^I input a new phone number (.*)$
 	 * 
-	 * @param phoneNumber
+	 * @param name
+	 *            user name/alias
 	 * @throws Exception
 	 */
 	@When("^I input a new phone number for user (.*)$")
 	public void WhenIInputANewPhoneNumber(String name) throws Exception {
-		PagesCollection.areaCodePage = PagesCollection.welcomePage.clickAreaCodeSelector();
-		PagesCollection.welcomePage = PagesCollection.areaCodePage.selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
-		
+		getWelcomePage().clickAreaCodeSelector();
+		getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
+
 		if (this.userToRegister == null) {
 			this.userToRegister = new ClientUser();
 		}
@@ -64,24 +87,24 @@ public class WelcomePageSteps {
 		this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		String number = this.userToRegister.getPhoneNumber().toString();
 		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		PagesCollection.welcomePage.inputPhoneNumber(number);
-		
-		PagesCollection.verificationPage = PagesCollection.welcomePage.clickConfirm();
+		getWelcomePage().inputPhoneNumber(number);
+		getWelcomePage().clickConfirm();
 	}
-	
+
 	@When("^I input the verification code$")
 	public void IInputTheVerificationCode() throws Exception {
-		PhoneNumber phoneNumber = this.userToRegister.getPhoneNumber();
-		String verificationCode = BackendAPIWrappers.getActivationCodeByPhoneNumber(phoneNumber);
-		PagesCollection.verificationPage.inputVerificationCode(verificationCode);
-		PagesCollection.addNamePage = PagesCollection.verificationPage.clickConfirm();
+		final PhoneNumber phoneNumber = this.userToRegister.getPhoneNumber();
+		final String verificationCode = BackendAPIWrappers
+				.getActivationCodeByPhoneNumber(phoneNumber);
+		getVerificationPage().inputVerificationCode(verificationCode);
+		getVerificationPage().clickConfirm();
 	}
-	
+
 	@When("^I input my name$")
 	public void IInputMyName() throws Exception {
 		String name = this.userToRegister.getName();
-		PagesCollection.addNamePage.inputName(name);
-		PagesCollection.profilePicturePage = PagesCollection.addNamePage.clickConfirm();
+		getAddNamePage().inputName(name);
+		getAddNamePage().clickConfirm();
 	}
-	
+
 }

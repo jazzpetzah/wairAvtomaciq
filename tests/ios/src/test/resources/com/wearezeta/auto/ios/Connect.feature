@@ -6,7 +6,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I open search by clicking plus button
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     Given I wait until <ContactEmail> exists in backend search results
@@ -197,7 +197,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I open search by clicking plus button
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -228,7 +228,7 @@ Feature: Connect
     And Contact <Contact> sends random message to user <Name>
     And I wait for 10 seconds
     Then I dont see conversation <Contact> in contact list
-    When I swipe down contact list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
@@ -240,6 +240,8 @@ Feature: Connect
     And I see new photo in the dialog
     And I see message in the dialog
     And I navigate back to conversations view
+    And I see People picker page
+    And I click close button to dismiss people view
     And Contact <Contact> sends random message to user <Name>
     When I tap on contact name <Contact>
     Then I see message in the dialog
@@ -253,7 +255,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I open search by clicking plus button
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
@@ -283,7 +285,7 @@ Feature: Connect
     Given Myself is connected to <Contact>
     Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    When I open search by clicking plus button
+    When I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page

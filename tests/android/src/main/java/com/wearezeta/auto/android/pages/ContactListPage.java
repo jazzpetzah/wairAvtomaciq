@@ -9,10 +9,10 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.locators.AndroidLocators.CommonLocators;
+import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -108,13 +108,18 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public void waitForConversationListLoad() throws Exception {
-		getWait().until(ExpectedConditions.visibilityOf(contactListFrame));
 		verifyContactListIsFullyLoaded();
 	}
 
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
 			throws Exception {
-		contacts.get(id).click();
+		try {
+			contacts.get(id).click();
+			log.debug("Trying to open contact " + id + ". It's name: " + contacts.get(id).getAttribute("value"));
+		} catch (Exception e) {
+			log.debug("Failed to find element in contact list.\nPage source: " + getDriver().getPageSource());
+			throw e;
+		}
 		return new DialogPage(this.getLazyDriver());
 	}
 
@@ -223,9 +228,6 @@ public class ContactListPage extends AndroidPage {
 
 		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
-		// TODO: we need this as sometimes we see people picker after login
-		PagesCollection.peoplePickerPage = new PeoplePickerPage(
-				this.getLazyDriver());
 		return this;
 	}
 
@@ -272,9 +274,14 @@ public class ContactListPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 90;
+	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(EmailSignInPage.idLoginButton),
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
+				.format("It seems that conversation list has not been loaded within %s seconds (login button is still visible)",
+						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
 		final By convoListLoadingProgressLocator = By
 				.xpath(AndroidLocators.ContactListPage.xpathConversationListLoadingIndicator);
 		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
@@ -322,37 +329,6 @@ public class ContactListPage extends AndroidPage {
 		}
 		conversationShareOption.click();
 		confirmShareButton.click();
-	}
-
-	public void shareURLFromNativeBrowser() throws Exception {
-		List<WebElement> imageButtonElements = this.getDriver()
-				.findElementsByClassName(
-						AndroidLocators.Browsers.nameNativeBrowserMenuButton);
-		for (WebElement imageButton : imageButtonElements) {
-			if (imageButton.getAttribute("name").equals("More options")) {
-				imageButton.click();
-			}
-		}
-		List<WebElement> textViewElements = this
-				.getDriver()
-				.findElementsByClassName(
-						AndroidLocators.Browsers.nameNativeBrowserMoreOptionsButton);
-		for (WebElement textView : textViewElements) {
-			if (textView.getAttribute("text").equals("Share page")) {
-				textView.click();
-				break;
-			}
-		}
-		List<WebElement> textElements = this
-				.getDriver()
-				.findElementsByClassName(
-						AndroidLocators.Browsers.nameNativeBrowserShareWireButton);
-		for (WebElement textView : textElements) {
-			if (textView.getAttribute("text").equals("Wire")) {
-				textView.click();
-			}
-		}
-		conversationShareOption.click();
 	}
 
 	public PersonalInfoPage tapOnMyAvatar() throws Exception {

@@ -1,7 +1,7 @@
 Feature: Conversation View
 
-  @staging @id330
-  Scenario Outline: Send Message to contact [PORTRAIT]
+  @staging @id2419
+  Scenario Outline: Vefiry sending message [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in using login <Login> and password <Password>
@@ -16,7 +16,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id
+  @staging @id2695
   Scenario Outline: Receive message from contact [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -30,9 +30,9 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-
-  @staging @id332 @deployPictures @id1470
-  Scenario Outline: Send a camera roll picture to user from contact list [PORTRAIT]
+      
+  @staging @id2413 @deployPictures 
+  Scenario Outline: Verify sending image [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using login <Login> and password <Password>
@@ -49,9 +49,9 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
-
-  @staging @id332 @deployPictures @id1470
-  Scenario Outline: Send a camera roll picture to user from contact list [LANDSCAPE]
+      
+  @staging @id2407 @deployPictures 
+  Scenario Outline: Verify sending image [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape

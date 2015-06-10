@@ -1,16 +1,24 @@
 package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
+
 import com.wearezeta.auto.android.pages.*;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private PeoplePickerPage getPeoplePickerPage() throws Exception {
+		return (PeoplePickerPage) pagesCollection
+				.getPage(PeoplePickerPage.class);
+	}
 
 	/**
 	 * Checks to see that the people picker page (search view) is visible
@@ -21,7 +29,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Exception {
-		Assert.assertTrue(PagesCollection.peoplePickerPage
+		Assert.assertTrue("People Picker is not visible", getPeoplePickerPage()
 				.isPeoplePickerPageVisible());
 	}
 
@@ -33,7 +41,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I tap on Search input on People picker page$")
 	public void WhenITapOnSearchInputOnPeoplePickerPage() throws Throwable {
-		PagesCollection.peoplePickerPage.tapPeopleSearch();
+		getPeoplePickerPage().tapPeopleSearch();
 	}
 
 	/**
@@ -51,7 +59,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.peoplePickerPage.tapOnContactInTopPeoples(contact);
+		getPeoplePickerPage().tapOnContactInTopPeoples(contact);
 	}
 
 	/**
@@ -63,8 +71,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I tap on create conversation$")
 	public void WhenITapOnCreateConversation() throws Throwable {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.peoplePickerPage
-				.tapCreateConversation();
+		getPeoplePickerPage().tapCreateConversation();
 	}
 
 	/**
@@ -76,8 +83,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I press Clear button$")
 	public void WhenIPressClearButton() throws Throwable {
-		PagesCollection.contactListPage = PagesCollection.peoplePickerPage
-				.tapClearButton();
+		getPeoplePickerPage().tapClearButton();
 	}
 
 	/**
@@ -89,8 +95,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I swipe down people picker$")
 	public void ISwipeDownContactList() throws Exception {
-		PagesCollection.contactListPage = (ContactListPage) PagesCollection.peoplePickerPage
-				.swipeDown(500);
+		getPeoplePickerPage().swipeDown(500);
 	}
 
 	/**
@@ -109,7 +114,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
+		getPeoplePickerPage().typeTextInPeopleSearch(contact);
 	}
 
 	/**
@@ -128,7 +133,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(email);
+		getPeoplePickerPage().typeTextInPeopleSearch(email);
 	}
 
 	/**
@@ -150,27 +155,28 @@ public class PeoplePickerPageSteps {
 			// Ignore silently
 		}
 		String[] list = contact.split("(?<=\\G.{" + part + "})");
-		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(list[0]);
+		getPeoplePickerPage().typeTextInPeopleSearch(list[0]);
 	}
 
 	/**
-	 * -duplicate of WhenIInputInPeoplePickerSearchFieldUserName(String)
+	 * Enter user name or email into the corresponding People Picker field
 	 * 
-	 * @step. ^I input in search field user name to connect to (.*)$
+	 * @step. ^I enter \"(.*)\" into Search input on People [Pp]icker page$
 	 * 
+	 * @param searchCriteria
+	 *            user name/email/phone number or the corresponding aliases
+	 * @throws Exception
 	 */
-	@When("^I input in search field user name to connect to (.*)$")
-	public void WhenIInputInSearchFieldUserNameToConnectTo(String contact)
-			throws Throwable {
-		// FIXME : ambiguous use of email field when the step states only user
-		// name
-		try {
-			ClientUser dstUser = usrMgr.findUserByNameOrNameAlias(contact);
-			contact = dstUser.getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		PagesCollection.peoplePickerPage.typeTextInPeopleSearch(contact);
+	@When("^I enter \"(.*)\" into Search input on People [Pp]icker page")
+	public void IEnterStringIntoSearchField(String searchCriteria)
+			throws Exception {
+		searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
+				FindBy.EMAIL_ALIAS);
+		searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
+				FindBy.NAME_ALIAS);
+		searchCriteria = usrMgr.replaceAliasesOccurences(searchCriteria,
+				FindBy.PHONENUMBER_ALIAS);
+		getPeoplePickerPage().typeTextInPeopleSearch(searchCriteria);
 	}
 
 	/**
@@ -185,7 +191,7 @@ public class PeoplePickerPageSteps {
 	public void WhenIAddInSearchFieldUserNameToConnectTo(String contact)
 			throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.peoplePickerPage.addTextToPeopleSearch(contact);
+		getPeoplePickerPage().addTextToPeopleSearch(contact);
 	}
 
 	/**
@@ -200,7 +206,7 @@ public class PeoplePickerPageSteps {
 	public void WhenISeeUserFoundOnPeoplePickerPage(String contact)
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
+		getPeoplePickerPage().waitUserPickerFindUser(contact);
 	}
 
 	/**
@@ -212,8 +218,8 @@ public class PeoplePickerPageSteps {
 	 */
 	@Then("^I see that no results found$")
 	public void ISeeNoResultsFound() throws Exception {
-		Assert.assertTrue(PagesCollection.peoplePickerPage
-				.isNoResultsFoundVisible());
+		Assert.assertTrue("Some results were found in People Picker",
+				getPeoplePickerPage().isNoResultsFoundVisible());
 	}
 
 	/**
@@ -232,41 +238,20 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		// PagesCollection.peoplePickerPage.waitUserPickerFindUser(contact);
-		PagesCollection.currentPage = PagesCollection.peoplePickerPage
-				.selectContact(contact);
-
-		if (PagesCollection.currentPage instanceof OtherUserPersonalInfoPage) {
-			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.currentPage;
-		}
-	}
-
-	/**
-	 * -unused
-	 * 
-	 * @step. ^I long tap on user name found on People picker page (.*)$
-	 * 
-	 * @param contact
-	 * @throws Throwable
-	 */
-	@When("^I  long tap on user name found on People picker page (.*)$")
-	public void WhenILongTapOnUserNameFoundOnPeoplePickerPage(String contact)
-			throws Throwable {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.peoplePickerPage.selectContactByLongTap(contact);
+		getPeoplePickerPage().selectContact(contact);
 	}
 
 	/**
 	 * Checks to see if the add to conversation button is visible
 	 * 
 	 * @step. ^I see Add to conversation button$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I see Add to conversation button$")
-	public void WhenISeeAddToConversationButton() {
+	public void WhenISeeAddToConversationButton() throws Exception {
 		Assert.assertTrue("Add to conversation button is not visible",
-				PagesCollection.peoplePickerPage
-						.isAddToConversationBtnVisible());
+				getPeoplePickerPage().isAddToConversationBtnVisible());
 	}
 
 	/**
@@ -278,7 +263,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I tap on Send an invitation$")
 	public void WhenITapOnSendAnInvitation() throws Exception {
-		PagesCollection.peoplePickerPage.tapOnSendInvitation();
+		getPeoplePickerPage().tapOnSendInvitation();
 	}
 
 	/**
@@ -290,8 +275,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I click on Add to conversation button$")
 	public void WhenIClickOnAddToConversationButton() throws Exception {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.peoplePickerPage
-				.clickOnAddToCoversationButton();
+		getPeoplePickerPage().clickOnAddToCoversationButton();
 	}
 
 	/**
@@ -303,8 +287,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I navigate back to Conversations List")
 	public void WhenINavigateBackToConversationsList() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.peoplePickerPage
-				.navigateBack();
+		getPeoplePickerPage().navigateBack();
 	}
 
 	private String rememberedPYMKItemName = null;
@@ -318,8 +301,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I remember the name of the first PYMK item$")
 	public void IRememeberTheNameOfFirstPYMKItem() throws Exception {
-		rememberedPYMKItemName = PagesCollection.peoplePickerPage
-				.getPYMKItemName(1);
+		rememberedPYMKItemName = getPeoplePickerPage().getPYMKItemName(1);
 	}
 
 	/**
@@ -331,7 +313,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I click \\+ button on the first PYMK item$")
 	public void IClickPlusButtonOnTheFirstPYMKItem() throws Exception {
-		PagesCollection.peoplePickerPage.clickPlusOnPYMKItem(1);
+		getPeoplePickerPage().clickPlusOnPYMKItem(1);
 	}
 
 	/**
@@ -348,9 +330,9 @@ public class PeoplePickerPageSteps {
 	public void IDoShortOrLongSwipeRightOnFirstPYMKItem(String swipeType)
 			throws Exception {
 		if (swipeType.equals("short")) {
-			PagesCollection.peoplePickerPage.shortSwipeRigthOnPYMKItem(1);
+			getPeoplePickerPage().shortSwipeRigthOnPYMKItem(1);
 		} else if (swipeType.equals("long")) {
-			PagesCollection.peoplePickerPage.longSwipeRigthOnPYMKItem(1);
+			getPeoplePickerPage().longSwipeRigthOnPYMKItem(1);
 		}
 	}
 
@@ -363,7 +345,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I click hide button on the first PYMK item$")
 	public void IClickHideButtonOnTheFirstPYMKItem() throws Exception {
-		PagesCollection.peoplePickerPage.clickHideButtonOnPYMKItem(1);
+		getPeoplePickerPage().clickHideButtonOnPYMKItem(1);
 	}
 
 	/**
@@ -379,8 +361,8 @@ public class PeoplePickerPageSteps {
 			throw new IllegalStateException(
 					"Please call the corresponding step to remember PYMK item name first");
 		}
-		Assert.assertTrue(PagesCollection.peoplePickerPage
-				.waitUntilPYMKItemIsInvisible(rememberedPYMKItemName));
+		Assert.assertTrue(getPeoplePickerPage().waitUntilPYMKItemIsInvisible(
+				rememberedPYMKItemName));
 	}
 
 	/**
@@ -394,8 +376,9 @@ public class PeoplePickerPageSteps {
 	@Then("^I see user (.*) in People picker$")
 	public void ThenISeeUserInPeoplePicker(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(PagesCollection.peoplePickerPage
-				.userIsVisible(contact));
+		Assert.assertTrue(String.format(
+				"User '%s' is not visible in People Picker", contact),
+				getPeoplePickerPage().userIsVisible(contact));
 	}
 
 	/**
@@ -403,18 +386,15 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @step. ^I see group (.*) in People picker$
 	 * 
-	 * @param contact
-	 * @throws Throwable
+	 * @param name
+	 * @throws Exception
 	 */
 	@Then("^I see group (.*) in People picker$")
-	public void ThenISeeGroupInPeoplePicker(String contact) throws Throwable {
-		try {
-			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		Assert.assertTrue(PagesCollection.peoplePickerPage
-				.groupIsVisible(contact));
+	public void ThenISeeGroupInPeoplePicker(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		Assert.assertTrue(String.format(
+				"Group '%s' is not visible in conversations list", name),
+				getPeoplePickerPage().groupIsVisible(name));
 	}
 
 	/**
@@ -432,12 +412,11 @@ public class PeoplePickerPageSteps {
 		if (shouldNotBeVisible == null) {
 			Assert.assertTrue(
 					"TOP PEOPLE overlay is hidden, but it should be visible",
-					PagesCollection.peoplePickerPage.isTopPeopleHeaderVisible());
+					getPeoplePickerPage().isTopPeopleHeaderVisible());
 		} else {
 			Assert.assertTrue(
 					"TOP PEOPLE overlay is visible, but it should be hidden",
-					PagesCollection.peoplePickerPage
-							.waitUntilTopPeopleHeaderInvisible());
+					getPeoplePickerPage().waitUntilTopPeopleHeaderInvisible());
 		}
 	}
 
@@ -453,20 +432,19 @@ public class PeoplePickerPageSteps {
 	@When("^I keep reopening People Picker until PYMK are visible$")
 	public void ReopenPeoplePickerUntilPYMKAppears() throws Exception {
 		final long millisecondsStarted = System.currentTimeMillis();
-		while (!PagesCollection.peoplePickerPage.waitUntilPYMKItemIsVisible(1)
+		while (!getPeoplePickerPage().waitUntilPYMKItemIsVisible(1)
 				&& System.currentTimeMillis() - millisecondsStarted <= PYMK_VISIBLITY_TIMEOUT_MILLISECONDS) {
-			PagesCollection.contactListPage = PagesCollection.peoplePickerPage
-					.tapClearButton();
+			getPeoplePickerPage().tapClearButton();
 			Thread.sleep(3000);
-			PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+			((ContactListPage) pagesCollection.getPage(ContactListPage.class))
 					.openPeoplePicker();
-			PagesCollection.peoplePickerPage.hideKeyboard();
+			getPeoplePickerPage().hideKeyboard();
 		}
-		PagesCollection.peoplePickerPage.hideKeyboard();
+		getPeoplePickerPage().hideKeyboard();
 		Assert.assertTrue(String.format(
 				"PYMK section has not been shown after %s seconds timeout",
 				PYMK_VISIBLITY_TIMEOUT_MILLISECONDS / 1000),
-				PagesCollection.peoplePickerPage.waitUntilPYMKItemIsVisible(1));
+				getPeoplePickerPage().waitUntilPYMKItemIsVisible(1));
 	}
 
 	private static final long TOP_PEOPLE_VISIBILITY_TIMEOUT_MILLISECONDS = 120 * 1000;
@@ -480,23 +458,24 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I wait until Top People list appears$")
 	public void WaitForTopPeople() throws Exception {
-		if (!PagesCollection.peoplePickerPage.isTopPeopleHeaderVisible()) {
+		if (!getPeoplePickerPage().isTopPeopleHeaderVisible()) {
 			// FIXME: Workaround for bug where Top People is sometimes not shown
 			// if sign in for the first time
-			PagesCollection.contactListPage = PagesCollection.peoplePickerPage
-					.tapClearButton();
-			PagesCollection.personalInfoPage = PagesCollection.contactListPage
+			getPeoplePickerPage().tapClearButton();
+			((ContactListPage) pagesCollection.getPage(ContactListPage.class))
 					.tapOnMyAvatar();
-			PagesCollection.personalInfoPage.tapOptionsButton();
-			PagesCollection.personalInfoPage.tapSignOutBtn();
+			((PersonalInfoPage) pagesCollection.getPage(PersonalInfoPage.class))
+					.tapOptionsButton();
+			((PersonalInfoPage) pagesCollection.getPage(PersonalInfoPage.class))
+					.tapSignOutBtn();
 			new EmailSignInSteps().GivenISignIn(
 					usrMgr.getSelfUser().getEmail(), usrMgr.getSelfUser()
 							.getPassword());
 			new ContactListPageSteps().GivenISeeContactList();
-			PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+			((ContactListPage) pagesCollection.getPage(ContactListPage.class))
 					.openPeoplePicker();
 		}
-		if (!PagesCollection.peoplePickerPage.isTopPeopleHeaderVisible()) {
+		if (!getPeoplePickerPage().isTopPeopleHeaderVisible()) {
 			throw new AssertionError(String.format(
 					"Top People list has not been shown after %s seconds",
 					TOP_PEOPLE_VISIBILITY_TIMEOUT_MILLISECONDS / 1000));

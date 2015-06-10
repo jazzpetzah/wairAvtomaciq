@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +11,7 @@ import cucumber.api.java.en.*;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -17,34 +19,19 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.*;
 
 public class ContactListPageSteps {
+	
 	private static final Logger log = ZetaLogger
 			.getLog(ContactListPageSteps.class.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	@Given("^I see Contact list with my name (.*)$")
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
-		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 
-		boolean loginFinished = PagesCollection.loginPage.isLoginFinished(name);
+		boolean loginFinished = PagesCollection.loginPage.isLoginFinished();
 		if (!loginFinished) {
 			log.debug(PagesCollection.loginPage.getPageSource());
 		}
-		Assert.assertTrue("Username : " + name
-				+ " dind't appear in contact list", loginFinished);
-		/*
-		 * PagesCollection.loginPage.waitForLaterButton(5);
-		 * PagesCollection.peoplePickerPage = PagesCollection.loginPage
-		 * .clickLaterButton(); if (null != PagesCollection.peoplePickerPage) {
-		 * PagesCollection.peoplePickerPage.setLaterClicked(true);
-		 * PeoplePickerPageSteps steps = new PeoplePickerPageSteps();
-		 * steps.WhenISeePeoplePickerPage();
-		 * steps.IClickCloseButtonDismissPeopleView(); // workaround for black
-		 * screen if
-		 * (CommonUtils.getIsSimulatorFromConfig(ContactListPageSteps.class)) {
-		 * PagesCollection.peoplePickerPage.minimizeApplication(2); } if
-		 * (PagesCollection.peoplePickerPage.isPeoplePickerPageVisible()) {
-		 * steps.IClickCloseButtonDismissPeopleView(); } }
-		 */
+		Assert.assertTrue("Self profile button dind't appear in contact list", loginFinished);
 	}
 
 	@When("I dismiss tutorial layout")
@@ -60,9 +47,9 @@ public class ContactListPageSteps {
 
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws Exception {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+
 		PagesCollection.personalInfoPage = PagesCollection.contactListPage
-				.tapOnMyName(name);
+				.tapOnMyName();
 
 		PagesCollection.personalInfoPage.waitForEmailFieldVisible();
 	}
@@ -110,13 +97,13 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Open search by clicking plus button next to self name
+	 * Open search by taping on search field
 	 * 
-	 * @step. ^I open search by clicking plus button$
+	 * @step. ^I open search by taping on it$
 	 * @throws Exception
 	 */
-	@When("^I open search by clicking plus button$")
-	public void IOpenSearchByClickingPlus() throws Exception {
+	@When("^I open search by taping on it$")
+	public void IOpenSearchByTap() throws Exception {
 		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
 				.openSearch();
 	}
@@ -503,43 +490,44 @@ public class ContactListPageSteps {
 				.unreadDotIsVisible(false, false, conversation);
 		Assert.assertTrue("Unread dot visible.", noUnreadDotSeen);
 	}
+	
+	private BufferedImage blankReferenceImage = null; 
+	private static final double MAX_OVERLAP_SCORE = 0.70;
+	
+	/**
+	 * Verifies that a ping symbol is seen in the conversation list
+	 * 
+	 * @step. ^I remember the state of the first conversation cell$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I remember the state of the first conversation cell$")
+	public void IRememberConversationState() throws Exception {
+		blankReferenceImage = PagesCollection.contactListPage.getScreenshotFirstContact();
+	}
 
 	/**
 	 * Verifies that a ping symbol is seen in the conversation list
 	 * 
-	 * @step. ^I see ping symbol for (.*)$
-	 * 
-	 * @param conversation
-	 *            conversation name to check for ping
+	 * @step. ^I see ping symbol$
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@Then("^I see ping symbol for (.*)$")
-	public void ISeePingSymbol(String conversation) throws Exception {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean pingSymbolPresent = PagesCollection.contactListPage
-				.pingIsVisible(true, false, conversation);
-		Assert.assertTrue("No ping symbol visible.", pingSymbolPresent);
-	}
+	@Then("I see ping symbol")
+	public void ISeePingSymbol() throws Exception {
+		if (blankReferenceImage == null) {
+			throw new IllegalStateException(
+					"This step requires you to remember the initial state of the conversation cell");
+		}
+		double score = -1;
+		final BufferedImage pingSymbol = PagesCollection.contactListPage
+				.getScreenshotFirstContact();
+		score = ImageUtil.getOverlapScore(pingSymbol, blankReferenceImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+		Assert.assertTrue("Ping symbol not visible", score <= MAX_OVERLAP_SCORE);
 
-	/**
-	 * Verifies that a hotping symbol is seen in the conversation list
-	 * 
-	 * @step. ^I see hotping symbol for (.*)$
-	 * 
-	 * @param conversation
-	 *            conversation name to check for ping
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@Then("^I see hotping symbol for (.*)$")
-	public void ISeeHotPingSymbol(String conversation) throws Exception {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean pingSymbolPresent = PagesCollection.contactListPage
-				.pingIsVisible(true, true, conversation);
-		Assert.assertTrue("No hotping symbol visible.", pingSymbolPresent);
 	}
 
 	/**

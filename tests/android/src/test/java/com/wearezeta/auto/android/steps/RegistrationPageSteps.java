@@ -1,24 +1,34 @@
 package com.wearezeta.auto.android.steps;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.android.pages.registration.ProfilePicturePage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 
 import cucumber.api.java.en.*;
 
 public class RegistrationPageSteps {
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
+	private RegistrationPage getRegistrationPage() throws Exception {
+		return (RegistrationPage) pagesCollection
+				.getPage(RegistrationPage.class);
+	}
+
+	private ProfilePicturePage getProfilePicturePage() throws Exception {
+		return (ProfilePicturePage) pagesCollection
+				.getPage(ProfilePicturePage.class);
+	}
+
 	private ClientUser userToRegister = null;
 
-	public static Future<String> activationMessage;
+	public Future<String> activationMessage;
 
 	/**
 	 * Presses the camera button once to bring up the camera, and again to take
@@ -29,21 +39,20 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I press Camera button twice$")
 	public void WhenIPressCameraButton() throws Exception {
-		PagesCollection.profilePicturePage.clickCameraButton();
+		getProfilePicturePage().clickCameraButton();
 		Thread.sleep(2000);
-		PagesCollection.profilePicturePage.clickCameraButton();
+		getProfilePicturePage().clickCameraButton();
 	}
 
 	/**
 	 * Presses the camera button to bring up the camera app
 	 * 
 	 * @step. ^I press Picture button$
-	 * 
-	 * @throws IOException
+	 * @throws Exception
 	 */
 	@When("^I press Picture button$")
-	public void WhenIPressPictureButton() throws IOException {
-		PagesCollection.registrationPage.selectPicture();
+	public void WhenIPressPictureButton() throws Exception {
+		getRegistrationPage().selectPicture();
 	}
 
 	/**
@@ -54,7 +63,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I choose photo from album$")
 	public void WhenIPressChoosePhoto() throws Exception {
-		PagesCollection.registrationPage.selectFirstGalleryPhoto();
+		getRegistrationPage().selectFirstGalleryPhoto();
 	}
 
 	/**
@@ -65,7 +74,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I confirm selection$")
 	public void IConfirmSelection() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.profilePicturePage.confirmPicture();
+		getProfilePicturePage().confirmPicture();
 	}
 
 	/**
@@ -79,13 +88,9 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I submit registration data$")
 	public void ISubmitRegistrationData() throws Exception {
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		PagesCollection.registrationPage.createAccount();
-		// FIXME: activation message should be received in another step!
-		RegistrationPageSteps.activationMessage = IMAPSMailbox.getInstance()
-				.getMessage(expectedHeaders,
-						BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+		activationMessage = BackendAPIWrappers
+				.initMessageListener(userToRegister);
+		getRegistrationPage().createAccount();
 	}
 
 	/**
@@ -98,8 +103,7 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I see confirmation page$")
 	public void ISeeConfirmationPage() throws Exception {
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isConfirmationVisible());
+		Assert.assertTrue(getRegistrationPage().isConfirmationVisible());
 	}
 
 	/**
@@ -112,11 +116,9 @@ public class RegistrationPageSteps {
 	 */
 	@Then("^I verify registration address$")
 	public void IVerifyRegistrationAddress() throws Throwable {
-		BackendAPIWrappers
-				.activateRegisteredUserByEmail(RegistrationPageSteps.activationMessage);
+		BackendAPIWrappers.activateRegisteredUserByEmail(activationMessage);
 		this.userToRegister.setUserState(UserState.Created);
-		PagesCollection.peoplePickerPage = PagesCollection.registrationPage
-				.continueRegistration();
+		getRegistrationPage().continueRegistration();
 	}
 
 }

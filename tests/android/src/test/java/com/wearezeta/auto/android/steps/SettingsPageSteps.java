@@ -2,12 +2,18 @@ package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.SettingsPage;
 
 import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 
 public class SettingsPageSteps {
+
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
+	private SettingsPage getSettingsPage() throws Exception {
+		return (SettingsPage) pagesCollection.getPage(SettingsPage.class);
+	}
 
 	/**
 	 * Checks to see that the settings page is visible
@@ -18,7 +24,8 @@ public class SettingsPageSteps {
 	 */
 	@Then("^I see settings page$")
 	public void ISeeSettingsPage() throws Throwable {
-		Assert.assertTrue(PagesCollection.settingsPage.isSettingsPageVisible());
+		Assert.assertTrue("Settings page is not visible", getSettingsPage()
+				.isSettingsPageVisible());
 	}
 
 	/**
@@ -30,18 +37,6 @@ public class SettingsPageSteps {
 	 */
 	@Then("^I see change password item$")
 	public void ISeeSettingsChangePassword() throws Throwable {
-		Assert.assertTrue(PagesCollection.settingsPage.isChangePasswordVisible());
-	}
-	
-	/**
-	 * Tap on change password item in settings menu
-	 * 
-	 * @step. ^I click on CHANGE PASSWORD$
-	 * 
-	 * @throws Throwable
-	 */
-	@When("^I click on CHANGE PASSWORD$")
-	public void IClickSettingsChangePassword() throws Throwable {
-		PagesCollection.commonAndroidPage = PagesCollection.settingsPage.clickChangePassword();
+		Assert.assertTrue(getSettingsPage().isChangePasswordVisible());
 	}
 }

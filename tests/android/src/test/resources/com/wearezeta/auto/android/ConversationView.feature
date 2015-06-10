@@ -63,7 +63,7 @@ Feature: Conversation View
     And I press add contact button
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in search field user name to connect to <Contact2>
+    And I enter "<Contact2>" into Search input on People Picker page
     And I see user <Contact2> found on People picker page
     And I tap on user name found on People picker page <Contact2>
     And I see Add to conversation button
@@ -251,42 +251,42 @@ Feature: Conversation View
 
   @id1504 @regression
   Scenario Outline: Verify you can play/pause media from the Media Bar (SoundCloud)
-    Given There are 3 users where <Name> is me
-    Given <Name> is connected to <Contact1>,<Contact2>
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
     Given I Sign in using login <Login> and password <Password>
     Given I see Contact list
     When I tap on contact name <Contact1>
     And I see dialog page
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
-    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send message to user Myself
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
     And I swipe down on dialog page
-    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user Myself
     And I tap Dialog page bottom
     And I press PlayPause media item button
     And I swipe down on dialog page
     And I swipe down on dialog page
     Then I see PAUSE on Mediabar
     And I press PlayPause on Mediabar button
-    And Contact <Contact1> send message to user <Name>
+    And Contact <Contact1> send message to user Myself
     And I tap Dialog page bottom
     And I see PLAY button in Media
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+      | Login      | Password      | Name      | Contact1  | SoudCloudLink                                              |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
 # Disabled since Selendroid cannot interact with external apps
   # @id2085 @staging
@@ -318,7 +318,7 @@ Feature: Conversation View
   #   | Login      | Password      | Name      | Contact   |
   #   | user1Email | user1Password | user1Name | user2Name |
 
- @id170 @regression
+  @id170 @regression
   Scenario Outline: Verify you can send and play youtube link
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact1>
@@ -328,8 +328,7 @@ Feature: Conversation View
     And I see dialog page
     And I tap on text input
     And I type the message "<YoutubeLink>" and send it
-    And I press play on youtube container
-    Then I am taken out of Wire and into the native browser app
+    Then I see Play button on Youtube container
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | YoutubeLink                                    |
