@@ -166,7 +166,6 @@ table.data-table td {
 
 .step-show-screenshot:hover {
     color:#0040FF;
-    font-weight: bold;
     cursor:pointer;
 }
 
