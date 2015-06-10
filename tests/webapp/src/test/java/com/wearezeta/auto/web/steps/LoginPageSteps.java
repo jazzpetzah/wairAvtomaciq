@@ -178,19 +178,6 @@ public class LoginPageSteps {
 	}
 
 	/**
-	 * Switch to [Rr]egistration page
-	 * 
-	 * @step. ^I switch to [Rr]egistration page$
-	 * 
-	 * @throws Exception
-	 */
-	@Given("^I switch to [Rr]egistration page$")
-	public void ISwitchToRegistrationPage() throws Exception {
-		PagesCollection.registrationPage = PagesCollection.loginPage
-				.switchToRegistrationPage();
-	}
-
-	/**
 	 * Click Change Password button on login page
 	 * 
 	 * @step. ^I click Change Password button$

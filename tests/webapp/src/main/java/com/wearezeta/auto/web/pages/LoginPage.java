@@ -120,25 +120,6 @@ public class LoginPage extends WebPage {
 		return changePasswordPage;
 	}
 
-	public RegistrationPage switchToRegistrationPage() throws Exception {
-		this.getDriver().navigate().to(this.getUrl());
-
-		final By locator = By
-				.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons);
-		if (DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator, 2)) {
-			for (WebElement btn : getDriver().findElements(locator)) {
-				if (btn.isDisplayed()) {
-					btn.click();
-					break;
-				}
-			}
-		}
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(WebAppLocators.RegistrationPage.xpathRootForm)) : "Registration page is not visible";
-
-		return new RegistrationPage(this.getLazyDriver(), this.getUrl());
-	}
-
 	public String getErrorMessage() throws InterruptedException, Exception {
 		DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.xpath(WebAppLocators.LoginPage.xpathLoginErrorText));
