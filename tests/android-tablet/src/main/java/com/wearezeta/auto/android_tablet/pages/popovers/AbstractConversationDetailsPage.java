@@ -21,12 +21,18 @@ public abstract class AbstractConversationDetailsPage extends
 			.format("//*[@id='%s']//*[@value='%s']", idOptionsContainer,
 					itemName.toUpperCase());
 
+	public final static String xpathAddPeopleButton = "//*[@id='ttv__participants__left_label' and @value='ADD PEOPLE']";
+	@FindBy(xpath = xpathAddPeopleButton)
+	private WebElement addPeopleButton;
+
+	public final static String idCloseButton = "gtv__participants__close";
+
 	public AbstractConversationDetailsPage(
 			Future<ZetaAndroidDriver> lazyDriver,
 			AbstractPopoverContainer container) throws Exception {
 		super(lazyDriver, container);
 	}
-	
+
 	public void tapOptionsButton() {
 		optionsButton.click();
 	}
@@ -41,5 +47,18 @@ public abstract class AbstractConversationDetailsPage extends
 	public boolean isMenuItemVisible(String itemName) throws Exception {
 		final By locator = By.xpath(xpathOptionMenuItemByName.apply(itemName));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public void tapAddPeopleButton() {
+		addPeopleButton.click();
+	}
+
+	private WebElement getCloseButton() throws Exception {
+		return this.getDriver().findElement(this.getContainer().getLocator())
+				.findElement(By.id(idCloseButton));
+	}
+
+	public void tapCloseButton() throws Exception {
+		getCloseButton().click();
 	}
 }

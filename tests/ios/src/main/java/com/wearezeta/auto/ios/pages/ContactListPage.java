@@ -27,7 +27,6 @@ public class ContactListPage extends IOSPage {
 			.getSimpleName());
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
-	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.70;
 
 	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE = 0.80;
 
@@ -468,39 +467,6 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = findNameInContactList(conversation);
 		DriverUtils.clickArchiveConversationButton(this.getDriver(), contact);
 		// DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
-	}
-
-	public boolean unreadDotIsVisible(boolean visible, boolean bigUnreadDot,
-			String conversation) throws Exception {
-		BufferedImage unreadDot = null;
-		BufferedImage referenceImage = null;
-		double score = 0;
-		WebElement contact = findCellInContactList(conversation);
-		unreadDot = getScreenshotByCoordinates(contact.getLocation().x,
-				contact.getLocation().y + contactListContainer.getLocation().y,
-				contact.getSize().width / 4, contact.getSize().height * 2)
-				.orElseThrow(IllegalStateException::new);
-		if (visible == true && bigUnreadDot == true) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "new_unreadDot.png");
-			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
-					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		} else if (visible == true && bigUnreadDot == false) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "new_unreadDot_small.png");
-			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
-					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		} else if (visible == false && bigUnreadDot == false) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "new_noUnreadDot.png");
-			score = ImageUtil.getOverlapScore(referenceImage, unreadDot,
-					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-		}
-		if (score <= MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE) {
-			return false;
-		}
-
-		return true;
 	}
 	
 	public BufferedImage getScreenshotFirstContact() throws Exception {

@@ -115,9 +115,11 @@ public class ContactListPage extends AndroidPage {
 			throws Exception {
 		try {
 			contacts.get(id).click();
-			log.debug("Trying to open contact " + id + ". It's name: " + contacts.get(id).getAttribute("value"));
+			log.debug("Trying to open contact " + id + ". It's name: "
+					+ contacts.get(id).getAttribute("value"));
 		} catch (Exception e) {
-			log.debug("Failed to find element in contact list.\nPage source: " + getDriver().getPageSource());
+			log.debug("Failed to find element in contact list.\nPage source: "
+					+ getDriver().getPageSource());
 			throw e;
 		}
 		return new DialogPage(this.getLazyDriver());
@@ -297,6 +299,10 @@ public class ContactListPage extends AndroidPage {
 				loadingItemLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
 				.format("Not all conversation list items were loaded within %s seconds",
 						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+		final By selfAvatarLocator = By
+				.id(AndroidLocators.ContactListPage.idSelfUserAvatar);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				selfAvatarLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : "Self avatar is not visible on top of conversations list";
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {
@@ -342,6 +348,11 @@ public class ContactListPage extends AndroidPage {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), searchButton);
 		searchButton.click();
 		return new PeoplePickerPage(getLazyDriver());
+	}
+
+	public boolean isAnyConversationVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.ContactListPage.idContactListNames), 2);
 	}
 
 }

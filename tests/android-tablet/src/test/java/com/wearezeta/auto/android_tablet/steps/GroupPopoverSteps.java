@@ -148,4 +148,5 @@ public class GroupPopoverSteps {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		getGroupPopover().tapParticipantAvatar(name);
 	}
+
 }

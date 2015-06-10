@@ -83,7 +83,9 @@ public class PeoplePickerPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public void tapPeopleSearch() {
+	public void tapPeopleSearch() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(AndroidLocators.PeoplePickerPage.idPickerSearch)) : "The People Picker search input is not visible";
 		pickerSearch.click();
 	}
 
