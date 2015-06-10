@@ -166,18 +166,15 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 						.read(new ByteArrayInputStream(output));
 				screenshotImage = ImageUtil.tilt(screenshotImage, -Math.PI / 2);
 				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				try {
-					ImageIO.write(screenshotImage, "png", baos);
-					output = baos.toByteArray();
-				} finally {
-					baos.close();
-				}
+				ImageIO.write(screenshotImage, "png", baos);
+				output = baos.toByteArray();
 			}
 			result.setSessionId(this.getSessionId().toString());
 			result.setStatus(HttpStatus.OK_200);
 			result.setValue(Base64.encodeBase64(output));
 			return result;
 		} catch (Exception e) {
+			e.printStackTrace();
 			// Wrap generic error into WebDriverException
 			throw new WebDriverException(e.getMessage(), e);
 		} finally {
