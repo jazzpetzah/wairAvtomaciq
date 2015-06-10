@@ -91,6 +91,14 @@ public class WelcomePageSteps {
 		getWelcomePage().clickConfirm();
 	}
 
+	/**
+	 * Get the verification code from the backend, type it into the
+	 * corresponding input field and confirm the input
+	 * 
+	 * @step. ^I input the verification code$
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I input the verification code$")
 	public void IInputTheVerificationCode() throws Exception {
 		final PhoneNumber phoneNumber = this.userToRegister.getPhoneNumber();
@@ -100,9 +108,16 @@ public class WelcomePageSteps {
 		getVerificationPage().clickConfirm();
 	}
 
+	/**
+	 * Enter the user name on the registration form
+	 * 
+	 * @step. ^I input my name$
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I input my name$")
 	public void IInputMyName() throws Exception {
-		String name = this.userToRegister.getName();
+		final String name = this.userToRegister.getName();
 		getAddNamePage().inputName(name);
 		getAddNamePage().clickConfirm();
 	}

@@ -4,6 +4,7 @@ Feature: Ping
   Scenario Outline: Send ping in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -20,6 +21,7 @@ Feature: Ping
   Scenario Outline: Verify you cannot Ping several times in a row
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>

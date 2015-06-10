@@ -15,10 +15,12 @@ import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.HasParallelScreenshotsFeature;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -135,32 +137,37 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 		log.debug(currentStep + " (status: " + arg0.getStatus() + ", time: "
 				+ (endDate - startDate) + "ms)");
+
+		// take screenshot
 		try {
-			final ZetaDriver driver = getDriver(
-					arg0.getStatus().equals(Result.FAILED)).orElse(null);
-			if (driver != null) {
-				if (arg0.getStatus().equals(Result.SKIPPED.getStatus())) {
-					// Don't make screenshots for skipped steps to speed up
-					// suite execution
-					return;
-				}
-				initScreenshotMakers(driver);
-				final String screenshotPath = String.format("%s/%s/%s/%s.png",
-						CommonUtils.getPictureResultsPathFromConfig(this
-								.getClass()), feature.replaceAll("\\W+", "_"),
-						scenario.replaceAll("\\W+", "_"), currentStep
-								.replaceAll("\\W+", "_"));
-				if (screenshotMakers.isPresent()) {
-					final Runnable task = new Thread(() -> storeScreenshot(
-							driver, screenshotPath));
-					screenshotMakers.get().execute(task);
+			if (CommonUtils.getMakeScreenshotsFromConfig(this.getClass())) {
+				final ZetaDriver driver = getDriver(
+						arg0.getStatus().equals(Result.FAILED)).orElse(null);
+				if (driver != null) {
+					if (arg0.getStatus().equals(Result.SKIPPED.getStatus())) {
+						// Don't make screenshots for skipped steps to speed up
+						// suite execution
+						return;
+					}
+					initScreenshotMakers(driver);
+					final String screenshotPath = String.format(
+							"%s/%s/%s/%s.png", CommonUtils
+									.getPictureResultsPathFromConfig(this
+											.getClass()), feature.replaceAll(
+									"\\W+", "_"), scenario.replaceAll("\\W+",
+									"_"), currentStep.replaceAll("\\W+", "_"));
+					if (screenshotMakers.isPresent()) {
+						final Runnable task = new Thread(() -> storeScreenshot(
+								driver, screenshotPath));
+						screenshotMakers.get().execute(task);
+					} else {
+						storeScreenshot(driver, screenshotPath);
+					}
 				} else {
-					storeScreenshot(driver, screenshotPath);
+					log.debug(String
+							.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
+									currentStep));
 				}
-			} else {
-				log.debug(String
-						.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
-								currentStep));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -174,11 +181,17 @@ public class ZetaFormatter implements Formatter, Reporter {
 			if (!screenshot.isPresent()) {
 				return;
 			}
+			BufferedImage imgToWrite = screenshot.get();
 			final File outputfile = new File(path);
 			if (!outputfile.getParentFile().exists()) {
 				outputfile.getParentFile().mkdirs();
 			}
-			ImageIO.write(screenshot.get(), "png", outputfile);
+			if (driver instanceof ZetaAndroidDriver) {
+				if (((ZetaAndroidDriver) driver).getOrientation() == ScreenOrientation.LANDSCAPE) {
+					imgToWrite = ImageUtil.tilt(imgToWrite, -Math.PI / 2);
+				}
+			}
+			ImageIO.write(imgToWrite, "png", outputfile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

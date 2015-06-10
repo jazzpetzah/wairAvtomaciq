@@ -5,9 +5,9 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    And I rotate UI to portrait
+    Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
@@ -28,9 +28,9 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    And I rotate UI to portrait
+    Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
@@ -53,9 +53,9 @@ Feature: People View
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    And I rotate UI to portrait
+    Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     And I tap the Search input
     And I see People Picker page
     And I keep on reopening People Picker until I see Top People
@@ -73,9 +73,9 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    And I rotate UI to landscape
+    Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
@@ -96,9 +96,9 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    And I rotate UI to landscape
+    Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
@@ -122,9 +122,9 @@ Feature: People View
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    And I rotate UI to landscape
+    Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     And I tap the Search input
     And I see People Picker page
     And I keep on reopening People Picker until I see Top People

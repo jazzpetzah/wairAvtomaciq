@@ -110,6 +110,19 @@ public class ConversationViewPageSteps {
 	public void ITapTheTextInput() throws Exception {
 		getConversationViewPage().tapTextInput();
 	}
+	
+	/**
+	 * Tap the isTyping avatar near the text input field 
+	 * 
+	 * @step. ^I tap IsTyping avatar in (?:the |\\s*)[Cc]onversation
+	 *        view$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap IsTyping avatar in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapIsTypingAvatar() throws Exception {
+		getConversationViewPage().tapIsTypingAvatar();
+	}
 
 	/**
 	 * Type a message into the active conversation. The text input should be
@@ -182,21 +195,51 @@ public class ConversationViewPageSteps {
 		getConversationViewPage().tapPingButton();
 	}
 
+	/**
+	 * Tap the Add Picture button. The input field slider should be already
+	 * opened
+	 * 
+	 * @step. ^I tap Add Picture button in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
 	@And("^I tap Add Picture button in (?:the |\\s*)[Cc]onversation view$")
 	public void ITapAddPicture() throws Exception {
 		getConversationViewCameraPage().tapLensButton();
 	}
 
+	/**
+	 * Tap the Take Photo button. The Add Picture button should be already
+	 * clicked
+	 * 
+	 * @step. ^I tap Take Photo button in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
 	@And("^I tap Take Photo button in (?:the |\\s*)[Cc]onversation view$")
 	public void ITapTakePhotoButton() throws Exception {
 		getConversationViewCameraPage().tapTakePhotoButton();
 	}
 
+	/**
+	 * Confirm the taken photo or selected picture
+	 * 
+	 * @step. ^I confirm the picture for (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
 	@When("^I confirm the picture for (?:the |\\s*)[Cc]onversation view$")
 	public void IConfirmPicture() throws Exception {
 		getConversationViewCameraPage().confirmPictureSelection();
 	}
 
+	/**
+	 * Verify whether there is at least one picture in the conversation view
+	 * 
+	 * @step. ^I see a new picture in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^I see a new picture in (?:the |\\s*)[Cc]onversation view$")
 	public void ISeeNewPicture() throws Exception {
 		Assert.assertTrue(

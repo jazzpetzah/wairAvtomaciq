@@ -36,7 +36,7 @@ Feature: Self Profile
 
   @id328 @smoke
   Scenario Outline: I can change my name
-    Given There are 1 user where <Name> is me
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list
     When I tap on my avatar

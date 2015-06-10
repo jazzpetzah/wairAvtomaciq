@@ -4,6 +4,7 @@ Feature: Archive
   Scenario Outline: Verify the conversation is unarchived when there are new messages in this conversation (simple message)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see my avatar on top of Contact list
     When I archive conversation <Contact>
@@ -20,6 +21,7 @@ Feature: Archive
   Scenario Outline: Verify acrhived list disappears if there are no more archived conversations
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see my avatar on top of Contact list
     And I do not see Archive button at the bottom of my Contact list
@@ -40,6 +42,7 @@ Feature: Archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I muted conversation with <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see my avatar on top of Contact list
     When I archive conversation <Contact>
@@ -56,6 +59,7 @@ Feature: Archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I muted conversation with <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see my avatar on top of Contact list
     And I archive conversation <Contact>
@@ -73,6 +77,7 @@ Feature: Archive
   Scenario Outline: Verify the conversation is unarchived when there are new messages in this conversation (Ping message)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see my avatar on top of Contact list
     When I archive conversation <Contact>
@@ -88,6 +93,7 @@ Feature: Archive
   Scenario Outline: Verify the conversation is unarchived when there are new calls in this conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see my avatar on top of Contact list
     And I archive conversation <Contact>

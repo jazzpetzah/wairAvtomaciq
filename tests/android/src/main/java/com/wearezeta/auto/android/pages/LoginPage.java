@@ -4,7 +4,6 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -29,15 +28,6 @@ public class LoginPage extends AndroidPage {
 	@FindBy(id = AndroidLocators.LoginPage.idForgotPass)
 	private WebElement forgotPasswordButton;
 
-	@FindBy(id = AndroidLocators.ContactListPage.idSelfUserAvatar)
-	protected WebElement selfUserAvatar;
-
-	@FindBy(id = AndroidLocators.ContactListPage.idContactListNames)
-	private WebElement contactListNames;
-
-	@FindBy(id = AndroidLocators.CommonLocators.xpathDismissUpdateButton)
-	private WebElement dismissUpdateButton;
-
 	public LoginPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -50,33 +40,6 @@ public class LoginPage extends AndroidPage {
 	public boolean waitForLogin() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(AndroidLocators.LoginPage.idSignUpButton), 40);
-	}
-
-	private static final int SIGN_IN_TIMEOUT_SECONDS = 60;
-
-	public void verifyLoginFinished() throws Exception {
-		final By clearBtnLocator = By
-				.id(AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn);
-		final By selfAvatarLocator = By
-				.id(AndroidLocators.ContactListPage.idSelfUserAvatar);
-		final long millisecondsStarted = System.currentTimeMillis();
-		do {
-			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-					clearBtnLocator, 1)) {
-				try {
-					pickerClearBtn.click();
-				} catch (ElementNotVisibleException e) {
-					// ignore silently
-				}
-			}
-			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-					selfAvatarLocator, 1)) {
-				return;
-			}
-		} while (System.currentTimeMillis() - millisecondsStarted <= SIGN_IN_TIMEOUT_SECONDS * 1000);
-		assert false : String.format(
-				"Sign in is still in progress after %s seconds",
-				SIGN_IN_TIMEOUT_SECONDS);
 	}
 
 	public RegistrationPage join() throws Exception {

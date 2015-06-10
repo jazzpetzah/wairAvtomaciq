@@ -4,7 +4,9 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.popovers.SingleUserPopover;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -32,11 +34,11 @@ public class SingleUserPopoverSteps {
 	public void ISeeThePopover(String shouldNotBeVisible) throws Exception {
 		if (shouldNotBeVisible == null) {
 			Assert.assertTrue(
-					"The single user popover is not currently visible",
+					"The Single user popover is not currently visible",
 					getSingleUserPopover().waitUntilVisible());
 		} else {
 			Assert.assertTrue(
-					"The single user popover is still visible, but should be hidden",
+					"The Single user popover is still visible, but should be hidden",
 					getSingleUserPopover().waitUntilInvisible());
 		}
 	}
@@ -101,7 +103,8 @@ public class SingleUserPopoverSteps {
 	}
 
 	/**
-	 * Verify whether the particular user email is visible on Signle user popover
+	 * Verify whether the particular user email is visible on Signle user
+	 * popover
 	 * 
 	 * @step. ^I see (?:the |\\s*)user email (.*) on [Ss]ingle user popover$"
 	 * 
@@ -113,10 +116,104 @@ public class SingleUserPopoverSteps {
 	public void ISeeUserEmail(String expectedEmail) throws Exception {
 		expectedEmail = usrMgr.findUserByEmailOrEmailAlias(expectedEmail)
 				.getEmail();
-		Assert.assertTrue(String.format(
-				"The user email '%s' is not displayed on [Ss]imgle user popover",
-				expectedEmail),
-				getSingleUserPopover().waitUntilUserEmailVisible(expectedEmail));
+		Assert.assertTrue(
+				String.format(
+						"The user email '%s' is not displayed on [Ss]imgle user popover",
+						expectedEmail), getSingleUserPopover()
+						.waitUntilUserEmailVisible(expectedEmail));
+	}
+
+	/**
+	 * Tap the Add People button on Single user popover
+	 * 
+	 * @step. ^I tap Add People button on [Ss]ingle user popover$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap Add People button on [Ss]ingle user popover$")
+	public void ITapAddPeople() throws Exception {
+		getSingleUserPopover().tapAddPeopleButton();
+	}
+
+	/**
+	 * Tap Close button on the popover
+	 * 
+	 * @step. ^I tap Close button on [Ss]ingle user popover$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Close button on [Ss]ingle user popover$")
+	public void ITapCloseButton() throws Exception {
+		getSingleUserPopover().tapCloseButton();
+	}
+
+	/**
+	 * Tap in the center of popover
+	 * 
+	 * @step. ^I tap in the center of [Ss]ingle user popover$
+	 * 
+	 * @param mode
+	 *            either "in the center" or "outside"
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap (in the center|outside) of [Ss]ingle user popover$")
+	public void ITapInTheCenterOfPopover(String mode) throws Exception {
+		if (mode.equals("outside")) {
+			getSingleUserPopover().tapOutside();
+		} else {
+			getSingleUserPopover().tapInTheCenter();
+		}
+	}
+
+	/**
+	 * Enter the given text into search input on Single user popover
+	 * 
+	 * @step. ^I enter \"(.*)\" into (?:the |\\s*)Search input on [Ss]ingle user
+	 *        popover$
+	 * 
+	 * @param text
+	 *            the text to enter into the search field. Could contain user
+	 *            name/email aliases
+	 * @throws Exception
+	 */
+	@When("^I enter \"(.*)\" into (?:the |\\s*)Search input on [Ss]ingle user popover$")
+	public void IEnterSearchText(String text) throws Exception {
+		text = usrMgr.replaceAliasesOccurences(text, FindBy.NAME_ALIAS);
+		text = usrMgr.replaceAliasesOccurences(text, FindBy.EMAIL_ALIAS);
+		getSingleUserPopover().enterSearchText(text);
+	}
+
+	/**
+	 * Tap the avatar of user, who is found in search resulsts on Single user
+	 * popover
+	 * 
+	 * @step. ^I tap (?:the |\\s*)avatar of (.*) in search results on [Ss]ingle
+	 *        user popover$
+	 * 
+	 * @param name
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@And("^I tap (?:the |\\s*)avatar of (.*) in search results on [Ss]ingle user popover$")
+	public void ITapAvatarFromSearch(String name) throws Exception {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		getSingleUserPopover().tapAvatarFromSearchResults(name);
+	}
+
+	/**
+	 * Tap the Add To Conversation button on Single user popover. This step
+	 * expectsm that you already have at least one avatar selected in search
+	 * results
+	 * 
+	 * @step. ^I tap (?:the |\\s*)Add To Conversation button on [Ss]ingle user
+	 *        popover$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap (?:the |\\s*)Add To Conversation button on [Ss]ingle user popover$")
+	public void ITapAddToConversationButton() throws Exception {
+		getSingleUserPopover().tapAddToConversationButton();
 	}
 
 }

@@ -4,6 +4,7 @@ Feature: Self Profile
   Scenario Outline: I can change my name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open self profile
@@ -19,6 +20,7 @@ Feature: Self Profile
   @regression @id1744
   Scenario Outline: Verify you can access your profile information
     Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -35,6 +37,7 @@ Feature: Self Profile
   @regression @id1753
   Scenario Outline: Verify correct accent color showing after sign out and sign in
     Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -43,7 +46,6 @@ Feature: Self Profile
     And I set my accent color to <ColorName>
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
@@ -61,6 +63,7 @@ Feature: Self Profile
     Given My browser supports synthetic drag and drop
     Given There is 1 user where <Name> is me
     Given Myself take snapshot of current profile picture
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -82,6 +85,7 @@ Feature: Self Profile
     Given There is 3 users where <Name> is me
     Given User me change accent color to <ColorName>
     Given Myself is connected to <Contact1>, <Contact2>
+    Given I switch to Sign In page
     When I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open self profile

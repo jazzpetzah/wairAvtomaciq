@@ -273,7 +273,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	public static void rotatePortrait() throws Exception {
 		executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:0");
 	}
-
+	
 	/**
 	 * http://stackoverflow.com/questions/13850192/how-to-lock-android-screen-via-adb
 	 * 
