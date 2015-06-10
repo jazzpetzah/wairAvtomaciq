@@ -790,7 +790,7 @@ public class CommonWebAppSteps {
 					// logout with JavaScript because otherwise backend will
 					// block
 					// us because of to many login requests
-					String logoutScript = "if (undefined != wire) wire.auth.repository.logout();";
+					String logoutScript = "(typeof wire !== 'undefined') && wire.auth.repository.logout();";
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript(logoutScript);
 				}
