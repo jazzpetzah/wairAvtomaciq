@@ -27,7 +27,6 @@ public class ContactListPage extends IOSPage {
 			.getSimpleName());
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
-	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.70;
 
 	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE = 0.80;
 

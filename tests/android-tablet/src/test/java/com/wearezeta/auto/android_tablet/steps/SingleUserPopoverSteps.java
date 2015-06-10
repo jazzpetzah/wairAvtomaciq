@@ -34,11 +34,11 @@ public class SingleUserPopoverSteps {
 	public void ISeeThePopover(String shouldNotBeVisible) throws Exception {
 		if (shouldNotBeVisible == null) {
 			Assert.assertTrue(
-					"The single user popover is not currently visible",
+					"The Single user popover is not currently visible",
 					getSingleUserPopover().waitUntilVisible());
 		} else {
 			Assert.assertTrue(
-					"The single user popover is still visible, but should be hidden",
+					"The Single user popover is still visible, but should be hidden",
 					getSingleUserPopover().waitUntilInvisible());
 		}
 	}

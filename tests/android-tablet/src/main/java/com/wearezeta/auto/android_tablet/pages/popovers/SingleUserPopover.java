@@ -53,7 +53,7 @@ public class SingleUserPopover extends AbstractPopoverContainer {
 		this.singleConnectedUserDetalsPage.tapAddPeopleButton();
 	}
 
-	public void enterSearchText(String text) {
+	public void enterSearchText(String text) throws Exception {
 		this.searchPage.enterSearchText(text);
 	}
 

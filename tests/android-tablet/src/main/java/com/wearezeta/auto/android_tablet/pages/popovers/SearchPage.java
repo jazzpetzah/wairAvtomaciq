@@ -12,8 +12,6 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 class SearchPage extends AbstractPopoverPage {
 	public static final String idSearchInput = "puet_pickuser__searchbox";
-	@FindBy(id = idSearchInput)
-	private WebElement searchInput;
 
 	public final static Function<String, String> xpathSearchResultsAvatarByName = name -> String
 			.format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']/parent::*",
@@ -28,8 +26,13 @@ class SearchPage extends AbstractPopoverPage {
 		super(lazyDriver, container);
 	}
 
-	public void enterSearchText(String text) {
-		searchInput.sendKeys(text);
+	private WebElement getSearchInput() throws Exception {
+		return this.getDriver().findElement(this.getContainer().getLocator())
+				.findElement(By.id(idSearchInput));
+	}
+
+	public void enterSearchText(String text) throws Exception {
+		getSearchInput().sendKeys(text);
 	}
 
 	public void tapAvatarFromSearchResults(String name) throws Exception {
