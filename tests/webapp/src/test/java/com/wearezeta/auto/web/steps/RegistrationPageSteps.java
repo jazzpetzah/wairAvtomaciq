@@ -10,6 +10,8 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
+import com.wearezeta.auto.web.common.Browser;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.pages.ActivationPage;
 import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
@@ -41,6 +43,12 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I enter user name (.*) on Registration page$")
 	public void IEnterName(String name) throws Exception {
+		if (WebAppExecutionContext.getBrowser() == Browser.InternetExplorer) {
+			// because webdriver for IE cannot delete cookies we get redirected
+			// to sign in page if we were logged in before. This is why we have
+			// to open registration page manually as a workaround
+			PagesCollection.registrationPage.openRegistrationPage();
+		}
 		PagesCollection.registrationPage.waitForRegistrationPageToFullyLoad();
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
@@ -175,8 +183,8 @@ public class RegistrationPageSteps {
 	 * Checks if a red dot is shown inside the email field on the registration
 	 * form
 	 *
-	 * @step. ^I verify that a red dot is shown inside the email field on the registration
-	 *        form$
+	 * @step. ^I verify that a red dot is shown inside the email field on the
+	 *        registration form$
 	 */
 	@Then("^I verify that a red dot is( not)? shown inside the email field on the registration form$")
 	public void ARedDotIsShownOnTheEmailField(String not) {
@@ -193,7 +201,7 @@ public class RegistrationPageSteps {
 	 * Checks if an icon is shown
 	 * 
 	 * @step. ^I verify that an envelope icon is shown$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Then("^I verify that an envelope icon is shown$")
 	public void IVerifyThatAnEnvelopeIconIsShown() throws Exception {
