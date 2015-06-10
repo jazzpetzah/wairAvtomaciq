@@ -28,7 +28,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | webdriver   | 120     |
 
-  @smoke @id2237 @calling
+  @smoke @id2237
   Scenario Outline: Call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
