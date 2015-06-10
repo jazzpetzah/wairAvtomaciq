@@ -267,6 +267,7 @@ Feature: Connect
     And I tap on edit connect request field
     And I type Connect request "<Message>"
     And I click Connect button on connect to page
+    And I wait for 2 seconds
     When <Contact> accept all requests
     And I wait for 2 seconds
     And I press Clear button
