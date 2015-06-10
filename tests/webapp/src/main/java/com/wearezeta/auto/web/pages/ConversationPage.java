@@ -45,7 +45,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathShowParticipantsButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssShowParticipantsButton)
 	private WebElement showParticipants;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendImageInput)
@@ -130,15 +130,7 @@ public class ConversationPage extends WebPage {
 			throws Exception {
 		DriverUtils.waitUntilElementClickable(this.getDriver(),
 				showParticipants);
-		if (WebAppExecutionContext.getBrowser() == Browser.InternetExplorer) {
-			this.getDriver()
-					.executeScript(
-							String.format(
-									"$('.%s').click();",
-									WebAppLocators.ConversationPage.classNameShowParticipantsButton));
-		} else {
-			showParticipants.click();
-		}
+		showParticipants.click();
 		if (isGroup) {
 			return new GroupPopoverContainer(this.getLazyDriver());
 		} else {

@@ -174,7 +174,7 @@ public final class WebAppLocators {
 		// This is needed for IE workaround
 		public static final String classNameShowParticipantsButton = "show-participants";
 
-		public static final String xpathShowParticipantsButton = "//*[@data-uie-name='do-participants']";
+		public static final String cssShowParticipantsButton = "[data-uie-name='do-participants']";
 
 		public static final String xpathActionMessageEntries = "//*[@data-uie-name='item-message' and contains(@class, 'special')]//div[contains(@class, 'action')]";
 
