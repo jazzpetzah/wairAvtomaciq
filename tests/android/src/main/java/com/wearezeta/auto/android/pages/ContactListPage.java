@@ -302,7 +302,7 @@ public class ContactListPage extends AndroidPage {
 		final By selfAvatarLocator = By
 				.id(AndroidLocators.ContactListPage.idSelfUserAvatar);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				selfAvatarLocator, 5) : "Self avatar is not visible on top of conversations list";
+				selfAvatarLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : "Self avatar is not visible on top of conversations list";
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {

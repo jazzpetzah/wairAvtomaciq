@@ -4,6 +4,8 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -17,6 +19,10 @@ public class SingleConnectedUserDetalsPage extends
 	public final static Function<String, String> xpathEmailByValue = value -> String
 			.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
 					value);
+
+	public final static String xpathAddPeopleButton = "//*[@id='ttv__participants__left_label' and @value='ADD PEOPLE']";
+	@FindBy(xpath = xpathAddPeopleButton)
+	private WebElement addPeopleButton;
 
 	public SingleConnectedUserDetalsPage(Future<ZetaAndroidDriver> lazyDriver,
 			SingleUserPopover container) throws Exception {
@@ -33,6 +39,10 @@ public class SingleConnectedUserDetalsPage extends
 			throws Exception {
 		final By locator = By.xpath(xpathEmailByValue.apply(expectedEmail));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public void tapAddPeopleButton() {
+		addPeopleButton.click();
 	}
 
 }

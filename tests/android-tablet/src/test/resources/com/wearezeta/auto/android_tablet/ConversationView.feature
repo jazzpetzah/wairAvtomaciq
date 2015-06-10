@@ -37,7 +37,7 @@ Feature: Conversation View
       | Name      | Contact   | Message    |
       | user1Name | user2Name | YOU PINGED |
 
-  @id2254 @staging @torun
+  @id2254 @smoke
   Scenario Outline: Send Camera picture to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -57,34 +57,33 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2255 @staging
+  @id2255 @smoke
   Scenario Outline: Add people to 1:1 chat in portrait mode
     Given There are 3 users where <Name> is me
-    Given <Name> is connected to <Contact1>,<Contact2>
+    Given Myself is connected to <Contact1>,<Contact2>
     And I rotate UI to portrait
-    Given I Sign in on tablet using login <Login> and password <Password>
-    And I see Contact list
-    When I tap on tablet contact name <Contact1>
-    And I see tablet dialog page
-    And I tap on profile button
-    And I see <Contact1> user profile page
-    And I press add contact button
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I enter "<Contact2>" into Search input on People Picker page
-    And I see user <Contact2> found on People picker page
-    And I tap on user name found on People picker page <Contact2>
-    And I see Add to conversation button
-    And I click on Add to conversation button
-    Then I see group chat page with users <Contact1>,<Contact2>
-    And I navigate back from dialog page
-    And I see <Contact1> and <Contact2> chat in contact list
+    Given I sign in using my email
+    And I see the conversations list
+    And I see the conversation <Contact1> in my conversations list
+    And I tap the conversation <Contact1>
+    And I see the conversation view
+    And I tap Show Details button on conversation view page
+    And I see the Single user popover
+    When I tap Add People button on Single user popover
+    And I enter "<Contact2>" into the Search input on Single user popover
+    And I tap the avatar of <Contact2> in search results on Single user popover
+    And I tap the Add To Conversation button on Single user popover
+    Then I do not see the Single user popover
+    And I see the conversation view
+    And I see the chat header message contains "<Action>" text on conversation view page
+    And I see the chat header message contains "<Contact1>" text on conversation view page
+    And I see the chat header message contains "<Contact2>" text on conversation view page
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  | Action                     |
+      | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION |
 
-  @id2256 @staging
+  @id2256 @staging @torun
   Scenario Outline: Send message to group chat in portrait mode
     Given There are 3 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>
