@@ -112,13 +112,6 @@ public class RegistrationPage extends WebPage {
 	public boolean isRedDotOnEmailField() {
 		return DriverUtils.isElementPresentAndDisplayed(redDotOnEmailField);
 	}
-	
-	public RegistrationPage openRegistrationPage() throws Exception {
-		getDriver()
-				.get(CommonUtils
-						.getWebAppApplicationPathFromConfig(RegistrationPage.class));
-		return this;
-	}
 
 	public LoginPage openSignInPage() throws Exception {
 		getDriver()
