@@ -1,11 +1,16 @@
 package com.wearezeta.auto.common.driver;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
@@ -25,6 +30,7 @@ import org.openqa.selenium.remote.Response;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import io.appium.java_client.android.AndroidDriver;
@@ -154,7 +160,19 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			Runtime.getRuntime()
 					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
 					.waitFor();
-			final byte[] output = FileUtils.readFileToByteArray(tmpScreenshot);
+			byte[] output = FileUtils.readFileToByteArray(tmpScreenshot);
+			if (this.getOrientation() == ScreenOrientation.LANDSCAPE) {
+				BufferedImage screenshotImage = ImageIO
+						.read(new ByteArrayInputStream(output));
+				screenshotImage = ImageUtil.tilt(screenshotImage, -Math.PI / 2);
+				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				try {
+					ImageIO.write(screenshotImage, "png", baos);
+					output = baos.toByteArray();
+				} finally {
+					baos.close();
+				}
+			}
 			result.setSessionId(this.getSessionId().toString());
 			result.setStatus(HttpStatus.OK_200);
 			result.setValue(Base64.encodeBase64(output));

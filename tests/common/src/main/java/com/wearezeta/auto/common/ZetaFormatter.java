@@ -15,12 +15,10 @@ import java.util.concurrent.TimeUnit;
 import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
-import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.HasParallelScreenshotsFeature;
-import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -185,11 +183,6 @@ public class ZetaFormatter implements Formatter, Reporter {
 			final File outputfile = new File(path);
 			if (!outputfile.getParentFile().exists()) {
 				outputfile.getParentFile().mkdirs();
-			}
-			if (driver instanceof ZetaAndroidDriver) {
-				if (((ZetaAndroidDriver) driver).getOrientation() == ScreenOrientation.LANDSCAPE) {
-					imgToWrite = ImageUtil.tilt(imgToWrite, -Math.PI / 2);
-				}
 			}
 			ImageIO.write(imgToWrite, "png", outputfile);
 		} catch (Exception e) {
