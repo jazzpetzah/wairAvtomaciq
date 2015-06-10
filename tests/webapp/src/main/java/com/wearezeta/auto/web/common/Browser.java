@@ -96,7 +96,6 @@ public enum Browser {
 		case Chrome:
 		case Firefox:
 		case Opera:
-		case InternetExplorer:
 			return true;
 		default:
 			return false;
