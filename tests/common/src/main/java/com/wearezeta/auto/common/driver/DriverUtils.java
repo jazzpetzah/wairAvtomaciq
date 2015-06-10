@@ -642,24 +642,6 @@ public class DriverUtils {
 		driver.resetApp();
 	}
 
-	/**
-	 * http://www.obeythetestinggoat.com/how-to-get-selenium-to-wait-for-page-load-after-a-click.html
-	 */
-	public static void waitForPageToLoad(RemoteWebDriver driver)
-			throws Exception {
-		DriverUtils.turnOffImplicitWait(driver);
-		try {
-			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(20, TimeUnit.SECONDS)
-					.pollingEvery(1, TimeUnit.SECONDS)
-					.ignoring(NoSuchElementException.class);
-			wait.until(ExpectedConditions.stalenessOf(driver
-					.findElementByTagName("body")));
-		} finally {
-			restoreImplicitWait(driver);
-		}
-	}
-
 	public static void tapInTheCenterOfTheElement(AppiumDriver driver,
 			WebElement element) {
 		final Point coords = element.getLocation();
