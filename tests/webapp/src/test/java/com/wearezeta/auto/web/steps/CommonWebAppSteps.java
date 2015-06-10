@@ -737,20 +737,7 @@ public class CommonWebAppSteps {
 	 */
 	@Then("^I refresh page$")
 	public void IRefreshPage() throws Exception {
-		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-			try {
-				if (WebAppExecutionContext.getBrowser()
-						.isSupportingConsoleLogManagement()) {
-					WebCommonUtils.refreshPage(PlatformDrivers
-							.getInstance()
-							.getDriver(CURRENT_PLATFORM)
-							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-									TimeUnit.MILLISECONDS));
-				}
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
-		}
+		PagesCollection.registrationPage.refreshPage();
 	}
 
 	@SuppressWarnings("unchecked")

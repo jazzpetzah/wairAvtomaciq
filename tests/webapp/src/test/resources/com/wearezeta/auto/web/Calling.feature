@@ -76,7 +76,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-  @smoke @id1839 @calling
+  @smoke @id1839
   Scenario Outline: Verify calling not supported in browsers without WebRTC
     Given My browser does not support calling
     Given There are 2 users where <Name> is me

@@ -120,4 +120,8 @@ public class RegistrationPage extends WebPage {
 						+ "auth/#login");
 		return new LoginPage(getLazyDriver());
 	}
+
+	public void refreshPage() throws Exception {
+		getDriver().get(getDriver().getCurrentUrl());
+	}
 }
