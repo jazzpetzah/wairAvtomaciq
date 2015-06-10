@@ -5,7 +5,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    And I rotate UI to portrait
+    Given I rotate UI to portrait
     Given I sign in using my email
     And I see the conversations list
     And I see the conversation <GroupChatName> in my conversations list
@@ -28,7 +28,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    And I rotate UI to portrait
+    Given I rotate UI to portrait
     Given I sign in using my email
     And I see the conversations list
     And I see the conversation <GroupChatName> in my conversations list
@@ -53,7 +53,7 @@ Feature: People View
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    And I rotate UI to portrait
+    Given I rotate UI to portrait
     Given I sign in using my email
     And I see the conversations list
     And I tap the Search input
@@ -73,7 +73,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    And I rotate UI to landscape
+    Given I rotate UI to landscape
     Given I sign in using my email
     And I see the conversations list
     And I see the conversation <GroupChatName> in my conversations list
@@ -96,7 +96,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    And I rotate UI to landscape
+    Given I rotate UI to landscape
     Given I sign in using my email
     And I see the conversations list
     And I see the conversation <GroupChatName> in my conversations list
@@ -122,7 +122,7 @@ Feature: People View
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    And I rotate UI to landscape
+    Given I rotate UI to landscape
     Given I sign in using my email
     And I see the conversations list
     And I tap the Search input

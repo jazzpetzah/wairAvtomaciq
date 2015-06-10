@@ -3,7 +3,7 @@ Feature: Search
   @id2249 @smoke
   Scenario Outline: Open/Close People picker in landscape mode
     Given There is 1 user where <Name> is me
-    And I rotate UI to landscape
+    Given I rotate UI to landscape
     Given I sign in using my email
     And I see the conversations list
     When I tap the Search input
@@ -18,7 +18,7 @@ Feature: Search
   @id2263 @smoke
   Scenario Outline: Open/Close People picker in portrait mode
     Given There is 1 user where <Name> is me
-    And I rotate UI to portrait
+    Given I rotate UI to portrait
     Given I sign in using my email
     And I see the conversations list
     When I tap the Search input

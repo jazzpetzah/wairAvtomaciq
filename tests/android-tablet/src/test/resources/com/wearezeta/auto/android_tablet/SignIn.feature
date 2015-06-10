@@ -34,7 +34,7 @@ Feature: Sign In
   Scenario Outline: Sign in to ZClient in landscape mode
     Given There is 1 user where <Name> is me
     Given I see welcome screen
-    And I rotate UI to landscape
+    Given I rotate UI to landscape
     When I switch to email sign in screen
     And I enter login "<Login>"
     And I enter password "<Password>"
@@ -49,7 +49,7 @@ Feature: Sign In
   @id2285 @smoke
   Scenario Outline: Negative case for sign in landscape mode
     Given I see welcome screen
-    And I rotate UI to landscape
+    Given I rotate UI to landscape
     When I switch to email sign in screen
     And I enter login "<Login>"
     And I enter password "<Password>"
