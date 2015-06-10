@@ -10,9 +10,9 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class SelfPictureUploadPage extends WebPage {
@@ -64,7 +64,7 @@ public class SelfPictureUploadPage extends WebPage {
 						this.getDriver(),
 						By.cssSelector(WebAppLocators.SelfPictureUploadPage.cssSendPictureInput),
 						5);
-		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Safari) {
+		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
 			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
 					.getNodeIp());
 		} else {
