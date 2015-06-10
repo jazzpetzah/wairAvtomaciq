@@ -71,7 +71,6 @@ public class CommonWebAppSteps {
 	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
 
 	static {
-		System.setProperty("java.awt.headless", "true");
 		System.setProperty("org.apache.commons.logging.Log",
 				"org.apache.commons.logging.impl.SimpleLog");
 		System.setProperty(
