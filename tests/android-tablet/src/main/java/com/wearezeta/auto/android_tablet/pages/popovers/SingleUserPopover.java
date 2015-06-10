@@ -64,4 +64,8 @@ public class SingleUserPopover extends AbstractPopoverContainer {
 	public void tapAddToConversationButton() {
 		this.searchPage.tapAddToConversationButton();
 	}
+
+	public void tapCloseButton() throws Exception {
+		this.singleConnectedUserDetalsPage.tapCloseButton();
+	}
 }

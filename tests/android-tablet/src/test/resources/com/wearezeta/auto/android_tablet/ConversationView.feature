@@ -206,27 +206,32 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
-  @id2047 @staging
+  @id2047 @smoke
   Scenario Outline: See one-to-one pop-over
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in on tablet using login <Login> and password <Password>
-    When I swipe right to tablet contact list
-    And I see conversation list loaded with my name <Name>
-    And I tap on tablet contact name <Contact>
-    And I see tablet dialog page
-    And I tap on profile button
-    Then I see participant pop-over
-    And I see <Contact> name and email in pop-over
-    And I can close pop-over by close button
-    When I tap on profile button
-    Then I see participant pop-over
-    And I see <Contact> name and email in pop-over
-    And I can close pop-over by tapping outside
+    Given I rotate UI to <Orientation>
+    Given I sign in using my email
+    And I see the conversations list
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And I see the conversation view
+    When I tap Show Details button on conversation view page
+    Then I see the Single user popover
+    And I see the user name <Contact> on Single user popover
+    When I tap Close button on Single user popover
+    Then I do not see the Single user popover
+    When I tap Show Details button on conversation view page
+    Then I see the Single user popover
+    When I tap in the center of Single user popover
+    Then I see the Single user popover
+    When I tap outside of Single user popover
+    Then I do not see the Single user popover
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   | Orientation |
+      | user1Name | user2Name | landscape   |
+      | user1Name | user2Name | portrait    |
 
   @id2050 @staging
   Scenario Outline: One-to-one pop-over hidden after rotations

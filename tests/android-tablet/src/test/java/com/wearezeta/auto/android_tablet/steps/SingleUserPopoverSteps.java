@@ -136,9 +136,41 @@ public class SingleUserPopoverSteps {
 	}
 
 	/**
+	 * Tap Close button on the popover
+	 * 
+	 * @step. ^I tap Close button on [Ss]ingle user popover$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Close button on [Ss]ingle user popover$")
+	public void ITapCloseButton() throws Exception {
+		getSingleUserPopover().tapCloseButton();
+	}
+
+	/**
+	 * Tap in the center of popover
+	 * 
+	 * @step. ^I tap in the center of [Ss]ingle user popover$
+	 * 
+	 * @param mode
+	 *            either "in the center" or "outside"
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap (in the center|outside) of [Ss]ingle user popover$")
+	public void ITapInTheCenterOfPopover(String mode) throws Exception {
+		if (mode.equals("outside")) {
+			getSingleUserPopover().tapOutside();
+		} else {
+			getSingleUserPopover().tapInTheCenter();
+		}
+	}
+
+	/**
 	 * Enter the given text into search input on Single user popover
 	 * 
-	 * @step. ^I enter \"(.*)\" into (?:the |\\s*)Search input on [Ss]ingle user popover$
+	 * @step. ^I enter \"(.*)\" into (?:the |\\s*)Search input on [Ss]ingle user
+	 *        popover$
 	 * 
 	 * @param text
 	 *            the text to enter into the search field. Could contain user
@@ -174,7 +206,8 @@ public class SingleUserPopoverSteps {
 	 * expectsm that you already have at least one avatar selected in search
 	 * results
 	 * 
-	 * @step. ^I tap (?:the |\\s*)Add To Conversation button on [Ss]ingle user popover$
+	 * @step. ^I tap (?:the |\\s*)Add To Conversation button on [Ss]ingle user
+	 *        popover$
 	 * 
 	 * @throws Exception
 	 */
