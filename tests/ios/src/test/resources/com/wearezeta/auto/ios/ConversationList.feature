@@ -45,22 +45,15 @@ Feature: Conversation List
     Given Contact <Contact> send number <Number2> of message to user <Name>
     Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    And I see unread <DotSizeSmall> messages dot for <Contact>
+    And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe right on Dialog page
-    Then I dont see an unread message dot for <Contact>
-    And Contact <Contact> send number <Number> of message to user <Name>
-    And I see unread <DotSizeBig> messages dot for <Contact>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I scroll to the end of the conversation
-    And I swipe right on Dialog page
-    Then I dont see an unread message dot for <Contact>
+    Then I see change of state for first conversation cell
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Number | NewName    | Color        |Number2 | DotSizeSmall |DotSizeBig |
-      | user1Email | user1Password | user1Name | user2Name | 30     | UNREAD DOT | BrightYellow | 2		 | small		|big		|
+      | Login      | Password      | Name      | Contact   | NewName    | Color        |Number2 |
+      | user1Email | user1Password | user1Name | user2Name | UNREAD DOT | BrightYellow | 2 	    |
 
   @regression @id2040
   Scenario Outline: Verify archive a group conversation

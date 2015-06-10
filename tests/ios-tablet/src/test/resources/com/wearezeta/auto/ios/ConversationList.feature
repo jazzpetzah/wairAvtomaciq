@@ -145,7 +145,7 @@ Feature: Conversation List
     And I remember the state of the first conversation cell
     When Contact <Contact> ping conversation <Name>
     And I wait for 10 seconds
-    Then I see ping symbol
+    Then I see change of state for first conversation cell
 
     Examples: 
       | Login      | Password      | Name      | Contact   | NewName  | Color        |
@@ -163,8 +163,49 @@ Feature: Conversation List
     And I remember the state of the first conversation cell
     When Contact <Contact> ping conversation <Name>
     And I wait for 10 seconds
-    Then I see ping symbol
+    Then I see change of state for first conversation cell
 
     Examples: 
       | Login      | Password      | Name      | Contact   | NewName  | Color        |
       | user1Email | user1Password | user1Name | user2Name | PING     | BrightOrange |
+      
+  @staging @id2376
+  Scenario Outline: Verify messages are marked as read with disappearing unread dot [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given User <Name> change accent color to <Color>
+    Given Contact <Contact> send number <Number> of message to user <Name>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I remember the state of the first conversation cell
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe right on Dialog page
+    Then I see change of state for first conversation cell
+
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | NewName    | Color        |Number |
+      | user1Email | user1Password | user1Name | user2Name | UNREAD DOT | BrightYellow | 2 	   |
+      
+   @staging @id2711
+  Scenario Outline: Verify messages are marked as read with disappearing unread dot [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given User <Name> change accent color to <Color>
+    Given Contact <Contact> send number <Number> of message to user <Name>
+    Given I rotate UI to landscapety c
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I remember the state of the first conversation cell
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe right on Dialog page
+    Then I see change of state for first conversation cell
+
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | NewName    | Color        |Number |
+      | user1Email | user1Password | user1Name | user2Name | UNREAD DOT | BrightYellow | 2 	   |
