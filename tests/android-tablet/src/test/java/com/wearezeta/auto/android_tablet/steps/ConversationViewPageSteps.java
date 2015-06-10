@@ -110,6 +110,19 @@ public class ConversationViewPageSteps {
 	public void ITapTheTextInput() throws Exception {
 		getConversationViewPage().tapTextInput();
 	}
+	
+	/**
+	 * Tap the isTyping avatar near the text input field 
+	 * 
+	 * @step. ^I tap IsTyping avatar in (?:the |\\s*)[Cc]onversation
+	 *        view$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap IsTyping avatar in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapIsTypingAvatar() throws Exception {
+		getConversationViewPage().tapIsTypingAvatar();
+	}
 
 	/**
 	 * Type a message into the active conversation. The text input should be

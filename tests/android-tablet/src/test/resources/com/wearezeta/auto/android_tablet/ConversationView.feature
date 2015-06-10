@@ -233,25 +233,31 @@ Feature: Conversation View
       | user1Name | user2Name | landscape   |
       | user1Name | user2Name | portrait    |
 
-  @id2050 @staging
+  @id2050 @smoke
   Scenario Outline: One-to-one pop-over hidden after rotations
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in on tablet using login <Login> and password <Password>
-    When I swipe right to tablet contact list
-    And I see conversation list loaded with my name <Name>
-    And I tap on tablet contact name <Contact>
-    And I see tablet dialog page
-    And I rotate UI to landscape
-    And I tap on profile button
-    Then I see participant pop-over
-    When I rotate UI to portrait
-    Then I do not see participant pop-over
-    When I tap on profile button
-    Then I see participant pop-over
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    And I see the conversations list
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And I see the conversation view
+    When I tap the text input in the conversation view
+    And I tap IsTyping avatar in the conversation view
+    Then I do not see the Single user popover
+    When I tap Show Details button on conversation view page
+    Then I see the Single user popover
     When I rotate UI to landscape
-    Then I do not see participant pop-over
+    Then I do not see the Single user popover
+    When I tap Show Details button on conversation view page
+    Then I see the Single user popover
+    When I rotate UI to portrait
+    Then I do not see the Single user popover
+    When I tap the text input in the conversation view
+    And I tap IsTyping avatar in the conversation view
+    Then I do not see the Single user popover
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
