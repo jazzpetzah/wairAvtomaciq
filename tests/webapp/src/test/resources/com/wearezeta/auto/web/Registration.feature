@@ -125,7 +125,8 @@ Feature: Registration
     Given I enter user password "<Password>" on Registration page
     Given I submit registration form
     And I see email <Email> on Verification page
-    And I refresh page
+    And I open Sign In page
+    When I see Sign In page
     When I Sign in using login <Email> and password <Password>
     Then I see email <Email> on Verification page
 

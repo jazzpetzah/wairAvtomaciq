@@ -886,4 +886,17 @@ public class CommonWebAppSteps {
 		commonSteps.UnblockContact(userAsNameAlias, userToBlockNameAlias);
 	}
 
+	/**
+	 * Open the sign in page directly (not through a link). This is useful when
+	 * testing pages with dead ends (forget password, email verification)
+	 * 
+	 * @step. ^I open Sign In page$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I open Sign In page$")
+	public void IOpenSignInPage() throws Exception {
+		PagesCollection.loginPage = PagesCollection.registrationPage
+				.openSignInPage();
+	}
 }

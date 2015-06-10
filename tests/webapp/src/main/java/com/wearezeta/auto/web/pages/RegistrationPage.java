@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -110,5 +111,13 @@ public class RegistrationPage extends WebPage {
 
 	public boolean isRedDotOnEmailField() {
 		return DriverUtils.isElementPresentAndDisplayed(redDotOnEmailField);
+	}
+
+	public LoginPage openSignInPage() throws Exception {
+		getDriver()
+				.get(CommonUtils
+						.getWebAppApplicationPathFromConfig(RegistrationPage.class)
+						+ "auth/#login");
+		return new LoginPage(getLazyDriver());
 	}
 }
