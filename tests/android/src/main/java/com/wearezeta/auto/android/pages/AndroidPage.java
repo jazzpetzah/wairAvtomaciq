@@ -1,6 +1,8 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -91,11 +93,13 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void rotateLandscape() throws Exception {
-		this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
+		AndroidCommonUtils.rotateLanscape();
+		// this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
 	}
 
 	public void rotatePortrait() throws Exception {
-		this.getDriver().rotate(ScreenOrientation.PORTRAIT);
+		AndroidCommonUtils.rotatePortrait();
+		// this.getDriver().rotate(ScreenOrientation.PORTRAIT);
 	}
 
 	public ScreenOrientation getOrientation() throws Exception {
@@ -107,7 +111,6 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void lockScreen() throws Exception {
-		// this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_POWER);
 		AndroidCommonUtils.lockScreen();
 	}
 
@@ -285,5 +288,26 @@ public abstract class AndroidPage extends BasePage {
 
 	public void tapOnCenterOfScreen() throws Exception {
 		DriverUtils.genericTap(this.getDriver());
+	}
+
+	@Override
+	public Optional<BufferedImage> getElementScreenshot(WebElement element)
+			throws Exception {
+		Point elementLocation = element.getLocation();
+		Dimension elementSize = element.getSize();
+		int x = elementLocation.x;
+		int y = elementLocation.y;
+		int w = elementSize.width;
+		int h = elementSize.height;
+		final Optional<BufferedImage> screenshot = takeScreenshot();
+		if (screenshot.isPresent()) {
+			if (this.getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
+				return Optional.of(screenshot.get().getSubimage(y, x, h, w));
+			} else {
+				return Optional.of(screenshot.get().getSubimage(x, y, w, h));
+			}
+		} else {
+			return Optional.empty();
+		}
 	}
 }
