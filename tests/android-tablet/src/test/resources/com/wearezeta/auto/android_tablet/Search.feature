@@ -5,7 +5,7 @@ Feature: Search
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     When I tap the Search input
     And I see People Picker page
     And I close People Picker
@@ -20,7 +20,7 @@ Feature: Search
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     When I tap the Search input
     And I see People Picker page
     And I close People Picker

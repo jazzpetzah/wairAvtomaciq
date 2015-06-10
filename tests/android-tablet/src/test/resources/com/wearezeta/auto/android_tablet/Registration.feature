@@ -4,7 +4,7 @@ Feature: Registration
   Scenario Outline: Register new user using front camera in landscape mode
     Given I see welcome screen
     Given I rotate UI to landscape
-    And I see welcome screen
+    Given I see welcome screen
     When I tap Register button
     And I see the Registration form
     And I enter the registration name "<Name>"
@@ -30,7 +30,7 @@ Feature: Registration
   Scenario Outline: Register new user using front camera in portrait mode
     Given I see welcome screen
     Given I rotate UI to portrait
-    And I see welcome screen
+    Given I see welcome screen
     When I tap Register button
     And I see the Registration form
     And I enter the registration name "<Name>"

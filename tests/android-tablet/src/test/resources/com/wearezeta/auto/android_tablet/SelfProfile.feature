@@ -5,7 +5,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
     And I tap my name field on Self Profile page
@@ -21,7 +21,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     And I see my name on Self Profile page
     And I tap my name field on Self Profile page
     And I change my name to <NewName> on Self Profile page
@@ -37,7 +37,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     When I tap the conversation <Contact>
     And I see the conversation view
     And I tap Show Details button on conversation view page
@@ -55,7 +55,7 @@ Feature: Self Profile
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     When I tap the conversation <Contact>
     And I see the conversation view
     And I tap Show Details button on conversation view page
@@ -72,7 +72,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
@@ -93,7 +93,7 @@ Feature: Self Profile
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
     And I remember my current profile picture
