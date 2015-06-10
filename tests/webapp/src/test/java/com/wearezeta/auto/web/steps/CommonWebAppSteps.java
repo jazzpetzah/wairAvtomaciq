@@ -766,6 +766,7 @@ public class CommonWebAppSteps {
 			for (LogEntry logEntry : logEntries) {
 				log.debug(logEntry.getMessage());
 			}
+			log.debug("--- END OF LOG ---");
 		}
 
 	}
@@ -802,7 +803,7 @@ public class CommonWebAppSteps {
 					// logout with JavaScript because otherwise backend will
 					// block
 					// us because of to many login requests
-					String logoutScript = "wire.auth.repository.logout();";
+					String logoutScript = "if (undefined != wire) wire.auth.repository.logout();";
 					JavascriptExecutor js = (JavascriptExecutor) driver;
 					js.executeScript(logoutScript);
 				}
