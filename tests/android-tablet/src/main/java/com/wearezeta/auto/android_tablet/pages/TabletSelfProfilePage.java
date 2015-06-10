@@ -64,7 +64,7 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 	public void changeSelfNameTo(String newName) throws Exception {
 		selfNameInput.clear();
 		selfNameInput.sendKeys(newName);
-		this.hideKeyboard();
+		this.getDriver().navigate().back();
 	}
 
 	public BufferedImage getScreenshot() throws Exception {
