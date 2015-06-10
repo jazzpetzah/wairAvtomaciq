@@ -72,7 +72,12 @@ public class PerformanceSteps {
 					final int MAX_ENTRIES_ON_SCREEN = 8;
 					int randomRange = (visibleContactsList.size() > MAX_ENTRIES_ON_SCREEN) ? MAX_ENTRIES_ON_SCREEN
 							: (visibleContactsList.size() - 1);
-					int randomChatIdx = perfCommon.random.nextInt(randomRange);
+					int randomChatIdx;
+					String convName;
+					do {
+						randomChatIdx = perfCommon.random.nextInt(randomRange);
+						convName = visibleContactsList.get(randomChatIdx).getText();
+					} while (convName.contains("tst"));
 					PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
 							.tapOnContactByIndex(visibleContactsList,
 									randomChatIdx);
