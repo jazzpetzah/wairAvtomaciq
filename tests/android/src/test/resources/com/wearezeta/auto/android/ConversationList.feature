@@ -44,26 +44,25 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | SoudCloudLink                                              |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id2177 @regression 
+  @id2177 @regression
   Scenario Outline: I can open and close people picker by UI button or swipe
-    Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
+    Given There is 1 user where <Name> is me
     Given I Sign in using login <Login> and password <Password>
-    Given I see Contact list
+    Given I see Contact list with no contacts
     When I press Open StartUI
     And I see People picker page
     And I press Clear button
-    Then I see Contact list
+    Then I see Contact list with no contacts
     And I do not see TOP PEOPLE
     When I press Open StartUI
     And I see People picker page
     And I swipe down people picker
-    Then I see Contact list
+    Then I see Contact list with no contacts
     And I do not see TOP PEOPLE
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
 
   @id1514 @regression
   Scenario Outline: Verify unsilince the conversation
