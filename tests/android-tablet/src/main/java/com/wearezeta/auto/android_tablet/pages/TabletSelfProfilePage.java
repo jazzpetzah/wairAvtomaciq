@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android_tablet.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -14,6 +15,10 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 	public static final String idSelfNameInput = "tet__profile__guided";
 	@FindBy(id = idSelfNameInput)
 	private WebElement selfNameInput;
+
+	public static final String idSelfProfileView = "ll_self_form";
+	@FindBy(id = idSelfProfileView)
+	private WebElement selfProfileView;
 
 	public static final Function<String, String> xpathSelfNameByContent = content -> String
 			.format("//*[@id='ttv__profile__name' and @value='%s']", content);
@@ -60,5 +65,15 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 		selfNameInput.clear();
 		selfNameInput.sendKeys(newName);
 		this.hideKeyboard();
+	}
+
+	public BufferedImage getScreenshot() throws Exception {
+		return this.getElementScreenshot(selfProfileView).orElseThrow(
+				IllegalStateException::new);
+	}
+
+	public void tapInTheCenter() throws Exception {
+		DriverUtils.tapInTheCenterOfTheElement(this.getDriver(),
+				selfProfileView);
 	}
 }

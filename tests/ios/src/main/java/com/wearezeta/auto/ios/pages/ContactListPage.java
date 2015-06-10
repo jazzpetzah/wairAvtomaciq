@@ -1,11 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.*;
 import java.util.concurrent.Future;
-
-import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -31,7 +28,6 @@ public class ContactListPage extends IOSPage {
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
 	private final double MIN_ACCEPTABLE_IMAGE_UNREADDOT_VALUE = 0.70;
-	private final double MIN_ACCEPTABLE_IMAGE_PING_VALUE = 0.50;
 
 	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE = 0.80;
 

@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.RasterFormatException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -80,7 +81,12 @@ public abstract class BasePage {
 		int h = elementSize.height;
 		final Optional<BufferedImage> screenshot = takeScreenshot();
 		if (screenshot.isPresent()) {
-			return Optional.of(screenshot.get().getSubimage(x, y, w, h));
+			try {
+				return Optional.of(screenshot.get().getSubimage(x, y, w, h));
+			} catch (RasterFormatException e) {
+				// Probably, landscape mode
+				return Optional.of(screenshot.get().getSubimage(y, x, h, w));
+			}
 		} else {
 			return Optional.empty();
 		}

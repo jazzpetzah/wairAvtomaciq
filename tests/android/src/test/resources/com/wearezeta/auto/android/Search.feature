@@ -97,28 +97,6 @@ Feature: Search
   #  Examples: 
   #    | Login      | Password      | Name      | Contact1  | Contact2  |
   #    | user1Email | user1Password | user1Name | user2Name | user3Name |
-
-  @id2213 @staging
-  Scenario Outline: I can dismiss PYMK by swipe
-    Given I see welcome screen
-    Given I press Join button
-    Given I press Camera button twice
-    Given I confirm selection
-    Given I enter name <Name>
-    Given I enter email <Email>
-    Given I enter password <Password>
-    Given I submit registration data
-    Given I see confirmation page
-    Given I verify registration address
-    When I wait for PYMK for 30 secs
-    And I hide keyboard
-    And I swipe on random connect
-    And I hide random connect by swipe
-    Then I do not see random connect
-
-    Examples: 
-      | Email      | Password      | Name      | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name |
       
   @id319 @regression
   Scenario Outline: I can create group chat from Search
@@ -141,7 +119,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName           |
       | user1Email | user1Password | user1Name | user3Name | user2Name | PeoplePicker GroupChat2 |
 
-  @id2214 @regressio
+  @id2214 @regression
   Scenario Outline: I can dismiss PYMK by Hide button
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>

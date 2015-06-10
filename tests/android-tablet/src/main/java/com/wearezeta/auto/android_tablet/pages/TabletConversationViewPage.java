@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
@@ -25,9 +26,24 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	@FindBy(id = AndroidLocators.DialogPage.idParticipantsBtn)
 	private WebElement showDetailsButton;
 
+	@FindBy(id = AndroidLocators.CommonLocators.idEditText)
+	private WebElement inputField;
+
+	public static final Function<String, String> xpathInputFieldByValue = value -> String
+			.format("//*[@id='%s' and @value='%s']",
+					AndroidLocators.CommonLocators.idEditText, value);
+
+	public static final Function<String, String> xpathConversationMessageByValue = value -> String
+			.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
+					value);
+
 	public TabletConversationViewPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
+	}
+
+	private DialogPage getDialogPage() throws Exception {
+		return (DialogPage) this.getAndroidPageInstance(DialogPage.class);
 	}
 
 	public boolean waitUntilVisible() throws Exception {
@@ -50,6 +66,43 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			throws Exception {
 		final By locator = By.xpath(xpathChatHeaderMessageByContent
 				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public void tapTextInput() {
+		inputField.click();
+	}
+
+	public void typeMessage(String message) {
+		inputField.sendKeys(message);
+	}
+
+	public void sendMessage() throws Exception {
+		inputField.sendKeys("\n");
+	}
+
+	public boolean waitUntilMessageIsVisible(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathConversationMessageByValue
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public void swipeLeftOnTextInput() throws Exception {
+		getDialogPage().swipeOnCursorInput();
+	}
+
+	public void tapPingButton() throws Exception {
+		getDialogPage().tapPingBtn();
+	}
+
+	public boolean waitUntilPingMessageIsVisible(String expectedMessage)
+			throws Exception {
+		return getDialogPage().waitForPingMessageWithText(expectedMessage);
+	}
+
+	public boolean waitUntilAPictureAppears() throws Exception {
+		final By locator = By.id(AndroidLocators.DialogPage.idDialogImages);
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 }

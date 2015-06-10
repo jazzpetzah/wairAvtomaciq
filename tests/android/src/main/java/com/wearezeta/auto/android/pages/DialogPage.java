@@ -55,7 +55,7 @@ public class DialogPage extends AndroidPage {
 	private WebElement cursorFrame;
 
 	public static final Function<String, String> xpathPingMessageByText = text -> String
-			.format("//*[@id='ttv__row_conversation__ping_message'] and @value='%s']",
+			.format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']",
 					text);
 
 	@FindBy(id = AndroidLocators.DialogPage.idPingIcon)
@@ -439,7 +439,7 @@ public class DialogPage extends AndroidPage {
 		getDriver().navigate().back();
 		return new ContactListPage(this.getLazyDriver());
 	}
-	
+
 	public boolean isHintVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(AndroidLocators.CommonLocators.idSearchHintClose));
@@ -648,7 +648,8 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
-	public boolean waitForPingMessageWithText(String expectedText) throws Exception {
+	public boolean waitForPingMessageWithText(String expectedText)
+			throws Exception {
 		final By locator = By.xpath(xpathPingMessageByText.apply(expectedText));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
