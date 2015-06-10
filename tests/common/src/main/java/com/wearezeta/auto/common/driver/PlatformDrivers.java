@@ -59,8 +59,8 @@ public final class PlatformDrivers {
 			String url, DesiredCapabilities capabilities, int maxRetryCount,
 			Consumer<RemoteWebDriver> initCompletedCallback,
 			Supplier<Boolean> beforeInitCallback) throws Exception {
-		final Platform platformInCapabilities = Platform
-				.getByName(capabilities.getCapability("platform").toString());
+		final Platform platformInCapabilities = Platform.getByName(capabilities
+				.getCapability("platformName").toString());
 		if (this.hasDriver(platformInCapabilities)) {
 			this.quitDriver(platformInCapabilities);
 		}
