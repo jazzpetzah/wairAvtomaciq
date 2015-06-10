@@ -10,6 +10,10 @@ public class WebAppExecutionContext {
 			.getLog(WebAppExecutionContext.class.getSimpleName());
 
 	private static String platform = "";
+	private static Browser browser = null;
+	private static String browserName;
+	private static String browserVersion;
+
 	static {
 		String osName = System.getProperty("com.wire.os.name");
 		String osVersion = System.getProperty("com.wire.os.version");
@@ -18,6 +22,10 @@ public class WebAppExecutionContext {
 		if (osVersion != null && !osVersion.equals("")) {
 			platform = platform + " " + osVersion;
 		}
+
+		browserName = System.getProperty("com.wire.browser.name");
+		browserVersion = System.getProperty("com.wire.browser.version");
+		browser = Browser.fromString(browserName);
 	}
 
 	public static String getPlatform() {
@@ -27,16 +35,6 @@ public class WebAppExecutionContext {
 
 	public static boolean isCurrentPlatfromWindows() {
 		return getPlatform().toLowerCase().contains("win");
-	}
-
-	private static Browser browser = null;
-	private static String browserName;
-	private static String browserVersion;
-
-	static {
-		browserName = System.getProperty("com.wire.browser.name");
-		browserVersion = System.getProperty("com.wire.browser.version");
-		browser = Browser.fromString(browserName);
 	}
 
 	public static Browser getBrowser() {
