@@ -196,7 +196,7 @@ Feature: Conversation List
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
     Given Contact <Contact> send number <Number> of message to user <Name>
-    Given I rotate UI to landscapety c
+    Given I rotate UI to landscape
     Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And I remember the state of the first conversation cell
