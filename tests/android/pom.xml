@@ -22,7 +22,7 @@
 		<driverTimeoutSeconds>7</driverTimeoutSeconds>
 		<androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
 		<androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
-		<defaultEmail>smoketester.android@wearezeta.com</defaultEmail>
+		<defaultEmail>smoketester@wire.com</defaultEmail>
 		<pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
 		<androidVersion>44</androidVersion>
 		<resourceFilePath>/Project/</resourceFilePath>

@@ -23,7 +23,7 @@
 		<iosImagesPath>img/</iosImagesPath>
 		<swipeScriptPath>swipeInWindow</swipeScriptPath>
 		<iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>
-		<defaultEmail>smoketester.ios@wearezeta.com</defaultEmail>
+		<defaultEmail>smoketester@wire.com</defaultEmail>
 		<iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
 		<deviceName>iPad Air</deviceName>
 		<backendType>staging</backendType>

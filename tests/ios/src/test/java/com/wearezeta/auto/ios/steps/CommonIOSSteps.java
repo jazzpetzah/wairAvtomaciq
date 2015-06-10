@@ -157,7 +157,7 @@ public class CommonIOSSteps {
 	public void IDismissAlert() throws Exception {
 		PagesCollection.loginPage.dismissAlert();
 	}
-	
+
 	/**
 	 * Hide keyboard using mobile command
 	 * 
@@ -169,7 +169,7 @@ public class CommonIOSSteps {
 	public void IHideKeyboard() throws Exception {
 		PagesCollection.loginPage.hideKeyboard();
 	}
-	
+
 	/**
 	 * Hide keyboard by click on hide keyboard button
 	 * 
@@ -181,7 +181,6 @@ public class CommonIOSSteps {
 	public void IClickHideKeyboardBtn() throws Exception {
 		PagesCollection.loginPage.clickHideKeyboarButton();
 	}
-	
 
 	/**
 	 * Closes the app for a certain amount of time in seconds
@@ -196,11 +195,12 @@ public class CommonIOSSteps {
 	public void ICloseApp(int seconds) throws Exception {
 		PagesCollection.iOSPage.minimizeApplication(seconds);
 	}
-	
+
 	/**
 	 * Locks screen for a certain amount of time in seconds
+	 * 
 	 * @param seconds
-	 * 			time in seconds to lock screen
+	 *            time in seconds to lock screen
 	 * @step.^I lock screen for (.*) seconds$
 	 * @throws Exception
 	 */
@@ -383,7 +383,7 @@ public class CommonIOSSteps {
 			String startLetter) throws Exception {
 		String newName = startLetter.concat(UUID.randomUUID().toString()
 				.replace("-", ""));
-		newName = newName.substring(0, newName.length() / 2 );
+		newName = newName.substring(0, newName.length() / 2);
 		commonSteps.IChangeUserName(userNameAlias, newName);
 	}
 
@@ -482,7 +482,7 @@ public class CommonIOSSteps {
 		PagesCollection.loginPage.rotateScreen(orientation);
 		Thread.sleep(1000); // fix for animation
 	}
-	
+
 	/**
 	 * Tap in center of the screen
 	 * 
@@ -494,7 +494,7 @@ public class CommonIOSSteps {
 	public void ITapOnCenterOfTheScreen() throws Exception {
 		PagesCollection.loginPage.tapOnCenterOfScreen();
 	}
-	
+
 	/**
 	 * Tap in top left corner of the screen
 	 * 
