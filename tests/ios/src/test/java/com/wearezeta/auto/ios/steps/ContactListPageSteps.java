@@ -440,62 +440,12 @@ public class ContactListPageSteps {
 				FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.archiveConversation(conversation);
 	}
-
-	/**
-	 * Verifies that an unread message dot is in the conversation list
-	 * 
-	 * @step. ^I see unread messages dot$
-	 * 
-	 * @param conversation
-	 *            conversation name to check for unread dot
-	 * @param dotSize
-	 *            tells if dot is big or small
-	 * 
-	 * @throws IOException
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I see unread (.*) messages dot for (.*)$")
-	public void ISeeUnreadMessagesDot(String dotSize, String conversation)
-			throws IOException, Exception {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean unreadDotSeen = false;
-		if (dotSize.equals("big")) {
-			unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(
-					true, true, conversation);
-		} else {
-			unreadDotSeen = PagesCollection.contactListPage.unreadDotIsVisible(
-					true, false, conversation);
-		}
-		Assert.assertTrue("No unread dot visible.", unreadDotSeen);
-	}
-
-	/**
-	 * Verifies that an unread message dot is NOT seen in the conversation list
-	 * 
-	 * @step. ^I dont see an unread messages dot$
-	 * 
-	 * @param conversation
-	 *            conversation name to check for unread dot
-	 * 
-	 * @throws IOException
-	 * @throws Exception
-	 * 
-	 */
-	@Then("^I dont see an unread message dot for (.*)$")
-	public void IDontSeeAnUnreadMessageDot(String conversation)
-			throws IOException, Exception {
-		conversation = usrMgr.findUserByNameOrNameAlias(conversation).getName();
-		boolean noUnreadDotSeen = PagesCollection.contactListPage
-				.unreadDotIsVisible(false, false, conversation);
-		Assert.assertTrue("Unread dot visible.", noUnreadDotSeen);
-	}
 	
-	private BufferedImage blankReferenceImage = null; 
+	private BufferedImage referenceImage = null; 
 	private static final double MAX_OVERLAP_SCORE = 0.70;
 	
 	/**
-	 * Verifies that a ping symbol is seen in the conversation list
+	 * Takes screenshot of conversation cell of first contact
 	 * 
 	 * @step. ^I remember the state of the first conversation cell$
 	 * 
@@ -504,27 +454,27 @@ public class ContactListPageSteps {
 	 */
 	@When("^I remember the state of the first conversation cell$")
 	public void IRememberConversationState() throws Exception {
-		blankReferenceImage = PagesCollection.contactListPage.getScreenshotFirstContact();
+		referenceImage = PagesCollection.contactListPage.getScreenshotFirstContact();
 	}
-
+	
 	/**
-	 * Verifies that a ping symbol is seen in the conversation list
+	 * Verifies that the change of state of first conversation cell is visible
 	 * 
-	 * @step. ^I see ping symbol$
+	 * @step. ^I see change of state for first conversation cell$
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@Then("I see ping symbol")
-	public void ISeePingSymbol() throws Exception {
-		if (blankReferenceImage == null) {
+	@Then("^I see change of state for first conversation cell$")
+	public void ISeeFirstConvCellChange() throws Exception {
+		if (referenceImage == null) {
 			throw new IllegalStateException(
 					"This step requires you to remember the initial state of the conversation cell");
 		}
 		double score = -1;
-		final BufferedImage pingSymbol = PagesCollection.contactListPage
+		final BufferedImage convCellState = PagesCollection.contactListPage
 				.getScreenshotFirstContact();
-		score = ImageUtil.getOverlapScore(pingSymbol, blankReferenceImage,
+		score = ImageUtil.getOverlapScore(convCellState, referenceImage,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		Assert.assertTrue("Ping symbol not visible", score <= MAX_OVERLAP_SCORE);
 
