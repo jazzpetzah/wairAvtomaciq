@@ -89,8 +89,8 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(id = idSearchButton)
 	private WebElement searchButton;
 
-	protected static final String xpathTopConversationsListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
-	protected static final String idSpinnerConversationsListLoadingIndicator = "liv__conversations__loading_indicator";
+	private static final String xpathTopConversationsListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
+	private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
@@ -230,20 +230,23 @@ public class ContactListPage extends AndroidPage {
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
 				.format("It seems that conversation list has not been loaded within %s seconds (login button is still visible)",
 						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+
 		final By topConvoListLoadingProgressLocator = By
 				.xpath(xpathTopConversationsListLoadingIndicator);
 		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				topConvoListLoadingProgressLocator,
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
 			log.warn(String
-					.format("It seems that conversation list has not been loaded within %s seconds (progress bar is still visible)",
+					.format("It seems that conversation list has not been loaded within %s seconds (the progress bar is still visible)",
 							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
 		}
+
 		final By selfAvatarLocator = By.id(idSelfUserAvatar);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				selfAvatarLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : "Self avatar is not visible on top of conversations list";
+
 		final By spinnerConvoListLoadingProgressLocator = By
-				.id(idSpinnerConversationsListLoadingIndicator);
+				.xpath(xpathSpinnerConversationsListLoadingIndicator);
 		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				spinnerConvoListLoadingProgressLocator,
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
@@ -251,6 +254,7 @@ public class ContactListPage extends AndroidPage {
 					.format("It seems that conversation list has not been loaded within %s seconds (the spinner is still visible)",
 							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
 		}
+
 		final By loadingItemLocator = By.xpath(xpathLoadingContactListItem);
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				loadingItemLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
