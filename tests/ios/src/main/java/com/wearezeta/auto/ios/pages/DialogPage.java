@@ -908,6 +908,6 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void clickOnPlayVideoButton() throws Exception{
-        youtubeCell.click();
-    }
+		youtubeCell.click();
+	}
 }

@@ -37,8 +37,11 @@ public class TabletDialogPageSteps {
 		TabletPagesCollection.tabletConversationDetailPopoverPage = (TabletConversationDetailPopoverPage) page;
 	}
 	
-	
-	
+	/**
+	 * Sending long message on the iPad and media link
+	 * @step. ^I type and send long message for tablet and media link (.*)$
+	 * @throws Exception
+	 */
 	@When("I type and send long message for tablet and media link (.*)")
 	public void ITypeAndSendLongTextAndMediaLink(String link) throws Exception {
 		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
@@ -46,6 +49,11 @@ public class TabletDialogPageSteps {
 		PagesCollection.dialogPage.sendMessageUsingScript(link);
 	}
 	
+	/** 
+	 * Clicking on video play button in youtube player
+	 * @step ^I click play video button$
+	 * @throws Exception
+	 */
 	@When("I click play video button")
     public void IClickPlayButton() throws Exception{
         PagesCollection.dialogPage.clickOnPlayVideoButton();
