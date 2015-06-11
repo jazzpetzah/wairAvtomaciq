@@ -1,11 +1,9 @@
 package com.wearezeta.auto.common.driver;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -75,35 +73,19 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		return this.sessionHelper.isSessionLost();
 	}
 
-	private int getCoord(double startC, double endC, double current,
-			double duration) {
-		return (int) Math.round(startC + (endC - startC) / duration * current);
-	}
-
-	private final static int SWIPE_STEP_DURATION_MILLISECONDS = 25;
-
 	@Override
 	public void swipe(int startx, int starty, int endx, int endy,
 			int durationMilliseconds) {
-		int duration = 1;
-		if (durationMilliseconds > SWIPE_STEP_DURATION_MILLISECONDS) {
-			duration = (durationMilliseconds % SWIPE_STEP_DURATION_MILLISECONDS == 0) ? (durationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS)
-					: (durationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS + 1);
+		final String adbCommandsChain = String.format(
+				"adb shell input swipe %d %d %d %d %d", startx, starty, endx,
+				endy, durationMilliseconds);
+		try {
+			Runtime.getRuntime()
+					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
+					.waitFor();
+		} catch (Exception e) {
+			throw new WebDriverException(e.getMessage(), e);
 		}
-		int current = 1;
-		final TouchActions ta = new TouchActions(this);
-		ta.down(startx, starty).perform();
-		do {
-			try {
-				Thread.sleep(SWIPE_STEP_DURATION_MILLISECONDS);
-			} catch (InterruptedException e) {
-				Throwables.propagate(e);
-			}
-			ta.move(getCoord(startx, endx, current, duration),
-					getCoord(starty, endy, current, duration)).perform();
-			current++;
-		} while (current <= duration);
-		ta.up(endx, endy).perform();
 	}
 
 	@Override
@@ -227,53 +209,6 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 							DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000,
 							driverCommand));
 			throw e;
-		}
-	}
-
-	private static String getAdbOutput(String cmdLine) throws Exception {
-		String result = "";
-		String adbCommand = "adb " + cmdLine;
-		final Process process = Runtime.getRuntime().exec(
-				new String[] { "/bin/bash", "-c", adbCommand });
-		if (process == null) {
-			throw new RuntimeException(String.format(
-					"Failed to execute command line '%s'", cmdLine));
-		}
-		BufferedReader in = null;
-		try {
-			in = new BufferedReader(new InputStreamReader(
-					process.getInputStream()));
-			String s;
-			while ((s = in.readLine()) != null) {
-				result = s + "\n";
-			}
-		} finally {
-			if (in != null) {
-				in.close();
-			}
-		}
-
-		return result.trim();
-	}
-
-	/**
-	 * Workaround for Selendroid issue when correct screen orientation is
-	 * returned only for the step where it is actually changed :-@
-	 *
-	 */
-	@Override
-	public ScreenOrientation getOrientation() {
-		String output = "";
-		try {
-			output = getAdbOutput("shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1");
-		} catch (Exception e) {
-			e.printStackTrace();
-			return super.getOrientation();
-		}
-		if (output.trim().equals("1")) {
-			return ScreenOrientation.LANDSCAPE;
-		} else {
-			return ScreenOrientation.PORTRAIT;
 		}
 	}
 
