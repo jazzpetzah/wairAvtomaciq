@@ -3,16 +3,15 @@ package com.wearezeta.auto.android.pages;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -30,58 +29,92 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public static final String LEAVE_CONVERSATION_BUTTON = "Leave conversation";
 	public static final String LEAVE_BUTTON = "LEAVE";
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeader)
+	private static final Function<String, String> xpathPartcipantNameByText = text -> String
+			.format("//*[@id='ttv__participants__header' and @value='%s']",
+					text);
+
+	private static final Function<String, String> xpathPartcipantEmailByText = text -> String
+			.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
+					text);
+
+	private static final Function<String, String> xpathSingleParticipantNameByText = text -> String
+			.format("//*[@id='ttv__single_participants__header' and @value='%s']",
+					text);
+
+	private static final Function<String, String> xpathSingleParticipantEmailByText = text -> String
+			.format("//*[@id='ttv__single_participants__sub_header' and @value='%s']",
+					text);
+
+	// Names on avatars are in uppercase and only the first part is visible
+	private static final Function<String, String> xpathParticipantAvatarByName = name -> String
+			.format("//*[@value='%s']/parent::*/parent::*", name.toUpperCase()
+					.split("\\s+")[0]);
+
+	private static final String idParticipantsHeader = "ttv__participants__header";
+	@FindBy(id = idParticipantsHeader)
 	private WebElement groupChatName;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeaderEditable)
+	private static final String idParticipantsHeaderEditable = "taet__participants__header__editable";
+	@FindBy(id = idParticipantsHeaderEditable)
 	private WebElement groupChatNameEditable;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idUserProfileConfirmationMenu)
+	private static final String idUserProfileConfirmationMenu = "user_profile_confirmation_menu";
+	@FindBy(id = idUserProfileConfirmationMenu)
 	private WebElement confirmMenu;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idBlockButton)
+	private static final String idBlockButton = "ttv__conversation_settings__block";
+	@FindBy(id = idBlockButton)
 	private WebElement blockButton;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idRightActionButton)
+	public static final String idRightActionButton = "gtv__participants__right__action";
+	@FindBy(id = idRightActionButton)
 	private WebElement rightConversationButton;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idRenameButton)
+	private static final String idRenameButton = "ttv__conversation_settings__rename";
+	@FindBy(id = idRenameButton)
 	private WebElement renameButton;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idArchiveButton)
+	private static final String idArchiveButton = "ttv__conversation_settings__archive";
+	@FindBy(id = idArchiveButton)
 	private WebElement archiveButton;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idLeaveButton)
+	private static final String idLeaveButton = "ttv__conversation_settings__leave";
+	@FindBy(id = idLeaveButton)
 	private WebElement leaveButton;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idSilenceButton)
+	private static final String idSilenceButton = "ttv__conversation_settings__silence";
+	@FindBy(id = idSilenceButton)
 	private WebElement silenceButton;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idUnblockBtn)
+	public static final String idUnblockBtn = "zb__connect_request__unblock_button";
+	@FindBy(id = idUnblockBtn)
 	private WebElement unblockButton;
 
-	@FindBy(id = AndroidLocators.PeoplePickerPage.idParticipantsClose)
+	@FindBy(id = PeoplePickerPage.idParticipantsClose)
 	private WebElement closeButton;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
+	@FindBy(how = How.CLASS_NAME, using = classNameFrameLayout)
 	private WebElement frameLayout;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idPager)
+	@FindBy(id = idPager)
 	private WebElement backGround;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idConfirmBtn)
+	@FindBy(id = idConfirmBtn)
 	private WebElement confirmBtn;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idLeftActionButton)
+	private static final String idLeftActionButton = "gtv__participants__left__action";
+	@FindBy(id = idLeftActionButton)
 	private WebElement addContactBtn;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idLeftActionLabel)
+	private static final String idLeftActionLabel = "ttv__participants__left_label";
+	@FindBy(id = idLeftActionLabel)
 	private WebElement addContactLabel;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idParticipantsSubHeader)
+	private static final String idParticipantsSubHeader = "ttv__participants__sub_header";
+	@FindBy(id = idParticipantsSubHeader)
 	private WebElement participantsSubHeader;
 
-	@FindBy(id = AndroidLocators.ConnectToPage.idConnectToHeader)
+	@FindBy(id = ConnectToPage.idConnectToHeader)
 	private List<WebElement> connectToHeader;
 
 	public OtherUserPersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
@@ -125,10 +158,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	private static By[] getOneToOneOptionsMenuLocators() {
-		return new By[] {
-				By.id(AndroidLocators.OtherUserPersonalInfoPage.idBlockButton),
-				By.id(AndroidLocators.OtherUserPersonalInfoPage.idSilenceButton),
-				By.id(AndroidLocators.OtherUserPersonalInfoPage.idArchiveButton) };
+		return new By[] { By.id(idBlockButton), By.id(idSilenceButton),
+				By.id(idArchiveButton) };
 	}
 
 	private static final int MENU_ITEM_VISIBILITY_TIMEOUT_SECONDS = 5;
@@ -154,13 +185,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	private static By[] getUserProfileLocators() {
-		return new By[] {
-				By.id(AndroidLocators.PeoplePickerPage.idParticipantsClose),
-				By.id(AndroidLocators.OtherUserPersonalInfoPage.idRightActionButton),
-				By.id(AndroidLocators.OtherUserPersonalInfoPage.idLeftActionButton),
-				By.id(AndroidLocators.OtherUserPersonalInfoPage.idLeftActionLabel),
-				By.id(AndroidLocators.OtherUserPersonalInfoPage.idParticipantsSubHeader),
-				By.id(AndroidLocators.OtherUserPersonalInfoPage.idParticipantsHeader) };
+		return new By[] { By.id(PeoplePickerPage.idParticipantsClose),
+				By.id(idRightActionButton), By.id(idLeftActionButton),
+				By.id(idLeftActionLabel), By.id(idParticipantsSubHeader),
+				By.id(idParticipantsHeader) };
 	}
 
 	public boolean isOneToOneUserProfileUIContentNotVisible() throws Exception {
@@ -195,30 +223,20 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isOtherUserNameVisible(String expectedName) throws Exception {
-		return DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						getDriver(),
-						By.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathPartcipantNameByText
-								.apply(expectedName)), 1)
-				|| DriverUtils
-						.waitUntilLocatorIsDisplayed(
-								getDriver(),
-								By.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathSingleParticipantNameByText
-										.apply(expectedName)), 1);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathPartcipantNameByText.apply(expectedName)), 1)
+				|| DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
+						.xpath(xpathSingleParticipantNameByText
+								.apply(expectedName)), 1);
 	}
 
 	public boolean isOtherUserMailVisible(String expectedEmail)
 			throws Exception {
-		return DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						getDriver(),
-						By.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathPartcipantEmailByText
-								.apply(expectedEmail)), 1)
-				|| DriverUtils
-						.waitUntilLocatorIsDisplayed(
-								getDriver(),
-								By.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathSingleParticipantEmailByText
-										.apply(expectedEmail)), 1);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathPartcipantEmailByText.apply(expectedEmail)), 1)
+				|| DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
+						.xpath(xpathSingleParticipantEmailByText
+								.apply(expectedEmail)), 1);
 	}
 
 	public boolean isConversationAlertVisible() {
@@ -248,9 +266,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isParticipantExists(String name) throws Exception {
-		final By locator = By
-				.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathParticipantAvatarByName
-						.apply(name));
+		final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
@@ -268,9 +284,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public AndroidPage tapOnParticipant(String name) throws Exception {
 		this.getWait().until(ExpectedConditions.visibilityOf(groupChatName));
 		try {
-			final By nameLocator = By
-					.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathParticipantAvatarByName
-							.apply(name));
+			final By nameLocator = By.xpath(xpathParticipantAvatarByName
+					.apply(name));
 			assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 					nameLocator);
 			this.getDriver().findElement(nameLocator).click();
@@ -301,9 +316,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isParticipantAvatarVisible(String name) throws Exception {
-		final By locator = By
-				.xpath(AndroidLocators.OtherUserPersonalInfoPage.xpathParticipantAvatarByName
-						.apply(name));
+		final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 }

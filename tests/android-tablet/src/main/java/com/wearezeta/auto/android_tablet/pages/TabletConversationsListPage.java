@@ -5,7 +5,6 @@ import java.util.concurrent.Future;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -60,24 +59,22 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 	}
 
 	public boolean waitUntilConversationIsVisible(String name) throws Exception {
-		final By locator = By
-				.xpath(AndroidLocators.ContactListPage.xpathContactByName
-						.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 20);
+		final By locator = By.xpath(ContactListPage.xpathContactByName
+				.apply(name));
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(getDriver(), locator, 20);
 	}
 
 	public boolean waitUntilConversationIsInvisible(String name)
 			throws Exception {
-		final By locator = By
-				.xpath(AndroidLocators.ContactListPage.xpathContactByName
-						.apply(name));
+		final By locator = By.xpath(ContactListPage.xpathContactByName
+				.apply(name));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
 	public void tapConversation(String name) throws Exception {
-		final By locator = By
-				.xpath(AndroidLocators.ContactListPage.xpathContactByName
-						.apply(name));
+		final By locator = By.xpath(ContactListPage.xpathContactByName
+				.apply(name));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
 				.format("The conversation '%s' does not exist in the conversations list",
 						name);
@@ -86,17 +83,15 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
 	public boolean waitUntilConversationIsSilenced(String name)
 			throws Exception {
-		final By locator = By
-				.xpath(AndroidLocators.ContactListPage.xpathMutedIconByConvoName
-						.apply(name));
+		final By locator = By.xpath(ContactListPage.xpathMutedIconByConvoName
+				.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public boolean waitUntilConversationIsNotSilenced(String name)
 			throws Exception {
-		final By locator = By
-				.xpath(AndroidLocators.ContactListPage.xpathMutedIconByConvoName
-						.apply(name));
+		final By locator = By.xpath(ContactListPage.xpathMutedIconByConvoName
+				.apply(name));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 

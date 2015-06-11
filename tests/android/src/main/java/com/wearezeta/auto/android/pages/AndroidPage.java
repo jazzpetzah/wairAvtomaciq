@@ -15,7 +15,6 @@ import org.openqa.selenium.support.FindBy;
 import android.view.KeyEvent;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -25,10 +24,27 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class AndroidPage extends BasePage {
 
-	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
+	protected static final String idConfirmBtn = "confirm";
+
+	protected static final String idEditText = "cet__cursor_view";
+
+	protected static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";
+
+	protected static final String idCloseImageBtn = "gtv__single_image_message__close";
+
+	protected static final String idSearchHintClose = "zb__search_hint__close_button";
+
+	protected static final String idConversationSendOption = "tv_conv_list_topic";
+
+	public static final String xpathDismissUpdateButton = "//*[@value='Dismiss']";
+
+	protected static final String classNameFrameLayout = "FrameLayout";
+
+	protected static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
 
-	@FindBy(id = AndroidLocators.CommonLocators.idPager)
+	protected static final String idPager = "conversation_pager";
+	@FindBy(id = idPager)
 	private WebElement content;
 
 	@Override
@@ -59,11 +75,8 @@ public abstract class AndroidPage extends BasePage {
 				// Cannot handle external apps properly :-(
 				AndroidCommonUtils.genericScreenTap(x, y);
 				try {
-					if (DriverUtils
-							.waitUntilLocatorIsDisplayed(
-									getDriver(),
-									By.xpath(AndroidLocators.DialogPage.xpathConfirmOKButton),
-									1)) {
+					if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+							By.xpath(DialogPage.xpathConfirmOKButton), 1)) {
 						return;
 					}
 				} catch (WebDriverException e) {

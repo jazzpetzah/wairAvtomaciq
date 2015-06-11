@@ -17,7 +17,7 @@ import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidLoggingUtils;
 import com.wearezeta.auto.android.common.reporter.LogcatListener;
-import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
@@ -146,8 +146,7 @@ public class CommonAndroidTabletSteps {
 	private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
 	private void onDriverInitFinished(RemoteWebDriver drv) {
-		final By locator = By
-				.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton);
+		final By locator = By.xpath(AndroidPage.xpathDismissUpdateButton);
 		final long millisecondsStarted = System.currentTimeMillis();
 		WebDriverException savedException = null;
 		do {

@@ -4,7 +4,7 @@ import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ConversationViewCameraPage extends AbstractCameraPage {
@@ -16,7 +16,7 @@ public class ConversationViewCameraPage extends AbstractCameraPage {
 
 	@Override
 	protected By getLensButtonLocator() {
-		return By.id(AndroidLocators.DialogPage.idAddPicture);
+		return By.id(DialogPage.idAddPicture);
 	}
 
 }

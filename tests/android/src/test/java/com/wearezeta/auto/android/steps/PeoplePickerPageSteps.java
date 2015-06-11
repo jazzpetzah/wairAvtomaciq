@@ -255,18 +255,6 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Tap on Send an invitation
-	 * 
-	 * @step. ^I tap on Send an invitation$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I tap on Send an invitation$")
-	public void WhenITapOnSendAnInvitation() throws Exception {
-		getPeoplePickerPage().tapOnSendInvitation();
-	}
-
-	/**
 	 * Clicks on the Add to conversation button
 	 * 
 	 * @step. ^I click on Add to conversation button$

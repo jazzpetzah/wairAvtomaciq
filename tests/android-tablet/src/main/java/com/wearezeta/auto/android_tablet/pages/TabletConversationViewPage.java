@@ -7,7 +7,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -23,15 +22,15 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			.format("//*[@id='ttv__row_conversation__connect_request__chathead_footer__label' and contains(@value, '%s')]",
 					content);
 
-	@FindBy(id = AndroidLocators.DialogPage.idParticipantsBtn)
+	@FindBy(id = DialogPage.idParticipantsBtn)
 	private WebElement showDetailsButton;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idEditText)
+	@FindBy(id = idEditText)
 	private WebElement inputField;
 
 	public static final Function<String, String> xpathInputFieldByValue = value -> String
 			.format("//*[@id='%s' and @value='%s']",
-					AndroidLocators.CommonLocators.idEditText, value);
+					idEditText, value);
 
 	public static final Function<String, String> xpathConversationMessageByValue = value -> String
 			.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
@@ -104,7 +103,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	}
 
 	public boolean waitUntilAPictureAppears() throws Exception {
-		final By locator = By.id(AndroidLocators.DialogPage.idDialogImages);
+		final By locator = By.id(DialogPage.idDialogImages);
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 

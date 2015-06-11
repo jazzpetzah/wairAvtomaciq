@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
@@ -139,8 +138,8 @@ public class AndroidCommonUtils extends CommonUtils {
 
 	public static String readClientVersionFromAdb() throws Exception {
 		final String output = getAdbOutput(String.format(
-				"shell dumpsys package %s | grep versionName",
-				CommonUtils.getAndroidPackageFromConfig(AndroidLocators.class)));
+				"shell dumpsys package %s | grep versionName", CommonUtils
+						.getAndroidPackageFromConfig(AndroidCommonUtils.class)));
 		if (output.contains("=")) {
 			return output.substring(output.indexOf("="), output.length());
 		} else {
@@ -273,9 +272,10 @@ public class AndroidCommonUtils extends CommonUtils {
 	public static void rotatePortrait() throws Exception {
 		executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:0");
 	}
-	
+
 	/**
-	 * http://stackoverflow.com/questions/13850192/how-to-lock-android-screen-via-adb
+	 * http://stackoverflow.com/questions/13850192/how-to-lock-android-screen-
+	 * via-adb
 	 * 
 	 * @throws Exception
 	 */

@@ -7,13 +7,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class TabletPeoplePickerPage extends AndroidTabletPage {
-	@FindBy(id = AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn)
+	@FindBy(id = PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement closePeoplePickerBtn;
 
 	public static final String xpathTopPeopleHeader = "//*[@id='ttv_pickuser__list_header_title' and @value='TOP PEOPLE']";
@@ -38,17 +37,17 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 
 	public boolean waitUntilVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn));
+				By.id(PeoplePickerPage.idPeoplePickerClearbtn));
 	}
 
 	public boolean waitUntilInvisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn));
+				By.id(PeoplePickerPage.idPeoplePickerClearbtn));
 	}
 
 	public void tapCloseButton() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn));
+				By.id(PeoplePickerPage.idPeoplePickerClearbtn));
 		closePeoplePickerBtn.click();
 	}
 
@@ -58,7 +57,7 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 
 	public void tapFoundItem(String item) throws Exception {
 		final By locator = By
-				.xpath(AndroidLocators.PeoplePickerPage.xpathPeoplePickerContactByName
+				.xpath(PeoplePickerPage.xpathPeoplePickerContactByName
 						.apply(item));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
 				.format("The item '%s' is not visible in People Picker search list after the defualt timeout expired",

@@ -7,16 +7,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class AboutPage extends AndroidPage {
-	@FindBy(id = AndroidLocators.AboutPage.idAboutLogo)
-	private WebElement aboutLogo;
 
-	@FindBy(xpath = AndroidLocators.AboutPage.xpathAboutClose)
+	private static final String idAboutLogo = "iv__about__logo";
+
+	private static final String xpathAboutClose = "//*[@id='fl__about__container']//GlyphTextView";
+	@FindBy(xpath = xpathAboutClose)
 	private WebElement aboutClose;
 
 	public AboutPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -30,7 +30,8 @@ public class AboutPage extends AndroidPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(aboutLogo);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idAboutLogo));
 	}
 
 	public PersonalInfoPage tapOnVersion() throws Exception {
@@ -40,7 +41,7 @@ public class AboutPage extends AndroidPage {
 
 	public boolean isInvisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.xpath(AndroidLocators.AboutPage.xpathAboutClose));
+				By.xpath(xpathAboutClose));
 	}
 
 }
