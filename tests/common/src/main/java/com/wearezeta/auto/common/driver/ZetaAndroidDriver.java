@@ -80,7 +80,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		return (int) Math.round(startC + (endC - startC) / duration * current);
 	}
 
-	private final static int SWIPE_STEP_DURATION_MILLISECONDS = 50;
+	private final static int SWIPE_STEP_DURATION_MILLISECONDS = 25;
 
 	@Override
 	public void swipe(int startx, int starty, int endx, int endy,
@@ -184,7 +184,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		}
 	}
 
-	private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 3000;
+	private static final long DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS = 2000;
 	private static final String SERVER_SIDE_ERROR_SIGNATURE = "unknown server-side error";
 
 	/**

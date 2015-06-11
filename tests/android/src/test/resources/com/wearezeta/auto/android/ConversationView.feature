@@ -231,10 +231,6 @@ Feature: Conversation View
     Then I see new photo in the dialog
     And I select last photo in dialog
     And I rotate UI to landscape
-    And I tap conversation details button
-    And I rotate UI to portrait
-    Then I select last photo in dialog
-    And I rotate UI to landscape
     And I swipe down on dialog page
     And I rotate UI to portrait
     Then I select last photo in dialog
