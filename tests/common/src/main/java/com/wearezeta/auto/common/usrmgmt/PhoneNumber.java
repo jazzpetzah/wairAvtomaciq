@@ -61,7 +61,7 @@ public final class PhoneNumber {
 		for (int i = 0; i < MIN_NUMBER_LENGTH
 				- prefix.length()
 				+ rand.nextInt(MAX_NUMBER_LENGTH - MIN_NUMBER_LENGTH
-						+ prefix.length() - 1); i++) {
+						+ prefix.length() - 2); i++) {
 			result.append(Integer.toString(rand.nextInt(10)));
 		}
 		return result.toString();
