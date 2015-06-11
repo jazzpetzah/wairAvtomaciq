@@ -18,7 +18,7 @@ Feature: Archive
       | user1Email | user1Password | user1Name | user2Name | user3Name | Hello   |
 
   @regression @id1537
-  Scenario Outline: Verify acrhived list disappears if there are no more archived conversations
+  Scenario Outline: Verify archived list disappears if there are no more archived conversations
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
     Given I switch to Sign In page
