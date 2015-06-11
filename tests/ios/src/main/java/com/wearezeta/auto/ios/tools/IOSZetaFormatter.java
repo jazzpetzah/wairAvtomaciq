@@ -34,7 +34,7 @@ public class IOSZetaFormatter extends ZetaFormatter {
 			try {
 				String[] picturepath = new String[] { CommonUtils
 						.getUserPicturePathFromConfig(IOSZetaFormatter.class) };
-				IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.1",
+				IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.x",
 						picturepath, true, true);
 			} catch (Exception ex) {
 				ex.printStackTrace();

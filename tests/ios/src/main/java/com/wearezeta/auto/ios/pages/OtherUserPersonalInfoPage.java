@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -130,9 +131,10 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		return nameField.getAttribute("value");
 	}
 
-	public String getEmailFieldValue() {
+	public String getEmailFieldValue() throws Exception {
 		String result = "";
 		try {
+			DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(IOSLocators.xpathOtherPersonalInfoPageEmailField));
 			result = emailField.getAttribute("value");
 		} catch (NoSuchElementException ex) {
 
