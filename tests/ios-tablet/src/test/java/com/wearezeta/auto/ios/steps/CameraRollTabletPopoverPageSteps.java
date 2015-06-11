@@ -1,10 +1,19 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.ios.pages.TabletPagesCollection;
+import com.wearezeta.auto.ios.pages.CameraRollTabletPopoverPage;
 
 import cucumber.api.java.en.When;
 
 public class CameraRollTabletPopoverPageSteps {
+
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private CameraRollTabletPopoverPage getCameraRollTabletPopoverPage()
+			throws Exception {
+		return (CameraRollTabletPopoverPage) pagesCollecton
+				.getPage(CameraRollTabletPopoverPage.class);
+	}
 
 	/**
 	 * Tap on Camera Roll button
@@ -15,8 +24,7 @@ public class CameraRollTabletPopoverPageSteps {
 	 */
 	@When("^I press Camera Roll button on iPad$")
 	public void IPressCameraRollButton() throws Throwable {
-		TabletPagesCollection.cameraRolliPadPopoverPage
-				.pressSelectFromLibraryButtoniPad();
+		getCameraRollTabletPopoverPage().pressSelectFromLibraryButtoniPad();
 	}
 
 	/**
@@ -28,8 +36,7 @@ public class CameraRollTabletPopoverPageSteps {
 	 */
 	@When("^I choose a picture from camera roll on iPad popover$")
 	public void IChooseAPictureFromCameraRoll() throws Throwable {
-		TabletPagesCollection.cameraRolliPadPopoverPage
-				.selectImageFromLibraryiPad();
+		getCameraRollTabletPopoverPage().selectImageFromLibraryiPad();
 	}
 
 	/**
@@ -41,8 +48,7 @@ public class CameraRollTabletPopoverPageSteps {
 	 */
 	@When("^I press Confirm button on iPad popover$")
 	public void IPressConfirmButton() throws Throwable {
-		TabletPagesCollection.cameraRolliPadPopoverPage
-				.pressConfirmButtoniPad();
+		getCameraRollTabletPopoverPage().pressConfirmButtoniPad();
 	}
 
 }

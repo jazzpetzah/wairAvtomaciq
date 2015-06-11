@@ -60,14 +60,13 @@ public class GroupChatPage extends DialogPage {
 				By.name(IOSLocators.nameConversationCursorInput));
 	}
 
-	public boolean isConversationChangedInChat() {
-
+	public boolean isConversationChangedInChat() throws Exception {
 		System.out.println(newGroupConversationNameChangeTextField.getText());
-		System.out.println(PagesCollection.groupChatInfoPage
-				.getConversationName());
+		final GroupChatInfoPage groupChatInfoPage = new GroupChatInfoPage(
+				this.getLazyDriver());
+		System.out.println(groupChatInfoPage.getConversationName());
 
-		String groupChatName = PagesCollection.groupChatInfoPage
-				.getConversationName();
+		String groupChatName = groupChatInfoPage.getConversationName();
 		return newGroupConversationNameChangeTextField.getText().contains(
 				groupChatName);
 	}

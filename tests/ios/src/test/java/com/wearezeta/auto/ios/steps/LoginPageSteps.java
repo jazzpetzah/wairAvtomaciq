@@ -15,9 +15,8 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.RegistrationPage;
 
 import cucumber.api.java.en.*;
 
@@ -27,6 +26,19 @@ import cucumber.api.java.en.*;
  */
 public class LoginPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private LoginPage getLoginPage() throws Exception {
+		return (LoginPage) pagesCollecton.getPage(LoginPage.class);
+	}
+
+	private RegistrationPage getRegistrationPage() throws Exception {
+		return (RegistrationPage) pagesCollecton
+				.getPage(RegistrationPage.class);
+	}
+
 	private ClientUser userToRegister = null;
 	private Future<String> activationMessage;
 	private static final String stagingURLForgot = "https://staging-website.wire.com/forgot/";
@@ -35,10 +47,11 @@ public class LoginPageSteps {
 	 * Verifies whether sign in screen is the current screen
 	 * 
 	 * @step. I see sign in screen
+	 * @throws Exception
 	 */
 	@Given("I see sign in screen")
-	public void GiveniSeeSignInScreen() {
-		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
+	public void GiveniSeeSignInScreen() throws Exception {
+		Assert.assertNotNull(getLoginPage().isVisible());
 	}
 
 	/**
@@ -57,17 +70,13 @@ public class LoginPageSteps {
 	 */
 	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void GivenISignIn(String login, String password) throws Exception {
-		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
-		PagesCollection.loginPage = (LoginPage) (PagesCollection.loginPage
-				.signIn());
-
+		Assert.assertNotNull(getLoginPage().isVisible());
+		getLoginPage().signIn();
 		emailLoginSequence(login, password);
-
-		Assert.assertNotNull("Login not passed",
-				PagesCollection.contactListPage);
 	}
-	
-	private void emailLoginSequence(String login, String password) throws Exception {
+
+	private void emailLoginSequence(String login, String password)
+			throws Exception {
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
@@ -78,33 +87,34 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		
-		PagesCollection.loginPage.setLogin(login);
-		PagesCollection.loginPage.setPassword(password);
-		PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
-				.login());
+
+		getLoginPage().setLogin(login);
+		getLoginPage().setPassword(password);
+		getLoginPage().login();
 	}
-	
+
 	private void phoneLoginSequence(String login) throws Exception {
 		String number = "";
 		try {
-			number = usrMgr.findUserByEmailOrEmailAlias(login).getPhoneNumber().toString();
+			number = usrMgr.findUserByEmailOrEmailAlias(login).getPhoneNumber()
+					.toString();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		
-		PagesCollection.loginPage.clickPhoneLogin();
-		
+
+		getLoginPage().clickPhoneLogin();
+
 		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		PagesCollection.registrationPage.inputPhoneNumber(number, PhoneNumber.WIRE_COUNTRY_PREFIX);
-		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(usrMgr.findUserByEmailOrEmailAlias(login).getPhoneNumber());
-		
-		PagesCollection.registrationPage.inputActivationCode(code);
-		
-		PagesCollection.contactListPage = PagesCollection.loginPage
-				.waitForLoginToFinish();
+		getRegistrationPage().inputPhoneNumber(number,
+				PhoneNumber.WIRE_COUNTRY_PREFIX);
+		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(usrMgr
+				.findUserByEmailOrEmailAlias(login).getPhoneNumber());
+
+		getRegistrationPage().inputActivationCode(code);
+
+		getLoginPage().waitForLoginToFinish();
 	}
-	
+
 	/**
 	 * Sign in with email/password (20%) or phone number (80%)
 	 * 
@@ -118,20 +128,16 @@ public class LoginPageSteps {
 	 *             if login operation was unsuccessful
 	 */
 	@Given("^I Sign in using phone number or login (.*) and password (.*)$")
-	public void GivenISignInWithPhone(String login, String password) throws Exception {
+	public void GivenISignInWithPhone(String login, String password)
+			throws Exception {
+		Assert.assertNotNull(getLoginPage().isVisible());
+		getLoginPage().signIn();
 
-		Assert.assertNotNull(PagesCollection.loginPage.isVisible());
-		PagesCollection.loginPage = (LoginPage) (PagesCollection.loginPage
-				.signIn());
-		
 		if (CommonUtils.trueInPercents(80)) {
-			phoneLoginSequence(login); 
+			phoneLoginSequence(login);
 		} else {
 			emailLoginSequence(login, password);
 		}
-
-		Assert.assertNotNull("Login not passed",
-				PagesCollection.contactListPage);
 	}
 
 	/**
@@ -139,12 +145,11 @@ public class LoginPageSteps {
 	 * account is signed in properly
 	 * 
 	 * @step. I press Sign in button
-	 * 
-	 * @throws IOException
+	 * @throws Exception
 	 */
 	@When("I press Sign in button")
-	public void WhenIPressSignInButton() throws IOException {
-		PagesCollection.loginPage.signIn();
+	public void WhenIPressSignInButton() throws Exception {
+		getLoginPage().signIn();
 	}
 
 	/**
@@ -156,18 +161,18 @@ public class LoginPageSteps {
 	 */
 	@When("I press Login button")
 	public void WhenIPressSignInButtonAgain() throws Exception {
-		PagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
-				.login());
+		getLoginPage().login();
 	}
 
 	/**
 	 * Taps Login button on the corresponding screen
 	 * 
 	 * @step. I attempt to press Login button
+	 * @throws Exception
 	 */
 	@When("I attempt to press Login button")
-	public void IAttemptToPressLoginButton() {
-		PagesCollection.loginPage.clickLoginButton();
+	public void IAttemptToPressLoginButton() throws Exception {
+		getLoginPage().clickLoginButton();
 	}
 
 	/**
@@ -186,7 +191,7 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.loginPage.setLogin(login);
+		getLoginPage().setLogin(login);
 	}
 
 	/**
@@ -205,7 +210,7 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.loginPage.setPassword(password);
+		getLoginPage().setPassword(password);
 	}
 
 	/**
@@ -218,21 +223,22 @@ public class LoginPageSteps {
 	 */
 	@When("I fill in email input (.*)")
 	public void IFillInEmailInput(String text) throws Exception {
-		PagesCollection.loginPage.setLogin(text);
+		getLoginPage().setLogin(text);
 	}
 
 	/**
 	 * Verifies whether login screen is the current screen
 	 * 
 	 * @step. ^I see login in screen$
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if current screen is not login screen
 	 */
 	@Then("^I see login in screen$")
-	public void ThenISeeLogInScreen() {
-		Assert.assertTrue("I don't see login screen",
-				PagesCollection.loginPage.isLoginButtonVisible());
+	public void ThenISeeLogInScreen() throws Exception {
+		Assert.assertTrue("I don't see login screen", getLoginPage()
+				.isLoginButtonVisible());
 	}
 
 	/**
@@ -243,27 +249,29 @@ public class LoginPageSteps {
 	 */
 	@When("I tap and hold on Email input")
 	public void ITapHoldEmailInput() throws Exception {
-		PagesCollection.loginPage.tapHoldEmailInput();
+		getLoginPage().tapHoldEmailInput();
 	}
 
 	/**
 	 * Taps "Select All" item in popup menu of an input field
 	 * 
 	 * @step. I click on popup SelectAll item
+	 * @throws Exception
 	 */
 	@When("I click on popup SelectAll item")
-	public void IClickPopupSelectAll() {
-		PagesCollection.loginPage.clickPopupSelectAllButton();
+	public void IClickPopupSelectAll() throws Exception {
+		getLoginPage().clickPopupSelectAllButton();
 	}
 
 	/**
 	 * Taps "Copy" item in popup menu of an input field
 	 * 
 	 * @step. I click on popup Copy item
+	 * @throws Exception
 	 */
 	@When("I click on popup Copy item")
-	public void IClickPopupCopy() {
-		PagesCollection.loginPage.clickPopupCopyButton();
+	public void IClickPopupCopy() throws Exception {
+		getLoginPage().clickPopupCopyButton();
 	}
 
 	/**
@@ -274,19 +282,20 @@ public class LoginPageSteps {
 	 */
 	@When("I copy email input field content")
 	public void ICopyEmailInputContent() throws Exception {
-		PagesCollection.loginPage.tapHoldEmailInput();
-		PagesCollection.loginPage.clickPopupSelectAllButton();
-		PagesCollection.loginPage.clickPopupCopyButton();
+		getLoginPage().tapHoldEmailInput();
+		getLoginPage().clickPopupSelectAllButton();
+		getLoginPage().clickPopupCopyButton();
 	}
 
 	/**
 	 * Taps "Paste" item in popup menu of an input field
 	 * 
 	 * @step. I click on popup Paste item
+	 * @throws Exception
 	 */
 	@When("I click on popup Paste item")
-	public void IClickPopupPaste() {
-		PagesCollection.loginPage.clickPopupPasteButton();
+	public void IClickPopupPaste() throws Exception {
+		getLoginPage().clickPopupPasteButton();
 	}
 
 	/**
@@ -296,7 +305,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I press Terms of Service link$")
 	public void IPressTermsOfServiceLink() throws Throwable {
-		PagesCollection.loginPage.openTermsLink();
+		getLoginPage().openTermsLink();
 	}
 
 	/**
@@ -308,8 +317,8 @@ public class LoginPageSteps {
 	 */
 	@Then("^I see the terms info page$")
 	public void ISeeTheTermsInfoPage() throws Throwable {
-		Assert.assertTrue("I don't see terms of service page",
-				PagesCollection.loginPage.isTermsPrivacyColseButtonVisible());
+		Assert.assertTrue("I don't see terms of service page", getLoginPage()
+				.isTermsPrivacyColseButtonVisible());
 		// TODO:verify correct content as far as copywrite is in
 	}
 
@@ -322,9 +331,9 @@ public class LoginPageSteps {
 	 */
 	@When("^I return to welcome page$")
 	public void IReturnToWelcomePage() throws Throwable {
-		PagesCollection.loginPage.closeTermsPrivacyController();
-		Assert.assertTrue("I don't see login screen",
-				PagesCollection.loginPage.isLoginButtonVisible());
+		getLoginPage().closeTermsPrivacyController();
+		Assert.assertTrue("I don't see login screen", getLoginPage()
+				.isLoginButtonVisible());
 	}
 
 	/**
@@ -334,7 +343,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I press Privacy Policy link$")
 	public void IPressPrivacyPolicyLink() throws Throwable {
-		PagesCollection.loginPage.openPrivacyLink();
+		getLoginPage().openPrivacyLink();
 	}
 
 	/**
@@ -347,8 +356,8 @@ public class LoginPageSteps {
 	 */
 	@Then("^I see the privacy info page$")
 	public void ISeeThePrivacyInfoPage() throws Throwable {
-		Assert.assertTrue("I don't see privacy policy page",
-				PagesCollection.loginPage.isTermsPrivacyColseButtonVisible());
+		Assert.assertTrue("I don't see privacy policy page", getLoginPage()
+				.isTermsPrivacyColseButtonVisible());
 		// TODO:verify correct content as far as copywrite is in
 	}
 
@@ -361,8 +370,8 @@ public class LoginPageSteps {
 	 */
 	@When("^I enter wrong email (.*)")
 	public void IEnterWrongEmail(String wrongMail) throws Exception {
-		PagesCollection.loginPage.setLogin(wrongMail);
-		PagesCollection.loginPage.tapPasswordField();
+		getLoginPage().setLogin(wrongMail);
+		getLoginPage().tapPasswordField();
 	}
 
 	/**
@@ -375,21 +384,22 @@ public class LoginPageSteps {
 	 */
 	@Then("^I see error with email notification$")
 	public void ISeeErrorWithEmailNotification() throws Exception {
-		Assert.assertTrue("I don't see error mail notification",
-				PagesCollection.loginPage.errorMailNotificationIsShown());
+		Assert.assertTrue("I don't see error mail notification", getLoginPage()
+				.errorMailNotificationIsShown());
 	}
 
 	/**
 	 * Verifies whether error message about email field is NOT visible
 	 * 
 	 * @step. ^I see no error notification$
+	 * @throws Exception
 	 * @throws AssertionError
 	 *             if error notification is visible
 	 */
 	@Then("^I see no error notification$")
-	public void ISeeNoErrorNotification() {
-		Assert.assertFalse("I see error mail notification",
-				PagesCollection.loginPage.errorMailNotificationIsNotShown());
+	public void ISeeNoErrorNotification() throws Exception {
+		Assert.assertFalse("I see error mail notification", getLoginPage()
+				.errorMailNotificationIsNotShown());
 	}
 
 	/**
@@ -399,7 +409,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I enter wrong password (.*)")
 	public void IEnterWrongPassword(String wrongPassword) throws Exception {
-		PagesCollection.loginPage.setPassword(wrongPassword);
+		getLoginPage().setPassword(wrongPassword);
 	}
 
 	/**
@@ -412,7 +422,7 @@ public class LoginPageSteps {
 	@Then("^I see wrong credentials notification$")
 	public void ISeeWrongCredentialsNotification() throws Exception {
 		Assert.assertTrue("I don't see wrong credentials notification",
-				PagesCollection.loginPage.wrongCredentialsNotificationIsShown());
+				getLoginPage().wrongCredentialsNotificationIsShown());
 	}
 
 	/**
@@ -423,14 +433,13 @@ public class LoginPageSteps {
 	 */
 	@When("^I click on Change Password button on SignIn$")
 	public void IClickOnChangePasswordButtonOnSignIn() throws Exception {
-		PagesCollection.personalInfoPage = PagesCollection.loginPage
-				.tapChangePasswordButton();
+		getLoginPage().tapChangePasswordButton();
 
 	}
 
 	@When("^I change URL to staging$")
 	public void IChangeURLToStaging() throws Exception {
-		PagesCollection.loginPage.changeURLInBrowser(stagingURLForgot);
+		getLoginPage().changeURLInBrowser(stagingURLForgot);
 	}
 
 	/**
@@ -444,7 +453,7 @@ public class LoginPageSteps {
 	@When("^I type in email (.*) to change password$")
 	public void ITypeInEmailToChangePassword(String email) throws Exception {
 		email = usrMgr.replaceAliasesOccurences(email, FindBy.EMAIL_ALIAS);
-		PagesCollection.loginPage.tapEmailFieldToChangePassword(email);
+		getLoginPage().tapEmailFieldToChangePassword(email);
 
 		userToRegister = new ClientUser();
 		this.userToRegister.setName("SmoketesterReset");
@@ -470,7 +479,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I press Change Password button in browser$")
 	public void IPressChangePasswordButtonInBrowser() throws Exception {
-		PagesCollection.loginPage.tapChangePasswordButtonInWebView();
+		getLoginPage().tapChangePasswordButtonInWebView();
 	}
 
 	/**
@@ -483,7 +492,7 @@ public class LoginPageSteps {
 	public void ICopyLinkFromEmailAndPastItIntoSafari() throws Exception {
 		String link = BackendAPIWrappers
 				.getPasswordResetLink(this.activationMessage);
-		PagesCollection.loginPage.changeURLInBrowser(link);
+		getLoginPage().changeURLInBrowser(link);
 	}
 
 	/**
@@ -496,18 +505,19 @@ public class LoginPageSteps {
 	 */
 	@When("^I type in new password (.*)$")
 	public void ITypeInNewPassword(String newPassword) throws Exception {
-		PagesCollection.loginPage.tapPasswordFieldToChangePassword(newPassword);
+		getLoginPage().tapPasswordFieldToChangePassword(newPassword);
 	}
 
 	/**
 	 * Verifys that the confirmation page for changed password is visible
 	 * 
 	 * @step. ^I see password changed confirmation page$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I see password changed confirmation page$")
-	public void ISeePasswordChangedConfirmationPage() {
-		boolean confirmationIsVisible = PagesCollection.loginPage
+	public void ISeePasswordChangedConfirmationPage() throws Exception {
+		boolean confirmationIsVisible = getLoginPage()
 				.passwordConfiamtionIsVisible();
 		Assert.assertTrue("Password changed confirmation is not visible",
 				confirmationIsVisible);
@@ -522,8 +532,7 @@ public class LoginPageSteps {
 	 */
 	@When("^Return to Wire app$")
 	public void ReturnToWireApp() throws Exception {
-		PagesCollection.loginPage.pressSimulatorHomeButton();
-
+		getLoginPage().pressSimulatorHomeButton();
 	}
 
 }

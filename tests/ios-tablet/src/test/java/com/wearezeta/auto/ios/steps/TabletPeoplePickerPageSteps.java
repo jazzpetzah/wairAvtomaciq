@@ -4,12 +4,20 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.pages.TabletPagesCollection;
+import com.wearezeta.auto.ios.pages.TabletPeoplePickerPage;
 
 import cucumber.api.java.en.When;
 
 public class TabletPeoplePickerPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private TabletPeoplePickerPage getTabletPeoplePickerPage() throws Exception {
+		return (TabletPeoplePickerPage) pagesCollecton
+				.getPage(TabletPeoplePickerPage.class);
+	}
 
 	/**
 	 * Verifies that people picker is visible on the ipad popover
@@ -19,7 +27,7 @@ public class TabletPeoplePickerPageSteps {
 	 */
 	@When("^I see People picker page on iPad popover$")
 	public void ISeePeoplePickerPageOniPadPopover() throws Throwable {
-		boolean pickerVisible = TabletPagesCollection.tabletPeoplePickerPage
+		boolean pickerVisible = getTabletPeoplePickerPage()
 				.isPeoplePickerPageVisible();
 		Assert.assertTrue("Peoplepicker not visible", pickerVisible);
 	}
@@ -32,7 +40,7 @@ public class TabletPeoplePickerPageSteps {
 	 */
 	@When("^I tap on Search input on People picker on iPad popover$")
 	public void ITapOnSearchInputOnPeoplePickerOniPadPopover() throws Throwable {
-		TabletPagesCollection.tabletPeoplePickerPage.pressIntoSearchField();
+		getTabletPeoplePickerPage().pressIntoSearchField();
 	}
 
 	/**
@@ -48,8 +56,8 @@ public class TabletPeoplePickerPageSteps {
 	public void IInputUserNameInPeoplePickerSearchFieldOniPadPopover(String name)
 			throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		TabletPagesCollection.tabletPeoplePickerPage
-				.fillTextInTabletPeoplePickerSearchField(name);
+		getTabletPeoplePickerPage().fillTextInTabletPeoplePickerSearchField(
+				name);
 	}
 
 	/**
@@ -70,8 +78,7 @@ public class TabletPeoplePickerPageSteps {
 		}
 		Assert.assertTrue("User :" + name
 				+ " is not presented on Pepople picker page",
-				TabletPagesCollection.tabletPeoplePickerPage
-						.waitUserPickerFindUser(name));
+				getTabletPeoplePickerPage().waitUserPickerFindUser(name));
 	}
 
 	/**
@@ -86,7 +93,7 @@ public class TabletPeoplePickerPageSteps {
 	public void IClickOnConnectedUserOnPeoplePickerOniPadPopover(String name)
 			throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		TabletPagesCollection.tabletPeoplePickerPage.selectConnectedUser(name);
+		getTabletPeoplePickerPage().selectConnectedUser(name);
 	}
 
 	/**
@@ -97,8 +104,7 @@ public class TabletPeoplePickerPageSteps {
 	 */
 	@When("^I click on Add to Conversation button on iPad popover$")
 	public void IClickOnAddToConversationButtonOniPadPopover() throws Throwable {
-		TabletPagesCollection.groupChatPage = TabletPagesCollection.tabletPeoplePickerPage
-				.clickAddToConversationButtonOniPadPopover();
+		getTabletPeoplePickerPage().clickAddToConversationButtonOniPadPopover();
 	}
 
 }

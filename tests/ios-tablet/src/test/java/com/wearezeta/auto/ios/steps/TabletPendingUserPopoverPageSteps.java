@@ -4,8 +4,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.ios.pages.TabletPagesCollection;
 import com.wearezeta.auto.ios.pages.TabletPendingUserPopoverPage;
 
 import cucumber.api.java.en.When;
@@ -14,13 +12,22 @@ public class TabletPendingUserPopoverPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private TabletPendingUserPopoverPage getTabletPendingUserPopoverPage()
+			throws Exception {
+		return (TabletPendingUserPopoverPage) pagesCollecton
+				.getPage(TabletPendingUserPopoverPage.class);
+	}
+
 	/**
 	 * Verifying pending profile popover on iPad
 	 * 
 	 * @step ^I see (.*) user pending profile popover on iPad$
 	 * 
 	 * @param user
-	 * 			usern from Examples
+	 *            usern from Examples
 	 * 
 	 * @throws NoSuchUserException
 	 * @throws Exception
@@ -28,17 +35,12 @@ public class TabletPendingUserPopoverPageSteps {
 	@When("^I see (.*) user pending profile popover on iPad$")
 	public void IseeUserPendingPopoverOnIpad(String user)
 			throws NoSuchUserException, Exception {
-		if (TabletPagesCollection.tabletPendingUserPopoverPage == null) {
-			TabletPagesCollection.tabletPendingUserPopoverPage = (TabletPendingUserPopoverPage) PagesCollection.loginPage
-					.instantiatePage(TabletPendingUserPopoverPage.class);
-		}
-		Assert.assertTrue("User name is not displayed",
-				TabletPagesCollection.tabletPendingUserPopoverPage
-						.isUserNameDisplayed(usrMgr.findUserByNameOrNameAlias(
-								user).getName()));
+		Assert.assertTrue(
+				"User name is not displayed",
+				getTabletPendingUserPopoverPage().isUserNameDisplayed(
+						usrMgr.findUserByNameOrNameAlias(user).getName()));
 		Assert.assertTrue("Pending label is not displayed",
-				TabletPagesCollection.tabletPendingUserPopoverPage
-						.isPendingLabelVisible());
+				getTabletPendingUserPopoverPage().isPendingLabelVisible());
 	}
 
 }

@@ -1,18 +1,28 @@
 package com.wearezeta.auto.ios.steps;
 
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.IncomingCallPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.StartedCallPage;
 
 import cucumber.api.java.en.When;
 
 public class CallPageSteps {
-	
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private StartedCallPage getStartedCallPage() throws Exception {
+		return (StartedCallPage) pagesCollecton.getPage(StartedCallPage.class);
+	}
+
+	private IncomingCallPage getIncomingCallPage() throws Exception {
+		return (IncomingCallPage) pagesCollecton
+				.getPage(IncomingCallPage.class);
+	}
 
 	/**
 	 * Verify that calling UI is visible
@@ -25,8 +35,8 @@ public class CallPageSteps {
 	@When("^I see calling message for contact (.*)$")
 	public void ISeeCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
-				.isIncomingCallMessageVisible(contact.toUpperCase()));
+		Assert.assertTrue(getStartedCallPage().isIncomingCallMessageVisible(
+				contact.toUpperCase()));
 	}
 
 	/**
@@ -38,13 +48,9 @@ public class CallPageSteps {
 	 */
 	@When("^I see mute call, end call and speakers buttons$")
 	public void ISeeCallingPageButtons() throws Exception {
-
-		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
-				.isEndCallVisible());
-		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
-				.isMuteCallVisible());
-		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
-				.isSpeakersVisible());
+		Assert.assertTrue(getStartedCallPage().isEndCallVisible());
+		Assert.assertTrue(getStartedCallPage().isMuteCallVisible());
+		Assert.assertTrue(getStartedCallPage().isSpeakersVisible());
 	}
 
 	/**
@@ -55,8 +61,7 @@ public class CallPageSteps {
 	 */
 	@When("^I end started call$")
 	public void IEndStartedCall() throws Exception {
-
-		((StartedCallPage) PagesCollection.callPage).clickEndCallButton();
+		getStartedCallPage().clickEndCallButton();
 	}
 
 	/**
@@ -67,9 +72,7 @@ public class CallPageSteps {
 	 */
 	@When("^I dont see calling page$")
 	public void IDontSeeCallPage() throws Exception {
-
-		Assert.assertFalse(((StartedCallPage) PagesCollection.callPage)
-				.isCallingMessageVisible());
+		Assert.assertFalse(getStartedCallPage().isCallingMessageVisible());
 	}
 
 	/**
@@ -80,9 +83,7 @@ public class CallPageSteps {
 	 */
 	@When("^I dont see incoming call page$")
 	public void IDontSeeIncomingCallPage() throws Exception {
-
-		Assert.assertFalse(((IncomingCallPage) PagesCollection.callPage)
-				.isCallingMessageVisible());
+		Assert.assertFalse(getIncomingCallPage().isCallingMessageVisible());
 	}
 
 	/**
@@ -96,8 +97,8 @@ public class CallPageSteps {
 	@When("^I see incoming calling message for contact (.*)$")
 	public void ISeeIncomingCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(((IncomingCallPage) PagesCollection.callPage)
-				.isCallingMessageVisible(contact.toUpperCase()));
+		Assert.assertTrue(getIncomingCallPage().isCallingMessageVisible(
+				contact.toUpperCase()));
 	}
 
 	/**
@@ -111,9 +112,10 @@ public class CallPageSteps {
 	@When("^I dont see incoming calling message from contact (.*)$")
 	public void IDontSeeIncomingCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertFalse("User " + contact + " calling UI is shown",
-				((IncomingCallPage) PagesCollection.callPage)
-						.isUserCallingMessageShown(contact.toUpperCase()));
+		Assert.assertFalse(
+				"User " + contact + " calling UI is shown",
+				getIncomingCallPage().isUserCallingMessageShown(
+						contact.toUpperCase()));
 	}
 
 	/**
@@ -124,8 +126,7 @@ public class CallPageSteps {
 	 */
 	@When("^I end incoming call$")
 	public void IEndIncomingCall() throws Exception {
-
-		((IncomingCallPage) PagesCollection.callPage).endIncomingCallClick();
+		getIncomingCallPage().endIncomingCallClick();
 	}
 
 	/**
@@ -136,9 +137,7 @@ public class CallPageSteps {
 	 */
 	@When("^I accept incoming call$")
 	public void IAcceptIncomingCall() throws Exception {
-
-		PagesCollection.callPage = ((IncomingCallPage) PagesCollection.callPage)
-				.acceptIncomingCallClick();
+		getIncomingCallPage().acceptIncomingCallClick();
 	}
 
 	/**
@@ -152,7 +151,7 @@ public class CallPageSteps {
 	@When("^I see started call message for contact (.*)$")
 	public void ISeeStartedCallMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
-				.isStartedCallMessageVisible(contact.toUpperCase()));
+		Assert.assertTrue(getStartedCallPage().isStartedCallMessageVisible(
+				contact.toUpperCase()));
 	}
 }

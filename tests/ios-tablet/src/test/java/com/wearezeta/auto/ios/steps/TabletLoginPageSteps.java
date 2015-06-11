@@ -6,10 +6,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.pages.ContactListPage;
-import com.wearezeta.auto.ios.pages.LoginPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.ios.pages.TabletPagesCollection;
+import com.wearezeta.auto.ios.pages.TabletLoginPage;
 
 import cucumber.api.java.en.Given;
 
@@ -18,7 +15,14 @@ public class TabletLoginPageSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(ContactListPageSteps.class.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	
+
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private TabletLoginPage getTabletLoginPage() throws Exception {
+		return (TabletLoginPage) pagesCollecton.getPage(TabletLoginPage.class);
+	}
+
 	/**
 	 * Signing in on tablet with login and password
 	 * 
@@ -41,15 +45,10 @@ public class TabletLoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertNotNull(TabletPagesCollection.loginPage.isVisible());
-		TabletPagesCollection.loginPage = (LoginPage) (PagesCollection.loginPage
-				.signIn());
-		TabletPagesCollection.loginPage.setLogin(login);
-		TabletPagesCollection.loginPage.setPassword(password);
-		TabletPagesCollection.contactListPage = (ContactListPage) (PagesCollection.loginPage
-				.login());
-
-		Assert.assertNotNull("Login not passed",
-				TabletPagesCollection.contactListPage);
+		Assert.assertNotNull(getTabletLoginPage().isVisible());
+		getTabletLoginPage().signIn();
+		getTabletLoginPage().setLogin(login);
+		getTabletLoginPage().setPassword(password);
+		getTabletLoginPage().login();
 	}
 }
