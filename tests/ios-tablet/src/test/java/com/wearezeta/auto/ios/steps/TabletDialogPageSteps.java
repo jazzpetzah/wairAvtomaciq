@@ -45,5 +45,9 @@ public class TabletDialogPageSteps {
 		Thread.sleep(1000);
 		PagesCollection.dialogPage.sendMessageUsingScript(link);
 	}
-
+	
+	@When("I click play video button")
+    public void IClickPlayButton() throws Exception{
+        PagesCollection.dialogPage.clickOnPlayVideoButton();
+    }
 }

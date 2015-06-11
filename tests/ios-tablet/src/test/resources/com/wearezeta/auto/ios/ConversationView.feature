@@ -202,8 +202,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message for tablet and media link <YoutubeLink>
-    And I see media link <YoutubeLink> and media in dialog
-    And I click video container for the first time
+    And I click play video button
     And I scroll media out of sight until media bar appears
     And I pause playing the media in media bar
     Then I see playing media is paused

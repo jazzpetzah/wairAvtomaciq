@@ -906,4 +906,8 @@ public class DialogPage extends IOSPage {
 			return false;
 		}
 	}
+
+	public void clickOnPlayVideoButton() throws Exception{
+        youtubeCell.click();
+    }
 }
