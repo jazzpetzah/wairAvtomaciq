@@ -41,7 +41,7 @@ public class IOSSimulatorPhotoLibHelper {
 	private static String GetiOSLibPath(String simulatorVersion)
 			throws Exception {
 		String result = "";
-		if (simulatorVersion.equals("8.0") || simulatorVersion.equals("8.1")) {
+		if (simulatorVersion.equals("8.x")) {
 			result = IOS_LIB_PATH_TEMPLATE8;
 		} else {
 			result = String.format(IOS_LIB_PATH_TEMPLATE7, simulatorVersion);
