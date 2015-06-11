@@ -171,8 +171,8 @@ Feature: Conversation View
     Then I see 128 participants in the Group Participants popover
 
     Examples: 
-      | Login                       | Password   | Contact1                             | Contact2                             |
-      | smoketester+id1688@wire.com | aqa123456! | 1d061a1f-04e1-4d86-a1c7-0389f8d7f548 | 1a3d4176-55d8-45d3-b2eb-a2446ad61d6b |
+      | Login                       | Password   | Contact1   | Contact2   |
+      | smoketester+id1688@wire.com | aqa123456! | perf.200.1 | perf.200.2 |
 
   @id2279 @staging
   Scenario Outline: Send a long message containing new lines in 1on1
