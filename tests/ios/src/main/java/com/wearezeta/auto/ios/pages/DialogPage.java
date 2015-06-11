@@ -92,7 +92,7 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
 	private WebElement addPictureButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathCallButton)
+	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCallButton)
 	private WebElement callButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
