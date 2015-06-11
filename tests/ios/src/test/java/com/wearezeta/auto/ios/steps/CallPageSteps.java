@@ -4,6 +4,7 @@ package com.wearezeta.auto.ios.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.pages.CallPage;
 import com.wearezeta.auto.ios.pages.IncomingCallPage;
 import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.StartedCallPage;
@@ -17,12 +18,12 @@ public class CallPageSteps {
 	/**
 	 * Verify that calling UI is visible
 	 * 
-	 * @step. ^I see calling message for contact (.*)$
+	 * @step. ^I see calling to contact (.*) message$
 	 * @param contact
 	 *            User name whom we call
 	 * @throws Exception
 	 */
-	@When("^I see calling message for contact (.*)$")
+	@When("^I see calling to contact (.*) message$")
 	public void ISeeCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
@@ -38,13 +39,37 @@ public class CallPageSteps {
 	 */
 	@When("^I see mute call, end call and speakers buttons$")
 	public void ISeeCallingPageButtons() throws Exception {
+		if (PagesCollection.callPage instanceof IncomingCallPage) {
+			PagesCollection.callPage = (CallPage) PagesCollection.loginPage
+					.instantiatePage(StartedCallPage.class);
+		}
 
-		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
+		Assert.assertTrue("End call button is not visible", ((StartedCallPage) PagesCollection.callPage)
 				.isEndCallVisible());
-		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
+		Assert.assertTrue("Mute call button is not visible", ((StartedCallPage) PagesCollection.callPage)
 				.isMuteCallVisible());
-		Assert.assertTrue(((StartedCallPage) PagesCollection.callPage)
+		Assert.assertTrue("Speakers button is not visible", ((StartedCallPage) PagesCollection.callPage)
 				.isSpeakersVisible());
+	}
+	
+	/**
+	 * 
+	 * Verify that calling UI buttons are visible (using it for iPad verification step as far speakers button is not shown there)
+	 * 
+	 * @step. ^I see mute call, end call buttons$
+	 * @throws Exception
+	 */
+	@When("^I see mute call, end call buttons$")
+	public void ISeeCallingPageButtonsOnIpad() throws Exception {
+		if (PagesCollection.callPage instanceof IncomingCallPage) {
+			PagesCollection.callPage = (CallPage) PagesCollection.loginPage
+					.instantiatePage(StartedCallPage.class);
+		}
+
+		Assert.assertTrue("End call button is not visible", ((StartedCallPage) PagesCollection.callPage)
+				.isEndCallVisible());
+		Assert.assertTrue("Mute call button is not visible", ((StartedCallPage) PagesCollection.callPage)
+				.isMuteCallVisible());
 	}
 
 	/**
@@ -119,13 +144,13 @@ public class CallPageSteps {
 	/**
 	 * Click on end incoming call button
 	 * 
-	 * @step. ^I end incoming call$
+	 * @step. ^I ignore incoming call$
 	 * @throws Exception
 	 */
-	@When("^I end incoming call$")
-	public void IEndIncomingCall() throws Exception {
+	@When("^I ignore incoming call$")
+	public void IignoreIncomingCall() throws Exception {
 
-		((IncomingCallPage) PagesCollection.callPage).endIncomingCallClick();
+		((IncomingCallPage) PagesCollection.callPage).ignoreIncomingCallClick();
 	}
 
 	/**
