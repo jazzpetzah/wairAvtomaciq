@@ -1,9 +1,11 @@
 package com.wearezeta.auto.common.driver;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
@@ -146,7 +148,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			if (this.getOrientation() == ScreenOrientation.LANDSCAPE) {
 				BufferedImage screenshotImage = ImageIO
 						.read(new ByteArrayInputStream(output));
-				screenshotImage = ImageUtil.tilt(screenshotImage, -Math.PI / 2);
+				screenshotImage = ImageUtil.tilt(screenshotImage, Math.PI / 2);
 				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ImageIO.write(screenshotImage, "png", baos);
 				output = baos.toByteArray();
@@ -209,6 +211,53 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 							DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000,
 							driverCommand));
 			throw e;
+		}
+	}
+
+	private static String getAdbOutput(String cmdLine) throws Exception {
+		String result = "";
+		String adbCommand = "adb " + cmdLine;
+		final Process process = Runtime.getRuntime().exec(
+				new String[] { "/bin/bash", "-c", adbCommand });
+		if (process == null) {
+			throw new RuntimeException(String.format(
+					"Failed to execute command line '%s'", cmdLine));
+		}
+		BufferedReader in = null;
+		try {
+			in = new BufferedReader(new InputStreamReader(
+					process.getInputStream()));
+			String s;
+			while ((s = in.readLine()) != null) {
+				result = s + "\n";
+			}
+		} finally {
+			if (in != null) {
+				in.close();
+			}
+		}
+
+		return result.trim();
+	}
+
+	/**
+	 * Workaround for Selendroid issue when correct screen orientation is
+	 * returned only for the step where it is actually changed :-@
+	 *
+	 */
+	@Override
+	public ScreenOrientation getOrientation() {
+		String output = "";
+		try {
+			output = getAdbOutput("shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return super.getOrientation();
+		}
+		if (output.trim().equals("1")) {
+			return ScreenOrientation.LANDSCAPE;
+		} else {
+			return ScreenOrientation.PORTRAIT;
 		}
 	}
 
