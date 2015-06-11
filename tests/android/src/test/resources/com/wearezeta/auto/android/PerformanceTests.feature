@@ -12,5 +12,5 @@ Feature: Performance Tests
     Then I generate performance report for <UsersNumber> users
 
     Examples: 
-      | Login      | Name      | Password      | Name      | UsersNumber | UserNamePrefix | Time |
-      | user1Email | aqa123456 | user1Password | user1Name | 11          | perf           | 5    |
+      | Login      | Name      | Password  | UsersNumber | UserNamePrefix | Time |
+      | user1Email | user1Name | aqa123456 | 11          | perf           | 5    |
