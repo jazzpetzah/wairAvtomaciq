@@ -259,7 +259,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	/**
 	 * Workaround for Selendroid issue when correct screen orientation is
 	 * returned only for the step where it is actually changed :-@
-	 * 
+	 *
 	 */
 	@Override
 	public ScreenOrientation getOrientation() {

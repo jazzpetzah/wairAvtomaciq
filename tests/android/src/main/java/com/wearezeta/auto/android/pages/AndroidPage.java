@@ -1,8 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
-import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
@@ -51,27 +49,30 @@ public abstract class AndroidPage extends BasePage {
 	public void selectFirstGalleryPhoto() throws Exception {
 		final Dimension screenDimension = getDriver().manage().window()
 				.getSize();
-		int ntry = 1;
+		final int xDivider = 6;
+		final int yDivider = 8;
+		int y = screenDimension.height / 2;
 		do {
-			// Selendroid workaround
-			// Cannot handle external apps properly :-(
-			AndroidCommonUtils.genericScreenTap(screenDimension.width
-					- (ntry % 5) * (screenDimension.width / 6),
-					screenDimension.height / 2 - (ntry / 5 + 1)
-							* (screenDimension.height / 10));
-			try {
-				if (DriverUtils
-						.waitUntilLocatorIsDisplayed(
-								getDriver(),
-								By.xpath(AndroidLocators.DialogPage.xpathConfirmOKButton),
-								2)) {
-					return;
+			int x = screenDimension.width - screenDimension.width / xDivider;
+			do {
+				// Selendroid workaround
+				// Cannot handle external apps properly :-(
+				AndroidCommonUtils.genericScreenTap(x, y);
+				try {
+					if (DriverUtils
+							.waitUntilLocatorIsDisplayed(
+									getDriver(),
+									By.xpath(AndroidLocators.DialogPage.xpathConfirmOKButton),
+									1)) {
+						return;
+					}
+				} catch (WebDriverException e) {
+					// ignore silently
 				}
-			} catch (WebDriverException e) {
-				// ignore silently
-			}
-			ntry++;
-		} while (ntry <= 15);
+				x -= screenDimension.width / xDivider;
+			} while (x >= screenDimension.width / xDivider);
+			y -= screenDimension.height / yDivider;
+		} while (y >= screenDimension.height / yDivider);
 		throw new RuntimeException("Failed to tap the first gallery image!");
 	}
 
@@ -93,13 +94,13 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void rotateLandscape() throws Exception {
-		AndroidCommonUtils.rotateLanscape();
-		// this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
+		// AndroidCommonUtils.rotateLanscape();
+		this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
 	}
 
 	public void rotatePortrait() throws Exception {
-		AndroidCommonUtils.rotatePortrait();
-		// this.getDriver().rotate(ScreenOrientation.PORTRAIT);
+		// AndroidCommonUtils.rotatePortrait();
+		this.getDriver().rotate(ScreenOrientation.PORTRAIT);
 	}
 
 	public ScreenOrientation getOrientation() throws Exception {
@@ -288,26 +289,5 @@ public abstract class AndroidPage extends BasePage {
 
 	public void tapOnCenterOfScreen() throws Exception {
 		DriverUtils.genericTap(this.getDriver());
-	}
-
-	@Override
-	public Optional<BufferedImage> getElementScreenshot(WebElement element)
-			throws Exception {
-		Point elementLocation = element.getLocation();
-		Dimension elementSize = element.getSize();
-		int x = elementLocation.x;
-		int y = elementLocation.y;
-		int w = elementSize.width;
-		int h = elementSize.height;
-		final Optional<BufferedImage> screenshot = takeScreenshot();
-		if (screenshot.isPresent()) {
-			if (this.getDriver().getOrientation() == ScreenOrientation.LANDSCAPE) {
-				return Optional.of(screenshot.get().getSubimage(y, x, h, w));
-			} else {
-				return Optional.of(screenshot.get().getSubimage(x, y, w, h));
-			}
-		} else {
-			return Optional.empty();
-		}
 	}
 }
