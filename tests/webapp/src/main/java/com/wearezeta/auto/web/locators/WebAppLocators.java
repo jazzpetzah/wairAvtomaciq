@@ -73,9 +73,7 @@ public final class WebAppLocators {
 				.format("%s div[data-uie-name='item-conversation-archived'][data-uie-value='%s']",
 						cssParentContactListItem, name);
 
-		public static final Function<String, String> cssOptionsButtonByContactName = (
-				name) -> String.format("%s + div [data-uie-name=go-options]",
-				cssContactListEntryByName.apply(name));
+		public static final String cssOptionsButtonByContactName = "[data-uie-name='go-options']";
 
 		public static final String cssSelfProfileAvatar = "[data-uie-name=go-self-profile]";
 
@@ -174,7 +172,7 @@ public final class WebAppLocators {
 		// This is needed for IE workaround
 		public static final String classNameShowParticipantsButton = "show-participants";
 
-		public static final String xpathShowParticipantsButton = "//*[@data-uie-name='do-participants']";
+		public static final String cssShowParticipantsButton = "[data-uie-name='do-participants']";
 
 		public static final String xpathActionMessageEntries = "//*[@data-uie-name='item-message' and contains(@class, 'special')]//div[contains(@class, 'action')]";
 

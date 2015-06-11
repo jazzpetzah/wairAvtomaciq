@@ -558,9 +558,25 @@ public class DriverUtils {
 		js.executeScript(addHoverClassScript, element);
 	}
 
+	public static void addClassToParent(RemoteWebDriver driver,
+			WebElement element, String cssClass) {
+		String addHoverClassScript = "arguments[0].parentNode.classList.add('"
+				+ cssClass + "');";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(addHoverClassScript, element);
+	}
+
 	public static void removeClass(RemoteWebDriver driver, WebElement element,
 			String cssClass) {
 		String script = "arguments[0].classList.remove('" + cssClass + "');";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(script, element);
+	}
+
+	public static void removeClassFromParent(RemoteWebDriver driver,
+			WebElement element, String cssClass) {
+		String script = "arguments[0].parentNode.classList.remove('" + cssClass
+				+ "');";
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript(script, element);
 	}
