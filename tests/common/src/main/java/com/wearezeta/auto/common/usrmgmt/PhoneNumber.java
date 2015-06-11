@@ -56,8 +56,10 @@ public final class PhoneNumber {
 		final StringBuilder result = new StringBuilder();
 		result.append(prefix);
 		final Random rand = new Random();
+		// The very first digit should not be Zero
+		result.append(Integer.toString(1 + rand.nextInt(9)));
 		for (int i = 1; i <= MIN_NUMBER_LENGTH - prefix.length()
-				+ rand.nextInt(MAX_NUMBER_LENGTH - MIN_NUMBER_LENGTH); i++) {
+				+ rand.nextInt(MAX_NUMBER_LENGTH - MIN_NUMBER_LENGTH - 1); i++) {
 			result.append(Integer.toString(rand.nextInt(10)));
 		}
 		return result.toString();
