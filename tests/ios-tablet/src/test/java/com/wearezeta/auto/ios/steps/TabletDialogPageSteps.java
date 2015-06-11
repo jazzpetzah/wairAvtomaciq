@@ -35,7 +35,4 @@ public class TabletDialogPageSteps {
 		TabletConversationDetailPopoverPage page = TabletPagesCollection.tabletDialogPage.pressConversationDetailiPadButton();
 		TabletPagesCollection.tabletConversationDetailPopoverPage = (TabletConversationDetailPopoverPage) page;
 	}
-	
-	
-
 }
