@@ -164,7 +164,7 @@ public class ContactListPage extends WebPage {
 				By.cssSelector(locator), 5);
 	}
 
-	public WebElement getContactWithName(String name, boolean includeArchived)
+	public WebElement getListElementByName(String name, boolean includeArchived)
 			throws Exception {
 		name = fixDefaultGroupConvoName(name, includeArchived);
 		final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
@@ -258,22 +258,22 @@ public class ContactListPage extends WebPage {
 			throws Exception {
 		if (!WebAppExecutionContext.getBrowser()
 				.isSupportingNativeMouseActions()) {
-			DriverUtils.addClass(this.getDriver(),
-					getContactWithName(conversationName, false), "hover");
+			DriverUtils.addClassToParent(this.getDriver(),
+					getListElementByName(conversationName, false), "hover");
 		} else {
 			DriverUtils.moveMouserOver(this.getDriver(),
-					getContactWithName(conversationName, false));
+					getListElementByName(conversationName, false));
 		}
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName
-				.apply(conversationName);
+		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName;
 		final By locator = By.cssSelector(cssOptionsButtonLocator);
 		final WebElement optionsButton = getDriver().findElement(locator);
+		DriverUtils.waitUntilElementClickable(getDriver(), optionsButton);
 		optionsButton.click();
 		if (!WebAppExecutionContext.getBrowser()
 				.isSupportingNativeMouseActions()) {
-			DriverUtils.removeClass(this.getDriver(),
-					getContactWithName(conversationName, false), "hover");
+			DriverUtils.removeClassFromParent(this.getDriver(),
+					getListElementByName(conversationName, false), "hover");
 		}
 	}
 
