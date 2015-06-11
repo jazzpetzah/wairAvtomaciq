@@ -307,6 +307,7 @@ Feature: Connect
   Scenario Outline: Verify you get auto-connected to people on sign-in
     Given There is 2 user where <Me> is me
     Given User <Me> has contact <Contact> in address book
+    Given I wait for 5 seconds
     Given User <Contact> has contact <Me> in address book
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
