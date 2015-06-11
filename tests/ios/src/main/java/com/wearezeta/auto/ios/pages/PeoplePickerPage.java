@@ -136,7 +136,8 @@ public class PeoplePickerPage extends IOSPage {
 															// activation
 	}
 
-	public void tapOnPeoplePickerClearBtn() {
+	public void tapOnPeoplePickerClearBtn() throws Exception {
+		getWait().until(ExpectedConditions.elementToBeClickable(peoplePickerClearBtn));
 		peoplePickerClearBtn.click();
 	}
 

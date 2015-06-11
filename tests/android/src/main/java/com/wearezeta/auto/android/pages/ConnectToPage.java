@@ -1,43 +1,53 @@
 package com.wearezeta.auto.android.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ConnectToPage extends AndroidPage {
-	@FindBy(id = AndroidLocators.ConnectToPage.idConnectRequestAccept)
+	public static final String idConnectToHeader = "taet__participants__header";
+
+	private static final Function<String, String> xpathConnectToHeaderByText = text -> String
+			.format("//*[@id='taet__participants__header' and @value='%s']",
+					text);
+
+	private static final String idConnectRequestAccept = "zb__connect_request__accept_button";
+	@FindBy(id = idConnectRequestAccept)
 	private WebElement connectAcceptBtn;
 
-	@FindBy(id = AndroidLocators.ConnectToPage.idConnectRequestIgnore)
+	private static final String idConnectRequestIgnore = "zb__connect_request__ignore_button";
+	@FindBy(id = idConnectRequestIgnore)
 	private WebElement connectIgnoreBtn;
 
-	@FindBy(id = AndroidLocators.ConnectToPage.idPaticipantsPendingLabel)
+	private static final String idPaticipantsPendingLabel = "ttv__participants__left_label";
+	@FindBy(id = idPaticipantsPendingLabel)
 	private WebElement pendingText;
 
-	@FindBy(id = AndroidLocators.PeoplePickerPage.idConnectionRequiesMessage)
+	@FindBy(id = PeoplePickerPage.idConnectionRequiesMessage)
 	private WebElement connectionRequestMessage;
 
-	@FindBy(id = AndroidLocators.PeoplePickerPage.idSendConnectionRequestButton)
+	@FindBy(id = PeoplePickerPage.idSendConnectionRequestButton)
 	private WebElement sendConnectionRequestButton;
 
-	@FindBy(id = AndroidLocators.ConnectToPage.idConnectToCharCounter)
+	private static final String idConnectToCharCounter = "ttv__send_connect_request__connect_button__character_counter";
+	@FindBy(id = idConnectToCharCounter)
 	private WebElement connectCharCounter;
 
-	@FindBy(id = AndroidLocators.PeoplePickerPage.idParticipantsClose)
+	@FindBy(id = PeoplePickerPage.idParticipantsClose)
 	private WebElement closeButton;
 
-	@FindBy(id = AndroidLocators.OtherUserPersonalInfoPage.idRightActionButton)
+	@FindBy(id = OtherUserPersonalInfoPage.idRightActionButton)
 	private WebElement blockButton;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idConfirmBtn)
+	@FindBy(id = idConfirmBtn)
 	private WebElement confirmBtn;
 
 	public ConnectToPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -66,9 +76,7 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public boolean isConnectToHeaderVisible(String text) throws Exception {
-		final By locator = By
-				.xpath(AndroidLocators.ConnectToPage.xpathConnectToHeaderByText
-						.apply(text));
+		final By locator = By.xpath(xpathConnectToHeaderByText.apply(text));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
