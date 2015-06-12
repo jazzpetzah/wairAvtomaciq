@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @id316 @smoke @torun
+  @id316 @smoke
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -36,7 +36,7 @@ Feature: Conversation View
   Scenario Outline: Send Camera picture to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
-    GGiven I sign in using my email or phone number
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
