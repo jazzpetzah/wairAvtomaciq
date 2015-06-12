@@ -454,22 +454,20 @@ public class DialogPage extends AndroidPage {
 				By.id(idConnectRequestChatLabel));
 	}
 
-	public String getConnectRequestChatUserName() {
+	public String getConnectRequestChatUserName() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idConnectRequestChatUserName)) : "The username is not visible on the connection request screen";
 		return connectRequestChatUserName.getText().toLowerCase();
 	}
 
+	@Override
 	public ContactListPage navigateBack() throws Exception {
-		getDriver().navigate().back();
+		super.navigateBack();
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public ContactListPage navigateBack(int time) throws Exception {
-		swipeRightCoordinates(time);
-		return new ContactListPage(this.getLazyDriver());
-	}
-
-	public ContactListPage navigateBackUsingBackButton() throws Exception {
-		getDriver().navigate().back();
+	public ContactListPage navigateBack(int timeMilliseconds) throws Exception {
+		swipeRightCoordinates(timeMilliseconds);
 		return new ContactListPage(this.getLazyDriver());
 	}
 

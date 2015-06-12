@@ -282,4 +282,8 @@ public class AndroidCommonUtils extends CommonUtils {
 	public static void lockScreen() throws Exception {
 		executeAdb("shell input keyevent 26");
 	}
+
+	public static void tapBackButton() throws Exception {
+		executeAdb("shell input keyevent 4");
+	}
 }

@@ -478,7 +478,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I navigate back from dialog page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
-		getDialogPage().navigateBack();
+		getDialogPage().navigateBack(1000);
 	}
 
 	/**
