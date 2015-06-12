@@ -254,9 +254,9 @@ public final class IOSLocators {
 	
 	public static final String xpathAllSoundAlertsButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]";
 	
-	public static final String nameSettingsChangePasswordButton = "Change Password";
+	public static final String xpathSettingsChangePasswordButton = "//UIAButton[contains(@name, 'CHANGE PASSWORD')]";
 	
-	public static final String xpathChangePasswordPageChangePasswordButton = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIAButton[1]";
+	public static final String nameChangePasswordPageChangePasswordButton = "CHANGE PASSWORD";
 	
 	public static final String nameOptionsHelpButton = "HELP";
 	
@@ -529,7 +529,7 @@ public final class IOSLocators {
 	////////////////////////////
 	//Reset Password from Sign In
 	////////////////////////////
-	public static final String nameForgotPasswordButton = "FORGOT PASSWORD? CHANGE";
+	public static final String nameForgotPasswordButton = "FORGOT PASSWORD?";
 	public static final String xpathChangePasswordEmailField = "//UIAApplication[@name='Safari']/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIATextField[@value='Email']";
 	public static final String classNameUIATextField = "UIATextField";
 	public static final String classNameUIASecureTextField = "UIASecureTextField";

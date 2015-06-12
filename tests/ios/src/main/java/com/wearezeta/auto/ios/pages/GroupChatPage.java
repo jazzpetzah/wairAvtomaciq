@@ -154,18 +154,6 @@ public class GroupChatPage extends DialogPage {
 	}
 
 	@Override
-	public IOSPage swipeRight(int time) throws Exception {
-		WebElement element = getDriver().findElement(
-				By.name(IOSLocators.nameMainWindow));
-
-		Point coords = element.getLocation();
-		Dimension elementSize = element.getSize();
-		this.getDriver().swipe(coords.x + 10, coords.y + 30,
-				coords.x + elementSize.width / 2 + 20, coords.y + 30, time);
-		return returnBySwipe(SwipeDirection.RIGHT);
-	}
-
-	@Override
 	public IOSPage returnBySwipe(SwipeDirection direction) throws Exception {
 		IOSPage page = null;
 		switch (direction) {
