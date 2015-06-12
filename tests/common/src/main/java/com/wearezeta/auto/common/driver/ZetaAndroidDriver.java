@@ -151,10 +151,12 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
 					.waitFor();
 			byte[] output = FileUtils.readFileToByteArray(tmpScreenshot);
-			if (this.getOrientation() == ScreenOrientation.LANDSCAPE) {
+			final int currentScreenOrientationValue = getScreenOrientationValue();
+			if (currentScreenOrientationValue != 0) {
 				BufferedImage screenshotImage = ImageIO
 						.read(new ByteArrayInputStream(output));
-				screenshotImage = ImageUtil.tilt(screenshotImage, Math.PI / 2);
+				screenshotImage = ImageUtil.tilt(screenshotImage,
+						-currentScreenOrientationValue * Math.PI / 2);
 				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ImageIO.write(screenshotImage, "png", baos);
 				output = baos.toByteArray();
@@ -247,20 +249,31 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	}
 
 	/**
+	 * 
+	 * 
+	 * @return 0 to 3. 0 is default portrait
+	 * @throws Exception
+	 */
+	private int getScreenOrientationValue() throws Exception {
+		final String output = getAdbOutput("shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1");
+		return Integer.parseInt(output);
+	}
+
+	/**
 	 * Workaround for Selendroid issue when correct screen orientation is
 	 * returned only for the step where it is actually changed :-@
 	 *
 	 */
 	@Override
 	public ScreenOrientation getOrientation() {
-		String output = "";
+		int value = 0;
 		try {
-			output = getAdbOutput("shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1");
+			value = getScreenOrientationValue();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return super.getOrientation();
 		}
-		if (output.trim().equals("1")) {
+		if (value % 2 == 1) {
 			return ScreenOrientation.LANDSCAPE;
 		} else {
 			return ScreenOrientation.PORTRAIT;
