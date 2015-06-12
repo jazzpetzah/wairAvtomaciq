@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.List;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -187,15 +188,21 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Verify Top People list is visible on People Picker page
+	 * Closes and opens People Picker until Top People list is visible on People
+	 * Picker page
 	 * 
-	 * @step. ^I see Top People list on People Picker page$
+	 * @step. ^I wait till Top People list appears$
 	 * 
 	 * @throws Exception
 	 */
 
-	@When("^I see Top People list on People picker page$")
-	public void ISeeTopPeopleListOnPeoplePickerPage() throws Exception {
+	@When("^I wait till Top People list appears$")
+	public void IwaitTillTopPeopleListAppears() throws Exception {
+		if (!PagesCollection.peoplePickerPage.isTopPeopleLabelVisible())
+			PagesCollection.contactListPage = PagesCollection.peoplePickerPage
+					.closeSearch();
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+				.openPeoplePicker();
 		Assert.assertTrue("Top People list is not shown",
 				PagesCollection.peoplePickerPage.isTopPeopleLabelVisible());
 	}
@@ -217,8 +224,15 @@ public class PeoplePickerPageSteps {
 				.clickNumberOfTopPeople(numberOfTopPeople);
 	}
 
+	private static List<String> selectedTopPeople;
+
+	public static List<String> getSelectedTopPeople() {
+		return selectedTopPeople;
+	}
+
 	@When("^I remember user names selected in Top People$")
 	public void IRememberUserNamesSelectedInTopPeople() throws Exception {
-		PagesCollection.peoplePickerPage.getNamesOfSelectedTopPeople();
+		selectedTopPeople = PagesCollection.peoplePickerPage
+				.getNamesOfSelectedTopPeople();
 	}
 }

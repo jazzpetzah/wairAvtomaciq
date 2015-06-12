@@ -78,13 +78,14 @@ public class PeoplePickerPage extends WebPage {
 				By.xpath(foundUserXpath), 3);
 	}
 
-	public void closeSearch() throws Exception {
+	public ContactListPage closeSearch() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathCloseSearchButton),
 				5);
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				closeSearchButton);
 		closeSearchButton.click();
+		return new ContactListPage(getLazyDriver());
 	}
 
 	public boolean isParticipantVisible(String name) throws Exception {

@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -9,6 +11,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
+
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -473,31 +476,37 @@ public class ContactListPageSteps {
 	 * Verifies whether the conversation with previously remembered users is
 	 * selected in the conversation list
 	 * 
-	 * @step. ^I see previously remembered user? selected in the conversations
+	 * @step. ^I see previously remembered user selected in the conversations
 	 *        list$
 	 * 
 	 * @param namesOfSelectedTopPeople
 	 *            conversation name
 	 * @throws Exception
 	 */
-
-	@Then("^I see previously remembered user? selected in the conversations list$")
-	public void ISeePreviouslyRememberedUserSelectedInConversationList(
-			String nameOfSelectedPeople) throws Exception {
-		nameOfSelectedPeople = usrMgr.replaceAliasesOccurences(
-				nameOfSelectedPeople, FindBy.NAME_ALIAS);
-		log.debug("Looking for contact with name " + nameOfSelectedPeople);
-		Assert.assertTrue("No contact list loaded.",
-				PagesCollection.contactListPage.waitForContactListVisible());
-		for (int i = 0; i < 5; i++) {
-			if (PagesCollection.contactListPage
-					.isConvoListEntryWithNameExist(nameOfSelectedPeople)) {
-				return;
+	@Then("^I see previosly remembered user selected in the conversations list$")
+	public void ISeePreviouslyRememberedUserSelectedInConversationList()
+			throws Exception {
+		final List<String> selectedTopPeople = PeoplePickerPageSteps
+				.getSelectedTopPeople();
+		if (selectedTopPeople != null) {
+			assert selectedTopPeople.size() == 1 : "Count of selected Top People is expected to be 1";
+			String oneSelectedTopPeople = selectedTopPeople.get(0);
+			oneSelectedTopPeople = usrMgr.replaceAliasesOccurences(
+					oneSelectedTopPeople, FindBy.NAME_ALIAS);
+			log.debug("Looking for contact with name " + selectedTopPeople);
+			Assert.assertTrue("No contact list loaded.",
+					PagesCollection.contactListPage.waitForContactListVisible());
+			for (int i = 0; i < 5; i++) {
+				if (PagesCollection.contactListPage
+						.isConvoListEntryWithNameExist(oneSelectedTopPeople)) {
+					return;
+				}
+				Thread.sleep(1000);
 			}
-			Thread.sleep(1000);
-		}
-		throw new AssertionError("Conversation list entry '"
-				+ nameOfSelectedPeople
-				+ "' is not visible after timeout expired");
+			throw new AssertionError("Conversation list entry '"
+					+ selectedTopPeople
+					+ "' is not visible after timeout expired");
+		} else
+			throw new Error("Top People are not selected");
 	}
 }
