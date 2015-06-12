@@ -62,7 +62,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		final By locator = By.xpath(ContactListPage.xpathContactByName
 				.apply(name));
 		return DriverUtils
-				.waitUntilLocatorIsDisplayed(getDriver(), locator, 20);
+				.waitUntilLocatorIsDisplayed(getDriver(), locator, 40);
 	}
 
 	public boolean waitUntilConversationIsInvisible(String name)
