@@ -82,6 +82,8 @@ final class SessionHelper {
 										this.wrappedDriver.getClass()
 												.getSimpleName(),
 										SCREENSHOTING_TIMEOUT_SECONDS));
+						((HasParallelScreenshotsFeature) this.wrappedDriver)
+								.forceStopOfScreenshoting();
 					}
 				} catch (InterruptedException e) {
 					// silently ignore

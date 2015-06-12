@@ -265,4 +265,14 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	public int getMaxScreenshotMakersCount() {
 		return 2;
 	}
+
+	@Override
+	public void forceStopOfScreenshoting() {
+		try {
+			CommonUtils.executeOsXCommand(new String[] { "/bin/bash", "-c",
+					"pkill -9 'adb shell screencap'" });
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
