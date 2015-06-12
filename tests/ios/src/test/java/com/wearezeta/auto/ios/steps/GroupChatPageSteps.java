@@ -8,6 +8,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.GroupChatInfoPage;
@@ -104,7 +105,8 @@ public class GroupChatPageSteps {
 	@When("^I return to the chat list$")
 	public void IReturnToChatList() throws Exception {
 		PagesCollection.contactListPage = (ContactListPage) PagesCollection.groupChatPage
-				.swipeRight(500);
+				.swipeRight(1000,
+						DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 28);;
 	}
 
 	@When("^I can see You Added (.*) message$")
