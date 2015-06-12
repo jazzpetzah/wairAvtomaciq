@@ -769,4 +769,28 @@ public class DialogPage extends AndroidPage {
 	public String getLastMessageFromDialog() {
 		return lastConversationMessage.getText();
 	}
+
+	public void swipeLeftOnCursorInput() throws Exception {
+		final By fakeCursorLocator = By.id(idFakeCursor);
+		int ntry = 1;
+		do {
+			DriverUtils.swipeLeft(this.getDriver(), cursorInput,
+					DEFAULT_SWIPE_TIME);
+			final int currentCursorOffset = getDriver()
+					.findElement(fakeCursorLocator).getLocation().getX();
+			if (currentCursorOffset < getDriver().manage().window().getSize()
+					.getWidth() / 2) {
+				return;
+			}
+			log.debug(String
+					.format("Failed to swipe left the text cursor. Retrying (%s of %s)...",
+							ntry, MAX_CURSOR_SWIPE_TRIES));
+			ntry++;
+			Thread.sleep(1000);
+		} while (ntry <= MAX_CURSOR_SWIPE_TRIES);
+		throw new RuntimeException(
+				String.format(
+						"Failed to swipe left the text cursor on input field after %s retries!",
+						MAX_CURSOR_SWIPE_TRIES));
+	}
 }
