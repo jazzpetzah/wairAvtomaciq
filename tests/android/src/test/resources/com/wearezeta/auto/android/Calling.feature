@@ -53,7 +53,7 @@ Feature: Calling
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I lock the device
     And <Contact> calls me using <CallBackend>
@@ -63,8 +63,8 @@ Feature: Calling
     Then I see started call message for contact <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
 
   @regression @id347
   Scenario Outline: Send text, image and knock while in the call with same user

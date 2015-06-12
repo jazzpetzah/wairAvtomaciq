@@ -81,22 +81,6 @@ Feature: Search
       | Name      |
       | user1Name |
 
-# Selendroid does not support interaction with external applications 
-  # @id1494 @regression
-  # Scenario Outline: Verify possibility of invitation accepting
-  #  Given There is 3 users where <Name> is me
-  #  Given Myself is connected to <Contact1>
-  #  Given I Sign in using login <Login> and password <Password>
-  #  Given I see Contact list
-  #  When I minimize the application
-  #  And I open Firefox
-  #  And I wait for Firefox Url bar
-  #  Then I connect using invitation link from <Contact2>
-  #
-  #  Examples: 
-  #    | Login      | Password      | Name      | Contact1  | Contact2  |
-  #    | user1Email | user1Password | user1Name | user2Name | user3Name |
-      
   @id319 @regression
   Scenario Outline: I can create group chat from Search
     Given There are 3 users where <Name> is me
@@ -122,7 +106,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list
     When I press Open StartUI
     And I see People picker page

@@ -129,7 +129,7 @@ Feature: Conversation View
   Scenario Outline: Send special chars message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
-    GGiven I sign in using my email or phone number
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
@@ -145,7 +145,7 @@ Feature: Conversation View
   Scenario Outline: Send emoji message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
@@ -154,8 +154,8 @@ Feature: Conversation View
     Then I see my message "<Message>" in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Message  |
-      | user1Email | user1Password | user1Name | user2Name | :) ;) :( |
+      | Name      | Contact   | Message  |
+      | user1Name | user2Name | :) ;) :( |
 
   @id147 @unicode @regression
   Scenario Outline: Send double byte chars
@@ -283,36 +283,6 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | SoudCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
-
-# Disabled since Selendroid cannot interact with external apps
-  # @id2085 @staging
-  # Scenario Outline: I want to share a picture to wire
-  #  Given There are 2 users where <Name> is me
-  #  Given <Contact> is connected to <Name>
-  #  Given I Sign in using login <Login> and password <Password>
-  #  Given I see Contact list
-  #  When I tap on contact name <Contact>
-  #  And I open the gallery application
-  #  And I share image from Gallery to Wire
-  #  Then I see new photo in the dialog
-  #
-  #  Examples: 
-  #    | Login      | Password      | Name      | Contact   |
-  #    | user1Email | user1Password | user1Name | user2Name |
-  #
-  # @id2084 @staging
-  # Scenario Outline: I want to share a URL on Wire
-  #  Given There is 2 users where <Name> is me
-  #  Given <Contact> is connected to <Name>
-  #  Given I Sign in using login <Login> and password <Password>
-  #  Given I see Contact list
-  #  And I tap on contact name <Contact>
-  #  And I share URL from native browser app to Wire with contact <Contact>
-  #  And I see URL in the dialog
-  #
-  #  Examples: 
-  #   | Login      | Password      | Name      | Contact   |
-  #   | user1Email | user1Password | user1Name | user2Name |
 
   @id170 @regression
   Scenario Outline: Verify you can send and play youtube link
