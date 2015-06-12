@@ -466,22 +466,27 @@ Feature: Connect
       | Name      | Contact   | Message          | Picture     |
       | user1Name | user2Name | Hello my friend! | testing.jpg |
 
-  @id2215 @staging
+  @id2215 @regression
   Scenario Outline: I can connect to someone from PYMK by clicking +
-    Given I see welcome screen
-    Given I input a new phone number
-    Given I input a valid verification number
-    Given I enter name <Name>
-    When I wait for PYMK for 30 secs
-    And I hide keyboard
-    And I press + button on a random Connect
-    And I press Clear button
-    Then I see Contact list
-    And I see contact list with PeoplePicker Random Connect
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Contact2>
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list
+    When I press Open StartUI
+    And I see People picker page
+    And I keep reopening People Picker until PYMK are visible
+    And I remember the name of the first PYMK item
+    And I click + button on the first PYMK item
+    Then I do not see the previously remembered PYMK item
+    When I press Clear button
+    Then I see Contact list with 2 contacts
+    When I press Open StartUI
+    Then I do not see the previously remembered PYMK item
 
     Examples: 
-      | Email      | Password      | Name      | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id2216 @staging
   Scenario Outline: I can connect to someone from PYMK by tap and typing connect message

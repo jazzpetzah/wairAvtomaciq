@@ -24,16 +24,43 @@ public class ContactListPageSteps {
 	/**
 	 * Verify whether conversations list is visible and no contacts are there
 	 * 
-	 * @step. ^I see Contact list with no contacts$
+	 * @step. ^I see Contact list with (no )?contacts$
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^I see Contact list with no contacts$")
-	public void GivenISeeContactListWithNoContacts() throws Exception {
+	@Given("^I see Contact list with (no )?contacts$")
+	public void GivenISeeContactListWithNoContacts(String shouldNotBeVisible)
+			throws Exception {
 		getContactListPage().verifyContactListIsFullyLoaded();
-		Assert.assertFalse(
-				"Some conversations are present in the conversations list, but zero is expected",
-				getContactListPage().isAnyConversationVisible());
+		if (shouldNotBeVisible == null) {
+			Assert.assertFalse(
+					"Some conversations are present in the conversations list, but zero is expected",
+					getContactListPage().isAnyConversationVisible());
+		} else {
+			Assert.assertTrue(
+					"No conversations are present in the conversations list, but some are expected",
+					getContactListPage().isAnyConversationVisible());
+		}
+	}
+
+	/**
+	 * Verify whether conversations list is visible and no contacts are there
+	 * 
+	 * @step. ^I see Contact list with (\\d+) contacts?$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I see Contact list with (\\d+) contacts?$")
+	public void GivenISeeContactListWithXContacts(int expectedNumber)
+			throws Exception {
+		getContactListPage().verifyContactListIsFullyLoaded();
+		final int actualNumber = getContactListPage()
+				.getCountOfVisibleConversations();
+		Assert.assertTrue(
+				String.format(
+						"%d conversations are expected to be visible, but %d are visible",
+						expectedNumber, actualNumber),
+				actualNumber == expectedNumber);
 	}
 
 	/**

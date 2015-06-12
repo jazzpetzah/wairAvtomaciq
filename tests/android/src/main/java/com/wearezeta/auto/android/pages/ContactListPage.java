@@ -22,6 +22,9 @@ public class ContactListPage extends AndroidPage {
 	public static final Function<String, String> xpathContactByName = name -> String
 			.format("//*[@id='tv_conv_list_topic' and @value='%s']", name);
 
+	public static final Function<Integer, String> xpathContactByIndex = index -> String
+			.format("(//*[@id='tv_conv_list_topic'])[%s]", index);
+
 	public static final Function<String, String> xpathMutedIconByConvoName = convoName -> String
 			.format("%s/parent::*//*[@id='tv_conv_list_voice_muted']",
 					xpathContactByName.apply(convoName));
@@ -289,7 +292,25 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isAnyConversationVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idContactListNames), 2);
+		for (int i = 1; i <= contactListNames.size(); i++) {
+			final By locator = By.xpath(xpathContactByIndex.apply(i));
+			if (DriverUtils
+					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public int getCountOfVisibleConversations() throws Exception {
+		int result = 0;
+		for (int i = 1; i <= contactListNames.size(); i++) {
+			final By locator = By.xpath(xpathContactByIndex.apply(i));
+			if (DriverUtils
+					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
+				result++;
+			}
+		}
+		return result;
 	}
 }
