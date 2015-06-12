@@ -303,6 +303,18 @@ public class PeoplePickerPageSteps {
 	public void IClickPlusButtonOnTheFirstPYMKItem() throws Exception {
 		getPeoplePickerPage().clickPlusOnPYMKItem(1);
 	}
+	
+	/**
+	 * Tap the very first item in PYMK list
+	 * 
+	 *  @step. ^I tap the first PYMK item$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap the first PYMK item$")
+	public void ITapTheFirstPYMKItem() throws Exception {
+		getPeoplePickerPage().tapPYMKItem(1);
+	}
 
 	/**
 	 * Do short or long swipe right the first PYMK entry

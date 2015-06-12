@@ -480,7 +480,7 @@ Feature: Connect
     And I click + button on the first PYMK item
     Then I do not see the previously remembered PYMK item
     When I press Clear button
-    Then I see Contact list with 2 contacts
+    Then I see contact list with name <Contact2>
     When I press Open StartUI
     Then I do not see the previously remembered PYMK item
 
@@ -488,29 +488,28 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2216 @staging
+  @id2216 @regression
   Scenario Outline: I can connect to someone from PYMK by tap and typing connect message
-    Given I see welcome screen
-    Given I press Join button
-    Given I press Camera button twice
-    Given I confirm selection
-    Given I enter name <Name>
-    Given I enter email <Email>
-    Given I enter password <Password>
-    Given I submit registration data
-    Given I see confirmation page
-    Given I verify registration address
-    When I wait for PYMK for 30 secs
-    And I hide keyboard
-    And I tap on a random contact from PYMK and set it name to <Contact1>
-    And I see connect to <Contact1> dialog
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Contact2>
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list
+    And I press Open StartUI
+    And I see People picker page
+    And I keep reopening People Picker until PYMK are visible
+    And I remember the name of the first PYMK item
+    When I tap the first PYMK item
+    And I see connect to <Contact2> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
     And I click Connect button on connect to page
     And I see People picker page
-    And I navigate back to Conversations List
-    Then I see contact list with name <Contact1>
+    And I press Clear button
+    Then I see contact list with name <Contact2>
+    When I press Open StartUI
+    Then I do not see the previously remembered PYMK item
 
     Examples: 
-      | Email      | Password      | Name      | Contact1  | Message       |
-      | user1Email | user1Password | user1Name | user2Name | Hellow friend |
+      | Name      | Contact1  | Contact2  | Message       |
+      | user1Name | user2Name | user3Name | Hellow friend |

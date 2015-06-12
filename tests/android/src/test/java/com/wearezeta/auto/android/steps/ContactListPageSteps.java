@@ -44,26 +44,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Verify whether conversations list is visible and no contacts are there
-	 * 
-	 * @step. ^I see Contact list with (\\d+) contacts?$
-	 * 
-	 * @throws Exception
-	 */
-	@Given("^I see Contact list with (\\d+) contacts?$")
-	public void GivenISeeContactListWithXContacts(int expectedNumber)
-			throws Exception {
-		getContactListPage().verifyContactListIsFullyLoaded();
-		final int actualNumber = getContactListPage()
-				.getCountOfVisibleConversations();
-		Assert.assertTrue(
-				String.format(
-						"%d conversations are expected to be visible, but %d are visible",
-						expectedNumber, actualNumber),
-				actualNumber == expectedNumber);
-	}
-
-	/**
 	 * Verify whether conversations list is visible
 	 * 
 	 * @step. ^I see Contact list$

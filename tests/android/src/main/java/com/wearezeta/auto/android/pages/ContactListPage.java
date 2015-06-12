@@ -301,16 +301,4 @@ public class ContactListPage extends AndroidPage {
 		}
 		return false;
 	}
-
-	public int getCountOfVisibleConversations() throws Exception {
-		int result = 0;
-		for (int i = 1; i <= contactListNames.size(); i++) {
-			final By locator = By.xpath(xpathContactByIndex.apply(i));
-			if (DriverUtils
-					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-				result++;
-			}
-		}
-		return result;
-	}
 }
