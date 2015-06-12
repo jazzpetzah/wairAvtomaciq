@@ -458,4 +458,70 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
+  @staging @id2405
+  Scenario Outline: Play/pause Youtube media link from the media bar [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type and send long message and media link <YoutubeLink>
+    And I click play video button
+    And I scroll media out of sight until media bar appears
+    And I pause playing the media in media bar
+    Then I see playing media is paused
+    And I press play in media bar
+    Then I see media is playing
+    And I stop media in media bar
+    Then The media stops playing
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | YoutubeLink                                 |
+      | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=gywGBuMUiI4 | 
       
+  @staging @id2403
+  Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type and send long message and media link <SoundCloudLink>
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
+    And I scroll to the end of the conversation
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I tap on the media bar
+    Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      
+  @staging @id2404
+  Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type and send long message and media link <SoundCloudLink>
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
+    And I scroll to the end of the conversation
+    And I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I see media bar on dialog page
+    And I wait 150 seconds for media to stop playing
+    Then I dont see media bar on dialog page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+
