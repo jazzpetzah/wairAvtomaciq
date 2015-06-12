@@ -138,10 +138,9 @@ Feature: Search
     When I see my avatar on top of Contact list
     And I open People Picker from Contact List
     And I wait till Top People list appears
-    When I select 1 user from Top People
-    And I remember user names selected in Top People
+    When I select <Contact1> from Top People
     And I choose to create conversation from People Picker
-    Then I see previosly remembered user selected in the conversations list
+    Then I see conversation with <Contact2> is selected in conversations list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Message1 |

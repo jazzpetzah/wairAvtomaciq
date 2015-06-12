@@ -224,13 +224,10 @@ public class PeoplePickerPage extends WebPage {
 				By.xpath(WebAppLocators.PeoplePickerPage.xpathTopPeople));
 	}
 
-	public void clickNumberOfTopPeople(int numberToTap) throws Exception {
-		for (int i = 1; i <= numberToTap; i++) {
-			final By topPeopleItemLocator = By
-					.xpath(WebAppLocators.PeoplePickerPage.xpathTopPeopleListByIndex
-							.apply(i));
-			getDriver().findElement(topPeopleItemLocator).click();
-		}
+	public void clickNameInTopPeople(String name) throws Exception {
+		String topPeopleItemLocator = WebAppLocators.PeoplePickerPage.xpathTopPeopleListByName
+						.apply(name);
+		getDriver().findElement(By.xpath(topPeopleItemLocator)).click();
 	}
 
 	public ArrayList<String> getNamesOfSelectedTopPeople() throws Exception {

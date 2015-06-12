@@ -483,7 +483,7 @@ public class ContactListPageSteps {
 	 *            conversation name
 	 * @throws Exception
 	 */
-	@Then("^I see previosly remembered user selected in the conversations list$")
+	@Then("^I see previously remembered user selected in the conversations list$")
 	public void ISeePreviouslyRememberedUserSelectedInConversationList()
 			throws Exception {
 		final List<String> selectedTopPeople = PeoplePickerPageSteps

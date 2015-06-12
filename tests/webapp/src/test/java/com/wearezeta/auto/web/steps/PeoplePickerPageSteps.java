@@ -210,19 +210,19 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Selects users from Top People in People Picker
 	 * 
-	 * @step. ^I select (\\d+) users? from Top People$
+	 * @step. ^I select (.*) from Top People$
 	 * 
-	 * @param numberOfTopPeople
-	 *            number of top people to select
+	 * @param nameOfTopPeople
+	 *            name of top people to select
 	 * @throws Exception
 	 */
 
-	@When("^I select (\\d+) users? from Top People$")
-	public void ISelectUsersFromTopPeople(int numberOfTopPeople)
+	@When("^I select (.*) from Top People$")
+	public void ISelectUsersFromTopPeople(String nameOfTopPeople)
 			throws Exception {
 		PagesCollection.peoplePickerPage
-				.clickNumberOfTopPeople(numberOfTopPeople);
-	}
+				.clickNameInTopPeople(nameOfTopPeople);
+		}
 
 	private static List<String> selectedTopPeople;
 

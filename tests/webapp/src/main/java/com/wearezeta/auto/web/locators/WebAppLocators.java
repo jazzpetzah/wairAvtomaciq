@@ -265,13 +265,13 @@ public final class WebAppLocators {
 
 		public static final String xpathTopPeople = "//*[@data-uie-name='status-top-people']";
 
-		public static final Function<Integer, String> xpathTopPeopleListByIndex = (
-				index) -> String
-				.format("(//user-list[contains(@params, 'top_users')]//*[@data-uie-name='item-user'])[%s]",
-						index);
+		public static final Function<String, String> xpathTopPeopleListByName = (
+				name) -> String
+				.format("(//user-list[contains(@params, 'top_users')]//*[@data-uie-name='item-user' and .//*[text()='%s'] ])",
+						name);
 
-		public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"+
-		"//*[@data-uie-name='item-user' and .//*[contains(@class,'selected')]]";
+		public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"
+				+ "//*[@data-uie-name='item-user' and .//*[contains(@class,'selected')]]";
 	}
 
 	public static final class RegistrationPage {
