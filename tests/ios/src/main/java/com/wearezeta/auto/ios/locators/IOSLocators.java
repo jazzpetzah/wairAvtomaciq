@@ -254,9 +254,9 @@ public final class IOSLocators {
 	
 	public static final String xpathAllSoundAlertsButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]";
 	
-	public static final String nameSettingsChangePasswordButton = "Change Password";
+	public static final String xpathSettingsChangePasswordButton = "//UIAButton[contains(@name, 'CHANGE PASSWORD')]";
 	
-	public static final String xpathChangePasswordPageChangePasswordButton = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIAButton[1]";
+	public static final String nameChangePasswordPageChangePasswordButton = "CHANGE PASSWORD";
 	
 	public static final String nameOptionsHelpButton = "HELP";
 	
@@ -529,7 +529,7 @@ public final class IOSLocators {
 	////////////////////////////
 	//Reset Password from Sign In
 	////////////////////////////
-	public static final String nameForgotPasswordButton = "FORGOT PASSWORD? CHANGE";
+	public static final String nameForgotPasswordButton = "FORGOT PASSWORD?";
 	public static final String xpathChangePasswordEmailField = "//UIAApplication[@name='Safari']/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIATextField[@value='Email']";
 	public static final String classNameUIATextField = "UIATextField";
 	public static final String classNameUIASecureTextField = "UIASecureTextField";
@@ -543,26 +543,28 @@ public final class IOSLocators {
 		
 		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CALLING')]";
 		
-		public static final String xpathEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[3]";
+		public static final String xpathEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[1]";
 		
 		public static final String xpathSpeakersButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[4]";
 		
-		public static final String xpathMuteCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[5]";
+		public static final String xpathMuteCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[3]";
 	}
 	
 	public final class IncomingCallPage {
 		
 		public static final String xpathCallingMessageUser = "//UIAStaticText[contains(@name, 'IS CALLING') and contains(@name, '%s')]";
 		
-		public static final String xpathAcceptCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[1]";
+		public static final String xpathAcceptCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[4]";
 		
 		public static final String xpathEndCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[2]";
 		
 		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'IS CALLING')]";
+		
+		public static final String xpathIgnoreCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[5]";
 	}
 	
 	public final class DialogPage {
-		public static final String xpathCallButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[3]";
+		public static final String nameCallButton = "ComposeControllerVoiceButton";
 	}
 	
 	public final class DialogInfoPage {

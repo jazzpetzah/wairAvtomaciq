@@ -225,6 +225,9 @@ public class ContactListPage extends AndroidPage {
 	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
+		final ScreenOrientation currentOrientation = this.getDriver()
+				.getOrientation();
+
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(EmailSignInPage.idLoginButton),
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
@@ -260,6 +263,12 @@ public class ContactListPage extends AndroidPage {
 				loadingItemLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
 				.format("Not all conversation list items were loaded within %s seconds",
 						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+
+		// FIXME: Workaround for non expected screen orientation change after
+		// sign in
+		if (this.getDriver().getOrientation() != currentOrientation) {
+			this.getDriver().rotate(currentOrientation);
+		}
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {

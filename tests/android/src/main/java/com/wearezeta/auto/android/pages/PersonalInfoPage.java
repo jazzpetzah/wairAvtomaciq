@@ -196,7 +196,7 @@ public class PersonalInfoPage extends AndroidPage {
 
 	@Override
 	public ContactListPage navigateBack() throws Exception {
-		this.getDriver().navigate().back();
+		super.navigateBack();
 		return new ContactListPage(this.getLazyDriver());
 	}
 

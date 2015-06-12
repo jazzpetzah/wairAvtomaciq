@@ -13,7 +13,7 @@ Feature: Calling
     And I see dialog page
     Then I see missed call from contact <Contact>
     And I click missed call button to call contact <Contact>
-    And I see calling message for contact <Contact>
+    And I see calling to contact <Contact> message
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend |
@@ -30,7 +30,7 @@ Feature: Calling
     And I swipe the text input cursor
     And I press call button
     Then I see mute call, end call and speakers buttons
-    And I see calling message for contact <Contact>
+    And I see calling to contact <Contact> message
     When I end started call
     Then I dont see calling page
 
@@ -46,7 +46,7 @@ Feature: Calling
     And I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
-    And I end incoming call
+    And I ignore incoming call
     Then I dont see incoming call page
 
     Examples: 
@@ -153,7 +153,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-  @calling_basic @id2652
+  @calling_basic @id2645
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -202,7 +202,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-  @calling_basic @id2627
+  @calling_basic @id933
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -221,7 +221,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | autocall     | 120     |
 
-  @calling_basic @id2624
+  @calling_basic @id913
   Scenario Outline: I want to end the call from the ongoing voice overlay
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

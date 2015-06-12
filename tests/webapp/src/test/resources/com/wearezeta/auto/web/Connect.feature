@@ -306,11 +306,36 @@ Feature: Connect
   @regression @id2548
   Scenario Outline: Verify you get auto-connected to people on sign-in
     Given There is 2 user where <Me> is me
+    # we need to wait a bit, otherwise backend throws a 429 status
+    Given I wait for 5 seconds
     Given User <Me> has contact <Contact> in address book
+    # we need to wait a bit, otherwise backend throws a 429 status
+    Given I wait for 5 seconds
     Given User <Contact> has contact <Me> in address book
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     And I see my avatar on top of Contact list
+    When I open conversation with <Contact>
+    Then I see CONNECTED TO action for <Contact> in conversation
+    Then I see START A CONVERSATION action for <Contact> in conversation
+    Then I do not see text message
+
+    Examples: 
+      | Me        | MyEmail    | MyPassword    | Contact   |
+      | user1Name | user1Email | user1Password | user2Name |
+
+  @staging @id2748
+  Scenario Outline: Verify you get auto-connected to people while being logged-in
+    Given There is 2 user where <Me> is me
+    # we need to wait a bit, otherwise backend throws a 429 status
+    Given I wait for 5 seconds
+    Given User <Me> has contact <Contact> in address book
+    Given I switch to Sign In page
+    Given I Sign in using login <MyEmail> and password <MyPassword>
+    And I see my avatar on top of Contact list
+    # we need to wait a bit, otherwise backend throws a 429 status
+    And I wait for 5 seconds
+    When User <Contact> has contact <Me> in address book
     When I open conversation with <Contact>
     Then I see CONNECTED TO action for <Contact> in conversation
     Then I see START A CONVERSATION action for <Contact> in conversation

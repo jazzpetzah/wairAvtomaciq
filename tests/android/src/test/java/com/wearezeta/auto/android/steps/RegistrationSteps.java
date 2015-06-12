@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.usrmgmt.UserState;
 
 import cucumber.api.java.en.*;
 
-public class RegistrationPageSteps {
+public class RegistrationSteps {
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 

@@ -1,14 +1,11 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.io.IOException;
-
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.ConnectToPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
@@ -16,56 +13,59 @@ import cucumber.api.java.en.When;
 public class ConnectToPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private ConnectToPage getConnectToPage() throws Exception {
+		return (ConnectToPage) pagesCollecton.getPage(ConnectToPage.class);
+	}
+
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String name) throws Throwable {
-		Assert.assertTrue("Connection input is not visible",
-				PagesCollection.connectToPage.isConnectToUserDialogVisible());
+		Assert.assertTrue("Connection input is not visible", getConnectToPage()
+				.isConnectToUserDialogVisible());
 	}
 
 	@When("^I input message in connect to dialog$")
-	public void WhenIInputMessageInConnectToDialog() {
-		PagesCollection.connectToPage.fillHelloTextInConnectDialog();
+	public void WhenIInputMessageInConnectToDialog() throws Exception {
+		getConnectToPage().fillHelloTextInConnectDialog();
 	}
 
 	/**
 	 * Erases all connection message content
 	 * 
 	 * @step. I delete all connect message content
-	 * 
-	 * @throws IOException
+	 * @throws Exception
 	 */
-
 	@When("^I delete all connect message content$")
-	public void IDeleteAllMessageContent() throws IOException {
-		PagesCollection.connectToPage.deleteTextInConnectDialog();
+	public void IDeleteAllMessageContent() throws Exception {
+		getConnectToPage().deleteTextInConnectDialog();
 	}
 
 	/**
 	 * Verifies connection button is disabled
 	 * 
 	 * @step. I see that connect button is disabled
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             if connection button is visible
 	 */
-
 	@When("^I see that connect button is disabled$")
-	public void IClickSendButtonConnectDialog() throws IOException {
-		Assert.assertFalse("Connect button is not disabled",
-				PagesCollection.connectToPage.isConnectButtonVisible());
+	public void IClickSendButtonConnectDialog() throws Exception {
+		Assert.assertFalse("Connect button is not disabled", getConnectToPage()
+				.isConnectButtonVisible());
 	}
 
 	@When("I click Connect button on connect to dialog")
 	public void IClickConnectButtonConnectDialog() throws Throwable {
-		PagesCollection.peoplePickerPage = PagesCollection.connectToPage
-				.sendInvitation();
+		getConnectToPage().sendInvitation();
 	}
 
 	@When("^I input message in connect to dialog and click Send button$")
 	public void WhenIInputMessageInConnectDialogAndClickSendButton(String name)
 			throws Throwable {
-		PagesCollection.iOSPage = PagesCollection.connectToPage
-				.sendInvitation(name);
+		getConnectToPage().sendInvitation(name);
 	}
 
 	@Given("^I have connection request from (.*)$")
@@ -83,14 +83,14 @@ public class ConnectToPageSteps {
 	 * 
 	 * @param characters
 	 *            number of characters to input into dialog
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 
 	@When("^I input message in connect dialog with (.*) characters$")
 	public void IInputMessageWithLength(int characters) throws Exception {
-		PagesCollection.connectToPage.inputCharactersIntoConnectDialogByScript(characters);
+		getConnectToPage().inputCharactersIntoConnectDialogByScript(characters);
 	}
-	
+
 	/**
 	 * Inputs a message with a certain number of random characters from keyboard
 	 * 
@@ -98,27 +98,25 @@ public class ConnectToPageSteps {
 	 * 
 	 * @param characters
 	 *            number of characters to input into dialog
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 
 	@When("^I fill in (.*) characters in connect dialog$")
 	public void IFillInCharsInConnectDialog(int characters) throws Exception {
-		PagesCollection.connectToPage.fillTextInConnectDialogWithLengh(characters);
+		getConnectToPage().fillTextInConnectDialogWithLengh(characters);
 	}
 
 	/**
 	 * Checks that the max amount of characters are present
 	 * 
 	 * @step. I input message in connect dialog with (.*) characters
+	 * @throws Exception
 	 * 
-	 * @throws AssertionError
-	 *             if too many characters are present
 	 */
 
 	@When("^I see message with max number of characters$")
-	public void VerifyMaxCharacterCount() throws IOException {
-		Assert.assertTrue(PagesCollection.connectToPage
-				.isMaxCharactersInMessage());
+	public void VerifyMaxCharacterCount() throws Exception {
+		Assert.assertTrue(getConnectToPage().isMaxCharactersInMessage());
 	}
 
 	@When("^I see connection request from (.*)$")
@@ -132,9 +130,7 @@ public class ConnectToPageSteps {
 	public void IAcceptInvitationMessage() throws Exception {
 		ContactListPageSteps clSteps = new ContactListPageSteps();
 		clSteps.WhenITapOnContactName(IOSLocators.xpathPendingRequest);
-		PagesCollection.connectToPage = (ConnectToPage) PagesCollection.loginPage
-				.instantiatePage(ConnectToPage.class);
-		PagesCollection.connectToPage.acceptInvitation();
+		getConnectToPage().acceptInvitation();
 		// Not needed since we auto accept all alerts
 	}
 

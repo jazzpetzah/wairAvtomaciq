@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -18,13 +17,25 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.ios.pages.ContactListPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.RegistrationPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class RegistrationPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private RegistrationPage getRegistrationPage() throws Exception {
+		return (RegistrationPage) pagesCollecton
+				.getPage(RegistrationPage.class);
+	}
+
+	private ContactListPage getContactListPage() throws Exception {
+		return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
+	}
 
 	private ClientUser userToRegister = null;
 
@@ -40,119 +51,111 @@ public class RegistrationPageSteps {
 
 	@Then("I see Take or select photo label and smile")
 	public void ISeeTakeOrSelectPhotoLabel() throws Exception {
-		Assert.assertTrue(PagesCollection.registrationPage
+		Assert.assertTrue(getRegistrationPage()
 				.isTakeOrSelectPhotoLabelVisible());
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isTakePhotoSmileDisplayed());
+		Assert.assertTrue(getRegistrationPage().isTakePhotoSmileDisplayed());
 	}
 
 	@Then("I don't see Take or select photo label and smile")
 	public void IDontSeeTakeOrSelectPhotoLabel() throws Exception {
-		Assert.assertFalse(PagesCollection.registrationPage
+		Assert.assertFalse(getRegistrationPage()
 				.isTakeOrSelectPhotoLabelVisible());
 	}
 
 	@When("^I press Camera button on Registration page$")
-	public void WhenIPressCameraButtonOnRegistrationPage() throws IOException {
-
-		PagesCollection.registrationPage.clickCameraButton();
+	public void WhenIPressCameraButtonOnRegistrationPage() throws Exception {
+		getRegistrationPage().clickCameraButton();
 	}
 
 	@When("^I take photo by front camera$")
-	public void WhenITakePhotoByFrontCamera() throws IOException {
-
-		PagesCollection.registrationPage.takePhotoByFrontCamera();
+	public void WhenITakePhotoByFrontCamera() throws Exception {
+		getRegistrationPage().takePhotoByFrontCamera();
 	}
 
 	@When("^I take photo by rear camera$")
 	public void WhenITakePhotoByRearCamera() throws Exception {
-		PagesCollection.registrationPage.takePhotoByRearCamera();
-		basePhoto = PagesCollection.registrationPage.takeScreenshot()
-				.orElseThrow(AssertionError::new);
+		getRegistrationPage().takePhotoByRearCamera();
+		basePhoto = getRegistrationPage().takeScreenshot().orElseThrow(
+				AssertionError::new);
 		Thread.sleep(3000);
 	}
 
 	@When("^I See photo taken$")
-	public void ISeePhotoTaken() throws IOException {
-
-		Assert.assertTrue(PagesCollection.registrationPage.isPictureSelected());
+	public void ISeePhotoTaken() throws Exception {
+		Assert.assertTrue(getRegistrationPage().isPictureSelected());
 	}
 
 	@When("^I press Picture button$")
 	public void WhenIPressPictureButton() throws Exception {
-
-		PagesCollection.cameraRollPage = PagesCollection.registrationPage
-				.selectPicture();
+		getRegistrationPage().selectPicture();
 	}
 
 	@When("^I See selected picture$")
 	public void ISeeSelectedPicture() throws Exception {
-		templateImage = PagesCollection.registrationPage.takeScreenshot()
-				.orElseThrow(AssertionError::new);
-		Assert.assertTrue(PagesCollection.registrationPage.isPictureSelected());
+		templateImage = getRegistrationPage().takeScreenshot().orElseThrow(
+				AssertionError::new);
+		Assert.assertTrue(getRegistrationPage().isPictureSelected());
 	}
 
 	@When("I reject selected picture$")
-	public void IRejectSelectedPicture() {
-		PagesCollection.registrationPage.cancelImageSelection();
+	public void IRejectSelectedPicture() throws Exception {
+		getRegistrationPage().cancelImageSelection();
 	}
 
 	@When("^I confirm selection$")
-	public void IConfirmSelection() throws IOException {
-		PagesCollection.registrationPage.confirmPicture();
+	public void IConfirmSelection() throws Exception {
+		getRegistrationPage().confirmPicture();
 	}
 
 	@When("I click Back button")
-	public void IClickBackButton() {
-		PagesCollection.registrationPage.tapBackButton();
+	public void IClickBackButton() throws Exception {
+		getRegistrationPage().tapBackButton();
 	}
 
 	@When("^I verify back button$")
-	public void IVerifyBackButton() {
-		Assert.assertTrue("I don't see the back button",
-				PagesCollection.registrationPage.isBackButtonVisible());
+	public void IVerifyBackButton() throws Exception {
+		Assert.assertTrue("I don't see the back button", getRegistrationPage()
+				.isBackButtonVisible());
 	}
 
 	@When("I click Forward Button")
-	public void IClickForwardButton() {
-		PagesCollection.registrationPage.tapForwardButton();
+	public void IClickForwardButton() throws Exception {
+		getRegistrationPage().tapForwardButton();
 	}
 
 	@When("I see Vignette overlay")
-	public void ISeeVignetteOverlay() {
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isVignetteOverlayVisible());
+	public void ISeeVignetteOverlay() throws Exception {
+		Assert.assertTrue(getRegistrationPage().isVignetteOverlayVisible());
 	}
 
 	@When("I click Vignette overlay")
-	public void IClickVignetteOverlay() {
-		PagesCollection.registrationPage.clickVignetteLayer();
+	public void IClickVignetteOverlay() throws Exception {
+		getRegistrationPage().clickVignetteLayer();
 	}
 
 	@When("I dismiss Vignette overlay")
 	public void IDismissVignetteOverlay() throws Exception {
-		PagesCollection.registrationPage.dismissVignetteBakground();
+		getRegistrationPage().dismissVignetteBakground();
 	}
 
 	@When("I don't see Vignette overlay")
-	public void IDontSeeVignetteOverlay() {
-		Assert.assertFalse(PagesCollection.registrationPage
-				.isVignetteOverlayVisible());
+	public void IDontSeeVignetteOverlay() throws Exception {
+		Assert.assertFalse(getRegistrationPage().isVignetteOverlayVisible());
 	}
 
 	@When("I see full color mode")
-	public void ISeeColorMode() {
-		Assert.assertTrue(PagesCollection.registrationPage.isColorModeVisible());
+	public void ISeeColorMode() throws Exception {
+		Assert.assertTrue(getRegistrationPage().isColorModeVisible());
 	}
 
 	@When("I click close full color mode button")
-	public void IClickCloseColorModeButton() {
-		PagesCollection.registrationPage.tapCloseColorModeButton();
+	public void IClickCloseColorModeButton() throws Exception {
+		getRegistrationPage().tapCloseColorModeButton();
 	}
 
 	@When("I see Registration name input")
-	public void ISeeRegistrationNameInput() {
-		Assert.assertTrue(PagesCollection.registrationPage.isNameLabelVisible());
+	public void ISeeRegistrationNameInput() throws Exception {
+		Assert.assertTrue(getRegistrationPage().isNameLabelVisible());
 	}
 
 	/**
@@ -174,16 +177,18 @@ public class RegistrationPageSteps {
 		this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		String number = this.userToRegister.getPhoneNumber().toString();
 		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		PagesCollection.registrationPage.inputPhoneNumber(number,
+		getRegistrationPage().inputPhoneNumber(number,
 				PhoneNumber.WIRE_COUNTRY_PREFIX);
 	}
 
 	/**
 	 * Click on I AGREE button to accept terms of service
+	 * 
+	 * @throws Exception
 	 */
 	@When("^I accept terms of service$")
-	public void IAcceptTermsOfService() {
-		PagesCollection.registrationPage.clickAgreeButton();
+	public void IAcceptTermsOfService() throws Exception {
+		getRegistrationPage().clickAgreeButton();
 	}
 
 	/**
@@ -196,7 +201,7 @@ public class RegistrationPageSteps {
 		String code = BackendAPIWrappers
 				.getActivationCodeByPhoneNumber(this.userToRegister
 						.getPhoneNumber());
-		PagesCollection.registrationPage.inputActivationCode(code);
+		getRegistrationPage().inputActivationCode(code);
 	}
 
 	@When("^I enter name (.*)$")
@@ -211,7 +216,7 @@ public class RegistrationPageSteps {
 			this.userToRegister.clearNameAliases();
 			this.userToRegister.addNameAlias(name);
 		}
-		PagesCollection.registrationPage.setName(this.userToRegister.getName());
+		getRegistrationPage().setName(this.userToRegister.getName());
 	}
 
 	@When("^I enter a username which is at most (\\d+) characters long from (\\w+) alphabet$")
@@ -220,19 +225,18 @@ public class RegistrationPageSteps {
 		String nameToType = LanguageUtils.generateRandomString(charactersLimit,
 				alphabetName).replace('\\', '|');
 		IEnterName(nameToType);
-		PagesCollection.registrationPage.inputName();
+		getRegistrationPage().inputName();
 	}
 
 	@When("^I input name (.*) and hit Enter$")
 	public void IInputNameAndHitEnter(String name) throws Exception {
 		IEnterName(name);
-		PagesCollection.registrationPage.inputName();
+		getRegistrationPage().inputName();
 	}
 
 	@Then("^I verify that my username is at most (\\d+) characters long$")
-	public void IVerifyUsernameLength(int charactersLimit) throws IOException {
-		String realUserName = PagesCollection.registrationPage
-				.getUsernameFieldValue();
+	public void IVerifyUsernameLength(int charactersLimit) throws Exception {
+		String realUserName = getRegistrationPage().getUsernameFieldValue();
 		int usernameLength = LanguageUtils.getUnicodeStringAsCharList(
 				realUserName).size();
 		Assert.assertTrue(charactersLimit >= usernameLength);
@@ -253,10 +257,10 @@ public class RegistrationPageSteps {
 		}
 
 		if (flag) {
-			PagesCollection.registrationPage.setEmail(email + "\n");
+			getRegistrationPage().setEmail(email + "\n");
 		} else {
-			PagesCollection.registrationPage.setEmail(this.userToRegister
-					.getEmail() + "\n");
+			getRegistrationPage().setEmail(
+					this.userToRegister.getEmail() + "\n");
 		}
 	}
 
@@ -279,32 +283,31 @@ public class RegistrationPageSteps {
 		}
 		this.userToRegister.clearEmailAliases();
 		this.userToRegister.addEmailAlias(email);
-		PagesCollection.registrationPage.setEmail(new StringBuilder(
-				this.userToRegister.getEmail()).insert(email.length() - 1,
-				"          ").toString());
+		getRegistrationPage().setEmail(
+				new StringBuilder(this.userToRegister.getEmail()).insert(
+						email.length() - 1, "          ").toString());
 	}
 
 	@When("^I enter an incorrect email (.*)$")
-	public void IEnterIncorrectEmail(String email) throws IOException {
-		PagesCollection.registrationPage.setEmail(email);
+	public void IEnterIncorrectEmail(String email) throws Exception {
+		getRegistrationPage().setEmail(email);
 	}
 
 	@When("I clear email input field on Registration page")
 	public void IClearEmailInputRegistration() throws Exception {
-		PagesCollection.registrationPage.clearEmailInput();
+		getRegistrationPage().clearEmailInput();
 	}
 
 	@Then("^I verify no spaces are present in email$")
-	public void CheckForSpacesInEmail() throws IOException {
-		String realEmailText = PagesCollection.registrationPage
-				.getEmailFieldValue();
-		String initialEmailText = PagesCollection.registrationPage.getEmail();
+	public void CheckForSpacesInEmail() throws Exception {
+		String realEmailText = getRegistrationPage().getEmailFieldValue();
+		String initialEmailText = getRegistrationPage().getEmail();
 		Assert.assertTrue(initialEmailText.replace(" ", "").equals(
 				realEmailText));
 	}
 
 	@When("^I attempt to enter emails with known incorrect formats$")
-	public void IEnterEmailWithIncorrectFormat() throws IOException {
+	public void IEnterEmailWithIncorrectFormat() throws Exception {
 		// current design has basic email requirements: contains single @,
 		// contains a domain name with a dot + domain extension(min 2
 		// characters)
@@ -312,17 +315,16 @@ public class RegistrationPageSteps {
 				"example@zeta", "abc@example."/* , "abc@example.c" */};
 		// test fails because minimum 2 character domain extension is not
 		// implemented(allows for only 1)
-		PagesCollection.registrationPage.setListOfEmails(listOfInvalidEmails);
+		getRegistrationPage().setListOfEmails(listOfInvalidEmails);
 	}
 
 	@Then("^I verify that the app does not let me continue$")
-	public void IVerifyIncorrectFormatMessage() throws IOException {
-		Assert.assertTrue(PagesCollection.registrationPage
-				.typeAllInvalidEmails());
+	public void IVerifyIncorrectFormatMessage() throws Exception {
+		Assert.assertTrue(getRegistrationPage().typeAllInvalidEmails());
 	}
 
 	@When("^I enter password (.*)$")
-	public void IEnterPassword(String password) throws IOException {
+	public void IEnterPassword(String password) throws Exception {
 		try {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
 					password).getPassword());
@@ -330,52 +332,48 @@ public class RegistrationPageSteps {
 			this.userToRegister.setPassword(password);
 			this.userToRegister.addPasswordAlias(password);
 		}
-		PagesCollection.registrationPage.setPassword(this.userToRegister
-				.getPassword());
+		getRegistrationPage().setPassword(this.userToRegister.getPassword());
 	}
 
 	@When("^I input password (.*) and hit Enter$")
 	public void IInputPasswordAndHitEnter(String password) throws Exception {
 		IEnterPassword(password);
-
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
-		PagesCollection.registrationPage.inputPassword();
+		getRegistrationPage().inputPassword();
 	}
 
 	@When("I click Create Account Button")
 	public void IClickCreateAccountButton() throws Exception {
-		PagesCollection.registrationPage.clickCreateAccountButton();
+		getRegistrationPage().clickCreateAccountButton();
 	}
 
 	@Then("Contact list loads with only my name (.*)")
 	public void ContactListLoadsWithOnlyMyName(String name) throws Throwable {
 		name = this.userToRegister.getName();
-		PagesCollection.contactListPage = (ContactListPage) PagesCollection.loginPage
-				.instantiatePage(ContactListPage.class);
-		PagesCollection.contactListPage.waitForContactListToLoad();
-		Assert.assertTrue("My username is not displayed first",
-				PagesCollection.contactListPage
-						.isMyUserNameDisplayedFirstInContactList(name));
+		getContactListPage().waitForContactListToLoad();
+		Assert.assertTrue(
+				"My username is not displayed first",
+				getContactListPage().isMyUserNameDisplayedFirstInContactList(
+						name));
 	}
 
 	@Then("I see Create Account button disabled")
-	public void ISeeCreateAccountButtonDisabled() {
-		Assert.assertFalse(PagesCollection.registrationPage
-				.isCreateAccountEnabled());
+	public void ISeeCreateAccountButtonDisabled() throws Exception {
+		Assert.assertFalse(getRegistrationPage().isCreateAccountEnabled());
 	}
 
 	@Then("^I navigate throughout the registration pages and see my input$")
-	public void NavigateAndVerifyInput() throws IOException {
-		PagesCollection.registrationPage.verifyUserInputIsPresent(
+	public void NavigateAndVerifyInput() throws Exception {
+		getRegistrationPage().verifyUserInputIsPresent(
 				this.userToRegister.getName(), this.userToRegister.getEmail());
 	}
 
 	@When("I navigate from password screen back to Welcome screen")
-	public void NaviateFromPassScreenToWelcomeScreen() {
-		PagesCollection.registrationPage.navigateToWelcomePage();
+	public void NaviateFromPassScreenToWelcomeScreen() throws Exception {
+		getRegistrationPage().navigateToWelcomePage();
 	}
 
 	/**
@@ -383,15 +381,16 @@ public class RegistrationPageSteps {
 	 * page
 	 * 
 	 * @step. I navigate back to welcome page
+	 * @throws Exception
 	 */
 	@When("^I navigate back to welcome page")
-	public void INavigateToWelcomePage() {
-		PagesCollection.registrationPage.navigateToWelcomePage();
+	public void INavigateToWelcomePage() throws Exception {
+		getRegistrationPage().navigateToWelcomePage();
 	}
 
 	@When("I input user data")
-	public void IInputUserData() {
-		PagesCollection.registrationPage.typeInRegistrationData();
+	public void IInputUserData() throws Exception {
+		getRegistrationPage().typeInRegistrationData();
 	}
 
 	@When("^I submit registration data$")
@@ -400,7 +399,7 @@ public class RegistrationPageSteps {
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
-		PagesCollection.registrationPage.createAccount();
+		getRegistrationPage().createAccount();
 	}
 
 	/**
@@ -417,33 +416,30 @@ public class RegistrationPageSteps {
 	@Then("^I confirm that inbox contains (\\d+) emails? for current recipient$")
 	public void VerifyRecipientsCount(int expectedCnt) throws Exception {
 		String expectedRecipient = this.userToRegister.getEmail();
-		PagesCollection.registrationPage
-				.waitUntilEmailsCountReachesExpectedValue(expectedCnt,
-						expectedRecipient,
-						BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT);
+		getRegistrationPage().waitUntilEmailsCountReachesExpectedValue(
+				expectedCnt, expectedRecipient,
+				BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT);
 	}
 
 	@Then("^I resend verification email$")
 	public void IResendVerificationEmail() throws Exception {
-		PagesCollection.registrationPage.reSendEmail();
+		getRegistrationPage().reSendEmail();
 	}
 
 	@When("^I see error page$")
-	public void ISeeErrorPage() throws IOException {
-		Assert.assertTrue(PagesCollection.registrationPage.confirmErrorPage());
+	public void ISeeErrorPage() throws Exception {
+		Assert.assertTrue(getRegistrationPage().confirmErrorPage());
 	}
 
 	@Then("^I return to the email page from error page$")
-	public void IReturntoEmailPageFromErrorPage() throws IOException {
-		PagesCollection.registrationPage.backToEmailPageFromErrorPage();
+	public void IReturntoEmailPageFromErrorPage() throws Exception {
+		getRegistrationPage().backToEmailPageFromErrorPage();
 	}
 
 	@Then("^I see confirmation page$")
 	public void ISeeConfirmationPage() throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.registrationPage
-				.waitForConfirmationMessage();
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isConfirmationShown());
+		getRegistrationPage().waitForConfirmationMessage();
+		Assert.assertTrue(getRegistrationPage().isConfirmationShown());
 	}
 
 	@Then("^I verify registration address$")
@@ -454,27 +450,26 @@ public class RegistrationPageSteps {
 	}
 
 	@When("I don't see Next button")
-	public void IDontSeeNextButton() {
-		Assert.assertFalse(PagesCollection.registrationPage
-				.isNextButtonPresented());
+	public void IDontSeeNextButton() throws Exception {
+		Assert.assertFalse(getRegistrationPage().isNextButtonPresented());
 	}
 
 	@When("^I see selected image set as background$")
 	public void ISeeSelectedImageSetAsBackground() throws Throwable {
-		templateImage = PagesCollection.registrationPage.takeScreenshot()
-				.orElseThrow(AssertionError::new);
+		templateImage = getRegistrationPage().takeScreenshot().orElseThrow(
+				AssertionError::new);
 	}
 
 	@When("^I see photo set as background$")
 	public void ISeePhotoSetAsBackground() throws Throwable {
-		referenceImage = PagesCollection.registrationPage.takeScreenshot()
-				.orElseThrow(AssertionError::new);
+		referenceImage = getRegistrationPage().takeScreenshot().orElseThrow(
+				AssertionError::new);
 	}
 
 	@Then("^I see photo is set as profile background$")
 	public void ISeePhotoSetAsProfileBackground() throws Throwable {
-		profileImage = PagesCollection.registrationPage.takeScreenshot()
-				.orElseThrow(AssertionError::new);
+		profileImage = getRegistrationPage().takeScreenshot().orElseThrow(
+				AssertionError::new);
 	}
 
 	@Then("I see photo image is correct")
@@ -499,11 +494,11 @@ public class RegistrationPageSteps {
 	 * displayed
 	 * 
 	 * @step. I see email verification reminder
+	 * @throws Exception
 	 */
 	@Then("^I see email verification reminder$")
-	public void ISeeEmailVerificationReminder() {
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isEmailVerifPromptVisible());
+	public void ISeeEmailVerificationReminder() throws Exception {
+		Assert.assertTrue(getRegistrationPage().isEmailVerifPromptVisible());
 	}
 
 }
