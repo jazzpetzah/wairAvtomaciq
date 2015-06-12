@@ -4,7 +4,7 @@ Feature: Search
   Scenario Outline: I can do full name search for existing 1:1 non-archive
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     And I wait until <Contact> exists in backend search results
     When I press Open StartUI
@@ -14,15 +14,15 @@ Feature: Search
     Then I see user <Contact> in People picker
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @id220 @regression
   Scenario Outline: I can do full name search for existing group convo non-archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I press Open StartUI
     And I see People picker page
@@ -31,14 +31,14 @@ Feature: Search
     Then I see group <GroupChatName> in People picker
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName          |
-      | user1Email | user1Password | user1Name | user3Name | user2Name | PeoplePicker GroupChat |
+      | Name      | Contact1  | Contact2  | GroupChatName          |
+      | user1Name | user3Name | user2Name | PeoplePicker GroupChat |
 
   @id223 @regression
   Scenario Outline: I can do partial name search for existing 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I press Open StartUI
     And I see People picker page
@@ -47,15 +47,15 @@ Feature: Search
     Then I see user <Contact> in People picker
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Size |
-      | user1Email | user1Password | user1Name | user2Name | 12   |
+      | Name      | Contact   | Size |
+      | user1Name | user2Name | 12   |
 
   @id225 @regression
   Scenario Outline: I can do partial name search for existing group convo non-archive
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I press Open StartUI
     And I see People picker page
@@ -64,14 +64,13 @@ Feature: Search
     Then I see group <GroupChatName> in People picker
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName           | Size |
-      | user1Email | user1Password | user1Name | user3Name | user2Name | PeoplePicker GroupChat1 | 5    |
+      | Name      | Contact1  | Contact2  | GroupChatName           | Size |
+      | user1Name | user3Name | user2Name | PeoplePicker GroupChat1 | 5    |
 
   @id327 @smoke
   Scenario Outline: Open/Close People picker
-    Given There is 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I press Open StartUI
     And I see People picker page
@@ -79,30 +78,14 @@ Feature: Search
     Then I see Contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      |
+      | user1Name |
 
-# Selendroid does not support interaction with external applications 
-  # @id1494 @regression
-  # Scenario Outline: Verify possibility of invitation accepting
-  #  Given There is 3 users where <Name> is me
-  #  Given Myself is connected to <Contact1>
-  #  Given I Sign in using login <Login> and password <Password>
-  #  Given I see Contact list
-  #  When I minimize the application
-  #  And I open Firefox
-  #  And I wait for Firefox Url bar
-  #  Then I connect using invitation link from <Contact2>
-  #
-  #  Examples: 
-  #    | Login      | Password      | Name      | Contact1  | Contact2  |
-  #    | user1Email | user1Password | user1Name | user2Name | user3Name |
-      
   @id319 @regression
   Scenario Outline: I can create group chat from Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I press Open StartUI
     And I see People picker page
@@ -111,20 +94,19 @@ Feature: Search
     And I tap on user name found on People picker page <Contact1>
     And I add in search field user name to connect to <Contact2>
     And I tap on user name found on People picker page <Contact2>
-    #And I press back button
     And I tap on create conversation
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName           |
-      | user1Email | user1Password | user1Name | user3Name | user2Name | PeoplePicker GroupChat2 |
+      | Name      | Contact1  | Contact2  | GroupChatName           |
+      | user1Name | user3Name | user2Name | PeoplePicker GroupChat2 |
 
   @id2214 @regression
   Scenario Outline: I can dismiss PYMK by Hide button
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list
     When I press Open StartUI
     And I see People picker page
@@ -138,15 +120,15 @@ Feature: Search
     Then I do not see the previously remembered PYMK item
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id2213 @regression
   Scenario Outline: I can dismiss PYMK by swipe
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list
     When I press Open StartUI
     And I see People picker page
@@ -159,6 +141,6 @@ Feature: Search
     Then I do not see the previously remembered PYMK item
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
       

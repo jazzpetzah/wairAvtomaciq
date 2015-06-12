@@ -4,7 +4,7 @@ Feature: Conversation List
   Scenario Outline: Mute conversation
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -21,14 +21,14 @@ Feature: Conversation List
     Then Contact <Contact1> is muted
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @id1510 @regression
   Scenario Outline: Verify conversation list play/pause controls can change playing media state (SoundCloud) 
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact1>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -41,13 +41,13 @@ Feature: Conversation List
     Then I see PlayPause media content button for conversation <Contact1>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | SoudCloudLink                                              |
-      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+      | Name      | Contact1  | SoudCloudLink                                              |
+      | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
   @id2177 @regression
   Scenario Outline: I can open and close people picker by UI button or swipe
     Given There is 1 user where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list with no contacts
     When I press Open StartUI
     And I see People picker page
@@ -61,15 +61,15 @@ Feature: Conversation List
     And I do not see TOP PEOPLE
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
 
   @id1514 @regression
   Scenario Outline: Verify unsilince the conversation
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given <Contact1> is silenced to user <Name>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     Given Contact <Contact1> is muted
     When I tap on contact name <Contact1>
@@ -83,5 +83,5 @@ Feature: Conversation List
     Then Contact <Contact1> is not muted
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact1  |
+      | user1Name | user2Name |

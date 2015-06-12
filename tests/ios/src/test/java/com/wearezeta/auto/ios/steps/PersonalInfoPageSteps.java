@@ -393,7 +393,7 @@ public class PersonalInfoPageSteps {
 
 	@Then("I see reset password page")
 	public void ISeeResetPasswordPage() throws Exception {
-		Assert.assertTrue(getPersonalInfoPage().isResetPasswordPageVisible());
+		Assert.assertTrue("Change Password button is not shown", getPersonalInfoPage().isResetPasswordPageVisible());
 	}
 
 	@When("I tap on Sound Alerts")

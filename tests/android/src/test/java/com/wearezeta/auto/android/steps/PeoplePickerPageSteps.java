@@ -456,9 +456,7 @@ public class PeoplePickerPageSteps {
 					.tapOptionsButton();
 			((PersonalInfoPage) pagesCollection.getPage(PersonalInfoPage.class))
 					.tapSignOutBtn();
-			new EmailSignInSteps().GivenISignIn(
-					usrMgr.getSelfUser().getEmail(), usrMgr.getSelfUser()
-							.getPassword());
+			new LoginSteps().ISignInUsingEmail();
 			new ContactListPageSteps().GivenISeeContactList();
 			((ContactListPage) pagesCollection.getPage(ContactListPage.class))
 					.openPeoplePicker();

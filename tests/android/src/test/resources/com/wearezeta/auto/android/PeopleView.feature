@@ -7,7 +7,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1> has a name <Contact1NewName>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
@@ -18,15 +18,15 @@ Feature: People View
     Then I see <Contact1> user name and email
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
+      | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
+      | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
 
   @id321 @smoke
   Scenario Outline: Leave group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I tap on contact name <GroupChatName>
     And I see dialog page
@@ -37,15 +37,15 @@ Feature: People View
     Then I see Contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3Name | LeaveGroupChat |
 
   @id322 @smoke
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
@@ -61,8 +61,8 @@ Feature: People View
     Then I see message <Message> contact <Contact2> on group page
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
+      | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
+      | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
 
   @id594 @regression
   Scenario Outline: Verify correct group info page information
@@ -74,7 +74,7 @@ Feature: People View
     Given <Contact1> has a name <Contact1NewName>
     Given <Contact2> has a name <Contact2NewName>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
@@ -90,8 +90,8 @@ Feature: People View
     Then I see the correct participant avatars for <Contact1NewName>,<Contact2NewName>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
-      | user1Email | user1Password | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatar TestContact |
+      | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
+      | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatar TestContact |
 
   @id1395 @smoke
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
@@ -99,7 +99,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Contact <Contact1> send message to user <Name>
     Given Contact <Name> send message to user <Contact1>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I open People Picker
     And I wait until Top People list appears
@@ -108,15 +108,15 @@ Feature: People View
     Then I see dialog page
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id1507 @regression
   Scenario Outline: Verify editing the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <OldGroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I tap on contact name <OldGroupChatName>
     And I tap conversation details button
@@ -127,14 +127,14 @@ Feature: People View
     And I see contact list with name <NewConversationName>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
+      | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
+      | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
 
   @id2236 @regression
   Scenario Outline: Check interaction with options menu
     Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given I Sign in using login <Login> and password <Password>
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I tap on contact name <Contact>
     And I see dialog page
@@ -169,15 +169,15 @@ Feature: People View
     Then I see correct 1:1 options menu
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @id1509 @regression
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I tap on contact name <GroupChatName>
     And I tap conversation details button
@@ -191,5 +191,5 @@ Feature: People View
     Then I see Pending button on pending user page
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupChat     |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     |

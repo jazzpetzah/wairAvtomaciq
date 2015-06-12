@@ -78,13 +78,19 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	@Override
 	public void swipe(int startx, int starty, int endx, int endy,
 			int durationMilliseconds) {
+		@SuppressWarnings("unused")
 		final String adbCommandsChain = String.format(
 				"adb shell input swipe %d %d %d %d %d", startx, starty, endx,
 				endy, durationMilliseconds);
+		final String adbCommandsChainLimited = String
+				.format("adb shell input swipe %d %d %d %d", startx, starty,
+						endx, endy);
 		try {
+			// FIXME: Swipe with timeout might not be supported by old Android
+			// API (<= 4.2)
 			Runtime.getRuntime()
-					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
-					.waitFor();
+					.exec(new String[] { "/bin/bash", "-c",
+							adbCommandsChainLimited }).waitFor();
 		} catch (Exception e) {
 			throw new WebDriverException(e.getMessage(), e);
 		}
@@ -264,5 +270,15 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	@Override
 	public int getMaxScreenshotMakersCount() {
 		return 2;
+	}
+
+	@Override
+	public void forceStopOfScreenshoting() {
+		try {
+			CommonUtils.executeOsXCommand(new String[] { "/bin/bash", "-c",
+					"pkill -9 'adb shell screencap'" });
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

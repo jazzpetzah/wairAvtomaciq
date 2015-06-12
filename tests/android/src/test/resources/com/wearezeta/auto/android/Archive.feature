@@ -6,7 +6,7 @@ Feature: Archive
     Given There are 3 users where <Name> is me 
     Given Myself is connected to <Contact1>
     Given Myself is connected to <Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     And I see contact list with name <Contact1>
     When I swipe right on a <Contact1>
@@ -17,15 +17,15 @@ Feature: Archive
     And I see dialog page
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id1512 @regression
   Scenario Outline: Verify you can archive and unarchive group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     And I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
@@ -36,5 +36,5 @@ Feature: Archive
     And I see dialog page
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3Name | LeaveGroupChat |
