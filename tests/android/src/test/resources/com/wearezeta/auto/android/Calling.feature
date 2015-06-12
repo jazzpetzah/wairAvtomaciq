@@ -88,6 +88,7 @@ Feature: Calling
     Then I see Ping message <Msg> in the dialog
     # There is some issue in Selendroid - we cannot swipe cursor after the keyboard was hidden once
     # That is why we send the text after photo and ping and not before
+    When I swipe left on text input
     And I tap on text input
     And I type the message "<Message>" and send it
     Then I see my message "<Message>" in the dialog

@@ -8,10 +8,8 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.pages.CameraRollPage;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.PersonalInfoPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -19,91 +17,103 @@ import cucumber.api.java.en.When;
 public class PersonalInfoPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private PersonalInfoPage getPersonalInfoPage() throws Exception {
+		return (PersonalInfoPage) pagesCollecton
+				.getPage(PersonalInfoPage.class);
+	}
+
 	BufferedImage referenceImage;
 
 	@When("^I swipe up for options$")
 	public void WhenISwipeUpForOptions() throws IOException, Throwable {
-		PagesCollection.personalInfoPage.swipeUp(500);
+		getPersonalInfoPage().swipeUp(500);
 	}
 
 	@When("I tap to edit my name")
 	public void ITapToEditName() throws Exception {
-		PagesCollection.personalInfoPage.tapOnEditNameField();
+		getPersonalInfoPage().tapOnEditNameField();
 	}
 
 	@When("I attempt to input an empty name and press return")
 	public void EnterEmptyNameAndPressReturn() throws Exception {
-		PagesCollection.personalInfoPage.clearNameField();
-		PagesCollection.personalInfoPage.pressEnterInNameField();
+		getPersonalInfoPage().clearNameField();
+		getPersonalInfoPage().pressEnterInNameField();
 	}
 
 	@When("I attempt to input an empty name and tap the screen")
-	public void EnterEmptyNameAndTapScreen() {
-		PagesCollection.personalInfoPage.clearNameField();
-		PagesCollection.personalInfoPage.tapOnPersonalPage();
+	public void EnterEmptyNameAndTapScreen() throws Exception {
+		getPersonalInfoPage().clearNameField();
+		getPersonalInfoPage().tapOnPersonalPage();
 	}
-	
+
 	/**
-	 * Enters an 80 char username 
+	 * Enters an 80 char username
 	 * 
 	 * @step. ^I attempt to enter an 80 char name$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I attempt to enter an 80 char name$")
-	public void EnterTooLongName() {
-		PagesCollection.personalInfoPage.clearNameField();
-		PagesCollection.personalInfoPage.attemptTooLongName();
+	public void EnterTooLongName() throws Exception {
+		getPersonalInfoPage().clearNameField();
+		getPersonalInfoPage().attemptTooLongName();
 	}
-	
+
 	/**
 	 * Verifies username is no more than 64 chars
 	 * 
 	 * @step. New name is only first 64 chars
+	 * @throws Exception
 	 * 
 	 */
 	@When("I verify my new name is only first 64 chars")
-	public void NewNameIsMaxChars() {
-		Assert.assertTrue("Username is greater than 64 characters", PagesCollection.personalInfoPage.nameIsMaxChars() >= 64);
+	public void NewNameIsMaxChars() throws Exception {
+		Assert.assertTrue("Username is greater than 64 characters",
+				getPersonalInfoPage().nameIsMaxChars() >= 64);
 	}
 
 	@When("I see error message asking for more characters")
 	public void ISeeErrorMessageForMoreCharacters() throws Exception {
-		Assert.assertTrue("Error message is not shown",
-				PagesCollection.personalInfoPage.isTooShortNameErrorMessage());
+		Assert.assertTrue("Error message is not shown", getPersonalInfoPage()
+				.isTooShortNameErrorMessage());
 	}
 
 	@When("^I press options button (.*)$")
 	public void WhenIPressOptionsButton(String buttonName) throws Throwable {
-		PagesCollection.personalInfoPage.tapOptionsButtonByText(buttonName);
+		getPersonalInfoPage().tapOptionsButtonByText(buttonName);
 	}
 
 	@When("I click on Settings button on personal page")
-	public void WhenIClickOnSettingsButtonOnPersonalPage() {
-		PagesCollection.personalInfoPage.clickOnSettingsButton();
+	public void WhenIClickOnSettingsButtonOnPersonalPage() throws Exception {
+		getPersonalInfoPage().clickOnSettingsButton();
 	}
 
 	@When("I see settings page")
-	public void ISeeSettingsPage() {
-		PagesCollection.personalInfoPage.isSettingsPageVisible();
+	public void ISeeSettingsPage() throws Exception {
+		getPersonalInfoPage().isSettingsPageVisible();
 	}
 
 	@When("I click on About button on personal page")
-	public void WhenIClickOnAboutButtonOnPersonalPage() {
-		PagesCollection.personalInfoPage.clickOnAboutButton();
+	public void WhenIClickOnAboutButtonOnPersonalPage() throws Exception {
+		getPersonalInfoPage().clickOnAboutButton();
 	}
 
 	/**
 	 * Verifies the about page in settings is shown
 	 * 
 	 * @step. ^I see About page
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             about page is not shown
 	 */
 	@Then("^I see About page$")
-	public void ThenISeeAboutPage() {
-		Assert.assertTrue("About page not shown",
-				PagesCollection.personalInfoPage.isAboutPageVisible());
+	public void ThenISeeAboutPage() throws Exception {
+		Assert.assertTrue("About page not shown", getPersonalInfoPage()
+				.isAboutPageVisible());
 	}
 
 	/**
@@ -120,182 +130,188 @@ public class PersonalInfoPageSteps {
 	@Then("^I see that the About page is colored (.*)$")
 	public void AboutPageIsColor(String color) throws Exception {
 		// only takes violet color
-		Assert.assertTrue("About page is not Violet",
-				PagesCollection.personalInfoPage.isAboutPageCertainColor(color));
+		Assert.assertTrue("About page is not Violet", getPersonalInfoPage()
+				.isAboutPageCertainColor(color));
 	}
 
 	/**
 	 * Verifies the wire.com button is shown
 	 * 
 	 * @step. ^I see WireWebsiteButton$
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             the wire.com button is not shown
 	 */
 	@Then("^I see WireWebsiteButton$")
-	public void ThenISeeWireWebsiteButton() {
+	public void ThenISeeWireWebsiteButton() throws Exception {
 		Assert.assertTrue("wire.com button on \"about\" page is missing",
-				PagesCollection.personalInfoPage.isWireWebsiteButtonVisible());
+				getPersonalInfoPage().isWireWebsiteButtonVisible());
 	}
 
 	/**
 	 * Verifies the terms of use button is shown
 	 * 
 	 * @step. ^I see TermsButton$
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             the terms of use button is not shown
 	 */
 	@Then("^I see TermsButton$")
-	public void ThenISeeTermsButton() {
-		Assert.assertTrue("Terms of use button missing",
-				PagesCollection.personalInfoPage.isTermsButtonVisible());
+	public void ThenISeeTermsButton() throws Exception {
+		Assert.assertTrue("Terms of use button missing", getPersonalInfoPage()
+				.isTermsButtonVisible());
 	}
 
 	/**
 	 * Verifies the privacy policy button is shown
 	 * 
 	 * @step. ^I see PrivacyPolicyButton$
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             the privacy policy button is not shown
 	 */
 	@Then("^I see PrivacyPolicyButton$")
-	public void ThenISeePrivacyPolicyButton() {
+	public void ThenISeePrivacyPolicyButton() throws Exception {
 		Assert.assertTrue("Privacy policy button missing",
-				PagesCollection.personalInfoPage.isPrivacyPolicyButtonVisible());
+				getPersonalInfoPage().isPrivacyPolicyButtonVisible());
 	}
 
 	/**
 	 * Verifies the build number text is shown
 	 * 
 	 * @step. ^I see BuildNumberText$
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             the build number info is not shown
 	 */
 	@Then("^I see BuildNumberText$")
-	public void ThenISeeBuildNumberText() {
-		Assert.assertTrue("Build number info not shown",
-				PagesCollection.personalInfoPage.isBuildNumberTextVisible());
+	public void ThenISeeBuildNumberText() throws Exception {
+		Assert.assertTrue("Build number info not shown", getPersonalInfoPage()
+				.isBuildNumberTextVisible());
 	}
 
 	/**
 	 * Opens the terms of use page from the about page
 	 * 
 	 * @step. ^I open TermsOfUsePage$
+	 * @throws Exception
 	 */
 	@When("^I open TermsOfUsePage$")
-	public void IClickOnTermsOfUse() {
-		PagesCollection.personalInfoPage.openTermsOfUsePage();
+	public void IClickOnTermsOfUse() throws Exception {
+		getPersonalInfoPage().openTermsOfUsePage();
 	}
 
 	/**
 	 * Opens the privacy policy page from the about page
 	 * 
 	 * @step. ^I open PrivacyPolicyPage$
+	 * @throws Exception
 	 */
 	@When("^I open PrivacyPolicyPage$")
-	public void IClickOnPrivacyPolicy() {
-		PagesCollection.personalInfoPage.openPrivacyPolicyPage();
+	public void IClickOnPrivacyPolicy() throws Exception {
+		getPersonalInfoPage().openPrivacyPolicyPage();
 	}
 
 	/**
 	 * Opens the wire.com website from the about page
 	 * 
 	 * @step. ^I open WireWebsite$
+	 * @throws Exception
 	 */
 	@When("^I open WireWebsite$")
-	public void IClickOnWireWebsite() {
-		PagesCollection.personalInfoPage.openWireWebsite();
+	public void IClickOnWireWebsite() throws Exception {
+		getPersonalInfoPage().openWireWebsite();
 	}
 
 	/**
 	 * Verifies that wire.com website is shown
 	 * 
 	 * @step. ^I see WireWebsitePage$
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             the wire.com website is not shown
 	 */
 	@Then("^I see WireWebsitePage$")
-	public void ThenISeeWireWebsite() {
+	public void ThenISeeWireWebsite() throws Exception {
 		Assert.assertTrue(
 				"wire.com is not shown or website element has changed",
-				PagesCollection.personalInfoPage.isWireWebsitePageVisible());
+				getPersonalInfoPage().isWireWebsitePageVisible());
 	}
 
 	/**
 	 * Closes a legal page from the about page
 	 * 
 	 * @step. ^I close legal page$
+	 * @throws Exception
 	 */
 	@When("^I close legal page$")
-	public void IClickToCloseLegalPage() {
-		PagesCollection.personalInfoPage.closeLegalPage();
+	public void IClickToCloseLegalPage() throws Exception {
+		getPersonalInfoPage().closeLegalPage();
 	}
 
 	/**
 	 * Verifies the terms of use page is shown
 	 * 
 	 * @step. ^I see TermsOfUsePage$
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             the terms of use page is not shown
 	 */
 	@Then("^I see TermsOfUsePage$")
-	public void ThenISeeTermsOfUsePage() {
+	public void ThenISeeTermsOfUsePage() throws Exception {
 		Assert.assertTrue(
 				"Terms of use page not visible or text element has changed",
-				PagesCollection.personalInfoPage.isTermsOfUsePageVisible());
+				getPersonalInfoPage().isTermsOfUsePageVisible());
 	}
 
 	/**
 	 * Verifies the privacy policy page is shown
 	 * 
 	 * @step. ^I see PrivacyPolicyPage$
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
 	 *             the privacy policy page is not shown
 	 */
 	@Then("^I see PrivacyPolicyPage$")
-	public void ThenISeePrivacyPolicyPage() {
+	public void ThenISeePrivacyPolicyPage() throws Exception {
 		Assert.assertTrue(
 				"Privacy Policy page is not visible or text element has changed",
-				PagesCollection.personalInfoPage.isPrivacyPolicyPageVisible());
+				getPersonalInfoPage().isPrivacyPolicyPageVisible());
 	}
 
 	@When("I click Sign out button from personal page")
 	public void IClickSignOutButtonFromPersonalPage() throws Exception {
-		PagesCollection.personalInfoPage.clickSignoutButton();
+		getPersonalInfoPage().clickSignoutButton();
 	}
 
 	@When("^I tap on personal screen$")
-	public void ITapOnPersonalScreen() throws InterruptedException {
-		PagesCollection.personalInfoPage.tapOnPersonalPage();
+	public void ITapOnPersonalScreen() throws Exception {
+		getPersonalInfoPage().tapOnPersonalPage();
 	}
 
 	@When("^I press Camera button$")
 	public void IPressCameraButton() throws Exception {
-		CameraRollPage page = PagesCollection.personalInfoPage
-				.pressCameraButton();
-		PagesCollection.cameraRollPage = (CameraRollPage) page;
+		getPersonalInfoPage().pressCameraButton();
 	}
 
 	@When("^I return to personal page$")
 	public void IReturnToPersonalPage() throws Throwable {
 		Thread.sleep(4000);// wait for picture to load on simulator
-		PagesCollection.personalInfoPage.tapOnPersonalPage();
+		getPersonalInfoPage().tapOnPersonalPage();
 		Thread.sleep(2000);// wait for picture to load on simulator
-		referenceImage = PagesCollection.personalInfoPage.takeScreenshot()
-				.orElseThrow(AssertionError::new);
-		PagesCollection.personalInfoPage.tapOnPersonalPage();
-
+		getPersonalInfoPage().takeScreenshot().orElseThrow(AssertionError::new);
+		getPersonalInfoPage().tapOnPersonalPage();
 	}
 
 	@Then("^I see changed user picture (.*)$")
 	public void ThenISeeChangedUserPicture(String filename) throws Throwable {
-
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + filename);
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
@@ -307,8 +323,8 @@ public class PersonalInfoPageSteps {
 	@Then("I see profile image is same as template")
 	public void ThenISeeProfileImageIsSameAsSelected(String filename)
 			throws Exception {
-		BufferedImage profileImage = PagesCollection.personalInfoPage
-				.takeScreenshot().orElseThrow(AssertionError::new);
+		BufferedImage profileImage = getPersonalInfoPage().takeScreenshot()
+				.orElseThrow(AssertionError::new);
 		double score = ImageUtil.getOverlapScore(
 				RegistrationPageSteps.basePhoto, profileImage);
 		System.out.println("SCORE: " + score);
@@ -319,37 +335,36 @@ public class PersonalInfoPageSteps {
 
 	@When("I see Personal page")
 	public void ISeePersonalPage() throws Exception {
-		PagesCollection.personalInfoPage.waitForSettingsButtonAppears();
+		getPersonalInfoPage().waitForSettingsButtonAppears();
 	}
 
 	@When("I see name (.*) on Personal page")
 	public void ISeeMyNameOnPersonalPage(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		Assert.assertTrue(PagesCollection.personalInfoPage.getUserNameValue()
-				.equals(name));
+		Assert.assertTrue(getPersonalInfoPage().getUserNameValue().equals(name));
 	}
 
 	@When("I see email (.*) on Personal page")
 	public void ISeeMyEmailOnPersonalPage(String email) throws Exception {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		Assert.assertTrue(email.equals(PagesCollection.personalInfoPage
-				.getUserEmailVaue()));
+		Assert.assertTrue(email
+				.equals(getPersonalInfoPage().getUserEmailVaue()));
 	}
 
 	@When("I attempt to enter (.*) and press return")
 	public void EnterUsernameAndPressReturn(String username) throws Exception {
-		PagesCollection.personalInfoPage.clearNameField();
-		PagesCollection.personalInfoPage.enterNameInNamefield(username);
-		PagesCollection.personalInfoPage.pressEnterInNameField();
+		getPersonalInfoPage().clearNameField();
+		getPersonalInfoPage().enterNameInNamefield(username);
+		getPersonalInfoPage().pressEnterInNameField();
 	}
 
 	@When("I attempt to enter (.*) and tap the screen")
 	public void EnterUsernameAndTapScreen(String username) throws Exception {
-		PagesCollection.personalInfoPage.clearNameField();
-		PagesCollection.personalInfoPage.enterNameInNamefield(username);
-		PagesCollection.personalInfoPage.tapOnPersonalPage();
+		getPersonalInfoPage().clearNameField();
+		getPersonalInfoPage().enterNameInNamefield(username);
+		getPersonalInfoPage().tapOnPersonalPage();
 	}
-	
+
 	/**
 	 * Attempt to change name using only spaces
 	 * 
@@ -358,44 +373,42 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("I attempt to change name using only spaces")
 	public void IEnterNameUsingOnlySpaces() throws Exception {
-		PagesCollection.personalInfoPage.changeNameUsingOnlySpaces();
+		getPersonalInfoPage().changeNameUsingOnlySpaces();
 	}
 
 	@When("I swipe right on the personal page")
 	public void ISwipeRightOnPersonalPage() throws Exception {
-		PagesCollection.contactListPage = (ContactListPage) PagesCollection.personalInfoPage
-				.swipeRight(1000);
+		getPersonalInfoPage().swipeRight(1000);
 	}
 
 	@When("I click on Settings button from the options menu")
-	public void WhenIClickOnSettingsButtonFromOptionsMenu() {
-		PagesCollection.personalInfoPage.tapOnSettingsButton();
+	public void WhenIClickOnSettingsButtonFromOptionsMenu() throws Exception {
+		getPersonalInfoPage().tapOnSettingsButton();
 	}
 
 	@When("I click on Change Password button in Settings")
-	public void WhenIClickOnChangePasswordButtonFromSettings() {
-		PagesCollection.personalInfoPage.clickChangePasswordButton();
+	public void WhenIClickOnChangePasswordButtonFromSettings() throws Exception {
+		getPersonalInfoPage().clickChangePasswordButton();
 	}
 
 	@Then("I see reset password page")
-	public void ISeeResetPasswordPage() {
-		Assert.assertTrue(PagesCollection.personalInfoPage
-				.isResetPasswordPageVisible());
+	public void ISeeResetPasswordPage() throws Exception {
+		Assert.assertTrue("Change Password button is not shown", getPersonalInfoPage().isResetPasswordPageVisible());
 	}
 
 	@When("I tap on Sound Alerts")
-	public void ITapOnSoundAlerts() {
-		PagesCollection.personalInfoPage.enterSoundAlertSettings();
+	public void ITapOnSoundAlerts() throws Exception {
+		getPersonalInfoPage().enterSoundAlertSettings();
 	}
 
 	@When("I see the Sound alerts page")
-	public void ISeeSoundAlertsPage() {
-		PagesCollection.personalInfoPage.isSoundAlertsPageVisible();
+	public void ISeeSoundAlertsPage() throws Exception {
+		getPersonalInfoPage().isSoundAlertsPageVisible();
 	}
 
 	@When("I verify that all is the default selected value")
-	public void IVerifyAllIsDefaultValue() {
-		PagesCollection.personalInfoPage.isDefaultSoundValOne();
+	public void IVerifyAllIsDefaultValue() throws Exception {
+		getPersonalInfoPage().isDefaultSoundValOne();
 	}
 
 	/**
@@ -417,7 +430,7 @@ public class PersonalInfoPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.personalInfoPage.changeName(newName);
+		getPersonalInfoPage().changeName(newName);
 		usrMgr.getSelfUser().setName(newName);
 	}
 
@@ -435,29 +448,29 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see my new name (.*)$")
 	public void ISeeMyNewName(String name) throws Throwable {
-		Assert.assertTrue(name.equals(PagesCollection.personalInfoPage
-				.getUserNameValue()));
+		Assert.assertTrue(name.equals(getPersonalInfoPage().getUserNameValue()));
 	}
 
 	/**
 	 * It clicks the Help button in the settings option menu
 	 * 
 	 * @step. ^I click on Help button from the options menu$
+	 * @throws Exception
 	 */
 	@When("^I click on Help button from the options menu$")
-	public void IClickOnHelpButtonFromTheOptionsMenu() {
-		PagesCollection.personalInfoPage.clickOnHelpButton();
+	public void IClickOnHelpButtonFromTheOptionsMenu() throws Exception {
+		getPersonalInfoPage().clickOnHelpButton();
 	}
 
 	/**
 	 * Verifies that it sees the Support web page
 	 * 
 	 * @step. ^I see Support web page$
+	 * @throws Exception
 	 */
 	@Then("^I see Support web page$")
-	public void ISeeSupportWebPage() {
-		Assert.assertTrue(PagesCollection.personalInfoPage
-				.isSupportWebPageVisible());
+	public void ISeeSupportWebPage() throws Exception {
+		Assert.assertTrue(getPersonalInfoPage().isSupportWebPageVisible());
 	}
 
 	/**
@@ -465,41 +478,45 @@ public class PersonalInfoPageSteps {
 	 * picker
 	 * 
 	 * @step. ^I change my accent color via the colorpicker$
+	 * @throws Exception
 	 */
 	@When("^I change my accent color via the colorpicker$")
-	public void IChangeMyAccentColorViaTheColorpicker() {
-		PagesCollection.personalInfoPage.changeAccentColor();
+	public void IChangeMyAccentColorViaTheColorpicker() throws Exception {
+		getPersonalInfoPage().changeAccentColor();
 	}
 
 	/**
 	 * Switches the chathead preview on or off in settings
 	 * 
 	 * @step. ^I switch on or off the chathead preview$
+	 * @throws Exception
 	 */
 	@When("^I switch on or off the chathead preview$")
-	public void ISwitchOnOrOffTheChatheadPreview() {
-		PagesCollection.personalInfoPage.switchChatheadsOnOff();
+	public void ISwitchOnOrOffTheChatheadPreview() throws Exception {
+		getPersonalInfoPage().switchChatheadsOnOff();
 	}
 
 	/**
 	 * Closes the settings by pressing back and done button
 	 * 
 	 * @step. ^I close the Settings$
+	 * @throws Exception
 	 */
 	@When("^I close the Settings$")
-	public void ICloseTheSettings() {
-		PagesCollection.personalInfoPage.pressSettingsBackButton();
-		PagesCollection.personalInfoPage.pressSettingsDoneButton();
+	public void ICloseTheSettings() throws Exception {
+		getPersonalInfoPage().pressSettingsBackButton();
+		getPersonalInfoPage().pressSettingsDoneButton();
 	}
-	
+
 	/**
 	 * Close self profile by pressing X button
 	 * 
 	 * @step. ^I close self profile$
+	 * @throws Exception
 	 */
 	@When("^I close self profile$")
-	public void ICloseSelfProfile() {
-		PagesCollection.personalInfoPage.closePersonalInfo();
+	public void ICloseSelfProfile() throws Exception {
+		getPersonalInfoPage().closePersonalInfo();
 	}
 
 }

@@ -18,7 +18,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
-import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 import com.wearezeta.auto.common.BasePage;
@@ -162,11 +161,6 @@ public abstract class IOSPage extends BasePage {
 
 	public void smallScrollDown() throws Exception {
 		this.getDriver().swipe(20, 300, 20, 400, 500);
-	}
-
-	public static void clearPagesCollection() throws IllegalArgumentException,
-			IllegalAccessException {
-		clearPagesCollection(PagesCollection.class, IOSPage.class);
 	}
 
 	public static String getImagesPath() {

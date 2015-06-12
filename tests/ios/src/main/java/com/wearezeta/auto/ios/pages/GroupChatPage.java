@@ -60,14 +60,13 @@ public class GroupChatPage extends DialogPage {
 				By.name(IOSLocators.nameConversationCursorInput));
 	}
 
-	public boolean isConversationChangedInChat() {
-
+	public boolean isConversationChangedInChat() throws Exception {
 		System.out.println(newGroupConversationNameChangeTextField.getText());
-		System.out.println(PagesCollection.groupChatInfoPage
-				.getConversationName());
+		final GroupChatInfoPage groupChatInfoPage = new GroupChatInfoPage(
+				this.getLazyDriver());
+		System.out.println(groupChatInfoPage.getConversationName());
 
-		String groupChatName = PagesCollection.groupChatInfoPage
-				.getConversationName();
+		String groupChatName = groupChatInfoPage.getConversationName();
 		return newGroupConversationNameChangeTextField.getText().contains(
 				groupChatName);
 	}
@@ -152,18 +151,6 @@ public class GroupChatPage extends DialogPage {
 				coords.y + elementSize.height - 170,
 				coords.x + elementSize.width / 2, coords.y + 40, time);
 		return returnBySwipe(SwipeDirection.UP);
-	}
-
-	@Override
-	public IOSPage swipeRight(int time) throws Exception {
-		WebElement element = getDriver().findElement(
-				By.name(IOSLocators.nameMainWindow));
-
-		Point coords = element.getLocation();
-		Dimension elementSize = element.getSize();
-		this.getDriver().swipe(coords.x + 10, coords.y + 30,
-				coords.x + elementSize.width / 2 + 20, coords.y + 30, time);
-		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
 	@Override
