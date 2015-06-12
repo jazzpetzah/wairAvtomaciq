@@ -22,6 +22,9 @@ public class ContactListPage extends AndroidPage {
 	public static final Function<String, String> xpathContactByName = name -> String
 			.format("//*[@id='tv_conv_list_topic' and @value='%s']", name);
 
+	public static final Function<Integer, String> xpathContactByIndex = index -> String
+			.format("(//*[@id='tv_conv_list_topic'])[%s]", index);
+
 	public static final Function<String, String> xpathMutedIconByConvoName = convoName -> String
 			.format("%s/parent::*//*[@id='tv_conv_list_voice_muted']",
 					xpathContactByName.apply(convoName));
@@ -225,9 +228,6 @@ public class ContactListPage extends AndroidPage {
 	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
-		final ScreenOrientation currentOrientation = this.getDriver()
-				.getOrientation();
-
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(EmailSignInPage.idLoginButton),
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
@@ -263,12 +263,6 @@ public class ContactListPage extends AndroidPage {
 				loadingItemLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
 				.format("Not all conversation list items were loaded within %s seconds",
 						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
-
-		// FIXME: Workaround for non expected screen orientation change after
-		// sign in
-		if (this.getDriver().getOrientation() != currentOrientation) {
-			this.getDriver().rotate(currentOrientation);
-		}
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {
@@ -289,7 +283,13 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isAnyConversationVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idContactListNames), 2);
+		for (int i = 1; i <= contactListNames.size(); i++) {
+			final By locator = By.xpath(xpathContactByIndex.apply(i));
+			if (DriverUtils
+					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

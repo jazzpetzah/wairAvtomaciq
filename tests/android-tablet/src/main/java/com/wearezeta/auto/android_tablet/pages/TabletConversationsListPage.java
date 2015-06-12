@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
+import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -46,7 +47,11 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 	}
 
 	public void verifyConversationsListIsLoaded() throws Exception {
-		getContactListPage().waitForConversationListLoad();
+		try {
+			getContactListPage().waitForConversationListLoad();
+		} finally {
+			ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
+		}
 	}
 
 	public TabletSelfProfilePage tapMyAvatar() throws Exception {
@@ -62,7 +67,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		final By locator = By.xpath(ContactListPage.xpathContactByName
 				.apply(name));
 		return DriverUtils
-				.waitUntilLocatorIsDisplayed(getDriver(), locator, 20);
+				.waitUntilLocatorIsDisplayed(getDriver(), locator, 40);
 	}
 
 	public boolean waitUntilConversationIsInvisible(String name)

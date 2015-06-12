@@ -24,16 +24,23 @@ public class ContactListPageSteps {
 	/**
 	 * Verify whether conversations list is visible and no contacts are there
 	 * 
-	 * @step. ^I see Contact list with no contacts$
+	 * @step. ^I see Contact list with (no )?contacts$
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^I see Contact list with no contacts$")
-	public void GivenISeeContactListWithNoContacts() throws Exception {
+	@Given("^I see Contact list with (no )?contacts$")
+	public void GivenISeeContactListWithNoContacts(String shouldNotBeVisible)
+			throws Exception {
 		getContactListPage().verifyContactListIsFullyLoaded();
-		Assert.assertFalse(
-				"Some conversations are present in the conversations list, but zero is expected",
-				getContactListPage().isAnyConversationVisible());
+		if (shouldNotBeVisible == null) {
+			Assert.assertFalse(
+					"Some conversations are present in the conversations list, but zero is expected",
+					getContactListPage().isAnyConversationVisible());
+		} else {
+			Assert.assertTrue(
+					"No conversations are present in the conversations list, but some are expected",
+					getContactListPage().isAnyConversationVisible());
+		}
 	}
 
 	/**

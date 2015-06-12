@@ -335,4 +335,10 @@ public class PeoplePickerPage extends AndroidPage {
 		final By locator = By.xpath(xpathPYMKItemByIdx.apply(index));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
+
+	public void tapPYMKItem(int index) throws Exception {
+		final By locator = By.xpath(xpathPYMKItemByIdx.apply(index));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "The first PYMK item is not visible";
+		getDriver().findElement(locator).click();
+	}
 }
