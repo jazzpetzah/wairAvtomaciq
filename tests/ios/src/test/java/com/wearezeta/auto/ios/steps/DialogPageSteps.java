@@ -719,7 +719,7 @@ public class DialogPageSteps {
 	/**
 	 * Clicking on video play button in youtube player
 	 * 
-	 * @step ^I click play video button$
+	 * @step. ^I click play video button$
 	 * @throws Exception
 	 */
 	@When("I click play video button")
