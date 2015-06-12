@@ -3,7 +3,7 @@ Feature: Settings
   @id67 @id68 @regression
   Scenario Outline: Open and Close settings page
     Given There is 1 user where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I tap on my avatar
     And I tap options button
@@ -14,13 +14,13 @@ Feature: Settings
     Then I see personal info page
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
 
   @id71 @regression
   Scenario Outline: Can not open Settings page when editing user name
     Given There are 1 user where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list
     When I tap on my avatar
     And I tap on my name
@@ -29,13 +29,13 @@ Feature: Settings
     Then I do not see About page
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
 
   @id90 @id91 @id92 @regression
   Scenario Outline: Open Close About page from Settings page
     Given There is 1 user where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I sign in using my email or phone number
     Given I see Contact list
     When I tap on my avatar
     And I tap options button
@@ -45,5 +45,5 @@ Feature: Settings
     Then I see personal info page
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |

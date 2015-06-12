@@ -4,7 +4,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.registration.AddNamePage;
 import com.wearezeta.auto.android.pages.registration.AreaCodePage;
-import com.wearezeta.auto.android.pages.registration.VerificationPage;
+import com.wearezeta.auto.android.pages.registration.PhoneNumberVerificationPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -26,9 +26,9 @@ public class WelcomePageSteps {
 		return (AreaCodePage) pagesCollection.getPage(AreaCodePage.class);
 	}
 
-	private VerificationPage getVerificationPage() throws Exception {
-		return (VerificationPage) pagesCollection
-				.getPage(VerificationPage.class);
+	private PhoneNumberVerificationPage getVerificationPage() throws Exception {
+		return (PhoneNumberVerificationPage) pagesCollection
+				.getPage(PhoneNumberVerificationPage.class);
 	}
 
 	private AddNamePage getAddNamePage() throws Exception {
