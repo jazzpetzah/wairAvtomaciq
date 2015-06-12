@@ -16,17 +16,12 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
+import com.wearezeta.auto.ios.pages.GroupChatPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
-import com.wearezeta.auto.ios.pages.ImageFullScreenPage;
-import com.wearezeta.auto.ios.pages.OtherUserPersonalInfoPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.ios.pages.CameraRollPage;
 import com.wearezeta.auto.ios.locators.IOSLocators;
-import com.wearezeta.auto.ios.pages.VideoPlayerPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -35,6 +30,21 @@ public class DialogPageSteps {
 	private static final Logger log = ZetaLogger.getLog(DialogPageSteps.class
 			.getSimpleName());
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private DialogPage getDialogPage() throws Exception {
+		return (DialogPage) pagesCollecton.getPage(DialogPage.class);
+	}
+
+	private GroupChatPage getGroupChatPage() throws Exception {
+		return (GroupChatPage) pagesCollecton.getPage(GroupChatPage.class);
+	}
+
+	private ContactListPage getContactListPage() throws Exception {
+		return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
+	}
 
 	public static String message;
 	private String longMessage = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.";
@@ -52,21 +62,19 @@ public class DialogPageSteps {
 
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
-		Assert.assertTrue(PagesCollection.dialogPage
-				.waitForCursorInputVisible());
+		Assert.assertTrue(getDialogPage().waitForCursorInputVisible());
 	}
 
 	@When("I tap on dialog page")
 	public void ITapOnDialogPage() throws Exception {
-		PagesCollection.dialogPage.tapDialogWindow();
+		getDialogPage().tapDialogWindow();
 	}
 
 	@When("^I tap on text input$")
 	public void WhenITapOnTextInput() throws Exception {
 		for (int i = 0; i < 5; i++) {
-			PagesCollection.dialogPage.tapOnCursorInput();
-			if (PagesCollection.dialogPage.isKeyboardVisible()) {
+			getDialogPage().tapOnCursorInput();
+			if (getDialogPage().isKeyboardVisible()) {
 				break;
 			}
 		}
@@ -76,71 +84,57 @@ public class DialogPageSteps {
 	public void WhenITypeTheMessage() throws Exception {
 		// message = CommonUtils.generateGUID().replace('-', 'x');
 		message = automationMessage;
-		PagesCollection.dialogPage.sendStringToInput(message);
+		getDialogPage().sendStringToInput(message);
 	}
 
 	@When("I input message from keyboard (.*)")
 	public void IInputMessageFromKeyboard(String message) throws Throwable {
-		PagesCollection.dialogPage.inputStringFromKeyboard(message);
+		getDialogPage().inputStringFromKeyboard(message);
 	}
 
 	@When("I paste long text to input")
 	public void IPasteLongTextToInput() throws Throwable {
-		PagesCollection.dialogPage.pasteTextToInput(longMessage);
+		getDialogPage().pasteTextToInput(longMessage);
 	}
 
 	@When("^I multi tap on text input$")
 	public void WhenIMultiTapOnTextInput() throws Throwable {
-		PagesCollection.dialogPage.multiTapOnCursorInput();
+		getDialogPage().multiTapOnCursorInput();
 	}
 
 	@Then("^I see You Pinged message in the dialog$")
 	public void ISeeHelloMessageFromMeInTheDialog() throws Throwable {
 		String pingmessage = IOSLocators.nameYouPingedMessage;
-
-		Assert.assertTrue(PagesCollection.dialogPage
-				.isMessageVisible(pingmessage));
+		Assert.assertTrue(getDialogPage().isMessageVisible(pingmessage));
 	}
 
 	@Then("^I see You Pinged Again message in the dialog$")
 	public void ISeeHeyMessageFromMeInTheDialog() throws Throwable {
 		String pingagainmessage = IOSLocators.nameYouPingedAgainMessage;
-
-		Assert.assertTrue(PagesCollection.dialogPage
-				.isMessageVisible(pingagainmessage));
+		Assert.assertTrue(getDialogPage().isMessageVisible(pingagainmessage));
 	}
 
 	@Then("^I see User (.*) Pinged message in the conversation$")
 	public void ISeeUserPingedMessageTheDialog(String user) throws Throwable {
 		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED";
-		if (PagesCollection.dialogPage != null) {
-			Assert.assertTrue(PagesCollection.dialogPage
-					.isMessageVisible(expectedPingMessage));
-		} else {
-			Assert.assertTrue(PagesCollection.groupChatPage
-					.isMessageVisible(expectedPingMessage));
-		}
+		Assert.assertTrue(getDialogPage().isMessageVisible(expectedPingMessage)
+				|| getGroupChatPage().isMessageVisible(expectedPingMessage));
 	}
 
 	@Then("^I see User (.*) Pinged Again message in the conversation$")
 	public void ISeeUserHotPingedMessageTheDialog(String user) throws Throwable {
 		String username = usrMgr.findUserByNameOrNameAlias(user).getName();
 		String expectedPingMessage = username.toUpperCase() + " PINGED AGAIN";
-		if (PagesCollection.dialogPage != null) {
-			Assert.assertTrue(PagesCollection.dialogPage
-					.isMessageVisible(expectedPingMessage));
-		} else {
-			Assert.assertTrue(PagesCollection.groupChatPage
-					.isMessageVisible(expectedPingMessage));
-		}
+		Assert.assertTrue(getDialogPage().isMessageVisible(expectedPingMessage)
+				|| getGroupChatPage().isMessageVisible(expectedPingMessage));
 	}
 
 	@When("^I type the message and send it$")
 	public void ITypeTheMessageAndSendIt() throws Throwable {
 		// message = CommonUtils.generateGUID().replace('-', 'x');
 		message = automationMessage;
-		PagesCollection.dialogPage.sendStringToInput(message + "\n");
+		getDialogPage().sendStringToInput(message + "\n");
 	}
 
 	/**
@@ -150,23 +144,16 @@ public class DialogPageSteps {
 	 * 
 	 * @param convName
 	 *            name of the conversation
+	 * @throws Exception
 	 * 
-	 * @throws InterruptedException
-	 * 
-	 * @throws AssertionError
-	 *             if title bar is not visible
-	 * 
-	 * @throws AssertionError
-	 *             if title bar has incorrect name
 	 */
 	@Then("^I see title bar in conversation name (.*)$")
-	public void ThenITitleBar(String convName) throws NoSuchUserException,
-			InterruptedException {
+	public void ThenITitleBar(String convName) throws Exception {
 		String chatName = usrMgr.findUserByNameOrNameAlias(convName).getName();
-		Assert.assertTrue("Title bar is not on the page",
-				PagesCollection.dialogPage.isTitleBarDisplayed());
-		Assert.assertTrue("Title bar has incorrect name",
-				PagesCollection.dialogPage.isTitleBarNamed(chatName));
+		Assert.assertTrue("Title bar is not on the page", getDialogPage()
+				.isTitleBarDisplayed());
+		Assert.assertTrue("Title bar has incorrect name", getDialogPage()
+				.isTitleBarNamed(chatName));
 	}
 
 	/**
@@ -179,10 +166,9 @@ public class DialogPageSteps {
 	 */
 	@When("^I open conversation details$")
 	public void IOpenConversationDetails() throws Exception {
-		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
-				.openConversationDetailsClick();
+		getDialogPage().openConversationDetailsClick();
 	}
-	
+
 	/**
 	 * Click open conversation details button in 1:1 dialog with Pending user
 	 * 
@@ -193,19 +179,17 @@ public class DialogPageSteps {
 	 */
 	@When("^I open pending user conversation details$")
 	public void IOpenPendingConversationDetails() throws Exception {
-		PagesCollection.otherUserOnPendingProfilePage = PagesCollection.dialogPage
-				.clickConversationDeatailForPendingUser();
+		getDialogPage().clickConversationDeatailForPendingUser();
 	}
 
 	@When("^I send the message$")
 	public void WhenISendTheMessage() throws Throwable {
-		PagesCollection.dialogPage.inputStringFromKeyboard("\n");
+		getDialogPage().inputStringFromKeyboard("\n");
 	}
 
 	@When("^I swipe up on dialog page to open other user personal page$")
 	public void WhenISwipeUpOnDialogPage() throws Exception {
-		PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) PagesCollection.dialogPage
-				.swipeUp(1000);
+		getDialogPage().swipeUp(1000);
 	}
 
 	/**
@@ -220,14 +204,12 @@ public class DialogPageSteps {
 
 	@When("^I swipe up on pending dialog page to open other user pending personal page$")
 	public void WhenISwipeUpOnPendingDialogPage() throws Throwable {
-		PagesCollection.otherUserOnPendingProfilePage = PagesCollection.dialogPage
-				.swipePendingDialogPageUp(500);
+		getDialogPage().swipePendingDialogPageUp(500);
 	}
 
 	@Then("^I see message in the dialog$")
 	public void ThenISeeMessageInTheDialog() throws Throwable {
-		String dialogLastMessage = PagesCollection.dialogPage
-				.getLastMessageFromDialog();
+		String dialogLastMessage = getDialogPage().getLastMessageFromDialog();
 		Assert.assertTrue("Message is different, actual: " + dialogLastMessage
 				+ " expected: " + message,
 				dialogLastMessage.equals((message).trim()));
@@ -236,9 +218,7 @@ public class DialogPageSteps {
 	@Then("I see last message in dialog is expected message (.*)")
 	public void ThenISeeLasMessageInTheDialogIsExpected(String msg)
 			throws Throwable {
-		String dialogLastMessage = PagesCollection.dialogPage
-				.getLastMessageFromDialog();
-
+		String dialogLastMessage = getDialogPage().getLastMessageFromDialog();
 		if (!Normalizer.isNormalized(dialogLastMessage, Form.NFC)) {
 			dialogLastMessage = Normalizer.normalize(dialogLastMessage,
 					Form.NFC);
@@ -254,8 +234,7 @@ public class DialogPageSteps {
 
 	@Then("^I see last message in the dialog$")
 	public void ThenISeeLastMessageInTheDialog() throws Throwable {
-		String dialogLastMessage = PagesCollection.dialogPage
-				.getLastMessageFromDialog();
+		String dialogLastMessage = getDialogPage().getLastMessageFromDialog();
 		Assert.assertTrue("Message is different, actual: " + dialogLastMessage
 				+ " expected: " + lastLine,
 				dialogLastMessage.equals((longMessage).trim()));
@@ -263,10 +242,9 @@ public class DialogPageSteps {
 
 	@When("^I swipe the text input cursor$")
 	public void ISwipeTheTextInputCursor() throws Throwable {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
 		for (int i = 0; i < 3; i++) {
-			PagesCollection.dialogPage.swipeInputCursor();
-			if (PagesCollection.dialogPage.isPingButtonVisible()) {
+			getDialogPage().swipeInputCursor();
+			if (getDialogPage().isPingButtonVisible()) {
 				break;
 			}
 		}
@@ -274,9 +252,7 @@ public class DialogPageSteps {
 
 	@When("^I press Add Picture button$")
 	public void IPressAddPictureButton() throws Throwable {
-		CameraRollPage page = PagesCollection.dialogPage
-				.pressAddPictureButton();
-		PagesCollection.cameraRollPage = (CameraRollPage) page;
+		getDialogPage().pressAddPictureButton();
 	}
 
 	/**
@@ -287,13 +263,12 @@ public class DialogPageSteps {
 	 */
 	@When("^I press call button$")
 	public void IPressCallButton() throws Throwable {
-
-		PagesCollection.callPage = PagesCollection.dialogPage.pressCallButton();
+		getDialogPage().pressCallButton();
 	}
 
 	@When("^I click Ping button$")
 	public void IPressPingButton() throws Throwable {
-		PagesCollection.dialogPage.pressPingButton();
+		getDialogPage().pressPingButton();
 	}
 
 	@Then("^I see Pending Connect to (.*) message on Dialog page from user (.*)$")
@@ -301,12 +276,12 @@ public class DialogPageSteps {
 			throws Throwable {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		String expectedConnectingLabel = PagesCollection.dialogPage
+		String expectedConnectingLabel = getDialogPage()
 				.getExpectedConnectingLabel(contact);
-		String actualConnectingLabel = PagesCollection.dialogPage
-				.getConnectMessageLabel();
+		String actualConnectingLabel = getDialogPage().getConnectMessageLabel();
 
-		Assert.assertTrue(actualConnectingLabel.contains(expectedConnectingLabel));
+		Assert.assertTrue(actualConnectingLabel
+				.contains(expectedConnectingLabel));
 	}
 
 	@Then("^I see new photo in the dialog$")
@@ -315,8 +290,7 @@ public class DialogPageSteps {
 
 		boolean isNumberIncreased = false;
 		for (int i = 0; i < 3; i++) {
-			afterNumberOfImages = PagesCollection.dialogPage
-					.getNumberOfImages();
+			afterNumberOfImages = getDialogPage().getNumberOfImages();
 			if (afterNumberOfImages == beforeNumberOfImages + 1) {
 				isNumberIncreased = true;
 				break;
@@ -334,50 +308,47 @@ public class DialogPageSteps {
 
 	@When("I type and send long message and media link (.*)")
 	public void ITypeAndSendLongTextAndMediaLink(String link) throws Exception {
-		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
+		getDialogPage().sendMessageUsingScript(longMessage);
 		Thread.sleep(1000);
-		PagesCollection.dialogPage.sendMessageUsingScript(link);
+		getDialogPage().sendMessageUsingScript(link);
 	}
 
 	@When("^I memorize message send time$")
-	public void IMemorizeMessageSendTime() {
-		sendDate = PagesCollection.dialogPage.getSendTime();
+	public void IMemorizeMessageSendTime() throws Exception {
+		sendDate = getDialogPage().getSendTime();
 	}
 
 	@Then("I see media link (.*) and media in dialog")
 	public void ISeeMediaLinkAndMediaInDialog(String link) throws Exception {
-		Assert.assertTrue("Media is missing in dialog",
-				PagesCollection.dialogPage.isMediaContainerVisible());
+		Assert.assertTrue("Media is missing in dialog", getDialogPage()
+				.isMediaContainerVisible());
 
 		for (int i = 0; i < 10; i++) {
-			if (!link.equalsIgnoreCase(PagesCollection.dialogPage
+			if (!link.equalsIgnoreCase(getDialogPage()
 					.getLastMessageFromDialog())) {
 				Thread.sleep(1000);
 			}
 		}
-		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage
+		Assert.assertEquals(link.toLowerCase(), getDialogPage()
 				.getLastMessageFromDialog().toLowerCase());
 	}
 
 	@When("I click video container for the first time")
 	public void IPlayVideoFirstTime() throws Exception {
-		PagesCollection.videoPlayerPage = (VideoPlayerPage) PagesCollection.dialogPage
-				.clickOnVideoContainerFirstTime();
+		getDialogPage().clickOnVideoContainerFirstTime();
 	}
 
 	@When("I tap on dialog window")
 	public void ITapOnDialogWindow() throws Exception {
-		PagesCollection.dialogPage.tapDialogWindow();
+		getDialogPage().tapDialogWindow();
 	}
 
 	@When("I swipe right on Dialog page")
 	public void ISwipeRightOnDialogPage() throws Exception {
-		
 		for (int i = 0; i < 3; i++) {
-			PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-					.swipeRight(1000,
-							DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 28);
-			if (PagesCollection.dialogPage.waitForCursorInputNotVisible()) {
+			getDialogPage().swipeRight(1000,
+					DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 28);
+			if (getDialogPage().waitForCursorInputNotVisible()) {
 				break;
 			}
 		}
@@ -385,62 +356,60 @@ public class DialogPageSteps {
 
 	@When("I send long message")
 	public void ISendLongMessage() throws Exception {
-		PagesCollection.dialogPage.sendMessageUsingScript(longMessage);
+		getDialogPage().sendMessageUsingScript(longMessage);
 	}
 
 	@When("^I post media link (.*)$")
 	public void IPostMediaLink(String link) throws Throwable {
-		PagesCollection.dialogPage = (DialogPage) PagesCollection.iOSPage;
-		PagesCollection.dialogPage.sendMessageUsingScript(link);
+		getDialogPage().sendMessageUsingScript(link);
 	}
 
 	@When("^I tap media link$")
 	public void ITapMediaLink() throws Throwable {
-		PagesCollection.dialogPage.startMediaContent();
+		getDialogPage().startMediaContent();
 		memTime = System.currentTimeMillis();
 	}
 
 	@When("^I scroll media out of sight until media bar appears$")
 	public void IScrollMediaOutOfSightUntilMediaBarAppears() throws Exception {
-		PagesCollection.dialogPage = PagesCollection.dialogPage
-				.scrollDownTilMediaBarAppears();
-		Assert.assertTrue("Media bar is not displayed",
-				PagesCollection.dialogPage.isMediaBarDisplayed());
+		getDialogPage().scrollDownTilMediaBarAppears();
+		Assert.assertTrue("Media bar is not displayed", getDialogPage()
+				.isMediaBarDisplayed());
 	}
 
 	@When("^I pause playing the media in media bar$")
 	public void IPausePlayingTheMediaInMediaBar() throws Exception {
-		PagesCollection.dialogPage.pauseMediaContent();
+		getDialogPage().pauseMediaContent();
 	}
 
 	@When("^I press play in media bar$")
 	public void IPressPlayInMediaBar() throws Exception {
-		PagesCollection.dialogPage.playMediaContent();
+		getDialogPage().playMediaContent();
 	}
 
 	@When("^I stop media in media bar$")
 	public void IStopMediaInMediaBar() throws Exception {
-		PagesCollection.dialogPage.stopMediaContent();
+		getDialogPage().stopMediaContent();
 	}
 
 	@Then("I see playing media is paused")
-	public void ThePlayingMediaIsPaused() {
+	public void ThePlayingMediaIsPaused() throws Exception {
 		String pausedState = IOSLocators.MEDIA_STATE_PAUSED;
-		mediaState = PagesCollection.dialogPage.getMediaState();
+		mediaState = getDialogPage().getMediaState();
 		Assert.assertEquals(pausedState, mediaState);
 	}
 
 	@Then("I see media is playing")
-	public void TheMediaIsPlaying() {
+	public void TheMediaIsPlaying() throws Exception {
 		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
-		mediaState = PagesCollection.dialogPage.getMediaState();
+		mediaState = getDialogPage().getMediaState();
 		Assert.assertEquals(playingState, mediaState);
 	}
 
 	@Then("The media stopps playing")
-	public void TheMediaStoppsPlaying() {
+	public void TheMediaStoppsPlaying() throws Exception {
 		String endedState = IOSLocators.MEDIA_STATE_STOPPED;
-		mediaState = PagesCollection.dialogPage.getMediaState();
+		mediaState = getDialogPage().getMediaState();
 		Assert.assertEquals(endedState, mediaState);
 	}
 
@@ -460,56 +429,54 @@ public class DialogPageSteps {
 	}
 
 	@Then("I see media bar on dialog page")
-	public void ISeeMediaBarInDialog() {
-		Assert.assertTrue(PagesCollection.dialogPage.isMediaBarDisplayed());
+	public void ISeeMediaBarInDialog() throws Exception {
+		Assert.assertTrue(getDialogPage().isMediaBarDisplayed());
 	}
 
 	@Then("I dont see media bar on dialog page")
-	public void ISeeMediaBarDisappear() {
-		Assert.assertFalse(PagesCollection.dialogPage.isMediaBarDisplayed());
+	public void ISeeMediaBarDisappear() throws Exception {
+		Assert.assertFalse(getDialogPage().isMediaBarDisplayed());
 	}
 
 	@When("^I tap on the media bar$")
 	public void ITapOnMediaBar() throws Exception {
-		PagesCollection.dialogPage.tapOnMediaBar();
+		getDialogPage().tapOnMediaBar();
 	}
 
 	@When("I scroll back to media container")
 	public void IScrollUpOnDialogPage() throws Throwable {
-		PagesCollection.dialogPage.scrollUpToMediaContainer();
+		getDialogPage().scrollUpToMediaContainer();
 	}
 
 	@Then("I see conversation view is scrolled back to the playing media link (.*)")
 	public void ISeeConversationViewIsScrolledBackToThePlayingMedia(String link)
 			throws Exception {
-		Assert.assertEquals(link.toLowerCase(), PagesCollection.dialogPage
+		Assert.assertEquals(link.toLowerCase(), getDialogPage()
 				.getLastMessageFromDialog().toLowerCase());
-		Assert.assertTrue("View did not scroll back",
-				PagesCollection.dialogPage.isMediaContainerVisible());
+		Assert.assertTrue("View did not scroll back", getDialogPage()
+				.isMediaContainerVisible());
 		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
-		mediaState = PagesCollection.dialogPage.getMediaState();
+		mediaState = getDialogPage().getMediaState();
 		Assert.assertEquals(playingState, mediaState);
 	}
 
 	@When("I tap and hold image to open full screen")
 	public void ITapImageToOpenFullScreen() throws Throwable {
-		PagesCollection.imageFullScreenPage = (ImageFullScreenPage) PagesCollection.dialogPage
-				.tapImageToOpen();
+		getDialogPage().tapImageToOpen();
 	}
 
 	@Then("^I scroll away the keyboard$")
 	public void IScrollKeyboardAway() throws Throwable {
-		PagesCollection.dialogPage.swipeDialogPageDown(500);
+		getDialogPage().swipeDialogPageDown(500);
 		Thread.sleep(2000);
 	}
 
 	@Then("^I navigate back to conversations view$")
 	public void INavigateToConversationsView() throws Exception {
 		for (int i = 0; i < 3; i++) {
-			PagesCollection.dialogPage.swipeRight(SWIPE_DURATION);
-			if (PagesCollection.contactListPage
-					.isMyUserNameDisplayedFirstInContactList(usrMgr
-							.getSelfUser().getName())) {
+			getDialogPage().swipeRight(SWIPE_DURATION);
+			if (getContactListPage().isMyUserNameDisplayedFirstInContactList(
+					usrMgr.getSelfUser().getName())) {
 				break;
 			}
 		}
@@ -517,68 +484,67 @@ public class DialogPageSteps {
 
 	@When("I try to send message with only spaces")
 	public void ISendMessageWithOnlySpaces() throws Throwable {
-		PagesCollection.dialogPage.sendStringToInput(onlySpacesMessage + "\n");
+		getDialogPage().sendStringToInput(onlySpacesMessage + "\n");
 	}
 
 	@Then("I see message with only spaces is not send")
-	public void ISeeMessageWithOnlySpacesIsNotSend() {
-		Assert.assertFalse(onlySpacesMessage.equals(PagesCollection.dialogPage
+	public void ISeeMessageWithOnlySpacesIsNotSend() throws Exception {
+		Assert.assertFalse(onlySpacesMessage.equals(getDialogPage()
 				.getLastMessageFromDialog()));
 	}
 
 	@When("I input message with leading empty spaces")
 	public void IInpuMessageWithLeadingEmptySpace() throws Throwable {
 		message = onlySpacesMessage + automationMessage;
-		PagesCollection.dialogPage.sendStringToInput(message);
+		getDialogPage().sendStringToInput(message);
 		message = automationMessage;
 	}
 
 	@When("I input message with trailing emtpy spaces")
 	public void IInputMessageWithTrailingEmptySpace() throws Throwable {
 		message = automationMessage + "." + onlySpacesMessage;
-		PagesCollection.dialogPage.sendStringToInput(message);
+		getDialogPage().sendStringToInput(message);
 	}
 
 	@When("I input message with lower case and upper case")
 	public void IInputMessageWithLowerAndUpperCase() throws Throwable {
 		message = CommonUtils.generateRandomString(7).toLowerCase()
 				+ CommonUtils.generateRandomString(7).toUpperCase();
-		PagesCollection.dialogPage.sendStringToInput(message);
+		getDialogPage().sendStringToInput(message);
 	}
 
 	@When("I input more than 200 chars message and send it")
 	public void ISend200CharsMessage() throws Exception {
 		message = CommonUtils.generateRandomString(210).toLowerCase()
 				.replace("x", " ");
-		PagesCollection.dialogPage.sendMessageUsingScript(message);
+		getDialogPage().sendMessageUsingScript(message);
 	}
 
 	@When("I tap and hold on message input")
 	public void ITapHoldTextInput() throws Exception {
-		PagesCollection.dialogPage.tapHoldTextInput();
+		getDialogPage().tapHoldTextInput();
 	}
 
 	@When("^I scroll to the beginning of the conversation$")
 	public void IScrollToTheBeginningOfTheConversation() throws Throwable {
-		PagesCollection.dialogPage.scrollToBeginningOfConversation();
+		getDialogPage().scrollToBeginningOfConversation();
 	}
 
 	@When("^I send predefined message (.*)$")
 	public void ISendPredefinedMessage(String message) throws Throwable {
-		PagesCollection.dialogPage.sendStringToInput(message + "\n");
+		getDialogPage().sendStringToInput(message + "\n");
 	}
 
 	@When("^I send using script predefined message (.*)$")
 	public void ISendUsingScriptPredefinedMessage(String message)
 			throws Exception {
-		PagesCollection.dialogPage.sendMessageUsingScript(message);
+		getDialogPage().sendMessageUsingScript(message);
 	}
 
 	@When("I verify image in dialog is same as template (.*)")
 	public void IVerifyImageInDialogSameAsTemplate(String filename)
 			throws Throwable {
-		BufferedImage templateImage = PagesCollection.dialogPage
-				.takeImageScreenshot();
+		BufferedImage templateImage = getDialogPage().takeImageScreenshot();
 		BufferedImage referenceImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + filename);
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
@@ -592,7 +558,7 @@ public class DialogPageSteps {
 
 	@When("I scroll to image in dialog")
 	public void IScrollToIMageInDIalog() throws Throwable {
-		PagesCollection.dialogPage = PagesCollection.dialogPage.scrollToImage();
+		getDialogPage().scrollToImage();
 	}
 
 	@When("^User (.*) Ping in chat (.*) by BackEnd$")
@@ -620,17 +586,13 @@ public class DialogPageSteps {
 	@Then("^I see (.*) icon in conversation$")
 	public void ThenIseeIcon(String iconLabel) throws Exception,
 			InterruptedException {
-		double score;
-		if (PagesCollection.dialogPage != null) {
-			PagesCollection.dialogPage.waitPingAnimation();
-			score = PagesCollection.dialogPage.checkPingIcon(iconLabel);
-		} else {
-			PagesCollection.groupChatPage.waitPingAnimation();
-			score = PagesCollection.groupChatPage.checkPingIcon(iconLabel);
-		}
+		getDialogPage().waitPingAnimation();
+		// TODO: detect current page
+		double score1 = getDialogPage().checkPingIcon(iconLabel);
+		double score2 = getGroupChatPage().checkPingIcon(iconLabel);
 		Assert.assertTrue(
-				"Overlap between two images has not enough score. Expected >= 0.75, current = "
-						+ score, score >= 0.75d);
+				"Overlap between two images has not enough score. Expected >= 0.75",
+				score1 >= 0.75d || score2 >= 0.75d);
 	}
 
 	@When("^Contact (.*) sends random message to user (.*)$")
@@ -651,7 +613,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I scroll to the end of the conversation$")
 	public void IScrollToTheEndOfTheConversation() throws Exception {
-		PagesCollection.dialogPage.scrollToEndOfConversation();
+		getDialogPage().scrollToEndOfConversation();
 	}
 
 	/**
@@ -667,8 +629,7 @@ public class DialogPageSteps {
 	public void ICheckCopiedContentFrom(String mail) throws Exception {
 		mail = usrMgr.findUserByEmailOrEmailAlias(mail).getEmail();
 		final String finalString = String.format(sendInviteMailContent, mail);
-		String lastMessage = PagesCollection.dialogPage
-				.getLastMessageFromDialog();
+		String lastMessage = getDialogPage().getLastMessageFromDialog();
 		boolean messageContainsContent = lastMessage.contains(finalString);
 		Assert.assertTrue("Mail Invite content is not shown in lastMessage",
 				messageContainsContent);
@@ -686,13 +647,8 @@ public class DialogPageSteps {
 	public void ISeeMissedCall(String contact) throws Exception {
 		String username = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		String expectedCallMessage = username.toUpperCase() + " CALLED";
-		if (PagesCollection.dialogPage != null) {
-			Assert.assertTrue(username + " called message is missing in dialog", PagesCollection.dialogPage
-					.isMessageVisible(expectedCallMessage));
-		}
-		else {
-			Assert.fail("This method is for dialog page and current page is not or is no initiated");
-		}
+		Assert.assertTrue(username + " called message is missing in dialog",
+				getDialogPage().isMessageVisible(expectedCallMessage));
 	}
 
 	/**
@@ -706,8 +662,7 @@ public class DialogPageSteps {
 	@When("^I click missed call button to call contact (.*)$")
 	public void IClickMissedCallButton(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.callPage = PagesCollection.dialogPage
-				.clickOnCallButtonForContact(contact.toUpperCase());
+		getDialogPage().clickOnCallButtonForContact(contact.toUpperCase());
 	}
 
 	public static final String TAP_OR_SLIDE = "TAP OR SLIDE";
@@ -720,8 +675,7 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see TAPORSLIDE text$")
 	public void ISeeTapOrSlideText() throws Exception {
-		boolean result = PagesCollection.dialogPage
-				.isTypeOrSlideExists(TAP_OR_SLIDE);
+		boolean result = getDialogPage().isTypeOrSlideExists(TAP_OR_SLIDE);
 		Assert.assertTrue(result);
 	}
 
@@ -736,13 +690,12 @@ public class DialogPageSteps {
 	@Then("^I see chathead of contact (.*)")
 	public void ISeeChatheadOfContact(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		boolean chatheadIsVisible = PagesCollection.dialogPage
-				.chatheadIsVisible(contact);
+		boolean chatheadIsVisible = getDialogPage().chatheadIsVisible(contact);
 		Assert.assertTrue("No Chathead visible.", chatheadIsVisible);
-		boolean chMessageIsVisible = PagesCollection.dialogPage
-				.chatheadMessageIsVisible(message);
+		boolean chMessageIsVisible = getDialogPage().chatheadMessageIsVisible(
+				message);
 		Assert.assertTrue("No Chathead message visible.", chMessageIsVisible);
-		boolean chAvatarImageIsVisible = PagesCollection.dialogPage
+		boolean chAvatarImageIsVisible = getDialogPage()
 				.chatheadAvatarImageIsVisible();
 		Assert.assertTrue("No Chathead avatar visible.", chAvatarImageIsVisible);
 	}
@@ -759,18 +712,18 @@ public class DialogPageSteps {
 	public void IDoNotSeeChatheadOfContactForSecondsWithAvatarAndMessage(
 			String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		boolean chatheadIsVisible = PagesCollection.dialogPage
-				.chatheadIsVisible(contact);
+		boolean chatheadIsVisible = getDialogPage().chatheadIsVisible(contact);
 		Assert.assertFalse("Chathead visible.", chatheadIsVisible);
 	}
-	
-	/** 
+
+	/**
 	 * Clicking on video play button in youtube player
-	 * @step ^I click play video button$
+	 * 
+	 * @step. ^I click play video button$
 	 * @throws Exception
 	 */
 	@When("I click play video button")
-    public void IClickPlayButton() throws Exception{
-        PagesCollection.dialogPage.clickOnPlayVideoButton();
-    }
+	public void IClickPlayButton() throws Exception {
+		getDialogPage().clickOnPlayVideoButton();
+	}
 }

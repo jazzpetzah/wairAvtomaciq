@@ -105,7 +105,7 @@ public class PerformanceSteps {
 						}
 						getDialogPage().isDialogVisible();
 						getDialogPage().tapDialogPageBottom();
-						
+
 						Thread.sleep(DEFAULT_WAIT_TIME);
 						boolean successful = false;
 						int count = 0;
@@ -116,9 +116,10 @@ public class PerformanceSteps {
 							} catch (Throwable e) {
 								log.debug("Camera image was not send before. Workaround...");
 								for (int y = 0; y < 2; y++) {
-									getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
+									getDialogPage().swipeDown(
+											DEFAULT_SWIPE_TIME);
 								}
-								getDialogPage().navigateBackUsingBackButton();
+								getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 								visibleContactsList = resetVisibleContactList();
 								getContactListPage().tapOnContactByPosition(
 										visibleContactsList, randomInt);

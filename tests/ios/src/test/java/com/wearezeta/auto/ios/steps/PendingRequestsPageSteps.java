@@ -3,30 +3,35 @@ package com.wearezeta.auto.ios.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.PendingRequestsPage;
 
 import cucumber.api.java.en.When;
 
 public class PendingRequestsPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private PendingRequestsPage getPendingRequestsPage() throws Exception {
+		return (PendingRequestsPage) pagesCollecton
+				.getPage(PendingRequestsPage.class);
+	}
+
 	@When("^I click on Ignore button on Pending requests page$")
 	public void IClickOnIgnoreButtonPendingRequests() throws Throwable {
-		PagesCollection.contactListPage = PagesCollection.pendingRequestsPage
-				.clickIgnoreButton();
+		getPendingRequestsPage().clickIgnoreButton();
 	}
 
 	@When("^I click on Ignore button on Pending requests page (.*) times$")
 	public void IClickOnIgnoreButtonPendingRequests(int numberOfIgnores)
 			throws Throwable {
-		PagesCollection.contactListPage = PagesCollection.pendingRequestsPage
-				.clickIgnoreButtonMultiple(numberOfIgnores);
+		getPendingRequestsPage().clickIgnoreButtonMultiple(numberOfIgnores);
 	}
 
 	@When("I click Connect button on Pending request page")
 	public void IClickOnConnectButtonPendingRequest() throws Throwable {
-		PagesCollection.contactListPage = PagesCollection.pendingRequestsPage
-				.clickConnectButton();
+		getPendingRequestsPage().clickConnectButton();
 	}
 
 	/**
@@ -43,23 +48,20 @@ public class PendingRequestsPageSteps {
 	@When("^I click on Connect button on Pending requests page (.*) times$")
 	public void IClickOnConnectButtonPendingRequests(int numberOfConnects)
 			throws Throwable {
-		PagesCollection.contactListPage = PagesCollection.pendingRequestsPage
-				.clickConnectButtonMultiple(numberOfConnects);
+		getPendingRequestsPage().clickConnectButtonMultiple(numberOfConnects);
 	}
 
 	@When("I see Pending request page")
 	public void ISeePendingRequestPage() throws Exception {
 		Assert.assertTrue("Pending Requests page is not shown",
-				PagesCollection.pendingRequestsPage.isConnectButtonDisplayed());
+				getPendingRequestsPage().isConnectButtonDisplayed());
 	}
 
 	@When("I see Hello connect message from user (.*) on Pending request page")
 	public void ISeeHelloConnectMessageFrom(String user) throws Exception {
 		user = usrMgr.findUserByNameOrNameAlias(user).getName();
-		Assert.assertEquals(user,
-				PagesCollection.pendingRequestsPage.getRequesterName());
-		Assert.assertTrue(PagesCollection.pendingRequestsPage
-				.isAutoMessageCorrect());
+		Assert.assertEquals(user, getPendingRequestsPage().getRequesterName());
+		Assert.assertTrue(getPendingRequestsPage().isAutoMessageCorrect());
 	}
 
 }

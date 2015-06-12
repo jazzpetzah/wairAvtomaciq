@@ -3,13 +3,21 @@ package com.wearezeta.auto.ios.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.TabletPagesCollection;
-import com.wearezeta.auto.ios.pages.TabletPeoplePickerPage;
+import com.wearezeta.auto.ios.pages.TabletConversationDetailPopoverPage;
 
 import cucumber.api.java.en.When;
 
 public class TabletConversationDetailPopoverPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private TabletConversationDetailPopoverPage getTabletConversationDetailPopoverPage()
+			throws Exception {
+		return (TabletConversationDetailPopoverPage) pagesCollecton
+				.getPage(TabletConversationDetailPopoverPage.class);
+	}
 
 	/**
 	 * Verifies that other peoples profile page in the popover is visible
@@ -21,7 +29,7 @@ public class TabletConversationDetailPopoverPageSteps {
 	@When("^I see (.*) user profile page in iPad popover$")
 	public void ISeeUserProfilePageIniPadPopover(String name) throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		boolean nameVisible = TabletPagesCollection.tabletConversationDetailPopoverPage
+		boolean nameVisible = getTabletConversationDetailPopoverPage()
 				.isOtherUserProfileNameVisible(name);
 		Assert.assertTrue("Other user name is not visible", nameVisible);
 	}
@@ -34,8 +42,7 @@ public class TabletConversationDetailPopoverPageSteps {
 	 */
 	@When("^I press Add button on iPad popover$")
 	public void IPressAddButtonOniPadPopover() throws Throwable {
-		TabletPagesCollection.tabletPeoplePickerPage = (TabletPeoplePickerPage) TabletPagesCollection.tabletConversationDetailPopoverPage
-				.addContactTo1on1Chat();
+		getTabletConversationDetailPopoverPage().addContactTo1on1Chat();
 	}
 
 }

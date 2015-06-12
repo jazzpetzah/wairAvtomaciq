@@ -102,7 +102,8 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public AndroidPage navigateBack() throws Exception {
-		this.getDriver().navigate().back();
+		AndroidCommonUtils.tapBackButton();
+		// this.getDriver().navigate().back();
 		return null;
 	}
 

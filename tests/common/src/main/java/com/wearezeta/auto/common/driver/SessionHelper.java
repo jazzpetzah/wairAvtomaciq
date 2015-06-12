@@ -65,7 +65,7 @@ final class SessionHelper {
 		return result;
 	}
 
-	public static final int SCREENSHOTING_TIMEOUT_SECONDS = 7;
+	public static final int SCREENSHOTING_TIMEOUT_SECONDS = 15;
 
 	private void waitForScreenshots() {
 		if (this.wrappedDriver instanceof HasParallelScreenshotsFeature) {
@@ -82,6 +82,8 @@ final class SessionHelper {
 										this.wrappedDriver.getClass()
 												.getSimpleName(),
 										SCREENSHOTING_TIMEOUT_SECONDS));
+						((HasParallelScreenshotsFeature) this.wrappedDriver)
+								.forceStopOfScreenshoting();
 					}
 				} catch (InterruptedException e) {
 					// silently ignore

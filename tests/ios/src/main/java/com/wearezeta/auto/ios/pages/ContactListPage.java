@@ -35,8 +35,8 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathContactListCells)
 	private List<WebElement> contactListCells;
-	
-	@FindBy( how = How.XPATH, using = IOSLocators.xpathFirstContactCell)
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathFirstContactCell)
 	private WebElement firstContactCell;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameProfileName)
@@ -65,7 +65,7 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameTutorialView)
 	private WebElement tutorialView;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameSelfButton)
 	private WebElement selfButton;
 
@@ -264,9 +264,9 @@ public class ContactListPage extends IOSPage {
 		return text;
 	}
 
-	public boolean verifyChangedGroupNameInChatList() {
+	public boolean verifyChangedGroupNameInChatList() throws Exception {
 		return firstChatInChatListTextField.getText().equals(
-				PagesCollection.groupChatInfoPage.getConversationName());
+				new GroupChatInfoPage(getLazyDriver()).getConversationName());
 	}
 
 	public GroupChatPage tapOnUnnamedGroupChat(String contact1, String contact2)
@@ -468,9 +468,10 @@ public class ContactListPage extends IOSPage {
 		DriverUtils.clickArchiveConversationButton(this.getDriver(), contact);
 		// DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
 	}
-	
+
 	public BufferedImage getScreenshotFirstContact() throws Exception {
-		//This takes a screenshot of the area to the left of a contact where ping and unread dot notifications are visible
+		// This takes a screenshot of the area to the left of a contact where
+		// ping and unread dot notifications are visible
 		WebElement contact = firstContactCell;
 		return getScreenshotByCoordinates(contact.getLocation().x,
 				contact.getLocation().y + contactListContainer.getLocation().y,
@@ -522,24 +523,24 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean changeOfAccentColorIsVisible(String name) throws Exception {
-		
-		return false; //Needs refactoring, UI have changed
-//		BufferedImage changedAccentColorImage = null;
-//		BufferedImage referenceImage = null;
-//		double score = 0;
-//		WebElement el = this.getDriver().findElementByXPath(
-//				String.format(IOSLocators.xpathSelfName, name));
-//		changedAccentColorImage = getElementScreenshot(el).orElseThrow(
-//				IllegalStateException::new);
-//		referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
-//				+ "changedAccentColor.png");
-//		score = ImageUtil.getOverlapScore(referenceImage,
-//				changedAccentColorImage,
-//				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-//		if (score >= MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE) {
-//			return true;
-//		}
-//		return false;
+
+		return false; // Needs refactoring, UI have changed
+		// BufferedImage changedAccentColorImage = null;
+		// BufferedImage referenceImage = null;
+		// double score = 0;
+		// WebElement el = this.getDriver().findElementByXPath(
+		// String.format(IOSLocators.xpathSelfName, name));
+		// changedAccentColorImage = getElementScreenshot(el).orElseThrow(
+		// IllegalStateException::new);
+		// referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+		// + "changedAccentColor.png");
+		// score = ImageUtil.getOverlapScore(referenceImage,
+		// changedAccentColorImage,
+		// ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+		// if (score >= MIN_ACCEPTABLE_IMAGE_ACCENTCOLOR_VALUE) {
+		// return true;
+		// }
+		// return false;
 	}
 
 }

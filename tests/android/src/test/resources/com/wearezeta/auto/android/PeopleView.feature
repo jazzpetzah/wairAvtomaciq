@@ -157,9 +157,11 @@ Feature: People View
     When I press options menu button
     And I see correct 1:1 options menu
     When I do small swipe down
-    Then I do not see 1:1 options menu
-    And I see profile page
-    When I press options menu button
+    And I wait for 5 seconds
+    Then I see correct 1:1 options menu
+    And I do not see profile page
+    When I press back button
+    And I press options menu button
     Then I see correct 1:1 options menu
     When I swipe left
     And I swipe right
