@@ -186,9 +186,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	private static By[] getUserProfileLocators() {
 		return new By[] { By.id(PeoplePickerPage.idParticipantsClose),
-				By.id(idRightActionButton), By.id(idLeftActionButton),
-				By.id(idLeftActionLabel), By.id(idParticipantsSubHeader),
-				By.id(idParticipantsHeader) };
+				By.id(idParticipantsSubHeader), By.id(idParticipantsHeader) };
 	}
 
 	public boolean isOneToOneUserProfileUIContentNotVisible() throws Exception {
