@@ -75,35 +75,19 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		return this.sessionHelper.isSessionLost();
 	}
 
-	private int getCoord(double startC, double endC, double current,
-			double duration) {
-		return (int) Math.round(startC + (endC - startC) / duration * current);
-	}
-
-	private final static int SWIPE_STEP_DURATION_MILLISECONDS = 25;
-
 	@Override
 	public void swipe(int startx, int starty, int endx, int endy,
 			int durationMilliseconds) {
-		int duration = 1;
-		if (durationMilliseconds > SWIPE_STEP_DURATION_MILLISECONDS) {
-			duration = (durationMilliseconds % SWIPE_STEP_DURATION_MILLISECONDS == 0) ? (durationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS)
-					: (durationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS + 1);
+		final String adbCommandsChain = String.format(
+				"adb shell input swipe %d %d %d %d %d", startx, starty, endx,
+				endy, durationMilliseconds);
+		try {
+			Runtime.getRuntime()
+					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
+					.waitFor();
+		} catch (Exception e) {
+			throw new WebDriverException(e.getMessage(), e);
 		}
-		int current = 1;
-		final TouchActions ta = new TouchActions(this);
-		ta.down(startx, starty).perform();
-		do {
-			try {
-				Thread.sleep(SWIPE_STEP_DURATION_MILLISECONDS);
-			} catch (InterruptedException e) {
-				Throwables.propagate(e);
-			}
-			ta.move(getCoord(startx, endx, current, duration),
-					getCoord(starty, endy, current, duration)).perform();
-			current++;
-		} while (current <= duration);
-		ta.up(endx, endy).perform();
 	}
 
 	@Override
@@ -164,7 +148,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			if (this.getOrientation() == ScreenOrientation.LANDSCAPE) {
 				BufferedImage screenshotImage = ImageIO
 						.read(new ByteArrayInputStream(output));
-				screenshotImage = ImageUtil.tilt(screenshotImage, -Math.PI / 2);
+				screenshotImage = ImageUtil.tilt(screenshotImage, Math.PI / 2);
 				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				ImageIO.write(screenshotImage, "png", baos);
 				output = baos.toByteArray();

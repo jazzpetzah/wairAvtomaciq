@@ -67,7 +67,35 @@ Feature: Calling
     And I open conversation with <Contact>
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I wait for 900 seconds
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
+    And I see the calling bar
+    And I wait for 60 seconds
     And I see the calling bar
     And I end the call
     And <Contact> stops all waiting instances

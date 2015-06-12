@@ -20,8 +20,6 @@ import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
-import com.wearezeta.auto.ios.pages.RegistrationPage;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.ios.tools.IOSKeyboard;
 
@@ -40,6 +38,9 @@ public class CommonIOSSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
 	private Date testStartedDate;
+
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
 
 	static {
 		System.setProperty("org.apache.commons.logging.Log",
@@ -123,39 +124,38 @@ public class CommonIOSSteps {
 		ZetaFormatter.setBuildNumber(IOSCommonUtils
 				.readClientVersionFromPlist().getClientBuildNumber());
 
-		PagesCollection.loginPage = new LoginPage(lazyDriver);
-		PagesCollection.registrationPage = new RegistrationPage(lazyDriver);
+		pagesCollecton.setFirstPage(new LoginPage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
 	@When("^I see keyboard$")
 	public void ISeeKeyboard() throws Exception {
-		Assert.assertTrue(PagesCollection.dialogPage.isKeyboardVisible());
+		Assert.assertTrue(pagesCollecton.getCommonPage().isKeyboardVisible());
 	}
 
 	@When("^I dont see keyboard$")
 	public void IDontSeeKeyboard() throws Exception {
-		Assert.assertFalse(PagesCollection.dialogPage.isKeyboardVisible());
+		Assert.assertFalse(pagesCollecton.getCommonPage().isKeyboardVisible());
 	}
 
 	@When("^I press keyboard Delete button$")
-	public void IPressKeyboardDeleteBtn() {
-		PagesCollection.iOSPage.clickKeyboardDeleteButton();
+	public void IPressKeyboardDeleteBtn() throws Exception {
+		pagesCollecton.getCommonPage().clickKeyboardDeleteButton();
 	}
 
 	@When("^I scroll up page a bit$")
 	public void IScrollUpPageABit() throws Exception {
-		PagesCollection.loginPage.smallScrollUp();
+		pagesCollecton.getCommonPage().smallScrollUp();
 	}
 
 	@When("^I accept alert$")
 	public void IAcceptAlert() throws Exception {
-		PagesCollection.loginPage.acceptAlert();
+		pagesCollecton.getCommonPage().acceptAlert();
 	}
 
 	@When("^I dismiss alert$")
 	public void IDismissAlert() throws Exception {
-		PagesCollection.loginPage.dismissAlert();
+		pagesCollecton.getCommonPage().dismissAlert();
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class CommonIOSSteps {
 	 */
 	@When("^I hide keyboard$")
 	public void IHideKeyboard() throws Exception {
-		PagesCollection.loginPage.hideKeyboard();
+		pagesCollecton.getCommonPage().hideKeyboard();
 	}
 
 	/**
@@ -179,7 +179,7 @@ public class CommonIOSSteps {
 	 */
 	@When("^I click hide keyboard button$")
 	public void IClickHideKeyboardBtn() throws Exception {
-		PagesCollection.loginPage.clickHideKeyboarButton();
+		pagesCollecton.getCommonPage().clickHideKeyboarButton();
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class CommonIOSSteps {
 	 */
 	@When("^I close the app for (.*) seconds$")
 	public void ICloseApp(int seconds) throws Exception {
-		PagesCollection.iOSPage.minimizeApplication(seconds);
+		pagesCollecton.getCommonPage().minimizeApplication(seconds);
 	}
 
 	/**
@@ -206,7 +206,7 @@ public class CommonIOSSteps {
 	 */
 	@When("^I lock screen for (.*) seconds$")
 	public void ILockScreen(int seconds) throws Exception {
-		PagesCollection.loginPage.lockScreen(seconds);
+		pagesCollecton.getCommonPage().lockScreen(seconds);
 	}
 
 	@Given("^(.*) sent connection request to (.*)$")
@@ -440,7 +440,7 @@ public class CommonIOSSteps {
 			e.printStackTrace();
 		}
 
-		IOSPage.clearPagesCollection();
+		pagesCollecton.clearAllPages();
 		IOSKeyboard.dispose();
 
 		if (CommonUtils.getIsSimulatorFromConfig(getClass())
@@ -479,7 +479,7 @@ public class CommonIOSSteps {
 	@When("^I rotate UI to (landscape|portrait)$")
 	public void WhenIRotateUILandscape(ScreenOrientation orientation)
 			throws Exception {
-		PagesCollection.loginPage.rotateScreen(orientation);
+		pagesCollecton.getCommonPage().rotateScreen(orientation);
 		Thread.sleep(1000); // fix for animation
 	}
 
@@ -492,7 +492,7 @@ public class CommonIOSSteps {
 	 */
 	@When("^I tap on center of the screen$")
 	public void ITapOnCenterOfTheScreen() throws Exception {
-		PagesCollection.loginPage.tapOnCenterOfScreen();
+		pagesCollecton.getCommonPage().tapOnCenterOfScreen();
 	}
 
 	/**
@@ -504,7 +504,7 @@ public class CommonIOSSteps {
 	 */
 	@When("^I tap on top left corner of the screen$")
 	public void ITapOnTopLeftCornerOfTheScreen() throws Exception {
-		PagesCollection.loginPage.tapOnTopLeftScreen();
+		pagesCollecton.getCommonPage().tapOnTopLeftScreen();
 	}
 
 }

@@ -381,7 +381,7 @@ public final class IOSLocators {
 	
 	public static final String xpathMediaConversationCell = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIATableView/UIATableCell/UIAWebView[last()]";
 	
-	public static final String xpathYoutubeConversationCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAButton[2]";
+	public static final String xpathYoutubeConversationCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAButton[1]";
 	
 	public static final String xpathConversationPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
 	
@@ -543,26 +543,28 @@ public final class IOSLocators {
 		
 		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CALLING')]";
 		
-		public static final String xpathEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[3]";
+		public static final String xpathEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[1]";
 		
 		public static final String xpathSpeakersButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[4]";
 		
-		public static final String xpathMuteCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[5]";
+		public static final String xpathMuteCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[3]";
 	}
 	
 	public final class IncomingCallPage {
 		
 		public static final String xpathCallingMessageUser = "//UIAStaticText[contains(@name, 'IS CALLING') and contains(@name, '%s')]";
 		
-		public static final String xpathAcceptCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[1]";
+		public static final String xpathAcceptCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[4]";
 		
 		public static final String xpathEndCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[2]";
 		
 		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'IS CALLING')]";
+		
+		public static final String xpathIgnoreCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[5]";
 	}
 	
 	public final class DialogPage {
-		public static final String xpathCallButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[3]";
+		public static final String nameCallButton = "ComposeControllerVoiceButton";
 	}
 	
 	public final class DialogInfoPage {

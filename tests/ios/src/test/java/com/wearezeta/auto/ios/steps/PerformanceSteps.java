@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
@@ -35,6 +34,17 @@ public class PerformanceSteps {
 		this.perfMon = perfMon;
 	}
 
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private DialogPage getDialogPage() throws Exception {
+		return (DialogPage) pagesCollecton.getPage(DialogPage.class);
+	}
+
+	private ContactListPage getContactListPage() throws Exception {
+		return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
+	}
+
 	/**
 	 * Starts standard actions loop (read messages/send messages) to measure
 	 * application performance
@@ -53,21 +63,19 @@ public class PerformanceSteps {
 				for (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) {
 					// Get list of visible dialogs, remove self user name from
 					// this list
-					boolean isLoaded = PagesCollection.contactListPage
+					boolean isLoaded = getContactListPage()
 							.waitForContactListToLoad();
 					if (!isLoaded) {
-						PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
+						getDialogPage()
 								.swipeRight(
 										500,
 										DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
 										30);
 					}
-					isLoaded = PagesCollection.contactListPage
-							.waitForContactListToLoad();
+					isLoaded = getContactListPage().waitForContactListToLoad();
 					Assert.assertTrue("Contact list didn't load", isLoaded);
 					ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
-							PagesCollection.contactListPage
-									.GetVisibleContacts());
+							getContactListPage().GetVisibleContacts());
 
 					final int MAX_ENTRIES_ON_SCREEN = 8;
 					int randomRange = (visibleContactsList.size() > MAX_ENTRIES_ON_SCREEN) ? MAX_ENTRIES_ON_SCREEN
@@ -76,11 +84,11 @@ public class PerformanceSteps {
 					String convName;
 					do {
 						randomChatIdx = perfCommon.random.nextInt(randomRange);
-						convName = visibleContactsList.get(randomChatIdx).getText();
+						convName = visibleContactsList.get(randomChatIdx)
+								.getText();
 					} while (convName.contains("tst"));
-					PagesCollection.dialogPage = (DialogPage) PagesCollection.contactListPage
-							.tapOnContactByIndex(visibleContactsList,
-									randomChatIdx);
+					getContactListPage().tapOnContactByIndex(
+							visibleContactsList, randomChatIdx);
 
 					// Emulating reading of previously received messages
 					// This is broken in iOS simulator, known Apple bug
@@ -88,16 +96,14 @@ public class PerformanceSteps {
 					// PagesCollection.dialogPage.swipeDown(500);
 
 					// Writing response
-					PagesCollection.dialogPage.tapOnCursorInput();
-					PagesCollection.dialogPage
-							.sendMessageUsingScript(CommonUtils.generateGUID());
+					getDialogPage().tapOnCursorInput();
+					getDialogPage().sendMessageUsingScript(
+							CommonUtils.generateGUID());
 
 					// Swipe back to the convo list
-					PagesCollection.contactListPage = (ContactListPage) PagesCollection.dialogPage
-							.swipeRight(
-									500,
-									DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
-									30);
+					getDialogPage().swipeRight(500,
+							DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
+							30);
 				}
 			}
 		}, timeout);
