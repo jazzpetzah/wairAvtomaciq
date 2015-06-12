@@ -134,14 +134,15 @@ Feature: Search
     Given User <Contact1> sent message <Message1> to conversation <Name>
     Given User Me sent message <Message1> to conversation <Contact2>
     Given User <Contact2> sent message <Message1> to conversation <Name>
-    Given I wait for 30 seconds
+    Given I wait for 50 seconds
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
     And I open People Picker from Contact List
     Then I see Top People list on People picker page
     When I select 1 user from Top People
+    And I remember user names selected in Top People
     And I choose to create conversation from People Picker
-    Then I see Contact list with name <Contact>
+    Then I see previosly remembered user selected in the conversations list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Message1 |

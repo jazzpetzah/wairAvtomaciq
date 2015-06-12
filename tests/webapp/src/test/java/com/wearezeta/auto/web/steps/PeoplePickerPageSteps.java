@@ -216,4 +216,9 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage
 				.clickNumberOfTopPeople(numberOfTopPeople);
 	}
+
+	@When("^I remember user names selected in Top People$")
+	public void IRememberUserNamesSelectedInTopPeople() throws Exception {
+		PagesCollection.peoplePickerPage.getNamesOfSelectedTopPeople();
+	}
 }

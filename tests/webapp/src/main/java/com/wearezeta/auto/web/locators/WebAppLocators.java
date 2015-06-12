@@ -269,6 +269,9 @@ public final class WebAppLocators {
 				index) -> String
 				.format("(//user-list[contains(@params, 'top_users')]//*[@data-uie-name='item-user'])[%s]",
 						index);
+
+		public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"+
+		"//*[@data-uie-name='item-user' and .//*[contains(@class,'selected')]]";
 	}
 
 	public static final class RegistrationPage {

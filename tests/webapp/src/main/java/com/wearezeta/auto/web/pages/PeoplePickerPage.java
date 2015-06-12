@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -39,6 +40,9 @@ public class PeoplePickerPage extends WebPage {
 
 	@FindBy(xpath = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']")
 	private List<WebElement> suggestions;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathSelectedTopPeopleList)
+	private List<WebElement> selectedTopPeopleItemLocator;
 
 	public PeoplePickerPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -226,5 +230,17 @@ public class PeoplePickerPage extends WebPage {
 							.apply(i));
 			getDriver().findElement(topPeopleItemLocator).click();
 		}
+	}
+
+	public ArrayList<String> getNamesOfSelectedTopPeople() throws Exception {
+		ArrayList<String> namesOfSelectedTopPeople = new ArrayList<String>();
+		final By selectedTopPeopleItemLocator = By
+				.xpath(WebAppLocators.PeoplePickerPage.xpathSelectedTopPeopleList);
+		for (WebElement element : getDriver().findElements(
+				selectedTopPeopleItemLocator)) {
+			namesOfSelectedTopPeople
+					.add(element.getAttribute("data-uie-value"));
+		}
+		return namesOfSelectedTopPeople;
 	}
 }
