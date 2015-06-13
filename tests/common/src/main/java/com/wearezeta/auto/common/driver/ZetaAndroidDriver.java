@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
@@ -190,17 +191,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 							+ ">>> Initial screen orientation: %s",
 					currentOrientation.getCode(),
 					this.initialOrientation.getCode()));
-			if (currentOrientation != this.initialOrientation) {
-				BufferedImage screenshotImage = ImageIO
-						.read(new ByteArrayInputStream(output));
-				screenshotImage = ImageUtil.tilt(
-						screenshotImage,
-						(this.initialOrientation.getCode() - currentOrientation
-								.getCode()) * Math.PI);
-				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				ImageIO.write(screenshotImage, "png", baos);
-				output = baos.toByteArray();
-			}
+			// output = fixScreenshotOrientation(output, currentOrientation);
 			result.setSessionId(this.getSessionId().toString());
 			result.setStatus(HttpStatus.OK_200);
 			result.setValue(Base64.encodeBase64(output));
@@ -213,6 +204,25 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			if (tmpScreenshot != null) {
 				tmpScreenshot.delete();
 			}
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private byte[] fixScreenshotOrientation(final byte[] initialScreenshot,
+			SurfaceOrientation currentOrientation) throws IOException {
+		// FIXME: understand screen rotation logic and adb screencap logic
+		if (currentOrientation != this.initialOrientation) {
+			BufferedImage screenshotImage = ImageIO
+					.read(new ByteArrayInputStream(initialScreenshot));
+			screenshotImage = ImageUtil.tilt(
+					screenshotImage,
+					(this.initialOrientation.getCode() - currentOrientation
+							.getCode()) * Math.PI / 2);
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(screenshotImage, "png", baos);
+			return baos.toByteArray();
+		} else {
+			return initialScreenshot;
 		}
 	}
 
