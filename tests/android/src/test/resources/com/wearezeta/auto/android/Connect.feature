@@ -480,7 +480,7 @@ Feature: Connect
     And I click + button on the first PYMK item
     Then I do not see the previously remembered PYMK item
     When I press Clear button
-    Then I see contact list with name <Contact2>
+    Then I see contact list with the previously remembered PYMK item
     When I press Open StartUI
     Then I do not see the previously remembered PYMK item
 
@@ -500,13 +500,12 @@ Feature: Connect
     And I keep reopening People Picker until PYMK are visible
     And I remember the name of the first PYMK item
     When I tap the first PYMK item
-    And I see connect to <Contact2> dialog
     And I tap on edit connect request field
     And I type Connect request "<Message>"
     And I click Connect button on connect to page
     And I see People picker page
     And I press Clear button
-    Then I see contact list with name <Contact2>
+    Then I see contact list with the previously remembered PYMK item
     When I press Open StartUI
     Then I do not see the previously remembered PYMK item
 
