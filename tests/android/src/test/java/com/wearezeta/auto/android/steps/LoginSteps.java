@@ -49,14 +49,11 @@ public class LoginSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	
 	/**
-	 * Inputs the login details for the given user and then clicks the sign in
-	 * button Also sets the contactList page in the pagesObject
-	 * 
+	 * Inputs the login details for the self user and then clicks the sign in
+	 * button.
 	 * 
 	 * @step. ^I sign in using my email$
 	 * 
-	 * @param login
-	 * @param password
 	 * @throws Exception
 	 */
 	@Given("^I sign in using my email$")
