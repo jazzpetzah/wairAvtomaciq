@@ -1,16 +1,9 @@
 package com.wearezeta.auto.common.driver;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
-
-import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
@@ -18,7 +11,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.jetty.http.HttpStatus;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.HasTouchScreen;
@@ -30,7 +22,6 @@ import org.openqa.selenium.remote.Response;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 import io.appium.java_client.android.AndroidDriver;
@@ -151,18 +142,10 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
 					.waitFor();
 			byte[] output = FileUtils.readFileToByteArray(tmpScreenshot);
-			final int currentScreenOrientationValue = getScreenOrientationValue();
-			log.debug(String.format(">>> Current screen orientation value: %s",
-					currentScreenOrientationValue));
-			// if (currentScreenOrientationValue != 0) {
-			// BufferedImage screenshotImage = ImageIO
-			// .read(new ByteArrayInputStream(output));
-			// screenshotImage = ImageUtil.tilt(screenshotImage,
-			// currentScreenOrientationValue * Math.PI / 2);
-			// final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			// ImageIO.write(screenshotImage, "png", baos);
-			// output = baos.toByteArray();
-			// }
+			// final int currentScreenOrientationValue =
+			// getScreenOrientationValue();
+			// log.debug(String.format(">>> Current screen orientation value: %s",
+			// currentScreenOrientationValue));
 			result.setSessionId(this.getSessionId().toString());
 			result.setStatus(HttpStatus.OK_200);
 			result.setValue(Base64.encodeBase64(output));
@@ -224,63 +207,64 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		}
 	}
 
-	private static String getAdbOutput(String cmdLine) throws Exception {
-		String result = "";
-		String adbCommand = "adb " + cmdLine;
-		final Process process = Runtime.getRuntime().exec(
-				new String[] { "/bin/bash", "-c", adbCommand });
-		if (process == null) {
-			throw new RuntimeException(String.format(
-					"Failed to execute command line '%s'", cmdLine));
-		}
-		BufferedReader in = null;
-		try {
-			in = new BufferedReader(new InputStreamReader(
-					process.getInputStream()));
-			String s;
-			while ((s = in.readLine()) != null) {
-				result = s + "\n";
-			}
-		} finally {
-			if (in != null) {
-				in.close();
-			}
-		}
+	// private static String getAdbOutput(String cmdLine) throws Exception {
+	// String result = "";
+	// String adbCommand = "adb " + cmdLine;
+	// final Process process = Runtime.getRuntime().exec(
+	// new String[] { "/bin/bash", "-c", adbCommand });
+	// if (process == null) {
+	// throw new RuntimeException(String.format(
+	// "Failed to execute command line '%s'", cmdLine));
+	// }
+	// BufferedReader in = null;
+	// try {
+	// in = new BufferedReader(new InputStreamReader(
+	// process.getInputStream()));
+	// String s;
+	// while ((s = in.readLine()) != null) {
+	// result = s + "\n";
+	// }
+	// } finally {
+	// if (in != null) {
+	// in.close();
+	// }
+	// }
+	//
+	// return result.trim();
+	// }
 
-		return result.trim();
-	}
+	// /**
+	// *
+	// *
+	// * @return 0 to 3. 0 is default portrait
+	// * @throws Exception
+	// */
+	// private int getScreenOrientationValue() throws Exception {
+	// final String output =
+	// getAdbOutput("shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1");
+	// return Integer.parseInt(output);
+	// }
 
-	/**
-	 * 
-	 * 
-	 * @return 0 to 3. 0 is default portrait
-	 * @throws Exception
-	 */
-	private int getScreenOrientationValue() throws Exception {
-		final String output = getAdbOutput("shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1");
-		return Integer.parseInt(output);
-	}
-
-	/**
-	 * Workaround for Selendroid issue when correct screen orientation is
-	 * returned only for the step where it is actually changed :-@
-	 *
-	 */
-	@Override
-	public ScreenOrientation getOrientation() {
-		int value = 0;
-		try {
-			value = getScreenOrientationValue();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return super.getOrientation();
-		}
-		if (value % 2 == 1) {
-			return ScreenOrientation.LANDSCAPE;
-		} else {
-			return ScreenOrientation.PORTRAIT;
-		}
-	}
+	// /**
+	// * Workaround for Selendroid issue when correct screen orientation is
+	// * returned only for the step where it is actually changed :-@
+	// *
+	// */
+	// @Override
+	// public ScreenOrientation getOrientation() {
+	// int value = 0;
+	// try {
+	// value = getScreenOrientationValue();
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// return super.getOrientation();
+	// }
+	// if (value % 2 == 1) {
+	// return ScreenOrientation.LANDSCAPE;
+	// } else {
+	// return ScreenOrientation.PORTRAIT;
+	// }
+	// }
 
 	@Override
 	public int getMaxScreenshotMakersCount() {
