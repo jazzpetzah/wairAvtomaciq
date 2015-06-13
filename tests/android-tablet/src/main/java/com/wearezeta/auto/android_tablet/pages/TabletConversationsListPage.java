@@ -4,9 +4,11 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
+import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -51,6 +53,19 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 			getContactListPage().waitForConversationListLoad();
 		} finally {
 			ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
+			// FIXME: Workaround for android bug AN-2238
+			Thread.sleep(500);
+			try {
+				DriverUtils
+						.swipeRight(
+								getDriver(),
+								getDriver()
+										.findElement(
+												By.xpath(PersonalInfoPage.xpathParentSelfProfileOverlay)),
+								1000);
+			} catch (WebDriverException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
