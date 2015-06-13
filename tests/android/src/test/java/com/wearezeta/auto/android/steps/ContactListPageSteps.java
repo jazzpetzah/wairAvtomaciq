@@ -33,13 +33,14 @@ public class ContactListPageSteps {
 			throws Exception {
 		getContactListPage().verifyContactListIsFullyLoaded();
 		if (shouldNotBeVisible == null) {
-			Assert.assertFalse(
-					"Some conversations are present in the conversations list, but zero is expected",
+			Assert.assertTrue(
+					"No conversations are visible in the conversations list, but some are expected",
 					getContactListPage().isAnyConversationVisible());
 		} else {
-			Assert.assertTrue(
-					"No conversations are present in the conversations list, but some are expected",
+			Assert.assertFalse(
+					"Some conversations are visible in the conversations list, but zero is expected",
 					getContactListPage().isAnyConversationVisible());
+
 		}
 	}
 
