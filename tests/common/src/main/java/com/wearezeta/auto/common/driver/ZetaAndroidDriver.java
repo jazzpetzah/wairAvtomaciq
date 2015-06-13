@@ -5,10 +5,12 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import javax.imageio.ImageIO;
 
@@ -44,10 +46,41 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	private SessionHelper sessionHelper;
 	private RemoteTouchScreen touch;
 
+	private enum SurfaceOrientation {
+		ROTATION_0(0), ROTATION_90(1), ROTATION_180(2), ROTATION_270(3);
+
+		final int code;
+
+		private SurfaceOrientation(int code) {
+			this.code = code;
+		}
+
+		public int getCode() {
+			return this.code;
+		}
+
+		public static SurfaceOrientation getByCode(int code) {
+			for (SurfaceOrientation item : SurfaceOrientation.values()) {
+				if (code == item.getCode()) {
+					return item;
+				}
+			}
+			throw new NoSuchElementException(String.format(
+					"There is no SurfaceOrientation item with code '%s'", code));
+		}
+	}
+
+	private SurfaceOrientation initialOrientation = SurfaceOrientation.ROTATION_0;
+
 	public ZetaAndroidDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
 		this.touch = new RemoteTouchScreen(getExecuteMethod());
 		sessionHelper = new SessionHelper(this);
+		try {
+			this.initialOrientation = this.getSurfaceOrientation();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -151,16 +184,13 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
 					.waitFor();
 			byte[] output = FileUtils.readFileToByteArray(tmpScreenshot);
-			final int currentScreenOrientationValue = getScreenOrientationValue();
-			if (currentScreenOrientationValue != 0) {
-				BufferedImage screenshotImage = ImageIO
-						.read(new ByteArrayInputStream(output));
-				screenshotImage = ImageUtil.tilt(screenshotImage,
-						-currentScreenOrientationValue * Math.PI / 2);
-				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				ImageIO.write(screenshotImage, "png", baos);
-				output = baos.toByteArray();
-			}
+			final SurfaceOrientation currentOrientation = this
+					.getSurfaceOrientation();
+			log.debug(String.format(
+					"Initial and current screen orientation values: %s -> %s",
+					currentOrientation.getCode(),
+					this.initialOrientation.getCode()));
+			// output = fixScreenshotOrientation(output, currentOrientation);
 			result.setSessionId(this.getSessionId().toString());
 			result.setStatus(HttpStatus.OK_200);
 			result.setValue(Base64.encodeBase64(output));
@@ -173,6 +203,25 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			if (tmpScreenshot != null) {
 				tmpScreenshot.delete();
 			}
+		}
+	}
+
+	@SuppressWarnings("unused")
+	private byte[] fixScreenshotOrientation(final byte[] initialScreenshot,
+			SurfaceOrientation currentOrientation) throws IOException {
+		// FIXME: understand screen rotation logic and adb screencap logic
+		if (currentOrientation != this.initialOrientation) {
+			BufferedImage screenshotImage = ImageIO
+					.read(new ByteArrayInputStream(initialScreenshot));
+			screenshotImage = ImageUtil.tilt(
+					screenshotImage,
+					(this.initialOrientation.getCode() - currentOrientation
+							.getCode()) * Math.PI / 2);
+			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			ImageIO.write(screenshotImage, "png", baos);
+			return baos.toByteArray();
+		} else {
+			return initialScreenshot;
 		}
 	}
 
@@ -254,9 +303,9 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	 * @return 0 to 3. 0 is default portrait
 	 * @throws Exception
 	 */
-	private int getScreenOrientationValue() throws Exception {
+	private SurfaceOrientation getSurfaceOrientation() throws Exception {
 		final String output = getAdbOutput("shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1");
-		return Integer.parseInt(output);
+		return SurfaceOrientation.getByCode(Integer.parseInt(output));
 	}
 
 	/**
@@ -266,14 +315,14 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	 */
 	@Override
 	public ScreenOrientation getOrientation() {
-		int value = 0;
+		SurfaceOrientation value = SurfaceOrientation.ROTATION_0;
 		try {
-			value = getScreenOrientationValue();
+			value = getSurfaceOrientation();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return super.getOrientation();
 		}
-		if (value % 2 == 1) {
+		if (value.getCode() % 2 == 1) {
 			return ScreenOrientation.LANDSCAPE;
 		} else {
 			return ScreenOrientation.PORTRAIT;

@@ -94,12 +94,10 @@ public class LoginPageSteps {
 	 * @step. ^the sign in error message reads (.*)
 	 * @param message
 	 *            expected error message
-	 * @throws Exception 
-	 * @throws InterruptedException 
-	 * @throws Throwable
+	 * @throws Exception
 	 */
 	@Then("^the sign in error message reads (.*)")
-	public void TheSignInErrorMessageReads(String message) throws InterruptedException, Exception {
+	public void TheSignInErrorMessageReads(String message) throws Exception {
 		assertThat("sign in error message",
 				PagesCollection.loginPage.getErrorMessage(), equalTo(message));
 	}
