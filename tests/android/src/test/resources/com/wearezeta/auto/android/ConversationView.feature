@@ -287,7 +287,7 @@ Feature: Conversation View
   @id170 @regression
   Scenario Outline: Verify you can send and play youtube link
     Given There are 2 users where <Name> is me
-    Given <Name> is connected to me
+    Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see Contact list
     When I tap on contact name <Contact1>
