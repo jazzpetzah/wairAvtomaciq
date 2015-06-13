@@ -104,6 +104,8 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public void tapEditConnectionRequest() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(PeoplePickerPage.idConnectionRequiesMessage)) : "The invitation input field is not visible";
 		connectionRequestMessage.clear();
 	}
 

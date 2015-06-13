@@ -17,7 +17,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class PersonalInfoPage extends AndroidPage {
 
-	private static final String xpathParentSelfProfileOverlay = "//*[@id='fl__conversation_list__profile_overlay']";
+	public static final String xpathParentSelfProfileOverlay = "//*[@id='fl__conversation_list__profile_overlay']";
 
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class

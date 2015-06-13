@@ -20,6 +20,10 @@ public class PeoplePickerPageSteps {
 				.getPage(PeoplePickerPage.class);
 	}
 
+	private ContactListPage getContactListPage() throws Exception {
+		return (ContactListPage) pagesCollection.getPage(ContactListPage.class);
+	}
+
 	/**
 	 * Checks to see that the people picker page (search view) is visible
 	 * 
@@ -303,11 +307,11 @@ public class PeoplePickerPageSteps {
 	public void IClickPlusButtonOnTheFirstPYMKItem() throws Exception {
 		getPeoplePickerPage().clickPlusOnPYMKItem(1);
 	}
-	
+
 	/**
 	 * Tap the very first item in PYMK list
 	 * 
-	 *  @step. ^I tap the first PYMK item$
+	 * @step. ^I tap the first PYMK item$
 	 * 
 	 * @throws Exception
 	 */
@@ -363,6 +367,27 @@ public class PeoplePickerPageSteps {
 		}
 		Assert.assertTrue(getPeoplePickerPage().waitUntilPYMKItemIsInvisible(
 				rememberedPYMKItemName));
+	}
+
+	/**
+	 * Verify whether the previously remembered PYMK item exists in the
+	 * conversations list
+	 * 
+	 * @step. ^I see contact list with the previously remembered PYMK item$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see contact list with the previously remembered PYMK item$")
+	public void ISeeContactListWithPReviouslyRememberedPYMKItem()
+			throws Exception {
+		if (rememberedPYMKItemName == null) {
+			throw new IllegalStateException(
+					"Please call the corresponding step to remember PYMK item name first");
+		}
+		Assert.assertTrue(String.format(
+				"There is no '%s' conversation in the list",
+				rememberedPYMKItemName),
+				getContactListPage().isContactExists(rememberedPYMKItemName));
 	}
 
 	/**
