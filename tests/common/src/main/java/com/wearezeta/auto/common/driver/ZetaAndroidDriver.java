@@ -188,8 +188,8 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					.getSurfaceOrientation();
 			log.debug(String.format(
 					"Initial and current screen orientation values: %s -> %s",
-					currentOrientation.getCode(),
-					this.initialOrientation.getCode()));
+					this.initialOrientation.getCode(),
+					currentOrientation.getCode()));
 			// output = fixScreenshotOrientation(output, currentOrientation);
 			result.setSessionId(this.getSessionId().toString());
 			result.setStatus(HttpStatus.OK_200);
