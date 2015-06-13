@@ -152,15 +152,17 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					.waitFor();
 			byte[] output = FileUtils.readFileToByteArray(tmpScreenshot);
 			final int currentScreenOrientationValue = getScreenOrientationValue();
-			if (currentScreenOrientationValue != 0) {
-				BufferedImage screenshotImage = ImageIO
-						.read(new ByteArrayInputStream(output));
-				screenshotImage = ImageUtil.tilt(screenshotImage,
-						currentScreenOrientationValue * Math.PI / 2);
-				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				ImageIO.write(screenshotImage, "png", baos);
-				output = baos.toByteArray();
-			}
+			log.debug(String.format(">>> Current screen orientation value: %s",
+					currentScreenOrientationValue));
+			// if (currentScreenOrientationValue != 0) {
+			// BufferedImage screenshotImage = ImageIO
+			// .read(new ByteArrayInputStream(output));
+			// screenshotImage = ImageUtil.tilt(screenshotImage,
+			// currentScreenOrientationValue * Math.PI / 2);
+			// final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			// ImageIO.write(screenshotImage, "png", baos);
+			// output = baos.toByteArray();
+			// }
 			result.setSessionId(this.getSessionId().toString());
 			result.setStatus(HttpStatus.OK_200);
 			result.setValue(Base64.encodeBase64(output));
