@@ -20,6 +20,7 @@
 		<generateUsers>true</generateUsers>
 		<driverTimeoutSeconds>30</driverTimeoutSeconds>
 		<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic>
+		<pathToAddressBook>AddressBook</pathToAddressBook>
 		<iosImagesPath>img/</iosImagesPath>
 		<swipeScriptPath>swipeInWindow</swipeScriptPath>
 		<iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>

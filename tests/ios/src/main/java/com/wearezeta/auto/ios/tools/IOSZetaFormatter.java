@@ -26,6 +26,15 @@ public class IOSZetaFormatter extends ZetaFormatter {
 				}
 				break;
 			}
+			if (t.getName().equals("@deployAddressBook")) {
+				try {
+					deployAddressBook();
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new RuntimeException(e.getMessage());
+				}
+				break;
+			}
 		}
 	}
 
@@ -34,11 +43,26 @@ public class IOSZetaFormatter extends ZetaFormatter {
 			try {
 				String[] picturepath = new String[] { CommonUtils
 						.getUserPicturePathFromConfig(IOSZetaFormatter.class) };
-				IOSSimulatorPhotoLibHelper.CreateSimulatorPhotoLib("8.x",
+				IOSSimulatorHelper.createSimulatorPhotoLib("8.x",
 						picturepath, true, true);
+				IOSSimulatorHelper.createSimulatorAddressBook("8.x", 
+						CommonUtils.getUserAddressBookFromConfig(IOSZetaFormatter.class));
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				log.error("Failed to deploy pictures into simulator.\n"
+						+ ex.getMessage());
+			}
+		}
+	}
+	
+	private void deployAddressBook() throws Exception {
+		if (CommonUtils.getIsSimulatorFromConfig(IOSZetaFormatter.class)) {
+			try {
+				IOSSimulatorHelper.createSimulatorAddressBook("8.x", 
+						CommonUtils.getUserAddressBookFromConfig(IOSZetaFormatter.class));
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				log.error("Failed to deploy address book into simulator.\n"
 						+ ex.getMessage());
 			}
 		}
