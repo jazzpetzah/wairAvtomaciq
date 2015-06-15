@@ -106,7 +106,7 @@ Feature: Conversation View
     And I press play in media bar
     Then I see media is playing
     And I stop media in media bar
-    Then The media stopps playing
+    Then The media stops playing
 
     Examples: 
       | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
@@ -394,7 +394,7 @@ Feature: Conversation View
     And I see video player page is opened
     And I tap on Done button on Video player page
     And I stop media in media bar
-    Then The media stopps playing
+    Then The media stops playing
 
     Examples: 
       | Login      | Password      | Name      | Contact   | YouTubeLink                                |
