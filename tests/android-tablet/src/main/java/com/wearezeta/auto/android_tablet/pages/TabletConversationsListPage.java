@@ -59,7 +59,6 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 	private void fixOrientation() throws Exception {
 		final ScreenOrientation currentOrientation = ScreenOrientationHelper
 				.getInstance().fixOrientation(getDriver());
-		Thread.sleep(500);
 		if (currentOrientation == ScreenOrientation.LANDSCAPE) {
 			// No need to swipe right in landscape orientation
 			return;
