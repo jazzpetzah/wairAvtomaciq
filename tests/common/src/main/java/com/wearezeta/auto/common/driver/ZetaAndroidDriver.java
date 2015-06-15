@@ -70,17 +70,10 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		}
 	}
 
-	private SurfaceOrientation initialOrientation = SurfaceOrientation.ROTATION_0;
-
 	public ZetaAndroidDriver(URL remoteAddress, Capabilities desiredCapabilities) {
 		super(remoteAddress, desiredCapabilities);
 		this.touch = new RemoteTouchScreen(getExecuteMethod());
 		sessionHelper = new SessionHelper(this);
-		try {
-			this.initialOrientation = this.getSurfaceOrientation();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -124,6 +117,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			Runtime.getRuntime()
 					.exec(new String[] { "/bin/bash", "-c",
 							adbCommandsChainLimited }).waitFor();
+			Thread.sleep(durationMilliseconds);
 		} catch (Exception e) {
 			throw new WebDriverException(e.getMessage(), e);
 		}
@@ -186,11 +180,9 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			byte[] output = FileUtils.readFileToByteArray(tmpScreenshot);
 			final SurfaceOrientation currentOrientation = this
 					.getSurfaceOrientation();
-			log.debug(String.format(
-					"Initial and current screen orientation values: %s -> %s",
-					this.initialOrientation.getCode(),
+			log.debug(String.format("Current screen orientation value -> %s",
 					currentOrientation.getCode()));
-			// output = fixScreenshotOrientation(output, currentOrientation);
+			output = fixScreenshotOrientation(output, currentOrientation);
 			result.setSessionId(this.getSessionId().toString());
 			result.setStatus(HttpStatus.OK_200);
 			result.setValue(Base64.encodeBase64(output));
@@ -206,17 +198,13 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		}
 	}
 
-	@SuppressWarnings("unused")
 	private byte[] fixScreenshotOrientation(final byte[] initialScreenshot,
 			SurfaceOrientation currentOrientation) throws IOException {
-		// FIXME: understand screen rotation logic and adb screencap logic
-		if (currentOrientation != this.initialOrientation) {
+		if (currentOrientation != SurfaceOrientation.ROTATION_0) {
 			BufferedImage screenshotImage = ImageIO
 					.read(new ByteArrayInputStream(initialScreenshot));
-			screenshotImage = ImageUtil.tilt(
-					screenshotImage,
-					(this.initialOrientation.getCode() - currentOrientation
-							.getCode()) * Math.PI / 2);
+			screenshotImage = ImageUtil.tilt(screenshotImage,
+					(currentOrientation.getCode()) * Math.PI / 2);
 			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ImageIO.write(screenshotImage, "png", baos);
 			return baos.toByteArray();
