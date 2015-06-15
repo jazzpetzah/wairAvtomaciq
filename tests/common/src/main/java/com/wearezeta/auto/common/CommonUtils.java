@@ -361,6 +361,11 @@ public class CommonUtils {
 			throws Exception {
 		return getValueFromConfig(c, "pathToUserpic");
 	}
+	
+	public static String getUserAddressBookFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "pathToAddressBook");
+	}
 
 	public static String generateGUID() {
 		return UUID.randomUUID().toString();
