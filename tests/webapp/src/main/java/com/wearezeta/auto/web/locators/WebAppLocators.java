@@ -267,7 +267,7 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathTopPeopleListByName = (
 				name) -> String
-				.format("(//user-list[contains(@params, 'top_users')]//*[@data-uie-name='item-user' and .//*[text()='%s'] ])",
+				.format("(//user-list[contains(@params, 'top_users')]//*[@data-uie-name='item-user' and .//*[text()='%s']])",
 						name);
 
 		public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"

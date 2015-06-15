@@ -1,8 +1,10 @@
 package com.wearezeta.auto.web.steps;
 
 import java.util.List;
+
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
@@ -212,17 +214,20 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @step. ^I select (.*) from Top People$
 	 * 
-	 * @param nameOfTopPeople
-	 *            name of top people to select
+	 * @param namesOfTopPeople
+	 *            comma separated list of names of top people to select
 	 * @throws Exception
 	 */
 
 	@When("^I select (.*) from Top People$")
-	public void ISelectUsersFromTopPeople(String nameOfTopPeople)
+	public void ISelectUsersFromTopPeople(String namesOfTopPeople)
 			throws Exception {
-		PagesCollection.peoplePickerPage
-				.clickNameInTopPeople(nameOfTopPeople);
+		for (String alias : CommonSteps.splitAliases(namesOfTopPeople)) {
+			final String userName = usrMgr.findUserByNameOrNameAlias(alias)
+					.getName();
+			PagesCollection.peoplePickerPage.clickNameInTopPeople(userName);
 		}
+	}
 
 	private static List<String> selectedTopPeople;
 

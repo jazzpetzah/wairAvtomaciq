@@ -140,7 +140,7 @@ Feature: Search
     And I wait till Top People list appears
     When I select <Contact1> from Top People
     And I choose to create conversation from People Picker
-    Then I see conversation with <Contact2> is selected in conversations list
+    Then I see conversation with <Contact1> is selected in conversations list
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Message1 |
