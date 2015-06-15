@@ -256,6 +256,7 @@ public class CommonWebAppSteps {
 		capabilities.setCapability("os_version", osVersion);
 		capabilities.setCapability("browser_version", browserVersion);
 		capabilities.setCapability("name", uniqueTestName);
+		capabilities.setCapability("browserstack.debug", "true");
 
 		return capabilities;
 	}
