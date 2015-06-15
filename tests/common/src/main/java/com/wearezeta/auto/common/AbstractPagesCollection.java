@@ -9,8 +9,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class AbstractPagesCollection {
 
-	private static final Logger log = ZetaLogger
-			.getLog(AbstractPagesCollection.class.getSimpleName());
+	private final Logger log = ZetaLogger.getLog(this.getClass()
+			.getSimpleName());
 
 	private final Map<Class<? extends BasePage>, BasePage> pagesMapping = new LinkedHashMap<Class<? extends BasePage>, BasePage>();
 
