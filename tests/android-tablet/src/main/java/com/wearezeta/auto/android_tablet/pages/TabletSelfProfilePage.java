@@ -19,7 +19,7 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 	public static final String idSelfProfileView = "ll_self_form";
 	@FindBy(id = idSelfProfileView)
 	private WebElement selfProfileView;
-
+	
 	public static final Function<String, String> xpathSelfNameByContent = content -> String
 			.format("//*[@id='ttv__profile__name' and @value='%s']", content);
 

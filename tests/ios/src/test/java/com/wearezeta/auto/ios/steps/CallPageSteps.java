@@ -57,6 +57,27 @@ public class CallPageSteps {
 	}
 
 	/**
+	 * 
+	 * Verify that calling UI buttons are visible (using it for iPad
+	 * verification step as far speakers button is not shown there)
+	 * 
+	 * @step. ^I see mute call, end call buttons$
+	 * @throws Exception
+	 */
+	@When("^I see mute call, end call buttons$")
+	public void ISeeCallingPageButtonsOnIpad() throws Exception {
+		// if (PagesCollection.callPage instanceof IncomingCallPage) {
+		// PagesCollection.callPage = (CallPage) PagesCollection.loginPage
+		// .instantiatePage(StartedCallPage.class);
+		// }
+
+		Assert.assertTrue("End call button is not visible",
+				(getStartedCallPage().isEndCallVisible()));
+		Assert.assertTrue("Mute call button is not visible",
+				(getStartedCallPage().isMuteCallVisible()));
+	}
+
+	/**
 	 * Click on end call button
 	 * 
 	 * @step. ^I end started call$
@@ -121,6 +142,12 @@ public class CallPageSteps {
 						contact.toUpperCase()));
 	}
 
+	/**
+	 * Click on ignore call button
+	 * 
+	 * @step. ^I ignore incoming call$
+	 * @throws Exception
+	 */
 	@When("^I ignore incoming call$")
 	public void IignoreIncomingCall() throws Exception {
 		getIncomingCallPage().ignoreIncomingCallClick();

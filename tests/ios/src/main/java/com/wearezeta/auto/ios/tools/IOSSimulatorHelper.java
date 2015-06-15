@@ -17,7 +17,7 @@ import org.xml.sax.SAXException;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
-public class IOSSimulatorPhotoLibHelper {
+public class IOSSimulatorHelper {
 	private static final String IOS_LIB_PATH_TEMPLATE8 = System
 			.getProperty("user.home")
 			+ "/Library/Developer/CoreSimulator/Devices/";
@@ -32,13 +32,13 @@ public class IOSSimulatorPhotoLibHelper {
 	public static final String SIMCTL = "/Applications/Xcode.app/Contents/Developer/usr/bin/simctl";
 
 	private static final Logger log = ZetaLogger
-			.getLog(IOSSimulatorPhotoLibHelper.class.getSimpleName());
+			.getLog(IOSSimulatorHelper.class.getSimpleName());
 
-	public IOSSimulatorPhotoLibHelper() {
+	public IOSSimulatorHelper() {
 		// TODO Auto-generated constructor stub
 	}
 
-	private static String GetiOSLibPath(String simulatorVersion)
+	private static String getiOSLibPath(String simulatorVersion)
 			throws Exception {
 		String result = "";
 		if (simulatorVersion.equals("8.x")) {
@@ -49,7 +49,7 @@ public class IOSSimulatorPhotoLibHelper {
 		return result;
 	}
 
-	private static String GetMediaPath(String libPath) {
+	private static String getMediaPath(String libPath) {
 		return String.format(MEDIA_PATH_TEMPLATE, libPath);
 	}
 
@@ -80,10 +80,10 @@ public class IOSSimulatorPhotoLibHelper {
 		return flag;
 	}
 
-	private static String FindSimultorFolder(String simulatorVersion)
+	private static String findSimultorFolder(String simulatorVersion)
 			throws Exception {
 		String deviceName = CommonUtils.getDeviceName(CommonUtils.class);
-		String libPath = GetiOSLibPath(simulatorVersion);
+		String libPath = getiOSLibPath(simulatorVersion);
 
 		if (!new File(libPath).exists()) {
 			throw new Exception(String.format(
@@ -116,12 +116,28 @@ public class IOSSimulatorPhotoLibHelper {
 
 		return result;
 	}
+	
+	public static void createSimulatorAddressBook(final String simulatorVersion, final String addressBookPath) throws Exception {
+		String simPath = findSimultorFolder(simulatorVersion);
+		String libPath = simPath + "/data/Library/";
+		
+		File rootObj = new File(libPath);
+		
+		File from = new File(addressBookPath);
+		File to = new File(rootObj.getAbsolutePath(),
+				from.getName());
+		if (from.isDirectory()) {
+			FileUtils.copyDirectory(from, to, false);
+		} else {
+			FileUtils.copyFile(from, to);
+		}
+	}
 
-	public static void CreateSimulatorPhotoLib(final String simulatorVersion,
+	public static void createSimulatorPhotoLib(final String simulatorVersion,
 			String[] srcPictPaths, boolean shouldDoCleanup, boolean useSimCtl)
 			throws Exception {
 
-		String simPath = FindSimultorFolder(simulatorVersion);
+		String simPath = findSimultorFolder(simulatorVersion);
 		String libPath = simPath + "/data/";
 
 		if (!new File(libPath).exists()) {
@@ -130,7 +146,7 @@ public class IOSSimulatorPhotoLibHelper {
 					simulatorVersion));
 			return;
 		}
-		File mediaObj = new File(GetMediaPath(libPath));
+		File mediaObj = new File(getMediaPath(libPath));
 		if (mediaObj.exists()) {
 			if (useSimCtl) {
 				CommonUtils.executeOsXCommand(new String[] { "/bin/bash", "-c",

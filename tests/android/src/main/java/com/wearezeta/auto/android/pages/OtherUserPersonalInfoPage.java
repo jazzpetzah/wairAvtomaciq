@@ -309,7 +309,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public DialogPage tabBackButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), closeButton);
-		closeButton.click();
+		this.getDriver().navigate().back();
 		return new DialogPage(this.getLazyDriver());
 	}
 

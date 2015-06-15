@@ -38,9 +38,11 @@ public final class ScreenOrientationHelper {
 		this.orientation = Optional.empty();
 	}
 
-	public ScreenOrientation fixOrientation(final ZetaAndroidDriver driver) {
+	public ScreenOrientation fixOrientation(final ZetaAndroidDriver driver)
+			throws InterruptedException {
 		if (this.orientation.isPresent()) {
 			driver.rotate(orientation.get());
+			Thread.sleep(500);
 			return this.orientation.get();
 		} else {
 			return driver.getOrientation();

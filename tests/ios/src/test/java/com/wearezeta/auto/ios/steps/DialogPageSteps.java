@@ -406,7 +406,7 @@ public class DialogPageSteps {
 		Assert.assertEquals(playingState, mediaState);
 	}
 
-	@Then("The media stopps playing")
+	@Then("The media stops playing")
 	public void TheMediaStoppsPlaying() throws Exception {
 		String endedState = IOSLocators.MEDIA_STATE_STOPPED;
 		mediaState = getDialogPage().getMediaState();

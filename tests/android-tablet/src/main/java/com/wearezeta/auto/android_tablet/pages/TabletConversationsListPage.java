@@ -4,11 +4,10 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.ScreenOrientation;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
-import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -52,20 +51,36 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		try {
 			getContactListPage().waitForConversationListLoad();
 		} finally {
-			ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
 			// FIXME: Workaround for android bug AN-2238
-			Thread.sleep(500);
-			try {
-				DriverUtils
-						.swipeRight(
-								getDriver(),
-								getDriver()
-										.findElement(
-												By.xpath(PersonalInfoPage.xpathParentSelfProfileOverlay)),
-								1000);
-			} catch (WebDriverException e) {
-				e.printStackTrace();
-			}
+			this.fixOrientation();
+		}
+	}
+
+	final static int MAX_ORIENTATION_FIX_RETRIES = 3;
+
+	private void fixOrientation() throws Exception {
+		final ScreenOrientation currentOrientation = ScreenOrientationHelper
+				.getInstance().fixOrientation(getDriver());
+		if (currentOrientation == ScreenOrientation.LANDSCAPE) {
+			// No need to swipe right in landscape orientation
+			return;
+		}
+
+		final By overlayLocator = By
+				.id(TabletSelfProfilePage.idSelfProfileView);
+		final int screenWidth = getDriver().manage().window().getSize()
+				.getWidth();
+		int ntry = 1;
+		while (getDriver().findElement(overlayLocator).getLocation().getX() < screenWidth / 2
+				&& ntry <= MAX_ORIENTATION_FIX_RETRIES) {
+			this.tapOnCenterOfScreen();
+			this.tapOnCenterOfScreen();
+			DriverUtils.swipeRight(getDriver(),
+					getDriver().findElement(overlayLocator), 1000);
+			ntry++;
+		}
+		if (ntry > MAX_ORIENTATION_FIX_RETRIES) {
+			throw new IllegalStateException("Conversations list is not visible");
 		}
 	}
 
