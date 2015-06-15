@@ -209,3 +209,41 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact   | NewName    | Color        |Number |
       | user1Email | user1Password | user1Name | user2Name | UNREAD DOT | BrightYellow | 2 	   |
+      
+  @staging @id2756 
+  Scenario Outline: Verify conversations are sorted according to most recent activity [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
+    Given Contact <Contact> send number <Number> of message to user <Name>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And Contact <Contact3> send number <Number> of message to user <Name>
+    And I see first item in contact list named <Contact3>
+    When Contact <Contact2> ping conversation <Name>
+    And I see first item in contact list named <Contact2>
+    When Contact <Contact> sends image <Picture> to single user conversation <Name>
+    Then I see first item in contact list named <Contact>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Contact2   | Contact3     |Number |  Picture      |
+      | user1Email | user1Password | user1Name | user2Name | user3name  | user4name    | 2 	   | testing.jpg   |
+
+  @staging @id2757
+  Scenario Outline: Verify conversations are sorted according to most recent activity [LANDSCAPE]
+    Given There are 4 users where <Name> is me
+    Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
+    Given Contact <Contact> send number <Number> of message to user <Name>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And Contact <Contact3> send number <Number> of message to user <Name>
+    And I see first item in contact list named <Contact3>
+    When Contact <Contact2> ping conversation <Name>
+    And I see first item in contact list named <Contact2>
+    When Contact <Contact> sends image <Picture> to single user conversation <Name>
+    Then I see first item in contact list named <Contact>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Contact2   | Contact3     |Number |  Picture      |
+      | user1Email | user1Password | user1Name | user2Name | user3name  | user4name    | 2 	   | testing.jpg   |
+      
