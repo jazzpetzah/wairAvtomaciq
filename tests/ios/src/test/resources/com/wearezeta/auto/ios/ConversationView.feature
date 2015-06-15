@@ -31,7 +31,7 @@ Feature: Conversation View
       | user1Email | user1Password | user1Name | user2Name |
 
   #https://wearezeta.atlassian.net/browse/ZIOS-3269
-  @smoke @id331
+  @regression @id331
   Scenario Outline: Send Hello to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -70,7 +70,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id334
+  @regression @id334
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
