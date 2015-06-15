@@ -55,7 +55,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1    | Contact2    | Contact3  | Number |
       | user1Email | user1Password | user1Name | user2Name   | user3Name   | user4Name | 4      |
       
-  @smoke @id1389
+  @regression @id1389
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -22,6 +22,9 @@ public class IncomingCallPage extends CallPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathCallingMessage)
 	private WebElement callingMessage;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathIgnoreCallButton)
+	private WebElement ignoreCallButton;
 
 	public IncomingCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -52,8 +55,8 @@ public class IncomingCallPage extends CallPage {
 		return new StartedCallPage(getLazyDriver());
 	}
 
-	public void endIncomingCallClick() {
-		endCallButton.click();
+	public void ignoreIncomingCallClick() {
+		ignoreCallButton.click();
 	}
 
 	public boolean isCallingMessageVisible() throws Exception {

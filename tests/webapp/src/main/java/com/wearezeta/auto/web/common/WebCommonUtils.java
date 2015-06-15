@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -16,25 +17,14 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
 
 public class WebCommonUtils extends CommonUtils {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(WebCommonUtils.class
 			.getSimpleName());
 
 	// workaround for local executions in case sshpass is not in the PATH
 	private static final String SSHPASS_PREFIX = "/usr/local/bin/";
-
-	public static String getWebAppBrowserNameFromConfig(Class<?> c)
-			throws Exception {
-		return getValueFromConfig(c, "browserName");
-	}
-
-	public static String getPlatformNameFromConfig(Class<?> c) throws Exception {
-		return getValueFromConfig(c, "platformName");
-	}
 
 	public static String getHubHostFromConfig(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "hubHost");
@@ -58,9 +48,10 @@ public class WebCommonUtils extends CommonUtils {
 		return String.format("%s/Documents", System.getProperty("user.home"));
 	}
 
-	public static String getFullPicturePath(String pictureName) {
-		return String.format("%s/Documents/%s",
-				System.getProperty("user.home"), pictureName);
+	public static String getFullPicturePath(String pictureName) throws URISyntaxException {
+		File file = new File(WebCommonUtils.class.getResource("/images/" + pictureName).toURI());
+		log.debug("Full picture path: " + file.getAbsolutePath());
+		return file.getAbsolutePath();
 	}
 
 	public static void putFileOnExecutionNode(String node, String srcPath,
@@ -212,7 +203,7 @@ public class WebCommonUtils extends CommonUtils {
 	public static void openUrlInNewTab(RemoteWebDriver driver, String url,
 			String nodeIp) throws Exception {
 		previousHandles = driver.getWindowHandles();
-		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Safari) {
+		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
 			openNewTabInSafari(url, nodeIp);
 		} else {
 			String script = "var d=document,a=d.createElement('a');a.target='_blank';a.href='%s';a.innerHTML='.';d.body.appendChild(a);return a";
@@ -298,20 +289,5 @@ public class WebCommonUtils extends CommonUtils {
 						+ StringEscapeUtils.escapeEcmaScript(scriptContent)
 						+ "';", "$('head').append(scriptElt);" };
 		driver.executeScript(StringUtils.join(loaderJS, "\n"));
-	}
-
-	public static void forceLogoutFromWebapp(RemoteWebDriver driver,
-			boolean areExceptionsSilenced) {
-		try {
-			driver.executeScript("(typeof wire !== 'undefined') && (typeof wire.app !== 'undefined') && wire.app.logout();");
-		} catch (Exception e) {
-			if (!areExceptionsSilenced) {
-				throw e;
-			}
-		}
-	}
-
-	public static void refreshPage(RemoteWebDriver driver) {
-		driver.get(driver.getCurrentUrl());
 	}
 }

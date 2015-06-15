@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.InvalidElementStateException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.OutputType;
@@ -88,7 +89,8 @@ public class DriverUtils {
 					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class)
-					.ignoring(StaleElementReferenceException.class);
+					.ignoring(StaleElementReferenceException.class)
+					.ignoring(InvalidElementStateException.class);
 			try {
 				return wait.until(drv -> {
 					return (drv.findElements(by).size() > 0)
@@ -548,6 +550,37 @@ public class DriverUtils {
 		driver.tap(fingerNumber, element, 1);
 	}
 
+	public static void addClass(RemoteWebDriver driver, WebElement element,
+			String cssClass) {
+		String addHoverClassScript = "arguments[0].classList.add('" + cssClass
+				+ "');";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(addHoverClassScript, element);
+	}
+
+	public static void addClassToParent(RemoteWebDriver driver,
+			WebElement element, String cssClass) {
+		String addHoverClassScript = "arguments[0].parentNode.classList.add('"
+				+ cssClass + "');";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(addHoverClassScript, element);
+	}
+
+	public static void removeClass(RemoteWebDriver driver, WebElement element,
+			String cssClass) {
+		String script = "arguments[0].classList.remove('" + cssClass + "');";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(script, element);
+	}
+
+	public static void removeClassFromParent(RemoteWebDriver driver,
+			WebElement element, String cssClass) {
+		String script = "arguments[0].parentNode.classList.remove('" + cssClass
+				+ "');";
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript(script, element);
+	}
+
 	public static void turnOffImplicitWait(RemoteWebDriver driver) {
 		driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
 	}
@@ -563,14 +596,15 @@ public class DriverUtils {
 		PlatformDrivers.setDefaultImplicitWaitTimeout(driver);
 	}
 
-	public static Optional<BufferedImage> takeScreenshot(ZetaDriver driver) {
+	public static Optional<BufferedImage> takeFullScreenShot(ZetaDriver driver)
+			throws Exception {
 		try {
-			byte[] scrImage = ((TakesScreenshot) driver)
+			final byte[] scrImage = ((TakesScreenshot) driver)
 					.getScreenshotAs(OutputType.BYTES);
-			InputStream in = new ByteArrayInputStream(scrImage);
-			BufferedImage bImageFromConvert = ImageIO.read(in);
-			return Optional.of(bImageFromConvert);
-		} catch (Exception e) {
+			final BufferedImage bImageFromConvert = ImageIO
+					.read(new ByteArrayInputStream(scrImage));
+			return Optional.ofNullable(bImageFromConvert);
+		} catch (WebDriverException | NoClassDefFoundError e) {
 			// e.printStackTrace();
 			log.error("Selenium driver has failed to take the screenshot of the current screen!");
 		}
@@ -579,10 +613,8 @@ public class DriverUtils {
 
 	public static void ToggleNetworkConnectionAndroid(AndroidDriver driver,
 			boolean airplane, boolean wifi, boolean data) {
-
 		NetworkConnectionSetting connection = new NetworkConnectionSetting(
 				airplane, wifi, data);
-
 		driver.setNetworkConnection(connection);
 	}
 
@@ -624,5 +656,33 @@ public class DriverUtils {
 
 	public static void resetApp(AppiumDriver driver) {
 		driver.resetApp();
+	}
+
+	public static void tapInTheCenterOfTheElement(AppiumDriver driver,
+			WebElement element) {
+		final Point coords = element.getLocation();
+		final Dimension size = element.getSize();
+		driver.tap(1, coords.x + size.getWidth() / 2,
+				coords.y + size.getHeight() / 2, 1);
+	}
+
+	public static void tapOutsideOfTheElement(AppiumDriver driver,
+			WebElement element, int xOffset, int yOffset) {
+		assert xOffset != 0 && yOffset != 0;
+		final Point coords = element.getLocation();
+		final Dimension size = element.getSize();
+		int dstX = 0;
+		int dstY = 0;
+		if (xOffset > 0) {
+			dstX = coords.getX() + size.getWidth() + xOffset;
+		} else {
+			dstX = coords.getX() - xOffset;
+		}
+		if (yOffset > 0) {
+			dstY = coords.getY() + size.getHeight() + yOffset;
+		} else {
+			dstY = coords.getY() - yOffset;
+		}
+		driver.tap(1, dstX, dstY, 1);
 	}
 }

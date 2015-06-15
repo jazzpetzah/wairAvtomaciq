@@ -2,13 +2,13 @@ Feature: Registration
 
   @smoke @id1936
   Scenario Outline: Verify new user can be registered
-    Given I switch to Registration page
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
     And I start activation email monitoring
     And I submit registration form
-    Then I see email <Email> on Verification page
+    Then I verify that an envelope icon is shown
+    And I see email <Email> on Verification page
     When I activate user by URL
     And User <Name> is Me without avatar
     And I see Self Picture Upload dialog
@@ -28,9 +28,10 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id2064
+  @smoke @id2064
   Scenario Outline: Photo selection dialogue - choose picture from library
     Given There is 1 user where <Name> is me without avatar picture
+    Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see Self Picture Upload dialog
     And I choose <PictureName> as my self picture on Self Picture Upload dialog
@@ -41,7 +42,6 @@ Feature: Registration
     When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     When I Sign in using login <Login> and password <Password>
     Then I do not see Self Picture Upload dialog
@@ -53,6 +53,7 @@ Feature: Registration
   @regression @id2065
   Scenario Outline: Photo selection dialogue - choose picture from carousel
     Given There is 1 user where <Name> is me without avatar picture
+    Given I switch to Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see Self Picture Upload dialog
     And I force carousel mode on Self Picture Upload dialog
@@ -64,7 +65,6 @@ Feature: Registration
     When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     When I Sign in using login <Login> and password <Password>
     Then I do not see Self Picture Upload dialog
@@ -76,7 +76,6 @@ Feature: Registration
   @regression @id1991
   Scenario Outline: I want to be notified if the email address I entered during registration has already been registered
     Given There is 1 user where user1Name is me without avatar picture
-    Given I switch to Registration page
     When I enter user name <Name> on Registration page
     And I enter user email <UsedEmail> on Registration page
     And I enter user password "<NewPassword>" on Registration page
@@ -92,9 +91,8 @@ Feature: Registration
       | Name      | UsedEmail  | UnusedEmail | Password      |
       | user1Name | user1Email | user2Email  | user2Password |
 
-  @regression @id1992
+  @smoke @id1992
   Scenario Outline: I want to see an error screen if the registration fails
-    Given I switch to Registration page
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page
     And I enter user password "<Password>" on Registration page
@@ -109,6 +107,7 @@ Feature: Registration
   @staging @id2229
   Scenario: Use Gmail contacts import on registration
     Given There is 1 user where user1Name is me without avatar picture
+    Given I switch to Sign In page
     Given I Sign in using login user1Email and password user1Password
     Given I see Self Picture Upload dialog
     Given I choose userpicture_landscape.jpg as my self picture on Self Picture Upload dialog
@@ -121,12 +120,13 @@ Feature: Registration
 
   @regression @id2051
   Scenario Outline: Register using already registered but not verified yet email
-    Given I switch to Registration page
     Given I enter user name <Name> on Registration page
     Given I enter user email <Email> on Registration page
     Given I enter user password "<Password>" on Registration page
     Given I submit registration form
     And I see email <Email> on Verification page
+    And I open Sign In page
+    When I see Sign In page
     When I Sign in using login <Email> and password <Password>
     Then I see email <Email> on Verification page
 

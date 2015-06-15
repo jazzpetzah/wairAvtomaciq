@@ -1,30 +1,10 @@
 Feature: People View
 
-  @smoke @id1691
-  Scenario Outline: Start group chat with users from contact list
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
-    And I wait until <Contact1> exists in backend search results
-    And I wait until <Contact2> exists in backend search results
-    When I open People Picker from Contact List
-    And I type <Contact1> in search field of People Picker
-    And I select <Contact1> from People Picker results
-    And I type <Contact2> in search field of People Picker
-    And I select <Contact2> from People Picker results
-    And I choose to create conversation from People Picker
-    And I see my avatar on top of Contact list
-    Then I see Contact list with name <Contact1>,<Contact2>
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
-
-  @smoke @id1686
+  @regression @id1686
   Scenario Outline: Verify you can access proﬁle information for the other participant in a 1to1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
@@ -38,11 +18,12 @@ Feature: People View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @smoke @id1692
+  @regression @id1692
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -60,11 +41,12 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       | Message  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat | YOU LEFT |
 
-  @smoke @id1694
+  @regression @id1694
   Scenario Outline: Verify you can remove participants from a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -87,6 +69,7 @@ Feature: People View
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given I sent connection request to <UnknownContact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -115,6 +98,7 @@ Feature: People View
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given <UnknownContact> sent connection request to Myself
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -145,6 +129,7 @@ Feature: People View
     Given Myself is connected to <KnownContact>
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -169,6 +154,7 @@ Feature: People View
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given Myself blocked <KnownContact>
     Given I sent connection request to <UnknownContact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -198,6 +184,7 @@ Feature: People View
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given Myself blocked <KnownContact>
     Given I sent connection request to <UnknownContact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -226,6 +213,7 @@ Feature: People View
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given Myself sent connection request to <UnknownContact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -251,6 +239,7 @@ Feature: People View
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given <UnknownContact> sent connection request to me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -277,6 +266,7 @@ Feature: People View
       Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>,<UnknownContact2>
       Given User <KnownContact> changes avatar picture to default
       Given <UnknownContact> sent connection request to me
+      Given I switch to Sign In page
       Given I Sign in using login <Login> and password <Password>
       Then I see my avatar on top of Contact list
       When I open conversation with <ChatName>
@@ -310,6 +300,7 @@ Feature: People View
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -319,7 +310,7 @@ Feature: People View
     And I see Add People message on Group Participants popover
     And I confirm add to chat on Group Participants popover
     And I input user name <Contact3> in search field on Group Participants popover
-    And I select <Contact3> from Group Participants popover search results
+    And I select user <Contact3> from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     And I open conversation with <ChatName>
     Then I see <Message> action for <Contact3> in conversation
@@ -346,6 +337,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -359,10 +351,11 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     | ChatNameEdit   | Message                  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | BaseChatName | EditedCahtName | RENAMED THE CONVERSATION |
 
-  @smoke @id1697
+  @regression @id1697
   Scenario Outline: Verify the new conversation is created on the other end from 1to1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact1>
@@ -379,7 +372,6 @@ Feature: People View
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     And User <Contact1> is me
     And I Sign in using login <Contact1> and password <Password>
@@ -390,7 +382,6 @@ Feature: People View
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     And User <Contact2> is me
     And I Sign in using login <Contact2> and password <Password>
@@ -408,6 +399,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given Myself blocked <Contact1>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open conversation with <ChatName>

@@ -152,10 +152,10 @@ public class GroupChatInfoPage extends IOSPage {
 			if (!participantName.equalsIgnoreCase(user)) {
 				continue;
 			}
-			PagesCollection.otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) tapOnParticipant(getParticipantName(participant));
-			participantNameTextFieldValue = PagesCollection.otherUserPersonalInfoPage
+			final OtherUserPersonalInfoPage otherUserPersonalInfoPage = (OtherUserPersonalInfoPage) tapOnParticipant(getParticipantName(participant));
+			participantNameTextFieldValue = otherUserPersonalInfoPage
 					.getNameFieldValue();
-			participantEmailTextFieldValue = PagesCollection.otherUserPersonalInfoPage
+			participantEmailTextFieldValue = otherUserPersonalInfoPage
 					.getEmailFieldValue();
 			Assert.assertTrue(
 					"Participant Name is incorrect and/or not displayed",
@@ -168,7 +168,7 @@ public class GroupChatInfoPage extends IOSPage {
 						participantEmailTextFieldValue.equalsIgnoreCase(email));
 			}
 		}
-		PagesCollection.groupChatInfoPage = (GroupChatInfoPage) PagesCollection.otherUserPersonalInfoPage
+		new OtherUserPersonalInfoPage(this.getLazyDriver())
 				.leavePageToGroupInfoPage();
 	}
 
@@ -316,11 +316,6 @@ public class GroupChatInfoPage extends IOSPage {
 
 	public void setConversationName(String newName) {
 		conversationName = newName;
-	}
-
-	public BufferedImage takeScreenShot() throws Exception {
-		return DriverUtils.takeScreenshot(this.getDriver()).orElseThrow(
-				IllegalStateException::new);
 	}
 
 	public void clickOnAddButton() {

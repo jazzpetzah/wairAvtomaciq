@@ -1,25 +1,31 @@
 package com.wearezeta.auto.ios.steps;
 
-
-import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.CameraRollPage;
 
 import cucumber.api.java.en.When;
 
 public class CameraRollPageSteps {
-	
+
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private CameraRollPage getCameraRollPage() throws Exception {
+		return (CameraRollPage) pagesCollecton.getPage(CameraRollPage.class);
+	}
+
 	@When("^I press Camera Roll button$")
 	public void IPressCameraRollButton() throws Throwable {
-		PagesCollection.cameraRollPage.pressSelectFromLibraryButton();
+		getCameraRollPage().pressSelectFromLibraryButton();
 	}
-	
+
 	@When("^I choose a picture from camera roll$")
 	public void IChooseAPictureFromCameraRoll() throws Throwable {
-		PagesCollection.cameraRollPage.selectImageFromLibrary();
+		getCameraRollPage().selectImageFromLibrary();
 	}
-	
+
 	@When("^I press Confirm button$")
 	public void IPressConfirmButton() throws Throwable {
-		PagesCollection.cameraRollPage.pressConfirmButton();
+		getCameraRollPage().pressConfirmButton();
 	}
-	
+
 }

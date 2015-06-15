@@ -8,8 +8,8 @@ var logger = require('../../server/logger.js').get('appium')
   , path = require('path')
   , ncp = require('ncp')
   , mkdirp = require('mkdirp')
-  , xcode = require('./xcode.js')
-  , Simctl = require('./simctl.js')
+  , xcode = require('../../future.js').xcode
+  , simctl = require('../../future').simctl
   , multiResolve = require('../../helpers.js').multiResolve
   , rimraf = require('rimraf')
   , xmlplist = require('plist')
@@ -59,13 +59,13 @@ var safeRimRafSync = function (delPath, tries) {
 };
 
 Simulator.prototype.getRootDir = function () {
-  var u = process.env.USER;
+  var home = process.env.HOME;
   if (parseFloat(this.sdkVer) >= 8) {
-    return path.resolve("/Users", u, "Library", "Developer",
+    return path.resolve(home, "Library", "Developer",
       "CoreSimulator", "Devices");
   }
 
-  return path.resolve("/Users", u, "Library", "Application Support",
+  return path.resolve(home, "Library", "Application Support",
     "iPhone Simulator");
 };
 
@@ -78,7 +78,7 @@ Simulator.prototype.getDirs = function () {
     }
     return [];
   } else {
-    var sdk = this.sdkVer.toString();
+    var sdk = this.platformVer.toString();
     base = this.getRootDir();
     var list = [];
     try {
@@ -104,7 +104,7 @@ Simulator.getPlistData = function (file) {
     } catch (err) {
       if (err.message.indexOf("Invalid binary plist") !== -1) {
         logger.debug("Plist was not binary format, retrying with xml");
-        data = xmlplist(file)[0];
+        data = xmlplist.parse(fileData.toString());
       } else {
         throw err;
       }
@@ -182,6 +182,38 @@ Simulator.prototype.getSafari8Dir = function () {
   return this.getApp8Dir("com.apple.mobilesafari", "Data");
 };
 
+Simulator.prototype.getProfilesDir = function () {
+  if (parseFloat(this.platformVer) >= 8) {
+    var profileDir = this.getProfiles8Dir();
+    if (profileDir && fs.existsSync(profileDir)) {
+      return profileDir;
+    }
+    return null;
+  } else {
+    throw new Error("iOS < 8 don't have a profiles dir");
+  }
+};
+
+Simulator.prototype.getProfiles8Dir = function () {
+  var root = this.getDirs()[0];
+  if (!root) {
+    return null;
+  }
+  return path.resolve(root, "Library", "ConfigurationProfiles");
+};
+
+Simulator.prototype.getUserSettingsPlist = function () {
+  var profilesDir = this.getProfilesDir();
+  if (!profilesDir) {
+    return null;
+  }
+  var plistPath = path.resolve(profilesDir, "UserSettings.plist");
+  if (fs.existsSync(plistPath)) {
+    return plistPath;
+  }
+  return null;
+};
+
 Simulator.prototype.getApp8Dir = function (bundleId, dataOrBundle) {
   var root = this.getDirs()[0];
   if (!root) {
@@ -207,6 +239,22 @@ Simulator.prototype.dirsExist = function () {
 Simulator.prototype.safariDirsExist = function () {
   try {
     return this.getSafariDirs().length > 0;
+  } catch (e) {
+    return false;
+  }
+};
+
+Simulator.prototype.profilesDirExists = function () {
+  try {
+    return this.getProfilesDir() !== null;
+  } catch (e) {
+    return false;
+  }
+};
+
+Simulator.prototype.userSettingsPlistExists = function () {
+  try {
+    return this.getUserSettingsPlist() !== null;
   } catch (e) {
     return false;
   }
@@ -354,44 +402,6 @@ Simulator.prototype.cleanSim = function (keepKeychains, tempDir, cb) {
   }.bind(this);
 
 
-  /*var cleanSimVEight = function (keepKeychains, tempDir, cb) {
-
-    var base = path.resolve(this.getRootDir(), this.udid, "data");
-    var keychainPath = path.resolve(base, "Library", "Keychains");
-    var tempKeychainPath = path.resolve(tempDir, "simkeychains_" + this.udid);
-
-    var removeKeychains = _.partial(ncp, keychainPath, tempKeychainPath);
-
-    var returnKeychains = function (err, cb) {
-      if (err) {
-        return cb(err);
-      }
-      mkdirp(keychainPath, function (err) {
-        if (err) { return cb(err); }
-        ncp(tempKeychainPath, keychainPath, cb);
-      });
-    };
-
-    var performWhileSavingKeychains = function (enclosed, cb) {
-      async.waterfall([
-        removeKeychains,
-        enclosed,
-        returnKeychains
-      ], cb);
-    };
-
-    var cleanSim = _.partial(Simctl.erase, this.udid);
-
-    if (keepKeychains) {
-      logger.debug("Resetting simulator and saving Keychains");
-      performWhileSavingKeychains(cleanSim, cb);
-    } else {
-      cleanSim(cb);
-    }
-
-  }.bind(this);
-*/
-
 //begin patch
   var cleanSimVEight = function (keepKeychains, tempDir, cb) {
     if (!this.dirsExist()) {
@@ -438,7 +448,45 @@ Simulator.prototype.cleanSim = function (keepKeychains, tempDir, cb) {
   }.bind(this);
 
 //end patch
+/*
+  var cleanSimVEight = function (keepKeychains, tempDir, cb) {
 
+    var base = path.resolve(this.getRootDir(), this.udid, "data");
+    var keychainPath = path.resolve(base, "Library", "Keychains");
+    var tempKeychainPath = path.resolve(tempDir, "simkeychains_" + this.udid);
+
+    var removeKeychains = _.partial(ncp, keychainPath, tempKeychainPath);
+
+    var returnKeychains = function (err, cb) {
+      if (err) {
+        return cb(err);
+      }
+      mkdirp(keychainPath, function (err) {
+        if (err) { return cb(err); }
+        ncp(tempKeychainPath, keychainPath, cb);
+      });
+    };
+
+    var performWhileSavingKeychains = function (enclosed, cb) {
+      async.waterfall([
+        removeKeychains,
+        enclosed,
+        returnKeychains
+      ], cb);
+    };
+
+    var cleanSim = _.partial(simctl.eraseDevice, this.udid);
+
+    if (keepKeychains) {
+      logger.debug("Resetting simulator and saving Keychains");
+      performWhileSavingKeychains(cleanSim, cb);
+    } else {
+      cleanSim(cb);
+    }
+
+  }.bind(this);
+
+*/
 
   if (this.sdkVer >= 8) {
     cleanSimVEight(keepKeychains, tempDir, cb);
@@ -449,6 +497,7 @@ Simulator.prototype.cleanSim = function (keepKeychains, tempDir, cb) {
 };
 
 Simulator.prototype.moveBuiltInApp = function (appPath, appName, newAppDir, cb) {
+  safeRimRafSync(newAppDir);
   ncp(appPath, newAppDir, function (err) {
     if (err) return cb(err);
     logger.debug("Copied " + appName + " to " + newAppDir);
@@ -495,7 +544,7 @@ Simulator.prototype.prepareBuiltInApp = function (appName, tmpDir, cb) {
       fs.stat(newAppDir, function (err, s) {
         if (err) {
           logger.warn("App is also not at " + newAppDir);
-          return cb(new Error("Couldn't find built in app in its home " +
+          return cb(new Error("Couldn't find built in app " + appName + " in its home " +
                               "or temp dir!"));
         }
         if (checkApp(s, appPath, cb)) {
@@ -528,15 +577,31 @@ Simulator.prototype.getBuiltInAppDir = function (cb) {
     var appDir = path.resolve(xcodeDir, "Platforms/iPhoneSimulator.platform/" +
                               "Developer/SDKs/iPhoneSimulator" +
                               this.platformVer + ".sdk/Applications/");
-    fs.stat(appDir, function (err, s) {
+    var testDir = function (dir, ncb) {
+      fs.stat(appDir, function (err, s) {
+        if (err) {
+          ncb(err);
+        } else if (!s.isDirectory()) {
+          ncb(new Error("Could not load built in applications directory"));
+        } else {
+          logger.debug('Found app dir: ' + appDir);
+          ncb(null, dir);
+        }
+      });
+    };
+    testDir(appDir, function (err, dir) {
       if (err) {
-        cb(err);
-      } else if (!s.isDirectory()) {
-        cb(new Error("Could not load built in applications directory"));
+        // try out other location
+        logger.debug('Unable to find app dir ' + appDir);
+        appDir = path.resolve("/Library/Developer/CoreSimulator/" +
+                              "Profiles/Runtimes/iOS " + this.platformVer + ".simruntime/" +
+                              "Contents/Resources/RuntimeRoot/Applications/");
+        logger.debug('Trying app dir ' + appDir);
+        testDir(appDir, cb);
       } else {
-        cb(null, appDir);
+        cb(null, dir);
       }
-    });
+    }.bind(this));
   }.bind(this));
 };
 
@@ -552,7 +617,7 @@ Simulator.prototype.deleteSim = function (cb) {
 
   var deleteSimVEight = function (cb) {
     logger.debug('Resetting Content and Settings for Simulator');
-    Simctl.erase(this.udid, cb);
+    simctl.eraseDevice(this.udid, cb);
   }.bind(this);
 
   var deleteSimLessThanVEight = function (cb) {
@@ -609,14 +674,14 @@ Simulator.prototype.setLocale = function (language, locale, calendar) {
 };
 
 Simulator.getSimAppPrefsFile = function () {
-  var u = process.env.USER;
-  return path.resolve("/Users", u, "Library", "Preferences",
+  var home = process.env.HOME;
+  return path.resolve(home, "Library", "Preferences",
                       "com.apple.iphonesimulator.plist");
 };
 
 Simulator.prototype.deleteOtherSims = function (cb) {
   logger.debug("Isolating the requested simulator by deleting all others");
-  Simctl.getDevices(function (err, devices) {
+  simctl.getDevices(function (err, devices) {
     if (err) return cb(err);
     var udids = [];
     var deleteCalls = [];
@@ -624,7 +689,7 @@ Simulator.prototype.deleteOtherSims = function (cb) {
       udids = udids.concat(_.pluck(sdkDevices, 'udid'));
     });
     _.each(_.without(udids, this.udid), function (udid) {
-      deleteCalls.push(_.partial(Simctl.delete, udid));
+      deleteCalls.push(_.partial(simctl.deleteDevice, udid));
     });
     async.series(deleteCalls, cb);
   }.bind(this));

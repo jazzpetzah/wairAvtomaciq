@@ -73,9 +73,7 @@ public final class WebAppLocators {
 				.format("%s div[data-uie-name='item-conversation-archived'][data-uie-value='%s']",
 						cssParentContactListItem, name);
 
-		public static final Function<String, String> cssOptionsButtonByContactName = (
-				name) -> String.format("%s + div [data-uie-name=go-options]",
-				cssContactListEntryByName.apply(name));
+		public static final String cssOptionsButtonByContactName = "[data-uie-name='go-options']";
 
 		public static final String cssSelfProfileAvatar = "[data-uie-name=go-self-profile]";
 
@@ -167,12 +165,14 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathEmbeddedYoutubeVideoById = text -> String
 				.format("//iframe[contains(@src, '%s')]", text);
 
+		public static final String idConversation = "conversation";
+
 		public static final String idConversationInput = "conversation-input-text";
 
 		// This is needed for IE workaround
 		public static final String classNameShowParticipantsButton = "show-participants";
 
-		public static final String xpathShowParticipantsButton = "//*[@data-uie-name='do-participants']";
+		public static final String cssShowParticipantsButton = "[data-uie-name='do-participants']";
 
 		public static final String xpathActionMessageEntries = "//*[@data-uie-name='item-message' and contains(@class, 'special')]//div[contains(@class, 'action')]";
 
@@ -184,7 +184,7 @@ public final class WebAppLocators {
 
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 
-		public static final String xpathPingButton = "//*[@data-uie-name='do-ping' or @data-uie-name='do-hot-ping']";
+		public static final String cssPingButton = "[data-uie-name='do-ping'], [data-uie-name='do-hot-ping']";
 
 		public static final String xpathCallButton = "//*[@data-uie-name='do-call']";
 
@@ -194,11 +194,15 @@ public final class WebAppLocators {
 				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
 						text);
 
-		public static final String xpathLastTextMessage = "(//*[@data-uie-name='item-message']//*[contains(@class, 'text-inner')])[last()]";
+		public static final String cssLastTextMessage = "[data-uie-name='item-message']:last-child .text-inner";
 
 		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
 
 		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls')]";
+
+		public static final Function<String, String> xpathCallingBarRootByName = text -> String
+				.format("//div[contains(@class, 'call-controls') and div/div/span[text()='%s']]",
+						text);
 
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-check')]";
@@ -244,11 +248,11 @@ public final class WebAppLocators {
 				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 				xpathRoot, name);
 
-		public static final String xpathCloseSearchButton = "//*[@data-uie-name='do-close']";
+		public static final String cssCloseSearchButton = ".search-header span[data-uie-name='do-close']";
 
-		public static final Function<String, String> cssRemoveIconByName = (
+		public static final Function<String, String> cssDismissIconByName = (
 				name) -> String.format(
-				"div[data-uie-value='%s'] span.icon-remove", name);
+				"div[data-uie-value='%s'] span.icon-dismiss", name);
 
 		public static final Function<String, String> cssAddIconByName = (name) -> String
 				.format("div[data-uie-value='%s'] span.icon-add", name);
@@ -276,7 +280,7 @@ public final class WebAppLocators {
 
 	public static final class RegistrationPage {
 
-		public static final String xpathSwitchToSignInButton = "//*[@data-uie-name='go-sign-in']";
+		public static final String cssSwitchToSignInButton = "[data-uie-name='go-sign-in']";
 
 		public static final String xpathRootForm = "//form[@id='form-create']";
 		public static final String cssRootForm = "#form-create";

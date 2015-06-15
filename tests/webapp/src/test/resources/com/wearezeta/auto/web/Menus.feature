@@ -1,8 +1,9 @@
 Feature: Menus
 
-  @smoke @id1648
+  @regression @id1648
   Scenario Outline: Check Preferences opening
     Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -19,6 +20,7 @@ Feature: Menus
   @smoke @id2190
   Scenario Outline: Verify sound settings are saved after re-login
     Given There is 1 user where <Name> is me
+    Given I switch to Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -32,7 +34,7 @@ Feature: Menus
     And I click close settings page button
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
+    Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -47,7 +49,7 @@ Feature: Menus
     And I click close settings page button
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
+    Given I see Sign In page
     Given I Sign in using login <Email> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog

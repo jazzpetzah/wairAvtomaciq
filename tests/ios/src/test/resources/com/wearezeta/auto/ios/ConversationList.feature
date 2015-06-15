@@ -45,22 +45,15 @@ Feature: Conversation List
     Given Contact <Contact> send number <Number2> of message to user <Name>
     Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
-    And I see unread <DotSizeSmall> messages dot for <Contact>
+    And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
     And I see dialog page
     And I swipe right on Dialog page
-    Then I dont see an unread message dot for <Contact>
-    And Contact <Contact> send number <Number> of message to user <Name>
-    And I see unread <DotSizeBig> messages dot for <Contact>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I scroll to the end of the conversation
-    And I swipe right on Dialog page
-    Then I dont see an unread message dot for <Contact>
+    Then I see change of state for first conversation cell
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Number | NewName    | Color        |Number2 | DotSizeSmall |DotSizeBig |
-      | user1Email | user1Password | user1Name | user2Name | 30     | UNREAD DOT | BrightYellow | 2		 | small		|big		|
+      | Login      | Password      | Name      | Contact   | NewName    | Color        |Number2 |
+      | user1Email | user1Password | user1Name | user2Name | UNREAD DOT | BrightYellow | 2 	    |
 
   @regression @id2040
   Scenario Outline: Verify archive a group conversation
@@ -104,13 +97,28 @@ Feature: Conversation List
     Given User <Name> change accent color to <Color>
     Given I Sign in using phone number or login <Login> and password <Password>
     And I see Contact list with my name <Name>
+    And I remember the state of the first conversation cell
     When Contact <Contact> ping conversation <Name>
     And I wait for 10 seconds
-    Then I see ping symbol for <Contact>
-    And Contact <Contact> hotping conversation <Name>
-    And I wait for 10 seconds
-    Then I see hotping symbol for <Contact>
+    Then I see ping symbol
 
     Examples: 
       | Login      | Password      | Name      | Contact   | NewName  | Color        |
       | user1Email | user1Password | user1Name | user2Name | PING     | BrightOrange |
+
+  @staging @id2761
+  Scenario Outline: Verify conversations are sorted according to most recent activity
+    Given There are 4 users where <Name> is me
+    Given <Name> is connected to <Contact1>,<Contact2>,<Contact3>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And Contact <Contact3> send number <Number> of message to user <Name>
+    And I see first item in contact list named <Contact3>
+    When Contact <Contact2> ping conversation <Name>
+    And I see first item in contact list named <Contact2>
+    When Contact <Contact1> sends image <Picture> to single user conversation <Name>
+    Then I see first item in contact list named <Contact1>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2   | Contact3     |Number |  Picture      |
+      | user1Email | user1Password | user1Name | user2Name | user3name  | user4name    | 2 	   | testing.jpg   |

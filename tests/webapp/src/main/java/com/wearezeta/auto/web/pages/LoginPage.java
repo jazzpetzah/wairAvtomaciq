@@ -12,9 +12,8 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
-import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
 
@@ -47,6 +46,11 @@ public class LoginPage extends WebPage {
 	@FindBy(css = ".auth-page .has-error .form-control #wire-password")
 	private WebElement redDotOnPasswordField;
 
+	public LoginPage(Future<ZetaWebAppDriver> lazyDriver)
+			throws Exception {
+		super(lazyDriver);
+	}
+
 	public LoginPage(Future<ZetaWebAppDriver> lazyDriver, String url)
 			throws Exception {
 		super(lazyDriver, url);
@@ -54,7 +58,7 @@ public class LoginPage extends WebPage {
 
 	public boolean isVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(WebAppLocators.LoginPage.xpathLoginPage));
+				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
 	}
 
 	public void inputEmail(String email) {
@@ -77,7 +81,7 @@ public class LoginPage extends WebPage {
 			noSignIn = DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 					By.xpath(WebAppLocators.LoginPage.xpathSignInButton), 60);
 		} catch (WebDriverException e) {
-			if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
+			if (WebAppExecutionContext.getBrowser() == Browser.InternetExplorer) {
 				noSignIn = true;
 			} else {
 				throw e;
@@ -116,25 +120,9 @@ public class LoginPage extends WebPage {
 		return changePasswordPage;
 	}
 
-	public RegistrationPage switchToRegistrationPage() throws Exception {
-		WebCommonUtils.forceLogoutFromWebapp(getDriver(), true);
-		final By locator = By
-				.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons);
-		if (DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator, 2)) {
-			for (WebElement btn : getDriver().findElements(locator)) {
-				if (btn.isDisplayed()) {
-					btn.click();
-					break;
-				}
-			}
-		}
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(WebAppLocators.RegistrationPage.xpathRootForm)) : "Registration page is not visible";
-
-		return new RegistrationPage(this.getLazyDriver(), this.getUrl());
-	}
-
-	public String getErrorMessage() {
+	public String getErrorMessage() throws InterruptedException, Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(WebAppLocators.LoginPage.xpathLoginErrorText));
 		return loginErrorText.getText();
 	}
 

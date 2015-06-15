@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -65,10 +66,10 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAllSoundAlertsButton)
 	private WebElement allSoundAlertsButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsChangePasswordButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsChangePasswordButton)
 	private WebElement settingsChangePasswordButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameChangePasswordPageChangePasswordButton)
 	private WebElement changePasswordPageChangePasswordButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsHelpButton)
@@ -88,6 +89,9 @@ public class PersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsDoneButton)
 	private WebElement settingsDoneButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.PersonalInfoPage.nameCloseButton)
+	private WebElement closeButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameWireWebsiteButton)
 	private WebElement wireWebsiteButton;
@@ -124,6 +128,11 @@ public class PersonalInfoPage extends IOSPage {
 
 	final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
 
+	
+	public void closePersonalInfo() {
+		closeButton.click();
+	}
+	
 	public String getUserNameValue() {
 		String name = profileNameEditField.getText();
 		return name;
@@ -215,8 +224,8 @@ public class PersonalInfoPage extends IOSPage {
 				PRIVACY_POLICY_PAGE_VALUE);
 	}
 
-	public boolean isResetPasswordPageVisible() {
-		return changePasswordPageChangePasswordButton.isDisplayed();
+	public boolean isResetPasswordPageVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(IOSLocators.xpathSettingsChangePasswordButton));
 	}
 
 	public void clickChangePasswordButton() {
@@ -236,9 +245,27 @@ public class PersonalInfoPage extends IOSPage {
 		profileNameEditField.click();
 	}
 
+	public void changeNameUsingOnlySpaces() throws Exception {
+		DriverUtils.mobileTapByCoordinates(this.getDriver(),
+				profileNameEditField);
+		profileNameEditField.clear();
+		profileNameEditField.sendKeys("  \n");
+	}
+
+	public void attemptTooLongName() {
+		String name = CommonUtils.generateRandomString(80).toLowerCase();
+		profileNameEditField.sendKeys(name + "\n");
+	}
+
+	public int nameIsMaxChars() {
+		String name = getUserNameValue();
+		int nameLength = name.length();
+		return nameLength;
+	}
+
 	public void changeName(String newName) throws Exception {
 		profileNameEditField.clear();
-		profileNameEditField.sendKeys(newName);
+		profileNameEditField.sendKeys(newName + "\n");
 	}
 
 	public boolean isTooShortNameErrorMessage() throws Exception {

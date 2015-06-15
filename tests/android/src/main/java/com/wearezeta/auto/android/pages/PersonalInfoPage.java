@@ -10,7 +10,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -18,53 +17,81 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class PersonalInfoPage extends AndroidPage {
 
+	public static final String xpathParentSelfProfileOverlay = "//*[@id='fl__conversation_list__profile_overlay']";
+
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idBackgroundOverlay)
+	private static final String idBackgroundOverlay = "v_background_dark_overlay";
+	@FindBy(id = idBackgroundOverlay)
 	private WebElement backgroundOverlay;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathSettingsBox)
+	private static final String idTakePhotoButton = "gtv__camera_control__take_a_picture";
+	@FindBy(id = idTakePhotoButton)
+	private WebElement takePhotoBtn;
+
+	private static final String xpathSettingsBox = xpathParentSelfProfileOverlay
+			+ "//*[@id='ll__settings_box_container']";
+	@FindBy(xpath = xpathSettingsBox)
 	private WebElement settingBox;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathEmailField)
+	private static final String xpathEmailField = xpathParentSelfProfileOverlay
+			+ "//*[@id='ttv__profile__email']";
+	@FindBy(xpath = xpathEmailField)
 	private WebElement emailField;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathNameField)
+	public static final String xpathNameField = xpathParentSelfProfileOverlay
+			+ "//*[@id='ttv__profile__name']";
+	@FindBy(xpath = xpathNameField)
 	private WebElement nameField;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathSettingsBtn)
+	private static final String xpathSettingsBtn = xpathParentSelfProfileOverlay
+			+ "//*[@id='ttv__profile__settings_box__settings']";
+	@FindBy(xpath = xpathSettingsBtn)
 	private WebElement settingsButton;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathNameEdit)
+	private static final String xpathNameEdit = xpathParentSelfProfileOverlay
+			+ "//*[@id='tet__profile__guided']";
+	@FindBy(xpath = xpathNameEdit)
 	private WebElement nameEdit;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idChangePhotoBtn)
+	private static final String idChangePhotoBtn = "gtv__camera_control__change_image_source";
+	@FindBy(id = idChangePhotoBtn)
 	private WebElement changePhotoBtn;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idGalleryBtn)
+	@FindBy(id = idGalleryBtn)
 	private WebElement galleryBtn;
 
-	@FindBy(xpath = AndroidLocators.DialogPage.xpathConfirmOKButton)
+	@FindBy(xpath = DialogPage.xpathConfirmOKButton)
 	private WebElement confirmBtn;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathProfileOptionsButton)
+	private static final String xpathProfileOptionsButton = xpathParentSelfProfileOverlay
+			+ "//*[@id='gtv__profile__settings_button']";
+	@FindBy(xpath = xpathProfileOptionsButton)
 	private WebElement optionsButton;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathAboutButton)
+	private static final String xpathAboutButton = xpathParentSelfProfileOverlay
+			+ "//*[@id='ttv__profile__settings_box__about']";
+	@FindBy(xpath = xpathAboutButton)
 	private WebElement aboutButton;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathSelfProfileClose)
+	private static final String xpathSelfProfileClose = xpathParentSelfProfileOverlay
+			+ "//*[@id='gtv__profile__close_button']";
+	@FindBy(xpath = xpathSelfProfileClose)
 	private WebElement selfProfileClose;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idPager)
+	@FindBy(id = idPager)
 	private WebElement page;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathSignOutBtn)
+	private static final String xpathSignOutBtn = xpathParentSelfProfileOverlay
+			+ "//*[@id='ttv__profile__settings_box__signout']";
+	@FindBy(xpath = xpathSignOutBtn)
 	private WebElement signOutBtn;
 
-	@FindBy(id = AndroidLocators.PersonalInfoPage.idOpenFrom)
+	private static final String idOpenFrom = "tiles";
+
+	@FindBy(id = idOpenFrom)
 	private List<WebElement> openFrom;
 
 	public PersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
@@ -88,6 +115,11 @@ public class PersonalInfoPage extends AndroidPage {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				changePhotoBtn);
 		changePhotoBtn.click();
+	}
+
+	public void tapTakePhotoButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), takePhotoBtn);
+		takePhotoBtn.click();
 	}
 
 	public void tapGalleryButton() throws Exception {
@@ -143,28 +175,28 @@ public class PersonalInfoPage extends AndroidPage {
 		this.getWait().until(ExpectedConditions.visibilityOf(nameField));
 		nameField.click();
 		if (!DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(AndroidLocators.PersonalInfoPage.xpathNameEdit))) {
+				By.xpath(xpathNameEdit))) {
 			DriverUtils.mobileTapByCoordinates(getDriver(), nameField);
 		}
 	}
 
 	public boolean isNameEditVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(AndroidLocators.PersonalInfoPage.xpathNameEdit));
+				By.xpath(xpathNameEdit));
 	}
 
 	public void clearSelfName() {
 		nameEdit.clear();
 	}
 
-	public void changeName(String name, String newName) throws Exception {
+	public void changeSelfNameTo(String newName) throws Exception {
 		nameEdit.sendKeys(newName);
 		this.getDriver().navigate().back();
 	}
 
 	@Override
 	public ContactListPage navigateBack() throws Exception {
-		this.getDriver().navigate().back();
+		super.navigateBack();
 		return new ContactListPage(this.getLazyDriver());
 	}
 
@@ -183,10 +215,8 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean waitForSettingsDissapear() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorDissapears(
-						this.getDriver(),
-						By.xpath(AndroidLocators.PersonalInfoPage.xpathProfileOptionsButton));
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.xpath(xpathProfileOptionsButton));
 	}
 
 	public ContactListPage pressCloseButton() throws Exception {

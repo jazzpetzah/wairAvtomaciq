@@ -18,6 +18,8 @@
 		<mailboxHandlerType>REST</mailboxHandlerType>
 		<defaultEmailListenerServiceHost>192.168.10.44</defaultEmailListenerServiceHost>
 		<defaultEmailListenerServicePort>21990</defaultEmailListenerServicePort>
+		<makeScreenshots>true</makeScreenshots>
+		<initNodeIp>true</initNodeIp>
 	</properties>
 
 	<dependencies>

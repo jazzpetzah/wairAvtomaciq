@@ -2,11 +2,14 @@ package com.wearezeta.auto.common;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
@@ -29,22 +32,16 @@ import gherkin.formatter.model.Result;
 import gherkin.formatter.model.Scenario;
 import gherkin.formatter.model.ScenarioOutline;
 import gherkin.formatter.model.Step;
-import gherkin.formatter.model.Tag;
 
 public class ZetaFormatter implements Formatter, Reporter {
 	private String feature = "";
 	private String scenario = "";
-	@SuppressWarnings("unused")
-	private String scope = "Unknown";
 	private Queue<String> step = new LinkedList<String>();
 
 	private static final Logger log = ZetaLogger.getLog(ZetaFormatter.class
 			.getSimpleName());
 
-	private long startDate;
-	private long endDate;
-	@SuppressWarnings("unused")
-	private int lineNumber = 0;
+	private long stepStartedTimestamp;
 
 	private static String buildNumber = "unknown";
 
@@ -65,8 +62,6 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	@Override
 	public void eof() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -83,32 +78,11 @@ public class ZetaFormatter implements Formatter, Reporter {
 	@Override
 	public void scenario(Scenario arg0) {
 		scenario = arg0.getName();
-		lineNumber = arg0.getLine();
-		for (Tag t : arg0.getTags()) {
-			if (t.getName().equals("@torun")) {
-				scope = "Dev Test";
-				break;
-			}
-
-			if (t.getName().equals("@smoke")) {
-				scope = "Smoke Test";
-			}
-
-			if (t.getName().equals("@regression")) {
-				scope = "Regression Test";
-			}
-
-			if (t.getName().equals("@staging")) {
-				scope = "Staging Test";
-			}
-		}
-
 		log.debug("\n\nScenario: " + scenario);
 	}
 
 	@Override
 	public void scenarioOutline(ScenarioOutline arg0) {
-
 	}
 
 	@Override
@@ -124,110 +98,131 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	@Override
 	public void uri(String arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void after(Match arg0, Result arg1) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void before(Match arg0, Result arg1) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void embedding(String arg0, byte[] arg1) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void match(Match arg0) {
-		startDate = new Date().getTime();
+		stepStartedTimestamp = new Date().getTime();
+	}
+
+	private void takeStepScreenshot(final Result stepResult,
+			final String stepName) throws Exception {
+		final ZetaDriver driver = getDriver(
+				stepResult.getStatus().equals(Result.FAILED)).orElse(null);
+		if (driver != null) {
+			if (stepResult.getStatus().equals(Result.SKIPPED.getStatus())) {
+				// Don't make screenshots for skipped steps to speed up
+				// suite execution
+				return;
+			}
+			final String screenshotPath = String
+					.format("%s/%s/%s/%s.png", CommonUtils
+							.getPictureResultsPathFromConfig(this.getClass()),
+							feature.replaceAll("\\W+", "_"), scenario
+									.replaceAll("\\W+", "_"), stepName
+									.replaceAll("\\W+", "_"));
+			final Optional<BufferedImage> screenshot = DriverUtils
+					.takeFullScreenShot(driver);
+			if (!screenshot.isPresent()) {
+				return;
+			}
+			screenshotSavers.execute(() -> storeScreenshot(screenshot.get(),
+					screenshotPath));
+		} else {
+			log.debug(String
+					.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
+							stepName));
+		}
 	}
 
 	@Override
 	public void result(Result arg0) {
-		endDate = new Date().getTime();
-		final String currentStep = step.poll();
-
-		log.debug(currentStep + " (status: " + arg0.getStatus() + ", time: "
-				+ (endDate - startDate) + "ms)");
-		// take screenshot
+		final String stepName = step.poll();
+		final String stepStatus = arg0.getStatus();
+		final long stepFinishedTimestamp = new Date().getTime();
+		boolean isScreenshotingEnabled = true;
 		try {
-			final ZetaDriver driver = getDriver(arg0.getStatus().equals(
-					Result.FAILED));
-			if (driver != null) {
-				if (arg0.getStatus().equals(Result.SKIPPED.getStatus())) {
-					// Don't make screenshots for skipped steps to speed up
-					// suite execution
-					return;
-				}
-				final Optional<BufferedImage> image = DriverUtils
-						.takeScreenshot(driver);
-				if (!image.isPresent()) {
-					log.info(String
-							.format("No screenshot could be taken for the step '%s' (skipped)",
-									currentStep));
-					return;
-				}
-				String picturePath = CommonUtils
-						.getPictureResultsPathFromConfig(this.getClass());
-				// FIXME: some characters in steps/captions may not be
-				// acceptable for file names
-				File outputfile = new File(picturePath + feature + "/"
-						+ scenario + "/" + currentStep + ".png");
-
-				if (!outputfile.getParentFile().exists()) {
-					outputfile.getParentFile().mkdirs();
-				}
-				ImageIO.write(image.get(), "png", outputfile);
-			} else {
-				log.debug(String
-						.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
-								currentStep));
-			}
+			isScreenshotingEnabled = CommonUtils
+					.getMakeScreenshotsFromConfig(this.getClass());
 		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (isScreenshotingEnabled) {
+			try {
+				takeStepScreenshot(arg0, stepName);
+			} catch (Exception e) {
+				// Ignore screenshoting exceptions
+				e.printStackTrace();
+			}
+			final long screenshotFinishedTimestamp = new Date().getTime();
+			log.debug(String
+					.format("%s (status: %s, step duration: %s ms + screenshot duration: %s ms)",
+							stepName, stepStatus, stepFinishedTimestamp
+									- stepStartedTimestamp,
+							screenshotFinishedTimestamp - stepFinishedTimestamp));
+		} else {
+			log.debug(String.format("%s (status: %s, step duration: %s ms)",
+					stepName, stepStatus, stepFinishedTimestamp
+							- stepStartedTimestamp));
+		}
+	}
+
+	private void storeScreenshot(final BufferedImage screenshot,
+			final String path) {
+		try {
+			final File outputfile = new File(path);
+			if (!outputfile.getParentFile().exists()) {
+				outputfile.getParentFile().mkdirs();
+			}
+			ImageIO.write(screenshot, "png", outputfile);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void write(String arg0) {
-		// TODO Auto-generated method stub
 	}
 
-	private static ZetaDriver getDriver(boolean forceWait) throws Exception {
+	private static Optional<ZetaDriver> getDriver(boolean forceWait)
+			throws Exception {
 		if (lazyDriver.isDone() || forceWait) {
-			return (ZetaDriver) lazyDriver
+			return Optional.of((ZetaDriver) lazyDriver
 					.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-							TimeUnit.MILLISECONDS);
+							TimeUnit.MILLISECONDS));
 		} else {
-			return null;
+			return Optional.empty();
 		}
 	}
 
 	private static Future<? extends RemoteWebDriver> lazyDriver = null;
 
-	public static void setLazyDriver(
+	public synchronized static void setLazyDriver(
 			Future<? extends RemoteWebDriver> lazyDriver) {
 		ZetaFormatter.lazyDriver = lazyDriver;
 	}
 
+	private static final ExecutorService screenshotSavers = Executors
+			.newFixedThreadPool(3);
+
 	@Override
 	public void startOfScenarioLifeCycle(Scenario scenario) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void endOfScenarioLifeCycle(Scenario scenario) {
-		// TODO Auto-generated method stub
 
 	}
 

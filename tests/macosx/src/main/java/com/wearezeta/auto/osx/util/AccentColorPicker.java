@@ -2,7 +2,6 @@ package com.wearezeta.auto.osx.util;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -38,9 +37,9 @@ public class AccentColorPicker {
 	private ZetaOSXDriver driver;
 
 	private NSPoint getRectangleMiddlePoint(ElementRectangle rect)
-			throws IOException {
+			throws Exception {
 		int multiply = OSXCommonUtils.screenPixelsMultiplier(driver);
-		
+
 		return new NSPoint(
 				(windowOffset.x() * multiply + rect.x() + rect.width() / 2)
 						/ multiply,
@@ -48,7 +47,7 @@ public class AccentColorPicker {
 						/ multiply);
 	}
 
-	public void changeAccentColor(AccentColor newColor) throws IOException {
+	public void changeAccentColor(AccentColor newColor) throws Exception {
 		ElementRectangle newColorArea = colorsAreas.get(newColor);
 		NSPoint clickPoint = getRectangleMiddlePoint(newColorArea);
 		Actions builder = new Actions(driver);
@@ -63,7 +62,7 @@ public class AccentColorPicker {
 	}
 
 	public static AccentColorPicker findColorPickerInWindow(
-			ZetaOSXDriver driver, WebElement window) throws IOException {
+			ZetaOSXDriver driver, WebElement window) throws Exception {
 		BufferedImage windowScreen = OSXCommonUtils.takeElementScreenshot(
 				window, driver);
 		NSPoint windowPosition = NSPoint.fromString(window
@@ -162,7 +161,7 @@ public class AccentColorPicker {
 	}
 
 	public static AccentColor findSelectedAccentColor(ZetaOSXDriver driver,
-			WebElement window) throws IOException {
+			WebElement window) throws Exception {
 		BufferedImage windowScreen = OSXCommonUtils.takeElementScreenshot(
 				window, driver);
 		return findSelectedAccentColor(windowScreen);

@@ -20,10 +20,11 @@
 		<generateUsers>true</generateUsers>
 		<driverTimeoutSeconds>30</driverTimeoutSeconds>
 		<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic>
+		<pathToAddressBook>AddressBook</pathToAddressBook>
 		<iosImagesPath>img/</iosImagesPath>
 		<swipeScriptPath>swipeInWindow</swipeScriptPath>
 		<iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>
-		<defaultEmail>smoketester.ios@wearezeta.com</defaultEmail>
+		<defaultEmail>smoketester@wire.com</defaultEmail>
 		<iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
 		<deviceName>iPhone 6</deviceName>
 		<perfDuration>1</perfDuration> <!-- Performance test duration, minutes -->

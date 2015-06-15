@@ -1,18 +1,15 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.android.locators.AndroidLocators.CommonLocators;
+import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -20,62 +17,83 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class ContactListPage extends AndroidPage {
 
-	@FindBy(id = AndroidLocators.PeoplePickerPage.idPeoplePickerClearbtn)
+	private static final String xpathLoadingContactListItem = "//*[@id='tv_conv_list_topic' and contains(@value, '…')]";
+
+	public static final Function<String, String> xpathContactByName = name -> String
+			.format("//*[@id='tv_conv_list_topic' and @value='%s']", name);
+
+	public static final Function<Integer, String> xpathContactByIndex = index -> String
+			.format("(//*[@id='tv_conv_list_topic'])[%s]", index);
+
+	public static final Function<String, String> xpathMutedIconByConvoName = convoName -> String
+			.format("%s/parent::*//*[@id='tv_conv_list_voice_muted']",
+					xpathContactByName.apply(convoName));
+
+	private static final Function<String, String> xpathPlayPauseButtonByConvoName = convoName -> String
+			.format("%s/parent::*//*[@id='tv_conv_list_media_player']",
+					xpathContactByName.apply(convoName));
+
+	@FindBy(id = PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
-	@FindBy(id = AndroidLocators.ContactListPage.idConversationListFrame)
+	private static final String idConversationListFrame = "pfac__conversation_list";
+	@FindBy(id = idConversationListFrame)
 	private WebElement contactListFrame;
 
-	@FindBy(id = AndroidLocators.ContactListPage.idMissedCallIcon)
+	private static final String idMissedCallIcon = "sci__list__missed_call";
+	@FindBy(id = idMissedCallIcon)
 	private WebElement missedCallIcon;
 
-	@FindBy(id = AndroidLocators.ContactListPage.idContactListNames)
+	private static final String idContactListNames = "tv_conv_list_topic";
+	@FindBy(id = idContactListNames)
 	private List<WebElement> contactListNames;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idEditText)
+	@FindBy(id = idEditText)
 	private WebElement cursorInput;
 
-	@FindBy(how = How.CLASS_NAME, using = AndroidLocators.CommonLocators.classNameFrameLayout)
+	@FindBy(how = How.CLASS_NAME, using = classNameFrameLayout)
 	private List<WebElement> frameLayout;
 
-	@FindBy(id = AndroidLocators.PeoplePickerPage.idPickerSearch)
+	@FindBy(id = PeoplePickerPage.idPickerSearch)
 	private WebElement openStartUI;
 
-	@FindBy(xpath = AndroidLocators.PersonalInfoPage.xpathNameField)
+	@FindBy(xpath = PersonalInfoPage.xpathNameField)
 	private WebElement selfUserName;
 
-	@FindBy(id = AndroidLocators.ContactListPage.idSelfUserAvatar)
+	private static final String idSelfUserAvatar = "civ__searchbox__self_user_avatar";
+	@FindBy(id = idSelfUserAvatar)
 	protected WebElement selfUserAvatar;
 
-	@FindBy(id = AndroidLocators.ContactListPage.idConfirmCancelButton)
+	public static final String idConfirmCancelButton = "cancel";
+	@FindBy(id = idConfirmCancelButton)
 	private List<WebElement> laterBtn;
 
-	@FindBy(id = AndroidLocators.ContactListPage.idConfirmCancelButtonPicker)
+	private static final String idConfirmCancelButtonPicker = "zb__confirm_dialog__cancel_button";
+	@FindBy(id = idConfirmCancelButtonPicker)
 	private List<WebElement> laterBtnPicker;
 
-	@FindBy(id = AndroidLocators.ContactListPage.idConvList)
+	private static final String idConvList = "pv__conv_list";
+	@FindBy(id = idConvList)
 	private WebElement convList;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idPager)
+	@FindBy(id = idPager)
 	private WebElement mainControl;
 
-	@FindBy(id = AndroidLocators.ConnectToPage.idConnectToHeader)
+	@FindBy(id = ConnectToPage.idConnectToHeader)
 	private WebElement connectToHeader;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idSearchHintClose)
+	@FindBy(id = idSearchHintClose)
 	private WebElement closeHintBtn;
 
-	@FindBy(xpath = AndroidLocators.CommonLocators.xpathGalleryCameraAlbum)
-	private WebElement galleryCameraAlbumButton;
-
-	@FindBy(id = AndroidLocators.CommonLocators.idConversationSendOption)
+	@FindBy(id = idConversationSendOption)
 	private WebElement conversationShareOption;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idConfirmBtn)
-	private WebElement confirmShareButton;
-
-	@FindBy(id = AndroidLocators.ContactListPage.idSearchButton)
+	private static final String idSearchButton = "gtv_pickuser__searchbutton";
+	@FindBy(id = idSearchButton)
 	private WebElement searchButton;
+
+	private static final String xpathTopConversationsListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
+	private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
@@ -85,22 +103,8 @@ public class ContactListPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public AndroidPage tapOnName(String name) throws Exception {
-		AndroidPage page = null;
+	public void tapOnName(String name) throws Exception {
 		findInContactList(name, 5).click();
-		try {
-			page = detectCurrentPage();
-		} catch (WebDriverException e) {
-			// workaround for incorrect tap
-			final WebElement el = findInContactList(name, 1);
-			if (el != null && DriverUtils.isElementPresentAndDisplayed(el)) {
-				this.restoreApplication();
-				el.click();
-				log.debug("tap on contact for the second time");
-			}
-			page = detectCurrentPage();
-		}
-		return page;
 	}
 
 	public void contactListSwipeUp(int time) {
@@ -108,13 +112,20 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public void waitForConversationListLoad() throws Exception {
-		getWait().until(ExpectedConditions.visibilityOf(contactListFrame));
 		verifyContactListIsFullyLoaded();
 	}
 
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
 			throws Exception {
-		contacts.get(id).click();
+		try {
+			contacts.get(id).click();
+			log.debug("Trying to open contact " + id + ". It's name: "
+					+ contacts.get(id).getAttribute("value"));
+		} catch (Exception e) {
+			log.debug("Failed to find element in contact list.\nPage source: "
+					+ getDriver().getPageSource());
+			throw e;
+		}
 		return new DialogPage(this.getLazyDriver());
 	}
 
@@ -124,9 +135,7 @@ public class ContactListPage extends AndroidPage {
 
 	public WebElement findInContactList(String name, int maxSwypesInList)
 			throws Exception {
-		final By nameLocator = By
-				.xpath(AndroidLocators.ContactListPage.xpathContactByName
-						.apply(name));
+		final By nameLocator = By.xpath(xpathContactByName.apply(name));
 		if (DriverUtils
 				.waitUntilLocatorIsDisplayed(getDriver(), nameLocator, 1)) {
 			return this.getDriver().findElement(nameLocator);
@@ -140,52 +149,34 @@ public class ContactListPage extends AndroidPage {
 		return null;
 	}
 
-	public AndroidPage swipeRightOnContact(int durationMilliseconds,
-			String contact) throws Exception {
+	public void swipeRightOnContact(int durationMilliseconds, String contact)
+			throws Exception {
 		WebElement el = this.getDriver().findElementByXPath(
-				AndroidLocators.ContactListPage.xpathContactByName
-						.apply(contact));
+				xpathContactByName.apply(contact));
 		elementSwipeRight(el, durationMilliseconds);
-		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idEditText))) {
-			return new ContactListPage(this.getLazyDriver());
-		} else {
-			return new DialogPage(this.getLazyDriver());
-		}
 	}
 
-	public AndroidPage swipeOnArchiveUnarchive(String contact) throws Exception {
+	public void swipeOnArchiveUnarchive(String contact) throws Exception {
 		WebElement el = getDriver().findElementByXPath(
-				AndroidLocators.ContactListPage.xpathContactByName
-						.apply(contact));
+				xpathContactByName.apply(contact));
 		DriverUtils.swipeRight(this.getDriver(), el, 1000);
-		if (DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idEditText), 2)) {
-			return new ContactListPage(this.getLazyDriver());
-		} else {
-			return new DialogPage(this.getLazyDriver());
-		}
 	}
 
 	public boolean isContactMuted(String name) throws Exception {
-		final By locator = By
-				.xpath(AndroidLocators.ContactListPage.xpathMutedIconByConvoName
-						.apply(name));
+		final By locator = By.xpath(xpathMutedIconByConvoName.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator);
 	}
 
 	public boolean waitUntilContactNotMuted(String name) throws Exception {
-		final By locator = By
-				.xpath(AndroidLocators.ContactListPage.xpathMutedIconByConvoName
-						.apply(name));
+		final By locator = By.xpath(xpathMutedIconByConvoName.apply(name));
 		return DriverUtils
 				.waitUntilLocatorDissapears(this.getDriver(), locator);
 	}
 
 	public boolean isHintVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(CommonLocators.idSearchHintClose));
+				By.id(idSearchHintClose));
 	}
 
 	public void closeHint() {
@@ -214,29 +205,12 @@ public class ContactListPage extends AndroidPage {
 		}
 	}
 
-	public ContactListPage pressLaterButton() throws Exception {
-		if (laterBtn.size() > 0) {
-			laterBtn.get(0).click();
-		} else if (laterBtnPicker.size() > 0) {
-			laterBtnPicker.get(0).click();
-		}
-
-		DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.ContactListPage.idSimpleDialogPageText));
-		// TODO: we need this as sometimes we see people picker after login
-		PagesCollection.peoplePickerPage = new PeoplePickerPage(
-				this.getLazyDriver());
-		return this;
-	}
-
 	public boolean isContactExists(String name) throws Exception {
 		return findInContactList(name, 0) != null;
 	}
 
 	public boolean waitUntilContactDisappears(String name) throws Exception {
-		final By nameLocator = By
-				.xpath(AndroidLocators.ContactListPage.xpathContactByName
-						.apply(name));
+		final By nameLocator = By.xpath(xpathContactByName.apply(name));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), nameLocator);
 	}
 
@@ -244,48 +218,47 @@ public class ContactListPage extends AndroidPage {
 		return findInContactList(name, cycles) != null;
 	}
 
-	private AndroidPage detectCurrentPage() throws Exception {
-		final Map<By, AndroidPage> pageMapping = new LinkedHashMap<By, AndroidPage>();
-		pageMapping.put(By.id(AndroidLocators.CommonLocators.idEditText),
-				new DialogPage(this.getLazyDriver()));
-		pageMapping.put(
-				By.xpath(AndroidLocators.PersonalInfoPage.xpathNameField),
-				new PersonalInfoPage(this.getLazyDriver()));
-		pageMapping.put(By.id(AndroidLocators.ConnectToPage.idConnectToHeader),
-				new ConnectToPage(this.getLazyDriver()));
-		for (Map.Entry<By, AndroidPage> entry : pageMapping.entrySet()) {
-			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-					entry.getKey(), 2)) {
-				return entry.getValue();
-			}
-		}
-		log.debug(getDriver().getPageSource());
-		throw new WebDriverException(
-				"Current page type cannot be detected. Please check locators");
-	}
-
 	public boolean isPlayPauseMediaButtonVisible(String convoName)
 			throws Exception {
-		final By locator = By
-				.xpath(AndroidLocators.ContactListPage.xpathPlayPauseButtonByConvoName
-						.apply(convoName));
+		final By locator = By.xpath(xpathPlayPauseButtonByConvoName
+				.apply(convoName));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 90;
+	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
-		final By convoListLoadingProgressLocator = By
-				.xpath(AndroidLocators.ContactListPage.xpathConversationListLoadingIndicator);
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(EmailSignInPage.idLoginButton),
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
+				.format("It seems that conversation list has not been loaded within %s seconds (login button is still visible)",
+						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+
+		final By topConvoListLoadingProgressLocator = By
+				.xpath(xpathTopConversationsListLoadingIndicator);
 		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				convoListLoadingProgressLocator,
+				topConvoListLoadingProgressLocator,
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
 			log.warn(String
-					.format("It seems that conversation list has not been loaded within %s seconds (progress bar is still visible)",
+					.format("It seems that conversation list has not been loaded within %s seconds (the progress bar is still visible)",
 							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
 		}
-		final By loadingItemLocator = By
-				.xpath(AndroidLocators.ContactListPage.xpathLoadingContactListItem);
+
+		final By selfAvatarLocator = By.id(idSelfUserAvatar);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				selfAvatarLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : "Self avatar is not visible on top of conversations list";
+
+		final By spinnerConvoListLoadingProgressLocator = By
+				.xpath(xpathSpinnerConversationsListLoadingIndicator);
+		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				spinnerConvoListLoadingProgressLocator,
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
+			log.warn(String
+					.format("It seems that conversation list has not been loaded within %s seconds (the spinner is still visible)",
+							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
+		}
+
+		final By loadingItemLocator = By.xpath(xpathLoadingContactListItem);
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				loadingItemLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
 				.format("Not all conversation list items were loaded within %s seconds",
@@ -294,65 +267,6 @@ public class ContactListPage extends AndroidPage {
 
 	public boolean isVisibleMissedCallIcon() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(missedCallIcon);
-	}
-
-	public void shareImageToWireFromGallery() throws Exception {
-		galleryCameraAlbumButton.click();
-		List<WebElement> galleryImageViews = this.getDriver()
-				.findElementsByClassName("android.widget.ImageView");
-		for (WebElement imageView : galleryImageViews) {
-			if (imageView.getAttribute("name").equals("Share with")) {
-				imageView.click();
-			}
-		}
-		List<WebElement> textViewElements = this.getDriver()
-				.findElementsByClassName("android.widget.TextView");
-		for (WebElement textView : textViewElements) {
-			if (textView.getAttribute("text").equals("See all")) {
-				textView.click();
-			}
-		}
-		// find elements again
-		textViewElements = this.getDriver().findElementsByClassName(
-				"android.widget.TextView");
-		for (WebElement textView : textViewElements) {
-			if (textView.getAttribute("text").equals("Wire")) {
-				textView.click();
-			}
-		}
-		conversationShareOption.click();
-		confirmShareButton.click();
-	}
-
-	public void shareURLFromNativeBrowser() throws Exception {
-		List<WebElement> imageButtonElements = this.getDriver()
-				.findElementsByClassName(
-						AndroidLocators.Browsers.nameNativeBrowserMenuButton);
-		for (WebElement imageButton : imageButtonElements) {
-			if (imageButton.getAttribute("name").equals("More options")) {
-				imageButton.click();
-			}
-		}
-		List<WebElement> textViewElements = this
-				.getDriver()
-				.findElementsByClassName(
-						AndroidLocators.Browsers.nameNativeBrowserMoreOptionsButton);
-		for (WebElement textView : textViewElements) {
-			if (textView.getAttribute("text").equals("Share page")) {
-				textView.click();
-				break;
-			}
-		}
-		List<WebElement> textElements = this
-				.getDriver()
-				.findElementsByClassName(
-						AndroidLocators.Browsers.nameNativeBrowserShareWireButton);
-		for (WebElement textView : textElements) {
-			if (textView.getAttribute("text").equals("Wire")) {
-				textView.click();
-			}
-		}
-		conversationShareOption.click();
 	}
 
 	public PersonalInfoPage tapOnMyAvatar() throws Exception {
@@ -368,4 +282,14 @@ public class ContactListPage extends AndroidPage {
 		return new PeoplePickerPage(getLazyDriver());
 	}
 
+	public boolean isAnyConversationVisible() throws Exception {
+		for (int i = 1; i <= contactListNames.size(); i++) {
+			final By locator = By.xpath(xpathContactByIndex.apply(i));
+			if (DriverUtils
+					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

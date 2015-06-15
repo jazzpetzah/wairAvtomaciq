@@ -10,6 +10,8 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.util.List;
 import org.junit.Assert;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 public class GroupPopoverPageSteps {
 
@@ -398,6 +400,16 @@ public class GroupPopoverPageSteps {
 				.clickAddPeopleButton();
 	}
 
+	@Then("I see (\\d+) participants in the Group Participants popover")
+	public void ISeeXParticipants(int amount) throws Exception {
+		assertThat("People information under conversation name",
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getPeopleCountInfo(), equalTo(String.valueOf(amount)));
+		assertThat("Actual amount of people in popover",
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getPeopleCount(), equalTo(amount));
+	}
+
 	/**
 	 * Verifies there is a question if you want to add people
 	 *
@@ -430,16 +442,34 @@ public class GroupPopoverPageSteps {
 	/**
 	 * Select user found in search results
 	 *
-	 * @step. ^I select (.*) from Group Participants popover search results$
+	 * @step. ^I select user (.*) from Group Participants popover search
+	 *        results$
 	 *
 	 * @param user
 	 * @throws Exception
 	 */
-	@When("^I select (.*) from Group Participants popover search results$")
+	@When("^I select user (.*) from Group Participants popover search results$")
 	public void ISelectUserFromSearchResults(String user) throws Exception {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		((GroupPopoverContainer) PagesCollection.popoverPage)
 				.selectUserFromSearchResult(user);
+	}
+
+	/**
+	 * Selects the first X participants from Group Participants popover search
+	 * results
+	 *
+	 * @step. ^I select the first (\\d+) participants from Group Participants
+	 *        popover search results$
+	 *
+	 * @param amount
+	 *            number of participants to select
+	 * @throws Exception
+	 */
+	@When("^I select the first (\\d+) participants from Group Participants popover search results$")
+	public void ISelectFirstUsersFromSearchResults(int amount) throws Exception {
+		((GroupPopoverContainer) PagesCollection.popoverPage)
+				.selectUsersFromSearchResult(amount);
 	}
 
 	/**

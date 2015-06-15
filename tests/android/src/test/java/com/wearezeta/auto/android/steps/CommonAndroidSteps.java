@@ -3,8 +3,7 @@ package com.wearezeta.auto.android.steps;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -19,30 +18,22 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import registration.WelcomePage;
-
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidLoggingUtils;
 import com.wearezeta.auto.android.common.reporter.LogcatListener;
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.android.pages.AndroidPage;
-import com.wearezeta.auto.android.pages.DialogPage;
-import com.wearezeta.auto.android.pages.LoginPage;
-import com.wearezeta.auto.android.pages.PagesCollection;
+import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.InvitationLinkGenerator;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
@@ -61,19 +52,19 @@ public class CommonAndroidSteps {
 				"warn");
 	}
 
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
 	private static final Logger log = ZetaLogger
 			.getLog(CommonAndroidSteps.class.getSimpleName());
 
-	private static String link = null;
 	public static LogcatListener listener = new LogcatListener();
 
 	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
-	private Future<String> passwordResetMessage;
-	private ClientUser userToRegister = null;
-	private static boolean skipBeforeAfter = false;
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
+	private long testStartedTimestamp = Long.MAX_VALUE;
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	public static final int DEFAULT_SWIPE_TIME = 1500;
@@ -145,12 +136,24 @@ public class CommonAndroidSteps {
 		return true;
 	}
 
-	// private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
+	private static final int UPDATE_ALERT_VISIBILITY_TIMEOUT = 5; // seconds
+
+	@SuppressWarnings("unused")
+	private void closeUpdateAlertIfAppears(RemoteWebDriver drv, By locator) {
+		try {
+			if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
+					UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
+				drv.findElement(locator).click();
+			}
+		} catch (Exception e) {
+			Throwables.propagate(e);
+		}
+	}
+
 	private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
 	private void onDriverInitFinished(RemoteWebDriver drv) {
-		final By locator = By
-				.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton);
+		final By locator = By.xpath(AndroidPage.xpathDismissUpdateButton);
 		final long millisecondsStarted = System.currentTimeMillis();
 		WebDriverException savedException = null;
 		do {
@@ -175,23 +178,17 @@ public class CommonAndroidSteps {
 							INTERFACE_INIT_TIMEOUT_MILLISECONDS));
 			throw savedException;
 		}
-		// Uncomment this if disable updates thing is broken again
-		// try {
-		// if (DriverUtils.waitUntilLocatorIsDisplayed(drv, locator,
-		// UPDATE_ALERT_VISIBILITY_TIMEOUT)) {
-		// drv.findElement(locator).click();
-		// }
-		// } catch (Exception e) {
-		// Throwables.propagate(e);
-		// }
+		// Break the glass in case of fire!
+		// Just uncomment the following line if Android developers break update
+		// alert appearance one more time
+		// closeUpdateAlertIfAppears(drv, locator);
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
+		testStartedTimestamp = new Date().getTime();
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
 				getUrl(), getPath(), isUnicode, this.getClass());
-		//TODO steadily remove this
-		PagesCollection.loginPage = new LoginPage(lazyDriver);
-		PagesCollection.welcomePage = new WelcomePage(lazyDriver);
+		pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
 
@@ -199,9 +196,6 @@ public class CommonAndroidSteps {
 	public void setUpPerformance() throws Exception {
 		listener.startListeningLogcat();
 
-		if (this.isSkipBeforeAfter()) {
-			return;
-		}
 		try {
 			AndroidCommonUtils.disableHints();
 		} catch (Exception e) {
@@ -212,18 +206,12 @@ public class CommonAndroidSteps {
 
 	@Before({ "~@unicode", "~@performance" })
 	public void setUp() throws Exception {
-		if (this.isSkipBeforeAfter()) {
-			return;
-		}
 		commonBefore();
 		initFirstPage(false);
 	}
 
 	@Before({ "@unicode", "~@performance" })
 	public void setUpUnicode() throws Exception {
-		if (this.isSkipBeforeAfter()) {
-			return;
-		}
 		commonBefore();
 		initFirstPage(true);
 	}
@@ -238,7 +226,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I press back button$")
 	public void PressBackButton() throws Exception {
-		PagesCollection.loginPage.navigateBack();
+		pagesCollection.getCommonPage().navigateBack();
 	}
 
 	/**
@@ -250,27 +238,30 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I hide keyboard$")
 	public void IHideKeyboard() throws Exception {
-		PagesCollection.loginPage.hideKeyboard();
+		pagesCollection.getCommonPage().hideKeyboard();
 	}
 
 	@When("^I swipe right$")
 	public void ISwipeRight() throws Exception {
-		PagesCollection.currentPage.swipeRightCoordinates(DEFAULT_SWIPE_TIME);
+		pagesCollection.getCommonPage().swipeRightCoordinates(
+				DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe left$")
 	public void ISwipeLeft() throws Exception {
-		PagesCollection.currentPage.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
+		pagesCollection.getCommonPage()
+				.swipeLeftCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe up$")
 	public void ISwipeUp() throws Exception {
-		PagesCollection.currentPage.swipeUpCoordinates(DEFAULT_SWIPE_TIME);
+		pagesCollection.getCommonPage().swipeUpCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	@When("^I swipe down$")
 	public void ISwipeDown() throws Exception {
-		PagesCollection.currentPage.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
+		pagesCollection.getCommonPage()
+				.swipeDownCoordinates(DEFAULT_SWIPE_TIME);
 	}
 
 	public void commonBefore() throws Exception {
@@ -297,8 +288,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I minimize the application$")
 	public void IMimizeApllication() throws Exception {
-		PagesCollection.commonAndroidPage = PagesCollection.loginPage
-				.minimizeApplication();
+		pagesCollection.getCommonPage().minimizeApplication();
 	}
 
 	/**
@@ -311,7 +301,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I lock the device$")
 	public void ILockTheDevice() throws Exception {
-		PagesCollection.loginPage.lockScreen();
+		pagesCollection.getCommonPage().lockScreen();
 	}
 
 	/**
@@ -346,41 +336,6 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Opens the gallery application and shares the default photo to wire
-	 * (com.google.android.gallery3d)
-	 * 
-	 * @step. ^I share image from Gallery to Wire$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I share image from Gallery to Wire$")
-	public void IShareImageFromGallery() throws Exception {
-		PagesCollection.contactListPage.shareImageToWireFromGallery();
-	}
-
-	/**
-	 * Opens the Browser app and shares the URL to wire (http://www.google.com)
-	 * 
-	 * @step. ^I share URL from native browser app to Wire with contact (.*)$
-	 * 
-	 * @param name
-	 *            name of contact to share URL with
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I share URL from native browser app to Wire with contact (.*)$")
-	public void IShareURLBrowserApp(String name) throws Exception {
-		IOpenBrowserApp();
-		PagesCollection.contactListPage.shareURLFromNativeBrowser();
-		if (PagesCollection.dialogPage == null) {
-			PagesCollection.dialogPage = (DialogPage) PagesCollection.currentPage;
-		}
-		Thread.sleep(5000);
-		PagesCollection.dialogPage.sendMessageInInput();
-	}
-
-	/**
 	 * Takes screenshot for comparison
 	 * 
 	 * @step. ^I take screenshot$
@@ -389,8 +344,8 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I take screenshot$")
 	public void WhenITake1stScreenshot() throws Exception {
-		final Optional<BufferedImage> screenshot = PagesCollection.loginPage
-				.takeScreenshot();
+		final Optional<BufferedImage> screenshot = pagesCollection
+				.getCommonPage().takeScreenshot();
 		if (screenshot.isPresent()) {
 			images.add(screenshot.get());
 		} else {
@@ -409,7 +364,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I tap on center of screen")
 	public void WhenITapOnCenterOfScreen() throws Throwable {
-		PagesCollection.currentPage.tapOnCenterOfScreen();
+		pagesCollection.getCommonPage().tapOnCenterOfScreen();
 	}
 
 	/**
@@ -434,7 +389,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I restore the application$")
 	public void IRestoreApllication() throws Exception {
-		PagesCollection.loginPage.restoreApplication();
+		pagesCollection.getCommonPage().restoreApplication();
 	}
 
 	/**
@@ -528,58 +483,6 @@ public class CommonAndroidSteps {
 			// Ignore silently
 		}
 		commonSteps.IChangeUserName(name, newName);
-	}
-
-	/**
-	 * Connects current user with a connection link from user B
-	 * 
-	 * @step. ^I connect using invitation link from (.*)$
-	 * 
-	 * @param name
-	 *            the user from which the connection link came
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I connect using invitation link from (.*)$")
-	public void WhenIConnectUsingInvitationLinkFrom(String name)
-			throws Exception {
-		try {
-			BackendAPIWrappers.tryLoginByUser(usrMgr
-					.findUserByNameOrNameAlias(name));
-			name = usrMgr.findUserByNameOrNameAlias(name).getId();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		String link = InvitationLinkGenerator.getInvitationToken(name);
-		PagesCollection.commonAndroidPage.ConnectByInvitationLink(link);
-
-	}
-
-	/**
-	 * Open Firefox browser
-	 * 
-	 * @step. ^I open Firefox$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I open Firefox$")
-	public void WhenIOpenFirefox() throws Exception {
-		PagesCollection.commonAndroidPage.openFirefoxBrowser();
-	}
-
-	/**
-	 * Wait for Firefox Url bar
-	 * 
-	 * @step. ^I wait for Firefox Url bar$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I wait for Firefox Url bar$")
-	public void WhenIWaitForFirefoxUrlBar() throws Exception {
-		PagesCollection.commonAndroidPage.waitForFireFoxUrlBar();
 	}
 
 	/**
@@ -756,34 +659,6 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Transfers Wire contacts to Mac (Why is this step in the android step
-	 * files? - dean).
-	 * 
-	 * @step. ^I add contacts list users to Mac contacts$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I add contacts list users to Mac contacts$")
-	public void AddContactsUsersToMacContacts() throws Exception {
-		commonSteps.AddContactsUsersToMacContacts();
-	}
-
-	/**
-	 * Removes Wire contacts from Mac (Why is this step in the android step
-	 * files? - dean).
-	 * 
-	 * @step. ^I remove contacts list users from Mac contacts$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I remove contacts list users from Mac contacts$")
-	public void IRemoveContactsListUsersFromMacContact() throws Exception {
-		commonSteps.IRemoveContactsListUsersFromMacContact();
-	}
-
-	/**
 	 * User A sends a simple text message to user B
 	 * 
 	 * @step. ^Contact (.*) send message to user (.*)$
@@ -901,6 +776,33 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * Waits for a given time to verify that another user does not exist in
+	 * search results
+	 * 
+	 * @step. ^(\\w+) waits? until (.*) does not exist in backend search
+	 *        results$
+	 * 
+	 * @param searchByNameAlias
+	 *            the user to search for in the query results.
+	 * @param query
+	 *            the search query to pass to the backend, which will return a
+	 *            list of users.
+	 * @param timeoutSeconds
+	 *            maximum time to wait until the other user disappears from
+	 *            search list
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Given("^(\\w+) waits? (\\d+) seconds? until (.*) does not exist in backend search results$")
+	public void UserWaitsUntilContactDoesNotExistsInHisSearchResults(
+			String searchByNameAlias, int timeoutSeconds, String query)
+			throws Exception {
+		commonSteps.WaitUntilContactIsNotFoundInSearch(searchByNameAlias,
+				query, timeoutSeconds);
+	}
+
+	/**
 	 * Sends an image from one user to a conversation
 	 * 
 	 * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
@@ -950,101 +852,18 @@ public class CommonAndroidSteps {
 			e.printStackTrace();
 		}
 
-		AndroidPage.clearPagesCollection();
+		pagesCollection.clearAllPages();
 
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+			try {
+				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+			} catch (WebDriverException e) {
+				e.printStackTrace();
+			}
 		}
+		AndroidLoggingUtils.writeDeviceLogsToConsole(testStartedTimestamp);
 
 		commonSteps.getUserManager().resetUsers();
-	}
-
-	public boolean isSkipBeforeAfter() {
-		return skipBeforeAfter;
-	}
-
-	public void setSkipBeforeAfter(boolean skipBeforeAfter) {
-		CommonAndroidSteps.skipBeforeAfter = skipBeforeAfter;
-	}
-
-	/**
-	 * Resets the password for the given email address
-	 * 
-	 * @param email
-	 *            the email associated to the account
-	 * @throws Exception
-	 */
-
-	@When("^I request reset password for (.*)$")
-	public void WhenIRequestResetPassword(String email) throws Exception {
-		try {
-			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		PagesCollection.commonAndroidPage.requestResetPassword(email);
-	}
-
-	/**
-	 * Resets the password for a given user's account to a newly defined
-	 * password
-	 * 
-	 * @step. ^I reset (.*) password by URL to new (.*)$
-	 * 
-	 * @param newPass
-	 *            the new password.
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@Then("^I reset password by URL to new (.*)$")
-	public void WhenIResetPasswordByUrl(String newPass) throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.commonAndroidPage
-				.resetByLink(link, newPass);
-	}
-
-	/**
-	 * Get new password link from mail
-	 * 
-	 * @step. ^I get new password link$
-	 * 
-	 * @param name
-	 *            the name of the user for which you want to reset the password.
-	 * @throws Exception
-	 */
-	@Then("^I get new (.*) password link$")
-	public void ThenIGetNewPaswordLink(String name) throws Exception {
-		try {
-			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
-		} catch (NoSuchUserException e) {
-			if (this.userToRegister == null) {
-				this.userToRegister = new ClientUser();
-			}
-			this.userToRegister.setName(name);
-			this.userToRegister.addNameAlias(name);
-		}
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.passwordResetMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
-
-		link = BackendAPIWrappers
-				.getPasswordResetLink(this.passwordResetMessage);
-	}
-
-	/**
-	 * Activates user using browser by URL from mail
-	 * 
-	 * @step. ^I activate user by URL$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I activate user by URL$")
-	public void WhenIActivateUserByUrl() throws Exception {
-		String link = BackendAPIWrappers
-				.getUserActivationLink(RegistrationPageSteps.activationMessage);
-		PagesCollection.peoplePickerPage = PagesCollection.commonAndroidPage
-				.activateByLink(link);
 	}
 
 	/**
@@ -1056,7 +875,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I rotate UI to landscape$")
 	public void WhenIRotateUILandscape() throws Exception {
-		PagesCollection.loginPage.rotateLandscape();
+		pagesCollection.getCommonPage().rotateLandscape();
 	}
 
 	/**
@@ -1068,7 +887,23 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I rotate UI to portrait$")
 	public void WhenIRotateUIPortrait() throws Exception {
-		PagesCollection.loginPage.rotatePortrait();
+		pagesCollection.getCommonPage().rotatePortrait();
 	}
 
+	/**
+	 * Add email(s) into address book of a user and upload address book
+	 * 
+	 * @step. ^(.*) (?:has|have) contacts? (.*) in (?:the |\\s*)address book$
+	 * 
+	 * @param asUser
+	 *            name of the user where the address book is uploaded
+	 * @param emails
+	 *            list of email addresses seperated by comma
+	 * @throws Exception
+	 */
+	@Given("^(.*) (?:has|have) contacts? (.*) in (?:the |\\s*)address book$")
+	public void UserXHasContactsInAddressBook(String asUser, String emails)
+			throws Exception {
+		commonSteps.UserXHasContactsInAddressBook(asUser, emails);
+	}
 }

@@ -1,8 +1,9 @@
 Feature: Sign Out
 
-  @smoke @id1790
-  Scenario Outline: Change sign-in user
+  @regression @id1790
+  Scenario Outline: Switch signed-in user
     Given There are 2 users where <Name> is me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -10,7 +11,6 @@ Feature: Sign Out
     When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>

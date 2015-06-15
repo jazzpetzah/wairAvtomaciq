@@ -67,7 +67,7 @@ public abstract class BasePage {
 	}
 
 	public Optional<BufferedImage> takeScreenshot() throws Exception {
-		return DriverUtils.takeScreenshot((ZetaDriver) this.getDriver());
+		return DriverUtils.takeFullScreenShot((ZetaDriver) this.getDriver());
 	}
 
 	public Optional<BufferedImage> getElementScreenshot(WebElement element)

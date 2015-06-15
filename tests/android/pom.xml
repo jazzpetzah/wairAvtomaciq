@@ -13,20 +13,18 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<skipTests>true</skipTests>
-		<TestRun>DevRun</TestRun>
-		<Url>http://127.0.0.1:4723/wd/hub</Url>
+		<testRun>DevRun</testRun>
+		<url>http://127.0.0.1:4723/wd/hub</url>
 		<appPath>/Project/zclient.apk</appPath>
 		<package>com.waz.zclient.dev</package>
-		<generateUsers>true</generateUsers>
-		<activity>com.waz.zclient.MainActivity</activity>
-		<waitActivities>com.waz.zclient.MainActivity,com.waz.zclient.newreg.activities.AppEntryActivity</waitActivities>
+		<activity>com.waz.zclient.LaunchActivity</activity>
+		<waitActivities>com.waz.zclient.LaunchActivity,com.waz.zclient.AppEntryActivity</waitActivities>
 		<driverTimeoutSeconds>7</driverTimeoutSeconds>
-		<defaultImagesPath>img/</defaultImagesPath>
 		<androidClientInfoPath>/Project/builds_info/classes.dex</androidClientInfoPath>
 		<androidAppiumLogPath>/Project/appium_android.log</androidAppiumLogPath>
-		<defaultEmail>smoketester.android@wearezeta.com</defaultEmail>
+		<defaultEmail>smoketester@wire.com</defaultEmail>
+		<pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
 		<androidVersion>44</androidVersion>
-		<androidLogs>false</androidLogs>
 		<resourceFilePath>/Project/</resourceFilePath>
 		<resultsPath>/results/</resultsPath>
 		<backendType>staging</backendType>
@@ -144,7 +142,7 @@
 				<configuration>
 					<skipTests>${skipTests}</skipTests>
 					<includes>
-						<include>**/${TestRun}.java</include>
+						<include>**/${testRun}.java</include>
 					</includes>
 					<argLine>-Djava.library.path=../common/native_lib</argLine>
 				</configuration>

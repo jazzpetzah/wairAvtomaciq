@@ -1,14 +1,20 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
 
 class AddPeoplePopoverPage extends AbstractPopoverPage {
+
+	@FindBy(css = PopoverLocators.Shared.cssSearchResultItems)
+	private List<WebElement> searchResultItems;
+
 	public AddPeoplePopoverPage(Future<ZetaWebAppDriver> lazyDriver,
 			PeoplePopoverContainer container) throws Exception {
 		super(lazyDriver, container);
@@ -52,5 +58,12 @@ class AddPeoplePopoverPage extends AbstractPopoverPage {
 
 	public void selectUserFromSearchResult(String name) throws Exception {
 		this.getFoundItemElement(name).click();
+	}
+
+	public void selectUsersFromSearchResult(int amount) throws Exception {
+		List<WebElement> elements = searchResultItems;
+		for (int i = 0; i < amount; i++) {
+			elements.get(i).click();
+		}
 	}
 }

@@ -102,12 +102,6 @@ public class CommonUtils {
 		stream.close();
 	}
 
-	public static Boolean getAndroidLogs(Class<?> c) throws Exception {
-		Boolean androidlogs = false;
-		androidlogs = Boolean.valueOf(getValueFromConfig(c, "androidLogs"));
-		return androidlogs;
-	}
-
 	public static String getBackendType(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "backendType");
 	}
@@ -367,6 +361,11 @@ public class CommonUtils {
 			throws Exception {
 		return getValueFromConfig(c, "pathToUserpic");
 	}
+	
+	public static String getUserAddressBookFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "pathToAddressBook");
+	}
 
 	public static String generateGUID() {
 		return UUID.randomUUID().toString();
@@ -423,13 +422,13 @@ public class CommonUtils {
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
-			WebElement element, AppiumDriver driver) throws IOException {
+			WebElement element, AppiumDriver driver) throws Exception {
 		return getElementScreenshot(element, driver, "iPhone 6");
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
 			WebElement element, AppiumDriver driver, String deviceName)
-			throws IOException {
+			throws Exception {
 		int multiply = 3;
 		if (deviceName.equals("iPhone 6")) {
 			multiply = 2;
@@ -437,7 +436,7 @@ public class CommonUtils {
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
 		final Optional<BufferedImage> screenshot = DriverUtils
-				.takeScreenshot((ZetaDriver) driver);
+				.takeFullScreenShot((ZetaDriver) driver);
 		if (screenshot.isPresent()) {
 			return Optional.of(screenshot.get()
 					.getSubimage(elementLocation.x * multiply,
@@ -526,5 +525,14 @@ public class CommonUtils {
 	public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");
+	}
+
+	public static boolean getMakeScreenshotsFromConfig(Class<?> c)
+			throws Exception {
+		return Boolean.valueOf(getValueFromCommonConfig(c, "makeScreenshots"));
+	}
+
+	public static boolean getInitNoteIpFromConfig(Class<?> c) throws Exception {
+		return Boolean.valueOf(getValueFromCommonConfig(c, "initNodeIp"));
 	}
 }

@@ -5,7 +5,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
@@ -21,7 +21,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in People picker search field user email <ContactEmail>
@@ -110,7 +110,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -134,7 +134,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -157,7 +157,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     #And I wait for 30 seconds
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -184,7 +184,7 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     When I see Contact list with my name <Name>
     #And I wait for 30 seconds
-    And I open search by clicking plus button
+    And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
@@ -201,3 +201,256 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | ConvoName    | UserCount | Contact   |
       | user1Email | user1Password | user1Name | TopGroupTest | 3         | user2Name |
+
+  @staging @id1456 
+  Scenario Outline: Verify you can unblock someone from search list [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Name> blocks user <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I dont see conversation <Contact> in contact list
+    And I wait until <Contact> exists in backend search results
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    And I unblock user
+    And I type the message
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id1456
+  Scenario Outline: Verify you can unblock someone from search list [LANDSAPE]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Name> blocks user <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I dont see conversation <Contact> in contact list
+    And I wait until <Contact> exists in backend search results
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I click hide keyboard button
+    And I tap on connected user <Contact> on People picker page
+    And I unblock user
+    And I type the message
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id2547
+  Scenario Outline: Verify dismissing with clicking on Hide [PORTRAIT]
+    Given There are 5 users where <Name> is me
+    Given <ContactWithFriends> is connected to <Name>
+    Given <ContactWithFriends> is connected to <Friend1>
+    Given <ContactWithFriends> is connected to <Friend2>
+    Given <ContactWithFriends> is connected to <Friend3>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe to reveal hide button for suggested contact <Friend1>
+    And I tap hide for suggested contact <Friend1>
+    Then I do not see suggested contact <Friend1>
+
+    Examples: 
+      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+
+  @staging @id2547
+  Scenario Outline: Verify dismissing with clicking on Hide [LANDSAPE]
+    Given There are 5 users where <Name> is me
+    Given <ContactWithFriends> is connected to <Name>
+    Given <ContactWithFriends> is connected to <Friend1>
+    Given <ContactWithFriends> is connected to <Friend2>
+    Given <ContactWithFriends> is connected to <Friend3>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe to reveal hide button for suggested contact <Friend1>
+    And I tap hide for suggested contact <Friend1>
+    Then I do not see suggested contact <Friend1>
+
+    Examples: 
+      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+
+  @staging @id2546
+  Scenario Outline: Verify dismissing with one single gesture [PORTRAIT]
+    Given There are 5 users where <Name> is me
+    Given <ContactWithFriends> is connected to <Name>
+    Given <ContactWithFriends> is connected to <Friend1>
+    Given <ContactWithFriends> is connected to <Friend2>
+    Given <ContactWithFriends> is connected to <Friend3>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe completely to dismiss suggested contact <Friend1>
+    Then I do not see suggested contact <Friend1>
+
+    Examples: 
+      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+
+  @staging @id2546
+  Scenario Outline: Verify dismissing with one single gesture [LANDSAPE]
+    Given There are 5 users where <Name> is me
+    Given <ContactWithFriends> is connected to <Name>
+    Given <ContactWithFriends> is connected to <Friend1>
+    Given <ContactWithFriends> is connected to <Friend2>
+    Given <ContactWithFriends> is connected to <Friend3>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe completely to dismiss suggested contact <Friend1>
+    Then I do not see suggested contact <Friend1>
+
+    Examples: 
+      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+
+  @staging @id2118
+  Scenario Outline: Verify sending connection request from PYMK [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I press the instant connect button
+    And I click close button to dismiss people view
+    Then I see first item in contact list named <Contact2>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @staging @id2118
+  Scenario Outline: Verify sending connection request from PYMK [LANDSAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I press the instant connect button
+    And I click close button to dismiss people view
+    Then I see first item in contact list named <Contact2>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @staging @id2149
+  Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I wait until <LastName> exists in backend search results
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <LastName>
+    Then I see user <NewName> found on People picker page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | NewName  | LastName |
+      | user1Email | user1Password | user1Name | user2Name | NEW NAME | NAME     |
+
+  @staging @id2149
+  Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I wait until <LastName> exists in backend search results
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <LastName>
+    Then I see user <NewName> found on People picker page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | NewName  | LastName |
+      | user1Email | user1Password | user1Name | user2Name | NEW NAME | NAME     |
+
+  @staging @id2703
+  Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations [PORTRAIT]
+    Given There are <UserCount> users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I wait until <Contact> exists in backend search results
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 3 top connections but not <Contact>
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    Then I see that <Number> contacts are selected
+
+    Examples: 
+      | Login      | Password      | Name      | UserCount | Contact   | Number |
+      | user1Email | user1Password | user1Name | 7         | user2Name | 4      |
+
+  @staging @id2703
+  Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations [LANDSAPE]
+    Given There are <UserCount> users where <Name> is me
+    Given Myself is connected to all other users
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    When I see Contact list with my name <Name>
+    And I wait until <Contact> exists in backend search results
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 3 top connections but not <Contact>
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    Then I see that <Number> contacts are selected
+
+    Examples: 
+      | Login      | Password      | Name      | UserCount | Contact   | Number |
+      | user1Email | user1Password | user1Name | 7         | user2Name | 4      |

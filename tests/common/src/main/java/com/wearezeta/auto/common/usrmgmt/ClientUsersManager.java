@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
@@ -37,9 +38,9 @@ public class ClientUsersManager {
 	private static final Logger log = ZetaLogger
 			.getLog(ClientUsersManager.class.getSimpleName());
 
-	private void setClientUserAliases(ClientUser user, String[] nameAliases,
-			String[] passwordAliases, String[] emailAliases,
-			String[] phoneNumberAliases) {
+	public static void setClientUserAliases(ClientUser user,
+			String[] nameAliases, String[] passwordAliases,
+			String[] emailAliases, String[] phoneNumberAliases) {
 		if (nameAliases != null && nameAliases.length > 0) {
 			user.clearNameAliases();
 			for (String nameAlias : nameAliases) {
@@ -114,17 +115,17 @@ public class ClientUsersManager {
 			try {
 				instance = new ClientUsersManager();
 			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
+				Throwables.propagate(e);
 			}
 		}
 		return instance;
 	}
 
 	public static enum FindBy {
-		NAME("Name"), PASSWORD("Password"), EMAIL("Email"), NAME_ALIAS(
-				"Name Alias(es)"), PASSWORD_ALIAS("Password Alias(es)"), EMAIL_ALIAS(
-				"Email Alias(es)"), PHONENUMBER_ALIAS("Phone Number Alias(es)");
+		NAME("Name"), PASSWORD("Password"), EMAIL("Email"), PHONE_NUMBER(
+				"Phone Number"), NAME_ALIAS("Name Alias(es)"), PASSWORD_ALIAS(
+				"Password Alias(es)"), EMAIL_ALIAS("Email Alias(es)"), PHONENUMBER_ALIAS(
+				"Phone Number Alias(es)");
 
 		private final String name;
 
@@ -141,6 +142,12 @@ public class ClientUsersManager {
 	public ClientUser findUserByPasswordAlias(String alias)
 			throws NoSuchUserException {
 		return findUserBy(alias, new FindBy[] { FindBy.PASSWORD_ALIAS });
+	}
+
+	public ClientUser findUserByPhoneNumberOrPhoneNumberAlias(String alias)
+			throws NoSuchUserException {
+		return findUserBy(alias, new FindBy[] { FindBy.PHONE_NUMBER,
+				FindBy.PHONENUMBER_ALIAS });
 	}
 
 	public ClientUser findUserByNameOrNameAlias(String alias)
@@ -180,6 +187,8 @@ public class ClientUsersManager {
 				aliases = user.getEmailAliases();
 			} else if (findByCriteria == FindBy.PASSWORD_ALIAS) {
 				aliases = user.getPasswordAliases();
+			} else if (findByCriteria == FindBy.PHONENUMBER_ALIAS) {
+				aliases = user.getPhoneNumberAliases();
 			} else if (findByCriteria == FindBy.NAME) {
 				if (user.getName().equalsIgnoreCase(searchStr)) {
 					return user;
@@ -190,6 +199,10 @@ public class ClientUsersManager {
 				}
 			} else if (findByCriteria == FindBy.PASSWORD) {
 				if (user.getPassword().equals(searchStr)) {
+					return user;
+				}
+			} else if (findByCriteria == FindBy.PHONE_NUMBER) {
+				if (user.getPhoneNumber().toString().equals(searchStr)) {
 					return user;
 				}
 			} else {

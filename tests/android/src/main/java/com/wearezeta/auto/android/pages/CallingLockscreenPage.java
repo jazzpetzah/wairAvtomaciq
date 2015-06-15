@@ -6,20 +6,22 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class CallingLockscreenPage extends AndroidPage {
 
-	@FindBy(id = AndroidLocators.LockscreenCallingPage.idLockScreenLogo)
+	private static final String idLockScreenLogo = "gtv__notifications__incoming_call__lockscreen__logo";
+	@FindBy(id = idLockScreenLogo)
 	private WebElement lockScreenLogo;
 
-	@FindBy(id = AndroidLocators.LockscreenCallingPage.idCallingUserName)
+	private static final String idCallingUserName = "ttv__notifications__incoming_call__lockscreen__header";
+	@FindBy(id = idCallingUserName)
 	private WebElement callingUsersName;
 
-	@FindBy(id = AndroidLocators.LockscreenCallingPage.idIncomingCallChathead)
+	private static final String idIncomingCallChathead = "civ__notifications__incoming_call__chathead";
+	@FindBy(id = idIncomingCallChathead)
 	private WebElement incomingCallChathead;
 
 	public CallingLockscreenPage(Future<ZetaAndroidDriver> lazyDriver)
@@ -33,8 +35,7 @@ public class CallingLockscreenPage extends AndroidPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		final By locator = By
-				.id(AndroidLocators.LockscreenCallingPage.idLockScreenLogo);
+		final By locator = By.id(idLockScreenLogo);
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 

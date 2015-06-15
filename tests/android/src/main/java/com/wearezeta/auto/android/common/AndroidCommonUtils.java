@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
@@ -139,8 +138,8 @@ public class AndroidCommonUtils extends CommonUtils {
 
 	public static String readClientVersionFromAdb() throws Exception {
 		final String output = getAdbOutput(String.format(
-				"shell dumpsys package %s | grep versionName",
-				CommonUtils.getAndroidPackageFromConfig(AndroidLocators.class)));
+				"shell dumpsys package %s | grep versionName", CommonUtils
+						.getAndroidPackageFromConfig(AndroidCommonUtils.class)));
 		if (output.contains("=")) {
 			return output.substring(output.indexOf("="), output.length());
 		} else {
@@ -240,5 +239,51 @@ public class AndroidCommonUtils extends CommonUtils {
 
 		writer.close();
 		return file.getAbsolutePath();
+	}
+
+	/**
+	 * http://android.stackexchange.com/questions/30157/how-to-return-to-the-
+	 * home-screen-with-a-terminal-command
+	 * 
+	 * @throws Exception
+	 */
+	public static void switchToHomeScreen() throws Exception {
+		executeAdb("shell am start -a android.intent.action.MAIN -c android.intent.category.HOME");
+	}
+
+	/**
+	 * http://stackoverflow.com/questions/4567904/how-to-start-an-application-
+	 * using-android-adb-tools
+	 * 
+	 * @param packageId
+	 * @param mainActivity
+	 * @throws Exception
+	 */
+	public static void switchToApplication(String packageId, String mainActivity)
+			throws Exception {
+		executeAdb(String.format("shell am start -n %s/%s", packageId,
+				mainActivity));
+	}
+
+	public static void rotateLanscape() throws Exception {
+		executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:1");
+	}
+
+	public static void rotatePortrait() throws Exception {
+		executeAdb("shell content insert --uri content://settings/system --bind name:s:user_rotation --bind value:i:0");
+	}
+
+	/**
+	 * http://stackoverflow.com/questions/13850192/how-to-lock-android-screen-
+	 * via-adb
+	 * 
+	 * @throws Exception
+	 */
+	public static void lockScreen() throws Exception {
+		executeAdb("shell input keyevent 26");
+	}
+
+	public static void tapBackButton() throws Exception {
+		executeAdb("shell input keyevent 4");
 	}
 }

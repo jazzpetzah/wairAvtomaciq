@@ -15,9 +15,8 @@ import org.openqa.selenium.support.FindBy;
 import android.view.KeyEvent;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidKeyEvent;
-import com.wearezeta.auto.android.locators.AndroidLocators;
-import com.wearezeta.auto.common.*;
+import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -25,14 +24,28 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class AndroidPage extends BasePage {
 
-	private static final Logger log = ZetaLogger.getLog(CommonUtils.class
+	protected static final String idConfirmBtn = "confirm";
+
+	protected static final String idEditText = "cet__cursor_view";
+
+	protected static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";
+
+	protected static final String idCloseImageBtn = "gtv__single_image_message__close";
+
+	protected static final String idSearchHintClose = "zb__search_hint__close_button";
+
+	protected static final String idConversationSendOption = "tv_conv_list_topic";
+
+	public static final String xpathDismissUpdateButton = "//*[@value='Dismiss']";
+
+	protected static final String classNameFrameLayout = "FrameLayout";
+
+	protected static final Logger log = ZetaLogger.getLog(CommonUtils.class
 			.getSimpleName());
 
-	@FindBy(id = AndroidLocators.CommonLocators.idPager)
+	protected static final String idPager = "conversation_pager";
+	@FindBy(id = idPager)
 	private WebElement content;
-
-	@FindBy(className = AndroidLocators.CommonLocators.classListView)
-	private WebElement container;
 
 	@Override
 	protected ZetaAndroidDriver getDriver() throws Exception {
@@ -52,27 +65,27 @@ public abstract class AndroidPage extends BasePage {
 	public void selectFirstGalleryPhoto() throws Exception {
 		final Dimension screenDimension = getDriver().manage().window()
 				.getSize();
-		int ntry = 1;
+		final int xDivider = 6;
+		final int yDivider = 8;
+		int y = screenDimension.height / 2;
 		do {
-			// Selendroid workaround
-			// Cannot handle external apps properly :-(
-			AndroidCommonUtils.genericScreenTap(screenDimension.width / 2
-					- ntry * (screenDimension.width / 10),
-					screenDimension.height / 2 - ntry
-							* (screenDimension.height / 10));
-			try {
-				if (DriverUtils
-						.waitUntilLocatorIsDisplayed(
-								getDriver(),
-								By.xpath(AndroidLocators.DialogPage.xpathConfirmOKButton),
-								2)) {
-					return;
+			int x = screenDimension.width - screenDimension.width / xDivider;
+			do {
+				// Selendroid workaround
+				// Cannot handle external apps properly :-(
+				AndroidCommonUtils.genericScreenTap(x, y);
+				try {
+					if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+							By.xpath(DialogPage.xpathConfirmOKButton), 1)) {
+						return;
+					}
+				} catch (WebDriverException e) {
+					// ignore silently
 				}
-			} catch (WebDriverException e) {
-				// ignore silently
-			}
-			ntry++;
-		} while (ntry <= 5);
+				x -= screenDimension.width / xDivider;
+			} while (x >= screenDimension.width / xDivider);
+			y -= screenDimension.height / yDivider;
+		} while (y >= screenDimension.height / yDivider);
 		throw new RuntimeException("Failed to tap the first gallery image!");
 	}
 
@@ -89,15 +102,18 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public AndroidPage navigateBack() throws Exception {
-		this.getDriver().navigate().back();
+		AndroidCommonUtils.tapBackButton();
+		// this.getDriver().navigate().back();
 		return null;
 	}
 
 	public void rotateLandscape() throws Exception {
+		// AndroidCommonUtils.rotateLanscape();
 		this.getDriver().rotate(ScreenOrientation.LANDSCAPE);
 	}
 
 	public void rotatePortrait() throws Exception {
+		// AndroidCommonUtils.rotatePortrait();
 		this.getDriver().rotate(ScreenOrientation.PORTRAIT);
 	}
 
@@ -105,27 +121,21 @@ public abstract class AndroidPage extends BasePage {
 		return this.getDriver().getOrientation();
 	}
 
-	public CommonAndroidPage minimizeApplication() throws Exception {
-		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_HOME);
-		Thread.sleep(1000);
-		return new CommonAndroidPage(this.getLazyDriver());
+	public void minimizeApplication() throws Exception {
+		AndroidCommonUtils.switchToHomeScreen();
 	}
 
 	public void lockScreen() throws Exception {
-		this.getDriver().sendKeyEvent(AndroidKeyEvent.KEYCODE_POWER);
+		AndroidCommonUtils.lockScreen();
 	}
 
 	public void restoreApplication() throws Exception {
-		try {
-			this.getDriver().runAppInBackground(10);
-		} catch (WebDriverException ex) {
-			// do nothing, sometimes after restoring the app we have this
-			// exception, Appium bug
-		}
+		AndroidCommonUtils.switchToApplication(
+				CommonUtils.getAndroidPackageFromConfig(this.getClass()),
+				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
 	}
 
-	public AndroidPage returnBySwipe(SwipeDirection direction)
-			throws Exception {
+	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 		return null;
 	};
 
@@ -293,10 +303,5 @@ public abstract class AndroidPage extends BasePage {
 
 	public void tapOnCenterOfScreen() throws Exception {
 		DriverUtils.genericTap(this.getDriver());
-	}
-
-	public static void clearPagesCollection() throws IllegalArgumentException,
-			IllegalAccessException {
-		clearPagesCollection(PagesCollection.class, AndroidPage.class);
 	}
 }

@@ -4,6 +4,7 @@ Feature: Connect
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I see connection request from one user
@@ -19,8 +20,9 @@ Feature: Connect
   Scenario Outline: Verify pending user profiles contain all the info required by spec
     Given There are 2 users where <Name> is me
     Given <UnknownContact> sent connection request to me
-    Given I Sign in using login <Login> and password <Password>
     Given User me change accent color to VividRed
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
     Then I see connection request from one user
     When I open the list of incoming connection requests
     Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
@@ -38,6 +40,7 @@ Feature: Connect
   @smoke @id1571
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -58,6 +61,7 @@ Feature: Connect
   @smoke @id2043
   Scenario Outline: Verify 1to1 conversation is successfully created for sender end after connection is accepted
     Given There are 2 users where <Name> is me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
@@ -74,7 +78,6 @@ Feature: Connect
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And User <Name2> is me
-    And I switch to Sign In page
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
     And I see my avatar on top of Contact list
@@ -86,7 +89,6 @@ Feature: Connect
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And User <Name> is me
-    And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -98,9 +100,10 @@ Feature: Connect
       | Login      | Login2     | Password      | Password2     | Name      | Name2     | Message      |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name | CONNECTED TO |
 
-  @smoke @id1553
+  @regression @id1553
   Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request
     Given There are 2 users where <Name> is me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I wait until <Login2> exists in backend search results
@@ -129,7 +132,6 @@ Feature: Connect
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And User <Name> is me
-    And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -143,6 +145,7 @@ Feature: Connect
   Scenario Outline: Verify you can block a person from profile view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -164,6 +167,7 @@ Feature: Connect
     Given <Contact> is connected to Me,<Contact2>
     Given <Contact> has group chat <ChatName> with Me,<Contact2>
     Given I sent connection request to <Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -184,6 +188,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open conversation with <Contact1>
@@ -198,7 +203,6 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
@@ -210,7 +214,6 @@ Feature: Connect
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     And I Sign in using login <Login> and password <Password>
     And User <Name> is me
@@ -228,7 +231,8 @@ Feature: Connect
     Given Contact <User2> sends image <Picture1> to single user conversation <User1>
     Given <User2> pinged the conversation with <User1>
     Given User <User2> sent message <Msg1> to conversation <User1>
-    When I Sign in using login <User1> and password <User1Password>
+    Given I switch to Sign In page
+    Given I Sign in using login <User1> and password <User1Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <User2>
     Then I see text message <Msg1>
@@ -256,16 +260,19 @@ Feature: Connect
     Then I see text message <Msg2>
 
     Examples: 
-      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1       | Msg2     | Picture1 | Picture2    |
-      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1   | Message2 | cat.jpg  | puppies.jpg |
+      | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1     | Msg2     | Picture1                  | Picture2                 |
+      | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1 | Message2 | userpicture_landscape.jpg | userpicture_portrait.jpg |
 
-  @staging @id2317
+  @regression @id2317
   Scenario Outline: Verify you can dismiss user suggestion in PYMK list
     Given There are 3 users where <Me> is me
+    # we need to wait a bit, otherwise backend throws a 429 status
+    Given I wait for 5 seconds
     Given User <Contact1> has contact <Me> in address book
     Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact2>
     Given There are suggestions for user <Me> on backend
+    Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     And I see my avatar on top of Contact list
     When I open People Picker from Contact List
@@ -277,13 +284,16 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
       | user1Name | user1Email | user1Password | user2Name | user3Name |
 
-  @staging @id2318
+  @smoke @id2318
   Scenario Outline: Verify you can add a user from PYMK list
     Given There are 3 users where <Me> is me
+    # we need to wait a bit, otherwise backend throws a 429 status
+    Given I wait for 5 seconds
     Given User <Contact1> has contact <Me> in address book
     Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact2>
     Given There are suggestions for user <Me> on backend
+    Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     Given I see my avatar on top of Contact list
     When I open People Picker from Contact List
@@ -300,8 +310,13 @@ Feature: Connect
   @regression @id2548
   Scenario Outline: Verify you get auto-connected to people on sign-in
     Given There is 2 user where <Me> is me
+    # we need to wait a bit, otherwise backend throws a 429 status
+    Given I wait for 5 seconds
     Given User <Me> has contact <Contact> in address book
+    # we need to wait a bit, otherwise backend throws a 429 status
+    Given I wait for 5 seconds
     Given User <Contact> has contact <Me> in address book
+    Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
@@ -309,24 +324,47 @@ Feature: Connect
     Then I see START A CONVERSATION action for <Contact> in conversation
     Then I do not see text message
 
-    Examples:
+    Examples: 
+      | Me        | MyEmail    | MyPassword    | Contact   |
+      | user1Name | user1Email | user1Password | user2Name |
+
+  @staging @id2748
+  Scenario Outline: Verify you get auto-connected to people while being logged-in
+    Given There is 2 user where <Me> is me
+    # we need to wait a bit, otherwise backend throws a 429 status
+    Given I wait for 5 seconds
+    Given User <Me> has contact <Contact> in address book
+    Given I switch to Sign In page
+    Given I Sign in using login <MyEmail> and password <MyPassword>
+    And I see my avatar on top of Contact list
+    # we need to wait a bit, otherwise backend throws a 429 status
+    And I wait for 5 seconds
+    When User <Contact> has contact <Me> in address book
+    When I open conversation with <Contact>
+    Then I see CONNECTED TO action for <Contact> in conversation
+    Then I see START A CONVERSATION action for <Contact> in conversation
+    Then I do not see text message
+
+    Examples: 
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
   @regression @id1564
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search view)
-    Given There are 2 users where <Name> is me
-    Given I sent connection request to <Contact>
+    Given There are 3 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I open People Picker from Contact List
     And I wait for 2 seconds
-    And I type <Contact> in search field of People Picker
-    Then I see user <Contact> found in People Picker
-    When I click on pending user <Contact> found in People Picker
+    And I type <Contact1> in search field of People Picker
+    Then I see user <Contact1> found in People Picker
+    When I click on pending user <Contact1> found in People Picker
     And I see Pending Outgoing Connection popover
     When I click Pending button on Pending Outgoing Connection popover
-    Then I see conversation with <Contact> is selected in conversations list
+    Then I see conversation with <Contact1> is selected in conversations list
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |

@@ -2,7 +2,6 @@ package com.wearezeta.auto.common.driver;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -15,6 +14,12 @@ final class SessionHelper {
 			.getSimpleName());
 
 	private boolean isSessionLost = false;
+	@SuppressWarnings("unused")
+	private ZetaDriver wrappedDriver;
+
+	public SessionHelper(ZetaDriver wrappedDriver) {
+		this.wrappedDriver = wrappedDriver;
+	}
 
 	public static String stackTraceToString(Throwable e) {
 		StringBuilder sb = new StringBuilder();
@@ -26,7 +31,8 @@ final class SessionHelper {
 		return sb.toString();
 	}
 
-	public List<WebElement> wrappedFindElements(Function<By, List<WebElement>> f, By by) {
+	public List<WebElement> wrappedFindElements(
+			Function<By, List<WebElement>> f, By by) {
 		List<WebElement> result = null;
 		try {
 			result = f.apply(by);
@@ -39,7 +45,6 @@ final class SessionHelper {
 			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
 			setSessionLost(true);
 		}
-
 		return result;
 	}
 
@@ -56,13 +61,14 @@ final class SessionHelper {
 			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
 			setSessionLost(true);
 		}
-
 		return result;
 	}
 
-	public void wrappedClose(Supplier<Void> f) {
+	public static final int SCREENSHOTING_TIMEOUT_SECONDS = 15;
+
+	public void wrappedClose(IVoidMethod f) {
 		try {
-			f.get();
+			f.call();
 		} catch (org.openqa.selenium.remote.SessionNotFoundException ex) {
 			log.error("Setting isSessionLost=true");
 			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
@@ -70,9 +76,9 @@ final class SessionHelper {
 		}
 	}
 
-	public void wrappedQuit(Supplier<Void> f) {
+	public void wrappedQuit(IVoidMethod f) {
 		try {
-			f.get();
+			f.call();
 		} catch (org.openqa.selenium.remote.SessionNotFoundException ex) {
 			log.error("Setting isSessionLost=true");
 			log.error(ex.getMessage() + "\n" + stackTraceToString(ex));
@@ -87,5 +93,4 @@ final class SessionHelper {
 	private void setSessionLost(boolean isSesstionLost) {
 		this.isSessionLost = isSesstionLost;
 	}
-
 }

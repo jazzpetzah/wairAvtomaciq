@@ -4,12 +4,23 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.CallingLockscreenPage;
 import com.wearezeta.auto.android.pages.CallingOverlayPage;
-import com.wearezeta.auto.android.pages.PagesCollection;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.When;
 
 public class CallingPageSteps {
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
+	private CallingOverlayPage getCallingOverlayPage() throws Exception {
+		return (CallingOverlayPage) pagesCollection
+				.getPage(CallingOverlayPage.class);
+	}
+
+	private CallingLockscreenPage getCallingLockscreenPage() throws Exception {
+		return (CallingLockscreenPage) pagesCollection
+				.getPage(CallingLockscreenPage.class);
+	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -24,9 +35,7 @@ public class CallingPageSteps {
 	 */
 	@When("I click the ignore call button")
 	public void IClickIgnoreCallButton() throws Exception {
-		PagesCollection.callingOverlayPage = (CallingOverlayPage) PagesCollection.loginPage
-				.instantiatePage(CallingOverlayPage.class);
-		PagesCollection.callingOverlayPage.muteConversation();
+		getCallingOverlayPage().muteConversation();
 	}
 
 	/**
@@ -35,7 +44,7 @@ public class CallingPageSteps {
 	 * 
 	 * @step. ^I see incoming calling message for contact (.*)$
 	 * 
-	 * @param contact
+	 * @param expectedCallerName
 	 *            User name who calls
 	 * @throws Exception
 	 */
@@ -44,20 +53,10 @@ public class CallingPageSteps {
 			throws Exception {
 		expectedCallerName = usrMgr.findUserByNameOrNameAlias(
 				expectedCallerName).getName();
-		final long millisecondsStarted = System.currentTimeMillis();
-		String actualCallerName;
-		do {
-			Thread.sleep(500);
-			actualCallerName = PagesCollection.callingOverlayPage
-					.getCallersName();
-		} while (System.currentTimeMillis() - millisecondsStarted <= CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS
-				&& !actualCallerName.equals(expectedCallerName));
-		Assert.assertEquals(
-				String.format(
-						"The current caller name '%s' differs from the expected value '%s' after %s seconds timeout",
-						actualCallerName, expectedCallerName,
-						CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS / 1000),
-				expectedCallerName, actualCallerName);
+		Assert.assertTrue(String.format(
+				"The current caller name differs from the expected value '%s'",
+				expectedCallerName), getCallingOverlayPage()
+				.waitUntilNameAppearsOnCallingBar(expectedCallerName));
 	}
 
 	/**
@@ -71,26 +70,11 @@ public class CallingPageSteps {
 	@When("^I see started call message for contact (.*)$")
 	public void ISeeStartedCallMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		String callersName = PagesCollection.callingOverlayPage
-				.getCallersName();
-		Assert.assertEquals(contact, callersName);
-	}
-
-	/**
-	 * Wait for call message changes
-	 * 
-	 * @step. ^I wait for call message changes from (.*) for (.*) seconds$
-	 * @param oldMessage
-	 *            call message that should disappear
-	 * @param sec
-	 *            timeout
-	 * @throws InterruptedException
-	 */
-	@When("^I wait for call message changes from (.*) for (.*) seconds$")
-	public void IWaitFormCallMessageChanges(String oldMessage, int sec)
-			throws InterruptedException {
-		PagesCollection.callingOverlayPage.waitForCallersNameChanges(
-				oldMessage, sec);
+		Assert.assertTrue(
+				String.format("'%s' name is not visible on calling bar",
+						contact),
+				getCallingOverlayPage().waitUntilNameAppearsOnCallingBar(
+						contact));
 	}
 
 	/**
@@ -102,8 +86,7 @@ public class CallingPageSteps {
 	 */
 	@When("^I cannot see the call bar$")
 	public void ICannotSeeTheCallBar() throws Exception {
-		Assert.assertTrue(PagesCollection.callingOverlayPage
-				.waitUntilNotVisible());
+		Assert.assertTrue(getCallingOverlayPage().waitUntilNotVisible());
 	}
 
 	/**
@@ -116,9 +99,9 @@ public class CallingPageSteps {
 	 */
 	@When("I see the call lock screen$")
 	public void ISeeTheCallLockScreen() throws Exception {
-		PagesCollection.callingLockscreenPage = (CallingLockscreenPage) PagesCollection.loginPage
-				.instantiatePage(CallingLockscreenPage.class);
-		Assert.assertTrue(PagesCollection.callingLockscreenPage.isVisible());
+		Assert.assertTrue(
+				"Calling lockscreen is not visible, but it should be",
+				getCallingLockscreenPage().isVisible());
 	}
 
 	/**
@@ -141,8 +124,7 @@ public class CallingPageSteps {
 		String actualCallerName;
 		do {
 			Thread.sleep(500);
-			actualCallerName = PagesCollection.callingLockscreenPage
-					.getCallersName();
+			actualCallerName = getCallingLockscreenPage().getCallersName();
 		} while (System.currentTimeMillis() - millisecondsStarted <= CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS
 				&& !actualCallerName.equals(expectedCallerName));
 		Assert.assertEquals(
@@ -162,10 +144,7 @@ public class CallingPageSteps {
 	 */
 	@When("I answer the call from the overlay bar$")
 	public void IAnswerCallFromTheOverlayBar() throws Exception {
-		PagesCollection.callingOverlayPage = (CallingOverlayPage) PagesCollection.loginPage
-				.instantiatePage(CallingOverlayPage.class);
-		PagesCollection.dialogPage = PagesCollection.callingOverlayPage
-				.acceptCall();
+		getCallingOverlayPage().acceptCall();
 	}
 
 	/**
@@ -178,8 +157,7 @@ public class CallingPageSteps {
 	 */
 	@When("I answer the call from the lock screen$")
 	public void IAnswerCallFromTheLockScreen() throws Exception {
-		PagesCollection.callingOverlayPage = PagesCollection.callingLockscreenPage
-				.acceptCall();
+		getCallingLockscreenPage().acceptCall();
 	}
 
 	// FIXME: replace multiple assertTrue calls with loops
@@ -193,19 +171,14 @@ public class CallingPageSteps {
 	 */
 	@When("^I see calling overlay Big bar$")
 	public void WhenISeeCallingOverlayBigBar() throws Exception {
-		Assert.assertTrue(PagesCollection.callingOverlayPage
-				.callingOverlayIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage
+		Assert.assertTrue(getCallingOverlayPage().callingOverlayIsVisible());
+		Assert.assertTrue(getCallingOverlayPage()
 				.incominCallerAvatarIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage
-				.callingMessageIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage
-				.callingDismissIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage
-				.callingSpeakerIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage
-				.callingMicMuteIsVisible());
-		Assert.assertFalse(PagesCollection.callingOverlayPage
+		Assert.assertTrue(getCallingOverlayPage().callingMessageIsVisible());
+		Assert.assertTrue(getCallingOverlayPage().callingDismissIsVisible());
+		Assert.assertTrue(getCallingOverlayPage().callingSpeakerIsVisible());
+		Assert.assertTrue(getCallingOverlayPage().callingMicMuteIsVisible());
+		Assert.assertFalse(getCallingOverlayPage()
 				.ongoingCallMinibarIsVisible());
 	}
 
@@ -218,7 +191,7 @@ public class CallingPageSteps {
 	 */
 	@When("^I see calling overlay Micro bar$")
 	public void WhenISeeCallingOverlayMicroBar() throws Exception {
-		Assert.assertTrue(PagesCollection.callingOverlayPage
+		Assert.assertTrue(getCallingOverlayPage()
 				.ongoingCallMicrobarIsVisible());
 	}
 
@@ -231,16 +204,11 @@ public class CallingPageSteps {
 	 */
 	@When("^I see calling overlay Mini bar$")
 	public void WhenISeeCallingOverlayMiniBar() throws Exception {
-		Assert.assertTrue(PagesCollection.callingOverlayPage
-				.ongoingCallMinibarIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage
-				.callingMessageIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage
-				.callingDismissIsVisible());
-		Assert.assertFalse(PagesCollection.callingOverlayPage
-				.callingSpeakerIsVisible());
-		Assert.assertTrue(PagesCollection.callingOverlayPage
-				.callingMicMuteIsVisible());
+		Assert.assertTrue(getCallingOverlayPage().ongoingCallMinibarIsVisible());
+		Assert.assertTrue(getCallingOverlayPage().callingMessageIsVisible());
+		Assert.assertTrue(getCallingOverlayPage().callingDismissIsVisible());
+		Assert.assertFalse(getCallingOverlayPage().callingSpeakerIsVisible());
+		Assert.assertTrue(getCallingOverlayPage().callingMicMuteIsVisible());
 	}
 
 }

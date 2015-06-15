@@ -12,25 +12,40 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class ContactListPageSteps {
+	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
+			.getInstance();
+
+	private ContactListPage getContactListPage() throws Exception {
+		return (ContactListPage) pagesCollection.getPage(ContactListPage.class);
+	}
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Close People Picker and open contact list without contacts (Should these
-	 * two pieces of behaviour be different steps?)
+	 * Verify whether conversations list is visible and no contacts are there
 	 * 
-	 * @step. ^I see Contact list with no contacts$
+	 * @step. ^I see Contact list with (no )?contacts$
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^I see Contact list with no contacts$")
-	public void GivenISeeContactListWithNoContacts() throws Exception {
-		PagesCollection.loginPage.verifyLoginFinished();
+	@Given("^I see Contact list with (no )?contacts$")
+	public void GivenISeeContactListWithNoContacts(String shouldNotBeVisible)
+			throws Exception {
+		getContactListPage().verifyContactListIsFullyLoaded();
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue(
+					"No conversations are visible in the conversations list, but some are expected",
+					getContactListPage().isAnyConversationVisible());
+		} else {
+			Assert.assertFalse(
+					"Some conversations are visible in the conversations list, but zero is expected",
+					getContactListPage().isAnyConversationVisible());
+
+		}
 	}
 
 	/**
-	 * After login checks to see that a conversation list exists with the
-	 * current user name visible at the top (Must log in first for this step to
-	 * work - seems like it should be independent of the step before it)
+	 * Verify whether conversations list is visible
 	 * 
 	 * @step. ^I see Contact list$
 	 * 
@@ -38,8 +53,7 @@ public class ContactListPageSteps {
 	 */
 	@Given("^I see Contact list$")
 	public void GivenISeeContactList() throws Exception {
-		PagesCollection.loginPage.verifyLoginFinished();
-		PagesCollection.contactListPage.verifyContactListIsFullyLoaded();
+		getContactListPage().verifyContactListIsFullyLoaded();
 	}
 
 	/**
@@ -58,8 +72,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.currentPage = PagesCollection.contactListPage
-				.tapOnName(contactName);
+		getContactListPage().tapOnName(contactName);
 	}
 
 	/**
@@ -71,8 +84,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I tap on my avatar$")
 	public void WhenITapOnMyAvatar() throws Exception {
-		PagesCollection.personalInfoPage = (PersonalInfoPage) PagesCollection.contactListPage
-				.tapOnMyAvatar();
+		getContactListPage().tapOnMyAvatar();
 	}
 
 	/**
@@ -83,8 +95,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I swipe down contact list$")
 	public void ISwipeDownContactList() throws Exception {
-		PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
-				.swipeDown(1000);
+		getContactListPage().swipeDown(1000);
 	}
 
 	/**
@@ -104,11 +115,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently - seems bad...
 		}
-		AndroidPage page = PagesCollection.contactListPage.swipeRightOnContact(
-				1500, contact);
-		if (page instanceof DialogPage) {
-			PagesCollection.dialogPage = (DialogPage) page;
-		}
+		getContactListPage().swipeRightOnContact(1500, contact);
 	}
 
 	/**
@@ -120,8 +127,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I press Open StartUI")
 	public void WhenIPressOpenStartUI() throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
-				.pressOpenStartUI();
+		getContactListPage().pressOpenStartUI();
 	}
 
 	/**
@@ -132,7 +138,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I swipe up contact list$")
 	public void ISwipeUpContactList() throws Exception {
-		PagesCollection.contactListPage.contactListSwipeUp(1000);
+		getContactListPage().contactListSwipeUp(1000);
 	}
 
 	/**
@@ -151,10 +157,11 @@ public class ContactListPageSteps {
 			throws Exception {
 		contact1 = usrMgr.findUserByNameOrNameAlias(contact1).getName();
 		contact2 = usrMgr.findUserByNameOrNameAlias(contact2).getName();
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isContactExists(contact1 + ", " + contact2)
-				|| PagesCollection.contactListPage.isContactExists(contact2
-						+ ", " + contact1));
+		// FIXME: the step should be more universal
+		Assert.assertTrue(getContactListPage().isContactExists(
+				contact1 + ", " + contact2)
+				|| getContactListPage().isContactExists(
+						contact2 + ", " + contact1));
 	}
 
 	/**
@@ -175,58 +182,41 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.contactListPage.waitForConversationListLoad();
+		getContactListPage().waitForConversationListLoad();
 		if (shouldNotSee == null) {
-			Assert.assertTrue(PagesCollection.contactListPage.isContactExists(
-					userName, 1));
+			Assert.assertTrue(getContactListPage().isContactExists(userName, 1));
 		} else {
-			Assert.assertTrue(PagesCollection.contactListPage
-					.waitUntilContactDisappears(userName));
+			Assert.assertTrue(getContactListPage().waitUntilContactDisappears(
+					userName));
 		}
 	}
 
 	/**
-	 * Check that Conversation List contains Random user from PYMK
+	 * Checks to see that the muted symbol appears or not for the given contact.
 	 * 
-	 * @step. ^I see contact list loaded with PeoplePicker Random Connect$
-	 * 
+	 * @step. "^Contact (.*) is (not )?muted$
+	 * @param contact
+	 * @param shouldNotBeMuted
+	 *            is set to null if 'not' part does not exist
+	 * @throws Exception
 	 */
-	@Then("^I see contact list loaded with PeoplePicker Random Connect$")
-	public void ThenISeeContactListLoadedWithPeoplePickerRandomConnect()
+	@Then("^Contact (.*) is (not )?muted$")
+	public void ContactIsMutedOrNot(String contact, String shouldNotBeMuted)
 			throws Exception {
-		Assert.assertTrue(PagesCollection.contactListPage.isContactExists(
-				PeoplePickerPageSteps.randomConnectName, 5));
-	}
-
-	/**
-	 * Checks to see that the muted symbol appears. Note, it just checks to see
-	 * that a mute symbol exists, not that one exists next to a given user
-	 * 
-	 * @step. ^Contact (.*) is muted$
-	 * @param contact
-	 * @throws Exception
-	 */
-	@Then("^Contact (.*) is muted$")
-	public void ContactIsMuted(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isContactMuted(contact));
-	}
-
-	/**
-	 * Check to see that the muted symbol does not appear Note, this step just
-	 * checks to see that there is no muted symbol, not that there isn't one
-	 * next to a given user
-	 * 
-	 * @step. ^Contact (.*) is not muted$
-	 * @param contact
-	 * @throws Exception
-	 */
-	@Then("^Contact (.*) is not muted$")
-	public void ThenContactIsNotMuted(String contact) throws Exception {
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.contactListPage
-				.waitUntilContactNotMuted(contact));
+		if (shouldNotBeMuted == null) {
+			Assert.assertTrue(
+					String.format(
+							"The conversation '%s' is supposed to be muted, but it is not",
+							contact),
+					getContactListPage().isContactMuted(contact));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"The conversation '%s' is supposed to be not muted, but it is",
+							contact), getContactListPage()
+							.waitUntilContactNotMuted(contact));
+		}
 	}
 
 	/**
@@ -243,8 +233,8 @@ public class ContactListPageSteps {
 			throws Exception {
 		convoName = usrMgr.replaceAliasesOccurences(convoName,
 				FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.contactListPage
-				.isPlayPauseMediaButtonVisible(convoName));
+		Assert.assertTrue(getContactListPage().isPlayPauseMediaButtonVisible(
+				convoName));
 	}
 
 	/**
@@ -257,7 +247,6 @@ public class ContactListPageSteps {
 	 */
 	@When("^I open People Picker$")
 	public void IOpenPeoplePicker() throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
-				.openPeoplePicker();
+		getContactListPage().openPeoplePicker();
 	}
 }

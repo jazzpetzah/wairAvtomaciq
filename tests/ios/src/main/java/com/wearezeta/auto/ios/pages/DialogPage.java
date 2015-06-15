@@ -92,7 +92,7 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddPictureButton)
 	private WebElement addPictureButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathCallButton)
+	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCallButton)
 	private WebElement callButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
@@ -208,7 +208,8 @@ public class DialogPage extends IOSPage {
 		DriverUtils.iOSMultiTap(this.getDriver(), conversationInput, 3);
 	}
 
-	public void sendStringToInput(String message) throws InterruptedException {
+	public void sendStringToInput(String message) throws Exception {
+		waitForCursorInputVisible();
 		conversationInput.sendKeys(message);
 	}
 
@@ -904,5 +905,9 @@ public class DialogPage extends IOSPage {
 		} else {
 			return false;
 		}
+	}
+
+	public void clickOnPlayVideoButton() throws Exception{
+		youtubeCell.click();
 	}
 }
