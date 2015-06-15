@@ -21,17 +21,9 @@ final class CallingServiceREST {
 	private static final Logger log = ZetaLogger
 			.getLog(CallingServiceREST.class.getSimpleName());
 
-	private static final String URL_PROTOCOL = "http://";
-
 	public static String getApiRoot() {
 		try {
-			return String
-					.format("%s%s:%s",
-							URL_PROTOCOL,
-							CommonUtils
-									.getDefaultCallingServiceHostFromConfig(CallingServiceREST.class),
-							CommonUtils
-									.getDefaultCallingServicePortFromConfig(CallingServiceREST.class));
+			return CommonUtils.getDefaultCallingServiceUrlFromConfig(CallingServiceREST.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
