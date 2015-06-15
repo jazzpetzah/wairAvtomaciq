@@ -105,3 +105,20 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact   | NewName  | Color        |
       | user1Email | user1Password | user1Name | user2Name | PING     | BrightOrange |
+
+  @staging @id2761
+  Scenario Outline: Verify conversations are sorted according to most recent activity
+    Given There are 4 users where <Name> is me
+    Given <Name> is connected to <Contact1>,<Contact2>,<Contact3>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And Contact <Contact3> send number <Number> of message to user <Name>
+    And I see first item in contact list named <Contact3>
+    When Contact <Contact2> ping conversation <Name>
+    And I see first item in contact list named <Contact2>
+    When Contact <Contact1> sends image <Picture> to single user conversation <Name>
+    Then I see first item in contact list named <Contact1>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2   | Contact3     |Number |  Picture      |
+      | user1Email | user1Password | user1Name | user2Name | user3name  | user4name    | 2 	   | testing.jpg   |

@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @regression @id589 @deployPictures
+  @smoke @id589 @deployPictures
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I enter phone number for user <Name>

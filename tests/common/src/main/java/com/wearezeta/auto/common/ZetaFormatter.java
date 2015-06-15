@@ -2,6 +2,7 @@ package com.wearezeta.auto.common;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +19,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
-import com.wearezeta.auto.common.driver.HasParallelScreenshotsFeature;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -41,8 +41,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 	private static final Logger log = ZetaLogger.getLog(ZetaFormatter.class
 			.getSimpleName());
 
-	private long startDate;
-	private long endDate;
+	private long stepStartedTimestamp;
 
 	private static String buildNumber = "unknown";
 
@@ -63,8 +62,6 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	@Override
 	public void eof() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -101,98 +98,102 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	@Override
 	public void uri(String arg0) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void after(Match arg0, Result arg1) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void before(Match arg0, Result arg1) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void embedding(String arg0, byte[] arg1) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void match(Match arg0) {
-		startDate = new Date().getTime();
+		stepStartedTimestamp = new Date().getTime();
 	}
 
-	@Override
-	public void result(Result arg0) {
-		endDate = new Date().getTime();
-		final String currentStep = step.poll();
-
-		log.debug(currentStep + " (status: " + arg0.getStatus() + ", time: "
-				+ (endDate - startDate) + "ms)");
-
-		// take screenshot
-		try {
-			if (CommonUtils.getMakeScreenshotsFromConfig(this.getClass())) {
-				final ZetaDriver driver = getDriver(
-						arg0.getStatus().equals(Result.FAILED)).orElse(null);
-				if (driver != null) {
-					if (arg0.getStatus().equals(Result.SKIPPED.getStatus())) {
-						// Don't make screenshots for skipped steps to speed up
-						// suite execution
-						return;
-					}
-					initScreenshotMakers(driver);
-					final String screenshotPath = String.format(
-							"%s/%s/%s/%s.png", CommonUtils
-									.getPictureResultsPathFromConfig(this
-											.getClass()), feature.replaceAll(
-									"\\W+", "_"), scenario.replaceAll("\\W+",
-									"_"), currentStep.replaceAll("\\W+", "_"));
-					if (screenshotMakers.isPresent()) {
-						final Runnable task = new Thread(() -> storeScreenshot(
-								driver, screenshotPath));
-						screenshotMakers.get().execute(task);
-					} else {
-						storeScreenshot(driver, screenshotPath);
-					}
-				} else {
-					log.debug(String
-							.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
-									currentStep));
-				}
+	private void takeStepScreenshot(final Result stepResult,
+			final String stepName) throws Exception {
+		final ZetaDriver driver = getDriver(
+				stepResult.getStatus().equals(Result.FAILED)).orElse(null);
+		if (driver != null) {
+			if (stepResult.getStatus().equals(Result.SKIPPED.getStatus())) {
+				// Don't make screenshots for skipped steps to speed up
+				// suite execution
+				return;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void storeScreenshot(ZetaDriver driver, String path) {
-		try {
+			final String screenshotPath = String
+					.format("%s/%s/%s/%s.png", CommonUtils
+							.getPictureResultsPathFromConfig(this.getClass()),
+							feature.replaceAll("\\W+", "_"), scenario
+									.replaceAll("\\W+", "_"), stepName
+									.replaceAll("\\W+", "_"));
 			final Optional<BufferedImage> screenshot = DriverUtils
 					.takeFullScreenShot(driver);
 			if (!screenshot.isPresent()) {
 				return;
 			}
-			BufferedImage imgToWrite = screenshot.get();
+			screenshotSavers.execute(() -> storeScreenshot(screenshot.get(),
+					screenshotPath));
+		} else {
+			log.debug(String
+					.format("Selenium driver is not ready yet. Skipping screenshot creation for step '%s'",
+							stepName));
+		}
+	}
+
+	@Override
+	public void result(Result arg0) {
+		final String stepName = step.poll();
+		final String stepStatus = arg0.getStatus();
+		final long stepFinishedTimestamp = new Date().getTime();
+		boolean isScreenshotingEnabled = true;
+		try {
+			isScreenshotingEnabled = CommonUtils
+					.getMakeScreenshotsFromConfig(this.getClass());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (isScreenshotingEnabled) {
+			try {
+				takeStepScreenshot(arg0, stepName);
+			} catch (Exception e) {
+				// Ignore screenshoting exceptions
+				e.printStackTrace();
+			}
+			final long screenshotFinishedTimestamp = new Date().getTime();
+			log.debug(String
+					.format("%s (status: %s, step duration: %s ms + screenshot duration: %s ms)",
+							stepName, stepStatus, stepFinishedTimestamp
+									- stepStartedTimestamp,
+							screenshotFinishedTimestamp - stepFinishedTimestamp));
+		} else {
+			log.debug(String.format("%s (status: %s, step duration: %s ms)",
+					stepName, stepStatus, stepFinishedTimestamp
+							- stepStartedTimestamp));
+		}
+	}
+
+	private void storeScreenshot(final BufferedImage screenshot,
+			final String path) {
+		try {
 			final File outputfile = new File(path);
 			if (!outputfile.getParentFile().exists()) {
 				outputfile.getParentFile().mkdirs();
 			}
-			ImageIO.write(imgToWrite, "png", outputfile);
-		} catch (Exception e) {
+			ImageIO.write(screenshot, "png", outputfile);
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
 	public void write(String arg0) {
-		// TODO Auto-generated method stub
 	}
 
 	private static Optional<ZetaDriver> getDriver(boolean forceWait)
@@ -206,45 +207,15 @@ public class ZetaFormatter implements Formatter, Reporter {
 		}
 	}
 
-	private void initScreenshotMakers(ZetaDriver driver) {
-		if (screenshotMakers.isPresent()) {
-			return;
-		}
-		if (driver instanceof HasParallelScreenshotsFeature) {
-			final int threadsCount = ((HasParallelScreenshotsFeature) driver)
-					.getMaxScreenshotMakersCount();
-			log.info(String
-					.format("%s declares support of multithreaded screenshots. Will do screenshots in %s parallel threads.",
-							driver.getClass().getSimpleName(), threadsCount));
-			screenshotMakers = Optional.of(Executors
-					.newFixedThreadPool(threadsCount));
-		} else {
-			screenshotMakers = Optional.empty();
-		}
-	}
-
 	private static Future<? extends RemoteWebDriver> lazyDriver = null;
 
 	public synchronized static void setLazyDriver(
 			Future<? extends RemoteWebDriver> lazyDriver) {
 		ZetaFormatter.lazyDriver = lazyDriver;
-		if (screenshotMakers.isPresent()) {
-			screenshotMakers.get().shutdownNow();
-			try {
-				screenshotMakers.get().awaitTermination(0, TimeUnit.SECONDS);
-			} catch (InterruptedException e) {
-				// ignore silently
-			}
-			screenshotMakers = Optional.empty();
-		}
 	}
 
-	private static Optional<ExecutorService> screenshotMakers = Optional
-			.empty();
-
-	public static Optional<ExecutorService> getScreenshotMakers() {
-		return screenshotMakers;
-	}
+	private static final ExecutorService screenshotSavers = Executors
+			.newFixedThreadPool(3);
 
 	@Override
 	public void startOfScenarioLifeCycle(Scenario scenario) {
