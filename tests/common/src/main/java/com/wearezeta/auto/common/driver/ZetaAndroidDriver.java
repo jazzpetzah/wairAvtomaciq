@@ -38,7 +38,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import io.appium.java_client.android.AndroidDriver;
 
 public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
-		HasTouchScreen, HasParallelScreenshotsFeature {
+		HasTouchScreen {
 
 	private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
 			.getSimpleName());
@@ -314,21 +314,6 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			return ScreenOrientation.LANDSCAPE;
 		} else {
 			return ScreenOrientation.PORTRAIT;
-		}
-	}
-
-	@Override
-	public int getMaxScreenshotMakersCount() {
-		return 2;
-	}
-
-	@Override
-	public void forceStopOfScreenshoting() {
-		try {
-			CommonUtils.executeOsXCommand(new String[] { "/bin/bash", "-c",
-					"pkill -9 'adb shell screencap'" });
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 }
