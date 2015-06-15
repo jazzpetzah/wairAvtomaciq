@@ -266,6 +266,8 @@ Feature: Connect
   @regression @id2317
   Scenario Outline: Verify you can dismiss user suggestion in PYMK list
     Given There are 3 users where <Me> is me
+    # we need to wait a bit, otherwise backend throws a 429 status
+    Given I wait for 5 seconds
     Given User <Contact1> has contact <Me> in address book
     Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact2>
@@ -285,6 +287,8 @@ Feature: Connect
   @smoke @id2318
   Scenario Outline: Verify you can add a user from PYMK list
     Given There are 3 users where <Me> is me
+    # we need to wait a bit, otherwise backend throws a 429 status
+    Given I wait for 5 seconds
     Given User <Contact1> has contact <Me> in address book
     Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact2>

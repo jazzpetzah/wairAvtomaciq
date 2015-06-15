@@ -317,7 +317,7 @@ public class ContactListPage extends WebPage {
 		}
 	}
 
-	private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 3; // seconds
+	private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 8; // seconds
 
 	public ConversationPage openConversation(String conversationName)
 			throws Exception {

@@ -4,11 +4,10 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.ScreenOrientation;
 
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
-import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -52,21 +51,25 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		try {
 			getContactListPage().waitForConversationListLoad();
 		} finally {
-			ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
 			// FIXME: Workaround for android bug AN-2238
-			Thread.sleep(500);
-			try {
-				DriverUtils
-						.swipeRight(
-								getDriver(),
-								getDriver()
-										.findElement(
-												By.xpath(PersonalInfoPage.xpathParentSelfProfileOverlay)),
-								1000);
-			} catch (WebDriverException e) {
-				e.printStackTrace();
-			}
+			this.fixOrientation();
 		}
+	}
+
+	private void fixOrientation() throws Exception {
+		final ScreenOrientation currentOrientation = ScreenOrientationHelper
+				.getInstance().fixOrientation(getDriver());
+		if (currentOrientation == ScreenOrientation.LANDSCAPE) {
+			// No need to swipe right in landscape orientation
+			return;
+		}
+
+		final By overlayLocator = By
+				.id(TabletSelfProfilePage.idSelfProfileView);
+		this.tapOnCenterOfScreen();
+		this.tapOnCenterOfScreen();
+		DriverUtils.swipeRight(getDriver(),
+				getDriver().findElement(overlayLocator), 1000);
 	}
 
 	public TabletSelfProfilePage tapMyAvatar() throws Exception {
