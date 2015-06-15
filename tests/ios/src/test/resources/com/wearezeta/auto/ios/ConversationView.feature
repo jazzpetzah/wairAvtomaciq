@@ -535,3 +535,34 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   | SoundCloudLink |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/isabella-emanuelsson/david-guetta-she-wolf-falling |
+      
+  @staging @id2762
+  Scenario Outline: Receive message from contact
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And Contact <Contact> send message to user <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id2763 @deployPictures
+  Scenario Outline: Receive a camera roll picture from user from contact list
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Picture | ConversationType | 
+      | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user | 
+  

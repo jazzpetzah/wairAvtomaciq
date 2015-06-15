@@ -543,11 +543,11 @@ public final class IOSLocators {
 		
 		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CALLING')]";
 		
-		public static final String xpathEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[1]";
+		public static final String xpathEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[3]";
 		
 		public static final String xpathSpeakersButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[4]";
 		
-		public static final String xpathMuteCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[3]";
+		public static final String xpathMuteCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[5]";
 	}
 	
 	public final class IncomingCallPage {
