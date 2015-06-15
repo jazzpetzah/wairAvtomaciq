@@ -270,7 +270,7 @@ public class PersonalInfoPageSteps {
 	}
 
 	private static final int PROFILE_IMAGE_CHANGE_TIMEOUT_SECONDS = 60;
-	private static final double MAX_OVERLAP_SCORE = 0.50;
+	private static final double MAX_OVERLAP_SCORE = 0.65;
 
 	/**
 	 * Verify that profile picture is different from the previously snapshotted
