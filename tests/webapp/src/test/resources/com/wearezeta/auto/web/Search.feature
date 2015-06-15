@@ -126,7 +126,7 @@ Feature: Search
       | Login      | Password      | Name      | Name2     | Login2     | Password2     |
       | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password |
 
-  @staging @id1721 @torun
+  @staging @id1721
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>
