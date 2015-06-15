@@ -56,6 +56,8 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		}
 	}
 
+	final static int MAX_ORIENTATION_FIX_RETRIES = 3;
+
 	private void fixOrientation() throws Exception {
 		final ScreenOrientation currentOrientation = ScreenOrientationHelper
 				.getInstance().fixOrientation(getDriver());
@@ -66,10 +68,20 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
 		final By overlayLocator = By
 				.id(TabletSelfProfilePage.idSelfProfileView);
-		this.tapOnCenterOfScreen();
-		this.tapOnCenterOfScreen();
-		DriverUtils.swipeRight(getDriver(),
-				getDriver().findElement(overlayLocator), 1000);
+		final int screenWidth = getDriver().manage().window().getSize()
+				.getWidth();
+		int ntry = 1;
+		while (getDriver().findElement(overlayLocator).getLocation().getX() < screenWidth / 2
+				&& ntry <= MAX_ORIENTATION_FIX_RETRIES) {
+			this.tapOnCenterOfScreen();
+			this.tapOnCenterOfScreen();
+			DriverUtils.swipeRight(getDriver(),
+					getDriver().findElement(overlayLocator), 1000);
+			ntry++;
+		}
+		if (ntry > MAX_ORIENTATION_FIX_RETRIES) {
+			throw new IllegalStateException("Conversations list is not visible");
+		}
 	}
 
 	public TabletSelfProfilePage tapMyAvatar() throws Exception {
