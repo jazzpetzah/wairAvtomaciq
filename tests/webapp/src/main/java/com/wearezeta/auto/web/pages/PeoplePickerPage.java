@@ -71,7 +71,7 @@ public class PeoplePickerPage extends WebPage {
 		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 				.apply(name);
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(foundUserXpath), 5);
+				By.xpath(foundUserXpath));
 	}
 
 	public void closeSearch() throws Exception {
@@ -189,6 +189,7 @@ public class PeoplePickerPage extends WebPage {
 		getDriver().findElement(
 				By.cssSelector(WebAppLocators.PeoplePickerPage.cssAddIconByName
 						.apply(user))).click();
+		DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
 	public ConnectToPopoverContainer clickPendingUserName(String name)
