@@ -204,7 +204,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			BufferedImage screenshotImage = ImageIO
 					.read(new ByteArrayInputStream(initialScreenshot));
 			screenshotImage = ImageUtil.tilt(screenshotImage,
-					(currentOrientation.getCode()) * Math.PI / 2);
+					-currentOrientation.getCode() * Math.PI / 2);
 			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ImageIO.write(screenshotImage, "png", baos);
 			return baos.toByteArray();

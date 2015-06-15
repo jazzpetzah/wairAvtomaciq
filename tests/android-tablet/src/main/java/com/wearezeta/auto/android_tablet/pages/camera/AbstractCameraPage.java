@@ -6,6 +6,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.android_tablet.pages.AndroidTabletPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -49,6 +50,7 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(xpathConfirmButton));
 		okConfirmButton.click();
+		ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
 	}
 
 	public void tapGalleryButton() throws Exception {
