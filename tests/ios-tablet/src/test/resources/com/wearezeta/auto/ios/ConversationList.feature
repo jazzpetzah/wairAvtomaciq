@@ -46,8 +46,7 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    When I swipe right on a <GroupChatName>
-    And I archive conversation <GroupChatName>
+    When I long swipe right to archive conversation <GroupChatName>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
@@ -64,8 +63,7 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in using phone number or login <Login> and password <Password>
     When I see Contact list with my name <Name>
-    When I swipe right on a <GroupChatName>
-    And I archive conversation <GroupChatName>
+	And I long swipe right to archive conversation <GroupChatName>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
