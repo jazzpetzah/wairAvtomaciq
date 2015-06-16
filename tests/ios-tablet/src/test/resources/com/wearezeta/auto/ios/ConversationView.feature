@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @staging @id2419
+  @regression @id2419
   Scenario Outline: Vefiry sending message [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2375
+  @regression @id2375
   Scenario Outline: Vefiry sending message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -33,7 +33,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id2695
+  @regression @id2695
   Scenario Outline: Receive message from contact [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -48,7 +48,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2695
+  @regression @id2695
   Scenario Outline: Receive message from contact [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -64,7 +64,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2413 @deployPictures 
+  @regression @id2413 @deployPictures 
   Scenario Outline: Verify sending image [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -83,7 +83,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2407 @deployPictures 
+  @regression @id2407 @deployPictures 
   Scenario Outline: Verify sending image [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -103,7 +103,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id2429
+  @regression @id2429
   Scenario Outline: Verify you can see Ping on the other side - 1:1 conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given User <Contact1> change name to <ContactName>
@@ -125,7 +125,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Action1 | Action2      | Color        | ContactName |
       | user1Email | user1Password | user1Name | user2Name | PINGED  | PINGED AGAIN | BrightOrange | OtherUser   |
 
-  @staging @id2429
+  @regression @id2429
   Scenario Outline: Verify you can see Ping on the other side - 1:1 conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given User <Contact1> change name to <ContactName>
@@ -148,7 +148,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Action1 | Action2      | Color        | ContactName |
       | user1Email | user1Password | user1Name | user2Name | PINGED  | PINGED AGAIN | BrightOrange | OtherUser   |
 
-  @staging @id2427
+  @regression @id2427
   Scenario Outline: Verify you can see Ping on the other side - group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -171,7 +171,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        | ContactName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |
 
-  @staging @id2427
+  @regression @id2427
   Scenario Outline: Verify you can see Ping on the other side - group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -195,7 +195,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        | ContactName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |
       
-  @staging @id2669 @deployPictures
+  @regression @id2669 @deployPictures
   Scenario Outline: Receive a camera roll picture from user from contact list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -210,7 +210,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture | ConversationType | 
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user | 
 
-  @staging @id2670 @deployPictures
+  @regression @id2670 @deployPictures
   Scenario Outline: Receive a camera roll picture from user from contact list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -226,7 +226,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture | ConversationType | 
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user | 
       
-  @staging @id2736
+  @regression @id2736
   Scenario Outline: Send Message to contact after navigating away from chat page [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -246,7 +246,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2737
+  @regression @id2737
   Scenario Outline: Send Message to contact after navigating away from chat page [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -267,7 +267,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id2738
+  @regression @id2738
   Scenario Outline: Send more than 200 chars message [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -282,7 +282,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2739
+  @regression @id2739
   Scenario Outline: Send more than 200 chars message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -298,7 +298,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id2740
+  @regression @id2740
   Scenario Outline: Send one line message with lower case and upper case [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -314,7 +314,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2741
+  @regression @id2741
   Scenario Outline: Send one line message with lower case and upper case [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -331,7 +331,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id2742
+  @regression @id2742
   Scenario Outline: Send special chars (German) [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -346,7 +346,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Text                  |
       | user1Email | user1Password | user1Name | user2Name | ÄäÖöÜüß & latin chars |
       
-  @staging @id2743
+  @regression @id2743
   Scenario Outline: Send special chars (German) [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -362,7 +362,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Text                  |
       | user1Email | user1Password | user1Name | user2Name | ÄäÖöÜüß & latin chars |
 
-  @staging @id2744
+  @regression @id2744
   Scenario Outline: Copy and paste to send the message [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -388,7 +388,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Text       |
       | user1Email | user1Password | user1Name | user2Name | TextToCopy |
       
-  @staging @id2745
+  @regression @id2745
   Scenario Outline: Copy and paste to send the message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -415,7 +415,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Text       |
       | user1Email | user1Password | user1Name | user2Name | TextToCopy |
 
-  @staging @id2746
+  @regression @id2746
   Scenario Outline: Send a text containing spaces on either end of message [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -436,7 +436,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
       
-  @staging @id2747
+  @regression @id2747
   Scenario Outline: Send a text containing spaces on either end of message [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -481,7 +481,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | YouTubeLink                                 |
       | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=gywGBuMUiI4 | 
       
-  @staging @id2403
+  @regression @id2403
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -503,7 +503,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
       
-  @staging @id2404
+  @regression @id2404
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
