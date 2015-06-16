@@ -205,7 +205,7 @@ public class AsyncProcess {
 		if (process.get().getClass().getName().equals("java.lang.UNIXProcess")) {
 			Field f = process.get().getClass().getDeclaredField("pid");
 			f.setAccessible(true);
-			return f.getInt(process);
+			return f.getInt(process.get());
 		} else {
 			throw new UnsupportedOperationException(
 					"getPid implementation is not available for non-Unix systems");
