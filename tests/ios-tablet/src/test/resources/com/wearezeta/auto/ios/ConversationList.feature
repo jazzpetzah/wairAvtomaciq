@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @staging @id2378 @id2568
+  @regression @id2378 @id2568
   Scenario Outline: Verify archive a conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -19,7 +19,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @staging @id2755 @id2377
+  @regression @id2755 @id2377
   Scenario Outline: Verify archive a conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -72,7 +72,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName    |
       | user1Email | user1Password | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
-  @staging @id2675
+  @regression @id2675
   Scenario Outline: Unarchive conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -89,7 +89,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | ArchivedUser |
       | user1Email | user1Password | user1Name | user2Name    |
 
-  @staging @id2751
+  @regression @id2751
   Scenario Outline: Unarchive conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
@@ -107,7 +107,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | ArchivedUser |
       | user1Email | user1Password | user1Name | user2Name    |
 
-  @staging @id2753
+  @regression @id2753
   Scenario Outline: Verify opening search by tapping on the search field [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in using login <Login> and password <Password>
@@ -119,7 +119,7 @@ Feature: Conversation List
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id2754
+  @regression @id2754
   Scenario Outline: Verify opening search by tapping on the search field [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -132,7 +132,7 @@ Feature: Conversation List
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id2369
+  @regression @id2369
   Scenario Outline: Verify Ping animation in the conversations list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -149,7 +149,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | NewName | Color        |
       | user1Email | user1Password | user1Name | user2Name | PING    | BrightOrange |
 
-  @staging @id2752
+  @regression @id2752
   Scenario Outline: Verify Ping animation in the conversations list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -167,7 +167,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | NewName | Color        |
       | user1Email | user1Password | user1Name | user2Name | PING    | BrightOrange |
 
-  @staging @id2367
+  @regression @id2367
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -186,7 +186,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | NewName    | Color        | Number |
       | user1Email | user1Password | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
 
-  @staging @id2711
+  @regression @id2711
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -206,7 +206,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | NewName    | Color        | Number |
       | user1Email | user1Password | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
 
-  @staging @id2756
+  @regression @id2756
   Scenario Outline: Verify conversations are sorted according to most recent activity [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
@@ -224,7 +224,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Email | user1Password | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
-  @staging @id2757
+  @regression @id2757
   Scenario Outline: Verify conversations are sorted according to most recent activity [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>

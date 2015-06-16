@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -79,7 +80,18 @@ public class GroupChatInfoPage extends IOSPage {
 
 	public void changeConversationName(String name) {
 		conversationNameTextField.clear();
-		conversationNameTextField.sendKeys(name + "\n");
+		int maxRetrys = 3;
+		int retryCounter = 0;
+		while (retryCounter < maxRetrys) {
+			try {
+				conversationNameTextField.sendKeys(name + "\n");
+				retryCounter = maxRetrys;
+			} catch (WebDriverException ex) {
+				conversationNameTextField.clear();
+				retryCounter++;
+			}
+		}
+
 	}
 
 	public boolean isNumberOfParticipants(int correctNumber) throws Exception {

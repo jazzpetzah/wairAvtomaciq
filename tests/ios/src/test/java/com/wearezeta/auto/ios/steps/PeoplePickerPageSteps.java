@@ -405,7 +405,7 @@ public class PeoplePickerPageSteps {
 
 	@When("I click Create Conversation button on People picker page")
 	public void IClickCreateConversationButton() throws Throwable {
-		if (!getPeoplePickerPage().isKeyboardVisible()) {
+		if (getPeoplePickerPage().isCreateConversationButtonVisible()) {
 			getPeoplePickerPage().clickCreateConversationButton();
 		} else {
 			WhenIClickOnGoButton();
