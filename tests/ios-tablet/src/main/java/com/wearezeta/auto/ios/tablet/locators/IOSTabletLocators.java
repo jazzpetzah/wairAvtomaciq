@@ -26,5 +26,9 @@ public final class IOSTabletLocators {
 		
 	}
 	
+	public static final class TabletOtherUserInfoPage {
+		public static final String xpathRemoveFromConversationOniPad = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAButton[@name='metaControllerRightButton']";
+		
+	}
 	
 }
