@@ -114,7 +114,7 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
-    Then I tap on 1 top connections
+    Then I tap on first 1 top connections
     #And I click Go button to create 1:1 conversation
     And I click Create Conversation button on People picker page
     And I wait for 2 seconds
@@ -138,7 +138,7 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
-    Then I tap on 1 top connections
+    Then I tap on first 1 top connections
     #And I click Go button to create 1:1 conversation
     And I click Create Conversation button on People picker page
     And I wait for 2 seconds
@@ -161,7 +161,7 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
-    Then I tap on 2 top connections
+    Then I tap on first 2 top connections
     And I click Create Conversation button on People picker page
     And I wait for 2 seconds
     And I open group conversation details
@@ -188,7 +188,7 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
-    And I tap on 2 top connections
+    And I tap on first 2 top connections
     And I click hide keyboard button
     And I click Create Conversation button on People picker page
     And I wait for 2 seconds

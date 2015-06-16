@@ -69,13 +69,13 @@ public final class LocalyticsAPIWrappers {
 		queryData
 				.put("app_id", stringsArrayToJSONArray(new String[] { appId }));
 		// https://api.localytics.com/docs#query-attribute-explorer
-		final String caninicalAttributeName = String.format("a:%s",
+		final String canonicalAttributeName = String.format("a:%s",
 				attributeName);
 		queryData.put("metrics",
 				stringsArrayToJSONArray(new String[] { "occurrences" }));
 		queryData
 				.put("dimensions",
-						stringsArrayToJSONArray(new String[] { caninicalAttributeName }));
+						stringsArrayToJSONArray(new String[] { canonicalAttributeName }));
 		JSONObject conditionsData = new JSONObject();
 		conditionsData.put("event_name", eventName);
 		JSONArray hourPeriodDefinition = stringsArrayToJSONArray(new String[] {
@@ -89,12 +89,12 @@ public final class LocalyticsAPIWrappers {
 			final JSONArray results = result.getJSONArray("results");
 			int numberOfOccurences = 0;
 			for (int idx = 0; idx < results.length(); idx++) {
-				if (results.getJSONObject(idx).has(caninicalAttributeName)) {
+				if (results.getJSONObject(idx).has(canonicalAttributeName)) {
 					if (attributeValue == null) {
 						numberOfOccurences += results.getJSONObject(idx)
 								.getInt("occurrences");
 					} else if (results.getJSONObject(idx)
-							.getString(caninicalAttributeName)
+							.getString(canonicalAttributeName)
 							.equals(attributeValue)) {
 						return results.getJSONObject(idx).getInt("occurrences");
 					}

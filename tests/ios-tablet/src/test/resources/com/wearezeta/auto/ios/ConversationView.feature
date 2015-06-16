@@ -466,7 +466,8 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type and send long message and media link <YoutubeLink>
+    And I type and send long message and media link <YouTubeLink>
+    And I see media link <YouTubeLink> and media in dialog
     And I click play video button
     And I scroll media out of sight until media bar appears
     And I pause playing the media in media bar
@@ -477,7 +478,7 @@ Feature: Conversation View
     Then The media stops playing
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | YoutubeLink                                 |
+      | Login      | Password      | Name      | Contact   | YouTubeLink                                 |
       | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=gywGBuMUiI4 | 
       
   @staging @id2403

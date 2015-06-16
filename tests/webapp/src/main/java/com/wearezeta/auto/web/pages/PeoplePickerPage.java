@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -40,6 +41,9 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(xpath = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']")
 	private List<WebElement> suggestions;
 
+	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathSelectedTopPeopleList)
+	private List<WebElement> selectedTopPeopleItemLocator;
+
 	public PeoplePickerPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -74,8 +78,9 @@ public class PeoplePickerPage extends WebPage {
 				By.xpath(foundUserXpath));
 	}
 
-	public void closeSearch() throws Exception {
+	public ContactListPage closeSearch() throws Exception {
 		closeSearchButton.click();
+		return new ContactListPage(getLazyDriver());
 	}
 
 	public boolean isParticipantVisible(String name) throws Exception {
@@ -206,5 +211,28 @@ public class PeoplePickerPage extends WebPage {
 		WebElement foundPendingUserElement = getDriver().findElement(
 				By.xpath(foundPendingUserXpath));
 		foundPendingUserElement.click();
+	}
+
+	public boolean isTopPeopleLabelVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.xpath(WebAppLocators.PeoplePickerPage.xpathTopPeople));
+	}
+
+	public void clickNameInTopPeople(String name) throws Exception {
+		String topPeopleItemLocator = WebAppLocators.PeoplePickerPage.xpathTopPeopleListByName
+				.apply(name);
+		getDriver().findElement(By.xpath(topPeopleItemLocator)).click();
+	}
+
+	public ArrayList<String> getNamesOfSelectedTopPeople() throws Exception {
+		ArrayList<String> namesOfSelectedTopPeople = new ArrayList<String>();
+		final By selectedTopPeopleItemLocator = By
+				.xpath(WebAppLocators.PeoplePickerPage.xpathSelectedTopPeopleList);
+		for (WebElement element : getDriver().findElements(
+				selectedTopPeopleItemLocator)) {
+			namesOfSelectedTopPeople
+					.add(element.getAttribute("data-uie-value"));
+		}
+		return namesOfSelectedTopPeople;
 	}
 }
