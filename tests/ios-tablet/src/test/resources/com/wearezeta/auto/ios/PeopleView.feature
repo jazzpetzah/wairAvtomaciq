@@ -141,3 +141,22 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroup    |
+   
+  @torun @staging @id2441 
+  Scenario Outline: Verify removing from group conversation [PORTRAIT]
+  	Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I select user on iPad group popover <Contact2>
+    And I click Remove on iPad
+    And I see remove warning message on iPad
+    And I confirm remove on iPad
+    
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveGroup    |
