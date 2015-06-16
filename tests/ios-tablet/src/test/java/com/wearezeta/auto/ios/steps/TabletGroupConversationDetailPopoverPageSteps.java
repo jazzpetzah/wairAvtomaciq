@@ -1,11 +1,22 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.ios.pages.TabletPagesCollection;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.ios.pages.TabletGroupConversationDetailPopoverPage;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class TabletGroupConversationDetailPopoverPageSteps {
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private TabletGroupConversationDetailPopoverPage getTabletGroupConversationDetailPopoverPage()
+			throws Exception {
+		return (TabletGroupConversationDetailPopoverPage) pagesCollecton
+				.getPage(TabletGroupConversationDetailPopoverPage.class);
+	}
 
 	/**
 	 * Opens the ellipses menu on the ipad popover
@@ -15,7 +26,7 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 	 */
 	@When("^I press conversation menu button on iPad$")
 	public void IPressConversationMenuButtonOniPad() throws Throwable {
-		TabletPagesCollection.tabletGroupConversationDetailPopoverPage
+		getTabletGroupConversationDetailPopoverPage()
 				.openConversationMenuOnPopover();
 	}
 
@@ -27,7 +38,7 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 	 */
 	@When("^I press leave converstation button on iPad$")
 	public void IPressLeaveConverstationButtonOniPad() throws Throwable {
-		TabletPagesCollection.tabletGroupConversationDetailPopoverPage
+		getTabletGroupConversationDetailPopoverPage()
 				.leaveConversation();
 	}
 
@@ -39,7 +50,7 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 	 */
 	@Then("^I press leave on iPad$")
 	public void i_press_leave_on_iPad() throws Throwable {
-		TabletPagesCollection.tabletGroupConversationDetailPopoverPage
+		getTabletGroupConversationDetailPopoverPage()
 				.confirmLeaveConversation();
 	}
 

@@ -121,7 +121,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroup    |
 
-  @smoke @id2708
+  @torun @smoke @id2708
   Scenario Outline: Verify leaving group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -134,9 +134,9 @@ Feature: People View
     And I open group conversation details on iPad
     And I press leave converstation button on iPad
     Then I press leave on iPad
-    #And I open archived conversations on iPad
-    #And I tap on group chat with name <GroupChatName>
-    #Then I see You Left message in group chat
+    And I open archived conversations on iPad
+    And I tap on group chat with name <GroupChatName>
+    Then I see You Left message in group chat
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
