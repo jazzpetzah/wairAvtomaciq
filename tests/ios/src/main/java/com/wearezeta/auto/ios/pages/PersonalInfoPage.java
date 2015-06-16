@@ -66,11 +66,8 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAllSoundAlertsButton)
 	private WebElement allSoundAlertsButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsChangePasswordButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsChangePasswordButton)
 	private WebElement settingsChangePasswordButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameChangePasswordPageChangePasswordButton)
-	private WebElement changePasswordPageChangePasswordButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsHelpButton)
 	private WebElement settingsHelpButton;
@@ -225,7 +222,7 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public boolean isResetPasswordPageVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(IOSLocators.xpathSettingsChangePasswordButton));
+		return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(IOSLocators.xpathChangePasswordPageChangePasswordButton));
 	}
 
 	public void clickChangePasswordButton() {

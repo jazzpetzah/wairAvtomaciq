@@ -92,9 +92,9 @@ public class ConnectToPageSteps {
 	}
 
 	/**
-	 * Inputs a message with a certain number of random characters from keyboard
+	 * Fill in a message with a certain number of random characters from keyboard
 	 * 
-	 * @step. I input message in connect dialog with (.*) characters
+	 * @step. I fill in (.*) characters in connect dialog
 	 * 
 	 * @param characters
 	 *            number of characters to input into dialog
@@ -109,7 +109,7 @@ public class ConnectToPageSteps {
 	/**
 	 * Checks that the max amount of characters are present
 	 * 
-	 * @step. I input message in connect dialog with (.*) characters
+	 * @step. I see message with max number of characters
 	 * @throws Exception
 	 * 
 	 */

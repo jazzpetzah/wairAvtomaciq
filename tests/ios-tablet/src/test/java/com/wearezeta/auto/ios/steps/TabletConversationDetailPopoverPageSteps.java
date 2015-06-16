@@ -5,6 +5,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.TabletConversationDetailPopoverPage;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class TabletConversationDetailPopoverPageSteps {
@@ -44,5 +45,7 @@ public class TabletConversationDetailPopoverPageSteps {
 	public void IPressAddButtonOniPadPopover() throws Throwable {
 		getTabletConversationDetailPopoverPage().addContactTo1on1Chat();
 	}
-
+	
+	
+	
 }
