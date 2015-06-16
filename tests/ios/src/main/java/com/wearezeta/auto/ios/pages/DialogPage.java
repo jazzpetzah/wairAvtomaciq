@@ -298,7 +298,7 @@ public class DialogPage extends IOSPage {
 		int count = 0;
 		boolean buttonIsShown = false;
 		if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-			DriverUtils.swipeDown(this.getDriver(), conversationPage, 1000);
+			DriverUtils.swipeDown(this.getDriver(), conversationPage, 2000);
 
 		} else {
 			swipeDownSimulator();
@@ -306,7 +306,7 @@ public class DialogPage extends IOSPage {
 		}
 		while (!buttonIsShown && (count < 20)) {
 			if (mediaContainer.getLocation().y < dialogWindow.getSize().height) {
-				Thread.sleep(1000);
+				Thread.sleep(1500);
 			} else {
 				buttonIsShown = true;
 			}

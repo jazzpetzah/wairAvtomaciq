@@ -189,13 +189,12 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     And I tap on first 2 top connections
-    And I click hide keyboard button
+    #And I click hide keyboard button
     And I click Create Conversation button on People picker page
     And I wait for 2 seconds
     And I open group conversation details
     And I change group conversation name to <ConvoName>
     And I dismiss popover on iPad
-    And I return to the chat list
     And I see first item in contact list named <ConvoName>
 
     Examples: 

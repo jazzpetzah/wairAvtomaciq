@@ -5,9 +5,11 @@ import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -35,8 +37,7 @@ public class ConnectToPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectionInputField)
 	private WebElement sendConnectionInput;
-	
-	@SuppressWarnings("unused")
+
 	private static final Logger log = ZetaLogger.getLog(ConnectToPage.class
 			.getSimpleName());
 
@@ -56,7 +57,18 @@ public class ConnectToPage extends IOSPage {
 	
 	public void fillTextInConnectDialogWithLengh(int numberOfCharacters) {
 		String text = CommonUtils.generateRandomStringFromAlphanumericPlusSymbolsWithLengh(numberOfCharacters);
-		sendConnectionInput.sendKeys(text);
+		int maxRetrys = 3;
+		int retryCounter = 0;
+		while (retryCounter < maxRetrys) {
+			try {
+				sendConnectionInput.sendKeys(text);
+				retryCounter = maxRetrys;
+			} catch (WebDriverException ex) {
+				log.debug("Error while filling text from keyboard: " + ex.getMessage());
+				sendConnectionInput.clear();
+				retryCounter++;
+			}
+		}
 	}
 
 	public void fillHelloTextInConnectDialog() {
@@ -65,7 +77,24 @@ public class ConnectToPage extends IOSPage {
 	
 	public void inputCharactersIntoConnectDialogByScript(int numberOfCharacters) throws Exception {
 		String text = CommonUtils.generateRandomStringFromAlphanumericPlusSymbolsWithLengh(numberOfCharacters);
-		sendConnectionInput.sendKeys(text);
+		scriptInputConnectDialog(text);
+	}
+	
+	private void scriptInputConnectDialog(String text) throws Exception {
+		getWait().until(ExpectedConditions.elementToBeClickable(sendConnectionInput));
+		String script = String.format(IOSLocators.scriptSendConnectionInput
+				+ ".setValue(\"%s\")", text);
+		int maxRetrys = 3;
+		int retryCounter = 0;
+		while (retryCounter < maxRetrys) {
+			try {
+				this.getDriver().executeScript(script);
+				retryCounter = maxRetrys;
+			} catch (WebDriverException ex) {
+				log.debug("Appium execute script fail. " + ex.getMessage());
+				retryCounter++;
+			}
+		}
 	}
 
 	public boolean isMaxCharactersInMessage() {
