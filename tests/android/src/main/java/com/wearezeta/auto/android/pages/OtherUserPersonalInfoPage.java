@@ -245,6 +245,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
+		final By confirmBtnLocator = By.id(idConfirmBtn);
+		DriverUtils.waitUntilLocatorDissapears(getDriver(), confirmBtnLocator,
+				3);
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}
 
