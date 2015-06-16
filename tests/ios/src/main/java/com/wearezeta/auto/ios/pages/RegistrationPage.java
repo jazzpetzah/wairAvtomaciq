@@ -145,7 +145,9 @@ public class RegistrationPage extends IOSPage {
 		return null;
 	}
 
-	public void clickAgreeButton() {
+	public void clickAgreeButton() throws Exception {
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), 
+				By.name(IOSLocators.RegistrationPage.nameAgreeButton));
 		agreeButton.click();
 	}
 
@@ -230,6 +232,8 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public CameraRollPage selectPicture() throws Exception {
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), 
+				By.name(IOSLocators.RegistrationPage.nameSelectPictureButton));
 		selectPictureButton.click();
 		photoButton.click();
 		return new CameraRollPage(this.getLazyDriver());

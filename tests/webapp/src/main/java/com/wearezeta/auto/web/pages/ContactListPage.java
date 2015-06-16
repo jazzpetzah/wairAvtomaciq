@@ -265,7 +265,7 @@ public class ContactListPage extends WebPage {
 					getListElementByName(conversationName, false));
 		}
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName;
+		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName.apply(conversationName);
 		final By locator = By.cssSelector(cssOptionsButtonLocator);
 		final WebElement optionsButton = getDriver().findElement(locator);
 		DriverUtils.waitUntilElementClickable(getDriver(), optionsButton);
