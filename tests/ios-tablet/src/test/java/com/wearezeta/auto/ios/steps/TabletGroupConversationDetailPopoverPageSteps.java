@@ -53,5 +53,18 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 		getTabletGroupConversationDetailPopoverPage()
 				.confirmLeaveConversation();
 	}
+	
+	/**
+	 * 
+	 * @param name
+	 * @throws Throwable
+	 */
+	@When("^I select user on iPad group popover (.*)$")
+	public void ISelectUserOniPadGroupPopover(String name) throws Throwable {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		getTabletGroupConversationDetailPopoverPage().selectUserByNameOniPadPopover(name);
+	}
+	
+	
 
 }
