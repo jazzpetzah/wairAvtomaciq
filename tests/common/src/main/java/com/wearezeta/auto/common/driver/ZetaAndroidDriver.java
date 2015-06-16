@@ -178,11 +178,14 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
 					.waitFor();
 			byte[] output = FileUtils.readFileToByteArray(tmpScreenshot);
-			final SurfaceOrientation currentOrientation = this
-					.getSurfaceOrientation();
-			log.debug(String.format("Current screen orientation value -> %s",
-					currentOrientation.getCode()));
-			output = fixScreenshotOrientation(output, currentOrientation);
+			if (CommonUtils.getIsTabletFromConfig(this.getClass())) {
+				final SurfaceOrientation currentOrientation = this
+						.getSurfaceOrientation();
+				log.debug(String.format(
+						"Current screen orientation value -> %s",
+						currentOrientation.getCode()));
+				output = fixScreenshotOrientation(output, currentOrientation);
+			}
 			result.setSessionId(this.getSessionId().toString());
 			result.setStatus(HttpStatus.OK_200);
 			result.setValue(Base64.encodeBase64(output));
