@@ -1,6 +1,6 @@
 Feature: People View
 
-  @staging @id600
+  @regression @id600
   Scenario Outline: Start group chat with users from contact list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -21,7 +21,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @staging @id2594
+  @regression @id2594
   Scenario Outline: Start group chat with users from contact list [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -43,7 +43,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @staging @id2434
+  @regression @id2434
   Scenario Outline: Start group chat from 1:1 conversation [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -72,7 +72,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id2653
+  @regression @id2653
   Scenario Outline: Start group chat from 1:1 conversation [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -101,7 +101,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name |
 
-  @smoke @id2445
+  @smoke @regression @id2445
   Scenario Outline: Verify leaving group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -121,7 +121,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroup    |
 
-  @smoke @id2708
+  @smoke @regression @id2708
   Scenario Outline: Verify leaving group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -35,7 +35,6 @@ import org.openqa.selenium.safari.SafariOptions;
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -68,7 +67,7 @@ public class CommonWebAppSteps {
 
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
 
-	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
+	private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
 
 	private static void setCustomChromeProfile(DesiredCapabilities capabilities)
 			throws Exception {
@@ -374,13 +373,14 @@ public class CommonWebAppSteps {
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
 		String avatar = null;
-		final String rootPath = CommonUtils
-				.getWebAppImagesPathFromConfig(getClass());
+		final String rootPath = "/images/";
 		if (path.equals("default")) {
 			avatar = DEFAULT_USER_PICTURE;
 		} else {
-			avatar = rootPath + "/" + path;
+			avatar = rootPath + path;
 		}
+		avatar = CommonWebAppSteps.class.getResource(avatar).getPath();
+		log.debug("Change avatar of user " + userNameAlias + " to " + avatar);
 		commonSteps.IChangeUserAvatarPicture(userNameAlias, avatar);
 	}
 

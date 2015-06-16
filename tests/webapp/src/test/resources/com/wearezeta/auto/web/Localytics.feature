@@ -69,7 +69,7 @@ Feature: Localytics
 # Start of uploadedContacts event
 #***************************************************
 
-@localytics @id2156
+@localytics @id2485
   Scenario Outline: Verify 'uploadedContacts:source=Gmail' stats
     Given I take snapshot of <AttrName> attribute count
     Given There is 1 user where <Name> is me without avatar picture
