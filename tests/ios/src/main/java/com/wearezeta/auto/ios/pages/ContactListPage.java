@@ -104,6 +104,8 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public PeoplePickerPage openSearch() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(), 
+				By.name(IOSLocators.ContactListPage.nameOpenStartUI));	
 		openStartUI.click();
 		return new PeoplePickerPage(getLazyDriver());
 	}
