@@ -28,5 +28,12 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 				By.name(IOSLocators.nameConversationMenu));
 		conversationMenuButton.click();
 	}
+	
+	public TabletOtherUserInfoPage selectUserByNameOniPadPopover(String name) throws Exception{
+		DriverUtils.mobileTapByCoordinates(this.getDriver(), getDriver()
+				.findElementByName(name.toUpperCase()));
+
+		return new TabletOtherUserInfoPage(this.getLazyDriver());
+	}
 
 }
