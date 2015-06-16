@@ -50,8 +50,14 @@ public class ContactsUploadPageSteps {
 	public void ISignUpAtGoogleWithEmail(String email, String password)
 			throws Exception {
 		PagesCollection.googeLoginPage.setEmail(email);
+		// sometimes google shows a next button and you have to enter the
+		// password separately
+		if (PagesCollection.googeLoginPage.hasNextButton()) {
+			PagesCollection.googeLoginPage.clickNext();
+		}
 		PagesCollection.googeLoginPage.setPassword(password);
-		PagesCollection.peoplePickerPage = PagesCollection.googeLoginPage.clickSignIn();
+		PagesCollection.peoplePickerPage = PagesCollection.googeLoginPage
+				.clickSignIn();
 	}
 
 	/**

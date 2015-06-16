@@ -37,8 +37,7 @@ public class ConnectToPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectionInputField)
 	private WebElement sendConnectionInput;
-	
-	@SuppressWarnings("unused")
+
 	private static final Logger log = ZetaLogger.getLog(ConnectToPage.class
 			.getSimpleName());
 

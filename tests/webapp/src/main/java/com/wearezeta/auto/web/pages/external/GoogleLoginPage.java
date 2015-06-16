@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.pages.external;
 import java.util.Set;
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,6 +21,9 @@ public class GoogleLoginPage extends WebPage {
 	@FindBy(id = "Passwd")
 	private WebElement passwordField;
 
+	@FindBy(id = "next")
+	private WebElement nextButton;
+
 	@FindBy(id = "signIn")
 	private WebElement signInButton;
 
@@ -36,6 +40,14 @@ public class GoogleLoginPage extends WebPage {
 	public void setPassword(String password) {
 		passwordField.clear();
 		passwordField.sendKeys(password);
+	}
+
+	public boolean hasNextButton() throws Exception {
+		return this.getDriver().findElements(By.id("next")).size() > 0;
+	}
+
+	public void clickNext() {
+		nextButton.click();
 	}
 
 	public PeoplePickerPage clickSignIn() throws Exception {
