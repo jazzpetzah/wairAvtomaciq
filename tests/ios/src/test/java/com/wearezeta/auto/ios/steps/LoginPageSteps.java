@@ -9,6 +9,7 @@ import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -134,7 +135,12 @@ public class LoginPageSteps {
 		getLoginPage().signIn();
 
 		if (CommonUtils.trueInPercents(80)) {
-			phoneLoginSequence(login);
+			try {
+				phoneLoginSequence(login);
+			} catch (BackendRequestException ex) {
+				getLoginPage().switchToEmailLogin();
+				emailLoginSequence(login, password);
+			}
 		} else {
 			emailLoginSequence(login, password);
 		}

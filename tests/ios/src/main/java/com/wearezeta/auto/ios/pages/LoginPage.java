@@ -102,6 +102,12 @@ public class LoginPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.namePhoneLoginButton)
 	private WebElement phoneLoginButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameEmailLoginButton)
+	private WebElement emailLoginButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameBackButton)
+	private WebElement backButton;
 
 	private String login;
 
@@ -121,6 +127,11 @@ public class LoginPage extends IOSPage {
 
 		signInButton.click();
 		return this;
+	}
+	
+	public void switchToEmailLogin() {
+		backButton.click();
+		emailLoginButton.click();
 	}
 	
 	public void clickPhoneLogin() {

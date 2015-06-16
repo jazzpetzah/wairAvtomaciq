@@ -591,6 +591,8 @@ public final class IOSLocators {
 	
 	public final class LoginPage {
 		public static final String namePhoneLoginButton = "PHONE SIGN IN";
+		public static final String nameBackButton = "BackToWelcomeButton";
+		public static final String nameEmailLoginButton = "EMAIL SIGN IN";
 	}
 	
 	public final class PeoplePickerPage {
