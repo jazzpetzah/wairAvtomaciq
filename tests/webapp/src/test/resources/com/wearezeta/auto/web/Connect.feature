@@ -349,7 +349,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
-  @regression @id1564
+  @staging @id1564
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search view)
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
