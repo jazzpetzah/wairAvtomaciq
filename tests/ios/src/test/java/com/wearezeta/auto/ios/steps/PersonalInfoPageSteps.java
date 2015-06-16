@@ -306,7 +306,7 @@ public class PersonalInfoPageSteps {
 		Thread.sleep(4000);// wait for picture to load on simulator
 		getPersonalInfoPage().tapOnPersonalPage();
 		Thread.sleep(2000);// wait for picture to load on simulator
-		getPersonalInfoPage().takeScreenshot().orElseThrow(AssertionError::new);
+		referenceImage = getPersonalInfoPage().takeScreenshot().orElseThrow(AssertionError::new);
 		getPersonalInfoPage().tapOnPersonalPage();
 	}
 
@@ -327,7 +327,7 @@ public class PersonalInfoPageSteps {
 				.orElseThrow(AssertionError::new);
 		double score = ImageUtil.getOverlapScore(
 				RegistrationPageSteps.basePhoto, profileImage);
-		System.out.println("SCORE: " + score);
+		
 		Assert.assertTrue(
 				"Images are differen. Expected score >= 0.75, current = "
 						+ score, score >= 0.75d);
