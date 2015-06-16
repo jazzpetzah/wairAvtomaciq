@@ -121,7 +121,7 @@ Feature: People View
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroup    |
 
-  @torun @smoke @id2708
+  @smoke @id2708
   Scenario Outline: Verify leaving group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
