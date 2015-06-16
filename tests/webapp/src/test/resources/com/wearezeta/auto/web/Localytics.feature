@@ -13,9 +13,9 @@ Feature: Localytics
     And I wait for 5 seconds
 
     Examples: 
-      | Name      | Password      | Email                     | AttrName                                                             |
-      | user1Name | user1Password | smoketester@wire.com      | regFailed:reason=The given e-mail address or phone number is in use. |
-      | user1Name | user1Password | smoketester+123@gmail.com | regFailed:reason=Unauthorized e-mail address or phone number.        |
+      | Name      | Password      | Email                      | AttrName                                                             |
+      | user1Name | user1Password | smoketester+sven1@wire.com | regFailed:reason=The given e-mail address or phone number is in use. |
+      | user1Name | user1Password | smoketester+123@gmail.com  | regFailed:reason=Unauthorized e-mail address or phone number.        |
 # FIXME: Are there any other 'reason' values to check ?
 
 #***************************************************
