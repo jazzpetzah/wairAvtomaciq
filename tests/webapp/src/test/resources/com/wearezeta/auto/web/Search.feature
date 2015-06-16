@@ -156,6 +156,7 @@ Feature: Search
     Given User <Contact1> sent message <Message1> to conversation <Name>
     Given User Me sent message <Message1> to conversation <Contact2>
     Given User <Contact2> sent message <Message1> to conversation <Name>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
     And I open People Picker from Contact List
@@ -167,3 +168,26 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | Message1 |
+
+  @staging @id1729
+  Scenario Outline: Verify you can create a group conversation from Top People list
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>, <Contact3>
+    Given User Me sent message <Message1> to conversation <Contact1>
+    Given User <Contact1> sent message <Message1> to conversation <Name>
+    Given User Me sent message <Message1> to conversation <Contact2>
+    Given User <Contact2> sent message <Message1> to conversation <Name>
+    Given User Me sent message <Message1> to conversation <Contact3>
+    Given User <Contact3> sent message <Message1> to conversation <Name>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I see my avatar on top of Contact list
+    And I open People Picker from Contact List
+    And I wait till Top People list appears
+    When I select <Contact1>,<Contact2> from Top People
+    And I choose to create conversation from People Picker
+    Then I see Contact list with name <Contact1>,<Contact2>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Message1 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | Message1 |
