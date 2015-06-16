@@ -76,7 +76,8 @@ Feature: Localytics
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see Self Picture Upload dialog
-    And I choose <PictureName> as my self picture on Self Picture Upload dialog
+    And I force carousel mode on Self Picture Upload dialog
+    And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
     When I see Contacts Upload dialog
     And I click button to import Gmail Contacts
@@ -85,8 +86,8 @@ Feature: Localytics
     And I wait for 5 seconds
 
     Examples:
-      | Login      | Password      | Name      | PictureName               | GoogleEmail                | GooglePassword | AttrName                      |
-      | user1Email | user1Password | user1Name | userpicture_landscape.jpg | smoketester.wire@gmail.com | aqa123456      | uploadedContacts:source=Gmail |
+      | Login      | Password      | Name      | GoogleEmail                | GooglePassword | AttrName                      |
+      | user1Email | user1Password | user1Name | smoketester.wire@gmail.com | aqa123456      | uploadedContacts:source=Gmail |
 
 #***************************************************
 # End of uploadedContacts event
