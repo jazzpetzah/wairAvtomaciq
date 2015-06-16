@@ -85,7 +85,7 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordEmailField)
 	private WebElement changePWEmailField;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameChangePasswordPageChangePasswordButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
 	private WebElement changePasswordPageChangePasswordButton;
 
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIATextField)
