@@ -254,9 +254,9 @@ public final class IOSLocators {
 	
 	public static final String xpathAllSoundAlertsButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]";
 	
-	public static final String xpathSettingsChangePasswordButton = "//UIAButton[contains(@name, 'CHANGE PASSWORD')]";
+	public static final String nameSettingsChangePasswordButton = "Change Password";
 	
-	public static final String nameChangePasswordPageChangePasswordButton = "CHANGE PASSWORD";
+	public static final String xpathChangePasswordPageChangePasswordButton = "//UIAButton[@name='CHANGE PASSWORD']";
 	
 	public static final String nameOptionsHelpButton = "HELP";
 	
