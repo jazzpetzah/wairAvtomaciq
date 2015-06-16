@@ -267,7 +267,7 @@ Feature: Connect
   Scenario Outline: Verify you can dismiss user suggestion in PYMK list
     Given There are 3 users where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
-    Given I wait for 5 seconds
+    Given I wait for 6 seconds
     Given User <Contact1> has contact <Me> in address book
     Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact2>
@@ -288,7 +288,7 @@ Feature: Connect
   Scenario Outline: Verify you can add a user from PYMK list
     Given There are 3 users where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
-    Given I wait for 5 seconds
+    Given I wait for 6 seconds
     Given User <Contact1> has contact <Me> in address book
     Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact2>
@@ -311,10 +311,10 @@ Feature: Connect
   Scenario Outline: Verify you get auto-connected to people on sign-in
     Given There is 2 user where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
-    Given I wait for 5 seconds
+    Given I wait for 6 seconds
     Given User <Me> has contact <Contact> in address book
     # we need to wait a bit, otherwise backend throws a 429 status
-    Given I wait for 5 seconds
+    Given I wait for 6 seconds
     Given User <Contact> has contact <Me> in address book
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
@@ -332,13 +332,13 @@ Feature: Connect
   Scenario Outline: Verify you get auto-connected to people while being logged-in
     Given There is 2 user where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
-    Given I wait for 5 seconds
+    Given I wait for 6 seconds
     Given User <Me> has contact <Contact> in address book
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
     And I see my avatar on top of Contact list
     # we need to wait a bit, otherwise backend throws a 429 status
-    And I wait for 5 seconds
+    And I wait for 6 seconds
     When User <Contact> has contact <Me> in address book
     When I open conversation with <Contact>
     Then I see CONNECTED TO action for <Contact> in conversation
@@ -349,7 +349,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
-  @regression @id1564
+  @staging @id1564
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search view)
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>

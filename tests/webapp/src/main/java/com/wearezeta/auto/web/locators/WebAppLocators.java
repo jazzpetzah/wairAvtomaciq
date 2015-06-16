@@ -73,7 +73,9 @@ public final class WebAppLocators {
 				.format("%s div[data-uie-name='item-conversation-archived'][data-uie-value='%s']",
 						cssParentContactListItem, name);
 
-		public static final String cssOptionsButtonByContactName = "[data-uie-name='go-options']";
+		public static final Function<String, String> cssOptionsButtonByContactName = (
+				name) -> cssContactListEntryByName.apply(name)
+				+ "+ div span[data-uie-name='go-options']";
 
 		public static final String cssSelfProfileAvatar = "[data-uie-name=go-self-profile]";
 
