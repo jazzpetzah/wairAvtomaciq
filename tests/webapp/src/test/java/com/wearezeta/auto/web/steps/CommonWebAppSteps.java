@@ -140,6 +140,8 @@ public class CommonWebAppSteps {
 		}
 
 		String platform = WebAppExecutionContext.getPlatform();
+		String osName = WebAppExecutionContext.getOsName();
+		String osVersion = WebAppExecutionContext.getOsVersion();
 		String browserName = WebAppExecutionContext.getBrowserName();
 		String browserVersion = WebAppExecutionContext.getBrowserVersion();
 
@@ -149,7 +151,7 @@ public class CommonWebAppSteps {
 
 		// get custom capabilities
 		DesiredCapabilities capabilities = getCustomCapabilities(platform,
-				browserName, browserVersion, uniqueName);
+				osName, osVersion, browserName, browserVersion, uniqueName);
 
 		final String hubHost = System.getProperty("hubHost");
 		final String hubPort = System.getProperty("hubPort");
@@ -212,8 +214,8 @@ public class CommonWebAppSteps {
 	}
 
 	private static DesiredCapabilities getCustomCapabilities(String platform,
-			String browserName, String browserVersion, String uniqueTestName)
-			throws Exception {
+			String osName, String osVersion, String browserName,
+			String browserVersion, String uniqueTestName) throws Exception {
 		final DesiredCapabilities capabilities;
 		Browser browser = Browser.fromString(browserName);
 		switch (browser) {
@@ -250,7 +252,11 @@ public class CommonWebAppSteps {
 
 		capabilities.setCapability("platform", platform);
 		capabilities.setCapability("version", browserVersion);
+		capabilities.setCapability("os", osName);
+		capabilities.setCapability("os_version", osVersion);
+		capabilities.setCapability("browser_version", browserVersion);
 		capabilities.setCapability("name", uniqueTestName);
+		capabilities.setCapability("browserstack.debug", "true");
 
 		return capabilities;
 	}

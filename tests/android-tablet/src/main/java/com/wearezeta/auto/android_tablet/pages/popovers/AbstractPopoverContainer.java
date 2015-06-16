@@ -35,6 +35,6 @@ public abstract class AbstractPopoverContainer extends AndroidTabletPage {
 
 	public void tapOutside() throws Exception {
 		final WebElement self = this.getDriver().findElement(getLocator());
-		DriverUtils.tapOutsideOfTheElement(getDriver(), self, 20, -20);
+		DriverUtils.tapOutsideOfTheElement(getDriver(), self, 30, 10);
 	}
 }

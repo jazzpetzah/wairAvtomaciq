@@ -1,7 +1,10 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.List;
+
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
@@ -186,4 +189,55 @@ public class PeoplePickerPageSteps {
 				.clickSendInvitationButton();
 	}
 
+	/**
+	 * Closes and opens People Picker until Top People list is visible on People
+	 * Picker page
+	 * 
+	 * @step. ^I wait till Top People list appears$
+	 * 
+	 * @throws Exception
+	 */
+
+	@When("^I wait till Top People list appears$")
+	public void IwaitTillTopPeopleListAppears() throws Exception {
+		if (!PagesCollection.peoplePickerPage.isTopPeopleLabelVisible())
+			PagesCollection.contactListPage = PagesCollection.peoplePickerPage
+					.closeSearch();
+		PagesCollection.peoplePickerPage = PagesCollection.contactListPage
+				.openPeoplePicker();
+		Assert.assertTrue("Top People list is not shown",
+				PagesCollection.peoplePickerPage.isTopPeopleLabelVisible());
+	}
+
+	/**
+	 * Selects users from Top People in People Picker
+	 * 
+	 * @step. ^I select (.*) from Top People$
+	 * 
+	 * @param namesOfTopPeople
+	 *            comma separated list of names of top people to select
+	 * @throws Exception
+	 */
+
+	@When("^I select (.*) from Top People$")
+	public void ISelectUsersFromTopPeople(String namesOfTopPeople)
+			throws Exception {
+		for (String alias : CommonSteps.splitAliases(namesOfTopPeople)) {
+			final String userName = usrMgr.findUserByNameOrNameAlias(alias)
+					.getName();
+			PagesCollection.peoplePickerPage.clickNameInTopPeople(userName);
+		}
+	}
+
+	private static List<String> selectedTopPeople;
+
+	public static List<String> getSelectedTopPeople() {
+		return selectedTopPeople;
+	}
+
+	@When("^I remember user names selected in Top People$")
+	public void IRememberUserNamesSelectedInTopPeople() throws Exception {
+		selectedTopPeople = PagesCollection.peoplePickerPage
+				.getNamesOfSelectedTopPeople();
+	}
 }
