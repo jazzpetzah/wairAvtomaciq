@@ -15,7 +15,8 @@ Feature: Welcome
     When I enter password <NewPassword> on Password Change page
     And I click Change Password button on Password Change page
     Then I see Password Change Succeeded page
-    Given I switch to sign in page
+    Given I open Sign In page
+    When I see Sign In page
     When I enter email <Email>
     And I enter password "<OldPassword>"
     And I press Sign In button

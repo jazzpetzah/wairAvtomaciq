@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -26,7 +25,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
+import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
@@ -114,14 +113,6 @@ public class ContactListPage extends WebPage {
 	}
 
 	public boolean waitForContactListVisible() throws Exception {
-		// FIXME: Try to refresh the page if convo list is not visible
-		// (workaround for Amazon server issue)
-		if (!DriverUtils
-				.waitUntilLocatorAppears(
-						this.getDriver(),
-						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton))) {
-			this.getDriver().navigate().to(this.getDriver().getCurrentUrl());
-		}
 		return DriverUtils
 				.waitUntilLocatorAppears(
 						this.getDriver(),
@@ -173,7 +164,7 @@ public class ContactListPage extends WebPage {
 				By.cssSelector(locator), 5);
 	}
 
-	public WebElement getContactWithName(String name, boolean includeArchived)
+	public WebElement getListElementByName(String name, boolean includeArchived)
 			throws Exception {
 		name = fixDefaultGroupConvoName(name, includeArchived);
 		final String locator = WebAppLocators.ContactListPage.cssContactListEntryByName
@@ -251,11 +242,10 @@ public class ContactListPage extends WebPage {
 		final By locator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		// moving focus from contact - to now show ... button
-		try {
+		// do nothing (safari workaround)
+		if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), this.getDriver()
 					.findElement(locator));
-		} catch (WebDriverException e) {
-			// do nothing (safari workaround)
 		}
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
@@ -266,19 +256,25 @@ public class ContactListPage extends WebPage {
 
 	public void clickOptionsButtonForContact(String conversationName)
 			throws Exception {
-		try {
+		if (!WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.addClassToParent(this.getDriver(),
+					getListElementByName(conversationName, false), "hover");
+		} else {
 			DriverUtils.moveMouserOver(this.getDriver(),
-					getContactWithName(conversationName, false));
-		} catch (WebDriverException e) {
-			DriverUtils.addClass(this.getDriver(),
-					getContactWithName(conversationName, false), "hover");
+					getListElementByName(conversationName, false));
 		}
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName
-				.apply(conversationName);
+		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName;
 		final By locator = By.cssSelector(cssOptionsButtonLocator);
 		final WebElement optionsButton = getDriver().findElement(locator);
+		DriverUtils.waitUntilElementClickable(getDriver(), optionsButton);
 		optionsButton.click();
+		if (!WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.removeClassFromParent(this.getDriver(),
+					getListElementByName(conversationName, false), "hover");
+		}
 	}
 
 	private static final int SELECTION_TIMEOUT = 3; // seconds
@@ -321,7 +317,7 @@ public class ContactListPage extends WebPage {
 		}
 	}
 
-	private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 3; // seconds
+	private static final int OPEN_CONVO_LIST_ENTRY_TIMEOUT = 8; // seconds
 
 	public ConversationPage openConversation(String conversationName)
 			throws Exception {
@@ -366,9 +362,7 @@ public class ContactListPage extends WebPage {
 				.waitUntilLocatorAppears(
 						this.getDriver(),
 						By.cssSelector(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton));
-		DriverUtils.waitUntilElementClickable(this.getDriver(),
-				openPeoplePickerButton);
-		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
+		if (WebAppExecutionContext.getBrowser() == Browser.InternetExplorer) {
 			clickWithJS(WebAppLocators.ContactListPage.cssOpenPeoplePickerButton);
 		} else {
 			openPeoplePickerButton.click();

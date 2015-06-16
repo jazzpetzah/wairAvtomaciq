@@ -10,7 +10,7 @@ Feature: Connect
     And I see People picker page
     And I tap on Search input on People picker page
     Given I wait until <ContactEmail> exists in backend search results
-    And I input in People picker search field user email <ContactEmail>
+    And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -65,84 +65,6 @@ Feature: Connect
       | Login      | Password      | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Email | user1Password | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
-  #Muted due to relogin issue
-  #@staging @id611
-  #Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request(UI)
-  #Given I Sign in using login <Login> and password <Password>
-  #And I see Contact list with my name <Name>
-  #When I swipe down contact list
-  #And I see People picker page
-  #And I input in People picker search field user name <Contact>
-  #And I see user <Contact> found on People picker page
-  #And I tap on NOT connected user name on People picker page <Contact>
-  #And I see connect to <Contact> dialog
-  #And I input message in connect to dialog
-  #Old method must change this line #And I click Send button on connect to dialog
-  #And I see People picker page
-  #And I click clear button
-  #And I see Contact list with my name <Name>
-  #And I tap on my name <Name>
-  #And I see Personal page
-  #And I click on Settings button on personal page
-  #And I click Sign out button from personal page
-  #And I Sign in using login <Contact> and password <Password>
-  #And I see Personal page
-  #And I swipe right on the personal page
-  #And I see Pending request link in contact list
-  #And I click on Pending request link in contact list
-  #And I click on Ignore button on Pending requests page
-  #And I dont see Pending request link in contact list
-  #And I don't see conversation with not connected user <Name>
-  #And I tap on my name <Contact>
-  #And I click on Settings button on personal page
-  #And I click Sign out button from personal page
-  #And I Sign in using login <Name> and password <Password>
-  #And I see Personal page
-  #And I swipe right on the personal page
-  #And I see conversation with not connected user <Contact>
-  #Examples:
-  #  | Login   | Password    | Name    | Contact  |
-  #  | aqaUser | aqaPassword | aqaUser | yourUser |
-  #Muted due to relogin issue
-  #@staging @id611
-  #Scenario Outline: Verify 1:1 conversation is not created on the second end after you ignore connection request(BE)
-  #Given I send invitation to <Name> by <Contact>
-  #And I Sign in using login <Name> and password <Password>
-  #And I see Pending request link in contact list
-  #And I click on Pending request link in contact list
-  #And I click on Ignore button on Pending requests page
-  #And I dont see Pending request link in contact list
-  #And I don't see conversation with not connected user <Contact>
-  #And I tap on my name <Name>
-  #And I click on Settings button on personal page
-  #And I click Sign out button from personal page
-  #And I Sign in using login <Contact> and password <Password>
-  #And I see Personal page
-  #And I swipe right on the personal page
-  #And I see conversation with not connected user <Name>
-  #Examples:
-  #| Login   | Password    | Name    | Contact         |
-  #| aqaUser | aqaPassword | aqaUser | yourNotContact1 |
-  #Muted due relogin issue and blank Personal page screen issue
-  #@staging @id610
-  #Scenario Outline: Verify 1:1 conversation is successfully created on the second end after you accept connection request(BE)
-  #Given I send invitation to <Name> by <Contact>
-  #And I Sign in using login <Name> and password <Password>
-  #And I see Pending request link in contact list
-  #And I click on Pending request link in contact list
-  #And I click Connect button on Pending request page
-  #And I dont see Pending request link in contact list
-  #And I see conversation with not connected user <Contact>
-  #And I tap on my name <Name>
-  #And I click on Settings button on personal page
-  #And I click Sign out button from personal page
-  #And I Sign in using login <Contact> and password <Password>
-  #And I see Personal page
-  #And I swipe right on the personal page
-  #And I see conversation with not connected user <Name>
-  #Examples:
-  #| Login   | Password    | Name    | Contact         |
-  #| aqaUser | aqaPassword | aqaUser | yourNotContact1 |
   @regression @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
     Given There are 5 users where <Name> is me
@@ -259,7 +181,7 @@ Feature: Connect
     And I see People picker page
     And I tap on Search input on People picker page
     And I wait until <ContactEmail> exists in backend search results
-    And I input in People picker search field user email <ContactEmail>
+    And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact>
     And I see connect to <Contact> dialog
@@ -267,10 +189,10 @@ Feature: Connect
     And I see People picker page
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact>
-    When I swipe down contact list
+    When I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in People picker search field user email <ContactEmail>
+    And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on user on pending name on People picker page <Contact>
     Then I see <Contact> user pending profile page

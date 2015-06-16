@@ -190,10 +190,34 @@ public final class BackendAPIWrappers {
 				phoneNumber.toString()));
 	}
 
+	private final static int MAX_CODE_GET_RETRIES = 5;
+	private final static int BACKEND_ERROR_PHONE_NUMBER_NOT_BOOKED = 404;
+
 	public static String getActivationCodeByPhoneNumber(PhoneNumber phoneNumber)
 			throws Exception {
-		return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString(
-				"code");
+		int ntry = 1;
+		BackendRequestException savedException = null;
+		do {
+			try {
+				return BackendREST.getActivationDataViaBackdoor(phoneNumber)
+						.getString("code");
+			} catch (BackendRequestException e) {
+				if (e.getReturnCode() == BACKEND_ERROR_PHONE_NUMBER_NOT_BOOKED) {
+					// the number booking request has not been delivered to the
+					// backend yet
+					savedException = e;
+					Thread.sleep(2000);
+					log.debug(String
+							.format("The phone number '%s' seems to be not booked yet. Trying to get the activation code one more time (%d of %d)...",
+									phoneNumber.toString(), ntry,
+									MAX_CODE_GET_RETRIES));
+				} else {
+					throw e;
+				}
+			}
+			ntry++;
+		} while (ntry <= MAX_CODE_GET_RETRIES);
+		throw savedException;
 	}
 
 	private final static int MAX_LOGIN_CODE_QUERIES = 5;

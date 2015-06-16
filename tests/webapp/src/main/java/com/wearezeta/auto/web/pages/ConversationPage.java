@@ -3,7 +3,7 @@ package com.wearezeta.auto.web.pages;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
+import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -46,7 +45,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathShowParticipantsButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssShowParticipantsButton)
 	private WebElement showParticipants;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssSendImageInput)
@@ -131,15 +130,7 @@ public class ConversationPage extends WebPage {
 			throws Exception {
 		DriverUtils.waitUntilElementClickable(this.getDriver(),
 				showParticipants);
-		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
-			this.getDriver()
-					.executeScript(
-							String.format(
-									"$('.%s').click();",
-									WebAppLocators.ConversationPage.classNameShowParticipantsButton));
-		} else {
-			showParticipants.click();
-		}
+		showParticipants.click();
 		if (isGroup) {
 			return new GroupPopoverContainer(this.getLazyDriver());
 		} else {
@@ -175,7 +166,7 @@ public class ConversationPage extends WebPage {
 						this.getDriver(),
 						By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput),
 						5);
-		if (WebAppExecutionContext.getCurrentBrowser() == Browser.Safari) {
+		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
 			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
 					.getNodeIp());
 		} else {
@@ -197,10 +188,10 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void clickPingButton() throws Exception {
-		try {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
-		} catch (WebDriverException e) {
-			// safari workaround
+		} else {
 			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		final By locator = By
@@ -230,9 +221,10 @@ public class ConversationPage extends WebPage {
 	}
 
 	public boolean isCallButtonVisible() throws Exception {
-		try {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
-		} catch (WebDriverException e) {
+		} else {
 			// safari workaround
 			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
@@ -241,9 +233,10 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void clickCallButton() throws Exception {
-		try {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
-		} catch (WebDriverException e) {
+		} else {
 			// safari workaround
 			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}

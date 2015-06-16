@@ -201,7 +201,7 @@ public class Step {
     	String tags = "";
     	tags += "<div class=\"step-screenshot\" id=\"scr " + getRawName().replaceAll("\\W+", "_") + "" + screenshotIndex + "\"><center>"
     		+ "<a href=\"Images/" + feature.replaceAll("\\W+", "_") + "/" + scenario.replaceAll("\\W+", "_") + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" target=\"_blank\">"
-    		+ "<img onerror=\"this.src='" + NO_IMAGE_URL +"';this.width=150;this.height=150\" src=\"Images/" + feature.replaceAll("\\W+", "_") + "/" + scenario.replaceAll("\\W+", "_") + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" width=\"30%\" height=\"30%\" />"
+    		+ "<img onerror=\"this.src='" + NO_IMAGE_URL +"';this.width=110;this.height=110\" src=\"Images/" + feature.replaceAll("\\W+", "_") + "/" + scenario.replaceAll("\\W+", "_") + "/" + getRawName().replaceAll("\\W+", "_") + ".png\" width=\"30%\" height=\"30%\" />"
     		+ "</a>"
   	  		+ "</center></div>";
   		return tags;

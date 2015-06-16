@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
@@ -37,9 +38,9 @@ public class ClientUsersManager {
 	private static final Logger log = ZetaLogger
 			.getLog(ClientUsersManager.class.getSimpleName());
 
-	public static void setClientUserAliases(ClientUser user, String[] nameAliases,
-			String[] passwordAliases, String[] emailAliases,
-			String[] phoneNumberAliases) {
+	public static void setClientUserAliases(ClientUser user,
+			String[] nameAliases, String[] passwordAliases,
+			String[] emailAliases, String[] phoneNumberAliases) {
 		if (nameAliases != null && nameAliases.length > 0) {
 			user.clearNameAliases();
 			for (String nameAlias : nameAliases) {
@@ -114,8 +115,7 @@ public class ClientUsersManager {
 			try {
 				instance = new ClientUsersManager();
 			} catch (Exception e) {
-				e.printStackTrace();
-				return null;
+				Throwables.propagate(e);
 			}
 		}
 		return instance;

@@ -6,6 +6,7 @@ import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.SessionNotCreatedException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.logging.LoggingPreferences;
@@ -17,7 +18,8 @@ import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidLoggingUtils;
 import com.wearezeta.auto.android.common.reporter.LogcatListener;
-import com.wearezeta.auto.android.locators.AndroidLocators;
+import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
@@ -46,6 +48,9 @@ public class CommonAndroidTabletSteps {
 	}
 
 	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
+			.getInstance();
+
+	private final ScreenOrientationHelper screenOrientationHelper = ScreenOrientationHelper
 			.getInstance();
 
 	private static final Logger log = ZetaLogger
@@ -146,8 +151,7 @@ public class CommonAndroidTabletSteps {
 	private static final long INTERFACE_INIT_TIMEOUT_MILLISECONDS = 15000;
 
 	private void onDriverInitFinished(RemoteWebDriver drv) {
-		final By locator = By
-				.xpath(AndroidLocators.CommonLocators.xpathDismissUpdateButton);
+		final By locator = By.xpath(AndroidPage.xpathDismissUpdateButton);
 		final long millisecondsStarted = System.currentTimeMillis();
 		WebDriverException savedException = null;
 		do {
@@ -184,6 +188,7 @@ public class CommonAndroidTabletSteps {
 				getUrl(), getPath(), isUnicode);
 		pagesCollection.setFirstPage(new TabletWelcomePage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
+		screenOrientationHelper.resetOrientation();
 	}
 
 	public void commonBefore() throws Exception {
@@ -314,6 +319,7 @@ public class CommonAndroidTabletSteps {
 	@When("^I rotate UI to landscape$")
 	public void WhenIRotateUILandscape() throws Exception {
 		pagesCollection.getCommonPage().rotateLandscape();
+		screenOrientationHelper.setOrientation(ScreenOrientation.LANDSCAPE);
 	}
 
 	/**
@@ -326,6 +332,7 @@ public class CommonAndroidTabletSteps {
 	@When("^I rotate UI to portrait$")
 	public void WhenIRotateUIPortrait() throws Exception {
 		pagesCollection.getCommonPage().rotatePortrait();
+		screenOrientationHelper.setOrientation(ScreenOrientation.PORTRAIT);
 	}
 
 	/**

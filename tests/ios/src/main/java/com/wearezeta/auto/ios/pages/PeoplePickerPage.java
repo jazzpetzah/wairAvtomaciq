@@ -136,8 +136,9 @@ public class PeoplePickerPage extends IOSPage {
 															// activation
 	}
 
-	public void tapOnPeoplePickerClearBtn() {
-		peoplePickerClearBtn.click();
+	public void tapOnPeoplePickerClearBtn() throws Exception {
+
+		DriverUtils.mobileTapByCoordinates(getDriver(), peoplePickerClearBtn);
 	}
 
 	public double checkAvatarClockIcon(String name) throws Exception {

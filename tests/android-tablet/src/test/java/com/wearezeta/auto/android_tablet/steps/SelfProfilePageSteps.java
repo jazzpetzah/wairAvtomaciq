@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletSelfProfilePage;
+import com.wearezeta.auto.android_tablet.pages.camera.SelfProfileCameraPage;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
@@ -21,6 +22,11 @@ public class SelfProfilePageSteps {
 	private TabletSelfProfilePage getSelfProfilePage() throws Exception {
 		return (TabletSelfProfilePage) pagesCollection
 				.getPage(TabletSelfProfilePage.class);
+	}
+
+	private SelfProfileCameraPage getSelfProfileCameraPage() throws Exception {
+		return (SelfProfileCameraPage) pagesCollection
+				.getPage(SelfProfileCameraPage.class);
 	}
 
 	/**
@@ -129,7 +135,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I tap Change Picture button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
 	public void ITapChangePictureButton() throws Exception {
-		getSelfProfilePage().tapChangePictureButton();
+		getSelfProfileCameraPage().tapLensButton();
 	}
 
 	/**
@@ -141,7 +147,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I tap Gallery button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
 	public void ITapGalleryButton() throws Exception {
-		getSelfProfilePage().tapGalleryButton();
+		getSelfProfileCameraPage().tapGalleryButton();
 	}
 
 	/**
@@ -165,7 +171,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I confirm my picture on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
 	public void IConfirmMyPicture() throws Exception {
-		getSelfProfilePage().tapConfirmPictureButton();
+		getSelfProfileCameraPage().confirmPictureSelection();
 	}
 
 	private static final double MAX_SCREENSHOTS_OVERLAP_SCORE = 0.5;
@@ -175,7 +181,8 @@ public class SelfProfilePageSteps {
 	 * Compare the previous Self Profile page screenshot with the current one to
 	 * calculate the overlap score
 	 * 
-	 * @step. ^I verify that my current profile picture is different from the previous one$
+	 * @step. ^I verify that my current profile picture is different from the
+	 *        previous one$
 	 * 
 	 * @throws Exception
 	 */

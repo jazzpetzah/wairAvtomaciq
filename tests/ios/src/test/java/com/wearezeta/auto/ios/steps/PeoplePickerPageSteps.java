@@ -10,9 +10,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.ios.pages.GroupChatPage;
+import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.IOSPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Then;
@@ -23,36 +22,43 @@ public class PeoplePickerPageSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(PeoplePickerPageSteps.class.getSimpleName());
 
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private PeoplePickerPage getPeoplePickerPage() throws Exception {
+		return (PeoplePickerPage) pagesCollecton
+				.getPage(PeoplePickerPage.class);
+	}
+
+	private ContactListPage getСontactListPage() throws Exception {
+		return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
+	}
+
 	@When("^I see People picker page$")
 	public void WhenISeePeoplePickerPage() throws Exception {
-		Assert.assertTrue(PagesCollection.peoplePickerPage
-				.isPeoplePickerPageVisible());
+		Assert.assertTrue(getPeoplePickerPage().isPeoplePickerPageVisible());
 	}
 
 	@When("I see Upload contacts dialog")
 	public void WhenISeeUploadContactsDialog() throws Exception {
-		if (PagesCollection.peoplePickerPage == null) {
-			PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.loginPage
-					.instantiatePage(PeoplePickerPage.class);
-		}
-		Assert.assertTrue("Upload dialog is not shown",
-				PagesCollection.peoplePickerPage.isUploadDialogShown());
+		Assert.assertTrue("Upload dialog is not shown", getPeoplePickerPage()
+				.isUploadDialogShown());
 	}
 
 	@When("I dont see Upload contacts dialog")
 	public void WhenIDontSeeUploadContactsDialog() throws Exception {
-		Assert.assertFalse("Upload dialog is shown",
-				PagesCollection.peoplePickerPage.isUploadDialogShown());
+		Assert.assertFalse("Upload dialog is shown", getPeoplePickerPage()
+				.isUploadDialogShown());
 	}
 
 	@When("I click Later button on Upload dialog")
 	public void IClickLaterButtonOnUploadDialog() throws Exception {
-		PagesCollection.peoplePickerPage.clickLaterButton();
+		getPeoplePickerPage().clickLaterButton();
 	}
 
 	@When("I click Continue button on Upload dialog")
 	public void IClickContinueButtonOnUploadDialog() throws Exception {
-		PagesCollection.peoplePickerPage.clickContinueButton();
+		getPeoplePickerPage().clickContinueButton();
 	}
 
 	/**
@@ -64,9 +70,8 @@ public class PeoplePickerPageSteps {
 
 	@When("I see CONNECT label")
 	public void ISeePeopleYouMayKnowLabel() throws Exception {
-		Assert.assertTrue("CONNECT label is not visible",
-				PagesCollection.peoplePickerPage
-						.isPeopleYouMayKnowLabelVisible());
+		Assert.assertTrue("CONNECT label is not visible", getPeoplePickerPage()
+				.isPeopleYouMayKnowLabelVisible());
 	}
 
 	/**
@@ -78,17 +83,18 @@ public class PeoplePickerPageSteps {
 
 	@When("I dont see CONNECT label")
 	public void IDontSeePeopleYouMayKnowLabel() throws Exception {
-		Assert.assertFalse("CONNECT label is visible",
-				PagesCollection.peoplePickerPage
-						.isPeopleYouMayKnowLabelVisible());
+		Assert.assertFalse("CONNECT label is visible", getPeoplePickerPage()
+				.isPeopleYouMayKnowLabelVisible());
 	}
-	
+
 	/**
 	 * Click maybe later to dismiss contacts import
+	 * 
+	 * @throws Exception
 	 */
 	@When("^I press maybe later button$")
-	public void IPressMaybeLater() {
-		PagesCollection.peoplePickerPage.clickMaybeLaterButton();
+	public void IPressMaybeLater() throws Exception {
+		getPeoplePickerPage().clickMaybeLaterButton();
 	}
 
 	/**
@@ -100,7 +106,7 @@ public class PeoplePickerPageSteps {
 
 	@When("I hide peoplepicker keyboard")
 	public void HidePeoplePickerKeyboard() throws Exception {
-		PagesCollection.peoplePickerPage.hidePeoplePickerKeyboard();
+		getPeoplePickerPage().hidePeoplePickerKeyboard();
 	}
 
 	/**
@@ -119,8 +125,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			log.debug("No user found. " + e);
 		}
-		PagesCollection.peoplePickerPage
-				.swipeToRevealHideSuggestedContact(contact);
+		getPeoplePickerPage().swipeToRevealHideSuggestedContact(contact);
 	}
 
 	/**
@@ -139,8 +144,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.peoplePickerPage
-				.swipeCompletelyToDismissSuggestedContact(contact);
+		getPeoplePickerPage().swipeCompletelyToDismissSuggestedContact(contact);
 	}
 
 	/**
@@ -157,7 +161,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			log.debug("No user found. " + e);
 		}
-		PagesCollection.peoplePickerPage.tapHideSuggestedContact(contact);
+		getPeoplePickerPage().tapHideSuggestedContact(contact);
 	}
 
 	/**
@@ -177,8 +181,7 @@ public class PeoplePickerPageSteps {
 			// Ignore silently
 		}
 		Assert.assertFalse("Suggested contact is still visible",
-				PagesCollection.peoplePickerPage
-						.isSuggestedContactVisible(contact));
+				getPeoplePickerPage().isSuggestedContactVisible(contact));
 	}
 
 	/**
@@ -191,11 +194,10 @@ public class PeoplePickerPageSteps {
 	@When("I re-enter the people picker if top people list is not there")
 	public void IRetryPeoplePickerIfNotLoaded() throws Exception {
 		for (int i = 0; i < 3; i++) {
-			if (!PagesCollection.peoplePickerPage.isTopPeopleLabelVisible()) {
+			if (!getPeoplePickerPage().isTopPeopleLabelVisible()) {
 				IClickCloseButtonDismissPeopleView();
 				Thread.sleep(5000);
-				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
-						.openSearch();
+				getСontactListPage().openSearch();
 			} else {
 				break;
 			}
@@ -211,21 +213,19 @@ public class PeoplePickerPageSteps {
 
 	@When("I re-enter the people picker if CONNECT label is not there")
 	public void IRetryPeoplePickerIfNoConnectLabel() throws Exception {
-		while (!PagesCollection.peoplePickerPage.isConnectLabelVisible()) {
+		while (!getPeoplePickerPage().isConnectLabelVisible()) {
 			IClickCloseButtonDismissPeopleView();
 			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
-						.swipeDown(1000);
+				getСontactListPage().swipeDown(1000);
 			} else {
-				PagesCollection.peoplePickerPage = (PeoplePickerPage) PagesCollection.contactListPage
-						.swipeDownSimulator();
+				getСontactListPage().swipeDownSimulator();
 			}
 		}
 	}
 
 	@When("^I tap on Search input on People picker page$")
 	public void WhenITapOnSearchInputOnPeoplePickerPage() throws Exception {
-		PagesCollection.peoplePickerPage.tapOnPeoplePickerSearch();
+		getPeoplePickerPage().tapOnPeoplePickerSearch();
 	}
 
 	@When("^I input in People picker search field user name (.*)$")
@@ -236,7 +236,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(contact);
+		getPeoplePickerPage().fillTextInPeoplePickerSearch(contact);
 	}
 
 	@When("^I input in People picker search field user email (.*)$")
@@ -247,12 +247,12 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.peoplePickerPage.fillTextInPeoplePickerSearch(email);
+		getPeoplePickerPage().fillTextInPeoplePickerSearch(email);
 	}
 
 	@When("I tap go to enter conversation")
-	public void IEnterConversation() {
-		PagesCollection.peoplePickerPage.goIntoConversation();
+	public void IEnterConversation() throws Exception {
+		getPeoplePickerPage().goIntoConversation();
 	}
 
 	@When("^I see user (.*) found on People picker page$")
@@ -265,8 +265,7 @@ public class PeoplePickerPageSteps {
 		}
 		Assert.assertTrue("User :" + contact
 				+ " is not presented on Pepople picker page",
-				PagesCollection.peoplePickerPage
-						.waitUserPickerFindUser(contact));
+				getPeoplePickerPage().waitUserPickerFindUser(contact));
 	}
 
 	@When("^I tap on NOT connected user name on People picker page (.*)$")
@@ -277,24 +276,21 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
-				.clickOnNotConnectedUser(contact);
+		getPeoplePickerPage().clickOnNotConnectedUser(contact);
 	}
 
 	@When("^I tap on user on pending name on People picker page (.*)$")
 	public void WhenITapOnUserOnPendingFoundOnPeoplePickerPage(String contact)
 			throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.otherUserOnPendingProfilePage = PagesCollection.peoplePickerPage
-				.clickOnUserOnPending(contact);
+		getPeoplePickerPage().clickOnUserOnPending(contact);
 	}
 
 	@When("^I search for user name (.*) and tap on it on People picker page$")
 	public void WhenISearchForUserNameAndTapOnItOnPeoplePickerPage(
 			String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.connectToPage = PagesCollection.peoplePickerPage
-				.pickUserAndTap(contact);
+		getPeoplePickerPage().pickUserAndTap(contact);
 	}
 
 	/**
@@ -307,50 +303,42 @@ public class PeoplePickerPageSteps {
 	@Then("^I see the user (.*) avatar with a clock$")
 	public void ISeeUserWithAvatarClock(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		Assert.assertTrue(
-				"Avatar does not have a clock icon",
-				PagesCollection.peoplePickerPage.checkAvatarClockIcon(contact) > 0.50);
+		Assert.assertTrue("Avatar does not have a clock icon",
+				getPeoplePickerPage().checkAvatarClockIcon(contact) > 0.50);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")
 	public void WhenISearchForIgnoredUserNameAndTapOnItOnPeoplePickerPage(
 			String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.peoplePickerPage.pickIgnoredUserAndTap(contact);
+		getPeoplePickerPage().pickIgnoredUserAndTap(contact);
 	}
 
 	@When("^I see Add to conversation button$")
 	public void WhenISeeAddToConversationButton() throws Exception {
 		Assert.assertTrue("Add to conversation button is not visible",
-				PagesCollection.peoplePickerPage
-						.isAddToConversationBtnVisible());
+				getPeoplePickerPage().isAddToConversationBtnVisible());
 	}
 
 	@When("^I don't see Add to conversation button$")
-	public void WhenIDontSeeAddToConversationButton() {
+	public void WhenIDontSeeAddToConversationButton() throws Exception {
 		Assert.assertTrue("Add to conversation button is visible",
-				PagesCollection.peoplePickerPage.addToConversationNotVisible());
+				getPeoplePickerPage().addToConversationNotVisible());
 	}
 
 	@When("^I click Go button to create 1:1 conversation$")
 	public void WhenIClickOnGoButtonForSingle() throws Exception {
-		PagesCollection.iOSPage = PagesCollection.peoplePickerPage
-				.clickOnGoButton(false);
+		getPeoplePickerPage().clickOnGoButton(false);
 	}
 
 	@When("^I click on Go button$")
 	public void WhenIClickOnGoButton() throws Exception {
-		PagesCollection.iOSPage = PagesCollection.peoplePickerPage
-				.clickOnGoButton(true);
-		if (PagesCollection.iOSPage instanceof GroupChatPage) {
-			PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.iOSPage;
-		}
+		getPeoplePickerPage().clickOnGoButton(true);
 	}
 
 	@When("^I click clear button$")
 	public void WhenIClickClearButton() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.peoplePickerPage
-				.dismissPeoplePicker();
+		getPeoplePickerPage().dismissPeoplePicker();
 	}
 
 	/**
@@ -364,8 +352,7 @@ public class PeoplePickerPageSteps {
 	@Then("I tap on first (.*) top connections")
 	public void WhenITapOnTopConnections(int numberOfTopConnections)
 			throws Exception {
-		PagesCollection.peoplePickerPage
-				.tapNumberOfTopConnections(numberOfTopConnections);
+		getPeoplePickerPage().tapNumberOfTopConnections(numberOfTopConnections);
 	}
 
 	/**
@@ -381,7 +368,7 @@ public class PeoplePickerPageSteps {
 	public void WhenITapOnTopConnectionsButNotUser(int numberOfTopConnections,
 			String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.peoplePickerPage.tapNumberOfTopConnectionsButNotUser(
+		getPeoplePickerPage().tapNumberOfTopConnectionsButNotUser(
 				numberOfTopConnections, contact);
 	}
 
@@ -389,42 +376,37 @@ public class PeoplePickerPageSteps {
 	public void IClickOnUserIconToAddItToExistingGroupChat(String contact)
 			throws Throwable {
 		String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		PagesCollection.peoplePickerPage.clickConnectedUserAvatar(name);
+		getPeoplePickerPage().clickConnectedUserAvatar(name);
 	}
 
 	@When("I see contact list on People picker page")
 	public void ISeeContactListOnPeoplePickerPage() throws Exception {
-		Assert.assertTrue("Contacts label is not shown",
-				PagesCollection.peoplePickerPage.isContactsLabelVisible());
+		Assert.assertTrue("Contacts label is not shown", getPeoplePickerPage()
+				.isContactsLabelVisible());
 	}
 
 	@When("I see top people list on People picker page")
 	public void ISeeTopPeopleListOnPeoplePickerPage() throws Exception {
 		Assert.assertTrue("Top People label is not shown",
-				PagesCollection.peoplePickerPage.isTopPeopleLabelVisible());
+				getPeoplePickerPage().isTopPeopleLabelVisible());
 	}
 
 	@When("I tap on connected user (.*) on People picker page")
 	public void ISelectUserOnPeoplePickerPage(String name) throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		PagesCollection.peoplePickerPage.selectUser(name);
+		getPeoplePickerPage().selectUser(name);
 	}
 
 	@When("I see Create Conversation button on People picker page")
 	public void ISeeCreateConversationButton() throws Exception {
 		Assert.assertTrue("Create Conversation button is not visible.",
-				PagesCollection.peoplePickerPage
-						.isCreateConversationButtonVisible());
+				getPeoplePickerPage().isCreateConversationButtonVisible());
 	}
 
 	@When("I click Create Conversation button on People picker page")
 	public void IClickCreateConversationButton() throws Throwable {
-		if (!PagesCollection.peoplePickerPage.isKeyboardVisible()) {
-			PagesCollection.iOSPage = PagesCollection.peoplePickerPage
-					.clickCreateConversationButton();
-			if (PagesCollection.iOSPage instanceof GroupChatPage) {
-				PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.iOSPage;
-			}
+		if (!getPeoplePickerPage().isKeyboardVisible()) {
+			getPeoplePickerPage().clickCreateConversationButton();
 		} else {
 			WhenIClickOnGoButton();
 		}
@@ -434,41 +416,38 @@ public class PeoplePickerPageSteps {
 	public void ISeeUserIsSelectedOnPeoplePickerPage(String name)
 			throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		Assert.assertTrue(PagesCollection.peoplePickerPage.isUserSelected(name));
+		Assert.assertTrue(getPeoplePickerPage().isUserSelected(name));
 	}
 
 	@When("I see user (.*) on People picker page is NOT selected")
 	public void ISeeUserIsNotSelectedOnPeoplePickerPage(String name)
 			throws Exception {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		Assert.assertFalse(PagesCollection.peoplePickerPage
-				.isUserSelected(name));
+		Assert.assertFalse(getPeoplePickerPage().isUserSelected(name));
 	}
 
 	@When("I press backspace button")
-	public void IPressBackspaceBtn() {
-		PagesCollection.peoplePickerPage.hitDeleteButton();
+	public void IPressBackspaceBtn() throws Exception {
+		getPeoplePickerPage().hitDeleteButton();
 	}
 
 	@When("I swipe up on People picker page")
 	public void ISwipeUpPeoplePickerPage() throws Throwable {
-		PagesCollection.peoplePickerPage.swipeUp(500);
+		getPeoplePickerPage().swipeUp(500);
 	}
 
 	@When("^I click on Add to conversation button$")
 	public void WhenIClickOnAddToConversationButton() throws Exception {
-		if (PagesCollection.peoplePickerPage.isKeyboardVisible()) {
-			PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.peoplePickerPage
-					.clickOnGoButton(true);
+		if (getPeoplePickerPage().isKeyboardVisible()) {
+			getPeoplePickerPage().clickOnGoButton(true);
 		} else {
-			PagesCollection.groupChatPage = (GroupChatPage) PagesCollection.peoplePickerPage
-					.clickAddToCoversationButton();
+			getPeoplePickerPage().clickAddToCoversationButton();
 		}
 	}
 
 	@When("I click close button to dismiss people view")
 	public void IClickCloseButtonDismissPeopleView() throws Exception {
-		PagesCollection.peoplePickerPage.tapOnPeoplePickerClearBtn();
+		getPeoplePickerPage().tapOnPeoplePickerClearBtn();
 	}
 
 	/**
@@ -479,9 +458,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I unblock user$")
 	public void IUnblockUser() throws Exception {
-		PagesCollection.dialogPage = PagesCollection.peoplePickerPage
-				.unblockUser();
-
+		getPeoplePickerPage().unblockUser();
 	}
 
 	/**
@@ -491,11 +468,12 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @param number
 	 *            expected number of contacts
+	 * @throws Exception
 	 * 
 	 */
 	@Then("^I see that (\\d+) contacts are selected$")
-	public void ISeeThatContactsAreSelected(int number) {
-		int numberOfSelectedTopPeople = PagesCollection.peoplePickerPage
+	public void ISeeThatContactsAreSelected(int number) throws Exception {
+		int numberOfSelectedTopPeople = getPeoplePickerPage()
 				.getNumberOfSelectedTopPeople();
 		Assert.assertEquals(number, numberOfSelectedTopPeople);
 	}
@@ -505,11 +483,12 @@ public class PeoplePickerPageSteps {
 	 * via mail.
 	 * 
 	 * @step. ^I press the send an invite button$
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I press the send an invite button$")
-	public void IPressTheSendAnInviteButton() {
-		PagesCollection.peoplePickerPage.tapSendInviteButton();
+	public void IPressTheSendAnInviteButton() throws Exception {
+		getPeoplePickerPage().tapSendInviteButton();
 	}
 
 	/**
@@ -523,17 +502,18 @@ public class PeoplePickerPageSteps {
 	@When("^I press the copy button$")
 	public void IPressTheCopyButton() throws UnsupportedFlavorException,
 			Exception {
-		PagesCollection.peoplePickerPage.tapSendInviteCopyButton();
+		getPeoplePickerPage().tapSendInviteCopyButton();
 	}
 
 	/**
 	 * Presses the instant connect plus button
 	 * 
 	 * @step. ^I press the instant connect button$
+	 * @throws Exception
 	 */
 	@When("^I press the instant connect button$")
-	public void IPressTheInstantConnectButton() {
-		PagesCollection.peoplePickerPage.pressInstantConnectButton();
+	public void IPressTheInstantConnectButton() throws Exception {
+		getPeoplePickerPage().pressInstantConnectButton();
 	}
 
 }

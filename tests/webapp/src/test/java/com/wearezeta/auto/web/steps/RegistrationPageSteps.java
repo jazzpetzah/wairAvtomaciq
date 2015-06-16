@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import org.junit.Assert;
-
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -19,7 +17,6 @@ import com.wearezeta.auto.web.pages.PagesCollection;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -44,6 +41,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I enter user name (.*) on Registration page$")
 	public void IEnterName(String name) throws Exception {
+		PagesCollection.registrationPage.waitForRegistrationPageToFullyLoad();
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchUserException e) {
@@ -152,8 +150,9 @@ public class RegistrationPageSteps {
 	@Then("^I see email (.*) on [Vv]erification page$")
 	public void ISeeVerificationEmail(String email) throws NoSuchUserException {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isVerificationEmailCorrect(email));
+		assertThat(
+				PagesCollection.registrationPage.getVerificationEmailAddress(),
+				equalTo(email));
 	}
 
 	/**
@@ -188,6 +187,18 @@ public class RegistrationPageSteps {
 			assertThat("Red dot on email field",
 					!PagesCollection.registrationPage.isRedDotOnEmailField());
 		}
+	}
+
+	/**
+	 * Checks if an icon is shown
+	 * 
+	 * @step. ^I verify that an envelope icon is shown$
+	 * @throws Exception 
+	 */
+	@Then("^I verify that an envelope icon is shown$")
+	public void IVerifyThatAnEnvelopeIconIsShown() throws Exception {
+		assertThat("Envelope icon not shown",
+				PagesCollection.registrationPage.isEnvelopeShown());
 	}
 
 	/**

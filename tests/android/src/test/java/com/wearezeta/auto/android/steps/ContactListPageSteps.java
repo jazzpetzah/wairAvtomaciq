@@ -22,23 +22,30 @@ public class ContactListPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Close People Picker and open contact list without contacts (Should these
-	 * two pieces of behaviour be different steps?)
+	 * Verify whether conversations list is visible and no contacts are there
 	 * 
-	 * @step. ^I see Contact list with no contacts$
+	 * @step. ^I see Contact list with (no )?contacts$
 	 * 
 	 * @throws Exception
 	 */
-	@Given("^I see Contact list with no contacts$")
-	public void GivenISeeContactListWithNoContacts() throws Exception {
-		((LoginPage) pagesCollection.getPage(LoginPage.class))
-				.verifyLoginFinished();
+	@Given("^I see Contact list with (no )?contacts$")
+	public void GivenISeeContactListWithNoContacts(String shouldNotBeVisible)
+			throws Exception {
+		getContactListPage().verifyContactListIsFullyLoaded();
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue(
+					"No conversations are visible in the conversations list, but some are expected",
+					getContactListPage().isAnyConversationVisible());
+		} else {
+			Assert.assertFalse(
+					"Some conversations are visible in the conversations list, but zero is expected",
+					getContactListPage().isAnyConversationVisible());
+
+		}
 	}
 
 	/**
-	 * After login checks to see that a conversation list exists with the
-	 * current user name visible at the top (Must log in first for this step to
-	 * work - seems like it should be independent of the step before it)
+	 * Verify whether conversations list is visible
 	 * 
 	 * @step. ^I see Contact list$
 	 * 
@@ -46,8 +53,6 @@ public class ContactListPageSteps {
 	 */
 	@Given("^I see Contact list$")
 	public void GivenISeeContactList() throws Exception {
-		((LoginPage) pagesCollection.getPage(LoginPage.class))
-				.verifyLoginFinished();
 		getContactListPage().verifyContactListIsFullyLoaded();
 	}
 

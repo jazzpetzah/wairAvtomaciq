@@ -7,45 +7,43 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class CallingOverlayPage extends AndroidPage {
+	@SuppressWarnings("unused")
+	private static final String idCallingMute = "cib__calling_mute";
 
-	@FindBy(id = AndroidLocators.CallingOverlayPage.idCallingOverlayContainer)
-	private WebElement callingOverlayContainer;
+	@SuppressWarnings("unused")
+	private static final String idCallingAccept = "gtv__calling__accept";
 
-	@FindBy(id = AndroidLocators.CallingOverlay.idOngoingCallMicrobar)
-	private WebElement ongoingCallMicrobar;
+	private static final String idCallingOverlayContainer = "coc__calling__overlay_container";
 
-	@FindBy(id = AndroidLocators.CallingOverlay.idOngoingCallMinibar)
-	private WebElement ongoingCallMinibar;
+	private static final String idOngoingCallMicrobar = "ocpv__ongoing";
 
-	@FindBy(id = AndroidLocators.CallingOverlay.idIncominCallerAvatar)
-	private WebElement incominCallerAvatar;
+	private static final String idOngoingCallMinibar = "ocpv__ongoing_small";
 
-	@FindBy(id = AndroidLocators.CallingOverlayPage.idIgnoreButton)
+	private static final String idIncominCallerAvatar = "civ__calling";
+
+	private static final String idIgnoreButton = "cib__calling_mute";
+	@FindBy(id = idIgnoreButton)
 	private WebElement ignoreButton;
 
-	@FindBy(id = AndroidLocators.CallingOverlayPage.idAcceptButton)
+	private static final String idAcceptButton = "gtv__calling__accept";
+	@FindBy(id = idAcceptButton)
 	private WebElement acceptButton;
 
-	public static final Function<String, String> xpathCallingBarCaptionByName = name -> String
+	private static final Function<String, String> xpathCallingBarCaptionByName = name -> String
 			.format("//*[@id='ttv__calling__message' and @value = '%s']", name);
 
-	@FindBy(id = AndroidLocators.CallingOverlay.idCallMessage)
-	private WebElement callMessage;
+	private static final String idCallMessage = "ttv__calling__message";
 
-	@FindBy(id = AndroidLocators.CallingOverlay.idCallingDismiss)
-	private WebElement callingDismiss;
+	private static final String idCallingDismiss = "cib__calling__dismiss";
 
-	@FindBy(id = AndroidLocators.CallingOverlay.idCallingSpeaker)
-	private WebElement callingSpeaker;
+	private static final String idCallingSpeaker = "cib__calling__speaker";
 
-	@FindBy(id = AndroidLocators.CallingOverlay.idCallingMicMute)
-	private WebElement callingMicMute;
+	private static final String idCallingMicMute = "cib__calling__mic_mute";
 
 	public CallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
@@ -60,20 +58,20 @@ public class CallingOverlayPage extends AndroidPage {
 	private static final int VISIBILITY_TIMEOUT_SECONDS = 5;
 
 	public boolean isVisible() throws Exception {
-		final By locator = By
-				.id(AndroidLocators.CallingOverlayPage.idCallingOverlayContainer);
+		final By locator = By.id(idCallingOverlayContainer);
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
 				VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public boolean waitUntilNotVisible() throws Exception {
-		final By locator = By
-				.id(AndroidLocators.CallingOverlayPage.idCallingOverlayContainer);
+		final By locator = By.id(idCallingOverlayContainer);
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
 				VISIBILITY_TIMEOUT_SECONDS);
 	}
 
-	public void muteConversation() {
+	public void muteConversation() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idIgnoreButton)) : "Ignore button is not visible";
 		ignoreButton.click();
 	}
 
@@ -84,40 +82,49 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public DialogPage acceptCall() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idAcceptButton)) : "Accept button is not visible";
 		acceptButton.click();
 		return new DialogPage(getLazyDriver());
 	}
 
 	public boolean incominCallerAvatarIsVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(callMessage);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idIncominCallerAvatar));
 	}
 
 	public boolean callingMessageIsVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(callMessage);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCallMessage));
 	}
 
 	public boolean callingDismissIsVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(callingDismiss);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCallingDismiss));
 	}
 
 	public boolean callingSpeakerIsVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(callingSpeaker);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCallingSpeaker));
 	}
 
 	public boolean callingMicMuteIsVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(callingMicMute);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCallingMicMute));
 	}
 
 	public boolean callingOverlayIsVisible() throws Exception {
-		return DriverUtils
-				.isElementPresentAndDisplayed(callingOverlayContainer);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCallingOverlayContainer));
 	}
 
 	public boolean ongoingCallMicrobarIsVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(ongoingCallMicrobar);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idOngoingCallMicrobar));
 	}
 
 	public boolean ongoingCallMinibarIsVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(ongoingCallMinibar);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idOngoingCallMinibar));
 	}
 }

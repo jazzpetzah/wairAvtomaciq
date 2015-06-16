@@ -22,7 +22,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import android.graphics.Point;
 
-import com.wearezeta.auto.android.locators.AndroidLocators;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -42,104 +41,141 @@ public class DialogPage extends AndroidPage {
 	public static final String SPEAKER_BUTTON_LABEL = "SPEAKER";
 	public static final String I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
 
-	@FindBy(id = AndroidLocators.CommonLocators.idEditText)
+	public static final String idParticipantsBtn = "gtv__cursor_participants";
+
+	public static final String xpathConfirmOKButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
+
+	public static final String idDialogImages = "iv__row_conversation__message_image";
+
+	public static final String idAddPicture = "gtv__cursor_picture";
+
+	private static final Function<String, String> xpathConversationMessageByText = text -> String
+			.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
+					text);
+
+	private static final String idFakeCursor = "v__cursor__fake_cursor";
+
+	@FindBy(id = idEditText)
 	private WebElement cursorInput;
 
-	@FindBy(id = AndroidLocators.DialogPage.idMessage)
+	private static final String idMessage = "ltv__row_conversation__message";
+	@FindBy(id = idMessage)
 	private List<WebElement> messagesList;
 
-	@FindBy(id = AndroidLocators.DialogPage.idMissedCallMesage)
+	private static final String idMissedCallMesage = "ttv__row_conversation__missed_call";
+	@FindBy(id = idMissedCallMesage)
 	private WebElement missedCallMessage;
 
-	@FindBy(id = AndroidLocators.DialogPage.idCursorFrame)
+	private static final String idCursorFrame = "cv";
+	@FindBy(id = idCursorFrame)
 	private WebElement cursorFrame;
 
 	public static final Function<String, String> xpathPingMessageByText = text -> String
-			.format("//*[@id='ttv__row_conversation__ping_message'] and @value='%s']",
+			.format("//*[@id='ttv__row_conversation__ping_message' and @value='%s']",
 					text);
 
-	@FindBy(id = AndroidLocators.DialogPage.idPingIcon)
+	private static final String idPingIcon = "gtv__knock_icon";
+	@FindBy(id = idPingIcon)
 	private WebElement pingIcon;
 
-	@FindBy(id = AndroidLocators.DialogPage.idDialogTakePhotoButton)
+	private static final String idDialogTakePhotoButton = "gtv__camera_control__take_a_picture";
+	@FindBy(id = idDialogTakePhotoButton)
 	private WebElement takePhotoButton;
 
-	@FindBy(id = AndroidLocators.DialogPage.idDialogChangeCameraButton)
+	private static final String idDialogChangeCameraButton = "gtv__camera__top_control__back_camera";
+	@FindBy(id = idDialogChangeCameraButton)
 	private WebElement changeCameraButton;
 
-	@FindBy(xpath = AndroidLocators.DialogPage.xpathConfirmOKButton)
+	@FindBy(xpath = xpathConfirmOKButton)
 	private WebElement okButton;
 
-	@FindBy(id = AndroidLocators.DialogPage.idDialogImages)
+	@FindBy(id = idDialogImages)
 	private WebElement image;
 
-	@FindBy(id = AndroidLocators.DialogPage.idDialogImages)
+	@FindBy(id = idDialogImages)
 	private List<WebElement> imageList;
 
-	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestDialog)
+	private static final String idConnectRequestDialog = "connect_request_root";
+	@FindBy(id = idConnectRequestDialog)
 	private WebElement connectRequestDialog;
 
-	@FindBy(id = AndroidLocators.DialogPage.idParticipantsBtn)
+	@FindBy(id = idParticipantsBtn)
 	private WebElement participantsButton;
 
-	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestMessage)
+	private static final String idConnectRequestMessage = "contact_request_message";
+	@FindBy(id = idConnectRequestMessage)
 	private WebElement connectRequestMessage;
 
-	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestConnectTo)
+	private static final String idConnectRequestConnectTo = "user_name";
+	@FindBy(id = idConnectRequestConnectTo)
 	private WebElement connectRequestConnectTo;
 
-	@FindBy(id = AndroidLocators.DialogPage.idBackgroundOverlay)
+	private static final String idBackgroundOverlay = "v_background_dark_overlay";
+	@FindBy(id = idBackgroundOverlay)
 	private WebElement backgroundOverlay;
 
-	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestChatLabel)
+	private static final String idConnectRequestChatLabel = "ttv__row_conversation__connect_request__chathead_footer__label";
+	@FindBy(id = idConnectRequestChatLabel)
 	private WebElement connectRequestChatLabel;
 
-	@FindBy(id = AndroidLocators.DialogPage.idConnectRequestChatUserName)
+	private static final String idConnectRequestChatUserName = "ttv__row_conversation__connect_request__chathead_footer__username";
+	@FindBy(id = idConnectRequestChatUserName)
 	private WebElement connectRequestChatUserName;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idGalleryBtn)
+	@FindBy(id = idGalleryBtn)
 	private WebElement galleryBtn;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idSearchHintClose)
+	@FindBy(id = idSearchHintClose)
 	private WebElement closeHintBtn;
 
-	@FindBy(id = AndroidLocators.CommonLocators.idCloseImageBtn)
+	@FindBy(id = idCloseImageBtn)
 	private WebElement closeImageBtn;
 
-	@FindBy(id = AndroidLocators.DialogPage.idPlayPauseMedia)
+	private static final String idPlayPauseMedia = "gtv__media_play";
+	@FindBy(id = idPlayPauseMedia)
 	private WebElement playPauseBtn;
 
-	@FindBy(id = AndroidLocators.DialogPage.idYoutubePlayButton)
+	private static final String idYoutubePlayButton = "gtv__youtube_message__play";
+	@FindBy(id = idYoutubePlayButton)
 	private WebElement playYoutubeBtn;
 
-	@FindBy(id = AndroidLocators.DialogPage.idMediaBarControl)
+	private static final String idMediaBarControl = "gtv__conversation_header__mediabar__control";
+	@FindBy(id = idMediaBarControl)
 	private WebElement mediaBarControl;
 
-	@FindBy(id = AndroidLocators.DialogPage.idAddPicture)
+	@FindBy(id = idAddPicture)
 	private WebElement addPictureBtn;
 
-	@FindBy(id = AndroidLocators.DialogPage.idPing)
+	private static final String idPing = "gtv__cursor_knock";
+	@FindBy(id = idPing)
 	private WebElement pingBtn;
 
-	@FindBy(id = AndroidLocators.DialogPage.idCallingMessage)
+	private static final String idCallingMessage = "ttv__calling__message";
+	@FindBy(id = idCallingMessage)
 	private WebElement callingMessageText;
 
-	@FindBy(id = AndroidLocators.DialogPage.idCall)
+	private static final String idCall = "gtv__cursor_call";
+	@FindBy(id = idCall)
 	private WebElement callBtn;
 
-	@FindBy(id = AndroidLocators.DialogPage.idMute)
+	private static final String idMute = "cib__calling__mic_mute";
+	@FindBy(id = idMute)
 	private WebElement muteBtn;
 
-	@FindBy(id = AndroidLocators.DialogPage.idSpeaker)
+	private static final String idSpeaker = "cib__calling__speaker";
+	@FindBy(id = idSpeaker)
 	private WebElement speakerBtn;
 
-	@FindBy(id = AndroidLocators.DialogPage.idCancelCall)
+	private static final String idCancelCall = "cib__calling__dismiss";
+	@FindBy(id = idCancelCall)
 	private WebElement cancelCallBtn;
 
-	@FindBy(id = AndroidLocators.DialogPage.idNewConversationNameMessage)
+	private static final String idNewConversationNameMessage = "ttv__row_conversation__new_conversation_name";
+	@FindBy(id = idNewConversationNameMessage)
 	private WebElement newConversationNameMessage;
 
-	@FindBy(xpath = AndroidLocators.DialogPage.xpathLastConversationMessage)
+	private static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
+	@FindBy(xpath = xpathLastConversationMessage)
 	private WebElement lastConversationMessage;
 
 	public static Function<String, String> xpathInputFieldByValue = value -> String
@@ -155,7 +191,7 @@ public class DialogPage extends AndroidPage {
 
 	public void waitForCursorInputVisible() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idEditText));
+				By.id(idEditText));
 	}
 
 	public void tapOnCursorInput() {
@@ -168,7 +204,7 @@ public class DialogPage extends AndroidPage {
 
 	public void tapOnTextInputIfVisible() throws Exception {
 		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idEditText), 5)) {
+				By.id(idEditText), 5)) {
 			cursorInput.click();
 		}
 	}
@@ -186,8 +222,7 @@ public class DialogPage extends AndroidPage {
 
 	public void swipeOnCursorInput() throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorInput));
-		final By fakeCursorLocator = By
-				.id(AndroidLocators.DialogPage.idFakeCursor);
+		final By fakeCursorLocator = By.id(idFakeCursor);
 		int ntry = 1;
 		do {
 			DriverUtils.swipeRight(this.getDriver(), cursorInput,
@@ -269,13 +304,13 @@ public class DialogPage extends AndroidPage {
 
 	public boolean checkNoCallingOverlay() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.idCallingMessage),
+				By.id(idCallingMessage),
 				CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public boolean checkCallingOverlay() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.DialogPage.idCallingMessage),
+				By.id(idCallingMessage),
 				CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
@@ -355,9 +390,7 @@ public class DialogPage extends AndroidPage {
 	private static final int MSG_DELIVERY_TIMEOUT_SECONDS = 4;
 
 	public void waitForMessage(String text) throws Exception {
-		final By locator = By
-				.xpath(AndroidLocators.DialogPage.xpathConversationMessageByText
-						.apply(text));
+		final By locator = By.xpath(xpathConversationMessageByText.apply(text));
 		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
 				MSG_DELIVERY_TIMEOUT_SECONDS)) {
 			throw new RuntimeException(
@@ -369,7 +402,7 @@ public class DialogPage extends AndroidPage {
 
 	public boolean isImageExists() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.idDialogImages));
+				By.id(idDialogImages));
 	}
 
 	public void confirm() throws Exception {
@@ -379,17 +412,17 @@ public class DialogPage extends AndroidPage {
 
 	public void takePhoto() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.idDialogTakePhotoButton));
+				By.id(idDialogTakePhotoButton));
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				takePhotoButton);
 		takePhotoButton.click();
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(AndroidLocators.DialogPage.idDialogTakePhotoButton));
+				By.id(idDialogTakePhotoButton));
 	}
 
 	public void changeCamera() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.idDialogChangeCameraButton));
+				By.id(idDialogChangeCameraButton));
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				changeCameraButton);
 		changeCameraButton.click();
@@ -408,7 +441,7 @@ public class DialogPage extends AndroidPage {
 
 	public Boolean isKnockIconVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.DialogPage.idPingIcon));
+				By.id(idPingIcon));
 	}
 
 	public String getConnectRequestChatLabel() throws Exception {
@@ -418,31 +451,29 @@ public class DialogPage extends AndroidPage {
 
 	public boolean isConnectRequestChatLabelVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.DialogPage.idConnectRequestChatLabel));
+				By.id(idConnectRequestChatLabel));
 	}
 
-	public String getConnectRequestChatUserName() {
+	public String getConnectRequestChatUserName() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idConnectRequestChatUserName)) : "The username is not visible on the connection request screen";
 		return connectRequestChatUserName.getText().toLowerCase();
 	}
 
+	@Override
 	public ContactListPage navigateBack() throws Exception {
-		getDriver().navigate().back();
+		super.navigateBack();
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public ContactListPage navigateBack(int time) throws Exception {
-		swipeRightCoordinates(time);
+	public ContactListPage navigateBack(int timeMilliseconds) throws Exception {
+		swipeRightCoordinates(timeMilliseconds);
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public ContactListPage navigateBackUsingBackButton() throws Exception {
-		getDriver().navigate().back();
-		return new ContactListPage(this.getLazyDriver());
-	}
-	
 	public boolean isHintVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idSearchHintClose));
+				By.id(idSearchHintClose));
 	}
 
 	public void closeHint() throws Exception {
@@ -460,7 +491,7 @@ public class DialogPage extends AndroidPage {
 		final int MAX_TRIES = 4;
 		int ntry = 1;
 		while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idCloseImageBtn), 4)
+				By.id(idCloseImageBtn), 4)
 				&& ntry <= MAX_TRIES) {
 			this.tapOnCenterOfScreen();
 			ntry++;
@@ -624,11 +655,8 @@ public class DialogPage extends AndroidPage {
 
 	public MessageEntry receiveMessage(String message, boolean checkTime)
 			throws Exception {
-		if (DriverUtils
-				.waitUntilLocatorAppears(
-						getDriver(),
-						By.xpath(AndroidLocators.DialogPage.xpathConversationMessageByText
-								.apply(message)))) {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(xpathConversationMessageByText.apply(message)))) {
 			return new MessageEntry("text", message, new Date(), checkTime);
 		}
 		return null;
@@ -648,17 +676,16 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 
-	public boolean waitForPingMessageWithText(String expectedText) throws Exception {
+	public boolean waitForPingMessageWithText(String expectedText)
+			throws Exception {
 		final By locator = By.xpath(xpathPingMessageByText.apply(expectedText));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public boolean isGroupChatDialogContainsNames(List<String> names)
 			throws Exception {
-		assert DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						getDriver(),
-						By.xpath(AndroidLocators.DialogPage.xpathLastConversationMessage));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathLastConversationMessage));
 		final String convoText = lastConversationMessage.getText();
 		for (String name : names) {
 			if (!convoText.toLowerCase().contains(name.toLowerCase())) {
@@ -670,7 +697,7 @@ public class DialogPage extends AndroidPage {
 
 	public boolean isDialogVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(AndroidLocators.DialogPage.idMessage));
+				By.id(idMessage));
 	}
 
 	public void tapPlayPauseBtn() throws Exception {
@@ -685,10 +712,9 @@ public class DialogPage extends AndroidPage {
 	// NOTE: Click happens on the text input area if participants button is not
 	// NOTE: visible
 	public void tapDialogPageBottom() throws Exception {
-		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.CommonLocators.idEditText));
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idEditText));
 		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.DialogPage.idParticipantsBtn), 5)) {
+				By.id(idParticipantsBtn), 5)) {
 			cursorInput.click();
 			Thread.sleep(1000); // fix for scrolling animation
 		}
@@ -696,7 +722,7 @@ public class DialogPage extends AndroidPage {
 
 	public boolean waitUntilYoutubePlayButtonVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(AndroidLocators.DialogPage.idYoutubePlayButton));
+				By.id(idYoutubePlayButton));
 	}
 
 	public double getMediaBarControlIconOverlapScore(String label)
@@ -742,5 +768,29 @@ public class DialogPage extends AndroidPage {
 
 	public String getLastMessageFromDialog() {
 		return lastConversationMessage.getText();
+	}
+
+	public void swipeLeftOnCursorInput() throws Exception {
+		final By fakeCursorLocator = By.id(idFakeCursor);
+		int ntry = 1;
+		do {
+			DriverUtils.swipeLeft(this.getDriver(), cursorInput,
+					DEFAULT_SWIPE_TIME);
+			final int currentCursorOffset = getDriver()
+					.findElement(fakeCursorLocator).getLocation().getX();
+			if (currentCursorOffset < getDriver().manage().window().getSize()
+					.getWidth() / 2) {
+				return;
+			}
+			log.debug(String
+					.format("Failed to swipe left the text cursor. Retrying (%s of %s)...",
+							ntry, MAX_CURSOR_SWIPE_TRIES));
+			ntry++;
+			Thread.sleep(1000);
+		} while (ntry <= MAX_CURSOR_SWIPE_TRIES);
+		throw new RuntimeException(
+				String.format(
+						"Failed to swipe left the text cursor on input field after %s retries!",
+						MAX_CURSOR_SWIPE_TRIES));
 	}
 }

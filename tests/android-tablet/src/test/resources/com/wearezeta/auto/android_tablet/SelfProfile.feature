@@ -3,9 +3,9 @@ Feature: Self Profile
   @id2264 @smoke
   Scenario Outline: ZClient change name in portrait mode
     Given There is 1 user where <Name> is me
-    And I rotate UI to portrait
+    Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
     And I tap my name field on Self Profile page
@@ -19,9 +19,9 @@ Feature: Self Profile
   @id2250 @smoke
   Scenario Outline: ZClient change name in landscape mode
     Given There is 1 user where <Name> is me
-    And I rotate UI to landscape
+    Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     And I see my name on Self Profile page
     And I tap my name field on Self Profile page
     And I change my name to <NewName> on Self Profile page
@@ -35,9 +35,9 @@ Feature: Self Profile
   Scenario Outline: Check contact personal info in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    And I rotate UI to portrait
+    Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     When I tap the conversation <Contact>
     And I see the conversation view
     And I tap Show Details button on conversation view page
@@ -53,9 +53,9 @@ Feature: Self Profile
   Scenario Outline: Check contact personal info in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    And I rotate UI to landscape
+    Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     When I tap the conversation <Contact>
     And I see the conversation view
     And I tap Show Details button on conversation view page
@@ -70,9 +70,9 @@ Feature: Self Profile
   @id2288 @smoke
   Scenario Outline: Change user picture in portrait mode
     Given There is 1 user where <Name> is me
-    And I rotate UI to portrait
+    Given I rotate UI to portrait
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
@@ -91,9 +91,9 @@ Feature: Self Profile
   @id2289 @smoke
   Scenario Outline: Change user picture in landscape mode
     Given There is 1 user where <Name> is me
-    And I rotate UI to landscape
+    Given I rotate UI to landscape
     Given I sign in using my email
-    And I see the conversations list
+    Given I see the conversations list
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
     And I remember my current profile picture

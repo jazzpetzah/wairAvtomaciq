@@ -4,6 +4,7 @@ Feature: Conversation View
   Scenario Outline: Send message in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -20,6 +21,7 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -28,7 +30,6 @@ Feature: Conversation View
     When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     And User <Name2> is me
     And I Sign in using login <Login2> and password <Password2>
@@ -45,6 +46,7 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -60,6 +62,7 @@ Feature: Conversation View
   Scenario Outline: Send picture to contact in 1:1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -74,6 +77,7 @@ Feature: Conversation View
   Scenario Outline: Able to send and play youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
@@ -99,6 +103,7 @@ Feature: Conversation View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -116,7 +121,8 @@ Feature: Conversation View
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given User Myself sent message <Msg1FromUserA> to conversation <ChatName>
     Given User <Contact1> is me
-    And I Sign in using login <Contact1Email> and password <Contact1Password>
+    Given I switch to Sign In page
+    Given I Sign in using login <Contact1Email> and password <Contact1Password>
     And I see Contact list with name <ChatName>
     When I open conversation with <ChatName>
     Then I see text message <Msg1FromUserA>
@@ -139,6 +145,7 @@ Feature: Conversation View
 
   @id1688
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
@@ -164,13 +171,14 @@ Feature: Conversation View
     Then I see 128 participants in the Group Participants popover
 
     Examples: 
-      | Login                                                              | Password  | Contact1                         | Contact2                         |
-      | smoketester.android+b5731febcd2448c68b5307b9bb860b4a@wearezeta.com | aqa123456 | 0139faca30ee45d28794f4d46211f984 | 01edc0159cc047018d9bf8e1a20ea9a8 |
+      | Login                       | Password   | Contact1   | Contact2   |
+      | smoketester+id1688@wire.com | aqa123456! | perf.200.1 | perf.200.2 |
 
   @id2279 @staging
   Scenario Outline: Send a long message containing new lines in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>

@@ -3,6 +3,7 @@ package com.wearezeta.auto.android_tablet.pages.popovers;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android_tablet.pages.AndroidTabletPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -25,5 +26,15 @@ public abstract class AbstractPopoverContainer extends AndroidTabletPage {
 	public boolean waitUntilInvisible() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorDissapears(getDriver(), getLocator());
+	}
+
+	public void tapInTheCenter() throws Exception {
+		final WebElement self = this.getDriver().findElement(getLocator());
+		DriverUtils.tapInTheCenterOfTheElement(getDriver(), self);
+	}
+
+	public void tapOutside() throws Exception {
+		final WebElement self = this.getDriver().findElement(getLocator());
+		DriverUtils.tapOutsideOfTheElement(getDriver(), self, 30, 10);
 	}
 }

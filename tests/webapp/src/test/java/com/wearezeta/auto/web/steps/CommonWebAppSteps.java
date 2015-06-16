@@ -1,14 +1,26 @@
 package com.wearezeta.auto.web.steps;
 
+import static org.junit.Assert.assertTrue;
+
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.logging.LogEntry;
@@ -16,6 +28,7 @@ import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.logging.LoggingPreferences;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
@@ -25,34 +38,25 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
-import com.wearezeta.auto.web.locators.WebAppLocators;
-import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 
 import cucumber.api.PendingException;
+import cucumber.api.Scenario;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-
-import java.util.Iterator;
-import java.util.List;
-
-import org.apache.commons.collections.IteratorUtils;
-
-import static org.junit.Assert.assertTrue;
 
 public class CommonWebAppSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -60,19 +64,11 @@ public class CommonWebAppSteps {
 	public static final Logger log = ZetaLogger.getLog(CommonWebAppSteps.class
 			.getSimpleName());
 
+	public static final Map<String, Future<ZetaWebAppDriver>> webdrivers = new HashMap<>();
+
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
-	private static final int MAX_DRIVER_CREATION_RETRIES = 3;
 
 	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
-
-	static {
-		System.setProperty("java.awt.headless", "false");
-		System.setProperty("org.apache.commons.logging.Log",
-				"org.apache.commons.logging.impl.SimpleLog");
-		System.setProperty(
-				"org.apache.commons.logging.simplelog.log.org.apache.http",
-				"warn");
-	}
 
 	private static void setCustomChromeProfile(DesiredCapabilities capabilities)
 			throws Exception {
@@ -132,66 +128,97 @@ public class CommonWebAppSteps {
 				+ "'");
 	}
 
-	private final static int MAX_TRIES = 5;
-
-	private void navigateToStartPage(RemoteWebDriver drv) {
-		if (WebAppExecutionContext.getCurrentBrowser() == Browser.InternetExplorer) {
-			// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
-			drv.manage()
-					.window()
-					.setSize(
-							new Dimension(
-									WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
-									WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
-		} else {
-			drv.manage().window().maximize();
-		}
-
+	@Before("~@performance")
+	public void setUp(Scenario scenario) throws Exception {
 		try {
-			drv.navigate()
-					.to(CommonUtils
-							.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class));
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			// async calls/waiting instances cleanup
+			CommonCallingSteps.getInstance().cleanupWaitingInstances();
+			CommonCallingSteps.getInstance().cleanupCalls();
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
 		}
 
-		// FIXME: I'm not sure whether white page instead of sign in is
-		// Amazon issue or webapp issue,
-		// but since this happens randomly in different browsers, then I can
-		// assume this issue has something to do to the hosting and/or
-		// Selenium driver
-		int ntry = 0;
-		while (ntry < MAX_TRIES) {
-			try {
-				if (DriverUtils
-						.waitUntilLocatorIsDisplayed(
-								drv,
-								By.xpath(WebAppLocators.LoginPage.xpathSwitchToRegisterButtons),
-								5)
-						|| DriverUtils
-								.waitUntilLocatorIsDisplayed(
-										drv,
-										By.xpath(WebAppLocators.RegistrationPage.xpathRootForm),
-										5)) {
-					break;
+		String platform = WebAppExecutionContext.getPlatform();
+		String osName = WebAppExecutionContext.getOsName();
+		String osVersion = WebAppExecutionContext.getOsVersion();
+		String browserName = WebAppExecutionContext.getBrowserName();
+		String browserVersion = WebAppExecutionContext.getBrowserVersion();
+
+		// create unique name for saucelabs and webdriver instances
+		String uniqueName = getUniqueTestName(scenario);
+		log.debug("Unique name for this test: " + uniqueName);
+
+		// get custom capabilities
+		DesiredCapabilities capabilities = getCustomCapabilities(platform,
+				osName, osVersion, browserName, browserVersion, uniqueName);
+
+		final String hubHost = System.getProperty("hubHost");
+		final String hubPort = System.getProperty("hubPort");
+		final String url = CommonUtils
+				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
+		final ExecutorService pool = Executors.newFixedThreadPool(1);
+
+		Callable<ZetaWebAppDriver> callableWebAppDriver = new Callable<ZetaWebAppDriver>() {
+
+			@Override
+			public ZetaWebAppDriver call() throws Exception {
+				final ZetaWebAppDriver lazyWebDriver = new ZetaWebAppDriver(
+						new URL("http://" + hubHost + ":" + hubPort + "/wd/hub"),
+						capabilities);
+				// setup of the browser
+				lazyWebDriver.setFileDetector(new LocalFileDetector());
+				if (WebAppExecutionContext.getBrowser().hasResizingWindowBug()) {
+					// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
+					lazyWebDriver
+							.manage()
+							.window()
+							.setSize(
+									new Dimension(
+											WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
+											WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
 				} else {
-					log.error(String
-							.format("Start page has failed to load. Trying to refresh (%s of %s)...",
-									ntry + 1, MAX_TRIES));
-					drv.navigate().to(drv.getCurrentUrl());
+					lazyWebDriver.manage().window().maximize();
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
+				// Workaround: IE does not open with a new profile so we delete
+				// local and session storage manually
+				if (WebAppExecutionContext.getBrowser() == Browser.InternetExplorer) {
+					lazyWebDriver.get(url);
+					lazyWebDriver.executeScript("localStorage.clear();");
+					lazyWebDriver.executeScript("sessionStorage.clear();");
+				}
+				return lazyWebDriver;
 			}
-			ntry++;
-		}
+		};
+
+		final Future<ZetaWebAppDriver> lazyWebDriver = pool
+				.submit(callableWebAppDriver);
+		webdrivers.put(uniqueName, lazyWebDriver);
+		lazyWebDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+				TimeUnit.MILLISECONDS).get(url);
+		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
+				url);
+		ZetaFormatter.setLazyDriver(lazyWebDriver);
 	}
 
-	private Future<ZetaWebAppDriver> resetWebAppDriver(String url)
-			throws Exception {
+	private String getUniqueTestName(Scenario scenario) {
+		String browserName = WebAppExecutionContext.getBrowserName();
+		String browserVersion = WebAppExecutionContext.getBrowserVersion();
+		String platform = WebAppExecutionContext.getPlatform();
+
+		String id = scenario.getId().substring(
+				scenario.getId().lastIndexOf(";") + 1);
+
+		return scenario.getName() + " (" + id + ") on " + platform + " with "
+				+ browserName + " " + browserVersion;
+	}
+
+	private static DesiredCapabilities getCustomCapabilities(String platform,
+			String osName, String osVersion, String browserName,
+			String browserVersion, String uniqueTestName) throws Exception {
 		final DesiredCapabilities capabilities;
-		switch (WebAppExecutionContext.getCurrentBrowser()) {
+		Browser browser = Browser.fromString(browserName);
+		switch (browser) {
 		case Chrome:
 			capabilities = DesiredCapabilities.chrome();
 			setCustomChromeProfile(capabilities);
@@ -213,57 +240,25 @@ public class CommonWebAppSteps {
 			break;
 		default:
 			throw new NotImplementedException(
-					"Incorrect browser name is set - "
-							+ WebAppExecutionContext.getCurrentBrowser()
-									.toString()
-							+ ". Please choose one of the following: chrome | firefox | safari | ie");
-		}
-		if (WebAppExecutionContext.getCurrentPlatform().length() > 0) {
-			// Use undocumented grid property to match platforms
-			// https://groups.google.com/forum/#!topic/selenium-users/PRsEBcbpNlM
-			capabilities.setCapability("applicationName",
-					WebAppExecutionContext.getCurrentPlatform());
+					"Unsupported/incorrect browser name is set: " + browserName);
 		}
 
-		if (WebAppExecutionContext.LoggingManagement
-				.isSupportedInCurrentBrowser()) {
-			setExtendedLoggingLevel(capabilities,
-					WebCommonUtils.getExtendedLoggingLevelInConfig(getClass()));
+		if (browser.isSupportingConsoleLogManagement()) {
+			setExtendedLoggingLevel(
+					capabilities,
+					WebCommonUtils
+							.getExtendedLoggingLevelInConfig(CommonCallingSteps.class));
 		}
 
-		// This could useful for testing on your local machine running Opera
-		// Do not forget to set real user name in profile path instead of
-		// default one
-		// setCustomOperaProfile(capabilities, "win7_opera");
+		capabilities.setCapability("platform", platform);
+		capabilities.setCapability("version", browserVersion);
+		capabilities.setCapability("os", osName);
+		capabilities.setCapability("os_version", osVersion);
+		capabilities.setCapability("browser_version", browserVersion);
+		capabilities.setCapability("name", uniqueTestName);
+		capabilities.setCapability("browserstack.debug", "true");
 
-		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
-		@SuppressWarnings("unchecked")
-		final Future<ZetaWebAppDriver> lazyWebDriver = (Future<ZetaWebAppDriver>) PlatformDrivers
-				.getInstance().resetDriver(url, capabilities,
-						MAX_DRIVER_CREATION_RETRIES, this::navigateToStartPage, null);
-		return lazyWebDriver;
-	}
-
-	@Before("~@performance")
-	public void setUp() throws Exception {
-		try {
-			// async calls/waiting instances cleanup
-			CommonCallingSteps.getInstance().cleanupWaitingInstances();
-			CommonCallingSteps.getInstance().cleanupCalls();
-		} catch (Exception e) {
-			// do not fail if smt fails here
-			e.printStackTrace();
-		}
-
-		final String url = CommonUtils
-				.getWebAppAppiumUrlFromConfig(CommonWebAppSteps.class);
-		final String path = CommonUtils
-				.getWebAppApplicationPathFromConfig(CommonWebAppSteps.class);
-		final Future<ZetaWebAppDriver> lazyWebDriver = resetWebAppDriver(url);
-		PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
-				path);
-		PagesCollection.loginPage = new LoginPage(lazyWebDriver, path);
-		ZetaFormatter.setLazyDriver(lazyWebDriver);
+		return capabilities;
 	}
 
 	/**
@@ -281,17 +276,17 @@ public class CommonWebAppSteps {
 	public void MyBrowserSupportsCalling(String doesNot) throws Exception {
 		if (doesNot == null) {
 			// should support calling
-			if (!WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
+			if (!WebAppExecutionContext.getBrowser().isSupportingCalls()) {
 				throw new PendingException("Browser "
-						+ WebAppExecutionContext.getCurrentBrowser().toString()
+						+ WebAppExecutionContext.getBrowser().toString()
 						+ " does not support calling.");
 			}
 		} else {
 			// should not support calling
-			if (WebAppExecutionContext.Calling.isSupportedInCurrentBrowser()) {
+			if (WebAppExecutionContext.getBrowser().isSupportingCalls()) {
 				throw new PendingException(
 						"Browser "
-								+ WebAppExecutionContext.getCurrentBrowser()
+								+ WebAppExecutionContext.getBrowser()
 										.toString()
 								+ " does support calling but this test is just for browsers without support.");
 			}
@@ -695,8 +690,8 @@ public class CommonWebAppSteps {
 	 */
 	@Given("^My browser supports synthetic drag and drop$")
 	public void MyBrowserSupportsSyntheticDragDrop() {
-		if (!WebAppExecutionContext.SyntheticDragAndDrop
-				.isSupportedInCurrentBrowser()) {
+		if (!WebAppExecutionContext.getBrowser()
+				.isSupportingSyntheticDragAndDrop()) {
 			throw new PendingException();
 		}
 	}
@@ -712,8 +707,8 @@ public class CommonWebAppSteps {
 	public void VerifyBrowserLogIsEmpty() throws Exception {
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
 			try {
-				if (WebAppExecutionContext.LoggingManagement
-						.isSupportedInCurrentBrowser()) {
+				if (WebAppExecutionContext.getBrowser()
+						.isSupportingConsoleLogManagement()) {
 					List<LogEntry> browserLog = getBrowserLog(PlatformDrivers
 							.getInstance()
 							.getDriver(CURRENT_PLATFORM)
@@ -746,20 +741,7 @@ public class CommonWebAppSteps {
 	 */
 	@Then("^I refresh page$")
 	public void IRefreshPage() throws Exception {
-		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
-			try {
-				if (WebAppExecutionContext.LoggingManagement
-						.isSupportedInCurrentBrowser()) {
-					WebCommonUtils.refreshPage(PlatformDrivers
-							.getInstance()
-							.getDriver(CURRENT_PLATFORM)
-							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-									TimeUnit.MILLISECONDS));
-				}
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
-		}
+		PagesCollection.registrationPage.refreshPage();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -775,12 +757,13 @@ public class CommonWebAppSteps {
 			for (LogEntry logEntry : logEntries) {
 				log.debug(logEntry.getMessage());
 			}
+			log.debug("--- END OF LOG ---");
 		}
 
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown(Scenario scenario) throws Exception {
 		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps.getInstance().cleanupWaitingInstances();
@@ -792,25 +775,52 @@ public class CommonWebAppSteps {
 
 		WebPage.clearPagesCollection();
 
-		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
+		String uniqueName = getUniqueTestName(scenario);
+
+		if (webdrivers.containsKey(uniqueName)) {
+			Future<ZetaWebAppDriver> webdriver = webdrivers.get(uniqueName);
 			try {
-				if (WebAppExecutionContext.LoggingManagement
-						.isSupportedInCurrentBrowser()) {
-					writeBrowserLogsIntoMainLog(PlatformDrivers
-							.getInstance()
-							.getDriver(CURRENT_PLATFORM)
-							.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
-									TimeUnit.MILLISECONDS));
+				ZetaWebAppDriver driver = webdriver.get(
+						ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+						TimeUnit.MILLISECONDS);
+
+				// save browser console if possible
+				if (WebAppExecutionContext.getBrowser()
+						.isSupportingConsoleLogManagement()) {
+					writeBrowserLogsIntoMainLog(driver);
 				}
-			} catch (ExecutionException e) {
+
+				if (driver instanceof ZetaWebAppDriver) {
+					// logout with JavaScript because otherwise backend will
+					// block
+					// us because of to many login requests
+					String logoutScript = "(typeof wire !== 'undefined') && wire.auth.repository.logout();";
+					JavascriptExecutor js = (JavascriptExecutor) driver;
+					js.executeScript(logoutScript);
+				}
+
+				// show link to saucelabs
+				String link = "https://saucelabs.com/jobs/"
+						+ driver.getSessionId();
+				log.debug("See more information on " + link);
+				String html = "<html><body><a id='link' href='"
+						+ link
+						+ "'>See more information on "
+						+ link
+						+ "</a><script>window.location.href = document.getElementById('link').getAttribute('href');</script></body></html>";
+				scenario.embed(html.getBytes(Charset.forName("UTF-8")),
+						"text/html");
+			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
-				PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+				webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
+						TimeUnit.MILLISECONDS).quit();
+				webdrivers.remove(uniqueName);
 			}
 		}
 		commonSteps.getUserManager().resetUsers();
 	}
-	
+
 	/**
 	 * Sends an image from one user to a conversation
 	 * 
@@ -834,8 +844,7 @@ public class CommonWebAppSteps {
 	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
 			String imageFileName, String conversationType,
 			String dstConversationName) throws Exception {
-		String imagePath = WebCommonUtils
-				.getFullPicturePath(imageFileName);
+		String imagePath = WebCommonUtils.getFullPicturePath(imageFileName);
 		Boolean isGroup = null;
 		if (conversationType.equals("single user")) {
 			isGroup = false;
@@ -849,6 +858,7 @@ public class CommonWebAppSteps {
 		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
 				imagePath, dstConversationName, isGroup);
 	}
+
 	/**
 	 * Unblocks user
 	 *
@@ -867,4 +877,17 @@ public class CommonWebAppSteps {
 		commonSteps.UnblockContact(userAsNameAlias, userToBlockNameAlias);
 	}
 
+	/**
+	 * Open the sign in page directly (not through a link). This is useful when
+	 * testing pages with dead ends (forget password, email verification)
+	 * 
+	 * @step. ^I open Sign In page$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I open Sign In page$")
+	public void IOpenSignInPage() throws Exception {
+		PagesCollection.loginPage = PagesCollection.registrationPage
+				.openSignInPage();
+	}
 }

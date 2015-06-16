@@ -10,12 +10,14 @@ public class SingleUserPopover extends AbstractPopoverContainer {
 	public final static String idRootLocator = "fl__participant_dialog__root";
 
 	private SingleConnectedUserDetalsPage singleConnectedUserDetalsPage;
+	private SearchPage searchPage;
 
 	public SingleUserPopover(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
 		this.singleConnectedUserDetalsPage = new SingleConnectedUserDetalsPage(
 				lazyDriver, this);
+		this.searchPage = new SearchPage(lazyDriver, this);
 	}
 
 	@Override
@@ -47,4 +49,23 @@ public class SingleUserPopover extends AbstractPopoverContainer {
 				.waitUntilUserEmailVisible(expectedEmail);
 	}
 
+	public void tapAddPeopleButton() {
+		this.singleConnectedUserDetalsPage.tapAddPeopleButton();
+	}
+
+	public void enterSearchText(String text) throws Exception {
+		this.searchPage.enterSearchText(text);
+	}
+
+	public void tapAvatarFromSearchResults(String name) throws Exception {
+		this.searchPage.tapAvatarFromSearchResults(name);
+	}
+
+	public void tapAddToConversationButton() {
+		this.searchPage.tapAddToConversationButton();
+	}
+
+	public void tapCloseButton() throws Exception {
+		this.singleConnectedUserDetalsPage.tapCloseButton();
+	}
 }

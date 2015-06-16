@@ -15,11 +15,44 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+      
+  @staging @id2375
+  Scenario Outline: Vefiry sending message [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type the message
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @staging @id2695
   Scenario Outline: Receive message from contact [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And Contact <Contact> send message to user <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
+  @staging @id2695
+  Scenario Outline: Receive message from contact [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
     Given I Sign in using login <Login> and password <Password>
     And I see Contact list with my name <Name>
     And Contact <Contact> send message to user <Name>
@@ -193,3 +226,303 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Picture | ConversationType | 
       | user1Email | user1Password | user1Name | user2Name | testing.jpg | single user | 
       
+  @staging @id2736
+  Scenario Outline: Send Message to contact after navigating away from chat page [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I input more than 200 chars message and send it
+    And I type the message
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
+    And I tap on text input
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
+  @staging @id2737
+  Scenario Outline: Send Message to contact after navigating away from chat page [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I input more than 200 chars message and send it
+    And I type the message
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
+    And I tap on text input
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id2738
+  Scenario Outline: Send more than 200 chars message [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I input more than 200 chars message and send it
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
+  @staging @id2739
+  Scenario Outline: Send more than 200 chars message [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I input more than 200 chars message and send it
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id2740
+  Scenario Outline: Send one line message with lower case and upper case [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I input message with lower case and upper case
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
+  @staging @id2741
+  Scenario Outline: Send one line message with lower case and upper case [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I input message with lower case and upper case
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id2742
+  Scenario Outline: Send special chars (German) [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I send using script predefined message <Text>
+    Then I see last message in dialog is expected message <Text>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Text                  |
+      | user1Email | user1Password | user1Name | user2Name | ÄäÖöÜüß & latin chars |
+      
+  @staging @id2743
+  Scenario Outline: Send special chars (German) [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I send using script predefined message <Text>
+    Then I see last message in dialog is expected message <Text>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Text                  |
+      | user1Email | user1Password | user1Name | user2Name | ÄäÖöÜüß & latin chars |
+
+  @staging @id2744
+  Scenario Outline: Copy and paste to send the message [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I see sign in screen
+    When I press Sign in button
+    And I have entered login <Text>
+    And I tap and hold on Email input
+    And I click on popup SelectAll item
+    And I click on popup Copy item
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I press Login button
+    And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I tap and hold on message input
+    And I click on popup Paste item
+    And I send the message
+    Then I see last message in dialog is expected message <Text>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Text       |
+      | user1Email | user1Password | user1Name | user2Name | TextToCopy |
+      
+  @staging @id2745
+  Scenario Outline: Copy and paste to send the message [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I see sign in screen
+    When I press Sign in button
+    And I have entered login <Text>
+    And I tap and hold on Email input
+    And I click on popup SelectAll item
+    And I click on popup Copy item
+    And I have entered login <Login>
+    And I have entered password <Password>
+    And I press Login button
+    And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I tap and hold on message input
+    And I click on popup Paste item
+    And I send the message
+    Then I see last message in dialog is expected message <Text>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Text       |
+      | user1Email | user1Password | user1Name | user2Name | TextToCopy |
+
+  @staging @id2746
+  Scenario Outline: Send a text containing spaces on either end of message [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I try to send message with only spaces
+    And I see message with only spaces is not send
+    And I input message with leading empty spaces
+    And I send the message
+    And I see message in the dialog
+    And I input message with trailing emtpy spaces
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
+  @staging @id2747
+  Scenario Outline: Send a text containing spaces on either end of message [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I try to send message with only spaces
+    And I see message with only spaces is not send
+    And I input message with leading empty spaces
+    And I send the message
+    And I see message in the dialog
+    And I input message with trailing emtpy spaces
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+      
+  @staging @id2405
+  Scenario Outline: Play/pause Youtube media link from the media bar [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type and send long message and media link <YouTubeLink>
+    And I see media link <YouTubeLink> and media in dialog
+    And I click play video button
+    And I scroll media out of sight until media bar appears
+    And I pause playing the media in media bar
+    Then I see playing media is paused
+    And I press play in media bar
+    Then I see media is playing
+    And I stop media in media bar
+    Then The media stops playing
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | YouTubeLink                                 |
+      | user1Email | user1Password | user1Name | user2Name | https://www.youtube.com/watch?v=gywGBuMUiI4 | 
+      
+  @staging @id2403
+  Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type and send long message and media link <SoundCloudLink>
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
+    And I scroll to the end of the conversation
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I tap on the media bar
+    Then I see conversation view is scrolled back to the playing media link <SoundCloudLink>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+      
+  @staging @id2404
+  Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type and send long message and media link <SoundCloudLink>
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
+    And I scroll to the end of the conversation
+    And I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I see media bar on dialog page
+    And I wait 150 seconds for media to stop playing
+    Then I dont see media bar on dialog page
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | SoundCloudLink                                                                       |
+      | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+

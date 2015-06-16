@@ -20,6 +20,10 @@ public class PeoplePickerPageSteps {
 				.getPage(PeoplePickerPage.class);
 	}
 
+	private ContactListPage getContactListPage() throws Exception {
+		return (ContactListPage) pagesCollection.getPage(ContactListPage.class);
+	}
+
 	/**
 	 * Checks to see that the people picker page (search view) is visible
 	 * 
@@ -255,18 +259,6 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Tap on Send an invitation
-	 * 
-	 * @step. ^I tap on Send an invitation$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I tap on Send an invitation$")
-	public void WhenITapOnSendAnInvitation() throws Exception {
-		getPeoplePickerPage().tapOnSendInvitation();
-	}
-
-	/**
 	 * Clicks on the Add to conversation button
 	 * 
 	 * @step. ^I click on Add to conversation button$
@@ -317,6 +309,18 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
+	 * Tap the very first item in PYMK list
+	 * 
+	 * @step. ^I tap the first PYMK item$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap the first PYMK item$")
+	public void ITapTheFirstPYMKItem() throws Exception {
+		getPeoplePickerPage().tapPYMKItem(1);
+	}
+
+	/**
 	 * Do short or long swipe right the first PYMK entry
 	 * 
 	 * @step. ^I do (short|long) swipe right on the first PYMK item$
@@ -363,6 +367,27 @@ public class PeoplePickerPageSteps {
 		}
 		Assert.assertTrue(getPeoplePickerPage().waitUntilPYMKItemIsInvisible(
 				rememberedPYMKItemName));
+	}
+
+	/**
+	 * Verify whether the previously remembered PYMK item exists in the
+	 * conversations list
+	 * 
+	 * @step. ^I see contact list with the previously remembered PYMK item$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see contact list with the previously remembered PYMK item$")
+	public void ISeeContactListWithPReviouslyRememberedPYMKItem()
+			throws Exception {
+		if (rememberedPYMKItemName == null) {
+			throw new IllegalStateException(
+					"Please call the corresponding step to remember PYMK item name first");
+		}
+		Assert.assertTrue(String.format(
+				"There is no '%s' conversation in the list",
+				rememberedPYMKItemName),
+				getContactListPage().isContactExists(rememberedPYMKItemName));
 	}
 
 	/**
@@ -468,9 +493,7 @@ public class PeoplePickerPageSteps {
 					.tapOptionsButton();
 			((PersonalInfoPage) pagesCollection.getPage(PersonalInfoPage.class))
 					.tapSignOutBtn();
-			new EmailSignInSteps().GivenISignIn(
-					usrMgr.getSelfUser().getEmail(), usrMgr.getSelfUser()
-							.getPassword());
+			new LoginSteps().ISignInUsingEmail();
 			new ContactListPageSteps().GivenISeeContactList();
 			((ContactListPage) pagesCollection.getPage(ContactListPage.class))
 					.openPeoplePicker();

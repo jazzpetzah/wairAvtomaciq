@@ -48,7 +48,7 @@ public final class AndroidLoggingUtils {
 				"yyyy-MM-dd HH:mm:ss.SSS");
 		final Pattern pattern = Pattern
 				.compile("(\\d{2}\\-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2}\\.\\d{3})");
-		log.debug("===CAPTURED DEVICE LOGS===");
+		log.debug("\n\n\n===CAPTURED DEVICE LOGS===\n");
 		for (String logLine : allLogLines) {
 			final Matcher matcher = pattern.matcher(logLine);
 			long logLineTimestamp = -1;
@@ -80,7 +80,7 @@ public final class AndroidLoggingUtils {
 				}
 			}
 		}
-		log.debug("===END OF CAPTURED DEVICE LOGS===");
+		log.debug("\n===END OF CAPTURED DEVICE LOGS===\n\n\n");
 	}
 
 }

@@ -57,5 +57,4 @@ public class GroupPopover extends AbstractPopoverContainer {
 			throws Exception {
 		return this.participantsPage.waitForParticipantAvatarNotVisible(name);
 	}
-
 }

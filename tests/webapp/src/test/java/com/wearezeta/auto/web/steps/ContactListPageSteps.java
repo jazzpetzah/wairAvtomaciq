@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
@@ -468,5 +470,43 @@ public class ContactListPageSteps {
 				FindBy.NAME_ALIAS);
 		Assert.assertTrue("No ping visible.", PagesCollection.contactListPage
 				.isPingIconVisibleForConversation(conversationName));
+	}
+
+	/**
+	 * Verifies whether the conversation with previously remembered users is
+	 * selected in the conversation list
+	 * 
+	 * @step. ^I see previously remembered user selected in the conversations
+	 *        list$
+	 * 
+	 * @param namesOfSelectedTopPeople
+	 *            conversation name
+	 * @throws Exception
+	 */
+	@Then("^I see previously remembered user selected in the conversations list$")
+	public void ISeePreviouslyRememberedUserSelectedInConversationList()
+			throws Exception {
+		final List<String> selectedTopPeople = PeoplePickerPageSteps
+				.getSelectedTopPeople();
+		if (selectedTopPeople != null) {
+			assert selectedTopPeople.size() == 1 : "Count of selected Top People is expected to be 1";
+			String oneSelectedTopPeople = selectedTopPeople.get(0);
+			oneSelectedTopPeople = usrMgr.replaceAliasesOccurences(
+					oneSelectedTopPeople, FindBy.NAME_ALIAS);
+			log.debug("Looking for contact with name " + selectedTopPeople);
+			Assert.assertTrue("No contact list loaded.",
+					PagesCollection.contactListPage.waitForContactListVisible());
+			for (int i = 0; i < 5; i++) {
+				if (PagesCollection.contactListPage
+						.isConvoListEntryWithNameExist(oneSelectedTopPeople)) {
+					return;
+				}
+				Thread.sleep(1000);
+			}
+			throw new AssertionError("Conversation list entry '"
+					+ selectedTopPeople
+					+ "' is not visible after timeout expired");
+		} else
+			throw new Error("Top People are not selected");
 	}
 }

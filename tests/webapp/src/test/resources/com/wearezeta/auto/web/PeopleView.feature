@@ -4,6 +4,7 @@ Feature: People View
   Scenario Outline: Verify you can access proﬁle information for the other participant in a 1to1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open conversation with <Contact>
@@ -22,6 +23,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -44,6 +46,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -66,6 +69,7 @@ Feature: People View
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given I sent connection request to <UnknownContact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -94,6 +98,7 @@ Feature: People View
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given <UnknownContact> sent connection request to Myself
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -124,6 +129,7 @@ Feature: People View
     Given Myself is connected to <KnownContact>
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -148,6 +154,7 @@ Feature: People View
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given Myself blocked <KnownContact>
     Given I sent connection request to <UnknownContact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -177,6 +184,7 @@ Feature: People View
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given Myself blocked <KnownContact>
     Given I sent connection request to <UnknownContact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -205,6 +213,7 @@ Feature: People View
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given Myself sent connection request to <UnknownContact>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -230,6 +239,7 @@ Feature: People View
     Given <KnownContact> is connected to <UnknownContact>
     Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
     Given <UnknownContact> sent connection request to me
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     Then I see my avatar on top of Contact list
     When I open conversation with <ChatName>
@@ -256,6 +266,7 @@ Feature: People View
       Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>,<UnknownContact2>
       Given User <KnownContact> changes avatar picture to default
       Given <UnknownContact> sent connection request to me
+      Given I switch to Sign In page
       Given I Sign in using login <Login> and password <Password>
       Then I see my avatar on top of Contact list
       When I open conversation with <ChatName>
@@ -289,6 +300,7 @@ Feature: People View
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -325,6 +337,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
@@ -342,6 +355,7 @@ Feature: People View
   Scenario Outline: Verify the new conversation is created on the other end from 1to1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact1>
@@ -358,7 +372,6 @@ Feature: People View
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     And User <Contact1> is me
     And I Sign in using login <Contact1> and password <Password>
@@ -369,7 +382,6 @@ Feature: People View
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
-    And I switch to sign in page
     And I see Sign In page
     And User <Contact2> is me
     And I Sign in using login <Contact2> and password <Password>
@@ -387,6 +399,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given Myself blocked <Contact1>
+    Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open conversation with <ChatName>

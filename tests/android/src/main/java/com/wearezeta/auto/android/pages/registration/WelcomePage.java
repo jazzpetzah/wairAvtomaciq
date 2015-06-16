@@ -9,7 +9,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.pages.AndroidPage;
-import com.wearezeta.auto.android.pages.LoginPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -23,7 +22,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class WelcomePage extends AndroidPage {
 	@SuppressWarnings("unused")
-	private static final Logger log = ZetaLogger.getLog(LoginPage.class
+	private static final Logger log = ZetaLogger.getLog(WelcomePage.class
 			.getSimpleName());
 
 	public static final String idphoneInputField = "et__reg__phone";
@@ -54,9 +53,9 @@ public class WelcomePage extends AndroidPage {
 		phoneInputField.sendKeys(phoneNumber);
 	}
 
-	public VerificationPage clickConfirm() throws Exception {
+	public PhoneNumberVerificationPage clickConfirm() throws Exception {
 		phoneConfirmationButton.click();
-		return new VerificationPage(this.getLazyDriver());
+		return new PhoneNumberVerificationPage(this.getLazyDriver());
 	}
 
 	public EmailSignInPage tapIHaveAnAccount() throws Exception {
@@ -72,6 +71,8 @@ public class WelcomePage extends AndroidPage {
 	}
 
 	public AreaCodePage clickAreaCodeSelector() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idAreaCodeSelector));
 		areaCodeSelectorButton.click();
 		return new AreaCodePage(this.getLazyDriver());
 	}

@@ -1,9 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
-import com.wearezeta.auto.ios.pages.CallPage;
-import com.wearezeta.auto.ios.pages.IncomingCallPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -31,8 +28,6 @@ public class CallingSteps {
 			String userToNameAlias, String callBackend) throws Exception {
 		commonCallingSteps.UserXCallsToUserYUsingCallBackend(userFromNameAlias,
 				userToNameAlias, callBackend);
-		PagesCollection.callPage = (CallPage) PagesCollection.loginPage
-				.instantiatePage(IncomingCallPage.class);
 	}
 
 	/**

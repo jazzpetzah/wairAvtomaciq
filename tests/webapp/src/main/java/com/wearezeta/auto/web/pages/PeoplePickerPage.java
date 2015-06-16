@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -12,7 +13,8 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.web.common.WebAppConstants.Browser;
+import com.wearezeta.auto.web.common.Browser;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
@@ -38,6 +40,9 @@ public class PeoplePickerPage extends WebPage {
 
 	@FindBy(xpath = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']")
 	private List<WebElement> suggestions;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathSelectedTopPeopleList)
+	private List<WebElement> selectedTopPeopleItemLocator;
 
 	public PeoplePickerPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -70,11 +75,12 @@ public class PeoplePickerPage extends WebPage {
 		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 				.apply(name);
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(foundUserXpath), 3);
+				By.xpath(foundUserXpath));
 	}
 
-	public void closeSearch() throws Exception {
+	public ContactListPage closeSearch() throws Exception {
 		closeSearchButton.click();
+		return new ContactListPage(getLazyDriver());
 	}
 
 	public boolean isParticipantVisible(String name) throws Exception {
@@ -90,7 +96,7 @@ public class PeoplePickerPage extends WebPage {
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(name));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				locator, 3);
+				locator, 5);
 		WebElement participant = getDriver().findElement(locator);
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				participant);
@@ -157,14 +163,14 @@ public class PeoplePickerPage extends WebPage {
 		final By locator = By
 				.xpath(WebAppLocators.PeoplePickerPage.xpathSearchResultByName
 						.apply(user));
-		if (this.getDriver().getCapabilities().getBrowserName()
-				.equals(Browser.Safari.toString())) {
-			log.debug("safari workaround");
-			DriverUtils.addClass(this.getDriver(), this
-					.getDriver().findElement(locator), "hover");
-		} else {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), getDriver()
 					.findElement(locator));
+		} else {
+			// safari
+			DriverUtils.addClass(this.getDriver(), this.getDriver()
+					.findElement(locator), "hover");
 		}
 		getDriver()
 				.findElement(
@@ -179,8 +185,8 @@ public class PeoplePickerPage extends WebPage {
 		if (this.getDriver().getCapabilities().getBrowserName()
 				.equals(Browser.Safari.toString())) {
 			log.debug("safari workaround");
-			DriverUtils.addClass(this.getDriver(), this
-					.getDriver().findElement(locator), "hover");
+			DriverUtils.addClass(this.getDriver(), this.getDriver()
+					.findElement(locator), "hover");
 		} else {
 			DriverUtils.moveMouserOver(this.getDriver(), getDriver()
 					.findElement(locator));
@@ -188,6 +194,7 @@ public class PeoplePickerPage extends WebPage {
 		getDriver().findElement(
 				By.cssSelector(WebAppLocators.PeoplePickerPage.cssAddIconByName
 						.apply(user))).click();
+		DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
 	public ConnectToPopoverContainer clickPendingUserName(String name)
@@ -204,5 +211,28 @@ public class PeoplePickerPage extends WebPage {
 		WebElement foundPendingUserElement = getDriver().findElement(
 				By.xpath(foundPendingUserXpath));
 		foundPendingUserElement.click();
+	}
+
+	public boolean isTopPeopleLabelVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.xpath(WebAppLocators.PeoplePickerPage.xpathTopPeople));
+	}
+
+	public void clickNameInTopPeople(String name) throws Exception {
+		String topPeopleItemLocator = WebAppLocators.PeoplePickerPage.xpathTopPeopleListByName
+				.apply(name);
+		getDriver().findElement(By.xpath(topPeopleItemLocator)).click();
+	}
+
+	public ArrayList<String> getNamesOfSelectedTopPeople() throws Exception {
+		ArrayList<String> namesOfSelectedTopPeople = new ArrayList<String>();
+		final By selectedTopPeopleItemLocator = By
+				.xpath(WebAppLocators.PeoplePickerPage.xpathSelectedTopPeopleList);
+		for (WebElement element : getDriver().findElements(
+				selectedTopPeopleItemLocator)) {
+			namesOfSelectedTopPeople
+					.add(element.getAttribute("data-uie-value"));
+		}
+		return namesOfSelectedTopPeople;
 	}
 }

@@ -6,7 +6,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.IOSPage;
-import com.wearezeta.auto.ios.pages.PagesCollection;
+import com.wearezeta.auto.ios.pages.ImageFullScreenPage;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 
 import cucumber.api.java.en.Then;
@@ -16,20 +16,28 @@ import org.junit.Assert;
 
 public class ImageFullScreenPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
+			.getInstance();
+
+	private ImageFullScreenPage getImageFullScreenPage() throws Exception {
+		return (ImageFullScreenPage) pagesCollecton
+				.getPage(ImageFullScreenPage.class);
+	}
+
 	public static final double FULLSCREEN_SCORE = 0.35;
 
 	BufferedImage referenceImage;
 
 	@When("^I see Full Screen Page opened$")
-	public void ISeeFullScreenPage() {
-		Assert.assertTrue(PagesCollection.imageFullScreenPage
-				.isImageFullScreenShown());
+	public void ISeeFullScreenPage() throws Exception {
+		Assert.assertTrue(getImageFullScreenPage().isImageFullScreenShown());
 	}
 
 	@When("I see expected image in fullscreen (.*)")
 	public void ISeeExpectedImageInFullScreen(String filename) throws Throwable {
-		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot()
-				.orElseThrow(AssertionError::new);
+		referenceImage = getImageFullScreenPage().takeScreenshot().orElseThrow(
+				AssertionError::new);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + filename);
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
@@ -47,39 +55,36 @@ public class ImageFullScreenPageSteps {
 	}
 
 	@When("I tap on fullscreen page")
-	public void ITapFullScreenPage() {
-		PagesCollection.imageFullScreenPage = PagesCollection.imageFullScreenPage
-				.tapOnFullScreenPage();
+	public void ITapFullScreenPage() throws Exception {
+		getImageFullScreenPage().tapOnFullScreenPage();
 	}
 
 	@When("I see sender first name (.*) on fullscreen page")
 	public void ISeeSenderName(String sender) throws Exception {
 		String senderFirstName = usrMgr.findUserByNameOrNameAlias(sender)
 				.getName().split(" ")[0].toUpperCase();
-		Assert.assertEquals(senderFirstName,
-				PagesCollection.imageFullScreenPage.getSenderName());
+		Assert.assertEquals(senderFirstName, getImageFullScreenPage()
+				.getSenderName());
 	}
 
 	@When("I see send date on fullscreen page")
-	public void ISeeSendDate() {
+	public void ISeeSendDate() throws Exception {
 		long actualDate = DialogPageSteps.sendDate;
 		long expectedDate = IOSCommonUtils
-				.stringToTime(PagesCollection.imageFullScreenPage
-						.getTimeStamp());
+				.stringToTime(getImageFullScreenPage().getTimeStamp());
 		boolean flag = Math.abs(actualDate - expectedDate) < IOSConstants.DELTA_SEND_TIME;
 		Assert.assertTrue("Expected date: " + expectedDate
 				+ " is different from actual: " + actualDate, flag);
 	}
 
 	@When("I see download button shown on fullscreen page")
-	public void ISeeDownloadButtonOnFullscreenPage() {
-		Assert.assertTrue(PagesCollection.imageFullScreenPage
-				.isDownloadButtonVisible());
+	public void ISeeDownloadButtonOnFullscreenPage() throws Exception {
+		Assert.assertTrue(getImageFullScreenPage().isDownloadButtonVisible());
 	}
 
 	@When("I tap download button on fullscreen page")
-	public void ITapDownloadButtonOnFullscreenPage() {
-		PagesCollection.imageFullScreenPage.clickDownloadButton();
+	public void ITapDownloadButtonOnFullscreenPage() throws Exception {
+		getImageFullScreenPage().clickDownloadButton();
 	}
 
 	@When("I verify image is downloaded and is same as original")
@@ -88,18 +93,15 @@ public class ImageFullScreenPageSteps {
 	}
 
 	@When("I verify image caption and download button are not shown")
-	public void IDontSeeImageCaptionAndDownloadButton() {
-		Assert.assertFalse(PagesCollection.imageFullScreenPage
-				.isDownloadButtonVisible());
-		Assert.assertFalse(PagesCollection.imageFullScreenPage
-				.isSenderNameVisible());
-		Assert.assertFalse(PagesCollection.imageFullScreenPage
-				.isSentTimeVisible());
+	public void IDontSeeImageCaptionAndDownloadButton() throws Exception {
+		Assert.assertFalse(getImageFullScreenPage().isDownloadButtonVisible());
+		Assert.assertFalse(getImageFullScreenPage().isSenderNameVisible());
+		Assert.assertFalse(getImageFullScreenPage().isSentTimeVisible());
 	}
 
 	@When("I tap close fullscreen page button")
 	public void ITapCloseFullscreenButton() throws Exception {
-		PagesCollection.imageFullScreenPage.clickCloseButton();
+		getImageFullScreenPage().clickCloseButton();
 	}
 
 	/**
@@ -110,10 +112,10 @@ public class ImageFullScreenPageSteps {
 	 */
 	@Then("^I rotate image in fullscreen mode$")
 	public void IRotateImageInFullscreenMode() throws Exception {
-		PagesCollection.imageFullScreenPage.rotateSimulatorLeft();
+		getImageFullScreenPage().rotateSimulatorLeft();
 		Thread.sleep(2000);
-		referenceImage = PagesCollection.imageFullScreenPage.takeScreenshot()
-				.orElseThrow(AssertionError::new);
+		referenceImage = getImageFullScreenPage().takeScreenshot().orElseThrow(
+				AssertionError::new);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "rotatedFullscreenImage.png");
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,

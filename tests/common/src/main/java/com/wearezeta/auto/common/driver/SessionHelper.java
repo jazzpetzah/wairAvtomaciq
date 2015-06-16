@@ -1,14 +1,12 @@
 package com.wearezeta.auto.common.driver;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 final class SessionHelper {
@@ -16,6 +14,7 @@ final class SessionHelper {
 			.getSimpleName());
 
 	private boolean isSessionLost = false;
+	@SuppressWarnings("unused")
 	private ZetaDriver wrappedDriver;
 
 	public SessionHelper(ZetaDriver wrappedDriver) {
@@ -65,33 +64,9 @@ final class SessionHelper {
 		return result;
 	}
 
-	public static final int SCREENSHOTING_TIMEOUT_SECONDS = 7;
-
-	private void waitForScreenshots() {
-		if (this.wrappedDriver instanceof HasParallelScreenshotsFeature) {
-			if (ZetaFormatter.getScreenshotMakers().isPresent()) {
-				ZetaFormatter.getScreenshotMakers().get().shutdown();
-				try {
-					if (!ZetaFormatter
-							.getScreenshotMakers()
-							.get()
-							.awaitTermination(SCREENSHOTING_TIMEOUT_SECONDS,
-									TimeUnit.SECONDS)) {
-						log.warn(String
-								.format("Not all screenshots were taken for %s within %s seconds timeout",
-										this.wrappedDriver.getClass()
-												.getSimpleName(),
-										SCREENSHOTING_TIMEOUT_SECONDS));
-					}
-				} catch (InterruptedException e) {
-					// silently ignore
-				}
-			}
-		}
-	}
+	public static final int SCREENSHOTING_TIMEOUT_SECONDS = 15;
 
 	public void wrappedClose(IVoidMethod f) {
-		waitForScreenshots();
 		try {
 			f.call();
 		} catch (org.openqa.selenium.remote.SessionNotFoundException ex) {
@@ -102,7 +77,6 @@ final class SessionHelper {
 	}
 
 	public void wrappedQuit(IVoidMethod f) {
-		waitForScreenshots();
 		try {
 			f.call();
 		} catch (org.openqa.selenium.remote.SessionNotFoundException ex) {

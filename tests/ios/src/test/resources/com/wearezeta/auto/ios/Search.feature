@@ -1,6 +1,6 @@
 Feature: Search
 
-  @regression @id2147
+  @smoke @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I Sign in using phone number or login <Login> and password <Password>
@@ -15,7 +15,7 @@ Feature: Search
       | Login      | Password      | Name      | ContactEmail | ContactName |
       | user1Email | user1Password | user1Name | user2Email   | user2Name   |
 
-  @regression @id2148
+  @smoke @id2148
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
     Given I Sign in using phone number or login <Login> and password <Password>
@@ -83,7 +83,7 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
-    Then I tap on 1 top connections
+    Then I tap on first 1 top connections
     And I click Create Conversation button on People picker page
     And I wait for 2 seconds
     And I see dialog page

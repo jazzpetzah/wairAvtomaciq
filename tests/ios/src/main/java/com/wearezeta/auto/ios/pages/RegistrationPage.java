@@ -103,25 +103,25 @@ public class RegistrationPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathEmailVerifPrompt)
 	private WebElement emailVerifPrompt;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathPhoneNumber)
 	private WebElement phoneNumber;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathActivationCode)
 	private WebElement activationCode;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountry)
 	private WebElement selectCountry;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountryList)
 	private WebElement countryList;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathConfirmPhoneNumber)
 	private WebElement confirmInput;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameAgreeButton)
 	private WebElement agreeButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameSelectPictureButton)
 	private WebElement selectPictureButton;
 
@@ -144,25 +144,27 @@ public class RegistrationPage extends IOSPage {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	public void clickAgreeButton() {
 		agreeButton.click();
 	}
-	
+
 	private void selectCountryByCode(String code) throws Exception {
 		selectCountry.click();
-		boolean result = false; int count = 0;
+		boolean result = false;
+		int count = 0;
 		while (!result && count < 10) {
 			WebElement el = null;
 			boolean flag = false;
-			count ++;
+			count++;
 			try {
-				el = getDriver().findElementByName(code);	
+				el = getDriver().findElementByName(code);
 			} catch (NoSuchElementException ex) {
 				flag = true;
 			}
 			if (!el.isDisplayed() || flag) {
-				List<WebElement> elementsList = countryList.findElements(By.className("UIATableCell"));
+				List<WebElement> elementsList = countryList.findElements(By
+						.className("UIATableCell"));
 				WebElement last = elementsList.get(elementsList.size() - 1);
 				DriverUtils.scrollToElement(getDriver(), last);
 				continue;
@@ -171,19 +173,20 @@ public class RegistrationPage extends IOSPage {
 			result = true;
 		}
 	}
-	
+
 	public void inputPhoneNumber(String number, String code) throws Exception {
 		selectCountryByCode(code);
 		phoneNumber.sendKeys(number);
 		confirmInput.click();
 	}
-	
+
 	public void inputActivationCode(String code) throws Exception {
-		getWait().until(ExpectedConditions.elementToBeClickable(activationCode));
+		getWait()
+				.until(ExpectedConditions.elementToBeClickable(activationCode));
 		activationCode.sendKeys(code);
 		confirmInput.click();
 	}
-   
+
 	public boolean isTakePhotoSmileDisplayed() {
 		return takePhotoSmile.isEnabled();
 	}
@@ -381,11 +384,10 @@ public class RegistrationPage extends IOSPage {
 		return createAccountButton.isEnabled();
 	}
 
-	public void verifyUserInputIsPresent(String name, String email)
 	// this test skips photo verification
-	{
-
-		PagesCollection.loginPage.clickJoinButton();
+	public void verifyUserInputIsPresent(String name, String email)
+			throws Exception {
+		new LoginPage(this.getLazyDriver()).clickJoinButton();
 		forwardWelcomeButton.click(); // skip photo
 		Assert.assertEquals("Name is not same as previously entered.", name,
 				yourName.getText());

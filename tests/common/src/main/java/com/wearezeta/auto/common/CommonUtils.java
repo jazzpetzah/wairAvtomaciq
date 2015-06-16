@@ -361,6 +361,11 @@ public class CommonUtils {
 			throws Exception {
 		return getValueFromConfig(c, "pathToUserpic");
 	}
+	
+	public static String getUserAddressBookFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromConfig(c, "pathToAddressBook");
+	}
 
 	public static String generateGUID() {
 		return UUID.randomUUID().toString();
@@ -406,14 +411,9 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "jenkinsProjectDir");
 	}
 
-	public static String getDefaultCallingServiceHostFromConfig(Class<?> c)
+	public static String getDefaultCallingServiceUrlFromConfig(Class<?> c)
 			throws Exception {
-		return getValueFromCommonConfig(c, "defaultCallingServiceHost");
-	}
-
-	public static String getDefaultCallingServicePortFromConfig(Class<?> c)
-			throws Exception {
-		return getValueFromCommonConfig(c, "defaultCallingServicePort");
+		return getValueFromCommonConfig(c, "defaultCallingServiceUrl");
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
@@ -520,5 +520,14 @@ public class CommonUtils {
 	public static String getDefaultEmailListenerServicePortFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "defaultEmailListenerServicePort");
+	}
+
+	public static boolean getMakeScreenshotsFromConfig(Class<?> c)
+			throws Exception {
+		return Boolean.valueOf(getValueFromCommonConfig(c, "makeScreenshots"));
+	}
+
+	public static boolean getInitNoteIpFromConfig(Class<?> c) throws Exception {
+		return Boolean.valueOf(getValueFromCommonConfig(c, "initNodeIp"));
 	}
 }
