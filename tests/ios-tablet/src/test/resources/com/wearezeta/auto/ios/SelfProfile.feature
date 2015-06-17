@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @staging @id730
+  @regression @id2589
   Scenario Outline: Verify about screen contains all the required information [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
@@ -30,7 +30,7 @@ Feature: Self Profile
       | Name      | Contact   | Color  |
       | user1Name | user2Name | Violet |
 
-  @staging @id731
+  @regression @id2589
   Scenario Outline: Verify about screen contains all the required information [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
@@ -61,9 +61,28 @@ Feature: Self Profile
       | Name      | Contact   | Color  |
       | user1Name | user2Name | Violet |
 
-  @staging @id2586
+  @regression @id2586
   Scenario Outline: Self profile. Verify max limit in 64 chars [PORTRAIT]
     Given There is 1 user where <Name> is me
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I tap to edit my name
+    And I change name <Name> to <NewUsername>
+    Then I see my new name <NewUsername1>
+    Then I see Contact list with my name <NewUsername1>
+    And I tap to edit my name
+    And I change name <Name> to <NewUsername>
+    Then I see my new name <NewUsername1>
+
+    Examples: 
+      | Name      | NewUsername                                                          | NewUsername1                                                     | Contact   |
+      | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 | user2Name |
+
+  @regression @id2586
+  Scenario Outline: Self profile. Verify max limit in 64 chars [LANDSCAPE]
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -75,12 +94,12 @@ Feature: Self Profile
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
     Then I see my new name <NewUsername1>
-    
+
     Examples: 
       | Name      | NewUsername                                                          | NewUsername1                                                     | Contact   |
       | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 | user2Name |
 
-  @staging @id1054 @id1060    
+  @staging @id2581 @id2586
   Scenario Outline: I verify I am unable to enter a name using only spaces or more than 80 chars [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -95,7 +114,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id1054 @id1060
+  @staging @id2581 @id2586
   Scenario Outline: I verify I am unable to enter a name using only spaces or more than 80 chars [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape

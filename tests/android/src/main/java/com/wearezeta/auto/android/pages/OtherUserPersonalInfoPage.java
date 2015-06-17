@@ -310,9 +310,25 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return groupChatName.getText();
 	}
 
-	public DialogPage tabBackButton() throws Exception {
+	public DialogPage tapCloseButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), closeButton);
-		this.getDriver().navigate().back();
+		final int halfHeight = this.getDriver().manage().window().getSize()
+				.getHeight() / 2;
+		int ntry = 1;
+		final int maxRetries = 3;
+		do {
+			closeButton.click();
+			ntry++;
+		} while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(PeoplePickerPage.idParticipantsClose), 1)
+				&& closeButton.getLocation().getY() < halfHeight
+				&& ntry <= maxRetries);
+		if (ntry > maxRetries) {
+			throw new AssertionError(
+					String.format(
+							"The conversations details screen has not been closed after %s retries",
+							maxRetries));
+		}
 		return new DialogPage(this.getLazyDriver());
 	}
 

@@ -357,7 +357,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@Then("^I return to group chat page$")
 	public void ThenIReturnToGroupChatPage() throws Exception {
-		getOtherUserPersonalInfoPage().tabBackButton();
+		getOtherUserPersonalInfoPage().tapCloseButton();
 	}
 
 	/**
