@@ -272,7 +272,7 @@ public final class IOSLocators {
 	
 	public static final String nameWireWebsiteButton = "wire.com";
 	
-	public static final String xpathWireWebsitePageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[1]";
+	public static final String xpathWireWebsitePageText = "//UIAStaticText[contains(@name, 'Great conversations')]";
 	
 	public static final String xpathWireWebsitePageUrlValue = "//UIAApplication[1]/UIAWindow[2]/UIAButton[2]/UIAStaticText[2]";
 	
