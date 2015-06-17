@@ -184,16 +184,16 @@ public class CommonUtils {
 	}
 
 	private final static Semaphore sem = new Semaphore(1);
-	private final static Map<String, String> cachedConfig = new HashMap<String, String>();
+	private final static Map<String, Optional<String>> cachedConfig = new HashMap<>();
 
-	private static String getValueFromConfigFile(Class<?> c, String key,
-			String resourcePath) throws Exception {
+	private static Optional<String> getValueFromConfigFile(Class<?> c,
+			String key, String resourcePath) throws Exception {
 		final String configKey = String.format("%s:%s", resourcePath, key);
 		if (cachedConfig.containsKey(configKey)) {
 			return cachedConfig.get(configKey);
 		}
 
-		final int maxTry = 5;
+		final int maxTry = 3;
 		int tryNum = 0;
 		Exception savedException = null;
 		do {
@@ -205,7 +205,12 @@ public class CommonUtils {
 						.getResourceAsStream(resourcePath);
 				Properties p = new Properties();
 				p.load(configFileStream);
-				cachedConfig.put(configKey, (String) p.get(key));
+				if (p.containsKey(key)) {
+					cachedConfig.put(configKey,
+							Optional.of((String) p.get(key)));
+				} else {
+					cachedConfig.put(configKey, Optional.empty());
+				}
 				return cachedConfig.get(configKey);
 			} catch (Exception e) {
 				savedException = e;
@@ -221,14 +226,40 @@ public class CommonUtils {
 		throw savedException;
 	}
 
+	private static final String PROJECT_CONFIG = "Configuration.cnf";
+
+	public static Optional<String> getOptionalValueFromConfig(Class<?> c,
+			String key) throws Exception {
+		return getValueFromConfigFile(c, key, PROJECT_CONFIG);
+	}
+
 	public static String getValueFromConfig(Class<?> c, String key)
 			throws Exception {
-		return getValueFromConfigFile(c, key, "Configuration.cnf");
+		final Optional<String> value = getValueFromConfigFile(c, key,
+				PROJECT_CONFIG);
+		if (value.isPresent()) {
+			return value.get();
+		} else {
+			throw new RuntimeException(String.format(
+					"There is no '%s' property in the '%s' configuration file",
+					key, PROJECT_CONFIG));
+		}
 	}
+
+	private static final String COMMON_CONFIG = "CommonConfiguration.cnf";
 
 	public static String getValueFromCommonConfig(Class<?> c, String key)
 			throws Exception {
-		return getValueFromConfigFile(c, key, "CommonConfiguration.cnf");
+		final Optional<String> value = getValueFromConfigFile(c, key,
+				COMMON_CONFIG);
+		if (value.isPresent()) {
+			return value.get();
+		} else {
+			throw new RuntimeException(
+					String.format(
+							"There is no '%s' property in the '%s' common configuration file",
+							key, COMMON_CONFIG));
+		}
 	}
 
 	public static String getDefaultEmailFromConfig(Class<?> c) throws Exception {
@@ -361,7 +392,7 @@ public class CommonUtils {
 			throws Exception {
 		return getValueFromConfig(c, "pathToUserpic");
 	}
-	
+
 	public static String getUserAddressBookFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "pathToAddressBook");
@@ -396,6 +427,11 @@ public class CommonUtils {
 	public static String getAndroidDeviceNameFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "deviceName");
+	}
+
+	public static boolean getIsTabletFromConfig(Class<?> c) throws Exception {
+		final Optional<String> value = getOptionalValueFromConfig(c, "isTablet");
+		return value.isPresent() ? Boolean.valueOf(value.get()) : false;
 	}
 
 	public static String getJenkinsSuperUserLogin(Class<?> c) throws Exception {

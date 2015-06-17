@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -48,10 +49,15 @@ public class WebCommonUtils extends CommonUtils {
 		return String.format("%s/Documents", System.getProperty("user.home"));
 	}
 
-	public static String getFullPicturePath(String pictureName) throws URISyntaxException {
-		File file = new File(WebCommonUtils.class.getResource("/images/" + pictureName).toURI());
-		log.debug("Full picture path: " + file.getAbsolutePath());
-		return file.getAbsolutePath();
+	public static String getFullPicturePath(String pictureName)
+			throws URISyntaxException {
+		String path = null;
+		URL url = WebCommonUtils.class.getResource("/images/" + pictureName);
+		if (url != null) {
+			path = url.getPath();
+		}
+		log.debug("Full picture path: " + path);
+		return path;
 	}
 
 	public static void putFileOnExecutionNode(String node, String srcPath,

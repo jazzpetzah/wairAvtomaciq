@@ -178,6 +178,7 @@ public class RegistrationPage extends IOSPage {
 
 	public void inputPhoneNumber(String number, String code) throws Exception {
 		selectCountryByCode(code);
+		getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
 		phoneNumber.sendKeys(number);
 		confirmInput.click();
 	}

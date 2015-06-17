@@ -479,8 +479,6 @@ public class ContactListPageSteps {
 	 * @step. ^I see previously remembered user selected in the conversations
 	 *        list$
 	 * 
-	 * @param namesOfSelectedTopPeople
-	 *            conversation name
 	 * @throws Exception
 	 */
 	@Then("^I see previously remembered user selected in the conversations list$")

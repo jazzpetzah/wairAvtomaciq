@@ -813,8 +813,10 @@ public class CommonWebAppSteps {
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
+				log.debug("Trying to quit webdriver for " + uniqueName);
 				webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 						TimeUnit.MILLISECONDS).quit();
+				log.debug("Remove webdriver for " + uniqueName + " from map");
 				webdrivers.remove(uniqueName);
 			}
 		}
