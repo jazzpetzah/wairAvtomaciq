@@ -1,10 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.ios.pages.CameraRollTabletPopoverPage;
-import com.wearezeta.auto.ios.pages.TabletConversationDetailPopoverPage;
-import com.wearezeta.auto.ios.pages.TabletGroupConversationDetailPopoverPage;
 import com.wearezeta.auto.ios.pages.TabletDialogPage;
-import com.wearezeta.auto.ios.pages.TabletLoginPage;
 
 import cucumber.api.java.en.When;
 
@@ -17,16 +13,6 @@ public class TabletDialogPageSteps {
 				.getPage(TabletDialogPage.class);
 	}
 	
-	private TabletLoginPage getTabletLoginPage() throws Exception {
-		return (TabletLoginPage) pagesCollecton.getPage(TabletLoginPage.class);
-	}
-	
-	private TabletGroupConversationDetailPopoverPage getTabletGroupConversationDetailPopoverPage()
-			throws Exception {
-		return (TabletGroupConversationDetailPopoverPage) pagesCollecton
-				.getPage(TabletGroupConversationDetailPopoverPage.class);
-	}
-
 	/**
 	 * Presses the add picture button on iPad to open a CameraRollPopoverPage
 	 * 
@@ -57,14 +43,6 @@ public class TabletDialogPageSteps {
 	 */
 	@When("^I open group conversation details on iPad$")
 	public void IOpenGroupConversationDetailsOniPad() throws Throwable {
-//		TabletPagesCollection.tabletDialogPage = (TabletDialogPage) PagesCollection.loginPage
-//				.instantiatePage(TabletDialogPage.class);
-		getTabletLoginPage().instantiatePage(TabletDialogPage.class);
-		TabletGroupConversationDetailPopoverPage page = getTabletDialogPage().pressGroupConversationDetailiPadButton();
-//		TabletPagesCollection.tabletGroupConversationDetailPopoverPage = (TabletGroupConversationDetailPopoverPage) page;
-		getTabletGroupConversationDetailPopoverPage();
+		getTabletDialogPage().pressGroupConversationDetailiPadButton();
 	}
-	
-	
-
 }
