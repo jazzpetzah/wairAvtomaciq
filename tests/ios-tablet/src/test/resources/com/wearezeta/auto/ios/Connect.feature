@@ -1,11 +1,11 @@
 Feature: Connect
 
-  @staging @id2355
+  @regression @id2355
   Scenario Outline: Verify sending a connection request to user chosen from search [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
     Given User <Name> change accent color to <Color>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
@@ -31,16 +31,16 @@ Feature: Connect
     And I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
-      | Login      | Password      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
-      | user1Email | user1Password | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
+      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
+      | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
 
-  @staging @id2355
+  @regression @id2355
   Scenario Outline: Verify sending a connection request to user chosen from search [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
     Given User <Name> change accent color to <Color>
     Given I rotate UI to landscape
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
@@ -66,5 +66,5 @@ Feature: Connect
     And I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
-      | Login      | Password      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
-      | user1Email | user1Password | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
+      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
+      | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |

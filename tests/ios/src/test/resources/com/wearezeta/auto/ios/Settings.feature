@@ -3,7 +3,7 @@ Feature: Settings
   @id482 @regression
   Scenario Outline: Verify user can access settings
     Given There is 1 user where <Name> is me
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I click on Settings button on personal page
@@ -11,13 +11,13 @@ Feature: Settings
     Then I see settings page
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
 
   @id729 @regression
   Scenario Outline: Attempt to open About screen in settings
     Given There is 1 user where <Name> is me
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I click on Settings button on personal page
@@ -25,13 +25,13 @@ Feature: Settings
     Then I see About page
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
 
-@regression @id862
+  @regression @id862
   Scenario Outline: Verify reset password page is accessible from settings
     Given There is 1 user where <Name> is me
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
 	And I click on Settings button on personal page
@@ -40,13 +40,13 @@ Feature: Settings
 	Then I see reset password page
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
 
   @id1258 @regression
   Scenario Outline: Verify default value for sound settings is all
     Given There is 1 user where <Name> is me
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     And I tap on my name <Name>
     And I click on Settings button on personal page
@@ -56,13 +56,13 @@ Feature: Settings
     Then I verify that all is the default selected value
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
       
   @regression @id2074
   Scenario Outline: Verify you can access Help site within the app
   	Given There is 1 user where <Name> is me
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     And I tap on my name <Name>
     And I click on Settings button on personal page
@@ -70,8 +70,8 @@ Feature: Settings
     Then I see Support web page
     
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
       
   @regression @id2146
   Scenario Outline: Verify switching on/off chatheads
@@ -79,7 +79,7 @@ Feature: Settings
     Given User <Contact2> change avatar picture to <Picture>
     Given User <Contact2> change name to <NewName>
     Given Myself is connected to <Contact>,<Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     And I tap on my name <Name>
     And I click on Settings button on personal page
@@ -110,6 +110,6 @@ Feature: Settings
     Then I do not see chathead of contact <Contact2>    
     
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2  | NewName  | Picture 					 |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
+      | Name      | Contact   | Contact2  | NewName  | Picture                      |
+      | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
   

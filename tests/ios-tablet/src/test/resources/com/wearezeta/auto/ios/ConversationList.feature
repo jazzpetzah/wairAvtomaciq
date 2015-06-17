@@ -4,7 +4,7 @@ Feature: Conversation List
   Scenario Outline: Verify archive a conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     And I archive conversation <Contact>
@@ -16,15 +16,15 @@ Feature: Conversation List
     Then I see user <Contact2> in contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @regression @id2755 @id2377
   Scenario Outline: Verify archive a conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     And I archive conversation <Contact>
@@ -36,15 +36,15 @@ Feature: Conversation List
     Then I see user <Contact2> in contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @staging @id2674
   Scenario Outline: Verify archive a group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     When I long swipe right to archive conversation <GroupChatName>
     Then I dont see conversation <GroupChatName> in contact list
@@ -52,8 +52,8 @@ Feature: Conversation List
     Then I see user <GroupChatName> in contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName    |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ArchiveGroupChat |
+      | Name      | Contact1  | Contact2  | GroupChatName    |
+      | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
   @staging @id2750
   Scenario Outline: Verify archive a group conversation [LANDSCAPE]
@@ -61,7 +61,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I long swipe right to archive conversation <GroupChatName>
     Then I dont see conversation <GroupChatName> in contact list
@@ -69,16 +69,16 @@ Feature: Conversation List
     Then I see user <GroupChatName> in contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName    |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ArchiveGroupChat |
+      | Name      | Contact1  | Contact2  | GroupChatName    |
+      | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
   @regression @id2675
   Scenario Outline: Unarchive conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
-    And I wait for 30 seconds
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I wait for 30 seconds
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And I open archived conversations on iPad
     And I tap on contact name <ArchivedUser>
@@ -86,8 +86,8 @@ Feature: Conversation List
     Then I see first item in contact list named <ArchivedUser>
 
     Examples: 
-      | Login      | Password      | Name      | ArchivedUser |
-      | user1Email | user1Password | user1Name | user2Name    |
+      | Name      | ArchivedUser |
+      | user1Name | user2Name    |
 
   @regression @id2751
   Scenario Outline: Unarchive conversation [LANDSCAPE]
@@ -96,7 +96,7 @@ Feature: Conversation List
     Given Myself archived conversation with <ArchivedUser>
     And I wait for 30 seconds
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And I open archived conversations on iPad
     And I tap on contact name <ArchivedUser>
@@ -104,33 +104,33 @@ Feature: Conversation List
     Then I see first item in contact list named <ArchivedUser>
 
     Examples: 
-      | Login      | Password      | Name      | ArchivedUser |
-      | user1Email | user1Password | user1Name | user2Name    |
+      | Name      | ArchivedUser |
+      | user1Name | user2Name    |
 
   @regression @id2753
   Scenario Outline: Verify opening search by tapping on the search field [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given There is 1 user where <Name> is me
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
 
   @regression @id2754
   Scenario Outline: Verify opening search by tapping on the search field [LANDSCAPE]
-    Given There are 2 users where <Name> is me
+    Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
 
   @regression @id2369
   Scenario Outline: Verify Ping animation in the conversations list [PORTRAIT]
@@ -138,7 +138,7 @@ Feature: Conversation List
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And I remember the state of the first conversation cell
     When Contact <Contact> ping conversation <Name>
@@ -146,8 +146,8 @@ Feature: Conversation List
     Then I see change of state for first conversation cell
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | NewName | Color        |
-      | user1Email | user1Password | user1Name | user2Name | PING    | BrightOrange |
+      | Name      | Contact   | NewName | Color        |
+      | user1Name | user2Name | PING    | BrightOrange |
 
   @regression @id2752
   Scenario Outline: Verify Ping animation in the conversations list [LANDSCAPE]
@@ -156,7 +156,7 @@ Feature: Conversation List
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And I remember the state of the first conversation cell
     When Contact <Contact> ping conversation <Name>
@@ -164,8 +164,8 @@ Feature: Conversation List
     Then I see change of state for first conversation cell
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | NewName | Color        |
-      | user1Email | user1Password | user1Name | user2Name | PING    | BrightOrange |
+      | Name      | Contact   | NewName | Color        |
+      | user1Name | user2Name | PING    | BrightOrange |
 
   @regression @id2367
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [PORTRAIT]
@@ -174,7 +174,7 @@ Feature: Conversation List
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
     Given Contact <Contact> send number <Number> of message to user <Name>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
@@ -183,8 +183,8 @@ Feature: Conversation List
     Then I see change of state for first conversation cell
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | NewName    | Color        | Number |
-      | user1Email | user1Password | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
+      | Name      | Contact   | NewName    | Color        | Number |
+      | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
 
   @regression @id2711
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [LANDSCAPE]
@@ -194,7 +194,7 @@ Feature: Conversation List
     Given User <Name> change accent color to <Color>
     Given Contact <Contact> send number <Number> of message to user <Name>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
@@ -203,15 +203,15 @@ Feature: Conversation List
     Then I see change of state for first conversation cell
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | NewName    | Color        | Number |
-      | user1Email | user1Password | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
+      | Name      | Contact   | NewName    | Color        | Number |
+      | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
 
   @regression @id2756
   Scenario Outline: Verify conversations are sorted according to most recent activity [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
     Given Contact <Contact> send number <Number> of message to user <Name>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And Contact <Contact3> send number <Number> of message to user <Name>
     And I see first item in contact list named <Contact3>
@@ -221,8 +221,8 @@ Feature: Conversation List
     Then I see first item in contact list named <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
-      | user1Email | user1Password | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
+      | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
+      | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
   @regression @id2757
   Scenario Outline: Verify conversations are sorted according to most recent activity [LANDSCAPE]
@@ -230,7 +230,7 @@ Feature: Conversation List
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
     Given Contact <Contact> send number <Number> of message to user <Name>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And Contact <Contact3> send number <Number> of message to user <Name>
     And I see first item in contact list named <Contact3>
@@ -240,5 +240,5 @@ Feature: Conversation List
     Then I see first item in contact list named <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
-      | user1Email | user1Password | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
+      | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
+      | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
