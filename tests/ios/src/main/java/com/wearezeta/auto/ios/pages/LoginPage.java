@@ -129,8 +129,10 @@ public class LoginPage extends IOSPage {
 		return this;
 	}
 	
-	public void switchToEmailLogin() {
+	public void switchToEmailLogin() throws Exception {
+		getWait().until(ExpectedConditions.elementToBeClickable(backButton));
 		backButton.click();
+		getWait().until(ExpectedConditions.elementToBeClickable(emailLoginButton));
 		emailLoginButton.click();
 	}
 	
