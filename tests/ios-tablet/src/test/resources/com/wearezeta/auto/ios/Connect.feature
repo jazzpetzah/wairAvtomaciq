@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @staging @id2355
+  @regression @id2355
   Scenario Outline: Verify sending a connection request to user chosen from search [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
@@ -34,7 +34,7 @@ Feature: Connect
       | Login      | Password      | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
       | user1Email | user1Password | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
 
-  @staging @id2355
+  @regression @id2355
   Scenario Outline: Verify sending a connection request to user chosen from search [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
