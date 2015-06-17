@@ -25,7 +25,6 @@
 		<defaultEmail>smoketester@wire.com</defaultEmail>
 		<pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
 		<androidVersion>44</androidVersion>
-		<androidLogs>false</androidLogs>
 		<resourceFilePath>/Project/</resourceFilePath>
 		<resultsPath>/results/</resultsPath>
 		<backendType>staging</backendType>
