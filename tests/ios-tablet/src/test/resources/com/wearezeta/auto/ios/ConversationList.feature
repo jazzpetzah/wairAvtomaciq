@@ -242,3 +242,30 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
+
+  @regression @id2360
+  Scenario Outline: Get invitation message from user [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given <Contact> sent connection request to Me
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @regression @id2360
+  Scenario Outline: Get invitation message from user [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given <Contact> sent connection request to Me
+    Given I rotate UI to landscape
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
