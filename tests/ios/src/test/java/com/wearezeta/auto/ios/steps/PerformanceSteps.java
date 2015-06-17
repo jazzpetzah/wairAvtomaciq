@@ -1,12 +1,20 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
+import com.wearezeta.auto.ios.reporter.IOSPerformanceReportGenerator;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
@@ -23,6 +31,7 @@ public class PerformanceSteps {
 	private static final int PERF_MON_INIT_DELAY = 5000; // milliseconds
 	private static final int PERF_MON_STOP_TIMEOUT = 60 * 1000; // milliseconds
 	private static final String ACTIVITY_MONITOR_TEMPLATE_PATH = "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate";
+	private static final String WIRE_ACTIVITY_MONITOR_TEMPLATE_PATH = "/Project/WireActivityMonitor.tracetemplate";
 
 	private AsyncProcess perfMon = null;
 
@@ -122,11 +131,14 @@ public class PerformanceSteps {
 	@When("^I start performance monitoring for the connected iPhone$")
 	public void IStartPerfMon() throws Exception {
 		final String iPhoneUDID = IOSCommonUtils.getConnectediPhoneUDID(true);
+		String templatePath = (new File(WIRE_ACTIVITY_MONITOR_TEMPLATE_PATH))
+				.exists() ? WIRE_ACTIVITY_MONITOR_TEMPLATE_PATH
+				: ACTIVITY_MONITOR_TEMPLATE_PATH;
 		final String[] cmd = {
 				"/bin/bash",
 				"-c",
 				String.format("cd $HOME && instruments -v -t %s -w %s",
-						ACTIVITY_MONITOR_TEMPLATE_PATH, iPhoneUDID) };
+						templatePath, iPhoneUDID) };
 		final AsyncProcess ap = new AsyncProcess(cmd, true, true);
 		ap.start();
 		Thread.sleep(PERF_MON_INIT_DELAY);
@@ -164,5 +176,32 @@ public class PerformanceSteps {
 		// Sending SIGINT to properly terminate perf monitor
 		this.getPerfMon().stop(2, new int[] { monitorPid },
 				PERF_MON_STOP_TIMEOUT);
+	}
+
+	private void exportTraceToCSV() throws IOException, ScriptException {
+		String script = String.format(CommonUtils
+				.readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
+
+		ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine engine = mgr.getEngineByName("AppleScript");
+		engine.eval(script);
+	}
+
+	/**
+	 * Generates iOS performance report
+	 * 
+	 * @step. ^I generate performance report$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I generate performance report for (\\d+) users$")
+	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
+		IOSPerformanceReportGenerator.setUsersCount(usersCount);
+		Thread.sleep(5000);
+		//export source
+		exportTraceToCSV();
+		Assert.assertTrue(IOSPerformanceReportGenerator
+				.updateReportDataWithCurrentRun(""));
+		Assert.assertTrue(IOSPerformanceReportGenerator.generateRunReport());
 	}
 }
