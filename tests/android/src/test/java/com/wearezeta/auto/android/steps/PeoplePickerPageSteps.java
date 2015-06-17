@@ -493,7 +493,7 @@ public class PeoplePickerPageSteps {
 					.tapOptionsButton();
 			((PersonalInfoPage) pagesCollection.getPage(PersonalInfoPage.class))
 					.tapSignOutBtn();
-			new LoginSteps().ISignInUsingEmail();
+			new LoginSteps().ISignInUsingMyEmail();
 			new ContactListPageSteps().GivenISeeContactList();
 			((ContactListPage) pagesCollection.getPage(ContactListPage.class))
 					.openPeoplePicker();
