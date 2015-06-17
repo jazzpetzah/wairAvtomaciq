@@ -10,7 +10,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -96,8 +95,6 @@ public class ContactListPage extends AndroidPage {
 	private static final String xpathTopConversationsListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
 	private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
 
-	private final CommonSteps commonSteps = CommonSteps.getInstance();
-	
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
 
@@ -236,9 +233,11 @@ public class ContactListPage extends AndroidPage {
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
 				.format("It seems that conversation list has not been loaded within %s seconds (login button is still visible)",
 						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
-		commonSteps.WaitForTime(3);
+
 		final By topConvoListLoadingProgressLocator = By
 				.xpath(xpathTopConversationsListLoadingIndicator);
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				topConvoListLoadingProgressLocator, 5);
 		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				topConvoListLoadingProgressLocator,
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
