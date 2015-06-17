@@ -4,7 +4,7 @@ Feature: Connect
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I open search by taping on it
     And I see People picker page
@@ -22,15 +22,15 @@ Feature: Connect
     And I see Pending Connect to <Contact> message on Dialog page from user <Name>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | ContactEmail | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user2Email   | user3Name |
+      | Name      | Contact   | ContactEmail | Contact2  |
+      | user1Name | user2Name | user2Email   | user3Name |
 
   @smoke @id585 @id1475
   Scenario Outline: Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given <Contact> sent connection request to Me
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
@@ -42,8 +42,8 @@ Feature: Connect
     Then I see first item in contact list named <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @regression @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
@@ -51,7 +51,7 @@ Feature: Connect
     Given Myself is connected to <GroupCreator>
     Given <GroupCreator> is connected to <UnconnectedUser>
     Given <GroupCreator> has group chat <GroupChatName> with <UnconnectedUser>,Myself
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I swipe up on group chat page
@@ -62,8 +62,8 @@ Feature: Connect
     Then I see first item in contact list named <UnconnectedUser>
 
     Examples: 
-      | Login      | Password      | Name      | GroupCreator | GroupChatName | UnconnectedUser |
-      | user1Email | user1Password | user1Name | user2Name    | TESTCHAT      | user3Name       |
+      | Name      | GroupCreator | GroupChatName | UnconnectedUser |
+      | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
   @regression @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
@@ -72,7 +72,7 @@ Feature: Connect
     Given <Contact2> sent connection request to me
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
@@ -88,8 +88,8 @@ Feature: Connect
     Then I see Pending request page
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
   @regression @id577
   Scenario Outline: Verify transitions between connection requests (connecting)
@@ -98,7 +98,7 @@ Feature: Connect
     Given <Contact2> sent connection request to me
     Given <Contact3> sent connection request to me
     Given Myself is connected to <Contact4>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
@@ -110,14 +110,14 @@ Feature: Connect
     And I see user <Contact3> in contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
   @regression @id1404
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I open search by taping on it
     And I see People picker page
@@ -135,15 +135,15 @@ Feature: Connect
     And I see <Contact> user pending profile page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @regression @id1399
   Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When Contact <Contact> sends image <Picture> to single user conversation <Name>
     And Contact <Contact> ping conversation <Name>
@@ -169,13 +169,13 @@ Feature: Connect
     Then I see message in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Picture     |
-      | user1Email | user1Password | user1Name | user2Name | testing.jpg |
+      | Name      | Contact   | Picture     |
+      | user1Name | user2Name | testing.jpg |
 
   @regression @id596
   Scenario Outline: Verify you cannot send the invitation message twice
     Given There are 2 users where <Name> is me
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I open search by taping on it
     And I see People picker page
@@ -198,14 +198,14 @@ Feature: Connect
     Then I see <Contact> user pending profile page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | ContactEmail |
-      | user1Email | user1Password | user1Name | user2Name | user2Email   |
+      | Name      | Contact   | ContactEmail |
+      | user1Name | user2Name | user2Email   |
 
   @regression @id1492
   Scenario Outline: Verify you can send an invitation via mail
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I open search by taping on it
     And I see People picker page
@@ -223,15 +223,15 @@ Feature: Connect
     Then I check copied content from <Login>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @regression @id2294
   Scenario Outline: Verify sending connection request by clicking instant + button (with search)
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
     Given User <Name> change accent color to <Color>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I swipe down contact list
     And I see People picker page
@@ -252,6 +252,6 @@ Feature: Connect
     Then I see Pending Connect to <UnconnectedUser> message on Dialog page from user <Name>
     
     Examples: 
-      | Login      | Password      | Name      | UnconnectedUser | ContactEmail | StartLetter |Color        |
-      | user1Email | user1Password | user1Name | user2Name 		 | user2Email   | T		      |BrightOrange |
-  	
+      | Name      | UnconnectedUser | ContactEmail | StartLetter |Color        |
+      | user1Name | user2Name       | user2Email   | T           |BrightOrange |
+

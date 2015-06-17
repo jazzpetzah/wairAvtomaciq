@@ -4,7 +4,7 @@ Feature: Calling
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
@@ -16,14 +16,14 @@ Feature: Calling
     And I see calling to contact <Contact> message
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
 
   @regression @id2067 @id909
   Scenario Outline: Verify starting and ending outgoing call by same person
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -35,14 +35,14 @@ Feature: Calling
     Then I dont see calling page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @calling_basic @id896
   Scenario Outline: Verify ignoring of incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
@@ -50,14 +50,14 @@ Feature: Calling
     Then I dont see incoming call page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
 
   @calling_basic @id2093
   Scenario Outline: Verify accepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
@@ -66,14 +66,14 @@ Feature: Calling
     And I see started call message for contact <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
 
   @calling_basic @id902
   Scenario Outline: Receiving missed call notification from one user
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
@@ -83,15 +83,15 @@ Feature: Calling
     Then I see missed call from contact <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
 
   @regression @id1228 
   Scenario Outline: Verify missed call indicator appearance (list)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
     Given User <Name> change accent color to <Color>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
@@ -103,8 +103,8 @@ Feature: Calling
     Then I see missed call indicator got moved down in list for contact <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
+      | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
+      | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
       
   @calling_basic @id882
   Scenario Outline: In zeta call for more than 15 mins
@@ -112,7 +112,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -127,8 +127,8 @@ Feature: Calling
     And <Contact> stops all waiting instances
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | webdriver   | 120     |
       
   @calling_basic @id2296
   Scenario Outline: Screenlock device when in the call
@@ -136,7 +136,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -150,15 +150,15 @@ Feature: Calling
     And <Contact> stops all waiting instances
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | webdriver   | 120     |
 
   @calling_basic @id2645
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given <Contact1> starts waiting instance using <CallBackend>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact1>
     And I see dialog page
@@ -176,8 +176,8 @@ Feature: Calling
     And I see missed call indicator in list for contact <Contact2>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | webdriver   | autocall     | 120     |
+      | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
+      | user1Name | user2Name | user3Name | webdriver   | autocall     | 120     |
       
   @calling_basic @id2646
   Scenario Outline: Put app into background after initiating call
@@ -185,7 +185,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -199,15 +199,15 @@ Feature: Calling
     And <Contact> stops all waiting instances
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+      | Name      | Contact   | CallBackend | Timeout |
+      | user1Name | user2Name | webdriver   | 120     |
 
   @calling_basic @id933
   Scenario Outline: I want to accept a call through the incoming voice dialogue (Button)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -218,8 +218,8 @@ Feature: Calling
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
+      | user1Name | user2Name | webdriver   | autocall     | 120     |
 
   @calling_basic @id913
   Scenario Outline: I want to end the call from the ongoing voice overlay
@@ -227,7 +227,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
@@ -248,5 +248,5 @@ Feature: Calling
     And <Contact> verifies that call status to me is changed to inactive in <Timeout> seconds
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
+      | user1Name | user2Name | webdriver   | autocall     | 120     |

@@ -442,7 +442,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I do small swipe down")
 	public void IDoSmallSwipeDown() throws Exception {
-		getOtherUserPersonalInfoPage().swipeByCoordinates(2500, 50, 50, 50, 53);
+		getOtherUserPersonalInfoPage().swipeByCoordinates(2000, 50, 50, 50, 55);
 	}
 
 	private UnknownUserDetailsPage getUnknownUserDetailsPage() throws Exception {

@@ -5,7 +5,6 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.TabletConversationDetailPopoverPage;
 
-import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class TabletConversationDetailPopoverPageSteps {

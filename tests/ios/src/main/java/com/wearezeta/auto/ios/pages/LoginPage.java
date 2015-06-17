@@ -130,10 +130,12 @@ public class LoginPage extends IOSPage {
 	}
 	
 	public void switchToEmailLogin() throws Exception {
-		getWait().until(ExpectedConditions.elementToBeClickable(backButton));
-		backButton.click();
-		getWait().until(ExpectedConditions.elementToBeClickable(emailLoginButton));
-		emailLoginButton.click();
+		if(!backButton.getText().equals("REGISTRATION")) {
+			DriverUtils.mobileTapByCoordinates(getDriver(), backButton);
+		}
+		DriverUtils.waitUntilLocatorAppears(getDriver(), 
+				By.name(IOSLocators.LoginPage.nameEmailLoginButton));
+		DriverUtils.mobileTapByCoordinates(getDriver(), emailLoginButton);
 	}
 	
 	public void clickPhoneLogin() {

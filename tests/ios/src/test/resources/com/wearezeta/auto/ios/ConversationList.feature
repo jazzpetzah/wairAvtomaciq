@@ -5,8 +5,8 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
-    And I wait for 30 seconds
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I wait for 30 seconds
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     And I open archived conversations
     And I tap on contact name <ArchivedUser>
@@ -14,14 +14,14 @@ Feature: Conversation List
     Then I see first item in contact list named <ArchivedUser>
 
     Examples: 
-      | Login      | Password      | Name      | ArchivedUser |
-      | user1Email | user1Password | user1Name | user2Name    |
+      | Name      | ArchivedUser |
+      | user1Name | user2Name    |
 
   @regression @id1332 @id2171 @id2172
   Scenario Outline: Verify archive a conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
     And I archive conversation <Contact>
@@ -33,8 +33,8 @@ Feature: Conversation List
     Then I see user <Contact2> in contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2 |
-      | user1Email | user1Password | user1Name | user2Name | user3Name|
+      | Name      | Contact   | Contact2 |
+      | user1Name | user2Name | user3Name|
 
   @regression @id1075 @id2153
   Scenario Outline: Verify messages are marked as read with disappearing unread dot
@@ -43,7 +43,7 @@ Feature: Conversation List
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
     Given Contact <Contact> send number <Number2> of message to user <Name>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
@@ -52,15 +52,15 @@ Feature: Conversation List
     Then I see change of state for first conversation cell
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | NewName    | Color        |Number2 |
-      | user1Email | user1Password | user1Name | user2Name | UNREAD DOT | BrightYellow | 2 	    |
+      | Name      | Contact   | NewName    | Color        |Number2 |
+      | user1Name | user2Name | UNREAD DOT | BrightYellow | 2 	    |
 
   @regression @id2040
   Scenario Outline: Verify archive a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     When I swipe right on a <GroupChatName>
     And I archive conversation <GroupChatName>
@@ -69,8 +69,8 @@ Feature: Conversation List
     Then I see user <GroupChatName> in contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName    |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ArchiveGroupChat |
+      | Name      | Contact1  | Contact2  | GroupChatName    |
+      | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
   @regression @id2041
   Scenario Outline: Verify unarchive a group conversation
@@ -78,7 +78,7 @@ Feature: Conversation List
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given Myself archived conversation having groupname <GroupChatName>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I open archived conversations
     And I tap on contact name <GroupChatName>
@@ -86,8 +86,8 @@ Feature: Conversation List
     Then I see first item in contact list named <GroupChatName>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName    |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ArchiveGroupChat |
+      | Name      | Contact1  | Contact2  | GroupChatName    |
+      | user1Name | user2Name | user3Name | ArchiveGroupChat |
 
   @staging @id1369
   Scenario Outline: Verify Ping animation in the conversations list
@@ -95,7 +95,7 @@ Feature: Conversation List
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     And I remember the state of the first conversation cell
     When Contact <Contact> ping conversation <Name>
@@ -103,14 +103,14 @@ Feature: Conversation List
     Then I see ping symbol
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | NewName  | Color        |
-      | user1Email | user1Password | user1Name | user2Name | PING     | BrightOrange |
+      | Name      | Contact   | NewName  | Color        |
+      | user1Name | user2Name | PING     | BrightOrange |
 
-  @staging @id2761
+  @smoke @id2761
   Scenario Outline: Verify conversations are sorted according to most recent activity
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>,<Contact3>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     And Contact <Contact3> send number <Number> of message to user <Name>
     And I see first item in contact list named <Contact3>
@@ -120,5 +120,5 @@ Feature: Conversation List
     Then I see first item in contact list named <Contact1>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2   | Contact3     |Number |  Picture      |
-      | user1Email | user1Password | user1Name | user2Name | user3name  | user4name    | 2 	   | testing.jpg   |
+      | Name      | Contact1   | Contact2   | Contact3     |Number |  Picture      |
+      | user1Name | user2Name | user3name  | user4name    | 2 	   | testing.jpg   |

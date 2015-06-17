@@ -163,7 +163,7 @@ public abstract class AndroidPage extends BasePage {
 		try {
 			this.getDriver().swipe(coords.x + 30,
 					coords.y + elementSize.height / 2,
-					coords.x + elementSize.width - 10,
+					coords.x + elementSize.width - 90,
 					coords.y + elementSize.height / 2, durationMilliseconds);
 		} catch (Exception ex) {
 			ex.printStackTrace();
