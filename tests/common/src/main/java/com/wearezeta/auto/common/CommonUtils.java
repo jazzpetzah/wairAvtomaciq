@@ -424,11 +424,6 @@ public class CommonUtils {
 				numberOfCharacters, ALPHANUMERIC_PLUS_SYMBOLS);
 	}
 
-	public static String getAndroidDeviceNameFromConfig(Class<?> c)
-			throws Exception {
-		return getValueFromConfig(c, "deviceName");
-	}
-
 	public static boolean getIsTabletFromConfig(Class<?> c) throws Exception {
 		final Optional<String> value = getOptionalValueFromConfig(c, "isTablet");
 		return value.isPresent() ? Boolean.valueOf(value.get()) : false;

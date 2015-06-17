@@ -85,8 +85,8 @@ public class CommonAndroidTabletSteps {
 		object.enable("logcat", Level.ALL);
 		capabilities.setCapability(CapabilityType.LOGGING_PREFS, object);
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
-		capabilities.setCapability("deviceName",
-				CommonUtils.getAndroidDeviceNameFromConfig(this.getClass()));
+		// To init the first available device
+		capabilities.setCapability("deviceName", "null");
 		capabilities.setCapability("app", path);
 		capabilities.setCapability("appPackage",
 				CommonUtils.getAndroidPackageFromConfig(this.getClass()));
