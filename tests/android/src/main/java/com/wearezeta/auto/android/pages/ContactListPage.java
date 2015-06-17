@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.pages;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -103,8 +104,13 @@ public class ContactListPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public void tapOnName(String name) throws Exception {
-		findInContactList(name, 5).click();
+	public void tapOnName(final String name) throws Exception {
+		findInContactList(name, 5)
+				.orElseThrow(
+						() -> new IllegalStateException(
+								String.format(
+										"The conversation '%s' does not exist in the conversations list",
+										name))).click();
 	}
 
 	public void contactListSwipeUp(int time) {
@@ -133,12 +139,12 @@ public class ContactListPage extends AndroidPage {
 		return contactListNames;
 	}
 
-	public WebElement findInContactList(String name, int maxSwypesInList)
-			throws Exception {
+	public Optional<WebElement> findInContactList(String name,
+			int maxSwypesInList) throws Exception {
 		final By nameLocator = By.xpath(xpathContactByName.apply(name));
 		if (DriverUtils
 				.waitUntilLocatorIsDisplayed(getDriver(), nameLocator, 1)) {
-			return this.getDriver().findElement(nameLocator);
+			return Optional.of(this.getDriver().findElement(nameLocator));
 		} else {
 			if (maxSwypesInList > 0) {
 				maxSwypesInList--;
@@ -146,7 +152,7 @@ public class ContactListPage extends AndroidPage {
 				return findInContactList(name, maxSwypesInList);
 			}
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	public void swipeRightOnContact(int durationMilliseconds, String contact)
@@ -206,7 +212,7 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isContactExists(String name) throws Exception {
-		return findInContactList(name, 0) != null;
+		return findInContactList(name, 0).isPresent();
 	}
 
 	public boolean waitUntilContactDisappears(String name) throws Exception {
@@ -215,7 +221,7 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isContactExists(String name, int cycles) throws Exception {
-		return findInContactList(name, cycles) != null;
+		return findInContactList(name, cycles).isPresent();
 	}
 
 	public boolean isPlayPauseMediaButtonVisible(String convoName)
