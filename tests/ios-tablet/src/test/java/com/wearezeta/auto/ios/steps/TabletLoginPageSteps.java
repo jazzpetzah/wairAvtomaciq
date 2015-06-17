@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.TabletLoginPage;
 
 import cucumber.api.java.en.Given;
@@ -26,29 +26,17 @@ public class TabletLoginPageSteps {
 	/**
 	 * Signing in on tablet with login and password
 	 * 
-	 * @step. ^I Sign in on tablet using login (.*) and password (.*)$
-	 * @param login
-	 *            login of the user
-	 * @param password
-	 *            password of the user
+	 * @step. ^I Sign in on tablet using my email$
+	 * 
 	 * @throws Exception
 	 */
-	@Given("^I Sign in on tablet using login (.*) and password (.*)$")
-	public void GivenISignIn(String login, String password) throws Exception {
-		try {
-			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		try {
-			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
+	@Given("^I Sign in on tablet using my email$")
+	public void GivenISignInUsingEmail() throws Exception {
 		Assert.assertNotNull(getTabletLoginPage().isVisible());
+		final ClientUser self = usrMgr.getSelfUserOrThrowError();
 		getTabletLoginPage().signIn();
-		getTabletLoginPage().setLogin(login);
-		getTabletLoginPage().setPassword(password);
+		getTabletLoginPage().setLogin(self.getEmail());
+		getTabletLoginPage().setPassword(self.getPassword());
 		getTabletLoginPage().login();
 	}
 }

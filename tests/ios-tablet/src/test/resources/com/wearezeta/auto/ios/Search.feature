@@ -3,7 +3,7 @@ Feature: Search
   @staging @id2147
   Scenario Outline: Verify search by email [PORTRAIT]
     Given There are 2 users where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
@@ -12,14 +12,14 @@ Feature: Search
     Then I see user <ContactName> found on People picker page
 
     Examples: 
-      | Login      | Password      | Name      | ContactEmail | ContactName |
-      | user1Email | user1Password | user1Name | user2Email   | user2Name   |
+      | Name      | ContactEmail | ContactName |
+      | user1Name | user2Email   | user2Name   |
 
   @staging @id2147
   Scenario Outline: Verify search by email [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
@@ -28,13 +28,13 @@ Feature: Search
     Then I see user <ContactName> found on People picker page
 
     Examples: 
-      | Login      | Password      | Name      | ContactEmail | ContactName |
-      | user1Email | user1Password | user1Name | user2Email   | user2Name   |
+      | Name      | ContactEmail | ContactName |
+      | user1Name | user2Email   | user2Name   |
 
   @staging @id2148
   Scenario Outline: Verify search by name [PORTRAIT]
     Given There are 2 users where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I swipe down contact list on iPad
     And I see People picker page
@@ -43,14 +43,14 @@ Feature: Search
     Then I see user <Contact> found on People picker page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @staging @id2148
   Scenario Outline: Verify search by name [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I swipe down contact list on iPad
     And I see People picker page
@@ -59,13 +59,13 @@ Feature: Search
     Then I see user <Contact> found on People picker page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @staging @id2531 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [PORTRAIT]
     Given There is 1 user where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I dismiss alert
     And I swipe down contact list on iPad
     And I see Upload contacts dialog
@@ -78,14 +78,14 @@ Feature: Search
     Then I dont see Upload contacts dialog
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
 
   @staging @id2531 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I dismiss alert
     And I swipe down contact list on iPad
     And I see Upload contacts dialog
@@ -98,8 +98,8 @@ Feature: Search
     Then I dont see Upload contacts dialog
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      | Name      |
+      | user1Name |
 
   @staging @id2656
   Scenario Outline: Start 1:1 chat with users from Top Connections [PORTRAIT]
@@ -107,7 +107,7 @@ Feature: Search
     Given Myself is connected to all other users
     Given Contact <Contact> send message to user <Name>
     Given Contact <Name> send message to user <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
     And I open search by taping on it
@@ -121,8 +121,8 @@ Feature: Search
     And I see dialog page
 
     Examples: 
-      | Login      | Password      | Name      | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | 2         | user2Name |
+      | Name      | UserCount | Contact   |
+      | user1Name | 2         | user2Name |
 
   @staging @id2656
   Scenario Outline: Start 1:1 chat with users from Top Connections [LANDSCAPE]
@@ -131,7 +131,7 @@ Feature: Search
     Given Contact <Contact> send message to user <Name>
     Given Contact <Name> send message to user <Contact>
     Given I rotate UI to landscape
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I wait for 30 seconds
     And I open search by taping on it
@@ -145,8 +145,8 @@ Feature: Search
     And I see dialog page
 
     Examples: 
-      | Login      | Password      | Name      | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | 2         | user2Name |
+      | Name      | UserCount | Contact   |
+      | user1Name | 2         | user2Name |
 
   @staging @id2550
   Scenario Outline: Start group chat with users from Top Connections [PORTRAIT]
@@ -154,7 +154,7 @@ Feature: Search
     Given Myself is connected to all other users
     Given Contact <Contact> send message to user <Name>
     Given Contact <Name> send message to user <Contact>
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     #And I wait for 30 seconds
     And I open search by taping on it
@@ -171,8 +171,8 @@ Feature: Search
     Then I see first item in contact list named <ConvoName>
 
     Examples: 
-      | Login      | Password      | Name      | ConvoName    | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | TopGroupTest | 3         | user2Name |
+      | Name      | ConvoName    | UserCount | Contact   |
+      | user1Name | TopGroupTest | 3         | user2Name |
 
   @staging @id2550
   Scenario Outline: Start group chat with users from Top Connections [LANDSCAPE]
@@ -181,7 +181,7 @@ Feature: Search
     Given Contact <Contact> send message to user <Name>
     Given Contact <Name> send message to user <Contact>
     Given I rotate UI to landscape
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     #And I wait for 30 seconds
     And I open search by taping on it
@@ -198,15 +198,15 @@ Feature: Search
     And I see first item in contact list named <ConvoName>
 
     Examples: 
-      | Login      | Password      | Name      | ConvoName    | UserCount | Contact   |
-      | user1Email | user1Password | user1Name | TopGroupTest | 3         | user2Name |
+      | Name      | ConvoName    | UserCount | Contact   |
+      | user1Name | TopGroupTest | 3         | user2Name |
 
   @staging @id1456 
   Scenario Outline: Verify you can unblock someone from search list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
@@ -221,8 +221,8 @@ Feature: Search
     Then I see message in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @staging @id1456
   Scenario Outline: Verify you can unblock someone from search list [LANDSAPE]
@@ -230,7 +230,7 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
@@ -246,8 +246,8 @@ Feature: Search
     Then I see message in the dialog
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @staging @id2547
   Scenario Outline: Verify dismissing with clicking on Hide [PORTRAIT]
@@ -256,7 +256,7 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend1>
     Given <ContactWithFriends> is connected to <Friend2>
     Given <ContactWithFriends> is connected to <Friend3>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
@@ -267,8 +267,8 @@ Feature: Search
     Then I do not see suggested contact <Friend1>
 
     Examples: 
-      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
-      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
   @staging @id2547
   Scenario Outline: Verify dismissing with clicking on Hide [LANDSAPE]
@@ -278,7 +278,7 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend2>
     Given <ContactWithFriends> is connected to <Friend3>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
@@ -289,8 +289,8 @@ Feature: Search
     Then I do not see suggested contact <Friend1>
 
     Examples: 
-      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
-      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
   @staging @id2546
   Scenario Outline: Verify dismissing with one single gesture [PORTRAIT]
@@ -299,7 +299,7 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend1>
     Given <ContactWithFriends> is connected to <Friend2>
     Given <ContactWithFriends> is connected to <Friend3>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
@@ -309,8 +309,8 @@ Feature: Search
     Then I do not see suggested contact <Friend1>
 
     Examples: 
-      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
-      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
   @staging @id2546
   Scenario Outline: Verify dismissing with one single gesture [LANDSAPE]
@@ -320,7 +320,7 @@ Feature: Search
     Given <ContactWithFriends> is connected to <Friend2>
     Given <ContactWithFriends> is connected to <Friend3>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
@@ -330,15 +330,15 @@ Feature: Search
     Then I do not see suggested contact <Friend1>
 
     Examples: 
-      | Login      | Password      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
-      | user1Email | user1Password | user1Name | user2Name          | user3Name | user4Name | user5Name |
+      | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
+      | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
   @staging @id2118
   Scenario Outline: Verify sending connection request from PYMK [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
@@ -349,8 +349,8 @@ Feature: Search
     Then I see first item in contact list named <Contact2>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @staging @id2118
   Scenario Outline: Verify sending connection request from PYMK [LANDSAPE]
@@ -358,7 +358,7 @@ Feature: Search
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
@@ -369,15 +369,15 @@ Feature: Search
     Then I see first item in contact list named <Contact2>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @staging @id2149
   Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I wait until <LastName> exists in backend search results
@@ -387,8 +387,8 @@ Feature: Search
     Then I see user <NewName> found on People picker page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | NewName  | LastName |
-      | user1Email | user1Password | user1Name | user2Name | NEW NAME | NAME     |
+      | Name      | Contact   | NewName  | LastName |
+      | user1Name | user2Name | NEW NAME | NAME     |
 
   @staging @id2149
   Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
@@ -396,7 +396,7 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I wait until <LastName> exists in backend search results
@@ -406,14 +406,14 @@ Feature: Search
     Then I see user <NewName> found on People picker page
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | NewName  | LastName |
-      | user1Email | user1Password | user1Name | user2Name | NEW NAME | NAME     |
+      | Name      | Contact   | NewName  | LastName |
+      | user1Name | user2Name | NEW NAME | NAME     |
 
   @staging @id2703
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
@@ -428,15 +428,15 @@ Feature: Search
     Then I see that <Number> contacts are selected
 
     Examples: 
-      | Login      | Password      | Name      | UserCount | Contact   | Number |
-      | user1Email | user1Password | user1Name | 7         | user2Name | 4      |
+      | Name      | UserCount | Contact   | Number |
+      | user1Name | 7         | user2Name | 4      |
 
   @staging @id2703
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations [LANDSAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
@@ -451,5 +451,5 @@ Feature: Search
     Then I see that <Number> contacts are selected
 
     Examples: 
-      | Login      | Password      | Name      | UserCount | Contact   | Number |
-      | user1Email | user1Password | user1Name | 7         | user2Name | 4      |
+      | Name      | UserCount | Contact   | Number |
+      | user1Name | 7         | user2Name | 4      |

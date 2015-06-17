@@ -59,21 +59,19 @@ public class LoginPageSteps {
 	 * Enter user email and password into corresponding fields on sign in screen
 	 * then taps "Sign In" button
 	 * 
-	 * @step. ^I Sign in using login (.*) and password (.*)$
+	 * @step. ^I sign in using my email$
 	 * 
-	 * @param login
-	 *            user login string
-	 * @param password
-	 *            user password string
 	 * 
 	 * @throws AssertionError
 	 *             if login operation was unsuccessful
 	 */
-	@Given("^I Sign in using login (.*) and password (.*)$")
-	public void GivenISignIn(String login, String password) throws Exception {
+	@Given("^I sign in using my email$")
+	public void GivenISignInUsingEmail() throws Exception {
 		Assert.assertNotNull(getLoginPage().isVisible());
 		getLoginPage().signIn();
-		emailLoginSequence(login, password);
+
+		final ClientUser self = usrMgr.getSelfUserOrThrowError();
+		emailLoginSequence(self.getEmail(), self.getPassword());
 	}
 
 	private void emailLoginSequence(String login, String password)
@@ -94,22 +92,13 @@ public class LoginPageSteps {
 		getLoginPage().login();
 	}
 
-	private void phoneLoginSequence(String login) throws Exception {
-		String number = "";
-		try {
-			number = usrMgr.findUserByEmailOrEmailAlias(login).getPhoneNumber()
-					.toString();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-
+	private void phoneLoginSequence(final PhoneNumber number) throws Exception {
 		getLoginPage().clickPhoneLogin();
 
-		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		getRegistrationPage().inputPhoneNumber(number,
+		getRegistrationPage().inputPhoneNumber(
+				number.toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""),
 				PhoneNumber.WIRE_COUNTRY_PREFIX);
-		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(usrMgr
-				.findUserByEmailOrEmailAlias(login).getPhoneNumber());
+		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(number);
 
 		getRegistrationPage().inputActivationCode(code);
 
@@ -119,30 +108,26 @@ public class LoginPageSteps {
 	/**
 	 * Sign in with email/password (20%) or phone number (80%)
 	 * 
-	 * @step. ^I Sign in using phone number or login (.*) and password (.*)$
-	 * @param login
-	 *            user login string
-	 * @param password
-	 *            user password string
+	 * @step. ^I sign in using my email or phone number$
 	 * 
 	 * @throws AssertionError
 	 *             if login operation was unsuccessful
 	 */
-	@Given("^I Sign in using phone number or login (.*) and password (.*)$")
-	public void GivenISignInWithPhone(String login, String password)
-			throws Exception {
+	@Given("^I sign in using my email or phone number$")
+	public void GivenISignInUsingEmailOrPhone() throws Exception {
 		Assert.assertNotNull(getLoginPage().isVisible());
 		getLoginPage().signIn();
 
+		final ClientUser self = usrMgr.getSelfUserOrThrowError();
 		if (CommonUtils.trueInPercents(80)) {
 			try {
-				phoneLoginSequence(login);
+				phoneLoginSequence(self.getPhoneNumber());
 			} catch (BackendRequestException ex) {
 				getLoginPage().switchToEmailLogin();
-				emailLoginSequence(login, password);
+				emailLoginSequence(self.getEmail(), self.getPassword());
 			}
 		} else {
-			emailLoginSequence(login, password);
+			emailLoginSequence(self.getEmail(), self.getPassword());
 		}
 	}
 

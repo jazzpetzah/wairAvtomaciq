@@ -6,7 +6,7 @@ Feature: Ping
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Name> change accent color to <Color>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I swipe the text input cursor
@@ -15,8 +15,8 @@ Feature: Ping
     And I see <Action1> icon in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange |
+      | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        |
+      | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange |
 
   @regression @id1358
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
@@ -25,7 +25,7 @@ Feature: Ping
     Given User <Contact1> change name to <ContactName>
     Given User <Contact1> change accent color to <Color>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on group chat with name <GroupChatName>
     And User <Contact1> Ping in chat <GroupChatName> by BackEnd
@@ -34,8 +34,8 @@ Feature: Ping
     And I see <Action1> icon in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        | ContactName |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |
+      | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        | ContactName |
+      | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange | OtherUser   |
 
   @regression @id1356
   Scenario Outline: Verify you can see Ping on the other side (1:1 conversation)
@@ -43,7 +43,7 @@ Feature: Ping
     Given User <Contact1> change name to <ContactName>
     Given Myself is connected to <Contact1>
     Given User <Contact1> change accent color to <Color>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact1>
     And User <Contact1> Ping in chat <Name> by BackEnd
@@ -52,5 +52,5 @@ Feature: Ping
     And I see <Action1> icon in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Action1 | Action2      | Color        | ContactName |
-      | user1Email | user1Password | user1Name | user2Name | PINGED  | PINGED AGAIN | BrightOrange | OtherUser   |
+      | Name      | Contact1  | Action1 | Action2      | Color        | ContactName |
+      | user1Name | user2Name | PINGED  | PINGED AGAIN | BrightOrange | OtherUser   |

@@ -4,7 +4,7 @@ Feature: Self Profile
   Scenario Outline: Change your profile picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap on personal screen
@@ -15,14 +15,14 @@ Feature: Self Profile
     Then I see changed user picture <Picture>
 
     Examples:
-      | Login      | Password      | Name      | Picture                      | Contact   |
-      | user1Email | user1Password | user1Name | userpicture_mobile_check.jpg | user2Name |
+      | Name      | Picture                      | Contact   |
+      | user1Name | userpicture_mobile_check.jpg | user2Name |
 
   @regression @id1055
   Scenario Outline: Attempt to enter a name with 0 chars
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
@@ -32,14 +32,14 @@ Feature: Self Profile
     And I see error message asking for more characters
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @regression @id1056
   Scenario Outline: Attempt to enter a name with 1 char
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
@@ -49,14 +49,14 @@ Feature: Self Profile
     And I see error message asking for more characters
 
     Examples: 
-      | Login      | Password      | Name      | username | Contact   |
-      | user1Email | user1Password | user1Name | c        | user2Name |
+      | Name      | username | Contact   |
+      | user1Name | c        | user2Name |
       
   @smoke @id1463
   Scenario Outline: Verify name change
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I tap to edit my name
@@ -69,15 +69,15 @@ Feature: Self Profile
 	Then I see my new name <NewUsername>
 
     Examples: 
-      | Login      | Password      | Name      | NewUsername        | Contact   |
-      | user1Email | user1Password | user1Name | New Name           | user2Name |
+      | Name      | NewUsername        | Contact   |
+      | user1Name | New Name           | user2Name |
       
   @regression @id667
   Scenario Outline: Verify changing and applying accent color
   	Given There are 1 users where <Name> is me
   	Given User <Name> change name to <NewName>
   	Given User <Name> change accent color to <Color>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I change my accent color via the colorpicker
@@ -85,6 +85,6 @@ Feature: Self Profile
     Then I see my names <Name> accent color is changed
    
     Examples: 
-      | Login      | Password      | Name      | NewName           | Color  |
-      | user1Email | user1Password | user1Name | AccentColorChange | Violet |
+      | Name      | NewName           | Color  |
+      | user1Name | AccentColorChange | Violet |
   
