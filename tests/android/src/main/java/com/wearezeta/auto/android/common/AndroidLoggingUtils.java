@@ -18,6 +18,9 @@ public final class AndroidLoggingUtils {
 	private static final Logger log = ZetaLogger
 			.getLog(AndroidLoggingUtils.class.getSimpleName());
 
+	public static final String ADB_PREFIX = "";
+//	public static final String ADB_PREFIX = "/Applications/android-sdk/platform-tools/";
+	
 	public AndroidLoggingUtils() {
 		// TODO Auto-generated constructor stub
 	}
@@ -41,7 +44,7 @@ public final class AndroidLoggingUtils {
 			throws Exception {
 		final long testFinsihedTimestamp = new Date().getTime();
 		final String[] cmd = new String[] { "/bin/bash", "-c",
-				"adb logcat -d -v time" };
+				ADB_PREFIX + "adb logcat -d -v time" };
 		final String[] allLogLines = CommonUtils.executeOsXCommandWithOutput(
 				cmd).split("\n");
 		final SimpleDateFormat sdf = new SimpleDateFormat(

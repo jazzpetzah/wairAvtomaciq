@@ -202,9 +202,9 @@ public class PersonalInfoPage extends IOSPage {
 		wireWebsiteButton.click();
 	}
 
-	public boolean isWireWebsitePageVisible() {
-		return wireWebsitePageText.getAttribute("name").equals(
-				WIRE_WEBSITE_PAGE_VALUE);
+	public boolean isWireWebsitePageVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(IOSLocators.xpathWireWebsitePageText));
 	}
 
 	public void closeLegalPage() {
@@ -222,7 +222,10 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public boolean isResetPasswordPageVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(IOSLocators.xpathChangePasswordPageChangePasswordButton));
+		return DriverUtils
+				.waitUntilLocatorAppears(
+						getDriver(),
+						By.xpath(IOSLocators.xpathChangePasswordPageChangePasswordButton));
 	}
 
 	public void clickChangePasswordButton() {
