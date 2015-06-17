@@ -106,7 +106,7 @@ Feature: Conversation List
       | Name      | Contact   | NewName  | Color        |
       | user1Name | user2Name | PING     | BrightOrange |
 
-  @staging @id2761
+  @smoke @id2761
   Scenario Outline: Verify conversations are sorted according to most recent activity
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact1>,<Contact2>,<Contact3>

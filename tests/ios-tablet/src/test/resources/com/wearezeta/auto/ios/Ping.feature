@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @staging @id2655
+  @regression @id2655
   Scenario Outline: Verify you can send Ping in a group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -18,7 +18,7 @@ Feature: Ping
       | Name      | Contact1  | Contact2  | Action1 | Action2      | GroupChatName        | Color        |
       | user1Name | user2Name | user3Name | PINGED  | PINGED AGAIN | ReceivePingGroupChat | BrightOrange |
 
-  @staging @id2655
+  @regression @id2655
   Scenario Outline: Verify you can send Ping in a group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

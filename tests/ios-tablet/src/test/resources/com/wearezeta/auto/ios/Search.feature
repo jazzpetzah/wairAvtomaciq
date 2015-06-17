@@ -333,7 +333,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
-  @staging @id2118
+  @regression @id2118
   Scenario Outline: Verify sending connection request from PYMK [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -352,7 +352,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id2118
+  @regression @id2118
   Scenario Outline: Verify sending connection request from PYMK [LANDSAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -372,7 +372,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id2149
+  @regression @id2149
   Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -390,7 +390,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @staging @id2149
+  @regression @id2149
   Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -409,7 +409,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @staging @id2703
+  @regression @id2703
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -431,7 +431,7 @@ Feature: Search
       | Name      | UserCount | Contact   | Number |
       | user1Name | 7         | user2Name | 4      |
 
-  @staging @id2703
+  @regression @id2703
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations [LANDSAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
