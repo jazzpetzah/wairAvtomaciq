@@ -31,6 +31,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	private static final String BACKEND_FILE_LOCATION = "/mnt/sdcard/customBackend.json";
 
 	public static final String ADB_PREFIX = "";
+//	public static final String ADB_PREFIX = "/Applications/android-sdk/platform-tools/";
 
 	private static void executeAdb(final String cmdline) throws Exception {
 		executeOsXCommand(new String[] { "/bin/bash", "-c",
