@@ -532,7 +532,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | SoundCloudLink |
       | user1Email | user1Password | user1Name | user2Name | https://soundcloud.com/isabella-emanuelsson/david-guetta-she-wolf-falling |
       
-  @staging @id2762
+  @smoke @id2762
   Scenario Outline: Receive message from contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -547,7 +547,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id2763 @deployPictures
+  @smoke @id2763 @deployPictures
   Scenario Outline: Receive a camera roll picture from user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
