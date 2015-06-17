@@ -115,7 +115,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently - seems bad...
 		}
-		getContactListPage().swipeRightOnContact(1000, contact);
+		getContactListPage().swipeRightOnConversation(1000, contact);
 	}
 
 	/**
