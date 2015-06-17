@@ -562,4 +562,60 @@ public class ConversationPageSteps {
 		Assert.assertEquals("YOU CALLED",
 				PagesCollection.conversationPage.getMissedCallMessage());
 	}
+
+	/**
+	 * Click on picture to open it in full screen mode
+	 *
+	 * @step. I click on picture$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I click on picture$")
+	public void WhenIClickOnPicture() throws Exception {
+		PagesCollection.conversationPage.clickOnPicture();
+	}
+
+	/**
+	 * Verifies whether picture is in fullscreen or not.
+	 *
+	 * @param doNot
+	 *            is set to null if "do not" part does not exist
+	 * 
+	 * @step. ^I( do not)? see picture in fullscreen$
+	 * @throws java.lang.Exception
+	 */
+	@Then("^I( do not)? see picture in fullscreen$")
+	public void ISeePictureInFullscreen(String doNot) throws Exception {
+		if (doNot == null) {
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isPictureInFullscreen());
+		} else {
+			Assert.assertFalse(PagesCollection.conversationPage
+					.isPictureInFullscreen());
+		}
+	}
+
+	/**
+	 * Click x button to close picture fullscreen mode
+	 *
+	 * @step. ^I click x button to close fullscreen mode$
+	 * @throws Exception
+	 */
+	@When("^I click x button to close fullscreen mode$")
+	public void IClickXButtonToCloseFullscreen() throws Exception {
+		PagesCollection.conversationPage.clickXButton();
+	}
+	
+	/**
+	 * I click on black border to close fullscreen mode
+	 *
+	 * @step. ^I click on black border to close fullscreen mode$
+	 * @throws Exception
+	 */
+	@When("^I click on black border to close fullscreen mode$")
+	public void IClickOnBlackBorderToCloseFullscreen() throws Exception {
+		PagesCollection.conversationPage.clickOnBlackBorder();
+	}
+	
+	
 }

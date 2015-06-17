@@ -63,6 +63,15 @@ public class ConversationPage extends WebPage {
 	@FindBy(css = WebAppLocators.ConversationPage.cssLastTextMessage)
 	private WebElement lastConversationMessage;
 
+	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idPictureFullscreen)
+	private WebElement pictureFullscreen;
+
+	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idXButton)
+	private WebElement xButton;
+
+	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idBlackBorder)
+	private WebElement blackBorder;
+
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -323,8 +332,34 @@ public class ConversationPage extends WebPage {
 	}
 
 	public String getLastTextMessage() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
 		return lastConversationMessage.getText();
+	}
+
+	public void clickOnPicture() throws Exception {
+		pictureFullscreen.click();
+	}
+
+	public boolean isPictureInFullscreen() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ConversationPage.xPathPictureIsFullscreen),
+						5);
+	}
+
+	public void clickXButton() throws Exception {
+		final By locator = By.id(WebAppLocators.ConversationPage.idXButton);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 2) : "Xbutton has not been shown after 2 seconds";
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(), xButton) : "X button has to be clickable";
+		xButton.click();
+	}
+
+	public void clickOnBlackBorder() throws Exception {
+		blackBorder.click();
 	}
 }

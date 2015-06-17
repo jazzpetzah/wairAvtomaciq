@@ -187,5 +187,27 @@ Feature: Conversation View
     Then I verify the last text message equals to <ExpectedMessage>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | ActualMessage                                           | ExpectedMessage                      |
+      | Login      | Password      | Name      | Contact   | ActualMessage                                           | ExpectedMessage                   |
       | user1Email | user1Password | user1Name | user2Name | ('LF' * 10)('a' * 100)('LF' * 10)('b' * 100)('LF' * 10) | ('a' * 100)('LF' * 10)('b' * 100) |
+
+  @staging @id1624 @torun
+  Scenario Outline: Send picture to contact in 1:1
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    And I send picture <PictureName> to the current conversation
+    When I click on picture
+    Then I see picture in fullscreen
+    When I click x button to close fullscreen mode
+    Then I do not see picture in fullscreen
+    When I click on picture
+    Then I see picture in fullscreen
+    When I click on black border to close fullscreen mode 
+    Then I do not see picture in fullscreen
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | PictureName               |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
