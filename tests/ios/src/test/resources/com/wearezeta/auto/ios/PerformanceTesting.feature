@@ -8,10 +8,10 @@ Feature: Performance Tests
     When I start performance monitoring for the connected iPhone
     And I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    And I test conversation loading time for conversation with 300 messages and 30 images
+#    And I test conversation loading time for conversation with 300 messages and 30 images
     And I start test cycle for <Time> minutes
     Then I finish performance monitoring for the connected iPhone
-    And I generate performance report for <UsersNumber> users
+    And I generate performance report for <UsersCount> users
 
     Examples: 
       | Login      | Name      | Password      | UsersCount        | Time            | UserNamePrefix |

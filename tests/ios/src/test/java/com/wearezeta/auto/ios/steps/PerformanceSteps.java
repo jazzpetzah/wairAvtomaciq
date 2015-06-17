@@ -198,7 +198,6 @@ public class PerformanceSteps {
 	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
 		IOSPerformanceReportGenerator.setUsersCount(usersCount);
 		Thread.sleep(5000);
-		//export source
 		exportTraceToCSV();
 		Assert.assertTrue(IOSPerformanceReportGenerator
 				.updateReportDataWithCurrentRun(""));
