@@ -215,11 +215,11 @@ public final class WebAppLocators {
 		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-minus')]";
 
-		public static final String idPictureFullscreen = "go-detail";
+		public static final String cssPictureFullscreen = "[data-uie-name='go-detail']";
 
 		public static final String xPathPictureIsFullscreen = "//div[contains(@class, 'modal-show')]";
 
-		public static final String idXButton = "do-close";
+		public static final String cssXButton = "[data-uie-name='do-close']";
 
 		public static final String idBlackBorder = "detail-view";
 	}
