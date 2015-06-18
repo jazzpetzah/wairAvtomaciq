@@ -73,23 +73,28 @@ public class LoginPageSteps {
 	 */
 	@Given("^I sign in using my email$")
 	public void GivenISignInUsingEmail() throws Exception {
+		System.out.println("Started sign in by email");
 		Assert.assertNotNull(getLoginPage().isVisible());
+		System.out.println("Check passed");
 		getLoginPage().signIn();
-
+		System.out.println("sign in clicked");
 		final ClientUser self = usrMgr.getSelfUserOrThrowError();
+		System.out.println("User taken");
 		emailLoginSequence(self.getEmail(), self.getPassword());
 	}
 
 	private void emailLoginSequence(String login, String password)
 			throws Exception {
+		System.out.println("Login sequence started");
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
+		System.out.println("Password retrieving");
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-			log.debug("Password: " + password);
+			System.out.println("Password: " + password);
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
