@@ -4,7 +4,7 @@ Feature: Sign Out
   Scenario Outline: Sign out from ZClient
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     When I tap on my avatar
     And I tap options button
     And I tap sign out button

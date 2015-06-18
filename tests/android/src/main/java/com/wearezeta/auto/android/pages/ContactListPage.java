@@ -58,9 +58,6 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(id = PeoplePickerPage.idPickerSearch)
 	private WebElement openStartUI;
 
-	@FindBy(xpath = PersonalInfoPage.xpathNameField)
-	private WebElement selfUserName;
-
 	private static final String idSelfUserAvatar = "civ__searchbox__self_user_avatar";
 	@FindBy(id = idSelfUserAvatar)
 	protected WebElement selfUserAvatar;
@@ -159,7 +156,8 @@ public class ContactListPage extends AndroidPage {
 			throws Exception {
 		final By locator = By.xpath(xpathContactByName.apply(name));
 		DriverUtils.swipeRight(this.getDriver(),
-				this.getDriver().findElement(locator), durationMilliseconds, 20, 50, 90, 50);
+				this.getDriver().findElement(locator), durationMilliseconds,
+				20, 50, 90, 50);
 	}
 
 	public void swipeOnArchiveUnarchive(String contact) throws Exception {
@@ -232,12 +230,13 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
+	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = 30;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(EmailSignInPage.idLoginButton),
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
-				.format("It seems that conversation list has not been loaded within %s seconds (login button is still visible)",
+				.format("It seems that conversations list has not been loaded within %s seconds (login button is still visible)",
 						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
 
 		final By topConvoListLoadingProgressLocator = By
@@ -248,7 +247,7 @@ public class ContactListPage extends AndroidPage {
 				topConvoListLoadingProgressLocator,
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
 			log.warn(String
-					.format("It seems that conversation list has not been loaded within %s seconds (the progress bar is still visible)",
+					.format("It seems that conversations list has not been loaded within %s seconds (the progress bar is still visible)",
 							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
 		}
 
@@ -262,15 +261,19 @@ public class ContactListPage extends AndroidPage {
 				spinnerConvoListLoadingProgressLocator,
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
 			log.warn(String
-					.format("It seems that conversation list has not been loaded within %s seconds (the spinner is still visible)",
+					.format("It seems that conversations list has not been loaded within %s seconds (the spinner is still visible)",
 							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
 		}
 
+		assert this.waitUntilConversationsInfoIsLoaded() : String
+				.format("Not all conversations list items were loaded within %s seconds",
+						CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
+	}
+
+	private boolean waitUntilConversationsInfoIsLoaded() throws Exception {
 		final By loadingItemLocator = By.xpath(xpathLoadingContactListItem);
-		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				loadingItemLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
-				.format("Not all conversation list items were loaded within %s seconds",
-						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				loadingItemLocator, CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {
@@ -295,6 +298,9 @@ public class ContactListPage extends AndroidPage {
 			final By locator = By.xpath(xpathContactByIndex.apply(i));
 			if (DriverUtils
 					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
+				assert waitUntilConversationsInfoIsLoaded() : String
+						.format("Not all conversations list items were loaded within %s seconds",
+								CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
 				return true;
 			}
 		}
