@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @staging @id2589
+  @regression @id2589
   Scenario Outline: Verify about screen contains all the required information [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
@@ -30,7 +30,7 @@ Feature: Self Profile
       | Name      | Contact   | Color  |
       | user1Name | user2Name | Violet |
 
-  @staging @id2589
+  @regression @id2589
   Scenario Outline: Verify about screen contains all the required information [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
@@ -61,7 +61,7 @@ Feature: Self Profile
       | Name      | Contact   | Color  |
       | user1Name | user2Name | Violet |
 
-  @staging @id2586
+  @regression @id2586
   Scenario Outline: Self profile. Verify max limit in 64 chars [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -79,7 +79,7 @@ Feature: Self Profile
       | Name      | NewUsername                                                          | NewUsername1                                                     | Contact   |
       | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 | user2Name |
 
-  @staging @id2586
+  @regression @id2586
   Scenario Outline: Self profile. Verify max limit in 64 chars [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape

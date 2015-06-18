@@ -6,7 +6,7 @@ Feature: Conversation List
     Given <Contact> is connected to me
     Given I rotate UI to landscape
     Given I sign in using my email
-    Given I see the conversations list
+    Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
@@ -29,7 +29,7 @@ Feature: Conversation List
     Given <Contact> is connected to me
     Given I rotate UI to portrait
     Given I sign in using my email
-    Given I see the conversations list
+    Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view

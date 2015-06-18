@@ -133,9 +133,12 @@ public class LoginPage extends IOSPage {
 		if(!backButton.getText().equals("REGISTRATION")) {
 			DriverUtils.mobileTapByCoordinates(getDriver(), backButton);
 		}
-		DriverUtils.waitUntilLocatorAppears(getDriver(), 
-				By.name(IOSLocators.LoginPage.nameEmailLoginButton));
-		DriverUtils.mobileTapByCoordinates(getDriver(), emailLoginButton);
+		if (!DriverUtils.waitUntilLocatorAppears(getDriver(), 
+				By.name(IOSLocators.LoginPage.nameEmailLoginButton))) {
+			signIn();
+		} else {
+			DriverUtils.mobileTapByCoordinates(getDriver(), emailLoginButton);
+		}
 	}
 	
 	public void clickPhoneLogin() {
