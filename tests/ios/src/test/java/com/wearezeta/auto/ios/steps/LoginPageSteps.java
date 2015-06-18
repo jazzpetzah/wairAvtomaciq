@@ -89,7 +89,7 @@ public class LoginPageSteps {
 		}
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-			log.debug(password);
+			log.debug("Password: " + password);
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
