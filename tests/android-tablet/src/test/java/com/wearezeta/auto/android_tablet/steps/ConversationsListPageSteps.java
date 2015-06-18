@@ -52,12 +52,12 @@ public class ConversationsListPageSteps {
 			Assert.assertTrue(
 					"No conversations are visible in the conversations list, but some are expected",
 					getConversationsListPage()
-							.isAnyConversationIsVisible());
+							.isAnyConversationVisible());
 		} else {
 			Assert.assertFalse(
 					"Some conversations are visible in the conversations list, but zero is expected",
 					getConversationsListPage()
-							.isAnyConversationIsVisible());
+							.isAnyConversationVisible());
 		}
 	}
 

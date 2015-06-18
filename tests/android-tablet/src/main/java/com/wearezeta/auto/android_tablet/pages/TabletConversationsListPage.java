@@ -123,7 +123,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
-	public boolean isAnyConversationIsVisible() throws Exception {
+	public boolean isAnyConversationVisible() throws Exception {
 		return getContactListPage().isAnyConversationVisible();
 	}
 
