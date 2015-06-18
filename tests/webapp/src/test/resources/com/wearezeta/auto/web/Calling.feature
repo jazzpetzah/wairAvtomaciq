@@ -213,7 +213,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
-  @staging @id1883 @torun
+  @staging @id1883
   Scenario Outline: A blocked contact trying to call me
     Given My browser supports calling
     Given There are 2 users where <Name> is me
