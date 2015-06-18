@@ -206,7 +206,7 @@ public final class BackendAPIWrappers {
 					// the number booking request has not been delivered to the
 					// backend yet
 					savedException = e;
-					Thread.sleep(2000);
+					Thread.sleep(4000);
 					log.debug(String
 							.format("The phone number '%s' seems to be not booked yet. Trying to get the activation code one more time (%d of %d)...",
 									phoneNumber.toString(), ntry,
@@ -237,7 +237,7 @@ public final class BackendAPIWrappers {
 								phoneNumber.toString(), count,
 								MAX_LOGIN_CODE_QUERIES));
 				savedException = e;
-				Thread.sleep(2000 * count);
+				Thread.sleep(4000 * count);
 			}
 		}
 		throw savedException;
