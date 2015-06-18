@@ -159,7 +159,7 @@ public class ContactListPage extends AndroidPage {
 			throws Exception {
 		final By locator = By.xpath(xpathContactByName.apply(name));
 		DriverUtils.swipeRight(this.getDriver(),
-				this.getDriver().findElement(locator), durationMilliseconds);
+				this.getDriver().findElement(locator), durationMilliseconds, 20, 50, 90, 50);
 	}
 
 	public void swipeOnArchiveUnarchive(String contact) throws Exception {
