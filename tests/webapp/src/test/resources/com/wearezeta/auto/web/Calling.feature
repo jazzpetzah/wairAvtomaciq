@@ -213,6 +213,23 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
+  @staging @id1883 @torun
+  Scenario Outline: A blocked contact trying to call me
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Myself blocked <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When <Contact> calls me using <CallBackend>
+    Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
+    And I do not see the calling bar
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+
   @regression @id2477
   Scenario Outline: Already on call and try to make another call (adressee)
     Given My browser supports calling

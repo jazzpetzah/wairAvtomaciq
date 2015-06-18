@@ -123,7 +123,9 @@
 						<com.wire.os.name>${com.wire.os.name}</com.wire.os.name>
 						<com.wire.os.version>${com.wire.os.version}</com.wire.os.version>
 						<com.wire.browser.name>${com.wire.browser.name}</com.wire.browser.name>
-						<com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
+                        <com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
+                        <hubHost>${hubHost}</hubHost>
+                        <hubPort>${hubPort}</hubPort>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
