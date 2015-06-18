@@ -35,6 +35,8 @@ public class PhoneNumberVerificationPage extends AndroidPage {
 	}
 
 	public void inputVerificationCode(String verificationCode) throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCodeInput), 15) : "Verification code input has not been shown in time";
 		codeInput.sendKeys(verificationCode);
 	}
 
