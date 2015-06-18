@@ -37,9 +37,9 @@ public class ContactListPageSteps {
 					"No conversations are visible in the conversations list, but some are expected",
 					getContactListPage().isAnyConversationVisible());
 		} else {
-			Assert.assertFalse(
+			Assert.assertTrue(
 					"Some conversations are visible in the conversations list, but zero is expected",
-					getContactListPage().isAnyConversationVisible());
+					getContactListPage().isNoConversationsVisible());
 
 		}
 	}

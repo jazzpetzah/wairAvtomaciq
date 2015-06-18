@@ -54,10 +54,10 @@ public class ConversationsListPageSteps {
 					getConversationsListPage()
 							.isAnyConversationVisible());
 		} else {
-			Assert.assertFalse(
+			Assert.assertTrue(
 					"Some conversations are visible in the conversations list, but zero is expected",
 					getConversationsListPage()
-							.isAnyConversationVisible());
+							.isNoConversationsVisible());
 		}
 	}
 

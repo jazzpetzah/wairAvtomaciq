@@ -294,10 +294,9 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isAnyConversationVisible() throws Exception {
-		for (int i = 1; i <= contactListNames.size(); i++) {
+		for (int i = contactListNames.size(); i >= 1; i--) {
 			final By locator = By.xpath(xpathContactByIndex.apply(i));
-			if (DriverUtils
-					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
+			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
 				assert waitUntilConversationsInfoIsLoaded() : String
 						.format("Not all conversations list items were loaded within %s seconds",
 								CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
@@ -305,5 +304,15 @@ public class ContactListPage extends AndroidPage {
 			}
 		}
 		return false;
+	}
+
+	public boolean isNoConversationsVisible() throws Exception {
+		for (int i = contactListNames.size(); i >= 1; i--) {
+			final By locator = By.xpath(xpathContactByIndex.apply(i));
+			if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
