@@ -21,6 +21,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
 			.getLog(OtherUserPersonalInfoPage.class.getSimpleName());
 
@@ -284,17 +285,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public AndroidPage tapOnParticipant(String name) throws Exception {
 		this.getWait().until(ExpectedConditions.visibilityOf(groupChatName));
-		try {
-			final By nameLocator = By.xpath(xpathParticipantAvatarByName
-					.apply(name));
-			assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-					nameLocator);
-			this.getDriver().findElement(nameLocator).click();
-		} catch (Exception e) {
-			log.debug("Failed to find contact with name " + name
-					+ "\n. Page source: " + this.getDriver().getPageSource());
-			throw e;
-		}
+		final By nameLocator = By.xpath(xpathParticipantAvatarByName
+				.apply(name));
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(getDriver(), nameLocator);
+		// Wait for animation
+		Thread.sleep(1000);
+		this.getDriver().findElement(nameLocator).click();
 		if (connectToHeader.size() > 0) {
 			return new ConnectToPage(this.getLazyDriver());
 		} else {

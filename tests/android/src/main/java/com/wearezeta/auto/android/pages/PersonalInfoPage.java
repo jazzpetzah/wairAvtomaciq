@@ -200,6 +200,27 @@ public class PersonalInfoPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
+	/**
+	 * Tries to apply changed name up to three time prior to return false result
+	 * 
+	 * @param expectedName
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean makeSureNewNameIsApplied(String expectedName)
+			throws Exception {
+		final int maxTries = 3;
+		int ntry = 1;
+		while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathNameEdit), 1)
+				&& !getUserName().equals(expectedName) && ntry <= maxTries) {
+			Thread.sleep(500);
+			this.getDriver().navigate().back();
+			ntry++;
+		}
+		return getUserName().equals(expectedName);
+	}
+
 	public String getUserName() throws Exception {
 		return nameField.getText();
 	}

@@ -197,9 +197,9 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see my new name (.*)$")
 	public void ISeeMyNewName(String name) throws Exception {
-		Assert.assertTrue(
-				String.format("The new name '%s' is not visible", name),
-				name.equals(getPersonalInfoPage().getUserName()));
+		Assert.assertTrue(String.format("The new name '%s' is not visible",
+				name), name.equals(getPersonalInfoPage()
+				.makeSureNewNameIsApplied(name)));
 	}
 
 	/**

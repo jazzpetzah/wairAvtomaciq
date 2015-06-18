@@ -155,11 +155,11 @@ public class ContactListPage extends AndroidPage {
 		return Optional.empty();
 	}
 
-	public void swipeRightOnContact(int durationMilliseconds, String contact)
+	public void swipeRightOnConversation(int durationMilliseconds, String name)
 			throws Exception {
-		WebElement el = this.getDriver().findElementByXPath(
-				xpathContactByName.apply(contact));
-		elementSwipeRight(el, durationMilliseconds);
+		final By locator = By.xpath(xpathContactByName.apply(name));
+		DriverUtils.swipeRight(this.getDriver(),
+				this.getDriver().findElement(locator), durationMilliseconds, 20, 50, 90, 50);
 	}
 
 	public void swipeOnArchiveUnarchive(String contact) throws Exception {
