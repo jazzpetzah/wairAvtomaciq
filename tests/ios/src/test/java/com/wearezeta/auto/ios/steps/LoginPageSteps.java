@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
@@ -26,6 +28,10 @@ import cucumber.api.java.en.*;
  *
  */
 public class LoginPageSteps {
+
+	private static final Logger log = ZetaLogger.getLog(LoginPageSteps.class
+			.getSimpleName());
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
@@ -83,6 +89,7 @@ public class LoginPageSteps {
 		}
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
+			log.debug(password);
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
