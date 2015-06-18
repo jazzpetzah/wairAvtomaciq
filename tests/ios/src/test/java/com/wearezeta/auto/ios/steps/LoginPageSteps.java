@@ -1,6 +1,5 @@
 package com.wearezeta.auto.ios.steps;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -12,7 +11,6 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
@@ -28,10 +26,6 @@ import cucumber.api.java.en.*;
  *
  */
 public class LoginPageSteps {
-
-	private static final Logger log = ZetaLogger.getLog(LoginPageSteps.class
-			.getSimpleName());
-
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
@@ -65,38 +59,33 @@ public class LoginPageSteps {
 	 * Enter user email and password into corresponding fields on sign in screen
 	 * then taps "Sign In" button
 	 * 
-	 * @step. ^I sign in using my email$
+	 * @step. ^I Sign in using login (.*) and password (.*)$
 	 * 
+	 * @param login
+	 *            user login string
+	 * @param password
+	 *            user password string
 	 * 
 	 * @throws AssertionError
 	 *             if login operation was unsuccessful
 	 */
-	@Given("^I sign in using my email$")
-	public void GivenISignInUsingEmail() throws Exception {
-		System.out.println("Started sign in by email");
+	@Given("^I Sign in using login (.*) and password (.*)$")
+	public void GivenISignIn(String login, String password) throws Exception {
 		Assert.assertNotNull(getLoginPage().isVisible());
-		System.out.println("Check passed");
 		getLoginPage().signIn();
-		System.out.println("sign in clicked");
-		final ClientUser self = usrMgr.getSelfUserOrThrowError();
-		System.out.println("User taken");
-		emailLoginSequence(self.getEmail(), self.getPassword());
+		emailLoginSequence(login, password);
 	}
 
 	private void emailLoginSequence(String login, String password)
 			throws Exception {
-		System.out.println("Login sequence started");
 		try {
 			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		System.out.println("Password retrieving");
 		try {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-			System.out.println("Password: " + password);
 		} catch (NoSuchUserException e) {
-			System.out.println("no password:" + password);
 			// Ignore silently
 		}
 
@@ -105,13 +94,22 @@ public class LoginPageSteps {
 		getLoginPage().login();
 	}
 
-	private void phoneLoginSequence(final PhoneNumber number) throws Exception {
+	private void phoneLoginSequence(String login) throws Exception {
+		String number = "";
+		try {
+			number = usrMgr.findUserByEmailOrEmailAlias(login).getPhoneNumber()
+					.toString();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+
 		getLoginPage().clickPhoneLogin();
 
-		getRegistrationPage().inputPhoneNumber(
-				number.toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""),
+		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
+		getRegistrationPage().inputPhoneNumber(number,
 				PhoneNumber.WIRE_COUNTRY_PREFIX);
-		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(number);
+		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(usrMgr
+				.findUserByEmailOrEmailAlias(login).getPhoneNumber());
 
 		getRegistrationPage().inputActivationCode(code);
 
@@ -121,26 +119,30 @@ public class LoginPageSteps {
 	/**
 	 * Sign in with email/password (20%) or phone number (80%)
 	 * 
-	 * @step. ^I sign in using my email or phone number$
+	 * @step. ^I Sign in using phone number or login (.*) and password (.*)$
+	 * @param login
+	 *            user login string
+	 * @param password
+	 *            user password string
 	 * 
 	 * @throws AssertionError
 	 *             if login operation was unsuccessful
 	 */
-	@Given("^I sign in using my email or phone number$")
-	public void GivenISignInUsingEmailOrPhone() throws Exception {
+	@Given("^I Sign in using phone number or login (.*) and password (.*)$")
+	public void GivenISignInWithPhone(String login, String password)
+			throws Exception {
 		Assert.assertNotNull(getLoginPage().isVisible());
 		getLoginPage().signIn();
 
-		final ClientUser self = usrMgr.getSelfUserOrThrowError();
 		if (CommonUtils.trueInPercents(80)) {
 			try {
-				phoneLoginSequence(self.getPhoneNumber());
+				phoneLoginSequence(login);
 			} catch (BackendRequestException ex) {
 				getLoginPage().switchToEmailLogin();
-				emailLoginSequence(self.getEmail(), self.getPassword());
+				emailLoginSequence(login, password);
 			}
 		} else {
-			emailLoginSequence(self.getEmail(), self.getPassword());
+			emailLoginSequence(login, password);
 		}
 	}
 
