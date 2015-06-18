@@ -96,6 +96,7 @@ public class LoginPageSteps {
 			password = usrMgr.findUserByPasswordAlias(password).getPassword();
 			System.out.println("Password: " + password);
 		} catch (NoSuchUserException e) {
+			System.out.println("no password");
 			// Ignore silently
 		}
 
