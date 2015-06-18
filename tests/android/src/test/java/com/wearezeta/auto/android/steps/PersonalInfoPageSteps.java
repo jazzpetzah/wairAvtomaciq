@@ -6,6 +6,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.PersonalInfoPage;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
@@ -43,7 +44,8 @@ public class PersonalInfoPageSteps {
 	 */
 	@When("^I tap on my name$")
 	public void WhenITapOnMyName() throws Exception {
-		getPersonalInfoPage().tapOnMyName();
+		final ClientUser self = usrMgr.getSelfUserOrThrowError();
+		getPersonalInfoPage().tapOnMyName(self.getName());
 	}
 
 	/**
@@ -197,9 +199,9 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see my new name (.*)$")
 	public void ISeeMyNewName(String name) throws Exception {
-		Assert.assertTrue(String.format("The new name '%s' is not visible",
-				name), name.equals(getPersonalInfoPage()
-				.makeSureNewNameIsApplied(name)));
+		Assert.assertTrue(
+				String.format("The new name '%s' is not visible", name),
+				getPersonalInfoPage().waitUntilNameIsVisible(name));
 	}
 
 	/**
@@ -211,8 +213,9 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see personal info page$")
 	public void ISeePersonalInfoPage() throws Exception {
+		final ClientUser self = usrMgr.getSelfUserOrThrowError();
 		Assert.assertTrue("Personal info page is not visible",
-				getPersonalInfoPage().isPersonalInfoVisible());
+				getPersonalInfoPage().waitUntilNameIsVisible(self.getName()));
 	}
 
 	/**
@@ -238,7 +241,7 @@ public class PersonalInfoPageSteps {
 	@Then("^I see edit name field$")
 	public void ThenISeeEditNameField() throws Exception {
 		Assert.assertTrue("Name edit field is not visible",
-				getPersonalInfoPage().isNameEditVisible());
+				getPersonalInfoPage().waitUntilNameEditIsVisible());
 	}
 
 	/**

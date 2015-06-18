@@ -6,6 +6,7 @@ import com.wearezeta.auto.android_tablet.pages.TabletConversationsListPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -28,9 +29,36 @@ public class ConversationsListPageSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see (?:the |\\s*)[Cc]onversations list$")
+	@Given("^I see (?:the |\\s*)[Cc]onversations list$")
 	public void ISeeConversationsList() throws Exception {
 		getConversationsListPage().verifyConversationsListIsLoaded();
+	}
+
+	/**
+	 * Wait until conversations list is fully loaded and there are (no)
+	 * conversations
+	 * 
+	 * @step. ^I see (?:the |\\s*)[Cc]onversations list with (no
+	 *        )?conversations?$
+	 * @param shouldBeNoConversations
+	 *            is set to null if "no" part does not exist in the step
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I see (?:the |\\s*)[Cc]onversations list with (no )?conversations?$")
+	public void ISeeConversationsListPlusItem(String shouldBeNoConversations)
+			throws Exception {
+		if (shouldBeNoConversations == null) {
+			Assert.assertTrue(
+					"No conversations are visible in the conversations list, but some are expected",
+					getConversationsListPage()
+							.isAnyConversationIsVisible());
+		} else {
+			Assert.assertFalse(
+					"Some conversations are visible in the conversations list, but zero is expected",
+					getConversationsListPage()
+							.isAnyConversationIsVisible());
+		}
 	}
 
 	/**
@@ -76,8 +104,8 @@ public class ConversationsListPageSteps {
 	 * Verify whether the particular conversation is visible in the
 	 * conversations list or not
 	 * 
-	 * @step.^I (do not )?see (?:the |\\s*)conversation (.*) in my
-	 *          conversations list$
+	 * @step.^I (do not )?see (?:the |\\s*)conversation (.*) in my conversations
+	 *          list$
 	 * @param shouldNotSee
 	 *            equals to null if "do not" part is not present
 	 * @param name
@@ -131,7 +159,5 @@ public class ConversationsListPageSteps {
 							.waitUntilConversationIsNotSilenced(name));
 		}
 	}
-	
 
-	
 }

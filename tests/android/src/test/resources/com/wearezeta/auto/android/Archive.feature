@@ -7,7 +7,7 @@ Feature: Archive
     Given Myself is connected to <Contact1>
     Given Myself is connected to <Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     And I see contact list with name <Contact1>
     When I swipe right on a <Contact1>
     Then I do not see contact list with name <Contact1>
@@ -26,7 +26,7 @@ Feature: Archive
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     And I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
     Then I do not see contact list with name <GroupChatName>
