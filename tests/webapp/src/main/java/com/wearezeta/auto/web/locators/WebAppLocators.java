@@ -219,7 +219,7 @@ public final class WebAppLocators {
 
 		public static final String xpathPictureIsFullscreen = "//div[contains(@class, 'modal-show')]";
 
-		public static final String xpathXButton = "(//*[@data-uie-name='do-close'])[last()]";
+		public static final String xpathXButton = "//div[contains(@class, 'detail-view-close-button')]//*[@data-uie-name='do-close-detail-view']";
 
 		public static final String idBlackBorder = "detail-view";
 	}
