@@ -24,13 +24,15 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.common.process.AsyncProcess;
 
+import cucumber.api.java.After;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
-	
-	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
-	
+
+	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
+			.getSimpleName());
+
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
 	private static final int PERF_MON_INIT_DELAY = 5000; // milliseconds
@@ -139,11 +141,12 @@ public class PerformanceSteps {
 		String templatePath = (new File(WIRE_ACTIVITY_MONITOR_TEMPLATE_PATH))
 				.exists() ? WIRE_ACTIVITY_MONITOR_TEMPLATE_PATH
 				: ACTIVITY_MONITOR_TEMPLATE_PATH;
+		final int INSTRUMENTS_TIMEOUT_MS = 7200000;
 		final String[] cmd = {
 				"/bin/bash",
 				"-c",
-				String.format("cd $HOME && instruments -v -t %s -w %s",
-						templatePath, iPhoneUDID) };
+				String.format("cd $HOME && instruments -v -t %s -w %s -l %s",
+						templatePath, iPhoneUDID, INSTRUMENTS_TIMEOUT_MS) };
 		final AsyncProcess ap = new AsyncProcess(cmd, true, true);
 		ap.start();
 		Thread.sleep(PERF_MON_INIT_DELAY);
@@ -193,7 +196,8 @@ public class PerformanceSteps {
 		log.debug("Script to execute: " + script);
 		try {
 			engine.eval(script);
-		} catch (Exception e) { }
+		} catch (Exception e) {
+		}
 	}
 
 	/**
@@ -211,5 +215,12 @@ public class PerformanceSteps {
 		Assert.assertTrue(IOSPerformanceReportGenerator
 				.updateReportDataWithCurrentRun(""));
 		Assert.assertTrue(IOSPerformanceReportGenerator.generateRunReport());
+	}
+
+	@After("performance")
+	public void CloseInstruments() {
+		try {
+			IStopPerfMon();
+		} catch (Exception e) { }
 	}
 }
