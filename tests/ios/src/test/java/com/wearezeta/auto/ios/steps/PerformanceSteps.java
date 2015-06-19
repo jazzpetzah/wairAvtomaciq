@@ -217,7 +217,7 @@ public class PerformanceSteps {
 		Assert.assertTrue(IOSPerformanceReportGenerator.generateRunReport());
 	}
 
-	@After("performance")
+	@After("@performance")
 	public void CloseInstruments() {
 		try {
 			IStopPerfMon();
