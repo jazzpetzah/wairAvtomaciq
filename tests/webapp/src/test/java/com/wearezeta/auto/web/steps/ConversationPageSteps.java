@@ -566,7 +566,7 @@ public class ConversationPageSteps {
 	/**
 	 * Click on picture to open it in full screen mode
 	 *
-	 * @step. I click on picture$
+	 * @step. ^I click on picture$
 	 *
 	 * @throws Exception
 	 */
