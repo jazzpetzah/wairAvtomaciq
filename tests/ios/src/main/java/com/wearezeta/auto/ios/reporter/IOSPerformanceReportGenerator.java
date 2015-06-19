@@ -112,6 +112,9 @@ public class IOSPerformanceReportGenerator {
 	}
 
 	private static double calculateMedian(List<Double> listValues) {
+		if (listValues.size() < 1) {
+			return 0;
+		}
 		Double[] values = new Double[listValues.size()];
 		listValues.toArray(values);
 		Arrays.sort(values);
