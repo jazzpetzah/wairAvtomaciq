@@ -63,10 +63,10 @@ public class ConversationPage extends WebPage {
 	@FindBy(css = WebAppLocators.ConversationPage.cssLastTextMessage)
 	private WebElement lastConversationMessage;
 
-	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPictureFullscreen)
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathPictureFullscreen)
 	private WebElement pictureFullscreen;
 
-	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssXButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.xpathXButton)
 	private WebElement xButton;
 
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idBlackBorder)
@@ -340,10 +340,8 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void clickOnPicture() throws Exception {
-		assert DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						getDriver(),
-						By.cssSelector(WebAppLocators.ConversationPage.cssPictureFullscreen));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
+				.xpath(WebAppLocators.ConversationPage.xpathPictureFullscreen));
 		pictureFullscreen.click();
 	}
 
@@ -351,13 +349,13 @@ public class ConversationPage extends WebPage {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.xpath(WebAppLocators.ConversationPage.xPathPictureIsFullscreen),
+						By.xpath(WebAppLocators.ConversationPage.xpathPictureIsFullscreen),
 						5);
 	}
 
 	public void clickXButton() throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssXButton);
+				.xpath(WebAppLocators.ConversationPage.xpathXButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, 2) : "Xbutton has not been shown after 2 seconds";
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(), xButton) : "X button has to be clickable";
