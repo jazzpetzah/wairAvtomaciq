@@ -191,7 +191,7 @@ public class PerformanceSteps {
 				.readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
 
 		ScriptEngineManager mgr = new ScriptEngineManager();
-		ScriptEngine engine = mgr.getEngineByName("AppleScript");
+		ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
 		log.debug("Script engine: " + engine);
 		log.debug("Script to execute: " + script);
 		try {
