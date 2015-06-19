@@ -63,6 +63,15 @@ public class ConversationPage extends WebPage {
 	@FindBy(css = WebAppLocators.ConversationPage.cssLastTextMessage)
 	private WebElement lastConversationMessage;
 
+	@FindBy(xpath = WebAppLocators.ConversationPage.xpathPictureFullscreen)
+	private WebElement pictureFullscreen;
+
+	@FindBy(xpath = WebAppLocators.ConversationPage.xpathXButton)
+	private WebElement xButton;
+
+	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idBlackBorder)
+	private WebElement blackBorder;
+
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -323,8 +332,31 @@ public class ConversationPage extends WebPage {
 	}
 
 	public String getLastTextMessage() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
 		return lastConversationMessage.getText();
+	}
+
+	public void clickOnPicture() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
+				.xpath(WebAppLocators.ConversationPage.xpathPictureFullscreen));
+		pictureFullscreen.click();
+	}
+
+	public boolean isPictureInFullscreen() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ConversationPage.xpathPictureIsFullscreen));
+	}
+
+	public void clickXButton() throws Exception {
+		xButton.click();
+	}
+
+	public void clickOnBlackBorder() throws Exception {
+		blackBorder.click();
 	}
 }
