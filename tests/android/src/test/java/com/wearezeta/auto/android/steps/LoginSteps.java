@@ -90,7 +90,13 @@ public class LoginSteps {
 		final ClientUser self = usrMgr.getSelfUserOrThrowError();
 		assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
 		getWelcomePage().clickAreaCodeSelector();
-		getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
+		try {
+			getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
+		} catch (NoSuchElementException e) {
+			// FIXME: Sometimes the area code selector button is not clicked
+			getWelcomePage().clickAreaCodeSelector();
+			getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
+		}
 		getWelcomePage().inputPhoneNumber(
 				self.getPhoneNumber().toString()
 						.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
