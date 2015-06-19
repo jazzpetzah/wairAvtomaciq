@@ -12,7 +12,9 @@ Feature: Connect
     And I type the message "<Message>"
     And I click on the GIF button
     And I click on the giphy send button
-    Then I see a gif in the conversation view
+    And I see dialog page
+    Then I see new photo in the dialog
+    And I see the via giphy dotcom message
 
     Examples: 
       | Name      | Contact   | Message |
