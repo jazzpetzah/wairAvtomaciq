@@ -310,3 +310,48 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
+
+  @staging @id2368
+  Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given User <Name> change accent color to <Color>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact1>
+    And I swipe right on Dialog page
+    Then I dont see unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 1 of message to user <Name>
+    Then I see 1 unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 1 of message to user <Name>
+    Then I see 5 unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 8 of message to user <Name>
+    Then I see 10 unread message indicator in list for contact <Contact>
+
+    Examples: 
+      | Name      | Contact   | Contact1  | Color           |
+      | user1Name | user2Name | user3Name | StrongLimeGreen |
+
+  @staging @id2368
+  Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given User <Name> change accent color to <Color>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I tap on contact name <Contact1>
+    Then I dont see unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 1 of message to user <Name>
+    Then I see 1 unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 1 of message to user <Name>
+    Then I see 5 unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 8 of message to user <Name>
+    Then I see 10 unread message indicator in list for contact <Contact>
+
+    Examples: 
+      | Name      | Contact   | Contact1  | Color           |
+      | user1Name | user2Name | user3Name | StrongLimeGreen |

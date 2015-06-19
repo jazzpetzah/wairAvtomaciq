@@ -525,4 +525,41 @@ public class ContactListPageSteps {
 		Assert.assertTrue("Color is not changed.", colorIsChanged);
 	}
 
+	/**
+	 * Verify that relevant unread message indicator is seen in conversation
+	 * list
+	 * 
+	 * @step. ^I see (.*) unread message indicator in list for contact (.*)$
+	 * @param contact
+	 *            the missed call is from
+	 * @throws Exception
+	 */
+	@Then("^I see (.*) unread message indicator in list for contact (.*)$")
+	public void ISeeUnreadMessageIndicatorInListForContact(int numOfMessage,
+			String contact) throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		boolean unreadIconVisibility = getContactListPage()
+				.unreadMessageIndicatorIsVisible(numOfMessage, contact);
+		Assert.assertTrue("No unread message indicator is visible.",
+				unreadIconVisibility);
+	}
+
+	/**
+	 * Verify that unread icon is not shown next to contact
+	 * 
+	 * @step. ^I dont see unread message indicator in list for contact (.*)$
+	 * @param contact
+	 *            contact name
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I dont see unread message indicator in list for contact (.*)$")
+	public void IDontSeeUnreadIndicator(String contact) throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		boolean unreadIconVisibility = getContactListPage()
+				.unreadMessageIndicatorIsVisible(0, contact);
+		Assert.assertTrue("Unread message indicator is visible.",
+				unreadIconVisibility);
+	}
+
 }
