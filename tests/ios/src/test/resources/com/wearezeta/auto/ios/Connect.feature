@@ -220,7 +220,7 @@ Feature: Connect
     And I tap and hold on message input
     And I click on popup Paste item
     And I send the message
-    Then I check copied content from <Login>
+    Then I check copied content from <Name>
 
     Examples: 
       | Name      | Contact   |

@@ -485,7 +485,7 @@ public class ContactListPageSteps {
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		boolean missedCallSeen = getContactListPage()
-				.missedCallIndicatorIsVisible(true, contact);
+				.missedCallIndicatorIsVisible(contact);
 		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
 	}
 
@@ -504,7 +504,7 @@ public class ContactListPageSteps {
 			String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		boolean missedCallSeen = getContactListPage()
-				.missedCallIndicatorIsVisible(false, contact);
+				.missedCallIndicatorIsVisible(contact);
 		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
 
 	}

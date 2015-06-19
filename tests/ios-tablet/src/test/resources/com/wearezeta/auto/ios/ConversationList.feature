@@ -269,3 +269,44 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
+
+  @staging @id2368
+  Scenario Outline: Verify missed call indicator appearance in conversation list [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given User <Name> change accent color to <Color>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When <Contact> calls me using <CallBackend>
+    And I wait for 5 seconds
+    And <Contact> stops all calls to me
+    Then I see missed call indicator in list for contact <Contact>
+    When Contact <Contact> send number <Number> of message to user <Name>
+    Then I see missed call indicator in list for contact <Contact>
+    When Contact <Contact1> send number <Number> of message to user <Name>
+    Then I see missed call indicator got moved down in list for contact <Contact>
+
+    Examples: 
+      | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
+      | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
+
+  @staging @id2368
+  Scenario Outline: Verify missed call indicator appearance in conversation list [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given User <Name> change accent color to <Color>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When <Contact> calls me using <CallBackend>
+    And I wait for 5 seconds
+    And <Contact> stops all calls to me
+    Then I see missed call indicator in list for contact <Contact>
+    When Contact <Contact> send number <Number> of message to user <Name>
+    Then I see missed call indicator in list for contact <Contact>
+    When Contact <Contact1> send number <Number> of message to user <Name>
+    Then I see missed call indicator got moved down in list for contact <Contact>
+
+    Examples: 
+      | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
+      | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
