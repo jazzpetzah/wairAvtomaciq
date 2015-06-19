@@ -50,7 +50,7 @@ public class IOSPerformanceReportGenerator {
 	private static String buildNumber;
 	private static int usersCount;
 	private static ClientDeviceInfo deviceInfo;
-	private static String networkType = "Unknown";
+	private static String networkType = "WiFi";
 	private static String deviceModel;
 	private static String deviceOSVersion;
 
