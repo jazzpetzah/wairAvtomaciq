@@ -8,7 +8,7 @@ Feature: Sign In
     And I have entered login <Login>
     And I have entered password <Password>
     And I press Log in button
-    Then I see Contact list
+    Then I see Contact list with no contacts
 
     Examples: 
       | Login      | Password      | Name      |

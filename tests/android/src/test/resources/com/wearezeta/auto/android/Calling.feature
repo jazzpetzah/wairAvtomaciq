@@ -5,7 +5,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
@@ -22,7 +22,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I click the ignore call button
@@ -37,7 +37,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I minimize the application
     And <Contact> calls me using <CallBackend>
     Then I see the call lock screen
@@ -54,7 +54,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I lock the device
     And <Contact> calls me using <CallBackend>
     Then I see the call lock screen
@@ -71,7 +71,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
     And <Contact> calls me using <CallBackend>
@@ -102,7 +102,7 @@ Feature: Calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
     And <Contact> calls me using <CallBackend>
@@ -127,7 +127,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When <Contact1> calls me using <CallBackend>
     And I answer the call from the overlay bar
     And I see dialog page

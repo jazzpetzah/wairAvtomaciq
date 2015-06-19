@@ -54,7 +54,7 @@ Feature: Archive
       | Email      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @id1544
+  @bug @id1544
   Scenario Outline: Verify that Call event can unarchive muted conversation automatically
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

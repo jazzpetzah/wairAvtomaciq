@@ -15,7 +15,7 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
 
-	private static final int TIMEOUT_FOR_FIRST_LOAD_OF_PAGE = 15;
+	private static final int TIMEOUT_FOR_FIRST_LOAD_OF_PAGE = 25;
 
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(RegistrationPage.class

@@ -67,7 +67,7 @@ Feature: Search
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
     And I dismiss alert
-    And I swipe down contact list on iPad
+    And I open search by taping on it
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I dismiss alert
@@ -87,7 +87,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I dismiss alert
-    And I swipe down contact list on iPad
+    And I open search by taping on it
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
     And I dismiss alert

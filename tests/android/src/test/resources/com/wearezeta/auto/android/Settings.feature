@@ -4,7 +4,7 @@ Feature: Settings
   Scenario Outline: Open and Close settings page
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     When I tap on my avatar
     And I tap options button
     And I tap settings button
@@ -21,7 +21,7 @@ Feature: Settings
   Scenario Outline: Can not open Settings page when editing user name
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list
+    Given I see Contact list with no contacts
     When I tap on my avatar
     And I tap on my name
     And I tap options button
@@ -36,7 +36,7 @@ Feature: Settings
   Scenario Outline: Open Close About page from Settings page
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     When I tap on my avatar
     And I tap options button
     And I tap about button

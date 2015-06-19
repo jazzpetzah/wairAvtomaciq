@@ -5,7 +5,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
-    Given I see the Conversations list
+    Given I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I tap Search input
     And I see People Picker page
@@ -29,7 +29,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
-    Given I see the Conversations list
+    Given I see the Conversations list with no conversations
     And I wait until <Contact> exists in backend search results
     When I tap Search input
     And I see People Picker page
@@ -54,7 +54,7 @@ Feature: Connect
     Given <Contact> sent connection request to me
     Given I rotate UI to landscape
     Given I sign in using my email
-    Given I see the Conversations list
+    Given I see the Conversations list with conversation
     And I see the conversation <WaitingMess> in my conversations list
     When I tap the conversation <WaitingMess>
     And I see the Incoming connections page
@@ -72,7 +72,7 @@ Feature: Connect
     Given <Contact> sent connection request to me
     Given I rotate UI to portrait
     Given I sign in using my email
-    Given I see the Conversations list
+    Given I see the Conversations list with conversation
     And I see the conversation <WaitingMess> in my conversations list
     When I tap the conversation <WaitingMess>
     And I see the Incoming connections page
