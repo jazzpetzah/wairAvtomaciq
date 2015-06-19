@@ -383,11 +383,12 @@ Feature: Connect
       | Name      | Contact   | Message      |
       | user1Name | user2Name | Hello friend |
 
-  @regression @id720
+  @id720 @staging
   Scenario Outline: I do not want to be seen in the search results of someone I blocked
+    # moved to staging because of bug on backend
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given I sign in using my email or phone number
+    Given I sign in using my email
     Given I see Contact list with contacts
     When User <Contact> blocks user Myself
     And I wait <TimeoutSeconds> seconds until <Contact> does not exist in backend search results
