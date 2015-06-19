@@ -24,6 +24,7 @@ Feature: Settings
     Given I see Contact list with no contacts
     When I tap on my avatar
     And I tap on my name
+    And I see edit name field with my name
     And I tap options button
     And I tap about button
     Then I do not see About page
