@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
@@ -518,8 +519,22 @@ public class ContactListPage extends IOSPage {
 				2 * contact.getSize().height, 2 * contact.getSize().height);
 
 		if (numberOfMessages == 0) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadMessageIndicator0.png");
+			if (CommonUtils.getDeviceName(this.getClass()).equals("iPad Air")) {
+				if (getOrientation() == ScreenOrientation.LANDSCAPE) {
+					referenceImage = ImageUtil.readImageFromFile(IOSPage
+							.getImagesPath()
+							+ "unreadMessageIndicator0_iPad_landscape.png");
+				} else {
+					referenceImage = ImageUtil.readImageFromFile(IOSPage
+							.getImagesPath()
+							+ "unreadMessageIndicator0_iPad.png");
+				}
+
+			} else {
+				referenceImage = ImageUtil
+						.readImageFromFile(IOSPage.getImagesPath()
+								+ "unreadMessageIndicator0_iPhone.png");
+			}
 		} else if (numberOfMessages == 1) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "unreadMessageIndicator1.png");
