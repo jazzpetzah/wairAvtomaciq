@@ -214,6 +214,14 @@ public final class WebAppLocators {
 
 		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-minus')]";
+
+		public static final String xpathPictureFullscreen = "(//*[@data-uie-name='go-detail'])[last()]";
+
+		public static final String xpathPictureIsFullscreen = "//div[contains(@class, 'modal-show')]";
+
+		public static final String xpathXButton = "//div[contains(@class, 'detail-view-close-button')]//*[@data-uie-name='do-close-detail-view']";
+
+		public static final String idBlackBorder = "detail-view";
 	}
 
 	public static final class ConnectToPage {
