@@ -190,8 +190,8 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | ActualMessage                                           | ExpectedMessage                   |
       | user1Email | user1Password | user1Name | user2Name | ('LF' * 10)('a' * 100)('LF' * 10)('b' * 100)('LF' * 10) | ('a' * 100)('LF' * 10)('b' * 100) |
 
-  @staging @id1624 @torun
-  Scenario Outline: Send picture to contact in 1:1
+  @staging @id1624
+  Scenario Outline: Verify you can see conversation images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
