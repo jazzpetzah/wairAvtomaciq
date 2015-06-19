@@ -50,7 +50,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id311 @noAcceptAlert
+  @regression @id311 @noAcceptAlert
   Scenario Outline: Verify uploading address book to the server
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -151,7 +151,7 @@ Feature: Search
       | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
       | user1Name | user2Name       | user2Email   | 141               | T           | BrightOrange |
 
-  @staging @id763
+  @regression @id763
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users

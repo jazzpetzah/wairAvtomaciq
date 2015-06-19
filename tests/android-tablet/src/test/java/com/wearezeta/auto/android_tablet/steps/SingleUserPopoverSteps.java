@@ -152,18 +152,11 @@ public class SingleUserPopoverSteps {
 	 * 
 	 * @step. ^I tap in the center of [Ss]ingle user popover$
 	 * 
-	 * @param mode
-	 *            either "in the center" or "outside"
-	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap (in the center|outside) of [Ss]ingle user popover$")
-	public void ITapInTheCenterOfPopover(String mode) throws Exception {
-		if (mode.equals("outside")) {
-			getSingleUserPopover().tapOutside();
-		} else {
-			getSingleUserPopover().tapInTheCenter();
-		}
+	@When("^I tap in the center of [Ss]ingle user popover$")
+	public void ITapInTheCenterOfPopover() throws Exception {
+		getSingleUserPopover().tapInTheCenter();
 	}
 
 	/**
