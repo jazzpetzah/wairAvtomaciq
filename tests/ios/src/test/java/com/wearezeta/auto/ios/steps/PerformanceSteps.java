@@ -186,20 +186,21 @@ public class PerformanceSteps {
 				PERF_MON_STOP_TIMEOUT);
 	}
 
-	private void exportTraceToCSV() throws IOException, ScriptException {
-		String script = String.format(CommonUtils
-				.readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
-
-		ScriptEngineManager mgr = new ScriptEngineManager();
-		ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
-		log.debug("Script engine: " + engine);
-		log.debug("Script to execute: " + script);
-		try {
-			engine.eval(script);
-		} catch (Exception e) {
-			log.debug(e.getMessage());
-			e.printStackTrace();
-		}
+	private void exportTraceToCSV() throws Exception {
+		/*
+		 * String script = String.format(CommonUtils
+		 * .readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
+		 * 
+		 * ScriptEngineManager mgr = new ScriptEngineManager(); ScriptEngine
+		 * engine = mgr.getEngineByName("AppleScriptEngine");
+		 * log.debug("Script engine: " + engine);
+		 * log.debug("Script to execute: " + script); try { engine.eval(script);
+		 * } catch (Exception e) { log.debug(e.getMessage());
+		 * e.printStackTrace(); }
+		 */
+		CommonUtils
+				.executeOsXCommand(new String[] { "bash", "-c",
+						"osascript /Project/iOS_Performance_Reports/export_data.scpt" });
 	}
 
 	/**
@@ -223,6 +224,7 @@ public class PerformanceSteps {
 	public void CloseInstruments() {
 		try {
 			IStopPerfMon();
-		} catch (Exception e) { }
+		} catch (Exception e) {
+		}
 	}
 }
