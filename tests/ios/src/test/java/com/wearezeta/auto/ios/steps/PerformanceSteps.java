@@ -9,6 +9,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
@@ -20,12 +21,16 @@ import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.common.process.AsyncProcess;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
+	
+	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
+	
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
 	private static final int PERF_MON_INIT_DELAY = 5000; // milliseconds
@@ -184,6 +189,8 @@ public class PerformanceSteps {
 
 		ScriptEngineManager mgr = new ScriptEngineManager();
 		ScriptEngine engine = mgr.getEngineByName("AppleScript");
+		log.debug("Script engine: " + engine);
+		log.debug("Script to execute: " + script);
 		engine.eval(script);
 	}
 
