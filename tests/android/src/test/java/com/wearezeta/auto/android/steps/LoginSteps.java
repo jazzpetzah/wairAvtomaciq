@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.steps;
 import java.util.Random;
 
 import org.junit.Assert;
+import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.registration.AddPhoneNumberPage;
@@ -61,7 +62,14 @@ public class LoginSteps {
 		final ClientUser self = usrMgr.getSelfUserOrThrowError();
 		assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
 		getWelcomePage().tapIHaveAnAccount();
-		getEmailSignInPage().setLogin(self.getEmail());
+		try {
+			getEmailSignInPage().setLogin(self.getEmail());
+		} catch (NoSuchElementException e) {
+			// FIXME: try again because sometimes tapping "I have account"
+			// button fails without any reason
+			getWelcomePage().tapIHaveAnAccount();
+			getEmailSignInPage().setLogin(self.getEmail());
+		}
 		getEmailSignInPage().setPassword(self.getPassword());
 		final AndroidPage returnedPage = getEmailSignInPage().logIn();
 		// We want to skip the "AddPhoneNumber page if it is presented to us
