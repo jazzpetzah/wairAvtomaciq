@@ -506,6 +506,45 @@ public class ContactListPage extends IOSPage {
 		return true;
 	}
 
+	public boolean unreadMessageIndicatorIsVisible(int numberOfMessages,
+			String conversation) throws Exception {
+		BufferedImage unreadMessageIndicator = null;
+		BufferedImage referenceImage = null;
+		double score = 0;
+		WebElement contact = findCellInContactList(conversation);
+
+		unreadMessageIndicator = getElementScreenshot(contact).orElseThrow(
+				IllegalStateException::new).getSubimage(0, 0,
+				2 * contact.getSize().height, 2 * contact.getSize().height);
+
+		if (numberOfMessages == 0) {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "unreadMessageIndicator0.png");
+		} else if (numberOfMessages == 1) {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "unreadMessageIndicator1.png");
+		} else if (numberOfMessages > 1 && numberOfMessages < 10) {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "unreadMessageIndicator5.png");
+		} else if (numberOfMessages >= 10) {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "unreadMessageIndicator10.png");
+		}
+
+		score = ImageUtil.getOverlapScore(referenceImage,
+				unreadMessageIndicator,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+
+		if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
+			log.debug("Overlap Score is " + score
+					+ ". And minimal expected is "
+					+ MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE);
+			return false;
+
+		}
+		return true;
+	}
+
 	public boolean changeOfAccentColorIsVisible(String name) throws Exception {
 
 		return false; // Needs refactoring, UI have changed

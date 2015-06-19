@@ -331,7 +331,7 @@ public class CommonIOSSteps {
 	public void UserSendNumberOfMessageToConversation(
 			String msgFromUserNameAlias, int numberOfMessages,
 			String dstUserNameAlias) throws Exception {
-		for (int i = 0; i <= numberOfMessages; i++) {
+		for (int i = 1; i <= numberOfMessages; i++) {
 			commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
 					dstUserNameAlias, CommonUtils.generateRandomString(10));
 		}
