@@ -225,7 +225,7 @@ Feature: Conversation View
     Then I see the Single user popover
     When I tap in the center of Single user popover
     Then I see the Single user popover
-    When I tap outside of Single user popover
+    When I tap the text input in the conversation view
     Then I do not see the Single user popover
 
     Examples: 
