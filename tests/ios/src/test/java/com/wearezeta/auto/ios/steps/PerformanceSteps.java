@@ -197,6 +197,8 @@ public class PerformanceSteps {
 		try {
 			engine.eval(script);
 		} catch (Exception e) {
+			log.debug(e.getMessage());
+			e.printStackTrace();
 		}
 	}
 
