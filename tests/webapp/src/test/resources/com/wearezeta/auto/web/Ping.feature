@@ -59,5 +59,5 @@ Feature: Ping
     Then I see ping message <PING>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  |Login1      | Password1     | Contact2  | Contact3  | ChatName             | PING   | Message |
-      | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password | user3Name | user4Name | SendMessageGroupChat | pinged | Message |
+      | Login      | Password      | Name      | Contact1  |Login1      | Password1     | Contact2  | ChatName             | PING   | Message |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password | user3Name | SendMessageGroupChat | pinged | Message |
