@@ -148,6 +148,7 @@ public class DriverUtils {
 					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class)
+					.ignoring(StaleElementReferenceException.class)
 					.ignoring(InvalidElementStateException.class);
 			return wait.until(drv -> {
 				return (drv.findElements(locator).size() > 0);
