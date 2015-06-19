@@ -492,17 +492,17 @@ public class IOSPerformanceReportGenerator {
 				networkType = deviceInfo.isWifiEnabled() ? "Wifi" : deviceInfo
 						.getGsmNetworkType();
 			} catch (NullPointerException e) {
-				networkType = "Unknown";
+				networkType = "WiFi";
 			}
 			try {
 				deviceModel = deviceInfo.getDeviceName();
 			} catch (NullPointerException e) {
-				deviceModel = "Unknown";
+				deviceModel = "WiFi";
 			}
 			try {
 				deviceOSVersion = deviceInfo.getOperatingSystemBuild();
 			} catch (NullPointerException e) {
-				deviceOSVersion = "Unknown";
+				deviceOSVersion = "WiFi";
 			}
 		} catch (Exception e) {
 		}
