@@ -627,7 +627,7 @@ public class DialogPageSteps {
 	 */
 	@Then("^I check copied content from (.*)$")
 	public void ICheckCopiedContentFrom(String mail) throws Exception {
-		mail = usrMgr.findUserByEmailOrEmailAlias(mail).getEmail();
+		mail = usrMgr.findUserByNameOrNameAlias(mail).getEmail();
 		final String finalString = String.format(sendInviteMailContent, mail);
 		String lastMessage = getDialogPage().getLastMessageFromDialog();
 		boolean messageContainsContent = lastMessage.contains(finalString);
