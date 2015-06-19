@@ -635,7 +635,6 @@ public class IOSPerformanceReportGenerator {
 			throws IOException {
 		LinkedHashMap<String, String[]> map = new LinkedHashMap<String, String[]>();
 
-		networkType = "Unknown";
 		List<String[]> savedData = new ArrayList<>();
 		String resultsPath = String.format("%s%s%s_%s_%s",
 				IOSPerformanceReportGenerator.REPORT_DATA_PATH,
