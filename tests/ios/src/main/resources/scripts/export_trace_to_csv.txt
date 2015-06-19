@@ -21,3 +21,6 @@ tell application "System Events" to tell process "Instruments"
 		click button "Save"
 	end tell
 end tell
+tell application "Instruments"
+	quit
+end tell
