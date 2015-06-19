@@ -28,7 +28,7 @@ public class ContactListPage extends IOSPage {
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
 
-	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE = 0.80;
+	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE = 0.90;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
@@ -104,8 +104,8 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public PeoplePickerPage openSearch() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(getDriver(), 
-				By.name(IOSLocators.ContactListPage.nameOpenStartUI));	
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.ContactListPage.nameOpenStartUI));
 		openStartUI.click();
 		return new PeoplePickerPage(getLazyDriver());
 	}
@@ -207,12 +207,10 @@ public class ContactListPage extends IOSPage {
 		WebElement contact = null;
 		for (int i = 0; i < 5; i++) {
 			for (WebElement listCell : contactListCells) {
-				for (WebElement cellText : contactListNames) {
-					if (cellText.getText().equals(name)) {
-						contact = listCell;
-						flag = false;
-						break;
-					}
+				if (listCell.getAttribute("name").equals(name)) {
+					contact = listCell;
+					flag = false;
+					break;
 				}
 			}
 			if (flag) {
@@ -481,44 +479,28 @@ public class ContactListPage extends IOSPage {
 				.orElseThrow(IllegalStateException::new);
 	}
 
-	public boolean missedCallIndicatorIsVisible(boolean isFirstInList,
-			String conversation) throws Exception {
+	public boolean missedCallIndicatorIsVisible(String conversation)
+			throws Exception {
 		BufferedImage missedCallIndicator = null;
 		BufferedImage referenceImage = null;
 		double score = 0;
 		WebElement contact = findCellInContactList(conversation);
-		if (isFirstInList) {
-			missedCallIndicator = getScreenshotByCoordinates(
-					contact.getLocation().x,
-					contact.getLocation().y
-							+ contactListContainer.getLocation().y / 2,
-					contact.getSize().width / 4, contact.getSize().height * 2)
-					.orElseThrow(IllegalStateException::new);
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "missedCallIndicator.png");
 
-			score = ImageUtil.getOverlapScore(referenceImage,
-					missedCallIndicator,
-					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-			if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
-				return false;
-			}
-		} else {
-			missedCallIndicator = getScreenshotByCoordinates(
-					contact.getLocation().x,
-					contact.getLocation().y
-							+ contactListContainer.getLocation().y * 2,
-					contact.getSize().width / 3, contact.getSize().height)
-					.orElseThrow(IllegalStateException::new);
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "missedCallIndicator2.png");
+		missedCallIndicator = getElementScreenshot(contact).orElseThrow(
+				IllegalStateException::new).getSubimage(0, 0,
+				2 * contact.getSize().height, 2 * contact.getSize().height);
 
-			score = ImageUtil.getOverlapScore(referenceImage,
-					missedCallIndicator,
-					ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-			if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
-				return false;
-			}
+		referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+				+ "missedCallIndicator.png");
+
+		score = ImageUtil.getOverlapScore(referenceImage, missedCallIndicator,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+
+		if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
+			log.debug("Overlap Score is " + score
+					+ ". And minimal expected is "
+					+ MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE);
+			return false;
 
 		}
 		return true;
