@@ -191,7 +191,9 @@ public class PerformanceSteps {
 		ScriptEngine engine = mgr.getEngineByName("AppleScript");
 		log.debug("Script engine: " + engine);
 		log.debug("Script to execute: " + script);
-		engine.eval(script);
+		try {
+			engine.eval(script);
+		} catch (Exception e) { }
 	}
 
 	/**
