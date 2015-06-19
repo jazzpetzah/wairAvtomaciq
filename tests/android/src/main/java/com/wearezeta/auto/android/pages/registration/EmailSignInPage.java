@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.pages.registration;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -13,7 +12,6 @@ import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.PeoplePickerPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
 
 /**
  * This page represents the email sign in screen, which you can reach from the
@@ -24,8 +22,6 @@ import com.wearezeta.auto.common.log.ZetaLogger;
  *
  */
 public class EmailSignInPage extends AndroidPage {
-	private static final Logger log = ZetaLogger.getLog(EmailSignInPage.class
-			.getSimpleName());
 
 	private static final Function<String, String> xpathLoginMessageByText = text -> String
 			.format("//*[@id='message' and @value='%s']", text);
@@ -51,12 +47,7 @@ public class EmailSignInPage extends AndroidPage {
 	}
 
 	public void setLogin(String login) throws Exception {
-		try {
-			loginInput.sendKeys(login);
-		} catch (Exception e) {
-			log.debug(this.getDriver().getPageSource());
-			throw e;
-		}
+		loginInput.sendKeys(login);
 	}
 
 	public void setPassword(String password) throws Exception {

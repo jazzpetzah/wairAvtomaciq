@@ -26,6 +26,8 @@ public class ContactListPage extends AndroidPage {
 	public static final Function<Integer, String> xpathContactByIndex = index -> String
 			.format("(//*[@id='tv_conv_list_topic'])[%s]", index);
 
+	public static final String xpathLastContact = "(//*[@id='tv_conv_list_topic'])[last()]";
+
 	public static final Function<String, String> xpathMutedIconByConvoName = convoName -> String
 			.format("%s/parent::*//*[@id='tv_conv_list_voice_muted']",
 					xpathContactByName.apply(convoName));
@@ -303,7 +305,8 @@ public class ContactListPage extends AndroidPage {
 				return true;
 			}
 		}
-		return false;
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathLastContact), 3);
 	}
 
 	public boolean isNoConversationsVisible() throws Exception {
