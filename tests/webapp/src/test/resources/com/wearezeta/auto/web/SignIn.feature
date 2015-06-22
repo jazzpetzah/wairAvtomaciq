@@ -45,7 +45,21 @@ Feature: Sign In
     And I see Contacts Upload dialog
     And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
-    
-    Examples:
+
+    Examples: 
       | Name      |
       | user1Name |
+
+  @staging @id2716
+  Scenario Outline: Verify you see correct error message when sign in with a phone number with incorrect code
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    When I switch to phone number sign in page
+    When I sign in using phone number of user <Name>
+    And I click on forward button on phone number sign in
+    And I enter wrong phone verification code for user <Name>
+    Then I see invalid phone code error message saying <Error>
+
+    Examples: 
+      | Name      | Error        |
+      | user1Name | INVALID CODE |

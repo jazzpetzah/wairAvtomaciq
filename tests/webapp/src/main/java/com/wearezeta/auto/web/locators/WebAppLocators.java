@@ -379,4 +379,8 @@ public final class WebAppLocators {
 				.format("%s//div[contains(@class, 'warning-bar-message')]//a[text()='%s']",
 						xpathRootDiv, name);
 	}
+
+	public static final class PhoneNumberVerificationPage {
+		public static final String cssErrorMessage = "#form-login-phone-code [data-uie-name='status-error']";
+	}
 }
