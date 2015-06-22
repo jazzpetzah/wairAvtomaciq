@@ -32,3 +32,20 @@ Feature: Sign In
       | Email      | Password      | Error                                      |
       | user1Email |               | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
       | user1Email | wrongPassword | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
+
+  @staging @id2714
+  Scenario Outline: Verify you can sign in with a phone number with correct credentials
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    When I switch to phone number sign in page
+    When I sign in using phone number of user <Name>
+    And I click on forward button on phone number sign in
+    And I enter phone verification code for user <Name>
+    Then I am signed in properly
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
+    And I see my avatar on top of Contact list
+    
+    Examples:
+      | Name      |
+      | user1Name |

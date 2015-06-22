@@ -207,4 +207,10 @@ public class LoginPageSteps {
 						loginErrorText, expectedError), loginErrorText
 						.equals(expectedError));
 	}
+
+	@When("^I switch to phone number sign in page$")
+	public void i_switch_to_phone_number_sign_in_page() throws Throwable {
+		PagesCollection.phoneNumberLoginPage = PagesCollection.loginPage
+				.switchToPhoneNumberLoginPage();
+	}
 }

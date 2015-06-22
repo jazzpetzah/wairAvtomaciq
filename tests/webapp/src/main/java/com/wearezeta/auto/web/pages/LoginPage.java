@@ -28,6 +28,9 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathSignInButton)
 	private WebElement signInButton;
 
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssPhoneSignInButton)
+	private WebElement phoneSignInButton;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathChangePasswordButton)
 	private WebElement changePasswordButton;
 
@@ -134,4 +137,8 @@ public class LoginPage extends WebPage {
 		return DriverUtils.isElementPresentAndDisplayed(redDotOnPasswordField);
 	}
 
+	public PhoneNumberLoginPage switchToPhoneNumberLoginPage() throws Exception {
+		phoneSignInButton.click();
+		return new PhoneNumberLoginPage(this.getLazyDriver());
+	}
 }
