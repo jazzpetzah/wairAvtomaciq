@@ -183,7 +183,7 @@ public class ContactListPageSteps {
 	@When("^I swipe right on a (.*)$")
 	public void ISwipeRightOnContact(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		getContactListPage().swipeRightOnContact(1500, contact);
+		getContactListPage().swipeRightOnContact(1000, contact);
 	}
 
 	@When("^I click mute conversation$")
