@@ -105,6 +105,10 @@ public class CommonWebAppSteps {
 		capabilities.setCapability(SafariOptions.CAPABILITY, options);
 	}
 
+	private static void setCustomIEProfile(DesiredCapabilities capabilities) {
+		capabilities.setCapability("ie.ensureCleanSession", true);
+	}
+
 	private static void setExtendedLoggingLevel(
 			DesiredCapabilities capabilities, String loggingLevelName) {
 		final LoggingPreferences logs = new LoggingPreferences();
@@ -179,13 +183,6 @@ public class CommonWebAppSteps {
 				} else {
 					lazyWebDriver.manage().window().maximize();
 				}
-				// Workaround: IE does not open with a new profile so we delete
-				// local and session storage manually
-				if (WebAppExecutionContext.getBrowser() == Browser.InternetExplorer) {
-					lazyWebDriver.get(url);
-					lazyWebDriver.executeScript("localStorage.clear();");
-					lazyWebDriver.executeScript("sessionStorage.clear();");
-				}
 				return lazyWebDriver;
 			}
 		};
@@ -236,6 +233,7 @@ public class CommonWebAppSteps {
 			break;
 		case InternetExplorer:
 			capabilities = DesiredCapabilities.internetExplorer();
+			setCustomIEProfile(capabilities);
 			break;
 		default:
 			throw new NotImplementedException(
