@@ -7,7 +7,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
-    And I archive conversation <Contact>
+    And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
     And I long swipe right to archive conversation <Contact2>
     Then I dont see conversation <Contact2> in contact list
@@ -27,7 +27,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
-    And I archive conversation <Contact>
+    And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
     And I long swipe right to archive conversation <Contact2>
     Then I dont see conversation <Contact2> in contact list
