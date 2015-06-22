@@ -12,7 +12,7 @@ Feature: Calling
     And I press call button
     Then I see mute call, end call buttons
     And I see calling to contact <Contact> message
-    When I end started call
+    When I end started call on iPad
     Then I dont see calling page
 
     Examples: 
@@ -32,7 +32,7 @@ Feature: Calling
     And I press call button
     Then I see mute call, end call buttons
     And I see calling to contact <Contact> message
-    When I end started call
+    When I end started call on iPad
     Then I dont see calling page
 
     Examples: 
