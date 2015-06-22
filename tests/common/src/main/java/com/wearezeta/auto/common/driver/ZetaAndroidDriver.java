@@ -42,9 +42,12 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 
 	private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
 			.getSimpleName());
-
+	public static final String ADB_PREFIX = "";
+//	public static final String ADB_PREFIX = "/Applications/android-sdk/platform-tools/";
+	
 	private SessionHelper sessionHelper;
 	private RemoteTouchScreen touch;
+	
 
 	private enum SurfaceOrientation {
 		ROTATION_0(0), ROTATION_90(1), ROTATION_180(2), ROTATION_270(3);
@@ -106,7 +109,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			int durationMilliseconds) {
 		try {
 			final String adbCommandsChain = String.format(
-					"adb shell input swipe %d %d %d %d %d", startx, starty,
+					ADB_PREFIX + "adb shell input swipe %d %d %d %d %d", startx, starty,
 					endx, endy, durationMilliseconds);
 			final int exitCode = Runtime.getRuntime()
 					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
@@ -115,7 +118,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 				// Swipe with timeout might not be supported by old Android API
 				// (<= 4.2)
 				final String adbCommandsChainLimited = String.format(
-						"adb shell input swipe %d %d %d %d", startx, starty,
+						ADB_PREFIX + "adb shell input swipe %d %d %d %d", startx, starty,
 						endx, endy);
 				Runtime.getRuntime()
 						.exec(new String[] { "/bin/bash", "-c",
@@ -175,8 +178,8 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					.format("/sdcard/%s.png", CommonUtils.generateGUID()
 							.replace("-", "").substring(0, 8));
 			final String adbCommandsChain = String.format(
-					"adb shell screencap -p %1$s; " + "adb pull %1$s %2$s; "
-							+ "adb shell rm %1$s", pathOnPhone,
+					ADB_PREFIX + "adb shell screencap -p %1$s; " + ADB_PREFIX + "adb pull %1$s %2$s; "
+							+ ADB_PREFIX + "adb shell rm %1$s", pathOnPhone,
 					tmpScreenshot.getCanonicalPath());
 			Runtime.getRuntime()
 					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
@@ -268,7 +271,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 
 	private static String getAdbOutput(String cmdLine) throws Exception {
 		String result = "";
-		String adbCommand = "adb " + cmdLine;
+		String adbCommand = ADB_PREFIX + "adb " + cmdLine;
 		final Process process = Runtime.getRuntime().exec(
 				new String[] { "/bin/bash", "-c", adbCommand });
 		if (process == null) {

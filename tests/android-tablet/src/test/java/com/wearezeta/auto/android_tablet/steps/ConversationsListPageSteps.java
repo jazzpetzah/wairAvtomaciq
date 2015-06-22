@@ -48,16 +48,15 @@ public class ConversationsListPageSteps {
 	@Given("^I see (?:the |\\s*)[Cc]onversations list with (no )?conversations?$")
 	public void ISeeConversationsListPlusItem(String shouldBeNoConversations)
 			throws Exception {
+		getConversationsListPage().verifyConversationsListIsLoaded();
 		if (shouldBeNoConversations == null) {
 			Assert.assertTrue(
 					"No conversations are visible in the conversations list, but some are expected",
-					getConversationsListPage()
-							.isAnyConversationVisible());
+					getConversationsListPage().isAnyConversationVisible());
 		} else {
-			Assert.assertFalse(
+			Assert.assertTrue(
 					"Some conversations are visible in the conversations list, but zero is expected",
-					getConversationsListPage()
-							.isAnyConversationVisible());
+					getConversationsListPage().isNoConversationsVisible());
 		}
 	}
 

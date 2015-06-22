@@ -127,4 +127,8 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		return getContactListPage().isAnyConversationVisible();
 	}
 
+	public boolean isNoConversationsVisible() throws Exception {
+		return getContactListPage().isNoConversationsVisible();
+	}
+
 }

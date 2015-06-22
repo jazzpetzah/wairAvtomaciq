@@ -26,6 +26,8 @@ public class ContactListPage extends AndroidPage {
 	public static final Function<Integer, String> xpathContactByIndex = index -> String
 			.format("(//*[@id='tv_conv_list_topic'])[%s]", index);
 
+	public static final String xpathLastContact = "(//*[@id='tv_conv_list_topic'])[last()]";
+
 	public static final Function<String, String> xpathMutedIconByConvoName = convoName -> String
 			.format("%s/parent::*//*[@id='tv_conv_list_voice_muted']",
 					xpathContactByName.apply(convoName));
@@ -294,16 +296,26 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isAnyConversationVisible() throws Exception {
-		for (int i = 1; i <= contactListNames.size(); i++) {
+		for (int i = contactListNames.size(); i >= 1; i--) {
 			final By locator = By.xpath(xpathContactByIndex.apply(i));
-			if (DriverUtils
-					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
+			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator)) {
 				assert waitUntilConversationsInfoIsLoaded() : String
 						.format("Not all conversations list items were loaded within %s seconds",
 								CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS);
 				return true;
 			}
 		}
-		return false;
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathLastContact), 3);
+	}
+
+	public boolean isNoConversationsVisible() throws Exception {
+		for (int i = contactListNames.size(); i >= 1; i--) {
+			final By locator = By.xpath(xpathContactByIndex.apply(i));
+			if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), locator)) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
