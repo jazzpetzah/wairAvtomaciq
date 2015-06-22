@@ -35,7 +35,7 @@ Feature: Ping
       | Login      | Password      | Name      | Contact   | PING   | PING_AGAIN   |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again |
 
-  @staging @id1709
+  @smoke @id1709
   Scenario Outline: Verify you can see Ping on the other side (group conversation)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
