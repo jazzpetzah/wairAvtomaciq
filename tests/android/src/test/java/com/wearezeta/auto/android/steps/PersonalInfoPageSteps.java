@@ -232,16 +232,18 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
-	 * Checks that self name edit field is showed
+	 * Checks that self name edit field containing user self name is visible
 	 * 
-	 * @step. ^I see edit name field$
+	 * @step. ^I see edit name field with my name$
 	 *
 	 * @throws Exception
 	 */
-	@Then("^I see edit name field$")
+	@Then("^I see edit name field with my name$")
 	public void ThenISeeEditNameField() throws Exception {
+		final ClientUser self = usrMgr.getSelfUserOrThrowError();
 		Assert.assertTrue("Name edit field is not visible",
-				getPersonalInfoPage().waitUntilNameEditIsVisible());
+				getPersonalInfoPage()
+						.waitUntilNameEditIsVisible(self.getName()));
 	}
 
 	/**

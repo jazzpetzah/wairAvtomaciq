@@ -66,15 +66,10 @@ public class CallPageSteps {
 	 */
 	@When("^I see mute call, end call buttons$")
 	public void ISeeCallingPageButtonsOnIpad() throws Exception {
-		// if (PagesCollection.callPage instanceof IncomingCallPage) {
-		// PagesCollection.callPage = (CallPage) PagesCollection.loginPage
-		// .instantiatePage(StartedCallPage.class);
-		// }
-
 		Assert.assertTrue("End call button is not visible",
-				(getStartedCallPage().isEndCallVisible()));
+				(getStartedCallPage().isIPadEndCallVisible()));
 		Assert.assertTrue("Mute call button is not visible",
-				(getStartedCallPage().isMuteCallVisible()));
+				(getStartedCallPage().isIPadMuteCallVisible()));
 	}
 
 	/**
@@ -89,6 +84,18 @@ public class CallPageSteps {
 	}
 
 	/**
+	 * Click on end call button (step for iPad. Will be removed once buttons
+	 * will get names)
+	 * 
+	 * @step. ^I end started call on iPad$
+	 * @throws Exception
+	 */
+	@When("^I end started call on iPad$")
+	public void IEndStartedCallIPad() throws Exception {
+		getStartedCallPage().clickIPadEndCallButton();
+	}
+
+	/**
 	 * Verify that calling page is not visible
 	 * 
 	 * @step. ^I dont see calling page$
@@ -96,7 +103,8 @@ public class CallPageSteps {
 	 */
 	@When("^I dont see calling page$")
 	public void IDontSeeCallPage() throws Exception {
-		Assert.assertFalse(getStartedCallPage().isCallingMessageVisible());
+		Assert.assertFalse("Calling bar is visible", getStartedCallPage()
+				.isCallingMessageVisible());
 	}
 
 	/**

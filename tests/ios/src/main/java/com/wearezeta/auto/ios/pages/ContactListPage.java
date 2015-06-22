@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.*;
@@ -494,6 +495,59 @@ public class ContactListPage extends IOSPage {
 				+ "missedCallIndicator.png");
 
 		score = ImageUtil.getOverlapScore(referenceImage, missedCallIndicator,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+
+		if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
+			log.debug("Overlap Score is " + score
+					+ ". And minimal expected is "
+					+ MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE);
+			return false;
+
+		}
+		return true;
+	}
+
+	public boolean unreadMessageIndicatorIsVisible(int numberOfMessages,
+			String conversation) throws Exception {
+		BufferedImage unreadMessageIndicator = null;
+		BufferedImage referenceImage = null;
+		double score = 0;
+		WebElement contact = findCellInContactList(conversation);
+
+		unreadMessageIndicator = getElementScreenshot(contact).orElseThrow(
+				IllegalStateException::new).getSubimage(0, 0,
+				2 * contact.getSize().height, 2 * contact.getSize().height);
+
+		if (numberOfMessages == 0) {
+			if (CommonUtils.getDeviceName(this.getClass()).equals("iPad Air")) {
+				if (getOrientation() == ScreenOrientation.LANDSCAPE) {
+					referenceImage = ImageUtil.readImageFromFile(IOSPage
+							.getImagesPath()
+							+ "unreadMessageIndicator0_iPad_landscape.png");
+				} else {
+					referenceImage = ImageUtil.readImageFromFile(IOSPage
+							.getImagesPath()
+							+ "unreadMessageIndicator0_iPad.png");
+				}
+
+			} else {
+				referenceImage = ImageUtil
+						.readImageFromFile(IOSPage.getImagesPath()
+								+ "unreadMessageIndicator0_iPhone.png");
+			}
+		} else if (numberOfMessages == 1) {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "unreadMessageIndicator1.png");
+		} else if (numberOfMessages > 1 && numberOfMessages < 10) {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "unreadMessageIndicator5.png");
+		} else if (numberOfMessages >= 10) {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "unreadMessageIndicator10.png");
+		}
+
+		score = ImageUtil.getOverlapScore(referenceImage,
+				unreadMessageIndicator,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 
 		if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {

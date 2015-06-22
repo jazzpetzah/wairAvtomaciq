@@ -42,7 +42,7 @@ Feature: Self Profile
     When I tap on my avatar
     And I see personal info page
     And I tap on my name
-    Then I see edit name field
+    Then I see edit name field with my name
     When I clear name field 
     And I change my name to <NewName>
     Then I see my new name <NewName>
