@@ -19,12 +19,18 @@ public class StartedCallPage extends CallPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathEndCallButton)
 	private WebElement endCallButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathiPadEndCallButton)
+	private WebElement iPadEndCallButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathSpeakersButton)
 	private WebElement speakersButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathMuteCallButton)
 	private WebElement muteCallButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathiPadMuteCallButton)
+	private WebElement iPadMuteCallButton;
 
 	public boolean isCallingMessageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -60,6 +66,10 @@ public class StartedCallPage extends CallPage {
 	public boolean isEndCallVisible() {
 		return endCallButton.isDisplayed();
 	}
+	
+	public boolean isIPadEndCallVisible() {
+		return iPadEndCallButton.isDisplayed();
+	}
 
 	public boolean isSpeakersVisible() {
 		return speakersButton.isDisplayed();
@@ -68,9 +78,18 @@ public class StartedCallPage extends CallPage {
 	public boolean isMuteCallVisible() {
 		return muteCallButton.isDisplayed();
 	}
+	
+	public boolean isIPadMuteCallVisible() {
+		return iPadMuteCallButton.isDisplayed();
+	}
 
 	public void clickEndCallButton() {
 		endCallButton.click();
 	}
+	
+	public void clickIPadEndCallButton() {
+		iPadEndCallButton.click();
+	}
+
 
 }

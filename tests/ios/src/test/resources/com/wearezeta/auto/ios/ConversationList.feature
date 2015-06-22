@@ -35,25 +35,29 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | Contact2 |
       | user1Name | user2Name | user3Name|
-
-  @regression @id1075 @id2153
-  Scenario Outline: Verify messages are marked as read with disappearing unread dot
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
-    Given User <Contact> change name to <NewName>
+      
+  @staging @id2153 @id1075
+  Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
     Given User <Name> change accent color to <Color>
-    Given Contact <Contact> send number <Number2> of message to user <Name>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
-    And I see dialog page
     And I swipe right on Dialog page
-    Then I see change of state for first conversation cell
+    And I tap on contact name <Contact1>
+    And I swipe right on Dialog page
+    Then I dont see unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 1 of message to user <Name>
+    Then I see 1 unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 1 of message to user <Name>
+    Then I see 5 unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 8 of message to user <Name>
+    Then I see 10 unread message indicator in list for contact <Contact>
 
     Examples: 
-      | Name      | Contact   | NewName    | Color        |Number2 |
-      | user1Name | user2Name | UNREAD DOT | BrightYellow | 2 	    |
+      | Name      | Contact   | Contact1  | Color           |
+      | user1Name | user2Name | user3Name | StrongLimeGreen |
 
   @regression @id2040
   Scenario Outline: Verify archive a group conversation

@@ -25,6 +25,8 @@ public final class WebAppLocators {
 
 		public static final String xpathSignInButton = "//*[@data-uie-name='do-sign-in']";
 
+		public static final String cssPhoneSignInButton = "[data-uie-name='go-phone-sign-in']";
+
 		public static final String xpathSwitchToRegisterButtons = "//*[@data-uie-name='go-register']";
 
 		public static final String xpathChangePasswordButton = "//*[@data-uie-name='go-forgot-password']";
@@ -214,6 +216,14 @@ public final class WebAppLocators {
 
 		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-minus')]";
+
+		public static final String xpathPictureFullscreen = "(//*[@data-uie-name='go-detail'])[last()]";
+
+		public static final String xpathPictureIsFullscreen = "//div[contains(@class, 'modal-show')]";
+
+		public static final String xpathXButton = "//div[contains(@class, 'detail-view-close-button')]//*[@data-uie-name='do-close-detail-view']";
+
+		public static final String idBlackBorder = "detail-view";
 	}
 
 	public static final class ConnectToPage {
@@ -368,5 +378,9 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathLinkByCaption = (name) -> String
 				.format("%s//div[contains(@class, 'warning-bar-message')]//a[text()='%s']",
 						xpathRootDiv, name);
+	}
+
+	public static final class PhoneNumberVerificationPage {
+		public static final String cssErrorMessage = "#form-login-phone-code [data-uie-name='status-error']";
 	}
 }

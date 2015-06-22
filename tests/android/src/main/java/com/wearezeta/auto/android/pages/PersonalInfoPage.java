@@ -51,6 +51,9 @@ public class PersonalInfoPage extends AndroidPage {
 	@FindBy(xpath = xpathSettingsBtn)
 	private WebElement settingsButton;
 
+	private static final Function<String, String> xpathEditFieldByValue = value -> String
+			.format(xpathParentSelfProfileOverlay
+					+ "//*[@id='tet__profile__guided' and @value='%s']", value);
 	private static final String xpathNameEdit = xpathParentSelfProfileOverlay
 			+ "//*[@id='tet__profile__guided']";
 	@FindBy(xpath = xpathNameEdit)
@@ -164,20 +167,17 @@ public class PersonalInfoPage extends AndroidPage {
 	}
 
 	public void tapOnMyName(String name) throws Exception {
-		final By locator = By.xpath(xpathNameFieldByValue.apply(name));
-		if (!DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(xpathNameEdit))) {
-			DriverUtils.mobileTapByCoordinates(getDriver(), getDriver()
-					.findElement(locator));
-		}
+		final By nameFieldlocator = By.xpath(xpathNameFieldByValue.apply(name));
+		getDriver().findElement(nameFieldlocator).click();
 	}
 
-	public boolean waitUntilNameEditIsVisible() throws Exception {
+	public boolean waitUntilNameEditIsVisible(String name) throws Exception {
+		final By locator = By.xpath(xpathEditFieldByValue.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(xpathNameEdit));
+				locator);
 	}
 
-	public void clearSelfName() {
+	public void clearSelfName() throws Exception {
 		nameEdit.clear();
 	}
 
