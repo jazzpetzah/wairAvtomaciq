@@ -76,7 +76,7 @@ public final class IOSLocators {
 
 	public static final String namePickerSearch = "textViewSearch";
 	
-	public static final String xpathPickerClearButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[3]";
+	public static final String namePickerClearButton = "PeoplePickerClearButton";
 	
 	public static final String nameSendConnectButton = "SEND";
 	
@@ -228,7 +228,7 @@ public final class IOSLocators {
 	
 	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[6]";
 	
-	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[contains(@name, 'wearezeta.com')]";
+	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAWindow[@name='ZClientMainWindow']/UIATextView[contains(@name, 'wire.com')]";
 	
 	///////////////////////
 	//Self profile page
