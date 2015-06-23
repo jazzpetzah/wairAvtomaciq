@@ -150,7 +150,7 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idPing)
 	private WebElement pingBtn;
 	
-	private static final String idSketch = "gtv__";
+	private static final String idSketch = "gtv__cursor_draw";
 	@FindBy(id = idSketch)
 	private WebElement sketchBtn;
 
