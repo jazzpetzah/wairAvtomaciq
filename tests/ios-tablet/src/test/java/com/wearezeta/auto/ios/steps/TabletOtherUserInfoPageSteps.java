@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
+import org.junit.Assert;
+
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.TabletGroupConversationDetailPopoverPage;
 import com.wearezeta.auto.ios.pages.TabletOtherUserInfoPage;
@@ -33,8 +35,7 @@ public class TabletOtherUserInfoPageSteps {
 	 */
 	@When("^I see remove warning message on iPad$")
 	public void ISeeRemoveWarningMessageOniPad() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-
+		Assert.assertTrue(getTabletOtherUserInfoPage().isRemoveFromConversationAlertVisible());
 	}
 
 	/**
@@ -43,8 +44,7 @@ public class TabletOtherUserInfoPageSteps {
 	 */
 	@When("^I confirm remove on iPad$")
 	public void IConfirmRemoveOniPad() throws Throwable {
-	    // Write code here that turns the phrase above into concrete actions
-
+		getTabletOtherUserInfoPage().confirmRemove();
 	}
 
 }

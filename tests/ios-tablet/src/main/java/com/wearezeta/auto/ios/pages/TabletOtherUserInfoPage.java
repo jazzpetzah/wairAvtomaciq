@@ -12,7 +12,7 @@ import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
 public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage{
 	
-	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletOtherUserInfoPage.xpathRemoveFromConversationOniPad)
+	@FindBy(how = How.NAME, using = IOSTabletLocators.TabletOtherUserInfoPage.nameOtherUserMetaControllerRightButtoniPadPopover)
 	private WebElement removeFromGroupChat;
 
 	public TabletOtherUserInfoPage(Future<ZetaIOSDriver> lazyDriver)
