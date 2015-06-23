@@ -141,10 +141,10 @@ Feature: People View
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroup    |
-   
-  @torun @staging @id2441 
+
+  @staging @id2441
   Scenario Outline: Verify removing from group conversation [PORTRAIT]
-  	Given There are 3 users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in using phone number or login <Login> and password <Password>
@@ -156,7 +156,29 @@ Feature: People View
     And I click Remove on iPad
     And I see remove warning message on iPad
     And I confirm remove on iPad
-    
+    Then I see that contact <Contact2> is not present on group popover on iPad
+
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveGroup    |
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveGroup   |
+
+  @staging @id2981
+  Scenario Outline: Verify removing from group conversation [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in using phone number or login <Login> and password <Password>
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I select user on iPad group popover <Contact2>
+    And I click Remove on iPad
+    And I see remove warning message on iPad
+    And I confirm remove on iPad
+    Then I see that contact <Contact2> is not present on group popover on iPad
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveGroup   |
