@@ -48,5 +48,11 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 	public void pressRenameEllipsesButton(){
 		renameEllipsesButton.click();
 	}
+	
+	public void exitGroupChatPopover() throws Exception{
+		DriverUtils.mobileTapByCoordinates(getDriver(), conversationMenuButton, 50, 50);
+	}
+
+
 
 }
