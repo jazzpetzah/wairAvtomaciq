@@ -35,5 +35,10 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 
 		return new TabletOtherUserInfoPage(this.getLazyDriver());
 	}
+	
+	public boolean waitForContactToDisappearOniPadPopover(String name) throws Exception{
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.name(name));
+	}
 
 }

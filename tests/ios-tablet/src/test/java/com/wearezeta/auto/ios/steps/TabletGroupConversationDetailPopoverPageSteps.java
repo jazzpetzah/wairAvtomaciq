@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
+import org.junit.Assert;
+
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.TabletGroupConversationDetailPopoverPage;
 
@@ -38,8 +40,7 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 	 */
 	@When("^I press leave converstation button on iPad$")
 	public void IPressLeaveConverstationButtonOniPad() throws Throwable {
-		getTabletGroupConversationDetailPopoverPage()
-				.leaveConversation();
+		getTabletGroupConversationDetailPopoverPage().leaveConversation();
 	}
 
 	/**
@@ -53,18 +54,34 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 		getTabletGroupConversationDetailPopoverPage()
 				.confirmLeaveConversation();
 	}
-	
+
 	/**
+	 * Selects a user on the group conversation popover
 	 * 
+	 * @step. ^I select user on iPad group popover (.*)$
 	 * @param name
 	 * @throws Throwable
 	 */
 	@When("^I select user on iPad group popover (.*)$")
 	public void ISelectUserOniPadGroupPopover(String name) throws Throwable {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		getTabletGroupConversationDetailPopoverPage().selectUserByNameOniPadPopover(name);
+		getTabletGroupConversationDetailPopoverPage()
+				.selectUserByNameOniPadPopover(name);
 	}
-	
-	
+
+	/**
+	 * Veryfies that there is one less user on the group conversation popover
+	 * 
+	 * @step. ^I see that contact (.*) is not present on group popover on iPad$
+	 * @param name
+	 * @throws Throwable
+	 */
+	@Then("^I see that contact (.*) is not present on group popover on iPad$")
+	public void ISeeThatContactIsNotPresentOnGroupPopoverOniPad(String name)
+			throws Throwable {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		Assert.assertTrue(getTabletGroupConversationDetailPopoverPage()
+				.waitForContactToDisappearOniPadPopover(name));
+	}
 
 }
