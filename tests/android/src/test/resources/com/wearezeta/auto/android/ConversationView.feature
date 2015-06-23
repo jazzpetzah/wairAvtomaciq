@@ -311,9 +311,10 @@ Feature: Conversation View
     And I see dialog page
     And I swipe on text input
     And I press Sketch button
+    And I draw a sketch with <NumColors> colors
 
     Examples: 
-      | Name      | Contact1  | Message     |
-      | user1Name | user2Name | go go go    |
+      | Name      | Contact1  | Message     | NumColors |
+      | user1Name | user2Name | go go go    | 1			|
       
       
