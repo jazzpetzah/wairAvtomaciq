@@ -301,7 +301,7 @@ Feature: Conversation View
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs    |
       
      
-  @id2814 @torun
+  @id2814 @verification
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

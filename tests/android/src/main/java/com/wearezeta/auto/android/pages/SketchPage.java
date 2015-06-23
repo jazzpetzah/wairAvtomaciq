@@ -1,7 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
 import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Future;
@@ -14,7 +13,7 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class SketchPage extends AndroidPage {
-	
+
 	private static final String idCanvas = "dcv__canvas";
 	@FindBy(id = idCanvas)
 	private WebElement canvas;
@@ -22,69 +21,65 @@ public class SketchPage extends AndroidPage {
 	private static final String idColorPicker = "ll__color_layout";
 	@FindBy(id = idColorPicker)
 	private WebElement colorPicker;
-	
+
 	private static final String idSendButton = "tv__send_button";
 	@FindBy(id = idSendButton)
 	private WebElement sendButton;
-	
-	//Colors should be in the order they appear in the color picker
-	public static final String[] colors = {
-		"white",
-		"black",
-		"blue",
-		"green",
-		"yellow",
-		"red",
-		"orange",
-		"pink",
-		"purple"
-	};
-	private int selectedColorIndex = 0; //default to white
-	
-	//dp * screen density. The padding value is taken from the file fragment_drawing.xml
-	//I'm not sure how to get it programmatically, but it shouldn't change very often.
-	//TODO calculate screen density through selendroid
+
+	// Colors should be in the order they appear in the color picker
+	public static final String[] colors = { "white", "black", "blue", "green",
+		"yellow", "red", "orange", "pink", "purple" };
+	private int selectedColorIndex = 0; // default to white
+
+	// dp * screen density. The padding value is taken from the file
+	// fragment_drawing.xml
+	// I'm not sure how to get it programmatically, but it shouldn't change very
+	// often.
+	// TODO calculate screen density through selendroid
 	private final int COLOR_PICKER_PADDING = 24 * 3;
 
 	public SketchPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
-	
+
 	public void setColor(int colorIndex) throws Exception {
 		this.selectedColorIndex = colorIndex;
 		selectColorFromChooser();
 	}
-	
+
 	public void setColor(String color) throws Exception {
 		color = color.toLowerCase().trim();
 		this.selectedColorIndex = ArrayUtils.indexOf(colors, color);
 		selectColorFromChooser();
 	}
-	
+
 	private void selectColorFromChooser() throws Exception {
 		int numColors = colors.length;
 		double colorPickerElementWidth = colorPicker.getSize().width;
-		//the actual select area is a bit smaller than the width of the element
-		double colorPickerSelectorWidth = colorPickerElementWidth - 2 * COLOR_PICKER_PADDING;
-		
+		// the actual select area is a bit smaller than the width of the element
+		double colorPickerSelectorWidth = colorPickerElementWidth - 2
+			* COLOR_PICKER_PADDING;
+
 		double colorWidth = colorPickerSelectorWidth / numColors;
-		
-		double colorPosition = colorWidth * selectedColorIndex + ((0.5) * colorWidth);
-		double percentX = (COLOR_PICKER_PADDING + colorPosition) / colorPickerElementWidth * 100;
+
+		double colorPosition = colorWidth * selectedColorIndex
+			+ ((0.5) * colorWidth);
+		double percentX = (COLOR_PICKER_PADDING + colorPosition)
+			/ colorPickerElementWidth * 100;
 		int percentY = 50;
-		
-		DriverUtils.tapOnPercentOfElement(this.getDriver(), colorPicker, (int) percentX, percentY);
+
+		DriverUtils.tapOnPercentOfElement(this.getDriver(), colorPicker,
+			(int) percentX, percentY);
 	}
-	
-	public void drawLinesOnCanvas(int percentStartX, int percentStartY, int percentEndX, int percentEndY) throws Exception {
+
+	public void drawLinesOnCanvas(int percentStartX, int percentStartY,
+		int percentEndX, int percentEndY) throws Exception {
 		int swipeDuration = 300;
-		DriverUtils.swipeElementPointToPoint(
-			this.getDriver(), canvas, swipeDuration, 
-			percentStartX, percentStartY,
-			percentEndX, percentEndY
-			);
+		DriverUtils.swipeElementPointToPoint(this.getDriver(), canvas,
+			swipeDuration, percentStartX, percentStartY, percentEndX,
+			percentEndY);
 	}
-	
+
 	public void drawRandomLines(int numLines) throws Exception {
 		Random random = new Random();
 		for (int i = 0; i < numLines; i++) {
@@ -95,7 +90,7 @@ public class SketchPage extends AndroidPage {
 			drawLinesOnCanvas(startX, startY, endX, endY);
 		}
 	}
-	
+
 	public void sendSketch() {
 		sendButton.click();
 	}
