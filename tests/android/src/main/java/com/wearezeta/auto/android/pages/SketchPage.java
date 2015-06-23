@@ -1,6 +1,8 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Future;
 
@@ -48,6 +50,11 @@ public class SketchPage extends AndroidPage {
 		super(lazyDriver);
 	}
 	
+	public void setColor(int colorIndex) throws Exception {
+		this.selectedColorIndex = colorIndex;
+		selectColorFromChooser();
+	}
+	
 	public void setColor(String color) throws Exception {
 		color = color.toLowerCase().trim();
 		this.selectedColorIndex = ArrayUtils.indexOf(colors, color);
@@ -91,5 +98,9 @@ public class SketchPage extends AndroidPage {
 	
 	public void sendSketch() {
 		sendButton.click();
+	}
+
+	public Optional<BufferedImage> screenshotCanvas() throws Exception {
+		return this.getElementScreenshot(canvas);
 	}
 }

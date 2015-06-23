@@ -312,9 +312,12 @@ Feature: Conversation View
     And I swipe on text input
     And I press Sketch button
     And I draw a sketch with <NumColors> colors
+    When I remember what my sketch looks like
+    And I send my sketch
+    Then I verify that my sketch is the same as what I drew
 
     Examples: 
-      | Name      | Contact1  | Message     | NumColors |
-      | user1Name | user2Name | go go go    | 1			|
+      | Name      | Contact1  | NumColors |
+      | user1Name | user2Name | 6			|
       
       

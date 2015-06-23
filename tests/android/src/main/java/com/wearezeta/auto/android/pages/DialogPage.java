@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -412,6 +413,10 @@ public class DialogPage extends AndroidPage {
 	public boolean isImageExists() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(idDialogImages));
+	}
+	
+	public Optional<BufferedImage> getLastImageInConversation() throws Exception {
+		return getElementScreenshot(imageList.get(imageList.size() - 1));
 	}
 
 	public void confirm() throws Exception {
