@@ -192,7 +192,7 @@ public class PerformanceSteps {
 
 	private void exportTraceToCSV() throws Exception {
 
-		String script = String.format(CommonUtils
+	/*	String script = String.format(CommonUtils
 				.readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
 
 		ScriptEngineManager mgr = new ScriptEngineManager();
@@ -204,12 +204,12 @@ public class PerformanceSteps {
 		} catch (Exception e) {
 			log.debug(e.getMessage());
 			e.printStackTrace();
-		}
+		}*/
 
-		/*
-		 * CommonUtils .executeOsXCommand(new String[] { "bash", "-c",
-		 * "osascript /Project/iOS_Performance_Reports/export_data.scpt" });
-		 */
+		CommonUtils
+				.executeOsXCommand(new String[] { "bash", "-c",
+						"osascript /Project/iOS_Performance_Reports/export_data.scpt" });
+
 	}
 
 	/**
