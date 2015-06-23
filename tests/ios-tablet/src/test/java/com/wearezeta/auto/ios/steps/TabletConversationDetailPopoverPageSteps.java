@@ -44,7 +44,5 @@ public class TabletConversationDetailPopoverPageSteps {
 	public void IPressAddButtonOniPadPopover() throws Throwable {
 		getTabletConversationDetailPopoverPage().addContactTo1on1Chat();
 	}
-	
-	
-	
+		
 }
