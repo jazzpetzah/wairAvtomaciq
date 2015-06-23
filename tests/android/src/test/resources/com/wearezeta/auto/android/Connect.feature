@@ -4,7 +4,7 @@ Feature: Connect
   Scenario Outline: Send connection request from search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I press Open StartUI
     And I see People picker page
@@ -28,7 +28,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <WaitingMess>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
@@ -42,7 +42,7 @@ Feature: Connect
   Scenario Outline: I can see a new inbox for connection when receive new connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     Given I do not see contact list with name <WaitingMess>
     Given <Contact> sent connection request to <Name>
     When I tap on contact name <WaitingMess>
@@ -60,7 +60,7 @@ Feature: Connect
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     Given <Contact2> sent connection request to me
     When I wait for 2 seconds
     Then I see contact list with name <WaitingMess2>
@@ -97,7 +97,7 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> sent connection request to <Name>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     Given <Contact2> sent connection request to <Name>
     When I see contact list with name <WaitingMess1>
     And I wait until <Contact2> exists in backend search results
@@ -122,7 +122,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I see contact list with name <WaitingMess>
     And I tap on contact name <WaitingMess>
     And I press Ignore connect button
@@ -146,7 +146,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I see contact list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
     And I press Open StartUI
@@ -166,7 +166,7 @@ Feature: Connect
   Scenario Outline: I can see the char counter changes when writing the first connect message
     Given There are 3 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I press Open StartUI
     And I see People picker page
@@ -189,7 +189,7 @@ Feature: Connect
   Scenario Outline: I can not send first message with space only
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I press Open StartUI
     And I see People picker page
@@ -210,7 +210,7 @@ Feature: Connect
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I press Open StartUI
     And I see People picker page
@@ -234,7 +234,7 @@ Feature: Connect
   Scenario Outline: I can receive new connection request when app in background
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     When I minimize the application
     And <Contact> sent connection request to Me
     And I wait for 2 seconds
@@ -254,7 +254,7 @@ Feature: Connect
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I press Open StartUI
     And I see People picker page
@@ -281,7 +281,7 @@ Feature: Connect
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I press Open StartUI
     And I see People picker page
@@ -304,7 +304,7 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>
     Given <Contact1> has group chat <ChatName> with Myself,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <ChatName>
     And I tap conversation details button
     And I tap on group chat contact <Contact2>
@@ -325,7 +325,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap conversation details button
@@ -350,7 +350,7 @@ Feature: Connect
   Scenario Outline: I want to see user has been blocked within the Start UI
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I press Open StartUI
     And I see People picker page
@@ -383,12 +383,13 @@ Feature: Connect
       | Name      | Contact   | Message      |
       | user1Name | user2Name | Hello friend |
 
-  @regression @id720
+  @id720 @staging
   Scenario Outline: I do not want to be seen in the search results of someone I blocked
+    # moved to staging because of bug on backend
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
-    Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I sign in using my email
+    Given I see Contact list with contacts
     When User <Contact> blocks user Myself
     And I wait <TimeoutSeconds> seconds until <Contact> does not exist in backend search results
     And I press Open StartUI
@@ -407,7 +408,7 @@ Feature: Connect
     Given Myself is connected to <Contact1>,<Contact2>
     Given User <Name> blocks user <Contact1>
     Given I sign in using my email or phone number
-    And I see Contact list
+    Given I see Contact list with contacts
     And I wait until <Contact1> exists in backend search results
     And I press Open StartUI
     And I see People picker page
@@ -429,7 +430,7 @@ Feature: Connect
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I press Open StartUI
     And I see People picker page
@@ -452,7 +453,7 @@ Feature: Connect
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
     And I type the message "<Message>" and send it
@@ -472,7 +473,7 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I press Open StartUI
     And I see People picker page
     And I keep reopening People Picker until PYMK are visible
@@ -494,7 +495,7 @@ Feature: Connect
     Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     And I press Open StartUI
     And I see People picker page
     And I keep reopening People Picker until PYMK are visible

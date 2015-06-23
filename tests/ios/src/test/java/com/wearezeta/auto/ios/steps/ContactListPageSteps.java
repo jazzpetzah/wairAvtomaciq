@@ -183,7 +183,7 @@ public class ContactListPageSteps {
 	@When("^I swipe right on a (.*)$")
 	public void ISwipeRightOnContact(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		getContactListPage().swipeRightOnContact(1500, contact);
+		getContactListPage().swipeRightConversationToRevealArchiveButton(contact);
 	}
 
 	@When("^I click mute conversation$")
@@ -416,6 +416,24 @@ public class ContactListPageSteps {
 				FindBy.NAME_ALIAS);
 		getContactListPage().archiveConversation(conversation);
 	}
+	
+	/**
+	 * Click on archive button for a conversation
+	 * 
+	 * @step. ^I click archive button for conversation (.*)$
+	 * 
+	 * @param conversation
+	 *            conversation name to archive
+	 * @throws Exception
+	 *             if conversation is not found
+	 * 
+	 */
+	@When("^I click archive button for conversation (.*)$")
+	public void IClickArchiveConversationButton(String conversation) throws Exception {
+		conversation = usrMgr.replaceAliasesOccurences(conversation,
+				FindBy.NAME_ALIAS);
+		getContactListPage().clickArchiveCoversationButton(conversation);
+	}
 
 	private BufferedImage referenceImage = null;
 	private static final double MAX_OVERLAP_SCORE = 0.70;
@@ -485,7 +503,7 @@ public class ContactListPageSteps {
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		boolean missedCallSeen = getContactListPage()
-				.missedCallIndicatorIsVisible(true, contact);
+				.missedCallIndicatorIsVisible(contact);
 		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
 	}
 
@@ -504,7 +522,7 @@ public class ContactListPageSteps {
 			String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		boolean missedCallSeen = getContactListPage()
-				.missedCallIndicatorIsVisible(false, contact);
+				.missedCallIndicatorIsVisible(contact);
 		Assert.assertTrue("No missed call indicator visible.", missedCallSeen);
 
 	}
@@ -523,6 +541,43 @@ public class ContactListPageSteps {
 		boolean colorIsChanged = getContactListPage()
 				.changeOfAccentColorIsVisible(name);
 		Assert.assertTrue("Color is not changed.", colorIsChanged);
+	}
+
+	/**
+	 * Verify that relevant unread message indicator is seen in conversation
+	 * list
+	 * 
+	 * @step. ^I see (.*) unread message indicator in list for contact (.*)$
+	 * @param contact
+	 *            the missed call is from
+	 * @throws Exception
+	 */
+	@Then("^I see (.*) unread message indicator in list for contact (.*)$")
+	public void ISeeUnreadMessageIndicatorInListForContact(int numOfMessage,
+			String contact) throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		boolean unreadIconVisibility = getContactListPage()
+				.unreadMessageIndicatorIsVisible(numOfMessage, contact);
+		Assert.assertTrue("No unread message indicator is visible.",
+				unreadIconVisibility);
+	}
+
+	/**
+	 * Verify that unread icon is not shown next to contact
+	 * 
+	 * @step. ^I dont see unread message indicator in list for contact (.*)$
+	 * @param contact
+	 *            contact name
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I dont see unread message indicator in list for contact (.*)$")
+	public void IDontSeeUnreadIndicator(String contact) throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		boolean unreadIconVisibility = getContactListPage()
+				.unreadMessageIndicatorIsVisible(0, contact);
+		Assert.assertTrue("Unread message indicator is visible.",
+				unreadIconVisibility);
 	}
 
 }

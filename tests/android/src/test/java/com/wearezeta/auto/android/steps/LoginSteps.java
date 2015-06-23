@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.steps;
 import java.util.Random;
 
 import org.junit.Assert;
+import org.openqa.selenium.NoSuchElementException;
 
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.registration.AddPhoneNumberPage;
@@ -47,7 +48,7 @@ public class LoginSteps {
 	}
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	
+
 	/**
 	 * Inputs the login details for the self user and then clicks the sign in
 	 * button.
@@ -57,11 +58,18 @@ public class LoginSteps {
 	 * @throws Exception
 	 */
 	@Given("^I sign in using my email$")
-	public void ISignInUsingEmail() throws Exception {
+	public void ISignInUsingMyEmail() throws Exception {
 		final ClientUser self = usrMgr.getSelfUserOrThrowError();
 		assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
 		getWelcomePage().tapIHaveAnAccount();
-		getEmailSignInPage().setLogin(self.getEmail());
+		try {
+			getEmailSignInPage().setLogin(self.getEmail());
+		} catch (NoSuchElementException e) {
+			// FIXME: try again because sometimes tapping "I have account"
+			// button fails without any reason
+			getWelcomePage().tapIHaveAnAccount();
+			getEmailSignInPage().setLogin(self.getEmail());
+		}
 		getEmailSignInPage().setPassword(self.getPassword());
 		final AndroidPage returnedPage = getEmailSignInPage().logIn();
 		// We want to skip the "AddPhoneNumber page if it is presented to us
@@ -70,9 +78,37 @@ public class LoginSteps {
 		}
 	}
 
-	// FIXME: Change this to 80 as soon as there is new Android candidate with
-	// phone number login fixed
-	private static final int PHONE_NUMBER_LOGIN_HIGH_THRESHOLD = 0;
+	/**
+	 * Do sign in using phone number
+	 * 
+	 * @step. ^I sign in using my phone number$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I sign in using my phone number$")
+	public void ISignInUsingMyPhoneNumber() throws Exception {
+		final ClientUser self = usrMgr.getSelfUserOrThrowError();
+		assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
+		getWelcomePage().clickAreaCodeSelector();
+		try {
+			getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
+		} catch (NoSuchElementException e) {
+			// FIXME: Sometimes the area code selector button is not clicked
+			getWelcomePage().clickAreaCodeSelector();
+			getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
+		}
+		getWelcomePage().inputPhoneNumber(
+				self.getPhoneNumber().toString()
+						.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
+		getWelcomePage().clickConfirm();
+		final String verificationCode = BackendAPIWrappers
+				.getLoginCodeByPhoneNumber(self.getPhoneNumber());
+		getVerificationPage().inputVerificationCode(verificationCode);
+		getVerificationPage().clickConfirm();
+		assert getVerificationPage().waitUntilConfirmButtonDissapears() : "Phone number verification code input screen is still visible";
+	}
+
+	private static final int PHONE_NUMBER_LOGIN_THRESHOLD = 60;
 	private static final Random random = new Random();
 
 	/**
@@ -86,22 +122,10 @@ public class LoginSteps {
 	 */
 	@Given("^I sign in using my email or phone number$")
 	public void ISignInUsingMyEmailOrPhoneNumber() throws Exception {
-		if (random.nextInt(100) < PHONE_NUMBER_LOGIN_HIGH_THRESHOLD) {
-			final ClientUser self = usrMgr.getSelfUserOrThrowError();
-			assert getWelcomePage().waitForInitialScreen() : "The initial screen was not shown";
-			getWelcomePage().clickAreaCodeSelector();
-			getAreaCodePage().selectAreaCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
-			getWelcomePage().inputPhoneNumber(
-					self.getPhoneNumber().toString()
-							.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
-			getWelcomePage().clickConfirm();
-			final String verificationCode = BackendAPIWrappers
-					.getLoginCodeByPhoneNumber(self.getPhoneNumber());
-			getVerificationPage().inputVerificationCode(verificationCode);
-			getVerificationPage().clickConfirm();
-			assert getVerificationPage().waitUntilConfirmButtonDissapears() : "Phone number verification code input screen is still visible";
+		if (random.nextInt(100) < PHONE_NUMBER_LOGIN_THRESHOLD) {
+			ISignInUsingMyPhoneNumber();
 		} else {
-			ISignInUsingEmail();
+			ISignInUsingMyEmail();
 		}
 	}
 

@@ -5,7 +5,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     And I wait until <Contact> exists in backend search results
     When I press Open StartUI
     And I see People picker page
@@ -23,7 +23,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
@@ -39,7 +39,7 @@ Feature: Search
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
@@ -56,7 +56,7 @@ Feature: Search
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
@@ -71,7 +71,7 @@ Feature: Search
   Scenario Outline: Open/Close People picker
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     When I press Open StartUI
     And I see People picker page
     And I press Clear button
@@ -86,7 +86,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
@@ -107,7 +107,7 @@ Feature: Search
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list
+    Given I see Contact list with contacts
     When I press Open StartUI
     And I see People picker page
     And I keep reopening People Picker until PYMK are visible
@@ -129,7 +129,7 @@ Feature: Search
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
     Given I sign in using my email or phone number
-    And I see Contact list
+    Given I see Contact list with contacts
     When I press Open StartUI
     And I see People picker page
     And I keep reopening People Picker until PYMK are visible

@@ -5,7 +5,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap conversation details button
@@ -29,7 +29,7 @@ Feature: Conversation List
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact1>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input
@@ -70,7 +70,7 @@ Feature: Conversation List
     Given <Contact1> is connected to <Name>
     Given <Contact1> is silenced to user <Name>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     Given Contact <Contact1> is muted
     When I tap on contact name <Contact1>
     And I see dialog page

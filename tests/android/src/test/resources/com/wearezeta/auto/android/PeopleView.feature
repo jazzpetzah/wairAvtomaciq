@@ -8,7 +8,7 @@ Feature: People View
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact1> has a name <Contact1NewName>
     Given I sign in using my email or phone number
-    And I see Contact list
+    Given I see Contact list with contacts
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
@@ -27,7 +27,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And I see dialog page
     And I tap conversation details button
@@ -46,7 +46,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
@@ -75,7 +75,7 @@ Feature: People View
     Given <Contact2> has a name <Contact2NewName>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     And I see contact list with name <Contact1>
     And I see contact list with name <Contact2>
     When I tap on contact name <GroupChatName>
@@ -100,7 +100,7 @@ Feature: People View
     Given Contact <Contact1> send message to user <Name>
     Given Contact <Name> send message to user <Contact1>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I open People Picker
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
@@ -117,7 +117,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <OldGroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <OldGroupChatName>
     And I tap conversation details button
     And I rename group conversation to <NewConversationName>
@@ -135,7 +135,7 @@ Feature: People View
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap conversation details button
@@ -158,8 +158,8 @@ Feature: People View
     And I see correct 1:1 options menu
     When I do small swipe down
     And I wait for 5 seconds
-    Then I see correct 1:1 options menu
-    And I do not see profile page
+    Then I do not see profile page
+    And I see correct 1:1 options menu
     When I press back button
     And I press options menu button
     Then I see correct 1:1 options menu
@@ -178,7 +178,7 @@ Feature: People View
     Given <Contact1> is connected to <Name>,<Contact2>
     Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And I tap conversation details button
     And I tap on group chat contact <Contact2>

@@ -1,13 +1,13 @@
 Feature: Conversation List
 
-  @staging @id2378 @id2568
+  @regression @id2378 @id2568
   Scenario Outline: Verify archive a conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
-    And I archive conversation <Contact>
+    And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
     And I long swipe right to archive conversation <Contact2>
     Then I dont see conversation <Contact2> in contact list
@@ -16,18 +16,18 @@ Feature: Conversation List
     Then I see user <Contact2> in contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2 |
-      | user1Email | user1Password | user1Name | user2Name | user3Name|
-      
-  @staging @id2755 @id2377
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @regression @id2755 @id2377
   Scenario Outline: Verify archive a conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
-    And I archive conversation <Contact>
+    And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
     And I long swipe right to archive conversation <Contact2>
     Then I dont see conversation <Contact2> in contact list
@@ -36,51 +36,49 @@ Feature: Conversation List
     Then I see user <Contact2> in contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2 |
-      | user1Email | user1Password | user1Name | user2Name | user3Name|
-      
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
+
   @staging @id2674
   Scenario Outline: Verify archive a group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    When I swipe right on a <GroupChatName>
-    And I archive conversation <GroupChatName>
+    When I long swipe right to archive conversation <GroupChatName>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName    |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ArchiveGroupChat |
-      
+      | Name      | Contact1  | Contact2  | GroupChatName    |
+      | user1Name | user2Name | user3Name | ArchiveGroupChat |
+
   @staging @id2750
   Scenario Outline: Verify archive a group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    When I swipe right on a <GroupChatName>
-    And I archive conversation <GroupChatName>
+    And I long swipe right to archive conversation <GroupChatName>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName    |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | ArchiveGroupChat |
-      
-  @staging @id2675
+      | Name      | Contact1  | Contact2  | GroupChatName    |
+      | user1Name | user2Name | user3Name | ArchiveGroupChat |
+
+  @regression @id2675
   Scenario Outline: Unarchive conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
-    And I wait for 30 seconds
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I wait for 30 seconds
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And I open archived conversations on iPad
     And I tap on contact name <ArchivedUser>
@@ -88,17 +86,17 @@ Feature: Conversation List
     Then I see first item in contact list named <ArchivedUser>
 
     Examples: 
-      | Login      | Password      | Name      | ArchivedUser |
-      | user1Email | user1Password | user1Name | user2Name    |
-      
-  @staging @id2751
+      | Name      | ArchivedUser |
+      | user1Name | user2Name    |
+
+  @regression @id2751
   Scenario Outline: Unarchive conversation [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
     Given Myself archived conversation with <ArchivedUser>
     And I wait for 30 seconds
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And I open archived conversations on iPad
     And I tap on contact name <ArchivedUser>
@@ -106,41 +104,41 @@ Feature: Conversation List
     Then I see first item in contact list named <ArchivedUser>
 
     Examples: 
-      | Login      | Password      | Name      | ArchivedUser |
-      | user1Email | user1Password | user1Name | user2Name    |
-      
-  @staging @id2753
+      | Name      | ArchivedUser |
+      | user1Name | user2Name    |
+
+  @regression @id2753
   Scenario Outline: Verify opening search by tapping on the search field [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given I Sign in using login <Login> and password <Password>
+    Given There is 1 user where <Name> is me
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
-      
-  @staging @id2754
+      | Name      |
+      | user1Name |
+
+  @regression @id2754
   Scenario Outline: Verify opening search by tapping on the search field [LANDSCAPE]
-    Given There are 2 users where <Name> is me
+    Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
-    Given I Sign in using login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see People picker page
 
     Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
-      
-  @staging @id2369
+      | Name      |
+      | user1Name |
+
+  @regression @id2369
   Scenario Outline: Verify Ping animation in the conversations list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And I remember the state of the first conversation cell
     When Contact <Contact> ping conversation <Name>
@@ -148,17 +146,17 @@ Feature: Conversation List
     Then I see change of state for first conversation cell
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | NewName  | Color        |
-      | user1Email | user1Password | user1Name | user2Name | PING     | BrightOrange |
-      
-  @staging @id2752
+      | Name      | Contact   | NewName | Color        |
+      | user1Name | user2Name | PING    | BrightOrange |
+
+  @regression @id2752
   Scenario Outline: Verify Ping animation in the conversations list [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And I remember the state of the first conversation cell
     When Contact <Contact> ping conversation <Name>
@@ -166,17 +164,17 @@ Feature: Conversation List
     Then I see change of state for first conversation cell
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | NewName  | Color        |
-      | user1Email | user1Password | user1Name | user2Name | PING     | BrightOrange |
-      
-  @staging @id2367
+      | Name      | Contact   | NewName | Color        |
+      | user1Name | user2Name | PING    | BrightOrange |
+
+  @regression @id2367
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given User <Contact> change name to <NewName>
     Given User <Name> change accent color to <Color>
     Given Contact <Contact> send number <Number> of message to user <Name>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
@@ -184,12 +182,11 @@ Feature: Conversation List
     And I swipe right on Dialog page
     Then I see change of state for first conversation cell
 
-
     Examples: 
-      | Login      | Password      | Name      | Contact   | NewName    | Color        |Number |
-      | user1Email | user1Password | user1Name | user2Name | UNREAD DOT | BrightYellow | 2 	   |
-      
-  @staging @id2711
+      | Name      | Contact   | NewName    | Color        | Number |
+      | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
+
+  @regression @id2711
   Scenario Outline: Verify messages are marked as read with disappearing unread dot [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -197,7 +194,7 @@ Feature: Conversation List
     Given User <Name> change accent color to <Color>
     Given Contact <Contact> send number <Number> of message to user <Name>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
@@ -205,17 +202,16 @@ Feature: Conversation List
     And I swipe right on Dialog page
     Then I see change of state for first conversation cell
 
-
     Examples: 
-      | Login      | Password      | Name      | Contact   | NewName    | Color        |Number |
-      | user1Email | user1Password | user1Name | user2Name | UNREAD DOT | BrightYellow | 2 	   |
-      
-  @staging @id2756 
+      | Name      | Contact   | NewName    | Color        | Number |
+      | user1Name | user2Name | UNREAD DOT | BrightYellow | 2      |
+
+  @regression @id2756
   Scenario Outline: Verify conversations are sorted according to most recent activity [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
     Given Contact <Contact> send number <Number> of message to user <Name>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And Contact <Contact3> send number <Number> of message to user <Name>
     And I see first item in contact list named <Contact3>
@@ -225,16 +221,16 @@ Feature: Conversation List
     Then I see first item in contact list named <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2   | Contact3     |Number |  Picture      |
-      | user1Email | user1Password | user1Name | user2Name | user3name  | user4name    | 2 	   | testing.jpg   |
+      | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
+      | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
-  @staging @id2757
+  @regression @id2757
   Scenario Outline: Verify conversations are sorted according to most recent activity [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given <Name> is connected to <Contact>,<Contact2>,<Contact3>
     Given Contact <Contact> send number <Number> of message to user <Name>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     And Contact <Contact3> send number <Number> of message to user <Name>
     And I see first item in contact list named <Contact3>
@@ -244,6 +240,118 @@ Feature: Conversation List
     Then I see first item in contact list named <Contact>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | Contact2   | Contact3     |Number |  Picture      |
-      | user1Email | user1Password | user1Name | user2Name | user3name  | user4name    | 2 	   | testing.jpg   |
-      
+      | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
+      | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
+
+  @regression @id2360
+  Scenario Outline: Get invitation message from user [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given <Contact> sent connection request to Me
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @regression @id2360
+  Scenario Outline: Get invitation message from user [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given <Contact> sent connection request to Me
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @staging @id2368
+  Scenario Outline: Verify missed call indicator appearance in conversation list [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given User <Name> change accent color to <Color>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When <Contact> calls me using <CallBackend>
+    And I wait for 5 seconds
+    And <Contact> stops all calls to me
+    Then I see missed call indicator in list for contact <Contact>
+    When Contact <Contact> send number <Number> of message to user <Name>
+    Then I see missed call indicator in list for contact <Contact>
+    When Contact <Contact1> send number <Number> of message to user <Name>
+    Then I see missed call indicator got moved down in list for contact <Contact>
+
+    Examples: 
+      | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
+      | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
+
+  @staging @id2368
+  Scenario Outline: Verify missed call indicator appearance in conversation list [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given User <Name> change accent color to <Color>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When <Contact> calls me using <CallBackend>
+    And I wait for 5 seconds
+    And <Contact> stops all calls to me
+    Then I see missed call indicator in list for contact <Contact>
+    When Contact <Contact> send number <Number> of message to user <Name>
+    Then I see missed call indicator in list for contact <Contact>
+    When Contact <Contact1> send number <Number> of message to user <Name>
+    Then I see missed call indicator got moved down in list for contact <Contact>
+
+    Examples: 
+      | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
+      | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
+
+  @staging @id2368
+  Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given User <Name> change accent color to <Color>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact1>
+    And I swipe right on Dialog page
+    Then I dont see unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 1 of message to user <Name>
+    Then I see 1 unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 1 of message to user <Name>
+    Then I see 5 unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 8 of message to user <Name>
+    Then I see 10 unread message indicator in list for contact <Contact>
+
+    Examples: 
+      | Name      | Contact   | Contact1  | Color           |
+      | user1Name | user2Name | user3Name | StrongLimeGreen |
+
+  @staging @id2368
+  Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact>,<Contact1>
+    Given User <Name> change accent color to <Color>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I tap on contact name <Contact1>
+    Then I dont see unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 1 of message to user <Name>
+    Then I see 1 unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 1 of message to user <Name>
+    Then I see 5 unread message indicator in list for contact <Contact>
+    And Contact <Contact> send number 8 of message to user <Name>
+    Then I see 10 unread message indicator in list for contact <Contact>
+
+    Examples: 
+      | Name      | Contact   | Contact1  | Color           |
+      | user1Name | user2Name | user3Name | StrongLimeGreen |

@@ -13,6 +13,8 @@ public class PagesCollection extends AbstractPagesCollection {
 
 	public static LoginPage loginPage = null;
 
+	public static PhoneNumberLoginPage phoneNumberLoginPage = null;
+
 	public static ContactListPage contactListPage = null;
 
 	public static ConversationPage conversationPage = null;
@@ -48,4 +50,6 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static YouAreInvitedPage youAreInvitedPage = null;
 
 	public static WarningPage warningPage = null;
+
+	public static PhoneNumberVerificationPage phoneNumberVerificationPage;
 }

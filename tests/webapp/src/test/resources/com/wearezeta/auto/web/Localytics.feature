@@ -13,9 +13,9 @@ Feature: Localytics
     And I wait for 5 seconds
 
     Examples: 
-      | Name      | Password      | Email                     | AttrName                                                             |
-      | user1Name | user1Password | smoketester@wire.com      | regFailed:reason=The given e-mail address or phone number is in use. |
-      | user1Name | user1Password | smoketester+123@gmail.com | regFailed:reason=Unauthorized e-mail address or phone number.        |
+      | Name      | Password      | Email                      | AttrName                                                             |
+      | user1Name | user1Password | smoketester+sven1@wire.com | regFailed:reason=The given e-mail address or phone number is in use. |
+      | user1Name | user1Password | smoketester+123@gmail.com  | regFailed:reason=Unauthorized e-mail address or phone number.        |
 # FIXME: Are there any other 'reason' values to check ?
 
 #***************************************************
@@ -69,14 +69,15 @@ Feature: Localytics
 # Start of uploadedContacts event
 #***************************************************
 
-@localytics @id2156
+@localytics @id2485
   Scenario Outline: Verify 'uploadedContacts:source=Gmail' stats
     Given I take snapshot of <AttrName> attribute count
     Given There is 1 user where <Name> is me without avatar picture
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see Self Picture Upload dialog
-    And I choose <PictureName> as my self picture on Self Picture Upload dialog
+    And I force carousel mode on Self Picture Upload dialog
+    And I select random picture from carousel on Self Picture Upload dialog
     And I confirm picture selection on Self Picture Upload dialog
     When I see Contacts Upload dialog
     And I click button to import Gmail Contacts
@@ -85,8 +86,8 @@ Feature: Localytics
     And I wait for 5 seconds
 
     Examples:
-      | Login      | Password      | Name      | PictureName               | GoogleEmail                | GooglePassword | AttrName                      |
-      | user1Email | user1Password | user1Name | userpicture_landscape.jpg | smoketester.wire@gmail.com | aqa123456      | uploadedContacts:source=Gmail |
+      | Login      | Password      | Name      | GoogleEmail                | GooglePassword | AttrName                      |
+      | user1Email | user1Password | user1Name | smoketester.wire@gmail.com | aqa123456      | uploadedContacts:source=Gmail |
 
 #***************************************************
 # End of uploadedContacts event

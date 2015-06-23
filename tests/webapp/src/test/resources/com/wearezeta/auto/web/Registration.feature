@@ -104,13 +104,13 @@ Feature: Registration
       | Name      | Email              | Password      |
       | user1Name | nope@wearezeta.com | user1Password |
 
-  @staging @id2229
+  @regression @id2229
   Scenario: Use Gmail contacts import on registration
     Given There is 1 user where user1Name is me without avatar picture
     Given I switch to Sign In page
     Given I Sign in using login user1Email and password user1Password
     Given I see Self Picture Upload dialog
-    Given I choose userpicture_landscape.jpg as my self picture on Self Picture Upload dialog
+    Given I force carousel mode on Self Picture Upload dialog
     Given I confirm picture selection on Self Picture Upload dialog
     When I see Contacts Upload dialog
     And I click button to import Gmail Contacts

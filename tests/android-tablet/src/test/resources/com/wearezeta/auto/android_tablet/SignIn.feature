@@ -9,7 +9,7 @@ Feature: Sign In
     And I enter login "<Login>"
     And I enter password "<Password>"
     And I tap Sign In button
-    And I see the Conversations list
+    And I see the Conversations list with no conversations
     Then I see my name on Self Profile page
 
     Examples: 
@@ -39,7 +39,7 @@ Feature: Sign In
     And I enter login "<Login>"
     And I enter password "<Password>"
     And I tap Sign In button
-    And I see the Conversations list
+    And I see the Conversations list with no conversations
     Then I see my name on Self Profile page
 
     Examples: 

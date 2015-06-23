@@ -66,11 +66,8 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAllSoundAlertsButton)
 	private WebElement allSoundAlertsButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathSettingsChangePasswordButton)
+	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsChangePasswordButton)
 	private WebElement settingsChangePasswordButton;
-
-	@FindBy(how = How.NAME, using = IOSLocators.nameChangePasswordPageChangePasswordButton)
-	private WebElement changePasswordPageChangePasswordButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameOptionsHelpButton)
 	private WebElement settingsHelpButton;
@@ -205,9 +202,9 @@ public class PersonalInfoPage extends IOSPage {
 		wireWebsiteButton.click();
 	}
 
-	public boolean isWireWebsitePageVisible() {
-		return wireWebsitePageText.getAttribute("name").equals(
-				WIRE_WEBSITE_PAGE_VALUE);
+	public boolean isWireWebsitePageVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(IOSLocators.xpathWireWebsitePageText));
 	}
 
 	public void closeLegalPage() {
@@ -225,7 +222,10 @@ public class PersonalInfoPage extends IOSPage {
 	}
 
 	public boolean isResetPasswordPageVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(IOSLocators.xpathSettingsChangePasswordButton));
+		return DriverUtils
+				.waitUntilLocatorAppears(
+						getDriver(),
+						By.xpath(IOSLocators.xpathChangePasswordPageChangePasswordButton));
 	}
 
 	public void clickChangePasswordButton() {

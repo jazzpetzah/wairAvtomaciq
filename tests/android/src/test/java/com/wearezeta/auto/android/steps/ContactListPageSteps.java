@@ -37,9 +37,9 @@ public class ContactListPageSteps {
 					"No conversations are visible in the conversations list, but some are expected",
 					getContactListPage().isAnyConversationVisible());
 		} else {
-			Assert.assertFalse(
+			Assert.assertTrue(
 					"Some conversations are visible in the conversations list, but zero is expected",
-					getContactListPage().isAnyConversationVisible());
+					getContactListPage().isNoConversationsVisible());
 
 		}
 	}
@@ -115,7 +115,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently - seems bad...
 		}
-		getContactListPage().swipeRightOnContact(1500, contact);
+		getContactListPage().swipeRightOnConversation(1000, contact);
 	}
 
 	/**

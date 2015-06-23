@@ -21,6 +21,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class OtherUserPersonalInfoPage extends AndroidPage {
 
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
 			.getLog(OtherUserPersonalInfoPage.class.getSimpleName());
 
@@ -245,6 +246,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
+		final By confirmBtnLocator = By.id(idConfirmBtn);
+		DriverUtils.waitUntilLocatorDissapears(getDriver(), confirmBtnLocator,
+				3);
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}
 
@@ -281,17 +285,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 
 	public AndroidPage tapOnParticipant(String name) throws Exception {
 		this.getWait().until(ExpectedConditions.visibilityOf(groupChatName));
-		try {
-			final By nameLocator = By.xpath(xpathParticipantAvatarByName
-					.apply(name));
-			assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-					nameLocator);
-			this.getDriver().findElement(nameLocator).click();
-		} catch (Exception e) {
-			log.debug("Failed to find contact with name " + name
-					+ "\n. Page source: " + this.getDriver().getPageSource());
-			throw e;
-		}
+		final By nameLocator = By.xpath(xpathParticipantAvatarByName
+				.apply(name));
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(getDriver(), nameLocator);
+		// Wait for animation
+		Thread.sleep(1000);
+		this.getDriver().findElement(nameLocator).click();
 		if (connectToHeader.size() > 0) {
 			return new ConnectToPage(this.getLazyDriver());
 		} else {
@@ -307,9 +307,25 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return groupChatName.getText();
 	}
 
-	public DialogPage tabBackButton() throws Exception {
+	public DialogPage tapCloseButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), closeButton);
-		this.getDriver().navigate().back();
+		final int halfHeight = this.getDriver().manage().window().getSize()
+				.getHeight() / 2;
+		int ntry = 1;
+		final int maxRetries = 3;
+		do {
+			closeButton.click();
+			ntry++;
+		} while (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(PeoplePickerPage.idParticipantsClose), 1)
+				&& closeButton.getLocation().getY() < halfHeight
+				&& ntry <= maxRetries);
+		if (ntry > maxRetries) {
+			throw new AssertionError(
+					String.format(
+							"The conversations details screen has not been closed after %s retries",
+							maxRetries));
+		}
 		return new DialogPage(this.getLazyDriver());
 	}
 

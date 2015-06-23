@@ -35,7 +35,6 @@ import org.openqa.selenium.safari.SafariOptions;
 import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
@@ -68,7 +67,7 @@ public class CommonWebAppSteps {
 
 	public static final Platform CURRENT_PLATFORM = Platform.Web;
 
-	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
+	private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
 
 	private static void setCustomChromeProfile(DesiredCapabilities capabilities)
 			throws Exception {
@@ -104,6 +103,10 @@ public class CommonWebAppSteps {
 		SafariOptions options = new SafariOptions();
 		options.setUseCleanSession(true);
 		capabilities.setCapability(SafariOptions.CAPABILITY, options);
+	}
+
+	private static void setCustomIEProfile(DesiredCapabilities capabilities) {
+		capabilities.setCapability("ie.ensureCleanSession", true);
 	}
 
 	private static void setExtendedLoggingLevel(
@@ -180,13 +183,6 @@ public class CommonWebAppSteps {
 				} else {
 					lazyWebDriver.manage().window().maximize();
 				}
-				// Workaround: IE does not open with a new profile so we delete
-				// local and session storage manually
-				if (WebAppExecutionContext.getBrowser() == Browser.InternetExplorer) {
-					lazyWebDriver.get(url);
-					lazyWebDriver.executeScript("localStorage.clear();");
-					lazyWebDriver.executeScript("sessionStorage.clear();");
-				}
 				return lazyWebDriver;
 			}
 		};
@@ -237,6 +233,7 @@ public class CommonWebAppSteps {
 			break;
 		case InternetExplorer:
 			capabilities = DesiredCapabilities.internetExplorer();
+			setCustomIEProfile(capabilities);
 			break;
 		default:
 			throw new NotImplementedException(
@@ -374,13 +371,14 @@ public class CommonWebAppSteps {
 	public void IChangeUserAvatarPicture(String userNameAlias, String path)
 			throws Exception {
 		String avatar = null;
-		final String rootPath = CommonUtils
-				.getWebAppImagesPathFromConfig(getClass());
+		final String rootPath = "/images/";
 		if (path.equals("default")) {
 			avatar = DEFAULT_USER_PICTURE;
 		} else {
-			avatar = rootPath + "/" + path;
+			avatar = rootPath + path;
 		}
+		avatar = CommonWebAppSteps.class.getResource(avatar).getPath();
+		log.debug("Change avatar of user " + userNameAlias + " to " + avatar);
 		commonSteps.IChangeUserAvatarPicture(userNameAlias, avatar);
 	}
 
@@ -813,8 +811,10 @@ public class CommonWebAppSteps {
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
+				log.debug("Trying to quit webdriver for " + uniqueName);
 				webdriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
 						TimeUnit.MILLISECONDS).quit();
+				log.debug("Remove webdriver for " + uniqueName + " from map");
 				webdrivers.remove(uniqueName);
 			}
 		}

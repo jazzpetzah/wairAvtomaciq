@@ -61,6 +61,8 @@ public class WelcomePage extends AndroidPage {
 	public EmailSignInPage tapIHaveAnAccount() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idHaveAccountButton), 30);
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				haveAccountButton);
 		haveAccountButton.click();
 		return new EmailSignInPage(this.getLazyDriver());
 	}

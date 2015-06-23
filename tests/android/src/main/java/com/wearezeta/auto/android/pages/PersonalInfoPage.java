@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.pages;
 
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -36,21 +37,23 @@ public class PersonalInfoPage extends AndroidPage {
 	@FindBy(xpath = xpathSettingsBox)
 	private WebElement settingBox;
 
-	private static final String xpathEmailField = xpathParentSelfProfileOverlay
-			+ "//*[@id='ttv__profile__email']";
-	@FindBy(xpath = xpathEmailField)
-	private WebElement emailField;
+	@SuppressWarnings("unused")
+	private static final Function<String, String> xpathEmailFieldByValue = value -> String
+			.format(xpathParentSelfProfileOverlay
+					+ "//*[@id='ttv__profile__email' and @value='%s']", value);
 
-	public static final String xpathNameField = xpathParentSelfProfileOverlay
-			+ "//*[@id='ttv__profile__name']";
-	@FindBy(xpath = xpathNameField)
-	private WebElement nameField;
+	private static final Function<String, String> xpathNameFieldByValue = value -> String
+			.format(xpathParentSelfProfileOverlay
+					+ "//*[@id='ttv__profile__name' and @value='%s']", value);
 
 	private static final String xpathSettingsBtn = xpathParentSelfProfileOverlay
 			+ "//*[@id='ttv__profile__settings_box__settings']";
 	@FindBy(xpath = xpathSettingsBtn)
 	private WebElement settingsButton;
 
+	private static final Function<String, String> xpathEditFieldByValue = value -> String
+			.format(xpathParentSelfProfileOverlay
+					+ "//*[@id='tet__profile__guided' and @value='%s']", value);
 	private static final String xpathNameEdit = xpathParentSelfProfileOverlay
 			+ "//*[@id='tet__profile__guided']";
 	@FindBy(xpath = xpathNameEdit)
@@ -97,14 +100,6 @@ public class PersonalInfoPage extends AndroidPage {
 	public PersonalInfoPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
-	}
-
-	public boolean isPersonalInfoVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(emailField);
-	}
-
-	public void waitForEmailFieldVisible() throws Exception {
-		this.getWait().until(ExpectedConditions.visibilityOf(emailField));
 	}
 
 	public void tapOnPage() throws Exception {
@@ -171,26 +166,25 @@ public class PersonalInfoPage extends AndroidPage {
 		this.getWait().until(ExpectedConditions.visibilityOf(confirmBtn));
 	}
 
-	public void tapOnMyName() throws Exception {
-		this.getWait().until(ExpectedConditions.visibilityOf(nameField));
-		nameField.click();
-		if (!DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(xpathNameEdit))) {
-			DriverUtils.mobileTapByCoordinates(getDriver(), nameField);
-		}
+	public void tapOnMyName(String name) throws Exception {
+		final By nameFieldlocator = By.xpath(xpathNameFieldByValue.apply(name));
+		getDriver().findElement(nameFieldlocator).click();
 	}
 
-	public boolean isNameEditVisible() throws Exception {
+	public boolean waitUntilNameEditIsVisible(String name) throws Exception {
+		final By locator = By.xpath(xpathEditFieldByValue.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(xpathNameEdit));
+				locator);
 	}
 
-	public void clearSelfName() {
+	public void clearSelfName() throws Exception {
 		nameEdit.clear();
 	}
 
 	public void changeSelfNameTo(String newName) throws Exception {
 		nameEdit.sendKeys(newName);
+		// Sometimes a phone might fail to apple the new name without this sleep
+		Thread.sleep(500);
 		this.getDriver().navigate().back();
 	}
 
@@ -200,8 +194,9 @@ public class PersonalInfoPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public String getUserName() throws Exception {
-		return nameField.getText();
+	public boolean waitUntilNameIsVisible(String expectedName) throws Exception {
+		final By locator = By.xpath(xpathNameFieldByValue.apply(expectedName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, 3);
 	}
 
 	public AboutPage tapAboutButton() throws Exception {

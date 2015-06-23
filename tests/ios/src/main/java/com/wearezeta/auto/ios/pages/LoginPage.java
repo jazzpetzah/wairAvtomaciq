@@ -85,7 +85,7 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordEmailField)
 	private WebElement changePWEmailField;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameChangePasswordPageChangePasswordButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
 	private WebElement changePasswordPageChangePasswordButton;
 
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIATextField)
@@ -129,9 +129,16 @@ public class LoginPage extends IOSPage {
 		return this;
 	}
 	
-	public void switchToEmailLogin() {
-		backButton.click();
-		emailLoginButton.click();
+	public void switchToEmailLogin() throws Exception {
+		if(!backButton.getText().equals("REGISTRATION")) {
+			DriverUtils.mobileTapByCoordinates(getDriver(), backButton);
+		}
+		if (!DriverUtils.waitUntilLocatorAppears(getDriver(), 
+				By.name(IOSLocators.LoginPage.nameEmailLoginButton))) {
+			signIn();
+		} else {
+			DriverUtils.mobileTapByCoordinates(getDriver(), emailLoginButton);
+		}
 	}
 	
 	public void clickPhoneLogin() {

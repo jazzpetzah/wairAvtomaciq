@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -178,7 +179,13 @@ public class RegistrationPage extends IOSPage {
 
 	public void inputPhoneNumber(String number, String code) throws Exception {
 		selectCountryByCode(code);
-		phoneNumber.sendKeys(number);
+		getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
+		try {
+			phoneNumber.sendKeys(number);
+		} catch (WebDriverException ex) {
+			phoneNumber.clear();
+			phoneNumber.sendKeys(number);
+		}
 		confirmInput.click();
 	}
 

@@ -4,7 +4,7 @@ Feature: Self Profile
   Scenario Outline: Change user picture
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     When I tap on my avatar
     And I tap on personal info screen
     And I remember my current profile picture
@@ -24,7 +24,7 @@ Feature: Self Profile
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap conversation details button
@@ -38,11 +38,11 @@ Feature: Self Profile
   Scenario Outline: I can change my name
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I see Contact list
+    And I see Contact list with no contacts
     When I tap on my avatar
     And I see personal info page
     And I tap on my name
-    Then I see edit name field
+    Then I see edit name field with my name
     When I clear name field 
     And I change my name to <NewName>
     Then I see my new name <NewName>
@@ -55,7 +55,7 @@ Feature: Self Profile
   Scenario Outline: Change user picture with front camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list
+    Given I see Contact list with no contacts
     When I tap on my avatar
     And I tap on personal info screen
     And I remember my current profile picture

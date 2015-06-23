@@ -1,10 +1,10 @@
 Feature: People View
 
-  @staging @id600
+  @regression @id600
   Scenario Outline: Start group chat with users from contact list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I open search by taping on it
     And I see People picker page
@@ -18,15 +18,15 @@ Feature: People View
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
-  @staging @id2594
+  @regression @id2594
   Scenario Outline: Start group chat with users from contact list [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I open search by taping on it
     And I see People picker page
@@ -40,14 +40,14 @@ Feature: People View
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
-  @staging @id2434
+  @regression @id2434
   Scenario Outline: Start group chat from 1:1 conversation [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -69,15 +69,15 @@ Feature: People View
     Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name |
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id2653
+  @regression @id2653
   Scenario Outline: Start group chat from 1:1 conversation [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -98,15 +98,15 @@ Feature: People View
     Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name |
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
 
-  @smoke @id2445
+  @smoke @regression @id2445
   Scenario Outline: Verify leaving group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
@@ -118,16 +118,16 @@ Feature: People View
     Then I see You Left message in group chat
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroup    |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | LeaveGroup    |
 
-  @smoke @id2708
+  @smoke @regression @id2708
   Scenario Outline: Verify leaving group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
@@ -139,8 +139,8 @@ Feature: People View
     Then I see You Left message in group chat
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroup    |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | LeaveGroup    |
 
   @staging @id2441
   Scenario Outline: Verify removing from group conversation [PORTRAIT]

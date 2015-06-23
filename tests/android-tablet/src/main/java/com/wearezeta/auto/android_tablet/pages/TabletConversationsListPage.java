@@ -2,7 +2,6 @@ package com.wearezeta.auto.android_tablet.pages;
 
 import java.util.concurrent.Future;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ScreenOrientation;
 
@@ -12,14 +11,8 @@ import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class TabletConversationsListPage extends AndroidTabletPage {
-
-	@SuppressWarnings("unused")
-	private static final Logger log = ZetaLogger
-			.getLog(TabletConversationsListPage.class.getSimpleName());
-
 	public TabletConversationsListPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -128,6 +121,14 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		final By locator = By.xpath(ContactListPage.xpathMutedIconByConvoName
 				.apply(name));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
+	public boolean isAnyConversationVisible() throws Exception {
+		return getContactListPage().isAnyConversationVisible();
+	}
+
+	public boolean isNoConversationsVisible() throws Exception {
+		return getContactListPage().isNoConversationsVisible();
 	}
 
 }
