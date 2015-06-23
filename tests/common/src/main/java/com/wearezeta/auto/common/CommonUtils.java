@@ -330,17 +330,22 @@ public class CommonUtils {
 
 	public static String getWebAppApplicationPathFromConfig(Class<?> c)
 			throws Exception {
-		final String currentBackendType = getBackendType(c);
-		switch (currentBackendType.toLowerCase()) {
-		case "edge":
-			return getValueFromConfig(c, "webappEdgeApplicationPath");
-		case "staging":
-			return getValueFromConfig(c, "webappStagingApplicationPath");
-		case "production":
-			return getValueFromConfig(c, "webappProductionApplicationPath");
-		default:
-			throw new RuntimeException(String.format(
-					"Non supported backend type '%s'", currentBackendType));
+		String applicationPath = getValueFromConfig(c, "webappApplicationPath");
+		if (!applicationPath.equals("")) {
+			return applicationPath;
+		} else {
+			final String currentBackendType = getBackendType(c);
+			switch (currentBackendType.toLowerCase()) {
+			case "edge":
+				return getValueFromConfig(c, "webappEdgeApplicationPath");
+			case "staging":
+				return getValueFromConfig(c, "webappStagingApplicationPath");
+			case "production":
+				return getValueFromConfig(c, "webappProductionApplicationPath");
+			default:
+				throw new RuntimeException(String.format(
+						"Non supported backend type '%s'", currentBackendType));
+			}
 		}
 	}
 
