@@ -672,8 +672,8 @@ public class DriverUtils {
 			int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension size = element.getSize();
-		driver.tap(1, coords.x + size.getWidth() * percentX,
-			coords.y + size.getHeight() * percentY, 1);
+		driver.tap(1, coords.x + size.getWidth() * percentX / 100,
+			coords.y + size.getHeight() * percentY / 100, 1);
 		
 	}
 

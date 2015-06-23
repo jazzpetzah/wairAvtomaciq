@@ -32,6 +32,11 @@ public class SketchPage extends AndroidPage {
 		"purple"
 	};
 	
+	//dp * screen density. The padding value is taken from the file fragment_drawing.xml
+	//I'm not sure how to get it programmatically, but it shouldn't change very often.
+	//TODO calculate screen density through selendroid
+	private final int colorPickerPadding = 24 * 3;
+	
 	private int selectedColorIndex = 0; //default to white
 
 	public SketchPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
@@ -45,14 +50,14 @@ public class SketchPage extends AndroidPage {
 	
 	private void selectColorFromChooser() throws Exception {
 		int numColors = colors.length;
-		double colorPickerWidth = colorPicker.getSize().width;
+		double colorPickerElementWidth = colorPicker.getSize().width;
+		//the actual select area is a bit smaller than the width of the element
+		double colorPickerSelectorWidth = colorPickerElementWidth - 2 * colorPickerPadding;
 		
-		double colorWidth = colorPickerWidth / numColors;
-		
-		System.out.println("SELECTED COLOR: " + colors[selectedColorIndex]);
+		double colorWidth = colorPickerSelectorWidth / numColors;
 		
 		double colorPosition = colorWidth * selectedColorIndex + ((0.5) * colorWidth);
-		double percentX = colorPosition / colorPickerWidth * 100;
+		double percentX = (colorPickerPadding + colorPosition) / colorPickerElementWidth * 100;
 		int percentY = 50;
 		
 		DriverUtils.tapOnPercentOfElement(this.getDriver(), colorPicker, (int) percentX, percentY);

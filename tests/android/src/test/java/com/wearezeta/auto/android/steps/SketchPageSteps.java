@@ -26,8 +26,12 @@ public class SketchPageSteps {
 	 */
 	@When("^I draw a sketch with (.*) colors$")
 	public void WhenISwipeLeftOnTextInput(int numColors) throws Exception {
-		int colorIndex = new Random().nextInt(SketchPage.colors.length);
-		getSketchPage().setColor(colorIndex);
+		for (int i = 0; i < SketchPage.colors.length; i++) {
+			getSketchPage().setColor(i);
+		}
+		
+		
+		
 	}
 
 }
