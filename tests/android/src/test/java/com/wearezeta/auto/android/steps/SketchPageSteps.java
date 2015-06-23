@@ -29,11 +29,12 @@ public class SketchPageSteps {
 	 */
 	@When("^I draw a sketch with (.*) colors$")
 	public void WhenIDrawASketchWithXColors(int numColors) throws Exception {
-		getSketchPage().setColor("white");
+		SketchPage page = getSketchPage();
+		page.setColor("white");
 		
 		int numLines = 5;
-		getSketchPage().drawRandomLines(numLines);	
-		getSketchPage().sendSketch();
+		page.drawRandomLines(numLines);	
+		page.sendSketch();
 	}
 
 }
