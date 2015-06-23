@@ -208,7 +208,7 @@ public class PerformanceSteps {
 
 		CommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c",
-						"osascript /Project/iOS_Performance_Reports/export_data.scpt" });
+						"/usr/bin/osascript /Project/iOS_Performance_Reports/export_data.scpt" });
 
 	}
 
