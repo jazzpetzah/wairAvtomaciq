@@ -10,6 +10,7 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.ios.locators.IOSLocators;
+import com.wearezeta.auto.ios.tablet.locators.IOSTabletLocators;
 
 public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage {
 
@@ -22,6 +23,9 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameConversationMenu)
 	private WebElement conversationMenuButton;
+	
+	@FindBy(how = How.NAME, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.nameRenameButtonEllipsesMenue)
+	private WebElement renameEllipsesButton;
 
 	public void openConversationMenuOnPopover() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
@@ -39,6 +43,10 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 	public boolean waitForContactToDisappearOniPadPopover(String name) throws Exception{
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.name(name));
+	}
+	
+	public void pressRenameEllipsesButton(){
+		renameEllipsesButton.click();
 	}
 
 }
