@@ -85,8 +85,10 @@ public class GroupChatPage extends DialogPage {
 	}
 
 	public boolean isYouAddedUserMessageShown(String user) throws Exception {
-		return isMessageShownInGroupChat(String.format(
-				IOSLocators.nameYouAddetToGroupChatMessage, user.toUpperCase()));
+		String message = String.format(
+				IOSLocators.xpathYouAddetToGroupChatMessage, user.toUpperCase());
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(message));
 	}
 
 	public boolean isYouRenamedConversationMessageVisible(String name) {

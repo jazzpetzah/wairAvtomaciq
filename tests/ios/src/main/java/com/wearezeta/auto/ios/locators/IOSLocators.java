@@ -76,7 +76,7 @@ public final class IOSLocators {
 
 	public static final String namePickerSearch = "textViewSearch";
 	
-	public static final String namePickerClearButton = "PeoplePickerClearButton";
+	public static final String xpathPickerClearButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[3]";
 	
 	public static final String nameSendConnectButton = "SEND";
 	
@@ -194,7 +194,7 @@ public final class IOSLocators {
 	
 	public static final String idProvideValidEmailMessage = "PLEASE ENTER A VALID EMAIL ADDRESS"; 
 	
-	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
+	public static final String nameAddContactToChatButton = "OtherUserMetaControllerLeftButton";
 	
 	public static final String nameOtherUserEmailField = "ProfileOtherEmailField";
 	
@@ -434,7 +434,7 @@ public final class IOSLocators {
 	public static final String nameAddPeopleDialogHeader = "Add people and share history?";
 	public static final String nameAddPeopleCancelButton = "CANCEL";
 	public static final String nameAddPeopleContinueButton = "CONTINUE";
-	public static final String nameYouAddetToGroupChatMessage = "YOU ADDED %s";
+	public static final String xpathYouAddetToGroupChatMessage = "//UIAStaticText[contains(@name, 'YOU ADDED %s')]";
 	public static final String nameYouRenamedConversationMessage = "YOU RENAMED THE CONVERSATION";
 	
 	

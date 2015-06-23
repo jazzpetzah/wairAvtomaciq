@@ -31,13 +31,10 @@ Feature: People View
   Scenario Outline: Add user to a group conversation
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    When I create group chat with <Contact1> and <Contact2>
-    And I return to the chat list
-    And I see <Contact1> and <Contact2> chat in contact list
-    And I tap on a group chat with <Contact1> and <Contact2>
-    #And I swipe up on group chat page
+    When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press Add button
     And I see People picker page
@@ -52,8 +49,8 @@ Feature: People View
     And I can see You Added <Contact3> message
 
     Examples: 
-      | Name      | Contact1    | Contact2    | Contact3  | Number |
-      | user1Name | user2Name   | user3Name   | user4Name | 4      |
+      | Name      | Contact1    | Contact2    | Contact3  | Number | GroupChatName |
+      | user1Name | user2Name   | user3Name   | user4Name | 4      | TESTCHAT      |
       
   @regression @id1389
   Scenario Outline: Leave from group chat
@@ -176,10 +173,10 @@ Feature: People View
   Scenario Outline: Verify you can start 1:1 conversation from a group conversation profile
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    When I create group chat with <Contact1> and <Contact2>
-    #And I swipe up on group chat page
+    When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select contact <Contact1>
     And I tap on start dialog button on other user profile page
@@ -187,8 +184,8 @@ Feature: People View
     Then I see message in the dialog
 
     Examples: 
-      | Name      | Contact1    | Contact2   |
-      | user1Name | user2Name   | user3Name  |
+      | Name      | Contact1    | Contact2   | GroupChatName |
+      | user1Name | user2Name   | user3Name  | TESTCHAT      |
 
   @regression @id393
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
