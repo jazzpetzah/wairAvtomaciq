@@ -182,3 +182,40 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveGroup   |
+      
+  @torun @staging @id2446
+  Scenario Outline: Verify editing the conversation name [PORTRAIT]
+  	Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I press conversation menu button on iPad
+    And I press RENAME on the menu on iPad
+    And I change group conversation name on iPad popover to <ChatName>
+    
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
+      | user1Name | user2Name | user3Name | RenameGroup   | NewName	 |
+  
+  @staging @id2922
+  Scenario Outline: Verify editing the conversation name [LANDSCAPE]
+  	Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I press conversation menu button on iPad
+    And I press RENAME on the menu on iPad
+    And I change group conversation name on iPad popover to <ChatName>
+    
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |ChatName |
+      | user1Name | user2Name | user3Name | RenameGroup   |NewName  |
