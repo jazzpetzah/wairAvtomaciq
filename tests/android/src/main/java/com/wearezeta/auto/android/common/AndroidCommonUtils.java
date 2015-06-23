@@ -287,4 +287,11 @@ public class AndroidCommonUtils extends CommonUtils {
 	public static void tapBackButton() throws Exception {
 		executeAdb("shell input keyevent 4");
 	}
+	
+	public static double getScreenDensity() throws Exception {
+		String result = getAdbOutput("shell getprop ro.sf.lcd_density");
+		double screenPixels = Integer.parseInt(result);
+		double densityIndependentPixels = 160; //the number of dp in a screen is constant
+		return screenPixels / densityIndependentPixels;
+	}
 }

@@ -9,6 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
@@ -29,14 +30,18 @@ public class SketchPage extends AndroidPage {
 	// Colors should be in the order they appear in the color picker
 	public static final String[] colors = { "white", "black", "blue", "green",
 		"yellow", "red", "orange", "pink", "purple" };
+
 	private int selectedColorIndex = 0; // default to white
 
-	// dp * screen density. The padding value is taken from the file
-	// fragment_drawing.xml
-	// I'm not sure how to get it programmatically, but it shouldn't change very
-	// often.
-	// TODO calculate screen density through selendroid
-	private final int COLOR_PICKER_PADDING = 24 * 3;
+	/**
+	 * The padding value on either sides of the color picker. Taken from the
+	 * file fragment_drawing.xml in the client project resource files under the
+	 * ColorPickerCircleLayout view element
+	 */
+	private final int COLOR_PICKER_PADDING_DP = 24;
+
+	private int colorPickerPadding = (int) (COLOR_PICKER_PADDING_DP
+		* AndroidCommonUtils.getScreenDensity());
 
 	public SketchPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -58,13 +63,13 @@ public class SketchPage extends AndroidPage {
 		double colorPickerElementWidth = colorPicker.getSize().width;
 		// the actual select area is a bit smaller than the width of the element
 		double colorPickerSelectorWidth = colorPickerElementWidth - 2
-			* COLOR_PICKER_PADDING;
+			* colorPickerPadding;
 
 		double colorWidth = colorPickerSelectorWidth / numColors;
 
 		double colorPosition = colorWidth * selectedColorIndex
 			+ ((0.5) * colorWidth);
-		double percentX = (COLOR_PICKER_PADDING + colorPosition)
+		double percentX = (colorPickerPadding + colorPosition)
 			/ colorPickerElementWidth * 100;
 		int percentY = 50;
 
