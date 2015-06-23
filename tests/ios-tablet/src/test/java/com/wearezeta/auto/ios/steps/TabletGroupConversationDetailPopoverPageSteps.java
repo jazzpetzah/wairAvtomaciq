@@ -61,6 +61,7 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 	 * 
 	 * @step. ^I select user on iPad group popover (.*)$
 	 * @param name
+	 *            of user I select
 	 * @throws Throwable
 	 */
 	@When("^I select user on iPad group popover (.*)$")
@@ -75,6 +76,7 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 	 * 
 	 * @step. ^I see that contact (.*) is not present on group popover on iPad$
 	 * @param name
+	 *            of user that got removed, should not be there
 	 * @throws Throwable
 	 */
 	@Then("^I see that contact (.*) is not present on group popover on iPad$")
@@ -83,6 +85,32 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		Assert.assertTrue(getTabletGroupConversationDetailPopoverPage()
 				.waitForContactToDisappearOniPadPopover(name));
+	}
+
+	/**
+	 * Presses in the ellipses menu on the RENAME button
+	 * 
+	 * @step. ^I press RENAME on the menu on iPad$
+	 * @throws Throwable
+	 */
+	@When("^I press RENAME on the menu on iPad$")
+	public void IPressRENAMEOnTheMenuOniPad() throws Throwable {
+		getTabletGroupConversationDetailPopoverPage()
+				.pressRenameEllipsesButton();
+	}
+
+	/**
+	 * Changes name of the group on the ipad popover
+	 * 
+	 * @step. ^I change group conversation name on iPad popover to (.*)$
+	 * @param groupname
+	 *            new name of the conversation
+	 * @throws Throwable
+	 */
+	@When("^I change group conversation name on iPad popover to (.*)$")
+	public void IChangeGroupConversationNameOniPadPopoverTo(String groupname)
+			throws Throwable {
+		getTabletGroupConversationDetailPopoverPage().changeConversationName(groupname);
 	}
 
 }
