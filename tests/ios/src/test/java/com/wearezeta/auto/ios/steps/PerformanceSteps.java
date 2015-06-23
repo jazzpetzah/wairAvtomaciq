@@ -187,20 +187,25 @@ public class PerformanceSteps {
 	}
 
 	private void exportTraceToCSV() throws Exception {
+
+		String script = String.format(CommonUtils
+				.readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
+
+		ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
+		log.debug("Script engine: " + engine);
+		log.debug("Script to execute: " + script);
+		try {
+			engine.eval(script);
+		} catch (Exception e) {
+			log.debug(e.getMessage());
+			e.printStackTrace();
+		}
+
 		/*
-		 * String script = String.format(CommonUtils
-		 * .readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
-		 * 
-		 * ScriptEngineManager mgr = new ScriptEngineManager(); ScriptEngine
-		 * engine = mgr.getEngineByName("AppleScriptEngine");
-		 * log.debug("Script engine: " + engine);
-		 * log.debug("Script to execute: " + script); try { engine.eval(script);
-		 * } catch (Exception e) { log.debug(e.getMessage());
-		 * e.printStackTrace(); }
+		 * CommonUtils .executeOsXCommand(new String[] { "bash", "-c",
+		 * "osascript /Project/iOS_Performance_Reports/export_data.scpt" });
 		 */
-		CommonUtils
-				.executeOsXCommand(new String[] { "bash", "-c",
-						"osascript /Project/iOS_Performance_Reports/export_data.scpt" });
 	}
 
 	/**
