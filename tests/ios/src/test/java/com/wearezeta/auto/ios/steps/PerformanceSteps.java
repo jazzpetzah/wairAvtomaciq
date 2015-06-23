@@ -1,13 +1,11 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.io.File;
-import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.Map;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -29,6 +27,12 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
+	static {
+		// for Jenkins slaves we should define that environment has display
+		CommonUtils.defineNoHeadlessEnvironment();
+		// disabling selenium logs to exclude not used output from log
+		CommonUtils.disableSeleniumLogs();
+	}
 
 	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
 			.getSimpleName());
