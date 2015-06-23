@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.ios.pages.TabletGroupConversationDetailPopoverPage;
 import com.wearezeta.auto.ios.pages.TabletOtherUserInfoPage;
 
 import cucumber.api.java.en.When;
