@@ -36,5 +36,5 @@ public class TabletConversationDetailPopoverPage extends OtherUserPersonalInfoPa
 		//catchShareContactsAlert();
 		return new TabletPeoplePickerPage(this.getLazyDriver());
 	}
-
+	
 }

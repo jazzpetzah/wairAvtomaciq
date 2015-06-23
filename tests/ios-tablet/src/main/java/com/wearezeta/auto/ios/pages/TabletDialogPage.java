@@ -39,5 +39,5 @@ public class TabletDialogPage extends DialogPage {
 		openConversationDetails.click();
 		return new TabletGroupConversationDetailPopoverPage(this.getLazyDriver());
 	}
-
+	
 }
