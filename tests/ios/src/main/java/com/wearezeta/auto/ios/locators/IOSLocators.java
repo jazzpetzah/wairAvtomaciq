@@ -194,7 +194,7 @@ public final class IOSLocators {
 	
 	public static final String idProvideValidEmailMessage = "PLEASE ENTER A VALID EMAIL ADDRESS"; 
 	
-	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
+	public static final String nameAddContactToChatButton = "OtherUserMetaControllerLeftButton";
 	
 	public static final String nameOtherUserEmailField = "ProfileOtherEmailField";
 	
