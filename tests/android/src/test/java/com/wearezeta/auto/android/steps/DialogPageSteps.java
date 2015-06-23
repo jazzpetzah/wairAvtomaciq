@@ -169,6 +169,20 @@ public class DialogPageSteps {
 	public void WhenIPressCallButton() throws Exception {
 		getDialogPage().tapCallBtn();
 	}
+	
+	/**
+	 * Press on the sketch button in the input controls
+	 * 
+	 * @step. ^I press Sketch button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I press Sketch button$")
+	public void WhenIPressOnSketchButton() throws Exception {
+		getDialogPage().tapSketchBtn();
+	}
+	
+	
 
 	/**
 	 * Press on the mute button in the calling controls
