@@ -110,7 +110,19 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 	@When("^I change group conversation name on iPad popover to (.*)$")
 	public void IChangeGroupConversationNameOniPadPopoverTo(String groupname)
 			throws Throwable {
-		getTabletGroupConversationDetailPopoverPage().changeConversationName(groupname);
+		getTabletGroupConversationDetailPopoverPage().changeConversationName(
+				groupname);
+	}
+	
+	/**
+	 * Closes the group info popover
+	 * 
+	 * @step. ^I exit the group info iPad popover$
+	 * @throws Throwable
+	 */
+	@When("^I exit the group info iPad popover$")
+	public void IExitTheGroupInfoiPadPopover() throws Throwable {
+		getTabletGroupConversationDetailPopoverPage().exitGroupChatPopover();
 	}
 
 }
