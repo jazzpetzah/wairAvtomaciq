@@ -156,7 +156,7 @@ Feature: People View
     And I do not see 1:1 options menu
     When I press options menu button
     And I see correct 1:1 options menu
-    #Need to delete small swipe check if it will be unstables
+    #Need to delete small swipe check if it will be unstable
     When I do small swipe down
     And I wait for 1 second
     Then I do not see profile page
