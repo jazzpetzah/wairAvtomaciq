@@ -24,7 +24,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
-    And I archive conversation <Contact>
+    And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
     And I long swipe right to archive conversation <Contact2>
     Then I dont see conversation <Contact2> in contact list
@@ -67,7 +67,7 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
     When I swipe right on a <GroupChatName>
-    And I archive conversation <GroupChatName>
+    And I click archive button for conversation <GroupChatName>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations
     Then I see user <GroupChatName> in contact list
