@@ -300,3 +300,20 @@ Feature: Conversation View
       | Name      | Contact1  | YoutubeLink                                    |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs    |
       
+     
+  @id2814 @torun
+  Scenario Outline: I can send a sketch
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe on text input
+    And I press Sketch button
+
+    Examples: 
+      | Name      | Contact1  | Message     |
+      | user1Name | user2Name | go go go    |
+      
+      

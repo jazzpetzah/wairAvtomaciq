@@ -149,6 +149,10 @@ public class DialogPage extends AndroidPage {
 	private static final String idPing = "gtv__cursor_knock";
 	@FindBy(id = idPing)
 	private WebElement pingBtn;
+	
+	private static final String idSketch = "gtv__";
+	@FindBy(id = idSketch)
+	private WebElement sketchBtn;
 
 	private static final String idCallingMessage = "ttv__calling__message";
 	@FindBy(id = idCallingMessage)
@@ -256,6 +260,11 @@ public class DialogPage extends AndroidPage {
 	public void tapPingBtn() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), pingBtn);
 		pingBtn.click();
+	}
+	
+	public void tapSketchBtn() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), pingBtn);
+		sketchBtn.click();
 	}
 
 	public void tapCallBtn() throws Exception {
