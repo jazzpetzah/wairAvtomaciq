@@ -147,7 +147,7 @@ Feature: People View
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
@@ -159,8 +159,8 @@ Feature: People View
     Then I see that contact <Contact2> is not present on group popover on iPad
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveGroup   |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | RemoveGroup   |
 
   @staging @id2981
   Scenario Outline: Verify removing from group conversation [LANDSCAPE]
@@ -168,7 +168,7 @@ Feature: People View
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
-    Given I Sign in using phone number or login <Login> and password <Password>
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
@@ -180,5 +180,5 @@ Feature: People View
     Then I see that contact <Contact2> is not present on group popover on iPad
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | RemoveGroup   |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | RemoveGroup   |
