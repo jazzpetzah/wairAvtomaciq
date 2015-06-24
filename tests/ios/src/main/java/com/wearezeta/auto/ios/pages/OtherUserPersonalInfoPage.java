@@ -36,9 +36,6 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameExitOtherUserPersonalInfoPageButton)
 	private WebElement exitOtherPersonalInfoPageButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.DialogInfoPage.nameEllipsisMenuButton)
-	private WebElement ellipsisMenuButton;
-
 	@FindBy(how = How.NAME, using = IOSLocators.DialogInfoPage.nameArchiveButton)
 	private WebElement archiveButton;
 
@@ -81,8 +78,8 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		}
 	}
 
-	public void openEllipsisMenu() {
-		ellipsisMenuButton.click();
+	public void openEllipsisMenu() throws Exception {
+		openConversationMenu();
 	}
 
 	public void clickArchiveMenuButton() {
