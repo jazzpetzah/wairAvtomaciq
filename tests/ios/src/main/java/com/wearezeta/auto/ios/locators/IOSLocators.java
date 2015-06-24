@@ -76,7 +76,7 @@ public final class IOSLocators {
 
 	public static final String namePickerSearch = "textViewSearch";
 	
-	public static final String xpathPickerClearButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[3]";
+	public static final String namePickerClearButton = "PeoplePickerClearButton";
 	
 	public static final String nameSendConnectButton = "SEND";
 	
@@ -166,6 +166,8 @@ public final class IOSLocators {
 	
 	public static final String nameConversationMenu = "metaControllerRightButton";
 	
+	public static final String nameOtherUserConversationMenu = "OtherUserMetaControllerRightButton";
+	
 	public static final String nameLeaveConversationAlert = "Leave the conversation?";
 
 	public static final String nameLeaveConversationButton = "LEAVE";
@@ -194,7 +196,9 @@ public final class IOSLocators {
 	
 	public static final String idProvideValidEmailMessage = "PLEASE ENTER A VALID EMAIL ADDRESS"; 
 	
-	public static final String nameAddContactToChatButton = "OtherUserMetaControllerLeftButton";
+	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
+	
+	public static final String nameOtherUserAddContactToChatButton = "OtherUserMetaControllerLeftButton";
 	
 	public static final String nameOtherUserEmailField = "ProfileOtherEmailField";
 	

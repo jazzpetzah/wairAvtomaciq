@@ -347,11 +347,11 @@ public class DialogPage extends IOSPage {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 					By.name(IOSLocators.nameOpenConversationDetails))) {
 				openConversationDetails.click();
-				DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-						By.name(IOSLocators.nameAddContactToChatButton), 5);
 			}
 			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.nameAddContactToChatButton))) {
+					By.name(IOSLocators.nameAddContactToChatButton), 2) ||
+					DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+							By.name(IOSLocators.nameOtherUserAddContactToChatButton), 2)) {
 				break;
 			} else {
 				swipeUp(1000);

@@ -26,6 +26,9 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
 	private WebElement addButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameOtherUserAddContactToChatButton)
+	private WebElement addOtherUserButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameContinueButton)
 	private WebElement continueButton;
@@ -48,6 +51,9 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameAddContactToChatButton)
 	private WebElement startDialogButton;
 
+	@FindBy(how = How.NAME, using = IOSLocators.nameOtherUserConversationMenu)
+	private WebElement otherUserConversationMenuButton;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameConversationMenu)
 	private WebElement conversationMenuButton;
 
@@ -94,7 +100,11 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	}
 
 	public PeoplePickerPage addContactToChat() throws Exception {
-		addButton.click();
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(IOSLocators.nameAddContactToChatButton), 2)) {
+			addButton.click();
+		} else {
+			addOtherUserButton.click();
+		}
 		catchContinueAlert();
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
@@ -152,8 +162,12 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		return page;
 	}
 
-	public void openConversationMenu() throws InterruptedException {
-		conversationMenuButton.click();
+	public void openConversationMenu() throws Exception {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(IOSLocators.nameConversationMenu), 2)) {
+			conversationMenuButton.click();
+		} else {
+			otherUserConversationMenuButton.click();
+		}
 		Thread.sleep(2000);
 	}
 
