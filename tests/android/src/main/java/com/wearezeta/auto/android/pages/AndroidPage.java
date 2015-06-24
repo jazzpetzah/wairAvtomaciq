@@ -219,48 +219,48 @@ public abstract class AndroidPage extends BasePage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public AndroidPage swipeRightCoordinates(int durationMilliseconds)
+	public AndroidPage swipeRightCoordinates_old(int durationMilliseconds)
 			throws Exception {
 		DriverUtils.swipeRightCoordinates(this.getDriver(),
 				durationMilliseconds);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
-	public AndroidPage swipeRightCoordinates(int durationMilliseconds,
+	public AndroidPage swipeRightCoordinates_old(int durationMilliseconds,
 			int horizontalPercent) throws Exception {
 		DriverUtils.swipeRightCoordinates(this.getDriver(),
 				durationMilliseconds, horizontalPercent);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
-	public AndroidPage swipeLeftCoordinates(int durationMilliseconds)
+	public AndroidPage swipeLeftCoordinates_old(int durationMilliseconds)
 			throws Exception {
 		DriverUtils
 				.swipeLeftCoordinates(this.getDriver(), durationMilliseconds);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
-	public AndroidPage swipeLeftCoordinates(int durationMilliseconds,
+	public AndroidPage swipeLeftCoordinates_old(int durationMilliseconds,
 			int horizontalPercent) throws Exception {
 		DriverUtils.swipeLeftCoordinates(this.getDriver(),
 				durationMilliseconds, horizontalPercent);
 		return returnBySwipe(SwipeDirection.LEFT);
 	}
 
-	public AndroidPage swipeUpCoordinates(int durationMilliseconds)
+	public AndroidPage swipeUpCoordinates_old(int durationMilliseconds)
 			throws Exception {
 		DriverUtils.swipeUpCoordinates(this.getDriver(), durationMilliseconds);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	public AndroidPage swipeUpCoordinates(int durationMilliseconds,
+	public AndroidPage swipeUpCoordinates_old(int durationMilliseconds,
 			int verticalPercent) throws Exception {
 		DriverUtils.swipeUpCoordinates(this.getDriver(), durationMilliseconds,
 				verticalPercent);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 
-	public AndroidPage swipeByCoordinates(int durationMilliseconds,
+	public AndroidPage swipeByCoordinates_old(int durationMilliseconds,
 			int widthStartPercent, int hightStartPercent, int widthEndPercent,
 			int hightEndPercent) throws Exception {
 		DriverUtils.swipeByCoordinates(this.getDriver(), durationMilliseconds,
@@ -269,18 +269,78 @@ public abstract class AndroidPage extends BasePage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public AndroidPage swipeDownCoordinates(int durationMilliseconds)
+	public AndroidPage swipeDownCoordinates_old(int durationMilliseconds)
 			throws Exception {
 		DriverUtils
 				.swipeDownCoordinates(this.getDriver(), durationMilliseconds);
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public AndroidPage swipeDownCoordinates(int durationMilliseconds,
+	public AndroidPage swipeDownCoordinates_old(int durationMilliseconds,
 			int verticalPercent) throws Exception {
 		DriverUtils.swipeDownCoordinates(this.getDriver(),
 				durationMilliseconds, verticalPercent);
 		return returnBySwipe(SwipeDirection.DOWN);
+	}
+
+	public void swipeByCoordinates(int durationMilliseconds,
+			int widthStartPercent, int hightStartPercent, int widthEndPercent,
+			int hightEndPercent) throws Exception {
+		final Dimension screenDimension = getDriver().manage().window()
+				.getSize();
+		this.getDriver().swipe(screenDimension.width * widthStartPercent / 100,
+				screenDimension.height * hightStartPercent / 100,
+				screenDimension.width * widthEndPercent / 100,
+				screenDimension.height * hightEndPercent / 100,
+				durationMilliseconds);
+	}
+
+	public static final int SWIPE_DEFAULT_PERCENTAGE_START = 10;
+	public static final int SWIPE_DEFAULT_PERCENTAGE_END = 90;
+	public static final int SWIPE_DEFAULT_PERCENTAGE = 50;
+
+	public void swipeRightCoordinates(int durationMilliseconds)
+			throws Exception {
+		swipeRightCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
+	}
+
+	public void swipeRightCoordinates(int durationMilliseconds,
+			int heightPercent) throws Exception {
+		swipeByCoordinates(durationMilliseconds,
+				SWIPE_DEFAULT_PERCENTAGE_START, heightPercent,
+				SWIPE_DEFAULT_PERCENTAGE_END, heightPercent);
+	}
+
+	public void swipeLeftCoordinates(int durationMilliseconds) throws Exception {
+		swipeLeftCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
+	}
+
+	public void swipeLeftCoordinates(int durationMilliseconds, int heightPercent)
+			throws Exception {
+		swipeByCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE_END,
+				heightPercent, SWIPE_DEFAULT_PERCENTAGE_START, heightPercent);
+	}
+
+	public void swipeUpCoordinates(int durationMilliseconds) throws Exception {
+		swipeUpCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
+	}
+
+	public void swipeUpCoordinates(int durationMilliseconds, int widthPercent)
+			throws Exception {
+		swipeByCoordinates(durationMilliseconds, widthPercent,
+				SWIPE_DEFAULT_PERCENTAGE_END, widthPercent,
+				SWIPE_DEFAULT_PERCENTAGE_START);
+	}
+
+	public void swipeDownCoordinates(int durationMilliseconds) throws Exception {
+		swipeDownCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
+	}
+
+	public void swipeDownCoordinates(int durationMilliseconds, int widthPercent)
+			throws Exception {
+		swipeByCoordinates(durationMilliseconds, widthPercent,
+				SWIPE_DEFAULT_PERCENTAGE_START, widthPercent,
+				SWIPE_DEFAULT_PERCENTAGE_END);
 	}
 
 	public void tapButtonByClassNameAndIndex(WebElement element,

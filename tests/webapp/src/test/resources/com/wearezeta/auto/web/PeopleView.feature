@@ -30,7 +30,7 @@ Feature: People View
     And I click People button in group conversation
     And I see Group Participants popover
     When I click Leave button on Group Participants popover
-      And I click confirm leave group conversation on Group Participants popover
+    And I click confirm leave group conversation on Group Participants popover
     And I wait for 2 seconds
     Then I do not see Contact list with name <ChatName>
     When I open archive

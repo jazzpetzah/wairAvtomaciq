@@ -122,7 +122,9 @@ Feature: Search
     When I click on not connected user <Name2> found in People Picker
     And I see Connect To popover
     And I click Connect button on Connect To popover
-    Then I see Contact list with name <Name2>
+    Then I see conversation with <Name2> is selected in conversations list
+    And I open conversation with <Name2>
+    And I see CONNECTING TO action for <Name2> in conversation
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
