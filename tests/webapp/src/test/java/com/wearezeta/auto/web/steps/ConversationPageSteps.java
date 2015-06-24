@@ -616,6 +616,15 @@ public class ConversationPageSteps {
 	public void IClickOnBlackBorderToCloseFullscreen() throws Exception {
 		PagesCollection.conversationPage.clickOnBlackBorder();
 	}
-	
-	
+
+	@When("^I click GIF button$")
+	public void IClickGIFButton() throws Throwable {
+		PagesCollection.giphyPage = PagesCollection.conversationPage
+				.clickGIFButton();
+	}
+
+	@Then("^I see sent gif in the conversation view$")
+	public void ISeeSentGifInTheConversationView() throws Throwable {
+	    PagesCollection.conversationPage.isGifVisible();
+	}
 }

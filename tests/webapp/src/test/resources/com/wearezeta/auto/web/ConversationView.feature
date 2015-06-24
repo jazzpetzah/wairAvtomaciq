@@ -205,9 +205,31 @@ Feature: Conversation View
     Then I do not see picture in fullscreen
     When I click on picture
     Then I see picture in fullscreen
-    When I click on black border to close fullscreen mode 
+    When I click on black border to close fullscreen mode
     Then I do not see picture in fullscreen
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
+
+  @id2891 @staging
+  Scenario Outline: Verify you can send not-random gif with giphy button
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I write message <Message>
+    And I click GIF button
+    Then I see Giphy popup
+    And I verify that the search of the Giphy popup contains <Message>
+    And I see gif image in Giphy popup
+    And I see more button in Giphy popup
+    When I click send button in Giphy popup
+    Then I verify the last text message equals to <ExpectedMessage>
+    And I see sent gif in the conversation view
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     |
+      | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com |

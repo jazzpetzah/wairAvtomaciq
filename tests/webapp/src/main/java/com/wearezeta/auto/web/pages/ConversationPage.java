@@ -54,6 +54,9 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPingButton)
 	private WebElement pingButton;
 
+	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idGIFButton)
+	private WebElement gifButton;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathCallButton)
 	private WebElement callButton;
 
@@ -358,5 +361,19 @@ public class ConversationPage extends WebPage {
 
 	public void clickOnBlackBorder() throws Exception {
 		blackBorder.click();
+	}
+
+	public GiphyPage clickGIFButton() throws Exception {
+		gifButton.click();
+		return new GiphyPage(getLazyDriver());
+	}
+
+	public boolean isGifVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssLastImageEntry),
+						40);
+
 	}
 }
