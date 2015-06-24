@@ -17,20 +17,23 @@ public class StartedCallPage extends CallPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathCallingMessage)
 	private WebElement callingMessage;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathEndCallButton)
+	@FindBy(how = How.NAME, using = IOSLocators.StartedCallPage.nameEndCallButton)
 	private WebElement endCallButton;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathiPadEndCallButton)
 	private WebElement iPadEndCallButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathSpeakersButton)
+	@FindBy(how = How.NAME, using = IOSLocators.StartedCallPage.nameSpeakersButton)
 	private WebElement speakersButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathMuteCallButton)
+	@FindBy(how = How.NAME, using = IOSLocators.StartedCallPage.nameMuteCallButton)
 	private WebElement muteCallButton;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.StartedCallPage.xpathiPadMuteCallButton)
 	private WebElement iPadMuteCallButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameCallingMessageUser)
+	private WebElement callingMessageUser;
 
 	public boolean isCallingMessageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -63,20 +66,23 @@ public class StartedCallPage extends CallPage {
 		return null;
 	}
 
-	public boolean isEndCallVisible() {
-		return endCallButton.isDisplayed();
+	public boolean isEndCallVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.StartedCallPage.nameEndCallButton));
 	}
 	
 	public boolean isIPadEndCallVisible() {
 		return iPadEndCallButton.isDisplayed();
 	}
 
-	public boolean isSpeakersVisible() {
-		return speakersButton.isDisplayed();
+	public boolean isSpeakersVisible() throws Exception {
+		return  DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.StartedCallPage.nameSpeakersButton));
 	}
 
-	public boolean isMuteCallVisible() {
-		return muteCallButton.isDisplayed();
+	public boolean isMuteCallVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.StartedCallPage.nameMuteCallButton));
 	}
 	
 	public boolean isIPadMuteCallVisible() {
