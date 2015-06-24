@@ -17,7 +17,7 @@ public class IncomingCallPage extends CallPage {
 	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameAcceptCallButton)
 	private WebElement acceptCallButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathEndCallButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.nameEndCallButton)
 	private WebElement endCallButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathCallingMessage)
