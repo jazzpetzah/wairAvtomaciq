@@ -184,7 +184,7 @@ public class PerformanceSteps {
 	}
 
 	private void exportTraceToCSV() throws Exception {
-
+/*
 		String script = String.format(CommonUtils
 				.readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
 
@@ -198,8 +198,8 @@ public class PerformanceSteps {
 			log.debug(e.getMessage());
 			e.printStackTrace();
 		}
-
-/*		CommonUtils
+*/
+		CommonUtils
 				.executeOsXCommand(new String[] {
 						"bash",
 						"-c",
@@ -207,7 +207,7 @@ public class PerformanceSteps {
 								+ CommonUtils
 										.getJenkinsSuperUserPassword(CommonUtils.class)
 								+ "| sudo -S osascript /Project/iOS_Performance_Reports/export_data.scpt" });
-*/
+
 	}
 
 	/**
