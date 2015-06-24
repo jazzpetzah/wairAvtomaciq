@@ -541,14 +541,23 @@ public final class IOSLocators {
 		
 		public static final String xpathStartedCallMessageUser = "//UIAStaticText[@name='%s']";
 		
-		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CALLING')]";
+		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CallStatusLabel')]";
+		
+		public static final String xpathEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[3]";
+		
+		public static final String nameCallingUsersAvatar = "CallingUsersImage";
 		
 		//Once all call banner buttons get own names these locators and related methods should be refactored
-		public static final String xpathEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[3]";
+		
+		public static final String nameEndCallButton = "LeaveCallButton";
 		
 		public static final String xpathiPadEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[1]";
 		
 		public static final String xpathSpeakersButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[4]";
+		
+		public static final String nameSpeakersButton = "CallSpeakerButton";
+		
+		public static final String nameMuteCallButton = "CallMuteButton";
 		
 		public static final String xpathMuteCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[5]";
 		
@@ -558,14 +567,20 @@ public final class IOSLocators {
 	public final class IncomingCallPage {
 		
 		public static final String xpathCallingMessageUser = "//UIAStaticText[contains(@name, 'IS CALLING') and contains(@name, '%s')]";
+
+		public static final String nameCallingMessageUser = "CallStatusLabel";
 		
 		public static final String xpathAcceptCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[1]";
+		
+		public static final String nameAcceptCallButton = "AcceptButton";
 		
 		public static final String xpathEndCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[2]";
 		
 		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'IS CALLING')]";
 		
 		public static final String xpathIgnoreCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[2]";
+		
+		public static final String nameIgnoreCallButton = "IgnoreButton";
 	}
 	
 	public final class DialogPage {

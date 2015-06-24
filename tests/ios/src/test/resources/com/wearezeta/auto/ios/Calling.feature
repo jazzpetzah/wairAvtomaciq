@@ -86,7 +86,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @regression @id1228 
+  @regression @id1228
   Scenario Outline: Verify missed call indicator appearance (list)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -105,7 +105,7 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
-      
+
   @calling_basic @id882
   Scenario Outline: In zeta call for more than 15 mins
     Given There are 2 users where <Name> is me
@@ -129,7 +129,7 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | webdriver   | 120     |
-      
+
   @calling_basic @id2296
   Scenario Outline: Screenlock device when in the call
     Given There are 2 users where <Name> is me
@@ -178,7 +178,7 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | user3Name | webdriver   | autocall     | 120     |
-      
+
   @calling_basic @id2646
   Scenario Outline: Put app into background after initiating call
     Given There are 2 users where <Name> is me

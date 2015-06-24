@@ -35,8 +35,7 @@ public class CallPageSteps {
 	@When("^I see calling to contact (.*) message$")
 	public void ISeeCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(getStartedCallPage().isIncomingCallMessageVisible(
-				contact.toUpperCase()));
+		Assert.assertTrue(getStartedCallPage().isCallingMessageVisible());
 	}
 
 	/**
@@ -52,8 +51,8 @@ public class CallPageSteps {
 				getStartedCallPage().isEndCallVisible());
 		Assert.assertTrue("Mute call button is not visible",
 				getStartedCallPage().isMuteCallVisible());
-		Assert.assertTrue("Speakers button is not visible",
-				getStartedCallPage().isSpeakersVisible());
+//		Assert.assertTrue("Speakers button is not visible",
+//				getStartedCallPage().isSpeakersVisible());
 	}
 
 	/**
