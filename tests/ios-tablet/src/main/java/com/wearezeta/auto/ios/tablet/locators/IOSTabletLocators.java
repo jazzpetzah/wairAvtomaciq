@@ -15,7 +15,7 @@ public final class IOSTabletLocators {
 	
 	public static final class TabletPeoplePickerPage{
 		public static final String nameShareContactsButton = "SHARE CONTACTS";
-		public static final String xpathIPADPeoplePickerResultUserName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[@name='%s']";
+		public static final String xpathIPADPeoplePickerResultUserName = "//UIAPopover//UIAStaticText[@name='%s']";
 		public static final String nameSearchField = "SEARCH BY NAME OR EMAIL";
 		public static final String xpathSearchField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIATextView[@name='textViewSearch']";
 	}
@@ -26,5 +26,9 @@ public final class IOSTabletLocators {
 		
 	}
 	
+	public static final class TabletOtherUserInfoPage {
+		public static final String nameOtherUserMetaControllerRightButtoniPadPopover = "OtherUserMetaControllerRightButton";
+		
+	}
 	
 }

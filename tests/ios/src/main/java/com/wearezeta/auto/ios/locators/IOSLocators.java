@@ -182,7 +182,7 @@ public final class IOSLocators {
     
     public static final String nameComfirmRemoveButton = "REMOVE";
 
-	public static final String nameRemoveFromConversation = "metaControllerRightButton";
+	public static final String nameRemoveFromConversation = "OtherUserMetaControllerRightButton";
 	
 	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
