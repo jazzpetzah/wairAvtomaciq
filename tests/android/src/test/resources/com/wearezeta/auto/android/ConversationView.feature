@@ -141,7 +141,7 @@ Feature: Conversation View
       | Name      | Contact   | Message                           |
       | user1Name | user2Name | ÄäÖöÜüß simple message in english |
 
-  @mute @regression @id149
+  @id149 @mute @regression
   Scenario Outline: Send emoji message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -172,7 +172,7 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   | Message                     |
       | user1Name | user2Name | 畑 はたけ hatake field of crops |
-      
+
   @id163 @regression
   Scenario Outline: Send image using existing camera rolls (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
@@ -240,7 +240,7 @@ Feature: Conversation View
     Then I rotate UI to portrait
     And I navigate back from dialog page
     And I see Contact list
-    
+
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
@@ -297,11 +297,10 @@ Feature: Conversation View
     Then I see Play button on Youtube container
 
     Examples: 
-      | Name      | Contact1  | YoutubeLink                                    |
-      | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs    |
-      
-     
-  @id2814 @verification @torun
+      | Name      | Contact1  | YoutubeLink                                 |
+      | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
+
+  @id2814 @verification
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -318,6 +317,4 @@ Feature: Conversation View
 
     Examples: 
       | Name      | Contact1  | NumColors |
-      | user1Name | user2Name | 6			|
-      
-      
+      | user1Name | user2Name | 6         |
