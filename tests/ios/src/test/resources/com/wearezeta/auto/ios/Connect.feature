@@ -254,4 +254,19 @@ Feature: Connect
     Examples: 
       | Name      | UnconnectedUser | ContactEmail | StartLetter |Color        |
       | user1Name | user2Name       | user2Email   | T           |BrightOrange |
+      
+  @staging @id2768 @deployAddressBook @noAcceptAlert
+  Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
+    Given There are 1 user where <Name> is me
+    Given I sign in using my email or phone number
+    And I dismiss alert
+    And I open search by taping on it
+    And I see Upload contacts dialog
+    And I click Continue button on Upload dialog
+    And I accept alert
+    Then I see CONNECT label
+    And I see user <Contact1> found on People picker page
 
+    Examples: 
+      | Name      | Contact1  | 
+      | user1Name | vb003     | 
