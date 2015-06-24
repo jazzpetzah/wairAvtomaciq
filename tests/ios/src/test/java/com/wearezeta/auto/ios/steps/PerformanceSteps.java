@@ -27,13 +27,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
-	static {
-		// for Jenkins slaves we should define that environment has display
-		CommonUtils.defineNoHeadlessEnvironment();
-		// disabling selenium logs to exclude not used output from log
-		CommonUtils.disableSeleniumLogs();
-	}
-
 	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
 			.getSimpleName());
 
@@ -192,7 +185,7 @@ public class PerformanceSteps {
 
 	private void exportTraceToCSV() throws Exception {
 
-	/*	String script = String.format(CommonUtils
+		String script = String.format(CommonUtils
 				.readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
 
 		ScriptEngineManager mgr = new ScriptEngineManager();
@@ -204,9 +197,9 @@ public class PerformanceSteps {
 		} catch (Exception e) {
 			log.debug(e.getMessage());
 			e.printStackTrace();
-		}*/
+		}
 
-		CommonUtils
+/*		CommonUtils
 				.executeOsXCommand(new String[] {
 						"bash",
 						"-c",
@@ -214,7 +207,7 @@ public class PerformanceSteps {
 								+ CommonUtils
 										.getJenkinsSuperUserPassword(CommonUtils.class)
 								+ "| sudo -S osascript /Project/iOS_Performance_Reports/export_data.scpt" });
-
+*/
 	}
 
 	/**

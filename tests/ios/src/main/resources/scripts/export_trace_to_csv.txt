@@ -1,4 +1,6 @@
 tell application "Instruments"
+	close every window
+	delay 1
 	open "Users:jenkins:instrumentscli0.trace"
 end tell
 delay 0.2
