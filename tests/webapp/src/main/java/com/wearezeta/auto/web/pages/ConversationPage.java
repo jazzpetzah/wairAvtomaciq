@@ -189,7 +189,7 @@ public class ConversationPage extends WebPage {
 				.getFullPicturePath(pictureName);
 		// TODO: Add comparison of the original and sent pictures
 		final boolean isAnyPictureMsgFound = DriverUtils
-				.waitUntilLocatorAppears(
+				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.xpath(WebAppLocators.ConversationPage.xpathImageMessageEntry),
 						40);
