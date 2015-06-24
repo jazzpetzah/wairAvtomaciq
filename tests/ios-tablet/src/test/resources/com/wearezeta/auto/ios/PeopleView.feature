@@ -55,13 +55,7 @@ Feature: People View
     And I see <Contact1> user profile page in iPad popover
     And I press Add button on iPad popover
     And I see People picker page on iPad popover
-    And I tap on Search input on People picker on iPad popover
-    And I input user name <Contact2> in People picker search field on iPad popover
-    And I see user <Contact2> found on People picker on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
-    And I tap on Search input on People picker on iPad popover
-    And I input user name <Contact3> in People picker search field on iPad popover
-    And I see user <Contact3> found on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
@@ -85,13 +79,7 @@ Feature: People View
     And I see <Contact1> user profile page in iPad popover
     And I press Add button on iPad popover
     And I see People picker page on iPad popover
-    And I tap on Search input on People picker on iPad popover
-    And I input user name <Contact2> in People picker search field on iPad popover
-    And I see user <Contact2> found on People picker on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
-    And I tap on Search input on People picker on iPad popover
-    And I input user name <Contact3> in People picker search field on iPad popover
-    And I see user <Contact3> found on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
