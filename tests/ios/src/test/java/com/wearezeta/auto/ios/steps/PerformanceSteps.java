@@ -214,10 +214,10 @@ public class PerformanceSteps {
 					.executeOsXCommand(new String[] {
 							"bash",
 							"-c",
-							/*"echo "
+							"echo "
 									+ CommonUtils
 											.getJenkinsSuperUserPassword(CommonUtils.class)
-									+ "| sudo -S */"osascript /Project/iOS_Performance_Reports/export_data.scpt" });
+									+ "| sudo -S osascript /Project/iOS_Performance_Reports/export_data.scpt" });
 			count++;
 		}
 	}
