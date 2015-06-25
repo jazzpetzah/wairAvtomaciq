@@ -106,9 +106,10 @@ public class LoginPageSteps {
 	 * Checks if a red dot is shown inside the email field on the sign in form
 	 *
 	 * @step. ^a red dot is shown inside the email field on the sign in form$
+	 * @throws Exception 
 	 */
 	@Then("^a red dot is shown inside the email field on the sign in form$")
-	public void ARedDotIsShownOnTheEmailField() {
+	public void ARedDotIsShownOnTheEmailField() throws Exception {
 		assertThat("Red dot on email field",
 				PagesCollection.loginPage.isRedDotOnEmailField());
 	}
@@ -118,9 +119,10 @@ public class LoginPageSteps {
 	 * form
 	 *
 	 * @step. ^a red dot is shown inside the password field on the sign in form$
+	 * @throws Exception 
 	 */
 	@Then("^a red dot is shown inside the password field on the sign in form$")
-	public void ARedDotIsShownOnThePasswordField() {
+	public void ARedDotIsShownOnThePasswordField() throws Exception {
 		assertThat("Red dot on password field",
 				PagesCollection.loginPage.isRedDotOnEmailField());
 	}

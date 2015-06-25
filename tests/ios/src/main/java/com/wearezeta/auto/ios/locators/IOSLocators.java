@@ -551,17 +551,12 @@ public final class IOSLocators {
 				
 		public static final String nameCallingUsersAvatar = "CallingUsersImage";
 		
-		//Once all call banner buttons get own names these locators and related methods should be refactored
-		
 		public static final String nameEndCallButton = "LeaveCallButton";
-		
-		public static final String xpathiPadEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[1]";
 				
 		public static final String nameSpeakersButton = "CallSpeakerButton";
 		
 		public static final String nameMuteCallButton = "CallMuteButton";
-				
-		public static final String xpathiPadMuteCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[3]";
+
 	}
 	
 	public final class IncomingCallPage {

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 
 import com.wearezeta.auto.common.email.MessagingUtils;
 import com.wearezeta.auto.common.email.PasswordResetMessage;
@@ -17,6 +18,9 @@ import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.external.PasswordChangePage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -28,8 +32,6 @@ public class PasswordChangeRequestSteps {
 			.getLog(PasswordChangeRequestSteps.class.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-	private static final int VISIBILITY_TIMEOUT_SECONDS = 5;
 
 	private Future<String> passwordChangeMessage = null;
 
@@ -46,8 +48,9 @@ public class PasswordChangeRequestSteps {
 			PagesCollection.passwordChangeRequestPage = (PasswordChangeRequestPage) PagesCollection.loginPage
 					.instantiatePage(PasswordChangeRequestPage.class);
 		}
-		PagesCollection.passwordChangeRequestPage
-				.waitUntilVisible(VISIBILITY_TIMEOUT_SECONDS);
+		Assert.assertTrue("Email field not visible",
+				PagesCollection.passwordChangeRequestPage.isEmailFieldVisible());
+		;
 	}
 
 	/**
@@ -117,8 +120,10 @@ public class PasswordChangeRequestSteps {
 	 */
 	@Then("^I see Password Change Request Succeeded page$")
 	public void ISeeRequestSucceededPage() throws Exception {
-		PagesCollection.passwordChangeRequestSuccessfullPage
-				.waitUntilVisible(VISIBILITY_TIMEOUT_SECONDS);
+		assertThat(
+				PagesCollection.passwordChangeRequestSuccessfullPage
+						.isConfirmationTextVisible(),
+				is(true));
 	}
 
 	/**

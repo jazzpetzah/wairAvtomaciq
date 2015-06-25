@@ -15,7 +15,7 @@ public class PasswordChangePage extends WebPage {
 	@FindBy(id = ExternalLocators.PasswordChangePage.idPasswordInput)
 	private WebElement passwordField;
 
-	@FindBy(xpath = ExternalLocators.PasswordChangePage.xpathSubmitButton)
+	@FindBy(css = ExternalLocators.PasswordChangePage.cssSubmitButton)
 	private WebElement changePasswordButton;
 
 	public PasswordChangePage(Future<ZetaWebAppDriver> lazyDriver)
@@ -30,7 +30,7 @@ public class PasswordChangePage extends WebPage {
 
 	public PasswordChangeSuccessfullPage clickChangePasswordButton()
 			throws Exception {
-		changePasswordButton.click();
+		changePasswordButton.submit();
 		return new PasswordChangeSuccessfullPage(this.getLazyDriver());
 	}
 

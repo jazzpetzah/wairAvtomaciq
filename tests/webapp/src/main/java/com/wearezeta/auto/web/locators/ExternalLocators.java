@@ -11,12 +11,12 @@ public final class ExternalLocators {
 
 	public static final class PasswordChangePage {
 		public final static String idPasswordInput = "password";
-		public final static String xpathSubmitButton = "//button[@type='submit']";
+		public final static String cssSubmitButton = "button.btn-md";
 	}
 
 	public static final class PasswordChangeRequestPage {
 		public final static String idEmailInput = "email";
-		public final static String xpathSubmitButton = "//button[@type='submit']";
+		public final static String cssSubmitButton = "button";
 	}
 
 	public static final class PasswordChangeRequestSuccessfullPage {
