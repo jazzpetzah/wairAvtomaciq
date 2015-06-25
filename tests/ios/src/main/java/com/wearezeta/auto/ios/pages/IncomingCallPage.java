@@ -14,17 +14,20 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class IncomingCallPage extends CallPage {
 
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathAcceptCallButton)
+	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameAcceptCallButton)
 	private WebElement acceptCallButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathEndCallButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.nameEndCallButton)
 	private WebElement endCallButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathCallingMessage)
 	private WebElement callingMessage;
 	
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathIgnoreCallButton)
+	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameIgnoreCallButton)
 	private WebElement ignoreCallButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameCallingMessageUser)
+	private WebElement callingMessageUser;
 
 	public IncomingCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -39,13 +42,13 @@ public class IncomingCallPage extends CallPage {
 	public boolean isCallingMessageVisible(String contact) throws Exception {
 		return getDriver().findElementByXPath(
 				String.format(
-						IOSLocators.IncomingCallPage.xpathCallingMessageUser,
+						IOSLocators.IncomingCallPage.nameCallingMessageUser,
 						contact)).isDisplayed();
 	}
 
 	public boolean isUserCallingMessageShown(String contact) throws Exception {
 		String locator = String.format(
-				IOSLocators.IncomingCallPage.xpathCallingMessageUser, contact);
+				IOSLocators.IncomingCallPage.nameCallingMessageUser, contact);
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(locator));
 	}

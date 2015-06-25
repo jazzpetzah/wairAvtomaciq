@@ -67,9 +67,18 @@ public class DriverUtils {
 	 * @param element
 	 * @return
 	 */
-	public static boolean isElementPresentAndDisplayed(final WebElement element) {
+	public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver,
+			final WebElement element) {
 		try {
-			return element.isDisplayed();
+			if (element.isDisplayed()
+					&& (element.getLocation().x < driver.manage().window()
+							.getSize().width)
+					&& (element.getLocation().y < driver.manage().window()
+							.getSize().height)) {
+				return true;
+			} else {
+				return false;
+			}
 		} catch (NoSuchElementException e) {
 			return false;
 		}
@@ -94,7 +103,11 @@ public class DriverUtils {
 			try {
 				return wait.until(drv -> {
 					return (drv.findElements(by).size() > 0)
-							&& drv.findElement(by).isDisplayed();
+							&& drv.findElement(by).isDisplayed()
+							&& (drv.findElement(by).getLocation().x < drv
+									.manage().window().getSize().width)
+							&& (drv.findElement(by).getLocation().y < drv
+									.manage().window().getSize().height);
 				});
 			} catch (TimeoutException e) {
 				return false;
@@ -122,7 +135,11 @@ public class DriverUtils {
 				try {
 					return (drv.findElements(by).size() == 0)
 							|| (drv.findElements(by).size() > 0 && !drv
-									.findElement(by).isDisplayed());
+									.findElement(by).isDisplayed())
+							|| (drv.findElement(by).getLocation().x > drv
+									.manage().window().getSize().width)
+							|| (drv.findElement(by).getLocation().y > drv
+									.manage().window().getSize().height);
 				} catch (WebDriverException e) {
 					return true;
 				}
@@ -331,19 +348,19 @@ public class DriverUtils {
 		swipeDown(driver, element, time, DEFAULT_PERCENTAGE,
 				SWIPE_Y_DEFAULT_PERCENTAGE_VERTICAL);
 	}
-	
-	public static void swipeElementPointToPoint(AppiumDriver driver, WebElement element,
-		int time, int startPercentX, int startPercentY, int endPercentX,
-		int endPercentY) {
-		
+
+	public static void swipeElementPointToPoint(AppiumDriver driver,
+			WebElement element, int time, int startPercentX, int startPercentY,
+			int endPercentX, int endPercentY) {
+
 		final Point coords = element.getLocation();
 		final Dimension size = element.getSize();
-		
+
 		int startX = coords.x + size.getWidth() * startPercentX / 100;
 		int startY = coords.y + size.getHeight() * startPercentY / 100;
 		int endX = coords.x + size.getWidth() * endPercentX / 100;
 		int endY = coords.y + size.getHeight() * endPercentY / 100;
-		
+
 		driver.swipe(startX, startY, endX, endY, time);
 	}
 
@@ -682,14 +699,14 @@ public class DriverUtils {
 		driver.tap(1, coords.x + size.getWidth() / 2,
 				coords.y + size.getHeight() / 2, 1);
 	}
-	
-	public static void tapOnPercentOfElement(AppiumDriver driver, WebElement element,
-			int percentX, int percentY) {
+
+	public static void tapOnPercentOfElement(AppiumDriver driver,
+			WebElement element, int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension size = element.getSize();
-		driver.tap(1, coords.x + size.getWidth() * percentX / 100,
-			coords.y + size.getHeight() * percentY / 100, 1);
-		
+		driver.tap(1, coords.x + size.getWidth() * percentX / 100, coords.y
+				+ size.getHeight() * percentY / 100, 1);
+
 	}
 
 	public static void tapOutsideOfTheElement(AppiumDriver driver,

@@ -177,9 +177,10 @@ public class RegistrationPageSteps {
 	 *
 	 * @step. ^I verify that a red dot is shown inside the email field on the registration
 	 *        form$
+	 * @throws Exception
 	 */
 	@Then("^I verify that a red dot is( not)? shown inside the email field on the registration form$")
-	public void ARedDotIsShownOnTheEmailField(String not) {
+	public void ARedDotIsShownOnTheEmailField(String not) throws Exception {
 		if (not == null) {
 			assertThat("Red dot on email field",
 					PagesCollection.registrationPage.isRedDotOnEmailField());
