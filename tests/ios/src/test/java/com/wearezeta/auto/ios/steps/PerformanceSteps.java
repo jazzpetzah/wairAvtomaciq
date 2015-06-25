@@ -1,11 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.io.File;
-
 import java.util.ArrayList;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -13,6 +9,7 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
+import com.wearezeta.auto.ios.reporter.IDeviceSysLogListener;
 import com.wearezeta.auto.ios.reporter.IOSPerformanceReportGenerator;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
@@ -23,6 +20,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.common.process.AsyncProcess;
 
 import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -32,10 +30,13 @@ public class PerformanceSteps {
 
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
+	
 	private static final int PERF_MON_INIT_DELAY = 5000; // milliseconds
 	private static final int PERF_MON_STOP_TIMEOUT = 60 * 1000; // milliseconds
 	private static final String ACTIVITY_MONITOR_TEMPLATE_PATH = "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate";
 	private static final String WIRE_ACTIVITY_MONITOR_TEMPLATE_PATH = "/Project/WireActivityMonitor.tracetemplate";
+
+	public static IDeviceSysLogListener listener = new IDeviceSysLogListener();
 
 	private AsyncProcess perfMon = null;
 
@@ -220,13 +221,22 @@ public class PerformanceSteps {
 	@Then("^I generate performance report for (\\d+) users$")
 	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
 		IOSPerformanceReportGenerator.setUsersCount(usersCount);
+		CommonIOSSteps.listener.stopListeningLogcat();
 		Thread.sleep(5000);
 		exportTraceToCSV();
 		Assert.assertTrue(IOSPerformanceReportGenerator
 				.updateReportDataWithCurrentRun(""));
 		Assert.assertTrue(IOSPerformanceReportGenerator.generateRunReport());
 	}
-
+	
+	@Before("@performance")
+	public void StartLogListener() {
+		try {
+			CommonIOSSteps.listener.startListeningLogcat();
+		} catch (Exception e) {
+		}
+	}
+	
 	@After("@performance")
 	public void CloseInstruments() {
 		try {
