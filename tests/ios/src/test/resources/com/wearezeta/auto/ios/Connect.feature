@@ -266,7 +266,8 @@ Feature: Connect
     And I accept alert
     Then I see CONNECT label
     And I see user <Contact1> found on People picker page
+    And I see user <Contact2> found on People picker page
 
     Examples: 
-      | Name      | Contact1  | 
-      | user1Name | vb003     | 
+      | Name      | Contact1  | Contact2 |
+      | user1Name | vb003     | Amelia   |
