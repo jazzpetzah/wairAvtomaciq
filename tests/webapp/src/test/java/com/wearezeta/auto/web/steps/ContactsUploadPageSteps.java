@@ -72,7 +72,7 @@ public class ContactsUploadPageSteps {
 	}
 
 	/**
-	 * Click Gmail inport button on Contacts Upload dialog
+	 * Click Gmail import button on Contacts Upload dialog
 	 * 
 	 * @step. ^I click button to import Gmail Contacts$
 	 * 
