@@ -95,12 +95,12 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public boolean isIgnoreConnectButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(connectIgnoreBtn)
-				&& DriverUtils.isElementPresentAndDisplayed(connectAcceptBtn);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), connectIgnoreBtn)
+				&& DriverUtils.isElementPresentAndDisplayed(getDriver(), connectAcceptBtn);
 	}
 
 	public boolean isPending() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(pendingText);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), pendingText);
 	}
 
 	public void tapEditConnectionRequest() throws Exception {

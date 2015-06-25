@@ -357,7 +357,6 @@ public class ContactListPage extends IOSPage {
 	}
 
 	public boolean isTutorialShown() throws Exception {
-		// this.refreshUITree();
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameTutorialView), 10);
 	}

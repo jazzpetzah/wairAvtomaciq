@@ -15,7 +15,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @staging @id2147
+  @staging @id2926
   Scenario Outline: Verify search by email [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -46,7 +46,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2148
+  @staging @id2927
   Scenario Outline: Verify search by name [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -81,7 +81,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id2531 @noAcceptAlert
+  @staging @id2928 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -124,7 +124,7 @@ Feature: Search
       | Name      | UserCount | Contact   |
       | user1Name | 2         | user2Name |
 
-  @staging @id2656
+  @staging @id2929
   Scenario Outline: Start 1:1 chat with users from Top Connections [LANDSCAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -174,7 +174,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount | Contact   |
       | user1Name | TopGroupTest | 3         | user2Name |
 
-  @staging @id2550
+  @staging @id2930
   Scenario Outline: Start group chat with users from Top Connections [LANDSCAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -224,7 +224,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id1456
+  @staging @id2931
   Scenario Outline: Verify you can unblock someone from search list [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -270,7 +270,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
-  @staging @id2547
+  @staging @id2932
   Scenario Outline: Verify dismissing with clicking on Hide [LANDSAPE]
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -312,7 +312,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
-  @staging @id2546
+  @staging @id2933
   Scenario Outline: Verify dismissing with one single gesture [LANDSAPE]
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -352,7 +352,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id2118
+  @regression @id2934
   Scenario Outline: Verify sending connection request from PYMK [LANDSAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -390,7 +390,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @regression @id2149
+  @regression @id2935
   Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -409,8 +409,45 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
+  @staging @id2150
+  Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I wait until <NewName> exists in backend search results
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <PartName>
+    Then I see user <NewName> found on People picker page
+
+    Examples: 
+      | Name      | Contact   | NewName           | PartName |
+      | user1Name | user2Name | Djulieta Carnobat | Djuli    |
+
+  @staging @id2945
+  Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I wait until <NewName> exists in backend search results
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <PartName>
+    Then I see user <NewName> found on People picker page
+
+    Examples: 
+      | Name      | Contact   | NewName           | PartName |
+      | user1Name | user2Name | Djulieta Carnobat | Djuli    |
+
   @regression @id2703
-  Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations [PORTRAIT]
+  Scenario Outline: Verify search is possible after selection users from Top People [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
@@ -431,8 +468,8 @@ Feature: Search
       | Name      | UserCount | Contact   | Number |
       | user1Name | 7         | user2Name | 4      |
 
-  @regression @id2703
-  Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations [LANDSAPE]
+  @regression @id2936
+  Scenario Outline: Verify search is possible after selection users from Top People [LANDSAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
     Given I rotate UI to landscape

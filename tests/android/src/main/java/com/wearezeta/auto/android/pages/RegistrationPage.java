@@ -52,7 +52,7 @@ public class RegistrationPage extends AndroidPage {
 	}
 
 	public void setName(String name) throws Exception {
-		assert DriverUtils.isElementPresentAndDisplayed(nameField);
+		assert DriverUtils.isElementPresentAndDisplayed(getDriver(), nameField);
 		nameField.sendKeys(name);
 		this.getWait()
 				.until(ExpectedConditions.elementToBeClickable(nextArrow));
