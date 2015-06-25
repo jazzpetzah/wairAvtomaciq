@@ -299,6 +299,8 @@ public final class IOSLocators {
 	public static final String nameOtherProfilePagePendingLabel = "PENDING";
 	
 	public static final String nameOtherProfilePageStartConversationButton = "metaControllerLeftButton";
+	
+	public static final String nameOtherProfilePageCloseButton = "OtherUserProfileCloseButton";
 	 
 	///////////////////////
 	//Camera page locators
