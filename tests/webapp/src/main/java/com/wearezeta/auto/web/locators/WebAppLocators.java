@@ -32,6 +32,10 @@ public final class WebAppLocators {
 		public static final String xpathChangePasswordButton = "//*[@data-uie-name='go-forgot-password']";
 
 		public static final String xpathLoginErrorText = "//*[@data-uie-name='status-error']";
+
+		public static final String cssRedDotOnEmailField = ".auth-page .has-error .form-control #wire-email";
+
+		public static final String cssRedDotOnPasswordField = ".auth-page .has-error .form-control #wire-password";
 	}
 
 	public static final class ContactListPage {
