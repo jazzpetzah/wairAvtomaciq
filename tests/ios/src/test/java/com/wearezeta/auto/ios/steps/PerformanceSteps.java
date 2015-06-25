@@ -221,18 +221,19 @@ public class PerformanceSteps {
 	@Then("^I generate performance report for (\\d+) users$")
 	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
 		IOSPerformanceReportGenerator.setUsersCount(usersCount);
-		CommonIOSSteps.listener.stopListeningLogcat();
+		listener.stopListeningLogcat();
+		log.debug(listener.getOutput());
 		Thread.sleep(5000);
 		exportTraceToCSV();
 		Assert.assertTrue(IOSPerformanceReportGenerator
-				.updateReportDataWithCurrentRun(""));
+				.updateReportDataWithCurrentRun(listener.getOutput()));
 		Assert.assertTrue(IOSPerformanceReportGenerator.generateRunReport());
 	}
 	
 	@Before("@performance")
 	public void StartLogListener() {
 		try {
-			CommonIOSSteps.listener.startListeningLogcat();
+			listener.startListeningLogcat();
 		} catch (Exception e) {
 		}
 	}
