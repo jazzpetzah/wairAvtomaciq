@@ -210,7 +210,7 @@ public class PerformanceSteps {
 		int result = -1;
 		int count = 0;
 		while (result != 0 && count < 3) {
-			CommonUtils
+			result = CommonUtils
 					.executeOsXCommand(new String[] {
 							"bash",
 							"-c",
