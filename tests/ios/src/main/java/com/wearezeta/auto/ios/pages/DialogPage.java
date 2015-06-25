@@ -492,8 +492,8 @@ public class DialogPage extends IOSPage {
 		return currentTime;
 	}
 
-	public boolean isMediaBarDisplayed() {
-		boolean flag = DriverUtils.isElementPresentAndDisplayed(mediabarPlayPauseButton);
+	public boolean isMediaBarDisplayed() throws Exception {
+		boolean flag = DriverUtils.isElementPresentAndDisplayed(getDriver(), mediabarPlayPauseButton);
 		return flag;
 	}
 

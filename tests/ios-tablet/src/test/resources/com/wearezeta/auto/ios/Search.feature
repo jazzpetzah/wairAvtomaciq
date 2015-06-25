@@ -409,6 +409,43 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
+  @staging @id2150
+  Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I wait until <NewName> exists in backend search results
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <PartName>
+    Then I see user <NewName> found on People picker page
+
+    Examples: 
+      | Name      | Contact   | NewName           | PartName |
+      | user1Name | user2Name | Djulieta Carnobat | Djuli    |
+
+  @staging @id2945
+  Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change name to <NewName>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I wait until <NewName> exists in backend search results
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <PartName>
+    Then I see user <NewName> found on People picker page
+
+    Examples: 
+      | Name      | Contact   | NewName           | PartName |
+      | user1Name | user2Name | Djulieta Carnobat | Djuli    |
+
   @regression @id2703
   Scenario Outline: Verify search is possible after selection users from Top People [PORTRAIT]
     Given There are <UserCount> users where <Name> is me

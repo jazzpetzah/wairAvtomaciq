@@ -153,11 +153,11 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isNoResultsFoundVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(noResults);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), noResults);
 	}
 
 	public boolean isTopPeopleHeaderVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(pickerTopPeopleHeader);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), pickerTopPeopleHeader);
 	}
 
 	public boolean waitUntilTopPeopleHeaderInvisible() throws Exception {
@@ -195,7 +195,7 @@ public class PeoplePickerPage extends AndroidPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 		this.getDriver().findElement(locator).click();
 
-		if (DriverUtils.isElementPresentAndDisplayed(addToConversationsButton)) {
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), addToConversationsButton)) {
 			return this;
 		} else {
 			return new DialogPage(this.getLazyDriver());
@@ -220,7 +220,7 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isPeoplePickerPageVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(pickerSearch);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), pickerSearch);
 	}
 
 	// FIXME: find better locator
@@ -246,9 +246,9 @@ public class PeoplePickerPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public boolean isAddToConversationBtnVisible() {
+	public boolean isAddToConversationBtnVisible() throws Exception {
 		return DriverUtils
-				.isElementPresentAndDisplayed(addToConversationsButton);
+				.isElementPresentAndDisplayed(getDriver(), addToConversationsButton);
 	}
 
 	public DialogPage clickOnAddToCoversationButton() throws Exception {
