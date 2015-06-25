@@ -281,7 +281,7 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(missedCallIcon);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), missedCallIcon);
 	}
 
 	public PersonalInfoPage tapOnMyAvatar() throws Exception {

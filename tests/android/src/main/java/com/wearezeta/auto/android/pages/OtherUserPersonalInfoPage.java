@@ -155,7 +155,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isUnblockBtnVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(unblockButton);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				unblockButton);
 	}
 
 	private static By[] getOneToOneOptionsMenuLocators() {
@@ -185,13 +186,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return true;
 	}
 
-	private static By[] getUserProfileLocators() {
+	private static By[] getParticipantPageLocators() {
 		return new By[] { By.id(PeoplePickerPage.idParticipantsClose),
 				By.id(idParticipantsSubHeader), By.id(idParticipantsHeader) };
 	}
 
-	public boolean isOneToOneUserProfileUIContentNotVisible() throws Exception {
-		for (By locator : getUserProfileLocators()) {
+	public boolean isParticipatPageUIContentNotVisible() throws Exception {
+		for (By locator : getParticipantPageLocators()) {
 			if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 					locator, MENU_ITEM_VISIBILITY_TIMEOUT_SECONDS)) {
 				return false;
@@ -200,8 +201,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return true;
 	}
 
-	public boolean isOneToOneUserProfileUIContentVisible() throws Exception {
-		for (By locator : getUserProfileLocators()) {
+	public boolean isParticipatPageUIContentVisible() throws Exception {
+		for (By locator : getParticipantPageLocators()) {
 			if (!DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 					locator, MENU_ITEM_VISIBILITY_TIMEOUT_SECONDS)) {
 				return false;
@@ -238,8 +239,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 								.apply(expectedEmail)), 1);
 	}
 
-	public boolean isConversationAlertVisible() {
-		return DriverUtils.isElementPresentAndDisplayed(confirmMenu);
+	public boolean isConversationAlertVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				confirmMenu);
 	}
 
 	public OtherUserPersonalInfoPage pressConfirmBtn() throws Exception {

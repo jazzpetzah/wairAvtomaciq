@@ -143,28 +143,27 @@ Feature: People View
     And I press options menu button
     Then I see correct 1:1 options menu
     When I tap on center of screen
-    Then I see profile page
+    Then I see participant page
     And I do not see 1:1 options menu
     When I press options menu button
     Then I see correct 1:1 options menu
     When I press back button
-    Then I see profile page
+    Then I see participant page
     And I do not see 1:1 options menu
     When I press options menu button
     And I swipe down
-    Then I see profile page
+    Then I see participant page
     And I do not see 1:1 options menu
     When I press options menu button
     And I see correct 1:1 options menu
     #Need to delete small swipe check if it will be unstable
     When I do small swipe down
     And I wait for 1 second
-    Then I do not see profile page
+    Then I do not see participant page
     And I see correct 1:1 options menu
     When I tap on center of screen
     And I press options menu button
-    Then I see correct 1:1 options menu
-    When I swipe left
+    And I swipe left
     And I swipe right
     And I swipe up
     Then I see correct 1:1 options menu
@@ -194,3 +193,43 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     |
+
+  @id2291 @staging
+  Scenario Outline: Check interaction with participants view
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    And I see contact list with name <Contact1>
+    And I see contact list with name <Contact2>
+    When I tap on contact name <GroupChatName>
+    And I see dialog page
+    And I tap conversation details button
+    Then I see participants page
+    And I see that the conversation name is <GroupChatName>
+    And I see the correct number of participants in the title <ParticipantNumber>
+    When I close participants page by UI button
+    Then I do not see participants page
+    And I see dialog page
+    When I swipe up on dialog page
+    Then I see participants page
+    When I swipe down on participants page
+    Then I do not see participants page
+    And I see dialog page
+    When I tap conversation details button
+    Then I see participants page
+    When I press back button
+    Then I do not see participants page
+    And I see dialog page
+    When I tap conversation details button
+    And I swipe right
+    And I swipe up
+    And I swipe left
+    Then I see participants page
+    And I see that the conversation name is <GroupChatName>
+    And I see the correct number of participants in the title <ParticipantNumber>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName  | ParticipantNumber |
+      | user1Name | user2Name | user3Name | GroupInfoCheck | 3                 |
