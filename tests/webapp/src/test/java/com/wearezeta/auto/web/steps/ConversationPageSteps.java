@@ -392,6 +392,16 @@ public class ConversationPageSteps {
 				expandPattern(expectedMessage));
 	}
 
+	/**
+	 * Verify the text of the second last text message in conversation. This
+	 * step should only be used after verifying the last message of the
+	 * conversation, because otherwise you might run into a race condition.
+	 * 
+	 * @step. ^I verify the second last text message equals to (.*)
+	 * @param expectedMessage
+	 *            the expected message
+	 * @throws Exception
+	 */
 	@Then("^I verify the second last text message equals to (.*)")
 	public void IVerifySecondLastTextMessage(String expectedMessage)
 			throws Exception {
