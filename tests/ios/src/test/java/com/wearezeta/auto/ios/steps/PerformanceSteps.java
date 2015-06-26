@@ -25,13 +25,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
-	static {
-		// for Jenkins slaves we should define that environment has display
-		CommonUtils.defineNoHeadlessEnvironment();
-		// disabling selenium logs to exclude not used output from log
-		CommonUtils.disableSeleniumLogs();
-	}
-
 	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
 			.getSimpleName());
 
@@ -244,6 +237,8 @@ public class PerformanceSteps {
 	
 	@Before("@performance")
 	public void StartLogListener() {
+		// for Jenkins slaves we should define that environment has display
+		CommonUtils.defineNoHeadlessEnvironment();
 		try {
 			listener.startListeningLogcat();
 		} catch (Exception e) {
