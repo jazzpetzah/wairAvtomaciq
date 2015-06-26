@@ -276,7 +276,7 @@ public final class IOSLocators {
 	
 	public static final String nameWireWebsiteButton = "wire.com";
 	
-	public static final String xpathWireWebsitePageText = "//UIAStaticText[contains(@name, 'Great conversations')]";
+	public static final String xpathWireWebsiteUrl = "//UIAElement[@label ='Wire Swiss GmbH']";
 	
 	public static final String xpathWireWebsitePageUrlValue = "//UIAApplication[1]/UIAWindow[2]/UIAButton[2]/UIAStaticText[2]";
 	
@@ -286,7 +286,7 @@ public final class IOSLocators {
 	
 	public static final String nameCloseLegalPageButton = "WebViewCloseButton";
 	
-	public static final String xpathTermsOfUsePageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[3]";
+	public static final String xpathTermsOfUsePageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[2]";
 	
 	public static final String xpathPrivacyPolicyPageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIALink[1]/UIAStaticText[1]";
 	
