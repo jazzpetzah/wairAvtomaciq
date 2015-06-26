@@ -240,4 +240,18 @@ public class PeoplePickerPageSteps {
 		selectedTopPeople = PagesCollection.peoplePickerPage
 				.getNamesOfSelectedTopPeople();
 	}
+
+	/**
+	 * Verifies whether Search is opened on People Picker Page
+	 *
+	 * @step. I see Search is opened$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see Search is opened$")
+	public void ISeeSearchIsOpened() throws Exception {
+		final String searchMissingMessage = "Search is not visible on People Picker Page";
+		Assert.assertTrue(searchMissingMessage,
+				PagesCollection.peoplePickerPage.isSearchOpened());
+	}
 }
