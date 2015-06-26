@@ -124,6 +124,30 @@ public class PerformanceSteps {
 	}
 
 	/**
+	 * Tests loading time of conversation with specified number of messages and
+	 * images
+	 * 
+	 * @step. ^I test conversation loading time for conversation with (\\d+)
+	 *        messages and (\\d+) images$
+	 * 
+	 * @param messages
+	 *            number of messages in conversation
+	 * @param images
+	 *            number of images in conversation
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I test conversation loading time for conversation with (\\d+) messages and (\\d+) images$")
+	public void ITestConversationLoadingTimeForConversation(int messages,
+			int images) throws Exception {
+		final String CONVERSATION_NAME_TEMPLATE = "perf%stxt%simgtst";
+		String conv = String.format(CONVERSATION_NAME_TEMPLATE, messages,
+				images);
+		//TODO: implement when time could be measured
+	}
+	
+	/**
 	 * Start performance monitor tool for the real connected iPhone. This will
 	 * throw the RuntimeException if there is no connected iPhone or instruments
 	 * failed to start. All the collected perf logs will be saved in $HOME
