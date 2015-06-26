@@ -1,12 +1,13 @@
 tell application "Instruments"
+	activate
 	close every window
-	delay 1
+	delay 2
 	open "Users:jenkins:instrumentscli0.trace"
 end tell
-delay 0.2
+delay 2
 tell application "System Events" to tell process "Instruments"
 	set frontmost to true
-	delay 0.5
+	delay 10
 	tell menu bar item "Instrument" of menu bar 1
 		click
 		click menu item "Export Track for 'Activity Monitor'..." of menu 1
