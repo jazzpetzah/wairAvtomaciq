@@ -36,7 +36,7 @@ public class ConversationPage extends WebPage {
 
 	private static final String TOOLTIP_PEOPLE = "People";
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathImageMessageEntry)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssLastImageEntry)
 	private List<WebElement> imageMessageEntries;
 
 	@FindBy(id = WebAppLocators.ConversationPage.idConversation)
@@ -197,7 +197,7 @@ public class ConversationPage extends WebPage {
 		final boolean isAnyPictureMsgFound = DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.xpath(WebAppLocators.ConversationPage.xpathImageMessageEntry),
+						By.cssSelector(WebAppLocators.ConversationPage.cssLastImageEntry),
 						40);
 		return isAnyPictureMsgFound && (imageMessageEntries.size() > 0);
 	}
