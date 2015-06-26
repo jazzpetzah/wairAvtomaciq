@@ -235,4 +235,9 @@ public class PeoplePickerPage extends WebPage {
 		}
 		return namesOfSelectedTopPeople;
 	}
+
+	public boolean isSearchOpened() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.cssSelector(WebAppLocators.PeoplePickerPage.cssSearchField));
+	}
 }
