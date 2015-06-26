@@ -192,6 +192,8 @@ public final class WebAppLocators {
 
 		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
 
+		public static final String cssLastImageEntry = "[data-uie-name='item-message']:last-of-type .image";
+
 		public static final String cssPingButton = "[data-uie-name='do-ping'], [data-uie-name='do-hot-ping']";
 
 		public static final String xpathCallButton = "//*[@data-uie-name='do-call']";
@@ -203,6 +205,8 @@ public final class WebAppLocators {
 						text);
 
 		public static final String cssLastTextMessage = "[data-uie-name='item-message']:last-child .text-inner";
+
+		public static final String cssSecondLastTextMessage = "[data-uie-name='item-message']:nth-last-child(2) .text-inner";
 
 		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
 
@@ -228,6 +232,8 @@ public final class WebAppLocators {
 		public static final String xpathXButton = "//div[contains(@class, 'detail-view-close-button')]//*[@data-uie-name='do-close-detail-view']";
 
 		public static final String idBlackBorder = "detail-view";
+
+		public static final String idGIFButton = "show-extensions";
 	}
 
 	public static final class ConnectToPage {

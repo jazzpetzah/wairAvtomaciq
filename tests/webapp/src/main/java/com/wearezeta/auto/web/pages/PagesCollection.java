@@ -51,5 +51,7 @@ public class PagesCollection extends AbstractPagesCollection {
 
 	public static WarningPage warningPage = null;
 
-	public static PhoneNumberVerificationPage phoneNumberVerificationPage;
+	public static PhoneNumberVerificationPage phoneNumberVerificationPage = null;
+
+	public static GiphyPage giphyPage = null;
 }

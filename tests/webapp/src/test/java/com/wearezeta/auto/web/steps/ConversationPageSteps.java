@@ -13,6 +13,9 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -384,9 +387,26 @@ public class ConversationPageSteps {
 	 */
 	@Then("^I verify the last text message equals to (.*)")
 	public void IVerifyLastTextMessage(String expectedMessage) throws Exception {
-		Assert.assertEquals(
-				PagesCollection.conversationPage.getLastTextMessage(),
+		Assert.assertEquals(PagesCollection.conversationPage
+				.isLastTextMessage(expectedMessage),
 				expandPattern(expectedMessage));
+	}
+
+	/**
+	 * Verify the text of the second last text message in conversation. This
+	 * step should only be used after verifying the last message of the
+	 * conversation, because otherwise you might run into a race condition.
+	 * 
+	 * @step. ^I verify the second last text message equals to (.*)
+	 * @param expectedMessage
+	 *            the expected message
+	 * @throws Exception
+	 */
+	@Then("^I verify the second last text message equals to (.*)")
+	public void IVerifySecondLastTextMessage(String expectedMessage)
+			throws Exception {
+		assertThat(PagesCollection.conversationPage.getSecondLastTextMessage(),
+				equalTo(expectedMessage));
 	}
 
 	/**
@@ -605,7 +625,7 @@ public class ConversationPageSteps {
 	public void IClickXButtonToCloseFullscreen() throws Exception {
 		PagesCollection.conversationPage.clickXButton();
 	}
-	
+
 	/**
 	 * I click on black border to close fullscreen mode
 	 *
@@ -616,6 +636,15 @@ public class ConversationPageSteps {
 	public void IClickOnBlackBorderToCloseFullscreen() throws Exception {
 		PagesCollection.conversationPage.clickOnBlackBorder();
 	}
-	
-	
+
+	@When("^I click GIF button$")
+	public void IClickGIFButton() throws Throwable {
+		PagesCollection.giphyPage = PagesCollection.conversationPage
+				.clickGIFButton();
+	}
+
+	@Then("^I see sent gif in the conversation view$")
+	public void ISeeSentGifInTheConversationView() throws Throwable {
+		PagesCollection.conversationPage.isGifVisible();
+	}
 }

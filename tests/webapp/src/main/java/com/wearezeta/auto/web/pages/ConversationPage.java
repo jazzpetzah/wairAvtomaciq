@@ -54,6 +54,9 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPingButton)
 	private WebElement pingButton;
 
+	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idGIFButton)
+	private WebElement gifButton;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathCallButton)
 	private WebElement callButton;
 
@@ -61,7 +64,10 @@ public class ConversationPage extends WebPage {
 	private WebElement pingMessage;
 
 	@FindBy(css = WebAppLocators.ConversationPage.cssLastTextMessage)
-	private WebElement lastConversationMessage;
+	private WebElement lastTextMessage;
+
+	@FindBy(css = WebAppLocators.ConversationPage.cssSecondLastTextMessage)
+	private WebElement secondLastTextMessage;
 
 	@FindBy(xpath = WebAppLocators.ConversationPage.xpathPictureFullscreen)
 	private WebElement pictureFullscreen;
@@ -336,7 +342,15 @@ public class ConversationPage extends WebPage {
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
 						By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
-		return lastConversationMessage.getText();
+		return lastTextMessage.getText();
+	}
+
+	public String getSecondLastTextMessage() throws Exception {
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastTextMessage));
+		return secondLastTextMessage.getText();
 	}
 
 	public void clickOnPicture() throws Exception {
@@ -358,5 +372,26 @@ public class ConversationPage extends WebPage {
 
 	public void clickOnBlackBorder() throws Exception {
 		blackBorder.click();
+	}
+
+	public GiphyPage clickGIFButton() throws Exception {
+		gifButton.click();
+		return new GiphyPage(getLazyDriver());
+	}
+
+	public boolean isGifVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssLastImageEntry),
+						40);
+
+	}
+
+	public boolean isLastTextMessage(String expectedMessage) throws Exception {
+		return DriverUtils
+		.waitUntilLocatorIsDisplayed(
+				getDriver(),
+				By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
 	}
 }
