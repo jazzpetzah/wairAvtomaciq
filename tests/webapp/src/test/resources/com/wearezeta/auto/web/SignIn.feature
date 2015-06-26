@@ -63,3 +63,23 @@ Feature: Sign In
     Examples: 
       | Name      | Error        |
       | user1Name | INVALID CODE |
+
+  @staging @id2227
+  Scenario Outline: Show invitation button when Gmail import on registration has no suggestions
+    Given There is 1 user where <Name> is me
+    Given I switch to sign in page
+    Given I see Sign In page
+    When I enter email <Email>
+    And I enter password "<Password>"
+    And I press Sign In button
+    Then I am signed in properly
+    And I see Contacts Upload dialog
+    And I click button to import Gmail Contacts
+    And I see Google login popup
+    When I sign up at Google with email <Gmail> and password <GmailPassword>
+    Then I see Search is opened
+    And I see Send Invitation button on People Picker page
+
+    Examples: 
+      | Email      | Password      | Name      | Gmail                       | GmailPassword |
+      | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456     |

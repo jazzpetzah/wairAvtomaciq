@@ -53,7 +53,7 @@ Feature: People View
     And I see dialog page
     And I open conversation details on iPad
     And I see <Contact1> user profile page in iPad popover
-    And I press Add button on iPad popover
+    And I press Add button
     And I see People picker page on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
@@ -77,7 +77,7 @@ Feature: People View
     And I see dialog page
     And I open conversation details on iPad
     And I see <Contact1> user profile page in iPad popover
-    And I press Add button on iPad popover
+    And I press Add button
     And I see People picker page on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover

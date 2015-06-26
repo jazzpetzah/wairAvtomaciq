@@ -210,7 +210,12 @@ public class DialogPage extends IOSPage {
 
 	public void sendStringToInput(String message) throws Exception {
 		waitForCursorInputVisible();
-		conversationInput.sendKeys(message);
+		try {
+			conversationInput.sendKeys(message);
+		} catch (WebDriverException ex) {
+			conversationInput.clear();
+			conversationInput.sendKeys(message);
+		}
 	}
 
 	public void scrollToTheEndOfConversation() throws Exception {
