@@ -44,7 +44,7 @@ public class IOSPerformanceReportGenerator {
 	private static final String PERFORMANCE_REPORT_XLS_TEMPLATE = "IOSPerformanceTemplate.xls";
 	private static final String PERFORMANCE_REPORT_XLS_RESULT = "IOSPerfReport.xls";
 
-	public static String REPORT_DATA_PATH = "/Project/iOS_Performance_Reports/";
+	public static String REPORT_DATA_PATH;
 	public static String RUN_TRACK_FILEPATH;
 
 	private static String buildNumber;
@@ -60,9 +60,14 @@ public class IOSPerformanceReportGenerator {
 
 	static {
 		try {
+			REPORT_DATA_PATH = IOSCommonUtils.getPerformanceDataFolderFromConfig(IOSPerformanceReportGenerator.class);
+		} catch (Exception e) {
+			REPORT_DATA_PATH = "/Project/iOS_Performance_Refactoring/";
+			e.printStackTrace();
+		}
+		try {
 			RUN_TRACK_FILEPATH = REPORT_DATA_PATH + File.separator + RUN_TRACK_FILENAME;
 		} catch (Exception e) {
-			
 			e.printStackTrace();
 		}
 	}
