@@ -64,7 +64,10 @@ public class ConversationPage extends WebPage {
 	private WebElement pingMessage;
 
 	@FindBy(css = WebAppLocators.ConversationPage.cssLastTextMessage)
-	private WebElement lastConversationMessage;
+	private WebElement lastTextMessage;
+
+	@FindBy(css = WebAppLocators.ConversationPage.cssSecondLastTextMessage)
+	private WebElement secondLastTextMessage;
 
 	@FindBy(xpath = WebAppLocators.ConversationPage.xpathPictureFullscreen)
 	private WebElement pictureFullscreen;
@@ -339,7 +342,15 @@ public class ConversationPage extends WebPage {
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
 						By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
-		return lastConversationMessage.getText();
+		return lastTextMessage.getText();
+	}
+
+	public String getSecondLastTextMessage() throws Exception {
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastTextMessage));
+		return secondLastTextMessage.getText();
 	}
 
 	public void clickOnPicture() throws Exception {
@@ -375,5 +386,12 @@ public class ConversationPage extends WebPage {
 						By.cssSelector(WebAppLocators.ConversationPage.cssLastImageEntry),
 						40);
 
+	}
+
+	public boolean isLastTextMessage(String expectedMessage) throws Exception {
+		return DriverUtils
+		.waitUntilLocatorIsDisplayed(
+				getDriver(),
+				By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
 	}
 }

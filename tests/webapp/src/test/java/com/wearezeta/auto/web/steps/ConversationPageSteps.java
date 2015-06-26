@@ -13,6 +13,9 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -384,9 +387,16 @@ public class ConversationPageSteps {
 	 */
 	@Then("^I verify the last text message equals to (.*)")
 	public void IVerifyLastTextMessage(String expectedMessage) throws Exception {
-		Assert.assertEquals(
-				PagesCollection.conversationPage.getLastTextMessage(),
+		Assert.assertEquals(PagesCollection.conversationPage
+				.isLastTextMessage(expectedMessage),
 				expandPattern(expectedMessage));
+	}
+
+	@Then("^I verify the second last text message equals to (.*)")
+	public void IVerifySecondLastTextMessage(String expectedMessage)
+			throws Exception {
+		assertThat(PagesCollection.conversationPage.getSecondLastTextMessage(),
+				equalTo(expectedMessage));
 	}
 
 	/**
@@ -605,7 +615,7 @@ public class ConversationPageSteps {
 	public void IClickXButtonToCloseFullscreen() throws Exception {
 		PagesCollection.conversationPage.clickXButton();
 	}
-	
+
 	/**
 	 * I click on black border to close fullscreen mode
 	 *
@@ -625,6 +635,6 @@ public class ConversationPageSteps {
 
 	@Then("^I see sent gif in the conversation view$")
 	public void ISeeSentGifInTheConversationView() throws Throwable {
-	    PagesCollection.conversationPage.isGifVisible();
+		PagesCollection.conversationPage.isGifVisible();
 	}
 }

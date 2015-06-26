@@ -227,8 +227,8 @@ Feature: Conversation View
     And I see gif image in Giphy popup
     And I see more button in Giphy popup
     When I click send button in Giphy popup
-    Then I verify the last text message equals to <ExpectedMessage>
-    And I see sent gif in the conversation view
+    Then I see sent gif in the conversation view
+    And I verify the second last text message equals to <ExpectedMessage>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     |

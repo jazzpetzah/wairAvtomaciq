@@ -202,6 +202,8 @@ public final class WebAppLocators {
 
 		public static final String cssLastTextMessage = "[data-uie-name='item-message']:last-child .text-inner";
 
+		public static final String cssSecondLastTextMessage = "[data-uie-name='item-message']:nth-last-child(2) .text-inner";
+
 		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
 
 		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls')]";
