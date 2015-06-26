@@ -17,12 +17,11 @@ public class PasswordChangeRequestSuccessfullPage extends WebPage {
 		super(lazyDriver);
 	}
 
-	public void waitUntilVisible(int timeoutSeconds) throws Exception {
-		assert DriverUtils
+	public boolean isConfirmationTextVisible() throws Exception {
+		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
 						By.xpath(ExternalLocators.PasswordChangeRequestSuccessfullPage.xpathLabelByText
-								.apply(CONFIRMATION_TEXT)), timeoutSeconds) : "Password change request confirmation page has not been shown after "
-				+ timeoutSeconds + " seconds";
+								.apply(CONFIRMATION_TEXT)));
 	}
 }

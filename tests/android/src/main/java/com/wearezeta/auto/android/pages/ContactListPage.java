@@ -11,6 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -235,6 +236,7 @@ public class ContactListPage extends AndroidPage {
 	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = 30;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
+		CommonSteps.getInstance().WaitForTime(1);
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(EmailSignInPage.idLoginButton),
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
@@ -279,7 +281,7 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(missedCallIcon);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), missedCallIcon);
 	}
 
 	public PersonalInfoPage tapOnMyAvatar() throws Exception {

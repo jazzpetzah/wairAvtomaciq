@@ -31,7 +31,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 
 	public boolean isClosePageButtonVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
-				.name(IOSLocators.nameOtherProfilePageStartConversationButton));
+				.name(IOSLocators.nameOtherProfilePageCloseButton));
 	}
 
 	public boolean isPendingLabelVisible() throws Exception {

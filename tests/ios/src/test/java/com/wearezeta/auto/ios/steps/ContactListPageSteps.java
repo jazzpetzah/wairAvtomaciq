@@ -183,7 +183,7 @@ public class ContactListPageSteps {
 	@When("^I swipe right on a (.*)$")
 	public void ISwipeRightOnContact(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		getContactListPage().swipeRightOnContact(1500, contact);
+		getContactListPage().swipeRightConversationToRevealArchiveButton(contact);
 	}
 
 	@When("^I click mute conversation$")
@@ -415,6 +415,24 @@ public class ContactListPageSteps {
 		conversation = usrMgr.replaceAliasesOccurences(conversation,
 				FindBy.NAME_ALIAS);
 		getContactListPage().archiveConversation(conversation);
+	}
+	
+	/**
+	 * Click on archive button for a conversation
+	 * 
+	 * @step. ^I click archive button for conversation (.*)$
+	 * 
+	 * @param conversation
+	 *            conversation name to archive
+	 * @throws Exception
+	 *             if conversation is not found
+	 * 
+	 */
+	@When("^I click archive button for conversation (.*)$")
+	public void IClickArchiveConversationButton(String conversation) throws Exception {
+		conversation = usrMgr.replaceAliasesOccurences(conversation,
+				FindBy.NAME_ALIAS);
+		getContactListPage().clickArchiveCoversationButton(conversation);
 	}
 
 	private BufferedImage referenceImage = null;

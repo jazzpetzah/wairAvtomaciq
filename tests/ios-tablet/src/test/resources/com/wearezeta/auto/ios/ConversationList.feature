@@ -7,7 +7,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
-    And I archive conversation <Contact>
+    And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
     And I long swipe right to archive conversation <Contact2>
     Then I dont see conversation <Contact2> in contact list
@@ -27,7 +27,7 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I swipe right on a <Contact>
-    And I archive conversation <Contact>
+    And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
     And I long swipe right to archive conversation <Contact2>
     Then I dont see conversation <Contact2> in contact list
@@ -311,7 +311,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
-  @staging @id2368
+  @staging @id2371
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -334,7 +334,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
-  @staging @id2368
+  @staging @id2942
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>

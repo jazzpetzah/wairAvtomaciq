@@ -76,7 +76,7 @@ public final class IOSLocators {
 
 	public static final String namePickerSearch = "textViewSearch";
 	
-	public static final String xpathPickerClearButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[3]";
+	public static final String namePickerClearButton = "PeoplePickerClearButton";
 	
 	public static final String nameSendConnectButton = "SEND";
 	
@@ -166,6 +166,8 @@ public final class IOSLocators {
 	
 	public static final String nameConversationMenu = "metaControllerRightButton";
 	
+	public static final String nameOtherUserConversationMenu = "OtherUserMetaControllerRightButton";
+	
 	public static final String nameLeaveConversationAlert = "Leave the conversation?";
 
 	public static final String nameLeaveConversationButton = "LEAVE";
@@ -180,7 +182,7 @@ public final class IOSLocators {
     
     public static final String nameComfirmRemoveButton = "REMOVE";
 
-	public static final String nameRemoveFromConversation = "metaControllerRightButton";
+	public static final String nameRemoveFromConversation = "OtherUserMetaControllerRightButton";
 	
 	public static final String xpathOtherConversationCellFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
@@ -195,6 +197,8 @@ public final class IOSLocators {
 	public static final String idProvideValidEmailMessage = "PLEASE ENTER A VALID EMAIL ADDRESS"; 
 	
 	public static final String nameAddContactToChatButton = "metaControllerLeftButton";
+	
+	public static final String nameOtherUserAddContactToChatButton = "OtherUserMetaControllerLeftButton";
 	
 	public static final String nameOtherUserEmailField = "ProfileOtherEmailField";
 	
@@ -228,7 +232,7 @@ public final class IOSLocators {
 	
 	public static final String xpathOtherPersonalInfoPageNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[6]";
 	
-	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATextView[contains(@name, 'wearezeta.com')]";
+	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAWindow[@name='ZClientMainWindow']/UIATextView[contains(@name, 'wire.com')]";
 	
 	///////////////////////
 	//Self profile page
@@ -295,6 +299,8 @@ public final class IOSLocators {
 	public static final String nameOtherProfilePagePendingLabel = "PENDING";
 	
 	public static final String nameOtherProfilePageStartConversationButton = "metaControllerLeftButton";
+	
+	public static final String nameOtherProfilePageCloseButton = "OtherUserProfileCloseButton";
 	 
 	///////////////////////
 	//Camera page locators
@@ -434,7 +440,7 @@ public final class IOSLocators {
 	public static final String nameAddPeopleDialogHeader = "Add people and share history?";
 	public static final String nameAddPeopleCancelButton = "CANCEL";
 	public static final String nameAddPeopleContinueButton = "CONTINUE";
-	public static final String nameYouAddetToGroupChatMessage = "YOU ADDED %s";
+	public static final String xpathYouAddetToGroupChatMessage = "//UIAStaticText[contains(@name, 'YOU ADDED %s')]";
 	public static final String nameYouRenamedConversationMessage = "YOU RENAMED THE CONVERSATION";
 	
 	
@@ -541,31 +547,29 @@ public final class IOSLocators {
 		
 		public static final String xpathStartedCallMessageUser = "//UIAStaticText[@name='%s']";
 		
-		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CALLING')]";
+		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'CallStatusLabel')]";
+				
+		public static final String nameCallingUsersAvatar = "CallingUsersImage";
 		
-		//Once all call banner buttons get own names these locators and related methods should be refactored
-		public static final String xpathEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[3]";
+		public static final String nameEndCallButton = "LeaveCallButton";
+				
+		public static final String nameSpeakersButton = "CallSpeakerButton";
 		
-		public static final String xpathiPadEndCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[1]";
-		
-		public static final String xpathSpeakersButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[4]";
-		
-		public static final String xpathMuteCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[5]";
-		
-		public static final String xpathiPadMuteCallButton = "//UIAWindow[@name='ZClientNotificationWindow']/UIAButton[3]";
+		public static final String nameMuteCallButton = "CallMuteButton";
+
 	}
 	
 	public final class IncomingCallPage {
 		
-		public static final String xpathCallingMessageUser = "//UIAStaticText[contains(@name, 'IS CALLING') and contains(@name, '%s')]";
+		public static final String nameCallingMessageUser = "CallStatusLabel";
+				
+		public static final String nameAcceptCallButton = "AcceptButton";
 		
-		public static final String xpathAcceptCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[1]";
-		
-		public static final String xpathEndCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[2]";
-		
+		public static final String nameEndCallButton = "LeaveCallButton";
+				
 		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'IS CALLING')]";
-		
-		public static final String xpathIgnoreCallButton = "//UIAApplication[1]/UIAWindow[@name='ZClientNotificationWindow']/UIAButton[2]";
+				
+		public static final String nameIgnoreCallButton = "IgnoreButton";
 	}
 	
 	public final class DialogPage {
@@ -581,6 +585,7 @@ public final class IOSLocators {
 	public final class ContactListPage {
 		public static final String nameOpenStartUI = "START A CONVERSATION";
 		public static final String nameSelfButton = "SelfButton";
+		public static final String xpathArchiveConversationButton = "//UIACollectionCell[@name='%s']/UIAButton[@name='ARCHIVE']";
 	}
 	
 	public final class RegistrationPage {

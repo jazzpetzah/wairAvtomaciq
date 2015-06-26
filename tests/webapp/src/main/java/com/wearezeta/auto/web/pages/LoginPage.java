@@ -43,14 +43,13 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathLoginErrorText)
 	private WebElement loginErrorText;
 
-	@FindBy(css = ".auth-page .has-error .form-control #wire-email")
+	@FindBy(css = WebAppLocators.LoginPage.cssRedDotOnEmailField)
 	private WebElement redDotOnEmailField;
 
-	@FindBy(css = ".auth-page .has-error .form-control #wire-password")
+	@FindBy(css = WebAppLocators.LoginPage.cssRedDotOnPasswordField)
 	private WebElement redDotOnPasswordField;
 
-	public LoginPage(Future<ZetaWebAppDriver> lazyDriver)
-			throws Exception {
+	public LoginPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 
@@ -129,12 +128,16 @@ public class LoginPage extends WebPage {
 		return loginErrorText.getText();
 	}
 
-	public boolean isRedDotOnEmailField() {
-		return DriverUtils.isElementPresentAndDisplayed(redDotOnEmailField);
+	public boolean isRedDotOnEmailField() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.cssSelector(WebAppLocators.LoginPage.cssRedDotOnEmailField));
 	}
 
-	public boolean isRedDotOnPasswordField() {
-		return DriverUtils.isElementPresentAndDisplayed(redDotOnPasswordField);
+	public boolean isRedDotOnPasswordField() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.LoginPage.cssRedDotOnPasswordField));
 	}
 
 	public PhoneNumberLoginPage switchToPhoneNumberLoginPage() throws Exception {

@@ -21,7 +21,6 @@ Feature: Welcome
     And I enter password "<OldPassword>"
     And I press Sign In button
     Then I see login error "<LoginErr>"
-    Given I switch to sign in page
     When I enter email <Email>
     And I enter password "<NewPassword>"
     And I press Sign In button

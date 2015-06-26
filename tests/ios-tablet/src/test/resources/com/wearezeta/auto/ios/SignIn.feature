@@ -14,7 +14,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id2607
+  @regression @id2925
   Scenario Outline: Sign in to ZClient [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -42,7 +42,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @regression @id2749 @noAcceptAlert
+  @regression @id2924 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong [LANDSCAPE]
     Given I see sign in screen
     Given I rotate UI to landscape
@@ -56,7 +56,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @regression @id1479 @id2608
+  @regression @id2608
   Scenario Outline: Verify possibility of reseting password (welcome page) [PORTRAIT]
     Given I see sign in screen
     And I press Sign in button
@@ -77,7 +77,7 @@ Feature: Sign In
       | Login                         | Password      | Name             | NewPassword  |
       | smoketester.ios@wearezeta.com | user1Password | SmoketesterReset | aqa123456789 |
 
-  @regression @id1479 @id2608
+  @regression @id2923
   Scenario Outline: Verify possibility of reseting password (welcome page) [LANDSCAPE]
     Given I see sign in screen
     Given I rotate UI to landscape

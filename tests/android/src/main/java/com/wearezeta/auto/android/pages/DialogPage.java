@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -149,6 +150,10 @@ public class DialogPage extends AndroidPage {
 	private static final String idPing = "gtv__cursor_knock";
 	@FindBy(id = idPing)
 	private WebElement pingBtn;
+	
+	private static final String idSketch = "gtv__cursor_draw";
+	@FindBy(id = idSketch)
+	private WebElement sketchBtn;
 
 	private static final String idCallingMessage = "ttv__calling__message";
 	@FindBy(id = idCallingMessage)
@@ -256,6 +261,11 @@ public class DialogPage extends AndroidPage {
 	public void tapPingBtn() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), pingBtn);
 		pingBtn.click();
+	}
+	
+	public void tapSketchBtn() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), pingBtn);
+		sketchBtn.click();
 	}
 
 	public void tapCallBtn() throws Exception {
@@ -404,6 +414,10 @@ public class DialogPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(idDialogImages));
 	}
+	
+	public Optional<BufferedImage> getLastImageInConversation() throws Exception {
+		return getElementScreenshot(imageList.get(imageList.size() - 1));
+	}
 
 	public void confirm() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), okButton);
@@ -429,9 +443,9 @@ public class DialogPage extends AndroidPage {
 		Thread.sleep(2000); // We must wait after camera switch
 	}
 
-	public boolean isConnectMessageVisible() {
+	public boolean isConnectMessageVisible() throws Exception {
 		return DriverUtils
-				.isElementPresentAndDisplayed(lastConversationMessage);
+				.isElementPresentAndDisplayed(getDriver(), lastConversationMessage);
 	}
 
 	public boolean isConnectMessageValid(String message) {
@@ -510,7 +524,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void sendFrontCameraImage() throws Exception {
-		if (DriverUtils.isElementPresentAndDisplayed(participantsButton)) {
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), participantsButton)) {
 			swipeOnCursorInput();
 			tapAddPictureBtn();
 			try {

@@ -104,7 +104,7 @@ Feature: Registration
       | Name      | Email              | Password      |
       | user1Name | nope@wearezeta.com | user1Password |
 
-  @staging @id2229
+  @regression @id2229
   Scenario: Use Gmail contacts import on registration
     Given There is 1 user where user1Name is me without avatar picture
     Given I switch to Sign In page

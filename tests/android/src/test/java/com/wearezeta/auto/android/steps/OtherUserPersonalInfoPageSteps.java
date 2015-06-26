@@ -391,18 +391,18 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Check that any UI content of other user profile is not showed
+	 * Check that any UI content of participant page is not showed
 	 * 
-	 * @step. ^I do not see profile page$
+	 * @step. ^I do not see participants? page$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I do not see profile page$")
-	public void IDoNotSeeContactProfile() throws Exception {
+	@Then("^I do not see participants? page$")
+	public void IDoNotSeeParticipantPage() throws Exception {
 		Assert.assertTrue(
 				"Contact profile page is visible, but expected not to be.",
 				getOtherUserPersonalInfoPage()
-						.isOneToOneUserProfileUIContentNotVisible());
+						.isParticipatPageUIContentNotVisible());
 	}
 
 	/**
@@ -421,16 +421,16 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
-	 * Check that any UI content of other user profile is not showed
+	 * Check that any UI content of participant page is showed
 	 * 
-	 * @step. ^I see profile page$
+	 * @step. ^I see participants? page$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see profile page$")
-	public void ISeeCorrectContactProfile() throws Exception {
+	@Then("^I see participants? page$")
+	public void ISeeCorrectParticipantPage() throws Exception {
 		Assert.assertTrue(getOtherUserPersonalInfoPage()
-				.isOneToOneUserProfileUIContentVisible());
+				.isParticipatPageUIContentVisible());
 	}
 
 	/**
@@ -442,7 +442,7 @@ public class OtherUserPersonalInfoPageSteps {
 	 */
 	@When("^I do small swipe down")
 	public void IDoSmallSwipeDown() throws Exception {
-		getOtherUserPersonalInfoPage().swipeByCoordinates(2000, 50, 50, 50, 55);
+		getOtherUserPersonalInfoPage().swipeByCoordinates(2000, 50, 50, 50, 60);
 	}
 
 	private UnknownUserDetailsPage getUnknownUserDetailsPage() throws Exception {
@@ -509,5 +509,29 @@ public class OtherUserPersonalInfoPageSteps {
 	public void ISeePendingButton() throws Exception {
 		Assert.assertTrue("Pending button is not visible, but it should be",
 				getUnknownUserDetailsPage().isPendingButtonVisible());
+	}
+
+	/**
+	 * Closes participants page by UI button
+	 * 
+	 * @step. ^I close participants? page by UI button$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I close participants? page by UI button$")
+	public void ThenICloseParticipantPageByUIButton() throws Exception {
+		getOtherUserPersonalInfoPage().tapCloseButton();
+	}
+	
+	/**
+	 * Perform swipe down on the participants page
+	 * 
+	 * @step. ^I swipe down on participants? page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I swipe down on participants? page$")
+	public void ISwipeDownParticipant() throws Exception {
+		getOtherUserPersonalInfoPage().swipeByCoordinates(2000, 50, 20, 50, 80);
 	}
 }

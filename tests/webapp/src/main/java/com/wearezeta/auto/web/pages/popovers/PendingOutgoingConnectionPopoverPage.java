@@ -25,7 +25,7 @@ class PendingOutgoingConnectionPopoverPage extends AbstractPopoverPage {
 
 	public boolean isPendingConnectionButtonVisible() throws Exception {
 		return DriverUtils
-				.isElementPresentAndDisplayed(pendingConnectionButton);
+				.isElementPresentAndDisplayed(getDriver(), pendingConnectionButton);
 	}
 
 	@Override

@@ -7,6 +7,9 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -71,7 +74,9 @@ public class PasswordChangeSteps {
 	 */
 	@Then("^I see Password Change Succeeded page$")
 	public void ISeePasswordChangeSucceeded() throws Exception {
-		PagesCollection.passwordChangeSuccessfullPage
-				.waitUntilVisible(VISIBILITY_TIMEOUT_SECONDS);
+		assertThat(
+				PagesCollection.passwordChangeSuccessfullPage
+						.isConfirmationTextVisible(),
+				is(true));
 	}
 }

@@ -35,8 +35,7 @@ public class CallPageSteps {
 	@When("^I see calling to contact (.*) message$")
 	public void ISeeCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(getStartedCallPage().isIncomingCallMessageVisible(
-				contact.toUpperCase()));
+		Assert.assertTrue(getStartedCallPage().isCallingMessageVisible());
 	}
 
 	/**
@@ -52,8 +51,8 @@ public class CallPageSteps {
 				getStartedCallPage().isEndCallVisible());
 		Assert.assertTrue("Mute call button is not visible",
 				getStartedCallPage().isMuteCallVisible());
-		Assert.assertTrue("Speakers button is not visible",
-				getStartedCallPage().isSpeakersVisible());
+//		Assert.assertTrue("Speakers button is not visible",
+//				getStartedCallPage().isSpeakersVisible());
 	}
 
 	/**
@@ -67,9 +66,9 @@ public class CallPageSteps {
 	@When("^I see mute call, end call buttons$")
 	public void ISeeCallingPageButtonsOnIpad() throws Exception {
 		Assert.assertTrue("End call button is not visible",
-				(getStartedCallPage().isIPadEndCallVisible()));
+				(getStartedCallPage().isEndCallVisible()));
 		Assert.assertTrue("Mute call button is not visible",
-				(getStartedCallPage().isIPadMuteCallVisible()));
+				(getStartedCallPage().isMuteCallVisible()));
 	}
 
 	/**
@@ -81,18 +80,6 @@ public class CallPageSteps {
 	@When("^I end started call$")
 	public void IEndStartedCall() throws Exception {
 		getStartedCallPage().clickEndCallButton();
-	}
-
-	/**
-	 * Click on end call button (step for iPad. Will be removed once buttons
-	 * will get names)
-	 * 
-	 * @step. ^I end started call on iPad$
-	 * @throws Exception
-	 */
-	@When("^I end started call on iPad$")
-	public void IEndStartedCallIPad() throws Exception {
-		getStartedCallPage().clickIPadEndCallButton();
 	}
 
 	/**

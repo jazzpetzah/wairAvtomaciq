@@ -3,6 +3,7 @@ package com.wearezeta.auto.web.pages;
 import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -42,7 +43,7 @@ public class RegistrationPage extends WebPage {
 	@FindBy(css = ".icon-envelope")
 	private WebElement verificationEnvelope;
 
-	@FindBy(css = ".auth-page .has-error .form-control #wire-create-email")
+	@FindBy(css = WebAppLocators.RegistrationPage.cssRedDotOnEmailField)
 	private WebElement redDotOnEmailField;
 
 	@FindBy(xpath = "//*[@data-uie-name='status-error']//div")
@@ -109,8 +110,11 @@ public class RegistrationPage extends WebPage {
 		return errorMessage.getText();
 	}
 
-	public boolean isRedDotOnEmailField() {
-		return DriverUtils.isElementPresentAndDisplayed(redDotOnEmailField);
+	public boolean isRedDotOnEmailField() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.RegistrationPage.cssRedDotOnEmailField));
 	}
 
 	public LoginPage openSignInPage() throws Exception {

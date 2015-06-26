@@ -55,13 +55,7 @@ Feature: People View
     And I see <Contact1> user profile page in iPad popover
     And I press Add button on iPad popover
     And I see People picker page on iPad popover
-    And I tap on Search input on People picker on iPad popover
-    And I input user name <Contact2> in People picker search field on iPad popover
-    And I see user <Contact2> found on People picker on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
-    And I tap on Search input on People picker on iPad popover
-    And I input user name <Contact3> in People picker search field on iPad popover
-    And I see user <Contact3> found on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
@@ -85,13 +79,7 @@ Feature: People View
     And I see <Contact1> user profile page in iPad popover
     And I press Add button on iPad popover
     And I see People picker page on iPad popover
-    And I tap on Search input on People picker on iPad popover
-    And I input user name <Contact2> in People picker search field on iPad popover
-    And I see user <Contact2> found on People picker on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
-    And I tap on Search input on People picker on iPad popover
-    And I input user name <Contact3> in People picker search field on iPad popover
-    And I see user <Contact3> found on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
@@ -141,3 +129,44 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveGroup    |
+
+  @staging @id2441
+  Scenario Outline: Verify removing from group conversation [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I select user on iPad group popover <Contact2>
+    And I click Remove on iPad
+    And I see remove warning message on iPad
+    And I confirm remove on iPad
+    Then I see that contact <Contact2> is not present on group popover on iPad
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | RemoveGroup   |
+
+  @staging @id2981
+  Scenario Outline: Verify removing from group conversation [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I select user on iPad group popover <Contact2>
+    And I click Remove on iPad
+    And I see remove warning message on iPad
+    And I confirm remove on iPad
+    Then I see that contact <Contact2> is not present on group popover on iPad
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | RemoveGroup   |
