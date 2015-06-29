@@ -230,7 +230,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
-  @staging @id1884
+  @regression @id1884
   Scenario Outline: Muted conversation person trying to call me
     Given My browser supports calling
     Given There are 2 users where <Name> is me
