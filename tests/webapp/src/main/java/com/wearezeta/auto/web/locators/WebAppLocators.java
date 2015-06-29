@@ -253,6 +253,9 @@ public final class WebAppLocators {
 						name);
 
 		public static final String xpathAllConnectionRequests = "//div[contains(@class, 'connect-request')";
+
+		public static final Function<String, String> cssRequestAvatarByUserId = id -> String
+				.format(".connect-request user-avatar[user-id='%s']", id);
 	}
 
 	public static final class PeoplePickerPage {
