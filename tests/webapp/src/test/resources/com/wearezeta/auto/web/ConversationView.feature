@@ -182,13 +182,17 @@ Feature: Conversation View
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
-    When I write template message <ActualMessage>
+    When I write 10 new lines
+    And I write message aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    And I write 10 new lines
+    And I write message bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+    And I write 10 new lines
     And I send message
     Then I verify the last text message equals to <ExpectedMessage>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | ActualMessage                                           | ExpectedMessage                   |
-      | user1Email | user1Password | user1Name | user2Name | ('LF' * 10)('a' * 100)('LF' * 10)('b' * 100)('LF' * 10) | ('a' * 100)('LF' * 10)('b' * 100) |
+      | Login      | Password      | Name      | Contact   | ExpectedMessage                   |
+      | user1Email | user1Password | user1Name | user2Name | ('a' * 100)('LF' * 10)('b' * 100) |
 
   @staging @id1624
   Scenario Outline: Verify you can see conversation images in fullscreen
