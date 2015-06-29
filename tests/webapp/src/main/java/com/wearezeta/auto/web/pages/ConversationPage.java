@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -83,8 +84,22 @@ public class ConversationPage extends WebPage {
 		super(lazyDriver);
 	}
 
-	public void writeNewMessage(String message) {
-		conversationInput.sendKeys(message);
+	public void writeNewMessage(String message) throws Exception {
+		if (WebAppExecutionContext.getBrowser()
+				.equals(Browser.InternetExplorer)) {
+			// IE11 has a bug that sends the form when pressing SHIFT+ENTER
+			message = message
+					.replace(Keys.chord(Keys.SHIFT, Keys.ENTER), "\\n");
+			String addMessageToInput = "var a=arguments[0];a.value=a.value+'"
+					+ message + "';";
+			JavascriptExecutor js = (JavascriptExecutor) getDriver();
+			js.executeScript(addMessageToInput, conversationInput);
+			// since we did not press any keys, we fake input by sending a space
+			// and then removing it again
+			conversationInput.sendKeys(" " + Keys.BACK_SPACE);
+		} else {
+			conversationInput.sendKeys(message);
+		}
 	}
 
 	public void sendNewMessage() {
