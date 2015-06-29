@@ -199,6 +199,7 @@ Feature: Conversation View
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I send picture <PictureName> to the current conversation
+    And I see sent picture <PictureName> in the conversation view
     When I click on picture
     Then I see picture in fullscreen
     When I click x button to close fullscreen mode
