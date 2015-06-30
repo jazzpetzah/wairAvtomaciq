@@ -28,7 +28,7 @@ public class ContactListPage extends IOSPage {
 			.getSimpleName());
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
-	private final double MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE = 0.90;
+	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.90;
 	private final int CONV_SWIPE_TIME = 1500;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
@@ -78,6 +78,9 @@ public class ContactListPage extends IOSPage {
 
 	// @FindBy(how = How.NAME, using = IOSLocators.nameArchiveButton)
 	// private WebElement archiveButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameMuteCallButton)
+	private WebElement muteCallButton;
 
 	private int oldLocation = 0;
 
@@ -482,8 +485,8 @@ public class ContactListPage extends IOSPage {
 						By.xpath(String
 								.format(IOSLocators.ContactListPage.xpathArchiveConversationButton,
 										conversation)));
-		return DriverUtils
-				.waitUntilElementClickable(getDriver(), archiveButton, 3);
+		return DriverUtils.waitUntilElementClickable(getDriver(),
+				archiveButton, 3);
 	}
 
 	public void clickArchiveCoversationButton(String conversation)
@@ -530,10 +533,9 @@ public class ContactListPage extends IOSPage {
 		score = ImageUtil.getOverlapScore(referenceImage, missedCallIndicator,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 
-		if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
+		if (score <= MIN_ACCEPTABLE_IMAGE_SCORE) {
 			log.debug("Overlap Score is " + score
-					+ ". And minimal expected is "
-					+ MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE);
+					+ ". And minimal expected is " + MIN_ACCEPTABLE_IMAGE_SCORE);
 			return false;
 
 		}
@@ -583,10 +585,9 @@ public class ContactListPage extends IOSPage {
 				unreadMessageIndicator,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 
-		if (score <= MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE) {
+		if (score <= MIN_ACCEPTABLE_IMAGE_SCORE) {
 			log.debug("Overlap Score is " + score
-					+ ". And minimal expected is "
-					+ MIN_ACCEPTABLE_IMAGE_MISSCALL_VALUE);
+					+ ". And minimal expected is " + MIN_ACCEPTABLE_IMAGE_SCORE);
 			return false;
 
 		}
@@ -612,6 +613,63 @@ public class ContactListPage extends IOSPage {
 		// return true;
 		// }
 		// return false;
+	}
+
+	public boolean isMuteCallButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				muteCallButton);
+	}
+
+	public void clickMuteCallButton() {
+		muteCallButton.click();
+	}
+
+	public boolean isPauseButtonVisible() throws IllegalStateException,
+			Exception {
+		BufferedImage pauseMediaButtonIcon = null;
+		BufferedImage referenceImage = null;
+		double score = 0;
+
+		pauseMediaButtonIcon = getElementScreenshot(playPauseButton)
+				.orElseThrow(IllegalStateException::new);
+
+		referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+				+ "pauseMediaButtonIcon.png");
+
+		score = ImageUtil.getOverlapScore(referenceImage, pauseMediaButtonIcon,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+
+		if (score <= MIN_ACCEPTABLE_IMAGE_SCORE) {
+			log.debug("Overlap Score is " + score
+					+ ". And minimal expected is " + MIN_ACCEPTABLE_IMAGE_SCORE);
+			return false;
+		}
+
+		return true;
+	}
+
+	public boolean isPlayButtonVisible() throws IllegalStateException,
+			Exception {
+		BufferedImage playMediaButtonIcon = null;
+		BufferedImage referenceImage = null;
+		double score = 0;
+
+		playMediaButtonIcon = getElementScreenshot(playPauseButton)
+				.orElseThrow(IllegalStateException::new);
+
+		referenceImage = ImageUtil.readImageFromFile(IOSPage.getImagesPath()
+				+ "playMediaButtonIcon.png");
+
+		score = ImageUtil.getOverlapScore(referenceImage, playMediaButtonIcon,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+
+		if (score <= MIN_ACCEPTABLE_IMAGE_SCORE) {
+			log.debug("Overlap Score is " + score
+					+ ". And minimal expected is " + MIN_ACCEPTABLE_IMAGE_SCORE);
+			return false;
+		}
+
+		return true;
 	}
 
 }
