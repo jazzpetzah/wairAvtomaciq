@@ -136,6 +136,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameChatheadAvatarImage)
 	private WebElement chatheadAvatarImage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameGifButton)
+	private WebElement openGifPreviewButton;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
 	private String connectingLabel = "CONNECTING TO %s.";
@@ -903,4 +906,9 @@ public class DialogPage extends IOSPage {
 	public void clickOnPlayVideoButton() throws Exception{
 		youtubeCell.click();
 	}
+	
+	public void openGifPreviewPage() {
+		openGifPreviewButton.click();
+	}
+	
 }
