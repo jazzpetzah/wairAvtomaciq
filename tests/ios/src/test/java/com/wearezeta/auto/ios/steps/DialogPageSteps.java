@@ -726,4 +726,19 @@ public class DialogPageSteps {
 	public void IClickPlayButton() throws Exception {
 		getDialogPage().clickOnPlayVideoButton();
 	}
+	
+	/**
+	 * Types in the tag for giphy and opens preview page
+	 * 
+	 * @step. ^I type tag for giphy preview (.*) and open preview overlay$
+	 * 
+	 * @param message
+	 *           Tag to be fetched from giphy
+	 * @throws Exception
+	 */
+	@When("^I type tag for giphy preview (.*) and open preview overlay$")
+	public void ITypeGiphyTagAndOpenPreview(String message) throws Exception {
+		getDialogPage().sendStringToInput(message);
+		getDialogPage().openGifPreviewPage();
+	}
 }

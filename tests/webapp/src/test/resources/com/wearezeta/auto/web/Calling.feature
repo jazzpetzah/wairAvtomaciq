@@ -230,7 +230,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
-  @staging @id1884
+  @regression @id1884
   Scenario Outline: Muted conversation person trying to call me
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -260,11 +260,11 @@ Feature: Calling
     And I open conversation with <Contact>
     When I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from user <Contact>
+    And I see the calling bar
     When I open conversation with <OtherContact>
-    Then I see the calling bar from user <Contact>
+    Then I see the calling bar
     When I call
-    Then I see the calling bar from user <Contact>
+    Then I see the calling bar
     When I end the call
     Then I do not see the calling bar
 

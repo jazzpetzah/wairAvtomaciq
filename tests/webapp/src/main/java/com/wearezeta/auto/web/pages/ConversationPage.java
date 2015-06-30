@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -36,7 +37,7 @@ public class ConversationPage extends WebPage {
 
 	private static final String TOOLTIP_PEOPLE = "People";
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathImageMessageEntry)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssLastImageEntry)
 	private List<WebElement> imageMessageEntries;
 
 	@FindBy(id = WebAppLocators.ConversationPage.idConversation)
@@ -54,6 +55,9 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPingButton)
 	private WebElement pingButton;
 
+	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idGIFButton)
+	private WebElement gifButton;
+
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathCallButton)
 	private WebElement callButton;
 
@@ -61,7 +65,10 @@ public class ConversationPage extends WebPage {
 	private WebElement pingMessage;
 
 	@FindBy(css = WebAppLocators.ConversationPage.cssLastTextMessage)
-	private WebElement lastConversationMessage;
+	private WebElement lastTextMessage;
+
+	@FindBy(css = WebAppLocators.ConversationPage.cssSecondLastTextMessage)
+	private WebElement secondLastTextMessage;
 
 	@FindBy(xpath = WebAppLocators.ConversationPage.xpathPictureFullscreen)
 	private WebElement pictureFullscreen;
@@ -77,8 +84,22 @@ public class ConversationPage extends WebPage {
 		super(lazyDriver);
 	}
 
-	public void writeNewMessage(String message) {
-		conversationInput.sendKeys(message);
+	public void writeNewMessage(String message) throws Exception {
+		if (WebAppExecutionContext.getBrowser()
+				.equals(Browser.InternetExplorer)) {
+			// IE11 has a bug that sends the form when pressing SHIFT+ENTER
+			message = message
+					.replace(Keys.chord(Keys.SHIFT, Keys.ENTER), "\\n");
+			String addMessageToInput = "var a=arguments[0];a.value=a.value+'"
+					+ message + "';";
+			JavascriptExecutor js = (JavascriptExecutor) getDriver();
+			js.executeScript(addMessageToInput, conversationInput);
+			// since we did not press any keys, we fake input by sending a space
+			// and then removing it again
+			conversationInput.sendKeys(" " + Keys.BACK_SPACE);
+		} else {
+			conversationInput.sendKeys(message);
+		}
 	}
 
 	public void sendNewMessage() {
@@ -191,7 +212,7 @@ public class ConversationPage extends WebPage {
 		final boolean isAnyPictureMsgFound = DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.xpath(WebAppLocators.ConversationPage.xpathImageMessageEntry),
+						By.cssSelector(WebAppLocators.ConversationPage.cssLastImageEntry),
 						40);
 		return isAnyPictureMsgFound && (imageMessageEntries.size() > 0);
 	}
@@ -336,7 +357,15 @@ public class ConversationPage extends WebPage {
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
 						By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
-		return lastConversationMessage.getText();
+		return lastTextMessage.getText();
+	}
+
+	public String getSecondLastTextMessage() throws Exception {
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastTextMessage));
+		return secondLastTextMessage.getText();
 	}
 
 	public void clickOnPicture() throws Exception {
@@ -358,5 +387,26 @@ public class ConversationPage extends WebPage {
 
 	public void clickOnBlackBorder() throws Exception {
 		blackBorder.click();
+	}
+
+	public GiphyPage clickGIFButton() throws Exception {
+		gifButton.click();
+		return new GiphyPage(getLazyDriver());
+	}
+
+	public boolean isGifVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssLastImageEntry),
+						40);
+
+	}
+
+	public boolean isLastTextMessage(String expectedMessage) throws Exception {
+		return DriverUtils
+		.waitUntilLocatorIsDisplayed(
+				getDriver(),
+				By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
 	}
 }

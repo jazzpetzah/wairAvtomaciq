@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.backend.AccentColor;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -80,10 +81,11 @@ public class PendingConnectionsPageSteps {
 	 * @throws Exception
 	 */
 	@Then("^I see avatar in connection request from user (.*)$")
-	public void ISeeAvatarFromUser(String user) throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+	public void ISeeAvatarFromUser(String nameAlias) throws Exception {
+		//user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(nameAlias);
 		Assert.assertTrue(PagesCollection.pendingConnectionsPage
-				.isAvatarByNameVisible(user));
+				.isAvatarByIdVisible(user.getId()));
 
 	}
 

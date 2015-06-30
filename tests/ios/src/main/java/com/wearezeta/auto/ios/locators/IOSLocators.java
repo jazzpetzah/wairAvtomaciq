@@ -573,7 +573,11 @@ public final class IOSLocators {
 	}
 	
 	public final class DialogPage {
+		
 		public static final String nameCallButton = "ComposeControllerVoiceButton";
+		
+		public static final String nameGifButton = "rightMenuButton";
+		
 	}
 	
 	public final class DialogInfoPage {
@@ -620,6 +624,20 @@ public final class IOSLocators {
 	
 	public final class PersonalInfoPage {
 		public static final String nameCloseButton = "CloseButton";
+	}
+	
+	public final class GiphyPreviewPage {
+		
+		public static final String nameGiphyRefreshButton = "topPanelLeftButton";
+		
+		public static final String nameGiphyLinkButton = "topPanelRightButton";
+		
+		public static final String nameGiphyTitleButton = "titleButton";
+		
+		public static final String nameGiphyCancelRequestButton = "rejectButton";
+		
+		public static final String nameGiphySendButton = "acceptButton";
+		
 	}
 	
 	/////////////
