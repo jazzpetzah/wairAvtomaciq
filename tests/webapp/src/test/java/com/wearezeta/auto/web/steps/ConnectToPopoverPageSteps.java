@@ -52,20 +52,6 @@ public class ConnectToPopoverPageSteps {
 	}
 
 	/**
-	 * Clicks Pending button on Pending Outgoing Connection popover
-	 * 
-	 * @step. ^I click Pending button on Pending Outgoing Connection popover$
-	 * @throws Exception
-	 * 
-	 */
-	// @When("^I click Pending button on Pending Outgoing Connection popover$")
-	// public void IClickPendingButtonOnPendingOutgoingConnectionPopover()
-	// throws Exception {
-	// ((ConnectToPopoverContainer) PagesCollection.popoverPage)
-	// .clickPendingButton();
-	// }
-
-	/**
 	 * Clicks Cancel request button on Pending Outgoing Connection popover
 	 * 
 	 * @step. ^I click Cancel request on Pending Outgoing Connection popover$
