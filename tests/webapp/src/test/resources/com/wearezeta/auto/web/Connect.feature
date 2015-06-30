@@ -372,7 +372,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
 
-  @staging @id2764 @torun
+  @staging @id2764
   Scenario Outline: I want to cancel a pending request from search
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
