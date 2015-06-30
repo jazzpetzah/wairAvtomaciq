@@ -133,4 +133,18 @@ Feature: Registration
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
-   
+
+  @staging @id1935
+  Scenario Outline: Verify that correct error messages are shown instead of email verification screen if there are some problems with the registration
+    When I enter user name <Name> on Registration page
+    And I enter user email <Email> on Registration page
+    And I enter user password "<Password>" on Registration page
+    And I submit registration form
+    Then I see error "PLEASE ENTER A VALID EMAIL ADDRESS." on Verification page
+    And I verify that a red dot is shown inside the email field on the registration form
+
+    Examples: 
+      | Email        | Password      | Name      |
+      | @example.com | user1Password | user1Name |
+      | example@     | user1Password | user1Name |
+      | @            | user1Password | user1Name |
