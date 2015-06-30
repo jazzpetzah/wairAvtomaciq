@@ -16,6 +16,8 @@ public class ConnectToPopoverContainer extends AbstractPopoverContainer {
 		this.connectToPopoverPage = new ConnectToPopoverPage(lazyDriver, this);
 		this.pendingOutgoingConnectionPopoverPage = new PendingOutgoingConnectionPopoverPage(
 				lazyDriver, this);
+		this.cancelRequestConfirmationPopoverPage = new CancelRequestConfirmationPopoverPage(
+				lazyDriver, this);
 	}
 
 	@Override
@@ -32,8 +34,9 @@ public class ConnectToPopoverContainer extends AbstractPopoverContainer {
 	// this.pendingOutgoingConnectionPopoverPage.clickPendingButton();
 	// }
 
-	public void clickCancelRequestButton() {
+	public CancelRequestConfirmationPopoverPage clickCancelRequestButton() {
 		this.pendingOutgoingConnectionPopoverPage.clickCancelRequestButton();
+		return this.cancelRequestConfirmationPopoverPage;
 	}
 
 	public void clickNoButton() {

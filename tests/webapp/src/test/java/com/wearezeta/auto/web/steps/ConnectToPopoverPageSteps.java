@@ -30,18 +30,27 @@ public class ConnectToPopoverPageSteps {
 		((ConnectToPopoverContainer) PagesCollection.popoverPage)
 				.waitUntilVisibleOrThrowException();
 	}
-	
+
 	/**
-	 * Verified whether Pending Outgoing Connection popover is displayed within some timeout
-	 * 
+	 * Verified whether Pending Outgoing Connection popover is displayed within
+	 * some timeout
+	 *
+	 * @param doNot
+	 *            is set to null if "do not" part does not exist
 	 * @throws Exception
 	 */
-	@And("^I see Pending Outgoing Connection popover$")
-	public void ISeePendingOutgoingConnectionPopover() throws Exception {
-		((ConnectToPopoverContainer) PagesCollection.popoverPage)
-				.waitUntilVisibleOrThrowException();
+	@And("^I( do not)? see Pending Outgoing Connection popover$")
+	public void ISeePendingOutgoingConnectionPopover(String doNot)
+			throws Exception {
+		if (doNot == null) {
+			((ConnectToPopoverContainer) PagesCollection.popoverPage)
+					.waitUntilVisibleOrThrowException();
+		} else {
+			((ConnectToPopoverContainer) PagesCollection.popoverPage)
+					.waitUntilNotVisibleOrThrowException();
+		}
 	}
-	
+
 	/**
 	 * Clicks Pending button on Pending Outgoing Connection popover
 	 * 
@@ -49,12 +58,13 @@ public class ConnectToPopoverPageSteps {
 	 * @throws Exception
 	 * 
 	 */
-//	@When("^I click Pending button on Pending Outgoing Connection popover$")
-//	public void IClickPendingButtonOnPendingOutgoingConnectionPopover() throws Exception {
-//		((ConnectToPopoverContainer) PagesCollection.popoverPage)
-//				.clickPendingButton();
-//	}
-	
+	// @When("^I click Pending button on Pending Outgoing Connection popover$")
+	// public void IClickPendingButtonOnPendingOutgoingConnectionPopover()
+	// throws Exception {
+	// ((ConnectToPopoverContainer) PagesCollection.popoverPage)
+	// .clickPendingButton();
+	// }
+
 	/**
 	 * Clicks Cancel request button on Pending Outgoing Connection popover
 	 * 
@@ -63,13 +73,15 @@ public class ConnectToPopoverPageSteps {
 	 * 
 	 */
 	@When("^I click Cancel request on Pending Outgoing Connection popover$")
-	public void IClickCancelRequestButtonOnPendingOutgoingConnectionPopover() throws Exception {
+	public void IClickCancelRequestButtonOnPendingOutgoingConnectionPopover()
+			throws Exception {
 		((ConnectToPopoverContainer) PagesCollection.popoverPage)
 				.clickCancelRequestButton();
 	}
-	
+
 	/**
-	 * Verified whether Cancel request confirmation popover is displayed within some timeout
+	 * Verified whether Cancel request confirmation popover is displayed within
+	 * some timeout
 	 * 
 	 * @throws Exception
 	 */
@@ -78,7 +90,7 @@ public class ConnectToPopoverPageSteps {
 		((ConnectToPopoverContainer) PagesCollection.popoverPage)
 				.waitUntilVisibleOrThrowException();
 	}
-	
+
 	/**
 	 * Clicks No button on Cancel request confirmation popover
 	 * 
@@ -89,7 +101,7 @@ public class ConnectToPopoverPageSteps {
 	@When("^I click No button on Cancel request confirmation popover$")
 	public void IClickNoButtonOnCancelRequestConfirmationPopover() {
 		((ConnectToPopoverContainer) PagesCollection.popoverPage)
-		.clickNoButton();
+				.clickNoButton();
 	}
 
 	/**
@@ -102,6 +114,6 @@ public class ConnectToPopoverPageSteps {
 	@When("^I click Yes button on Cancel request confirmation popover$")
 	public void IClickYesButtonOnCancelRequestConfirmationPopover() {
 		((ConnectToPopoverContainer) PagesCollection.popoverPage)
-		.clickYesButton();
+				.clickYesButton();
 	}
 }

@@ -43,9 +43,9 @@ public final class PopoverLocators {
 		
 		public static final class CancelRequestConfirmationPage {
 			
-			public static final String xpathNoButton = "//*data-uie-name='do-cancel']";
+			public static final String xpathNoButton = "//*[@data-uie-name='do-cancel']";
 		
-			public static final String xpathYesButton = "//*data-uie-name='do-confirm']";
+			public static final String xpathYesButton = "//*[@data-uie-name='do-confirm']";
 		}
 	}
 
