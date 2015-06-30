@@ -351,7 +351,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
-  @regression @id1564
+  @staging @id1564 @muted
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search view)
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
@@ -371,3 +371,39 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @staging @id2764 @torun
+  Scenario Outline: I want to cancel a pending request from search
+    Given There are 3 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open People Picker from Contact List
+    And I wait for 2 seconds
+    And I type <Contact1> in search field of People Picker
+    Then I see user <Contact1> found in People Picker
+    When I click on pending user <Contact1> found in People Picker
+    And I see Pending Outgoing Connection popover
+    When I click Cancel request on Pending Outgoing Connection popover
+    Then I see Cancel request confirmation popover
+    When I click No button on Cancel request confirmation popover
+    Then I see Pending Outgoing Connection popover
+    When I click Cancel request on Pending Outgoing Connection popover
+    Then I see Cancel request confirmation popover
+    When I click Yes button on Cancel request confirmation popover
+    Then I do not see Pending Outgoing Connection popover
+    When I close People Picker
+    Then I do not see Contact list with name <Contact1>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And User <Contact1> is me
+    And I Sign in using login <Contact1Email> and password <Contact1Password>
+    Then I see my avatar on top of Contact list
+    And I do not see Contact list with name <Name>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user1Email    | user1Password    | user3Name |

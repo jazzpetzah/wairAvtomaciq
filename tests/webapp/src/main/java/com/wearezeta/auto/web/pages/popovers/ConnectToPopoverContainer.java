@@ -8,6 +8,7 @@ import com.wearezeta.auto.web.locators.PopoverLocators;
 public class ConnectToPopoverContainer extends AbstractPopoverContainer {
 	private ConnectToPopoverPage connectToPopoverPage;
 	private PendingOutgoingConnectionPopoverPage pendingOutgoingConnectionPopoverPage;
+	private CancelRequestConfirmationPopoverPage cancelRequestConfirmationPopoverPage;
 
 	public ConnectToPopoverContainer(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -27,7 +28,19 @@ public class ConnectToPopoverContainer extends AbstractPopoverContainer {
 		this.connectToPopoverPage.clickConnectButton();
 	}
 
-	public void clickPendingButton() throws Exception {
-		this.pendingOutgoingConnectionPopoverPage.clickPendingButton();
+	// public void clickPendingButton() throws Exception {
+	// this.pendingOutgoingConnectionPopoverPage.clickPendingButton();
+	// }
+
+	public void clickCancelRequestButton() {
+		this.pendingOutgoingConnectionPopoverPage.clickCancelRequestButton();
+	}
+
+	public void clickNoButton() {
+		this.cancelRequestConfirmationPopoverPage.clickNoButton();
+	}
+
+	public void clickYesButton() {
+		this.cancelRequestConfirmationPopoverPage.clickYesButton();
 	}
 }

@@ -34,8 +34,18 @@ public final class PopoverLocators {
 		
 		public static final class PendingOutgoingConnectionPage {
 
-			public static final String xpathPendingConnectionButton = xpathRootLocator
-					+ "//*[@data-uie-name='go-conversation']";
+//			public static final String xpathPendingConnectionButton = xpathRootLocator
+//					+ "//*[@data-uie-name='go-conversation']";
+//			
+			public static final String xpathCancelRequestButton = xpathRootLocator
+					+ "//*[@data-uie-name='go-cancel']";
+		}
+		
+		public static final class CancelRequestConfirmationPage {
+			
+			public static final String xpathNoButton = "//*data-uie-name='do-cancel']";
+		
+			public static final String xpathYesButton = "//*data-uie-name='do-confirm']";
 		}
 	}
 
@@ -183,5 +193,6 @@ public final class PopoverLocators {
 			public static final String xpathUnblockButton = xpathRootLocator
 					+ "//*[@data-uie-name='do-unblock']";
 		}
+
 	}
 }
