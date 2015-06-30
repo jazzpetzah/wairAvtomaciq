@@ -56,31 +56,31 @@ Feature: People View
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    When I create group chat with <Contact1> and <Contact2>
-    #And I swipe up on group chat page
+    When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press leave converstation button
     And I see leave conversation alert
     Then I press leave
     And I open archived conversations
-    And I see <Contact1> and <Contact2> chat in contact list
-    And I tap on a group chat with <Contact1> and <Contact2>
+    And I see user <GroupChatName> in contact list
+    And I tap on group chat with name <GroupChatName>
     And I see You Left message in group chat
 
     Examples: 
-      | Name      | Contact1    | Contact2   |
-      | user1Name | user2Name   | user3Name  |
+      | Name      | Contact1    | Contact2   | GroupChatName |
+      | user1Name | user2Name   | user3Name  | TESTCHAT      |
 
   @smoke @id1390
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    When I create group chat with <Contact1> and <Contact2>
-    #And I swipe up on group chat page
+	When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select contact <Contact2>
     And I click Remove
@@ -89,8 +89,8 @@ Feature: People View
     Then I see that <Contact2> is not present on group chat page
 
     Examples: 
-      | Name      | Contact1    | Contact2   |
-      | user1Name | user2Name   | user3Name  |
+      | Name      | Contact1    | Contact2   | GroupChatName |
+      | user1Name | user2Name   | user3Name  | TESTCHAT      |
 
   @regression @id1396
   Scenario Outline: Verify correct group info page information
@@ -119,10 +119,10 @@ Feature: People View
   Scenario Outline: I can edit the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-    When I create group chat with <Contact1> and <Contact2>
-    #And I swipe up on group chat page
+	When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I change group conversation name to <ChatName>
     Then I see correct conversation name <ChatName>
@@ -132,8 +132,8 @@ Feature: People View
     And I see in contact list group chat named <ChatName>
 
     Examples:
-      | Name      | Contact1    | Contact2   | ChatName |
-      | user1Name | user2Name   | user3Name  | QAtest   |
+      | Name      | Contact1    | Contact2   | ChatName | GroupChatName |
+      | user1Name | user2Name   | user3Name  | QAtest   | TESTCHAT      |
 
   @regression @id531
   Scenario Outline: I can see the individual user profile if I select someone in participants view
@@ -299,63 +299,6 @@ Feature: People View
     Examples: 
       | Name      | Contact1    | Contact2   | Contact3  |
       | user1Name | user2Name   | user3Name  | user4Name |
-
-  #Known issue ZIOS-1711. Muted test due to crash after relogin.
-  #@staging @id597 @mute
-  #Scenario Outline: Verify the new conversation is created on the other end (1:1 source)
-    #Given I Sign in using login <Login> and password <Password>
-    #And I see Contact list with my name <Name>
-    #When I create group chat with <Contact1> and <Contact2>
-    #And I swipe up on group chat page
-    #And I change group conversation name to <ChatName>
-    #And I swipe down on group chat info page
-    #And I swipe right on Dialog page
-    #And I tap on my name <Name>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I Sign in using login <Contact1> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #And I see in contact list group chat named <ChatName>
-    #And I tap on my name <Contact1>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I Sign in using login <Contact2> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #Then I see in contact list group chat named <ChatName>
-
-    #Examples: 
-      #| Login   | Password    | Name    | Contact1    | Contact2    | ChatName   |
-      #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | QAtestChat |
-
-  #Muted due to app quit on logout workaround
-  #@staging @id602 @mute
-  #Scenario Outline: Verify new users are added to a group conversation on the other end
-    #Given I Sign in using login <Login> and password <Password>
-    #And I see Contact list with my name <Name>
-    #When I create group chat with <Contact1> and <Contact2>
-    #And I send predefined message <message>
-    #And I see message in group chat <message>
-    #And I swipe down on group chat page
-    #And I swipe up on group chat page in simulator
-    #And I change group conversation name to <ChatName>
-    #And I add to existing group chat contact <Contact3>
-    #And I swipe down on group chat info page
-    #And I swipe right on Dialog page
-    #And I tap on my name <Name>
-    #And I click on Settings button on personal page
-    #And I click Sign out button from personal page
-    #And I Sign in using login <Contact3> and password <Password>
-    #And I see Personal page
-    #And I swipe right on the personal page
-    #And I see in contact list group chat named <ChatName>
-    #And I tap on group chat with name <ChatName>
-    #And I see message in group chat <message>
-
-    #Examples: 
-      #| Login   | Password    | Name    | Contact1    | Contact2    | Contact3    | ChatName   | message      |
-      #| aqaUser | aqaPassword | aqaUser | aqaContact1 | aqaContact2 | aqaContact3 | QAtestChat | Test Message |
       
   @regression @id1462
   Scenario Outline: Verify silence the conversation
