@@ -53,7 +53,7 @@ Feature: People View
     And I see dialog page
     And I open conversation details on iPad
     And I see <Contact1> user profile page in iPad popover
-    And I press Add button on iPad popover
+    And I press Add button
     And I see People picker page on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
@@ -77,7 +77,7 @@ Feature: People View
     And I see dialog page
     And I open conversation details on iPad
     And I see <Contact1> user profile page in iPad popover
-    And I press Add button on iPad popover
+    And I press Add button
     And I see People picker page on iPad popover
     And I click on connected user <Contact2> on People picker on iPad popover
     And I click on connected user <Contact3> on People picker on iPad popover
@@ -170,3 +170,47 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveGroup   |
+
+  @staging @id2446
+  Scenario Outline: Verify editing the conversation name [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I press conversation menu button on iPad
+    And I press RENAME on the menu on iPad
+    And I change group conversation name on iPad popover to <ChatName>
+    And I exit the group info iPad popover
+    Then I see you renamed conversation to <ChatName> message shown in Group Chat
+    And I return to the chat list
+    Then I see in contact list group chat named <ChatName>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
+      | user1Name | user2Name | user3Name | RenameGroup   | NewName  |
+
+  @staging @id2922
+  Scenario Outline: Verify editing the conversation name [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I press conversation menu button on iPad
+    And I press RENAME on the menu on iPad
+    And I change group conversation name on iPad popover to <ChatName>
+    And I exit the group info iPad popover
+    Then I see you renamed conversation to <ChatName> message shown in Group Chat
+    Then I see in contact list group chat named <ChatName>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
+      | user1Name | user2Name | user3Name | RenameGroup   | NewName  |

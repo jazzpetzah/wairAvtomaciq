@@ -1,19 +1,28 @@
 package com.wearezeta.auto.web.pages;
 
 import com.wearezeta.auto.common.backend.AccentColor;
+
 import java.util.concurrent.Future;
 
+import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+
 import java.util.List;
+
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 public class PendingConnectionsPage extends WebPage {
+
+	@SuppressWarnings("unused")
+	private static final Logger log = ZetaLogger.getLog(PendingConnectionsPage.class
+			.getSimpleName());
 
 	private static final String CSS_BACKGROUND_COLOR = "background-color";
 	private static final String CSS_BORDER_TOP_COLOR = "border-top-color";
@@ -53,15 +62,11 @@ public class PendingConnectionsPage extends WebPage {
 		return message.getText();
 	}
 
-	public boolean isAvatarByNameVisible(String userName) throws Exception {
-		String locator = WebAppLocators.ConnectToPage.xpathRequestByName
-				.apply(userName)
-				+ WebAppLocators.ConnectToPage.xpathRequestAvatarPartial;
-		DriverUtils
-				.waitUntilLocatorAppears(this.getDriver(), By.xpath(locator));
-
-		WebElement message = getDriver().findElement(By.xpath(locator));
-		return message.isDisplayed();
+	public boolean isAvatarByIdVisible(String userId) throws Exception {
+		String locator = WebAppLocators.ConnectToPage.cssRequestAvatarByUserId
+				.apply(userId);
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(locator));
 	}
 
 	public boolean isAcceptRequestButtonForUserVisible(String userName)

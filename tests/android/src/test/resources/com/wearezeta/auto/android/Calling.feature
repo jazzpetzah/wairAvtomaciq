@@ -152,3 +152,22 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
+
+  @id2211 @regression
+  Scenario Outline: I can dismiss calling bar by swipe
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And <Contact> calls me using <CallBackend>
+    And I see call overlay
+    And I answer the call from the overlay bar
+    And I dismiss calling bar by swipe
+    Then I do not see call overlay
+    And <Contact> stops all calls to me
+
+    Examples: 
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |

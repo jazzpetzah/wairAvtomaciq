@@ -276,7 +276,7 @@ public final class IOSLocators {
 	
 	public static final String nameWireWebsiteButton = "wire.com";
 	
-	public static final String xpathWireWebsitePageText = "//UIAStaticText[contains(@name, 'Great conversations')]";
+	public static final String xpathWireWebsiteUrl = "//UIAElement[@label ='Wire Swiss GmbH']";
 	
 	public static final String xpathWireWebsitePageUrlValue = "//UIAApplication[1]/UIAWindow[2]/UIAButton[2]/UIAStaticText[2]";
 	
@@ -286,7 +286,7 @@ public final class IOSLocators {
 	
 	public static final String nameCloseLegalPageButton = "WebViewCloseButton";
 	
-	public static final String xpathTermsOfUsePageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[3]";
+	public static final String xpathTermsOfUsePageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIAStaticText[2]";
 	
 	public static final String xpathPrivacyPolicyPageText = "//UIAApplication[1]/UIAWindow[2]/UIAScrollView[1]/UIAWebView[1]/UIALink[1]/UIAStaticText[1]";
 	
@@ -573,7 +573,11 @@ public final class IOSLocators {
 	}
 	
 	public final class DialogPage {
+		
 		public static final String nameCallButton = "ComposeControllerVoiceButton";
+		
+		public static final String nameGifButton = "rightMenuButton";
+		
 	}
 	
 	public final class DialogInfoPage {
@@ -620,6 +624,20 @@ public final class IOSLocators {
 	
 	public final class PersonalInfoPage {
 		public static final String nameCloseButton = "CloseButton";
+	}
+	
+	public final class GiphyPreviewPage {
+		
+		public static final String nameGiphyRefreshButton = "topPanelLeftButton";
+		
+		public static final String nameGiphyLinkButton = "topPanelRightButton";
+		
+		public static final String nameGiphyTitleButton = "titleButton";
+		
+		public static final String nameGiphyCancelRequestButton = "rejectButton";
+		
+		public static final String nameGiphySendButton = "acceptButton";
+		
 	}
 	
 	/////////////

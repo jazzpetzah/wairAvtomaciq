@@ -190,7 +190,7 @@ public final class WebAppLocators {
 
 		public static final String cssSendImageInput = "input[data-uie-name=do-share-image]";
 
-		public static final String xpathImageMessageEntry = "//div[@class='message-asset-image']";
+		public static final String cssLastImageEntry = "[data-uie-name='item-message']:last-of-type .image";
 
 		public static final String cssPingButton = "[data-uie-name='do-ping'], [data-uie-name='do-hot-ping']";
 
@@ -203,6 +203,8 @@ public final class WebAppLocators {
 						text);
 
 		public static final String cssLastTextMessage = "[data-uie-name='item-message']:last-child .text-inner";
+
+		public static final String cssSecondLastTextMessage = "[data-uie-name='item-message']:nth-last-child(2) .text-inner";
 
 		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
 
@@ -228,6 +230,8 @@ public final class WebAppLocators {
 		public static final String xpathXButton = "//div[contains(@class, 'detail-view-close-button')]//*[@data-uie-name='do-close-detail-view']";
 
 		public static final String idBlackBorder = "detail-view";
+
+		public static final String idGIFButton = "show-extensions";
 	}
 
 	public static final class ConnectToPage {
@@ -249,6 +253,9 @@ public final class WebAppLocators {
 						name);
 
 		public static final String xpathAllConnectionRequests = "//div[contains(@class, 'connect-request')";
+
+		public static final Function<String, String> cssRequestAvatarByUserId = id -> String
+				.format(".connect-request user-avatar[user-id='%s']", id);
 	}
 
 	public static final class PeoplePickerPage {
@@ -292,6 +299,8 @@ public final class WebAppLocators {
 
 		public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"
 				+ "//*[@data-uie-name='item-user' and .//*[contains(@class,'selected')]]";
+
+		public static final String cssSearchField = "[data-uie-name='enter-users']";
 	}
 
 	public static final class RegistrationPage {

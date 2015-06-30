@@ -210,5 +210,4 @@ public class CallingPageSteps {
 		Assert.assertFalse(getCallingOverlayPage().callingSpeakerIsVisible());
 		Assert.assertTrue(getCallingOverlayPage().callingMicMuteIsVisible());
 	}
-
 }

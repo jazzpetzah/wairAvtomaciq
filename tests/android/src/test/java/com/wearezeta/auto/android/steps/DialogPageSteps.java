@@ -671,4 +671,18 @@ public class DialogPageSteps {
 		Assert.assertEquals(contact + " CALLED", getDialogPage()
 				.getMissedCallMessage());
 	}
+	
+	/**
+	 * Swipes on calling bar to dismiss a call
+	 * 
+	 * @step. ^I dismiss calling bar by swipe$
+	 * 
+	 * @throws Exception
+	 */
+	@When("I dismiss calling bar by swipe$")
+	public void IDismissCalling() throws Exception {
+		Assert.assertTrue("Call overlay is not visible, nothing to swipe", getDialogPage()
+				.checkCallingOverlay());
+		getDialogPage().swipeByCoordinates(1500, 30, 25, 30, 5);
+	}
 }

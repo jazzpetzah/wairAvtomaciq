@@ -43,8 +43,5 @@ public class TabletConversationDetailPopoverPageSteps {
 	@When("^I press Add button on iPad popover$")
 	public void IPressAddButtonOniPadPopover() throws Throwable {
 		getTabletConversationDetailPopoverPage().addContactTo1on1Chat();
-	}
-	
-	
-	
+	}	
 }

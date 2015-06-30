@@ -336,6 +336,8 @@ Feature: Connect
     Given User <Me> has contact <Contact> in address book
     Given I switch to Sign In page
     Given I Sign in using login <MyEmail> and password <MyPassword>
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
     And I see my avatar on top of Contact list
     # we need to wait a bit, otherwise backend throws a 429 status
     And I wait for 10 seconds
