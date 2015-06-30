@@ -539,7 +539,7 @@ Feature: Conversation View
     And I send gif from giphy preview page
     And I wait for 5 seconds
     And I see dialog page
-    And I see new photo in the dialog
+    Then I see new photo in the dialog
 
     Examples: 
       | Name      | Contact   |  GiphyTag    |
@@ -559,7 +559,7 @@ Feature: Conversation View
     And I send gif from giphy preview page
     And I wait for 5 seconds
     And I see dialog page
-    And I see new photo in the dialog
+    Then I see new photo in the dialog
 
     Examples: 
       | Name      | Contact   |  GiphyTag    |
