@@ -174,7 +174,7 @@ Feature: Conversation View
       | Login                       | Password   | Contact1   | Contact2   |
       | smoketester+id1688@wire.com | aqa123456! | perf.200.1 | perf.200.2 |
 
-  @id2279 @staging
+  @id2279 @regression
   Scenario Outline: Send a long message containing new lines in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
