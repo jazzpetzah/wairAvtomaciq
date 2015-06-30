@@ -151,4 +151,9 @@ public class IOSCommonUtils {
 								logStartTime, logEndTime, simId) });
 		log.debug(collectedLogEntries);
 	}
+
+	public static String getPerformanceDataFolderFromConfig(Class<?> c)
+			throws Exception {
+		return CommonUtils.getValueFromConfig(c, "performanceDataFolder");
+	}
 }

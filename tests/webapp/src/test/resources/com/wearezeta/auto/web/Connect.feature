@@ -356,6 +356,7 @@ Feature: Connect
     Given Myself is connected to <Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
     When I open People Picker from Contact List
     And I wait for 2 seconds
     And I type <Contact1> in search field of People Picker

@@ -210,7 +210,12 @@ public class DialogPage extends IOSPage {
 
 	public void sendStringToInput(String message) throws Exception {
 		waitForCursorInputVisible();
-		conversationInput.sendKeys(message);
+		try {
+			conversationInput.sendKeys(message);
+		} catch (WebDriverException ex) {
+			conversationInput.clear();
+			conversationInput.sendKeys(message);
+		}
 	}
 
 	public void scrollToTheEndOfConversation() throws Exception {
@@ -347,11 +352,11 @@ public class DialogPage extends IOSPage {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 					By.name(IOSLocators.nameOpenConversationDetails))) {
 				openConversationDetails.click();
-				DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-						By.name(IOSLocators.nameAddContactToChatButton), 5);
 			}
 			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.nameAddContactToChatButton))) {
+					By.name(IOSLocators.nameAddContactToChatButton), 2) ||
+					DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+							By.name(IOSLocators.nameOtherUserAddContactToChatButton), 2)) {
 				break;
 			} else {
 				swipeUp(1000);
@@ -492,8 +497,8 @@ public class DialogPage extends IOSPage {
 		return currentTime;
 	}
 
-	public boolean isMediaBarDisplayed() {
-		boolean flag = DriverUtils.isElementPresentAndDisplayed(mediabarPlayPauseButton);
+	public boolean isMediaBarDisplayed() throws Exception {
+		boolean flag = DriverUtils.isElementPresentAndDisplayed(getDriver(), mediabarPlayPauseButton);
 		return flag;
 	}
 

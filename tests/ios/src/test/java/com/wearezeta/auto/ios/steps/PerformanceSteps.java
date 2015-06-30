@@ -1,28 +1,42 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
+import com.wearezeta.auto.ios.reporter.IDeviceSysLogListener;
+import com.wearezeta.auto.ios.reporter.IOSPerformanceReportGenerator;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.driver.DriverUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.common.process.AsyncProcess;
 
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
+	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
+			.getSimpleName());
+
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
+	
 	private static final int PERF_MON_INIT_DELAY = 5000; // milliseconds
 	private static final int PERF_MON_STOP_TIMEOUT = 60 * 1000; // milliseconds
 	private static final String ACTIVITY_MONITOR_TEMPLATE_PATH = "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate";
+	private static final String WIRE_ACTIVITY_MONITOR_TEMPLATE_PATH = "/Project/WireActivityMonitor.tracetemplate";
+
+	public static IDeviceSysLogListener listener = new IDeviceSysLogListener();
 
 	private AsyncProcess perfMon = null;
 
@@ -110,6 +124,30 @@ public class PerformanceSteps {
 	}
 
 	/**
+	 * Tests loading time of conversation with specified number of messages and
+	 * images
+	 * 
+	 * @step. ^I test conversation loading time for conversation with (\\d+)
+	 *        messages and (\\d+) images$
+	 * 
+	 * @param messages
+	 *            number of messages in conversation
+	 * @param images
+	 *            number of images in conversation
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I test conversation loading time for conversation with (\\d+) messages and (\\d+) images$")
+	public void ITestConversationLoadingTimeForConversation(int messages,
+			int images) throws Exception {
+		final String CONVERSATION_NAME_TEMPLATE = "perf%stxt%simgtst";
+		String conv = String.format(CONVERSATION_NAME_TEMPLATE, messages,
+				images);
+		//TODO: implement when time could be measured
+	}
+	
+	/**
 	 * Start performance monitor tool for the real connected iPhone. This will
 	 * throw the RuntimeException if there is no connected iPhone or instruments
 	 * failed to start. All the collected perf logs will be saved in $HOME
@@ -122,11 +160,15 @@ public class PerformanceSteps {
 	@When("^I start performance monitoring for the connected iPhone$")
 	public void IStartPerfMon() throws Exception {
 		final String iPhoneUDID = IOSCommonUtils.getConnectediPhoneUDID(true);
+		String templatePath = (new File(WIRE_ACTIVITY_MONITOR_TEMPLATE_PATH))
+				.exists() ? WIRE_ACTIVITY_MONITOR_TEMPLATE_PATH
+				: ACTIVITY_MONITOR_TEMPLATE_PATH;
+		final int INSTRUMENTS_TIMEOUT_MS = 7200000;
 		final String[] cmd = {
 				"/bin/bash",
 				"-c",
-				String.format("cd $HOME && instruments -v -t %s -w %s",
-						ACTIVITY_MONITOR_TEMPLATE_PATH, iPhoneUDID) };
+				String.format("cd $HOME && instruments -v -t %s -w %s -l %s",
+						templatePath, iPhoneUDID, INSTRUMENTS_TIMEOUT_MS) };
 		final AsyncProcess ap = new AsyncProcess(cmd, true, true);
 		ap.start();
 		Thread.sleep(PERF_MON_INIT_DELAY);
@@ -164,5 +206,74 @@ public class PerformanceSteps {
 		// Sending SIGINT to properly terminate perf monitor
 		this.getPerfMon().stop(2, new int[] { monitorPid },
 				PERF_MON_STOP_TIMEOUT);
+	}
+
+	private void exportTraceToCSV() throws Exception {
+/*
+		String script = String.format(CommonUtils
+				.readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
+
+		ScriptEngineManager mgr = new ScriptEngineManager();
+		ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
+		log.debug("Script engine: " + engine);
+		log.debug("Script to execute: " + script);
+		try {
+			engine.eval(script);
+		} catch (Exception e) {
+			log.debug(e.getMessage());
+			e.printStackTrace();
+		}
+*/
+		int result = -1;
+		int count = 0;
+		while (result != 0 && count < 3) {
+			result = CommonUtils
+					.executeOsXCommand(new String[] {
+							"bash",
+							"-c",
+							String.format(
+									"echo %s| sudo -S osascript %sexport_data.scpt",
+									CommonUtils
+											.getJenkinsSuperUserPassword(CommonUtils.class),
+									IOSPerformanceReportGenerator.REPORT_DATA_PATH) });
+			count++;
+		}
+	}
+
+	/**
+	 * Generates iOS performance report
+	 * 
+	 * @step. ^I generate performance report$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I generate performance report for (\\d+) users$")
+	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
+		IOSPerformanceReportGenerator.setUsersCount(usersCount);
+		listener.stopListeningLogcat();
+		log.debug(listener.getOutput());
+		Thread.sleep(5000);
+		exportTraceToCSV();
+		Assert.assertTrue(IOSPerformanceReportGenerator
+				.updateReportDataWithCurrentRun(listener.getOutput()));
+		Assert.assertTrue(IOSPerformanceReportGenerator.generateRunReport());
+	}
+	
+	@Before("@performance")
+	public void StartLogListener() {
+		// for Jenkins slaves we should define that environment has display
+		CommonUtils.defineNoHeadlessEnvironment();
+		try {
+			listener.startListeningLogcat();
+		} catch (Exception e) {
+		}
+	}
+	
+	@After("@performance")
+	public void CloseInstruments() {
+		try {
+			IStopPerfMon();
+		} catch (Exception e) {
+		}
 	}
 }

@@ -205,8 +205,8 @@ public class PersonalInfoPage extends AndroidPage {
 		return new AboutPage(this.getLazyDriver());
 	}
 
-	public boolean isSettingsVisible() {
-		return DriverUtils.isElementPresentAndDisplayed(settingBox);
+	public boolean isSettingsVisible() throws Exception{
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), settingBox);
 	}
 
 	public boolean waitForSettingsDissapear() throws Exception {

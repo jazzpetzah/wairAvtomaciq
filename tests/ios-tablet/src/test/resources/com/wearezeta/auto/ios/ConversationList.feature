@@ -311,7 +311,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
-  @staging @id2368
+  @staging @id2371
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -334,7 +334,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
-  @staging @id2368
+  @staging @id2942
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>

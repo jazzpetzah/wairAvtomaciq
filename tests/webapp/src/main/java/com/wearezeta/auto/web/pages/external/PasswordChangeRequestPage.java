@@ -20,7 +20,7 @@ public class PasswordChangeRequestPage extends WebPage {
 	@FindBy(id = ExternalLocators.PasswordChangeRequestPage.idEmailInput)
 	private WebElement emailField;
 
-	@FindBy(xpath = ExternalLocators.PasswordChangeRequestPage.xpathSubmitButton)
+	@FindBy(css = ExternalLocators.PasswordChangeRequestPage.cssSubmitButton)
 	private WebElement changePasswordButton;
 
 	public PasswordChangeRequestPage(Future<ZetaWebAppDriver> lazyDriver)
@@ -40,9 +40,8 @@ public class PasswordChangeRequestPage extends WebPage {
 		return new PasswordChangeRequestSuccessfullPage(this.getLazyDriver());
 	}
 
-	public void waitUntilVisible(int timeoutSeconds) throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(ExternalLocators.PasswordChangeRequestPage.idEmailInput)) : "Password Change Request page has not been displayed within "
-				+ timeoutSeconds + " seconds";
+	public boolean isEmailFieldVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(ExternalLocators.PasswordChangeRequestPage.idEmailInput));
 	}
 }

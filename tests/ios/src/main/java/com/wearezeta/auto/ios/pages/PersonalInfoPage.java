@@ -108,8 +108,8 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPrivacyPolicyPageText)
 	private WebElement privacyPolicyPageText;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathWireWebsitePageText)
-	private WebElement wireWebsitePageText;
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathWireWebsiteUrl)
+	private WebElement wireWebsitePageUrlLabel;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutPageWireLogo)
 	private WebElement aboutPageWireLogo;
@@ -204,7 +204,7 @@ public class PersonalInfoPage extends IOSPage {
 
 	public boolean isWireWebsitePageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.xpath(IOSLocators.xpathWireWebsitePageText));
+				By.xpath(IOSLocators.xpathWireWebsiteUrl));
 	}
 
 	public void closeLegalPage() {

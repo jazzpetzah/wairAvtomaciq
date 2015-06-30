@@ -117,7 +117,7 @@ public class IOSSimulatorHelper {
 		return result;
 	}
 	
-	//current users available : vb003 (vova+vb003@wire.com)
+	//current users available : vb003 (vova+vb003@wire.com), Amelia(+49 170 502 78 82)
 	public static void createSimulatorAddressBook(final String simulatorVersion, final String addressBookPath) throws Exception {
 		String simPath = findSimultorFolder(simulatorVersion);
 		String libPath = simPath + "/data/Library/";

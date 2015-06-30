@@ -443,9 +443,9 @@ public class DialogPage extends AndroidPage {
 		Thread.sleep(2000); // We must wait after camera switch
 	}
 
-	public boolean isConnectMessageVisible() {
+	public boolean isConnectMessageVisible() throws Exception {
 		return DriverUtils
-				.isElementPresentAndDisplayed(lastConversationMessage);
+				.isElementPresentAndDisplayed(getDriver(), lastConversationMessage);
 	}
 
 	public boolean isConnectMessageValid(String message) {
@@ -524,7 +524,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void sendFrontCameraImage() throws Exception {
-		if (DriverUtils.isElementPresentAndDisplayed(participantsButton)) {
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), participantsButton)) {
 			swipeOnCursorInput();
 			tapAddPictureBtn();
 			try {
