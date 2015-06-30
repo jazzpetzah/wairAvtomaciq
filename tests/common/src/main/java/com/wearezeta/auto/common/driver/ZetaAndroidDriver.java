@@ -108,20 +108,20 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	@Override
 	public void swipe(int startx, int starty, int endx, int endy,
 		int durationMilliseconds) {		
-		String adbCommandsChain = "adb shell input swipe ";
+		String adbCommand = "adb shell input swipe %d %d %d %d";
 		
 		if (lowerThanFourDotThree()) {
-			adbCommandsChain += String.format(ADB_PREFIX
-				+ "%d %d %d %d", startx, starty, endx, endy);
+			adbCommand = String.format(ADB_PREFIX + 
+				adbCommand, startx, starty, endx, endy);
 		} else {
-			adbCommandsChain += String.format(ADB_PREFIX
-				+ "%d %d %d %d %d", startx, starty, endx, endy, durationMilliseconds);
+			adbCommand = String.format(ADB_PREFIX + 
+				 adbCommand + " %d", startx, starty, endx, endy, durationMilliseconds);
 		}
-		log.debug("ADB swipe: " + adbCommandsChain);
+		log.debug("ADB swipe: " + adbCommand);
 		
 		try {
 			Runtime.getRuntime()
-				.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
+				.exec(new String[] { "/bin/bash", "-c", adbCommand })
 				.waitFor();
 		} catch (Exception e) {
 			throw new WebDriverException(e.getMessage(), e);
