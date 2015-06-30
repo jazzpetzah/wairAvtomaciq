@@ -135,7 +135,7 @@ public class GroupChatPageSteps {
 
 	@When("I swipe right on group chat page")
 	public void ISwipeRightOnGroupChatPage() throws Throwable {
-		getGroupChatPage().swipeRight(500);
+		getGroupChatPage().swipeRight(1000);
 	}
 
 }
