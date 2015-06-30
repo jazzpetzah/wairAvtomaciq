@@ -214,3 +214,50 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
       | user1Name | user2Name | user3Name | RenameGroup   | NewName  |
+
+  @torun @staging @id2442
+  Scenario Outline: Verify correct group info page information [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given User <Contact1> change avatar picture to <Picture>
+    Given User <Contact1> change name to AQAPICTURECONTACT
+    Given User <Contact2> change name to AQAAVATAR TestContact
+    Given User <Contact2> change accent color to <Color>
+    Given User <Contact1> change accent color to <Color2>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    Then I can read the group name <GroupChatName> on the iPad popover
+    Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
+    Then I see the correct avatar picture for user <Contact1> on iPad
+    Then I see the correct avatar picture for user <Contact2> on iPad
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName | Picture                      | Color        | Color2       | ParticipantsNumber |
+      | user1Name | user2Name | user3Name | GroupInfo     | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | 3                  |
+
+  @staging @id2989
+  Scenario Outline: Verify correct group info page information [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given User <Contact1> change avatar picture to <Picture>
+    Given User <Contact1> change name to AQAPICTURECONTACT
+    Given User <Contact2> change name to AQAAVATAR TestContact
+    Given User <Contact2> change accent color to <Color>
+    Given User <Contact1> change accent color to <Color2>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    Then I can read the group name <GroupChatName> on the iPad popover
+    Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName | Picture                      | Color        | Color2       |
+      | user1Name | user2Name | user3Name | GroupInfo     | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow |
