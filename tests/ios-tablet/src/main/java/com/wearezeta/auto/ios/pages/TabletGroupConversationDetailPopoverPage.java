@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -51,6 +52,19 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 	
 	public void exitGroupChatPopover() throws Exception{
 		DriverUtils.mobileTapByCoordinates(getDriver(), conversationMenuButton, 50, 50);
+	}
+	
+	public int numberOfPeopleInGroupConversationOniPad() throws Exception{
+		int result = -1;
+		List<WebElement> elements = getDriver().findElements(By.xpath(IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathGroupConvTotalNumber));
+		for (WebElement element : elements) {
+			String value = element.getText();
+			if (value.contains(IOSTabletLocators.TabletGroupConversationDetailPopoverPage.namePeopleCountWord)) {
+				result = Integer.parseInt(value.substring(0,
+						value.indexOf((IOSTabletLocators.TabletGroupConversationDetailPopoverPage.namePeopleCountWord))));
+			}
+		}
+		return result;
 	}
 
 
