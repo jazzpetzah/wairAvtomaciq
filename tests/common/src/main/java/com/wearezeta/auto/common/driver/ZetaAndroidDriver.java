@@ -107,6 +107,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	@Override
 	public void swipe(int startx, int starty, int endx, int endy,
 			int durationMilliseconds) {
+		log.debug("ADB swipe: \"adb shell input swipe "+startx+" "+starty+" "+endx+" "+endy+" "+durationMilliseconds+"\"");
 		try {
 			final String adbCommandsChain = String.format(
 					ADB_PREFIX + "adb shell input swipe %d %d %d %d %d", startx, starty,
