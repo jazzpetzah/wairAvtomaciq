@@ -32,7 +32,7 @@ public final class IOSTabletLocators {
 	}
 	
 	public static final class TabletGroupConversationDetailPopoverPage{
-		public static final String nameRenameButtonEllipsesMenue = "RENAME";
+		public static final String nameRenameButtonEllipsisMenue = "RENAME";
 	}
 	
 }

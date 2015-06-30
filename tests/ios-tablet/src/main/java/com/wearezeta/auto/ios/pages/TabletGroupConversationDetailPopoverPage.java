@@ -24,7 +24,7 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 	@FindBy(how = How.NAME, using = IOSLocators.nameConversationMenu)
 	private WebElement conversationMenuButton;
 	
-	@FindBy(how = How.NAME, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.nameRenameButtonEllipsesMenue)
+	@FindBy(how = How.NAME, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.nameRenameButtonEllipsisMenue)
 	private WebElement renameEllipsesButton;
 
 	public void openConversationMenuOnPopover() throws Exception {
