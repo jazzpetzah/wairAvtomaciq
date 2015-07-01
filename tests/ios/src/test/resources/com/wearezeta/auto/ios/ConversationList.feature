@@ -10,7 +10,7 @@ Feature: Conversation List
     And I see Contact list with my name <Name>
     And I open archived conversations
     And I tap on contact name <ArchivedUser>
-    And I navigate back to conversations view
+    And I return to the chat list
     Then I see first item in contact list named <ArchivedUser>
 
     Examples: 
@@ -44,9 +44,9 @@ Feature: Conversation List
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact1>
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I dont see unread message indicator in list for contact <Contact>
     And Contact <Contact> send number 1 of message to user <Name>
     Then I see 1 unread message indicator in list for contact <Contact>
@@ -86,7 +86,7 @@ Feature: Conversation List
     When I see Contact list with my name <Name>
     And I open archived conversations
     And I tap on contact name <GroupChatName>
-    And I navigate back to conversations view
+    And I return to the chat list
     Then I see first item in contact list named <GroupChatName>
 
     Examples: 

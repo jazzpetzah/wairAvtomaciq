@@ -132,7 +132,7 @@ Feature: Connect
     And I tap on user on pending name on People picker page <Contact>
     And I see <Contact> user pending profile page
     And I click on start conversation button on pending profile page
-    And I see <Contact> user pending profile page
+    Then I see <Contact> user pending profile page
 
     Examples: 
       | Name      | Contact   | Contact2  |

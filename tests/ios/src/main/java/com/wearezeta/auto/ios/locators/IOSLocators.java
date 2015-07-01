@@ -442,6 +442,7 @@ public final class IOSLocators {
 	public static final String nameAddPeopleContinueButton = "CONTINUE";
 	public static final String xpathYouAddetToGroupChatMessage = "//UIAStaticText[contains(@name, 'YOU ADDED %s')]";
 	public static final String nameYouRenamedConversationMessage = "YOU RENAMED THE CONVERSATION";
+	public static final String nameConversationBackButton = "ConversationBackButton";
 	
 	
 	////////////////////////////
