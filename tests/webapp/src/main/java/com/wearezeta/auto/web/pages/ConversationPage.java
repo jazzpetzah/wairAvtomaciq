@@ -35,6 +35,8 @@ import org.openqa.selenium.support.How;
 
 public class ConversationPage extends WebPage {
 
+	private static final int TIMEOUT_IMAGE_MESSAGE_UPLOAD = 40; // seconds
+
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
 
@@ -227,7 +229,7 @@ public class ConversationPage extends WebPage {
 	public boolean isImageMessageFound() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
-				40);
+				TIMEOUT_IMAGE_MESSAGE_UPLOAD);
 	}
 
 	public int getNumberOfImagesInCurrentConversation() {
