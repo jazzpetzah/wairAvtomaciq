@@ -1,7 +1,8 @@
 package com.wearezeta.auto.android.steps;
 
+import org.junit.Assert;
+
 import com.wearezeta.auto.android.pages.GiphyPreviewPage;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.When;
 
@@ -13,9 +14,8 @@ public class GiphySteps {
 		return (GiphyPreviewPage) pagesCollection.getPage(GiphyPreviewPage.class);
 	}
 	
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	
 	/**
+	 * Click on GIF button
 	 * 
 	 * @step. ^I click on the GIF button$
 	 * 
@@ -27,6 +27,19 @@ public class GiphySteps {
 	}
 	
 	/**
+	 * Check if giphy preview page with all required UI elements appears
+	 * 
+	 * @step. ^I see giphy preview page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see giphy preview page$")
+	public void ISeeGiphyPreviewPage() throws Exception {
+	Assert.assertTrue("Gipgy preview page is not shown", getGiphyPreviewPage().isGiphyPreviewShown());
+	}
+	
+	/**
+	 * Click on SEND button
 	 * 
 	 * @step. ^I click on the giphy send button$
 	 * 
@@ -35,16 +48,5 @@ public class GiphySteps {
 	@When("^I click on the giphy send button$")
 	public void IClickOnTheGiphySendButton() throws Exception {
 		getGiphyPreviewPage().clickeSendButton();
-	}
-	
-	/**
-	 * 
-	 * @step. ^I see a gif in the conversation view$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I see the via giphy dotcom message$")
-	public void ISeeAGifInTheConversationView() throws Exception {
-		//TODO
 	}
 }
