@@ -353,7 +353,7 @@ public class DialogPage extends AndroidPage {
 					.format("The message '%s' was autocorrected. This might cause unpredicted test results",
 							message));
 		}
-		this.pressEnter();
+		//this.pressEnter();
 	}
 
 	public void pressKeyboardSendButton() throws Exception {
