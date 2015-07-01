@@ -39,10 +39,10 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import io.appium.java_client.android.AndroidDriver;
 
 public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
-	HasTouchScreen {
+		HasTouchScreen {
 
 	private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
-		.getSimpleName());
+			.getSimpleName());
 	public static final String ADB_PREFIX = "";
 	// public static final String ADB_PREFIX =
 	// "/Applications/android-sdk/platform-tools/";
@@ -70,7 +70,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 				}
 			}
 			throw new NoSuchElementException(String.format(
-				"There is no SurfaceOrientation item with code '%s'", code));
+					"There is no SurfaceOrientation item with code '%s'", code));
 		}
 	}
 
@@ -107,22 +107,21 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 
 	@Override
 	public void swipe(int startx, int starty, int endx, int endy,
-		int durationMilliseconds) {		
-		String adbCommand = "adb shell input swipe %d %d %d %d";
-		
+			int durationMilliseconds) {
+		String adbCommand = ADB_PREFIX + "adb shell input swipe %d %d %d %d";
+
 		if (lowerThanFourDotThree()) {
-			adbCommand = String.format(ADB_PREFIX + 
-				adbCommand, startx, starty, endx, endy);
+			adbCommand = String.format(adbCommand, startx, starty, endx, endy);
 		} else {
-			adbCommand = String.format(ADB_PREFIX + 
-				 adbCommand + " %d", startx, starty, endx, endy, durationMilliseconds);
+			adbCommand = String.format(adbCommand + " %d", startx, starty,
+					endx, endy, durationMilliseconds);
 		}
 		log.debug("ADB swipe: " + adbCommand);
-		
+
 		try {
 			Runtime.getRuntime()
-				.exec(new String[] { "/bin/bash", "-c", adbCommand })
-				.waitFor();
+					.exec(new String[] { "/bin/bash", "-c", adbCommand })
+					.waitFor();
 		} catch (Exception e) {
 			throw new WebDriverException(e.getMessage(), e);
 		}
@@ -132,22 +131,25 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	 * Checks to see that the android version is less than 4.3
 	 */
 	public static boolean lowerThanFourDotThree() {
-        Scanner s;
-        String result = "";
+		Scanner s;
+		String result = "";
 		try {
-			s = new java.util.Scanner(Runtime.getRuntime().exec(
-				"adb shell getprop ro.build.version.release").getInputStream()).useDelimiter("\\A");
+			s = new java.util.Scanner(Runtime
+					.getRuntime()
+					.exec(ADB_PREFIX
+							+ "adb shell getprop ro.build.version.release")
+					.getInputStream()).useDelimiter("\\A");
 			result = s.hasNext() ? s.next() : "";
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-       
-        if (result.compareTo("4.3") < 0) {
-        	//comparing lexicographically, 4.2.2 < 4.3 for example
+
+		if (result.compareTo("4.3") < 0) {
+			// comparing lexicographically, 4.2.2 < 4.3 for example
 			return true;
 		}
-        return false;
-    }
+		return false;
+	}
 
 	@Override
 	public void tap(int fingers, WebElement element, int durationMilliseconds) {
@@ -193,22 +195,24 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		File tmpScreenshot = null;
 		try {
 			tmpScreenshot = File.createTempFile("tmp", ".png", null);
-			final String pathOnPhone = String.format("/sdcard/%s.png",
-				CommonUtils.generateGUID().replace("-", "").substring(0, 8));
-			final String adbCommandsChain = String.format(ADB_PREFIX
-				+ "adb shell screencap -p %1$s; " + ADB_PREFIX
-				+ "adb pull %1$s %2$s; " + ADB_PREFIX + "adb shell rm %1$s",
-				pathOnPhone, tmpScreenshot.getCanonicalPath());
+			final String pathOnPhone = String
+					.format("/sdcard/%s.png", CommonUtils.generateGUID()
+							.replace("-", "").substring(0, 8));
+			final String adbCommandsChain = String.format(
+					ADB_PREFIX + "adb shell screencap -p %1$s; " + ADB_PREFIX
+							+ "adb pull %1$s %2$s; " + ADB_PREFIX
+							+ "adb shell rm %1$s", pathOnPhone,
+					tmpScreenshot.getCanonicalPath());
 			Runtime.getRuntime()
-				.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
-				.waitFor();
+					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
+					.waitFor();
 			byte[] output = FileUtils.readFileToByteArray(tmpScreenshot);
 			if (CommonUtils.getIsTabletFromConfig(this.getClass())) {
 				final SurfaceOrientation currentOrientation = this
-					.getSurfaceOrientation();
+						.getSurfaceOrientation();
 				log.debug(String.format(
-					"Current screen orientation value -> %s",
-					currentOrientation.getCode()));
+						"Current screen orientation value -> %s",
+						currentOrientation.getCode()));
 				output = fixScreenshotOrientation(output, currentOrientation);
 			}
 			result.setSessionId(this.getSessionId().toString());
@@ -227,12 +231,12 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	}
 
 	private byte[] fixScreenshotOrientation(final byte[] initialScreenshot,
-		SurfaceOrientation currentOrientation) throws IOException {
+			SurfaceOrientation currentOrientation) throws IOException {
 		if (currentOrientation != SurfaceOrientation.ROTATION_0) {
 			BufferedImage screenshotImage = ImageIO
-				.read(new ByteArrayInputStream(initialScreenshot));
+					.read(new ByteArrayInputStream(initialScreenshot));
 			screenshotImage = ImageUtil.tilt(screenshotImage,
-				-currentOrientation.getCode() * Math.PI / 2);
+					-currentOrientation.getCode() * Math.PI / 2);
 			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ImageIO.write(screenshotImage, "png", baos);
 			return baos.toByteArray();
@@ -273,17 +277,16 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 						return super.execute(driverCommand, parameters);
 					} catch (WebDriverException e1) {
 						if (!e.getMessage().contains(
-							SERVER_SIDE_ERROR_SIGNATURE)) {
+								SERVER_SIDE_ERROR_SIGNATURE)) {
 							throw e1;
 						}
 					}
 				} // while have time
 			} // if getMessage contains
 			log.error(String
-				.format(
-					"Android driver is still not available after %s seconds timeout. The recent webdriver command was '%s'",
-					DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000,
-					driverCommand));
+					.format("Android driver is still not available after %s seconds timeout. The recent webdriver command was '%s'",
+							DRIVER_AVAILABILITY_TIMEOUT_MILLISECONDS / 1000,
+							driverCommand));
 			throw e;
 		}
 	}
@@ -292,15 +295,15 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		String result = "";
 		String adbCommand = ADB_PREFIX + "adb " + cmdLine;
 		final Process process = Runtime.getRuntime().exec(
-			new String[] { "/bin/bash", "-c", adbCommand });
+				new String[] { "/bin/bash", "-c", adbCommand });
 		if (process == null) {
 			throw new RuntimeException(String.format(
-				"Failed to execute command line '%s'", cmdLine));
+					"Failed to execute command line '%s'", cmdLine));
 		}
 		BufferedReader in = null;
 		try {
 			in = new BufferedReader(new InputStreamReader(
-				process.getInputStream()));
+					process.getInputStream()));
 			String s;
 			while ((s = in.readLine()) != null) {
 				result = s + "\n";

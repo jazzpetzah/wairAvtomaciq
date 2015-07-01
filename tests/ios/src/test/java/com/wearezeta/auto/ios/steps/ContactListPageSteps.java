@@ -183,7 +183,8 @@ public class ContactListPageSteps {
 	@When("^I swipe right on a (.*)$")
 	public void ISwipeRightOnContact(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		getContactListPage().swipeRightConversationToRevealArchiveButton(contact);
+		getContactListPage().swipeRightConversationToRevealArchiveButton(
+				contact);
 	}
 
 	@When("^I click mute conversation$")
@@ -217,7 +218,8 @@ public class ContactListPageSteps {
 	public void ISeePlayPauseButtonNextToUserName(String contact)
 			throws Exception {
 		String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(getContactListPage().isPlayPauseButtonVisible(name));
+		Assert.assertTrue("Play pause button is not shown",
+				getContactListPage().isPlayPauseButtonVisible(name));
 	}
 
 	@When("I dont see play/pause button next to username (.*) in contact list")
@@ -237,6 +239,32 @@ public class ContactListPageSteps {
 			throws Exception {
 		String name = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		getContactListPage().tapPlayPauseButtonNextTo(name);
+	}
+
+	/**
+	 * Verify pause media button in contact list
+	 * 
+	 * @step. I see pause media button in contact list
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see pause media button in contact list")
+	public void ISeePauseMediaButtonContactList() throws Exception {
+		Assert.assertTrue("Pause media button is not shown",
+				getContactListPage().isPauseButtonVisible());
+	}
+
+	/**
+	 * Verify play media button in contact list
+	 * 
+	 * @step. I see play media button in contact list
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see play media button in contact list")
+	public void ISeePlayMediaButtonContactList() throws Exception {
+		Assert.assertTrue("Play media button is not shown",
+				getContactListPage().isPlayButtonVisible());
 	}
 
 	@When("I see in contact list group chat named (.*)")
@@ -429,7 +457,8 @@ public class ContactListPageSteps {
 	 * 
 	 */
 	@When("^I click archive button for conversation (.*)$")
-	public void IClickArchiveConversationButton(String conversation) throws Exception {
+	public void IClickArchiveConversationButton(String conversation)
+			throws Exception {
 		conversation = usrMgr.replaceAliasesOccurences(conversation,
 				FindBy.NAME_ALIAS);
 		getContactListPage().clickArchiveCoversationButton(conversation);
@@ -578,6 +607,67 @@ public class ContactListPageSteps {
 				.unreadMessageIndicatorIsVisible(0, contact);
 		Assert.assertTrue("Unread message indicator is visible.",
 				unreadIconVisibility);
+	}
+
+	/**
+	 * Verify that play icon is not shown next to contact
+	 * 
+	 * @step. ^I see media button next to user (.*) changed to Play$
+	 * @param contact
+	 *            contact name
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see media button next to user (.*) changed to Play$")
+	public void ISeeMediaButtonChangedToPlay(String contact)
+			throws IllegalStateException, Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertTrue("No play button next to user: " + contact,
+				getContactListPage().isPlayButtonVisible());
+
+	}
+
+	/**
+	 * Verify that pause icon is not shown next to contact
+	 * 
+	 * @step. ^I see media button next to user (.*) changed to Pause$
+	 * @param contact
+	 *            contact name
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see media button next to user (.*) changed to Pause$")
+	public void ISeeMediaButtonChangedToPause(String contact)
+			throws IllegalStateException, Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertTrue("No pause button next to user: " + contact,
+				getContactListPage().isPauseButtonVisible());
+
+	}
+
+	/**
+	 * Verify that mute call button is shown in conversation list
+	 * 
+	 * @step. ^I see mute call button in conversation list$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see mute call button in conversation list$")
+	public void ISeeMuteCallButtonInConversationList() throws Exception {
+		Assert.assertTrue("Mute call button is not shown in conversation list",
+				getContactListPage().isMuteCallButtonVisible());
+	}
+
+	/**
+	 * Click on mute call button in conversation list
+	 * 
+	 * @step. ^I click mute call button in conversation list
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I click mute call button in conversation list$")
+	public void IClickMuteCallButtonInConversationList() throws Exception {
+		getContactListPage().clickMuteCallButton();
 	}
 
 }

@@ -51,8 +51,8 @@ public class CallPageSteps {
 				getStartedCallPage().isEndCallVisible());
 		Assert.assertTrue("Mute call button is not visible",
 				getStartedCallPage().isMuteCallVisible());
-//		Assert.assertTrue("Speakers button is not visible",
-//				getStartedCallPage().isSpeakersVisible());
+		// Assert.assertTrue("Speakers button is not visible",
+		// getStartedCallPage().isSpeakersVisible());
 	}
 
 	/**
@@ -172,5 +172,18 @@ public class CallPageSteps {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(getStartedCallPage().isStartedCallMessageVisible(
 				contact.toUpperCase()));
+	}
+
+	/**
+	 * Verify is mute call button icon selected or not
+	 * 
+	 * @step. ^I see mute call button on calling bar is selected$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see mute call button on calling bar is selected$")
+	public void ISeeMuteCallButtonOnCallingBarIsSelected() throws Exception {
+		Assert.assertTrue("Mute call button is not selected",
+				getStartedCallPage().isMuteCallButtonSelected());
 	}
 }
