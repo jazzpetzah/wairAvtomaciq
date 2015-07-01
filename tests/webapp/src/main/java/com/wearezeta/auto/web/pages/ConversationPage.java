@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -14,6 +16,7 @@ import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
@@ -31,6 +34,8 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 public class ConversationPage extends WebPage {
+
+	private static final int TIMEOUT_IMAGE_MESSAGE_UPLOAD = 40; // seconds
 
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
 			.getSimpleName());
@@ -207,17 +212,29 @@ public class ConversationPage extends WebPage {
 		}
 	}
 
-	public boolean isPictureSent(String pictureName) throws Exception {
-		@SuppressWarnings("unused")
+	public double getOverlapScoreOfLastImage(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-		// TODO: Add comparison of the original and sent pictures
-		final boolean isAnyPictureMsgFound = DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						this.getDriver(),
-						By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
-						40);
-		return isAnyPictureMsgFound && (imageEntries.size() > 0);
+		if (!isImageMessageFound()) {
+			return 0.0;
+		}
+		// comparison of the original and sent pictures
+		BufferedImage actualImage = CommonUtils.getElementScreenshot(lastImageEntry,
+				this.getDriver())
+				.orElseThrow(IllegalStateException::new);
+		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
+		return ImageUtil.getOverlapScore(actualImage, expectedImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+	}
+
+	public boolean isImageMessageFound() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
+				TIMEOUT_IMAGE_MESSAGE_UPLOAD);
+	}
+
+	public int getNumberOfImagesInCurrentConversation() {
+		return imageEntries.size();
 	}
 
 	public void clickPingButton() throws Exception {

@@ -36,6 +36,7 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     Then I see sent picture <PictureName> in the conversation view
+    And I see only 1 picture in the conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | PictureName               |
