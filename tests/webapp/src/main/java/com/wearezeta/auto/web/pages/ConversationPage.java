@@ -223,7 +223,8 @@ public class ConversationPage extends WebPage {
 				this.getDriver())
 				.orElseThrow(IllegalStateException::new);
 		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
-		return ImageUtil.getOverlapScore(actualImage, expectedImage, 1);
+		return ImageUtil.getOverlapScore(actualImage, expectedImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 	}
 
 	public boolean isImageMessageFound() throws Exception {
