@@ -190,7 +190,9 @@ public final class WebAppLocators {
 
 		public static final String cssSendImageInput = "input[data-uie-name=do-share-image]";
 
-		public static final String cssLastImageEntry = "[data-uie-name='item-message']:last-of-type .image";
+		public static final String xpathImageEntries = "//*[@data-uie-name='item-message' and not(contains(@style,'display: none;'))]//*[@class='image']";
+
+		public static final String xpathLastImageEntry = "//*[@data-uie-name='item-message' and not(contains(@style,'display: none;'))][last()]//*[@class='image']";
 
 		public static final String cssPingButton = "[data-uie-name='do-ping'], [data-uie-name='do-hot-ping']";
 
