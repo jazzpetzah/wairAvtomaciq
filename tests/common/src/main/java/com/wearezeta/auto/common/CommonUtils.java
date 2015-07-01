@@ -481,19 +481,14 @@ public class CommonUtils {
 	}
 
 	public static Optional<BufferedImage> getElementScreenshot(
-			WebElement element, ZetaWebAppDriver driver)
-			throws Exception {
-		int multiply = 1;
+			WebElement element, ZetaWebAppDriver driver) throws Exception {
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();
 		final Optional<BufferedImage> screenshot = DriverUtils
 				.takeFullScreenShot(driver);
 		if (screenshot.isPresent()) {
-			return Optional.of(screenshot.get()
-					.getSubimage(elementLocation.x * multiply,
-							elementLocation.y * multiply,
-							elementSize.width * multiply,
-							elementSize.height * multiply));
+			return Optional.of(screenshot.get().getSubimage(elementLocation.x,
+					elementLocation.y, elementSize.width, elementSize.height));
 		} else {
 			return Optional.empty();
 		}
