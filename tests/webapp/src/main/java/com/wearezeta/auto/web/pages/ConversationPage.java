@@ -45,7 +45,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathLastImageEntry)
 	private WebElement lastImageEntry;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathImageEntries)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssImageEntries)
 	private List<WebElement> imageEntries;
 
 	@FindBy(id = WebAppLocators.ConversationPage.idConversation)
@@ -66,7 +66,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idGIFButton)
 	private WebElement gifButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathCallButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssCallButton)
 	private WebElement callButton;
 
 	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
@@ -117,7 +117,7 @@ public class ConversationPage extends WebPage {
 	public boolean isActionMessageSent(final Set<String> parts)
 			throws Exception {
 		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathActionMessageEntries);
+				.cssSelector(WebAppLocators.ConversationPage.cssLastMessageAction);
 		assert DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
 		final List<WebElement> actionMessages = this.getDriver()
 				.findElements(locator).stream().filter(x -> x.isDisplayed())
@@ -279,7 +279,7 @@ public class ConversationPage extends WebPage {
 			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathCallButton), 5);
+				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton), 5);
 	}
 
 	public void clickCallButton() throws Exception {
@@ -291,7 +291,7 @@ public class ConversationPage extends WebPage {
 			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathCallButton), 5);
+				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton), 5);
 		callButton.click();
 	}
 
@@ -309,7 +309,7 @@ public class ConversationPage extends WebPage {
 
 	public String getMissedCallMessage() throws Exception {
 		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathMissedCallAction);
+				.cssSelector(WebAppLocators.ConversationPage.cssLastMessageAction);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
 				+ MISSED_CALL_MSG_TIMOEUT + " second(s) timeout";
