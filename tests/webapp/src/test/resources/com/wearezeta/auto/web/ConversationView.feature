@@ -27,6 +27,7 @@ Feature: Conversation View
     And I open conversation with <ChatName>
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
+    And I see only 1 picture in the conversation
     When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -69,6 +70,7 @@ Feature: Conversation View
     And I open conversation with <Contact>
     And I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
+    And I see only 1 picture in the conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PictureName               |
