@@ -512,10 +512,6 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
-    And I swipe right on Dialog page
-    And I tap on contact name <Contact>
-    And I scroll to the end of the conversation
-    And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I see media bar on dialog page
