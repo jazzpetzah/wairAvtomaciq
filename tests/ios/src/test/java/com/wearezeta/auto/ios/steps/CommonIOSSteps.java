@@ -507,4 +507,16 @@ public class CommonIOSSteps {
 		pagesCollecton.getCommonPage().tapOnTopLeftScreen();
 	}
 
+	/**
+	 * General swipe action
+	 * 
+	 * @step. ^I swipe left in current window$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I swipe left in current window$")
+	public void ISwipeLeftInCurrentWindow() throws Exception {
+		pagesCollecton.getCommonPage().swipeLeft(500);
+	}
+
 }

@@ -257,7 +257,7 @@ Feature: People View
     And I click on connected user <Contact3> avatar on People picker page
     And I click on Go button
     And I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
-    And I swipe right on group chat page
+    And I return to the chat list
     And I see Contact list with my name <Name>
     And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
@@ -292,7 +292,7 @@ Feature: People View
     And I see <Contact1> user profile page
     And I close user profile page to return to dialog page
     And I see dialog page
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I see Contact list with my name <Name>
     And I don't see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
@@ -316,7 +316,7 @@ Feature: People View
     And I press menu silence button
     And I close user profile page to return to dialog page
     And I see dialog page
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I see Contact list with my name <Name>
     Then I see conversation <Contact> is silenced
 
@@ -341,7 +341,7 @@ Feature: People View
     And I press menu notify button
     And I close user profile page to return to dialog page
     And I see dialog page
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I see Contact list with my name <Name>
     Then I see conversation <Contact> is unsilenced
 

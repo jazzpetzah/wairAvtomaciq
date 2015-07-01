@@ -37,8 +37,11 @@ public class ConversationPage extends WebPage {
 
 	private static final String TOOLTIP_PEOPLE = "People";
 
-	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssLastImageEntry)
-	private List<WebElement> imageMessageEntries;
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathLastImageEntry)
+	private WebElement lastImageEntry;
+
+	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathImageEntries)
+	private List<WebElement> imageEntries;
 
 	@FindBy(id = WebAppLocators.ConversationPage.idConversation)
 	private WebElement conversation;
@@ -212,9 +215,9 @@ public class ConversationPage extends WebPage {
 		final boolean isAnyPictureMsgFound = DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.cssSelector(WebAppLocators.ConversationPage.cssLastImageEntry),
+						By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
 						40);
-		return isAnyPictureMsgFound && (imageMessageEntries.size() > 0);
+		return isAnyPictureMsgFound && (imageEntries.size() > 0);
 	}
 
 	public void clickPingButton() throws Exception {
@@ -398,7 +401,7 @@ public class ConversationPage extends WebPage {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.cssSelector(WebAppLocators.ConversationPage.cssLastImageEntry),
+						By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
 						40);
 
 	}
