@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @smoke @id344 @deployPictures
+  @smoke @id344
   Scenario Outline: Change your profile picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -16,7 +16,7 @@ Feature: Self Profile
 
     Examples:
       | Name      | Picture                      | Contact   |
-      | user1Name | userpicture_mobile_check.jpg | user2Name |
+      | user1Name | userpicture_ios_check.png    | user2Name |
 
   @regression @id1055
   Scenario Outline: Attempt to enter a name with 0 chars
