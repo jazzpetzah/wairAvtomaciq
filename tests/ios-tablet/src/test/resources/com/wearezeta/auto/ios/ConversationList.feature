@@ -355,3 +355,49 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
+
+  @staging @id2364
+  Scenario Outline: Verify Play/pause Youtube media from conversation list [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type and send long message and media link <YouTubeLink>
+    And I click play video button
+    And I rotate UI to portrait
+    And I click play video button
+    And I swipe right on Dialog page
+    Then I see play/pause button next to username <Contact> in contact list
+    And I tap on play/pause button in contact list
+    And I see media button next to user <Contact> changed to Play
+    And I tap on play/pause button in contact list
+    And I see media button next to user <Contact> changed to Pause
+
+    Examples: 
+      | Name      | Contact   | YouTubeLink                                 |
+      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
+
+  @staging @id2566
+  Scenario Outline: Verify muting ongoing call [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts waiting instance using <CallBackend>
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And <Contact> calls me using <CallBackend>
+    And I accept incoming call
+    And I see mute call, end call buttons
+    And I swipe right on Dialog page
+    Then I see mute call button in conversation list
+    And I click mute call button in conversation list
+    And I swipe left in current window
+    And I see mute call button on calling bar is selected
+
+    Examples: 
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | webdriver    |

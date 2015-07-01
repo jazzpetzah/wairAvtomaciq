@@ -103,8 +103,7 @@ public class GroupChatPageSteps {
 
 	@When("^I return to the chat list$")
 	public void IReturnToChatList() throws Exception {
-		getGroupChatPage().swipeRight(1000,
-						DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 28);;
+		getGroupChatPage().returnToContactList();
 	}
 
 	@When("^I can see You Added (.*) message$")

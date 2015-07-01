@@ -50,8 +50,8 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement dialogWindow;
 
-	// @FindBy(how = How.XPATH, using = IOSLocators.xpathCursorInput)
-	// private WebElement cursorInput;
+	@FindBy(how = How.NAME, using = IOSLocators.nameConversationBackButton)
+	private WebElement conversationBackButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameConversationCursorInput)
 	private WebElement conversationInput;
@@ -168,6 +168,11 @@ public class DialogPage extends IOSPage {
 
 	public void pressPingButton() {
 		pingButton.click();
+	}
+	
+	public ContactListPage returnToContactList() throws Exception {
+		conversationBackButton.click();
+		return new ContactListPage(getLazyDriver());
 	}
 
 	public StartedCallPage pressCallButton() throws Exception {

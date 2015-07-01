@@ -442,6 +442,7 @@ public final class IOSLocators {
 	public static final String nameAddPeopleContinueButton = "CONTINUE";
 	public static final String xpathYouAddetToGroupChatMessage = "//UIAStaticText[contains(@name, 'YOU ADDED %s')]";
 	public static final String nameYouRenamedConversationMessage = "YOU RENAMED THE CONVERSATION";
+	public static final String nameConversationBackButton = "ConversationBackButton";
 	
 	
 	////////////////////////////
@@ -590,6 +591,7 @@ public final class IOSLocators {
 		public static final String nameOpenStartUI = "START A CONVERSATION";
 		public static final String nameSelfButton = "SelfButton";
 		public static final String xpathArchiveConversationButton = "//UIACollectionCell[@name='%s']/UIAButton[@name='ARCHIVE']";
+		public static final String nameMuteCallButton = "MuteVoiceButton";
 	}
 	
 	public final class RegistrationPage {
