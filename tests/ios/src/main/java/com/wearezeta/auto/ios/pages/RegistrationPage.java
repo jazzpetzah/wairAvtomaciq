@@ -416,7 +416,12 @@ public class RegistrationPage extends IOSPage {
 
 	public void typeUsername() throws Exception {
 		this.getWait().until(ExpectedConditions.elementToBeClickable(yourName));
-		yourName.sendKeys(getName());
+		try {
+			yourName.sendKeys(getName());
+		} catch (WebDriverException ex) {
+			yourName.clear();
+			yourName.sendKeys(getName());
+		}
 	}
 
 	public String getUsernameFieldValue() {
