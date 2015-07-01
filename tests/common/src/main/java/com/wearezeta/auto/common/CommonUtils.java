@@ -19,6 +19,7 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class CommonUtils {
@@ -474,6 +475,20 @@ public class CommonUtils {
 							elementLocation.y * multiply,
 							elementSize.width * multiply,
 							elementSize.height * multiply));
+		} else {
+			return Optional.empty();
+		}
+	}
+
+	public static Optional<BufferedImage> getElementScreenshot(
+			WebElement element, ZetaWebAppDriver driver) throws Exception {
+		org.openqa.selenium.Point elementLocation = element.getLocation();
+		Dimension elementSize = element.getSize();
+		final Optional<BufferedImage> screenshot = DriverUtils
+				.takeFullScreenShot(driver);
+		if (screenshot.isPresent()) {
+			return Optional.of(screenshot.get().getSubimage(elementLocation.x,
+					elementLocation.y, elementSize.width, elementSize.height));
 		} else {
 			return Optional.empty();
 		}

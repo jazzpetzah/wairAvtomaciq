@@ -44,11 +44,6 @@ public class ImageUtil {
 			throw new IllegalArgumentException("original == null");
 		}
 
-		// Don't convert if it already has correct type
-		if (original.getType() == type) {
-			return original;
-		}
-
 		// Create a buffered image
 		BufferedImage image = new BufferedImage(original.getWidth(),
 				original.getHeight(), type);

@@ -303,9 +303,12 @@ public class PersonalInfoPageSteps {
 
 	@When("^I return to personal page$")
 	public void IReturnToPersonalPage() throws Throwable {
-		Thread.sleep(4000);// wait for picture to load on simulator
+		Thread.sleep(2000);// wait for picture to load on simulator
 		getPersonalInfoPage().tapOnPersonalPage();
 		Thread.sleep(2000);// wait for picture to load on simulator
+		getPersonalInfoPage().tapOnPersonalPage();
+		Thread.sleep(2000);
+		getPersonalInfoPage().tapOnPersonalPage();
 		referenceImage = getPersonalInfoPage().takeScreenshot().orElseThrow(AssertionError::new);
 		getPersonalInfoPage().tapOnPersonalPage();
 	}

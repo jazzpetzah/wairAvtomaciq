@@ -117,8 +117,8 @@
 					<includes>
 						<include>**/${TestRun}.java</include>
 					</includes>
+					<argLine>-Djava.library.path=../common/native_lib</argLine>
 					<systemPropertyVariables>
-						<java.library.path>../common/native_lib</java.library.path>
 						<java.awt.headless>true</java.awt.headless>
 						<org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
 						<org.apache.commons.logging.simplelog.log.org.apache.http>warn</org.apache.commons.logging.simplelog.log.org.apache.http>
