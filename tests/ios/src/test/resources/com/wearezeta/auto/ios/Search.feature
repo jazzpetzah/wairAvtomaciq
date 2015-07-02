@@ -132,7 +132,7 @@ Feature: Search
     Then I see connect to <UnconnectedUser> dialog
     And I delete all connect message content
     And I see that connect button is disabled
-    And I input message in connect dialog with <NumOfMessageChars> characters
+    And I type message in connect dialog with <NumOfMessageChars> characters
     And I see message with max number of characters
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
@@ -149,7 +149,7 @@ Feature: Search
 
     Examples: 
       | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
-      | user1Name | user2Name       | user2Email   | 141               | T           | BrightOrange |
+      | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
 
   @regression @id763
   Scenario Outline: I can still search for other people using the search field, regardless of whether I already added people from Top conversations
