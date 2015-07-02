@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @smoke @id589 @deployPictures
+  @smoke @id589
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I enter phone number for user <Name>
@@ -18,7 +18,7 @@ Feature: Registration
       | user1Email | user1Password | user1Name |
       
       
-  @staging @id304 @deployPictures
+  @staging @id304 
   Scenario Outline: Attempt to register an email with spaces
     Given I see sign in screen
     When I press Join button
@@ -34,7 +34,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id304 @deployPictures
+  @staging @id304 
   Scenario Outline: Attempt to register an email with incorrect format
     Given I see sign in screen
     When I press Join button
@@ -50,7 +50,7 @@ Feature: Registration
       | Name      |
       | user1Name |
 
-  @staging @id284 @deployPictures
+  @staging @id284 
   Scenario Outline: Conserve user input throughout registration
     Given I see sign in screen
     When I press Join button
@@ -68,7 +68,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id282 @deployPictures
+  @staging @id282 
   Scenario Outline: Can return to email page to change email if input incorrectly
     Given I see sign in screen
     When I press Join button
@@ -90,7 +90,7 @@ Feature: Registration
       | Correct    | Password      | Name      | Incorrect           |
       | user1Email | user1Password | user1Name | error@wearezeta.com |
 
-  @staging @id528 @id529 @id530 @deployPictures
+  @staging @id528 @id529 @id530 
   Scenario Outline: Register new user using username with maximum characters allowed
     Given I see sign in screen
     When I press Join button
@@ -116,7 +116,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id285 @deployPictures
+  @staging @id285 
   Scenario Outline: Take or select a photo label not visible when picture is selected
     Given I see sign in screen
     When I press Join button
@@ -130,7 +130,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id273 @id301 @deployPictures
+  @staging @id273 @id301 
   Scenario Outline: Next Button should not be visible on first registration step visit
     Given I see sign in screen
     When I press Join button
@@ -152,7 +152,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id1392 @deployPictures
+  @staging @id1392 
   Scenario Outline: Automatic email verification
     Given I see sign in screen
     When I press Join button
@@ -171,7 +171,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id305 @deployPictures
+  @staging @id305 
   Scenario Outline: Minimum 8 chars password requirement validation
     Given I see sign in screen
     When I press Join button
@@ -188,7 +188,7 @@ Feature: Registration
       | Email      | Password | Name      |
       | user1Email | 1234567  | user1Name |
 
-  @staging @id298 @deployPictures
+  @staging @id298 
   Scenario Outline: Can re-send verification email from verification screen
     Given I see sign in screen
     When I press Join button
@@ -211,7 +211,7 @@ Feature: Registration
       | Email      | Password      | Name      | EmailCount |
       | user1Email | user1Password | user1Name | 20         |
 
-  @staging @id302 @deployPictures
+  @staging @id302 
   Scenario Outline: Verify back button during registration process
     Given I see sign in screen
     When I press Join button
@@ -233,7 +233,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id798 @deployPictures
+  @staging @id798 
   Scenario Outline: Email verification reminder is displayed when attempt is made to sign in with unverified email
     Given I see sign in screen
     When I press Join button
