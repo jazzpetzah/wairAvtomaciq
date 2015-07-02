@@ -78,6 +78,13 @@ public class PeoplePickerPage extends WebPage {
 				By.xpath(foundUserXpath));
 	}
 
+	public boolean isUserNotFound(String name) throws Exception {
+		String foundUserXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultByName
+				.apply(name);
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.xpath(foundUserXpath));
+	}
+
 	public ContactListPage closeSearch() throws Exception {
 		closeSearchButton.click();
 		return new ContactListPage(getLazyDriver());
