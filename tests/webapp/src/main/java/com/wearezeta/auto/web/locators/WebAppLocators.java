@@ -172,6 +172,8 @@ public final class WebAppLocators {
 
 		// messages (including images, text, missed call notifications, pings)
 
+		public static final String cssMessage = "[data-uie-name='item-message'][data-uie-visible='true']";
+
 		public static final String cssLastMessage = "[data-uie-name='item-message'][data-uie-visible='true']:last-child";
 
 		public static final String cssSecondLastMessage = "[data-uie-name='item-message'][data-uie-visible='true']:nth-last-child(2)";
@@ -181,6 +183,9 @@ public final class WebAppLocators {
 
 		public static final String cssSecondLastTextMessage = cssSecondLastMessage
 				+ " .text-inner";
+
+		public static final String cssFirstMessageAction = cssMessage
+				+ " .action";
 
 		public static final String cssLastMessageAction = cssLastMessage
 				+ " .action";
