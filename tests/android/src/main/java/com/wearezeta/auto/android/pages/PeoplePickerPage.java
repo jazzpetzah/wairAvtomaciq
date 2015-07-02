@@ -326,6 +326,11 @@ public class PeoplePickerPage extends AndroidPage {
 		this.getDriver().findElement(locator).click();
 	}
 
+	public boolean isUserInPYMKList(String name) throws Exception {
+		final By locator = By.xpath(xpathPYMKItemByName.apply(name));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+	
 	public boolean waitUntilPYMKItemIsInvisible(String name) throws Exception {
 		final By locator = By.xpath(xpathPYMKItemByName.apply(name));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);

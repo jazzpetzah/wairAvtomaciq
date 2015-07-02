@@ -71,8 +71,8 @@ public class PeoplePickerPageSteps {
 			Assert.assertTrue(PagesCollection.peoplePickerPage
 					.isUserFound(name));
 		} else {
-			Assert.assertFalse(PagesCollection.peoplePickerPage
-					.isUserFound(name));
+			Assert.assertTrue(PagesCollection.peoplePickerPage
+					.isUserNotFound(name));
 		}
 	}
 

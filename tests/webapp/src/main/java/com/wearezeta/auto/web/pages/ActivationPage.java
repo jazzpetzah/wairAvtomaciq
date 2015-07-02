@@ -39,7 +39,7 @@ public class ActivationPage extends WebPage {
 
 	public ContactListPage verifyActivation(int timeoutSeconds)
 			throws Exception {
-		if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
 			assert DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 					By.xpath(WebAppLocators.ActivationPage.xpathBtnOpenWebApp),
 					timeoutSeconds) : "Activation page is visible instead of the web app";

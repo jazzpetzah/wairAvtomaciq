@@ -85,7 +85,8 @@ Feature: Registration
     When I enter user email <UnusedEmail> on Registration page
     Then I verify that a red dot is not shown inside the email field on the registration form
     When I submit registration form
-    Then I see email <UnusedEmail> on Verification page
+    Then I verify that an envelope icon is shown
+    And I see email <UnusedEmail> on Verification page
 
     Examples: 
       | Name      | UsedEmail  | UnusedEmail | Password      |
@@ -123,7 +124,8 @@ Feature: Registration
     Given I enter user name <Name> on Registration page
     Given I enter user email <Email> on Registration page
     Given I enter user password "<Password>" on Registration page
-    Given I submit registration form
+    When I submit registration form
+    Then I verify that an envelope icon is shown
     And I see email <Email> on Verification page
     And I open Sign In page
     When I see Sign In page

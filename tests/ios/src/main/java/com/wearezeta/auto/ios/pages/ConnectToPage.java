@@ -75,9 +75,31 @@ public class ConnectToPage extends IOSPage {
 		sendConnectionInput.sendKeys(inviteMessage);
 	}
 	
-	public void inputCharactersIntoConnectDialogByScript(int numberOfCharacters) throws Exception {
+	public void inputCharactersIntoConnectDialogByScript(int numberOfCharacters, boolean isPhone) throws Exception {
 		String text = CommonUtils.generateRandomStringFromAlphanumericPlusSymbolsWithLengh(numberOfCharacters);
-		scriptInputConnectDialog(text);
+		if (isPhone) {
+			scriptInputConnectDialogPhone(text);
+		} else {
+			scriptInputConnectDialog(text);
+		}
+	}
+	
+	private void scriptInputConnectDialogPhone(String text) throws Exception {
+		getWait().until(ExpectedConditions.elementToBeClickable(sendConnectionInput));
+		String script = String.format(IOSLocators.scriptSendConnectionInputPhone
+				+ ".setValue(\"%s\")", text);
+		int maxRetrys = 3;
+		int retryCounter = 0;
+		while (retryCounter < maxRetrys) {
+			try {
+				this.getDriver().executeScript(script);
+				retryCounter = maxRetrys;
+			} catch (WebDriverException ex) {
+				log.debug("Appium execute script fail. " + ex.getMessage());
+				retryCounter++;
+			}
+		}
+		sendConnectionInput.sendKeys(" ");
 	}
 	
 	private void scriptInputConnectDialog(String text) throws Exception {

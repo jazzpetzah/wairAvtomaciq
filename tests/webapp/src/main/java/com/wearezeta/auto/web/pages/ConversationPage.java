@@ -117,7 +117,7 @@ public class ConversationPage extends WebPage {
 	public boolean isActionMessageSent(final Set<String> parts)
 			throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssLastMessageAction);
+				.cssSelector(WebAppLocators.ConversationPage.cssFirstMessageAction);
 		assert DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
 		final List<WebElement> actionMessages = this.getDriver()
 				.findElements(locator).stream().filter(x -> x.isDisplayed())

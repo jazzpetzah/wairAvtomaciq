@@ -137,7 +137,7 @@ public class WebCommonUtils extends CommonUtils {
 	}
 
 	public static String getOperaProfileRoot() throws Exception {
-		if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
 			return String
 					.format("C:\\Users\\%s\\AppData\\Roaming\\Opera Software\\Opera Stable\\",
 							CommonUtils

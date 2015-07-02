@@ -319,7 +319,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id2990 @staging
+  @id2990 @regression
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
