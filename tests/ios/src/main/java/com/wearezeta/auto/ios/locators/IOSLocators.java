@@ -580,6 +580,10 @@ public final class IOSLocators {
 		
 		public static final String nameGifButton = "rightMenuButton";
 		
+		public static final String xpathLoremIpsumText = "//UIATextView[contains(@name, 'Lorem ipsum')]";
+		
+		public static final String nameSoundCloudContainer = "Play on SoundCloud";
+		
 	}
 	
 	public final class DialogInfoPage {

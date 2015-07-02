@@ -42,7 +42,7 @@ public class LoginPageSteps {
 
 	private ClientUser userToRegister = null;
 	private Future<String> activationMessage;
-	private static final String stagingURLForgot = "https://staging-website.wire.com/forgot/";
+	private static final String stagingURLForgot = "https://staging-website.zinfra.io/forgot/";
 
 	/**
 	 * Verifies whether sign in screen is the current screen

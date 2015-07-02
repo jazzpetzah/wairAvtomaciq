@@ -108,7 +108,8 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	@Override
 	public void swipe(int startx, int starty, int endx, int endy,
 			int durationMilliseconds) {
-		String adbCommand = ADB_PREFIX + "adb shell input swipe %d %d %d %d";
+		String adbCommand = ADB_PREFIX
+				+ "adb shell input touchscreen swipe %d %d %d %d";
 
 		if (lowerThanFourDotThree()) {
 			adbCommand = String.format(adbCommand, startx, starty, endx, endy);
@@ -140,6 +141,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 							+ "adb shell getprop ro.build.version.release")
 					.getInputStream()).useDelimiter("\\A");
 			result = s.hasNext() ? s.next() : "";
+			log.debug("Detected Android: " + result);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
