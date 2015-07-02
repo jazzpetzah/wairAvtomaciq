@@ -209,7 +209,10 @@ public class PeoplePickerPageSteps {
 	@When("^I see user (.*) found on People picker page$")
 	public void WhenISeeUserFoundOnPeoplePickerPage(String contact)
 			throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+		}
 		getPeoplePickerPage().waitUserPickerFindUser(contact);
 	}
 
@@ -393,28 +396,52 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Check that user exists in People picker
 	 * 
-	 * @step. ^I see user (.*) in People picker$
+	 * @step. ^I see user (.*) in [Pp]eople [Pp]icker$
 	 * 
 	 * @param contact
 	 * @throws Throwable
 	 */
-	@Then("^I see user (.*) in People picker$")
+	@Then("^I see user (.*) in [Pp]eople [Pp]icker$")
 	public void ThenISeeUserInPeoplePicker(String contact) throws Throwable {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+		}
 		Assert.assertTrue(String.format(
 				"User '%s' is not visible in People Picker", contact),
 				getPeoplePickerPage().userIsVisible(contact));
 	}
 
 	/**
+	 * Check that user exists in the PYMK list in People picker
+	 * 
+	 * @step. ^I see recommended user (.*) in [Pp]eople [Pp]icker$
+	 * 
+	 * @param contact
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I see recommended user (.*) in [Pp]eople [Pp]icker$")
+	public void ThenISeeRecommendedUserInPeoplePicker(String contact)
+			throws Throwable {
+		try {
+			contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		} catch (NoSuchUserException e) {
+		}
+		Assert.assertTrue(String.format(
+				"User '%s' is not visible in recommended list", contact),
+				getPeoplePickerPage().isUserInPYMKList(contact));
+	}
+
+	/**
 	 * Looks for a group chat in the people picker search view
 	 * 
-	 * @step. ^I see group (.*) in People picker$
+	 * @step. ^I see group (.*) in [Pp]eople [Pp]icker$
 	 * 
 	 * @param name
 	 * @throws Exception
 	 */
-	@Then("^I see group (.*) in People picker$")
+	@Then("^I see group (.*) in [Pp]eople [Pp]icker$")
 	public void ThenISeeGroupInPeoplePicker(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
 		Assert.assertTrue(String.format(

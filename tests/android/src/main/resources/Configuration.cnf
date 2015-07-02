@@ -11,6 +11,7 @@ pictureResultsPath=${pictureResultsPath}
 androidClientInfoPath=${androidClientInfoPath}
 androidAppiumLogPath=${androidAppiumLogPath}
 defaultEmail=${defaultEmail}
+androidAddressBookMailAccount=${androidAddressBookMailAccount}
 androidVersion=${androidVersion}
 resourceFilePath=${resourceFilePath}
 resultsPath=${resultsPath}
