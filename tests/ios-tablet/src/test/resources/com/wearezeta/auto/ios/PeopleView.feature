@@ -130,7 +130,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveGroup    |
 
-  @staging @id2441
+  @regression @id2441
   Scenario Outline: Verify removing from group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -150,7 +150,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveGroup   |
 
-  @staging @id2981
+  @regression @id2981
   Scenario Outline: Verify removing from group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -171,7 +171,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveGroup   |
 
-  @staging @id2446
+  @regression @id2446
   Scenario Outline: Verify editing the conversation name [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -193,7 +193,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
       | user1Name | user2Name | user3Name | RenameGroup   | NewName  |
 
-  @staging @id2922
+  @regression @id2922
   Scenario Outline: Verify editing the conversation name [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

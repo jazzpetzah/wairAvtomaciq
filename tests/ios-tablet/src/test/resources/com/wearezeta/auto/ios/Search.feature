@@ -1,6 +1,6 @@
 Feature: Search
 
-  @staging @id2147
+  @regression @id2147
   Scenario Outline: Verify search by email [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
@@ -15,7 +15,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @staging @id2926
+  @regression @id2926
   Scenario Outline: Verify search by email [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -46,7 +46,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2927
+  @regression @id2927
   Scenario Outline: Verify search by name [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -101,7 +101,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id2656
+  @regression @id2656
   Scenario Outline: Start 1:1 chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -174,7 +174,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount | Contact   |
       | user1Name | TopGroupTest | 3         | user2Name |
 
-  @staging @id2930
+  @regression @id2930
   Scenario Outline: Start group chat with users from Top Connections [LANDSCAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -201,7 +201,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount | Contact   |
       | user1Name | TopGroupTest | 3         | user2Name |
 
-  @staging @id1456 
+  @regression @id1456 
   Scenario Outline: Verify you can unblock someone from search list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -224,7 +224,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2931
+  @regression @id2931
   Scenario Outline: Verify you can unblock someone from search list [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -249,7 +249,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2547
+  @regression @id2547
   Scenario Outline: Verify dismissing with clicking on Hide [PORTRAIT]
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -270,7 +270,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
-  @staging @id2932
+  @regression @id2932
   Scenario Outline: Verify dismissing with clicking on Hide [LANDSAPE]
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -292,7 +292,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
-  @staging @id2546
+  @regression @id2546
   Scenario Outline: Verify dismissing with one single gesture [PORTRAIT]
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -312,7 +312,7 @@ Feature: Search
       | Name      | ContactWithFriends | Friend1   | Friend2   | Friend3   |
       | user1Name | user2Name          | user3Name | user4Name | user5Name |
 
-  @staging @id2933
+  @regression @id2933
   Scenario Outline: Verify dismissing with one single gesture [LANDSAPE]
     Given There are 5 users where <Name> is me
     Given <ContactWithFriends> is connected to <Name>
@@ -409,7 +409,7 @@ Feature: Search
       | Name      | Contact   | NewName  | LastName |
       | user1Name | user2Name | NEW NAME | NAME     |
 
-  @staging @id2150
+  @regression @id2150
   Scenario Outline: Verify search by second name (something after space) [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -427,7 +427,7 @@ Feature: Search
       | Name      | Contact   | NewName           | PartName |
       | user1Name | user2Name | Djulieta Carnobat | Djuli    |
 
-  @staging @id2945
+  @regression @id2945
   Scenario Outline: Verify search by second name (something after space) [LANDSAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
