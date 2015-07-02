@@ -17,7 +17,7 @@ public class YouAreInvitedPageSteps {
 	 */
 	@Then("^I see You are invited page$")
 	public void ISeeYouAreInvitedPage() throws Exception {
-		if (WebAppExecutionContext.isCurrentPlatfromWindows()) {
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
 			PagesCollection.youAreInvitedPage.waitUntilConnectButtonVisible();
 		} else {
 			PagesCollection.youAreInvitedPage

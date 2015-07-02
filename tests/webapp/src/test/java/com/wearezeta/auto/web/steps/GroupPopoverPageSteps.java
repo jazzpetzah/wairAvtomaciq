@@ -4,12 +4,17 @@ import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import java.util.List;
+
 import org.junit.Assert;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
@@ -23,6 +28,8 @@ public class GroupPopoverPageSteps {
 	private static final String TOOLTIP_REMOVE_FROM_CONVERSATION = "Remove from conversation";
 	private static final String TOOLTIP_LEAVE_CONVERSATION = "Leave conversation";
 	private static final String TOOLTIP_ADD_PEOPLE_TO_CONVERSATION = "Add people to conversation";
+	private static final String SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_WIN = "(Ctrl + Alt + Shift + E)";
+	private static final String SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_MAC = "(⌘⌥⇧E)";
 	private static final String TOOLTIP_BACK = "Back";
 	private static final String TOOLTIP_OPEN_CONVERSATION = "Open conversation";
 	private static final String TOOLTIP_CHANGE_CONVERSATION_NAME = "Change conversation name";
@@ -519,9 +526,16 @@ public class GroupPopoverPageSteps {
 	 */
 	@Then("^I see correct add people button tool tip$")
 	public void ThenISeeCorrectAddPeopleButtonToolTip() throws Exception {
-		Assert.assertTrue(((GroupPopoverContainer) PagesCollection.popoverPage)
-				.getAddPeopleButtonToolTip().equals(
-						TOOLTIP_ADD_PEOPLE_TO_CONVERSATION));
+		String tooltip = TOOLTIP_ADD_PEOPLE_TO_CONVERSATION + " ";
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			tooltip = tooltip + SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_WIN;
+		} else {
+			tooltip = tooltip + SHORTCUT_ADD_PEOPLE_TO_CONVERSATION_MAC;
+		}
+		assertThat(
+				((GroupPopoverContainer) PagesCollection.popoverPage)
+						.getAddPeopleButtonToolTip(),
+				equalTo(tooltip));
 	}
 
 	/**
