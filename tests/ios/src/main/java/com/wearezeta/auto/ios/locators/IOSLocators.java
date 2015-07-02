@@ -491,6 +491,7 @@ public final class IOSLocators {
 	//////////////////
 	
 	public static final String nameSendConnectionInputField = "SendConnectionRequestMessageView";
+	public static final String scriptSendConnectionInputPhone = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"SendConnectionRequestMessageView\"]";
 	public static final String scriptSendConnectionInput = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].popover().textViews()[\"SendConnectionRequestMessageView\"]";
 	
 	//////////////////
