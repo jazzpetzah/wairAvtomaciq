@@ -372,9 +372,9 @@ Feature: Conversation List
     And I swipe right on Dialog page
     Then I see play/pause button next to username <Contact> in contact list
     And I tap on play/pause button in contact list
-    And I see media button next to user <Contact> changed to Play
+    And I see Play media button next to user <Contact>
     And I tap on play/pause button in contact list
-    And I see media button next to user <Contact> changed to Pause
+    And I see Pause media button next to user <Contact>
 
     Examples: 
       | Name      | Contact   | YouTubeLink                                |
@@ -414,13 +414,14 @@ Feature: Conversation List
     And I see dialog page
     And I tap media link
     And I rotate UI to portrait
-    And I tap media link
     And I swipe right on Dialog page
-    Then I see play/pause button next to username <Contact> in contact list
+    Then I see Pause media button next to user <Contact>
     And I tap on play/pause button in contact list
-    And I see media button next to user <Contact> changed to Play
+    And I see Play media button next to user <Contact>
+    And I see playing media is paused
     And I tap on play/pause button in contact list
-    And I see media button next to user <Contact> changed to Pause
+    And I see Pause media button next to user <Contact>
+    And I see media is playing
 
     Examples: 
       | Name      | Contact   | SoundCloudLink                                                                       |
