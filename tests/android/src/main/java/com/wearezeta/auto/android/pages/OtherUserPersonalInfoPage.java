@@ -281,8 +281,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public void renameGroupChat(String chatName) throws Exception {
 		groupChatNameEditable.clear();
 		groupChatNameEditable.sendKeys(chatName);
-		// FIXME: The app crashes if we apply name changes too fast :-@
-		groupChatNameEditable.sendKeys("\n");
+		this.pressEnter();
+		this.pressEsc();		
 	}
 
 	public AndroidPage tapOnParticipant(String name) throws Exception {
