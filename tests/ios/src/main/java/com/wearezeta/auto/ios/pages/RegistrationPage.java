@@ -66,10 +66,10 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathHidePasswordButton)
 	private WebElement hidePasswordButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameCreateAccountButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathCreateAccountButton)
 	private WebElement createAccountButton;
 
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameConfirmationMessage)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathConfirmationMessage)
 	private WebElement confirmationText;
 
 	@FindBy(how = How.ID, using = IOSLocators.idProvideValidEmailMessage)
@@ -147,7 +147,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void clickAgreeButton() throws Exception {
-		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), 
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.name(IOSLocators.RegistrationPage.nameAgreeButton));
 		agreeButton.click();
 	}
@@ -239,7 +239,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public CameraRollPage selectPicture() throws Exception {
-		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), 
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.name(IOSLocators.RegistrationPage.nameSelectPictureButton));
 		selectPictureButton.click();
 		photoButton.click();
@@ -273,19 +273,9 @@ public class RegistrationPage extends IOSPage {
 		return closeColorModeButton.isDisplayed();
 	}
 
-	public PeoplePickerPage waitForConfirmationMessage() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.className(IOSLocators.classNameConfirmationMessage));
-
-		return new PeoplePickerPage(this.getLazyDriver());
-	}
-
-	public boolean isConfirmationShown() {
-		String expectedMessage = null;
-		String actualMessage = null;
-		expectedMessage = String.format(confirmMessage, getEmail());
-		actualMessage = confirmationText.getText();
-		return actualMessage.equals(expectedMessage);
+	public boolean isConfirmationShown() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(String
+				.format(IOSLocators.xpathConfirmationMessage, getEmail())));
 	}
 
 	public void confirmPicture() {
@@ -334,7 +324,7 @@ public class RegistrationPage extends IOSPage {
 
 	public void clickCreateAccountButton() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.nameCreateAccountButton));
+				By.xpath(IOSLocators.xpathCreateAccountButton));
 		createAccountButton.click();
 	}
 

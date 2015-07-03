@@ -121,7 +121,7 @@ public class SelfProfilePageSteps {
 	 * @throws Exception
 	 */
 	@When("^I remember my current profile picture$")
-	public void IRememberMyCurrentProfilePicture() throws Exception {
+	public void IRememberMyCurrentProfilePictureTablet() throws Exception {
 		savedProfileScreenshot = getSelfProfilePage().getScreenshot();
 	}
 

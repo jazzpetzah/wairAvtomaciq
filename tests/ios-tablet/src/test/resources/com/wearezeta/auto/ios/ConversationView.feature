@@ -522,8 +522,8 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-    @staging @id2978
-    Scenario Outline: Verify I can send gif from preview
+    @regression @id2978
+    Scenario Outline: Verify I can send gif from preview [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -541,8 +541,8 @@ Feature: Conversation View
       | Name      | Contact   |  GiphyTag    |
       | user1Name | user2Name |  Happy       |
       
-    @staging @id2979
-    Scenario Outline: Verify I can send gif from preview
+    @regression @id2979
+    Scenario Outline: Verify I can send gif from preview [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape

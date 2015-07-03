@@ -612,13 +612,13 @@ public class ContactListPageSteps {
 	/**
 	 * Verify that play icon is not shown next to contact
 	 * 
-	 * @step. ^I see media button next to user (.*) changed to Play$
+	 * @step. ^I see Play media button next to user (.*)$
 	 * @param contact
 	 *            contact name
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see media button next to user (.*) changed to Play$")
+	@Then("^I see Play media button next to user (.*)$")
 	public void ISeeMediaButtonChangedToPlay(String contact)
 			throws IllegalStateException, Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
@@ -630,13 +630,13 @@ public class ContactListPageSteps {
 	/**
 	 * Verify that pause icon is not shown next to contact
 	 * 
-	 * @step. ^I see media button next to user (.*) changed to Pause$
+	 * @step. ^I see Pause media button next to user (.*)$
 	 * @param contact
 	 *            contact name
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see media button next to user (.*) changed to Pause$")
+	@Then("^I see Pause media button next to user (.*)$")
 	public void ISeeMediaButtonChangedToPause(String contact)
 			throws IllegalStateException, Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();

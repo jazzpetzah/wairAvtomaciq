@@ -270,7 +270,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id2368
+  @regression @id2368
   Scenario Outline: Verify missed call indicator appearance in conversation list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -290,7 +290,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
-  @staging @id2368
+  @regression @id2995
   Scenario Outline: Verify missed call indicator appearance in conversation list [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -356,7 +356,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
-  @staging @id2364
+  @staging @id2465 
   Scenario Outline: Verify Play/pause Youtube media from conversation list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -372,12 +372,12 @@ Feature: Conversation List
     And I swipe right on Dialog page
     Then I see play/pause button next to username <Contact> in contact list
     And I tap on play/pause button in contact list
-    And I see media button next to user <Contact> changed to Play
+    And I see Play media button next to user <Contact>
     And I tap on play/pause button in contact list
-    And I see media button next to user <Contact> changed to Pause
+    And I see Pause media button next to user <Contact>
 
     Examples: 
-      | Name      | Contact   | YouTubeLink                                 |
+      | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
   @staging @id2566
@@ -400,4 +400,29 @@ Feature: Conversation List
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | webdriver    |
+      | user1Name | user2Name | webdriver   |
+
+  @staging @id2364 
+  Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And User <Contact> sent message <SoundCloudLink> to conversation <Contact>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap media link
+    And I rotate UI to portrait
+    And I swipe right on Dialog page
+    Then I see Pause media button next to user <Contact>
+    And I tap on play/pause button in contact list
+    And I see Play media button next to user <Contact>
+    And I see playing media is paused
+    And I tap on play/pause button in contact list
+    And I see Pause media button next to user <Contact>
+    And I see media is playing
+
+    Examples: 
+      | Name      | Contact   | SoundCloudLink                                                                       |
+      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
