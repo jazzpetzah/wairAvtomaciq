@@ -526,4 +526,4 @@ Feature: Connect
 
     Examples: 
       | Name      | Contact1 | Contact2 |
-      | user1Name | vb003    | Amelia   |
+      | user1Name | vb003    | Dorothy  |
