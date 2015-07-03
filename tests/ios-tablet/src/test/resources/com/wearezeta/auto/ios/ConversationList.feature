@@ -270,7 +270,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id2368
+  @regression @id2368
   Scenario Outline: Verify missed call indicator appearance in conversation list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -290,7 +290,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
-  @staging @id2368
+  @regression @id2995
   Scenario Outline: Verify missed call indicator appearance in conversation list [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
