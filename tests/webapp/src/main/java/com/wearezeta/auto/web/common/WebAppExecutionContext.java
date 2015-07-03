@@ -40,7 +40,7 @@ public class WebAppExecutionContext {
 		return platform;
 	}
 
-	public static boolean isCurrentPlatfromWindows() {
+	public static boolean isCurrentPlatformWindows() {
 		return getPlatform().toLowerCase().contains("win");
 	}
 

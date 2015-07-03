@@ -121,7 +121,6 @@ Feature: People View
     When I tap on contact name <OldGroupChatName>
     And I tap conversation details button
     And I rename group conversation to <NewConversationName>
-    And I return to group chat page
     Then I see a message informing me that I renamed the conversation to <NewConversationName>
     And I navigate back from dialog page
     And I see contact list with name <NewConversationName>

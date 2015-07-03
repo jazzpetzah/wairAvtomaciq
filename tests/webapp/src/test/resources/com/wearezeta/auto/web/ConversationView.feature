@@ -146,11 +146,12 @@ Feature: Conversation View
       | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
       | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
 
-  @id1688
+  @regression @id1688
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    When I open People Picker from Contact List
+    When I see my avatar on top of Contact list
+    And I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
     And I type <Contact2> in search field of People Picker

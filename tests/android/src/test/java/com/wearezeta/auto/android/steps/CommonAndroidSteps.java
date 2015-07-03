@@ -906,4 +906,26 @@ public class CommonAndroidSteps {
 			throws Exception {
 		commonSteps.UserXHasContactsInAddressBook(asUser, emails);
 	}
+
+	/**
+	 * Adds 1 user with email and 1 with phone number in Android address book
+	 * 
+	 * @step. ^I add predefined users to address book$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I add predefined users to address book$")
+	public void IAddPredefinedUsersToAddressBook() throws Exception {
+		AndroidCommonUtils.addPreDefinedUsersToAddressBook();
+	}
+
+	@Before("@deployAddressBook")
+	public void CleanAddressBook() throws Exception {
+		AndroidCommonUtils.cleanAddressBook();
+	}
+
+	@After("@deployAddressBook")
+	public void DeleteDeployedContacts() throws Exception {
+		AndroidCommonUtils.removeTestContactsFromAddressBook();
+	}
 }

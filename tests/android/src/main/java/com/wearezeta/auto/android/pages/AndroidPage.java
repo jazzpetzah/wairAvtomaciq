@@ -100,6 +100,10 @@ public abstract class AndroidPage extends BasePage {
 	protected void pressEnter() throws Exception {
 		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 	}
+	
+	protected void pressEsc() throws Exception {
+		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ESCAPE);
+	}
 
 	public AndroidPage navigateBack() throws Exception {
 		AndroidCommonUtils.tapBackButton();

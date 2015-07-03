@@ -291,7 +291,7 @@ public class DialogPage extends IOSPage {
 	public void startMediaContent() throws Exception {
 		boolean flag = DriverUtils.waitUntilLocatorIsDisplayed(
 				this.getDriver(),
-				By.xpath(IOSLocators.xpathMediaConversationCell));
+				By.xpath(IOSLocators.xpathMediaConversationCell), 3);
 		if (flag) {
 			mediaLinkCell.click();
 		} else {

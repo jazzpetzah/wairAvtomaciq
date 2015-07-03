@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,6 +33,8 @@ public class AndroidCommonUtils extends CommonUtils {
 
 	public static final String ADB_PREFIX = "";
 //	public static final String ADB_PREFIX = "/Applications/android-sdk/platform-tools/";
+
+	private static ArrayList<String> addressBookAddedNames = new ArrayList<String>();
 
 	private static void executeAdb(final String cmdline) throws Exception {
 		executeOsXCommand(new String[] { "/bin/bash", "-c",
@@ -214,6 +217,12 @@ public class AndroidCommonUtils extends CommonUtils {
 		return CommonUtils.getValueFromConfig(c, "androidAppiumLogPath");
 	}
 
+	public static String getAndroidAddressBookMailAccountFromConfig(Class<?> c)
+			throws Exception {
+		return CommonUtils.getValueFromConfig(c,
+				"androidAddressBookMailAccount");
+	}
+
 	public static void deployBackendFile(String fileName) throws Exception {
 		executeAdb(String.format("push %s %s", fileName, BACKEND_FILE_LOCATION));
 	}
@@ -287,11 +296,100 @@ public class AndroidCommonUtils extends CommonUtils {
 	public static void tapBackButton() throws Exception {
 		executeAdb("shell input keyevent 4");
 	}
-	
+
+	public static int insertNewContactForMailAccountInAddressBook(String email)
+			throws Exception {
+		executeAdb(String.format("shell content insert "
+				+ "--uri content://com.android.contacts/raw_contacts "
+				+ "--bind account_type:s:com.google "
+				+ "--bind account_name:s:%s", email));
+
+		String idsList = getAdbOutput("shell content query "
+				+ "--uri content://com.android.contacts/raw_contacts "
+				+ "--projection _id");
+		Pattern pattern = Pattern.compile("_id=(\\d+)");
+		Matcher matcher = pattern.matcher(idsList);
+		int value = 0;
+		while (matcher.find()) {
+			try {
+				value = Integer.parseInt(matcher.group(1));
+			} catch (NumberFormatException e) {
+			}
+		}
+		return value;
+	}
+
+	public static void insertPhoneNumberForContactInAddressBook(int id,
+			String phone) throws Exception {
+		executeAdb(String.format("shell content insert "
+				+ "--uri content://com.android.contacts/data "
+				+ "--bind raw_contact_id:i:%s "
+				+ "--bind mimetype:s:vnd.android.cursor.item/phone_v2 "
+				+ "--bind data1:s:%s", id, phone));
+	}
+
+	public static void insertNameForContactInAddressBook(int id, String name)
+			throws Exception {
+		executeAdb(String.format("shell content insert "
+				+ "--uri content://com.android.contacts/data "
+				+ "--bind raw_contact_id:i:%s "
+				+ "--bind mimetype:s:vnd.android.cursor.item/name "
+				+ "--bind data1:s:'%s'", id, name));
+	}
+
+	public static void insertEmailForContactInAddressBook(int id, String email)
+			throws Exception {
+		executeAdb(String.format("shell content insert "
+				+ "--uri content://com.android.contacts/data "
+				+ "--bind raw_contact_id:i:%s "
+				+ "--bind mimetype:s:vnd.android.cursor.item/email_v2 "
+				+ "--bind data1:s:'%s'", id, email));
+	}
+
+	public static void removeAddressBookContactWithName(String name)
+			throws Exception {
+		executeAdb(String.format("shell content delete "
+				+ "--uri content://com.android.contacts/raw_contacts "
+				+ "--where \"display_name='%s'\"", name));
+	}
+
+	public static void cleanAddressBook() throws Exception {
+		executeAdb("shell content delete "
+				+ "--uri content://com.android.contacts/raw_contacts");
+	}
+
+	public static void removeTestContactsFromAddressBook() throws Exception {
+		for (String name : addressBookAddedNames) {
+			removeAddressBookContactWithName(name);
+		}
+	}
+
+	public static void addPreDefinedUsersToAddressBook() throws Exception {
+		final String USER_WITH_EMAIL_NAME = "vb003";
+		final String USER_WITH_EMAIL_EMAIL = "vova+vb003@wire.com";
+		final String USER_WITH_PHONE_NAME = "Dorothy";
+		final String USER_WITH_PHONE_PHONE = "+491705027882";
+		int id = AndroidCommonUtils
+				.insertNewContactForMailAccountInAddressBook(getAndroidAddressBookMailAccountFromConfig(AndroidCommonUtils.class));
+		AndroidCommonUtils.insertNameForContactInAddressBook(id,
+				USER_WITH_EMAIL_NAME);
+		AndroidCommonUtils.insertEmailForContactInAddressBook(id,
+				USER_WITH_EMAIL_EMAIL);
+		addressBookAddedNames.add(USER_WITH_EMAIL_NAME);
+		id = AndroidCommonUtils
+				.insertNewContactForMailAccountInAddressBook(getAndroidAddressBookMailAccountFromConfig(AndroidCommonUtils.class));
+		AndroidCommonUtils.insertNameForContactInAddressBook(id,
+				USER_WITH_PHONE_NAME);
+		AndroidCommonUtils.insertPhoneNumberForContactInAddressBook(id,
+				USER_WITH_PHONE_PHONE);
+		addressBookAddedNames.add(USER_WITH_PHONE_NAME);
+	}
+
 	public static double getScreenDensity() throws Exception {
 		String result = getAdbOutput("shell getprop ro.sf.lcd_density");
 		double screenPixels = Integer.parseInt(result);
-		double densityIndependentPixels = 160; //the number of dp in a screen is constant
+		double densityIndependentPixels = 160; // the number of dp in a screen
+												// is constant
 		return screenPixels / densityIndependentPixels;
 	}
 }
