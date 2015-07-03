@@ -514,7 +514,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Message       |
       | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id2661 @deployAddressBook
+  @staging @id2661 @deployAddressBook
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There is 1 user where <Name> is me
     Given I add predefined users to address book
