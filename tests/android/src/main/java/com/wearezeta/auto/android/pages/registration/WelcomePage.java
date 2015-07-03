@@ -50,6 +50,7 @@ public class WelcomePage extends AndroidPage {
 	}
 
 	public void inputPhoneNumber(String phoneNumber) {
+		phoneInputField.clear();
 		phoneInputField.sendKeys(phoneNumber);
 	}
 
