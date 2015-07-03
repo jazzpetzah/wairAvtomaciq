@@ -152,7 +152,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id1392 
+  @staging
   Scenario Outline: Automatic email verification
     Given I see sign in screen
     When I press Join button
