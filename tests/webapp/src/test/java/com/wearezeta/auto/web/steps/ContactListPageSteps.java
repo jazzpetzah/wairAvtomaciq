@@ -406,8 +406,8 @@ public class ContactListPageSteps {
 			assertTrue(PagesCollection.contactListPage
 					.isMissedCallVisibleForContact(conversationName));
 		} else {
-			assertFalse(PagesCollection.contactListPage
-					.isMissedCallVisibleForContact(conversationName));
+			assertTrue(PagesCollection.contactListPage
+					.isMissedCallInvisibleForContact(conversationName));
 		}
 	}
 
