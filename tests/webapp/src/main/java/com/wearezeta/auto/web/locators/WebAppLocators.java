@@ -220,8 +220,6 @@ public final class WebAppLocators {
 
 		public static final String cssRightControlsPanel = "div.controls-right";
 
-		public static final String cssSendImageLabel = "label.controls-right-button.conversation-input-button.icon-camera.icon-button";
-
 		public static final String cssSendImageInput = "input[data-uie-name=do-share-image]";
 
 		public static final String cssPingButton = "[data-uie-name='do-ping'], [data-uie-name='do-hot-ping']";
