@@ -350,7 +350,7 @@ public class AndroidCommonUtils extends CommonUtils {
 			throws Exception {
 		executeAdb(String.format("shell content delete "
 				+ "--uri content://com.android.contacts/raw_contacts "
-				+ "--where \"display_name='%s'\""));
+				+ "--where \"display_name='%s'\"", name));
 	}
 
 	public static void cleanAddressBook() throws Exception {
