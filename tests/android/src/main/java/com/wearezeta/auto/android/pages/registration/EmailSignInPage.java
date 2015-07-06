@@ -1,9 +1,11 @@
 package com.wearezeta.auto.android.pages.registration;
 
+import java.awt.event.KeyEvent;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -47,6 +49,12 @@ public class EmailSignInPage extends AndroidPage {
 	}
 
 	public void setLogin(String login) throws Exception {
+		loginInput.click();
+		String cleanupString = "";
+		for (int i = 0; i < 40; i++) {
+			cleanupString += Keys.ARROW_RIGHT + "" + Keys.DELETE;
+		}
+		loginInput.sendKeys(cleanupString);
 		loginInput.sendKeys(login);
 	}
 

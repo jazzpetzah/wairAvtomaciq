@@ -350,7 +350,7 @@ public class AndroidCommonUtils extends CommonUtils {
 			throws Exception {
 		executeAdb(String.format("shell content delete "
 				+ "--uri content://com.android.contacts/raw_contacts "
-				+ "--where \"display_name='%s'\""));
+				+ "--where \"display_name='%s'\"", name));
 	}
 
 	public static void cleanAddressBook() throws Exception {
@@ -367,7 +367,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	public static void addPreDefinedUsersToAddressBook() throws Exception {
 		final String USER_WITH_EMAIL_NAME = "vb003";
 		final String USER_WITH_EMAIL_EMAIL = "vova+vb003@wire.com";
-		final String USER_WITH_PHONE_NAME = "Amelia";
+		final String USER_WITH_PHONE_NAME = "Dorothy";
 		final String USER_WITH_PHONE_PHONE = "+491705027882";
 		int id = AndroidCommonUtils
 				.insertNewContactForMailAccountInAddressBook(getAndroidAddressBookMailAccountFromConfig(AndroidCommonUtils.class));

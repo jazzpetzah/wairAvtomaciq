@@ -126,9 +126,7 @@ public final class IOSLocators {
 	
 	public static final String classUIATextView = "UIATextView";
 	
-    public static final String xpathEmailVerifPrompt = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'We sent an email to ')]";
-
-	
+    public static final String xpathEmailVerifPrompt = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'We sent an email to ')]";	
 	
 	public static final String xpathNameMediaContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
@@ -144,9 +142,9 @@ public final class IOSLocators {
 	
 	public static final String xpathYourName = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[@value='YOUR FULL NAME']";
 	
-	public static final String nameYourEmail = "RegistrationEmailField";
+	public static final String nameYourEmail = "EmailField";
 	
-	public static final String nameYourPassword = "RegistrationPasswordField";
+	public static final String nameYourPassword = "PasswordField";
 
 	public static final String xpathRevealPasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]/UIAButton[1]";
 	
@@ -154,9 +152,9 @@ public final class IOSLocators {
 	
 	public static final String xpathHidePasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
 	
-	public static final String classNameConfirmationMessage = "UIATextView";
+	public static final String xpathConfirmationMessage = "//UIAStaticText[contains(@name, 'We sent an email to %s.')]";
 	
-	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
+	public static final String xpathCreateAccountButton = "//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton";
 	
 	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/*[last()]";
 	

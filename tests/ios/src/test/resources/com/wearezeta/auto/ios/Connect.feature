@@ -269,5 +269,5 @@ Feature: Connect
     And I see user <Contact2> found on People picker page
 
     Examples: 
-      | Name      | Contact1  | Contact2 |
-      | user1Name | vb003     | Amelia   |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | vb003     | Dorothy   |

@@ -194,8 +194,6 @@ public class ConversationPage extends WebPage {
 				+ "\").css({'opacity': '100'});";
 		this.getDriver().executeScript(showImageLabelJScript);
 		final String showPathInputJScript = "$(\""
-				+ WebAppLocators.ConversationPage.cssSendImageLabel
-				+ "\").find(\""
 				+ WebAppLocators.ConversationPage.cssSendImageInput
 				+ "\").css({'left': '0'});";
 		this.getDriver().executeScript(showPathInputJScript);
