@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @calling_basic @id373
+  @id373 @calling_basic
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -32,7 +32,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id1497
+  @id1497 @calling_basic
   Scenario Outline: Receive call while Wire is running in the background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -49,7 +49,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id1499
+  @id1499 @calling_basic
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -66,7 +66,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @regression @id347
+  @id347 @regression
   Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
