@@ -169,7 +169,7 @@ public class DialogPage extends IOSPage {
 	public void pressPingButton() {
 		pingButton.click();
 	}
-	
+
 	public ContactListPage returnToContactList() throws Exception {
 		conversationBackButton.click();
 		return new ContactListPage(getLazyDriver());
@@ -226,7 +226,8 @@ public class DialogPage extends IOSPage {
 		}
 	}
 
-	public void scrollToTheEndOfConversation() throws Exception {
+	public void scrollToTheEndOfConversationByTapOnCursorInput()
+			throws Exception {
 		String script = IOSLocators.scriptCursorInputPath + ".tap();";
 		this.getDriver().executeScript(script);
 	}
@@ -765,7 +766,7 @@ public class DialogPage extends IOSPage {
 		} catch (Exception e) {
 		}
 
-		scrollToTheEndOfConversation();
+		scrollToTheEndOfConversationByTapOnCursorInput();
 		String script = "";
 		for (int i = 0; i < messages.length; i++) {
 			script += String.format(IOSLocators.scriptCursorInputPath
