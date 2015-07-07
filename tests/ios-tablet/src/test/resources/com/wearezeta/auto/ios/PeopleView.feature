@@ -214,3 +214,44 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
       | user1Name | user2Name | user3Name | RenameGroup   | NewName  |
+  
+  @torun @staging @id2432
+  Scenario Outline: Check any users personal info in group conversation [PORTRAIT]
+  	Given There are 3 users where <Name> is me
+    Given Myself is connected to <GroupCreator>,<NonConnectedContact>
+    Given Myself has group chat <GroupChatName> with <GroupCreator>,<NonConnectedContact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I select user on iPad group popover <GroupCreator>
+    Then I see email and name of user <GroupCreator> on iPad popover
+    
+    Examples: 
+      | Name      | GroupCreator | NonConnectedContact  | GroupChatName 	 | 
+      | user1Name | user2Name 	 | user3Name 			| SingleInfoGroup    | 
+  
+  
+     
+  @staging @id3007
+  Scenario Outline: Check any users personal info in group conversation [LANDSCAPE]
+  	Given There are 3 users where <Name> is me
+    Given <GroupCreator> is connected to me
+    Given <GroupCreator> is connected to <NonConnectedContact>
+    Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I select user on iPad group popover <GroupCreator>
+    Then I see email and name of user <GroupCreator> on iPad popover
+    And I go back to group deatil popover
+    And I select user on iPad group popover <NonConnectedContact>
+    Then I see connect page for user <NonConnectedContact> on iPad popover
+    
+    Examples: 
+      | Name      | GroupCreator | NonConnectedContact  | GroupChatName 	 | 
+      | user1Name | user2Name 	 | user3Name 			| SingleInfoGroup    |
