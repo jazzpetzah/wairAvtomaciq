@@ -34,7 +34,7 @@ Feature: Connect
       | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
       | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
 
-  @regression @id2355
+  @regression @id3008
   Scenario Outline: Verify sending a connection request to user chosen from search [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
@@ -68,3 +68,56 @@ Feature: Connect
     Examples: 
       | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
       | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
+
+  @staging @id2119
+  Scenario Outline: Send invitation message to a user [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I wait until <ContactEmail> exists in backend search results
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on NOT connected user name on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I click Connect button on connect to dialog
+    And I see People picker page
+    And I click close button to dismiss people view
+    Then I see first item in contact list named <Contact>
+    And I tap on contact name <Contact>
+    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+
+    Examples: 
+      | Name      | Contact   | ContactEmail | Contact2  |
+      | user1Name | user2Name | user2Email   | user3Name |
+
+  @staging @id3009
+  Scenario Outline: Send invitation message to a user [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I wait until <ContactEmail> exists in backend search results
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on NOT connected user name on People picker page <Contact>
+    And I see connect to <Contact> dialog
+    And I click Connect button on connect to dialog
+    And I see People picker page
+    And I click close button to dismiss people view
+    Then I see first item in contact list named <Contact>
+    And I tap on contact name <Contact>
+    And I see Pending Connect to <Contact> message on Dialog page from user <Name>
+
+    Examples: 
+      | Name      | Contact   | ContactEmail | Contact2  |
+      | user1Name | user2Name | user2Email   | user3Name |
+
+

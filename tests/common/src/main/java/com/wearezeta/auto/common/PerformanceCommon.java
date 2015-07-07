@@ -66,6 +66,9 @@ public final class PerformanceCommon {
 		} catch (BackendRequestException e) {
 			e.printStackTrace();
 			getLogger().debug(e.getMessage());
+		} catch (java.util.NoSuchElementException e) {
+			e.printStackTrace();
+			getLogger().debug(e.getMessage());
 		}
 	}
 

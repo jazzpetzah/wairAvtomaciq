@@ -256,7 +256,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id2360
+  @regression @id3010
   Scenario Outline: Get invitation message from user [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
