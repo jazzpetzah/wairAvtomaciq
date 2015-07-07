@@ -35,6 +35,7 @@ public final class IOSTabletLocators {
 		public static final String nameRenameButtonEllipsisMenue = "RENAME";
 		public static final String xpathGroupConvTotalNumber = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAStaticText[contains(@name,'PEOPLE')]";
 		public static final String namePeopleCountWord = " PEOPLE";
+		public static final String xpathPopoverAvatarCollectionView = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIACollectionView[1]";
 	}
 	
 }
