@@ -70,7 +70,7 @@ Feature: Connect
       | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
 
   @staging @id2119
-  Scenario Outline: Send invitation message to a user [PORTRAIT]
+  Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given I Sign in on tablet using my email
@@ -95,7 +95,7 @@ Feature: Connect
       | user1Name | user2Name | user2Email   | user3Name |
 
   @staging @id3009
-  Scenario Outline: Send invitation message to a user [LANDSCAPE]
+  Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
     Given I rotate UI to landscape
