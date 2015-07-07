@@ -36,7 +36,6 @@
 		<com.wire.os.version>7</com.wire.os.version>
 		<com.wire.browser.name>Chrome</com.wire.browser.name>
 		<com.wire.browser.version>43.0</com.wire.browser.version>
-		<tags>@smoke,@regression</tags>
 	</properties>
 
 	<dependencies>
@@ -168,7 +167,7 @@
                                 <argument>--strict</argument>
                                 <argument>${basedir}/src/test/resources/com/wearezeta/auto/web/</argument>
                                 <argument>--tags</argument>
-								<argument>${tags}</argument>
+								<argument>@id1910</argument>
                             </arguments>
                         </configuration>
                     </execution>
