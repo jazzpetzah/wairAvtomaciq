@@ -12,6 +12,7 @@ Feature: Search
     When I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
+    And I wait for the search field of People Picker to be empty
     And I type <Contact2> in search field of People Picker
     And I select <Contact2> from People Picker results
     And I choose to create conversation from People Picker
@@ -34,6 +35,7 @@ Feature: Search
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
     And I wait until <Contact2> exists in backend search results
+    And I wait for the search field of People Picker to be empty
     And I type <Contact2> in search field of People Picker
     And I select <Contact2> from People Picker results
     And I choose to create conversation from People Picker
