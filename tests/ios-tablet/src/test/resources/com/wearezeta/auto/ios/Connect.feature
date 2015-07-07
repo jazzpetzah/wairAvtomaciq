@@ -120,4 +120,42 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
+  @staging @id2610 
+  Scenario Outline: Send connection request to unconnected participant in a group chat [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <GroupCreator>
+    Given <GroupCreator> is connected to <UnconnectedUser>
+    Given <GroupCreator> has group chat <GroupChatName> with <UnconnectedUser>,Myself
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open conversation details on iPad
+    And I tap on not connected contact <UnconnectedUser>
+    And I click Connect button on connect to dialog
+    And I exit the group info iPad popover
+    And I swipe right on group chat page
+    Then I see first item in contact list named <UnconnectedUser>
 
+    Examples: 
+      | Name      | GroupCreator | GroupChatName | UnconnectedUser |
+      | user1Name | user2Name    | TESTCHAT      | user3Name       |
+
+  @staging @id3011
+  Scenario Outline: Send connection request to unconnected participant in a group chat [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <GroupCreator>
+    Given <GroupCreator> is connected to <UnconnectedUser>
+    Given <GroupCreator> has group chat <GroupChatName> with <UnconnectedUser>,Myself
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open conversation details on iPad
+    And I tap on not connected contact <UnconnectedUser>
+    And I click Connect button on connect to dialog
+    And I exit the group info iPad popover
+    Then I see first item in contact list named <UnconnectedUser>
+
+    Examples: 
+      | Name      | GroupCreator | GroupChatName | UnconnectedUser |
+      | user1Name | user2Name    | TESTCHAT      | user3Name       |
