@@ -356,7 +356,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
-  @staging @id2465 
+  @regression @id2465 
   Scenario Outline: Verify Play/pause Youtube media from conversation list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -380,7 +380,7 @@ Feature: Conversation List
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @staging @id2566
+  @regression @id2566
   Scenario Outline: Verify muting ongoing call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -402,7 +402,7 @@ Feature: Conversation List
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | webdriver   |
 
-  @staging @id2364 
+  @regression @id2364
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

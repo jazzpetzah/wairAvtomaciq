@@ -1,7 +1,7 @@
 Feature: Sign In
 
   @id326 @smoke
-  Scenario Outline: Sign in to ZClient
+  Scenario Outline: Sign in to Wire by mail
     Given There is 1 user where <Name> is me
     Given I see welcome screen
     When I switch to email sign in screen
@@ -14,6 +14,16 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
+  @id1 @smoke
+  Scenario Outline: Sign in to Wire by phone
+    Given There are 1 users where <Name> is me
+    When I sign in using my phone number
+    Then I see Contact list with no contacts
+
+    Examples: 
+      | Name      |
+      | user1Name |
+      
   #@id209 @smoke
   #Scenario Outline: I can change sign in user
     #Given I have 2 users and 0 contacts for 0 users
