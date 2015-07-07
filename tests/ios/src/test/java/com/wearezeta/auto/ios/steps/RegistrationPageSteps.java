@@ -438,8 +438,23 @@ public class RegistrationPageSteps {
 
 	@Then("^I see confirmation page$")
 	public void ISeeConfirmationPage() throws Exception {
-		getRegistrationPage().waitForConfirmationMessage();
 		Assert.assertTrue(getRegistrationPage().isConfirmationShown());
+	}
+	
+	/**
+	 * Start monitoring thread for activation email. Please put this step BEFORE
+	 * you submit the registration form
+	 * 
+	 * @step. ^I start activation email monitoring$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I start activation email monitoring$")
+	public void IStartActivationEmailMonitoring() throws Exception {
+		Map<String, String> expectedHeaders = new HashMap<String, String>();
+		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
+				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 	}
 
 	@Then("^I verify registration address$")

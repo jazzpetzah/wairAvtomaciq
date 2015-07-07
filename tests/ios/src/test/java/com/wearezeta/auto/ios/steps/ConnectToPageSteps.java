@@ -77,7 +77,7 @@ public class ConnectToPageSteps {
 	}
 
 	/**
-	 * Inputs a message with a certain number of random characters by script
+	 * Inputs a message with a certain number of random characters by script on iPAD
 	 * 
 	 * @step. I input message in connect dialog with (.*) characters
 	 * 
@@ -88,7 +88,22 @@ public class ConnectToPageSteps {
 
 	@When("^I input message in connect dialog with (.*) characters$")
 	public void IInputMessageWithLength(int characters) throws Exception {
-		getConnectToPage().inputCharactersIntoConnectDialogByScript(characters);
+		getConnectToPage().inputCharactersIntoConnectDialogByScript(characters, false);
+	}
+	
+	/**
+	 * Inputs a message with a certain number of random characters by script on iPhone
+	 * 
+	 * @step. ^I type message in connect dialog with (.*) characters$
+	 * 
+	 * @param characters
+	 *            number of characters to input into dialog
+	 * @throws Exception
+	 */
+
+	@When("^I type message in connect dialog with (.*) characters$")
+	public void IInputMessageWithLengthPhone(int characters) throws Exception {
+		getConnectToPage().inputCharactersIntoConnectDialogByScript(characters, true);
 	}
 
 	/**

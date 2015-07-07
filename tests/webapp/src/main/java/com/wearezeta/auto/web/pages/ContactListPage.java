@@ -177,9 +177,17 @@ public class ContactListPage extends WebPage {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
 				.apply(conversationName);
-		List<WebElement> missedCallNotification = getDriver().findElements(
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.xpath(locator));
-		return missedCallNotification.size() > 0;
+	}
+
+	public boolean isMissedCallInvisibleForContact(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(locator));
 	}
 
 	public void openArchive() throws Exception {

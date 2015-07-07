@@ -27,6 +27,7 @@ Feature: Conversation View
     And I open conversation with <ChatName>
     When I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
+    And I see only 1 picture in the conversation
     When I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -36,6 +37,7 @@ Feature: Conversation View
     Then I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     Then I see sent picture <PictureName> in the conversation view
+    And I see only 1 picture in the conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | PictureName               |
@@ -68,6 +70,7 @@ Feature: Conversation View
     And I open conversation with <Contact>
     And I send picture <PictureName> to the current conversation
     Then I see sent picture <PictureName> in the conversation view
+    And I see only 1 picture in the conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PictureName               |
@@ -143,11 +146,12 @@ Feature: Conversation View
       | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  | ChatName  | Msg1FromUserA | Msg2FromUserA |
       | user1Name | user2Name | user2Email    | user2Password    | user3Name | GroupChat | Message1      | Message2      |
 
-  @id1688
+  @regression @id1688
   Scenario Outline: Verify you can add maximum+1 number of participants into group conversation
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    When I open People Picker from Contact List
+    When I see my avatar on top of Contact list
+    And I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
     And I type <Contact2> in search field of People Picker

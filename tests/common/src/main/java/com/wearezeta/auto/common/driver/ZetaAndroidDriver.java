@@ -11,6 +11,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
@@ -43,11 +44,11 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
 			.getSimpleName());
 	public static final String ADB_PREFIX = "";
-//	public static final String ADB_PREFIX = "/Applications/android-sdk/platform-tools/";
-	
+	// public static final String ADB_PREFIX =
+	// "/Applications/android-sdk/platform-tools/";
+
 	private SessionHelper sessionHelper;
 	private RemoteTouchScreen touch;
-	
 
 	private enum SurfaceOrientation {
 		ROTATION_0(0), ROTATION_90(1), ROTATION_180(2), ROTATION_270(3);
@@ -107,28 +108,49 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	@Override
 	public void swipe(int startx, int starty, int endx, int endy,
 			int durationMilliseconds) {
-		log.debug("ADB swipe: \"adb shell input swipe "+startx+" "+starty+" "+endx+" "+endy+" "+durationMilliseconds+"\"");
-		try {
-			final String adbCommandsChain = String.format(
-					ADB_PREFIX + "adb shell input swipe %d %d %d %d %d", startx, starty,
+		String adbCommand = ADB_PREFIX
+				+ "adb shell input touchscreen swipe %d %d %d %d";
+
+		if (lowerThanFourDotThree()) {
+			adbCommand = String.format(adbCommand, startx, starty, endx, endy);
+		} else {
+			adbCommand = String.format(adbCommand + " %d", startx, starty,
 					endx, endy, durationMilliseconds);
-			final int exitCode = Runtime.getRuntime()
-					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
+		}
+		log.debug("ADB swipe: " + adbCommand);
+
+		try {
+			Runtime.getRuntime()
+					.exec(new String[] { "/bin/bash", "-c", adbCommand })
 					.waitFor();
-			if (exitCode != 0) {
-				// Swipe with timeout might not be supported by old Android API
-				// (<= 4.2)
-				final String adbCommandsChainLimited = String.format(
-						ADB_PREFIX + "adb shell input swipe %d %d %d %d", startx, starty,
-						endx, endy);
-				Runtime.getRuntime()
-						.exec(new String[] { "/bin/bash", "-c",
-								adbCommandsChainLimited }).waitFor();
-				Thread.sleep(durationMilliseconds);
-			}
 		} catch (Exception e) {
 			throw new WebDriverException(e.getMessage(), e);
 		}
+	}
+
+	/*
+	 * Checks to see that the android version is less than 4.3
+	 */
+	public static boolean lowerThanFourDotThree() {
+		Scanner s;
+		String result = "";
+		try {
+			s = new java.util.Scanner(Runtime
+					.getRuntime()
+					.exec(ADB_PREFIX
+							+ "adb shell getprop ro.build.version.release")
+					.getInputStream()).useDelimiter("\\A");
+			result = s.hasNext() ? s.next() : "";
+			log.debug("Detected Android: " + result);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (result.compareTo("4.3") < 0) {
+			// comparing lexicographically, 4.2.2 < 4.3 for example
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -179,8 +201,9 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					.format("/sdcard/%s.png", CommonUtils.generateGUID()
 							.replace("-", "").substring(0, 8));
 			final String adbCommandsChain = String.format(
-					ADB_PREFIX + "adb shell screencap -p %1$s; " + ADB_PREFIX + "adb pull %1$s %2$s; "
-							+ ADB_PREFIX + "adb shell rm %1$s", pathOnPhone,
+					ADB_PREFIX + "adb shell screencap -p %1$s; " + ADB_PREFIX
+							+ "adb pull %1$s %2$s; " + ADB_PREFIX
+							+ "adb shell rm %1$s", pathOnPhone,
 					tmpScreenshot.getCanonicalPath());
 			Runtime.getRuntime()
 					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })

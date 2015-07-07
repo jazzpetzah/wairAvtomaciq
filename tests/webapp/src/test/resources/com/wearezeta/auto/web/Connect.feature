@@ -224,7 +224,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | ChatName                 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat | user2Email | user2Password | user2Name | GroupChatWithBlockedUser |
 
-  @staging @id1563
+  @smoke @id1563
   Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <User1> is me
     Given Myself is connected to <User2>
@@ -257,7 +257,8 @@ Feature: Connect
     And I Sign in using login <User1Email> and password <User1Password>
     Then I see Contact list with name <User2>
     When I open conversation with <User2>
-    Then I see text message <Msg2>
+    # Uncommented last step because of WEBAPP-862
+    # Then I see text message <Msg2>
 
     Examples: 
       | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1     | Msg2     | Picture1                  | Picture2                 |
@@ -351,7 +352,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
-  @regression @id1564
+  @staging @id1564 @muted
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search view)
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
@@ -371,3 +372,39 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user3Name |
+
+  @staging @id2764
+  Scenario Outline: I want to cancel a pending request from search
+    Given There are 3 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open People Picker from Contact List
+    And I wait for 2 seconds
+    And I type <Contact1> in search field of People Picker
+    Then I see user <Contact1> found in People Picker
+    When I click on pending user <Contact1> found in People Picker
+    And I see Pending Outgoing Connection popover
+    When I click Cancel request on Pending Outgoing Connection popover
+    Then I see Cancel request confirmation popover
+    When I click No button on Cancel request confirmation popover
+    Then I see Pending Outgoing Connection popover
+    When I click Cancel request on Pending Outgoing Connection popover
+    Then I see Cancel request confirmation popover
+    When I click Yes button on Cancel request confirmation popover
+    Then I do not see Pending Outgoing Connection popover
+    When I close People Picker
+    Then I do not see Contact list with name <Contact1>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And User <Contact1> is me
+    And I Sign in using login <Contact1Email> and password <Contact1Password>
+    Then I see my avatar on top of Contact list
+    And I do not see Contact list with name <Name>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user1Email    | user1Password    | user3Name |

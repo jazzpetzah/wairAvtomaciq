@@ -76,7 +76,7 @@ Feature: Self Profile
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
-    And I remember my current profile picture
+    And I remember my current profile picture tablet
     And I tap Change Picture button on Self Profile page
     And I tap Gallery button on Self Profile page
     And I select a picture from the Gallery
@@ -96,7 +96,7 @@ Feature: Self Profile
     Given I see the conversations list with no conversations
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
-    And I remember my current profile picture
+    And I remember my current profile picture tablet
     And I tap Change Picture button on Self Profile page
     And I tap Gallery button on Self Profile page
     And I select a picture from the Gallery

@@ -126,9 +126,7 @@ public final class IOSLocators {
 	
 	public static final String classUIATextView = "UIATextView";
 	
-    public static final String xpathEmailVerifPrompt = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'We sent an email to ')]";
-
-	
+    public static final String xpathEmailVerifPrompt = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'We sent an email to ')]";	
 	
 	public static final String xpathNameMediaContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
@@ -144,9 +142,9 @@ public final class IOSLocators {
 	
 	public static final String xpathYourName = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[@value='YOUR FULL NAME']";
 	
-	public static final String nameYourEmail = "RegistrationEmailField";
+	public static final String nameYourEmail = "EmailField";
 	
-	public static final String nameYourPassword = "RegistrationPasswordField";
+	public static final String nameYourPassword = "PasswordField";
 
 	public static final String xpathRevealPasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIASecureTextField[1]/UIAButton[1]";
 	
@@ -154,9 +152,9 @@ public final class IOSLocators {
 	
 	public static final String xpathHidePasswordButton = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]/UIAButton[1]";
 	
-	public static final String classNameConfirmationMessage = "UIATextView";
+	public static final String xpathConfirmationMessage = "//UIAStaticText[contains(@name, 'We sent an email to %s.')]";
 	
-	public static final String nameCreateAccountButton = "RegistrationCreateAccountButton";
+	public static final String xpathCreateAccountButton = "//UIASecureTextField[contains(@name, 'PasswordField')]/UIAButton";
 	
 	public static final String xpathLastChatMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/*[last()]";
 	
@@ -442,6 +440,7 @@ public final class IOSLocators {
 	public static final String nameAddPeopleContinueButton = "CONTINUE";
 	public static final String xpathYouAddetToGroupChatMessage = "//UIAStaticText[contains(@name, 'YOU ADDED %s')]";
 	public static final String nameYouRenamedConversationMessage = "YOU RENAMED THE CONVERSATION";
+	public static final String nameConversationBackButton = "ConversationBackButton";
 	
 	
 	////////////////////////////
@@ -490,6 +489,7 @@ public final class IOSLocators {
 	//////////////////
 	
 	public static final String nameSendConnectionInputField = "SendConnectionRequestMessageView";
+	public static final String scriptSendConnectionInputPhone = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"SendConnectionRequestMessageView\"]";
 	public static final String scriptSendConnectionInput = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].popover().textViews()[\"SendConnectionRequestMessageView\"]";
 	
 	//////////////////
@@ -573,7 +573,15 @@ public final class IOSLocators {
 	}
 	
 	public final class DialogPage {
+		
 		public static final String nameCallButton = "ComposeControllerVoiceButton";
+		
+		public static final String nameGifButton = "rightMenuButton";
+		
+		public static final String xpathLoremIpsumText = "//UIATextView[contains(@name, 'Lorem ipsum')]";
+		
+		public static final String nameSoundCloudContainer = "Play on SoundCloud";
+		
 	}
 	
 	public final class DialogInfoPage {
@@ -586,6 +594,7 @@ public final class IOSLocators {
 		public static final String nameOpenStartUI = "START A CONVERSATION";
 		public static final String nameSelfButton = "SelfButton";
 		public static final String xpathArchiveConversationButton = "//UIACollectionCell[@name='%s']/UIAButton[@name='ARCHIVE']";
+		public static final String nameMuteCallButton = "MuteVoiceButton";
 	}
 	
 	public final class RegistrationPage {
@@ -620,6 +629,20 @@ public final class IOSLocators {
 	
 	public final class PersonalInfoPage {
 		public static final String nameCloseButton = "CloseButton";
+	}
+	
+	public final class GiphyPreviewPage {
+		
+		public static final String nameGiphyRefreshButton = "topPanelLeftButton";
+		
+		public static final String nameGiphyLinkButton = "topPanelRightButton";
+		
+		public static final String nameGiphyTitleButton = "titleButton";
+		
+		public static final String nameGiphyCancelRequestButton = "rejectButton";
+		
+		public static final String nameGiphySendButton = "acceptButton";
+		
 	}
 	
 	/////////////

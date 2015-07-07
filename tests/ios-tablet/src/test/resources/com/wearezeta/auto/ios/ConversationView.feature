@@ -512,10 +512,6 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
-    And I swipe right on Dialog page
-    And I tap on contact name <Contact>
-    And I scroll to the end of the conversation
-    And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I see media bar on dialog page
@@ -526,3 +522,41 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
+    @regression @id2978
+    Scenario Outline: Verify I can send gif from preview [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type tag for giphy preview <GiphyTag> and open preview overlay
+    And I wait for 5 seconds
+    And I send gif from giphy preview page
+    And I wait for 5 seconds
+    And I see dialog page
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   |  GiphyTag    |
+      | user1Name | user2Name |  Happy       |
+      
+    @regression @id2979
+    Scenario Outline: Verify I can send gif from preview [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type tag for giphy preview <GiphyTag> and open preview overlay
+    And I wait for 5 seconds
+    And I send gif from giphy preview page
+    And I wait for 5 seconds
+    And I see dialog page
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   |  GiphyTag    |
+      | user1Name | user2Name |  Happy       |

@@ -47,7 +47,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @id332 @deployPictures @id1470
+  @smoke @id332 @id1470
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -91,7 +91,7 @@ Feature: Conversation View
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
     And I wait for 5 seconds
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact>
     And I scroll to the end of the conversation
     Then I see media link <SoundCloudLink> and media in dialog
@@ -117,7 +117,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact>
     And I scroll to the end of the conversation
     Then I see media link <SoundCloudLink> and media in dialog
@@ -139,7 +139,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact>
     And I scroll to the end of the conversation
     And I see media link <SoundCloudLink> and media in dialog
@@ -162,7 +162,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact1>
     And I scroll to the end of the conversation
     And I see media link <SoundCloudLink> and media in dialog
@@ -202,7 +202,7 @@ Feature: Conversation View
     And I see dialog page
     And I input more than 200 chars message and send it
     And I type the message
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact>
     And I tap on text input
     And I send the message
@@ -379,7 +379,7 @@ Feature: Conversation View
     And I see dialog page
     And I type and send long message and media link <YouTubeLink>
     And I see media link <YouTubeLink> and media in dialog
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact>
     And I click video container for the first time
     And I see video player page is opened
@@ -406,7 +406,7 @@ Feature: Conversation View
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact1>
     And I tap media link
     And I swipe right on Dialog page
@@ -415,10 +415,10 @@ Feature: Conversation View
     And I tap on contact name <Contact2>
     And I type and send long message and media link <SoundCloudLink>
     And I see media link <SoundCloudLink> and media in dialog
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact2>
     And I tap media link
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I see play/pause button next to username <Contact2> in contact list
     And I tap play/pause button in contact list next to username <Contact2>
     And I tap on contact name <Contact2>
@@ -513,17 +513,17 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <SoundCloudLink>
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I see play/pause button next to username <Contact> in contact list
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
     And I scroll media out of sight until media bar appears
     Then I see playing media is paused
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
     Then I see media is playing
@@ -561,4 +561,23 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   | Picture | ConversationType | 
       | user1Name | user2Name | testing.jpg | single user | 
+  
+    @staging @id2977
+    Scenario Outline: Verify I can send gif from preview
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type tag for giphy preview <GiphyTag> and open preview overlay
+    And I wait for 5 seconds
+    And I send gif from giphy preview page
+    And I wait for 5 seconds
+    And I see dialog page
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   |  GiphyTag    |
+      | user1Name | user2Name |  Happy       |
   

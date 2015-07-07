@@ -50,8 +50,8 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameMainWindow)
 	private WebElement dialogWindow;
 
-	// @FindBy(how = How.XPATH, using = IOSLocators.xpathCursorInput)
-	// private WebElement cursorInput;
+	@FindBy(how = How.NAME, using = IOSLocators.nameConversationBackButton)
+	private WebElement conversationBackButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameConversationCursorInput)
 	private WebElement conversationInput;
@@ -137,6 +137,9 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameChatheadAvatarImage)
 	private WebElement chatheadAvatarImage;
 
+	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameGifButton)
+	private WebElement openGifPreviewButton;
+
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
 	private String connectingLabel = "CONNECTING TO %s.";
 
@@ -165,6 +168,11 @@ public class DialogPage extends IOSPage {
 
 	public void pressPingButton() {
 		pingButton.click();
+	}
+	
+	public ContactListPage returnToContactList() throws Exception {
+		conversationBackButton.click();
+		return new ContactListPage(getLazyDriver());
 	}
 
 	public StartedCallPage pressCallButton() throws Exception {
@@ -283,7 +291,7 @@ public class DialogPage extends IOSPage {
 	public void startMediaContent() throws Exception {
 		boolean flag = DriverUtils.waitUntilLocatorIsDisplayed(
 				this.getDriver(),
-				By.xpath(IOSLocators.xpathMediaConversationCell));
+				By.xpath(IOSLocators.xpathMediaConversationCell), 3);
 		if (flag) {
 			mediaLinkCell.click();
 		} else {
@@ -293,7 +301,7 @@ public class DialogPage extends IOSPage {
 					lastMessageXPath);
 			this.getDriver().tap(
 					1,
-					10,
+					el.getLocation().x + 30,
 					el.getLocation().y + el.getSize().height
 							+ (el.getSize().height / 2), 1);
 		}
@@ -301,7 +309,7 @@ public class DialogPage extends IOSPage {
 
 	public DialogPage scrollDownTilMediaBarAppears() throws Exception {
 		int count = 0;
-		while ((count<3) && !isMediaBarDisplayed()) {
+		while ((count < 3) && !isMediaBarDisplayed()) {
 			swipeDialogPageDown(2000);
 			count++;
 		}
@@ -354,9 +362,12 @@ public class DialogPage extends IOSPage {
 				openConversationDetails.click();
 			}
 			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.nameAddContactToChatButton), 2) ||
-					DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-							By.name(IOSLocators.nameOtherUserAddContactToChatButton), 2)) {
+					By.name(IOSLocators.nameAddContactToChatButton), 2)
+					|| DriverUtils
+							.waitUntilLocatorIsDisplayed(
+									this.getDriver(),
+									By.name(IOSLocators.nameOtherUserAddContactToChatButton),
+									2)) {
 				break;
 			} else {
 				swipeUp(1000);
@@ -449,9 +460,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean isMediaContainerVisible() throws Exception {
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathMediaConversationCell));
-		return mediaLinkCell != null;
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(IOSLocators.xpathMediaConversationCell), 10);
 	}
 
 	public VideoPlayerPage clickOnVideoContainerFirstTime() throws Exception {
@@ -498,7 +508,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean isMediaBarDisplayed() throws Exception {
-		boolean flag = DriverUtils.isElementPresentAndDisplayed(getDriver(), mediabarPlayPauseButton);
+		boolean flag = DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				mediabarPlayPauseButton);
 		return flag;
 	}
 
@@ -727,6 +738,16 @@ public class DialogPage extends IOSPage {
 		clickKeyboardReturnButton();
 	}
 
+	public void waitLoremIpsumText() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(IOSLocators.DialogPage.xpathLoremIpsumText), 10);
+	}
+
+	public void waitSoundCloudLoad() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.DialogPage.nameSoundCloudContainer));
+	}
+
 	public void sendMessagesUsingScript(String[] messages) throws Exception {
 		// swipe down workaround
 		try {
@@ -900,7 +921,12 @@ public class DialogPage extends IOSPage {
 		}
 	}
 
-	public void clickOnPlayVideoButton() throws Exception{
+	public void clickOnPlayVideoButton() throws Exception {
 		youtubeCell.click();
 	}
+
+	public void openGifPreviewPage() {
+		openGifPreviewButton.click();
+	}
+
 }

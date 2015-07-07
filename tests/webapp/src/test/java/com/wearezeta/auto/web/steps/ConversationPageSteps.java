@@ -1,5 +1,8 @@
 package com.wearezeta.auto.web.steps;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -13,8 +16,6 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -23,6 +24,8 @@ import org.junit.Assert;
 import org.openqa.selenium.Keys;
 
 public class ConversationPageSteps {
+
+	private static final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.85;
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -201,9 +204,29 @@ public class ConversationPageSteps {
 	 * @throws Exception
 	 */
 	@Then("^I see sent picture (.*) in the conversation view$")
-	public void ThenISeeSentPicture(String pictureName) throws Exception {
-		Assert.assertTrue(PagesCollection.conversationPage
-				.isPictureSent(pictureName));
+	public void ISeeSentPicture(String pictureName) throws Exception {
+		assertThat("Message with image not found",
+				PagesCollection.conversationPage.isImageMessageFound());
+		assertThat("Overlap score of image comparsion",
+				PagesCollection.conversationPage
+						.getOverlapScoreOfLastImage(pictureName),
+				greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
+	}
+
+	/**
+	 * Verifies that only x images are in the conversation. Helps with checking
+	 * for doubles.
+	 * 
+	 * @step. ^I see only (\\d+) picture[s]? in the conversation$
+	 * 
+	 * @param x
+	 *            the amount of images
+	 */
+	@Then("^I see only (\\d+) picture[s]? in the conversation$")
+	public void ISeeOnlyXPicturesInConversation(int x) {
+		assertThat("Number of images in the conversation",
+				PagesCollection.conversationPage
+						.getNumberOfImagesInCurrentConversation(), equalTo(x));
 	}
 
 	/**

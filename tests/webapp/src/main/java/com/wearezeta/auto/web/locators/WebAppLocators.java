@@ -166,47 +166,69 @@ public final class WebAppLocators {
 
 	public static final class ConversationPage {
 
+		// content
+
+		public static final String idConversation = "conversation";
+
+		// messages (including images, text, missed call notifications, pings)
+
+		public static final String cssMessage = "[data-uie-name='item-message'][data-uie-visible='true']";
+
+		public static final String cssLastMessage = "[data-uie-name='item-message'][data-uie-visible='true']:last-child";
+
+		public static final String cssSecondLastMessage = "[data-uie-name='item-message'][data-uie-visible='true']:nth-last-child(2)";
+
+		public static final String cssLastTextMessage = cssLastMessage
+				+ " .text-inner";
+
+		public static final String cssSecondLastTextMessage = cssSecondLastMessage
+				+ " .text-inner";
+
+		public static final String cssFirstMessageAction = cssMessage
+				+ " .action";
+
+		public static final String cssLastMessageAction = cssLastMessage
+				+ " .action";
+
+		public static final String xpathLastImageEntry = "(//*[@data-uie-name='go-image-detail' and @data-uie-visible='true'])[last()]";
+
+		public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']";
+
+		public static final String classPingMessage = "pinged";
+
+		// special message identifier
+
 		public static final Function<String, String> xpathMessageEntryByText = text -> String
 				.format("//*[@data-uie-name='item-message']//div[contains(@class, 'text') and text()='%s']",
+						text);
+
+		public static final Function<String, String> textMessageByText = text -> String
+				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
 						text);
 
 		public static final Function<String, String> xpathEmbeddedYoutubeVideoById = text -> String
 				.format("//iframe[contains(@src, '%s')]", text);
 
-		public static final String idConversation = "conversation";
-
-		public static final String idConversationInput = "conversation-input-text";
+		// input area (text input + buttons)
 
 		// This is needed for IE workaround
 		public static final String classNameShowParticipantsButton = "show-participants";
 
 		public static final String cssShowParticipantsButton = "[data-uie-name='do-participants']";
 
-		public static final String xpathActionMessageEntries = "//*[@data-uie-name='item-message' and contains(@class, 'special')]//div[contains(@class, 'action')]";
+		public static final String idConversationInput = "conversation-input-text";
 
 		public static final String cssRightControlsPanel = "div.controls-right";
 
-		public static final String cssSendImageLabel = "label.controls-right-button.conversation-input-button.icon-camera.icon-button";
-
 		public static final String cssSendImageInput = "input[data-uie-name=do-share-image]";
-
-		public static final String cssLastImageEntry = "[data-uie-name='item-message']:last-of-type .image";
 
 		public static final String cssPingButton = "[data-uie-name='do-ping'], [data-uie-name='do-hot-ping']";
 
-		public static final String xpathCallButton = "//*[@data-uie-name='do-call']";
+		public static final String cssCallButton = "[data-uie-name='do-call']";
 
-		public static final String classPingMessage = "pinged";
+		public static final String idGIFButton = "show-extensions";
 
-		public static final Function<String, String> textMessageByText = text -> String
-				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
-						text);
-
-		public static final String cssLastTextMessage = "[data-uie-name='item-message']:last-child .text-inner";
-
-		public static final String cssSecondLastTextMessage = "[data-uie-name='item-message']:nth-last-child(2) .text-inner";
-
-		public static final String xpathMissedCallAction = "//*[@data-uie-value='call']//div[contains(@class, 'action')]";
+		// bars (call bar)
 
 		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls')]";
 
@@ -223,6 +245,8 @@ public final class WebAppLocators {
 		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-minus')]";
 
+		// image fullscreen
+
 		public static final String xpathPictureFullscreen = "(//*[@data-uie-name='go-detail'])[last()]";
 
 		public static final String xpathPictureIsFullscreen = "//div[contains(@class, 'modal-show')]";
@@ -230,8 +254,6 @@ public final class WebAppLocators {
 		public static final String xpathXButton = "//div[contains(@class, 'detail-view-close-button')]//*[@data-uie-name='do-close-detail-view']";
 
 		public static final String idBlackBorder = "detail-view";
-
-		public static final String idGIFButton = "show-extensions";
 	}
 
 	public static final class ConnectToPage {

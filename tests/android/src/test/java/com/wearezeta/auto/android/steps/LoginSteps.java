@@ -101,6 +101,9 @@ public class LoginSteps {
 				self.getPhoneNumber().toString()
 						.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""));
 		getWelcomePage().clickConfirm();
+		if (getVerificationPage().waitUntilManualCodeButtonAppears()) {
+			getVerificationPage().clickManualCodeButton();
+		}
 		final String verificationCode = BackendAPIWrappers
 				.getLoginCodeByPhoneNumber(self.getPhoneNumber());
 		getVerificationPage().inputVerificationCode(verificationCode);

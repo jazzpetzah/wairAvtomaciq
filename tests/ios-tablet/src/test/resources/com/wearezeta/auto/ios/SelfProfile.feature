@@ -99,7 +99,7 @@ Feature: Self Profile
       | Name      | NewUsername                                                          | NewUsername1                                                     | Contact   |
       | user1Name | mynewusernamewithmorethan64characters3424245345345354353452345234535 | mynewusernamewithmorethan64characters342424534534535435345234523 | user2Name |
 
-  @staging @id2581 @id2586
+  @regression @id2581 @id2586
   Scenario Outline: I verify I am unable to enter a name using only spaces or more than 80 chars [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -114,7 +114,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2581 @id2586
+  @regression @id2581 @id2586
   Scenario Outline: I verify I am unable to enter a name using only spaces or more than 80 chars [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape

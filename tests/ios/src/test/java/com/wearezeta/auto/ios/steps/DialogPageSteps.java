@@ -309,8 +309,9 @@ public class DialogPageSteps {
 	@When("I type and send long message and media link (.*)")
 	public void ITypeAndSendLongTextAndMediaLink(String link) throws Exception {
 		getDialogPage().sendMessageUsingScript(longMessage);
-		Thread.sleep(1000);
+		getDialogPage().waitLoremIpsumText();
 		getDialogPage().sendMessageUsingScript(link);
+		getDialogPage().waitSoundCloudLoad();
 	}
 
 	@When("^I memorize message send time$")
@@ -322,13 +323,6 @@ public class DialogPageSteps {
 	public void ISeeMediaLinkAndMediaInDialog(String link) throws Exception {
 		Assert.assertTrue("Media is missing in dialog", getDialogPage()
 				.isMediaContainerVisible());
-
-		for (int i = 0; i < 10; i++) {
-			if (!link.equalsIgnoreCase(getDialogPage()
-					.getLastMessageFromDialog())) {
-				Thread.sleep(1000);
-			}
-		}
 		Assert.assertEquals(link.toLowerCase(), getDialogPage()
 				.getLastMessageFromDialog().toLowerCase());
 	}
@@ -725,5 +719,20 @@ public class DialogPageSteps {
 	@When("I click play video button")
 	public void IClickPlayButton() throws Exception {
 		getDialogPage().clickOnPlayVideoButton();
+	}
+	
+	/**
+	 * Types in the tag for giphy and opens preview page
+	 * 
+	 * @step. ^I type tag for giphy preview (.*) and open preview overlay$
+	 * 
+	 * @param message
+	 *           Tag to be fetched from giphy
+	 * @throws Exception
+	 */
+	@When("^I type tag for giphy preview (.*) and open preview overlay$")
+	public void ITypeGiphyTagAndOpenPreview(String message) throws Exception {
+		getDialogPage().sendStringToInput(message);
+		getDialogPage().openGifPreviewPage();
 	}
 }

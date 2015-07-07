@@ -720,7 +720,7 @@ public class CommonAndroidSteps {
 	 * Verifies that there are N new users for a test all sharing a common
 	 * prefix in their names and makes them if they don't exist.
 	 * 
-	 * @step. ^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$
+	 * @step. ^There \\w+ (\\d+) shared user[s]* with name prefix ([\\w\\.]+)$
 	 * 
 	 * @param count
 	 *            the number of users to make
@@ -730,7 +730,7 @@ public class CommonAndroidSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
+	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix ([\\w\\.]+)$")
 	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
 			throws Exception {
 		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
@@ -905,5 +905,27 @@ public class CommonAndroidSteps {
 	public void UserXHasContactsInAddressBook(String asUser, String emails)
 			throws Exception {
 		commonSteps.UserXHasContactsInAddressBook(asUser, emails);
+	}
+
+	/**
+	 * Adds 1 user with email and 1 with phone number in Android address book
+	 * 
+	 * @step. ^I add predefined users to address book$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I add predefined users to address book$")
+	public void IAddPredefinedUsersToAddressBook() throws Exception {
+		AndroidCommonUtils.addPreDefinedUsersToAddressBook();
+	}
+
+	@Before("@deployAddressBook")
+	public void CleanAddressBook() throws Exception {
+		AndroidCommonUtils.cleanAddressBook();
+	}
+
+	@After("@deployAddressBook")
+	public void DeleteDeployedContacts() throws Exception {
+		AndroidCommonUtils.removeTestContactsFromAddressBook();
 	}
 }
