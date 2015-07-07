@@ -5,6 +5,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.TabletOtherUserInfoPage;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class TabletOtherUserInfoPageSteps {
@@ -51,6 +52,50 @@ public class TabletOtherUserInfoPageSteps {
 	@When("^I confirm remove on iPad$")
 	public void IConfirmRemoveOniPad() throws Throwable {
 		getTabletOtherUserInfoPage().confirmRemove();
+	}
+	
+	/**
+	 * 
+	 * @param user
+	 * @throws Throwable
+	 */
+	@Then("^I see email and name of user (.*) on iPad popover$")
+	public void ISeeEmailAndNameOfUserOniPadPopover(String user) throws Throwable {
+		
+		String participantNameTextFieldValue = "";
+		String participantEmailTextFieldValue = "";
+		
+		user = usrMgr.findUserByNameOrNameAlias(user).getName();
+		String email = usrMgr.findUserByNameOrNameAlias(user).getEmail();
+		
+		participantNameTextFieldValue = getTabletOtherUserInfoPage()
+				.getNameFieldValueOniPadPopover();
+		participantEmailTextFieldValue = getTabletOtherUserInfoPage()
+				.getEmailFieldValueOniPadPopover();
+		Assert.assertTrue(
+				"Participant Name is incorrect and/or not displayed",
+				participantNameTextFieldValue.equalsIgnoreCase(user));
+		Assert.assertTrue(
+				"Participant Email is incorrect and/or not displayed",
+				participantEmailTextFieldValue.equalsIgnoreCase(email));
+	}
+
+	/**
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I go back to group deatil popover$")
+	public void IGoBackToGroupDeatilPopover() throws Throwable {
+
+	}
+	
+	/**
+	 * 
+	 * @param user
+	 * @throws Throwable
+	 */
+	@Then("^I see connect page for user (.*) on iPad popover$")
+	public void ISeeConnectPageForUserOniPadPopover(String user) throws Throwable {
 	}
 
 }
