@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @smoke @id576 @id2119
+  @smoke @id576 @id2541
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
