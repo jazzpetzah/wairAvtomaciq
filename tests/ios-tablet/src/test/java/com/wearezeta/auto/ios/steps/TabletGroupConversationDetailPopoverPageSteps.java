@@ -172,7 +172,7 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 			throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(getTabletGroupConversationDetailPopoverPage()
-				.areParticipantAvatarCorrect(contact));
+				.areParticipantAvatarCorrectOniPadPopover(contact));
 	}
 
 }
