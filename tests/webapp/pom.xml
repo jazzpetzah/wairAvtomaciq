@@ -133,6 +133,47 @@
 				</configuration>
 			</plugin>
 			<plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <classpathScope>test</classpathScope>
+                            <executable>java</executable>
+                            <arguments>
+                                <argument>-Djava.awt.headless=true</argument>
+                                <argument>-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.SimpleLog</argument>
+                                <argument>-Dorg.apache.commons.logging.simplelog.log.org.apache.http=warn</argument>
+                                <argument>-Dcom.wire.os.name=${com.wire.os.name}</argument>
+                                <argument>-Dcom.wire.os.version=${com.wire.os.version}</argument>
+                                <argument>-Dcom.wire.browser.name=${com.wire.browser.name}</argument>
+                                <argument>-Dcom.wire.browser.version=${com.wire.browser.version}</argument>
+                                <argument>-DhubHost=${hubHost}</argument>
+                                <argument>-DhubPort=${hubPort}</argument>
+                                <argument>-classpath</argument>
+                                <classpath />
+                                <argument>cucumber.api.cli.Main</argument>
+                                <argument>--format</argument>
+                                <argument>json:${project.build.directory}/cuke-results.json</argument>
+                                <argument>--format</argument>
+                                <argument>junit:${project.build.directory}/cuke-results-junit.xml</argument>
+                                <argument>--glue</argument>
+                                <argument>com.wearezeta.auto.web.steps</argument>
+                                <argument>--strict</argument>
+                                <argument>${basedir}/src/test/resources/com/wearezeta/auto/web/</argument>
+                                <argument>--tags</argument>
+								<argument>@id1910</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.6</version>
