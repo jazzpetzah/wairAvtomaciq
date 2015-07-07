@@ -45,7 +45,7 @@ public class DriverUtils {
 	private static final Logger log = ZetaLogger.getLog(DriverUtils.class
 			.getSimpleName());
 
-	private static int getDefaultLookupTimeoutSeconds() throws Exception {
+	public static int getDefaultLookupTimeoutSeconds() throws Exception {
 		return Integer.parseInt(CommonUtils
 				.getDriverTimeoutFromConfig(DriverUtils.class));
 	}
