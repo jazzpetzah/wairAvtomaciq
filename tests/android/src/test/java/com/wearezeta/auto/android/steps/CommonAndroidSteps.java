@@ -720,7 +720,7 @@ public class CommonAndroidSteps {
 	 * Verifies that there are N new users for a test all sharing a common
 	 * prefix in their names and makes them if they don't exist.
 	 * 
-	 * @step. ^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$
+	 * @step. ^There \\w+ (\\d+) shared user[s]* with name prefix ([\\w\\.]+)$
 	 * 
 	 * @param count
 	 *            the number of users to make
@@ -730,7 +730,7 @@ public class CommonAndroidSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix (\\w+)$")
+	@Given("^There \\w+ (\\d+) shared user[s]* with name prefix ([\\w\\.]+)$")
 	public void ThereAreNSharedUsersWithNamePrefix(int count, String namePrefix)
 			throws Exception {
 		commonSteps.ThereAreNSharedUsersWithNamePrefix(count, namePrefix);
