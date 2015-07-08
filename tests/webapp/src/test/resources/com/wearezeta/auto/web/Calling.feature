@@ -45,6 +45,7 @@ Feature: Calling
     And I end the call
     Then <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
+    Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
@@ -61,6 +62,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
+    Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
