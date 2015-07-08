@@ -109,13 +109,18 @@ public final class PerformanceCommon {
 			final String contactName = getRandomContactName(selfUser);
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
-					try {
-						BackendAPIWrappers.sendDialogMessageByChatName(
+					boolean isSent = false;
+					int count = 0;
+					while (!isSent && count++ < 5) {
+						try {
+							BackendAPIWrappers.sendDialogMessageByChatName(
 								selfUser, contactName,
 								CommonUtils.generateGUID());
-					} catch (Exception e) {
-						e.printStackTrace();
-						getLogger().debug(e.getMessage());
+							isSent = true;
+						} catch (Exception e) {
+							e.printStackTrace();
+							getLogger().debug(e.getMessage());
+						}
 					}
 				}
 			});
