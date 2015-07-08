@@ -134,13 +134,12 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent long message to conversation <Contact>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type and send long message and media link <SoundCloudLink>
-    And I return to the chat list
-    And I tap on contact name <Contact>
     And I scroll to the end of the conversation
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
@@ -459,7 +458,8 @@ Feature: Conversation View
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
-    Then I rotate image in fullscreen mode
+    And I rotate UI to landscape
+    Then I see image rotated in fullscreen mode
 
     Examples: 
       | Name      | Contact   | Picture     | Color        | NewName          |
