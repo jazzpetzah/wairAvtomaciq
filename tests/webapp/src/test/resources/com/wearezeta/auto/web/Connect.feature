@@ -117,6 +117,7 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
+    And I open conversation with <Name2>
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
