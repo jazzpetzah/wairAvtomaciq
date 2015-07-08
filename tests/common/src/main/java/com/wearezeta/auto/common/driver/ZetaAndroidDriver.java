@@ -112,18 +112,19 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 				+ "adb shell input touchscreen swipe %d %d %d %d";
 
 		if (lowerThanFourDotThree()) {
-			swipe42(startx, starty, endx, endy, durationMilliseconds);
+			adbCommand = String.format(adbCommand, startx, starty, endx, endy);
 		} else {
 			adbCommand = String.format(adbCommand + " %d", startx, starty,
 					endx, endy, durationMilliseconds);
-			log.debug("ADB swipe: " + adbCommand);
-			try {
-				Runtime.getRuntime()
-						.exec(new String[] { "/bin/bash", "-c", adbCommand })
-						.waitFor();
-			} catch (Exception e) {
-				throw new WebDriverException(e.getMessage(), e);
-			}
+		}
+		log.debug("ADB swipe: " + adbCommand);
+
+		try {
+			Runtime.getRuntime()
+					.exec(new String[] { "/bin/bash", "-c", adbCommand })
+					.waitFor();
+		} catch (Exception e) {
+			throw new WebDriverException(e.getMessage(), e);
 		}
 	}
 
@@ -141,13 +142,13 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					.getInputStream()).useDelimiter("\\A");
 			result = s.hasNext() ? s.next() : "";
 			log.debug("Detected Android: " + result);
+			getScreenEvent42();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		if (result.compareTo("4.3") < 0) {
 			// comparing lexicographically, 4.2.2 < 4.3 for example
-			getScreenEvent42();
 			return true;
 		}
 		return false;
@@ -171,86 +172,11 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			if (result.contains("0035")) {
 				result = result.split("\n")[0];
 			}
-			log.debug("Detected touchscreen event: " + result);
+			log.debug("Detected screen event: " + result);
 		} catch (Exception e) {
 			new Exception(e.getMessage(), e);
 		}
 		return result;
-	}
-
-	/*
-	 * Experimental ADB swipe for 4.2
-	 */
-	public void swipe42(int startx, int starty, int endx, int endy,
-			int durationMilliseconds) {
-		String screenEvent = getScreenEvent42();
-		String adbFingerDown = ADB_PREFIX + "adb shell sendevent "
-				+ screenEvent + " 1 330 1\n" + ADB_PREFIX
-				+ "adb shell sendevent " + screenEvent + " 3 58 1\n";
-		String adbFingerUp = ADB_PREFIX + "adb shell sendevent " + screenEvent
-				+ " 1 330 0\n" + ADB_PREFIX + "adb shell sendevent "
-				+ screenEvent + " 3 58 0\n";
-		String adbSyncReport = ADB_PREFIX + "adb shell sendevent "
-				+ screenEvent + " 0 2 0\n" + ADB_PREFIX
-				+ "adb shell sendevent " + screenEvent + " 0 0 0\n";
-		String adbLocationX = ADB_PREFIX + "adb shell sendevent " + screenEvent
-				+ " 3 53 ";
-		String adbLocationY = ADB_PREFIX + "adb shell sendevent " + screenEvent
-				+ " 3 54 ";
-		String adbPressure = ADB_PREFIX + "adb shell sendevent " + screenEvent
-				+ " 3 58 0\n";
-		int steps = 7;
-		if (durationMilliseconds >= 1500) {
-			steps = durationMilliseconds / 200;
-		}
-		int stepx = startx / endx > 1 ? -(startx - endx) / steps
-				: (endx - startx) / steps;
-		int stepy = starty / endy > 1 ? -(starty - endy) / steps
-				: (endy - starty) / steps;
-		int x = startx;
-		int y = starty;
-		try {
-			// PUT FINGER
-			Runtime.getRuntime()
-					.exec(new String[] {
-							"/bin/bash",
-							"-c",
-							String.format(adbFingerDown + adbLocationX + startx
-									+ "\n" + adbLocationY + starty + "\n"
-									+ adbSyncReport) }).waitFor();
-		} catch (Exception e) {
-			// ignore silent
-		}
-		for (int i = 0; i < steps; i++) {
-			try {
-				Runtime.getRuntime()
-						.exec(new String[] {
-								"/bin/bash",
-								"-c",
-								String.format(adbPressure + adbLocationX + x
-										+ "\n" + adbLocationY + y + "\n"
-										+ adbSyncReport) }).waitFor();
-				System.out.println(adbPressure + adbLocationX + x + "\n"
-						+ adbLocationY + y + "\n" + adbSyncReport);
-			} catch (Exception e) {
-				// ignore silent
-			}
-			x = x + stepx;
-			y = y + stepy;
-		}
-
-		try {
-			// RELEASE FINGER
-			Runtime.getRuntime()
-					.exec(new String[] {
-							"/bin/bash",
-							"-c",
-							String.format(adbFingerUp + adbLocationX + endx
-									+ "\n" + adbLocationY + endy + "\n"
-									+ adbSyncReport) }).waitFor();
-		} catch (Exception e) {
-			// ignore silent
-		}
 	}
 
 	@Override
