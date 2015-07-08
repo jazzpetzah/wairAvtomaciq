@@ -2,13 +2,14 @@ package com.wearezeta.auto.common;
 
 import java.io.InputStream;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
@@ -18,7 +19,9 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.SelfUserIsNotDefinedException;
 
 public final class PerformanceCommon {
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
 	private final Logger logger = ZetaLogger.getLog(PerformanceCommon.class
 			.getSimpleName());
 
@@ -52,11 +55,11 @@ public final class PerformanceCommon {
 
 	public Random random = new Random();
 
-	private String getRandomContactName(ClientUser selfUser)
-			throws SelfUserIsNotDefinedException {
-		List<ClientUser> otherUsers = getUserManager().getCreatedUsers();
-		otherUsers.remove(selfUser);
-		return otherUsers.get(random.nextInt(otherUsers.size())).getName();
+	private String getRandomConversationId(ClientUser user) throws Exception {
+		JSONArray conversations = BackendAPIWrappers.getConversations(user);
+		int value = random.nextInt(conversations.length());
+		JSONObject conversation = (JSONObject) conversations.get(value);
+		return conversation.getString("id");
 	}
 
 	private void generateIncomingMessages() throws Exception {
@@ -106,21 +109,17 @@ public final class PerformanceCommon {
 		ExecutorService executor = Executors
 				.newFixedThreadPool(simultaneousMsgsCount);
 		for (int i = 0; i < totalMsgsCount; i++) {
-			final String contactName = getRandomContactName(selfUser);
 			Runnable worker = new Thread(new Runnable() {
 				public void run() {
-					boolean isSent = false;
-					int count = 0;
-					while (!isSent && count++ < 5) {
-						try {
-							BackendAPIWrappers.sendDialogMessageByChatName(
-								selfUser, contactName,
+					try {
+						ClientUser user = BackendAPIWrappers
+								.tryLoginByUser(selfUser);
+						String id = getRandomConversationId(user);
+						BackendAPIWrappers.sendConversationMessage(user, id,
 								CommonUtils.generateGUID());
-							isSent = true;
-						} catch (Exception e) {
-							e.printStackTrace();
-							getLogger().debug(e.getMessage());
-						}
+					} catch (Exception e) {
+						e.printStackTrace();
+						getLogger().debug(e.getMessage());
 					}
 				}
 			});
@@ -137,9 +136,8 @@ public final class PerformanceCommon {
 				.getResourceAsStream(DEFAULT_PERF_IMAGE);
 		try {
 			for (int i = 0; i < imagesCount; i++) {
-				final String contact = getRandomContactName(selfUser);
-				BackendAPIWrappers.sendPictureToChatByName(selfUser, contact,
-						defaultImage);
+				BackendAPIWrappers.sendPictureToChatById(selfUser,
+						getRandomConversationId(selfUser), defaultImage);
 			}
 		} finally {
 			if (defaultImage != null) {
