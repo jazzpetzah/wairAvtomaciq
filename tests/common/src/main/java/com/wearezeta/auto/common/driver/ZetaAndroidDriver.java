@@ -142,6 +142,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					.getInputStream()).useDelimiter("\\A");
 			result = s.hasNext() ? s.next() : "";
 			log.debug("Detected Android: " + result);
+			getScreenEvent42();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -151,6 +152,31 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			return true;
 		}
 		return false;
+	}
+
+	/*
+	 * Detects touchscreen event to use it in swipe for 4.2
+	 */
+	public static String getScreenEvent42() {
+		Scanner s;
+		String result = null;
+		String adbCommand = ADB_PREFIX + "adb shell getevent -p";
+		try {
+			s = new java.util.Scanner(Runtime.getRuntime()
+					.exec(new String[] { "/bin/bash", "-c", adbCommand })
+					.getInputStream()).useDelimiter("0036").useDelimiter(
+					"add device [0-9]+: ");
+			do {
+				result = s.hasNext() ? s.next() : "";
+			} while (!result.contains("0035"));
+			if (result.contains("0035")) {
+				result = result.split("\n")[0];
+			}
+			log.debug("Detected screen event: " + result);
+		} catch (Exception e) {
+			new Exception(e.getMessage(), e);
+		}
+		return result;
 	}
 
 	@Override
