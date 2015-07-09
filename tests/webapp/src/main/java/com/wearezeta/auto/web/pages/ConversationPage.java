@@ -426,4 +426,8 @@ public class ConversationPage extends WebPage {
 				getDriver(),
 				By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
 	}
+
+	public String getMessageFromInputField() {
+		return conversationInput.getAttribute("value");
+	}
 }

@@ -246,3 +246,20 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     |
       | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com |
+
+  @id3018 @staging
+  Scenario Outline: Verify that typed-in messages are not lost
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I write message <Message>
+    And I refresh page
+    And I wait for 5 seconds
+    Then I verify that message <Message> was cached
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Message                                  |
+      | user1Email | user1Password | user1Name | user2Name | All of these Candlejack jokes aren’t fu- |
