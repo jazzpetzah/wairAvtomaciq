@@ -294,6 +294,7 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
+    And I click hide keyboard button
     And I tap on user on pending name on People picker page <Contact>
     And I see <Contact> user pending profile popover on iPad
     And I click on start conversation button on pending profile page
@@ -325,7 +326,7 @@ Feature: Connect
     And I wait for 5 seconds
     And I see new photo in the dialog
     And I see message in the dialog
-    And I navigate back to conversations view
+    And I swipe right on Dialog page
     And I see People picker page
     And I click close button to dismiss people view
     And Contact <Contact> sends random message to user <Name>
