@@ -346,7 +346,7 @@ public class ContactListPage extends IOSPage {
 
 	public boolean isPendingRequestInContactList() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathPendingRequest));
+				By.xpath(IOSLocators.xpathPendingRequest), 5);
 	}
 
 	public PendingRequestsPage clickPendingRequest() throws Exception {

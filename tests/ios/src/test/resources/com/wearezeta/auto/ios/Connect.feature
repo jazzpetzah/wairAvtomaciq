@@ -201,7 +201,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @regression @id1492
+  @regression @id2536
   Scenario Outline: Verify you can send an invitation via mail
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

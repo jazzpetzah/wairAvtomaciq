@@ -190,6 +190,11 @@ public class DialogPage extends IOSPage {
 				By.name(IOSLocators.nameConversationCursorInput), 3);
 	}
 
+	public boolean isCursorInputVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				conversationInput);
+	}
+
 	public void waitForYouAddedCellVisible() throws Exception {
 		this.getWait().until(
 				ExpectedConditions.visibilityOf(youAddedCell.get(0)));

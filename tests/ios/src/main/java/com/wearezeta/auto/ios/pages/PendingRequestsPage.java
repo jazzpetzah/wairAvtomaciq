@@ -87,7 +87,7 @@ public class PendingRequestsPage extends IOSPage {
 
 	public boolean isConnectButtonDisplayed() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.namePendingRequestConnectButton));
+				By.name(IOSLocators.namePendingRequestConnectButton), 5);
 	}
 
 	public String getRequesterName() {

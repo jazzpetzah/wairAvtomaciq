@@ -79,6 +79,12 @@ public class DialogPageSteps {
 		}
 	}
 
+	@When("I see text input in dialog is not allowed")
+	public void ISeeTextInputIsNotAllowed() throws Exception {
+		Assert.assertFalse("Text input is allowed", getDialogPage()
+				.isCursorInputVisible());
+	}
+
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Exception {
 		// message = CommonUtils.generateGUID().replace('-', 'x');
