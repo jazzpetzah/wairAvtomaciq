@@ -200,8 +200,7 @@ public class ConversationPage extends WebPage {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput),
-						5);
+						By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput));
 		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
 			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
 					.getNodeIp());
