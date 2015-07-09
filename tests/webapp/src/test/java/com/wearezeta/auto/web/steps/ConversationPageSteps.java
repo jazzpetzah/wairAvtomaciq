@@ -672,4 +672,17 @@ public class ConversationPageSteps {
 	public void ISeeSentGifInTheConversationView() throws Throwable {
 		PagesCollection.conversationPage.isGifVisible();
 	}
+
+	/**
+	 * Verify that the input text field contains message X
+	 * 
+	 * @param message
+	 *            the message it should contain
+	 */
+	@Then("^I verify that message (.*) was cached$")
+	public void IVerifyThatMessageWasCached(String message) {
+		assertThat("Cached message in input field",
+				PagesCollection.conversationPage.getMessageFromInputField(),
+				equalTo(message));
+	}
 }
