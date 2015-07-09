@@ -142,13 +142,13 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					.getInputStream()).useDelimiter("\\A");
 			result = s.hasNext() ? s.next() : "";
 			log.debug("Detected Android: " + result);
-			getScreenEvent42();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		if (result.compareTo("4.3") < 0) {
 			// comparing lexicographically, 4.2.2 < 4.3 for example
+			getScreenEvent42();
 			return true;
 		}
 		return false;
@@ -175,6 +175,13 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			log.debug("Detected screen event: " + result);
 		} catch (Exception e) {
 			new Exception(e.getMessage(), e);
+		}
+		// Debugging swipe event on 42
+		adbCommand = ADB_PREFIX + "adb shell getevent -p " + result;
+		try {
+			log.debug("Event options:"+getAdbOutput(adbCommand));
+		} catch (Exception e) {
+			// ignore
 		}
 		return result;
 	}
