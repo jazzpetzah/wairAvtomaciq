@@ -331,7 +331,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
-  @staging @id2748
+  @regression @id2748
   Scenario Outline: Verify you get auto-connected to people while being logged-in
     Given There is 2 user where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
