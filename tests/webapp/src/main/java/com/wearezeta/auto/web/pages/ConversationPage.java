@@ -189,13 +189,10 @@ public class ConversationPage extends WebPage {
 	public void sendPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
-		final String showImageLabelJScript = "$(\""
-				+ WebAppLocators.ConversationPage.cssRightControlsPanel
-				+ "\").css({'opacity': '100'});";
-		this.getDriver().executeScript(showImageLabelJScript);
+		DriverUtils.addClass(getDriver(), conversation, "hover");
 		final String showPathInputJScript = "$(\""
 				+ WebAppLocators.ConversationPage.cssSendImageInput
-				+ "\").css({'left': '0'});";
+				+ "\").css({'left': -200});";
 		this.getDriver().executeScript(showPathInputJScript);
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
