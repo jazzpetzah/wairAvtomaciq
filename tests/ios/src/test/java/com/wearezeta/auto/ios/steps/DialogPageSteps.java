@@ -79,6 +79,13 @@ public class DialogPageSteps {
 		}
 	}
 
+	/**
+	 * Verify that text input is not allowed
+	 * 
+	 * @step. I see text input in dialog is not allowed
+	 * 
+	 * @throws Exception
+	 */
 	@When("I see text input in dialog is not allowed")
 	public void ISeeTextInputIsNotAllowed() throws Exception {
 		Assert.assertFalse("Text input is allowed", getDialogPage()

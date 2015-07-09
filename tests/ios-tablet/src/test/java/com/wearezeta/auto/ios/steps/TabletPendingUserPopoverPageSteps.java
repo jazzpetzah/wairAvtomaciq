@@ -43,7 +43,18 @@ public class TabletPendingUserPopoverPageSteps {
 				getTabletPendingUserPopoverPage().isPendingLabelVisible());
 	}
 
-	@When("^I see incoming pending popover from user (.*) on iPad")
+	/**
+	 * Verify presence of incoming pending popover for particular user
+	 * 
+	 * @step. I see incoming pending popover from user (.*) on iPad$
+	 * 
+	 * @param user
+	 *            username String
+	 * 
+	 * @throws NoSuchUserException
+	 * @throws Exception
+	 */
+	@When("^I see incoming pending popover from user (.*) on iPad$")
 	public void ISeeIncomingPendingPopoverOnIpad(String user)
 			throws NoSuchUserException, Exception {
 		Assert.assertTrue(
