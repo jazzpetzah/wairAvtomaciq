@@ -263,3 +263,19 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   | Message                                  |
       | user1Email | user1Password | user1Name | user2Name | All of these Candlejack jokes aren’t fu- |
+
+  @id2992 @staging @torun
+  Scenario Outline: Verify Start (Search) is opened when you press ⌥ ⌘ N (Mac) or alt + ctrl + N (Win)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I type shortcut combination to open search
+    And I wait for 7 seconds
+    Then I see Search is opened
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

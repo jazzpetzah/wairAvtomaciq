@@ -427,4 +427,13 @@ public class ConversationPage extends WebPage {
 	public String getMessageFromInputField() {
 		return conversationInput.getAttribute("value");
 	}
+
+	public PeoplePickerPage pressShortCutForSearch() throws Exception {
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+		conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "N"));
+		} else {
+		conversationInput.sendKeys(Keys.chord(Keys.COMMAND, Keys.LEFT_ALT, "N"));
+		}
+		return new PeoplePickerPage(getLazyDriver());
+		}
 }
