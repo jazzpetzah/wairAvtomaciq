@@ -275,8 +275,9 @@ Feature: Calling
   @regression @id1883
   Scenario Outline: Verify I can not see blocked contact trying to call me
     Given My browser supports calling
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    # OtherContact is needed otherwise the search will show up sometimes
+    Given Myself is connected to <Contact>,<OtherContact>
     Given Myself blocked <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -286,8 +287,8 @@ Feature: Calling
     And I do not see the calling bar
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+      | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
   @regression @id1884
   Scenario Outline: Verify I can see muted conversation person trying to call me
