@@ -103,8 +103,8 @@ Feature: Calling
     And <Contact> stops all waiting instances
 
     Examples: 
-		 | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-		 | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
   @staging @id1902
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
@@ -133,8 +133,8 @@ Feature: Calling
 	And <Contact2> stops all waiting instances
 
 	Examples: 
-		 | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
-		 | user1Email | user1Password | user1Name | user2Name  | user3Name  | webdriver   | 120     |
+      | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | webdriver   | 120     |
 
   @smoke @id1839
   Scenario Outline: Verify I can not call in browsers without WebRTC
@@ -159,8 +159,8 @@ Feature: Calling
     And I verify browser log is empty
 
     Examples: 
-		 | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-		 | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+	  | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
   @staging @id3083
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
@@ -183,11 +183,11 @@ Feature: Calling
 	Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
 	Then I see the calling bar from user <Contact2>
 	And I end the call
-	And <Contact2> stops all waiting instances
+    And <Contact2> stops all waiting instances
 
-	Examples: 
-		 | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | WaitBackend | Timeout |
-		 | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | webdriver   | 120     |
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | webdriver   | 120     |
 
   @regression @id2013
   Scenario Outline: Verify I get missed call notification when I call
@@ -303,8 +303,8 @@ Feature: Calling
     And I see the calling bar
 
     Examples: 
-       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-       | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
   @regression @id2477
   Scenario Outline: Already on call and try to make another call (adressee)
