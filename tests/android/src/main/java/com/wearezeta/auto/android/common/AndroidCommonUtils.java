@@ -163,7 +163,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 
 	private static boolean isWifiEnabled() throws Exception {
-		final String output = getAdbOutput("shell dumpsys wifi");
+		final String output = getAdbOutput("adb shell dumpsys wifi");
 
 		if (output.contains("Wi-Fi is disabled")) {
 			return false;

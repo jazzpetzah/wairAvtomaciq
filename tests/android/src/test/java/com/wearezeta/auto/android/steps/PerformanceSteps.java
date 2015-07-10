@@ -177,7 +177,6 @@ public class PerformanceSteps {
 				break;
 		}
 		getDialogPage().isDialogVisible();
-		Thread.sleep(10000);
 		CommonAndroidSteps.listener.stopListeningLogcat();
 		for (int y = 0; y < 2; y++) {
 			getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
@@ -200,7 +199,6 @@ public class PerformanceSteps {
 				AndroidPerformanceReportGenerator.RXLOG_FILEPATH,
 				RXLOGGER_RESOURCE_FILE_PATH);
 		Thread.sleep(5000);
-		log.debug(CommonAndroidSteps.listener.getOutput());
 		Assert.assertTrue(AndroidPerformanceReportGenerator
 				.updateReportDataWithCurrentRun(CommonAndroidSteps.listener
 						.getOutput()));

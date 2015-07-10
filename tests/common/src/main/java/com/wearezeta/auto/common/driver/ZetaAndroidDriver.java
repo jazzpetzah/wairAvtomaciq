@@ -110,9 +110,9 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			int durationMilliseconds) {
 		String adbCommand = ADB_PREFIX
 				+ "adb shell input touchscreen swipe %d %d %d %d";
-
 		if (lowerThanFourDotThree()) {
 			adbCommand = String.format(adbCommand, startx, starty, endx, endy);
+			getScreenEvent42();
 		} else {
 			adbCommand = String.format(adbCommand + " %d", startx, starty,
 					endx, endy, durationMilliseconds);
@@ -141,14 +141,12 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 							+ "adb shell getprop ro.build.version.release")
 					.getInputStream()).useDelimiter("\\A");
 			result = s.hasNext() ? s.next() : "";
-			log.debug("Detected Android: " + result);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		if (result.compareTo("4.3") < 0) {
 			// comparing lexicographically, 4.2.2 < 4.3 for example
-			getScreenEvent42();
 			return true;
 		}
 		return false;
@@ -170,18 +168,11 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 				result = s.hasNext() ? s.next() : "";
 			} while (!result.contains("0035"));
 			if (result.contains("0035")) {
-				result = result.split("\n")[0];
+				result = result.split("\n")[0].trim();
 			}
 			log.debug("Detected screen event: " + result);
 		} catch (Exception e) {
 			new Exception(e.getMessage(), e);
-		}
-		// Debugging swipe event on 42
-		adbCommand = ADB_PREFIX + "adb shell getevent -p " + result;
-		try {
-			log.debug("Event options:"+getAdbOutput(adbCommand));
-		} catch (Exception e) {
-			// ignore
 		}
 		return result;
 	}
@@ -341,15 +332,14 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					process.getInputStream()));
 			String s;
 			while ((s = in.readLine()) != null) {
-				result = s + "\n";
+				result = result + s + "\n";
 			}
 		} finally {
 			if (in != null) {
 				in.close();
 			}
 		}
-
-		return result.trim();
+		return result;
 	}
 
 	/**
