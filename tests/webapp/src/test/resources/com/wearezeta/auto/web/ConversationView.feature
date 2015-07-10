@@ -273,7 +273,6 @@ Feature: Conversation View
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     When I type shortcut combination to open search
-    And I wait for 7 seconds
     Then I see Search is opened
 
     Examples: 

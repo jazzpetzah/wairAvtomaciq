@@ -694,7 +694,7 @@ public class ConversationPageSteps {
 	 */
 	@Then("^I type shortcut combination to open search$")
 	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
-	PagesCollection.conversationPage.pressShortCutForSearch();
+	PagesCollection.peoplePickerPage = PagesCollection.conversationPage.pressShortCutForSearch();
 	}
 
 }
