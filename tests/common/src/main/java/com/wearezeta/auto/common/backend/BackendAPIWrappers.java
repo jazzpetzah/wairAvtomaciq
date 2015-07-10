@@ -120,6 +120,7 @@ public final class BackendAPIWrappers {
 			}
 			break;
 		case ByPhoneNumber:
+		case ByPhoneNumberOnly:
 			while (true) {
 				try {
 					BackendREST.bookPhoneNumber(user.getPhoneNumber());
@@ -140,7 +141,9 @@ public final class BackendAPIWrappers {
 			BackendREST.registerNewUser(user.getPhoneNumber(), user.getName(),
 					activationCode);
 			changeUserPassword(user, null, user.getPassword());
-			attachUserEmailUsingBackdoor(user);
+			if (strategy != RegistrationStrategy.ByPhoneNumberOnly) {
+				attachUserEmailUsingBackdoor(user);
+			}
 			break;
 		default:
 			throw new RuntimeException(String.format(

@@ -64,6 +64,22 @@ Feature: Sign In
       | Name      | Error        |
       | user1Name | INVALID CODE |
 
+  @staging @id2707
+  Scenario Outline: Verify you are asked to add an email address after sign in with a phone number
+    Given There is 1 user where <Name> is me with phone number only
+    Given I switch to sign in page
+    When I switch to phone number sign in page
+    When I sign in using phone number of user <Name>
+    And I click on forward button on phone number sign in
+    And I enter phone verification code for user <Name>
+    And I enter email <EmailOfOtherUser> on add email address dialog
+    And I enter password aqa123456! on add email address dialog
+    And I click add button on add email address dialog
+
+    Examples: 
+      | Name      | EmailOfOtherUser      |
+      | user1Name | qa1+qa1@wearezeta.com |
+
   @staging @id2227
   Scenario Outline: Show invitation button when Gmail import on registration has no suggestions
     Given There is 1 user where <Name> is me
