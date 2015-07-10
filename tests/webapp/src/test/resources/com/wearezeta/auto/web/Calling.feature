@@ -159,8 +159,35 @@ Feature: Calling
     And I verify browser log is empty
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+		 | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+		 | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+
+  @staging @id3083
+  Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
+	Given My browser supports calling
+	Given There are 3 users where <Name> is me
+	Given Myself is connected to <Contact1>,<Contact2>
+	Given <Contact2> starts waiting instance using <WaitBackend>
+	Given <Contact2> accepts next incoming call automatically
+	Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+	Given I switch to Sign In page
+	Given I Sign in using login <Login> and password <Password>
+	And I see my avatar on top of Contact list
+	And I open conversation with <Contact1>
+	And <Contact1> calls me using <CallBackend>
+	And I accept the incoming call
+	Then <Contact1> verifies that call status to Myself is changed to active in <Timeout> seconds
+	Then I see the calling bar from user <Contact1>
+	And I open conversation with <Contact2>
+	And I call
+	Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+	Then I see the calling bar from user <Contact2>
+	And I end the call
+	And <Contact2> stops all waiting instances
+
+	Examples: 
+		 | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | WaitBackend | Timeout |
+		 | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | webdriver   | 120     |
 
   @regression @id2013
   Scenario Outline: Verify I get missed call notification when I call
