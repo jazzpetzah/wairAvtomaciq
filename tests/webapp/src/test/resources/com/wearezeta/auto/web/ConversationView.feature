@@ -279,7 +279,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id2993 @staging @torun
+  @id2993 @staging
   Scenario Outline: Verify you ping in a conversation when you press alt + ctrl + G (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
