@@ -43,7 +43,6 @@ public class ConversationPage extends WebPage {
 			.getSimpleName());
 
 	private static final String TOOLTIP_PEOPLE = "People";
-	private static final String TOOLTIP_PING = "Ping";
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathLastImageEntry)
 	private WebElement lastImageEntry;
@@ -465,11 +464,6 @@ public class ConversationPage extends WebPage {
 			throw new PendingException(
 					"Webdriver does not support shortcuts for Mac browsers");
 		}
-	}
-
-	public boolean isPingButtonTooltipCorrect() {
-		return TOOLTIP_PING.equals(showParticipants
-				.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
 	}
 
 	public String getPingButtonToolTip() {
