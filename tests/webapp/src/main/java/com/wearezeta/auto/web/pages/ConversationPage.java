@@ -430,9 +430,9 @@ public class ConversationPage extends WebPage {
 
 	public PeoplePickerPage pressShortCutForSearch() throws Exception {
 		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-		conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "N"));
+		conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "n"));
 		} else {
-		conversationInput.sendKeys(Keys.chord(Keys.COMMAND, Keys.LEFT_ALT, "N"));
+		conversationInput.sendKeys(Keys.chord(Keys.COMMAND, Keys.LEFT_ALT, "n"));
 		}
 		return new PeoplePickerPage(getLazyDriver());
 		}
