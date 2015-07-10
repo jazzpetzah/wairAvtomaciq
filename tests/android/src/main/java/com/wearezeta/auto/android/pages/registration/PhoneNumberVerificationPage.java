@@ -21,7 +21,11 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class PhoneNumberVerificationPage extends AndroidPage {
 
-	public static final String idCodeInput = "et__reg__phone";
+	public static final String idCodeOldInput = "et__reg__phone";
+	@FindBy(id = idCodeOldInput)
+	private WebElement codeOldInput;
+
+	public static final String idCodeInput = "et__reg__code";
 	@FindBy(id = idCodeInput)
 	private WebElement codeInput;
 
@@ -32,16 +36,23 @@ public class PhoneNumberVerificationPage extends AndroidPage {
 	public static final String idManualCodeButton = "tv__manual_button";
 	@FindBy(id = idManualCodeButton)
 	private WebElement manualCodeButton;
-	
+
 	public PhoneNumberVerificationPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
 	}
 
 	public void inputVerificationCode(String verificationCode) throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCodeInput), 15) : "Verification code input has not been shown in time";
-		codeInput.sendKeys(verificationCode);
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCodeInput), 15)) {
+			codeInput.sendKeys(verificationCode);
+		} else if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCodeOldInput), 15)) {
+			codeOldInput.sendKeys(verificationCode);
+		} else {
+			assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+					By.id(idCodeInput), 15) : "Verification code input has not been shown in time";
+		}
 	}
 
 	public AddNamePage clickConfirm() throws Exception {
@@ -53,16 +64,16 @@ public class PhoneNumberVerificationPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(idConfirmButton), 40);
 	}
-	
+
 	public boolean waitUntilManualCodeButtonAppears() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.id(idManualCodeButton), 20);
 	}
-	
+
 	public PhoneNumberVerificationPage clickManualCodeButton() throws Exception {
 		manualCodeButton.click();
-		 DriverUtils.waitUntilLocatorDissapears(getDriver(),
-					By.id(idManualCodeButton), 15);
+		DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idManualCodeButton), 15);
 		return new PhoneNumberVerificationPage(this.getLazyDriver());
 	}
 

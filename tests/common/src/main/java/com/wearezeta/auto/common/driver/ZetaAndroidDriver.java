@@ -141,7 +141,6 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 							+ "adb shell getprop ro.build.version.release")
 					.getInputStream()).useDelimiter("\\A");
 			result = s.hasNext() ? s.next() : "";
-			log.debug("Detected Android: " + result);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
