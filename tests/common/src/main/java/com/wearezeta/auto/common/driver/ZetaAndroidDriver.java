@@ -341,7 +341,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					process.getInputStream()));
 			String s;
 			while ((s = in.readLine()) != null) {
-				result = s + "\n";
+				result = result + s + "\n";
 			}
 		} finally {
 			if (in != null) {
