@@ -43,8 +43,9 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 
 	private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
 			.getSimpleName());
-	// public static final String ADB_PREFIX = "";
-	public static final String ADB_PREFIX = "/Applications/android-sdk/platform-tools/";
+	public static final String ADB_PREFIX = "";
+	// public static final String ADB_PREFIX =
+	// "/Applications/android-sdk/platform-tools/";
 
 	private SessionHelper sessionHelper;
 	private RemoteTouchScreen touch;
