@@ -469,4 +469,30 @@ public class ConversationPage extends WebPage {
 	public String getPingButtonToolTip() {
 		return pingButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
+
+	public void hoverCallButton() throws Exception {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
+		} else {
+			// safari workaround
+			DriverUtils.addClass(this.getDriver(), conversation, "hover");
+		}
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
+				5);
+	}
+
+	public String getCallButtonToolTip() {
+		return callButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
+	}
+
+	public void pressShortCutForCall() throws Exception {
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "t"));
+		} else {
+			throw new PendingException(
+					"Webdriver does not support shortcuts for Mac browsers");
+		}
+	}
 }

@@ -295,3 +295,21 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   |
       | user1Email | user1Password | user1Name | user2Name | pinged |
+
+  @id2994 @staging
+  Scenario Outline: Verify you start a call in a conversation when you press ⌥ ⌘ T (Mac) or alt + ctrl + T (Win)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    And I see calling button
+    When I hover call button
+    Then I see correct call button tooltip
+    When I type shortcut combination to start a call
+    Then I see the calling bar
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | PING   |
+      | user1Email | user1Password | user1Name | user2Name | pinged |
