@@ -1,7 +1,7 @@
 Feature: Calling
 
   @regression @id1860
-  Scenario Outline: Send text, image and knock while in the call with same user
+  Scenario Outline: Verify I can send text, image and ping while in the same convo
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -29,7 +29,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | webdriver   | 120     |
 
   @smoke @id2237
-  Scenario Outline: Call a user twice in a row
+  Scenario Outline: Verify I can call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -107,7 +107,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
   @smoke @id1839
-  Scenario Outline: Verify calling not supported in browsers without WebRTC
+  Scenario Outline: Verify I can not call in browsers without WebRTC
     Given My browser does not support calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -133,7 +133,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
   @regression @id2013
-  Scenario Outline: Missed call notification (caller)
+  Scenario Outline: Verify I get missed call notification when I call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -153,7 +153,7 @@ Feature: Calling
 
   # This has to work even in browsers, which don't support calling
   @regression @id2014
-  Scenario Outline: Missed call notification (adressee)
+  Scenario Outline: Verify I get missed call notification when someone calls me
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
     Given I switch to Sign In page
@@ -216,7 +216,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
   @regression @id1883
-  Scenario Outline: A blocked contact trying to call me
+  Scenario Outline: Verify I can not see blocked contact trying to call me
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -233,7 +233,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
   @regression @id1884
-  Scenario Outline: Muted conversation person trying to call me
+  Scenario Outline: Verify I can see muted conversation person trying to call me
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
