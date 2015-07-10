@@ -175,13 +175,6 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		} catch (Exception e) {
 			new Exception(e.getMessage(), e);
 		}
-		// Debugging swipe event on 42
-		adbCommand = "shell getevent -p " + result;
-		try {
-			log.debug("Event options:\n" + getAdbOutput(adbCommand));
-		} catch (Exception e) {
-			// ignore
-		}
 		return result;
 	}
 
