@@ -39,7 +39,7 @@ public class ConversationPageSteps {
 	 * Sends random message (generated GUID) into opened conversation
 	 *
 	 * @step. ^I write random message$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I write random message$")
 	public void WhenIWriteRandomMessage() throws Exception {
@@ -54,7 +54,7 @@ public class ConversationPageSteps {
 	 *
 	 * @param message
 	 *            text message
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I write message (.*)$")
 	public void IWriteMessage(String message) throws Exception {
@@ -62,13 +62,14 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Types x number of new lines to opened conversation, but does not send them
+	 * Types x number of new lines to opened conversation, but does not send
+	 * them
 	 *
 	 * @step. ^I write (.*) new lines$
 	 *
 	 * @param message
 	 *            text message
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I write (\\d+) new lines$")
 	public void IWriteXNewLines(int amount) throws Exception {
@@ -685,4 +686,17 @@ public class ConversationPageSteps {
 				PagesCollection.conversationPage.getMessageFromInputField(),
 				equalTo(message));
 	}
+
+	/**
+	 * Types shortcut combination to open search
+	 * 
+	 * @step. ^I type shortcut combination to open search$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to open search$")
+	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.conversationPage
+				.pressShortCutForSearch();
+	}
+
 }
