@@ -897,15 +897,17 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean chatheadIsVisible(String contact) throws Exception {
+
 		List<WebElement> el = this.getDriver()
 				.findElements(
 						By.xpath(String.format(IOSLocators.xpathChatheadName,
 								contact)));
-		if (el.size() > 0) {
-			return true;
-		} else {
-			return false;
+		for (WebElement element : el) {
+			if (DriverUtils.isElementPresentAndDisplayed(getDriver(), element)) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	public boolean chatheadMessageIsVisible(String message) throws Exception {
@@ -919,8 +921,9 @@ public class DialogPage extends IOSPage {
 		}
 	}
 
-	public boolean chatheadAvatarImageIsVisible() {
-		if (chatheadAvatarImage.isDisplayed()) {
+	public boolean chatheadAvatarImageIsVisible() throws Exception {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.nameChatheadAvatarImage))) {
 			return true;
 		} else {
 			return false;

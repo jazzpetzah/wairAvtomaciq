@@ -64,7 +64,7 @@ public class ContactListPageSteps {
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws Exception {
 		getContactListPage().tapOnMyName();
-		getPersonalInfoPage().waitForEmailFieldVisible();
+		getPersonalInfoPage().waitSelfProfileVisible();
 	}
 
 	@When("^I tap on contact name (.*)$")
