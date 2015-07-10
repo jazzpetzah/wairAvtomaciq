@@ -103,8 +103,38 @@ Feature: Calling
     And <Contact> stops all waiting instances
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+		 | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+		 | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+
+  @staging @id1902
+  Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
+	Given My browser supports calling
+	Given There are 3 users where <Name> is me
+	Given Myself is connected to <Contact1>,<Contact2>
+	Given <Contact1> starts waiting instance using <CallBackend>
+	Given <Contact1> accepts next incoming call automatically
+	Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+	Given <Contact2> starts waiting instance using <CallBackend>
+	Given <Contact2> accepts next incoming call automatically
+	Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+	Given I switch to Sign In page
+	Given I Sign in using login <Login> and password <Password>
+	And I see my avatar on top of Contact list
+	And I open conversation with <Contact1>
+	And I call
+	Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+	Then I see the calling bar from user <Contact1>
+	And I open conversation with <Contact2>
+	And I call
+	Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+	Then I see the calling bar from user <Contact2>
+	And I end the call
+	And <Contact1> stops all waiting instances
+	And <Contact2> stops all waiting instances
+
+	Examples: 
+		 | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
+		 | user1Email | user1Password | user1Name | user2Name  | user3Name  | webdriver   | 120     |
 
   @smoke @id1839
   Scenario Outline: Verify I can not call in browsers without WebRTC
