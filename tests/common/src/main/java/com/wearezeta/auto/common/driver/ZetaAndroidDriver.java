@@ -161,6 +161,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		String result = null;
 		String adbCommand = ADB_PREFIX + "adb shell getevent -p";
 		try {
+			log.debug("Events list:\n" + getAdbOutput("shell getevent -p"));
 			s = new java.util.Scanner(Runtime.getRuntime()
 					.exec(new String[] { "/bin/bash", "-c", adbCommand })
 					.getInputStream()).useDelimiter("0036").useDelimiter(
