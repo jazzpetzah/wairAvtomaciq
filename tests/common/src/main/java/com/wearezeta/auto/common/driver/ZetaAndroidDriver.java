@@ -170,7 +170,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 				result = s.hasNext() ? s.next() : "";
 			} while (!result.contains("0035"));
 			if (result.contains("0035")) {
-				result = result.split("\n")[0];
+				result = result.split("\n")[0].trim();
 			}
 			log.debug("Detected screen event: " + result);
 		} catch (Exception e) {
