@@ -208,16 +208,17 @@ public class ConversationPage extends WebPage {
 		}
 	}
 
-	public double getOverlapScoreOfLastImage(String pictureName) throws Exception {
+	public double getOverlapScoreOfLastImage(String pictureName)
+			throws Exception {
 		final String picturePath = WebCommonUtils
 				.getFullPicturePath(pictureName);
 		if (!isImageMessageFound()) {
 			return 0.0;
 		}
 		// comparison of the original and sent pictures
-		BufferedImage actualImage = CommonUtils.getElementScreenshot(lastImageEntry,
-				this.getDriver())
-				.orElseThrow(IllegalStateException::new);
+		BufferedImage actualImage = CommonUtils.getElementScreenshot(
+				lastImageEntry, this.getDriver()).orElseThrow(
+				IllegalStateException::new);
 		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
 		return ImageUtil.getOverlapScore(actualImage, expectedImage,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
@@ -275,7 +276,8 @@ public class ConversationPage extends WebPage {
 			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton), 5);
+				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
+				5);
 	}
 
 	public void clickCallButton() throws Exception {
@@ -287,7 +289,8 @@ public class ConversationPage extends WebPage {
 			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton), 5);
+				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
+				5);
 		callButton.click();
 	}
 
@@ -411,19 +414,17 @@ public class ConversationPage extends WebPage {
 	}
 
 	public boolean isGifVisible() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						this.getDriver(),
-						By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
-						40);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
+				40);
 
 	}
 
 	public boolean isLastTextMessage(String expectedMessage) throws Exception {
 		return DriverUtils
-		.waitUntilLocatorIsDisplayed(
-				getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
 	}
 
 	public String getMessageFromInputField() {
@@ -432,10 +433,11 @@ public class ConversationPage extends WebPage {
 
 	public PeoplePickerPage pressShortCutForSearch() throws Exception {
 		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
-		conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "n"));
+			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "n"));
 		} else {
-		throw new PendingException("Webdriver does not support shortcuts for Mac browsers");
+			throw new PendingException(
+					"Webdriver does not support shortcuts for Mac browsers");
 		}
 		return new PeoplePickerPage(getLazyDriver());
-		}
+	}
 }
