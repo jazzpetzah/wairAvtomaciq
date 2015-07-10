@@ -43,6 +43,7 @@ public class ConversationPage extends WebPage {
 			.getSimpleName());
 
 	private static final String TOOLTIP_PEOPLE = "People";
+	private static final String TOOLTIP_PING = "Ping";
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathLastImageEntry)
 	private WebElement lastImageEntry;
@@ -439,5 +440,39 @@ public class ConversationPage extends WebPage {
 					"Webdriver does not support shortcuts for Mac browsers");
 		}
 		return new PeoplePickerPage(getLazyDriver());
+	}
+
+	public void hoverPingButton() throws Exception {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
+		} else {
+			DriverUtils.addClass(this.getDriver(), conversation, "hover");
+		}
+		final By locator = By
+				.cssSelector(WebAppLocators.ConversationPage.cssPingButton);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, 2) : "Ping button has not been shown after 2 seconds";
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				pingButton) : "Ping button has to be clickable";
+
+	}
+
+	public void pressShortCutForPing() throws Exception {
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "g"));
+		} else {
+			throw new PendingException(
+					"Webdriver does not support shortcuts for Mac browsers");
+		}
+	}
+
+	public boolean isPingButtonTooltipCorrect() {
+		return TOOLTIP_PING.equals(showParticipants
+				.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
+	}
+
+	public String getPingButtonToolTip() {
+		return pingButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 }

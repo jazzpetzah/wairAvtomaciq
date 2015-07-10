@@ -699,4 +699,37 @@ public class ConversationPageSteps {
 				.pressShortCutForSearch();
 	}
 
+	/**
+	 * Hovers ping button
+	 * 
+	 * @step. ^I hover ping button$
+	 * @throws Exception
+	 */
+	@Then("^I hover ping button$")
+	public void IHoverPingButton() throws Exception {
+		PagesCollection.conversationPage.hoverPingButton();
+	}
+
+	/**
+	 * Types shortcut combination to ping
+	 * 
+	 * @step. ^I type shortcut combination to ping$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to ping$")
+	public void ITypeShortcutCombinationToPing() throws Exception {
+		PagesCollection.conversationPage.pressShortCutForPing();
+	}
+
+	/**
+	 * Verifies whether ping button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct ping button tool tip$
+	 *
+	 */
+	@Then("^I see correct ping button tooltip$")
+	public void ISeeCorrectPingButtonTooltip() {
+		Assert.assertTrue(PagesCollection.conversationPage
+				.isPingButtonTooltipCorrect());
+	}
 }
