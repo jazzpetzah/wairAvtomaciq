@@ -420,4 +420,8 @@ public final class WebAppLocators {
 	public static final class PhoneNumberVerificationPage {
 		public static final String cssErrorMessage = "#form-login-phone-code [data-uie-name='status-error']";
 	}
+
+	public static final class PhoneNumberLoginPage {
+		public static final String cssErrorMessage = "#form-login-phone [data-uie-name='status-error']";
+	}
 }
