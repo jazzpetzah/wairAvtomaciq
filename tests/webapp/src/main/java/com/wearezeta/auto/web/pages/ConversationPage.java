@@ -25,7 +25,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -80,6 +79,9 @@ public class ConversationPage extends WebPage {
 	@FindBy(css = WebAppLocators.ConversationPage.cssSecondLastTextMessage)
 	private WebElement secondLastTextMessage;
 
+	@FindBy(css = WebAppLocators.ConversationPage.cssLastAction)
+	private WebElement lastAction;
+
 	@FindBy(xpath = WebAppLocators.ConversationPage.xpathPictureFullscreen)
 	private WebElement pictureFullscreen;
 
@@ -116,14 +118,22 @@ public class ConversationPage extends WebPage {
 		conversationInput.sendKeys(Keys.ENTER);
 	}
 
+	public String getLastActionMessage() throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
+		final List<WebElement> actionElements = this.getDriver().findElements(
+				locator);
+		return actionElements.get(actionElements.size() - 1).getText();
+	}
+
 	public boolean isActionMessageSent(final Set<String> parts)
 			throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssFirstMessageAction);
+				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
 		assert DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
 		final List<WebElement> actionMessages = this.getDriver()
-				.findElements(locator).stream().filter(x -> x.isDisplayed())
-				.collect(Collectors.toList());
+				.findElements(locator);
 		// Get the most recent action message only
 		final String actionMessageInUI = actionMessages.get(
 				actionMessages.size() - 1).getText();
@@ -308,7 +318,7 @@ public class ConversationPage extends WebPage {
 
 	public String getMissedCallMessage() throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssLastMessageAction);
+				.cssSelector(WebAppLocators.ConversationPage.cssLastAction);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
 				+ MISSED_CALL_MSG_TIMOEUT + " second(s) timeout";

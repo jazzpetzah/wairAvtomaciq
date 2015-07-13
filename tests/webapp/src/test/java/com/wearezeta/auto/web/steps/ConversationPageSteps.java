@@ -72,8 +72,8 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I write (.*) new lines$
 	 *
-	 * @param message
-	 *            text message
+	 * @param amount
+	 *            number of lines to write
 	 * @throws Exception
 	 */
 	@When("^I write (\\d+) new lines$")
@@ -284,8 +284,9 @@ public class ConversationPageSteps {
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);
 		parts.addAll(CommonSteps.splitAliases(contacts));
-		Assert.assertTrue(PagesCollection.conversationPage
-				.isActionMessageSent(parts));
+		assertThat("Check action",
+				PagesCollection.conversationPage.getLastActionMessage(),
+				containsString(message));
 	}
 
 	/**
