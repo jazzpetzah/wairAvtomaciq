@@ -284,8 +284,9 @@ public class ConversationPageSteps {
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);
 		parts.addAll(CommonSteps.splitAliases(contacts));
-		Assert.assertTrue(PagesCollection.conversationPage
-				.isActionMessageSent(parts));
+		assertThat("Check action",
+				PagesCollection.conversationPage.getLastActionMessage(),
+				containsString(message));
 	}
 
 	/**
@@ -635,14 +636,20 @@ public class ConversationPageSteps {
 	 * @step. ^I( do not)? see picture in fullscreen$
 	 * @throws java.lang.Exception
 	 */
-	@Then("^I( do not)? see picture in fullscreen$")
-	public void ISeePictureInFullscreen(String doNot) throws Exception {
+	@Then("^I( do not)? see picture (.*) in fullscreen$")
+	public void ISeePictureInFullscreen(String doNot, String pictureName) throws Exception {
 		if (doNot == null) {
 			Assert.assertTrue(PagesCollection.conversationPage
+					.isPictureInModalDialog());
+			Assert.assertTrue(PagesCollection.conversationPage
 					.isPictureInFullscreen());
+			assertThat("Overlap score of image comparsion",
+					PagesCollection.conversationPage
+							.getOverlapScoreOfFullscreenImage(pictureName),
+					greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
 		} else {
-			Assert.assertFalse(PagesCollection.conversationPage
-					.isPictureInFullscreen());
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isPictureNotInModalDialog());
 		}
 	}
 

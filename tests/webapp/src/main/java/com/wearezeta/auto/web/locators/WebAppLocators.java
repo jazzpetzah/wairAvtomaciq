@@ -184,10 +184,10 @@ public final class WebAppLocators {
 		public static final String cssSecondLastTextMessage = cssSecondLastMessage
 				+ " .text-inner";
 
-		public static final String cssFirstMessageAction = cssMessage
+		public static final String cssFirstAction = cssMessage
 				+ " .action";
 
-		public static final String cssLastMessageAction = cssLastMessage
+		public static final String cssLastAction = cssLastMessage
 				+ " .action";
 
 		public static final String xpathLastImageEntry = "(//*[@data-uie-name='go-image-detail' and @data-uie-visible='true'])[last()]";
@@ -247,13 +247,13 @@ public final class WebAppLocators {
 
 		// image fullscreen
 
-		public static final String xpathPictureFullscreen = "(//*[@data-uie-name='go-detail'])[last()]";
-
-		public static final String xpathPictureIsFullscreen = "//div[contains(@class, 'modal-show')]";
+		public static final String cssModalDialog = ".modal-show";
 
 		public static final String xpathXButton = "//div[contains(@class, 'detail-view-close-button')]//*[@data-uie-name='do-close-detail-view']";
 
 		public static final String idBlackBorder = "detail-view";
+
+		public static final String cssFullscreenImage = ".detail-view-image";
 	}
 
 	public static final class ConnectToPage {
