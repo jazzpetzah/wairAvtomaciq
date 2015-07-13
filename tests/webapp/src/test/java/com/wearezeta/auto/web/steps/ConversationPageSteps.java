@@ -72,8 +72,8 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I write (.*) new lines$
 	 *
-	 * @param message
-	 *            text message
+	 * @param amount
+	 *            number of lines to write
 	 * @throws Exception
 	 */
 	@When("^I write (\\d+) new lines$")

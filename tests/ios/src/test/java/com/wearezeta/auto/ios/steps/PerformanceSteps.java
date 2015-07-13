@@ -142,6 +142,7 @@ public class PerformanceSteps {
 	public void ITestConversationLoadingTimeForConversation(int messages,
 			int images) throws Exception {
 		final String CONVERSATION_NAME_TEMPLATE = "perf%stxt%simgtst";
+		@SuppressWarnings("unused")
 		String conv = String.format(CONVERSATION_NAME_TEMPLATE, messages,
 				images);
 		//TODO: implement when time could be measured
