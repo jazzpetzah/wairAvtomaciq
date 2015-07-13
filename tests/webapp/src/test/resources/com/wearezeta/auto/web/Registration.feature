@@ -136,7 +136,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id1935
+  @regression @id1935
   Scenario Outline: Verify that correct error messages are shown instead of email verification screen if there are some problems with the registration
     When I enter user name <Name> on Registration page
     And I enter user email <Email> on Registration page

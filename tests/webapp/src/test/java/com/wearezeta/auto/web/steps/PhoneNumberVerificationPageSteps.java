@@ -23,6 +23,15 @@ public class PhoneNumberVerificationPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	/**
+	 * Fills out correct country code and phone number for a user
+	 * 
+	 * @step. ^I enter phone verification code for user (.*)$
+	 * 
+	 * @param name
+	 *            name alias of the user
+	 * @throws Throwable
+	 */
 	@When("^I enter phone verification code for user (.*)$")
 	public void i_enter_phone_verification_code_for_user_user_Name(String name)
 			throws Throwable {
@@ -33,6 +42,15 @@ public class PhoneNumberVerificationPageSteps {
 				.enterCode(code);
 	}
 
+	/**
+	 * Enters wrong verification code by swapping all numbers into others
+	 * 
+	 * @step. ^I enter wrong phone verification code for user (.*)$
+	 * 
+	 * @param name
+	 *            name alias of the user
+	 * @throws Throwable
+	 */
 	@When("^I enter wrong phone verification code for user (.*)$")
 	public void i_enter_wrong_phone_verification_code_for_user_user_Name(
 			String name) throws Throwable {
@@ -48,6 +66,15 @@ public class PhoneNumberVerificationPageSteps {
 				.enterCode(wrongcode);
 	}
 
+	/**
+	 * Verifies that the error message is correct
+	 * 
+	 * @step. ^I see invalid phone code error message saying (.*)
+	 * 
+	 * @param message
+	 *            error message
+	 * @throws Exception
+	 */
 	@Then("^I see invalid phone code error message saying (.*)")
 	public void TheSignInErrorMessageReads(String message) throws Exception {
 		assertThat("invalid phone code error",

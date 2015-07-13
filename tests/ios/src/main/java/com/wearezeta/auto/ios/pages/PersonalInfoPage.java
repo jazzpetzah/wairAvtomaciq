@@ -86,7 +86,7 @@ public class PersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsDoneButton)
 	private WebElement settingsDoneButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.PersonalInfoPage.nameCloseButton)
 	private WebElement closeButton;
 
@@ -114,6 +114,9 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutPageWireLogo)
 	private WebElement aboutPageWireLogo;
 
+	@FindBy(how = How.NAME, using = IOSLocators.nameAboutCloseButton)
+	private WebElement aboutCloseButton;
+
 	public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -125,11 +128,10 @@ public class PersonalInfoPage extends IOSPage {
 
 	final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
 
-	
 	public void closePersonalInfo() {
 		closeButton.click();
 	}
-	
+
 	public String getUserNameValue() {
 		String name = profileNameEditField.getText();
 		return name;
@@ -157,6 +159,10 @@ public class PersonalInfoPage extends IOSPage {
 
 	public boolean isAboutPageVisible() {
 		return termsOfUseButton.isDisplayed();
+	}
+
+	public void clickAboutCloseButton() {
+		aboutCloseButton.click();
 	}
 
 	public boolean isAboutPageCertainColor(String color) throws Exception {
@@ -384,8 +390,15 @@ public class PersonalInfoPage extends IOSPage {
 		settingsBackButton.click();
 	}
 
-	public void pressSettingsDoneButton() {
+	public void pressSettingsDoneButton() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.nameSettingsDoneButton), 5);
 		settingsDoneButton.click();
+	}
+
+	public boolean waitSelfProfileVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameProfileName));
 	}
 
 }

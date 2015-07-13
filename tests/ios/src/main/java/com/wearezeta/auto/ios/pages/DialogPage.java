@@ -169,7 +169,7 @@ public class DialogPage extends IOSPage {
 	public void pressPingButton() {
 		pingButton.click();
 	}
-	
+
 	public ContactListPage returnToContactList() throws Exception {
 		conversationBackButton.click();
 		return new ContactListPage(getLazyDriver());
@@ -188,6 +188,11 @@ public class DialogPage extends IOSPage {
 	public boolean waitForCursorInputNotVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.name(IOSLocators.nameConversationCursorInput), 3);
+	}
+
+	public boolean isCursorInputVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				conversationInput);
 	}
 
 	public void waitForYouAddedCellVisible() throws Exception {
@@ -226,7 +231,8 @@ public class DialogPage extends IOSPage {
 		}
 	}
 
-	public void scrollToTheEndOfConversation() throws Exception {
+	public void scrollToTheEndOfConversationByTapOnCursorInput()
+			throws Exception {
 		String script = IOSLocators.scriptCursorInputPath + ".tap();";
 		this.getDriver().executeScript(script);
 	}
@@ -765,7 +771,7 @@ public class DialogPage extends IOSPage {
 		} catch (Exception e) {
 		}
 
-		scrollToTheEndOfConversation();
+		scrollToTheEndOfConversationByTapOnCursorInput();
 		String script = "";
 		for (int i = 0; i < messages.length; i++) {
 			script += String.format(IOSLocators.scriptCursorInputPath
@@ -891,15 +897,17 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean chatheadIsVisible(String contact) throws Exception {
+
 		List<WebElement> el = this.getDriver()
 				.findElements(
 						By.xpath(String.format(IOSLocators.xpathChatheadName,
 								contact)));
-		if (el.size() > 0) {
-			return true;
-		} else {
-			return false;
+		for (WebElement element : el) {
+			if (DriverUtils.isElementPresentAndDisplayed(getDriver(), element)) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	public boolean chatheadMessageIsVisible(String message) throws Exception {
@@ -913,8 +921,9 @@ public class DialogPage extends IOSPage {
 		}
 	}
 
-	public boolean chatheadAvatarImageIsVisible() {
-		if (chatheadAvatarImage.isDisplayed()) {
+	public boolean chatheadAvatarImageIsVisible() throws Exception {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.nameChatheadAvatarImage))) {
 			return true;
 		} else {
 			return false;

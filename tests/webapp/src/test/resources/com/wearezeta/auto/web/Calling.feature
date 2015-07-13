@@ -1,7 +1,7 @@
 Feature: Calling
 
   @regression @id1860
-  Scenario Outline: Send text, image and knock while in the call with same user
+  Scenario Outline: Verify I can send text, image and ping while in the same convo
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -29,7 +29,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | webdriver   | 120     |
 
   @smoke @id2237
-  Scenario Outline: Call a user twice in a row
+  Scenario Outline: Verify I can call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -45,6 +45,7 @@ Feature: Calling
     And I end the call
     Then <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
     And <Contact> accepts next incoming call automatically
+    Then <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
@@ -61,6 +62,7 @@ Feature: Calling
     Given Myself is connected to <Contact>
     Given <Contact> starts waiting instance using <CallBackend>
     Given <Contact> accepts next incoming call automatically
+    Given <Contact> verifies that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -104,8 +106,38 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
+  @staging @id1902
+  Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
+	Given My browser supports calling
+	Given There are 3 users where <Name> is me
+	Given Myself is connected to <Contact1>,<Contact2>
+	Given <Contact1> starts waiting instance using <CallBackend>
+	Given <Contact1> accepts next incoming call automatically
+	Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+	Given <Contact2> starts waiting instance using <CallBackend>
+	Given <Contact2> accepts next incoming call automatically
+	Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+	Given I switch to Sign In page
+	Given I Sign in using login <Login> and password <Password>
+	And I see my avatar on top of Contact list
+	And I open conversation with <Contact1>
+	And I call
+	Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+	Then I see the calling bar from user <Contact1>
+	And I open conversation with <Contact2>
+	And I call
+	Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+	Then I see the calling bar from user <Contact2>
+	And I end the call
+	And <Contact1> stops all waiting instances
+	And <Contact2> stops all waiting instances
+
+	Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | webdriver   | 120     |
+
   @smoke @id1839
-  Scenario Outline: Verify calling not supported in browsers without WebRTC
+  Scenario Outline: Verify I can not call in browsers without WebRTC
     Given My browser does not support calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -128,10 +160,37 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+	  | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+
+  @staging @id3083
+  Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
+	Given My browser supports calling
+	Given There are 3 users where <Name> is me
+	Given Myself is connected to <Contact1>,<Contact2>
+	Given <Contact2> starts waiting instance using <WaitBackend>
+	Given <Contact2> accepts next incoming call automatically
+	Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+	Given I switch to Sign In page
+	Given I Sign in using login <Login> and password <Password>
+	And I see my avatar on top of Contact list
+	And I open conversation with <Contact1>
+	And <Contact1> calls me using <CallBackend>
+	And I accept the incoming call
+	Then <Contact1> verifies that call status to Myself is changed to active in <Timeout> seconds
+	Then I see the calling bar from user <Contact1>
+	And I open conversation with <Contact2>
+	And I call
+	Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+	Then I see the calling bar from user <Contact2>
+	And I end the call
+    And <Contact2> stops all waiting instances
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | webdriver   | 120     |
 
   @regression @id2013
-  Scenario Outline: Missed call notification (caller)
+  Scenario Outline: Verify I get missed call notification when I call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -151,7 +210,7 @@ Feature: Calling
 
   # This has to work even in browsers, which don't support calling
   @regression @id2014
-  Scenario Outline: Missed call notification (adressee)
+  Scenario Outline: Verify I get missed call notification when someone calls me
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to Me
     Given I switch to Sign In page
@@ -214,10 +273,11 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
   @regression @id1883
-  Scenario Outline: A blocked contact trying to call me
+  Scenario Outline: Verify I can not see blocked contact trying to call me
     Given My browser supports calling
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    # OtherContact is needed otherwise the search will show up sometimes
+    Given Myself is connected to <Contact>,<OtherContact>
     Given Myself blocked <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -227,11 +287,11 @@ Feature: Calling
     And I do not see the calling bar
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+      | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
   @regression @id1884
-  Scenario Outline: Muted conversation person trying to call me
+  Scenario Outline: Verify I can see muted conversation person trying to call me
     Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -244,8 +304,8 @@ Feature: Calling
     And I see the calling bar
 
     Examples: 
-       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-       | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
   @regression @id2477
   Scenario Outline: Already on call and try to make another call (adressee)

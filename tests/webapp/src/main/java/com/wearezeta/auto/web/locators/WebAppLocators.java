@@ -184,10 +184,10 @@ public final class WebAppLocators {
 		public static final String cssSecondLastTextMessage = cssSecondLastMessage
 				+ " .text-inner";
 
-		public static final String cssFirstMessageAction = cssMessage
+		public static final String cssFirstAction = cssMessage
 				+ " .action";
 
-		public static final String cssLastMessageAction = cssLastMessage
+		public static final String cssLastAction = cssLastMessage
 				+ " .action";
 
 		public static final String xpathLastImageEntry = "(//*[@data-uie-name='go-image-detail' and @data-uie-visible='true'])[last()]";
@@ -419,5 +419,9 @@ public final class WebAppLocators {
 
 	public static final class PhoneNumberVerificationPage {
 		public static final String cssErrorMessage = "#form-login-phone-code [data-uie-name='status-error']";
+	}
+
+	public static final class PhoneNumberLoginPage {
+		public static final String cssErrorMessage = "#form-login-phone [data-uie-name='status-error']";
 	}
 }

@@ -128,8 +128,7 @@ public class ContactListPage extends AndroidPage {
 			log.debug("Trying to open contact " + id + ". It's name: "
 					+ contacts.get(id).getAttribute("value"));
 		} catch (Exception e) {
-			log.debug("Failed to find element in contact list.\nPage source: "
-					+ getDriver().getPageSource());
+			log.debug("Failed to find element in contact list.");
 			throw e;
 		}
 		return new DialogPage(this.getLazyDriver());
@@ -148,7 +147,7 @@ public class ContactListPage extends AndroidPage {
 		} else {
 			if (maxSwypesInList > 0) {
 				maxSwypesInList--;
-				DriverUtils.swipeUp(this.getDriver(), mainControl, 500);
+				DriverUtils.swipeUp(this.getDriver(), mainControl, 500, 50, 90);
 				return findInContactList(name, maxSwypesInList);
 			}
 		}

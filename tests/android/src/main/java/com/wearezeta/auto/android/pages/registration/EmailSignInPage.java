@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android.pages.registration;
 
-import java.awt.event.KeyEvent;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 

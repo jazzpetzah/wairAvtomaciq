@@ -43,4 +43,26 @@ public class TabletPendingUserPopoverPageSteps {
 				getTabletPendingUserPopoverPage().isPendingLabelVisible());
 	}
 
+	/**
+	 * Verify presence of incoming pending popover for particular user
+	 * 
+	 * @step. I see incoming pending popover from user (.*) on iPad$
+	 * 
+	 * @param user
+	 *            username String
+	 * 
+	 * @throws NoSuchUserException
+	 * @throws Exception
+	 */
+	@When("^I see incoming pending popover from user (.*) on iPad$")
+	public void ISeeIncomingPendingPopoverOnIpad(String user)
+			throws NoSuchUserException, Exception {
+		Assert.assertTrue(
+				"User name is not displayed",
+				getTabletPendingUserPopoverPage().isUserNameDisplayed(
+						usrMgr.findUserByNameOrNameAlias(user).getName()));
+		Assert.assertTrue("Connect button is not shown",
+				getTabletPendingUserPopoverPage().isConnectButtonDisplayed());
+	}
+
 }

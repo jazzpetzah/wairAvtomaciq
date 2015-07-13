@@ -104,7 +104,7 @@ Feature: Conversation List
     And I remember the state of the first conversation cell
     When Contact <Contact> ping conversation <Name>
     And I wait for 10 seconds
-    Then I see ping symbol
+    Then I see change of state for first conversation cell
 
     Examples: 
       | Name      | Contact   | NewName  | Color        |

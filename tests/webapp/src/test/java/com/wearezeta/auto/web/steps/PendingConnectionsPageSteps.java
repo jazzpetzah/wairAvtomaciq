@@ -76,7 +76,7 @@ public class PendingConnectionsPageSteps {
 	 * Checks if the avatar on a connection request from a user is visible
 	 *
 	 * @step. ^I see avatar in connection request from user (.*)$
-	 * @param user
+	 * @param nameAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */

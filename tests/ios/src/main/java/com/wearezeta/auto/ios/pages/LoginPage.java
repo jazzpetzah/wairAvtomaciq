@@ -128,19 +128,19 @@ public class LoginPage extends IOSPage {
 		signInButton.click();
 		return this;
 	}
-	
+
 	public void switchToEmailLogin() throws Exception {
-		if(!backButton.getText().equals("REGISTRATION")) {
+		if (!backButton.getText().equals("REGISTRATION")) {
 			DriverUtils.mobileTapByCoordinates(getDriver(), backButton);
 		}
-		if (!DriverUtils.waitUntilLocatorAppears(getDriver(), 
+		if (!DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.name(IOSLocators.LoginPage.nameEmailLoginButton))) {
 			signIn();
 		} else {
 			DriverUtils.mobileTapByCoordinates(getDriver(), emailLoginButton);
 		}
 	}
-	
+
 	public void clickPhoneLogin() {
 		phoneLoginButton.click();
 	}
@@ -160,13 +160,8 @@ public class LoginPage extends IOSPage {
 		}
 	}
 
-	public boolean isSelfProfileVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.nameProfileName));
-	}
-	
 	public ContactListPage waitForLoginToFinish() throws Exception {
-		
+
 		if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(IOSLocators.xpathLoginButton), 40)) {
 			return new ContactListPage(this.getLazyDriver());

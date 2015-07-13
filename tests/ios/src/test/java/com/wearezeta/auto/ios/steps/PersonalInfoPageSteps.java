@@ -117,6 +117,18 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
+	 * Close About page
+	 * 
+	 * @step. I close About page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I close About page$")
+	public void ICloseAboutPage() throws Exception {
+		getPersonalInfoPage().clickAboutCloseButton();
+	}
+
+	/**
 	 * Verifies the about page is Violet
 	 * 
 	 * @step. ^I see that the About page is colored (.*)$
@@ -309,7 +321,8 @@ public class PersonalInfoPageSteps {
 		getPersonalInfoPage().tapOnPersonalPage();
 		Thread.sleep(2000);
 		getPersonalInfoPage().tapOnPersonalPage();
-		referenceImage = getPersonalInfoPage().takeScreenshot().orElseThrow(AssertionError::new);
+		referenceImage = getPersonalInfoPage().takeScreenshot().orElseThrow(
+				AssertionError::new);
 		getPersonalInfoPage().tapOnPersonalPage();
 	}
 
@@ -330,7 +343,7 @@ public class PersonalInfoPageSteps {
 				.orElseThrow(AssertionError::new);
 		double score = ImageUtil.getOverlapScore(
 				RegistrationPageSteps.basePhoto, profileImage);
-		
+
 		Assert.assertTrue(
 				"Images are differen. Expected score >= 0.75, current = "
 						+ score, score >= 0.75d);
@@ -396,7 +409,8 @@ public class PersonalInfoPageSteps {
 
 	@Then("I see reset password page")
 	public void ISeeResetPasswordPage() throws Exception {
-		Assert.assertTrue("Change Password button is not shown", getPersonalInfoPage().isResetPasswordPageVisible());
+		Assert.assertTrue("Change Password button is not shown",
+				getPersonalInfoPage().isResetPasswordPageVisible());
 	}
 
 	@When("I tap on Sound Alerts")
@@ -520,6 +534,19 @@ public class PersonalInfoPageSteps {
 	@When("^I close self profile$")
 	public void ICloseSelfProfile() throws Exception {
 		getPersonalInfoPage().closePersonalInfo();
+	}
+
+	/**
+	 * Verify Self profile page is opened
+	 * 
+	 * @step. I see self profile page
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see self profile page")
+	public void ISeeSelfProfilePage() throws Exception {
+		Assert.assertTrue("Self profile page is not visible",
+				getPersonalInfoPage().waitSelfProfileVisible());
 	}
 
 }
