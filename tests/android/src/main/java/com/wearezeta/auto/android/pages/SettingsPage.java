@@ -64,13 +64,11 @@ public class SettingsPage extends AndroidPage {
 		DriverUtils.tapOnPercentOfElement(getDriver(), spotifyWebView, 50,
 			percentageToSpotifyLoginButton);
 
-		Thread.sleep(1000);
 		AndroidCommonUtils.type(username);
 
 		DriverUtils.tapOnPercentOfElement(getDriver(), spotifyWebView, 50,
 			percentageToSpotifyPasswordField);
 
-		Thread.sleep(1000);
 		AndroidCommonUtils.type(password);
 
 		AndroidCommonUtils.tapBackButton();
