@@ -14,11 +14,11 @@ import com.wearezeta.auto.web.pages.PagesCollection;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-public class PhoneNumberLoginPage {
+public class PhoneNumberLoginPageSteps {
 
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
-			.getLog(PhoneNumberLoginPage.class.getSimpleName());
+			.getLog(PhoneNumberLoginPageSteps.class.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -66,7 +66,7 @@ public class PhoneNumberLoginPage {
 	}
 
 	/**
-	 * Click the button ">" after entering the phone number
+	 * Click the Forward button after entering the phone number
 	 * 
 	 * @step. ^I click on forward button on phone number sign in$
 	 * 
