@@ -182,7 +182,7 @@ Feature: Conversation View
       | Login                       | Password   | Contact1   | Contact2   |
       | smoketester+id1688@wire.com | aqa123456! | perf.200.1 | perf.200.2 |
 
-  @id2279 @regression
+  @regression @id2279
   Scenario Outline: Send a long message containing new lines in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -213,13 +213,13 @@ Feature: Conversation View
     And I send picture <PictureName> to the current conversation
     And I see sent picture <PictureName> in the conversation view
     When I click on picture
-    Then I see picture in fullscreen
+    Then I see picture <PictureName> in fullscreen
     When I click x button to close fullscreen mode
-    Then I do not see picture in fullscreen
+    Then I do not see picture <PictureName> in fullscreen
     When I click on picture
-    Then I see picture in fullscreen
+    Then I see picture <PictureName> in fullscreen
     When I click on black border to close fullscreen mode
-    Then I do not see picture in fullscreen
+    Then I do not see picture <PictureName> in fullscreen
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PictureName               |

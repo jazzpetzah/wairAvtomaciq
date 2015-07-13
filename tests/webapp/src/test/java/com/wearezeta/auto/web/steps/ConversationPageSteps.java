@@ -636,14 +636,18 @@ public class ConversationPageSteps {
 	 * @step. ^I( do not)? see picture in fullscreen$
 	 * @throws java.lang.Exception
 	 */
-	@Then("^I( do not)? see picture in fullscreen$")
-	public void ISeePictureInFullscreen(String doNot) throws Exception {
+	@Then("^I( do not)? see picture (.*) in fullscreen$")
+	public void ISeePictureInFullscreen(String doNot, String pictureName) throws Exception {
 		if (doNot == null) {
 			Assert.assertTrue(PagesCollection.conversationPage
-					.isPictureInFullscreen());
+					.isPictureInModalDialog());
+			assertThat("Overlap score of image comparsion",
+					PagesCollection.conversationPage
+							.getOverlapScoreOfFullscreenImage(pictureName),
+					greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
 		} else {
-			Assert.assertFalse(PagesCollection.conversationPage
-					.isPictureInFullscreen());
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isPictureNotInModalDialog());
 		}
 	}
 

@@ -31,6 +31,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -82,8 +83,11 @@ public class ConversationPage extends WebPage {
 	@FindBy(css = WebAppLocators.ConversationPage.cssLastAction)
 	private WebElement lastAction;
 
-	@FindBy(xpath = WebAppLocators.ConversationPage.xpathPictureFullscreen)
-	private WebElement pictureFullscreen;
+	@FindBy(css = WebAppLocators.ConversationPage.cssImageEntries)
+	private WebElement lastPicture;
+
+	@FindBy(css = WebAppLocators.ConversationPage.cssFullscreenImage)
+	private WebElement fullscreenImage;
 
 	@FindBy(xpath = WebAppLocators.ConversationPage.xpathXButton)
 	private WebElement xButton;
@@ -228,6 +232,22 @@ public class ConversationPage extends WebPage {
 		// comparison of the original and sent pictures
 		BufferedImage actualImage = CommonUtils.getElementScreenshot(
 				lastImageEntry, this.getDriver()).orElseThrow(
+				IllegalStateException::new);
+		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
+		return ImageUtil.getOverlapScore(actualImage, expectedImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+	}
+
+	public double getOverlapScoreOfFullscreenImage(String pictureName)
+			throws Exception {
+		final String picturePath = WebCommonUtils
+				.getFullPicturePath(pictureName);
+		if (!isImageMessageFound()) {
+			return 0.0;
+		}
+		// comparison of the fullscreen image and sent picture
+		BufferedImage actualImage = CommonUtils.getElementScreenshot(
+				fullscreenImage, this.getDriver()).orElseThrow(
 				IllegalStateException::new);
 		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
 		return ImageUtil.getOverlapScore(actualImage, expectedImage,
@@ -398,16 +418,25 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void clickOnPicture() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
-				.xpath(WebAppLocators.ConversationPage.xpathPictureFullscreen));
-		pictureFullscreen.click();
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries));
+		lastPicture.click();
 	}
 
-	public boolean isPictureInFullscreen() throws Exception {
+	public boolean isPictureInModalDialog() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.xpath(WebAppLocators.ConversationPage.xpathPictureIsFullscreen));
+						By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
+	}
+
+	public boolean isPictureNotInModalDialog() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorDissapears(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
 	}
 
 	public void clickXButton() throws Exception {
@@ -415,7 +444,14 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void clickOnBlackBorder() throws Exception {
-		blackBorder.click();
+		if (WebAppExecutionContext.getBrowser()
+				.equals(Browser.InternetExplorer)) {
+			Actions builder = new Actions(getDriver());
+			builder.moveToElement(fullscreenImage, -10, -10).click().build()
+					.perform();
+		} else {
+			blackBorder.click();
+		}
 	}
 
 	public GiphyPage clickGIFButton() throws Exception {
