@@ -9,7 +9,7 @@ import cucumber.api.java.en.Then;
 public class SettingsPageSteps {
 
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-			.getInstance();
+		.getInstance();
 
 	private SettingsPage getSettingsPage() throws Exception {
 		return (SettingsPage) pagesCollection.getPage(SettingsPage.class);
@@ -25,7 +25,7 @@ public class SettingsPageSteps {
 	@Then("^I see settings page$")
 	public void ISeeSettingsPage() throws Throwable {
 		Assert.assertTrue("Settings page is not visible", getSettingsPage()
-				.isSettingsPageVisible());
+			.isSettingsPageVisible());
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class SettingsPageSteps {
 	public void ISeeSettingsChangePassword() throws Throwable {
 		Assert.assertTrue(getSettingsPage().isChangePasswordVisible());
 	}
-	
+
 	/**
 	 * Navigates to the spotify login page in the settings
 	 * 
@@ -52,7 +52,7 @@ public class SettingsPageSteps {
 		getSettingsPage().clickServicesButton();
 		getSettingsPage().clickConnectWithSpotifyButton();
 	}
-	
+
 	/**
 	 * 
 	 * 
@@ -61,11 +61,11 @@ public class SettingsPageSteps {
 	 * @throws Throwable
 	 */
 	@Then("^I input (.*) and (.*) into the spotify login page$")
-	public void IClickOnLogIntoSpotify(String username, String password) throws Throwable {
+	public void IClickOnLogIntoSpotify(String username, String password)
+		throws Throwable {
 		getSettingsPage().enterSpotifyCredentials(username, password);
 	}
-	
-	
+
 	/**
 	 * 
 	 * 
