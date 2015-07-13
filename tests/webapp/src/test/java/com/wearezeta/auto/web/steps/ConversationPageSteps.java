@@ -641,6 +641,8 @@ public class ConversationPageSteps {
 		if (doNot == null) {
 			Assert.assertTrue(PagesCollection.conversationPage
 					.isPictureInModalDialog());
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isPictureInFullscreen());
 			assertThat("Overlap score of image comparsion",
 					PagesCollection.conversationPage
 							.getOverlapScoreOfFullscreenImage(pictureName),

@@ -432,6 +432,13 @@ public class ConversationPage extends WebPage {
 						By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
 	}
 
+	public boolean isPictureInFullscreen() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssFullscreenImage));
+	}
+
 	public boolean isPictureNotInModalDialog() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorDissapears(
@@ -515,4 +522,5 @@ public class ConversationPage extends WebPage {
 	public String getPingButtonToolTip() {
 		return pingButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
+
 }
