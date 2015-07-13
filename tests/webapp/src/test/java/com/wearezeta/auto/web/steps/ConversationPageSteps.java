@@ -284,8 +284,9 @@ public class ConversationPageSteps {
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);
 		parts.addAll(CommonSteps.splitAliases(contacts));
-		Assert.assertTrue(PagesCollection.conversationPage
-				.isActionMessageSent(parts));
+		assertThat("Check action",
+				PagesCollection.conversationPage.getLastActionMessage(),
+				containsString(message));
 	}
 
 	/**
