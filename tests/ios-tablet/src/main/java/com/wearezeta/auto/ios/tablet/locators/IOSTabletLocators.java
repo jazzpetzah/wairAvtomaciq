@@ -11,6 +11,7 @@ public final class IOSTabletLocators {
 	
 	public static final class TabletPendingUserPopoverPage {
 		public static final String xpathUserName = "//UIAPopover/UIAStaticText[contains(@name, '%s')]";
+		public static final String xpathConnectButton = "//UIAPopover/UIAButton[@name='CONNECT']";
 	}
 	
 	public static final class TabletPeoplePickerPage{

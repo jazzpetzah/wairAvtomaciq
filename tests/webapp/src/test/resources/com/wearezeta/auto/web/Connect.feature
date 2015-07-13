@@ -74,6 +74,7 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
+    And I open conversation with <Name2>
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -94,10 +95,10 @@ Feature: Connect
     And I see my avatar on top of Contact list
     Then I see Contact list with name <Name2>
     And I open conversation with <Name2>
-    And I see <Message> action for <Name2> in conversation
+    And I see <Action> action for <Name2> in conversation
 
     Examples: 
-      | Login      | Login2     | Password      | Password2     | Name      | Name2     | Message      |
+      | Login      | Login2     | Password      | Password2     | Name      | Name2     | Action       |
       | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name | CONNECTED TO |
 
   @regression @id1553
@@ -116,6 +117,7 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     And I see Contact list with name <Name2>
+    And I open conversation with <Name2>
     And I open self profile
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
@@ -329,7 +331,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
-  @staging @id2748
+  @regression @id2748
   Scenario Outline: Verify you get auto-connected to people while being logged-in
     Given There is 2 user where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status

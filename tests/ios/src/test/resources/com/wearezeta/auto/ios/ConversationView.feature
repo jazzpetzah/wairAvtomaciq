@@ -9,8 +9,8 @@ Feature: Conversation View
     And I tap on contact name <Contact>
     And I see dialog page
     Then I see TAPORSLIDE text
-    
-    Examples:
+
+    Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
 
@@ -85,15 +85,13 @@ Feature: Conversation View
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent long message to conversation <Contact>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type and send long message and media link <SoundCloudLink>
-    And I wait for 5 seconds
-    And I return to the chat list
-    And I tap on contact name <Contact>
-    And I scroll to the end of the conversation
+    And I tap on text input
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -112,15 +110,14 @@ Feature: Conversation View
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent long message to conversation <Contact>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type and send long message and media link <SoundCloudLink>
-    And I return to the chat list
-    And I tap on contact name <Contact>
-    And I scroll to the end of the conversation
-    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap on text input
+    And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I tap on the media bar
@@ -134,14 +131,13 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent long message to conversation <Contact>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type and send long message and media link <SoundCloudLink>
-    And I return to the chat list
-    And I tap on contact name <Contact>
-    And I scroll to the end of the conversation
+    And I tap on text input
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -400,23 +396,24 @@ Feature: Conversation View
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation - SoundCloud
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Name> sent long message to conversation <Contact1>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact1>
+    Given User <Name> sent long message to conversation <Contact2>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact2>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I type and send long message and media link <SoundCloudLink>
+    And I tap on text input
     And I see media link <SoundCloudLink> and media in dialog
-    And I return to the chat list
-    And I tap on contact name <Contact1>
     And I tap media link
     And I swipe right on Dialog page
     And I see play/pause button next to username <Contact1> in contact list
     And I tap play/pause button in contact list next to username <Contact1>
     And I tap on contact name <Contact2>
-    And I type and send long message and media link <SoundCloudLink>
+    And I see dialog page
+    And I tap on text input
     And I see media link <SoundCloudLink> and media in dialog
-    And I return to the chat list
-    And I tap on contact name <Contact2>
     And I tap media link
     And I return to the chat list
     And I see play/pause button next to username <Contact2> in contact list
@@ -443,11 +440,11 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
-      
+
   @staging @id1480
   Scenario Outline: Rotate image in fullscreen mode
-  	Given There are 2 users where <Name> is me
-  	Given User <Contact> change name to <NewName>
+    Given There are 2 users where <Name> is me
+    Given User <Contact> change name to <NewName>
     Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -458,12 +455,13 @@ Feature: Conversation View
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
-    Then I rotate image in fullscreen mode
-    
+    And I rotate UI to landscape
+    Then I see image rotated in fullscreen mode
+
     Examples: 
-      | Name      | Contact   | Picture     | Color       | NewName          |
-      | user1Name | user2Name | testing.jpg | BrightOrange| RotateFullscreen |
-      
+      | Name      | Contact   | Picture     | Color        | NewName          |
+      | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
+
   @regression @id2124
   Scenario Outline: Verify archiving conversation from ellipsis menu
     Given There are 2 users where <Name> is me
@@ -482,7 +480,7 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-      
+
   @regression @id2132
   Scenario Outline: Verify displaying chathead when another conversation is opened
     Given There are 3 users where <Name> is me
@@ -494,15 +492,13 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>
-    Then I see chathead of contact <Contact2> 
+    Then I see chathead of contact <Contact2>
     And I wait for 5 seconds
     Then I do not see chathead of contact <Contact2>
 
-    
     Examples: 
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
- 
 
   @regression @id1476
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
@@ -527,11 +523,11 @@ Feature: Conversation View
     And I tap play/pause button in contact list next to username <Contact>
     And I tap on contact name <Contact>
     Then I see media is playing
-    
+
     Examples: 
-      | Name      | Contact   | SoundCloudLink |
+      | Name      | Contact   | SoundCloudLink                                                            |
       | user1Name | user2Name | https://soundcloud.com/isabella-emanuelsson/david-guetta-she-wolf-falling |
-      
+
   @smoke @id2762
   Scenario Outline: Receive message from contact
     Given There are 2 users where <Name> is me
@@ -559,11 +555,11 @@ Feature: Conversation View
     Then I see new photo in the dialog
 
     Examples: 
-      | Name      | Contact   | Picture | ConversationType | 
-      | user1Name | user2Name | testing.jpg | single user | 
-  
-    @staging @id2977
-    Scenario Outline: Verify I can send gif from preview
+      | Name      | Contact   | Picture     | ConversationType |
+      | user1Name | user2Name | testing.jpg | single user      |
+
+  @staging @id2977
+  Scenario Outline: Verify I can send gif from preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -578,6 +574,5 @@ Feature: Conversation View
     Then I see new photo in the dialog
 
     Examples: 
-      | Name      | Contact   |  GiphyTag    |
-      | user1Name | user2Name |  Happy       |
-  
+      | Name      | Contact   | GiphyTag |
+      | user1Name | user2Name | Happy    |

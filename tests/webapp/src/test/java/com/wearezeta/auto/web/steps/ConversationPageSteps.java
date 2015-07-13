@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
@@ -29,6 +30,10 @@ public class ConversationPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	private static final String TOOLTIP_PING = "Ping";
+	private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + G)";
+	private static final String SHORTCUT_PING_MAC = "(⌘⌥G)";
+
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
 			.getLog(ConversationPageSteps.class.getSimpleName());
@@ -39,7 +44,7 @@ public class ConversationPageSteps {
 	 * Sends random message (generated GUID) into opened conversation
 	 *
 	 * @step. ^I write random message$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I write random message$")
 	public void WhenIWriteRandomMessage() throws Exception {
@@ -54,7 +59,7 @@ public class ConversationPageSteps {
 	 *
 	 * @param message
 	 *            text message
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I write message (.*)$")
 	public void IWriteMessage(String message) throws Exception {
@@ -62,13 +67,14 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Types x number of new lines to opened conversation, but does not send them
+	 * Types x number of new lines to opened conversation, but does not send
+	 * them
 	 *
 	 * @step. ^I write (.*) new lines$
 	 *
 	 * @param message
 	 *            text message
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I write (\\d+) new lines$")
 	public void IWriteXNewLines(int amount) throws Exception {
@@ -671,5 +677,72 @@ public class ConversationPageSteps {
 	@Then("^I see sent gif in the conversation view$")
 	public void ISeeSentGifInTheConversationView() throws Throwable {
 		PagesCollection.conversationPage.isGifVisible();
+	}
+
+	/**
+	 * Verify that the input text field contains message X
+	 * 
+	 * @param message
+	 *            the message it should contain
+	 */
+	@Then("^I verify that message (.*) was cached$")
+	public void IVerifyThatMessageWasCached(String message) {
+		assertThat("Cached message in input field",
+				PagesCollection.conversationPage.getMessageFromInputField(),
+				equalTo(message));
+	}
+
+	/**
+	 * Types shortcut combination to open search
+	 * 
+	 * @step. ^I type shortcut combination to open search$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to open search$")
+	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.conversationPage
+				.pressShortCutForSearch();
+	}
+
+	/**
+	 * Hovers ping button
+	 * 
+	 * @step. ^I hover ping button$
+	 * @throws Exception
+	 */
+	@Then("^I hover ping button$")
+	public void IHoverPingButton() throws Exception {
+		PagesCollection.conversationPage.hoverPingButton();
+	}
+
+	/**
+	 * Types shortcut combination to ping
+	 * 
+	 * @step. ^I type shortcut combination to ping$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to ping$")
+	public void ITypeShortcutCombinationToPing() throws Exception {
+		PagesCollection.conversationPage.pressShortCutForPing();
+	}
+
+	/**
+	 * Verifies whether ping button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct ping button tool tip$
+	 *
+	 */
+	@Then("^I see correct ping button tooltip$")
+	public void ISeeCorrectPingButtonTooltip() {
+
+		String tooltip = TOOLTIP_PING + " ";
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			tooltip = tooltip + SHORTCUT_PING_WIN;
+		} else {
+			tooltip = tooltip + SHORTCUT_PING_MAC;
+		}
+		assertThat("Ping button tooltip",
+				PagesCollection.conversationPage.getPingButtonToolTip(),
+				equalTo(tooltip));
 	}
 }

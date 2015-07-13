@@ -392,6 +392,14 @@ public final class BackendAPIWrappers {
 		}
 	}
 
+	public static void sendPictureToChatById(ClientUser userFrom,
+			String chatId, InputStream src) throws Exception {
+		userFrom = tryLoginByUser(userFrom);
+		byte[] srcImageAsByteArray = IOUtils.toByteArray(src);
+		BackendREST.sendPicture(generateAuthToken(userFrom), chatId,
+				srcImageAsByteArray, guessMimeType(src));
+	}
+
 	public static void sendPictureToChatByName(ClientUser userFrom,
 			String chatName, InputStream src) throws Exception {
 		userFrom = tryLoginByUser(userFrom);
@@ -731,7 +739,7 @@ public final class BackendAPIWrappers {
 				convId, refId);
 	}
 
-	private static JSONArray getConversations(ClientUser user) throws Exception {
+	public static JSONArray getConversations(ClientUser user) throws Exception {
 		JSONObject conversationsInfo = null;
 		int tryNum = 0;
 		while (tryNum < MAX_BACKEND_RETRIES) {

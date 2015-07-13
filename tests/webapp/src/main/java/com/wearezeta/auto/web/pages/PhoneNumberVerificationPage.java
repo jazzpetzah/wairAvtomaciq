@@ -44,7 +44,7 @@ public class PhoneNumberVerificationPage extends WebPage {
 		DriverUtils
 				.waitUntilLocatorAppears(
 						getDriver(),
-						By.xpath(WebAppLocators.PhoneNumberVerificationPage.cssErrorMessage));
+						By.cssSelector(WebAppLocators.PhoneNumberVerificationPage.cssErrorMessage));
 		return errorMessage.getText();
 	}
 }
