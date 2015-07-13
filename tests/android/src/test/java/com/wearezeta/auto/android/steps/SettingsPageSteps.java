@@ -60,7 +60,7 @@ public class SettingsPageSteps {
 	 * Navigates the spotify web view and fills it out with the provided
 	 * credentials
 	 * 
-	 * @step. ^I click Log into Spotify$
+	 * @step. ^I input (.*) and (.*) into the spotify login page$
 	 * 
 	 * @throws Throwable
 	 */
