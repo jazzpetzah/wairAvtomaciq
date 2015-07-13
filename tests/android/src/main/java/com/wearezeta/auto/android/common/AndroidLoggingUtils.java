@@ -7,15 +7,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -59,14 +62,19 @@ public final class AndroidLoggingUtils {
 						try {
 							return CommonUtils.executeOsXCommandWithOutput(cmd);
 						} catch (Exception e) {
-							log.error(e.getMessage());
-							// Throwables.propagate(e);
+							Throwables.propagate(e);
 							return "";
 						}
 					}
 				});
-		final String[] allLogLines = logOutput.get(LOG_READ_TIMEOUT_SECONDS,
-				TimeUnit.SECONDS).split("\n");
+		String[] allLogLines = new String[] {};
+		try {
+			allLogLines = logOutput.get(LOG_READ_TIMEOUT_SECONDS,
+					TimeUnit.SECONDS).split("\n");
+		} catch (TimeoutException | ExecutionException e) {
+			log.error(e.getMessage());
+			return;
+		}
 		final SimpleDateFormat sdf = new SimpleDateFormat(
 				"yyyy-MM-dd HH:mm:ss.SSS");
 		final Pattern pattern = Pattern
