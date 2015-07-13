@@ -28,7 +28,7 @@ public class SettingsPage extends AndroidPage {
 	// Elements in the web view need to be clicked by percentage
 	private static final int percentageToSpotifyLoginButton = 38;
 	private static final int percentageToSpotifyUsernameField = 37;
-	private static final int percentageToSpotifyPasswordField = 45;
+	private static final int percentageToSpotifyPasswordField = 84;
 	private static final int percentageToSpotifyConfirmLogin = 65;
 
 	private static final String xpathSettingPageTitle = "//*[@id='title' and @value='Settings']";
@@ -57,22 +57,28 @@ public class SettingsPage extends AndroidPage {
 		connectToSpotifyButton.click();
 	}
 
-	public void enterSpotifyCredentials(String username, String password)
-		throws Exception {
+	public void openSpotifyLoginFields() throws Exception {
 		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 			By.id(idSpotifyWebView));
 		DriverUtils.tapOnPercentOfElement(getDriver(), spotifyWebView, 50,
 			percentageToSpotifyLoginButton);
+	}
 
+	public void enterSpotifyUsername(String username) throws Exception {
+		DriverUtils.tapOnPercentOfElement(getDriver(), spotifyWebView, 50,
+			percentageToSpotifyUsernameField);
 		AndroidCommonUtils.type(username);
+	}
 
+	public void enterSpotifyPassword(String password) throws Exception {
 		DriverUtils.tapOnPercentOfElement(getDriver(), spotifyWebView, 50,
 			percentageToSpotifyPasswordField);
-
 		AndroidCommonUtils.type(password);
+	}
 
+	public void navigateBackToSettingsScreen() throws Exception {
+		// hides keyboard
 		AndroidCommonUtils.tapBackButton();
-
 		DriverUtils.tapOnPercentOfElement(getDriver(), spotifyWebView, 50,
 			percentageToSpotifyConfirmLogin);
 	}

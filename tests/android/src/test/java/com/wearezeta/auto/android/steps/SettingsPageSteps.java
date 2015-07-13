@@ -1,8 +1,11 @@
 package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
+import org.openqa.selenium.By;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.SettingsPage;
+import com.wearezeta.auto.common.driver.DriverUtils;
 
 import cucumber.api.java.en.Then;
 
@@ -54,7 +57,8 @@ public class SettingsPageSteps {
 	}
 
 	/**
-	 * 
+	 * Navigates the spotify web view and fills it out with the provided
+	 * credentials
 	 * 
 	 * @step. ^I click Log into Spotify$
 	 * 
@@ -63,13 +67,19 @@ public class SettingsPageSteps {
 	@Then("^I input (.*) and (.*) into the spotify login page$")
 	public void IClickOnLogIntoSpotify(String username, String password)
 		throws Throwable {
-		getSettingsPage().enterSpotifyCredentials(username, password);
+		SettingsPage settingsPage = getSettingsPage();
+
+		settingsPage.openSpotifyLoginFields();
+		settingsPage.enterSpotifyUsername(username);
+		settingsPage.enterSpotifyPassword(password);
+		settingsPage.navigateBackToSettingsScreen();
 	}
 
 	/**
+	 * Checks to see that the "Connect to Spotify" button has changed to
+	 * "Disconnect from Spotify"
 	 * 
-	 * 
-	 * @step. ^I click Log into Spotify$
+	 * @step. ^I see that I am connected to spotify$
 	 * 
 	 * @throws Throwable
 	 */
