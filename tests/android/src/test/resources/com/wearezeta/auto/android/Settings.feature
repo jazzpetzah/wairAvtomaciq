@@ -48,3 +48,23 @@ Feature: Settings
     Examples: 
       | Name      |
       | user1Name |
+
+  @id3006 @staging @torun
+  Scenario Outline: I can sign into spotify using my premium account
+    Given My device runs Android <TargetDeviceVersion> or higher
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on my avatar
+    And I tap options button
+    And I tap settings button
+    And I wait for 2 seconds
+    Then I see settings page
+    And I navigate to the spotify login page
+    And I input <SpotifyUsername> and <SpotifyPassword> into the spotify login page
+    Then I see that I am connected to spotify
+
+    Examples: 
+      | TargetDeviceVersion | Name      | Contact1  | SpotifyUsername | SpotifyPassword |
+      | 5.0                 | user1Name | user2Name | smoketester-gb  | aqa123456       |

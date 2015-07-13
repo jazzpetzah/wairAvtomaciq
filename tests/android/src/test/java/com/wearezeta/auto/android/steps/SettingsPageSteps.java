@@ -39,4 +39,42 @@ public class SettingsPageSteps {
 	public void ISeeSettingsChangePassword() throws Throwable {
 		Assert.assertTrue(getSettingsPage().isChangePasswordVisible());
 	}
+	
+	/**
+	 * Navigates to the spotify login page in the settings
+	 * 
+	 * @step. ^I navigate to the spotify login page$
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I navigate to the spotify login page$")
+	public void IClickTheServicesButton() throws Throwable {
+		getSettingsPage().clickServicesButton();
+		getSettingsPage().clickConnectWithSpotifyButton();
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @step. ^I click Log into Spotify$
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I input (.*) and (.*) into the spotify login page$")
+	public void IClickOnLogIntoSpotify(String username, String password) throws Throwable {
+		getSettingsPage().enterSpotifyCredentials(username, password);
+	}
+	
+	
+	/**
+	 * 
+	 * 
+	 * @step. ^I click Log into Spotify$
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I see that I am connected to spotify$")
+	public void ISeeIAmConnectedToSpotify() throws Throwable {
+		Assert.assertTrue(getSettingsPage().doesSpotifyOptionSayDisconnect());
+	}
 }

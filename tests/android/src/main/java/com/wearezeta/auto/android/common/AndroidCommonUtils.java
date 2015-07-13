@@ -22,7 +22,7 @@ import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 
 public class AndroidCommonUtils extends CommonUtils {
 	private static final Logger log = ZetaLogger
-			.getLog(AndroidCommonUtils.class.getSimpleName());
+		.getLog(AndroidCommonUtils.class.getSimpleName());
 
 	private static final String stagingBackend = "[\"https://staging-nginz-https.zinfra.io\", \"https://staging-nginz-ssl.zinfra.io/await\", \"1003090516085\"]";
 	private static final String edgeBackend = "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"1003090516085\"]";
@@ -32,21 +32,22 @@ public class AndroidCommonUtils extends CommonUtils {
 	private static final String BACKEND_FILE_LOCATION = "/mnt/sdcard/customBackend.json";
 
 	public static final String ADB_PREFIX = "";
-//	public static final String ADB_PREFIX = "/Applications/android-sdk/platform-tools/";
+	// public static final String ADB_PREFIX =
+	// "/Applications/android-sdk/platform-tools/";
 
 	private static ArrayList<String> addressBookAddedNames = new ArrayList<String>();
 
 	private static void executeAdb(final String cmdline) throws Exception {
 		executeOsXCommand(new String[] { "/bin/bash", "-c",
-				ADB_PREFIX + "adb " + cmdline });
+			ADB_PREFIX + "adb " + cmdline });
 	}
 
 	public static void uploadPhotoToAndroid(String photoPathOnDevice)
-			throws Exception {
+		throws Exception {
 		executeAdb(String.format("push %s %s", getImagePath(CommonUtils.class),
-				photoPathOnDevice));
+			photoPathOnDevice));
 		executeAdb("shell \"am broadcast -a android.intent.action.MEDIA_MOUNTED -d "
-				+ "file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
+			+ "file:///sdcard \"Broadcasting: Intent { act=android.intent.action.MEDIA_MOUNTED dat=file:///sdcard }");
 	}
 
 	public static void openGalleryApplication() throws Exception {
@@ -67,9 +68,9 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 
 	public static void copyFileFromAndroid(String filePathOnSystem,
-			String filePathOnDevice) throws Exception {
+		String filePathOnDevice) throws Exception {
 		executeAdb(String.format("pull %s %s", filePathOnDevice,
-				filePathOnSystem));
+			filePathOnSystem));
 	}
 
 	public static void disableHints() throws Exception {
@@ -85,15 +86,15 @@ public class AndroidCommonUtils extends CommonUtils {
 
 		String adbCommand = ADB_PREFIX + "adb " + cmdLine;
 		final Process process = Runtime.getRuntime().exec(
-				new String[] { "/bin/bash", "-c", adbCommand });
+			new String[] { "/bin/bash", "-c", adbCommand });
 		if (process == null) {
 			throw new RuntimeException(String.format(
-					"Failed to execute command line '%s'", cmdLine));
+				"Failed to execute command line '%s'", cmdLine));
 		}
 		BufferedReader in = null;
 		try {
 			in = new BufferedReader(new InputStreamReader(
-					process.getInputStream()));
+				process.getInputStream()));
 			String s;
 			while ((s = in.readLine()) != null) {
 				result = s + "\n";
@@ -113,7 +114,7 @@ public class AndroidCommonUtils extends CommonUtils {
 		BufferedReader bufferedReader = null;
 		try {
 			File file = new File(
-					getAndroidClientInfoPathFromConfig(AndroidCommonUtils.class));
+				getAndroidClientInfoPathFromConfig(AndroidCommonUtils.class));
 			bufferedReader = new BufferedReader(new FileReader(file));
 			String s;
 			Pattern pattern = Pattern.compile("zMessaging ([0-9\\.]*)");
@@ -127,7 +128,7 @@ public class AndroidCommonUtils extends CommonUtils {
 			}
 		} catch (Exception ex) {
 			log.error("Failed to read Android client properties.\n"
-					+ ex.getMessage());
+				+ ex.getMessage());
 		} finally {
 			if (bufferedReader != null)
 				bufferedReader.close();
@@ -136,14 +137,14 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 
 	private static String getPropertyFromAdb(String propertyName)
-			throws Exception {
+		throws Exception {
 		return getAdbOutput(String.format("shell getprop %s", propertyName));
 	}
 
 	public static String readClientVersionFromAdb() throws Exception {
 		final String output = getAdbOutput(String.format(
-				"shell dumpsys package %s | grep versionName", CommonUtils
-						.getAndroidPackageFromConfig(AndroidCommonUtils.class)));
+			"shell dumpsys package %s | grep versionName",
+			CommonUtils.getAndroidPackageFromConfig(AndroidCommonUtils.class)));
 		if (output.contains("=")) {
 			return output.substring(output.indexOf("="), output.length());
 		} else {
@@ -169,7 +170,7 @@ public class AndroidCommonUtils extends CommonUtils {
 			return false;
 		} else if (output.contains("Wi-Fi is enabled")) {
 			final Pattern pattern = Pattern
-					.compile("mNetworkInfo (NetworkInfo: |\\[)?type: [^,]*, state: ([^,]*),");
+				.compile("mNetworkInfo (NetworkInfo: |\\[)?type: [^,]*, state: ([^,]*),");
 			final Matcher matcher = pattern.matcher(output);
 			String state = "no info";
 			while (matcher.find()) {
@@ -189,38 +190,38 @@ public class AndroidCommonUtils extends CommonUtils {
 		String os = "Android";
 		String osBuild = getPropertyFromAdb("ro.build.version.release");
 		String deviceName = capitalizeManufacturerName(getPropertyFromAdb("ro.product.manufacturer"))
-				+ " " + getPropertyFromAdb("ro.product.model");
+			+ " " + getPropertyFromAdb("ro.product.model");
 		String gsmNetworkType = getPropertyFromAdb("gsm.network.type");
 		Boolean isWifiEnabled = isWifiEnabled();
 
 		return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType,
-				isWifiEnabled);
+			isWifiEnabled);
 	}
 
 	public static String getRxLogResourceFilePathFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return CommonUtils.getValueFromConfig(c, "resourceFilePath");
 	}
 
 	public static String getRxLogResultsPathFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return CommonUtils.getValueFromConfig(c, "resultsPath");
 	}
 
 	public static String getAndroidClientInfoPathFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return CommonUtils.getValueFromConfig(c, "androidClientInfoPath");
 	}
 
 	public static String getAndroidAppiumLogPathFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return CommonUtils.getValueFromConfig(c, "androidAppiumLogPath");
 	}
 
 	public static String getAndroidAddressBookMailAccountFromConfig(Class<?> c)
-			throws Exception {
+		throws Exception {
 		return CommonUtils.getValueFromConfig(c,
-				"androidAddressBookMailAccount");
+			"androidAddressBookMailAccount");
 	}
 
 	public static void deployBackendFile(String fileName) throws Exception {
@@ -228,7 +229,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 
 	public static String createBackendJSON(String bt)
-			throws FileNotFoundException, UnsupportedEncodingException {
+		throws FileNotFoundException, UnsupportedEncodingException {
 		File file = new File(BACKEND_JSON);
 		if (file.exists()) {
 			FileUtils.deleteQuietly(file);
@@ -270,9 +271,9 @@ public class AndroidCommonUtils extends CommonUtils {
 	 * @throws Exception
 	 */
 	public static void switchToApplication(String packageId, String mainActivity)
-			throws Exception {
+		throws Exception {
 		executeAdb(String.format("shell am start -n %s/%s", packageId,
-				mainActivity));
+			mainActivity));
 	}
 
 	public static void rotateLanscape() throws Exception {
@@ -298,15 +299,15 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 
 	public static int insertNewContactForMailAccountInAddressBook(String email)
-			throws Exception {
+		throws Exception {
 		executeAdb(String.format("shell content insert "
-				+ "--uri content://com.android.contacts/raw_contacts "
-				+ "--bind account_type:s:com.google "
-				+ "--bind account_name:s:%s", email));
+			+ "--uri content://com.android.contacts/raw_contacts "
+			+ "--bind account_type:s:com.google " + "--bind account_name:s:%s",
+			email));
 
 		String idsList = getAdbOutput("shell content query "
-				+ "--uri content://com.android.contacts/raw_contacts "
-				+ "--projection _id");
+			+ "--uri content://com.android.contacts/raw_contacts "
+			+ "--projection _id");
 		Pattern pattern = Pattern.compile("_id=(\\d+)");
 		Matcher matcher = pattern.matcher(idsList);
 		int value = 0;
@@ -320,42 +321,42 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 
 	public static void insertPhoneNumberForContactInAddressBook(int id,
-			String phone) throws Exception {
+		String phone) throws Exception {
 		executeAdb(String.format("shell content insert "
-				+ "--uri content://com.android.contacts/data "
-				+ "--bind raw_contact_id:i:%s "
-				+ "--bind mimetype:s:vnd.android.cursor.item/phone_v2 "
-				+ "--bind data1:s:%s", id, phone));
+			+ "--uri content://com.android.contacts/data "
+			+ "--bind raw_contact_id:i:%s "
+			+ "--bind mimetype:s:vnd.android.cursor.item/phone_v2 "
+			+ "--bind data1:s:%s", id, phone));
 	}
 
 	public static void insertNameForContactInAddressBook(int id, String name)
-			throws Exception {
+		throws Exception {
 		executeAdb(String.format("shell content insert "
-				+ "--uri content://com.android.contacts/data "
-				+ "--bind raw_contact_id:i:%s "
-				+ "--bind mimetype:s:vnd.android.cursor.item/name "
-				+ "--bind data1:s:'%s'", id, name));
+			+ "--uri content://com.android.contacts/data "
+			+ "--bind raw_contact_id:i:%s "
+			+ "--bind mimetype:s:vnd.android.cursor.item/name "
+			+ "--bind data1:s:'%s'", id, name));
 	}
 
 	public static void insertEmailForContactInAddressBook(int id, String email)
-			throws Exception {
+		throws Exception {
 		executeAdb(String.format("shell content insert "
-				+ "--uri content://com.android.contacts/data "
-				+ "--bind raw_contact_id:i:%s "
-				+ "--bind mimetype:s:vnd.android.cursor.item/email_v2 "
-				+ "--bind data1:s:'%s'", id, email));
+			+ "--uri content://com.android.contacts/data "
+			+ "--bind raw_contact_id:i:%s "
+			+ "--bind mimetype:s:vnd.android.cursor.item/email_v2 "
+			+ "--bind data1:s:'%s'", id, email));
 	}
 
 	public static void removeAddressBookContactWithName(String name)
-			throws Exception {
+		throws Exception {
 		executeAdb(String.format("shell content delete "
-				+ "--uri content://com.android.contacts/raw_contacts "
-				+ "--where \"display_name='%s'\"", name));
+			+ "--uri content://com.android.contacts/raw_contacts "
+			+ "--where \"display_name='%s'\"", name));
 	}
 
 	public static void cleanAddressBook() throws Exception {
 		executeAdb("shell content delete "
-				+ "--uri content://com.android.contacts/raw_contacts");
+			+ "--uri content://com.android.contacts/raw_contacts");
 	}
 
 	public static void removeTestContactsFromAddressBook() throws Exception {
@@ -370,18 +371,18 @@ public class AndroidCommonUtils extends CommonUtils {
 		final String USER_WITH_PHONE_NAME = "Dorothy";
 		final String USER_WITH_PHONE_PHONE = "+491705027882";
 		int id = AndroidCommonUtils
-				.insertNewContactForMailAccountInAddressBook(getAndroidAddressBookMailAccountFromConfig(AndroidCommonUtils.class));
+			.insertNewContactForMailAccountInAddressBook(getAndroidAddressBookMailAccountFromConfig(AndroidCommonUtils.class));
 		AndroidCommonUtils.insertNameForContactInAddressBook(id,
-				USER_WITH_EMAIL_NAME);
+			USER_WITH_EMAIL_NAME);
 		AndroidCommonUtils.insertEmailForContactInAddressBook(id,
-				USER_WITH_EMAIL_EMAIL);
+			USER_WITH_EMAIL_EMAIL);
 		addressBookAddedNames.add(USER_WITH_EMAIL_NAME);
 		id = AndroidCommonUtils
-				.insertNewContactForMailAccountInAddressBook(getAndroidAddressBookMailAccountFromConfig(AndroidCommonUtils.class));
+			.insertNewContactForMailAccountInAddressBook(getAndroidAddressBookMailAccountFromConfig(AndroidCommonUtils.class));
 		AndroidCommonUtils.insertNameForContactInAddressBook(id,
-				USER_WITH_PHONE_NAME);
+			USER_WITH_PHONE_NAME);
 		AndroidCommonUtils.insertPhoneNumberForContactInAddressBook(id,
-				USER_WITH_PHONE_PHONE);
+			USER_WITH_PHONE_PHONE);
 		addressBookAddedNames.add(USER_WITH_PHONE_NAME);
 	}
 
@@ -391,5 +392,26 @@ public class AndroidCommonUtils extends CommonUtils {
 		double densityIndependentPixels = 160; // the number of dp in a screen
 												// is constant
 		return screenPixels / densityIndependentPixels;
+	}
+
+	public static void type(String message) throws Exception {
+		executeAdb("shell input text " + message);
+	}
+
+	/**
+	 * Compares the Android of the plugged-in device with the input (target)
+	 * version that you wish to check for. For exmaple, if you want to check
+	 * that the plugged in device is 4.4 or higher, you need to supply "4.4" as
+	 * the target version
+	 * 
+	 * @param targetVersion
+	 *            the Android version you wish to check for
+	 * @return a negative int, 0, or a positive int if the targetVersion is less
+	 *         than, equal to or greater than the current device's version
+	 * @throws Exception 
+	 */
+	public static int compareAndroidVersion(String targetVersion) throws Exception {
+		String deviceVersion = readDeviceInfo().getOperatingSystemBuild();
+		return deviceVersion.compareTo(targetVersion);
 	}
 }
