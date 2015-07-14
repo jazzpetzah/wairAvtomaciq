@@ -2,12 +2,16 @@ package com.wearezeta.auto.web.pages;
 
 import java.util.Set;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -53,9 +57,18 @@ public class ContactsUploadPage extends WebPage {
 
 	public GoogleLoginPage switchToGooglePopup() throws Exception {
 		WebDriver driver = this.getDriver();
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(driver).withTimeout(
+				DriverUtils.getDefaultLookupTimeoutSeconds(), TimeUnit.SECONDS)
+				.pollingEvery(1, TimeUnit.SECONDS);
+		try {
+			wait.until(drv -> {
+				return (drv.getWindowHandles().size() > 1);
+			});
+		} catch (TimeoutException e) {
+			throw new TimeoutException("No Popup for Google was found", e);
+		}
 		Set<String> handles = driver.getWindowHandles();
 		handles.remove(driver.getWindowHandle());
-		assert handles.size() > 0 : "No Popup for Google was found";
 		driver.switchTo().window(handles.iterator().next());
 		return new GoogleLoginPage(this.getLazyDriver());
 	}
