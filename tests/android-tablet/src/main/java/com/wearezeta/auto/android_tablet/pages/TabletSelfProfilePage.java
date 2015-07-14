@@ -24,7 +24,7 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 			.format("//*[@id='ttv__profile__name' and @value='%s']", content);
 
 	public static final Function<String, String> xpathOptionsMenuItemByName = name -> String
-			.format("//*[@id='ll__settings_box_container']//*[@value='%s']",
+			.format("//*[@id='fl__profile__settings_box']//*[@value='%s']",
 					name.toUpperCase());
 
 	public static final String idOptionsButton = "gtv__profile__settings_button";
