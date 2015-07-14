@@ -134,7 +134,7 @@ public class ContactListPageSteps {
 
 	/**
 	 * Verifies whether the particular ongoing call with given conversation name
-	 * is shown on top of * conversation list
+	 * is shown on top of conversation list
 	 *
 	 * @step. ^I see ongoing call item with name (.*) is shown on top of
 	 *        conversations list$

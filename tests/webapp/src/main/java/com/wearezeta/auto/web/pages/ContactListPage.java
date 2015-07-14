@@ -462,7 +462,7 @@ public class ContactListPage extends WebPage {
 				.waitUntilLocatorAppears(
 						this.getDriver(),
 						By.xpath(WebAppLocators.ContactListPage.xpathOngoingCallListItemWithConvName
-								.apply(convName)), 3);
+								.apply(convName)));
 	}
 
 	public int getItemIndex(String convoName) throws Exception {
