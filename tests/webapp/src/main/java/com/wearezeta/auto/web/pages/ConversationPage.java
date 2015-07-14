@@ -453,7 +453,14 @@ public class ConversationPage extends WebPage {
 			builder.moveToElement(fullscreenImage, -10, -10).click().build()
 					.perform();
 		} else {
-			blackBorder.click();
+			if (WebAppExecutionContext.getBrowser().equals(Browser.Chrome)) {
+				Actions builder = new Actions(getDriver());
+				builder.moveToElement(fullscreenImage, -10, -10).click()
+						.build().perform();
+			} else {
+
+				blackBorder.click();
+			}
 		}
 	}
 
