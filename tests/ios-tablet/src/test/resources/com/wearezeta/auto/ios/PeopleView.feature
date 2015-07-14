@@ -249,3 +249,40 @@ Feature: People View
     Examples: 
       | Name      | Contact2  | ConnectedContact | GroupChatName   |
       | user1Name | user2Name | user3Name        | SingleInfoGroup |
+
+  @staging @id3085
+  Scenario Outline: Verify you cant start 1:1 with unconnected user in group [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given <GroupCreator> is connected to me
+    Given <GroupCreator> is connected to <NonConnectedContact>
+    Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I select user on iPad group popover <NonConnectedContact>
+    Then I see connect to <NonConnectedContact> dialog
+
+    Examples: 
+      | Name      | GroupCreator | NonConnectedContact | GroupChatName |
+      | user1Name | user2Name    | user3Name           | TESTCHAT      |
+
+  @staging @id3086
+  Scenario Outline: Verify you cant start 1:1 with unconnected user in group [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given <GroupCreator> is connected to me
+    Given <GroupCreator> is connected to <NonConnectedContact>
+    Given <GroupCreator> has group chat <GroupChatName> with Myself,<NonConnectedContact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I select user on iPad group popover <NonConnectedContact>
+    Then I see connect to <NonConnectedContact> dialog
+
+    Examples: 
+      | Name      | GroupCreator | NonConnectedContact | GroupChatName |
+      | user1Name | user2Name    | user3Name           | TESTCHAT      |
