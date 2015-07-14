@@ -31,6 +31,7 @@ public final class IOSTabletLocators {
 		public static final String nameOtherUserMetaControllerRightButtoniPadPopover = "OtherUserMetaControllerRightButton";
 		public static final String xpathOtherUserNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAStaticText[2]";
 		public static final String xpathOtherUserEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIATextView[2]";
+		public static final String nameOtherUserMetaControllerLeftButtoniPadPopover = "OtherUserMetaControllerLeftButton";
 		
 	}
 	
