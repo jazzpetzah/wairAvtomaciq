@@ -575,6 +575,7 @@ public class AndroidPerformanceReportGenerator {
 			generationPassed = true;
 		} catch (Exception ex) {
 			log.error("Failed generate reports.\n" + ex.getMessage());
+			ex.printStackTrace();
 		}
 		return generationPassed;
 	}
