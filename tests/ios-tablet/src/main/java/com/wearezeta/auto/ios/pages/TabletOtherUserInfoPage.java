@@ -23,6 +23,9 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage{
 	
 	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletOtherUserInfoPage.xpathOtherUserEmailField)
 	private WebElement emailFieldPopover;
+	
+	@FindBy(how = How.NAME, using = IOSTabletLocators.TabletOtherUserInfoPage.nameOtherUserMetaControllerLeftButtoniPadPopover)
+	private WebElement startDialogiPadButton;
 
 	public TabletOtherUserInfoPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
@@ -47,6 +50,10 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage{
 
 		}
 		return result;
+	}
+	
+	public void clickStartDialogButtonOniPadPopover() throws Exception{
+		startDialogiPadButton.click();
 	}
 
 }

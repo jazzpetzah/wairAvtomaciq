@@ -83,5 +83,14 @@ public class TabletOtherUserInfoPageSteps {
 				"Participant Email is incorrect and/or not displayed",
 				participantEmailTextFieldValue.equalsIgnoreCase(email));
 	}
+	
+	/**
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I tap on other users start dialog button on iPad popover$")
+	public void ITapOnOtherUsersStartDialogButtonOniPadPopover() throws Throwable {
+		getTabletOtherUserInfoPage().clickStartDialogButtonOniPadPopover();
+	}
 
 }
