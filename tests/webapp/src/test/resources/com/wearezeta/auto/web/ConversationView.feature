@@ -154,17 +154,20 @@ Feature: Conversation View
     And I open People Picker from Contact List
     And I type <Contact1> in search field of People Picker
     And I select <Contact1> from People Picker results
+    And I wait for the search field of People Picker to be empty
     And I type <Contact2> in search field of People Picker
     And I select <Contact2> from People Picker results
     And I choose to create conversation from People Picker
     And I open conversation with <Contact1>, <Contact2>
     And I click People button in group conversation
+    And I see Group Participants popover
     When I click Add People button on Group Participants popover
     And I see Add People message on Group Participants popover
     And I confirm add to chat on Group Participants popover
     And I select the first 125 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
+    And I see Group Participants popover
     Then I see 128 participants in the Group Participants popover
     When I click Add People button on Group Participants popover
     And I see Add People message on Group Participants popover
@@ -172,13 +175,14 @@ Feature: Conversation View
     And I select the first 1 participants from Group Participants popover search results
     And I choose to create group conversation from Group Participants popover
     When I click People button in group conversation
+    And I see Group Participants popover
     Then I see 128 participants in the Group Participants popover
 
     Examples: 
       | Login                       | Password   | Contact1   | Contact2   |
       | smoketester+id1688@wire.com | aqa123456! | perf.200.1 | perf.200.2 |
 
-  @id2279 @regression
+  @regression @id2279
   Scenario Outline: Send a long message containing new lines in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -209,13 +213,13 @@ Feature: Conversation View
     And I send picture <PictureName> to the current conversation
     And I see sent picture <PictureName> in the conversation view
     When I click on picture
-    Then I see picture in fullscreen
+    Then I see picture <PictureName> in fullscreen
     When I click x button to close fullscreen mode
-    Then I do not see picture in fullscreen
+    Then I do not see picture <PictureName> in fullscreen
     When I click on picture
-    Then I see picture in fullscreen
+    Then I see picture <PictureName> in fullscreen
     When I click on black border to close fullscreen mode
-    Then I do not see picture in fullscreen
+    Then I do not see picture <PictureName> in fullscreen
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PictureName               |
@@ -242,3 +246,52 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     |
       | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com |
+
+  @id3018 @staging
+  Scenario Outline: Verify that typed-in messages are not lost
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I write message <Message>
+    And I refresh page
+    And I wait for 5 seconds
+    Then I verify that message <Message> was cached
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Message                                  |
+      | user1Email | user1Password | user1Name | user2Name | All of these Candlejack jokes aren’t fu- |
+
+  @id2992 @staging
+  Scenario Outline: Verify Start (Search) is opened when you press ⌥ ⌘ N (Mac) or alt + ctrl + N (Win)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I type shortcut combination to open search
+    Then I see Search is opened
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @id2993 @staging
+  Scenario Outline: Verify you ping in a conversation when you press alt + ctrl + G (Win)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I hover ping button
+    Then I see correct ping button tooltip
+    When I type shortcut combination to ping
+    Then I see ping message <PING>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | PING   |
+      | user1Email | user1Password | user1Name | user2Name | pinged |

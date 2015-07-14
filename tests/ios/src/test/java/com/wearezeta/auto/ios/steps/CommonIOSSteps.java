@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
@@ -518,11 +519,11 @@ public class CommonIOSSteps {
 	public void ISwipeLeftInCurrentWindow() throws Exception {
 		pagesCollecton.getCommonPage().swipeLeft(500);
 	}
-	
+
 	/**
 	 * Send message to a conversation
 	 * 
-	 * @step. ^User (.*) sent message (.*) to conversation (.*)
+	 * @step. ^User (.*) sent message (.*) to conversation (.*)$
 	 * @param userFromNameAlias
 	 *            user who want to mute conversation
 	 * @param message
@@ -531,11 +532,29 @@ public class CommonIOSSteps {
 	 *            the name of existing conversation to send the message to
 	 * @throws Exception
 	 */
-	@When("^User (.*) sent message (.*) to conversation (.*)")
+	@When("^User (.*) sent message (.*) to conversation (.*)$")
 	public void UserSentMessageToConversation(String userFromNameAlias,
 			String message, String conversationName) throws Exception {
 		commonSteps.UserSentMessageToConversation(userFromNameAlias,
 				conversationName, message);
 	}
 
+	/**
+	 * Send long message to a conversation
+	 * 
+	 * @step. ^User (.*) sent long message to conversation (.*)$
+	 * 
+	 * @param userFromNameAlias
+	 *            user who want to mute conversation
+	 * @param conversationName
+	 *            the name of existing conversation to send the message to
+	 * 
+	 * @throws Exception
+	 */
+	@When("^User (.*) sent long message to conversation (.*)$")
+	public void UserSentLongMessageToConversation(String userFromNameAlias,
+			String conversationName) throws Exception {
+		UserSentMessageToConversation(userFromNameAlias,
+				IOSConstants.LONG_MESSAGE, conversationName);
+	}
 }

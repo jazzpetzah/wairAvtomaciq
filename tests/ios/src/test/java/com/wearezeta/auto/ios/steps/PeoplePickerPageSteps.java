@@ -263,8 +263,8 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		Assert.assertTrue("User :" + contact
-				+ " is not presented on Pepople picker page",
+		Assert.assertTrue("User: " + contact
+				+ " is not presented on People picker page",
 				getPeoplePickerPage().waitUserPickerFindUser(contact));
 	}
 

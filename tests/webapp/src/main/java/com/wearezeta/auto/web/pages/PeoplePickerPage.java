@@ -3,12 +3,18 @@ package com.wearezeta.auto.web.pages;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
+import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.Wait;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -246,5 +252,22 @@ public class PeoplePickerPage extends WebPage {
 	public boolean isSearchOpened() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.cssSelector(WebAppLocators.PeoplePickerPage.cssSearchField));
+	}
+
+	public boolean waitForSearchFieldToBeEmpty() throws Exception {
+		By locator = By
+				.cssSelector(WebAppLocators.PeoplePickerPage.cssSearchField);
+		Wait<WebDriver> wait = new FluentWait<WebDriver>(getDriver())
+				.withTimeout(DriverUtils.getDefaultLookupTimeoutSeconds(),
+						TimeUnit.SECONDS).pollingEvery(1, TimeUnit.SECONDS)
+				.ignoring(NoSuchElementException.class);
+		return wait.until(drv -> {
+			try {
+				String value = drv.findElement(locator).getAttribute("value");
+				return (value.equals(""));
+			} catch (WebDriverException e) {
+				return true;
+			}
+		});
 	}
 }

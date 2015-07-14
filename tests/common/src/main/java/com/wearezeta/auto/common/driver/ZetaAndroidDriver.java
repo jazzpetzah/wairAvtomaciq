@@ -110,9 +110,9 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			int durationMilliseconds) {
 		String adbCommand = ADB_PREFIX
 				+ "adb shell input touchscreen swipe %d %d %d %d";
-
 		if (lowerThanFourDotThree()) {
 			adbCommand = String.format(adbCommand, startx, starty, endx, endy);
+			getScreenEvent42();
 		} else {
 			adbCommand = String.format(adbCommand + " %d", startx, starty,
 					endx, endy, durationMilliseconds);
@@ -141,7 +141,6 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 							+ "adb shell getprop ro.build.version.release")
 					.getInputStream()).useDelimiter("\\A");
 			result = s.hasNext() ? s.next() : "";
-			log.debug("Detected Android: " + result);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -151,6 +150,31 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			return true;
 		}
 		return false;
+	}
+
+	/*
+	 * Detects touchscreen event to use it in swipe for 4.2
+	 */
+	public static String getScreenEvent42() {
+		Scanner s;
+		String result = null;
+		String adbCommand = ADB_PREFIX + "adb shell getevent -p";
+		try {
+			s = new java.util.Scanner(Runtime.getRuntime()
+					.exec(new String[] { "/bin/bash", "-c", adbCommand })
+					.getInputStream()).useDelimiter("0036").useDelimiter(
+					"add device [0-9]+: ");
+			do {
+				result = s.hasNext() ? s.next() : "";
+			} while (!result.contains("0035"));
+			if (result.contains("0035")) {
+				result = result.split("\n")[0].trim();
+			}
+			log.debug("Detected screen event: " + result);
+		} catch (Exception e) {
+			new Exception(e.getMessage(), e);
+		}
+		return result;
 	}
 
 	@Override
@@ -308,15 +332,14 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					process.getInputStream()));
 			String s;
 			while ((s = in.readLine()) != null) {
-				result = s + "\n";
+				result = result + s + "\n";
 			}
 		} finally {
 			if (in != null) {
 				in.close();
 			}
 		}
-
-		return result.trim();
+		return result;
 	}
 
 	/**
@@ -326,7 +349,9 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	 * @throws Exception
 	 */
 	private SurfaceOrientation getSurfaceOrientation() throws Exception {
-		final String output = getAdbOutput("shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1");
+		final String output = getAdbOutput(
+				"shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1")
+				.trim();
 		return SurfaceOrientation.getByCode(Integer.parseInt(output));
 	}
 

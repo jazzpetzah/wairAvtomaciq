@@ -107,12 +107,11 @@ public class ImageFullScreenPageSteps {
 	/**
 	 * When the image is shown in fullscreen mode, the device gets rotated
 	 * 
-	 * @step. ^I rotate image in fullscreen mode$
+	 * @step. ^I see image rotated in fullscreen mode$
 	 * @throws Exception
 	 */
-	@Then("^I rotate image in fullscreen mode$")
-	public void IRotateImageInFullscreenMode() throws Exception {
-		getImageFullScreenPage().rotateSimulatorLeft();
+	@Then("^I see image rotated in fullscreen mode$")
+	public void ISeeImageRotatedInFullscreenMode() throws Exception {
 		Thread.sleep(2000);
 		referenceImage = getImageFullScreenPage().takeScreenshot().orElseThrow(
 				AssertionError::new);
@@ -125,7 +124,6 @@ public class ImageFullScreenPageSteps {
 				"Overlap between two images has no enough score. Expected >= "
 						+ FULLSCREEN_SCORE + " , current = " + score,
 				score >= FULLSCREEN_SCORE);
-
 	}
 
 }

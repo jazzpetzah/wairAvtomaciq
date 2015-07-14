@@ -158,6 +158,14 @@ public class ImageUtil {
 				+ 1, CvType.CV_32FC1);
 		Imgproc.matchTemplate(gref, gtpl, res, Imgproc.TM_CCOEFF_NORMED);
 
+		/* Uncomment this if you want to see the images
+		try {
+			ImageIO.write(refImage, "png", new File("refImage.png"));
+			ImageIO.write(tplImage, "png", new File("tplImage.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		**/
 		MinMaxLocResult minMaxLocResult = Core.minMaxLoc(res);
 		return minMaxLocResult.maxVal;
 	}

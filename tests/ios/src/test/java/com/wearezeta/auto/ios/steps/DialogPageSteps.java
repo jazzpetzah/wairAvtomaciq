@@ -47,7 +47,6 @@ public class DialogPageSteps {
 	}
 
 	public static String message;
-	private String longMessage = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.";
 
 	private String lastLine = "ea commodo consequat.";
 	private String mediaState;
@@ -80,6 +79,19 @@ public class DialogPageSteps {
 		}
 	}
 
+	/**
+	 * Verify that text input is not allowed
+	 * 
+	 * @step. I see text input in dialog is not allowed
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see text input in dialog is not allowed")
+	public void ISeeTextInputIsNotAllowed() throws Exception {
+		Assert.assertFalse("Text input is allowed", getDialogPage()
+				.isCursorInputVisible());
+	}
+
 	@When("^I type the message$")
 	public void WhenITypeTheMessage() throws Exception {
 		// message = CommonUtils.generateGUID().replace('-', 'x');
@@ -94,7 +106,7 @@ public class DialogPageSteps {
 
 	@When("I paste long text to input")
 	public void IPasteLongTextToInput() throws Throwable {
-		getDialogPage().pasteTextToInput(longMessage);
+		getDialogPage().pasteTextToInput(IOSConstants.LONG_MESSAGE);
 	}
 
 	@When("^I multi tap on text input$")
@@ -237,7 +249,7 @@ public class DialogPageSteps {
 		String dialogLastMessage = getDialogPage().getLastMessageFromDialog();
 		Assert.assertTrue("Message is different, actual: " + dialogLastMessage
 				+ " expected: " + lastLine,
-				dialogLastMessage.equals((longMessage).trim()));
+				dialogLastMessage.equals((IOSConstants.LONG_MESSAGE).trim()));
 	}
 
 	@When("^I swipe the text input cursor$")
@@ -308,7 +320,7 @@ public class DialogPageSteps {
 
 	@When("I type and send long message and media link (.*)")
 	public void ITypeAndSendLongTextAndMediaLink(String link) throws Exception {
-		getDialogPage().sendMessageUsingScript(longMessage);
+		getDialogPage().sendMessageUsingScript(IOSConstants.LONG_MESSAGE);
 		getDialogPage().waitLoremIpsumText();
 		getDialogPage().sendMessageUsingScript(link);
 		getDialogPage().waitSoundCloudLoad();
@@ -350,7 +362,7 @@ public class DialogPageSteps {
 
 	@When("I send long message")
 	public void ISendLongMessage() throws Exception {
-		getDialogPage().sendMessageUsingScript(longMessage);
+		getDialogPage().sendMessageUsingScript(IOSConstants.LONG_MESSAGE);
 	}
 
 	@When("^I post media link (.*)$")
@@ -720,14 +732,14 @@ public class DialogPageSteps {
 	public void IClickPlayButton() throws Exception {
 		getDialogPage().clickOnPlayVideoButton();
 	}
-	
+
 	/**
 	 * Types in the tag for giphy and opens preview page
 	 * 
 	 * @step. ^I type tag for giphy preview (.*) and open preview overlay$
 	 * 
 	 * @param message
-	 *           Tag to be fetched from giphy
+	 *            Tag to be fetched from giphy
 	 * @throws Exception
 	 */
 	@When("^I type tag for giphy preview (.*) and open preview overlay$")

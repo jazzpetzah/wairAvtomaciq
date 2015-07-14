@@ -34,6 +34,18 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
+	 * Workaround for bug WEBAPP-1386
+	 * 
+	 * @step. ^I wait for the search field of People Picker to be empty$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I wait for the search field of People Picker to be empty$")
+	public void IWaitForSearchFieldToBeEmpty() throws Exception {
+		PagesCollection.peoplePickerPage.waitForSearchFieldToBeEmpty();
+	}
+
+	/**
 	 * Input user name/email in search field of People Picker
 	 * 
 	 * @step. ^I type (.*) in search field of People Picker$

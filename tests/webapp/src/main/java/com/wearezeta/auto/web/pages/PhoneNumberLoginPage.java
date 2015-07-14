@@ -2,10 +2,13 @@ package com.wearezeta.auto.web.pages;
 
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
+import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class PhoneNumberLoginPage extends WebPage {
 
@@ -17,6 +20,9 @@ public class PhoneNumberLoginPage extends WebPage {
 
 	@FindBy(id = "wire-login-phone")
 	private WebElement forwardButton;
+
+	@FindBy(css = WebAppLocators.PhoneNumberLoginPage.cssErrorMessage)
+	private WebElement errorMessage;
 
 	public PhoneNumberLoginPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -41,5 +47,11 @@ public class PhoneNumberLoginPage extends WebPage {
 	public PhoneNumberVerificationPage clickForwardButton() throws Exception {
 		forwardButton.click();
 		return new PhoneNumberVerificationPage(getLazyDriver());
+	}
+
+	public String getErrorMessage() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.cssSelector(WebAppLocators.PhoneNumberLoginPage.cssErrorMessage));
+		return errorMessage.getText();
 	}
 }
