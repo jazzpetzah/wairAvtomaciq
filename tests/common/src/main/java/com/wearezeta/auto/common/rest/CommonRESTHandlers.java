@@ -167,7 +167,7 @@ public final class CommonRESTHandlers {
 		String responseStr;
 		try {
 			responseStr = response.getEntity(String.class);
-		} catch (UniformInterfaceException e) {
+		} catch (UniformInterfaceException | NullPointerException e) {
 			responseStr = "";
 		}
 		log.debug(String.format(" >>> Response: %s",

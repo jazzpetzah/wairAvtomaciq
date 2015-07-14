@@ -25,7 +25,7 @@ public class YouAreInvitedPage extends WebPage {
 			throws Exception {
 		super(lazyDriver);
 	}
-	
+
 	@Override
 	public void setUrl(String url) {
 		// To make sure that we are redirected to staging site
@@ -42,24 +42,18 @@ public class YouAreInvitedPage extends WebPage {
 		return SITE_ROOT + uri.getPath();
 	}
 
-	private static final int BUTTONS_VISIBILITY_TIMEUOT_SECONDS = 5;
-
 	public void waitUntilConnectButtonVisible() throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.xpath(ExternalLocators.YouAreInvitedPage.xpathConnectButton),
-						BUTTONS_VISIBILITY_TIMEUOT_SECONDS) : "Connect button has not beem show on You are invited page after "
-				+ BUTTONS_VISIBILITY_TIMEUOT_SECONDS + " seconds timeout";
+						By.xpath(ExternalLocators.YouAreInvitedPage.xpathConnectButton)) : "Connect button has not beem show on You are invited page after ";
 	}
 
 	public void waitUntilDownloadWireButtonVisible() throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.xpath(ExternalLocators.YouAreInvitedPage.xpathDownloadWireButton),
-						BUTTONS_VISIBILITY_TIMEUOT_SECONDS) : "Download Wire button has not beem show on You are invited page after "
-				+ BUTTONS_VISIBILITY_TIMEUOT_SECONDS + " seconds timeout";
+						By.cssSelector(ExternalLocators.YouAreInvitedPage.cssDownloadWireButton)) : "Download Wire button has not beem show on You are invited page";
 	}
 
 	public void clickConnectButton() {

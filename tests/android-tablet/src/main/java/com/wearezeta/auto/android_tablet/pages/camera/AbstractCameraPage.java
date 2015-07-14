@@ -20,9 +20,9 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
 	@FindBy(id = idGalleryButton)
 	private WebElement galleryButton;
 
-	public static final String idTakePictureButton = "gtv__camera_control__take_a_picture";
-	@FindBy(id = idTakePictureButton)
-	protected WebElement takePictureButton;
+	public static final String idTakePhotoButton = "gtv__camera_control__take_a_picture";
+	@FindBy(id = idTakePhotoButton)
+	protected WebElement takePhotoButton;
 
 	public AbstractCameraPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
@@ -42,8 +42,12 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
 
 	public void tapTakePhotoButton() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idTakePictureButton));
-		takePictureButton.click();
+				By.id(idTakePhotoButton));
+		takePhotoButton.click();
+		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idTakePhotoButton), 2)) {
+			takePhotoButton.click();
+		}
 	}
 
 	public void confirmPictureSelection() throws Exception {
