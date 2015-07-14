@@ -28,7 +28,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | webdriver   | 120     |
 
-  @staging @id1892 @torun
+  @staging @id1892
   Scenario Outline: Verify the corresponding conversations list item gets sticky on outgoing call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -39,8 +39,7 @@ Feature: Calling
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And I call
-# Depending on the spec
-#     Then I see ongoing call item with name <Contact> is shown on top of conversations list
+    Then I see ongoing call item with name <Contact> is shown on top of conversations list
     Then <Contact> accepts next incoming call automatically
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
@@ -52,7 +51,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-  @staging @id1891 @torun
+  @staging @id1891
   Scenario Outline: Verify the corresponding conversations list item gets sticky on incoming call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -62,8 +61,7 @@ Feature: Calling
     And I see my avatar on top of Contact list
     And I open conversation with <Contact>
     And <Contact> calls me using <CallBackend>
-# Depending on the spec
-#     Then I see ongoing call item with name <Contact> is shown on top of conversations list
+    Then I see ongoing call item with name <Contact> is shown on top of conversations list
     And I accept the incoming call
     Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
     And I see the calling bar
