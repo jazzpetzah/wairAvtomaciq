@@ -296,8 +296,9 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PING   |
       | user1Email | user1Password | user1Name | user2Name | pinged |
 
-  @id2994 @staging
+  @id2994 @staging @torun
   Scenario Outline: Verify you start a call in a conversation when you press ⌥ ⌘ T (Mac) or alt + ctrl + T (Win)
+    Given My browser supports calling
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -311,5 +312,5 @@ Feature: Conversation View
     Then I see the calling bar
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | PING   |
-      | user1Email | user1Password | user1Name | user2Name | pinged |
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
