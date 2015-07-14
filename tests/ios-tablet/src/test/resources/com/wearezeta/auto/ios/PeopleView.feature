@@ -335,3 +335,48 @@ Feature: People View
     Examples: 
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
+     
+  @staging @id2612
+  Scenario Outline: Verify opening 1-to-1 conversation from group conversation details [PORTRAIT]
+  	Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I select user on iPad group popover <Contact2>
+    And I tap on other users start dialog button on iPad popover
+    And I exit the group info iPad popover
+    Then I see dialog page
+    And I type the message
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Name      | Contact2  | Contact3   | GroupChatName   |
+      | user1Name | user2Name | user3Name  | 1on1FromGroup   |
+  
+  @staging @id3087
+  Scenario Outline: Verify opening 1-to-1 conversation from group conversation details [LANDSCAPE]
+  	Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details on iPad
+    And I select user on iPad group popover <Contact2>
+    And I tap on other users start dialog button on iPad popover
+    And I exit the group info iPad popover
+    Then I see dialog page
+    And I type the message
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Name      | Contact2  | Contact3   | GroupChatName   |
+      | user1Name | user2Name | user3Name  | 1on1FromGroup   |
