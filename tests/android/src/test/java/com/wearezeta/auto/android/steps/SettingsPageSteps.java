@@ -1,11 +1,8 @@
 package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
-import org.openqa.selenium.By;
 
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.SettingsPage;
-import com.wearezeta.auto.common.driver.DriverUtils;
 
 import cucumber.api.java.en.Then;
 
