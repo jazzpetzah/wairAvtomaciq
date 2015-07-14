@@ -16,7 +16,7 @@ public abstract class AbstractConversationDetailsPage extends
 	@FindBy(id = idOptionsButton)
 	private WebElement optionsButton;
 
-	public final static String idOptionsContainer = "ll__settings_box_container";
+	public final static String idOptionsContainer = "fl__profile__settings_box";
 	public final static Function<String, String> xpathOptionMenuItemByName = itemName -> String
 			.format("//*[@id='%s']//*[@value='%s']", idOptionsContainer,
 					itemName.toUpperCase());

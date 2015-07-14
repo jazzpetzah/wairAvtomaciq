@@ -106,7 +106,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @id3024 @torun
+  @staging @id3024
   Scenario Outline: Verify default value for sound settings is all [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape

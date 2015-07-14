@@ -126,7 +126,8 @@ public class GroupChatPage extends DialogPage {
 	public IOSPage openConversationDetailsClick() throws Exception {
 		for (int i = 0; i < 3; i++) {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.nameOpenConversationDetails))) {
+					By.name(IOSLocators.namePlusButton))) {
+				plusButton.click();
 				openConversationDetails.click();
 				DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 						By.name(IOSLocators.nameAddContactToChatButton), 5);
