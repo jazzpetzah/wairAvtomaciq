@@ -29,11 +29,16 @@ public final class IOSTabletLocators {
 	
 	public static final class TabletOtherUserInfoPage {
 		public static final String nameOtherUserMetaControllerRightButtoniPadPopover = "OtherUserMetaControllerRightButton";
+		public static final String xpathOtherUserNameField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAStaticText[2]";
+		public static final String xpathOtherUserEmailField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIATextView[2]";
 		
 	}
 	
 	public static final class TabletGroupConversationDetailPopoverPage{
 		public static final String nameRenameButtonEllipsisMenue = "RENAME";
+		public static final String xpathGroupConvTotalNumber = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAStaticText[contains(@name,'PEOPLE')]";
+		public static final String namePeopleCountWord = " PEOPLE";
+		public static final String xpathPopoverAvatarCollectionView = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIACollectionView[1]";
 	}
 	
 }

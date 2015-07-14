@@ -6,11 +6,19 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
+import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -19,8 +27,7 @@ public final class AndroidLoggingUtils {
 			.getLog(AndroidLoggingUtils.class.getSimpleName());
 
 	public static final String ADB_PREFIX = "";
-//	public static final String ADB_PREFIX = "/Applications/android-sdk/platform-tools/";
-	
+
 	public AndroidLoggingUtils() {
 		// TODO Auto-generated constructor stub
 	}
@@ -32,6 +39,10 @@ public final class AndroidLoggingUtils {
 		patternsToExcludeFromLog.add(Pattern.compile("/selendroid",
 				Pattern.CASE_INSENSITIVE));
 	}
+
+	private static final ExecutorService logsCollector = Executors
+			.newFixedThreadPool(3);
+	private static final int LOG_READ_TIMEOUT_SECONDS = 15;
 
 	/**
 	 * 
@@ -45,8 +56,25 @@ public final class AndroidLoggingUtils {
 		final long testFinsihedTimestamp = new Date().getTime();
 		final String[] cmd = new String[] { "/bin/bash", "-c",
 				ADB_PREFIX + "adb logcat -d -v time" };
-		final String[] allLogLines = CommonUtils.executeOsXCommandWithOutput(
-				cmd).split("\n");
+		final Future<String> logOutput = logsCollector
+				.submit(new Callable<String>() {
+					public String call() {
+						try {
+							return CommonUtils.executeOsXCommandWithOutput(cmd);
+						} catch (Exception e) {
+							Throwables.propagate(e);
+							return "";
+						}
+					}
+				});
+		String[] allLogLines = new String[] {};
+		try {
+			allLogLines = logOutput.get(LOG_READ_TIMEOUT_SECONDS,
+					TimeUnit.SECONDS).split("\n");
+		} catch (TimeoutException | ExecutionException e) {
+			log.error(e.getMessage());
+			return;
+		}
 		final SimpleDateFormat sdf = new SimpleDateFormat(
 				"yyyy-MM-dd HH:mm:ss.SSS");
 		final Pattern pattern = Pattern

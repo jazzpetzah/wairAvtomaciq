@@ -33,6 +33,9 @@ public class ConversationPageSteps {
 	private static final String TOOLTIP_PING = "Ping";
 	private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + G)";
 	private static final String SHORTCUT_PING_MAC = "(⌘⌥G)";
+	private static final String TOOLTIP_CALL = "Call";
+	private static final String SHORTCUT_CALL_WIN = "(Ctrl + Alt + T)";
+	private static final String SHORTCUT_CALL_MAC = "(⌘⌥T)";
 
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
@@ -636,14 +639,20 @@ public class ConversationPageSteps {
 	 * @step. ^I( do not)? see picture in fullscreen$
 	 * @throws java.lang.Exception
 	 */
-	@Then("^I( do not)? see picture in fullscreen$")
-	public void ISeePictureInFullscreen(String doNot) throws Exception {
+	@Then("^I( do not)? see picture (.*) in fullscreen$")
+	public void ISeePictureInFullscreen(String doNot, String pictureName) throws Exception {
 		if (doNot == null) {
 			Assert.assertTrue(PagesCollection.conversationPage
+					.isPictureInModalDialog());
+			Assert.assertTrue(PagesCollection.conversationPage
 					.isPictureInFullscreen());
+			assertThat("Overlap score of image comparsion",
+					PagesCollection.conversationPage
+							.getOverlapScoreOfFullscreenImage(pictureName),
+					greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
 		} else {
-			Assert.assertFalse(PagesCollection.conversationPage
-					.isPictureInFullscreen());
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isPictureNotInModalDialog());
 		}
 	}
 
@@ -745,5 +754,46 @@ public class ConversationPageSteps {
 		assertThat("Ping button tooltip",
 				PagesCollection.conversationPage.getPingButtonToolTip(),
 				equalTo(tooltip));
+	}
+
+	/**
+	 * Hovers call button
+	 *
+	 * @step. ^I hover call button$
+	 */
+	@When("^I hover call button$")
+	public void IHoverCallButton() throws Throwable {
+		PagesCollection.conversationPage.hoverCallButton();
+	}
+
+	/**
+	 * Verifies whether call button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct call button tool tip$
+	 *
+	 */
+	@Then("^I see correct call button tooltip$")
+	public void ISeeCorrectCallButtonTooltip() {
+
+		String tooltip = TOOLTIP_CALL + " ";
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			tooltip = tooltip + SHORTCUT_CALL_WIN;
+		} else {
+			tooltip = tooltip + SHORTCUT_CALL_MAC;
+		}
+		assertThat("Call button tooltip",
+				PagesCollection.conversationPage.getCallButtonToolTip(),
+				equalTo(tooltip));
+	}
+
+	/**
+	 * Types shortcut combination to call
+	 * 
+	 * @step. ^I type shortcut combination to ping$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to start a call$")
+	public void ITypeShortcutCombinationToCall() throws Exception {
+		PagesCollection.conversationPage.pressShortCutForCall();
 	}
 }

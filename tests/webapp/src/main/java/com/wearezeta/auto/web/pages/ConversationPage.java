@@ -31,6 +31,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
@@ -82,8 +83,11 @@ public class ConversationPage extends WebPage {
 	@FindBy(css = WebAppLocators.ConversationPage.cssLastAction)
 	private WebElement lastAction;
 
-	@FindBy(xpath = WebAppLocators.ConversationPage.xpathPictureFullscreen)
-	private WebElement pictureFullscreen;
+	@FindBy(css = WebAppLocators.ConversationPage.cssImageEntries)
+	private WebElement lastPicture;
+
+	@FindBy(css = WebAppLocators.ConversationPage.cssFullscreenImage)
+	private WebElement fullscreenImage;
 
 	@FindBy(xpath = WebAppLocators.ConversationPage.xpathXButton)
 	private WebElement xButton;
@@ -132,8 +136,8 @@ public class ConversationPage extends WebPage {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
 		assert DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
-		final List<WebElement> actionMessages = this.getDriver()
-				.findElements(locator);
+		final List<WebElement> actionMessages = this.getDriver().findElements(
+				locator);
 		// Get the most recent action message only
 		final String actionMessageInUI = actionMessages.get(
 				actionMessages.size() - 1).getText();
@@ -228,6 +232,22 @@ public class ConversationPage extends WebPage {
 		// comparison of the original and sent pictures
 		BufferedImage actualImage = CommonUtils.getElementScreenshot(
 				lastImageEntry, this.getDriver()).orElseThrow(
+				IllegalStateException::new);
+		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
+		return ImageUtil.getOverlapScore(actualImage, expectedImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+	}
+
+	public double getOverlapScoreOfFullscreenImage(String pictureName)
+			throws Exception {
+		final String picturePath = WebCommonUtils
+				.getFullPicturePath(pictureName);
+		if (!isImageMessageFound()) {
+			return 0.0;
+		}
+		// comparison of the fullscreen image and sent picture
+		BufferedImage actualImage = CommonUtils.getElementScreenshot(
+				fullscreenImage, this.getDriver()).orElseThrow(
 				IllegalStateException::new);
 		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
 		return ImageUtil.getOverlapScore(actualImage, expectedImage,
@@ -398,16 +418,28 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void clickOnPicture() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
-				.xpath(WebAppLocators.ConversationPage.xpathPictureFullscreen));
-		pictureFullscreen.click();
+		assert DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries));
+		lastPicture.click();
+	}
+
+	public boolean isPictureInModalDialog() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
 	}
 
 	public boolean isPictureInFullscreen() throws Exception {
 		return DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.xpath(WebAppLocators.ConversationPage.xpathPictureIsFullscreen));
+						By.cssSelector(WebAppLocators.ConversationPage.cssFullscreenImage));
+	}
+
+	public boolean isPictureNotInModalDialog() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
 	}
 
 	public void clickXButton() throws Exception {
@@ -415,7 +447,15 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void clickOnBlackBorder() throws Exception {
-		blackBorder.click();
+		if (WebAppExecutionContext.getBrowser()
+				.equals(Browser.InternetExplorer)
+				|| WebAppExecutionContext.getBrowser().equals(Browser.Chrome)) {
+			Actions builder = new Actions(getDriver());
+			builder.moveToElement(fullscreenImage, -10, -10).click().build()
+					.perform();
+		} else {
+			blackBorder.click();
+		}
 	}
 
 	public GiphyPage clickGIFButton() throws Exception {
@@ -478,5 +518,31 @@ public class ConversationPage extends WebPage {
 
 	public String getPingButtonToolTip() {
 		return pingButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
+	}
+
+	public void hoverCallButton() throws Exception {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
+		} else {
+			// safari workaround
+			DriverUtils.addClass(this.getDriver(), conversation, "hover");
+		}
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
+				5);
+	}
+
+	public String getCallButtonToolTip() {
+		return callButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
+	}
+
+	public void pressShortCutForCall() throws Exception {
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "t"));
+		} else {
+			throw new PendingException(
+					"Webdriver does not support shortcuts for Mac browsers");
+		}
 	}
 }

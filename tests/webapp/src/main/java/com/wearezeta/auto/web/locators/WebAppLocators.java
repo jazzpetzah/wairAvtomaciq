@@ -247,13 +247,13 @@ public final class WebAppLocators {
 
 		// image fullscreen
 
-		public static final String xpathPictureFullscreen = "(//*[@data-uie-name='go-detail'])[last()]";
-
-		public static final String xpathPictureIsFullscreen = "//div[contains(@class, 'modal-show')]";
+		public static final String cssModalDialog = ".modal-show";
 
 		public static final String xpathXButton = "//div[contains(@class, 'detail-view-close-button')]//*[@data-uie-name='do-close-detail-view']";
 
 		public static final String idBlackBorder = "detail-view";
+
+		public static final String cssFullscreenImage = ".detail-view-image";
 	}
 
 	public static final class ConnectToPage {
