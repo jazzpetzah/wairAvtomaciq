@@ -138,11 +138,13 @@ public class AndroidPerformanceReportGenerator {
 		Double[] values = new Double[listValues.size()];
 		listValues.toArray(values);
 		Arrays.sort(values);
-		double median;
-		if (values.length % 2 == 0) {
-			median = ((double) values[values.length / 2] + (double) values[values.length / 2 - 1]) / 2;
-		} else {
-			median = (double) values[values.length / 2];
+		double median = 0d;
+		if (!listValues.isEmpty()) {
+			if (values.length % 2 == 0) {
+				median = ((double) values[values.length / 2] + (double) values[values.length / 2 - 1]) / 2;
+			} else {
+				median = (double) values[values.length / 2];
+			}
 		}
 		return median;
 	}
