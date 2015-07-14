@@ -136,8 +136,8 @@ public class ConversationPage extends WebPage {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
 		assert DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
-		final List<WebElement> actionMessages = this.getDriver()
-				.findElements(locator);
+		final List<WebElement> actionMessages = this.getDriver().findElements(
+				locator);
 		// Get the most recent action message only
 		final String actionMessageInUI = actionMessages.get(
 				actionMessages.size() - 1).getText();
@@ -385,9 +385,10 @@ public class ConversationPage extends WebPage {
 		getDriver().findElement(locator).click();
 	}
 
+	@Deprecated
 	public void clickSilenceCallButton() throws Exception {
 		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathSilenceIncomingCallButton);
+				.xpath(WebAppLocators.ConversationPage.xpathEndCallButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Silence call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
@@ -426,10 +427,8 @@ public class ConversationPage extends WebPage {
 	}
 
 	public boolean isPictureInModalDialog() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						this.getDriver(),
-						By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
 	}
 
 	public boolean isPictureInFullscreen() throws Exception {
@@ -440,10 +439,8 @@ public class ConversationPage extends WebPage {
 	}
 
 	public boolean isPictureNotInModalDialog() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorDissapears(
-						this.getDriver(),
-						By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
 	}
 
 	public void clickXButton() throws Exception {

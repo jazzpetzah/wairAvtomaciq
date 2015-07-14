@@ -21,9 +21,9 @@
 		<driverTimeoutSeconds>7</driverTimeoutSeconds>
 		<defaultEmail>smoketester@wire.com</defaultEmail>
 		<!-- edge | staging | production -->
-		<backendType>staging</backendType>
+        <backendType>edge</backendType>
 		<!-- leave webappApplicationPath empty to get the default URL for the backendType -->
-		<webappApplicationPath></webappApplicationPath>
+        <webappApplicationPath>https://wire-webapp-edge.zinfra.io/</webappApplicationPath>
 		<webappImagesPath>img/</webappImagesPath>
 		<!-- The levels in descending order are: SEVERE (highest value), WARNING, 
 			INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 

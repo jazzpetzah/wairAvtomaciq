@@ -42,6 +42,7 @@ public final class WebAppLocators {
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 		public static final String cssParentContactListItem = "div#conversation-list";
+		public static final String cssConversationListTopBar = "div.conversation-list-top-bar";
 
 		public static final String cssIncomingPendingConvoItem = cssParentContactListItem
 				+ " [data-uie-name=item-pending-requests]";
@@ -70,9 +71,14 @@ public final class WebAppLocators {
 						+ "*[@data-uie-name='status-silence']", name);
 
 		public static final Function<String, String> cssContactListEntryByName = (
+				name) -> String
+				.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s']",
+						cssParentContactListItem, name);
+
+		public static final Function<String, String> cssCallConversationByName = (
 				name) -> String.format(
-				"%s div[data-uie-name=item-conversation][data-uie-value='%s']",
-				cssParentContactListItem, name);
+				"%s div[data-uie-name='item-call'][data-uie-value='%s']",
+				cssConversationListTopBar, name);
 
 		public static final Function<String, String> cssArchiveListEntryByName = (
 				name) -> String
@@ -83,7 +89,7 @@ public final class WebAppLocators {
 				name) -> cssContactListEntryByName.apply(name)
 				+ "+ div span[data-uie-name='go-options']";
 
-		public static final String cssSelfProfileAvatar = "[data-uie-name=go-self-profile]";
+		public static final String cssSelfProfileAvatar = "[data-uie-name='go-self-profile']";
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "//*[@data-uie-name='item-conversation']";
@@ -184,11 +190,9 @@ public final class WebAppLocators {
 		public static final String cssSecondLastTextMessage = cssSecondLastMessage
 				+ " .text-inner";
 
-		public static final String cssFirstAction = cssMessage
-				+ " .action";
+		public static final String cssFirstAction = cssMessage + " .action";
 
-		public static final String cssLastAction = cssLastMessage
-				+ " .action";
+		public static final String cssLastAction = cssLastMessage + " .action";
 
 		public static final String xpathLastImageEntry = "(//*[@data-uie-name='go-image-detail' and @data-uie-visible='true'])[last()]";
 
@@ -230,10 +234,10 @@ public final class WebAppLocators {
 
 		// bars (call bar)
 
-		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls')]";
+		public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
-				.format("//div[contains(@class, 'call-controls') and div/div/span[text()='%s']]",
+				.format("//call-menu[contains(@class, 'call-menu') and contains(@class, 'on') and div/div/div/span[text()='%s']]",
 						text);
 
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
@@ -241,9 +245,6 @@ public final class WebAppLocators {
 
 		public static String xpathEndCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-close')]";
-
-		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot
-				+ "//*[contains(@class, 'icon-minus')]";
 
 		// image fullscreen
 

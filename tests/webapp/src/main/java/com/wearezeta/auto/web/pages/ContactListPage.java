@@ -251,7 +251,8 @@ public class ContactListPage extends WebPage {
 				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		// moving focus from contact - to now show ... button
 		// do nothing (safari workaround)
-		if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), this.getDriver()
 					.findElement(locator));
 		}
@@ -273,7 +274,8 @@ public class ContactListPage extends WebPage {
 					getListElementByName(conversationName, false));
 		}
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName.apply(conversationName);
+		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName
+				.apply(conversationName);
 		final By locator = By.cssSelector(cssOptionsButtonLocator);
 		final WebElement optionsButton = getDriver().findElement(locator);
 		DriverUtils.waitUntilElementClickable(getDriver(), optionsButton);
@@ -340,6 +342,23 @@ public class ContactListPage extends WebPage {
 				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
 		selectEntryWithRetry(entryLocator,
 				WebAppLocators.ContactListPage.cssContactListEntryByName
+						.apply(conversationName));
+		return new ConversationPage(this.getLazyDriver());
+	}
+
+	public ConversationPage openCallConversation(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final By entryLocator = By
+				.cssSelector(WebAppLocators.ContactListPage.cssCallConversationByName
+						.apply(conversationName));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation item '"
+				+ conversationName
+				+ "' has not been found in the conversations list within "
+				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
+		selectEntryWithRetry(entryLocator,
+				WebAppLocators.ContactListPage.cssCallConversationByName
 						.apply(conversationName));
 		return new ConversationPage(this.getLazyDriver());
 	}

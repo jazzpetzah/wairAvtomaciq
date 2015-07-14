@@ -1,6 +1,6 @@
 Feature: Calling
-
-  @regression @id1860
+# failed
+  @regression @id1860 @torun
   Scenario Outline: Verify I can send text, image and ping while in the same convo
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -27,7 +27,7 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | webdriver   | 120     |
-
+# success
   @smoke @id2237
   Scenario Outline: Verify I can call a user twice in a row
     Given My browser supports calling
@@ -55,6 +55,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
+# skipped
   @regression @id1866
   Scenario Outline: Verify I can call a user for more than 15 mins
     Given My browser supports calling
@@ -106,6 +107,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
+# skipped
   @staging @id1902
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
 	Given My browser supports calling
@@ -136,6 +138,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | webdriver   | 120     |
 
+# skipped
   @smoke @id1839
   Scenario Outline: Verify I can not call in browsers without WebRTC
     Given My browser does not support calling
@@ -162,6 +165,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
 	  | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
+# skipped
   @staging @id3083
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
 	Given My browser supports calling
@@ -189,6 +193,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | webdriver   | 120     |
 
+# success
   @regression @id2013
   Scenario Outline: Verify I get missed call notification when I call
     Given My browser supports calling
@@ -209,27 +214,33 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name |
 
   # This has to work even in browsers, which don't support calling
+# true fail
   @regression @id2014
   Scenario Outline: Verify I get missed call notification when someone calls me
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to Me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
-    When I open self profile
-    When <Contact> calls me using <CallBackend>
+      And I see my avatar on top of Contact list
+      And I wait for 1 seconds
+ # BROKEN
+      When I open self profile
+      And I wait for 1 seconds
+    When I open conversation with <Contact2>
+    When <Contact1> calls me using <CallBackend>
     And I wait for 1 seconds
-    And <Contact> stops all calls to me
+    And <Contact1> stops all calls to me
     And I wait for 1 seconds
-    Then I see missed call notification for conversation <Contact>
-    When I open conversation with <Contact>
-    Then I do not see missed call notification for conversation <Contact>
-    Then I see conversation with missed call from <Contact>
+    Then I see missed call notification for conversation <Contact1>
+    When I open conversation with <Contact1>
+    Then I do not see missed call notification for conversation <Contact1>
+    Then I see conversation with missed call from <Contact1>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
+      | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    |
 
+# skipped
   @staging @id1882
   Scenario Outline: People trying to call me while I'm not signed in
     Given My browser supports calling
@@ -250,6 +261,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
+# success
   @regression @id1875
   Scenario Outline: Already on call and try to make another call (caller)
     Given My browser supports calling
@@ -272,6 +284,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
+# success
   @regression @id1883
   Scenario Outline: Verify I can not see blocked contact trying to call me
     Given My browser supports calling
@@ -290,6 +303,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
+# success
   @regression @id1884
   Scenario Outline: Verify I can see muted conversation person trying to call me
     Given My browser supports calling
@@ -307,6 +321,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
+# success
   @regression @id2477
   Scenario Outline: Already on call and try to make another call (adressee)
     Given My browser supports calling
@@ -322,9 +337,11 @@ Feature: Calling
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
     When I open conversation with <OtherContact>
-    Then I see the calling bar
+    Then I do not see the calling bar
     When I call
-    Then I see the calling bar
+    Then I do not see the calling bar
+    When I open call conversation with <Contact>
+    And I see the calling bar
     When I end the call
     Then I do not see the calling bar
 
