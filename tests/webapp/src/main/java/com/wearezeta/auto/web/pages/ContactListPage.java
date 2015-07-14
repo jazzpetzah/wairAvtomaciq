@@ -251,7 +251,8 @@ public class ContactListPage extends WebPage {
 				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		// moving focus from contact - to now show ... button
 		// do nothing (safari workaround)
-		if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), this.getDriver()
 					.findElement(locator));
 		}
@@ -273,7 +274,8 @@ public class ContactListPage extends WebPage {
 					getListElementByName(conversationName, false));
 		}
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName.apply(conversationName);
+		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName
+				.apply(conversationName);
 		final By locator = By.cssSelector(cssOptionsButtonLocator);
 		final WebElement optionsButton = getDriver().findElement(locator);
 		DriverUtils.waitUntilElementClickable(getDriver(), optionsButton);
@@ -450,6 +452,24 @@ public class ContactListPage extends WebPage {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	public boolean isOngoingCallItemVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorAppears(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathOngoingCallListItem),
+						3);
+	}
+
+	public boolean isOngoingCallItemWithConvNameVisible(String convName)
+			throws Exception {
+		convName = fixDefaultGroupConvoName(convName, false);
+		return DriverUtils
+				.waitUntilLocatorAppears(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathOngoingCallListItemWithConvName
+								.apply(convName)), 3);
 	}
 
 	public int getItemIndex(String convoName) throws Exception {
