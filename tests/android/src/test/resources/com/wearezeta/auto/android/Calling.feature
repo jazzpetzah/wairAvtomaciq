@@ -66,7 +66,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id347 @regression
+  @id347 @staging
   Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -122,7 +122,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
-  @id2212 @regression
+  @id2212 @staging
   Scenario Outline: Correct calling bar in different places
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

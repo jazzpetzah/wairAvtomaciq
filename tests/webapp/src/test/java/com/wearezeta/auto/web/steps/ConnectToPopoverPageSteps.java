@@ -81,8 +81,6 @@ public class ConnectToPopoverPageSteps {
 	 * Clicks No button on Cancel request confirmation popover
 	 * 
 	 * @step. ^I click No button on Cancel request confirmation popover$
-	 * @throws Exception
-	 * 
 	 */
 	@When("^I click No button on Cancel request confirmation popover$")
 	public void IClickNoButtonOnCancelRequestConfirmationPopover() {
@@ -94,8 +92,6 @@ public class ConnectToPopoverPageSteps {
 	 * Clicks Yes button on Cancel request confirmation popover
 	 * 
 	 * @step. ^I click Yes request on Pending Outgoing Connection popover$
-	 * @throws Exception
-	 * 
 	 */
 	@When("^I click Yes button on Cancel request confirmation popover$")
 	public void IClickYesButtonOnCancelRequestConfirmationPopover() {

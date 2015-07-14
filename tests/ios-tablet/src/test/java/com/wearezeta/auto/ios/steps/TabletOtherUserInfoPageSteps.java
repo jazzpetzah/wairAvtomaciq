@@ -8,6 +8,7 @@ import com.wearezeta.auto.ios.pages.TabletOtherUserInfoPage;
 import cucumber.api.java.en.When;
 
 public class TabletOtherUserInfoPageSteps {
+	@SuppressWarnings("unused")
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection

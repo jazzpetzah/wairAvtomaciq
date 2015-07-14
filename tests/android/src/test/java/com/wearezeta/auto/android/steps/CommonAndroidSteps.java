@@ -37,6 +37,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -918,6 +919,22 @@ public class CommonAndroidSteps {
 	public void IAddPredefinedUsersToAddressBook() throws Exception {
 		AndroidCommonUtils.addPreDefinedUsersToAddressBook();
 	}
+	
+	/**
+	 * Checks to see that a device runs the target version, and if not, 
+	 * throws a pending exception to skip this test without failing
+	 * 
+	 * @step. ^My device runs Android (.*) or higher$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^My device runs Android (.*) or higher$")
+	public void MyDeviceRunsAndroid(String targetVersion) throws Exception {
+		if (AndroidCommonUtils.compareAndroidVersion(targetVersion) < 0) {
+			throw new PendingException("This test isn't suitable to run on "
+				+ "anything lower than Android " + targetVersion);
+		}
+	}
 
 	@Before("@deployAddressBook")
 	public void CleanAddressBook() throws Exception {
@@ -928,4 +945,5 @@ public class CommonAndroidSteps {
 	public void DeleteDeployedContacts() throws Exception {
 		AndroidCommonUtils.removeTestContactsFromAddressBook();
 	}
+	
 }

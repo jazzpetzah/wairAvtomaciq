@@ -141,7 +141,6 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 							+ "adb shell getprop ro.build.version.release")
 					.getInputStream()).useDelimiter("\\A");
 			result = s.hasNext() ? s.next() : "";
-			log.debug("Detected Android: " + result);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -350,7 +349,9 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	 * @throws Exception
 	 */
 	private SurfaceOrientation getSurfaceOrientation() throws Exception {
-		final String output = getAdbOutput("shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1");
+		final String output = getAdbOutput(
+				"shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1")
+				.trim();
 		return SurfaceOrientation.getByCode(Integer.parseInt(output));
 	}
 

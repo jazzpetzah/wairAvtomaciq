@@ -9,7 +9,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class TabletGroupConversationDetailPopoverPageSteps {
-	@SuppressWarnings("unused")
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
@@ -113,7 +112,7 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 		getTabletGroupConversationDetailPopoverPage().changeConversationName(
 				groupname);
 	}
-	
+
 	/**
 	 * Closes the group info popover
 	 * 
@@ -123,6 +122,56 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 	@When("^I exit the group info iPad popover$")
 	public void IExitTheGroupInfoiPadPopover() throws Throwable {
 		getTabletGroupConversationDetailPopoverPage().exitGroupChatPopover();
+	}
+
+	/**
+	 * Checks that it can read the correct group name
+	 * 
+	 * @step. ^I can read the group name (.*) on the iPad popover$
+	 * @throws Throwable
+	 */
+	@Then("^I can read the group name (.*) on the iPad popover$")
+	public void ICanReadTheGroupNameOnTheiPadPopover(String groupname)
+			throws Throwable {
+		Assert.assertEquals(getTabletGroupConversationDetailPopoverPage()
+				.getGroupChatName(), groupname);
+	}
+
+	/**
+	 * Checks that the number of participants in a group is correct on the
+	 * popover
+	 * 
+	 * @step. ^I see that number of participants (\\d+) is correct on iPad
+	 *        popover$
+	 * @param participantsNumber
+	 *            number of participants in that group
+	 * @throws Throwable
+	 */
+	@Then("^I see that number of participants (\\d+) is correct on iPad popover$")
+	public void ISeeThatNumberOfParticipantsIsCorrectOniPadPopover(
+			int participantsNumber) throws Throwable {
+		int actualNumberOfPeople = getTabletGroupConversationDetailPopoverPage()
+				.numberOfPeopleInGroupConversationOniPad();
+		Assert.assertTrue("Actual number of people in chat ("
+				+ actualNumberOfPeople + ") is not the same as expected ("
+				+ participantsNumber + ")",
+				actualNumberOfPeople == participantsNumber);
+	}
+
+	/**
+	 * Checks that the contact has the correct avatar picture
+	 * 
+	 * @step. ^I see the correct avatar picture for user (.*) on iPad$
+	 * @param contact
+	 *            the avatar picture gets checked of
+	 * @throws Throwable
+	 */
+	@Then("^I see the correct avatar picture for user (.*) on iPad$")
+	public void ISeeTheCorrectAvatarPictureForUserOniPad(String contact)
+			throws Throwable {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		Assert.assertTrue(getTabletGroupConversationDetailPopoverPage()
+				.areParticipantAvatarCorrectOniPadPopover(contact));
 	}
 
 }
