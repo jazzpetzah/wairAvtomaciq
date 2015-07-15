@@ -351,6 +351,24 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
+  @staging @id1905
+  Scenario Outline: Verify that outgoing call is terminated after within 1 minute timeout if nobody responds
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I call
+    And I see the calling bar
+    And I wait for 60 seconds
+    Then I do not see the calling bar
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
   @regression @id2477
   Scenario Outline: Already on call and try to make another call (adressee)
     Given My browser supports calling
