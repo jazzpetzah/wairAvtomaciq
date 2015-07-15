@@ -349,7 +349,28 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+         | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+
+  @staging @id1907
+  Scenario Outline: Verify call button is not visible in the conversation view while incoming call is in progress
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When <Contact> calls me using <CallBackend>
+    Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
+    And I see the calling bar
+    And I accept the incoming call
+    And I do not see calling button
+    When I end the call
+    Then I do not see the calling bar
+    And I see calling button
+
+    Examples: 
+       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
+       | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
   @regression @id2477
   Scenario Outline: Already on call and try to make another call (adressee)
