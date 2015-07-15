@@ -62,7 +62,7 @@ Feature: Sign In
 
     Examples: 
       | CountryCode | PhoneNumber | Error        |
-      | +0          | 12341234    | INVALID PHONE NUMBER |
+      | +49         | 9999999999  | INVALID PHONE NUMBER |
       | +49         | qwerqwer    | INVALID PHONE NUMBER |
       | +49         | !@$!@$      | INVALID PHONE NUMBER |
 
