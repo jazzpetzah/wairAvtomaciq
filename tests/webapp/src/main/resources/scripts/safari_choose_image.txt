@@ -27,6 +27,7 @@ tell application "System Events"
 		end repeat
 		repeat with i in allButtons
 			if title of i is "no files selected" then click i
+			if title of i is "no file selected" then click i
 		end repeat
 	end tell
 end tell
