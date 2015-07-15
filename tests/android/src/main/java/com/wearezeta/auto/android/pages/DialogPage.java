@@ -400,8 +400,15 @@ public class DialogPage extends AndroidPage {
 
 	public void waitForMessage(String text) throws Exception {
 		final By locator = By.xpath(xpathConversationMessageByText.apply(text));
-		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
-				MSG_DELIVERY_TIMEOUT_SECONDS)) {
+		final int maxTries = 5;
+		int ntry = 0;
+		do {
+			ntry++;
+			this.swipeByCoordinates(DEFAULT_SWIPE_TIME, 50, 70, 50, 50);
+		} while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
+				MSG_DELIVERY_TIMEOUT_SECONDS) && ntry < maxTries);
+
+		if (ntry >= maxTries) {
 			throw new RuntimeException(
 					String.format(
 							"Message '%s' has not been displayed after '%s' seconds timeout",
