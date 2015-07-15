@@ -316,6 +316,31 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
+  @staging @id1906
+  Scenario Outline: Verify I can make another call while current one is ignored
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact2> starts waiting instance using <CallWaitBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact1>
+    When <Contact1> calls me using <CallBackend>
+    And I see the calling bar from user <Contact1>
+    When I silence the incoming call
+    When I open conversation with <Contact2>
+    Then I do not see the calling bar
+    When I call
+    Then I see the calling bar from user <Contact2>
+    When I end the call
+    Then I do not see the calling bar
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | CallBackend | CallWaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | autocall    | webdriver       | 120     |
+
   @regression @id1883
   Scenario Outline: Verify I can not see blocked contact trying to call me
     Given My browser supports calling
