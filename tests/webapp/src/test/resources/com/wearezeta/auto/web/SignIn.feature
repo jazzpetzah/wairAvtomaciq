@@ -33,7 +33,7 @@ Feature: Sign In
       | user1Email |               | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
       | user1Email | wrongPassword | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
 
-  @staging @id2714
+  @smoke @id2714
   Scenario Outline: Verify you can sign in with a phone number with correct credentials
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
@@ -51,7 +51,7 @@ Feature: Sign In
       | user1Name |
 
 
-  @staging @id2715
+  @regression @id2715
   Scenario Outline: Verify you see correct error message when sign in with incorrect phone number
     Given I switch to sign in page
     When I switch to phone number sign in page
@@ -62,11 +62,11 @@ Feature: Sign In
 
     Examples: 
       | CountryCode | PhoneNumber | Error        |
-      | +0          | 12341234    | INVALID PHONE NUMBER |
+      | +49         | 9999999999  | INVALID PHONE NUMBER |
       | +49         | qwerqwer    | INVALID PHONE NUMBER |
       | +49         | !@$!@$      | INVALID PHONE NUMBER |
 
-  @staging @id2716
+  @regression @id2716
   Scenario Outline: Verify you see correct error message when sign in with a phone number with incorrect code
     Given There is 1 user where <Name> is me
     Given I switch to sign in page

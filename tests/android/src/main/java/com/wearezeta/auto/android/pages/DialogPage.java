@@ -150,7 +150,7 @@ public class DialogPage extends AndroidPage {
 	private static final String idPing = "gtv__cursor_knock";
 	@FindBy(id = idPing)
 	private WebElement pingBtn;
-	
+
 	private static final String idSketch = "gtv__cursor_draw";
 	@FindBy(id = idSketch)
 	private WebElement sketchBtn;
@@ -262,7 +262,7 @@ public class DialogPage extends AndroidPage {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), pingBtn);
 		pingBtn.click();
 	}
-	
+
 	public void tapSketchBtn() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), pingBtn);
 		sketchBtn.click();
@@ -413,8 +413,9 @@ public class DialogPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(idDialogImages));
 	}
-	
-	public Optional<BufferedImage> getLastImageInConversation() throws Exception {
+
+	public Optional<BufferedImage> getLastImageInConversation()
+			throws Exception {
 		return getElementScreenshot(imageList.get(imageList.size() - 1));
 	}
 
@@ -443,8 +444,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public boolean isConnectMessageVisible() throws Exception {
-		return DriverUtils
-				.isElementPresentAndDisplayed(getDriver(), lastConversationMessage);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				lastConversationMessage);
 	}
 
 	public boolean isConnectMessageValid(String message) {
@@ -523,7 +524,8 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void sendFrontCameraImage() throws Exception {
-		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), participantsButton)) {
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				participantsButton)) {
 			swipeOnCursorInput();
 			tapAddPictureBtn();
 			try {
@@ -773,6 +775,12 @@ public class DialogPage extends AndroidPage {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				mediaBarControl);
 		mediaBarControl.click();
+	}
+
+	public boolean waitUntilMediaBarVisible(int timeoutSeconds)
+			throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idMediaBarControl), timeoutSeconds);
 	}
 
 	public String getMissedCallMessage() throws Exception {

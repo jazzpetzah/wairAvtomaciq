@@ -121,7 +121,7 @@ public class DialogPageSteps {
 	public void WhenISwipeOnTextInput() throws Exception {
 		getDialogPage().swipeOnCursorInput();
 	}
-	
+
 	/**
 	 * Swipes the text input area to hide the different input options
 	 * 
@@ -169,7 +169,7 @@ public class DialogPageSteps {
 	public void WhenIPressCallButton() throws Exception {
 		getDialogPage().tapCallBtn();
 	}
-	
+
 	/**
 	 * Press on the sketch button in the input controls
 	 * 
@@ -181,8 +181,6 @@ public class DialogPageSteps {
 	public void WhenIPressOnSketchButton() throws Exception {
 		getDialogPage().tapSketchBtn();
 	}
-	
-	
 
 	/**
 	 * Press on the mute button in the calling controls
@@ -495,6 +493,30 @@ public class DialogPageSteps {
 		getDialogPage().swipeDown(SWIPE_DURATION_MILLISECONDS);
 	}
 
+	private static final int MAX_SWIPES = 5;
+
+	/**
+	 * Swipe down on dialog page until Mediabar appears
+	 * 
+	 * @step. ^I swipe down on dialog page until Mediabar appears$
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I swipe down on dialog page until Mediabar appears$")
+	public void ISwipedownOnDialogPageUntilMediaBarAppears() throws Exception {
+		int swipeNum = 1;
+		while (swipeNum <= MAX_SWIPES) {
+			getDialogPage().swipeDown(SWIPE_DURATION_MILLISECONDS);
+			if (getDialogPage().waitUntilMediaBarVisible(2)) {
+				return;
+			}
+			swipeNum++;
+		}
+		assert getDialogPage().waitUntilMediaBarVisible(1) : "The Media bar is still not visible after "
+				+ MAX_SWIPES + " swipes";
+	}
+
 	/**
 	 * Navigates back to the contact list page using a swipe right
 	 * 
@@ -671,7 +693,7 @@ public class DialogPageSteps {
 		Assert.assertEquals(contact + " CALLED", getDialogPage()
 				.getMissedCallMessage());
 	}
-	
+
 	/**
 	 * Swipes on calling bar to dismiss a call
 	 * 
@@ -681,8 +703,8 @@ public class DialogPageSteps {
 	 */
 	@When("I dismiss calling bar by swipe$")
 	public void IDismissCalling() throws Exception {
-		Assert.assertTrue("Call overlay is not visible, nothing to swipe", getDialogPage()
-				.checkCallingOverlay());
+		Assert.assertTrue("Call overlay is not visible, nothing to swipe",
+				getDialogPage().checkCallingOverlay());
 		getDialogPage().swipeByCoordinates(1500, 30, 25, 30, 5);
 	}
 }

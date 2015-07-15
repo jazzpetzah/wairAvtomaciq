@@ -202,7 +202,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | ExpectedMessage                   |
       | user1Email | user1Password | user1Name | user2Name | ('a' * 100)('LF' * 10)('b' * 100) |
 
-  @staging @id1624
+  @regression @id1624
   Scenario Outline: Verify you can see conversation images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -247,7 +247,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     |
       | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com |
 
-  @id3018 @staging
+  @regression @id3018
   Scenario Outline: Verify that typed-in messages are not lost
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -264,7 +264,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message                                  |
       | user1Email | user1Password | user1Name | user2Name | All of these Candlejack jokes aren’t fu- |
 
-  @id2992 @staging
+  @regression @id2992
   Scenario Outline: Verify Start (Search) is opened when you press ⌥ ⌘ N (Mac) or alt + ctrl + N (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -279,7 +279,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @id2993 @staging
+  @regression @id2993
   Scenario Outline: Verify you ping in a conversation when you press alt + ctrl + G (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -296,7 +296,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PING   |
       | user1Email | user1Password | user1Name | user2Name | pinged |
 
-  @id2994 @staging
+  @regression @id2994
   Scenario Outline: Verify you start a call in a conversation when you press ⌥ ⌘ T (Mac) or alt + ctrl + T (Win)
     Given My browser supports calling
     Given There are 2 users where <Name> is me

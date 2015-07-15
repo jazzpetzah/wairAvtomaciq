@@ -1,11 +1,8 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.List;
 import java.util.concurrent.Future;
-
-import javax.imageio.ImageIO;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
