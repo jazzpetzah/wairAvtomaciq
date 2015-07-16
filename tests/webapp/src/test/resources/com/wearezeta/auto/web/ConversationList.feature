@@ -64,3 +64,24 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | ColorName  | Contact   |
       | user1Email | user1Password | user1Name | StrongBlue | user2Name |
+
+  @staging @id2998
+  Scenario Outline: Verify you silence the conversation when you press ⌥⇧⌘L (Mac) or alt + ctrl + L (Win)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    And I see that conversation <Contact> is not muted
+    When I click on options button for conversation <Contact>
+    And I hover mute button for conversation <Contact>
+    Then I see correct tooltip
+    When I press ⌥ ⇧ ⌘ L (Mac) or alt + ctrl + L (Win) to mute the conversation
+    Then I see that conversation <Contact> is muted
+    When I press ⌥ ⇧ ⌘ L (Mac) or alt + ctrl + L (Win) to unmute the conversation
+    Then I see that conversation <Contact> is not muted
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

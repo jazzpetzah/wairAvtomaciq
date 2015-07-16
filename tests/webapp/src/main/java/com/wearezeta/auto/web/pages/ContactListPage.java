@@ -251,7 +251,8 @@ public class ContactListPage extends WebPage {
 				.cssSelector(WebAppLocators.ContactListPage.cssSelfProfileAvatar);
 		// moving focus from contact - to now show ... button
 		// do nothing (safari workaround)
-		if (WebAppExecutionContext.getBrowser().isSupportingNativeMouseActions()) {
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), this.getDriver()
 					.findElement(locator));
 		}
@@ -273,7 +274,8 @@ public class ContactListPage extends WebPage {
 					getListElementByName(conversationName, false));
 		}
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName.apply(conversationName);
+		final String cssOptionsButtonLocator = WebAppLocators.ContactListPage.cssOptionsButtonByContactName
+				.apply(conversationName);
 		final By locator = By.cssSelector(cssOptionsButtonLocator);
 		final WebElement optionsButton = getDriver().findElement(locator);
 		DriverUtils.waitUntilElementClickable(getDriver(), optionsButton);
@@ -522,5 +524,16 @@ public class ContactListPage extends WebPage {
 						.apply(conversationName));
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, 3);
+	}
+
+	public void hoverMuteButtonForContact(String conversationName)
+			throws Exception {
+		waitForOptionButtonsToBeClickable(conversationName);
+
+		final By muteLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
+						.apply(conversationName));
+		final WebElement muteButton = this.getDriver().findElement(muteLocator);
+		muteButton.hover();
 	}
 }

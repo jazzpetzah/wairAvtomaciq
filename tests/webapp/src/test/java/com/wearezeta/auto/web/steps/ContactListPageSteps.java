@@ -506,4 +506,35 @@ public class ContactListPageSteps {
 		} else
 			throw new Error("Top People are not selected");
 	}
+
+	/**
+	 * Click on options button for conversation
+	 * 
+	 * @step. ^I click on options button for conversation (.*)$
+	 * 
+	 * @param contact
+	 *            conversation name string
+	 * @throws Exception
+	 */
+
+	@When("^I click on options button for conversation (.*)$")
+	public void IClickOnOptionsButton(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
+	}
+
+	/**
+	 * I hover mute button for the particular conversation
+	 * 
+	 * @step. ^I hover mute button for conversation (.*)
+	 * 
+	 * @param contact
+	 *            conversation name string
+	 * @throws Exception
+	 */
+	@When("^I hover mute button for conversation (.*)")
+	public void IHoverMuteButtonFor(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		PagesCollection.contactListPage.hoverMuteButtonForContact(contact);
+	}
 }
