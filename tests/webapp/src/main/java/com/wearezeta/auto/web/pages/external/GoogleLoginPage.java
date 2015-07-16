@@ -33,7 +33,8 @@ public class GoogleLoginPage extends WebPage {
 		super(lazyDriver);
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(String email) throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id("Email"));
 		emailField.clear();
 		emailField.sendKeys(email);
 	}
@@ -67,5 +68,9 @@ public class GoogleLoginPage extends WebPage {
 		this.getDriver().switchTo()
 				.window(this.getDriver().getWindowHandles().iterator().next());
 		return new PeoplePickerPage(getLazyDriver());
+	}
+
+	public boolean hasProfileImage() throws Exception {
+		return this.getDriver().findElements(By.id("profile-img")).size() > 0;
 	}
 }
