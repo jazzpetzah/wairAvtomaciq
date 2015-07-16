@@ -400,8 +400,15 @@ public class DialogPage extends AndroidPage {
 
 	public void waitForMessage(String text) throws Exception {
 		final By locator = By.xpath(xpathConversationMessageByText.apply(text));
-		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
-				MSG_DELIVERY_TIMEOUT_SECONDS)) {
+		final int maxTries = 5;
+		int ntry = 0;
+		do {
+			ntry++;
+			this.swipeByCoordinates(DEFAULT_SWIPE_TIME, 50, 70, 50, 50);
+		} while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
+				MSG_DELIVERY_TIMEOUT_SECONDS) && ntry < maxTries);
+
+		if (ntry >= maxTries) {
 			throw new RuntimeException(
 					String.format(
 							"Message '%s' has not been displayed after '%s' seconds timeout",
@@ -715,12 +722,36 @@ public class DialogPage extends AndroidPage {
 				By.id(idMessage));
 	}
 
+	private static final double MAX_BUTTON_STATE_OVERLAP = 0.5;
+	private static final int MAX_CLICK_RETRIES = 5;
+
 	public void tapPlayPauseBtn() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), playPauseBtn);
+		final BufferedImage initialState = getElementScreenshot(playPauseBtn)
+				.orElseThrow(
+						() -> new AssertionError(
+								"Failed to get a screenshot of Play/Pause button"));
 		playPauseBtn.click();
-		// FIXME: Find a way to detect that Play/Pause button state has been
-		// really changed
 		Thread.sleep(2000);
+		int clickTry = 1;
+		do {
+			final BufferedImage currentState = getElementScreenshot(
+					playPauseBtn).orElseThrow(
+					() -> new AssertionError(
+							"Failed to get a screenshot of Play/Pause button"));
+			final double overlapScore = ImageUtil.getOverlapScore(currentState,
+					initialState,
+					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+			if (overlapScore < MAX_BUTTON_STATE_OVERLAP) {
+				return;
+			} else {
+				playPauseBtn.click();
+				Thread.sleep(2000);
+			}
+			clickTry++;
+		} while (clickTry <= MAX_CLICK_RETRIES);
+		assert (clickTry > MAX_CLICK_RETRIES) : "Media playback state has not been changed after "
+				+ MAX_CLICK_RETRIES + " retries";
 	}
 
 	// NOTE: This method is required to scroll conversation to the end.
