@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @regression @id1860
+  @staging @id1860
   Scenario Outline: Verify I can send text, image and ping while in the same convo
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -14,7 +14,6 @@ Feature: Calling
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
-    And I end the call
     And I write random message
     And I send message
     And I click ping button
@@ -22,6 +21,7 @@ Feature: Calling
     Then I see random message in conversation
     And I see ping message <PING>
     And I see sent picture <PictureName> in the conversation view
+    And I end the call
     Then <Contact> stops all waiting instances
 
     Examples: 
