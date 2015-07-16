@@ -97,7 +97,7 @@ public class AndroidCommonUtils extends CommonUtils {
 					process.getInputStream()));
 			String s;
 			while ((s = in.readLine()) != null) {
-				result = s + "\n";
+				result += s + "\n";
 			}
 			outputErrorStreamToLog(process.getErrorStream());
 		} finally {
