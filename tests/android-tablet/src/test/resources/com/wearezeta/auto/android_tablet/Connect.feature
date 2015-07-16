@@ -84,7 +84,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id2852 @staging @torun
+  @id2852 @staging
   Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
