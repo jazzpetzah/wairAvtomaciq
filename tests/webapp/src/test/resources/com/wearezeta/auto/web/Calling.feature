@@ -260,7 +260,7 @@ Feature: Calling
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-      When I open self profile
+    When I open self profile
     When <Contact1> calls me using <CallBackend>
     And I wait for 1 seconds
     And <Contact1> stops all calls to me
@@ -309,7 +309,7 @@ Feature: Calling
     Then I see the calling bar from user <Contact>
     When I call
     Then I see the calling bar from user <Contact>
-    When I silence the incoming call
+    When I end the call
     Then I do not see the calling bar
 
     Examples: 
@@ -328,8 +328,8 @@ Feature: Calling
     And I see my avatar on top of Contact list
     And I open conversation with <Contact1>
     When <Contact1> calls me using <CallBackend>
-    And I see the calling bar from user <Contact1>
-    When I silence the incoming call
+    And I see the calling bar
+    When I end the call
     When I open conversation with <Contact2>
     Then I do not see the calling bar
     When I call
@@ -374,7 +374,7 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-         | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+      | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
   @staging @id1907
   Scenario Outline: Verify call button is not visible in the conversation view while incoming call is in progress

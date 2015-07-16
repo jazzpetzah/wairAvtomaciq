@@ -244,7 +244,7 @@ public final class WebAppLocators {
 		public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
-				.format("//call-menu[contains(@class, 'call-menu') and contains(@class, 'on') and div/div/div/span[text()='%s']]",
+				.format("//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]/div/div/div/div/div[contains(@class, 'cc-avatar-label') and text()='%s']",
 						text);
 
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
