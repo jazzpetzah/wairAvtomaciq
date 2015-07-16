@@ -270,13 +270,13 @@ Feature: Conversation View
     And I type the message "<SoudCloudLink>" and send it
     And I swipe down on dialog page
     And Contact <Contact1> send message to user Myself
-    And I tap Dialog page bottom
+    And I scroll to the bottom of conversation view
     And I press PlayPause media item button
     And I swipe down on dialog page until Mediabar appears
     Then I see PAUSE on Mediabar
     And I press PlayPause on Mediabar button
     And Contact <Contact1> send message to user Myself
-    And I tap Dialog page bottom
+    And I scroll to the bottom of conversation view
     And I see PLAY button in Media
 
     Examples: 

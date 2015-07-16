@@ -306,13 +306,13 @@ public class DialogPageSteps {
 	/**
 	 * Tap on Dialog page bottom for scrolling page to the end
 	 * 
-	 * @step. ^I tap Dialog page bottom$
+	 * @step. ^I scroll to the bottom of conversation view$
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I tap Dialog page bottom$")
-	public void WhenITapOnDialogPageBottom() throws Exception {
+	@When("^I scroll to the bottom of conversation view$")
+	public void IScrollToTheBottom() throws Exception {
 		getDialogPage().tapDialogPageBottom();
 	}
 
