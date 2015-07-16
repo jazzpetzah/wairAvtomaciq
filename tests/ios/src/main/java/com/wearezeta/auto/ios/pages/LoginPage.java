@@ -141,7 +141,8 @@ public class LoginPage extends IOSPage {
 		}
 	}
 
-	public void clickPhoneLogin() {
+	public void clickPhoneLogin() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), phoneLoginButton);
 		phoneLoginButton.click();
 	}
 

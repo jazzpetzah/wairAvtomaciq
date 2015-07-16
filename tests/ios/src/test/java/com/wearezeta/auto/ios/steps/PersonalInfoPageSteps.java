@@ -465,7 +465,8 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see my new name (.*)$")
 	public void ISeeMyNewName(String name) throws Throwable {
-		Assert.assertTrue(name.equals(getPersonalInfoPage().getUserNameValue()));
+		String actualName = getPersonalInfoPage().getUserNameValue();
+		Assert.assertTrue(actualName.contains(name));
 	}
 
 	/**
