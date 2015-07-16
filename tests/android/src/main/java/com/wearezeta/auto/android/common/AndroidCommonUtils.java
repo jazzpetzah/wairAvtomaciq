@@ -82,7 +82,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 
 	private static String getAdbOutput(String cmdLine) throws Exception {
-		String result = "no info";
+		String result = "";
 
 		String adbCommand = ADB_PREFIX + "adb " + cmdLine;
 		final Process process = Runtime.getRuntime().exec(
