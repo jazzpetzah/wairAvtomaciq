@@ -464,6 +464,24 @@ public class ContactListPage extends WebPage {
 		}
 	}
 
+	public boolean isOngoingCallItemVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorAppears(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathOngoingCallListItem),
+						3);
+	}
+
+	public boolean isOngoingCallItemWithConvNameVisible(String convName)
+			throws Exception {
+		convName = fixDefaultGroupConvoName(convName, false);
+		return DriverUtils
+				.waitUntilLocatorAppears(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathOngoingCallListItemWithConvName
+								.apply(convName)));
+	}
+
 	public int getItemIndex(String convoName) throws Exception {
 		convoName = fixDefaultGroupConvoName(convoName, false);
 		final int entriesCount = this

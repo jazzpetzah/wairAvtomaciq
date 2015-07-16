@@ -91,6 +91,13 @@ public final class WebAppLocators {
 
 		public static final String cssSelfProfileAvatar = "[data-uie-name='go-self-profile']";
 
+		public static final String xpathOngoingCallListItem = "//div[@data-uie-name='item-call']";
+
+		public static final Function<String, String> xpathOngoingCallListItemWithConvName = (
+				name) -> String.format(
+				"//div[@data-uie-name='item-call' and @data-uie-value='%s']",
+				name);
+
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "//*[@data-uie-name='item-conversation']";
 		public static final Function<Integer, String> xpathContactListEntryByIndex = (

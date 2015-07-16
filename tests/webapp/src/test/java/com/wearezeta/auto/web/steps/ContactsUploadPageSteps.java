@@ -49,7 +49,10 @@ public class ContactsUploadPageSteps {
 	@When("^I sign up at Google with email (.*) and password (.*)$")
 	public void ISignUpAtGoogleWithEmail(String email, String password)
 			throws Exception {
-		PagesCollection.googeLoginPage.setEmail(email);
+		// sometimes Google already shows the email
+		if(!PagesCollection.googeLoginPage.hasProfileImage()) {
+			PagesCollection.googeLoginPage.setEmail(email);
+		}
 		// sometimes google shows a next button and you have to enter the
 		// password separately
 		if (PagesCollection.googeLoginPage.hasNextButton()) {

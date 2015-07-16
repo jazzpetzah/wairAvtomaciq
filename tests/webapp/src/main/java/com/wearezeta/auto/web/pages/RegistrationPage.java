@@ -128,4 +128,20 @@ public class RegistrationPage extends WebPage {
 	public void refreshPage() throws Exception {
 		getDriver().get(getDriver().getCurrentUrl());
 	}
+
+	public void signOutFromGoogle() throws Exception {
+		ZetaWebAppDriver driver = getDriver();
+		String currentUrl = driver.getCurrentUrl();
+		driver.get("https://www.google.com");
+		By avatar = By
+		.xpath("//*[contains(@title,'Google Account:')]");
+		if (DriverUtils.waitUntilLocatorAppears(driver, avatar)) {
+			driver.findElement(avatar).click();
+			driver.findElement(By.xpath("//a[contains(text(),'Sign out')]"))
+					.click();
+			DriverUtils.waitUntilLocatorAppears(driver,
+					By.xpath("//a[contains(text(),'Sign in')]"));
+		}
+        driver.get(currentUrl);
+	}
 }

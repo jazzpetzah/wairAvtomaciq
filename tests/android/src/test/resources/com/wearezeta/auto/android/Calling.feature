@@ -15,7 +15,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | webdriver   |
 
   @id1503 @calling_basic
   Scenario Outline: Silence an incoming call
@@ -30,7 +30,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | webdriver   |
 
   @id1497 @calling_basic
   Scenario Outline: Receive call while Wire is running in the background
@@ -47,7 +47,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | webdriver   |
 
   @id1499 @calling_basic
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
@@ -64,9 +64,9 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | webdriver   |
 
-  @id347 @staging
+  @id347 @regression
   Scenario Outline: Send text, image and knock while in the call with same user
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -95,7 +95,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Message                   | Msg        |
-      | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
+      | user1Name | user2Name | webdriver   | simple message in english | YOU PINGED |
 
   @id2210 @regression
   Scenario Outline: Calling bar buttons are clickable and change their states
@@ -120,9 +120,9 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
-      | user1Name | user2Name | autocall    | Speaker        | Mute        |
+      | user1Name | user2Name | webdriver   | Speaker        | Mute        |
 
-  @id2212 @staging
+  @id2212 @regression
   Scenario Outline: Correct calling bar in different places
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -151,7 +151,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Name | user2Name | user3Name | autocall    |
+      | user1Name | user2Name | user3Name | webdriver   |
 
   @id2211 @regression
   Scenario Outline: I can dismiss calling bar by swipe
@@ -170,4 +170,4 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | webdriver   |

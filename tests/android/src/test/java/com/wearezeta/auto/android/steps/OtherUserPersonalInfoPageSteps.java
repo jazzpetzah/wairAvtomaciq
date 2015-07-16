@@ -522,16 +522,4 @@ public class OtherUserPersonalInfoPageSteps {
 	public void ThenICloseParticipantPageByUIButton() throws Exception {
 		getOtherUserPersonalInfoPage().tapCloseButton();
 	}
-	
-	/**
-	 * Perform swipe down on the participants page
-	 * 
-	 * @step. ^I swipe down on participants? page$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I swipe down on participants? page$")
-	public void ISwipeDownParticipant() throws Exception {
-		getOtherUserPersonalInfoPage().swipeByCoordinates(2000, 50, 20, 50, 80);
-	}
 }
