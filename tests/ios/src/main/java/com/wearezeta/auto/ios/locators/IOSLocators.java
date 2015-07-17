@@ -62,7 +62,9 @@ public final class IOSLocators {
 	
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
-	public static final String nameOpenConversationDetails = "conversationDetailButton";
+	public static final String namePlusButton = "plusButton";
+	
+	public static final String nameOpenConversationDetails = "ComposeControllerConversationDetailButton";
 	
 	public static final String xpathPinged = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAStaticText[contains(@name, 'PINGED')]";
 	
@@ -262,7 +264,7 @@ public final class IOSLocators {
 	
 	public static final String nameOptionsHelpButton = "HELP";
 	
-	public static final String xpathSettingsHelpHeader = "//UIAWebView/UIALink[@name='Support']";
+	public static final String xpathSettingsHelpHeader = "//UIAWebView/UIAStaticText[@name='Support']";
 	
 	public static final String xpathSettingsChatheadSwitch = "//UIASwitch[@name='Message previews']";
 	
@@ -296,7 +298,7 @@ public final class IOSLocators {
 	
 	public static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
 	
-	public static final String nameOtherProfilePagePendingLabel = "PENDING";
+	public static final String nameOtherProfilePagePendingLabel = "CANCEL REQUEST";
 	
 	public static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
 	
@@ -583,6 +585,8 @@ public final class IOSLocators {
 		public static final String xpathLoremIpsumText = "//UIATextView[contains(@name, 'Lorem ipsum')]";
 		
 		public static final String nameSoundCloudContainer = "Play on SoundCloud";
+		
+		public static final String nameCloseButton = "closeButton";
 		
 	}
 	

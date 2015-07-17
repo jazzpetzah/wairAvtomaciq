@@ -139,6 +139,43 @@ public class ContactListPageSteps {
 	}
 
 	/**
+	 * Verifies whether the particular ongoing call with given conversation name
+	 * is shown on top of conversation list
+	 *
+	 * @step. ^I see ongoing call item with name (.*) is shown on top of
+	 *        conversations list$
+	 *
+	 * @param convoName
+	 *            conversation name
+	 * @throws Exception
+	 */
+	@Then("^I see ongoing call item with name (.*) is shown on top of conversations list$")
+	public void ISeeOngoingCallWithNameInConvoList(String convoName)
+			throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(
+				String.format(
+						"Ongoing call with name '%s' should be shown on top of conversation list",
+						convoName), PagesCollection.contactListPage
+						.isOngoingCallItemWithConvNameVisible(convoName));
+	}
+
+	/**
+	 * Verifies whether an ongoing call is shown on top of conversation list
+	 *
+	 * @step. ^I see ongoing call item is shown on top of conversations list$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I see ongoing call item is shown on top of conversations list$")
+	public void ISeeOngoingCallWithNameInConvoList() throws Exception {
+		Assert.assertTrue(
+				"Ongoing call should be shown on top of conversation list",
+				PagesCollection.contactListPage.isOngoingCallItemVisible());
+	}
+
+	/**
 	 * Unarchives conversation 'name'
 	 * 
 	 * @step. I unarchive conversation with (.*)

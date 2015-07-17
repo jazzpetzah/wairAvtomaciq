@@ -33,10 +33,6 @@ public class PhoneNumberVerificationPage extends AndroidPage {
 	@FindBy(id = idConfirmButton)
 	private WebElement confirmButton;
 
-	public static final String idManualCodeButton = "tv__manual_button";
-	@FindBy(id = idManualCodeButton)
-	private WebElement manualCodeButton;
-
 	public PhoneNumberVerificationPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -63,18 +59,6 @@ public class PhoneNumberVerificationPage extends AndroidPage {
 	public boolean waitUntilConfirmButtonDissapears() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(idConfirmButton), 40);
-	}
-
-	public boolean waitUntilManualCodeButtonAppears() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.id(idManualCodeButton), 20);
-	}
-
-	public PhoneNumberVerificationPage clickManualCodeButton() throws Exception {
-		manualCodeButton.click();
-		DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idManualCodeButton), 15);
-		return new PhoneNumberVerificationPage(this.getLazyDriver());
 	}
 
 }

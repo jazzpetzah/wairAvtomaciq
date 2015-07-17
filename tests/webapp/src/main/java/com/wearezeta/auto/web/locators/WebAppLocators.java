@@ -31,7 +31,7 @@ public final class WebAppLocators {
 
 		public static final String xpathChangePasswordButton = "//*[@data-uie-name='go-forgot-password']";
 
-		public static final String xpathLoginErrorText = "//*[@data-uie-name='status-error']";
+		public static final String cssLoginErrorText = ".has-error [data-uie-name='status-error']";
 
 		public static final String cssRedDotOnEmailField = ".auth-page .has-error .form-control #wire-email";
 
@@ -84,6 +84,13 @@ public final class WebAppLocators {
 				+ "+ div span[data-uie-name='go-options']";
 
 		public static final String cssSelfProfileAvatar = "[data-uie-name=go-self-profile]";
+
+		public static final String xpathOngoingCallListItem = "//div[@data-uie-name='item-call']";
+
+		public static final Function<String, String> xpathOngoingCallListItemWithConvName = (
+				name) -> String.format(
+				"//div[@data-uie-name='item-call' and @data-uie-value='%s']",
+				name);
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
 				+ "//*[@data-uie-name='item-conversation']";

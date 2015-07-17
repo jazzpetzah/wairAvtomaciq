@@ -65,6 +65,9 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPingedAgain)
 	private WebElement pingedAgain;
 
+	@FindBy(how = How.NAME, using = IOSLocators.namePlusButton)
+	protected WebElement plusButton;
+	
 	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
 	protected WebElement openConversationDetails;
 
@@ -94,6 +97,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCallButton)
 	private WebElement callButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCloseButton)
+	private WebElement closeButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
 	private WebElement imageCell;
@@ -181,6 +187,9 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean waitForCursorInputVisible() throws Exception {
+		if(DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(IOSLocators.DialogPage.nameCloseButton), 2)) {
+			closeButton.click();
+		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.name(IOSLocators.nameConversationCursorInput), 10);
 	}
@@ -364,7 +373,8 @@ public class DialogPage extends IOSPage {
 
 		for (int i = 0; i < 3; i++) {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.nameOpenConversationDetails))) {
+					By.name(IOSLocators.namePlusButton))) {
+				plusButton.click();
 				openConversationDetails.click();
 			}
 			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
@@ -385,6 +395,7 @@ public class DialogPage extends IOSPage {
 
 	public OtherUserOnPendingProfilePage clickConversationDeatailForPendingUser()
 			throws Exception {
+		plusButton.click();
 		openConversationDetails.click();
 		return new OtherUserOnPendingProfilePage(this.getLazyDriver());
 	}

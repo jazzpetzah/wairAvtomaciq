@@ -1,8 +1,6 @@
 package com.wearezeta.auto.android.common.reporter;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,23 +8,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
-import org.apache.poi.hssf.usermodel.HSSFPicture;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.ClientAnchor;
-import org.apache.poi.ss.usermodel.Font;
-import org.apache.poi.ss.usermodel.Workbook;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -35,30 +26,143 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 
+class ExecutionData {
+	private String runDate = new Date().toString();
+	private String buildNumber;
+	private String deviceModel;
+	private String deviceOSVersion;
+	private String networkType;
+	private int numberOfUsers;
+	private double startupTime;
+	private double signInTime;
+	private double firstConversationLoadingTime;
+	private double conversationLoadingMedianTime;
+
+	public String getBuildNumber() {
+		return buildNumber;
+	}
+
+	public void setBuildNumber(String buildNumber) {
+		this.buildNumber = buildNumber;
+	}
+
+	public String getNetworkType() {
+		return networkType;
+	}
+
+	public void setNetworkType(String networkType) {
+		this.networkType = networkType;
+	}
+
+	public int getNumberOfUsers() {
+		return numberOfUsers;
+	}
+
+	public void setNumberOfUsers(int numberOfUsers) {
+		this.numberOfUsers = numberOfUsers;
+	}
+
+	public double getStartupTime() {
+		return startupTime;
+	}
+
+	public void setStartupTime(double startupTime) {
+		this.startupTime = startupTime;
+	}
+
+	public double getSignInTime() {
+		return signInTime;
+	}
+
+	public void setSignInTime(double signInTime) {
+		this.signInTime = signInTime;
+	}
+
+	public double getFirstConversationLoadingTime() {
+		return firstConversationLoadingTime;
+	}
+
+	public void setFirstConversationLoadingTime(
+			double firstConversationLoadingTime) {
+		this.firstConversationLoadingTime = firstConversationLoadingTime;
+	}
+
+	public String getRunDate() {
+		return runDate;
+	}
+
+	public void setRunDate(String runDate) {
+		this.runDate = runDate;
+	}
+
+	public double getConversationLoadingMedianTime() {
+		return conversationLoadingMedianTime;
+	}
+
+	public void setConversationLoadingMedianTime(
+			double conversationLoadingMedianTime) {
+		this.conversationLoadingMedianTime = conversationLoadingMedianTime;
+	}
+
+	public String getDeviceModel() {
+		return deviceModel;
+	}
+
+	public void setDeviceModel(String deviceModel) {
+		this.deviceModel = deviceModel;
+	}
+
+	public String getDeviceOSVersion() {
+		return deviceOSVersion;
+	}
+
+	public void setDeviceOSVersion(String deviceOSVersion) {
+		this.deviceOSVersion = deviceOSVersion;
+	}
+
+	public String toString() {
+		return String.format("%s,%s,%s,%s,%s,%s,%s,%s,%s", buildNumber,
+				deviceModel, deviceOSVersion, networkType, numberOfUsers,
+				startupTime, signInTime, firstConversationLoadingTime,
+				conversationLoadingMedianTime);
+	}
+}
+
 public class AndroidPerformanceReportGenerator {
 
 	private static final Logger log = ZetaLogger
 			.getLog(AndroidPerformanceReportGenerator.class.getSimpleName());
 
-	private static final String RXLOG_FILENAME = "Resource0.csv";
-	private static final String PERFORMANCE_REPORT_DATA_CSV = "PerfRunResult.csv";
-	private static final String PERFORMANCE_REPORT_XLS_TEMPLATE = "AndroidPerformanceTemplate.xls";
-	private static final String PERFORMANCE_REPORT_XLS_RESULT = "AndroidPerfReport.xls";
-
 	public static String REPORT_DATA_PATH;
-	public static String RXLOG_FILEPATH;
-	private static String WIRE_PACKAGE;
 
-	private static String buildNumber;
-	private static int usersCount;
-	private static ClientDeviceInfo deviceInfo;
-	private static String networkType;
-	private static String deviceModel;
-	private static String deviceOSVersion;
+	private static String[] CHART_TITLES = new String[] {
+			"Application Startup Time", "Sign In Time",
+			"First Conversation Loading Time",
+			"Conversation Loading Median Time" };
 
-	private static List<String[]> parsedRxLog = new ArrayList<String[]>();
-	private static LinkedHashMap<String, Double> timeMeasurements = new LinkedHashMap<String, Double>();
-	private static LinkedHashMap<String, AndroidResource> resources = new LinkedHashMap<String, AndroidResource>();
+	public static final String API_KEY = "d99071df5c72636eb5aba15117d050c7";
+	private static LinkedHashMap<String, String> WIDGETS = new LinkedHashMap<String, String>();
+	static {
+		WIDGETS.put(CHART_TITLES[0] + " (Wifi)",
+				"152307-6fa497fb-3841-4681-a1d7-a3678537eb89");
+		WIDGETS.put(CHART_TITLES[1] + " (Wifi)",
+				"152307-4cac0493-16cc-404b-acab-0c2104771ac8");
+		WIDGETS.put(CHART_TITLES[2] + " (Wifi)",
+				"152307-9b5145d9-58bc-44dd-8801-9801fee143a3");
+		WIDGETS.put(CHART_TITLES[3] + " (Wifi)",
+				"152307-8df9a10b-5932-47a3-8459-3a96dd59b4bf");
+
+		WIDGETS.put(CHART_TITLES[0] + " (LTE)",
+				"152307-669b4d33-df05-4efb-9657-b60729c2cd31");
+		WIDGETS.put(CHART_TITLES[1] + " (LTE)",
+				"152307-afde00b0-2129-423d-8808-fe4cf672d123");
+		WIDGETS.put(CHART_TITLES[2] + " (LTE)",
+				"152307-8bc26c2a-3f3c-4a9e-ae03-3bb091b74b33");
+		WIDGETS.put(CHART_TITLES[3] + " (LTE)",
+				"152307-44e0fc4e-5a37-4d8d-8aca-8c5ad06eccda");
+	}
+
+	public static ExecutionData data = new ExecutionData();
 
 	static {
 		try {
@@ -68,83 +172,6 @@ public class AndroidPerformanceReportGenerator {
 			REPORT_DATA_PATH = "";
 			e.printStackTrace();
 		}
-
-		try {
-			RXLOG_FILEPATH = AndroidCommonUtils
-					.getRxLogResourceFilePathFromConfig(AndroidPerformanceReportGenerator.class);
-		} catch (Exception e) {
-			RXLOG_FILEPATH = REPORT_DATA_PATH + File.separator + RXLOG_FILENAME;
-			e.printStackTrace();
-		}
-
-		try {
-			WIRE_PACKAGE = CommonUtils
-					.getAndroidPackageFromConfig(AndroidPerformanceReportGenerator.class);
-		} catch (Exception e) {
-			WIRE_PACKAGE = "com.waz.zclient.dev";
-			e.printStackTrace();
-		}
-	}
-
-	private static void initResources() {
-		resources.put(ReporterConstants.Values.CPU, new AndroidResource());
-		resources.put(ReporterConstants.Values.FOREGROUND_PACKAGE,
-				new AndroidResource());
-		resources.put(ReporterConstants.Values.FREE_PHYSICAL_MEM,
-				new AndroidResource());
-		resources.put(ReporterConstants.Values.FREE_STORAGE_MEM,
-				new AndroidResource());
-		resources.put(ReporterConstants.Values.TOTAL_TX, new AndroidResource());
-		resources.put(ReporterConstants.Values.TOTAL_RX, new AndroidResource());
-
-		String[] header = parsedRxLog.get(0);
-		for (Map.Entry<String, AndroidResource> res : resources.entrySet()) {
-			try {
-				String key = res.getKey();
-				AndroidResource resource = res.getValue();
-				resource.setResourceName(res.getKey());
-				resource.setResourceIndex(Arrays.asList(header).indexOf(key));
-				log.debug(res.getValue());
-			} catch (Exception e) {
-				log.fatal("Failed set resources indexes reports.\n"
-						+ e.getMessage());
-				throw e;
-			}
-		}
-		parsedRxLog.remove(0);
-	}
-
-	private static double calculateSum(List<Double> listValues) {
-		double result = 0;
-		for (Double value : listValues) {
-			result = result + value;
-		}
-		result /= 1024.0;
-		return result;
-	}
-
-	private static double calculateAverage(List<Double> values) {
-		Double sum = 0d;
-		if (!values.isEmpty()) {
-			for (Double mark : values) {
-				sum += mark;
-			}
-			return sum.doubleValue() / values.size();
-		}
-		return sum;
-	}
-
-	private static double calculateMedian(List<Double> listValues) {
-		Double[] values = new Double[listValues.size()];
-		listValues.toArray(values);
-		Arrays.sort(values);
-		double median;
-		if (values.length % 2 == 0) {
-			median = ((double) values[values.length / 2] + (double) values[values.length / 2 - 1]) / 2;
-		} else {
-			median = (double) values[values.length / 2];
-		}
-		return median;
 	}
 
 	private static LinkedHashMap<String, Double> readTimeMeasurementsData(
@@ -156,11 +183,13 @@ public class AndroidPerformanceReportGenerator {
 				(double) readSuccessfulLoginTime(applicationLog));
 		times.put(ReporterConstants.Values.CONV_PAGE_LOADING_TIME,
 				readConversationPageLoadingTime(applicationLog));
+		times.put(ReporterConstants.Values.CONV_LOADING_MEDIAN_TIME,
+				calculateConversationPageLoadingMedianTime(applicationLog));
 		return times;
 	}
 
 	private static int readApplicationStartupTime(String output) {
-		int result = -1;
+		int result = 0;
 		Pattern pattern = Pattern
 				.compile(ReporterConstants.Log.APP_LAUNCH_TIME_REGEX);
 		Matcher matcher = pattern.matcher(output);
@@ -174,7 +203,7 @@ public class AndroidPerformanceReportGenerator {
 	}
 
 	private static int readSuccessfulLoginTime(String output) {
-		int result = -1;
+		int result = 0;
 		Pattern pattern = Pattern
 				.compile(ReporterConstants.Log.LOGIN_SUCCESS_REGEX);
 		Matcher matcher = pattern.matcher(output);
@@ -189,248 +218,176 @@ public class AndroidPerformanceReportGenerator {
 
 	private static double readConversationPageLoadingTime(String output) {
 		double result = 0;
-		int count = 0;
 		Pattern pattern = Pattern
 				.compile(ReporterConstants.Log.CONVERSATION_PAGE_VISIBLE_REGEX);
 		Matcher matcher = pattern.matcher(output);
 		while (matcher.find()) {
 			try {
 				result = (int) (Long.parseLong(matcher.group(1)) / 1000000);
-				log.debug("Conversation loading time " + result);
-				count++;
+				log.debug("First conversation loading time " + result);
+				break;
 			} catch (NumberFormatException e) {
 			}
 		}
-		log.debug("Conversation loading count " + count);
 		return result;
 	}
 
-	private static List<String[]> readRxLog() throws IOException {
-		CSVReader reader = null;
-		List<String[]> values = new ArrayList<String[]>();
-		try {
-			reader = new CSVReader(new FileReader(RXLOG_FILEPATH));
-			String[] nextLine;
-			while ((nextLine = reader.readNext()) != null) {
-				values.add(nextLine);
+	private static double calculateConversationPageLoadingMedianTime(
+			String output) {
+		ArrayList<Double> results = new ArrayList<Double>();
+		Pattern pattern = Pattern
+				.compile(ReporterConstants.Log.CONVERSATION_PAGE_VISIBLE_REGEX);
+		Matcher matcher = pattern.matcher(output);
+		while (matcher.find()) {
+			try {
+				results.add((double) ((int) (Long.parseLong(matcher.group(1)) / 1000000)));
+			} catch (NumberFormatException e) {
 			}
-		} finally {
-			if (reader != null)
-				reader.close();
 		}
-		return values;
+		return calculateMedian(results);
 	}
 
-	private static void readResourcesData() {
-		try {
-			for (String[] rxLogEntry : parsedRxLog) {
-				List<String> rxLogEntryList = Arrays.asList(rxLogEntry);
-				if (rxLogEntryList.get(
-						resources.get(
-								ReporterConstants.Values.FOREGROUND_PACKAGE)
-								.getResourceIndex()).equals(WIRE_PACKAGE)) {
-					AndroidResource cpu = resources
-							.get(ReporterConstants.Values.CPU);
-					cpu.addValue(Double.parseDouble(rxLogEntryList.get(cpu
-							.getResourceIndex())));
-					AndroidResource physicalMemory = resources
-							.get(ReporterConstants.Values.FREE_PHYSICAL_MEM);
-					physicalMemory.addValue(Double.parseDouble(rxLogEntryList
-							.get(physicalMemory.getResourceIndex())));
-					AndroidResource storageMemory = resources
-							.get(ReporterConstants.Values.FREE_STORAGE_MEM);
-					storageMemory.addValue(Double.parseDouble(rxLogEntryList
-							.get(storageMemory.getResourceIndex())));
-					AndroidResource transmittedData = resources
-							.get(ReporterConstants.Values.TOTAL_TX);
-					transmittedData.addValue(Double.parseDouble(rxLogEntryList
-							.get(transmittedData.getResourceIndex())));
-					AndroidResource receivedData = resources
-							.get(ReporterConstants.Values.TOTAL_RX);
-					receivedData.addValue(Double.parseDouble(rxLogEntryList
-							.get(receivedData.getResourceIndex())));
-				}
+	private static double calculateMedian(List<Double> listValues) {
+		Double[] values = new Double[listValues.size()];
+		listValues.toArray(values);
+		Arrays.sort(values);
+		double median = 0d;
+		if (!listValues.isEmpty()) {
+			if (values.length % 2 == 0) {
+				median = ((double) values[values.length / 2] + (double) values[values.length / 2 - 1]) / 2;
+			} else {
+				median = (double) values[values.length / 2];
 			}
+		}
+		return median;
+	}
+
+	private static ExecutionData fillBuildAndDeviceData(ExecutionData data) {
+		data.setBuildNumber("Unknown");
+		data.setNetworkType("Unknown");
+		data.setDeviceModel("Unknown");
+		data.setDeviceOSVersion("Unknown");
+		try {
+			data.setBuildNumber(AndroidCommonUtils.readClientVersionFromAdb());
+			ClientDeviceInfo deviceInfo = AndroidCommonUtils.readDeviceInfo();
+			log.debug("Execution device info: " + deviceInfo.toString());
+			try {
+				data.setNetworkType(deviceInfo.isWifiEnabled() ? "Wifi"
+						: deviceInfo.getGsmNetworkType());
+			} catch (NullPointerException e) {
+			}
+			try {
+				data.setDeviceModel(deviceInfo.getDeviceName());
+			} catch (NullPointerException e) {
+			}
+			try {
+				data.setDeviceOSVersion(deviceInfo.getOperatingSystemBuild());
+			} catch (NullPointerException e) {
+			}
+		} catch (Exception e) {
+		}
+		return data;
+	}
+
+	public static ExecutionData collectExecutionData(int usersCount,
+			String appLog) {
+		// set number of users
+		data.setNumberOfUsers(usersCount);
+
+		data = fillBuildAndDeviceData(data);
+
+		// calculate time consumption
+		LinkedHashMap<String, Double> timeConsumption = readTimeMeasurementsData(appLog);
+
+		for (Map.Entry<String, Double> time : timeConsumption.entrySet()) {
+			switch (time.getKey()) {
+			case ReporterConstants.Values.APPLICATION_STARTUP_TIME:
+				data.setStartupTime(time.getValue());
+				break;
+			case ReporterConstants.Values.LOGIN_TIME:
+				data.setSignInTime(time.getValue());
+				break;
+			case ReporterConstants.Values.CONV_PAGE_LOADING_TIME:
+				data.setFirstConversationLoadingTime(time.getValue());
+				break;
+			case ReporterConstants.Values.CONV_LOADING_MEDIAN_TIME:
+				data.setConversationLoadingMedianTime(time.getValue());
+				break;
+			default:
+				break;
+			}
+		}
+		return data;
+	}
+
+	private static String createResultFile() throws Exception {
+		String resultsPath = AndroidPerformanceReportGenerator.REPORT_DATA_PATH;
+		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+				.format(Calendar.getInstance().getTime());
+		resultsPath = resultsPath + File.separator + timeStamp + ".csv";
+		log.debug("Created file " + resultsPath);
+		try {
+			File f = new File(resultsPath);
+			f.getParentFile().mkdirs();
+			f.createNewFile();
 		} catch (Exception ex) {
-			log.error("Failed set resources values reports.\n"
-					+ ex.getMessage());
+			log.error("Failed to create result file.\n" + ex.getMessage());
+			throw (ex);
+		}
+		return resultsPath;
+	}
+
+	private static final String LATEST_REPORT_NAME = "latest_android_performance.csv";
+	private static final String ANDROID_PERFORMANCE_RESULTS_FILE = "android_performance_runs.csv";
+
+	private static void copyReportAsLatest(String filePath) throws Exception {
+		String resultsPath = AndroidPerformanceReportGenerator.REPORT_DATA_PATH;
+		resultsPath = resultsPath + File.separator + LATEST_REPORT_NAME;
+		try {
+			File f = new File(resultsPath);
+			if (f.exists())
+				f.delete();
+			FileUtils.copyFile(new File(filePath), f);
+		} catch (Exception ex) {
+			log.error("Failed to create result file.\n" + ex.getMessage());
 			throw (ex);
 		}
 	}
 
-	private static List<Double> convertBytesToMegabytes(List<Double> values) {
-		List<Double> normalizedValues = new ArrayList<>();
-		for (Double value : values) {
-			normalizedValues.add(value / 1024 / 1024);
-		}
-		return normalizedValues;
-	}
+	private static final String[] RESULTS_FILE_HEADER = { "runDate",
+			"buildNumber", "deviceModel", "deviceOSVersion", "networkType",
+			"numberOfUsers", "startupTime", "signInTime",
+			"firstConversationLoadingTime", "conversationLoadingMedianTime" };
 
-	private static List<Double> convertAbsoluteDataValuesToDifference(
-			List<Double> values) {
-		List<Double> normalizedValues = new ArrayList<Double>();
-		normalizedValues.add(0.0d);
-		for (int i = 1; i < values.size(); i++) {
-			normalizedValues.add(values.get(i) - values.get(i - 1));
-		}
-		return normalizedValues;
-	}
-
-	private static void normalizeResourcesValues() {
-		AndroidResource freePhysicalMemory = resources
-				.get(ReporterConstants.Values.FREE_PHYSICAL_MEM);
-		AndroidResource freeStorageMemory = resources
-				.get(ReporterConstants.Values.FREE_STORAGE_MEM);
-		AndroidResource transmittedData = resources
-				.get(ReporterConstants.Values.TOTAL_TX);
-		AndroidResource receivedData = resources
-				.get(ReporterConstants.Values.TOTAL_RX);
-		freePhysicalMemory.setValues(convertBytesToMegabytes(freePhysicalMemory
-				.getValues()));
-		freeStorageMemory.setValues(convertBytesToMegabytes(freeStorageMemory
-				.getValues()));
-		transmittedData
-				.setValues(convertAbsoluteDataValuesToDifference(transmittedData
-						.getValues()));
-		receivedData
-				.setValues(convertAbsoluteDataValuesToDifference(receivedData
-						.getValues()));
-	}
-
-	private static void calculateAverageAndMedianResourcesValues() {
-		AndroidResource cpu = resources.get(ReporterConstants.Values.CPU);
-		AndroidResource freePhysicalMemory = resources
-				.get(ReporterConstants.Values.FREE_PHYSICAL_MEM);
-		AndroidResource freeStorageMemory = resources
-				.get(ReporterConstants.Values.FREE_STORAGE_MEM);
-		cpu.setAverageValue(calculateAverage(cpu.getValues()));
-		cpu.setMedianValue(calculateMedian(cpu.getValues()));
-		freePhysicalMemory.setAverageValue(calculateAverage(freePhysicalMemory
-				.getValues()));
-		freePhysicalMemory.setMedianValue(calculateMedian(freePhysicalMemory
-				.getValues()));
-		freeStorageMemory.setAverageValue(calculateAverage(freeStorageMemory
-				.getValues()));
-		freeStorageMemory.setMedianValue(calculateMedian(freeStorageMemory
-				.getValues()));
-	}
-
-	private static void calculateTotalResourcesValues() {
-		AndroidResource transmittedData = resources
-				.get(ReporterConstants.Values.TOTAL_TX);
-		AndroidResource receivedData = resources
-				.get(ReporterConstants.Values.TOTAL_RX);
-		transmittedData
-				.setTotalValue(calculateSum(transmittedData.getValues()));
-		receivedData.setTotalValue(calculateSum(receivedData.getValues()));
-	}
-
-	private static LinkedHashMap<String, AndroidResource> convertTimesToResources() {
-		LinkedHashMap<String, AndroidResource> resources = new LinkedHashMap<String, AndroidResource>();
-		for (Map.Entry<String, Double> time : timeMeasurements.entrySet()) {
-			AndroidResource res = new AndroidResource();
-			res.setResourceName(time.getKey());
-			res.setTotalValue(time.getValue());
-			resources.put(time.getKey(), res);
-		}
-		return resources;
-	}
-
-	private static void storeFilteredAndNormalizedResults(String filePath)
-			throws IOException {
+	public static void storeRunResultsToCSV() {
 		try {
+			String filePath = createResultFile();
 			CSVWriter writer = new CSVWriter(new FileWriter(filePath),
 					CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
-			String[] entries = { ReporterConstants.Values.CPU,
-					ReporterConstants.Values.FREE_PHYSICAL_MEM_NORMALIZED,
-					ReporterConstants.Values.FREE_STORAGE_MEM_NORMALIZED,
-					ReporterConstants.Values.TOTAL_TX,
-					ReporterConstants.Values.TOTAL_RX };
+			String[] entries = RESULTS_FILE_HEADER;
 			writer.writeNext(entries);
 
-			AndroidResource cpu = resources.get(ReporterConstants.Values.CPU);
-			AndroidResource freePhysicalMemory = resources
-					.get(ReporterConstants.Values.FREE_PHYSICAL_MEM);
-			AndroidResource freeStorageMemory = resources
-					.get(ReporterConstants.Values.FREE_STORAGE_MEM);
-			AndroidResource transmittedData = resources
-					.get(ReporterConstants.Values.TOTAL_TX);
-			AndroidResource receivedData = resources
-					.get(ReporterConstants.Values.TOTAL_RX);
-
-			for (int i = 0; i < cpu.getValues().size(); i++) {
-				String[] values = { Double.toString(cpu.getValues().get(i)),
-						Double.toString(freePhysicalMemory.getValues().get(i)),
-						Double.toString(freeStorageMemory.getValues().get(i)),
-						Double.toString(transmittedData.getValues().get(i)),
-						Double.toString(receivedData.getValues().get(i)) };
-				writer.writeNext(values);
-			}
+			String[] values = { data.getRunDate(), data.getBuildNumber(),
+					data.getDeviceModel(), data.getDeviceOSVersion(),
+					data.getNetworkType(),
+					Integer.toString(data.getNumberOfUsers()),
+					Double.toString(data.getStartupTime()),
+					Double.toString(data.getSignInTime()),
+					Double.toString(data.getFirstConversationLoadingTime()),
+					Double.toString(data.getConversationLoadingMedianTime()) };
+			writer.writeNext(values);
 			writer.flush();
 			writer.close();
-		} catch (Exception ex) {
-			log.error("Failed save normalized results.\n" + ex);
-			ex.printStackTrace();
-			throw (ex);
+
+			copyReportAsLatest(filePath);
+		} catch (Exception e) {
+			log.debug(e);
 		}
 	}
 
-	private static Double diffInPercents(Double previousValue,
-			Double currentValue) {
-		return currentValue / previousValue * 100 - 100;
-	}
-
-	private static String[] generateSummaryReportString(
-			AndroidResource resouce, String[] previousRun) {
-		Double previousAverageValue = previousRun[ReporterConstants.Xls.AVERAGE_VALUE_INDEX]
-				.equals("null") ? null
-				: Double.parseDouble(previousRun[ReporterConstants.Xls.AVERAGE_VALUE_INDEX]);
-		Double previousMedianValue = previousRun[ReporterConstants.Xls.MEDIAN_VALUE_INDEX]
-				.equals("null") ? null
-				: Double.parseDouble(previousRun[ReporterConstants.Xls.MEDIAN_VALUE_INDEX]);
-		Double previousTotalValue = Double
-				.parseDouble(previousRun[ReporterConstants.Xls.TOTAL_VALUE_INDEX]);
-		Double averageValueDiff = previousAverageValue != null
-				&& previousAverageValue != 0 ? diffInPercents(
-				previousAverageValue, resouce.getAverageValue()) : 0;
-		Double medianValueDiff = previousMedianValue != null
-				&& previousMedianValue != 0 ? diffInPercents(
-				previousMedianValue, resouce.getMedianValue()) : 0;
-		Double totalValueDiff = previousTotalValue != 0 ? diffInPercents(
-				previousTotalValue, resouce.getTotalValue()) : 0;
-		String[] entries = {
-				resouce.getResourceName(),
-				resouce.getAverageValue() != null ? resouce.getAverageValue()
-						.toString() : "null",
-				averageValueDiff != null ? averageValueDiff.toString() : "null",
-				resouce.getMedianValue() != null ? resouce.getMedianValue()
-						.toString() : "null",
-				medianValueDiff != null ? medianValueDiff.toString() : "null",
-				String.valueOf(resouce.getTotalValue()),
-				totalValueDiff != null ? totalValueDiff.toString() : "null" };
-		return entries;
-	}
-
-	private static String[] generateSummaryReportString(AndroidResource resouce) {
-		String[] entries = {
-				resouce.getResourceName(),
-				resouce.getAverageValue() != null ? resouce.getAverageValue()
-						.toString() : "null",
-				"0",
-				resouce.getMedianValue() != null ? resouce.getMedianValue()
-						.toString() : "null", "0",
-				String.valueOf(resouce.getTotalValue()), "0" };
-		return entries;
-	}
-
-	private static void saveSummaryReport() throws Exception {
-		boolean finished = false;
+	private static List<String[]> readAllResults(String resultsPath)
+			throws IOException {
 		List<String[]> savedData = new ArrayList<>();
-		List<String[]> newData = new ArrayList<>();
-		String resultsPath = String.format("%s%s%s_%s_%s",
-				AndroidPerformanceReportGenerator.REPORT_DATA_PATH,
-				File.separator, usersCount, networkType,
-				PERFORMANCE_REPORT_DATA_CSV);
 		File f = new File(resultsPath);
 		if (!f.exists()) {
 			f.getParentFile().mkdirs();
@@ -448,360 +405,171 @@ public class AndroidPerformanceReportGenerator {
 					reader.close();
 			}
 		}
+		return savedData;
+	}
+
+	private static List<String[]> readLatestResult() throws IOException {
+		List<String[]> savedData = new ArrayList<>();
+		String resultsPath = String.format("%s%s%s",
+				AndroidPerformanceReportGenerator.REPORT_DATA_PATH,
+				File.separator, LATEST_REPORT_NAME);
+		File f = new File(resultsPath);
+		if (!f.exists()) {
+			f.getParentFile().mkdirs();
+			f.createNewFile();
+		} else {
+			CSVReader reader = null;
+			try {
+				reader = new CSVReader(new FileReader(resultsPath));
+				String[] nextLine;
+				while ((nextLine = reader.readNext()) != null) {
+					savedData.add(nextLine);
+				}
+			} finally {
+				if (reader != null)
+					reader.close();
+			}
+		}
+		return savedData;
+	}
+
+	public static void mergeLastResultIntoList() throws IOException {
+		String resultsPath = String.format("%s%s%s",
+				AndroidPerformanceReportGenerator.REPORT_DATA_PATH,
+				File.separator, ANDROID_PERFORMANCE_RESULTS_FILE);
+		List<String[]> savedData = readAllResults(resultsPath);
+		List<String[]> newData = readLatestResult();
+		newData.remove(0);
 		CSVWriter writer = null;
 		try {
 			writer = new CSVWriter(new FileWriter(resultsPath),
 					CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER);
 			if (savedData.size() > 0) {
-				String[] entries = {
-						new SimpleDateFormat("yyyy-MM-dd HH:mm")
-								.format(Calendar.getInstance().getTime()), " ",
-						buildNumber };
-				newData.add(entries);
-				for (Map.Entry<String, AndroidResource> entry : resources
-						.entrySet()) {
-					if (entry.getKey().equals(
-							ReporterConstants.Values.FOREGROUND_PACKAGE))
-						continue;
-					boolean isFound = false;
-					for (int i = 1; i < 9; i++) {
-						String[] savedEntry = savedData.get(savedData.size()
-								- i);
-						if (savedEntry[0].equals(entry.getKey())) {
-							isFound = true;
-							newData.add(generateSummaryReportString(
-									entry.getValue(), savedEntry));
-							break;
-						}
-					}
-					if (!isFound) {
-						newData.add(generateSummaryReportString(entry
-								.getValue()));
-					}
-				}
-				finished = true;
+				writer.writeAll(savedData);
 			} else {
-				String[] entries = new String[] { "Measurement",
-						"Average Value", "Average Diff %", "Median Value",
-						"Median Diff %", "Total Value", "Total Diff %" };
-
-				String[] nextEntries = {
-						new SimpleDateFormat("yyyy-MM-dd HH:mm")
-								.format(Calendar.getInstance().getTime()), " ",
-						buildNumber };
-				newData.add(entries);
-				newData.add(nextEntries);
-				for (Map.Entry<String, AndroidResource> entry : resources
-						.entrySet()) {
-					newData.add(generateSummaryReportString(entry.getValue()));
-				}
-				finished = true;
+				writer.writeNext(RESULTS_FILE_HEADER);
 			}
+			writer.writeAll(newData);
+			writer.flush();
 		} catch (Exception ex) {
 			log.error("Failed to generate summary report string.\n"
 					+ ex.getMessage());
 			throw (ex);
 		} finally {
-			if (savedData.size() > 0) {
-				writer.writeAll(savedData);
-			}
-			if (finished) {
-				writer.writeAll(newData);
-			}
-			writer.flush();
 			writer.close();
 		}
 	}
 
-	private static String createResultFile() throws Exception {
-		String resultsPath = AndroidPerformanceReportGenerator.REPORT_DATA_PATH;
-		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
-				.format(Calendar.getInstance().getTime());
-		resultsPath = resultsPath + File.separator + timeStamp + ".csv";
-		try {
-			File f = new File(resultsPath);
-			f.getParentFile().mkdirs();
-			f.createNewFile();
-		} catch (Exception ex) {
-			log.error("Failed to create result file.\n" + ex.getMessage());
-			throw (ex);
+	private static void buildChartFor(List<String[]> rawData, String title,
+			String network) throws Exception {
+		TreeMap<String, String> users10Values = new TreeMap<String, String>();
+		TreeMap<String, String> users300Values = new TreeMap<String, String>();
+		TreeMap<String, String> users600Values = new TreeMap<String, String>();
+		TreeMap<String, String> users1000Values = new TreeMap<String, String>();
+
+		int index = -1;
+		if (title.equals(CHART_TITLES[0])) {
+			index = ReporterConstants.Csv.APPLICATION_STARTUP_TIME_COLUMN;
+		} else if (title.equals(CHART_TITLES[1])) {
+			index = ReporterConstants.Csv.SIGN_IN_TIME_COLUMN;
+		} else if (title.equals(CHART_TITLES[2])) {
+			index = ReporterConstants.Csv.FIRST_CONVERSATION_LOADING_COLUMN;
+		} else if (title.equals(CHART_TITLES[3])) {
+			index = ReporterConstants.Csv.CONVERSATION_LOADING_MEDIAN_COLUMN;
 		}
-		return resultsPath;
-	}
-
-	private static void fillBuildAndDeviceData() {
-		try {
-			buildNumber = AndroidCommonUtils.readClientVersionFromAdb();
-			deviceInfo = AndroidCommonUtils.readDeviceInfo();
-			log.debug("Execution device info: " + deviceInfo.toString());
-			try {
-				networkType = deviceInfo.isWifiEnabled() ? "Wifi" : deviceInfo
-						.getGsmNetworkType();
-			} catch (NullPointerException e) {
-				networkType = "Unknown";
-			}
-			try {
-				deviceModel = deviceInfo.getDeviceName();
-			} catch (NullPointerException e) {
-				deviceModel = "Unknown";
-			}
-			try {
-				deviceOSVersion = deviceInfo.getOperatingSystemBuild();
-			} catch (NullPointerException e) {
-				deviceOSVersion = "Unknown";
-			}
-		} catch (Exception e) {
+		if (index < 0) {
+			throw new Exception("Incorrect chart title specified.");
 		}
-	}
 
-	public static boolean updateReportDataWithCurrentRun(String applicationLog) {
-		boolean generationPassed = false;
-		fillBuildAndDeviceData();
-		try {
-			parsedRxLog = readRxLog();
-			timeMeasurements = readTimeMeasurementsData(applicationLog);
-			initResources();
-			readResourcesData();
+		for (String[] raw : rawData) {
+			if (!raw[ReporterConstants.Csv.NETWORK_TYPE_COLUMN].equals(network))
+				continue;
+			String build = raw[ReporterConstants.Csv.BUILD_NUMBER_COLUMN];
+			String users = raw[ReporterConstants.Csv.NUMBER_OF_USERS_COLUMN];
+			String time = raw[index];
 
-			normalizeResourcesValues();
-			calculateAverageAndMedianResourcesValues();
-			calculateTotalResourcesValues();
-
-			storeFilteredAndNormalizedResults(createResultFile());
-
-			resources.putAll(convertTimesToResources());
-
-			saveSummaryReport();
-			generationPassed = true;
-		} catch (Exception ex) {
-			log.error("Failed generate reports.\n" + ex.getMessage());
-			ex.printStackTrace();
-		}
-		return generationPassed;
-	}
-
-	private static List<Double> averageCPU = new ArrayList<>();
-	private static List<Double> medianCPU = new ArrayList<>();
-	private static List<Double> averagePhysMem = new ArrayList<>();
-	private static List<Double> medianPhysMem = new ArrayList<>();
-	private static List<Double> averageStorageMem = new ArrayList<>();
-	private static List<Double> medianStorageMem = new ArrayList<>();
-	private static List<String> runDate = new ArrayList<>();
-	private static List<Double> totalRX = new ArrayList<>();
-	private static List<Double> totalTX = new ArrayList<>();
-	private static List<Double> applicationStartupTime = new ArrayList<Double>();
-	private static List<Double> loginTime = new ArrayList<Double>();
-	private static List<Double> conversationLoadingTime = new ArrayList<Double>();
-
-	private static void fillSheet(HSSFSheet summary, List<Double> values,
-			int row, boolean valueShouldBeDecreased) {
-		HSSFCell currentBuildCell = summary.getRow(row).getCell(2);
-		HSSFCell previousBuildCell = summary.getRow(row).getCell(3);
-		HSSFCell diffCell = summary.getRow(row).getCell(4);
-
-		double currentBuild = values.get(values.size() - 1).doubleValue();
-		double previousBuild = values.get(values.size() - 2).doubleValue();
-		double diff = 0;
-		if (valueShouldBeDecreased) {
-			diff = (100 - (currentBuild / (previousBuild / 100))) / 100;
-		} else {
-			diff = ((currentBuild / (previousBuild / 100)) - 100) / 100;
-		}
-		if (currentBuildCell == null)
-			currentBuildCell = summary.getRow(row).createCell(2);
-		if (previousBuildCell == null)
-			previousBuildCell = summary.getRow(row).createCell(3);
-		if (diffCell == null)
-			diffCell = summary.getRow(row).createCell(4);
-		currentBuildCell.setCellValue(currentBuild);
-		previousBuildCell.setCellValue(previousBuild);
-		diffCell.setCellValue(diff);
-	}
-
-	public static void generateSummary(HSSFWorkbook wb) throws IOException {
-		readExecutionsData();
-		HSSFSheet summary = wb.getSheet(ReporterConstants.Xls.SUMMARY_SHEET);
-
-		HSSFCell buildVersion = summary.getRow(
-				ReporterConstants.Xls.BUILD_NUMBER_ROW).getCell(
-				ReporterConstants.Xls.BUILD_NUMBER_COLUMN);
-		HSSFCell numberOfConversations = summary.getRow(
-				ReporterConstants.Xls.NUMBER_OF_CONVERSATIONS_ROW).getCell(
-				ReporterConstants.Xls.BUILD_NUMBER_COLUMN);
-		HSSFCell networkTypeCell = summary.getRow(
-				ReporterConstants.Xls.NETWORK_TYPE_ROW).getCell(
-				ReporterConstants.Xls.BUILD_NUMBER_COLUMN);
-		HSSFCell phoneModelCell = summary.getRow(
-				ReporterConstants.Xls.DEVICE_MODEL_ROW).getCell(
-				ReporterConstants.Xls.BUILD_NUMBER_COLUMN);
-		HSSFCell phoneOSVersionCell = summary.getRow(
-				ReporterConstants.Xls.DEVICE_VERSION_ROW).getCell(
-				ReporterConstants.Xls.BUILD_NUMBER_COLUMN);
-		HSSFCell previousBuildVersionCell = summary.getRow(
-				ReporterConstants.Xls.CPU_STATS_ROW - 1).getCell(3);
-
-		CellStyle cs = wb.createCellStyle();
-		cs.setWrapText(true);
-		cs.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-		cs.setAlignment(CellStyle.ALIGN_CENTER);
-		previousBuildVersionCell.setCellStyle(cs);
-		Font font = wb.createFont();
-		font.setBoldweight(Font.BOLDWEIGHT_BOLD);
-		cs.setFont(font);
-
-		buildVersion.setCellValue(runDate.get(runDate.size() - 1));
-		numberOfConversations.setCellValue(usersCount);
-		networkTypeCell.setCellValue(networkType);
-		phoneModelCell.setCellValue(deviceModel);
-		phoneOSVersionCell.setCellValue(deviceOSVersion);
-		previousBuildVersionCell.setCellValue("Previous Build\n"
-				+ runDate.get(runDate.size() - 2));
-		try {
-			fillSheet(summary, medianCPU, ReporterConstants.Xls.CPU_STATS_ROW,
-					true);
-			fillSheet(summary, medianPhysMem,
-					ReporterConstants.Xls.FREE_PHYSICAL_MEMORY_STATS_ROW, false);
-			fillSheet(summary, medianStorageMem,
-					ReporterConstants.Xls.FREE_STORAGE_MEMORY_STATS_ROW, false);
-			fillSheet(summary, totalRX,
-					ReporterConstants.Xls.TOTAL_RX_STATS_ROW, true);
-			fillSheet(summary, totalTX,
-					ReporterConstants.Xls.TOTAL_TX_STATS_ROW, true);
-
-			fillSheet(summary, applicationStartupTime,
-					ReporterConstants.Xls.APPLICATION_STARTUP_TIME_ROW, true);
-			fillSheet(summary, loginTime, ReporterConstants.Xls.LOGIN_TIME_ROW,
-					true);
-			fillSheet(summary, conversationLoadingTime,
-					ReporterConstants.Xls.CONVERSATION_LOADING_TIME_ROW, true);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			log.debug("It's first execution for "
-					+ usersCount
-					+ " users' performance test. No diff info will be available in report.");
-		}
-	}
-
-	private static LinkedHashMap<String, String[]> readExecutionsData()
-			throws IOException {
-		LinkedHashMap<String, String[]> map = new LinkedHashMap<String, String[]>();
-
-		List<String[]> savedData = new ArrayList<>();
-		String resultsPath = String.format("%s%s%s_%s_%s",
-				AndroidPerformanceReportGenerator.REPORT_DATA_PATH,
-				File.separator, usersCount, networkType,
-				PERFORMANCE_REPORT_DATA_CSV);
-		CSVReader reader = null;
-		try {
-			reader = new CSVReader(new FileReader(resultsPath));
-			String[] nextLine;
-			while ((nextLine = reader.readNext()) != null) {
-				savedData.add(nextLine);
-			}
-		} finally {
-			if (reader != null)
-				reader.close();
-		}
-		savedData.remove(0);
-		for (String[] string : savedData) {
-			List<String> line = Arrays.asList(string);
-			switch (line.get(ReporterConstants.Columns.MEASUREMENT_COLUMN_ID)) {
-			case ReporterConstants.Values.CPU:
-				averageCPU.add(Double.parseDouble(line
-						.get(ReporterConstants.Xls.AVERAGE_VALUE_INDEX)));
-				medianCPU.add(Double.parseDouble(line
-						.get(ReporterConstants.Xls.MEDIAN_VALUE_INDEX)));
+			switch (users) {
+			case "10":
+				users10Values.put(build, time);
 				break;
-			case ReporterConstants.Values.FREE_PHYSICAL_MEM:
-				averagePhysMem.add(Double.parseDouble(line
-						.get(ReporterConstants.Xls.AVERAGE_VALUE_INDEX)));
-				medianPhysMem.add(Double.parseDouble(line
-						.get(ReporterConstants.Xls.MEDIAN_VALUE_INDEX)));
+			case "300":
+				users300Values.put(build, time);
 				break;
-			case ReporterConstants.Values.FREE_STORAGE_MEM:
-				averageStorageMem.add(Double.parseDouble(line
-						.get(ReporterConstants.Xls.AVERAGE_VALUE_INDEX)));
-				medianStorageMem.add(Double.parseDouble(line
-						.get(ReporterConstants.Xls.MEDIAN_VALUE_INDEX)));
+			case "600":
+				users600Values.put(build, time);
 				break;
-			case ReporterConstants.Values.TOTAL_RX:
-				totalRX.add(Double.parseDouble(line
-						.get(ReporterConstants.Xls.TOTAL_VALUE_INDEX)));
-				break;
-			case ReporterConstants.Values.TOTAL_TX:
-				totalTX.add(Double.parseDouble(line
-						.get(ReporterConstants.Xls.TOTAL_VALUE_INDEX)));
-				break;
-			case ReporterConstants.Values.APPLICATION_STARTUP_TIME:
-				applicationStartupTime.add(Double.parseDouble(line
-						.get(ReporterConstants.Xls.TOTAL_VALUE_INDEX)));
-				break;
-			case ReporterConstants.Values.LOGIN_TIME:
-				loginTime.add(Double.parseDouble(line
-						.get(ReporterConstants.Xls.TOTAL_VALUE_INDEX)));
-				break;
-			case ReporterConstants.Values.CONV_PAGE_LOADING_TIME:
-				conversationLoadingTime.add(Double.parseDouble(line
-						.get(ReporterConstants.Xls.TOTAL_VALUE_INDEX)));
+			case "1000":
+				users1000Values.put(build, time);
 				break;
 			default:
-				String str = line.get(2);
-				String[] splited = str.split("\\s+");
-				runDate.add(splited[0]);
+				throw new Exception(
+						"Unsupported number of users (supported - 10/300/600/1000)");
 			}
 		}
 
-		return map;
-	}
-
-	public static boolean generateRunReport() throws IOException {
-		FileOutputStream fileOut = null;
-		HSSFWorkbook wb = null;
-		try {
-			wb = new HSSFWorkbook(new FileInputStream(REPORT_DATA_PATH
-					+ PERFORMANCE_REPORT_XLS_TEMPLATE));
-
-			generateSummary(wb);
-
-			parsedRxLog = readRxLog();
-			for (Map.Entry<String, byte[]> entry : ChartBuilder.generateCharts(
-					String.format("%s%s%s_%s_%s",
-							AndroidPerformanceReportGenerator.REPORT_DATA_PATH,
-							File.separator, usersCount, networkType,
-							PERFORMANCE_REPORT_DATA_CSV)).entrySet()) {
-				HSSFSheet cpuSheet = wb.getSheet(entry.getKey());
-				if (cpuSheet == null) {
-					cpuSheet = wb.createSheet(entry.getKey());
-				}
-				byte[] picture = entry.getValue();
-				int my_picture_id = wb.addPicture(picture,
-						Workbook.PICTURE_TYPE_JPEG);
-				HSSFPatriarch drawing = cpuSheet.createDrawingPatriarch();
-				ClientAnchor my_anchor = new HSSFClientAnchor();
-				my_anchor.setCol1(ReporterConstants.Xls.CHART_CELL_OFFSET);
-				my_anchor.setRow1(ReporterConstants.Xls.CHART_CELL_OFFSET);
-				HSSFPicture my_picture = drawing.createPicture(my_anchor,
-						my_picture_id);
-				my_picture.resize();
-			}
-
-			fileOut = new FileOutputStream(REPORT_DATA_PATH
-					+ PERFORMANCE_REPORT_XLS_RESULT);
-			wb.write(fileOut);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		} finally {
-			if (fileOut != null) {
-				fileOut.flush();
-				fileOut.close();
-			}
-			if (wb != null)
-				wb.close();
+		ArrayList<String> builds = new ArrayList<String>();
+		for (String build : users10Values.keySet()) {
+			builds.add("\\\"" + build + "\\\"");
 		}
-		return true;
+
+		String titleValue = String.format("%s (%s)", title, network);
+
+		String curlFormat = String
+				.format("curl https://push.geckoboard.com/v1/send/%s "
+						+ "-d '{"
+						+ "\"api_key\":\"%s\","
+						+ "\"data\":{"
+						+ "\"highchart\": "
+						+ "\"{chart:{type:\\\"column\\\", style: {color: \\\"#b9bbbb\\\"},"
+						+ "renderTo:\\\"container\\\",backgroundColor:\\\"transparent\\\","
+						+ "lineColor:\\\"rgba(35,37,38,100)\\\",plotShadow: false,},"
+						+ "credits:{enabled:false},title:{style: {color: \\\"#b9bbbb\\\"},"
+						+ "text:\\\"%s\\\"},"
+						+ "xAxis:{categories:[%s]},"
+						+ "yAxis:{title:{style: {color: \\\"#b9bbbb\\\"}, text:\\\"Time (ms)\\\"}},"
+						+ "legend:{itemStyle: {color: \\\"#b9bbbb\\\"}, layout:\\\"vertical\\\","
+						+ "align:\\\"right\\\",verticalAlign:\\\"middle\\\",borderWidth:0},"
+						+ "series:[{color:\\\"#108ec5\\\",name:\\\"10 users\\\",data:[%s]},"
+						+ "{color:\\\"#52b238\\\",name:\\\"300 users\\\",data:[%s]},"
+						+ "{color:\\\"#ee5728\\\",name:\\\"600 users\\\",data:[%s]},"
+						+ "{color:\\\"#fefe22\\\",name:\\\"1000 users\\\",data:[%s]}]}\"}}'",
+						WIDGETS.get(titleValue),
+						API_KEY,
+						titleValue,
+						Arrays.toString(builds.toArray(new String[0]))
+								.replace("[", "").replace("]", ""),
+						Arrays.toString(
+								users10Values.values().toArray(new String[0]))
+								.replace("[", "").replace("]", ""),
+						Arrays.toString(
+								users300Values.values().toArray(new String[0]))
+								.replace("[", "").replace("]", ""),
+						Arrays.toString(
+								users600Values.values().toArray(new String[0]))
+								.replace("[", "").replace("]", ""),
+						Arrays.toString(
+								users1000Values.values().toArray(new String[0]))
+								.replace("[", "").replace("]", ""));
+
+		CommonUtils
+				.executeOsXCommand(new String[] { "bash", "-c", curlFormat });
 	}
 
-	public static void setUsersCount(int usersCount) {
-		AndroidPerformanceReportGenerator.usersCount = usersCount;
+	public static void buildGeckoJSONRequest() throws Exception {
+		String resultsPath = String.format("%s%s%s",
+				AndroidPerformanceReportGenerator.REPORT_DATA_PATH,
+				File.separator, ANDROID_PERFORMANCE_RESULTS_FILE);
+		List<String[]> results = readAllResults(resultsPath);
+		results.remove(0);
+
+		buildChartFor(results, CHART_TITLES[0], "Wifi");
+		buildChartFor(results, CHART_TITLES[1], "Wifi");
+		buildChartFor(results, CHART_TITLES[2], "Wifi");
+		buildChartFor(results, CHART_TITLES[3], "Wifi");
+
+		buildChartFor(results, CHART_TITLES[0], "LTE");
+		buildChartFor(results, CHART_TITLES[1], "LTE");
+		buildChartFor(results, CHART_TITLES[2], "LTE");
+		buildChartFor(results, CHART_TITLES[2], "LTE");
 	}
 }

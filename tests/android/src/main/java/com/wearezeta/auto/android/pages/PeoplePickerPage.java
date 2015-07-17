@@ -11,7 +11,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.wearezeta.auto.android.common.KeyboardMapper;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -42,6 +41,8 @@ public class PeoplePickerPage extends AndroidPage {
 					name);
 
 	public static final String idPickerSearch = "puet_pickuser__searchbox";
+	@FindBy(id = idPickerSearch)
+	private WebElement pickerSearch;
 
 	public static final String idPeoplePickerClearbtn = "gtv_pickuser__clearbutton";
 
@@ -85,12 +86,6 @@ public class PeoplePickerPage extends AndroidPage {
 	private static final String idPickerUsersUnselected = "pick_user_chathead_unselected";
 	@FindBy(id = idPickerUsersUnselected)
 	private List<WebElement> pickerUsersUnselected;
-
-	@FindBy(id = idPickerSearch)
-	private WebElement pickerSearch;
-
-	@FindBy(id = idPickerSearch)
-	private List<WebElement> pickerSearchList;
 
 	private static final String idPickerGrid = "gv_pickuser__topresult__gridview";
 	@FindBy(id = idPickerGrid)
@@ -137,19 +132,13 @@ public class PeoplePickerPage extends AndroidPage {
 		this.getDriver().findElement(locator).click();
 	}
 
-	public void typeTextInPeopleSearch(String contactName) throws Exception {
-		for (char ch : contactName.toCharArray()) {
-			int keyCode = KeyboardMapper.getPrimaryKeyCode(ch);
-			this.getDriver().sendKeyEvent(keyCode);
-		}
-		this.getDriver().sendKeyEvent(66);
+	public void typeTextInPeopleSearch(String text) throws Exception {
+		pickerSearch.clear();
+		pickerSearch.sendKeys(text);
 	}
 
-	public void addTextToPeopleSearch(String contactName) throws Exception {
-		for (char ch : contactName.toCharArray()) {
-			int keyCode = KeyboardMapper.getPrimaryKeyCode(ch);
-			this.getDriver().sendKeyEvent(keyCode);
-		}
+	public void addTextToPeopleSearch(String text) throws Exception {
+		pickerSearch.sendKeys(text);
 	}
 
 	public boolean isNoResultsFoundVisible() throws Exception {
@@ -157,7 +146,8 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isTopPeopleHeaderVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), pickerTopPeopleHeader);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				pickerTopPeopleHeader);
 	}
 
 	public boolean waitUntilTopPeopleHeaderInvisible() throws Exception {
@@ -195,7 +185,8 @@ public class PeoplePickerPage extends AndroidPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 		this.getDriver().findElement(locator).click();
 
-		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), addToConversationsButton)) {
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				addToConversationsButton)) {
 			return this;
 		} else {
 			return new DialogPage(this.getLazyDriver());
@@ -220,7 +211,8 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isPeoplePickerPageVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), pickerSearch);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				pickerSearch);
 	}
 
 	// FIXME: find better locator
@@ -247,8 +239,8 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isAddToConversationBtnVisible() throws Exception {
-		return DriverUtils
-				.isElementPresentAndDisplayed(getDriver(), addToConversationsButton);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				addToConversationsButton);
 	}
 
 	public DialogPage clickOnAddToCoversationButton() throws Exception {
@@ -330,7 +322,7 @@ public class PeoplePickerPage extends AndroidPage {
 		final By locator = By.xpath(xpathPYMKItemByName.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
-	
+
 	public boolean waitUntilPYMKItemIsInvisible(String name) throws Exception {
 		final By locator = By.xpath(xpathPYMKItemByName.apply(name));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
