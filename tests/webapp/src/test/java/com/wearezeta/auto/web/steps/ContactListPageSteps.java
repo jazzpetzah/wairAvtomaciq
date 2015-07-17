@@ -538,7 +538,7 @@ public class ContactListPageSteps {
 	 *            conversation name string
 	 * @throws Exception
 	 */
-	@When("^I hover mute button for conversation (.*)")
+	@When("^I hover mute button for conversation (.*)$")
 	public void IHoverMuteButtonFor(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.hoverMuteButtonForContact(contact);
@@ -551,7 +551,7 @@ public class ContactListPageSteps {
 	 * @throws Exception
 	 *
 	 */
-	@Then("^I see correct tooltip for silence button in conversation (.*)")
+	@Then("^I see correct tooltip for silence button in conversation (.*)$")
 	public void ISeeCorrectTooltipForSilenceButton(String contact)
 			throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
