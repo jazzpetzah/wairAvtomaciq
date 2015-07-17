@@ -26,7 +26,7 @@ public class ContactListPageSteps {
 			.getLog(ContactListPageSteps.class.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private static final String TOOLTIP_SILENCE = "Ping";
+	private static final String TOOLTIP_SILENCE = "Stummschalten";
 	private static final String SHORTCUT_SILENCE_WIN = "(Ctrl + Alt + L)";
 	private static final String SHORTCUT_SILENCE_MAC = "(⌘⌥L)";
 
@@ -551,7 +551,7 @@ public class ContactListPageSteps {
 	 * @throws Exception
 	 *
 	 */
-	@Then("^I see correct tooltip for silence button$")
+	@Then("^I see correct tooltip for silence button in conversation (.*)")
 	public void ISeeCorrectTooltipForSilenceButton(String contact)
 			throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
@@ -567,14 +567,16 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Types shortcut combination to (un)?mute the conversation
+	 * Types shortcut combination to mute or unmute the conversation
 	 * 
-	 * @step. ^I type shortcut combination to mute the conversation$
+	 * @step. ^I type shortcut combination to mute the conversation (.*)$
 	 * @throws Exception
 	 */
-	@When("^I type shortcut combination to (un)?mute the conversation$")
+	@When("^I type shortcut combination to mute or unmute the conversation (.*)$")
 	public void ITypeShortcutCombinationToMuteOrUnmute(String contact)
 			throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.pressShortCutToMuteOrUnmute(contact);
+
 	}
 }

@@ -550,32 +550,27 @@ public class ContactListPage extends WebPage {
 				.isSupportingNativeMouseActions()) {
 			DriverUtils.removeClassFromParent(this.getDriver(),
 					getListElementByName(conversationName, false), "hover");
-			final By muteLocator = By
-					.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
-							.apply(conversationName));
-			final WebElement muteButton = this.getDriver().findElement(
-					muteLocator);
 		}
 	}
 
 	public String getMuteButtonToolTip(String conversationName)
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		if (!WebAppExecutionContext.getBrowser()
+		final By muteLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
+						.apply(conversationName));
+		final WebElement muteButton = this.getDriver().findElement(muteLocator);
+		if (WebAppExecutionContext.getBrowser()
 				.isSupportingNativeMouseActions()) {
-			DriverUtils.removeClassFromParent(this.getDriver(),
-					getListElementByName(conversationName, false), "hover");
-			final By muteLocator = By
-					.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
-							.apply(conversationName));
-			final WebElement muteButton = this.getDriver().findElement(
-					muteLocator);
-			return muteButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
+			DriverUtils.moveMouserOver(this.getDriver(), muteButton);
+		} else {
+			// safari workaround
+			DriverUtils.addClass(this.getDriver(), muteButton, "hover");
 		}
-		return conversationName;
+		return muteButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 
-	public String pressShortCutToMuteOrUnmute(String conversationName)
+	public void pressShortCutToMuteOrUnmute(String conversationName)
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
@@ -584,7 +579,6 @@ public class ContactListPage extends WebPage {
 			throw new PendingException(
 					"Webdriver does not support shortcuts for Mac browsers");
 		}
-		return conversationName;
 	}
 
 }
