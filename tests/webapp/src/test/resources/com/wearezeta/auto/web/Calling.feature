@@ -28,6 +28,33 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | webdriver   | 120     |
 
+  @staging @id2080
+  Scenario Outline: Verify I can get pinged by callee during call
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> accepts next incoming call automatically
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    And I call
+    Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar
+    And <Contact> pinged the conversation with <Contact>
+    And I see ping message <PING>
+    And <Contact> hotpinged the conversation with <Contact>
+    And I see ping message <HOTPING>
+    And I end the call
+    Then <Contact> stops all waiting instances
+
+    Examples: 
+       | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
+       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again | webdriver   | 120     |
+
+
+
   @staging @id1892
   Scenario Outline: Verify the corresponding conversations list item gets sticky on outgoing call
     Given My browser supports calling

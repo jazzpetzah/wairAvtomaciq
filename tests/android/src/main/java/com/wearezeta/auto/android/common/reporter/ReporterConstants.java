@@ -31,6 +31,8 @@ public class ReporterConstants {
 
 		public static final String CONV_PAGE_LOADING_TIME = "Conversation Page Loading Time (ms)";
 
+		public static final String CONV_LOADING_MEDIAN_TIME = "Conversation loading (median)";
+		
 		public static final String CONV_CONTENT_SYNC_TIME = "Conversation Content Sync Time (ms)";
 	}
 
