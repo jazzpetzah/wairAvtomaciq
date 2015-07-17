@@ -75,11 +75,11 @@ Feature: Conversation List
     And I open conversation with <Contact>
     And I see that conversation <Contact> is not muted
     When I click on options button for conversation <Contact>
-    And I hover mute button for conversation <Contact>
-    Then I see correct tooltip
-    When I press ⌥ ⇧ ⌘ L (Mac) or alt + ctrl + L (Win) to mute the conversation
+    #And I hover mute button for conversation <Contact>
+    Then I see correct tooltip for silence button
+    When I type shortcut combination to mute the conversation
     Then I see that conversation <Contact> is muted
-    When I press ⌥ ⇧ ⌘ L (Mac) or alt + ctrl + L (Win) to unmute the conversation
+    When I type shortcut combination to unmute the conversation
     Then I see that conversation <Contact> is not muted
 
     Examples: 

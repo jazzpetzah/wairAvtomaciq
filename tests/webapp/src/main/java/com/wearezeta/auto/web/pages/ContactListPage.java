@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
+import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -29,6 +32,8 @@ import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
+import cucumber.api.PendingException;
+
 public class ContactListPage extends WebPage {
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
@@ -45,6 +50,9 @@ public class ContactListPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
+
+	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
+	private WebElement conversationInput;
 
 	public ContactListPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -529,11 +537,54 @@ public class ContactListPage extends WebPage {
 	public void hoverMuteButtonForContact(String conversationName)
 			throws Exception {
 		waitForOptionButtonsToBeClickable(conversationName);
-
-		final By muteLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
-						.apply(conversationName));
-		final WebElement muteButton = this.getDriver().findElement(muteLocator);
-		muteButton.hover();
+		if (!WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.addClassToParent(this.getDriver(),
+					getListElementByName(conversationName, false), "hover");
+		} else {
+			DriverUtils.moveMouserOver(this.getDriver(),
+					getListElementByName(conversationName, false));
+		}
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		if (!WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.removeClassFromParent(this.getDriver(),
+					getListElementByName(conversationName, false), "hover");
+			final By muteLocator = By
+					.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
+							.apply(conversationName));
+			final WebElement muteButton = this.getDriver().findElement(
+					muteLocator);
+		}
 	}
+
+	public String getMuteButtonToolTip(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		if (!WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.removeClassFromParent(this.getDriver(),
+					getListElementByName(conversationName, false), "hover");
+			final By muteLocator = By
+					.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
+							.apply(conversationName));
+			final WebElement muteButton = this.getDriver().findElement(
+					muteLocator);
+			return muteButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
+		}
+		return conversationName;
+	}
+
+	public String pressShortCutToMuteOrUnmute(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "l"));
+		} else {
+			throw new PendingException(
+					"Webdriver does not support shortcuts for Mac browsers");
+		}
+		return conversationName;
+	}
+
 }
