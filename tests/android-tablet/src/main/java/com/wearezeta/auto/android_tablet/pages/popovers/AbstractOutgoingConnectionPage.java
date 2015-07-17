@@ -10,7 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-class OutgoingConnectionPage extends AbstractPopoverPage {
+abstract class AbstractOutgoingConnectionPage extends AbstractPopoverPage {
 	public static final Function<String, String> xpathNameByValue = value -> String
 			.format("//*[@id='%s']//*[@value='%s']",
 					OutgoingConnectionPopover.idRootLocator, value);
@@ -19,18 +19,16 @@ class OutgoingConnectionPage extends AbstractPopoverPage {
 	@FindBy(id = idMessage)
 	private WebElement message;
 
-	public static final String idConnectButton = "zb__send_connect_request__connect_button";
-	@FindBy(id = idConnectButton)
-	private WebElement connectButton;
-
 	public static final String idCloseButton = "gtv__participants__close";
 	@FindBy(id = idCloseButton)
 	private WebElement closeButton;
 
-	public OutgoingConnectionPage(Future<ZetaAndroidDriver> lazyDriver,
-			OutgoingConnectionPopover container) throws Exception {
+	public AbstractOutgoingConnectionPage(Future<ZetaAndroidDriver> lazyDriver,
+			AbstractPopoverContainer container) throws Exception {
 		super(lazyDriver, container);
 	}
+
+	protected abstract By getConnectButtonLocator();
 
 	public boolean isNameVisible(String name) throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -48,6 +46,8 @@ class OutgoingConnectionPage extends AbstractPopoverPage {
 	}
 
 	public void tapConnectButton() throws Exception {
+		final WebElement connectButton = getDriver().findElement(
+				getConnectButtonLocator());
 		assert DriverUtils
 				.waitUntilElementClickable(getDriver(), connectButton);
 		connectButton.click();

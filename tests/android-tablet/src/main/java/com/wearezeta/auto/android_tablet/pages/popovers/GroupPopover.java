@@ -11,11 +11,14 @@ public class GroupPopover extends AbstractPopoverContainer {
 
 	private ParticipantsPage participantsPage;
 	private ConnectedParticipantPage connectedParticipantPage;
+	private ParticipantOutgoingConnectionPage outgoingConnectionPage;
 
 	public GroupPopover(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 		this.participantsPage = new ParticipantsPage(lazyDriver, this);
 		this.connectedParticipantPage = new ConnectedParticipantPage(
+				lazyDriver, this);
+		this.outgoingConnectionPage = new ParticipantOutgoingConnectionPage(
 				lazyDriver, this);
 	}
 
@@ -56,5 +59,17 @@ public class GroupPopover extends AbstractPopoverContainer {
 	public boolean waitForParticipantAvatarNotVisible(String name)
 			throws Exception {
 		return this.participantsPage.waitForParticipantAvatarNotVisible(name);
+	}
+
+	public void setConnectionMessage(String text) throws Exception {
+		this.outgoingConnectionPage.setMessage(text);
+	}
+
+	public void tapConnectButton() throws Exception {
+		this.outgoingConnectionPage.tapConnectButton();
+	}
+
+	public boolean waitUntilPendingButtonIsVisible() throws Exception {
+		return this.outgoingConnectionPage.waitUntilPendingButtonIsVisible();
 	}
 }
