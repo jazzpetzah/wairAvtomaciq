@@ -527,8 +527,13 @@ public class DialogPage extends AndroidPage {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				participantsButton);
 		participantsButton.click();
-		// Wait for transition
-		Thread.sleep(1000);
+		final long millisecondsStarted = System.currentTimeMillis();
+		final long maxAnimationDurationMillis = 2000;
+		do {
+			Thread.sleep(200);
+		} while (participantsButton.getLocation().getY() > 0
+				&& System.currentTimeMillis() - millisecondsStarted < maxAnimationDurationMillis);
+		assert participantsButton.getLocation().getY() < 0;
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}
 
