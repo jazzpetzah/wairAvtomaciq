@@ -26,7 +26,7 @@ public class ContactListPageSteps {
 			.getLog(ContactListPageSteps.class.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-	private static final String TOOLTIP_SILENCE = "Stummschalten";
+	private static final String TOOLTIP_SILENCE = "Silence";
 	private static final String SHORTCUT_SILENCE_WIN = "(Ctrl + Alt + L)";
 	private static final String SHORTCUT_SILENCE_MAC = "(⌘⌥L)";
 
