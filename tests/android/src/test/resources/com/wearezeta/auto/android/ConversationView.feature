@@ -50,7 +50,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1262 @smoke @torun
+  @id1262 @smoke
   Scenario Outline: Add people to 1:1 chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
