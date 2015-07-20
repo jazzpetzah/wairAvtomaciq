@@ -108,6 +108,9 @@ public class LoginPage extends IOSPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameBackButton)
 	private WebElement backButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameMaybeLater)
+	private WebElement maybeLater;
 
 	private String login;
 
@@ -228,6 +231,9 @@ public class LoginPage extends IOSPage {
 	}
 
 	public Boolean isLoginFinished() throws Exception {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(IOSLocators.LoginPage.nameMaybeLater))) {
+			maybeLater.click();
+		}
 		try {
 			this.getWait().until(
 					ExpectedConditions.presenceOfElementLocated(By

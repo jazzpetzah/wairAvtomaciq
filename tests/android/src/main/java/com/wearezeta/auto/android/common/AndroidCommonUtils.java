@@ -146,7 +146,7 @@ public class AndroidCommonUtils extends CommonUtils {
 				"shell dumpsys package %s | grep versionName", CommonUtils
 						.getAndroidPackageFromConfig(AndroidCommonUtils.class)));
 		if (output.contains("=")) {
-			return output.substring(output.indexOf("="), output.length());
+			return output.substring(output.indexOf("=") + 1, output.length());
 		} else {
 			return output;
 		}
