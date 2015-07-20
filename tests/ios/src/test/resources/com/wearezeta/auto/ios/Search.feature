@@ -35,6 +35,7 @@ Feature: Search
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     And I dismiss alert
+    And I dismiss settings warning
     And I open search by taping on it
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
@@ -55,8 +56,8 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    # TODO: Address book upload
     And I dismiss alert
+    And I dismiss settings warning
     And I open search by taping on it
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
@@ -179,6 +180,7 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
     When I dont see conversation <Contact> in contact list
     And I open search by taping on it
     And I see People picker page

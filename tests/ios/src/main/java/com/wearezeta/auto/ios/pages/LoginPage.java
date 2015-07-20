@@ -229,11 +229,15 @@ public class LoginPage extends IOSPage {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.name(IOSLocators.nameLoginField));
 	}
-
-	public Boolean isLoginFinished() throws Exception {
+	
+	public void dismisSettingsWaring() throws Exception {
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(IOSLocators.LoginPage.nameMaybeLater))) {
 			maybeLater.click();
 		}
+	}
+
+	public Boolean isLoginFinished() throws Exception {
+		dismisSettingsWaring();
 		try {
 			this.getWait().until(
 					ExpectedConditions.presenceOfElementLocated(By

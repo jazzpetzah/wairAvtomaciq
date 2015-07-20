@@ -129,7 +129,7 @@ Feature: Connect
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
-    And I open conversation details on iPad
+    And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
     And I click Connect button on connect to dialog
     And I exit the group info iPad popover
@@ -150,7 +150,7 @@ Feature: Connect
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
-    And I open conversation details on iPad
+    And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
     And I click Connect button on connect to dialog
     And I exit the group info iPad popover
