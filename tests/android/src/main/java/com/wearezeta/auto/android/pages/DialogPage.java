@@ -780,6 +780,7 @@ public class DialogPage extends AndroidPage {
 		if (!DriverUtils
 				.isElementPresentAndDisplayed(getDriver(), cursorBtnImg)) {
 			tapOnCursorFrame();
+			this.hideKeyboard();
 			Thread.sleep(500); // fix for scrolling animation
 		}
 	}
