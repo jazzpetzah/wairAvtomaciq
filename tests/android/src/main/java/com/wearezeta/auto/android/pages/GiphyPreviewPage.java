@@ -10,7 +10,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class GiphyPreviewPage extends AndroidPage {
-	public static final String giphyPreviewButtonId = "cursor_button_giphy";
 	@FindBy(id = giphyPreviewButtonId)
 	private WebElement giphyPreviewButton;
 	final By giphyPreviewButtonLocator = By.id(giphyPreviewButtonId);

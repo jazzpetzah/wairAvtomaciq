@@ -24,6 +24,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class AndroidPage extends BasePage {
 
+	protected static final String giphyPreviewButtonId = "cursor_button_giphy";
+	
 	protected static final String idConfirmBtn = "confirm";
 
 	protected static final String idEditText = "cursor_edit_text";

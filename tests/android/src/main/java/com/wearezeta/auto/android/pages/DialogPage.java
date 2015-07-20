@@ -52,6 +52,10 @@ public class DialogPage extends AndroidPage {
 			.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
 					text);
 
+	@FindBy(id = giphyPreviewButtonId)
+	private WebElement giphyPreviewButton;
+	final By giphyPreviewButtonLocator = By.id(giphyPreviewButtonId);
+
 	@FindBy(id = idEditText)
 	private WebElement cursorInput;
 
@@ -349,11 +353,19 @@ public class DialogPage extends AndroidPage {
 							"The string '%s' was autocorrected. Please disable autocorrection on the device and restart the test.",
 							message));
 		}
-		// Enter does not send text anymore
-		// this.pressEnter();
-		// Use tap by coords instead
-		pressKeyboardSendButton();
+		this.pressEnter();
 		this.hideKeyboard();
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				giphyPreviewButtonLocator)
+				&& (giphyPreviewButton.getLocation().y * 100
+						/ getDriver().manage().window().getSize().getHeight() < 90)) {
+			pressKeyboardSendButton();
+			this.hideKeyboard();
+		} else {
+//			FIXME: Enter does not send text anymore, unicode tests affected
+			this.pressEnter();
+			this.hideKeyboard();
+		}
 	}
 
 	public void typeMessage(String message) throws Exception {

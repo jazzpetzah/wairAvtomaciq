@@ -124,7 +124,7 @@ Feature: Conversation View
       | Name      | Contact   | Message  |
       | user1Name | user2Name | aaaaAAAA |
 
-  @id146 @unicode @regression
+  @id146 @unicode @regression_mute @mute
   Scenario Outline: Send special chars message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -156,7 +156,7 @@ Feature: Conversation View
       | Name      | Contact   | Message  |
       | user1Name | user2Name | :) ;) :( |
 
-  @id147 @unicode @regression
+  @id147 @unicode @regression_mute @mute
   Scenario Outline: Send double byte chars
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
