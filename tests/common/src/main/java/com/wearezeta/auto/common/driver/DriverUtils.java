@@ -71,10 +71,16 @@ public class DriverUtils {
 			final WebElement element) {
 		try {
 			if (element.isDisplayed()
+					&& element.getLocation().x > 0
+					&& element.getLocation().y > 0
 					&& (element.getLocation().x < driver.manage().window()
 							.getSize().width)
 					&& (element.getLocation().y < driver.manage().window()
-							.getSize().height)) {
+							.getSize().height)
+					|| (element.getLocation().x == 0 && element.getSize().width == driver
+							.manage().window().getSize().width)
+					|| (element.getLocation().y == 0 && element.getSize().height == driver
+							.manage().window().getSize().height)) {
 				return true;
 			} else {
 				return false;
@@ -103,11 +109,8 @@ public class DriverUtils {
 			try {
 				return wait.until(drv -> {
 					return (drv.findElements(by).size() > 0)
-							&& drv.findElement(by).isDisplayed()
-							&& (drv.findElement(by).getLocation().x < drv
-									.manage().window().getSize().width)
-							&& (drv.findElement(by).getLocation().y < drv
-									.manage().window().getSize().height);
+							&& isElementPresentAndDisplayed(driver,
+									drv.findElement(by));
 				});
 			} catch (TimeoutException e) {
 				return false;
@@ -124,11 +127,11 @@ public class DriverUtils {
 	}
 
 	public static boolean waitUntilLocatorDissapears(RemoteWebDriver driver,
-			final By by, int timeout) throws Exception {
+			final By by, int timeoutSeconds) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(timeout, TimeUnit.SECONDS)
+					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
 			return wait.until(drv -> {

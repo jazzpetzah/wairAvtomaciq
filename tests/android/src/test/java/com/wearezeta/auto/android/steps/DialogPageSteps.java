@@ -326,6 +326,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap conversation details button$")
 	public void WhenITapConversationDetailsBottom() throws Exception {
+		getDialogPage().swipeOnCursorInput();
 		getDialogPage().tapConversationDetailsButton();
 	}
 

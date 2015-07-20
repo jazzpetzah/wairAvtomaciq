@@ -26,7 +26,9 @@ public abstract class AndroidPage extends BasePage {
 
 	protected static final String idConfirmBtn = "confirm";
 
-	protected static final String idEditText = "cet__cursor_view";
+	protected static final String idEditText = "cursor_edit_text";
+	
+	protected static final String idCursorArea = "cursor_layout";
 
 	protected static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";
 
