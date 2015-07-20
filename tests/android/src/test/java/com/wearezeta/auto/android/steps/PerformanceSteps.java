@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.reporter.AndroidPerfReportModel;
 import com.wearezeta.auto.android.common.reporter.AndroidPerformanceHelpers;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
@@ -196,10 +197,14 @@ public class PerformanceSteps {
 	public void ThenIGeneratePerformanceReport(int usersCount,
 			String networkType) throws Exception {
 		CommonAndroidSteps.getLogcatListener().stop(5000);
-		AndroidPerformanceHelpers.storePerformanceResultsToCSV(usersCount,
-				CommonAndroidSteps.getLogcatListener().getStdout() + "\n"
-						+ CommonAndroidSteps.getLogcatListener().getStderr(),
-				usersCount,
+		final AndroidPerfReportModel dataModel = new AndroidPerfReportModel();
+		dataModel.loadFromLogCat(CommonAndroidSteps.getLogcatListener()
+				.getStdout()
+				+ "\n"
+				+ CommonAndroidSteps.getLogcatListener().getStderr());
+		AndroidPerformanceHelpers.storeWidgetDataAsJSON(
+				AndroidCommonUtils.getGeckoboardWidgetIdFromConfig(getClass()),
+				dataModel,
 				AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
 	}
 }

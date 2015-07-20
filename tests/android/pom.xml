@@ -26,6 +26,7 @@
 		<androidAddressBookMailAccount>smoketester@wearezeta.com</androidAddressBookMailAccount>
 		<pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
 		<perfReportPath>${user.home}/Documents/performance.csv</perfReportPath>
+		<perfGeckoboardWidgetId>141043-83f588df-e70e-47a7-b903-7ada3fdb95f8</perfGeckoboardWidgetId>
 		<androidVersion>44</androidVersion>
 		<backendType>staging</backendType>
 	</properties>

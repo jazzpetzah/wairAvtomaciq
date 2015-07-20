@@ -202,7 +202,12 @@ public class AndroidCommonUtils extends CommonUtils {
 			throws Exception {
 		return CommonUtils.getValueFromConfig(c, "perfReportPath");
 	}
-	
+
+	public static String getGeckoboardWidgetIdFromConfig(Class<?> c)
+			throws Exception {
+		return CommonUtils.getValueFromConfig(c, "perfGeckoboardWidgetId");
+	}
+
 	public static String getAndroidClientInfoPathFromConfig(Class<?> c)
 			throws Exception {
 		return CommonUtils.getValueFromConfig(c, "androidClientInfoPath");
