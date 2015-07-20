@@ -187,7 +187,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean waitForCursorInputVisible() throws Exception {
-		if(DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(IOSLocators.DialogPage.nameCloseButton), 2)) {
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.name(IOSLocators.DialogPage.nameCloseButton), 2)) {
 			closeButton.click();
 		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -314,11 +315,9 @@ public class DialogPage extends IOSPage {
 					IOSLocators.xpathLastMessageFormat, messagesList.size());
 			WebElement el = this.getDriver().findElementByXPath(
 					lastMessageXPath);
-			this.getDriver().tap(
-					1,
-					el.getLocation().x + 30,
-					el.getLocation().y + el.getSize().height
-							+ (el.getSize().height / 2), 1);
+			int y = el.getLocation().y + 2 * el.getSize().height;
+			this.getDriver().tap(1, el.getLocation().x + 30,
+					el.getLocation().y + 2 * el.getSize().height, 1);
 		}
 	}
 
