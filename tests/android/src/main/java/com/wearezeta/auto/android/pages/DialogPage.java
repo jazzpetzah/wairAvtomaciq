@@ -353,8 +353,6 @@ public class DialogPage extends AndroidPage {
 							"The string '%s' was autocorrected. Please disable autocorrection on the device and restart the test.",
 							message));
 		}
-		this.pressEnter();
-		this.hideKeyboard();
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
 				giphyPreviewButtonLocator)
 				&& (giphyPreviewButton.getLocation().y * 100
