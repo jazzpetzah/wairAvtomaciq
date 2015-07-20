@@ -61,7 +61,7 @@ public class DialogPage extends AndroidPage {
 	private static final String idCursorBtn = "typing_indicator_button";
 	@FindBy(id = idCursorBtn)
 	private WebElement cursorBtn;
-	
+
 	private static final String idCursorBtnImg = "typing_indicator_imageview";
 	@FindBy(id = idCursorBtnImg)
 	private WebElement cursorBtnImg;
@@ -777,7 +777,8 @@ public class DialogPage extends AndroidPage {
 				5);
 		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCursorFrame));
-		if (!DriverUtils.isElementPresentAndDisplayed(getDriver(), cursorBtnImg)) {
+		if (!DriverUtils
+				.isElementPresentAndDisplayed(getDriver(), cursorBtnImg)) {
 			tapOnCursorFrame();
 			Thread.sleep(500); // fix for scrolling animation
 		}
