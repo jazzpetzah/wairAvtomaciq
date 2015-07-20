@@ -51,7 +51,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I open conversation details on iPad
+    And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I press Add button
     And I see People picker page on iPad popover
@@ -75,7 +75,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I open conversation details on iPad
+    And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I press Add button
     And I see People picker page on iPad popover
