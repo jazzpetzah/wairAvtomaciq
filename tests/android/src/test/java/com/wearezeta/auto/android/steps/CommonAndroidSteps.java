@@ -21,7 +21,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidLoggingUtils;
-import com.wearezeta.auto.android.common.reporter.LogcatListener;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.CommonCallingSteps;
@@ -36,6 +35,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.common.process.AsyncProcess;
 
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
@@ -59,7 +59,18 @@ public class CommonAndroidSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(CommonAndroidSteps.class.getSimpleName());
 
-	public static LogcatListener listener = new LogcatListener();
+	private static final AsyncProcess logcatListener = new AsyncProcess(new String[] {
+			"/bin/bash", "-c",
+			AndroidCommonUtils.ADB_PREFIX + "adb -d logcat *:W" }, false, false);
+
+	/**
+	 * This listener starts only for tests, which have "performance" tag
+	 * 
+	 * @return
+	 */
+	public static AsyncProcess getLogcatListener() {
+		return logcatListener;
+	}
 
 	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
@@ -195,7 +206,7 @@ public class CommonAndroidSteps {
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
-		listener.startListeningLogcat();
+		logcatListener.start();
 
 		try {
 			AndroidCommonUtils.disableHints();
@@ -844,6 +855,14 @@ public class CommonAndroidSteps {
 
 	@After
 	public void tearDown() throws Exception {
+		if (logcatListener.isRunning()) {
+			try {
+				logcatListener.stop(2000);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
 		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps.getInstance().cleanupWaitingInstances();
@@ -919,10 +938,10 @@ public class CommonAndroidSteps {
 	public void IAddPredefinedUsersToAddressBook() throws Exception {
 		AndroidCommonUtils.addPreDefinedUsersToAddressBook();
 	}
-	
+
 	/**
-	 * Checks to see that a device runs the target version, and if not, 
-	 * throws a pending exception to skip this test without failing
+	 * Checks to see that a device runs the target version, and if not, throws a
+	 * pending exception to skip this test without failing
 	 * 
 	 * @step. ^My device runs Android (.*) or higher$
 	 * 
@@ -932,7 +951,7 @@ public class CommonAndroidSteps {
 	public void MyDeviceRunsAndroid(String targetVersion) throws Exception {
 		if (AndroidCommonUtils.compareAndroidVersion(targetVersion) < 0) {
 			throw new PendingException("This test isn't suitable to run on "
-				+ "anything lower than Android " + targetVersion);
+					+ "anything lower than Android " + targetVersion);
 		}
 	}
 
@@ -945,5 +964,5 @@ public class CommonAndroidSteps {
 	public void DeleteDeployedContacts() throws Exception {
 		AndroidCommonUtils.removeTestContactsFromAddressBook();
 	}
-	
+
 }

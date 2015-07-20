@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.android.common.reporter.AndroidPerformanceReportGenerator;
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.reporter.AndroidPerformanceHelpers;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
-import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.performance.PerformanceCommon;
+import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -182,17 +183,23 @@ public class PerformanceSteps {
 	}
 
 	/**
-	 * Generates android performance report
+	 * Generates android performance report and saves it by path provided in the
+	 * configuration file, option "perfReportPath". The previous report is going
+	 * to be silently deleted if it already exists in this folder
 	 * 
-	 * @step. ^I generate performance report$
+	 * @step. ^I generate performance report for (\\d+) users? on (WiFi|4G)
+	 *        network$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I generate performance report for (\\d+) users$")
-	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
-		CommonAndroidSteps.listener.stopListeningLogcat();
-		AndroidPerformanceReportGenerator.collectExecutionData(usersCount,
-				CommonAndroidSteps.listener.getOutput());
-		AndroidPerformanceReportGenerator.storeRunResultsToCSV();
+	@Then("^I generate performance report for (\\d+) users? on (WiFi|4G) network$")
+	public void ThenIGeneratePerformanceReport(int usersCount,
+			String networkType) throws Exception {
+		CommonAndroidSteps.getLogcatListener().stop(5000);
+		AndroidPerformanceHelpers.storePerformanceResultsToCSV(usersCount,
+				CommonAndroidSteps.getLogcatListener().getStdout() + "\n"
+						+ CommonAndroidSteps.getLogcatListener().getStderr(),
+				usersCount,
+				AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
 	}
 }

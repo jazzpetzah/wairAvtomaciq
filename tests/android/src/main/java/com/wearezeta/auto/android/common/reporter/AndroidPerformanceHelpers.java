@@ -128,10 +128,10 @@ class ExecutionData {
 	}
 }
 
-public class AndroidPerformanceReportGenerator {
+public class AndroidPerformanceHelpers {
 
 	private static final Logger log = ZetaLogger
-			.getLog(AndroidPerformanceReportGenerator.class.getSimpleName());
+			.getLog(AndroidPerformanceHelpers.class.getSimpleName());
 
 	public static String REPORT_DATA_PATH;
 
@@ -163,16 +163,6 @@ public class AndroidPerformanceReportGenerator {
 	}
 
 	public static ExecutionData data = new ExecutionData();
-
-	static {
-		try {
-			REPORT_DATA_PATH = AndroidCommonUtils
-					.getRxLogResultsPathFromConfig(AndroidPerformanceReportGenerator.class);
-		} catch (Exception e) {
-			REPORT_DATA_PATH = "";
-			e.printStackTrace();
-		}
-	}
 
 	private static LinkedHashMap<String, Double> readTimeMeasurementsData(
 			String applicationLog) {
@@ -321,7 +311,7 @@ public class AndroidPerformanceReportGenerator {
 	}
 
 	private static String createResultFile() throws Exception {
-		String resultsPath = AndroidPerformanceReportGenerator.REPORT_DATA_PATH;
+		String resultsPath = AndroidPerformanceHelpers.REPORT_DATA_PATH;
 		String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
 				.format(Calendar.getInstance().getTime());
 		resultsPath = resultsPath + File.separator + timeStamp + ".csv";
@@ -341,7 +331,7 @@ public class AndroidPerformanceReportGenerator {
 	private static final String ANDROID_PERFORMANCE_RESULTS_FILE = "android_performance_runs.csv";
 
 	private static void copyReportAsLatest(String filePath) throws Exception {
-		String resultsPath = AndroidPerformanceReportGenerator.REPORT_DATA_PATH;
+		String resultsPath = AndroidPerformanceHelpers.REPORT_DATA_PATH;
 		resultsPath = resultsPath + File.separator + LATEST_REPORT_NAME;
 		try {
 			File f = new File(resultsPath);
@@ -411,7 +401,7 @@ public class AndroidPerformanceReportGenerator {
 	private static List<String[]> readLatestResult() throws IOException {
 		List<String[]> savedData = new ArrayList<>();
 		String resultsPath = String.format("%s%s%s",
-				AndroidPerformanceReportGenerator.REPORT_DATA_PATH,
+				AndroidPerformanceHelpers.REPORT_DATA_PATH,
 				File.separator, LATEST_REPORT_NAME);
 		File f = new File(resultsPath);
 		if (!f.exists()) {
@@ -435,7 +425,7 @@ public class AndroidPerformanceReportGenerator {
 
 	public static void mergeLastResultIntoList() throws IOException {
 		String resultsPath = String.format("%s%s%s",
-				AndroidPerformanceReportGenerator.REPORT_DATA_PATH,
+				AndroidPerformanceHelpers.REPORT_DATA_PATH,
 				File.separator, ANDROID_PERFORMANCE_RESULTS_FILE);
 		List<String[]> savedData = readAllResults(resultsPath);
 		List<String[]> newData = readLatestResult();
@@ -557,7 +547,7 @@ public class AndroidPerformanceReportGenerator {
 
 	public static void buildGeckoJSONRequest() throws Exception {
 		String resultsPath = String.format("%s%s%s",
-				AndroidPerformanceReportGenerator.REPORT_DATA_PATH,
+				AndroidPerformanceHelpers.REPORT_DATA_PATH,
 				File.separator, ANDROID_PERFORMANCE_RESULTS_FILE);
 		List<String[]> results = readAllResults(resultsPath);
 		results.remove(0);

@@ -17,7 +17,6 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidLoggingUtils;
-import com.wearezeta.auto.android.common.reporter.LogcatListener;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
@@ -55,8 +54,6 @@ public class CommonAndroidTabletSteps {
 
 	private static final Logger log = ZetaLogger
 			.getLog(CommonAndroidTabletSteps.class.getSimpleName());
-
-	public static LogcatListener listener = new LogcatListener();
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();

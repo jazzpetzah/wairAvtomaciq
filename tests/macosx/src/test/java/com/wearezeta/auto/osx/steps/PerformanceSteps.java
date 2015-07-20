@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
+import com.wearezeta.auto.common.performance.PerformanceCommon;
+import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.osx.pages.ContactListPage;
 import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;

@@ -12,11 +12,11 @@ import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.reporter.IDeviceSysLogListener;
 import com.wearezeta.auto.ios.reporter.IOSPerformanceReportGenerator;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
-import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.performance.PerformanceCommon;
+import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.common.process.AsyncProcess;
 
 import cucumber.api.java.After;

@@ -1,4 +1,4 @@
-package com.wearezeta.auto.common;
+package com.wearezeta.auto.common.performance;
 
 import java.io.InputStream;
 import java.time.LocalDateTime;
@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
