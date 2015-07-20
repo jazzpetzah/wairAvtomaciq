@@ -61,6 +61,10 @@ public class DialogPage extends AndroidPage {
 	private static final String idCursorBtn = "typing_indicator_button";
 	@FindBy(id = idCursorBtn)
 	private WebElement cursorBtn;
+	
+	private static final String idCursorBtnImg = "typing_indicator_imageview";
+	@FindBy(id = idCursorBtnImg)
+	private WebElement cursorBtnImg;
 
 	private static final String idMessage = "ltv__row_conversation__message";
 	@FindBy(id = idMessage)
@@ -70,7 +74,7 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idMissedCallMesage)
 	private WebElement missedCallMessage;
 
-	private static final String idCursorFrame = "cv";
+	private static final String idCursorFrame = "cursor_layout";
 	@FindBy(id = idCursorFrame)
 	private WebElement cursorFrame;
 
@@ -772,9 +776,9 @@ public class DialogPage extends AndroidPage {
 		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idCursorBtn),
 				5);
 		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCursorArea));
-		if (!DriverUtils.isElementPresentAndDisplayed(getDriver(), cursorBtn)) {
-			tapOnCursorInput();
+				By.id(idCursorFrame));
+		if (!DriverUtils.isElementPresentAndDisplayed(getDriver(), cursorBtnImg)) {
+			tapOnCursorFrame();
 			Thread.sleep(500); // fix for scrolling animation
 		}
 	}

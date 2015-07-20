@@ -70,6 +70,10 @@ public class DriverUtils {
 	public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver,
 			final WebElement element) {
 		try {
+			// log.info("Element size " + element.getSize().width + "x"
+			// + element.getSize().width);
+			// log.info("Element location " + element.getLocation().x + ":"
+			// + element.getLocation().y);
 			if (element.isDisplayed()
 					&& element.getLocation().x > 0
 					&& element.getLocation().y > 0
@@ -77,10 +81,12 @@ public class DriverUtils {
 							.getSize().width)
 					&& (element.getLocation().y < driver.manage().window()
 							.getSize().height)
-					|| (element.getLocation().x == 0 && element.getSize().width == driver
-							.manage().window().getSize().width)
-					|| (element.getLocation().y == 0 && element.getSize().height == driver
-							.manage().window().getSize().height)) {
+					|| (element.getLocation().x == 0 && (element.getSize().width == driver
+							.manage().window().getSize().width || !element
+							.getText().isEmpty()))
+					|| (element.getLocation().y == 0 && (element.getSize().height == driver
+							.manage().window().getSize().height || !element
+							.getText().isEmpty()))) {
 				return true;
 			} else {
 				return false;
