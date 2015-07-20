@@ -408,7 +408,7 @@ Feature: Conversation List
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    And User <Contact> sent message <SoundCloudLink> to conversation <Contact>
+    Given User <Contact> sent message <SoundCloudLink> to conversation <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
