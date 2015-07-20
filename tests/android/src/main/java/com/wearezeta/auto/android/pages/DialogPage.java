@@ -777,6 +777,7 @@ public class DialogPage extends AndroidPage {
 				5);
 		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCursorFrame));
+		tapOnCursorFrame();
 		if (!DriverUtils
 				.isElementPresentAndDisplayed(getDriver(), cursorBtnImg)) {
 			tapOnCursorFrame();
