@@ -323,31 +323,32 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | ChatName         | Message        |
       | user1Name | user2Name | user3Name | ContactGroupChat | Yo! What's up! |
 
-  @id676 @regression
+  @id676 @regression @torun
   Scenario Outline: I want to block a person from 1:1 conversation
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given <Contact2> is connected to <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    When I tap on contact name <Contact1>
     And I see dialog page
     And I tap conversation details button
     And I press options menu button
     And I Press Block button
     And I confirm block
-    Then I do not see contact list with name <Contact>
-    And I wait until <Contact> exists in backend search results
+    Then I do not see contact list with name <Contact1>
+    And I wait until <Contact1> exists in backend search results
     And I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    And I see user <Contact> found on People picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I see user <Contact1> found on People picker page
     And I tap on user name found on People picker page <Contact>
     Then User info should be shown with Block button
 
     Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id680 @regression
   Scenario Outline: I want to see user has been blocked within the Start UI
