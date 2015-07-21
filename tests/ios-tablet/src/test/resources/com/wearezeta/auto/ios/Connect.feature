@@ -484,6 +484,7 @@ Feature: Connect
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
     And I dismiss alert
+    And I see Contact list with my name <Name>
     And I open search by taping on it
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
