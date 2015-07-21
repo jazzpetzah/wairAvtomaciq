@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -84,10 +83,4 @@ public class AndroidPerfReportModel extends PerfReportModel {
 			this.addConvoStartupTime(timeMillis);
 		}
 	}
-
-	@Override
-	public void loadFromJSON(final JSONObject jsonObj) throws Exception {
-		super.loadFromJSON(jsonObj);
-	}
-
 }

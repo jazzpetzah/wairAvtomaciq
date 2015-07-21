@@ -133,9 +133,6 @@ public abstract class PerfReportModel {
 	}
 
 	protected void loadFromJSON(final JSONObject jsonObj) throws Exception {
-		// final JSONTokener tokener = new JSONTokener(new FileReader(new File(
-		// path)));
-		// final JSONObject loadedJSON = new JSONObject(tokener);
 		this.setDeviceName(jsonObj.getString("deviceName"));
 		this.setDeviceOSVersion(jsonObj.getString("deviceOSVersion"));
 		this.setNetworkType(NetworkType.fromString(jsonObj
