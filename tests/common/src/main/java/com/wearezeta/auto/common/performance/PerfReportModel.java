@@ -78,7 +78,7 @@ public abstract class PerfReportModel {
 	public void clearConvoStartupTimes() {
 		this.convoLoadTimes.clear();
 	}
-	
+
 	protected void addConvoStartupTime(long timeMillis) {
 		this.convoLoadTimes.add(timeMillis);
 	}
@@ -132,7 +132,8 @@ public abstract class PerfReportModel {
 		result.put("usersCount", this.getUsersCount());
 		result.put("buildNumber", this.getBuildNumber());
 		result.put("signInTime", this.getSignInTime());
-		result.put("convoLoadTimes", new JSONArray(this.convoLoadTimes));
+		result.put("convoLoadTimes",
+				new JSONArray(this.convoLoadTimes.toArray(new Long[0])));
 		return result;
 	}
 

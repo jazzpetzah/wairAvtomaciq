@@ -1,6 +1,6 @@
 Feature: Performance Tests
 
-  @performance
+  @performance @torun
   Scenario Outline: Normal usage
     Given There are <UsersNumber> shared users with name prefix <UserNamePrefix>
     Given User <Name> is Me
@@ -13,4 +13,6 @@ Feature: Performance Tests
 
     Examples: 
       | Name      | UsersNumber       | UserNamePrefix    | Time            |
-      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} |
+#      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} |
+      | user1Name | 11                | perf10users        | 2               |
+      

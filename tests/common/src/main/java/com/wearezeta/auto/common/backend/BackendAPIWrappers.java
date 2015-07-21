@@ -694,6 +694,15 @@ public final class BackendAPIWrappers {
 				convId, message);
 	}
 
+	public static void sendConversationMessages(ClientUser userFrom,
+			String convId, List<String> messages) throws Exception {
+		tryLoginByUser(userFrom);
+		for (String message : messages) {
+			BackendREST.sendConversationMessage(generateAuthToken(userFrom),
+					convId, message);
+		}
+	}
+
 	public static void uploadAddressBookWithContacts(ClientUser user,
 			List<String> emailsToAdd) throws Exception {
 		AddressBook addressBook = new AddressBook();
@@ -739,6 +748,7 @@ public final class BackendAPIWrappers {
 	}
 
 	public static JSONArray getConversations(ClientUser user) throws Exception {
+		user = tryLoginByUser(user);
 		JSONObject conversationsInfo = null;
 		int tryNum = 0;
 		while (tryNum < MAX_BACKEND_RETRIES) {

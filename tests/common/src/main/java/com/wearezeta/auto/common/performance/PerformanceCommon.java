@@ -1,23 +1,15 @@
 package com.wearezeta.auto.common.performance;
 
-import java.io.InputStream;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.SelfUserIsNotDefinedException;
 
 public final class PerformanceCommon {
 
@@ -34,11 +26,8 @@ public final class PerformanceCommon {
 		return this.usrMgr;
 	}
 
-	public static final int SEND_MESSAGE_NUM = 4;
-	private static final int BACKEND_MESSAGE_COUNT = 5;
 	private static final int MIN_WAIT_SECONDS = 5;
-	private static final int MAX_WAIT_SECONDS = 30;
-	public static final int SIMULTANEOUS_MSGS_COUNT = 5;
+	private static final int MAX_WAIT_SECONDS = 10;
 
 	public static final String DEFAULT_PERF_IMAGE = "perf/default.jpg";
 
@@ -54,96 +43,59 @@ public final class PerformanceCommon {
 		return instance;
 	}
 
-	public Random random = new Random();
-
-	private String getRandomConversationId(ClientUser user) throws Exception {
-		JSONArray conversations = BackendAPIWrappers.getConversations(user);
-		int value = random.nextInt(conversations.length());
-		JSONObject conversation = (JSONObject) conversations.get(value);
-		return conversation.getString("id");
-	}
-
-	private void generateIncomingMessages() throws Exception {
-		sendRandomMessagesToUser(BACKEND_MESSAGE_COUNT, SIMULTANEOUS_MSGS_COUNT);
-		try {
-			sendDefaultImageToUser(BACKEND_MESSAGE_COUNT / 5);
-		} catch (BackendRequestException e) {
-			e.printStackTrace();
-			getLogger().debug(e.getMessage());
-		} catch (java.util.NoSuchElementException e) {
-			e.printStackTrace();
-			getLogger().debug(e.getMessage());
+	public void sendMultipleMessagesIntoConversation(String convoName,
+			int msgsCount) throws Exception {
+		final String convo_id = BackendAPIWrappers.getConversationIdByName(
+				usrMgr.getSelfUserOrThrowError(), convoName);
+		final List<String> msgsToSend = new ArrayList<>();
+		for (int i = 0; i < msgsCount; i++) {
+			msgsToSend.add(CommonUtils.generateGUID());
 		}
+		BackendAPIWrappers.sendConversationMessages(
+				usrMgr.getSelfUserOrThrowError(), convo_id, msgsToSend);
 	}
 
 	public static interface PerformanceLoop {
 		public void run() throws Exception;
 	}
 
+	private static final Random rand = new Random();
+
 	public void runPerformanceLoop(PerformanceLoop loop,
 			final int timeoutMinutes) throws Exception {
-		LocalDateTime startDateTime = LocalDateTime.now();
-		long minutesElapsed = 0;
+		final long millisecondsStarted = System.currentTimeMillis();
 		do {
-			generateIncomingMessages();
-
 			loop.run();
 
-			final long sleepDurationSeconds = (MIN_WAIT_SECONDS + random
+			final int sleepDurationSeconds = (MIN_WAIT_SECONDS + rand
 					.nextInt(MAX_WAIT_SECONDS - MIN_WAIT_SECONDS + 1));
 			getLogger().debug(
 					String.format("Sleeping %s seconds", sleepDurationSeconds));
 			Thread.sleep(sleepDurationSeconds * 1000);
-			minutesElapsed = java.time.Duration.between(startDateTime,
-					LocalDateTime.now()).toMinutes();
 			getLogger()
 					.debug(String
-							.format("Approximately %s minute(s) left till the end of the perf test",
-									timeoutMinutes - minutesElapsed));
-		} while (minutesElapsed <= timeoutMinutes);
+							.format("Approximately %s second(s) left till the end of the perf test",
+									timeoutMinutes
+											* 60
+											- (System.currentTimeMillis() - millisecondsStarted)
+											/ 1000));
+		} while (System.currentTimeMillis() - millisecondsStarted < timeoutMinutes * 60000);
 	}
 
-	private void sendRandomMessagesToUser(int totalMsgsCount,
-			int simultaneousMsgsCount) throws SelfUserIsNotDefinedException,
-			InterruptedException {
-		final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
-		ExecutorService executor = Executors
-				.newFixedThreadPool(simultaneousMsgsCount);
-		for (int i = 0; i < totalMsgsCount; i++) {
-			Runnable worker = new Thread(new Runnable() {
-				public void run() {
-					try {
-						ClientUser user = BackendAPIWrappers
-								.tryLoginByUser(selfUser);
-						String id = getRandomConversationId(user);
-						BackendAPIWrappers.sendConversationMessage(user, id,
-								CommonUtils.generateGUID());
-					} catch (Exception e) {
-						e.printStackTrace();
-						getLogger().debug(e.getMessage());
-					}
-				}
-			});
-			executor.submit(worker);
-		}
-		executor.shutdown();
-		executor.awaitTermination(900, TimeUnit.SECONDS);
-	}
-
-	private void sendDefaultImageToUser(int imagesCount) throws Exception {
-		final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
-		final ClassLoader classLoader = this.getClass().getClassLoader();
-		final InputStream defaultImage = classLoader
-				.getResourceAsStream(DEFAULT_PERF_IMAGE);
-		try {
-			for (int i = 0; i < imagesCount; i++) {
-				BackendAPIWrappers.sendPictureToChatById(selfUser,
-						getRandomConversationId(selfUser), defaultImage);
-			}
-		} finally {
-			if (defaultImage != null) {
-				defaultImage.close();
-			}
-		}
-	}
+	// private void sendDefaultImageToUser(int imagesCount) throws Exception {
+	// final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
+	// final ClassLoader classLoader = this.getClass().getClassLoader();
+	// final InputStream defaultImage = classLoader
+	// .getResourceAsStream(DEFAULT_PERF_IMAGE);
+	// try {
+	// for (int i = 0; i < imagesCount; i++) {
+	// BackendAPIWrappers.sendPictureToChatById(selfUser,
+	// getRandomConversationId(selfUser), defaultImage);
+	// }
+	// } finally {
+	// if (defaultImage != null) {
+	// defaultImage.close();
+	// }
+	// }
+	// }
 }

@@ -104,6 +104,12 @@ public class ContactListPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
+	public String getFirstVisibleConversationName() throws Exception {
+		final By locator = By.xpath(xpathContactByIndex.apply(1));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "The first conversation in the list is not visible";
+		return getDriver().findElement(locator).getAttribute("value");
+	}
+
 	public void tapOnName(final String name) throws Exception {
 		findInContactList(name, 5)
 				.orElseThrow(
@@ -125,8 +131,7 @@ public class ContactListPage extends AndroidPage {
 			throws Exception {
 		try {
 			contacts.get(id).click();
-			log.debug("Trying to open contact " + id + ". It's name: "
-					+ contacts.get(id).getAttribute("value"));
+			log.debug("Trying to open contact #" + (id + 1));
 		} catch (Exception e) {
 			log.debug("Failed to find element in contact list.");
 			throw e;
@@ -280,7 +285,8 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), missedCallIcon);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				missedCallIcon);
 	}
 
 	public PersonalInfoPage tapOnMyAvatar() throws Exception {
