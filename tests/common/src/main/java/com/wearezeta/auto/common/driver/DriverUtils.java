@@ -140,16 +140,23 @@ public class DriverUtils {
 					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-			return wait
-					.until(drv -> {
-						try {
-							return (drv.findElements(by).size() == 0)
-									|| (drv.findElements(by).size() > 0 && !isElementPresentAndDisplayed(
-											driver, drv.findElement(by)));
-						} catch (WebDriverException e) {
-							return true;
-						}
-					});
+			return wait.until(drv -> {
+				try {
+					return (drv.findElements(by).size() == 0)
+							|| (drv.findElements(by).size() > 0 && !drv
+									.findElement(by).isDisplayed())
+							|| (drv.findElement(by).getLocation().x > drv
+									.manage().window().getSize().width)
+							|| (drv.findElement(by).getLocation().y > drv
+									.manage().window().getSize().height)
+							|| (drv.findElements(by).size() > 0 && drv
+									.findElement(by).getLocation().x < 0)
+							|| (drv.findElements(by).size() > 0 && drv
+									.findElement(by).getLocation().y < 0);
+				} catch (WebDriverException e) {
+					return true;
+				}
+			});
 		} catch (TimeoutException ex) {
 			return false;
 		} finally {
