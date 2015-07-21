@@ -95,7 +95,7 @@ Feature: Conversation View
     Then I see embedded youtube video of <Youtubelink3>
     When I write message <Youtubelink4>
     And I send message
-    Then I see embedded youtube video of <Youtubelink2>
+    Then I see embedded youtube video of <Youtubelink4>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Youtubelink1                               | Youtubelink2                                                 | Youtubelink3                          | Youtubelink4                 |
