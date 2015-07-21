@@ -8,18 +8,16 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ConnectToPage extends AndroidPage {
 	public static final String idConnectToHeader = "taet__participants__header";
+
 	private static final Function<String, String> xpathConnectToHeaderByText = text -> String
 			.format("//*[@id='taet__participants__header' and @value='%s']",
-					text);
-
-	private static final Function<String, String> xpathConnectToSubHeaderByText = text -> String
-			.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
 					text);
 
 	private static final String idConnectRequestAccept = "zb__connect_request__accept_button";
@@ -53,6 +51,8 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = idConfirmBtn)
 	private WebElement confirmBtn;
 
+	private final CommonSteps commonSteps = CommonSteps.getInstance();
+	
 	public ConnectToPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -78,23 +78,18 @@ public class ConnectToPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public boolean isConnectToHeaderVisible(String text) throws Exception {
-		final By locator = By.xpath(xpathConnectToHeaderByText.apply(text));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-	}
-
 	private static final int MAX_TRIES = 5;
 
-	public boolean isConnectToSubHeaderVisible(String text) throws Exception {
-		final By locator = By.xpath(xpathConnectToSubHeaderByText.apply(text));
+	public boolean isConnectToHeaderVisible(String text) throws Exception {
+		final By locator = By.xpath(xpathConnectToHeaderByText.apply(text));
 		int ntry = 1;
 		do {
 			if (DriverUtils
 					.waitUntilLocatorIsDisplayed(getDriver(), locator, 3)) {
-				this.waitUntilIgnoreButtonIsVisible();
+				commonSteps.WaitForTime(0.3);
 				this.swipeUpCoordinates(1000, 50);
 			} else {
-				this.waitUntilIgnoreButtonIsVisible();
+				commonSteps.WaitForTime(0.3);
 				this.swipeDownCoordinates(1000, 50);
 				return true;
 			}

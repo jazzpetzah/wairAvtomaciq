@@ -31,13 +31,6 @@ public class ConnectToPageSteps {
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		String contactMail = usrMgr.findUserByNameOrNameAlias(contact)
-				.getEmail();
-		Assert.assertTrue(
-				String.format(
-						"Connect To sub header with text '%s' is not visible, but should be",
-						contactMail), getConnectToPage()
-						.isConnectToSubHeaderVisible(contactMail));
 		Assert.assertTrue(
 				String.format(
 						"Connect To header with text '%s' is not visible, but should be",
