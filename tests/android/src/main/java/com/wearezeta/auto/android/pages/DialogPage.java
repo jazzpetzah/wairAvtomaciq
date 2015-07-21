@@ -788,6 +788,7 @@ public class DialogPage extends AndroidPage {
 		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCursorFrame));
 		tapOnCursorFrame();
+		this.hideKeyboard();
 		if (!DriverUtils
 				.isElementPresentAndDisplayed(getDriver(), cursorBtnImg)) {
 			tapOnCursorFrame();
