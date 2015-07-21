@@ -106,7 +106,6 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
-    And I swipe up on connect page
     And I see connect to <Contact2> dialog
     And I Connect with contact by pressing button
     And I wait for 5 seconds
