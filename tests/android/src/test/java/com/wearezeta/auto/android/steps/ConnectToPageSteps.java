@@ -39,6 +39,21 @@ public class ConnectToPageSteps {
 	}
 
 	/**
+	 * Scroll to gived user in the inbox
+	 * 
+	 * @step. ^I scroll to inbox contact (.*)$
+	 * 
+	 * @param contact
+	 *            The name of the user to search.
+	 * @throws Throwable
+	 */
+	@When("^I scroll to inbox contact (.*)$")
+	public void WhenIScrollToInboxContact(String contact) throws Throwable {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		getConnectToPage().scrollToInboxContact(contact);
+	}
+
+	/**
 	 * Verifies that the connect and ignore buttons are visible when viewing the
 	 * dialog of a user who has sent you a connection request.
 	 * 

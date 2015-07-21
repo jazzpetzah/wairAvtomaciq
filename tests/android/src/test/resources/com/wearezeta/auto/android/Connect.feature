@@ -94,8 +94,10 @@ Feature: Connect
 
   @id544 @regression
   Scenario Outline: I accept someone from people picker and -1 from inbox as well
-    Given There are 3 users where <Name> is me
+    Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to <Name>
+    Given <Contact3> sent connection request to <Name>
+    Given <Contact4> sent connection request to <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     Given <Contact2> sent connection request to <Name>
@@ -106,6 +108,8 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
+    And I see Accept and Ignore buttons
+    And I scroll to inbox contact <Contact2>
     And I see connect to <Contact2> dialog
     And I Connect with contact by pressing button
     And I wait for 5 seconds
@@ -113,8 +117,8 @@ Feature: Connect
     And I see contact list with name <WaitingMess2>
 
     Examples: 
-      | Name      | Contact1  | WaitingMess2     | Contact2  | WaitingMess1     |
-      | user1Name | user2Name | 1 person waiting | user3Name | 2 people waiting |
+      | Name      | Contact1  | WaitingMess2      | Contact2  | WaitingMess1     | Contact3  | Contact4  |
+      | user1Name | user2Name | 2 people waiting  | user3Name | 3 people waiting | user3Name | user4Name |
 
   @id540 @regression
   Scenario Outline: I can ignore a connect request and reconnect later
