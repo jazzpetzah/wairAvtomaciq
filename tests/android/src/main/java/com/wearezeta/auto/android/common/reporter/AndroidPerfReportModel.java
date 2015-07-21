@@ -78,6 +78,7 @@ public class AndroidPerfReportModel extends PerfReportModel {
 				ReporterConstants.Log.APP_LAUNCH_TIME_REGEX, output));
 		this.setSignInTime(readLogValue(
 				ReporterConstants.Log.LOGIN_SUCCESS_REGEX, output));
+		this.clearConvoStartupTimes();
 		for (long timeMillis : readLogValues(
 				ReporterConstants.Log.CONVERSATION_PAGE_VISIBLE_REGEX, output)) {
 			this.addConvoStartupTime(timeMillis);

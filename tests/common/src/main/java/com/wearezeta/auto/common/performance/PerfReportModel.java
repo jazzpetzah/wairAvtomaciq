@@ -75,6 +75,10 @@ public abstract class PerfReportModel {
 		this.usersCount = usersCount;
 	}
 
+	public void clearConvoStartupTimes() {
+		this.convoLoadTimes.clear();
+	}
+	
 	protected void addConvoStartupTime(long timeMillis) {
 		this.convoLoadTimes.add(timeMillis);
 	}
