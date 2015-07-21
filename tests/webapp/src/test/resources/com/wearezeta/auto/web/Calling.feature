@@ -42,9 +42,9 @@ Feature: Calling
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
-    And <Contact> pinged the conversation with <Contact>
+    And User <Contact> pinged in the conversation with <Contact>
     And I see ping message <PING>
-    And <Contact> hotpinged the conversation with <Contact>
+    And User <Contact> pinged twice in the conversation with <Contact>
     And I see ping message <HOTPING>
     And I end the call
     Then <Contact> stops all waiting instances

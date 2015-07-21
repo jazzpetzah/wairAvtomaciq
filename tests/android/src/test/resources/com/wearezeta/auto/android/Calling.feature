@@ -82,6 +82,7 @@ Feature: Calling
     And I press Add Picture button
     And I press "Take Photo" button
     And I press "Confirm" button
+    And I scroll to the bottom of conversation view
     Then I see new photo in the dialog
     When I swipe on text input
     And I press Ping button

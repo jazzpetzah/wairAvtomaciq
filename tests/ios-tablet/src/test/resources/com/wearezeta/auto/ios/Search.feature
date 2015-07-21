@@ -207,6 +207,7 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
@@ -231,6 +232,7 @@ Feature: Search
     Given User <Name> blocks user <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it

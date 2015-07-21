@@ -326,6 +326,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I tap conversation details button$")
 	public void WhenITapConversationDetailsBottom() throws Exception {
+		getDialogPage().swipeOnCursorInput();
 		getDialogPage().tapConversationDetailsButton();
 	}
 
@@ -518,7 +519,7 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Navigates back to the contact list page using a swipe right
+	 * Navigates back to the contact list page using back button (disabled using a swipe right)
 	 * 
 	 * @step. ^I navigate back from dialog page$
 	 * 
@@ -526,7 +527,9 @@ public class DialogPageSteps {
 	 */
 	@When("^I navigate back from dialog page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
-		getDialogPage().navigateBack(1000);
+//		getDialogPage().navigateBack(1000);
+		getDialogPage().navigateBack();
+		getDialogPage().initContactListPage();
 	}
 
 	/**

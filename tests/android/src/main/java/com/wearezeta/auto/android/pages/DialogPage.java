@@ -42,22 +42,33 @@ public class DialogPage extends AndroidPage {
 	public static final String SPEAKER_BUTTON_LABEL = "SPEAKER";
 	public static final String I_LEFT_CHAT_MESSAGE = "YOU HAVE LEFT";
 
-	public static final String idParticipantsBtn = "gtv__cursor_participants";
-
 	public static final String xpathConfirmOKButton = "//*[@id='ttv__confirmation__confirm' and @value='OK']";
 
 	public static final String idDialogImages = "iv__row_conversation__message_image";
 
-	public static final String idAddPicture = "gtv__cursor_picture";
+	public static final String idAddPicture = "cursor_menu_item_camera";
 
 	private static final Function<String, String> xpathConversationMessageByText = text -> String
 			.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
 					text);
 
-	private static final String idFakeCursor = "v__cursor__fake_cursor";
+	@FindBy(id = giphyPreviewButtonId)
+	private WebElement giphyPreviewButton;
+	final By giphyPreviewButtonLocator = By.id(giphyPreviewButtonId);
 
 	@FindBy(id = idEditText)
 	private WebElement cursorInput;
+
+	@FindBy(id = idCursorArea)
+	private WebElement cursorArea;
+
+	private static final String idCursorBtn = "typing_indicator_button";
+	@FindBy(id = idCursorBtn)
+	private WebElement cursorBtn;
+
+	private static final String idCursorBtnImg = "typing_indicator_imageview";
+	@FindBy(id = idCursorBtnImg)
+	private WebElement cursorBtnImg;
 
 	private static final String idMessage = "ltv__row_conversation__message";
 	@FindBy(id = idMessage)
@@ -67,7 +78,7 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idMissedCallMesage)
 	private WebElement missedCallMessage;
 
-	private static final String idCursorFrame = "cv";
+	private static final String idCursorFrame = "cursor_layout";
 	@FindBy(id = idCursorFrame)
 	private WebElement cursorFrame;
 
@@ -100,6 +111,7 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idConnectRequestDialog)
 	private WebElement connectRequestDialog;
 
+	public static final String idParticipantsBtn = "cursor_menu_item_participant";
 	@FindBy(id = idParticipantsBtn)
 	private WebElement participantsButton;
 
@@ -147,11 +159,11 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idAddPicture)
 	private WebElement addPictureBtn;
 
-	private static final String idPing = "gtv__cursor_knock";
+	private static final String idPing = "cursor_menu_item_ping";
 	@FindBy(id = idPing)
 	private WebElement pingBtn;
 
-	private static final String idSketch = "gtv__cursor_draw";
+	private static final String idSketch = "cursor_menu_item_draw";
 	@FindBy(id = idSketch)
 	private WebElement sketchBtn;
 
@@ -159,7 +171,7 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idCallingMessage)
 	private WebElement callingMessageText;
 
-	private static final String idCall = "gtv__cursor_call";
+	private static final String idCall = "cursor_menu_item_calling";
 	@FindBy(id = idCall)
 	private WebElement callBtn;
 
@@ -196,11 +208,11 @@ public class DialogPage extends AndroidPage {
 
 	public void waitForCursorInputVisible() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idEditText));
+				By.id(idCursorArea));
 	}
 
 	public void tapOnCursorInput() {
-		cursorInput.click();
+		cursorArea.click();
 	}
 
 	public void tapOnCursorFrame() {
@@ -209,8 +221,8 @@ public class DialogPage extends AndroidPage {
 
 	public void tapOnTextInputIfVisible() throws Exception {
 		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idEditText), 5)) {
-			cursorInput.click();
+				By.id(idCursorArea), 5)) {
+			cursorArea.click();
 		}
 	}
 
@@ -220,20 +232,20 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void multiTapOnCursorInput() throws Exception {
-		DriverUtils.androidMultiTap(this.getDriver(), cursorInput, 2, 500);
+		DriverUtils.androidMultiTap(this.getDriver(), cursorArea, 2, 500);
 	}
 
 	private static final int MAX_CURSOR_SWIPE_TRIES = 5;
 
 	public void swipeOnCursorInput() throws Exception {
-		getWait().until(ExpectedConditions.elementToBeClickable(cursorInput));
-		final By fakeCursorLocator = By.id(idFakeCursor);
+		getWait().until(ExpectedConditions.elementToBeClickable(cursorArea));
+		final By cursorLocator = By.id(idCursorArea);
 		int ntry = 1;
 		do {
-			DriverUtils.swipeRight(this.getDriver(), cursorInput,
+			DriverUtils.swipeRight(this.getDriver(), cursorArea,
 					DEFAULT_SWIPE_TIME);
 			final int currentCursorOffset = getDriver()
-					.findElement(fakeCursorLocator).getLocation().getX();
+					.findElement(cursorLocator).getLocation().getX();
 			if (currentCursorOffset > getDriver().manage().window().getSize()
 					.getWidth() / 2) {
 				return;
@@ -341,8 +353,17 @@ public class DialogPage extends AndroidPage {
 							"The string '%s' was autocorrected. Please disable autocorrection on the device and restart the test.",
 							message));
 		}
-		this.pressEnter();
-		this.hideKeyboard();
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				giphyPreviewButtonLocator)
+				&& (giphyPreviewButton.getLocation().y * 100
+						/ getDriver().manage().window().getSize().getHeight() < 90)) {
+			pressKeyboardSendButton();
+			this.hideKeyboard();
+		} else {
+			// FIXME: Enter does not send text anymore, unicode tests affected
+			this.pressEnter();
+			this.hideKeyboard();
+		}
 	}
 
 	public void typeMessage(String message) throws Exception {
@@ -356,10 +377,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void pressKeyboardSendButton() throws Exception {
-		int sendKeyXPosPercentage = 95;
-		int sendKeyYPosPercentage = 95;
-		DriverUtils.genericTap(this.getDriver(), 200, sendKeyXPosPercentage,
-				sendKeyYPosPercentage);
+		tapByCoordinates(94, 95);
 	}
 
 	public void clickLastImageFromDialog() {
@@ -487,8 +505,22 @@ public class DialogPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
+	/**
+	 * Navigates back by swipe and initialize ContactListPage
+	 * 
+	 * @throws Exception
+	 */
 	public ContactListPage navigateBack(int timeMilliseconds) throws Exception {
 		swipeRightCoordinates(timeMilliseconds);
+		return new ContactListPage(this.getLazyDriver());
+	}
+
+	/**
+	 * Just return new ContactListPage
+	 * 
+	 * @throws Exception
+	 */
+	public ContactListPage initContactListPage() throws Exception {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
@@ -765,11 +797,17 @@ public class DialogPage extends AndroidPage {
 	// NOTE: Click happens on the text input area if participants button is not
 	// NOTE: visible
 	public void tapDialogPageBottom() throws Exception {
-		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(idEditText));
-		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idParticipantsBtn), 5)) {
-			cursorInput.click();
-			Thread.sleep(1000); // fix for scrolling animation
+		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idCursorBtn),
+				5);
+		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCursorFrame));
+		tapOnCursorFrame();
+		this.hideKeyboard();
+		if (!DriverUtils
+				.isElementPresentAndDisplayed(getDriver(), cursorBtnImg)) {
+			tapOnCursorFrame();
+			this.hideKeyboard();
+			Thread.sleep(500); // fix for scrolling animation
 		}
 	}
 
@@ -830,10 +868,10 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void swipeLeftOnCursorInput() throws Exception {
-		final By fakeCursorLocator = By.id(idFakeCursor);
+		final By fakeCursorLocator = By.id(idCursorArea);
 		int ntry = 1;
 		do {
-			DriverUtils.swipeLeft(this.getDriver(), cursorInput,
+			DriverUtils.swipeLeft(this.getDriver(), cursorArea,
 					DEFAULT_SWIPE_TIME);
 			final int currentCursorOffset = getDriver()
 					.findElement(fakeCursorLocator).getLocation().getX();

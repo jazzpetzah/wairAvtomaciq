@@ -57,7 +57,7 @@ Feature: Conversation List
     When I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open self profile
-    When <Contact> pinged the conversation with <Name>
+    When User <Contact> pinged in the conversation with <Name>
     And I see ping icon in conversation with <Contact>
     Then I verify ping icon in conversation with <Contact> has <ColorName> color
 

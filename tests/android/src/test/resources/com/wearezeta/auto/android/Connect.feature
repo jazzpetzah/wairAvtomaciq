@@ -456,6 +456,7 @@ Feature: Connect
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
+    And I tap on text input
     And I type the message "<Message>" and send it
     And User <Name> blocks user <Contact>
     And Contact <Contact> sends image <Picture> to single user conversation <Name>
