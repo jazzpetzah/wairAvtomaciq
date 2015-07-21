@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -65,6 +66,8 @@ public abstract class AndroidPage extends BasePage {
 	public AndroidPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
+
+	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	public void selectFirstGalleryPhoto() throws Exception {
 		final Dimension screenDimension = getDriver().manage().window()
@@ -116,6 +119,7 @@ public abstract class AndroidPage extends BasePage {
 	 */
 	public AndroidPage navigateBack() throws Exception {
 		AndroidCommonUtils.tapBackButton();
+		commonSteps.WaitForTime(0.5);
 		// this.getDriver().navigate().back();
 		return null;
 	}

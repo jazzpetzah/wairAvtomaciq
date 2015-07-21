@@ -167,11 +167,11 @@ public class DriverUtils {
 	}
 
 	public static boolean waitUntilLocatorAppears(RemoteWebDriver driver,
-			final By locator, int timeout) throws Exception {
+			final By locator, int timeoutSeconds) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(timeout, TimeUnit.SECONDS)
+					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class)
 					.ignoring(StaleElementReferenceException.class)
@@ -252,7 +252,8 @@ public class DriverUtils {
 		final int yOffset = (int) Math.round(elementSize.height
 				* (percentY / 100.0));
 		try {
-			driver.swipe(coords.x, coords.y + yOffset, coords.x - xOffset, coords.y + yOffset, time);
+			driver.swipe(coords.x, coords.y + yOffset, coords.x - xOffset,
+					coords.y + yOffset, time);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
