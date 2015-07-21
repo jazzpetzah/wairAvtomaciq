@@ -51,8 +51,8 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = idConfirmBtn)
 	private WebElement confirmBtn;
 
-	private final CommonSteps commonSteps = CommonSteps.getInstance();
-	
+	// private final CommonSteps commonSteps = CommonSteps.getInstance();
+
 	public ConnectToPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -78,24 +78,38 @@ public class ConnectToPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	private static final int MAX_TRIES = 5;
+	private static final int MAX_SCROLLS = 5;
 
 	public boolean isConnectToHeaderVisible(String text) throws Exception {
 		final By locator = By.xpath(xpathConnectToHeaderByText.apply(text));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public void scrollToInboxContact(String contactName) throws Exception {
+		scrollToInboxContact(contactName, MAX_SCROLLS);
+	}
+
+	public void scrollToInboxContact(String contactName, int maxScrolls)
+			throws Exception {
+		final By locator = By.xpath(xpathConnectToHeaderByText
+				.apply(contactName));
 		int ntry = 1;
 		do {
 			if (DriverUtils
 					.waitUntilLocatorIsDisplayed(getDriver(), locator, 3)) {
-				commonSteps.WaitForTime(0.3);
+				this.waitUntilIgnoreButtonIsVisible();
 				this.swipeUpCoordinates(1000, 50);
 			} else {
-				commonSteps.WaitForTime(0.3);
+				this.waitUntilIgnoreButtonIsVisible();
 				this.swipeDownCoordinates(1000, 50);
-				return true;
+				return;
 			}
 			ntry++;
-		} while (ntry <= MAX_TRIES);
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+		} while (ntry <= maxScrolls);
+		throw new RuntimeException(
+				String.format(
+						"Failed to find user %s in the inbox after scrolling %s users!",
+						contactName, maxScrolls));
 	}
 
 	public DialogPage pressAcceptConnectButton() throws Exception {

@@ -177,6 +177,8 @@ public final class WebAppLocators {
 
 		public static final String idConversation = "conversation";
 
+		public static final String idMessageList = "message-list";
+
 		// messages (including images, text, missed call notifications, pings)
 
 		public static final String cssMessage = "[data-uie-name='item-message'][data-uie-visible='true']";
