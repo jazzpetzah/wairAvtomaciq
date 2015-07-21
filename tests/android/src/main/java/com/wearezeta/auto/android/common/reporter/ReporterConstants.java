@@ -37,11 +37,6 @@ public class ReporterConstants {
 
 		public static final String LOGIN_SUCCESS_REGEX = "Login success after ([\\d]*)";
 
-		// TODO: set value
-		public static final String FAILED_LOGIN_REGEX = "";
-
 		public static final String CONVERSATION_PAGE_VISIBLE_REGEX = "Conversation page visible after ([\\d]*)";
-
-		public static final String CONVERSATION_SYNC_TIME_REGEX = "";
 	}
 }

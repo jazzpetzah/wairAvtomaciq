@@ -26,7 +26,8 @@ public class AndroidPerfReportModel extends PerfReportModel {
 		}
 
 		try {
-			final ClientDeviceInfo deviceInfo = AndroidCommonUtils.readDeviceInfo();
+			final ClientDeviceInfo deviceInfo = AndroidCommonUtils
+					.readDeviceInfo();
 			// FIXME: handle other network types
 			this.setNetworkType(deviceInfo.isWifiEnabled() ? NetworkType.WiFi
 					: NetworkType.FourG);
@@ -38,6 +39,10 @@ public class AndroidPerfReportModel extends PerfReportModel {
 		}
 	}
 
+	private static long nanosecondsToMilliseconds(long nano) {
+		return nano / 1000000L;
+	}
+
 	private static List<Long> readLogValues(final String patternStr,
 			final String output) {
 		final Pattern pattern = Pattern.compile(patternStr);
@@ -45,7 +50,8 @@ public class AndroidPerfReportModel extends PerfReportModel {
 		final List<Long> result = new ArrayList<>();
 		while (matcher.find()) {
 			try {
-				result.add(Long.parseLong(matcher.group(1)) / 1000);
+				result.add(nanosecondsToMilliseconds(Long.parseLong(matcher
+						.group(1))));
 			} catch (NumberFormatException e) {
 				log.error(e);
 			}
@@ -59,7 +65,8 @@ public class AndroidPerfReportModel extends PerfReportModel {
 		final Matcher matcher = pattern.matcher(output);
 		while (matcher.find()) {
 			try {
-				return Long.parseLong(matcher.group(1)) / 1000;
+				return nanosecondsToMilliseconds(Long.parseLong(matcher
+						.group(1)));
 			} catch (NumberFormatException e) {
 				log.error(e);
 			}
