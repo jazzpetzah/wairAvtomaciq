@@ -12,5 +12,5 @@ Feature: Performance Tests
     Then I generate performance report for <UsersNumber> users
 
     Examples: 
-      | Name      | UsersNumber       | UserNamePrefix    | Time                 |
-      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfExecutionTime} |
+      | Name      | UsersNumber       | UserNamePrefix    | Time            |
+      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} |
