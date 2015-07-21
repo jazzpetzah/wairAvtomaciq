@@ -360,7 +360,7 @@ public class DialogPage extends AndroidPage {
 			pressKeyboardSendButton();
 			this.hideKeyboard();
 		} else {
-//			FIXME: Enter does not send text anymore, unicode tests affected
+			// FIXME: Enter does not send text anymore, unicode tests affected
 			this.pressEnter();
 			this.hideKeyboard();
 		}
@@ -505,8 +505,22 @@ public class DialogPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
+	/**
+	 * Navigates back by swipe and initialize ContactListPage
+	 * 
+	 * @throws Exception
+	 */
 	public ContactListPage navigateBack(int timeMilliseconds) throws Exception {
 		swipeRightCoordinates(timeMilliseconds);
+		return new ContactListPage(this.getLazyDriver());
+	}
+
+	/**
+	 * Just return new ContactListPage
+	 * 
+	 * @throws Exception
+	 */
+	public ContactListPage initContactListPage() throws Exception {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
