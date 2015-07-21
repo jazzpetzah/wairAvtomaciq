@@ -447,6 +447,8 @@ public class DialogPage extends AndroidPage {
 	public void confirm() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), okButton);
 		okButton.click();
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(xpathConfirmOKButton));
 	}
 
 	public void takePhoto() throws Exception {
