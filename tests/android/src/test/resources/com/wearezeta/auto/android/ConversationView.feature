@@ -124,7 +124,7 @@ Feature: Conversation View
       | Name      | Contact   | Message  |
       | user1Name | user2Name | aaaaAAAA |
 
-  @id146 @unicode @regression
+  @id146 @unicode @regression_mute @mute
   Scenario Outline: Send special chars message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -156,7 +156,7 @@ Feature: Conversation View
       | Name      | Contact   | Message  |
       | user1Name | user2Name | :) ;) :( |
 
-  @id147 @unicode @regression
+  @id147 @unicode @regression_mute @mute
   Scenario Outline: Send double byte chars
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -252,6 +252,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
+    #FIXME: Create a method with parameter to send xx messages
     And Contact <Contact1> send message to user Myself
     And Contact <Contact1> send message to user Myself
     And Contact <Contact1> send message to user Myself

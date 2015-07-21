@@ -191,11 +191,9 @@ public final class WebAppLocators {
 		public static final String cssSecondLastTextMessage = cssSecondLastMessage
 				+ " .text-inner";
 
-		public static final String cssFirstAction = cssMessage
-				+ " .action";
+		public static final String cssFirstAction = cssMessage + " .action";
 
-		public static final String cssLastAction = cssLastMessage
-				+ " .action";
+		public static final String cssLastAction = cssLastMessage + " .action";
 
 		public static final String xpathLastImageEntry = "(//*[@data-uie-name='go-image-detail' and @data-uie-visible='true'])[last()]";
 
@@ -237,7 +235,7 @@ public final class WebAppLocators {
 
 		// bars (call bar)
 
-		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls')]";
+		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls-wrapper') and contains(@class, 'on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
 				.format("//div[contains(@class, 'call-controls') and div/div/span[text()='%s']]",

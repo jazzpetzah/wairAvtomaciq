@@ -10,7 +10,6 @@ import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class GiphyPreviewPage extends AndroidPage {
-	public static final String giphyPreviewButtonId = "gtv_cursor_multiuse_button";
 	@FindBy(id = giphyPreviewButtonId)
 	private WebElement giphyPreviewButton;
 	final By giphyPreviewButtonLocator = By.id(giphyPreviewButtonId);
@@ -67,10 +66,6 @@ public class GiphyPreviewPage extends AndroidPage {
 				&& DriverUtils
 						.waitUntilLocatorAppears(getDriver(),
 								giphyCancelButtonLocator,
-								GIPHY_LOCATOR_TIMEOUT_SECONDS)
-				&& DriverUtils
-						.waitUntilLocatorAppears(getDriver(),
-								giphyReloadButtonLocator,
 								GIPHY_LOCATOR_TIMEOUT_SECONDS)
 				&& DriverUtils.waitUntilLocatorAppears(getDriver(),
 						giphyLinkButtonLocator, GIPHY_LOCATOR_TIMEOUT_SECONDS)
