@@ -98,12 +98,6 @@ public class ConversationPage extends WebPage {
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
-		// verify conversation page is loaded by presence of the participants
-		// button
-		assert DriverUtils
-				.waitUntilLocatorAppears(
-						this.getDriver(),
-						By.cssSelector(WebAppLocators.ConversationPage.cssShowParticipantsButton));
 	}
 
 	public void writeNewMessage(String message) throws Exception {
