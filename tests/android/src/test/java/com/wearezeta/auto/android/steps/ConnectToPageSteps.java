@@ -31,6 +31,13 @@ public class ConnectToPageSteps {
 	@When("^I see connect to (.*) dialog$")
 	public void WhenISeeConnectToUserDialog(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		String contactMail = usrMgr.findUserByNameOrNameAlias(contact)
+				.getEmail();
+		Assert.assertTrue(
+				String.format(
+						"Connect To sub header with text '%s' is not visible, but should be",
+						contactMail), getConnectToPage()
+						.isConnectToSubHeaderVisible(contactMail));
 		Assert.assertTrue(
 				String.format(
 						"Connect To header with text '%s' is not visible, but should be",
@@ -61,7 +68,7 @@ public class ConnectToPageSteps {
 	@Then("^I swipe up on connect page$")
 	public void ISwipeUpOnConnectPage() throws Exception {
 		getConnectToPage().waitUntilIgnoreButtonIsVisible();
-		getConnectToPage().swipeUpCoordinates(1000, 90);
+		getConnectToPage().swipeUpCoordinates(1000, 50);
 		// It is very hard to detect when swipe animation is finished that is
 		// why this hardcoded sleep is needed here
 		Thread.sleep(5000);

@@ -14,9 +14,12 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ConnectToPage extends AndroidPage {
 	public static final String idConnectToHeader = "taet__participants__header";
-
 	private static final Function<String, String> xpathConnectToHeaderByText = text -> String
 			.format("//*[@id='taet__participants__header' and @value='%s']",
+					text);
+
+	private static final Function<String, String> xpathConnectToSubHeaderByText = text -> String
+			.format("//*[@id='ttv__participants__sub_header' and @value='%s']",
 					text);
 
 	private static final String idConnectRequestAccept = "zb__connect_request__accept_button";
@@ -80,6 +83,26 @@ public class ConnectToPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
+	private static final int MAX_TRIES = 5;
+
+	public boolean isConnectToSubHeaderVisible(String text) throws Exception {
+		final By locator = By.xpath(xpathConnectToSubHeaderByText.apply(text));
+		int ntry = 1;
+		do {
+			if (DriverUtils
+					.waitUntilLocatorIsDisplayed(getDriver(), locator, 3)) {
+				this.waitUntilIgnoreButtonIsVisible();
+				this.swipeUpCoordinates(1000, 50);
+			} else {
+				this.waitUntilIgnoreButtonIsVisible();
+				this.swipeDownCoordinates(1000, 50);
+				return true;
+			}
+			ntry++;
+		} while (ntry <= MAX_TRIES);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
 	public DialogPage pressAcceptConnectButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				connectAcceptBtn);
@@ -95,12 +118,15 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public boolean isIgnoreConnectButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), connectIgnoreBtn)
-				&& DriverUtils.isElementPresentAndDisplayed(getDriver(), connectAcceptBtn);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				connectIgnoreBtn)
+				&& DriverUtils.isElementPresentAndDisplayed(getDriver(),
+						connectAcceptBtn);
 	}
 
 	public boolean isPending() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), pendingText);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				pendingText);
 	}
 
 	public void tapEditConnectionRequest() throws Exception {
