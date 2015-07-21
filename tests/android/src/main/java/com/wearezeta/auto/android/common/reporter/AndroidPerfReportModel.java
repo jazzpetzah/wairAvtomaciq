@@ -67,7 +67,7 @@ public class AndroidPerfReportModel extends PerfReportModel {
 		return 0;
 	}
 
-	public void loadFromLogCat(final String output) {
+	public void loadDataFromLogCat(final String output) {
 		this.setAppStartupTimeMillis(readLogValue(
 				ReporterConstants.Log.APP_LAUNCH_TIME_REGEX, output));
 		this.setSignInTime(readLogValue(

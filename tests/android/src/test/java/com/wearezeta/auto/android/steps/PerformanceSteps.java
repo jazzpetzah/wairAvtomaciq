@@ -188,17 +188,20 @@ public class PerformanceSteps {
 	 * configuration file, option "perfReportPath". The previous report is going
 	 * to be silently deleted if it already exists in this folder
 	 * 
-	 * @step. ^I generate performance report for (\\d+) users? on (WiFi|4G)
-	 *        network$
+	 * @step. ^I generate performance report for (\\d+) users?$
+	 * 
+	 * @param usersCount
+	 *            count of users in the test (self user + all contacts)
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I generate performance report for (\\d+) users? on (WiFi|4G) network$")
-	public void ThenIGeneratePerformanceReport(int usersCount,
-			String networkType) throws Exception {
-		CommonAndroidSteps.getLogcatListener().stop(5000);
+	@Then("^I generate performance report for (\\d+) users?$")
+	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
+		CommonAndroidSteps.getLogcatListener().stop(2,
+				new int[] { CommonAndroidSteps.getLogcatListener().getPid() },
+				5000);
 		final AndroidPerfReportModel dataModel = new AndroidPerfReportModel();
-		dataModel.loadFromLogCat(CommonAndroidSteps.getLogcatListener()
+		dataModel.loadDataFromLogCat(CommonAndroidSteps.getLogcatListener()
 				.getStdout()
 				+ "\n"
 				+ CommonAndroidSteps.getLogcatListener().getStderr());
