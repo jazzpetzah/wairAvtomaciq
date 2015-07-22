@@ -323,7 +323,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | ChatName         | Message        |
       | user1Name | user2Name | user3Name | ContactGroupChat | Yo! What's up! |
 
-  @id676 @regression @torun
+  @id676 @regression
   Scenario Outline: I want to block a person from 1:1 conversation
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
