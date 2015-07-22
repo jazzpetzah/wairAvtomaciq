@@ -74,6 +74,10 @@ public class DriverUtils {
 			// + element.getSize().width);
 			// log.info("Element location " + element.getLocation().x + ":"
 			// + element.getLocation().y);
+			// log.info("Screen size " + driver
+			// .manage().window().getSize().width + ":"
+			// + driver
+			// .manage().window().getSize().height);
 			if (element.isDisplayed()
 					&& element.getLocation().x > 0
 					&& element.getLocation().y > 0
@@ -81,10 +85,10 @@ public class DriverUtils {
 							.getSize().width)
 					&& (element.getLocation().y < driver.manage().window()
 							.getSize().height)
-					|| (element.getLocation().x == 0 && (element.getSize().width == driver
+					|| (element.getLocation().x == 0 && (element.getSize().width >= driver
 							.manage().window().getSize().width || !element
 							.getText().isEmpty()))
-					|| (element.getLocation().y == 0 && (element.getSize().height == driver
+					|| (element.getLocation().y == 0 && (element.getSize().height >= driver
 							.manage().window().getSize().height || !element
 							.getText().isEmpty()))) {
 				return true;
