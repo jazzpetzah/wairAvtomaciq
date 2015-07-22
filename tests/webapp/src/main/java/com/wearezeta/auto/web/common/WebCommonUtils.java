@@ -24,9 +24,6 @@ public class WebCommonUtils extends CommonUtils {
 	private static final Logger log = ZetaLogger.getLog(WebCommonUtils.class
 			.getSimpleName());
 
-	// workaround for local executions in case sshpass is not in the PATH
-	private static final String SSHPASS_PREFIX = "/usr/local/bin/";
-
 	public static String getHubHostFromConfig(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "hubHost");
 	}
@@ -62,12 +59,10 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void putFileOnExecutionNode(String node, String srcPath,
 			String dstPath) throws Exception {
-		String commandTemplate = SSHPASS_PREFIX
-				+ "sshpass -p %s "
-				+ "scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+		String keyPath = WebCommonUtils.class.getResource("/jenkins_ssh_key").getPath();
+		String commandTemplate = "scp -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s %s@%s:%s";
-		String command = String.format(commandTemplate,
-				getJenkinsSuperUserPassword(CommonUtils.class), srcPath,
+		String command = String.format(commandTemplate, keyPath, srcPath,
 				getJenkinsSuperUserLogin(CommonUtils.class), node, dstPath);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
@@ -75,12 +70,10 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void executeCommandOnNode(String node, String cmd)
 			throws Exception {
-		String commandTemplate = SSHPASS_PREFIX
-				+ "sshpass -p %s "
-				+ "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+		String keyPath = WebCommonUtils.class.getResource("/jenkins_ssh_key").getPath();
+		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s %s";
-		String command = String.format(commandTemplate,
-				getJenkinsSuperUserPassword(CommonUtils.class),
+		String command = String.format(commandTemplate, keyPath,
 				getJenkinsSuperUserLogin(CommonUtils.class), node, cmd);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
@@ -88,12 +81,10 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void executeAppleScriptFileOnNode(String node,
 			String scriptPath) throws Exception {
-		String commandTemplate = SSHPASS_PREFIX
-				+ "sshpass -p %s "
-				+ "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
+		String keyPath = WebCommonUtils.class.getResource("/jenkins_ssh_key").getPath();
+		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s osascript %s";
-		String command = String.format(commandTemplate,
-				getJenkinsSuperUserPassword(CommonUtils.class),
+		String command = String.format(commandTemplate, keyPath,
 				getJenkinsSuperUserLogin(CommonUtils.class), node, scriptPath);
 		if (WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
 				command }) == 255) {
@@ -295,5 +286,16 @@ public class WebCommonUtils extends CommonUtils {
 						+ StringEscapeUtils.escapeEcmaScript(scriptContent)
 						+ "';", "$('head').append(scriptElt);" };
 		driver.executeScript(StringUtils.join(loaderJS, "\n"));
+	}
+
+	public static void clearHistoryInSafari(String nodeIp) throws Exception {
+		final String srcScriptPath = String.format("%s/%s",
+				WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
+				WebAppConstants.Scripts.SAFARI_CLEAR_HISTORY_SCRIPT);
+		final String dstScriptPath = String.format("%s/%s",
+				WebAppConstants.TMP_ROOT,
+				WebAppConstants.Scripts.SAFARI_CLEAR_HISTORY_SCRIPT);
+	    putFileOnExecutionNode(nodeIp, srcScriptPath, dstScriptPath);
+		executeAppleScriptFileOnNode(nodeIp, dstScriptPath);
 	}
 }

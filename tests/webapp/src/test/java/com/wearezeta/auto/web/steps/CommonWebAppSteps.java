@@ -183,6 +183,10 @@ public class CommonWebAppSteps {
 				} else {
 					lazyWebDriver.manage().window().maximize();
 				}
+				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+					WebCommonUtils.clearHistoryInSafari(lazyWebDriver
+							.getNodeIp());
+				}
 				return lazyWebDriver;
 			}
 		};
