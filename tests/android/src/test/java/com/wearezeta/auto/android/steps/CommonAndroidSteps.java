@@ -35,7 +35,6 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.common.process.AsyncProcess;
 
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
@@ -59,24 +58,15 @@ public class CommonAndroidSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(CommonAndroidSteps.class.getSimpleName());
 
-	private static final AsyncProcess logcatListener = new AsyncProcess(new String[] {
-			"/bin/bash", "-c",
-			AndroidCommonUtils.ADB_PREFIX + "adb -d logcat *:W" }, false, false);
-
-	/**
-	 * This listener starts only for tests, which have "performance" tag
-	 * 
-	 * @return
-	 */
-	public static AsyncProcess getLogcatListener() {
-		return logcatListener;
-	}
-
 	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
-	private long testStartedTimestamp = Long.MAX_VALUE;
+	private static long testStartedTimestamp = -1;
+
+	public static long getTestStartedTimestamp() {
+		return testStartedTimestamp;
+	}
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	public static final int DEFAULT_SWIPE_TIME = 1500;
@@ -206,8 +196,6 @@ public class CommonAndroidSteps {
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
-		logcatListener.start();
-
 		try {
 			AndroidCommonUtils.disableHints();
 		} catch (Exception e) {
@@ -855,14 +843,6 @@ public class CommonAndroidSteps {
 
 	@After
 	public void tearDown() throws Exception {
-		if (logcatListener.isRunning()) {
-			try {
-				logcatListener.stop(2000);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-
 		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps.getInstance().cleanupWaitingInstances();

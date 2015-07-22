@@ -304,8 +304,6 @@ public final class BackendAPIWrappers {
 
 	public static void autoTestSendRequest(ClientUser userFrom,
 			ClientUser userTo) throws Exception {
-		userFrom = tryLoginByUser(userFrom);
-		userTo = tryLoginByUser(userTo);
 		sendConnectRequest(userFrom, userTo, userTo.getName(),
 				CommonSteps.CONNECTION_MESSAGE);
 		userFrom.setUserState(UserState.RequestSend);

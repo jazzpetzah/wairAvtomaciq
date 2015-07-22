@@ -52,6 +52,12 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(id = idContactListNames)
 	private List<WebElement> contactListNames;
 
+	private static final String xpathNonEmptyContacts = "//*[@id='"
+			+ idContactListNames
+			+ "' and @value and string-length(@value) > 0]";
+	private static final Function<Integer, String> xpathNonEmptyContactByIdx = idx -> String
+			.format("(%s)[%d]", xpathNonEmptyContacts, idx);
+
 	@FindBy(id = idEditText)
 	private WebElement cursorInput;
 
@@ -105,9 +111,20 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public String getFirstVisibleConversationName() throws Exception {
-		final By locator = By.xpath(xpathContactByIndex.apply(1));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "The first conversation in the list is not visible";
-		return getDriver().findElement(locator).getAttribute("value");
+		final int itemsCount = getDriver().findElements(
+				By.xpath(xpathNonEmptyContacts)).size();
+		for (int i = 1; i <= itemsCount; i++) {
+			final By locator = By.xpath(xpathNonEmptyContactByIdx.apply(i));
+			if (DriverUtils
+					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
+				final String name = getDriver().findElement(locator).getText();
+				if ((name instanceof String) && name.length() > 0) {
+					return name;
+				}
+			}
+		}
+		throw new AssertionError(
+				"There are no visible conversations in the list");
 	}
 
 	public void tapOnName(final String name) throws Exception {

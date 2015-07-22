@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.common;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -44,16 +45,9 @@ public final class AndroidLoggingUtils {
 			.newFixedThreadPool(3);
 	private static final int LOG_READ_TIMEOUT_SECONDS = 15;
 
-	/**
-	 * 
-	 * @param testStartedTimestamp
-	 *            should be taken as new Date().getTime(). This is Unix time
-	 *            stamp
-	 * @throws Exception
-	 */
-	public static void writeDeviceLogsToConsole(long testStartedTimestamp)
-			throws Exception {
-		final long testFinsihedTimestamp = new Date().getTime();
+	public static List<String> getLogLinesForCurrentTestCase(
+			final long loggingStartedTimestamp) throws Exception {
+		final long currentTimestamp = new Date().getTime();
 		final String[] cmd = new String[] { "/bin/bash", "-c",
 				ADB_PREFIX + "adb logcat -d -v time" };
 		final Future<String> logOutput = logsCollector
@@ -67,19 +61,13 @@ public final class AndroidLoggingUtils {
 						}
 					}
 				});
-		String[] allLogLines = new String[] {};
-		try {
-			allLogLines = logOutput.get(LOG_READ_TIMEOUT_SECONDS,
-					TimeUnit.SECONDS).split("\n");
-		} catch (TimeoutException | ExecutionException e) {
-			log.error(e.getMessage());
-			return;
-		}
+		final List<String> allLogLines = Arrays.asList(logOutput.get(
+				LOG_READ_TIMEOUT_SECONDS, TimeUnit.SECONDS).split("\n"));
 		final SimpleDateFormat sdf = new SimpleDateFormat(
 				"yyyy-MM-dd HH:mm:ss.SSS");
 		final Pattern pattern = Pattern
 				.compile("(\\d{2}\\-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2}\\.\\d{3})");
-		log.debug("\n\n\n===CAPTURED DEVICE LOGS===\n");
+		final List<String> result = new ArrayList<>();
 		for (String logLine : allLogLines) {
 			final Matcher matcher = pattern.matcher(logLine);
 			long logLineTimestamp = -1;
@@ -95,23 +83,46 @@ public final class AndroidLoggingUtils {
 			} else {
 				continue;
 			}
-			if (logLineTimestamp > testStartedTimestamp
-					&& logLineTimestamp < testFinsihedTimestamp) {
-				boolean shouldIncludeLineToLog = true;
-				for (final Pattern excludePattern : patternsToExcludeFromLog) {
-					final Matcher excludeMatcher = excludePattern
-							.matcher(logLine);
-					if (excludeMatcher.find()) {
-						shouldIncludeLineToLog = false;
-						break;
-					}
-				}
-				if (shouldIncludeLineToLog) {
-					System.out.println(logLine.trim());
-				}
+			if (logLineTimestamp > loggingStartedTimestamp
+					&& logLineTimestamp < currentTimestamp) {
+				result.add(logLine.trim());
 			}
 		}
-		log.debug("\n===END OF CAPTURED DEVICE LOGS===\n\n\n");
+		return result;
+	}
+
+	/**
+	 * 
+	 * @param testStartedTimestamp
+	 *            should be taken as new Date().getTime(). This is Unix time
+	 *            stamp
+	 * @throws Exception
+	 */
+	public static void writeDeviceLogsToConsole(long testStartedTimestamp)
+			throws Exception {
+		List<String> nonFilteredList = new ArrayList<>();
+		try {
+			nonFilteredList = getLogLinesForCurrentTestCase(testStartedTimestamp);
+		} catch (ExecutionException | TimeoutException e) {
+			e.printStackTrace();
+			log.error(e.getMessage());
+			return;
+		}
+		log.debug("\n\n\n=== CAPTURED DEVICE LOGS ===\n");
+		for (String logLine : nonFilteredList) {
+			boolean shouldIncludeLineToLog = true;
+			for (final Pattern excludePattern : patternsToExcludeFromLog) {
+				final Matcher excludeMatcher = excludePattern.matcher(logLine);
+				if (excludeMatcher.find()) {
+					shouldIncludeLineToLog = false;
+					break;
+				}
+			}
+			if (shouldIncludeLineToLog) {
+				System.out.println(logLine.trim());
+			}
+		}
+		log.debug("\n=== END OF CAPTURED DEVICE LOGS ===\n\n\n");
 	}
 
 }

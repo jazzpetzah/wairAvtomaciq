@@ -52,7 +52,8 @@ public final class PerformanceCommon {
 			msgsToSend.add(CommonUtils.generateGUID());
 		}
 		BackendAPIWrappers.sendConversationMessages(
-				usrMgr.getSelfUserOrThrowError(), convo_id, msgsToSend);
+				usrMgr.findUserByNameOrNameAlias(convoName), convo_id,
+				msgsToSend);
 	}
 
 	public static interface PerformanceLoop {

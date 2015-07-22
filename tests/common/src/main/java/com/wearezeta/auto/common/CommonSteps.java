@@ -92,10 +92,10 @@ public final class CommonSteps {
 		if (usersToNameAliases.toLowerCase().contains(OTHER_USERS_ALIAS)) {
 			List<ClientUser> otherUsers = usrMgr.getCreatedUsers();
 			otherUsers.remove(usrFrom);
-			for (ClientUser usrTo : otherUsers) {
-				BackendAPIWrappers.autoTestSendRequest(usrFrom, usrTo);
-				BackendAPIWrappers.autoTestAcceptAllRequest(usrTo);
+			for (ClientUser contact : otherUsers) {
+				BackendAPIWrappers.autoTestSendRequest(contact, usrFrom);
 			}
+			BackendAPIWrappers.autoTestAcceptAllRequest(usrFrom);
 		} else {
 			for (String userToName : splitAliases(usersToNameAliases)) {
 				ClientUser usrTo = usrMgr.findUserByNameOrNameAlias(userToName);

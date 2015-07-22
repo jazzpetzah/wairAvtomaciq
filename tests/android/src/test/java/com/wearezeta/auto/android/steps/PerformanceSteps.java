@@ -3,15 +3,16 @@ package com.wearezeta.auto.android.steps;
 import java.util.List;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidLoggingUtils;
 import com.wearezeta.auto.android.common.reporter.AndroidPerfReportModel;
 import com.wearezeta.auto.android.common.reporter.AndroidPerformanceHelpers;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -35,25 +36,46 @@ public class PerformanceSteps {
 	}
 
 	/**
+	 * Send multiple messages from one of my contacts using the backend
+	 * 
+	 * @step. ^I receive (\\d+) messages? from contact (.*)
+	 * 
+	 * @param msgsCount
+	 *            count of messages to send
+	 * @param asContact
+	 *            from which contact should we send these messages
+	 * @throws Exception
+	 */
+	@Given("^I receive (\\d+) messages? from contact (.*)")
+	public void IReceiveXMessagesFromContact(int msgsCount, String asContact)
+			throws Exception {
+		assert msgsCount >= MAX_MSGS_IN_CONVO_WINDOW * 2 : String
+				.format("The count of messages to send (%d) should be greater or equal to the max "
+						+ "count of messages in conversation window multiplied by 2 (%d)",
+						msgsCount, MAX_MSGS_IN_CONVO_WINDOW * 2);
+		asContact = usrMgr.findUserByNameOrNameAlias(asContact).getName();
+		perfCommon.sendMultipleMessagesIntoConversation(asContact,
+				msgsCount * 2);
+	}
+
+	/**
 	 * Starts standard actions loop (read messages/send messages) to measure
 	 * application performance
 	 * 
-	 * @step. ^I start testing cycle for (\\d+) minutes$
+	 * @step. ^I start test cycle for (\\d+) minutes? with messages received
+	 *        from (.*)
 	 * 
 	 * @param timeout
 	 *            number of minutes to run the loop
+	 * @param fromContact
+	 *            contact name/alias, from which I received messages
 	 * @throws Exception
 	 */
-	@When("^I start test cycle for (\\d+) minutes$")
-	public void WhenIStartTestCycleForNMinutes(int timeout) throws Exception {
-		final List<ClientUser> allUsers = usrMgr.getCreatedUsers();
-		// Send messages to the last contact
-		final String destConvoName = allUsers.get(allUsers.size() - 1)
-				.getName();
-		// Send twice more messages that can fit into single SyncEngine window
-		perfCommon.sendMultipleMessagesIntoConversation(destConvoName,
-				MAX_MSGS_IN_CONVO_WINDOW * 2);
-		getContactListPage().waitForConversationListLoad();
+	@When("^I start test cycle for (\\d+) minutes? with messages received from (.*)")
+	public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact)
+			throws Exception {
+		final String destConvoName = usrMgr.findUserByNameOrNameAlias(
+				fromContact).getName();
 		final String firstConvoName = getContactListPage()
 				.getFirstVisibleConversationName();
 		// This contact, which received messages, should be the first contact in
@@ -85,14 +107,11 @@ public class PerformanceSteps {
 	 */
 	@Then("^I generate performance report for (\\d+) users?$")
 	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
-		CommonAndroidSteps.getLogcatListener().stop(2,
-				new int[] { CommonAndroidSteps.getLogcatListener().getPid() },
-				5000);
+		final List<String> logOutput = AndroidLoggingUtils
+				.getLogLinesForCurrentTestCase(CommonAndroidSteps
+						.getTestStartedTimestamp());
 		final AndroidPerfReportModel dataModel = new AndroidPerfReportModel();
-		dataModel.loadDataFromLogCat(CommonAndroidSteps.getLogcatListener()
-				.getStdout()
-				+ "\n"
-				+ CommonAndroidSteps.getLogcatListener().getStderr());
+		dataModel.loadDataFromLogCat(String.join("\n", logOutput));
 		AndroidPerformanceHelpers.storeWidgetDataAsJSON(
 				AndroidCommonUtils.getGeckoboardWidgetIdFromConfig(getClass()),
 				dataModel,
