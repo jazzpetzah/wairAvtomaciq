@@ -26,8 +26,8 @@ public final class PerformanceCommon {
 		return this.usrMgr;
 	}
 
-	private static final int MIN_WAIT_SECONDS = 5;
-	private static final int MAX_WAIT_SECONDS = 10;
+	private static final int MIN_WAIT_SECONDS = 2;
+	private static final int MAX_WAIT_SECONDS = 5;
 
 	public static final String DEFAULT_PERF_IMAGE = "perf/default.jpg";
 

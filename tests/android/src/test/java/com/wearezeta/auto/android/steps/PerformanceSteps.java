@@ -76,17 +76,36 @@ public class PerformanceSteps {
 			throws Exception {
 		final String destConvoName = usrMgr.findUserByNameOrNameAlias(
 				fromContact).getName();
-		final String firstConvoName = getContactListPage()
+		String firstConvoName = getContactListPage()
 				.getFirstVisibleConversationName();
-		// This contact, which received messages, should be the first contact in
-		// the visible convo list now
+		int ntry = 1;
+		do {
+			// This contact, which received messages, should be the first
+			// contact in the visible convo list now
+			if (destConvoName.equals(firstConvoName)) {
+				break;
+			} else {
+				Thread.sleep(10000);
+			}
+			firstConvoName = getContactListPage()
+					.getFirstVisibleConversationName();
+			ntry++;
+		} while (ntry <= 3);
 		assert destConvoName.equals(firstConvoName) : String
 				.format("The very first conversation name '%s' is not the same as expected one ('%s')",
 						firstConvoName, destConvoName);
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
-				getContactListPage().tapOnName(firstConvoName);
-				assert getDialogPage().isDialogVisible();
+				final int maxRetries = 10;
+				int ntry = 1;
+				do {
+					getContactListPage().tapOnName(destConvoName);
+					Thread.sleep(3000);
+					ntry++;
+				} while (!getDialogPage().isDialogVisible()
+						&& ntry <= maxRetries);
+				assert getDialogPage().isDialogVisible() : "The conversation has not been opened after "
+						+ maxRetries + " retries";
 				getDialogPage().tapDialogPageBottom();
 				getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 			}
