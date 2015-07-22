@@ -79,18 +79,12 @@ public class DriverUtils {
 			// + driver
 			// .manage().window().getSize().height);
 			if (element.isDisplayed()
-					&& element.getLocation().x > 0
-					&& element.getLocation().y > 0
-					&& (element.getLocation().x < driver.manage().window()
-							.getSize().width)
-					&& (element.getLocation().y < driver.manage().window()
-							.getSize().height)
-					|| (element.getLocation().x == 0 && (element.getSize().width >= driver
-							.manage().window().getSize().width || !element
-							.getText().isEmpty()))
-					|| (element.getLocation().y == 0 && (element.getSize().height >= driver
-							.manage().window().getSize().height || !element
-							.getText().isEmpty()))) {
+					&& element.getLocation().x >= 0
+					&& element.getLocation().y >= 0
+					&& element.getLocation().x < driver.manage().window()
+							.getSize().width
+					&& element.getLocation().y < driver.manage().window()
+							.getSize().height) {
 				return true;
 			} else {
 				return false;
