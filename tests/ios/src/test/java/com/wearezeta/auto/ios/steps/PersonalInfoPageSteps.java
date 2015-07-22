@@ -315,7 +315,7 @@ public class PersonalInfoPageSteps {
 
 	@When("^I return to personal page$")
 	public void IReturnToPersonalPage() throws Throwable {
-		Thread.sleep(2000);// wait for picture to load on simulator
+		Thread.sleep(5000);// wait for picture to load on simulator
 		getPersonalInfoPage().tapOnPersonalPage();
 		Thread.sleep(2000);// wait for picture to load on simulator
 		getPersonalInfoPage().tapOnPersonalPage();
@@ -330,7 +330,8 @@ public class PersonalInfoPageSteps {
 	public void ThenISeeChangedUserPicture(String filename) throws Throwable {
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + filename);
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= 0.65, current = "
 						+ score, score >= 0.65d);
@@ -342,7 +343,8 @@ public class PersonalInfoPageSteps {
 		BufferedImage profileImage = getPersonalInfoPage().takeScreenshot()
 				.orElseThrow(AssertionError::new);
 		double score = ImageUtil.getOverlapScore(
-				RegistrationPageSteps.basePhoto, profileImage);
+				RegistrationPageSteps.basePhoto, profileImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 
 		Assert.assertTrue(
 				"Images are differen. Expected score >= 0.75, current = "

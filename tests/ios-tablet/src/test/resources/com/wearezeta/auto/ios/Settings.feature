@@ -227,3 +227,64 @@ Feature: Settings
     Examples: 
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
+
+  @regression @id2589
+  Scenario Outline: Verify about screen contains all the required information [PORTRAIT]
+    Given There is 1 user where <Name> is me
+    Given User me change accent color to <Color>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I click on Settings button on personal page
+    And I click on About button on personal page
+    Then I see About page
+    And I see that the About page is colored <Color>
+    And I see WireWebsiteButton
+    And I see TermsButton
+    And I see PrivacyPolicyButton
+    And I see BuildNumberText
+    And I open PrivacyPolicyPage
+    And I see PrivacyPolicyPage
+    And I close legal page
+    Then I see About page
+    And I open TermsOfUsePage
+    And I see TermsOfUsePage
+    And I close legal page
+    Then I see About page
+    And I open WireWebsite
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact   | Color  |
+      | user1Name | user2Name | Violet |
+
+  @regression @id3156
+  Scenario Outline: Verify about screen contains all the required information [LANDSCAPE]
+    Given There is 1 user where <Name> is me
+    Given User me change accent color to <Color>
+    Given I Sign in on tablet using my email
+    Given I rotate UI to landscape
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I click on Settings button on personal page
+    And I click on About button on personal page
+    Then I see About page
+    And I see that the About page is colored <Color>
+    And I see WireWebsiteButton
+    And I see TermsButton
+    And I see PrivacyPolicyButton
+    And I see BuildNumberText
+    And I open PrivacyPolicyPage
+    And I see PrivacyPolicyPage
+    And I close legal page
+    Then I see About page
+    And I open TermsOfUsePage
+    And I see TermsOfUsePage
+    And I close legal page
+    Then I see About page
+    And I open WireWebsite
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact   | Color  |
+      | user1Name | user2Name | Violet |
