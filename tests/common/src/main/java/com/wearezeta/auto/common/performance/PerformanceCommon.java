@@ -73,16 +73,16 @@ public final class PerformanceCommon {
 			getLogger().debug(
 					String.format("Sleeping %s seconds", sleepDurationSeconds));
 			Thread.sleep(sleepDurationSeconds * 1000);
-			getLogger()
-					.debug(String
-							.format("Approximately %s second(s) left till the end of the perf test",
-									timeoutMinutes
-											* 60
-											- (System.currentTimeMillis() - millisecondsStarted)
-											/ 1000));
+			final long secondsLeft = timeoutMinutes * 60
+					- (System.currentTimeMillis() - millisecondsStarted) / 1000;
+			if (secondsLeft > 0) {
+				getLogger()
+						.debug(String
+								.format("Approximately %s second(s) left till the end of the perf test",
+										secondsLeft));
+			}
 		} while (System.currentTimeMillis() - millisecondsStarted < timeoutMinutes * 60000);
 	}
-
 	// private void sendDefaultImageToUser(int imagesCount) throws Exception {
 	// final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
 	// final ClassLoader classLoader = this.getClass().getClassLoader();

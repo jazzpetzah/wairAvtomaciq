@@ -111,6 +111,7 @@ public class PerformanceSteps {
 				.getLogLinesForCurrentTestCase(CommonAndroidSteps
 						.getTestStartedTimestamp());
 		final AndroidPerfReportModel dataModel = new AndroidPerfReportModel();
+		dataModel.setContactsCount(usersCount - 1);
 		dataModel.loadDataFromLogCat(String.join("\n", logOutput));
 		AndroidPerformanceHelpers.storeWidgetDataAsJSON(
 				AndroidCommonUtils.getGeckoboardWidgetIdFromConfig(getClass()),

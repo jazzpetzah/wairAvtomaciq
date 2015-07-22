@@ -14,7 +14,7 @@ public abstract class PerfReportModel {
 	private String deviceOSVersion = UNKNOWN_VALUE;
 	private NetworkType networkType;
 	private long appStartupTimeMillis;
-	private int usersCount;
+	private int contactsCount;
 	private String buildNumber = UNKNOWN_VALUE;
 	private long signInTime;
 	private List<Long> convoLoadTimes = new ArrayList<>();
@@ -67,12 +67,12 @@ public abstract class PerfReportModel {
 		this.appStartupTimeMillis = appStartupTimeMillis;
 	}
 
-	public int getUsersCount() {
-		return usersCount;
+	public int getContactsCount() {
+		return contactsCount;
 	}
 
-	protected void setUsersCount(int usersCount) {
-		this.usersCount = usersCount;
+	public void setContactsCount(int contactsCount) {
+		this.contactsCount = contactsCount;
 	}
 
 	public void clearConvoStartupTimes() {
@@ -129,7 +129,7 @@ public abstract class PerfReportModel {
 		result.put("deviceOSVersion", this.getDeviceOSVersion());
 		result.put("networkType", this.getNetworkType().toString());
 		result.put("appStartupTimeMillis", this.getAppStartupTimeMillis());
-		result.put("usersCount", this.getUsersCount());
+		result.put("contactsCount", this.getContactsCount());
 		result.put("buildNumber", this.getBuildNumber());
 		result.put("signInTime", this.getSignInTime());
 		result.put("convoLoadTimes",
@@ -143,7 +143,7 @@ public abstract class PerfReportModel {
 		this.setNetworkType(NetworkType.fromString(jsonObj
 				.getString("networkType")));
 		this.setAppStartupTimeMillis(jsonObj.getLong("appStartupTimeMillis"));
-		this.setUsersCount(jsonObj.getInt("usersCount"));
+		this.setContactsCount(jsonObj.getInt("contactsCount"));
 		this.setBuildNumber(jsonObj.getString("buildNumber"));
 		this.setSignInTime(jsonObj.getLong("signInTime"));
 		this.convoLoadTimes.clear();

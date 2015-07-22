@@ -88,7 +88,7 @@ public class EmailSignInPage extends AndroidPage {
 
 	public boolean waitForLoginScreenDisappear() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(EmailSignInPage.idLoginButton), 60);
+				By.id(EmailSignInPage.idLoginButton), 60 * 3);
 	}
 
 	public void verifyErrorMessageText(String expectedMsg) throws Exception {

@@ -68,23 +68,21 @@ public final class AndroidLoggingUtils {
 		final Pattern pattern = Pattern
 				.compile("(\\d{2}\\-\\d{2}\\s+\\d{2}:\\d{2}:\\d{2}\\.\\d{3})");
 		final List<String> result = new ArrayList<>();
+		long lastLogLineTimestamp = -1;
 		for (String logLine : allLogLines) {
 			final Matcher matcher = pattern.matcher(logLine);
-			long logLineTimestamp = -1;
 			if (matcher.find()) {
 				try {
-					logLineTimestamp = sdf.parse(
+					lastLogLineTimestamp = sdf.parse(
 							Integer.toString(Calendar.getInstance().get(
 									Calendar.YEAR))
 									+ "-" + matcher.group(1)).getTime();
 				} catch (ParseException e) {
-					continue;
+					// ignore silently
 				}
-			} else {
-				continue;
 			}
-			if (logLineTimestamp > loggingStartedTimestamp
-					&& logLineTimestamp < currentTimestamp) {
+			if (lastLogLineTimestamp > loggingStartedTimestamp
+					&& lastLogLineTimestamp < currentTimestamp) {
 				result.add(logLine.trim());
 			}
 		}
