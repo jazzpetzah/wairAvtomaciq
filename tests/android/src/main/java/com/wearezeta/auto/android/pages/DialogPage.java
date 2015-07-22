@@ -377,7 +377,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void pressKeyboardSendButton() throws Exception {
-		tapByCoordinates(94, 95);
+		tapByCoordinates(94, 96);
 	}
 
 	public void clickLastImageFromDialog() {

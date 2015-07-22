@@ -369,16 +369,16 @@ public abstract class AndroidPage extends BasePage {
 
 	public void tapByCoordinates(int widthPercent, int hightPercent)
 			throws Exception {
-		DriverUtils.genericTap(this.getDriver(), widthPercent, hightPercent);
-	}
-
-	public void tapByCoordinates(int time, int widthPercent, int hightPercent)
-			throws Exception {
-		DriverUtils.genericTap(this.getDriver(), time, widthPercent,
-				hightPercent);
+		int x = getDriver().manage().window().getSize().getWidth()
+				* widthPercent / 100;
+		int y = getDriver().manage().window().getSize().getHeight()
+				* hightPercent / 100;
+		AndroidCommonUtils.genericScreenTap(x, y);
 	}
 
 	public void tapOnCenterOfScreen() throws Exception {
-		DriverUtils.genericTap(this.getDriver());
+		int x = getDriver().manage().window().getSize().getWidth() / 2;
+		int y = getDriver().manage().window().getSize().getHeight() / 2;
+		AndroidCommonUtils.genericScreenTap(x, y);
 	}
 }
