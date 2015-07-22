@@ -747,4 +747,20 @@ public class DialogPageSteps {
 		getDialogPage().sendStringToInput(message);
 		getDialogPage().openGifPreviewPage();
 	}
+
+	/**
+	 * Verify my user name in conversation view
+	 * 
+	 * @step. I see my user name (.*) in conversation
+	 * 
+	 * @param name
+	 *            String name - my user name
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see my user name (.*) in conversation")
+	public void ISeeMyNameInDialog(String name) throws Exception {
+		Assert.assertTrue("My name: " + name + " is not displayed in dialog",
+				getDialogPage().isMyNameInDialogDisplayed(name));
+	}
 }
