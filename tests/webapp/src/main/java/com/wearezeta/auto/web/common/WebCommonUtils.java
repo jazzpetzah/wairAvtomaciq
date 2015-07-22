@@ -89,7 +89,7 @@ public class WebCommonUtils extends CommonUtils {
 	public static void executeAppleScriptFileOnNode(String node,
 			String scriptPath) throws Exception {
 		File file = new File(sshKeyPath);
-		file.setReadable(true, true);
+		log.info("set readable: " + file.setReadable(true, true));
 		file.setWritable(true, true);
 		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s osascript %s";
