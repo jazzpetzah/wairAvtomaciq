@@ -62,11 +62,7 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void putFileOnExecutionNode(String node, String srcPath,
 			String dstPath) throws Exception {
-		File keyFile = new File(sshKeyPath);
-		if (!keyFile.setReadable(false, false) || !keyFile.setReadable(true, true)) {
-            log.info(String.format("Failed to make SSH File '%s' readable by owner", sshKeyPath));
-        }
-		keyFile.setWritable(true, true);
+		setCorrectPermissionsOfKeyFile();
 		String commandTemplate = "scp -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s %s@%s:%s";
 		String command = String.format(commandTemplate, sshKeyPath, srcPath,
@@ -75,11 +71,25 @@ public class WebCommonUtils extends CommonUtils {
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}
 
+	private static void setCorrectPermissionsOfKeyFile() {
+		File keyFile = new File(sshKeyPath);
+		if (!keyFile.setReadable(false, false)
+				|| !keyFile.setReadable(true, true)) {
+			log.info(String.format(
+					"Failed to make SSH File '%s' readable by owner",
+					sshKeyPath));
+		}
+		if (!keyFile.setWritable(false, false)
+				|| !keyFile.setWritable(true, true)) {
+			log.info(String.format(
+					"Failed to make SSH File '%s' writable by owner",
+					sshKeyPath));
+		}
+	}
+
 	public static void executeCommandOnNode(String node, String cmd)
 			throws Exception {
-		File file = new File(sshKeyPath);
-		file.setReadable(true, true);
-		file.setWritable(true, true);
+		setCorrectPermissionsOfKeyFile();
 		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s %s";
 		String command = String.format(commandTemplate, sshKeyPath,
@@ -90,9 +100,7 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void executeAppleScriptFileOnNode(String node,
 			String scriptPath) throws Exception {
-		File file = new File(sshKeyPath);
-		log.info("set readable: " + file.setReadable(true, true));
-		file.setWritable(true, true);
+		setCorrectPermissionsOfKeyFile();
 		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s osascript %s";
 		String command = String.format(commandTemplate, sshKeyPath,
