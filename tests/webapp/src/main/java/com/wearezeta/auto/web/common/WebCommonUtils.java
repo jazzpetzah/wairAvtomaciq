@@ -62,9 +62,11 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void putFileOnExecutionNode(String node, String srcPath,
 			String dstPath) throws Exception {
-		File file = new File(sshKeyPath);
-		file.setReadable(true, true);
-		file.setWritable(true, true);
+		File keyFile = new File(sshKeyPath);
+		if (!keyFile.setReadable(false, false) || !keyFile.setReadable(true, true)) {
+            log.info(String.format("Failed to make SSH File '%s' readable by owner", sshKeyPath));
+        }
+		keyFile.setWritable(true, true);
 		String commandTemplate = "scp -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s %s@%s:%s";
 		String command = String.format(commandTemplate, sshKeyPath, srcPath,
