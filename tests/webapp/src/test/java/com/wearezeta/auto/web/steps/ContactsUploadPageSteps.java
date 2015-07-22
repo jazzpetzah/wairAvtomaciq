@@ -50,9 +50,7 @@ public class ContactsUploadPageSteps {
 	public void ISignUpAtGoogleWithEmail(String email, String password)
 			throws Exception {
 		// sometimes Google already shows the email
-		if(!PagesCollection.googeLoginPage.hasProfileImage()) {
-			PagesCollection.googeLoginPage.setEmail(email);
-		}
+		PagesCollection.googeLoginPage.setEmail(email);
 		// sometimes google shows a next button and you have to enter the
 		// password separately
 		if (PagesCollection.googeLoginPage.hasNextButton()) {
