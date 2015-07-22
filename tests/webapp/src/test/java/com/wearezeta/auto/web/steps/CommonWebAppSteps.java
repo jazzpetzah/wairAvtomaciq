@@ -563,7 +563,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Send Ping into a conversation using the backend
 	 * 
-	 * @step. ^(.*) pinged conversation with (.*)$
+	 * @step. ^User (.*) pinged in the conversation with (.*)$
 	 * 
 	 * @param pingFromUserNameAlias
 	 *            conversations list owner name/alias
@@ -571,10 +571,28 @@ public class CommonWebAppSteps {
 	 *            the name of conversation to send ping to
 	 * @throws Exception
 	 */
-	@When("^(.*) pinged the conversation with (.*)$")
+	@When("^User (.*) pinged in the conversation with (.*)$")
 	public void UserPingedConversation(String pingFromUserNameAlias,
 			String dstConversationName) throws Exception {
 		commonSteps.UserPingedConversation(pingFromUserNameAlias,
+				dstConversationName);
+	}
+
+	/**
+	 * Send Hotping into a conversation using the backend
+	 *
+	 * @step. ^User (.*) pinged twice in the conversation with (.*)$
+	 *
+	 * @param pingFromUserNameAlias
+	 *            conversations list owner name/alias
+	 * @param dstConversationName
+	 *            the name of conversation to send ping to
+	 * @throws Exception
+	 */
+	@When("^User (.*) pinged twice in the conversation with (.*)$")
+	public void UserHotPingedConversation(String pingFromUserNameAlias,
+			String dstConversationName) throws Exception {
+		commonSteps.UserHotPingedConversation(pingFromUserNameAlias,
 				dstConversationName);
 	}
 
@@ -889,5 +907,23 @@ public class CommonWebAppSteps {
 	public void IOpenSignInPage() throws Exception {
 		PagesCollection.loginPage = PagesCollection.registrationPage
 				.openSignInPage();
+	}
+
+	/**
+	 * Workaround: cleanSession capability of Safari does not delete cookies
+	 * that cannot be deleted by JS, so we added a workaround to logout from
+	 * google
+	 * 
+	 * @step. ^I sign out from Google if necessary$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I sign out from Google if necessary$")
+	public void ISignOutFromGoogleIfNecessary() throws Exception {
+		// cleanSession capability of Safari does not delete cookies that cannot
+		// be deleted by JS, so we added a workaround to logout from google
+		if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+			PagesCollection.registrationPage.signOutFromGoogle();
+		}
 	}
 }

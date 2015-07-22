@@ -183,16 +183,15 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 
 	@Override
 	public void tap(int fingers, int x, int y, int durationMilliseconds) {
-		final TouchActions ta = new TouchActions(this);
-		for (int i = 0; i < fingers; i++) {
-			ta.down(x, y).up(x, y);
-		}
-		ta.perform();
+		final String adbCommand = String.format(ADB_PREFIX
+				+ "adb shell input touchscreen tap %d %d", x, y);
 		try {
-			Thread.sleep(durationMilliseconds);
-		} catch (InterruptedException e) {
-			Throwables.propagate(e);
+			Runtime.getRuntime().exec(
+					new String[] { "/bin/bash", "-c", adbCommand });
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	@Override

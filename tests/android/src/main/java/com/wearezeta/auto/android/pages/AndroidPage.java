@@ -16,6 +16,7 @@ import android.view.KeyEvent;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
@@ -24,9 +25,13 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public abstract class AndroidPage extends BasePage {
 
+	protected static final String giphyPreviewButtonId = "cursor_button_giphy";
+
 	protected static final String idConfirmBtn = "confirm";
 
-	protected static final String idEditText = "cet__cursor_view";
+	protected static final String idEditText = "cursor_edit_text";
+
+	protected static final String idCursorArea = "caret";
 
 	protected static final String idGalleryBtn = "gtv__camera_control__pick_from_gallery";
 
@@ -61,6 +66,8 @@ public abstract class AndroidPage extends BasePage {
 	public AndroidPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
+
+	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	public void selectFirstGalleryPhoto() throws Exception {
 		final Dimension screenDimension = getDriver().manage().window()
@@ -100,13 +107,19 @@ public abstract class AndroidPage extends BasePage {
 	protected void pressEnter() throws Exception {
 		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ENTER);
 	}
-	
+
 	protected void pressEsc() throws Exception {
 		this.getDriver().sendKeyEvent(KeyEvent.KEYCODE_ESCAPE);
 	}
 
+	/**
+	 * Navigates back by BACK button
+	 * 
+	 * @throws Exception
+	 */
 	public AndroidPage navigateBack() throws Exception {
 		AndroidCommonUtils.tapBackButton();
+		commonSteps.WaitForTime(0.5);
 		// this.getDriver().navigate().back();
 		return null;
 	}
@@ -356,16 +369,16 @@ public abstract class AndroidPage extends BasePage {
 
 	public void tapByCoordinates(int widthPercent, int hightPercent)
 			throws Exception {
-		DriverUtils.genericTap(this.getDriver(), widthPercent, hightPercent);
-	}
-
-	public void tapByCoordinates(int time, int widthPercent, int hightPercent)
-			throws Exception {
-		DriverUtils.genericTap(this.getDriver(), time, widthPercent,
-				hightPercent);
+		int x = getDriver().manage().window().getSize().getWidth()
+				* widthPercent / 100;
+		int y = getDriver().manage().window().getSize().getHeight()
+				* hightPercent / 100;
+		AndroidCommonUtils.genericScreenTap(x, y);
 	}
 
 	public void tapOnCenterOfScreen() throws Exception {
-		DriverUtils.genericTap(this.getDriver());
+		int x = getDriver().manage().window().getSize().getWidth() / 2;
+		int y = getDriver().manage().window().getSize().getHeight() / 2;
+		AndroidCommonUtils.genericScreenTap(x, y);
 	}
 }

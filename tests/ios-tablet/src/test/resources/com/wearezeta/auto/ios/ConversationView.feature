@@ -481,17 +481,16 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=gywGBuMUiI4 | 
 
-  @regression @id2403
+  @regression @id2403 
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent long message to conversation <Contact>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type and send long message and media link <SoundCloudLink>
-    And I swipe right on Dialog page
-    And I tap on contact name <Contact>
     And I scroll to the end of the conversation
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link

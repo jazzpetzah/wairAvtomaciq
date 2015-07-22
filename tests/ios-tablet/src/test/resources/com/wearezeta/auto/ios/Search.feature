@@ -31,7 +31,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @staging @id2148
+  @regression @id2148
   Scenario Outline: Verify search by name [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
@@ -67,6 +67,7 @@ Feature: Search
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
     And I dismiss alert
+    When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
@@ -87,6 +88,7 @@ Feature: Search
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I dismiss alert
+    When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog
@@ -207,6 +209,7 @@ Feature: Search
     Given <Contact> is connected to <Name>
     Given User <Name> blocks user <Contact>
     Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it
@@ -231,6 +234,7 @@ Feature: Search
     Given User <Name> blocks user <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
     When I dont see conversation <Contact> in contact list
     And I wait until <Contact> exists in backend search results
     And I open search by taping on it

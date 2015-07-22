@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.pages.PeoplePickerPage;
 import com.wearezeta.auto.web.pages.WebPage;
@@ -32,12 +33,15 @@ public class GoogleLoginPage extends WebPage {
 		super(lazyDriver);
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(String email) throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id("Email"));
 		emailField.clear();
 		emailField.sendKeys(email);
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(String password) throws Exception {
+		// this wait is needed when the NEXT button thing happens
+		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id("Password"));
 		passwordField.clear();
 		passwordField.sendKeys(password);
 	}
@@ -64,5 +68,9 @@ public class GoogleLoginPage extends WebPage {
 		this.getDriver().switchTo()
 				.window(this.getDriver().getWindowHandles().iterator().next());
 		return new PeoplePickerPage(getLazyDriver());
+	}
+
+	public boolean hasProfileImage() throws Exception {
+		return this.getDriver().findElements(By.id("profile-img")).size() > 0;
 	}
 }

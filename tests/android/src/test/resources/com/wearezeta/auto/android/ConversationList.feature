@@ -34,7 +34,8 @@ Feature: Conversation List
     And I see dialog page
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
-    And I type the message "Test" and send it
+    # Workaround for bug with autoscroll
+    And I scroll to the bottom of conversation view
     And I press PlayPause media item button
     And I navigate back from dialog page
     And I see Contact list
