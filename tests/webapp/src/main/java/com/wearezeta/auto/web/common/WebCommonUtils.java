@@ -24,6 +24,9 @@ public class WebCommonUtils extends CommonUtils {
 	private static final Logger log = ZetaLogger.getLog(WebCommonUtils.class
 			.getSimpleName());
 
+	private static final String sshKeyPath = WebCommonUtils.class.getResource(
+			"/ssh/jenkins_ssh_key").getPath();
+
 	public static String getHubHostFromConfig(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "hubHost");
 	}
@@ -59,10 +62,9 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void putFileOnExecutionNode(String node, String srcPath,
 			String dstPath) throws Exception {
-		String keyPath = WebCommonUtils.class.getResource("/jenkins_ssh_key").getPath();
 		String commandTemplate = "scp -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s %s@%s:%s";
-		String command = String.format(commandTemplate, keyPath, srcPath,
+		String command = String.format(commandTemplate, sshKeyPath, srcPath,
 				getJenkinsSuperUserLogin(CommonUtils.class), node, dstPath);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
@@ -70,10 +72,9 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void executeCommandOnNode(String node, String cmd)
 			throws Exception {
-		String keyPath = WebCommonUtils.class.getResource("/jenkins_ssh_key").getPath();
 		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s %s";
-		String command = String.format(commandTemplate, keyPath,
+		String command = String.format(commandTemplate, sshKeyPath,
 				getJenkinsSuperUserLogin(CommonUtils.class), node, cmd);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
@@ -81,10 +82,9 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void executeAppleScriptFileOnNode(String node,
 			String scriptPath) throws Exception {
-		String keyPath = WebCommonUtils.class.getResource("/jenkins_ssh_key").getPath();
 		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s osascript %s";
-		String command = String.format(commandTemplate, keyPath,
+		String command = String.format(commandTemplate, sshKeyPath,
 				getJenkinsSuperUserLogin(CommonUtils.class), node, scriptPath);
 		if (WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
 				command }) == 255) {
