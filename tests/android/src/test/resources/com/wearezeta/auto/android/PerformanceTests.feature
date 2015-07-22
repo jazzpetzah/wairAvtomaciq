@@ -13,6 +13,6 @@ Feature: Performance Tests
 
     Examples: 
       | Name      | UsersNumber       | UserNamePrefix    | Time            | MsgsCount | Sender        |
-#      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 200       | user2Name     |
-      | user1Name | 1001                | perf1000user         | 1               | 200      | user2Name     |
+      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 200       | user2Name     |
+#      | user1Name | 1001                | perf1000user         | 1               | 200      | user2Name     |
       
