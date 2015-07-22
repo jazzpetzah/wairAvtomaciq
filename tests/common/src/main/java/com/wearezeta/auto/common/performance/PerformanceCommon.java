@@ -77,7 +77,7 @@ public final class PerformanceCommon {
 					- (System.currentTimeMillis() - millisecondsStarted) / 1000;
 			if (secondsLeft > 0) {
 				getLogger()
-						.debug(String
+						.info(String
 								.format("Approximately %s second(s) left till the end of the perf test",
 										secondsLeft));
 			}

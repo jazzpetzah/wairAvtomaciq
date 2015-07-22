@@ -91,6 +91,13 @@ public final class CommonSteps {
 				.findUserByNameOrNameAlias(userFromNameAlias);
 		if (usersToNameAliases.toLowerCase().contains(OTHER_USERS_ALIAS)) {
 			List<ClientUser> otherUsers = usrMgr.getCreatedUsers();
+			final int conversationsCount = BackendAPIWrappers.getConversations(
+					usrFrom).length();
+			if (conversationsCount >= otherUsers.size() * 0.9) {
+				// Skip reconnect since this shortcut is used only for perf
+				// tests
+				return;
+			}
 			otherUsers.remove(usrFrom);
 			for (ClientUser contact : otherUsers) {
 				BackendAPIWrappers.autoTestSendRequest(contact, usrFrom);

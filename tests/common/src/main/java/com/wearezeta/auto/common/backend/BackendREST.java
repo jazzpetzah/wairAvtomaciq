@@ -121,7 +121,7 @@ final class BackendREST {
 
 	public static JSONObject sendConnectRequest(AuthToken fromToken,
 			String toId, String connectName, String message) throws Exception {
-		Builder webResource = buildDefaultRequestWithAuth("self/connections",
+		Builder webResource = buildDefaultRequestWithAuth("connections",
 				MediaType.APPLICATION_JSON, fromToken).type(
 				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
@@ -137,9 +137,9 @@ final class BackendREST {
 	// If size == null or start == null then default values will be used instead
 	// max size value is limited to 100
 	// default size value is 100
-	public static JSONArray getConnectionsInfo(AuthToken token, Integer size,
+	public static JSONObject getConnectionsInfo(AuthToken token, Integer size,
 			String start) throws Exception {
-		String requestUri = "self/connections";
+		String requestUri = "connections";
 		if (size != null && start != null) {
 			requestUri = String.format("%s?start=%s&size=%s", requestUri,
 					start, size.intValue());
@@ -153,7 +153,7 @@ final class BackendREST {
 				MediaType.APPLICATION_JSON, token);
 		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
-		return new JSONArray(output);
+		return new JSONObject(output);
 	}
 
 	public static void changeConnectRequestStatus(AuthToken token,
@@ -438,9 +438,11 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
-	public static JSONObject getConversationsInfo(AuthToken token)
-			throws Exception {
-		Builder webResource = buildDefaultRequestWithAuth("conversations",
+	public static JSONObject getConversationsInfo(AuthToken token,
+			String startId) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth(
+				(startId == null) ? "conversations" : String.format(
+						"conversations/?start=%s", startId),
 				MediaType.APPLICATION_JSON, token);
 		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });

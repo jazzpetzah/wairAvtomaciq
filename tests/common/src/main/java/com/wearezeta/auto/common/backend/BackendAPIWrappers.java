@@ -624,14 +624,33 @@ public final class BackendAPIWrappers {
 				contact.getId(), connectName, message);
 	}
 
-	public static void acceptAllConnections(ClientUser user) throws Exception {
+	private static JSONArray getAllConnections(ClientUser user)
+			throws Exception {
 		tryLoginByUser(user);
-		JSONArray connections = BackendREST.getConnectionsInfo(
-				generateAuthToken(user), null, null);
+		String startId = null;
+		JSONObject connectionsInfo = null;
+		final JSONArray result = new JSONArray();
+		do {
+			connectionsInfo = BackendREST.getConnectionsInfo(
+					generateAuthToken(user), null, startId);
+			final JSONArray connections = connectionsInfo
+					.getJSONArray("connections");
+			for (int i = 0; i < connections.length(); i++) {
+				result.put(connections.getJSONObject(i));
+			}
+			if (connections.length() > 0) {
+				startId = connections.getJSONObject(connections.length() - 1)
+						.getString("to");
+			}
+		} while (connectionsInfo.getBoolean("has_more"));
+		return result;
+	}
+
+	public static void acceptAllConnections(ClientUser user) throws Exception {
+		final JSONArray connections = getAllConnections(user);
 		for (int i = 0; i < connections.length(); i++) {
-			String to = ((JSONObject) connections.get(i)).getString("to");
-			String status = ((JSONObject) connections.get(i))
-					.getString("status");
+			String to = connections.getJSONObject(i).getString("to");
+			String status = connections.getJSONObject(i).getString("status");
 			if (status.equals(ConnectionStatus.Pending.toString())) {
 				changeConnectRequestStatus(user, to, ConnectionStatus.Accepted);
 			}
@@ -639,13 +658,10 @@ public final class BackendAPIWrappers {
 	}
 
 	public static void ignoreAllConnections(ClientUser user) throws Exception {
-		tryLoginByUser(user);
-		JSONArray connections = BackendREST.getConnectionsInfo(
-				generateAuthToken(user), null, null);
+		final JSONArray connections = getAllConnections(user);
 		for (int i = 0; i < connections.length(); i++) {
-			String to = ((JSONObject) connections.get(i)).getString("to");
-			String status = ((JSONObject) connections.get(i))
-					.getString("status");
+			String to = connections.getJSONObject(i).getString("to");
+			String status = connections.getJSONObject(i).getString("status");
 			if (status.equals(ConnectionStatus.Pending.toString())) {
 				changeConnectRequestStatus(user, to, ConnectionStatus.Ignored);
 			}
@@ -747,31 +763,44 @@ public final class BackendAPIWrappers {
 
 	public static JSONArray getConversations(ClientUser user) throws Exception {
 		user = tryLoginByUser(user);
+		final JSONArray result = new JSONArray();
+		String startId = null;
 		JSONObject conversationsInfo = null;
-		int tryNum = 0;
-		while (tryNum < MAX_BACKEND_RETRIES) {
-			try {
-				conversationsInfo = BackendREST
-						.getConversationsInfo(generateAuthToken(user));
-				break;
-			} catch (BackendRequestException e) {
-				if (e.getReturnCode() == SERVER_SIDE_ERROR) {
-					log.debug(String
-							.format("Server side request failed. Retrying (%d of %d)...",
-									tryNum + 1, MAX_BACKEND_RETRIES));
-					e.printStackTrace();
-					tryNum++;
-					if (tryNum >= MAX_BACKEND_RETRIES) {
-						throw e;
+		do {
+			int tryNum = 0;
+			while (tryNum < MAX_BACKEND_RETRIES) {
+				try {
+					conversationsInfo = BackendREST.getConversationsInfo(
+							generateAuthToken(user), startId);
+					break;
+				} catch (BackendRequestException e) {
+					if (e.getReturnCode() == SERVER_SIDE_ERROR) {
+						log.debug(String
+								.format("Server side request failed. Retrying (%d of %d)...",
+										tryNum + 1, MAX_BACKEND_RETRIES));
+						e.printStackTrace();
+						tryNum++;
+						if (tryNum >= MAX_BACKEND_RETRIES) {
+							throw e;
+						} else {
+							Thread.sleep((tryNum + 1) * 2000);
+						}
 					} else {
-						Thread.sleep((tryNum + 1) * 2000);
+						throw e;
 					}
-				} else {
-					throw e;
 				}
 			}
-		}
-		return conversationsInfo.getJSONArray("conversations");
+			final JSONArray response = conversationsInfo
+					.getJSONArray("conversations");
+			for (int i = 0; i < response.length(); i++) {
+				result.put(response.getJSONObject(i));
+			}
+			if (response.length() > 0) {
+				startId = response.getJSONObject(response.length() - 1)
+						.getString("id");
+			}
+		} while (conversationsInfo.getBoolean("has_more"));
+		return result;
 	}
 
 	private static JSONArray getEventsfromConversation(String convId,
