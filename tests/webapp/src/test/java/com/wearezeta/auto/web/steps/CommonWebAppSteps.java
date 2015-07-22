@@ -183,6 +183,10 @@ public class CommonWebAppSteps {
 				} else {
 					lazyWebDriver.manage().window().maximize();
 				}
+				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+					WebCommonUtils.clearHistoryInSafari(lazyWebDriver
+							.getNodeIp());
+				}
 				return lazyWebDriver;
 			}
 		};
@@ -909,21 +913,4 @@ public class CommonWebAppSteps {
 				.openSignInPage();
 	}
 
-	/**
-	 * Workaround: cleanSession capability of Safari does not delete cookies
-	 * that cannot be deleted by JS, so we added a workaround to logout from
-	 * google
-	 * 
-	 * @step. ^I sign out from Google if necessary$
-	 * 
-	 * @throws Exception
-	 */
-	@Given("^I sign out from Google if necessary$")
-	public void ISignOutFromGoogleIfNecessary() throws Exception {
-		// cleanSession capability of Safari does not delete cookies that cannot
-		// be deleted by JS, so we added a workaround to logout from google
-		if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
-			PagesCollection.registrationPage.signOutFromGoogle();
-		}
-	}
 }
