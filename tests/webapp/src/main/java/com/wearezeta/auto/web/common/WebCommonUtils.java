@@ -62,6 +62,9 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void putFileOnExecutionNode(String node, String srcPath,
 			String dstPath) throws Exception {
+		File file = new File(sshKeyPath);
+		file.setReadable(true, true);
+		file.setWritable(true, true);
 		String commandTemplate = "scp -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s %s@%s:%s";
 		String command = String.format(commandTemplate, sshKeyPath, srcPath,
@@ -72,6 +75,9 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void executeCommandOnNode(String node, String cmd)
 			throws Exception {
+		File file = new File(sshKeyPath);
+		file.setReadable(true, true);
+		file.setWritable(true, true);
 		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s %s";
 		String command = String.format(commandTemplate, sshKeyPath,
@@ -82,6 +88,9 @@ public class WebCommonUtils extends CommonUtils {
 
 	public static void executeAppleScriptFileOnNode(String node,
 			String scriptPath) throws Exception {
+		File file = new File(sshKeyPath);
+		file.setReadable(true, true);
+		file.setWritable(true, true);
 		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s osascript %s";
 		String command = String.format(commandTemplate, sshKeyPath,
