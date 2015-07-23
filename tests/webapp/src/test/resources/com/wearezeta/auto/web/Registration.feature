@@ -130,7 +130,8 @@ Feature: Registration
     And I open Sign In page
     When I see Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see email <Email> on Verification page
+    Then I verify that an envelope icon is shown
+    And I see email <Email> on Verification page
 
     Examples: 
       | Email      | Password      | Name      |
