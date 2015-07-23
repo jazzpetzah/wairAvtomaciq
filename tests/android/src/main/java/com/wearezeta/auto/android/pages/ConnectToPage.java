@@ -127,6 +127,8 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public boolean isIgnoreConnectButtonVisible() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				connectIgnoreBtn, 3);
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				connectIgnoreBtn)
 				&& DriverUtils.isElementPresentAndDisplayed(getDriver(),

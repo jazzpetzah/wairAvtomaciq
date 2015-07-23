@@ -67,7 +67,7 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.namePlusButton)
 	protected WebElement plusButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
 	protected WebElement openConversationDetails;
 
@@ -97,7 +97,7 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCallButton)
 	private WebElement callButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCloseButton)
 	private WebElement closeButton;
 
@@ -315,7 +315,6 @@ public class DialogPage extends IOSPage {
 					IOSLocators.xpathLastMessageFormat, messagesList.size());
 			WebElement el = this.getDriver().findElementByXPath(
 					lastMessageXPath);
-			int y = el.getLocation().y + 2 * el.getSize().height;
 			this.getDriver().tap(1, el.getLocation().x + 30,
 					el.getLocation().y + 2 * el.getSize().height, 1);
 		}
@@ -946,6 +945,14 @@ public class DialogPage extends IOSPage {
 
 	public void openGifPreviewPage() {
 		openGifPreviewButton.click();
+	}
+
+	public boolean isMyNameInDialogDisplayed(String name) throws Exception {
+		WebElement el = getDriver().findElement(
+				By.xpath(String.format(
+						IOSLocators.DialogPage.xpathMyNameInDialog,
+						name.toUpperCase())));
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), el);
 	}
 
 }

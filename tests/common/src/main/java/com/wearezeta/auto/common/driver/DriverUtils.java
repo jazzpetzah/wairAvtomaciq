@@ -195,11 +195,11 @@ public class DriverUtils {
 	}
 
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
-			final WebElement element, int timeout) throws Exception {
+			final WebElement element, int timeoutSeconds) throws Exception {
 		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(timeout, TimeUnit.SECONDS)
+					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class)
 					.ignoring(StaleElementReferenceException.class);

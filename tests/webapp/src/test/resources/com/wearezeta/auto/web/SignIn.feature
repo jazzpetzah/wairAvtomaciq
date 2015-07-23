@@ -83,7 +83,6 @@ Feature: Sign In
   @staging @id2227
   Scenario Outline: Show invitation button when Gmail import on registration has no suggestions
     Given There is 1 user where <Name> is me
-    Given I sign out from Google if necessary
     Given I switch to sign in page
     Given I see Sign In page
     When I enter email <Email>

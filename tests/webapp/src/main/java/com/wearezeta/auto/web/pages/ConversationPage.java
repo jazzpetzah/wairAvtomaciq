@@ -98,10 +98,6 @@ public class ConversationPage extends WebPage {
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
-		// verify conversation page is loaded by presence of the message list
-		// Xtra timeout time for safari
-		assert DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.id(WebAppLocators.ConversationPage.idMessageList), 10);
 	}
 
 	public void writeNewMessage(String message) throws Exception {
