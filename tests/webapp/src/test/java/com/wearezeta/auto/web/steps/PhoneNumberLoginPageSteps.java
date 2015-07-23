@@ -59,9 +59,10 @@ public class PhoneNumberLoginPageSteps {
 	 * 
 	 * @param code
 	 *            country code (for e.g. +49)
+	 * @throws Exception 
 	 */
 	@When("^I enter country code (.*) on phone number sign in$")
-	public void ISelectCountryCode(String code) {
+	public void ISelectCountryCode(String code) throws Exception {
 		PagesCollection.phoneNumberLoginPage.enterCountryCode(code);
 	}
 
