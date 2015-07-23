@@ -4,16 +4,12 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.json.JSONObject;
 
 public class AndroidPerformanceHelpers {
 
-	public static void storeWidgetDataAsJSON(final String widgetId,
+	public static void storeWidgetDataAsJSON(
 			final AndroidPerfReportModel model, final String path)
 			throws IOException {
-		final JSONObject result = new JSONObject();
-		result.put("widgetId", widgetId);
-		result.put("model", model.asJSON());
-		FileUtils.writeStringToFile(new File(path), result.toString(4));
+		FileUtils.writeStringToFile(new File(path), model.asJSON().toString(4));
 	}
 }

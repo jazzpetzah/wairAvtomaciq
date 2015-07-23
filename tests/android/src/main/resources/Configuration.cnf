@@ -14,5 +14,4 @@ defaultEmail=${defaultEmail}
 androidAddressBookMailAccount=${androidAddressBookMailAccount}
 androidVersion=${androidVersion}
 perfReportPath=${perfReportPath}
-perfGeckoboardWidgetId=${perfGeckoboardWidgetId}
 backendType=${backendType}
