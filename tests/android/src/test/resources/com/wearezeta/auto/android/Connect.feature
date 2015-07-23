@@ -94,8 +94,10 @@ Feature: Connect
 
   @id544 @regression
   Scenario Outline: I accept someone from people picker and -1 from inbox as well
-    Given There are 3 users where <Name> is me
+    Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to <Name>
+    Given <Contact3> sent connection request to <Name>
+    Given <Contact4> sent connection request to <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     Given <Contact2> sent connection request to <Name>
@@ -106,7 +108,8 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I enter "<Contact2>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact2>
-    And I swipe up on connect page
+    And I see Accept and Ignore buttons
+    And I scroll to inbox contact <Contact2>
     And I see connect to <Contact2> dialog
     And I Connect with contact by pressing button
     And I wait for 5 seconds
@@ -114,8 +117,8 @@ Feature: Connect
     And I see contact list with name <WaitingMess2>
 
     Examples: 
-      | Name      | Contact1  | WaitingMess2     | Contact2  | WaitingMess1     |
-      | user1Name | user2Name | 1 person waiting | user3Name | 2 people waiting |
+      | Name      | Contact1  | WaitingMess2      | Contact2  | WaitingMess1     | Contact3  | Contact4  |
+      | user1Name | user2Name | 2 people waiting  | user3Name | 3 people waiting | user3Name | user4Name |
 
   @id540 @regression
   Scenario Outline: I can ignore a connect request and reconnect later
@@ -322,29 +325,30 @@ Feature: Connect
 
   @id676 @regression
   Scenario Outline: I want to block a person from 1:1 conversation
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>
+    Given <Contact2> is connected to <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I tap on contact name <Contact>
+    When I tap on contact name <Contact1>
     And I see dialog page
     And I tap conversation details button
     And I press options menu button
     And I Press Block button
     And I confirm block
-    Then I do not see contact list with name <Contact>
-    And I wait until <Contact> exists in backend search results
+    Then I do not see contact list with name <Contact1>
+    And I wait until <Contact1> exists in backend search results
     And I press Open StartUI
     And I see People picker page
     And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    And I see user <Contact> found on People picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    And I see user <Contact1> found on People picker page
     And I tap on user name found on People picker page <Contact>
     Then User info should be shown with Block button
 
     Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id680 @regression
   Scenario Outline: I want to see user has been blocked within the Start UI

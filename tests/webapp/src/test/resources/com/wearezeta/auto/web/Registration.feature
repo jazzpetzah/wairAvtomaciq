@@ -108,7 +108,6 @@ Feature: Registration
   @regression @id2229
   Scenario: Use Gmail contacts import on registration
     Given There is 1 user where user1Name is me without avatar picture
-    Given I sign out from Google if necessary
     Given I switch to Sign In page
     Given I Sign in using login user1Email and password user1Password
     Given I see Self Picture Upload dialog
@@ -131,7 +130,8 @@ Feature: Registration
     And I open Sign In page
     When I see Sign In page
     When I Sign in using login <Email> and password <Password>
-    Then I see email <Email> on Verification page
+    Then I verify that an envelope icon is shown
+    And I see email <Email> on Verification page
 
     Examples: 
       | Email      | Password      | Name      |

@@ -94,7 +94,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @staging @id3009
+  @regression @id3009
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -120,7 +120,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @staging @id2610
+  @regression @id2610
   Scenario Outline: Send connection request to unconnected participant in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -140,7 +140,7 @@ Feature: Connect
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
-  @staging @id3011
+  @regression @id3011
   Scenario Outline: Send connection request to unconnected participant in a group chat [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -160,7 +160,7 @@ Feature: Connect
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
-  @staging @id2330
+  @regression @id2330
   Scenario Outline: Verify transitions between connection requests (ignoring) [PORTRAIT]
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -200,7 +200,7 @@ Feature: Connect
     And I see Pending request link in contact list
     And I click on Pending request link in contact list
     And I see Pending request page
-    And I click on Connect button on Pending requests page <SentRequests> times
+    And I click on Ignore button on Pending requests page <SentRequests> times
     And I dont see Pending request link in contact list
     And I don't see conversation with not connected user <Contact1>
     And I wait until <Contact1> exists in backend search results
@@ -214,7 +214,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @staging @id2329
+  @regression @id2329
   Scenario Outline: Verify transitions between connection requests (accepting) [PORTRAIT]
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -237,7 +237,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @staging @id3013
+  @regression @id3013
   Scenario Outline: Verify transitions between connection requests (accepting) [LANDSCAPE]
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -260,7 +260,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @staging @id2359
+  @regression @id2359
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search) [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -281,7 +281,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id3014
+  @regression @id3014
   Scenario Outline: Verify impossibility of starting 1:1 conversation with pending  user (Search) [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -304,7 +304,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @id2341
+  @regression @id2341
   Scenario Outline: Verify you don't receive any messages from blocked person in 1to1 chat [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -337,7 +337,7 @@ Feature: Connect
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @staging @id3015
+  @regression @id3015
   Scenario Outline: Verify you don't receive any messages from blocked person in 1to1 chat [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -369,7 +369,7 @@ Feature: Connect
       | Name      | Contact   | Picture     |
       | user1Name | user2Name | testing.jpg |
 
-  @staging @id2436
+  @regression @id2436
   Scenario Outline: Verify you cannot send the invitation message twice [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given I Sign in on tablet using my email
@@ -398,7 +398,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @staging @id3016
+  @regression @id3016
   Scenario Outline: Verify you cannot send the invitation message twice [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -484,6 +484,7 @@ Feature: Connect
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
     And I dismiss alert
+    And I see Contact list with my name <Name>
     And I open search by taping on it
     And I see Upload contacts dialog
     And I click Continue button on Upload dialog

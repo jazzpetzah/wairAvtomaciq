@@ -105,6 +105,12 @@ public class PeoplePickerPage extends IOSPage {
 	public void clickNotNowButton() {
 		notNowButton.click();
 	}
+	
+	public void closeShareContactsIfVisible() throws Exception {
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), notNowButton)) {
+			clickNotNowButton();
+		}
+	}
 
 	public void clickLaterButton() throws Exception {
 		for (int i = 0; i < 3; i++) {

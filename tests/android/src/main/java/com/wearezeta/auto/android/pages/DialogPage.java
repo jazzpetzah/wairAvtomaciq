@@ -201,6 +201,8 @@ public class DialogPage extends AndroidPage {
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 	private final String DIALOG_IMAGE = "android_dialog_sendpicture_result.png";
 	private static final int DEFAULT_SWIPE_TIME = 500;
+	private static final int MAX_SWIPE_RETRIES = 5;
+	private static final int MAX_CLICK_RETRIES = 5;
 
 	public DialogPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -235,8 +237,6 @@ public class DialogPage extends AndroidPage {
 		DriverUtils.androidMultiTap(this.getDriver(), cursorArea, 2, 500);
 	}
 
-	private static final int MAX_CURSOR_SWIPE_TRIES = 5;
-
 	public void swipeOnCursorInput() throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorArea));
 		final By cursorLocator = By.id(idCursorArea);
@@ -252,16 +252,16 @@ public class DialogPage extends AndroidPage {
 			}
 			log.debug(String.format(
 					"Failed to swipe the text cursor. Retrying (%s of %s)...",
-					ntry, MAX_CURSOR_SWIPE_TRIES));
+					ntry, MAX_SWIPE_RETRIES));
 			ntry++;
 			tapOnTextInputIfVisible();
 			this.hideKeyboard();
 			Thread.sleep(1000);
-		} while (ntry <= MAX_CURSOR_SWIPE_TRIES);
+		} while (ntry <= MAX_SWIPE_RETRIES);
 		throw new RuntimeException(
 				String.format(
 						"Failed to swipe the text cursor on input field after %s retries!",
-						MAX_CURSOR_SWIPE_TRIES));
+						MAX_SWIPE_RETRIES));
 	}
 
 	public void tapAddPictureBtn() throws Exception {
@@ -377,7 +377,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void pressKeyboardSendButton() throws Exception {
-		tapByCoordinates(94, 95);
+		tapByCoordinates(94, 96);
 	}
 
 	public void clickLastImageFromDialog() {
@@ -418,15 +418,14 @@ public class DialogPage extends AndroidPage {
 
 	public void waitForMessage(String text) throws Exception {
 		final By locator = By.xpath(xpathConversationMessageByText.apply(text));
-		final int maxTries = 5;
 		int ntry = 0;
 		do {
 			ntry++;
 			this.swipeByCoordinates(DEFAULT_SWIPE_TIME, 50, 70, 50, 50);
-		} while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
-				MSG_DELIVERY_TIMEOUT_SECONDS) && ntry < maxTries);
+		} while (!DriverUtils.waitUntilLocatorAppears(getDriver(), locator,
+				MSG_DELIVERY_TIMEOUT_SECONDS) && ntry <= MAX_SWIPE_RETRIES);
 
-		if (ntry >= maxTries) {
+		if (ntry > MAX_SWIPE_RETRIES) {
 			throw new RuntimeException(
 					String.format(
 							"Message '%s' has not been displayed after '%s' seconds timeout",
@@ -447,6 +446,8 @@ public class DialogPage extends AndroidPage {
 	public void confirm() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), okButton);
 		okButton.click();
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(xpathConfirmOKButton));
 	}
 
 	public void takePhoto() throws Exception {
@@ -762,7 +763,6 @@ public class DialogPage extends AndroidPage {
 	}
 
 	private static final double MAX_BUTTON_STATE_OVERLAP = 0.5;
-	private static final int MAX_CLICK_RETRIES = 5;
 
 	public void tapPlayPauseBtn() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), playPauseBtn);
@@ -881,13 +881,13 @@ public class DialogPage extends AndroidPage {
 			}
 			log.debug(String
 					.format("Failed to swipe left the text cursor. Retrying (%s of %s)...",
-							ntry, MAX_CURSOR_SWIPE_TRIES));
+							ntry, MAX_SWIPE_RETRIES));
 			ntry++;
 			Thread.sleep(1000);
-		} while (ntry <= MAX_CURSOR_SWIPE_TRIES);
+		} while (ntry <= MAX_SWIPE_RETRIES);
 		throw new RuntimeException(
 				String.format(
 						"Failed to swipe left the text cursor on input field after %s retries!",
-						MAX_CURSOR_SWIPE_TRIES));
+						MAX_SWIPE_RETRIES));
 	}
 }
