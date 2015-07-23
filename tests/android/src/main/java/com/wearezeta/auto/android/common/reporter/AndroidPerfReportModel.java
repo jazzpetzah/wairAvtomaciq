@@ -91,7 +91,7 @@ public class AndroidPerfReportModel extends PerfReportModel {
 		// this.addConvoStartupTime(timeMillis);
 		// }
 		final Random rand = new Random();
-		this.setAppStartupTimeMillis(10000 + rand.nextInt(30000));
+		this.setAppStartupTime(10000 + rand.nextInt(30000));
 		this.setSignInTime(20000 + rand.nextInt(30000));
 		this.clearConvoStartupTimes();
 		this.addConvoStartupTime(20000);

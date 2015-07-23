@@ -10,10 +10,13 @@ import org.json.JSONObject;
 public abstract class PerfReportModel {
 	private static final String UNKNOWN_VALUE = "Unknown";
 
+	/**
+	 * All times are in milliseconds
+	 */
 	private String deviceName = UNKNOWN_VALUE;
 	private String deviceOSVersion = UNKNOWN_VALUE;
 	private NetworkType networkType;
-	private long appStartupTimeMillis;
+	private long appStartupTime;
 	private int contactsCount;
 	private String buildNumber = UNKNOWN_VALUE;
 	private long signInTime;
@@ -59,12 +62,12 @@ public abstract class PerfReportModel {
 		this.networkType = networkType;
 	}
 
-	public long getAppStartupTimeMillis() {
-		return appStartupTimeMillis;
+	public long getAppStartupTime() {
+		return appStartupTime;
 	}
 
-	protected void setAppStartupTimeMillis(long appStartupTimeMillis) {
-		this.appStartupTimeMillis = appStartupTimeMillis;
+	protected void setAppStartupTime(long appStartupTime) {
+		this.appStartupTime = appStartupTime;
 	}
 
 	public int getContactsCount() {
@@ -128,7 +131,7 @@ public abstract class PerfReportModel {
 		result.put("deviceName", this.getDeviceName());
 		result.put("deviceOSVersion", this.getDeviceOSVersion());
 		result.put("networkType", this.getNetworkType().toString());
-		result.put("appStartupTimeMillis", this.getAppStartupTimeMillis());
+		result.put("appStartupTime", this.getAppStartupTime());
 		result.put("contactsCount", this.getContactsCount());
 		result.put("buildNumber", this.getBuildNumber());
 		result.put("signInTime", this.getSignInTime());
@@ -142,7 +145,7 @@ public abstract class PerfReportModel {
 		this.setDeviceOSVersion(jsonObj.getString("deviceOSVersion"));
 		this.setNetworkType(NetworkType.fromString(jsonObj
 				.getString("networkType")));
-		this.setAppStartupTimeMillis(jsonObj.getLong("appStartupTimeMillis"));
+		this.setAppStartupTime(jsonObj.getLong("appStartupTime"));
 		this.setContactsCount(jsonObj.getInt("contactsCount"));
 		this.setBuildNumber(jsonObj.getString("buildNumber"));
 		this.setSignInTime(jsonObj.getLong("signInTime"));
