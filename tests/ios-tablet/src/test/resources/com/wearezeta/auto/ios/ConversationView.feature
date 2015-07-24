@@ -15,7 +15,7 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-      
+
   @regression @id2375
   Scenario Outline: Vefiry sending message [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -63,8 +63,8 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-      
-  @regression @id2413 @deployPictures 
+
+  @regression @id2413 @deployPictures
   Scenario Outline: Verify sending image [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -82,8 +82,8 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-      
-  @regression @id2407 @deployPictures 
+
+  @regression @id2407 @deployPictures
   Scenario Outline: Verify sending image [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -207,8 +207,8 @@ Feature: Conversation View
     Then I see new photo in the dialog
 
     Examples: 
-      | Name      | Contact   | Picture | ConversationType | 
-      | user1Name | user2Name | testing.jpg | single user | 
+      | Name      | Contact   | Picture     | ConversationType |
+      | user1Name | user2Name | testing.jpg | single user      |
 
   @regression @id2670 @deployPictures
   Scenario Outline: Receive a camera roll picture from user from contact list [LANDSCAPE]
@@ -223,8 +223,8 @@ Feature: Conversation View
     Then I see new photo in the dialog
 
     Examples: 
-      | Name      | Contact   | Picture | ConversationType | 
-      | user1Name | user2Name | testing.jpg | single user | 
+      | Name      | Contact   | Picture     | ConversationType |
+      | user1Name | user2Name | testing.jpg | single user      |
 
   @regression @id2736
   Scenario Outline: Send Message to contact after navigating away from chat page [PORTRAIT]
@@ -387,7 +387,7 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   | Text       |
       | user1Email | user1Password | user1Name | user2Name | TextToCopy |
-      
+
   @regression @id2745
   Scenario Outline: Copy and paste to send the message [LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -479,9 +479,9 @@ Feature: Conversation View
 
     Examples: 
       | Name      | Contact   | YouTubeLink                                 |
-      | user1Name | user2Name | https://www.youtube.com/watch?v=gywGBuMUiI4 | 
+      | user1Name | user2Name | https://www.youtube.com/watch?v=gywGBuMUiI4 |
 
-  @regression @id2403 
+  @regression @id2403
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -521,8 +521,8 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-    @regression @id2978
-    Scenario Outline: Verify I can send gif from preview [PORTRAIT]
+  @regression @id2978
+  Scenario Outline: Verify I can send gif from preview [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -537,11 +537,11 @@ Feature: Conversation View
     Then I see new photo in the dialog
 
     Examples: 
-      | Name      | Contact   |  GiphyTag    |
-      | user1Name | user2Name |  Happy       |
-      
-    @regression @id2979
-    Scenario Outline: Verify I can send gif from preview [LANDSCAPE]
+      | Name      | Contact   | GiphyTag |
+      | user1Name | user2Name | Happy    |
+
+  @regression @id2979
+  Scenario Outline: Verify I can send gif from preview [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
@@ -557,9 +557,9 @@ Feature: Conversation View
     Then I see new photo in the dialog
 
     Examples: 
-      | Name      | Contact   |  GiphyTag    |
-      | user1Name | user2Name |  Happy       |
-      
+      | Name      | Contact   | GiphyTag |
+      | user1Name | user2Name | Happy    |
+
   @staging @id2987
   Scenario Outline: I can send a sketch[PORTRAIT]
     Given There are 2 users where <Name> is me
@@ -577,7 +577,7 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
-      
+
   @staging @id2988
   Scenario Outline: I can send a sketch[LANDSCAPE]
     Given There are 2 users where <Name> is me
@@ -596,3 +596,71 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @staging @id2420
+  Scenario Outline: Verify sending ping in 1-to-1 conversation [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I click Ping button
+    Then I see You Pinged message in the dialog
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3193
+  Scenario Outline: Verify sending ping in 1-to-1 conversation [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I click Ping button
+    Then I see You Pinged message in the dialog
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3194
+  Scenario Outline: Send message to group chat [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I type the message
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | SimpleGroup   |
+
+  @staging @id3195
+  Scenario Outline: Send message to group chat [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I type the message
+    And I send the message
+    Then I see message in the dialog
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | SimpleGroup   |
