@@ -83,16 +83,4 @@ public class TabletOtherUserInfoPageSteps {
 				participantEmailTextFieldValue.equalsIgnoreCase(email));
 	}
 
-	/**
-	 * Clicks the start 1:1 dialog button from the other user page in a group
-	 * 
-	 * @step. ^I tap on other users start dialog button on iPad popover$
-	 * @throws Throwable
-	 */
-	@When("^I tap on other users start dialog button on iPad popover$")
-	public void ITapOnOtherUsersStartDialogButtonOniPadPopover()
-			throws Throwable {
-		getTabletOtherUserInfoPage().clickStartDialogButtonOniPadPopover();
-	}
-
 }

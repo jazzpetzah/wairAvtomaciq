@@ -51,9 +51,5 @@ public class TabletOtherUserInfoPage extends OtherUserPersonalInfoPage{
 		}
 		return result;
 	}
-	
-	public void clickStartDialogButtonOniPadPopover() throws Exception{
-		startDialogiPadButton.click();
-	}
 
 }
