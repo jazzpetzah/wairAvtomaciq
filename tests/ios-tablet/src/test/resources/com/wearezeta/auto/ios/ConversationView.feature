@@ -664,3 +664,57 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SimpleGroup   |
+
+  @staging @id3196
+  Scenario Outline: Play/pause SoundCloud media link from the media bar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> sent long message to conversation <Contact>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I pause playing the media in media bar
+    Then I see playing media is paused
+    And I press play in media bar
+    Then I see media is playing
+    And I stop media in media bar
+    Then The media stops playing
+
+    Examples: 
+      | Name      | Contact   | SoundCloudLink                                                                       |
+      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+
+  @staging @id3197
+  Scenario Outline: Play/pause SoundCloud media link from the media bar
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> sent long message to conversation <Contact>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I tap on text input
+    And I tap on contact name <Contact>
+    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I pause playing the media in media bar
+    Then I see playing media is paused
+    And I press play in media bar
+    Then I see media is playing
+    And I stop media in media bar
+    Then The media stops playing
+
+    Examples: 
+      | Name      | Contact   | SoundCloudLink                                                                       |
+      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
