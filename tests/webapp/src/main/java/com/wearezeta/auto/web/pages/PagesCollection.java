@@ -53,5 +53,7 @@ public class PagesCollection extends AbstractPagesCollection {
 
 	public static PhoneNumberVerificationPage phoneNumberVerificationPage = null;
 
+	public static AddEmailAddressPage addEmailAddressPage = null;
+
 	public static GiphyPage giphyPage = null;
 }
