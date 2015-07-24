@@ -360,6 +360,28 @@ public class CommonWebAppSteps {
 	}
 
 	/**
+	 * Creates specified number of users and sets user with specified name as
+	 * main user. The user is registered with a phone number only and has no
+	 * email address attached
+	 * 
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with phone number
+	 *        only$
+	 * 
+	 * @param count
+	 *            number of users to create
+	 * @param myNameAlias
+	 *            user name or name alias to use as main user
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
+	public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
+			String myNameAlias) throws Exception {
+		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
+				CURRENT_PLATFORM, count, myNameAlias);
+	}
+
+	/**
 	 * Set avatar picture for a particular user
 	 * 
 	 * @step. ^User (\\w+) changes? avatar picture to (.*)

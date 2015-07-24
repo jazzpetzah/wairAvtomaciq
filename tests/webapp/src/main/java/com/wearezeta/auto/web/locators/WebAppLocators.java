@@ -428,6 +428,14 @@ public final class WebAppLocators {
 		public static final String cssErrorMessage = "#form-login-phone-code [data-uie-name='status-error']";
 	}
 
+	public static final class AddEmailAddressPage {
+		public static final String cssErrorMessage = "#form-login-phone-mail [data-uie-name='status-error']";
+
+		public static final String cssRedDotOnEmailField = ".auth-page .has-error .form-control #wire-mail-email";
+
+		public static final String cssRedDotOnPasswordField = ".auth-page .has-error .form-control #wire-mail-password";
+	}
+
 	public static final class PhoneNumberLoginPage {
 		public static final String cssErrorMessage = "#form-login-phone [data-uie-name='status-error']";
 	}
