@@ -35,6 +35,7 @@ public class AddEmailAddressPage extends WebPage {
 	}
 
 	public void setEmail(String email) throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), emailField);
 		emailField.click();
 		emailField.clear();
 		emailField.sendKeys(email);
