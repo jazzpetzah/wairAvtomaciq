@@ -92,6 +92,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
+    And I return to the chat list
+    And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -117,6 +119,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
+    And I return to the chat list
+    And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -138,6 +142,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
+    And I return to the chat list
+    And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -160,6 +166,8 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input
+    And I return to the chat list
+    And I tap on contact name <Contact1>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -406,9 +414,11 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input
+    And I return to the chat list
+    And I tap on contact name <Contact1>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I see play/pause button next to username <Contact1> in contact list
     And I tap play/pause button in contact list next to username <Contact1>
     And I tap on contact name <Contact2>
