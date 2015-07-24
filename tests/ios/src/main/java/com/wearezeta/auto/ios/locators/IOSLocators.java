@@ -62,7 +62,9 @@ public final class IOSLocators {
 	
 	public static final String nameTextInput = "ComposeControllerTextView";
 	
-	public static final String nameOpenConversationDetails = "conversationDetailButton";
+	public static final String namePlusButton = "plusButton";
+	
+	public static final String nameOpenConversationDetails = "ComposeControllerConversationDetailButton";
 	
 	public static final String xpathPinged = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAStaticText[contains(@name, 'PINGED')]";
 	
@@ -238,7 +240,7 @@ public final class IOSLocators {
 
 	public static final String nameProfileName = "ProfileSelfNameField";
 	
-	public static final String xpathProfileNameEditField = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAElement[1]/UIATextView[1]";
+	public static final String xpathProfileNameEditField = "//UIAElement[@name='ProfileSelfNameField']/UIATextView";
 	
 	public static final String nameSelfNameTooShortError = "AT LEAST 2 CHARACTERS ";
 	
@@ -248,13 +250,13 @@ public final class IOSLocators {
 	
 	public static final String xpathOptionsSettingsButton = "//UIAButton[@name='SETTINGS' or @name='Settings']";
 	
-	public static final String xpathSettingsPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]";
+	public static final String xpathSettingsPage = "//UIANavigationBar[@name='Settings']";
 	
 	public static final String nameSoundAlertsButton = "Alerts";
 	
-	public static final String xpathSoundAlertsPage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIANavigationBar[1]/UIAImage[1]";
+	public static final String xpathSoundAlertsPage = "//UIANavigationBar[@name='Alerts']";;
 	
-	public static final String xpathAllSoundAlertsButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]";
+	public static final String xpathAllSoundAlertsButton = "//UIATableCell[@name='All']";
 	
 	public static final String nameSettingsChangePasswordButton = "Change Password";
 	
@@ -262,15 +264,17 @@ public final class IOSLocators {
 	
 	public static final String nameOptionsHelpButton = "HELP";
 	
-	public static final String xpathSettingsHelpHeader = "//UIAApplication[@name='Safari']/UIAWindow[2]/UIAScrollView[1]/UIAScrollView[1]/UIAWebView[1]/UIALink[@name='Support']";
+	public static final String xpathSettingsHelpHeader = "//UIAWebView/UIAStaticText[@name='Support']";
 	
-	public static final String xpathSettingsChatheadSwitch = "//UIAApplication[1]/UIAWindow[2]/UIATableView[1]/UIATableCell[1]/UIASwitch[@name='Message previews']";
+	public static final String xpathSettingsChatheadSwitch = "//UIASwitch[@name='Message previews']";
 	
 	public static final String nameSettingsBackButton = "Back";
 	
 	public static final String nameSettingsDoneButton = "Done";
 
 	public static final String xpathAboutPageWireLogo = "//UIAApplication[1]/UIAWindow[2]/UIAImage[1]";
+	
+	public static final String nameAboutCloseButton = "";
 	
 	public static final String nameWireWebsiteButton = "wire.com";
 	
@@ -294,7 +298,7 @@ public final class IOSLocators {
 	
 	public static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
 	
-	public static final String nameOtherProfilePagePendingLabel = "PENDING";
+	public static final String nameOtherProfilePagePendingLabel = "CANCEL REQUEST";
 	
 	public static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
 	
@@ -582,6 +586,10 @@ public final class IOSLocators {
 		
 		public static final String nameSoundCloudContainer = "Play on SoundCloud";
 		
+		public static final String nameCloseButton = "closeButton";
+		
+		public static final String xpathMyNameInDialog = "//UIAStaticText[@name='%s'][last()]";
+		
 	}
 	
 	public final class DialogInfoPage {
@@ -612,6 +620,7 @@ public final class IOSLocators {
 		public static final String namePhoneLoginButton = "PHONE SIGN IN";
 		public static final String nameBackButton = "BackToWelcomeButton";
 		public static final String nameEmailLoginButton = "EMAIL SIGN IN";
+		public static final String nameMaybeLater = "MAYBE LATER";
 	}
 	
 	public final class PeoplePickerPage {

@@ -11,7 +11,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
@@ -44,11 +43,11 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	private static final Logger log = ZetaLogger.getLog(ZetaAndroidDriver.class
 			.getSimpleName());
 	public static final String ADB_PREFIX = "";
-	// public static final String ADB_PREFIX =
 	// "/Applications/android-sdk/platform-tools/";
 
 	private SessionHelper sessionHelper;
 	private RemoteTouchScreen touch;
+	private String androidOSVersion;
 
 	private enum SurfaceOrientation {
 		ROTATION_0(0), ROTATION_90(1), ROTATION_180(2), ROTATION_270(3);
@@ -78,6 +77,11 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		super(remoteAddress, desiredCapabilities);
 		this.touch = new RemoteTouchScreen(getExecuteMethod());
 		sessionHelper = new SessionHelper(this);
+		try {
+			androidOSVersion = getAndroidOSVersionString();
+		} catch (Exception e) {
+			Throwables.propagate(e);
+		}
 	}
 
 	@Override
@@ -105,20 +109,51 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		return this.sessionHelper.isSessionLost();
 	}
 
+	private static int getNextCoord(double startC, double endC, double current,
+			double duration) {
+		return (int) Math.round(startC + (endC - startC) / duration * current);
+	}
+
+	private final static int SWIPE_STEP_DURATION_MILLISECONDS = 40;
+
+	private void swipeViaTouchActions(int startx, int starty, int endx,
+			int endy, int durationMilliseconds) {
+		int duration = 1;
+		if (durationMilliseconds > SWIPE_STEP_DURATION_MILLISECONDS) {
+			duration = (durationMilliseconds % SWIPE_STEP_DURATION_MILLISECONDS == 0) ? (durationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS)
+					: (durationMilliseconds / SWIPE_STEP_DURATION_MILLISECONDS + 1);
+		}
+		int current = 1;
+		final TouchActions ta = new TouchActions(this);
+		ta.down(startx, starty).perform();
+		do {
+			try {
+				Thread.sleep(SWIPE_STEP_DURATION_MILLISECONDS);
+			} catch (InterruptedException e) {
+				Throwables.propagate(e);
+			}
+			ta.move(getNextCoord(startx, endx, current, duration),
+					getNextCoord(starty, endy, current, duration)).perform();
+			current++;
+		} while (current <= duration);
+		ta.up(endx, endy).perform();
+	}
+
 	@Override
 	public void swipe(int startx, int starty, int endx, int endy,
 			int durationMilliseconds) {
-		String adbCommand = ADB_PREFIX
-				+ "adb shell input touchscreen swipe %d %d %d %d";
-
-		if (lowerThanFourDotThree()) {
-			adbCommand = String.format(adbCommand, startx, starty, endx, endy);
-		} else {
-			adbCommand = String.format(adbCommand + " %d", startx, starty,
-					endx, endy, durationMilliseconds);
+		if (androidOSVersion.compareTo("4.3") < 0) {
+			// adb swipe command under 4.2 does not support duration parameter
+			// and this fucks up all the tests
+			swipeViaTouchActions(startx, starty, endx, endy,
+					durationMilliseconds);
+			return;
 		}
-		log.debug("ADB swipe: " + adbCommand);
 
+		final String adbCommand = String.format(ADB_PREFIX
+				+ "adb shell input touchscreen swipe %d %d %d %d %d", startx,
+				starty, endx, endy, durationMilliseconds);
+		log.debug("ADB swipe: " + adbCommand);
 		try {
 			Runtime.getRuntime()
 					.exec(new String[] { "/bin/bash", "-c", adbCommand })
@@ -128,62 +163,8 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		}
 	}
 
-	/*
-	 * Checks to see that the android version is less than 4.3
-	 */
-	public static boolean lowerThanFourDotThree() {
-		Scanner s;
-		String result = "";
-		try {
-			s = new java.util.Scanner(Runtime
-					.getRuntime()
-					.exec(ADB_PREFIX
-							+ "adb shell getprop ro.build.version.release")
-					.getInputStream()).useDelimiter("\\A");
-			result = s.hasNext() ? s.next() : "";
-			log.debug("Detected Android: " + result);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		if (result.compareTo("4.3") < 0) {
-			// comparing lexicographically, 4.2.2 < 4.3 for example
-			getScreenEvent42();
-			return true;
-		}
-		return false;
-	}
-
-	/*
-	 * Detects touchscreen event to use it in swipe for 4.2
-	 */
-	public static String getScreenEvent42() {
-		Scanner s;
-		String result = null;
-		String adbCommand = ADB_PREFIX + "adb shell getevent -p";
-		try {
-			s = new java.util.Scanner(Runtime.getRuntime()
-					.exec(new String[] { "/bin/bash", "-c", adbCommand })
-					.getInputStream()).useDelimiter("0036").useDelimiter(
-					"add device [0-9]+: ");
-			do {
-				result = s.hasNext() ? s.next() : "";
-			} while (!result.contains("0035"));
-			if (result.contains("0035")) {
-				result = result.split("\n")[0];
-			}
-			log.debug("Detected screen event: " + result);
-		} catch (Exception e) {
-			new Exception(e.getMessage(), e);
-		}
-		// Debugging swipe event on 42
-		adbCommand = ADB_PREFIX + "adb shell getevent -p " + result;
-		try {
-			log.debug("Event options:"+getAdbOutput(adbCommand));
-		} catch (Exception e) {
-			// ignore
-		}
-		return result;
+	private static String getAndroidOSVersionString() throws Exception {
+		return getAdbOutput("shell getprop ro.build.version.release").trim();
 	}
 
 	@Override
@@ -202,16 +183,15 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 
 	@Override
 	public void tap(int fingers, int x, int y, int durationMilliseconds) {
-		final TouchActions ta = new TouchActions(this);
-		for (int i = 0; i < fingers; i++) {
-			ta.down(x, y).up(x, y);
-		}
-		ta.perform();
+		final String adbCommand = String.format(ADB_PREFIX
+				+ "adb shell input touchscreen tap %d %d", x, y);
 		try {
-			Thread.sleep(durationMilliseconds);
-		} catch (InterruptedException e) {
-			Throwables.propagate(e);
+			Runtime.getRuntime().exec(
+					new String[] { "/bin/bash", "-c", adbCommand });
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	@Override
@@ -341,15 +321,14 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 					process.getInputStream()));
 			String s;
 			while ((s = in.readLine()) != null) {
-				result = s + "\n";
+				result = result + s + "\n";
 			}
 		} finally {
 			if (in != null) {
 				in.close();
 			}
 		}
-
-		return result.trim();
+		return result;
 	}
 
 	/**
@@ -359,7 +338,9 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	 * @throws Exception
 	 */
 	private SurfaceOrientation getSurfaceOrientation() throws Exception {
-		final String output = getAdbOutput("shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1");
+		final String output = getAdbOutput(
+				"shell dumpsys input | grep 'SurfaceOrientation' | awk '{ print $2 }' | head -n 1")
+				.trim();
 		return SurfaceOrientation.getByCode(Integer.parseInt(output));
 	}
 

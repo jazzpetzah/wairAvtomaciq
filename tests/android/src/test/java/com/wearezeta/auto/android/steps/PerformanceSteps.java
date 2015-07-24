@@ -3,10 +3,8 @@ package com.wearezeta.auto.android.steps;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
-import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.reporter.AndroidPerformanceReportGenerator;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
@@ -23,7 +21,6 @@ public class PerformanceSteps {
 	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
 			.getSimpleName());
 
-	private static final String RXLOGGER_RESOURCE_FILE_PATH = "/sdcard/RxLogger/Resource0.csv";
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 	private final PerformanceCommon perfCommon = PerformanceCommon
@@ -119,7 +116,8 @@ public class PerformanceSteps {
 									getDialogPage().swipeDown(
 											DEFAULT_SWIPE_TIME);
 								}
-								getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
+								getDialogPage()
+										.navigateBack(DEFAULT_SWIPE_TIME);
 								visibleContactsList = resetVisibleContactList();
 								getContactListPage().tapOnContactByPosition(
 										visibleContactsList, randomInt);
@@ -177,8 +175,6 @@ public class PerformanceSteps {
 				break;
 		}
 		getDialogPage().isDialogVisible();
-		Thread.sleep(10000);
-		CommonAndroidSteps.listener.stopListeningLogcat();
 		for (int y = 0; y < 2; y++) {
 			getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
 		}
@@ -194,16 +190,9 @@ public class PerformanceSteps {
 	 */
 	@Then("^I generate performance report for (\\d+) users$")
 	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
-		AndroidPerformanceReportGenerator.setUsersCount(usersCount);
-		// CommonAndroidSteps.listener.stopListeningLogcat();
-		AndroidCommonUtils.copyFileFromAndroid(
-				AndroidPerformanceReportGenerator.RXLOG_FILEPATH,
-				RXLOGGER_RESOURCE_FILE_PATH);
-		Thread.sleep(5000);
-		log.debug(CommonAndroidSteps.listener.getOutput());
-		Assert.assertTrue(AndroidPerformanceReportGenerator
-				.updateReportDataWithCurrentRun(CommonAndroidSteps.listener
-						.getOutput()));
-		Assert.assertTrue(AndroidPerformanceReportGenerator.generateRunReport());
+		CommonAndroidSteps.listener.stopListeningLogcat();
+		AndroidPerformanceReportGenerator.collectExecutionData(usersCount,
+				CommonAndroidSteps.listener.getOutput());
+		AndroidPerformanceReportGenerator.storeRunResultsToCSV();
 	}
 }

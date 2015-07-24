@@ -117,6 +117,18 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
+	 * Close About page
+	 * 
+	 * @step. I close About page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I close About page$")
+	public void ICloseAboutPage() throws Exception {
+		getPersonalInfoPage().clickAboutCloseButton();
+	}
+
+	/**
 	 * Verifies the about page is Violet
 	 * 
 	 * @step. ^I see that the About page is colored (.*)$
@@ -303,13 +315,14 @@ public class PersonalInfoPageSteps {
 
 	@When("^I return to personal page$")
 	public void IReturnToPersonalPage() throws Throwable {
-		Thread.sleep(2000);// wait for picture to load on simulator
+		Thread.sleep(5000);// wait for picture to load on simulator
 		getPersonalInfoPage().tapOnPersonalPage();
 		Thread.sleep(2000);// wait for picture to load on simulator
 		getPersonalInfoPage().tapOnPersonalPage();
 		Thread.sleep(2000);
 		getPersonalInfoPage().tapOnPersonalPage();
-		referenceImage = getPersonalInfoPage().takeScreenshot().orElseThrow(AssertionError::new);
+		referenceImage = getPersonalInfoPage().takeScreenshot().orElseThrow(
+				AssertionError::new);
 		getPersonalInfoPage().tapOnPersonalPage();
 	}
 
@@ -317,7 +330,8 @@ public class PersonalInfoPageSteps {
 	public void ThenISeeChangedUserPicture(String filename) throws Throwable {
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + filename);
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= 0.65, current = "
 						+ score, score >= 0.65d);
@@ -329,8 +343,9 @@ public class PersonalInfoPageSteps {
 		BufferedImage profileImage = getPersonalInfoPage().takeScreenshot()
 				.orElseThrow(AssertionError::new);
 		double score = ImageUtil.getOverlapScore(
-				RegistrationPageSteps.basePhoto, profileImage);
-		
+				RegistrationPageSteps.basePhoto, profileImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+
 		Assert.assertTrue(
 				"Images are differen. Expected score >= 0.75, current = "
 						+ score, score >= 0.75d);
@@ -396,7 +411,8 @@ public class PersonalInfoPageSteps {
 
 	@Then("I see reset password page")
 	public void ISeeResetPasswordPage() throws Exception {
-		Assert.assertTrue("Change Password button is not shown", getPersonalInfoPage().isResetPasswordPageVisible());
+		Assert.assertTrue("Change Password button is not shown",
+				getPersonalInfoPage().isResetPasswordPageVisible());
 	}
 
 	@When("I tap on Sound Alerts")
@@ -451,7 +467,8 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see my new name (.*)$")
 	public void ISeeMyNewName(String name) throws Throwable {
-		Assert.assertTrue(name.equals(getPersonalInfoPage().getUserNameValue()));
+		String actualName = getPersonalInfoPage().getUserNameValue();
+		Assert.assertTrue(actualName.contains(name));
 	}
 
 	/**
@@ -489,6 +506,38 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
+	 * Changes the accent color by pickick relevant one by coordinates at the
+	 * color picker
+	 * 
+	 * @step. ^I set my accent color via the colorpicker to (.*)$
+	 * 
+	 * @param String
+	 *            color - should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * @throws Exception
+	 */
+	@When("^I set my accent color via the colorpicker to (.*)$")
+	public void ISetMyAccentColorViaTheColorpicker(String color)
+			throws Exception {
+		getPersonalInfoPage().setAccentColor(color);
+	}
+	
+	/**
+	 * Changes the accent color by sliding to relevant one by coordinates at the
+	 * color picker
+	 * 
+	 * @step. ^I slide my accent color via the colorpicker from (.*) to (.*)$
+	 * 
+	 * @param String
+	 *            color - should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * @throws Exception
+	 */
+	@When("^I slide my accent color via the colorpicker from (.*) to (.*)$")
+	public void ISlideMyAccentColorViaTheColorpicker(String startColor, String endColor)
+			throws Exception {
+		getPersonalInfoPage().swipeAccentColor(startColor, endColor);
+	}
+
+	/**
 	 * Switches the chathead preview on or off in settings
 	 * 
 	 * @step. ^I switch on or off the chathead preview$
@@ -520,6 +569,19 @@ public class PersonalInfoPageSteps {
 	@When("^I close self profile$")
 	public void ICloseSelfProfile() throws Exception {
 		getPersonalInfoPage().closePersonalInfo();
+	}
+
+	/**
+	 * Verify Self profile page is opened
+	 * 
+	 * @step. I see self profile page
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see self profile page")
+	public void ISeeSelfProfilePage() throws Exception {
+		Assert.assertTrue("Self profile page is not visible",
+				getPersonalInfoPage().waitSelfProfileVisible());
 	}
 
 }

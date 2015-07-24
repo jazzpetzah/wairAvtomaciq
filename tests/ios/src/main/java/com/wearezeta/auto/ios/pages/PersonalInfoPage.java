@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -86,7 +87,7 @@ public class PersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSettingsDoneButton)
 	private WebElement settingsDoneButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.PersonalInfoPage.nameCloseButton)
 	private WebElement closeButton;
 
@@ -114,6 +115,9 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutPageWireLogo)
 	private WebElement aboutPageWireLogo;
 
+	@FindBy(how = How.NAME, using = IOSLocators.nameAboutCloseButton)
+	private WebElement aboutCloseButton;
+
 	public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -122,14 +126,14 @@ public class PersonalInfoPage extends IOSPage {
 	final String TERMS_OF_USE_PAGE_VALUE = "PLEASE READ THIS AGREEMENT CAREFULLY; THIS IS A BINDING CONTRACT.";
 	final String PRIVACY_POLICY_PAGE_VALUE = "Our Privacy Commitment";
 	final String ABOUT_LOGO_IMAGE = "about_page_logo.png";
+	final int COLORS_COUNT = 7;
 
 	final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.95;
 
-	
 	public void closePersonalInfo() {
 		closeButton.click();
 	}
-	
+
 	public String getUserNameValue() {
 		String name = profileNameEditField.getText();
 		return name;
@@ -157,6 +161,10 @@ public class PersonalInfoPage extends IOSPage {
 
 	public boolean isAboutPageVisible() {
 		return termsOfUseButton.isDisplayed();
+	}
+
+	public void clickAboutCloseButton() {
+		aboutCloseButton.click();
 	}
 
 	public boolean isAboutPageCertainColor(String color) throws Exception {
@@ -376,6 +384,22 @@ public class PersonalInfoPage extends IOSPage {
 		accentColorPicker.click();
 	}
 
+	public void setAccentColor(int ord) throws Exception {
+		tapColorPickerByColorOrder(ord);
+	}
+
+	private void tapColorPickerByColorOrder(int ord) throws Exception {
+		DriverUtils.tapOnPercentOfElement(getDriver(), accentColorPicker, ord
+				* 2 * COLORS_COUNT - COLORS_COUNT, 50);
+	}
+
+	private void swipeColorPickerFromColorToColor(int startColor, int endColor)
+			throws Exception {
+		DriverUtils.swipeElementPointToPoint(getDriver(), accentColorPicker,
+				1000, startColor * 2 * COLORS_COUNT - COLORS_COUNT, 50,
+				endColor * 2 * COLORS_COUNT - COLORS_COUNT, 50);
+	}
+
 	public void switchChatheadsOnOff() {
 		settingsChatheadSwitch.click();
 	}
@@ -384,8 +408,25 @@ public class PersonalInfoPage extends IOSPage {
 		settingsBackButton.click();
 	}
 
-	public void pressSettingsDoneButton() {
+	public void pressSettingsDoneButton() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.nameSettingsDoneButton), 5);
 		settingsDoneButton.click();
 	}
 
+	public boolean waitSelfProfileVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameProfileName));
+	}
+
+	public void setAccentColor(String color) throws Exception {
+		setAccentColor(AccentColor.getByName(color).getId());
+
+	}
+
+	public void swipeAccentColor(String currentColor, String destColor)
+			throws Exception {
+		swipeColorPickerFromColorToColor(AccentColor.getByName(currentColor)
+				.getId(), AccentColor.getByName(destColor).getId());
+	}
 }

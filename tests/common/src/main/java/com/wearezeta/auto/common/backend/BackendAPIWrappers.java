@@ -179,7 +179,7 @@ public final class BackendAPIWrappers {
 				.getString("code");
 	}
 
-	public static String getActivationCodeForBookedPhoneNumber(
+	private static String getActivationCodeForBookedPhoneNumber(
 			PhoneNumber phoneNumber) throws Exception {
 		return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString(
 				"code");
@@ -193,7 +193,7 @@ public final class BackendAPIWrappers {
 				phoneNumber.toString()));
 	}
 
-	private final static int MAX_CODE_GET_RETRIES = 5;
+	private final static int MAX_ACTIVATION_CODE_GET_RETRIES = 6;
 	private final static int BACKEND_ERROR_PHONE_NUMBER_NOT_BOOKED = 404;
 
 	public static String getActivationCodeByPhoneNumber(PhoneNumber phoneNumber)
@@ -202,47 +202,46 @@ public final class BackendAPIWrappers {
 		BackendRequestException savedException = null;
 		do {
 			try {
-				return BackendREST.getActivationDataViaBackdoor(phoneNumber)
-						.getString("code");
+				return getActivationCodeForBookedPhoneNumber(phoneNumber);
 			} catch (BackendRequestException e) {
 				if (e.getReturnCode() == BACKEND_ERROR_PHONE_NUMBER_NOT_BOOKED) {
 					// the number booking request has not been delivered to the
 					// backend yet
 					savedException = e;
-					Thread.sleep(4000);
 					log.debug(String
 							.format("The phone number '%s' seems to be not booked yet. Trying to get the activation code one more time (%d of %d)...",
 									phoneNumber.toString(), ntry,
-									MAX_CODE_GET_RETRIES));
+									MAX_ACTIVATION_CODE_GET_RETRIES));
+					Thread.sleep(2000 * ntry);
 				} else {
 					throw e;
 				}
 			}
 			ntry++;
-		} while (ntry <= MAX_CODE_GET_RETRIES);
+		} while (ntry <= MAX_ACTIVATION_CODE_GET_RETRIES);
 		throw savedException;
 	}
 
-	private final static int MAX_LOGIN_CODE_QUERIES = 5;
+	private final static int MAX_LOGIN_CODE_QUERIES = 6;
 
 	public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber)
 			throws Exception {
-		int count = 0;
+		int ntry = 1;
 		Exception savedException = null;
-		while (count < MAX_LOGIN_CODE_QUERIES) {
-			count++;
+		do {
 			try {
 				return BackendREST.getLoginCodeViaBackdoor(phoneNumber)
 						.getString("code");
 			} catch (BackendRequestException e) {
 				log.error(String
 						.format("Failed to get login code for phone number '%s'. Retrying (%s of %s)...",
-								phoneNumber.toString(), count,
+								phoneNumber.toString(), ntry,
 								MAX_LOGIN_CODE_QUERIES));
 				savedException = e;
-				Thread.sleep(4000 * count);
+				Thread.sleep(2000 * ntry);
 			}
-		}
+			ntry++;
+		} while (ntry <= MAX_LOGIN_CODE_QUERIES);
 		throw savedException;
 	}
 

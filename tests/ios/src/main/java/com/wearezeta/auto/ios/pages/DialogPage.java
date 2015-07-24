@@ -65,6 +65,9 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPingedAgain)
 	private WebElement pingedAgain;
 
+	@FindBy(how = How.NAME, using = IOSLocators.namePlusButton)
+	protected WebElement plusButton;
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
 	protected WebElement openConversationDetails;
 
@@ -94,6 +97,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCallButton)
 	private WebElement callButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCloseButton)
+	private WebElement closeButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
 	private WebElement imageCell;
@@ -181,6 +187,10 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean waitForCursorInputVisible() throws Exception {
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.name(IOSLocators.DialogPage.nameCloseButton), 2)) {
+			closeButton.click();
+		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.name(IOSLocators.nameConversationCursorInput), 10);
 	}
@@ -305,11 +315,8 @@ public class DialogPage extends IOSPage {
 					IOSLocators.xpathLastMessageFormat, messagesList.size());
 			WebElement el = this.getDriver().findElementByXPath(
 					lastMessageXPath);
-			this.getDriver().tap(
-					1,
-					el.getLocation().x + 30,
-					el.getLocation().y + el.getSize().height
-							+ (el.getSize().height / 2), 1);
+			this.getDriver().tap(1, el.getLocation().x + 30,
+					el.getLocation().y + 2 * el.getSize().height, 1);
 		}
 	}
 
@@ -364,7 +371,8 @@ public class DialogPage extends IOSPage {
 
 		for (int i = 0; i < 3; i++) {
 			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.nameOpenConversationDetails))) {
+					By.name(IOSLocators.namePlusButton))) {
+				plusButton.click();
 				openConversationDetails.click();
 			}
 			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
@@ -385,6 +393,7 @@ public class DialogPage extends IOSPage {
 
 	public OtherUserOnPendingProfilePage clickConversationDeatailForPendingUser()
 			throws Exception {
+		plusButton.click();
 		openConversationDetails.click();
 		return new OtherUserOnPendingProfilePage(this.getLazyDriver());
 	}
@@ -465,6 +474,11 @@ public class DialogPage extends IOSPage {
 		return page;
 	}
 
+	public boolean isYoutubeContainerVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(IOSLocators.xpathYoutubeConversationCell), 10);
+	}
+	
 	public boolean isMediaContainerVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell), 10);
@@ -897,15 +911,17 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean chatheadIsVisible(String contact) throws Exception {
+
 		List<WebElement> el = this.getDriver()
 				.findElements(
 						By.xpath(String.format(IOSLocators.xpathChatheadName,
 								contact)));
-		if (el.size() > 0) {
-			return true;
-		} else {
-			return false;
+		for (WebElement element : el) {
+			if (DriverUtils.isElementPresentAndDisplayed(getDriver(), element)) {
+				return true;
+			}
 		}
+		return false;
 	}
 
 	public boolean chatheadMessageIsVisible(String message) throws Exception {
@@ -919,8 +935,9 @@ public class DialogPage extends IOSPage {
 		}
 	}
 
-	public boolean chatheadAvatarImageIsVisible() {
-		if (chatheadAvatarImage.isDisplayed()) {
+	public boolean chatheadAvatarImageIsVisible() throws Exception {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.nameChatheadAvatarImage))) {
 			return true;
 		} else {
 			return false;
@@ -933,6 +950,14 @@ public class DialogPage extends IOSPage {
 
 	public void openGifPreviewPage() {
 		openGifPreviewButton.click();
+	}
+
+	public boolean isMyNameInDialogDisplayed(String name) throws Exception {
+		WebElement el = getDriver().findElement(
+				By.xpath(String.format(
+						IOSLocators.DialogPage.xpathMyNameInDialog,
+						name.toUpperCase())));
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), el);
 	}
 
 }

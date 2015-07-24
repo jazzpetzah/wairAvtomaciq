@@ -95,7 +95,7 @@ Feature: Conversation View
     Then I see embedded youtube video of <Youtubelink3>
     When I write message <Youtubelink4>
     And I send message
-    Then I see embedded youtube video of <Youtubelink2>
+    Then I see embedded youtube video of <Youtubelink4>
 
     Examples: 
       | Login      | Password      | Name      | Contact   | Youtubelink1                               | Youtubelink2                                                 | Youtubelink3                          | Youtubelink4                 |
@@ -182,7 +182,7 @@ Feature: Conversation View
       | Login                       | Password   | Contact1   | Contact2   |
       | smoketester+id1688@wire.com | aqa123456! | perf.200.1 | perf.200.2 |
 
-  @id2279 @regression
+  @regression @id2279
   Scenario Outline: Send a long message containing new lines in 1on1
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -202,7 +202,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | ExpectedMessage                   |
       | user1Email | user1Password | user1Name | user2Name | ('a' * 100)('LF' * 10)('b' * 100) |
 
-  @staging @id1624
+  @regression @id1624
   Scenario Outline: Verify you can see conversation images in fullscreen
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -213,13 +213,13 @@ Feature: Conversation View
     And I send picture <PictureName> to the current conversation
     And I see sent picture <PictureName> in the conversation view
     When I click on picture
-    Then I see picture in fullscreen
+    Then I see picture <PictureName> in fullscreen
     When I click x button to close fullscreen mode
-    Then I do not see picture in fullscreen
+    Then I do not see picture <PictureName> in fullscreen
     When I click on picture
-    Then I see picture in fullscreen
+    Then I see picture <PictureName> in fullscreen
     When I click on black border to close fullscreen mode
-    Then I do not see picture in fullscreen
+    Then I do not see picture <PictureName> in fullscreen
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PictureName               |
@@ -247,7 +247,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | Message | ExpectedMessage     |
       | user1Email | user1Password | user1Name | user2Name | cat     | cat • via giphy.com |
 
-  @id3018 @staging
+  @regression @id3018
   Scenario Outline: Verify that typed-in messages are not lost
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -263,3 +263,54 @@ Feature: Conversation View
     Examples: 
       | Login      | Password      | Name      | Contact   | Message                                  |
       | user1Email | user1Password | user1Name | user2Name | All of these Candlejack jokes aren’t fu- |
+
+  @regression @id2992
+  Scenario Outline: Verify Start (Search) is opened when you press ⌥ ⌘ N (Mac) or alt + ctrl + N (Win)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I type shortcut combination to open search
+    Then I see Search is opened
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @regression @id2993
+  Scenario Outline: Verify you ping in a conversation when you press alt + ctrl + G (Win)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I hover ping button
+    Then I see correct ping button tooltip
+    When I type shortcut combination to ping
+    Then I see ping message <PING>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | PING   |
+      | user1Email | user1Password | user1Name | user2Name | pinged |
+
+  @regression @id2994
+  Scenario Outline: Verify you start a call in a conversation when you press ⌥ ⌘ T (Mac) or alt + ctrl + T (Win)
+    Given My browser supports calling
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    And I see calling button
+    When I hover call button
+    Then I see correct call button tooltip
+    When I type shortcut combination to start a call
+    Then I see the calling bar
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |

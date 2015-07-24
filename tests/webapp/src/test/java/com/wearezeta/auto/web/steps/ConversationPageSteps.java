@@ -13,6 +13,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
@@ -29,6 +30,13 @@ public class ConversationPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	private static final String TOOLTIP_PING = "Ping";
+	private static final String SHORTCUT_PING_WIN = "(Ctrl + Alt + G)";
+	private static final String SHORTCUT_PING_MAC = "(⌘⌥G)";
+	private static final String TOOLTIP_CALL = "Call";
+	private static final String SHORTCUT_CALL_WIN = "(Ctrl + Alt + T)";
+	private static final String SHORTCUT_CALL_MAC = "(⌘⌥T)";
+
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
 			.getLog(ConversationPageSteps.class.getSimpleName());
@@ -39,7 +47,7 @@ public class ConversationPageSteps {
 	 * Sends random message (generated GUID) into opened conversation
 	 *
 	 * @step. ^I write random message$
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I write random message$")
 	public void WhenIWriteRandomMessage() throws Exception {
@@ -54,7 +62,7 @@ public class ConversationPageSteps {
 	 *
 	 * @param message
 	 *            text message
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@When("^I write message (.*)$")
 	public void IWriteMessage(String message) throws Exception {
@@ -62,13 +70,14 @@ public class ConversationPageSteps {
 	}
 
 	/**
-	 * Types x number of new lines to opened conversation, but does not send them
+	 * Types x number of new lines to opened conversation, but does not send
+	 * them
 	 *
 	 * @step. ^I write (.*) new lines$
 	 *
-	 * @param message
-	 *            text message
-	 * @throws Exception 
+	 * @param amount
+	 *            number of lines to write
+	 * @throws Exception
 	 */
 	@When("^I write (\\d+) new lines$")
 	public void IWriteXNewLines(int amount) throws Exception {
@@ -278,8 +287,9 @@ public class ConversationPageSteps {
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);
 		parts.addAll(CommonSteps.splitAliases(contacts));
-		Assert.assertTrue(PagesCollection.conversationPage
-				.isActionMessageSent(parts));
+		assertThat("Check action",
+				PagesCollection.conversationPage.getLastActionMessage(),
+				containsString(message));
 	}
 
 	/**
@@ -629,14 +639,20 @@ public class ConversationPageSteps {
 	 * @step. ^I( do not)? see picture in fullscreen$
 	 * @throws java.lang.Exception
 	 */
-	@Then("^I( do not)? see picture in fullscreen$")
-	public void ISeePictureInFullscreen(String doNot) throws Exception {
+	@Then("^I( do not)? see picture (.*) in fullscreen$")
+	public void ISeePictureInFullscreen(String doNot, String pictureName) throws Exception {
 		if (doNot == null) {
 			Assert.assertTrue(PagesCollection.conversationPage
+					.isPictureInModalDialog());
+			Assert.assertTrue(PagesCollection.conversationPage
 					.isPictureInFullscreen());
+			assertThat("Overlap score of image comparsion",
+					PagesCollection.conversationPage
+							.getOverlapScoreOfFullscreenImage(pictureName),
+					greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
 		} else {
-			Assert.assertFalse(PagesCollection.conversationPage
-					.isPictureInFullscreen());
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isPictureNotInModalDialog());
 		}
 	}
 
@@ -684,5 +700,100 @@ public class ConversationPageSteps {
 		assertThat("Cached message in input field",
 				PagesCollection.conversationPage.getMessageFromInputField(),
 				equalTo(message));
+	}
+
+	/**
+	 * Types shortcut combination to open search
+	 * 
+	 * @step. ^I type shortcut combination to open search$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to open search$")
+	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
+		PagesCollection.peoplePickerPage = PagesCollection.conversationPage
+				.pressShortCutForSearch();
+	}
+
+	/**
+	 * Hovers ping button
+	 * 
+	 * @step. ^I hover ping button$
+	 * @throws Exception
+	 */
+	@Then("^I hover ping button$")
+	public void IHoverPingButton() throws Exception {
+		PagesCollection.conversationPage.hoverPingButton();
+	}
+
+	/**
+	 * Types shortcut combination to ping
+	 * 
+	 * @step. ^I type shortcut combination to ping$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to ping$")
+	public void ITypeShortcutCombinationToPing() throws Exception {
+		PagesCollection.conversationPage.pressShortCutForPing();
+	}
+
+	/**
+	 * Verifies whether ping button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct ping button tool tip$
+	 *
+	 */
+	@Then("^I see correct ping button tooltip$")
+	public void ISeeCorrectPingButtonTooltip() {
+
+		String tooltip = TOOLTIP_PING + " ";
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			tooltip = tooltip + SHORTCUT_PING_WIN;
+		} else {
+			tooltip = tooltip + SHORTCUT_PING_MAC;
+		}
+		assertThat("Ping button tooltip",
+				PagesCollection.conversationPage.getPingButtonToolTip(),
+				equalTo(tooltip));
+	}
+
+	/**
+	 * Hovers call button
+	 *
+	 * @step. ^I hover call button$
+	 */
+	@When("^I hover call button$")
+	public void IHoverCallButton() throws Throwable {
+		PagesCollection.conversationPage.hoverCallButton();
+	}
+
+	/**
+	 * Verifies whether call button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct call button tool tip$
+	 *
+	 */
+	@Then("^I see correct call button tooltip$")
+	public void ISeeCorrectCallButtonTooltip() {
+
+		String tooltip = TOOLTIP_CALL + " ";
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			tooltip = tooltip + SHORTCUT_CALL_WIN;
+		} else {
+			tooltip = tooltip + SHORTCUT_CALL_MAC;
+		}
+		assertThat("Call button tooltip",
+				PagesCollection.conversationPage.getCallButtonToolTip(),
+				equalTo(tooltip));
+	}
+
+	/**
+	 * Types shortcut combination to call
+	 * 
+	 * @step. ^I type shortcut combination to ping$
+	 * @throws Exception
+	 */
+	@Then("^I type shortcut combination to start a call$")
+	public void ITypeShortcutCombinationToCall() throws Exception {
+		PagesCollection.conversationPage.pressShortCutForCall();
 	}
 }

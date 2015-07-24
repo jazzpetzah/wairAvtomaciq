@@ -330,6 +330,14 @@ public class DialogPageSteps {
 	public void IMemorizeMessageSendTime() throws Exception {
 		sendDate = getDialogPage().getSendTime();
 	}
+	
+	@Then("I see youtube link (.*) and media in dialog")
+	public void ISeeYoutubeLinkAndMediaInDialog(String link) throws Exception {
+		Assert.assertTrue("Media is missing in dialog", getDialogPage()
+				.isYoutubeContainerVisible());
+		Assert.assertEquals(link.toLowerCase(), getDialogPage()
+				.getLastMessageFromDialog().toLowerCase());
+	}
 
 	@Then("I see media link (.*) and media in dialog")
 	public void ISeeMediaLinkAndMediaInDialog(String link) throws Exception {
@@ -746,5 +754,21 @@ public class DialogPageSteps {
 	public void ITypeGiphyTagAndOpenPreview(String message) throws Exception {
 		getDialogPage().sendStringToInput(message);
 		getDialogPage().openGifPreviewPage();
+	}
+
+	/**
+	 * Verify my user name in conversation view
+	 * 
+	 * @step. I see my user name (.*) in conversation
+	 * 
+	 * @param name
+	 *            String name - my user name
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see my user name (.*) in conversation")
+	public void ISeeMyNameInDialog(String name) throws Exception {
+		Assert.assertTrue("My name: " + name + " is not displayed in dialog",
+				getDialogPage().isMyNameInDialogDisplayed(name));
 	}
 }

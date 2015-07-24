@@ -231,7 +231,7 @@ Feature: Connect
     Given There are 2 users where <User1> is me
     Given Myself is connected to <User2>
     Given Contact <User2> sends image <Picture1> to single user conversation <User1>
-    Given <User2> pinged the conversation with <User1>
+    Given User <User2> pinged in the conversation with <User1>
     Given User <User2> sent message <Msg1> to conversation <User1>
     Given I switch to Sign In page
     Given I Sign in using login <User1> and password <User1Password>
@@ -240,7 +240,7 @@ Feature: Connect
     Then I see text message <Msg1>
     And <User1> blocked <User2>
     And Contact <User2> sends image <Picture2> to single user conversation <User1>
-    And <User2> pinged the conversation with <User1>
+    And User <User2> pinged in the conversation with <User1>
     And User <User2> sent message <Msg2> to conversation <User1>
     And I do not see Contact list with name <Name>
     When I open self profile

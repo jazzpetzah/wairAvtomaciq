@@ -33,7 +33,7 @@ public class ContactsUploadPageSteps {
 	 */
 	@And("^I see Google login popup$")
 	public void ISeeGoogleLoginPopup() throws Exception {
-		PagesCollection.googeLoginPage = PagesCollection.contactsUploadPage
+		PagesCollection.googleLoginPage = PagesCollection.contactsUploadPage
 				.switchToGooglePopup();
 	}
 
@@ -49,14 +49,15 @@ public class ContactsUploadPageSteps {
 	@When("^I sign up at Google with email (.*) and password (.*)$")
 	public void ISignUpAtGoogleWithEmail(String email, String password)
 			throws Exception {
-		PagesCollection.googeLoginPage.setEmail(email);
+		// sometimes Google already shows the email
+		PagesCollection.googleLoginPage.setEmail(email);
 		// sometimes google shows a next button and you have to enter the
 		// password separately
-		if (PagesCollection.googeLoginPage.hasNextButton()) {
-			PagesCollection.googeLoginPage.clickNext();
+		if (PagesCollection.googleLoginPage.hasNextButton()) {
+			PagesCollection.googleLoginPage.clickNext();
 		}
-		PagesCollection.googeLoginPage.setPassword(password);
-		PagesCollection.peoplePickerPage = PagesCollection.googeLoginPage
+		PagesCollection.googleLoginPage.setPassword(password);
+		PagesCollection.peoplePickerPage = PagesCollection.googleLoginPage
 				.clickSignIn();
 	}
 

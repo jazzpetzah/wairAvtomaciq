@@ -23,6 +23,15 @@ public class PhoneNumberVerificationPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
+	/**
+	 * Fills out correct country code and phone number for a user
+	 * 
+	 * @step. ^I enter phone verification code for user (.*)$
+	 * 
+	 * @param name
+	 *            name alias of the user
+	 * @throws Throwable
+	 */
 	@When("^I enter phone verification code for user (.*)$")
 	public void i_enter_phone_verification_code_for_user_user_Name(String name)
 			throws Throwable {
@@ -33,21 +42,40 @@ public class PhoneNumberVerificationPageSteps {
 				.enterCode(code);
 	}
 
+	/**
+	 * Enters wrong verification code by swapping all numbers into others
+	 * 
+	 * @step. ^I enter wrong phone verification code for user (.*)$
+	 * 
+	 * @param name
+	 *            name alias of the user
+	 * @throws Throwable
+	 */
 	@When("^I enter wrong phone verification code for user (.*)$")
 	public void i_enter_wrong_phone_verification_code_for_user_user_Name(
 			String name) throws Throwable {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
 		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
 				.getPhoneNumber());
-		String wrongcode = code.replace("0", "1");
-		wrongcode = wrongcode.replace("2", "3");
-		wrongcode = wrongcode.replace("4", "5");
-		wrongcode = wrongcode.replace("6", "7");
-		wrongcode = wrongcode.replace("8", "9");
+		String wrongcode = "";
+		if (code.charAt(0) != '1') {
+			wrongcode = "1" + code.substring(1);
+		} else {
+			wrongcode = "0" + code.substring(1);
+		}
 		PagesCollection.contactListPage = PagesCollection.phoneNumberVerificationPage
 				.enterCode(wrongcode);
 	}
 
+	/**
+	 * Verifies that the error message is correct
+	 * 
+	 * @step. ^I see invalid phone code error message saying (.*)
+	 * 
+	 * @param message
+	 *            error message
+	 * @throws Exception
+	 */
 	@Then("^I see invalid phone code error message saying (.*)")
 	public void TheSignInErrorMessageReads(String message) throws Exception {
 		assertThat("invalid phone code error",

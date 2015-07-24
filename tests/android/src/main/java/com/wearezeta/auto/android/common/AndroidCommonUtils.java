@@ -32,7 +32,8 @@ public class AndroidCommonUtils extends CommonUtils {
 	private static final String BACKEND_FILE_LOCATION = "/mnt/sdcard/customBackend.json";
 
 	public static final String ADB_PREFIX = "";
-//	public static final String ADB_PREFIX = "/Applications/android-sdk/platform-tools/";
+	// public static final String ADB_PREFIX =
+	// "/Applications/android-sdk/platform-tools/";
 
 	private static ArrayList<String> addressBookAddedNames = new ArrayList<String>();
 
@@ -81,7 +82,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 
 	private static String getAdbOutput(String cmdLine) throws Exception {
-		String result = "no info";
+		String result = "";
 
 		String adbCommand = ADB_PREFIX + "adb " + cmdLine;
 		final Process process = Runtime.getRuntime().exec(
@@ -96,7 +97,7 @@ public class AndroidCommonUtils extends CommonUtils {
 					process.getInputStream()));
 			String s;
 			while ((s = in.readLine()) != null) {
-				result = s + "\n";
+				result += s + "\n";
 			}
 			outputErrorStreamToLog(process.getErrorStream());
 		} finally {
@@ -145,7 +146,7 @@ public class AndroidCommonUtils extends CommonUtils {
 				"shell dumpsys package %s | grep versionName", CommonUtils
 						.getAndroidPackageFromConfig(AndroidCommonUtils.class)));
 		if (output.contains("=")) {
-			return output.substring(output.indexOf("="), output.length());
+			return output.substring(output.indexOf("=") + 1, output.length());
 		} else {
 			return output;
 		}
@@ -391,5 +392,27 @@ public class AndroidCommonUtils extends CommonUtils {
 		double densityIndependentPixels = 160; // the number of dp in a screen
 												// is constant
 		return screenPixels / densityIndependentPixels;
+	}
+
+	public static void type(String message) throws Exception {
+		executeAdb("shell input text " + message);
+	}
+
+	/**
+	 * Compares the Android of the plugged-in device with the input (target)
+	 * version that you wish to check for. For exmaple, if you want to check
+	 * that the plugged in device is 4.4 or higher, you need to supply "4.4" as
+	 * the target version
+	 * 
+	 * @param targetVersion
+	 *            the Android version you wish to check for
+	 * @return a negative int, 0, or a positive int if the targetVersion is less
+	 *         than, equal to or greater than the current device's version
+	 * @throws Exception
+	 */
+	public static int compareAndroidVersion(String targetVersion)
+			throws Exception {
+		String deviceVersion = readDeviceInfo().getOperatingSystemBuild();
+		return deviceVersion.compareTo(targetVersion);
 	}
 }

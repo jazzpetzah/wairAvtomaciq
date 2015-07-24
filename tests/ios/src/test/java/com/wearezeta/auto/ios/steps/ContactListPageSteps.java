@@ -50,6 +50,16 @@ public class ContactListPageSteps {
 		Assert.assertTrue("Self profile button dind't appear in contact list",
 				loginFinished);
 	}
+	
+	/**
+	 * Click MAYBE LATER on settings warning screen
+	 * @step. ^I dismiss settings warning$
+	 * @throws Exception
+	 */
+	@When("^I dismiss settings warning$")
+	public void IDismissSettingsWarning() throws Exception {
+		getLoginPage().dismisSettingsWaring();
+	}
 
 	@When("I dismiss tutorial layout")
 	public void IDismissTutorial() throws Exception {
@@ -64,7 +74,7 @@ public class ContactListPageSteps {
 	@When("^I tap on my name (.*)$")
 	public void WhenITapOnMyName(String name) throws Exception {
 		getContactListPage().tapOnMyName();
-		getPersonalInfoPage().waitForEmailFieldVisible();
+		getPersonalInfoPage().waitSelfProfileVisible();
 	}
 
 	@When("^I tap on contact name (.*)$")

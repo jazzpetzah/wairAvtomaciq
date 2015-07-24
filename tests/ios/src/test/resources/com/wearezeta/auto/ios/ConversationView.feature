@@ -85,15 +85,13 @@ Feature: Conversation View
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent long message to conversation <Contact>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type and send long message and media link <SoundCloudLink>
-    And I wait for 5 seconds
-    And I return to the chat list
-    And I tap on contact name <Contact>
-    And I scroll to the end of the conversation
+    And I tap on text input
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -112,15 +110,14 @@ Feature: Conversation View
   Scenario Outline: Conversation gets scrolled back to playing media when clicking on media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent long message to conversation <Contact>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I type and send long message and media link <SoundCloudLink>
-    And I return to the chat list
-    And I tap on contact name <Contact>
-    And I scroll to the end of the conversation
-    Then I see media link <SoundCloudLink> and media in dialog
+    And I tap on text input
+    And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
     And I tap on the media bar
@@ -140,7 +137,7 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    And I scroll to the end of the conversation
+    And I tap on text input
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -156,18 +153,17 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
+    Given User <Name> sent long message to conversation <Contact1>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact1>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I type and send long message and media link <SoundCloudLink>
-    And I return to the chat list
-    And I tap on contact name <Contact1>
-    And I scroll to the end of the conversation
+    And I tap on text input
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
-    And I scroll to the end of the conversation
+    And I tap on text input
     Then I dont see media bar on dialog page
 
     Examples: 
@@ -360,7 +356,9 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I post media link <YouTubeLink>
-    Then I see media link <YouTubeLink> and media in dialog
+    And I return to the chat list
+    And I tap on contact name <Contact>
+    Then I see youtube link <YouTubeLink> and media in dialog
     And I click video container for the first time
     And I see video player page is opened
 
@@ -377,7 +375,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <YouTubeLink>
-    And I see media link <YouTubeLink> and media in dialog
+    And I see youtube link <YouTubeLink> and media in dialog
     And I return to the chat list
     And I tap on contact name <Contact>
     And I click video container for the first time

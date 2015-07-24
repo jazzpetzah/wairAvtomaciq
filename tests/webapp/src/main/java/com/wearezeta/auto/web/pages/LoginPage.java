@@ -40,7 +40,7 @@ public class LoginPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathPasswordInput)
 	private WebElement passwordInput;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathLoginErrorText)
+	@FindBy(how = How.CSS, using = WebAppLocators.LoginPage.cssLoginErrorText)
 	private WebElement loginErrorText;
 
 	@FindBy(css = WebAppLocators.LoginPage.cssRedDotOnEmailField)
@@ -124,7 +124,7 @@ public class LoginPage extends WebPage {
 
 	public String getErrorMessage() throws InterruptedException, Exception {
 		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.xpath(WebAppLocators.LoginPage.xpathLoginErrorText));
+				By.xpath(WebAppLocators.LoginPage.cssLoginErrorText));
 		return loginErrorText.getText();
 	}
 
@@ -141,6 +141,7 @@ public class LoginPage extends WebPage {
 	}
 
 	public PhoneNumberLoginPage switchToPhoneNumberLoginPage() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), phoneSignInButton);
 		phoneSignInButton.click();
 		return new PhoneNumberLoginPage(this.getLazyDriver());
 	}

@@ -15,7 +15,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | webdriver   |
 
   @id1503 @calling_basic
   Scenario Outline: Silence an incoming call
@@ -30,7 +30,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | webdriver   |
 
   @id1497 @calling_basic
   Scenario Outline: Receive call while Wire is running in the background
@@ -47,7 +47,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | webdriver   |
 
   @id1499 @calling_basic
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
@@ -64,7 +64,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | webdriver   |
 
   @id347 @regression
   Scenario Outline: Send text, image and knock while in the call with same user
@@ -82,6 +82,7 @@ Feature: Calling
     And I press Add Picture button
     And I press "Take Photo" button
     And I press "Confirm" button
+    And I scroll to the bottom of conversation view
     Then I see new photo in the dialog
     When I swipe on text input
     And I press Ping button
@@ -95,7 +96,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Message                   | Msg        |
-      | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
+      | user1Name | user2Name | webdriver   | simple message in english | YOU PINGED |
 
   @id2210 @regression
   Scenario Outline: Calling bar buttons are clickable and change their states
@@ -120,7 +121,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
-      | user1Name | user2Name | autocall    | Speaker        | Mute        |
+      | user1Name | user2Name | webdriver   | Speaker        | Mute        |
 
   @id2212 @regression
   Scenario Outline: Correct calling bar in different places
@@ -151,7 +152,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Name | user2Name | user3Name | autocall    |
+      | user1Name | user2Name | user3Name | webdriver   |
 
   @id2211 @regression
   Scenario Outline: I can dismiss calling bar by swipe
@@ -170,4 +171,4 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | autocall    |
+      | user1Name | user2Name | webdriver   |
