@@ -80,7 +80,7 @@ Feature: Sign In
       | Name      | Error        |
       | user1Name | INVALID CODE |
 
-  @staging @id2227
+  @regression @id2227
   Scenario Outline: Show invitation button when Gmail import on registration has no suggestions
     Given There is 1 user where <Name> is me
     Given I switch to sign in page

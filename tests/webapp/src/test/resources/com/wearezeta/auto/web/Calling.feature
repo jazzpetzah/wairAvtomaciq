@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @staging @id1860
+  @regression @id1860
   Scenario Outline: Verify I can send text, image and ping while in the same convo
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -28,7 +28,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | webdriver   | 120     |
 
-  @staging @id2080
+  @regression @id2080
   Scenario Outline: Verify I can get pinged by callee during call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -78,7 +78,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-  @staging @id1891
+  @regression @id1891
   Scenario Outline: Verify the corresponding conversations list item gets sticky on incoming call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -343,7 +343,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
-  @staging @id1906
+  @regression @id1906
   Scenario Outline: Verify I can make another call while current one is ignored
     Given My browser supports calling
     Given There are 3 users where <Name> is me
