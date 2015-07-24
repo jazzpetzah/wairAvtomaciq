@@ -186,7 +186,7 @@ Feature: People View
     And I change group conversation name on iPad popover to <ChatName>
     And I exit the group info iPad popover
     Then I see you renamed conversation to <ChatName> message shown in Group Chat
-    And I return to the chat list
+    And I swipe right on group chat page
     Then I see in contact list group chat named <ChatName>
 
     Examples: 
