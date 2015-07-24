@@ -183,6 +183,10 @@ public class CommonWebAppSteps {
 				} else {
 					lazyWebDriver.manage().window().maximize();
 				}
+				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+					WebCommonUtils.clearHistoryInSafari(lazyWebDriver
+							.getNodeIp());
+				}
 				return lazyWebDriver;
 			}
 		};
@@ -563,7 +567,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Send Ping into a conversation using the backend
 	 * 
-	 * @step. ^(.*) pinged conversation with (.*)$
+	 * @step. ^User (.*) pinged in the conversation with (.*)$
 	 * 
 	 * @param pingFromUserNameAlias
 	 *            conversations list owner name/alias
@@ -571,10 +575,28 @@ public class CommonWebAppSteps {
 	 *            the name of conversation to send ping to
 	 * @throws Exception
 	 */
-	@When("^(.*) pinged the conversation with (.*)$")
+	@When("^User (.*) pinged in the conversation with (.*)$")
 	public void UserPingedConversation(String pingFromUserNameAlias,
 			String dstConversationName) throws Exception {
 		commonSteps.UserPingedConversation(pingFromUserNameAlias,
+				dstConversationName);
+	}
+
+	/**
+	 * Send Hotping into a conversation using the backend
+	 *
+	 * @step. ^User (.*) pinged twice in the conversation with (.*)$
+	 *
+	 * @param pingFromUserNameAlias
+	 *            conversations list owner name/alias
+	 * @param dstConversationName
+	 *            the name of conversation to send ping to
+	 * @throws Exception
+	 */
+	@When("^User (.*) pinged twice in the conversation with (.*)$")
+	public void UserHotPingedConversation(String pingFromUserNameAlias,
+			String dstConversationName) throws Exception {
+		commonSteps.UserHotPingedConversation(pingFromUserNameAlias,
 				dstConversationName);
 	}
 
@@ -890,4 +912,5 @@ public class CommonWebAppSteps {
 		PagesCollection.loginPage = PagesCollection.registrationPage
 				.openSignInPage();
 	}
+
 }

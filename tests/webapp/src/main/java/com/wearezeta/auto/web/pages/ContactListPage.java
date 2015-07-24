@@ -1,5 +1,7 @@
 package com.wearezeta.auto.web.pages;
 
+import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -11,6 +13,7 @@ import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -28,6 +31,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
+
+import cucumber.api.PendingException;
 
 public class ContactListPage extends WebPage {
 
@@ -48,6 +53,9 @@ public class ContactListPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ContactListPage.cssOpenPeoplePickerButton)
 	private WebElement openPeoplePickerButton;
+
+	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
+	private WebElement conversationInput;
 
 	public ContactListPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -447,6 +455,24 @@ public class ContactListPage extends WebPage {
 		}
 	}
 
+	public boolean isOngoingCallItemVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorAppears(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathOngoingCallListItem),
+						3);
+	}
+
+	public boolean isOngoingCallItemWithConvNameVisible(String convName)
+			throws Exception {
+		convName = fixDefaultGroupConvoName(convName, false);
+		return DriverUtils
+				.waitUntilLocatorAppears(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ContactListPage.xpathOngoingCallListItemWithConvName
+								.apply(convName)));
+	}
+
 	public int getItemIndex(String convoName) throws Exception {
 		convoName = fixDefaultGroupConvoName(convoName, false);
 		final int entriesCount = this
@@ -518,4 +544,52 @@ public class ContactListPage extends WebPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, 3);
 	}
+
+	public void hoverMuteButtonForContact(String conversationName)
+			throws Exception {
+		waitForOptionButtonsToBeClickable(conversationName);
+		if (!WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.addClassToParent(this.getDriver(),
+					getListElementByName(conversationName, false), "hover");
+		} else {
+			DriverUtils.moveMouserOver(this.getDriver(),
+					getListElementByName(conversationName, false));
+		}
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		if (!WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.removeClassFromParent(this.getDriver(),
+					getListElementByName(conversationName, false), "hover");
+		}
+	}
+
+	public String getMuteButtonToolTip(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final By muteLocator = By
+				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
+						.apply(conversationName));
+		final WebElement muteButton = this.getDriver().findElement(muteLocator);
+		if (WebAppExecutionContext.getBrowser()
+				.isSupportingNativeMouseActions()) {
+			DriverUtils.moveMouserOver(this.getDriver(), muteButton);
+		} else {
+			// safari workaround
+			DriverUtils.addClass(this.getDriver(), muteButton, "hover");
+		}
+		return muteButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
+	}
+
+	public void pressShortCutToMuteOrUnmute(String conversationName)
+			throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "l"));
+		} else {
+			throw new PendingException(
+					"Webdriver does not support shortcuts for Mac browsers");
+		}
+	}
+
 }

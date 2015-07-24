@@ -31,6 +31,8 @@ public class ReporterConstants {
 
 		public static final String CONV_PAGE_LOADING_TIME = "Conversation Page Loading Time (ms)";
 
+		public static final String CONV_LOADING_MEDIAN_TIME = "Conversation loading (median)";
+		
 		public static final String CONV_CONTENT_SYNC_TIME = "Conversation Content Sync Time (ms)";
 	}
 
@@ -48,6 +50,29 @@ public class ReporterConstants {
 		public static final String CONVERSATION_SYNC_TIME_REGEX = "";
 	}
 
+	public static final class Csv {
+		
+		public static final int RUN_DATE_COLUMN = 0;
+		
+		public static final int BUILD_NUMBER_COLUMN = 1;
+		
+		public static final int DEVICE_MODEL_COLUMN = 2;
+		
+		public static final int DEVICE_OS_COLUMN = 3;
+		
+		public static final int NETWORK_TYPE_COLUMN = 4;
+		
+		public static final int NUMBER_OF_USERS_COLUMN = 5;
+		
+		public static final int APPLICATION_STARTUP_TIME_COLUMN = 6;
+		
+		public static final int SIGN_IN_TIME_COLUMN = 7;
+		
+		public static final int FIRST_CONVERSATION_LOADING_COLUMN = 8;
+		
+		public static final int CONVERSATION_LOADING_MEDIAN_COLUMN = 9;
+	}
+	
 	public static final class Xls {
 
 		public static final int MEDIAN_VALUE_INDEX = 3;

@@ -76,8 +76,7 @@ public class SelfPictureUploadPage extends WebPage {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
-						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathConfirmPictureSelectionButton),
-						5);
+						By.xpath(WebAppLocators.SelfPictureUploadPage.xpathConfirmPictureSelectionButton));
 		pictureSelectionConfirmButton.click();
 		return new ContactsUploadPage(this.getLazyDriver());
 	}

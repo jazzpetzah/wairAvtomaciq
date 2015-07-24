@@ -51,7 +51,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I open conversation details on iPad
+    And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I press Add button
     And I see People picker page on iPad popover
@@ -75,7 +75,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I open conversation details on iPad
+    And I open conversation details
     And I see <Contact1> user profile page in iPad popover
     And I press Add button
     And I see People picker page on iPad popover
@@ -98,7 +98,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     And I press leave converstation button on iPad
     Then I press leave on iPad
     And I open archived conversations on iPad
@@ -119,7 +119,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     And I press leave converstation button on iPad
     Then I press leave on iPad
     And I open archived conversations on iPad
@@ -139,7 +139,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     And I select user on iPad group popover <Contact2>
     And I click Remove on iPad
     And I see remove warning message on iPad
@@ -160,7 +160,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     And I select user on iPad group popover <Contact2>
     And I click Remove on iPad
     And I see remove warning message on iPad
@@ -180,7 +180,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     And I press conversation menu button on iPad
     And I press RENAME on the menu on iPad
     And I change group conversation name on iPad popover to <ChatName>
@@ -203,7 +203,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     And I press conversation menu button on iPad
     And I press RENAME on the menu on iPad
     And I change group conversation name on iPad popover to <ChatName>
@@ -229,7 +229,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     Then I can read the group name <GroupChatName> on the iPad popover
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
     Then I see the correct avatar picture for user <Contact1> on iPad
@@ -254,7 +254,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     Then I can read the group name <GroupChatName> on the iPad popover
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
     Then I see the correct avatar picture for user <Contact1> on iPad
@@ -273,7 +273,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     And I select user on iPad group popover <Contact2>
     Then I see email and name of user <Contact2> on iPad popover
 
@@ -291,7 +291,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     And I select user on iPad group popover <Contact2>
     Then I see email and name of user <Contact2> on iPad popover
 
@@ -309,7 +309,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     And I select user on iPad group popover <NonConnectedContact>
     Then I see connect to <NonConnectedContact> dialog
 
@@ -328,7 +328,7 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     And I select user on iPad group popover <NonConnectedContact>
     Then I see connect to <NonConnectedContact> dialog
 

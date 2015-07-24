@@ -198,6 +198,7 @@ public class PeoplePickerPageSteps {
 				IClickCloseButtonDismissPeopleView();
 				Thread.sleep(5000);
 				getСontactListPage().openSearch();
+				getPeoplePickerPage().closeShareContactsIfVisible();
 			} else {
 				break;
 			}

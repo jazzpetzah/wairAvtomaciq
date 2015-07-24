@@ -315,7 +315,7 @@ public class PersonalInfoPageSteps {
 
 	@When("^I return to personal page$")
 	public void IReturnToPersonalPage() throws Throwable {
-		Thread.sleep(2000);// wait for picture to load on simulator
+		Thread.sleep(5000);// wait for picture to load on simulator
 		getPersonalInfoPage().tapOnPersonalPage();
 		Thread.sleep(2000);// wait for picture to load on simulator
 		getPersonalInfoPage().tapOnPersonalPage();
@@ -330,7 +330,8 @@ public class PersonalInfoPageSteps {
 	public void ThenISeeChangedUserPicture(String filename) throws Throwable {
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + filename);
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= 0.65, current = "
 						+ score, score >= 0.65d);
@@ -342,7 +343,8 @@ public class PersonalInfoPageSteps {
 		BufferedImage profileImage = getPersonalInfoPage().takeScreenshot()
 				.orElseThrow(AssertionError::new);
 		double score = ImageUtil.getOverlapScore(
-				RegistrationPageSteps.basePhoto, profileImage);
+				RegistrationPageSteps.basePhoto, profileImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 
 		Assert.assertTrue(
 				"Images are differen. Expected score >= 0.75, current = "
@@ -465,7 +467,8 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see my new name (.*)$")
 	public void ISeeMyNewName(String name) throws Throwable {
-		Assert.assertTrue(name.equals(getPersonalInfoPage().getUserNameValue()));
+		String actualName = getPersonalInfoPage().getUserNameValue();
+		Assert.assertTrue(actualName.contains(name));
 	}
 
 	/**
@@ -500,6 +503,38 @@ public class PersonalInfoPageSteps {
 	@When("^I change my accent color via the colorpicker$")
 	public void IChangeMyAccentColorViaTheColorpicker() throws Exception {
 		getPersonalInfoPage().changeAccentColor();
+	}
+
+	/**
+	 * Changes the accent color by pickick relevant one by coordinates at the
+	 * color picker
+	 * 
+	 * @step. ^I set my accent color via the colorpicker to (.*)$
+	 * 
+	 * @param String
+	 *            color - should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * @throws Exception
+	 */
+	@When("^I set my accent color via the colorpicker to (.*)$")
+	public void ISetMyAccentColorViaTheColorpicker(String color)
+			throws Exception {
+		getPersonalInfoPage().setAccentColor(color);
+	}
+	
+	/**
+	 * Changes the accent color by sliding to relevant one by coordinates at the
+	 * color picker
+	 * 
+	 * @step. ^I slide my accent color via the colorpicker from (.*) to (.*)$
+	 * 
+	 * @param String
+	 *            color - should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * @throws Exception
+	 */
+	@When("^I slide my accent color via the colorpicker from (.*) to (.*)$")
+	public void ISlideMyAccentColorViaTheColorpicker(String startColor, String endColor)
+			throws Exception {
+		getPersonalInfoPage().swipeAccentColor(startColor, endColor);
 	}
 
 	/**

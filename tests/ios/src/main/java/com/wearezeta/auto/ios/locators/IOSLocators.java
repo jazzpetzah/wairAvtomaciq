@@ -264,7 +264,7 @@ public final class IOSLocators {
 	
 	public static final String nameOptionsHelpButton = "HELP";
 	
-	public static final String xpathSettingsHelpHeader = "//UIAWebView/UIALink[@name='Support']";
+	public static final String xpathSettingsHelpHeader = "//UIAWebView/UIAStaticText[@name='Support']";
 	
 	public static final String xpathSettingsChatheadSwitch = "//UIASwitch[@name='Message previews']";
 	
@@ -298,7 +298,7 @@ public final class IOSLocators {
 	
 	public static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
 	
-	public static final String nameOtherProfilePagePendingLabel = "PENDING";
+	public static final String nameOtherProfilePagePendingLabel = "CANCEL REQUEST";
 	
 	public static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
 	
@@ -586,6 +586,10 @@ public final class IOSLocators {
 		
 		public static final String nameSoundCloudContainer = "Play on SoundCloud";
 		
+		public static final String nameCloseButton = "closeButton";
+		
+		public static final String xpathMyNameInDialog = "//UIAStaticText[@name='%s'][last()]";
+		
 	}
 	
 	public final class DialogInfoPage {
@@ -616,6 +620,7 @@ public final class IOSLocators {
 		public static final String namePhoneLoginButton = "PHONE SIGN IN";
 		public static final String nameBackButton = "BackToWelcomeButton";
 		public static final String nameEmailLoginButton = "EMAIL SIGN IN";
+		public static final String nameMaybeLater = "MAYBE LATER";
 	}
 	
 	public final class PeoplePickerPage {

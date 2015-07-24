@@ -104,9 +104,6 @@ public class WelcomePageSteps {
 		final PhoneNumber phoneNumber = this.userToRegister.getPhoneNumber();
 		final String verificationCode = BackendAPIWrappers
 				.getActivationCodeByPhoneNumber(phoneNumber);
-		if (getVerificationPage().waitUntilManualCodeButtonAppears()) {
-			getVerificationPage().clickManualCodeButton();
-		}
 		getVerificationPage().inputVerificationCode(verificationCode);
 		getVerificationPage().clickConfirm();
 	}
