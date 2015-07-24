@@ -61,6 +61,8 @@ public class RegistrationPage extends WebPage {
 
 	public LoginPage switchToLoginPage() throws Exception {
 		if (waitForRegistrationPageToFullyLoad()) {
+			DriverUtils.waitUntilElementClickable(getDriver(),
+					switchToSignInButton);
 			switchToSignInButton.click();
 		}
 
