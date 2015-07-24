@@ -474,6 +474,11 @@ public class DialogPage extends IOSPage {
 		return page;
 	}
 
+	public boolean isYoutubeContainerVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(IOSLocators.xpathYoutubeConversationCell), 10);
+	}
+	
 	public boolean isMediaContainerVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell), 10);

@@ -141,6 +141,7 @@ public class LoginPage extends WebPage {
 	}
 
 	public PhoneNumberLoginPage switchToPhoneNumberLoginPage() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), phoneSignInButton);
 		phoneSignInButton.click();
 		return new PhoneNumberLoginPage(this.getLazyDriver());
 	}

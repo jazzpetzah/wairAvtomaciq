@@ -330,6 +330,14 @@ public class DialogPageSteps {
 	public void IMemorizeMessageSendTime() throws Exception {
 		sendDate = getDialogPage().getSendTime();
 	}
+	
+	@Then("I see youtube link (.*) and media in dialog")
+	public void ISeeYoutubeLinkAndMediaInDialog(String link) throws Exception {
+		Assert.assertTrue("Media is missing in dialog", getDialogPage()
+				.isYoutubeContainerVisible());
+		Assert.assertEquals(link.toLowerCase(), getDialogPage()
+				.getLastMessageFromDialog().toLowerCase());
+	}
 
 	@Then("I see media link (.*) and media in dialog")
 	public void ISeeMediaLinkAndMediaInDialog(String link) throws Exception {
