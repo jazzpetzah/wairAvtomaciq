@@ -2,11 +2,12 @@ package com.wearezeta.auto.common.rest;
 
 import org.apache.log4j.Logger;
 
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.UniformInterfaceException;
-import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 public final class CommonRESTHandlers {
 	private RESTResponseHandler responseHandler;
@@ -29,151 +30,177 @@ public final class CommonRESTHandlers {
 	private static final int MAX_SINGLE_ENTITY_LENGTH_IN_LOG = 400;
 
 	private static String formatLogRecord(Object entity) {
-		String result = "<" + entity.getClass().getSimpleName() + ">";
-		if (entity instanceof String) {
-			result = ((String) entity);
-			if (result.length() == 0) {
-				result = EMPTY_LOG_RECORD;
-			} else if (result.length() > MAX_SINGLE_ENTITY_LENGTH_IN_LOG) {
-				result = result.substring(0, MAX_SINGLE_ENTITY_LENGTH_IN_LOG)
-						+ "...";
+		String result;
+		if (entity != null) {
+			result = "<" + entity.getClass().getSimpleName() + ">";
+			if (entity instanceof String) {
+				result = ((String) entity);
+				if (result.length() == 0) {
+					result = EMPTY_LOG_RECORD;
+				} else if (result.length() > MAX_SINGLE_ENTITY_LENGTH_IN_LOG) {
+					result = result.substring(0,
+							MAX_SINGLE_ENTITY_LENGTH_IN_LOG) + "...";
+				}
 			}
+			return result;
+		} else {
+			result = "<null>";
+			return result;
 		}
-		return result;
+
+	}
+
+	public <T> T httpPost(Builder webResource, Object entity,
+			Class<T> responseEntityType, int[] acceptableResponseCodes)
+			throws RESTError {
+		log.debug("POST REQUEST...");
+		Response response = null;
+		int tryNum = 0;
+		do {
+			try {
+				response = webResource.post(
+						Entity.entity(entity, MediaType.APPLICATION_JSON_TYPE),
+						Response.class);
+				break;
+			} catch (ProcessingException e) {
+				log.warn(e.getMessage());
+				tryNum++;
+			}
+		} while (tryNum < this.maxRetries);
+		T responseEntity;
+		try {
+			responseEntity = response.readEntity(responseEntityType);
+		} catch (ProcessingException | IllegalStateException
+				| NullPointerException e) {
+			responseEntity = null;
+			log.warn(e.getMessage());
+		}
+		log.debug(String.format(" >>> Input data: %s\n >>> Response: %s",
+				formatLogRecord(entity), formatLogRecord(responseEntity)));
+		this.responseHandler.verifyRequestResult(response.getStatus(),
+				acceptableResponseCodes);
+		return responseEntity;
 	}
 
 	public String httpPost(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws RESTError {
+		String returnString = httpPost(webResource, entity, String.class,
+				acceptableResponseCodes);
+		returnString = returnString == null ? "" : returnString;
+		return returnString;
+	}
+
+	public <T> T httpPut(Builder webResource, Object entity,
+			Class<T> responseEntityType, int[] acceptableResponseCodes)
+			throws RESTError {
 		log.debug("PUT REQUEST...");
-		ClientResponse response = null;
+		Response response = null;
 		int tryNum = 0;
 		do {
 			try {
-				response = webResource.post(ClientResponse.class, entity);
+				response = webResource.put(
+						Entity.entity(entity, MediaType.APPLICATION_JSON_TYPE),
+						Response.class);
 				break;
-			} catch (ClientHandlerException e) {
-				e.printStackTrace();
+			} catch (ProcessingException e) {
+				log.warn(e.getMessage());
 				tryNum++;
 			}
 		} while (tryNum < this.maxRetries);
-		String responseStr;
+		T responseEntity;
 		try {
-			responseStr = response.getEntity(String.class);
-		} catch (UniformInterfaceException e) {
-			responseStr = "";
+			responseEntity = response.readEntity(responseEntityType);
+		} catch (ProcessingException | IllegalStateException
+				| NullPointerException e) {
+			responseEntity = null;
+			log.warn(e.getMessage());
 		}
 		log.debug(String.format(" >>> Input data: %s\n >>> Response: %s",
-				formatLogRecord(entity), formatLogRecord(responseStr)));
+				formatLogRecord(entity), formatLogRecord(responseEntity)));
 		this.responseHandler.verifyRequestResult(response.getStatus(),
 				acceptableResponseCodes);
-		return responseStr;
+		return responseEntity;
 	}
 
 	public String httpPut(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws RESTError {
-		log.debug("PUT REQUEST...");
-		ClientResponse response = null;
+		String returnString = httpPut(webResource, entity, String.class,
+				acceptableResponseCodes);
+		returnString = returnString == null ? "" : returnString;
+		return returnString;
+	}
+
+	public <T> T httpDelete(Builder webResource, Class<T> responseEntityType,
+			int[] acceptableResponseCodes) throws RESTError {
+		log.debug("DELETE REQUEST...");
+		Response response = null;
 		int tryNum = 0;
 		do {
 			try {
-				response = webResource.put(ClientResponse.class, entity);
+				response = webResource.delete(Response.class);
 				break;
-			} catch (ClientHandlerException e) {
-				e.printStackTrace();
+			} catch (ProcessingException e) {
+				log.warn(e.getMessage());
 				tryNum++;
 			}
 		} while (tryNum < this.maxRetries);
-		String responseStr;
+		T responseEntity;
 		try {
-			responseStr = response.getEntity(String.class);
-		} catch (UniformInterfaceException e) {
-			responseStr = "";
+			responseEntity = response.readEntity(responseEntityType);
+		} catch (ProcessingException | IllegalStateException
+				| NullPointerException e) {
+			responseEntity = null;
+			log.warn(e.getMessage());
 		}
-		log.debug(String.format(" >>> Input data: %s\n >>> Response: %s",
-				formatLogRecord(entity), formatLogRecord(responseStr)));
+		log.debug(String.format(" >>> Response: %s",
+				formatLogRecord(responseEntity)));
 		this.responseHandler.verifyRequestResult(response.getStatus(),
 				acceptableResponseCodes);
-		return responseStr;
+		return responseEntity;
 	}
 
 	public String httpDelete(Builder webResource, int[] acceptableResponseCodes)
 			throws RESTError {
-		log.debug("DELETE REQUEST...");
-		ClientResponse response = null;
-		int tryNum = 0;
-		do {
-			try {
-				response = webResource.delete(ClientResponse.class);
-				break;
-			} catch (ClientHandlerException e) {
-				e.printStackTrace();
-				tryNum++;
-			}
-		} while (tryNum < this.maxRetries);
-		String responseStr;
-		try {
-			responseStr = response.getEntity(String.class);
-		} catch (UniformInterfaceException e) {
-			responseStr = "";
-		}
-		log.debug(String.format(" >>> Response: %s",
-				formatLogRecord(responseStr)));
-		this.responseHandler.verifyRequestResult(response.getStatus(),
+		String returnString = httpDelete(webResource, String.class,
 				acceptableResponseCodes);
-		return responseStr;
+		returnString = returnString == null ? "" : returnString;
+		return returnString;
 	}
 
-	public Object httpGet(Builder webResource, Class<?> entityClass,
+	public <T> T httpGet(Builder webResource, Class<T> responseEntityType,
 			int[] acceptableResponseCodes) throws RESTError {
 		log.debug("GET REQUEST...");
-		ClientResponse response = null;
+		Response response = null;
 		int tryNum = 0;
 		do {
 			try {
-				response = webResource.get(ClientResponse.class);
+				response = webResource.get(Response.class);
 				break;
-			} catch (ClientHandlerException e) {
-				e.printStackTrace();
+			} catch (ProcessingException e) {
+				log.warn(e.getMessage());
 				tryNum++;
 			}
 		} while (tryNum < this.maxRetries);
-		Object responseObj = null;
+		T responseEntity;
 		try {
-			responseObj = response.getEntity(entityClass);
-		} catch (UniformInterfaceException e) {
-			// Do nothing
+			responseEntity = response.readEntity(responseEntityType);
+		} catch (ProcessingException | IllegalStateException
+				| NullPointerException e) {
+			responseEntity = null;
+			log.warn(e.getMessage());
 		}
 		log.debug(String.format(" >>> Response: %s",
-				formatLogRecord(responseObj)));
+				formatLogRecord(responseEntity)));
 		this.responseHandler.verifyRequestResult(response.getStatus(),
 				acceptableResponseCodes);
-		return responseObj;
+		return responseEntity;
 	}
 
 	public String httpGet(Builder webResource, int[] acceptableResponseCodes)
 			throws RESTError {
-		log.debug("GET REQUEST...");
-		ClientResponse response = null;
-		int tryNum = 0;
-		do {
-			try {
-				response = webResource.get(ClientResponse.class);
-				break;
-			} catch (ClientHandlerException e) {
-				e.printStackTrace();
-				tryNum++;
-			}
-		} while (tryNum < this.maxRetries);
-		String responseStr;
-		try {
-			responseStr = response.getEntity(String.class);
-		} catch (UniformInterfaceException | NullPointerException e) {
-			responseStr = "";
-		}
-		log.debug(String.format(" >>> Response: %s",
-				formatLogRecord(responseStr)));
-		this.responseHandler.verifyRequestResult(response.getStatus(),
+		String returnString = httpGet(webResource, String.class,
 				acceptableResponseCodes);
-		return responseStr;
+		returnString = returnString == null ? "" : returnString;
+		return returnString;
 	}
 }

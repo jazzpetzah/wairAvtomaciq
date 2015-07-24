@@ -1,12 +1,12 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.common.CommonCallingSteps;
+import com.wearezeta.auto.common.CommonCallingSteps2;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CallingSteps {
-	private final CommonCallingSteps commonCallingSteps = CommonCallingSteps
+	private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
 			.getInstance();
 
 	/**

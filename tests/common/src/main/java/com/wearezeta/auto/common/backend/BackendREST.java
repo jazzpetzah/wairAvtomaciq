@@ -19,8 +19,6 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.onboarding.AddressBook;
@@ -29,9 +27,24 @@ import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
 import com.wearezeta.auto.image_send.*;
 
 import java.awt.image.BufferedImage;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.core.Configuration;
+import org.glassfish.jersey.client.ClientConfig;
 
 // Backend API calls should be invoked indirectly via API Wrappers class
 final class BackendREST {
+
 	private static final Logger log = ZetaLogger.getLog(BackendREST.class
 			.getSimpleName());
 
@@ -41,9 +54,42 @@ final class BackendREST {
 			BackendREST::verifyRequestResult, MAX_REQUEST_RETRY_COUNT);
 
 	private static String backendUrl = null;
-	private static Client client = Client.create();
+	private static Client client = initClient(new ClientConfig());
+
 	static {
 		log.setLevel(Level.DEBUG);
+	}
+
+	private static Client initClient(Configuration config) {
+		TrustManager[] certs = new TrustManager[] { new X509TrustManager() {
+			@Override
+			public X509Certificate[] getAcceptedIssuers() {
+				return null;
+			}
+
+			@Override
+			public void checkServerTrusted(X509Certificate[] chain,
+					String authType) throws CertificateException {
+			}
+
+			@Override
+			public void checkClientTrusted(X509Certificate[] chain,
+					String authType) throws CertificateException {
+			}
+		} };
+		SSLContext ctx = null;
+		try {
+			ctx = SSLContext.getInstance("SSL");
+			ctx.init(null, certs, new SecureRandom());
+		} catch (KeyManagementException | NoSuchAlgorithmException ex) {
+			log.error(ex);
+		}
+
+		return ClientBuilder
+				.newBuilder()
+				.withConfig(config)
+				.hostnameVerifier((String hostname, SSLSession session) -> true)
+				.sslContext(ctx).build();
 	}
 
 	private static void verifyRequestResult(int currentResponseCode,
@@ -62,7 +108,7 @@ final class BackendREST {
 			throws Exception {
 		final String dstUrl = String.format("%s/%s", getBaseURI(), restAction);
 		log.debug(String.format("Making request to %s...", dstUrl));
-		return client.resource(dstUrl).accept(accept);
+		return client.target(dstUrl).request().accept(accept);
 	}
 
 	private static Builder buildDefaultRequestWithAuth(String restAction,
@@ -70,7 +116,8 @@ final class BackendREST {
 		final String dstUrl = String.format("%s/%s", getBaseURI(), restAction);
 		log.debug(String.format("Making request to %s...", dstUrl));
 		return client
-				.resource(dstUrl)
+				.target(dstUrl)
+				.request()
 				.accept(accept)
 				.header(HttpHeaders.AUTHORIZATION,
 						String.format("%s %s", token.getType(),
@@ -80,7 +127,7 @@ final class BackendREST {
 	public static JSONObject login(String email, String password)
 			throws Exception {
 		Builder webResource = buildDefaultRequest("login",
-				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("email", email);
 		requestBody.put("password", password);
@@ -93,7 +140,7 @@ final class BackendREST {
 	public static JSONObject login(PhoneNumber phoneNumber, String code)
 			throws Exception {
 		Builder webResource = buildDefaultRequest("login",
-				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
 		requestBody.put("code", code);
@@ -122,8 +169,7 @@ final class BackendREST {
 	public static JSONObject sendConnectRequest(AuthToken fromToken,
 			String toId, String connectName, String message) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("self/connections",
-				MediaType.APPLICATION_JSON, fromToken).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, fromToken);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("user", toId);
 		requestBody.put("name", connectName);
@@ -160,8 +206,7 @@ final class BackendREST {
 			String connectionId, ConnectionStatus newStatus) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
 				String.format("self/connections/%s", connectionId),
-				MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, token);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("status", newStatus.toString());
 		restHandlers.httpPut(webResource, requestBody.toString(), new int[] {
@@ -171,8 +216,7 @@ final class BackendREST {
 	public static void updateSelfEmail(AuthToken token, String newEmail)
 			throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("self/email",
-				MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, token);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("email", newEmail);
 		restHandlers.httpPut(webResource, requestBody.toString(),
@@ -182,8 +226,7 @@ final class BackendREST {
 	public static void updateSelfPassword(AuthToken token, String oldPassword,
 			String newPassword) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("self/password",
-				MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, token);
 		JSONObject requestBody = new JSONObject();
 		if (oldPassword != null) {
 			requestBody.put("old_password", oldPassword);
@@ -195,16 +238,14 @@ final class BackendREST {
 
 	public static void detachSelfEmail(AuthToken token) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("self/email",
-				MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, token);
 		restHandlers.httpDelete(webResource, new int[] { HttpStatus.SC_OK });
 	}
 
 	public static void updateSelfPhoneNumber(AuthToken token,
 			PhoneNumber phoneNumber) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("self/phone",
-				MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, token);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
 		restHandlers.httpPut(webResource, requestBody.toString(),
@@ -213,15 +254,14 @@ final class BackendREST {
 
 	public static void detachSelfPhoneNumber(AuthToken token) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("self/phone",
-				MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, token);
 		restHandlers.httpDelete(webResource, new int[] { HttpStatus.SC_OK });
 	}
 
 	public static JSONObject registerNewUser(String email, String userName,
 			String password) throws Exception {
 		Builder webResource = buildDefaultRequest("register",
-				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("email", email);
 		requestBody.put("name", userName);
@@ -234,7 +274,7 @@ final class BackendREST {
 	public static JSONObject registerNewUser(PhoneNumber phoneNumber,
 			String userName, String activationCode) throws Exception {
 		Builder webResource = buildDefaultRequest("register",
-				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
 		requestBody.put("name", userName);
@@ -255,7 +295,7 @@ final class BackendREST {
 	public static void bookPhoneNumber(PhoneNumber phoneNumber)
 			throws Exception {
 		Builder webResource = buildDefaultRequest("activate/send",
-				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
 		restHandlers.httpPost(webResource, requestBody.toString(),
@@ -308,7 +348,7 @@ final class BackendREST {
 	public static void activateNewUser(PhoneNumber phoneNumber, String code,
 			boolean isDryRun) throws Exception {
 		Builder webResource = buildDefaultRequest("activate",
-				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
 		requestBody.put("code", code);
@@ -320,7 +360,7 @@ final class BackendREST {
 	public static void activateNewUser(String email, String code,
 			boolean isDryRun) throws Exception {
 		Builder webResource = buildDefaultRequest("activate",
-				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("email", email);
 		requestBody.put("code", code);
@@ -332,7 +372,7 @@ final class BackendREST {
 	public static void generateLoginCode(PhoneNumber phoneNumber)
 			throws Exception {
 		Builder webResource = buildDefaultRequest("login/send",
-				MediaType.APPLICATION_JSON).type(MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("phone", phoneNumber.toString());
 		restHandlers.httpPost(webResource, requestBody.toString(),
@@ -358,8 +398,7 @@ final class BackendREST {
 		requestBody.put("users", ids);
 		requestBody.put("name", conversationName);
 		Builder webResource = buildDefaultRequestWithAuth("conversations",
-				MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, token);
 		final String output = restHandlers.httpPost(webResource,
 				requestBody.toString(), new int[] { HttpStatus.SC_CREATED });
 		return new JSONObject(output);
@@ -372,10 +411,10 @@ final class BackendREST {
 		for (AssetRequest request : reqBuilder.getRequests()) {
 			Builder webResource = buildDefaultRequestWithAuth(
 					request.getEndpoint(), MediaType.APPLICATION_JSON, token)
-					.type(request.getContentType())
+			// .type(request.getContentType())
 					.header("Content-Disposition",
-							request.getContentDisposition())
-					.header("Content-Length", request.getContentLength());
+							request.getContentDisposition()).header(
+							"Content-Length", request.getContentLength());
 			final String output = restHandlers.httpPost(webResource,
 					request.getPayload(), new int[] { HttpStatus.SC_CREATED });
 			final JSONObject jsonOutput = new JSONObject(output);
@@ -400,8 +439,7 @@ final class BackendREST {
 			String convId, String message) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
 				String.format("conversations/%s/messages", convId),
-				MediaType.APPLICATION_JSON, userFromToken).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, userFromToken);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("content", message);
 		requestBody.put("nonce", CommonUtils.generateGUID());
@@ -411,10 +449,8 @@ final class BackendREST {
 
 	public static JSONObject sendConversationPing(AuthToken userFromToken,
 			String convId) throws Exception {
-		Builder webResource = buildDefaultRequestWithAuth(
-				"conversations/" + convId + "/knock",
-				MediaType.APPLICATION_JSON, userFromToken).type(
-				MediaType.APPLICATION_JSON);
+		Builder webResource = buildDefaultRequestWithAuth("conversations/"
+				+ convId + "/knock", MediaType.APPLICATION_JSON, userFromToken);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("nonce", CommonUtils.generateGUID());
 		final String output = restHandlers.httpPost(webResource,
@@ -425,10 +461,9 @@ final class BackendREST {
 
 	public static JSONObject sendConvertsationHotPing(AuthToken userFromToken,
 			String convId, String refId) throws Exception {
-		Builder webResource = buildDefaultRequestWithAuth(
-				"conversations/" + convId + "/hot-knock",
-				MediaType.APPLICATION_JSON, userFromToken).type(
-				MediaType.APPLICATION_JSON);
+		Builder webResource = buildDefaultRequestWithAuth("conversations/"
+				+ convId + "/hot-knock", MediaType.APPLICATION_JSON,
+				userFromToken);
 		JSONObject requestBody = new JSONObject();
 		requestBody.put("ref", refId);
 		requestBody.put("nonce", CommonUtils.generateGUID());
@@ -527,8 +562,7 @@ final class BackendREST {
 			Map<String, AssetData> publishedPictureAssets, String name)
 			throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
-				String.format("self"), MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+				String.format("self"), MediaType.APPLICATION_JSON, token);
 		JSONObject requestBody = new JSONObject();
 		if (accentId != null) {
 			requestBody.put("accent_id", accentId.intValue());
@@ -548,8 +582,7 @@ final class BackendREST {
 			String lastRead, Boolean muted, Boolean archived) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
 				String.format("conversations/%s/self", convId),
-				MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, token);
 		JSONObject requestBody = new JSONObject();
 		if (lastRead != null) {
 			requestBody.put("last_read", lastRead);
@@ -573,11 +606,10 @@ final class BackendREST {
 	public static JSONObject searchForContacts(AuthToken token, String query)
 			throws Exception {
 		// Changed this to make it look the same as in webapp
-		Builder webResource = buildDefaultRequestWithAuth(
-				String.format("search/contacts?q=%s&size=30&l=3&d=1",
-						URLEncoder.encode(query, "utf-8")),
-				MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+		Builder webResource = buildDefaultRequestWithAuth(String.format(
+				"search/contacts?q=%s&size=30&l=3&d=1",
+				URLEncoder.encode(query, "utf-8")), MediaType.APPLICATION_JSON,
+				token);
 		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
@@ -587,8 +619,7 @@ final class BackendREST {
 			List<String> contactsIds, String conversationId) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth(
 				String.format("conversations/%s/members", conversationId),
-				MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, token);
 		JSONObject requestBody = new JSONObject();
 		JSONArray userIds = new JSONArray();
 		for (String userId : contactsIds) {
@@ -604,8 +635,7 @@ final class BackendREST {
 	public static JSONObject uploadAddressBook(AuthToken token,
 			AddressBook addressBook) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("onboarding/v3",
-				MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, token);
 		final String output = restHandlers.httpPost(webResource, addressBook
 				.asJSONObject().toString(), new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
@@ -613,8 +643,7 @@ final class BackendREST {
 
 	public static JSONObject getSuggestions(AuthToken token) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("search/suggestions",
-				MediaType.APPLICATION_JSON, token).type(
-				MediaType.APPLICATION_JSON);
+				MediaType.APPLICATION_JSON, token);
 		final String output = restHandlers.httpGet(webResource,
 				new int[] { HttpStatus.SC_OK });
 		return new JSONObject(output);
