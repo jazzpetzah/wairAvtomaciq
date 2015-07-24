@@ -56,7 +56,7 @@ public class RegistrationPage extends WebPage {
 	
 	public boolean waitForRegistrationPageToFullyLoad() throws Exception {
 		return DriverUtils.waitUntilElementClickable(this.getDriver(),
-				createAccount, TIMEOUT_FOR_FIRST_LOAD_OF_PAGE);
+				emailField, TIMEOUT_FOR_FIRST_LOAD_OF_PAGE);
 	}
 
 	public LoginPage switchToLoginPage() throws Exception {
