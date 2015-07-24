@@ -582,6 +582,8 @@ public final class IOSLocators {
 		
 		public static final String nameGifButton = "rightMenuButton";
 		
+		public static final String nameCursorSketchButton = "ComposeControllerSketchButton";
+		
 		public static final String xpathLoremIpsumText = "//UIATextView[contains(@name, 'Lorem ipsum')]";
 		
 		public static final String nameSoundCloudContainer = "Play on SoundCloud";
@@ -651,6 +653,16 @@ public final class IOSLocators {
 		public static final String nameGiphyCancelRequestButton = "rejectButton";
 		
 		public static final String nameGiphySendButton = "acceptButton";
+		
+	}
+	
+	public final class SketchPageElements {
+		
+		public static final String nameSketchSendButton = "SketchConfirmButton";
+		
+		public static final String nameSketchUndoButton = "SketchUndoButton";
+		
+		public static final String nameSketchCancelButton = "SketchCancelButton";
 		
 	}
 	

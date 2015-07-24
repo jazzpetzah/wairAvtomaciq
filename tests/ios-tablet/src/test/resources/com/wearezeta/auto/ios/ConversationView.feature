@@ -559,3 +559,40 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |  GiphyTag    |
       | user1Name | user2Name |  Happy       |
+      
+  @staging @id2987
+  Scenario Outline: I can send a sketch[PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I tap on sketch button in cursor
+    And I draw a random sketch
+    And I send my sketch
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+      
+  @staging @id2988
+  Scenario Outline: I can send a sketch[LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to landscape
+    Given I sign in using my email or phone number
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I tap on sketch button in cursor
+    And I draw a random sketch
+    And I send my sketch
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |

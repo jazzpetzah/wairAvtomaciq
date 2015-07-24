@@ -180,7 +180,7 @@ Feature: Self Profile
       | Name      | username1char | username2chars | Contact   |
       | user1Name | c             | AB             | user2Name |
 
-  @smoke @id3162
+  @staging @id3162
   Scenario Outline: Verify name change [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -198,7 +198,7 @@ Feature: Self Profile
       | Name      | NewUsername | Contact   |
       | user1Name | NewName     | user2Name |
 
-  @smoke @id3163
+  @staging @id3163
   Scenario Outline: Verify name change [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -216,3 +216,37 @@ Feature: Self Profile
     Examples: 
       | Name      | NewUsername | Contact   |
       | user1Name | NewName     | user2Name |
+
+  @staging @id2571
+  Scenario Outline: Verify changing and applying accent color [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> sent long message to conversation <Name>
+    Given User <Name> change accent color to <Color1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I slide my accent color via the colorpicker from <Color1> to <Color2>
+    And I swipe right on the personal page
+    Then I see 5 unread message indicator in list for contact <Contact>
+
+    Examples: 
+      | Name      | NewName           | Color1 | Color2          | Contact   |
+      | user1Name | AccentColorChange | Violet | StrongLimeGreen | user2Name |
+
+  @staging @id3191
+  Scenario Outline: Verify changing and applying accent color [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Contact> sent long message to conversation <Name>
+    Given User <Name> change accent color to <Color1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I slide my accent color via the colorpicker from <Color1> to <Color2>
+    Then I see 5 unread message indicator in list for contact <Contact>
+
+    Examples: 
+      | Name      | NewName           | Color1 | Color2          | Contact   |
+      | user1Name | AccentColorChange | Violet | StrongLimeGreen | user2Name |
