@@ -63,7 +63,10 @@ public class WebCommonUtils extends CommonUtils {
 	public static void putFileOnExecutionNode(String node, String srcPath,
 			String dstPath) throws Exception {
 		setCorrectPermissionsOfKeyFile();
-		srcPath = WebCommonUtils.class.getResource("/" + srcPath).getPath();
+		// only get files via resources when there is no leading /
+		if (srcPath.charAt(0) != '/') {
+			srcPath = WebCommonUtils.class.getResource("/" + srcPath).getPath();
+		}
 		String commandTemplate = "scp -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s %s@%s:%s";
 		String command = String.format(commandTemplate, sshKeyPath, srcPath,

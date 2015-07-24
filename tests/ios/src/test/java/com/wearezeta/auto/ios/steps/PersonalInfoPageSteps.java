@@ -506,6 +506,38 @@ public class PersonalInfoPageSteps {
 	}
 
 	/**
+	 * Changes the accent color by pickick relevant one by coordinates at the
+	 * color picker
+	 * 
+	 * @step. ^I set my accent color via the colorpicker to (.*)$
+	 * 
+	 * @param String
+	 *            color - should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * @throws Exception
+	 */
+	@When("^I set my accent color via the colorpicker to (.*)$")
+	public void ISetMyAccentColorViaTheColorpicker(String color)
+			throws Exception {
+		getPersonalInfoPage().setAccentColor(color);
+	}
+	
+	/**
+	 * Changes the accent color by sliding to relevant one by coordinates at the
+	 * color picker
+	 * 
+	 * @step. ^I slide my accent color via the colorpicker from (.*) to (.*)$
+	 * 
+	 * @param String
+	 *            color - should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * @throws Exception
+	 */
+	@When("^I slide my accent color via the colorpicker from (.*) to (.*)$")
+	public void ISlideMyAccentColorViaTheColorpicker(String startColor, String endColor)
+			throws Exception {
+		getPersonalInfoPage().swipeAccentColor(startColor, endColor);
+	}
+
+	/**
 	 * Switches the chathead preview on or off in settings
 	 * 
 	 * @step. ^I switch on or off the chathead preview$
