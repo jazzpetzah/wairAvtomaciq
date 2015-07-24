@@ -345,10 +345,9 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I tap on other users start dialog button on iPad popover
-    And I exit the group info iPad popover
+    And I tap on start dialog button on other user profile page
     Then I see dialog page
     And I type the message
     And I send the message
@@ -368,10 +367,9 @@ Feature: People View
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open group conversation details on iPad
+    And I open group conversation details
     And I select user on iPad group popover <Contact2>
-    And I tap on other users start dialog button on iPad popover
-    And I exit the group info iPad popover
+    And I tap on start dialog button on other user profile page
     Then I see dialog page
     And I type the message
     And I send the message
