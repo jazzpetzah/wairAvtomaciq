@@ -154,7 +154,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 		this.getDriver().tap(
 				1,
 				this.getDriver().findElementByName(
-						IOSLocators.nameAddContactToChatButton), 1);
+						IOSLocators.nameOtherUserAddContactToChatButton), 1);
 		page = new DialogPage(this.getLazyDriver());
 		return page;
 	}

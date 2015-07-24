@@ -468,7 +468,7 @@ public class DialogPageSteps {
 		getDialogPage().clickLastImageFromDialog();
 	}
 
-	private static final int SWIPE_DURATION_MILLISECONDS = 1000;
+	private static final int SWIPE_DURATION_MILLISECONDS = 1300;
 
 	/**
 	 * 

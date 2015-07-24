@@ -70,7 +70,4 @@ public class GoogleLoginPage extends WebPage {
 		return new PeoplePickerPage(getLazyDriver());
 	}
 
-	public boolean hasProfileImage() throws Exception {
-		return this.getDriver().findElements(By.id("profile-img")).size() > 0;
-	}
 }

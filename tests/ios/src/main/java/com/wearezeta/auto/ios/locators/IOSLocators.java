@@ -590,6 +590,8 @@ public final class IOSLocators {
 		
 		public static final String nameCloseButton = "closeButton";
 		
+		public static final String xpathMyNameInDialog = "//UIAStaticText[@name='%s'][last()]";
+		
 	}
 	
 	public final class DialogInfoPage {

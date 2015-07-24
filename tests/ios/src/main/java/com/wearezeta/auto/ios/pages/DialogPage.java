@@ -68,7 +68,7 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.namePlusButton)
 	protected WebElement plusButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
 	protected WebElement openConversationDetails;
 
@@ -98,7 +98,7 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCallButton)
 	private WebElement callButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCloseButton)
 	private WebElement closeButton;
 
@@ -478,6 +478,11 @@ public class DialogPage extends IOSPage {
 		return page;
 	}
 
+	public boolean isYoutubeContainerVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(IOSLocators.xpathYoutubeConversationCell), 10);
+	}
+	
 	public boolean isMediaContainerVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell), 10);
@@ -953,6 +958,14 @@ public class DialogPage extends IOSPage {
 	
 	public void openSketch() {
 		openSketchButton.click();
+	}
+
+	public boolean isMyNameInDialogDisplayed(String name) throws Exception {
+		WebElement el = getDriver().findElement(
+				By.xpath(String.format(
+						IOSLocators.DialogPage.xpathMyNameInDialog,
+						name.toUpperCase())));
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), el);
 	}
 
 }
