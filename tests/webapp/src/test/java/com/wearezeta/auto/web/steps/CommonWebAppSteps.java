@@ -33,6 +33,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
+import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
@@ -135,11 +136,9 @@ public class CommonWebAppSteps {
 	public void setUp(Scenario scenario) throws Exception {
 		try {
 			// async calls/waiting instances cleanup
-			CommonCallingSteps.getInstance().cleanupWaitingInstances();
-			CommonCallingSteps.getInstance().cleanupCalls();
+			CommonCallingSteps2.getInstance().cleanup();
 		} catch (Exception e) {
-			// do not fail if smt fails here
-			e.printStackTrace();
+			log.warn(e);
 		}
 
 		String platform = WebAppExecutionContext.getPlatform();
@@ -786,11 +785,9 @@ public class CommonWebAppSteps {
 	public void tearDown(Scenario scenario) throws Exception {
 		try {
 			// async calls/waiting instances cleanup
-			CommonCallingSteps.getInstance().cleanupWaitingInstances();
-			CommonCallingSteps.getInstance().cleanupCalls();
+			CommonCallingSteps2.getInstance().cleanup();
 		} catch (Exception e) {
-			// do not fail if smt fails here
-			e.printStackTrace();
+			log.warn(e);
 		}
 
 		WebPage.clearPagesCollection();

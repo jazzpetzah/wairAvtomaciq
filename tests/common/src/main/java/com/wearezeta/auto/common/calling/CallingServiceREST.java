@@ -5,8 +5,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
@@ -18,24 +16,27 @@ import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.client.urlconnection.HTTPSProperties;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.calling.models.CallingServiceBackend;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import com.wearezeta.auto.common.rest.RESTError;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.core.Configuration;
+import org.glassfish.jersey.client.ClientConfig;
 
 final class CallingServiceREST {
-	private static final Logger log = ZetaLogger
+	private static final Logger LOG = ZetaLogger
 			.getLog(CallingServiceREST.class.getSimpleName());
 
 	public static String getApiRoot() {
 		try {
-			return CommonUtils.getDefaultCallingServiceUrlFromConfig(CallingServiceREST.class);
+			return CommonUtils
+					.getDefaultCallingServiceUrlFromConfig(CallingServiceREST.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
@@ -45,10 +46,7 @@ final class CallingServiceREST {
 	private static final CommonRESTHandlers restHandlers = new CommonRESTHandlers(
 			CallingServiceREST::verifyRequestResult);
 
-	/**
-	 * Set configuration to accept our self-signed certificate for https
-	 */
-	public static ClientConfig configureClient() {
+	private static Client initClient(Configuration config) {
 		TrustManager[] certs = new TrustManager[] { new X509TrustManager() {
 			@Override
 			public X509Certificate[] getAcceptedIssuers() {
@@ -67,29 +65,20 @@ final class CallingServiceREST {
 		} };
 		SSLContext ctx = null;
 		try {
-			ctx = SSLContext.getInstance("TLS");
+			ctx = SSLContext.getInstance("SSL");
 			ctx.init(null, certs, new SecureRandom());
-		} catch (java.security.GeneralSecurityException ex) {
+		} catch (KeyManagementException | NoSuchAlgorithmException ex) {
+			LOG.error(ex);
 		}
-		HttpsURLConnection.setDefaultSSLSocketFactory(ctx.getSocketFactory());
 
-		ClientConfig config = new DefaultClientConfig();
-		try {
-			config.getProperties().put(
-					HTTPSProperties.PROPERTY_HTTPS_PROPERTIES,
-					new HTTPSProperties(new HostnameVerifier() {
-						@Override
-						public boolean verify(String hostname,
-								SSLSession session) {
-							return true;
-						}
-					}, ctx));
-		} catch (Exception e) {
-		}
-		return config;
+		return ClientBuilder
+				.newBuilder()
+				.withConfig(config)
+				.hostnameVerifier((String hostname, SSLSession session) -> true)
+				.sslContext(ctx).build();
 	}
 
-	private static Client client = Client.create(CallingServiceREST.configureClient());
+	public static final Client client = initClient(new ClientConfig());
 
 	private static void verifyRequestResult(int currentResponseCode,
 			int[] acceptableResponseCodes) throws CallingServiceException {
@@ -105,9 +94,8 @@ final class CallingServiceREST {
 
 	private static Builder buildDefaultRequest(String restAction, String accept) {
 		final String dstUrl = String.format("%s/%s", getApiRoot(), restAction);
-		log.debug(String.format("Request to %s...", dstUrl));
-		return client.resource(dstUrl).accept(accept)
-				.type(MediaType.APPLICATION_JSON);
+		LOG.debug(String.format("Request to %s...", dstUrl));
+		return client.target(dstUrl).request().accept(accept);
 	}
 
 	private static Builder buildDefaultRequest(String restAction) {
