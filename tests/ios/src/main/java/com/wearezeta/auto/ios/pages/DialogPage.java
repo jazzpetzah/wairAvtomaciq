@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -145,6 +146,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameGifButton)
 	private WebElement openGifPreviewButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCursorSketchButton)
+	private WebElement openSketchButton;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
 	private String connectingLabel = "CONNECTING TO %s.";
@@ -950,6 +954,10 @@ public class DialogPage extends IOSPage {
 
 	public void openGifPreviewPage() {
 		openGifPreviewButton.click();
+	}
+	
+	public void openSketch() {
+		openSketchButton.click();
 	}
 
 	public boolean isMyNameInDialogDisplayed(String name) throws Exception {

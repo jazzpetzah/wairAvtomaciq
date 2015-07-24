@@ -111,7 +111,7 @@ Feature: Sign In
       | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail                   | InvalidPassword | ErrorInvalidPassword                                |
       | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | EMAIL ADDRESS ALREADY TAKEN | @example.com | PLEASE ENTER A VALID EMAIL ADDRESS. | 123             | PLEASE CHOOSE A PASSWORD WITH AT LEAST 8 CHARACTERS |
 
-  @staging @id2227
+  @regression @id2227
   Scenario Outline: Show invitation button when Gmail import on registration has no suggestions
     Given There is 1 user where <Name> is me
     Given I switch to sign in page
