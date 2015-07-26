@@ -34,6 +34,7 @@ public class PhoneNumberVerificationPage extends WebPage {
 	}
 
 	public ContactListPage enterCode(String code) throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), phoneCodeField);
 		log.info("Enter code: " + code);
 		phoneCodeField.clear();
 		phoneCodeField.sendKeys(code);
@@ -46,5 +47,11 @@ public class PhoneNumberVerificationPage extends WebPage {
 						getDriver(),
 						By.cssSelector(WebAppLocators.PhoneNumberVerificationPage.cssErrorMessage));
 		return errorMessage.getText();
+	}
+
+	public AddEmailAddressPage enterCodeForEmaillessUser(String code)
+			throws Exception {
+		enterCode(code);
+		return new AddEmailAddressPage(getLazyDriver());
 	}
 }

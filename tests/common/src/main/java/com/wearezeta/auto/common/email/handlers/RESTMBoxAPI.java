@@ -10,12 +10,14 @@ import org.apache.log4j.Logger;
 import org.jboss.netty.handler.timeout.ReadTimeoutException;
 import org.json.JSONArray;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource.Builder;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import com.wearezeta.auto.common.rest.RESTError;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation.Builder;
+import org.glassfish.jersey.client.ClientProperties;
 
 final class RESTMBoxAPI {
 	private static final Logger log = ZetaLogger.getLog(RESTMBoxAPI.class
@@ -57,10 +59,10 @@ final class RESTMBoxAPI {
 			int timeoutMilliseconds) {
 		final String dstUrl = String.format("%s/%s", getApiRoot(), restAction);
 		log.debug(String.format("Request to %s...", dstUrl));
-		final Client client = Client.create();
-		client.setReadTimeout(timeoutMilliseconds);
-		return client.resource(dstUrl).accept(MediaType.APPLICATION_JSON)
-				.type(MediaType.APPLICATION_JSON);
+		final Client client = ClientBuilder.newClient();
+		client.property(ClientProperties.READ_TIMEOUT, timeoutMilliseconds);
+		return client.target(dstUrl).request()
+				.accept(MediaType.APPLICATION_JSON);
 	}
 
 	public static JSONArray getRecentEmailsForUser(String email, int minCount,

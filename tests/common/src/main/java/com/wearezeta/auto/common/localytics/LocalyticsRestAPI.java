@@ -8,10 +8,11 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.json.JSONObject;
 
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource.Builder;
-import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Invocation.Builder;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 /**
  * https://api.localytics.com/docs
@@ -39,12 +40,11 @@ final class LocalyticsRestAPI {
 
 	private static Builder buildDefaultRequest(String restAction,
 			LocalyticsToken token) throws Exception {
-		final Client client = Client.create();
-		client.addFilter(new HTTPBasicAuthFilter(token.getKey(), token
-				.getSecret()));
-		return client.resource(String.format("%s/%s", BASE_URL, restAction))
-				.type(MediaType.APPLICATION_JSON)
-				.accept(MEDIA_TYPE_LOCALYTICS_JSON);
+		final Client client = ClientBuilder.newClient();
+		client.register(HttpAuthenticationFeature.basic(token.getKey(),
+				token.getSecret()));
+		return client.target(String.format("%s/%s", BASE_URL, restAction))
+				.request().accept(MEDIA_TYPE_LOCALYTICS_JSON);
 	}
 
 	public static JSONObject query(LocalyticsToken token, JSONObject requestBody)

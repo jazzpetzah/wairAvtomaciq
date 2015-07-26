@@ -125,6 +125,13 @@ public final class CommonSteps {
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
+	public void ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(Platform currentPlatform, int count,
+			String myNameAlias) throws Exception {
+		usrMgr.createUsersOnBackend(count, RegistrationStrategy
+				.ByPhoneNumberOnly);
+		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
+	}
+
 	public void IgnoreAllIncomingConnectRequest(String userToNameAlias)
 			throws Exception {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);

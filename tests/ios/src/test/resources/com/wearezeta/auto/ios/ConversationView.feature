@@ -92,6 +92,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
+    And I return to the chat list
+    And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -117,6 +119,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
+    And I return to the chat list
+    And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -138,6 +142,8 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
+    And I return to the chat list
+    And I tap on contact name <Contact>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -160,6 +166,8 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input
+    And I return to the chat list
+    And I tap on contact name <Contact1>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -356,7 +364,9 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I post media link <YouTubeLink>
-    Then I see media link <YouTubeLink> and media in dialog
+    And I return to the chat list
+    And I tap on contact name <Contact>
+    Then I see youtube link <YouTubeLink> and media in dialog
     And I click video container for the first time
     And I see video player page is opened
 
@@ -373,7 +383,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <YouTubeLink>
-    And I see media link <YouTubeLink> and media in dialog
+    And I see youtube link <YouTubeLink> and media in dialog
     And I return to the chat list
     And I tap on contact name <Contact>
     And I click video container for the first time
@@ -404,9 +414,11 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I tap on text input
+    And I return to the chat list
+    And I tap on contact name <Contact1>
     And I see media link <SoundCloudLink> and media in dialog
     And I tap media link
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I see play/pause button next to username <Contact1> in contact list
     And I tap play/pause button in contact list next to username <Contact1>
     And I tap on contact name <Contact2>
@@ -575,3 +587,21 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Happy    |
+
+  @staging @id2976
+  Scenario Outline: I can send a sketch
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I tap on sketch button in cursor
+    And I draw a random sketch
+    And I send my sketch
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
