@@ -1,9 +1,8 @@
 package com.wearezeta.auto.android.steps;
 
-import java.util.List;
-
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidLoggingUtils;
+import com.wearezeta.auto.android.common.AndroidLogListener;
+import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.common.reporter.AndroidPerfReportModel;
 import com.wearezeta.auto.android.common.reporter.AndroidPerformanceHelpers;
 import com.wearezeta.auto.android.pages.ContactListPage;
@@ -126,12 +125,11 @@ public class PerformanceSteps {
 	 */
 	@Then("^I generate performance report for (\\d+) users?$")
 	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
-		final List<String> logOutput = AndroidLoggingUtils
-				.getLogLinesForCurrentTestCase(CommonAndroidSteps
-						.getTestStartedTimestamp());
 		final AndroidPerfReportModel dataModel = new AndroidPerfReportModel();
 		dataModel.setContactsCount(usersCount - 1);
-		dataModel.loadDataFromLogCat(String.join("\n", logOutput));
+		final String logOutput = AndroidLogListener.getInstance(
+				ListenerType.PERF).getStdOut();
+		dataModel.loadDataFromLogCat(logOutput);
 		AndroidPerformanceHelpers.storeWidgetDataAsJSON(dataModel,
 				AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
 	}

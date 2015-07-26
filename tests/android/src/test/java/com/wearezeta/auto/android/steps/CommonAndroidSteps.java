@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.steps;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -20,7 +19,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidLoggingUtils;
+import com.wearezeta.auto.android.common.AndroidLogListener;
+import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.CommonCallingSteps;
@@ -62,11 +62,6 @@ public class CommonAndroidSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
-	private static long testStartedTimestamp = -1;
-
-	public static long getTestStartedTimestamp() {
-		return testStartedTimestamp;
-	}
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	public static final int DEFAULT_SWIPE_TIME = 1500;
@@ -187,7 +182,7 @@ public class CommonAndroidSteps {
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
-		testStartedTimestamp = new Date().getTime();
+		AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
 				getUrl(), getPath(), isUnicode, this.getClass());
 		pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
@@ -196,6 +191,7 @@ public class CommonAndroidSteps {
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
+		AndroidLogListener.getInstance(ListenerType.PERF).start();
 		try {
 			AndroidCommonUtils.disableHints();
 		} catch (Exception e) {
@@ -861,7 +857,10 @@ public class CommonAndroidSteps {
 				e.printStackTrace();
 			}
 		}
-		AndroidLoggingUtils.writeDeviceLogsToConsole(testStartedTimestamp);
+
+		AndroidLogListener.forceStopAll();
+		AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener
+				.getInstance(ListenerType.DEFAULT));
 
 		commonSteps.getUserManager().resetUsers();
 	}

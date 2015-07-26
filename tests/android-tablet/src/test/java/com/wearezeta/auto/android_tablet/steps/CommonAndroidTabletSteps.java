@@ -1,6 +1,5 @@
 package com.wearezeta.auto.android_tablet.steps;
 
-import java.util.Date;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
@@ -16,7 +15,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidLoggingUtils;
+import com.wearezeta.auto.android.common.AndroidLogListener;
+import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
@@ -58,7 +58,6 @@ public class CommonAndroidTabletSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
-	private long testStartedTimestamp = Long.MAX_VALUE;
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	public static final int DEFAULT_SWIPE_TIME = 1500;
@@ -180,7 +179,7 @@ public class CommonAndroidTabletSteps {
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
-		testStartedTimestamp = new Date().getTime();
+		AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
 				getUrl(), getPath(), isUnicode);
 		pagesCollection.setFirstPage(new TabletWelcomePage(lazyDriver));
@@ -235,7 +234,9 @@ public class CommonAndroidTabletSteps {
 			}
 		}
 
-		AndroidLoggingUtils.writeDeviceLogsToConsole(testStartedTimestamp);
+		AndroidLogListener.forceStopAll();
+		AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener
+				.getInstance(ListenerType.DEFAULT));
 
 		commonSteps.getUserManager().resetUsers();
 	}
