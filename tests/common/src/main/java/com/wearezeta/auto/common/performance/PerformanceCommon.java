@@ -83,20 +83,4 @@ public final class PerformanceCommon {
 			}
 		} while (System.currentTimeMillis() - millisecondsStarted < timeoutMinutes * 60000);
 	}
-	// private void sendDefaultImageToUser(int imagesCount) throws Exception {
-	// final ClientUser selfUser = getUserManager().getSelfUserOrThrowError();
-	// final ClassLoader classLoader = this.getClass().getClassLoader();
-	// final InputStream defaultImage = classLoader
-	// .getResourceAsStream(DEFAULT_PERF_IMAGE);
-	// try {
-	// for (int i = 0; i < imagesCount; i++) {
-	// BackendAPIWrappers.sendPictureToChatById(selfUser,
-	// getRandomConversationId(selfUser), defaultImage);
-	// }
-	// } finally {
-	// if (defaultImage != null) {
-	// defaultImage.close();
-	// }
-	// }
-	// }
 }
