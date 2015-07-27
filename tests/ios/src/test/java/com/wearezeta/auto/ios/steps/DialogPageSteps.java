@@ -755,6 +755,18 @@ public class DialogPageSteps {
 		getDialogPage().sendStringToInput(message);
 		getDialogPage().openGifPreviewPage();
 	}
+	
+	/**
+	 * Opens the sketch feature
+	 * 
+	 * @step. ^I tap on sketch button in cursor$
+	 * @throws Exception
+	 */
+	@When("^I tap on sketch button in cursor$")
+	public void ITapSketchButton() throws Exception {
+		getDialogPage().openSketch();
+	}
+	
 
 	/**
 	 * Verify my user name in conversation view
