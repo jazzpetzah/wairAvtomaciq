@@ -10,6 +10,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
+import com.thoughtworks.selenium.SeleniumException;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -115,18 +116,24 @@ public class ContactListPage extends AndroidPage {
 		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		do {
-			final int itemsCount = getDriver().findElements(
-					By.xpath(xpathNonEmptyContacts)).size();
-			for (int i = 1; i <= itemsCount; i++) {
-				final By locator = By.xpath(xpathNonEmptyContactByIdx.apply(i));
-				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-						locator, 1)) {
-					final String name = getDriver().findElement(locator)
-							.getText();
-					if ((name instanceof String) && name.length() > 0) {
-						return name;
+			try {
+				final int itemsCount = getDriver().findElements(
+						By.xpath(xpathNonEmptyContacts)).size();
+				for (int i = 1; i <= itemsCount; i++) {
+					final By locator = By.xpath(xpathNonEmptyContactByIdx
+							.apply(i));
+					if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+							locator, 1)) {
+						final String name = getDriver().findElement(locator)
+								.getText();
+						if ((name instanceof String) && name.length() > 0) {
+							return name;
+						}
 					}
 				}
+			} catch (SeleniumException e) {
+				e.printStackTrace();
+				// Ignore silently
 			}
 			Thread.sleep(millisecondsDelay);
 			ntry++;
