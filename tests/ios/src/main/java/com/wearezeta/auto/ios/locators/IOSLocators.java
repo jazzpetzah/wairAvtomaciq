@@ -387,7 +387,7 @@ public final class IOSLocators {
 	
 	public static final String nameMediaCellPlayButton = "mediaCellButton";
 	
-	public static final String xpathMediaConversationCell = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIATableView/UIATableCell/UIAWebView[last()]";
+	public static final String xpathMediaConversationCell = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[last()]/UIATableCell[last()]/UIAButton[2]";
 	
 	public static final String xpathYoutubeConversationCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAButton[1]";
 	
