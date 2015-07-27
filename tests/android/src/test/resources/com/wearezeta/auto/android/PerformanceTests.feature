@@ -7,7 +7,6 @@ Feature: Performance Tests
     Given Myself is connected to all other users
     Given I receive <MsgsCount> messages from contact <Sender>
     Given I sign in using my email
-    Given I see Contact list with contacts
     When I start test cycle for <Time> minutes with messages received from <Sender>
     Then I generate performance report for <UsersNumber> users
 

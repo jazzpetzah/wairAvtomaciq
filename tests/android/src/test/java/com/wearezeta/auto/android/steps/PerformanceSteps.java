@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android.steps;
 
+import org.junit.Assert;
+
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidLogListener;
 import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
@@ -58,6 +60,25 @@ public class PerformanceSteps {
 		perfCommon.sendMultipleMessagesIntoConversation(asContact, msgsCount);
 	}
 
+	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
+		final int maxTries = 3;
+		final long millisecondsDelay = 20000;
+		int ntry = 1;
+		do {
+			try {
+				getContactListPage().verifyContactListIsFullyLoaded();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Thread.sleep(millisecondsDelay);
+			ntry++;
+		} while (!getContactListPage().isAnyConversationVisible()
+				&& ntry <= maxTries);
+		Assert.assertTrue(
+				"No conversations are visible in the conversations list, but some are expected",
+				getContactListPage().isAnyConversationVisible());
+	}
+
 	/**
 	 * Starts standard actions loop (read messages/send messages) to measure
 	 * application performance
@@ -74,6 +95,7 @@ public class PerformanceSteps {
 	@When("^I start test cycle for (\\d+) minutes? with messages received from (.*)")
 	public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact)
 			throws Exception {
+		waitUntilConversationsListIsFullyLoaded();
 		final String destConvoName = usrMgr.findUserByNameOrNameAlias(
 				fromContact).getName();
 		String firstConvoName = getContactListPage()
