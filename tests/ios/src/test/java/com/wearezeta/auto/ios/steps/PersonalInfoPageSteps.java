@@ -511,8 +511,8 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I set my accent color via the colorpicker to (.*)$
 	 * 
-	 * @param String
-	 *            color - should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * @param color
+	 *             should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed, BrightOrange, SoftPink, Violet
 	 * @throws Exception
 	 */
 	@When("^I set my accent color via the colorpicker to (.*)$")
@@ -527,8 +527,8 @@ public class PersonalInfoPageSteps {
 	 * 
 	 * @step. ^I slide my accent color via the colorpicker from (.*) to (.*)$
 	 * 
-	 * @param String
-	 *            color - should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * @param color
+	 *            should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed, BrightOrange, SoftPink, Violet
 	 * @throws Exception
 	 */
 	@When("^I slide my accent color via the colorpicker from (.*) to (.*)$")
