@@ -382,10 +382,9 @@ public class ConversationPage extends WebPage {
 		getDriver().findElement(locator).click();
 	}
 
-	@Deprecated
 	public void clickSilenceCallButton() throws Exception {
 		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathEndCallButton);
+				.xpath(WebAppLocators.ConversationPage.xpathSilenceIncomingCallButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Silence call button has not been shown after "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";

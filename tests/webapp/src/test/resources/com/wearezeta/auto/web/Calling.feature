@@ -334,7 +334,7 @@ Feature: Calling
     Then I see the calling bar from user <Contact>
     When I call
     Then I see the calling bar from user <Contact>
-    When I end the call
+      When I silence the incoming call
     Then I do not see the calling bar
 
     Examples: 
@@ -354,7 +354,7 @@ Feature: Calling
     And I open conversation with <Contact1>
     When <Contact1> calls me using <CallBackend>
     And I see the calling bar
-    When I end the call
+      When I silence the incoming call
     When I open conversation with <Contact2>
     Then I do not see the calling bar
     When I call

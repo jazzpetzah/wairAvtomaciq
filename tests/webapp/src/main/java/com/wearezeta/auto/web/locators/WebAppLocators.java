@@ -253,6 +253,9 @@ public final class WebAppLocators {
 		public static String xpathEndCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-close')]";
 
+		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot
+				+ "//*[contains(@class, 'icon-minus')]";
+
 		// image fullscreen
 
 		public static final String cssModalDialog = ".modal-show";
