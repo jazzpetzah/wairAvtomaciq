@@ -111,20 +111,29 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public String getFirstVisibleConversationName() throws Exception {
-		final int itemsCount = getDriver().findElements(
-				By.xpath(xpathNonEmptyContacts)).size();
-		for (int i = 1; i <= itemsCount; i++) {
-			final By locator = By.xpath(xpathNonEmptyContactByIdx.apply(i));
-			if (DriverUtils
-					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
-				final String name = getDriver().findElement(locator).getText();
-				if ((name instanceof String) && name.length() > 0) {
-					return name;
+		final int maxTries = 5;
+		final long millisecondsDelay = 20000;
+		int ntry = 1;
+		do {
+			final int itemsCount = getDriver().findElements(
+					By.xpath(xpathNonEmptyContacts)).size();
+			for (int i = 1; i <= itemsCount; i++) {
+				final By locator = By.xpath(xpathNonEmptyContactByIdx.apply(i));
+				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						locator, 1)) {
+					final String name = getDriver().findElement(locator)
+							.getText();
+					if ((name instanceof String) && name.length() > 0) {
+						return name;
+					}
 				}
 			}
-		}
+			Thread.sleep(millisecondsDelay);
+			ntry++;
+		} while (ntry <= maxTries);
 		throw new AssertionError(
-				"There are no visible conversations in the list");
+				"There are no visible conversations in the list after "
+						+ millisecondsDelay * maxTries / 1000 + " seconds");
 	}
 
 	public void tapOnName(final String name) throws Exception {
