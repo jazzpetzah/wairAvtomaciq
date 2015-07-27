@@ -33,13 +33,32 @@ public class PhoneNumberVerificationPageSteps {
 	 * @throws Throwable
 	 */
 	@When("^I enter phone verification code for user (.*)$")
-	public void i_enter_phone_verification_code_for_user_user_Name(String name)
+	public void IEnterPhoneVerificationCodeForUser(String name)
 			throws Throwable {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
 		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
 				.getPhoneNumber());
 		PagesCollection.contactListPage = PagesCollection.phoneNumberVerificationPage
 				.enterCode(code);
+	}
+
+	/**
+	 * Fills out correct country code and phone number for a user that has no email
+	 * 
+	 * @step. ^I enter phone verification code for emailless user (.*)$
+	 * 
+	 * @param name
+	 *            name alias of the user
+	 * @throws Throwable
+	 */
+	@When("^I enter phone verification code for emailless user (.*)$")
+	public void IEnterPhoneVerificationCodeForEmaillessUser(String name)
+			throws Throwable {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
+				.getPhoneNumber());
+		PagesCollection.addEmailAddressPage = PagesCollection.phoneNumberVerificationPage
+				.enterCodeForEmaillessUser(code);
 	}
 
 	/**

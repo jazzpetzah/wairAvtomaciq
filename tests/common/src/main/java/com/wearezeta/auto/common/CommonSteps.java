@@ -118,6 +118,13 @@ public final class CommonSteps {
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
+	public void ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(Platform currentPlatform, int count,
+			String myNameAlias) throws Exception {
+		usrMgr.createUsersOnBackend(count, RegistrationStrategy
+				.ByPhoneNumberOnly);
+		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
+	}
+
 	public void IgnoreAllIncomingConnectRequest(String userToNameAlias)
 			throws Exception {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
@@ -126,6 +133,11 @@ public final class CommonSteps {
 
 	private static final int DRIVER_PING_INTERVAL_SECONDS = 60;
 
+	/**
+	 * Wait for time in seconds
+	 * 
+	 * @throws Exception
+	 */
 	public void WaitForTime(int seconds) throws Exception {
 		final Thread pingThread = new Thread() {
 			public void run() {
@@ -147,6 +159,37 @@ public final class CommonSteps {
 		pingThread.start();
 		try {
 			Thread.sleep(seconds * 1000);
+		} finally {
+			pingThread.interrupt();
+		}
+	}
+
+	/**
+	 * Wait for time in seconds
+	 * 
+	 * @throws Exception
+	 */
+	public void WaitForTime(double seconds) throws Exception {
+		final Thread pingThread = new Thread() {
+			public void run() {
+				do {
+					try {
+						Thread.sleep(DRIVER_PING_INTERVAL_SECONDS * 1000);
+					} catch (InterruptedException e) {
+						return;
+					}
+					try {
+						PlatformDrivers.getInstance().pingDrivers();
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+				} while (!isInterrupted());
+			}
+		};
+		pingThread.start();
+		try {
+			Thread.sleep((int) (seconds * 1000));
 		} finally {
 			pingThread.interrupt();
 		}

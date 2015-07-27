@@ -33,6 +33,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
+import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
@@ -135,11 +136,9 @@ public class CommonWebAppSteps {
 	public void setUp(Scenario scenario) throws Exception {
 		try {
 			// async calls/waiting instances cleanup
-			CommonCallingSteps.getInstance().cleanupWaitingInstances();
-			CommonCallingSteps.getInstance().cleanupCalls();
+			CommonCallingSteps2.getInstance().cleanup();
 		} catch (Exception e) {
-			// do not fail if smt fails here
-			e.printStackTrace();
+			log.warn(e);
 		}
 
 		String platform = WebAppExecutionContext.getPlatform();
@@ -182,6 +181,10 @@ public class CommonWebAppSteps {
 											WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
 				} else {
 					lazyWebDriver.manage().window().maximize();
+				}
+				if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
+					WebCommonUtils.clearHistoryInSafari(lazyWebDriver
+							.getNodeIp());
 				}
 				return lazyWebDriver;
 			}
@@ -353,6 +356,28 @@ public class CommonWebAppSteps {
 			String myNameAlias) throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
 				myNameAlias);
+	}
+
+	/**
+	 * Creates specified number of users and sets user with specified name as
+	 * main user. The user is registered with a phone number only and has no
+	 * email address attached
+	 * 
+	 * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with phone number
+	 *        only$
+	 * 
+	 * @param count
+	 *            number of users to create
+	 * @param myNameAlias
+	 *            user name or name alias to use as main user
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
+	public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
+			String myNameAlias) throws Exception {
+		commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
+				CURRENT_PLATFORM, count, myNameAlias);
 	}
 
 	/**
@@ -563,7 +588,7 @@ public class CommonWebAppSteps {
 	/**
 	 * Send Ping into a conversation using the backend
 	 * 
-	 * @step. ^(.*) pinged conversation with (.*)$
+	 * @step. ^User (.*) pinged in the conversation with (.*)$
 	 * 
 	 * @param pingFromUserNameAlias
 	 *            conversations list owner name/alias
@@ -571,10 +596,28 @@ public class CommonWebAppSteps {
 	 *            the name of conversation to send ping to
 	 * @throws Exception
 	 */
-	@When("^(.*) pinged the conversation with (.*)$")
+	@When("^User (.*) pinged in the conversation with (.*)$")
 	public void UserPingedConversation(String pingFromUserNameAlias,
 			String dstConversationName) throws Exception {
 		commonSteps.UserPingedConversation(pingFromUserNameAlias,
+				dstConversationName);
+	}
+
+	/**
+	 * Send Hotping into a conversation using the backend
+	 *
+	 * @step. ^User (.*) pinged twice in the conversation with (.*)$
+	 *
+	 * @param pingFromUserNameAlias
+	 *            conversations list owner name/alias
+	 * @param dstConversationName
+	 *            the name of conversation to send ping to
+	 * @throws Exception
+	 */
+	@When("^User (.*) pinged twice in the conversation with (.*)$")
+	public void UserHotPingedConversation(String pingFromUserNameAlias,
+			String dstConversationName) throws Exception {
+		commonSteps.UserHotPingedConversation(pingFromUserNameAlias,
 				dstConversationName);
 	}
 
@@ -764,11 +807,9 @@ public class CommonWebAppSteps {
 	public void tearDown(Scenario scenario) throws Exception {
 		try {
 			// async calls/waiting instances cleanup
-			CommonCallingSteps.getInstance().cleanupWaitingInstances();
-			CommonCallingSteps.getInstance().cleanupCalls();
+			CommonCallingSteps2.getInstance().cleanup();
 		} catch (Exception e) {
-			// do not fail if smt fails here
-			e.printStackTrace();
+			log.warn(e);
 		}
 
 		WebPage.clearPagesCollection();
@@ -891,21 +932,4 @@ public class CommonWebAppSteps {
 				.openSignInPage();
 	}
 
-	/**
-	 * Workaround: cleanSession capability of Safari does not delete cookies
-	 * that cannot be deleted by JS, so we added a workaround to logout from
-	 * google
-	 * 
-	 * @step. ^I sign out from Google if necessary$
-	 * 
-	 * @throws Exception
-	 */
-	@Given("^I sign out from Google if necessary$")
-	public void ISignOutFromGoogleIfNecessary() throws Exception {
-		// cleanSession capability of Safari does not delete cookies that cannot
-		// be deleted by JS, so we added a workaround to logout from google
-		if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
-			PagesCollection.registrationPage.signOutFromGoogle();
-		}
-	}
 }

@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -50,6 +51,8 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = idConfirmBtn)
 	private WebElement confirmBtn;
 
+	// private final CommonSteps commonSteps = CommonSteps.getInstance();
+
 	public ConnectToPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -75,9 +78,38 @@ public class ConnectToPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
+	private static final int MAX_SCROLLS = 5;
+
 	public boolean isConnectToHeaderVisible(String text) throws Exception {
 		final By locator = By.xpath(xpathConnectToHeaderByText.apply(text));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public void scrollToInboxContact(String contactName) throws Exception {
+		scrollToInboxContact(contactName, MAX_SCROLLS);
+	}
+
+	public void scrollToInboxContact(String contactName, int maxScrolls)
+			throws Exception {
+		final By locator = By.xpath(xpathConnectToHeaderByText
+				.apply(contactName));
+		int ntry = 1;
+		do {
+			if (DriverUtils
+					.waitUntilLocatorIsDisplayed(getDriver(), locator, 3)) {
+				this.waitUntilIgnoreButtonIsVisible();
+				this.swipeUpCoordinates(1000, 50);
+			} else {
+				this.waitUntilIgnoreButtonIsVisible();
+				this.swipeDownCoordinates(1000, 50);
+				return;
+			}
+			ntry++;
+		} while (ntry <= maxScrolls);
+		throw new RuntimeException(
+				String.format(
+						"Failed to find user %s in the inbox after scrolling %s users!",
+						contactName, maxScrolls));
 	}
 
 	public DialogPage pressAcceptConnectButton() throws Exception {
@@ -95,12 +127,17 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public boolean isIgnoreConnectButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), connectIgnoreBtn)
-				&& DriverUtils.isElementPresentAndDisplayed(getDriver(), connectAcceptBtn);
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				connectIgnoreBtn, 3);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				connectIgnoreBtn)
+				&& DriverUtils.isElementPresentAndDisplayed(getDriver(),
+						connectAcceptBtn);
 	}
 
 	public boolean isPending() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), pendingText);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				pendingText);
 	}
 
 	public void tapEditConnectionRequest() throws Exception {

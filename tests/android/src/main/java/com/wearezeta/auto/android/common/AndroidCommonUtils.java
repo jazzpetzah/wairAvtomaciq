@@ -82,7 +82,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 
 	private static String getAdbOutput(String cmdLine) throws Exception {
-		String result = "no info";
+		String result = "";
 
 		String adbCommand = ADB_PREFIX + "adb " + cmdLine;
 		final Process process = Runtime.getRuntime().exec(
@@ -97,7 +97,7 @@ public class AndroidCommonUtils extends CommonUtils {
 					process.getInputStream()));
 			String s;
 			while ((s = in.readLine()) != null) {
-				result = s + "\n";
+				result += s + "\n";
 			}
 			outputErrorStreamToLog(process.getErrorStream());
 		} finally {
@@ -146,7 +146,7 @@ public class AndroidCommonUtils extends CommonUtils {
 				"shell dumpsys package %s | grep versionName", CommonUtils
 						.getAndroidPackageFromConfig(AndroidCommonUtils.class)));
 		if (output.contains("=")) {
-			return output.substring(output.indexOf("="), output.length());
+			return output.substring(output.indexOf("=") + 1, output.length());
 		} else {
 			return output;
 		}

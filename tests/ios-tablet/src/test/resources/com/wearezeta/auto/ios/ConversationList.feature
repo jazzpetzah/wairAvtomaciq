@@ -280,6 +280,7 @@ Feature: Conversation List
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
+    And <Contact> verifies that call status to me is changed to inactive in 60 seconds
     Then I see missed call indicator in list for contact <Contact>
     When Contact <Contact> send number <Number> of message to user <Name>
     Then I see missed call indicator in list for contact <Contact>
@@ -301,6 +302,7 @@ Feature: Conversation List
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
+    And <Contact> verifies that call status to me is changed to inactive in 60 seconds
     Then I see missed call indicator in list for contact <Contact>
     When Contact <Contact> send number <Number> of message to user <Name>
     Then I see missed call indicator in list for contact <Contact>
@@ -311,7 +313,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
-  @staging @id2371
+  @regression @id2371
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -406,10 +408,10 @@ Feature: Conversation List
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Contact> sent message <SoundCloudLink> to conversation <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
-    And User <Contact> sent message <SoundCloudLink> to conversation <Contact>
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap media link

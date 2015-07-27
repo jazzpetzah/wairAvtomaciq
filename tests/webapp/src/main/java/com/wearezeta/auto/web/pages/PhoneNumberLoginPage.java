@@ -34,7 +34,8 @@ public class PhoneNumberLoginPage extends WebPage {
 		super(lazyDriver, url);
 	}
 
-	public void enterCountryCode(String countryCode) {
+	public void enterCountryCode(String countryCode) throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), countryCodeField);
 		countryCodeField.clear();
 		countryCodeField.sendKeys(countryCode);
 	}

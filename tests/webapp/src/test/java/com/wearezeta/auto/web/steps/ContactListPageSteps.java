@@ -9,12 +9,15 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertTrue;
 
 public class ContactListPageSteps {
@@ -23,6 +26,9 @@ public class ContactListPageSteps {
 			.getLog(ContactListPageSteps.class.getSimpleName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	private static final String TOOLTIP_SILENCE = "Silence";
+	private static final String SHORTCUT_SILENCE_WIN = "(Ctrl + Alt + L)";
+	private static final String SHORTCUT_SILENCE_MAC = "(⌘⌥L)";
 
 	/**
 	 * Checks that contact list is loaded and waits for profile avatar to be
@@ -567,5 +573,72 @@ public class ContactListPageSteps {
 					+ "' is not visible after timeout expired");
 		} else
 			throw new Error("Top People are not selected");
+	}
+
+	/**
+	 * Click on options button for conversation
+	 * 
+	 * @step. ^I click on options button for conversation (.*)$
+	 * 
+	 * @param contact
+	 *            conversation name string
+	 * @throws Exception
+	 */
+
+	@When("^I click on options button for conversation (.*)$")
+	public void IClickOnOptionsButton(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
+	}
+
+	/**
+	 * I hover mute button for the particular conversation
+	 * 
+	 * @step. ^I hover mute button for conversation (.*)
+	 * 
+	 * @param contact
+	 *            conversation name string
+	 * @throws Exception
+	 */
+	@When("^I hover mute button for conversation (.*)$")
+	public void IHoverMuteButtonFor(String contact) throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		PagesCollection.contactListPage.hoverMuteButtonForContact(contact);
+	}
+
+	/**
+	 * Verifies whether silence button tool tip is correct or not.
+	 *
+	 * @step. ^I see correct tooltip for silence button$
+	 * @throws Exception
+	 *
+	 */
+	@Then("^I see correct tooltip for silence button in conversation (.*)$")
+	public void ISeeCorrectTooltipForSilenceButton(String contact)
+			throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		String tooltip = TOOLTIP_SILENCE + " ";
+		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
+			tooltip = tooltip + SHORTCUT_SILENCE_WIN;
+		} else {
+			tooltip = tooltip + SHORTCUT_SILENCE_MAC;
+		}
+		assertThat("Silence button tooltip",
+				PagesCollection.contactListPage.getMuteButtonToolTip(contact),
+				equalTo(tooltip));
+	}
+
+	/**
+	 * Types shortcut combination to mute or unmute the conversation
+	 * 
+	 * @step. ^I type shortcut combination to mute the conversation (.*)$
+	 * @throws Exception
+	 */
+	@When("^I type shortcut combination to mute or unmute the conversation (.*)$")
+	public void ITypeShortcutCombinationToMuteOrUnmute(String contact)
+			throws Exception {
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		PagesCollection.contactListPage.pressShortCutToMuteOrUnmute(contact);
+
 	}
 }

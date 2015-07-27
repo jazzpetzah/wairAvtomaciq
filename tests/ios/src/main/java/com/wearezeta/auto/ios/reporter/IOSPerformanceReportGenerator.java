@@ -145,13 +145,13 @@ public class IOSPerformanceReportGenerator {
 	}
 
 	private static int readApplicationStartupTime(String output) {
-		int result = -1;
+		int result = 0;
 		Pattern pattern = Pattern
 				.compile(ReporterConstants.Log.APP_LAUNCH_TIME_REGEX);
 		Matcher matcher = pattern.matcher(output);
 		while (matcher.find()) {
 			try {
-				result = (int) (Long.parseLong(matcher.group(1)) / 1000000);
+				result = (int) (Long.parseLong(matcher.group(1)));
 			} catch (NumberFormatException e) {
 			}
 		}
@@ -159,13 +159,13 @@ public class IOSPerformanceReportGenerator {
 	}
 
 	private static int readSuccessfulLoginTime(String output) {
-		int result = -1;
+		int result = 0;
 		Pattern pattern = Pattern
 				.compile(ReporterConstants.Log.LOGIN_SUCCESS_REGEX);
 		Matcher matcher = pattern.matcher(output);
 		while (matcher.find()) {
 			try {
-				result = (int) (Long.parseLong(matcher.group(1)) / 1000000);
+				result = (int) (Long.parseLong(matcher.group(1)));
 			} catch (NumberFormatException e) {
 			}
 		}
@@ -180,7 +180,7 @@ public class IOSPerformanceReportGenerator {
 		Matcher matcher = pattern.matcher(output);
 		while (matcher.find()) {
 			try {
-				result = (int) (Long.parseLong(matcher.group(1)) / 1000000);
+				result = (int) (Long.parseLong(matcher.group(1)));
 				log.debug("Conversation loading time " + result);
 				count++;
 			} catch (NumberFormatException e) {

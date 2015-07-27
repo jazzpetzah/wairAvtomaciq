@@ -31,7 +31,7 @@ public final class WebAppLocators {
 
 		public static final String xpathChangePasswordButton = "//*[@data-uie-name='go-forgot-password']";
 
-		public static final String xpathLoginErrorText = "//*[@data-uie-name='status-error']";
+		public static final String cssLoginErrorText = ".has-error [data-uie-name='status-error']";
 
 		public static final String cssRedDotOnEmailField = ".auth-page .has-error .form-control #wire-email";
 
@@ -183,13 +183,15 @@ public final class WebAppLocators {
 
 		public static final String idConversation = "conversation";
 
+		public static final String idMessageList = "message-list";
+
 		// messages (including images, text, missed call notifications, pings)
 
-		public static final String cssMessage = "[data-uie-name='item-message'][data-uie-visible='true']";
+		public static final String cssMessage = "[data-uie-name='item-message']";
 
-		public static final String cssLastMessage = "[data-uie-name='item-message'][data-uie-visible='true']:last-child";
+		public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
 
-		public static final String cssSecondLastMessage = "[data-uie-name='item-message'][data-uie-visible='true']:nth-last-child(2)";
+		public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";
 
 		public static final String cssLastTextMessage = cssLastMessage
 				+ " .text-inner";
@@ -198,8 +200,6 @@ public final class WebAppLocators {
 				+ " .text-inner";
 
 		public static final String cssFirstAction = cssMessage + " .action";
-
-		public static final String cssLastAction = cssLastMessage + " .action";
 
 		public static final String xpathLastImageEntry = "(//*[@data-uie-name='go-image-detail' and @data-uie-visible='true'])[last()]";
 
@@ -427,6 +427,14 @@ public final class WebAppLocators {
 
 	public static final class PhoneNumberVerificationPage {
 		public static final String cssErrorMessage = "#form-login-phone-code [data-uie-name='status-error']";
+	}
+
+	public static final class AddEmailAddressPage {
+		public static final String cssErrorMessage = "#form-login-phone-mail [data-uie-name='status-error']";
+
+		public static final String cssRedDotOnEmailField = ".auth-page .has-error .form-control #wire-mail-email";
+
+		public static final String cssRedDotOnPasswordField = ".auth-page .has-error .form-control #wire-mail-password";
 	}
 
 	public static final class PhoneNumberLoginPage {

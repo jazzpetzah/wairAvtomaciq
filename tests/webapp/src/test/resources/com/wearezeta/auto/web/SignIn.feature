@@ -50,7 +50,6 @@ Feature: Sign In
       | Name      |
       | user1Name |
 
-
   @regression @id2715
   Scenario Outline: Verify you see correct error message when sign in with incorrect phone number
     Given I switch to sign in page
@@ -61,7 +60,7 @@ Feature: Sign In
     Then I see invalid phone number error message saying <Error>
 
     Examples: 
-      | CountryCode | PhoneNumber | Error        |
+      | CountryCode | PhoneNumber | Error                |
       | +49         | 9999999999  | INVALID PHONE NUMBER |
       | +49         | qwerqwer    | INVALID PHONE NUMBER |
       | +49         | !@$!@$      | INVALID PHONE NUMBER |
@@ -80,10 +79,41 @@ Feature: Sign In
       | Name      | Error        |
       | user1Name | INVALID CODE |
 
-  @staging @id2227
+  @staging @id2707
+  Scenario Outline: Verify you are asked to add an email address after sign in with a phone number
+    Given There is 1 user where <Name> is me with phone number only
+    Given I switch to sign in page
+    When I switch to phone number sign in page
+    When I sign in using phone number of user <Name>
+    And I click on forward button on phone number sign in
+    And I enter phone verification code for emailless user <Name>
+    And I enter email address <EmailOfOtherUser> on add email address dialog
+    And I enter password <PasswordOfOtherUser> on add email address dialog
+    And I click add button on add email address dialog
+    Then I see error message on add email address dialog saying <ErrorAlready>
+    And a red dot is shown inside the email field on add email address dialog
+    When I enter email address <InvalidEmail> on add email address dialog
+    And I enter password <PasswordOfOtherUser> on add email address dialog
+    And I click add button on add email address dialog
+    Then I see error message on add email address dialog saying <ErrorInvalidEmail>
+    And a red dot is shown inside the email field on add email address dialog
+    When I enter email of user <Name> on add email address dialog
+    And I enter password <InvalidPassword> on add email address dialog
+    And I click add button on add email address dialog
+    Then I see error message on add email address dialog saying <ErrorInvalidPassword>
+    And a red dot is shown inside the password field on add email address dialog
+    When I enter email of user <Name> on add email address dialog
+    And I enter password <PasswordOfOtherUser> on add email address dialog
+    And I click add button on add email address dialog
+    Then I verify that an envelope icon is shown
+
+    Examples: 
+      | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail                   | InvalidPassword | ErrorInvalidPassword                                |
+      | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | EMAIL ADDRESS ALREADY TAKEN | @example.com | PLEASE ENTER A VALID EMAIL ADDRESS. | 123             | PLEASE CHOOSE A PASSWORD WITH AT LEAST 8 CHARACTERS |
+
+  @regression @id2227
   Scenario Outline: Show invitation button when Gmail import on registration has no suggestions
     Given There is 1 user where <Name> is me
-    Given I sign out from Google if necessary
     Given I switch to sign in page
     Given I see Sign In page
     When I enter email <Email>

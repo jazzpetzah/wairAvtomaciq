@@ -80,9 +80,6 @@ public class ConversationPage extends WebPage {
 	@FindBy(css = WebAppLocators.ConversationPage.cssSecondLastTextMessage)
 	private WebElement secondLastTextMessage;
 
-	@FindBy(css = WebAppLocators.ConversationPage.cssLastAction)
-	private WebElement lastAction;
-
 	@FindBy(css = WebAppLocators.ConversationPage.cssImageEntries)
 	private WebElement lastPicture;
 
@@ -338,7 +335,7 @@ public class ConversationPage extends WebPage {
 
 	public String getMissedCallMessage() throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssLastAction);
+				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
 				+ MISSED_CALL_MSG_TIMOEUT + " second(s) timeout";

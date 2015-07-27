@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @staging @id2587
+  @regression @id2587
   Scenario Outline: Verify user can access settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -14,7 +14,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @id3021
+  @regression @id3021
   Scenario Outline: Verify user can access settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -28,7 +28,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @id2588
+  @regression @id2588
   Scenario Outline: Attempt to open About screen in settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -44,7 +44,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @id3022
+  @regression @id3022
   Scenario Outline: Attempt to open About screen in settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -60,7 +60,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @id2591
+  @regression @id2591
   Scenario Outline: Verify reset password page is accessible from settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -75,7 +75,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @id3023
+  @regression @id3023
   Scenario Outline: Verify reset password page is accessible from settings [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -90,7 +90,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @id2596
+  @regression @id2596
   Scenario Outline: Verify default value for sound settings is all [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -106,7 +106,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @id3024
+  @regression @id3024
   Scenario Outline: Verify default value for sound settings is all [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -122,7 +122,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @id3019
+  @regression @id3019
   Scenario Outline: Verify you can access Help site within the app [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -136,7 +136,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @id3025
+  @regression @id3025
   Scenario Outline: Verify you can access Help site within the app [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -227,3 +227,64 @@ Feature: Settings
     Examples: 
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
+
+  @regression @id2589
+  Scenario Outline: Verify about screen contains all the required information [PORTRAIT]
+    Given There is 1 user where <Name> is me
+    Given User me change accent color to <Color>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I click on Settings button on personal page
+    And I click on About button on personal page
+    Then I see About page
+    And I see that the About page is colored <Color>
+    And I see WireWebsiteButton
+    And I see TermsButton
+    And I see PrivacyPolicyButton
+    And I see BuildNumberText
+    And I open PrivacyPolicyPage
+    And I see PrivacyPolicyPage
+    And I close legal page
+    Then I see About page
+    And I open TermsOfUsePage
+    And I see TermsOfUsePage
+    And I close legal page
+    Then I see About page
+    And I open WireWebsite
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact   | Color  |
+      | user1Name | user2Name | Violet |
+
+  @regression @id3156
+  Scenario Outline: Verify about screen contains all the required information [LANDSCAPE]
+    Given There is 1 user where <Name> is me
+    Given User me change accent color to <Color>
+    Given I Sign in on tablet using my email
+    Given I rotate UI to landscape
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I click on Settings button on personal page
+    And I click on About button on personal page
+    Then I see About page
+    And I see that the About page is colored <Color>
+    And I see WireWebsiteButton
+    And I see TermsButton
+    And I see PrivacyPolicyButton
+    And I see BuildNumberText
+    And I open PrivacyPolicyPage
+    And I see PrivacyPolicyPage
+    And I close legal page
+    Then I see About page
+    And I open TermsOfUsePage
+    And I see TermsOfUsePage
+    And I close legal page
+    Then I see About page
+    And I open WireWebsite
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact   | Color  |
+      | user1Name | user2Name | Violet |

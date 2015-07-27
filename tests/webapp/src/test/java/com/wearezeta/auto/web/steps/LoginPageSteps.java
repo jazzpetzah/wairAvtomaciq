@@ -124,7 +124,7 @@ public class LoginPageSteps {
 	@Then("^a red dot is shown inside the password field on the sign in form$")
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
 		assertThat("Red dot on password field",
-				PagesCollection.loginPage.isRedDotOnEmailField());
+				PagesCollection.loginPage.isRedDotOnPasswordField());
 	}
 
 	/**

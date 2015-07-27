@@ -35,7 +35,7 @@ public class PagesCollection extends AbstractPagesCollection {
 
 	public static ContactsUploadPage contactsUploadPage = null;
 
-	public static GoogleLoginPage googeLoginPage = null;
+	public static GoogleLoginPage googleLoginPage = null;
 
 	public static ProfilePicturePage profilePicturePage = null;
 
@@ -52,6 +52,8 @@ public class PagesCollection extends AbstractPagesCollection {
 	public static WarningPage warningPage = null;
 
 	public static PhoneNumberVerificationPage phoneNumberVerificationPage = null;
+
+	public static AddEmailAddressPage addEmailAddressPage = null;
 
 	public static GiphyPage giphyPage = null;
 }

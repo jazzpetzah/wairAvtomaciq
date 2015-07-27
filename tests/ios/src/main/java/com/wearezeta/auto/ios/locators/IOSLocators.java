@@ -298,7 +298,7 @@ public final class IOSLocators {
 	
 	public static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
 	
-	public static final String nameOtherProfilePagePendingLabel = "PENDING";
+	public static final String nameOtherProfilePagePendingLabel = "CANCEL REQUEST";
 	
 	public static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
 	
@@ -387,7 +387,7 @@ public final class IOSLocators {
 	
 	public static final String nameMediaCellPlayButton = "mediaCellButton";
 	
-	public static final String xpathMediaConversationCell = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIATableView/UIATableCell/UIAWebView[last()]";
+	public static final String xpathMediaConversationCell = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[last()]/UIATableCell[last()]/UIAButton[2]";
 	
 	public static final String xpathYoutubeConversationCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIAButton[1]";
 	
@@ -582,11 +582,15 @@ public final class IOSLocators {
 		
 		public static final String nameGifButton = "rightMenuButton";
 		
+		public static final String nameCursorSketchButton = "ComposeControllerSketchButton";
+		
 		public static final String xpathLoremIpsumText = "//UIATextView[contains(@name, 'Lorem ipsum')]";
 		
 		public static final String nameSoundCloudContainer = "Play on SoundCloud";
 		
 		public static final String nameCloseButton = "closeButton";
+		
+		public static final String xpathMyNameInDialog = "//UIAStaticText[@name='%s'][last()]";
 		
 	}
 	
@@ -618,6 +622,7 @@ public final class IOSLocators {
 		public static final String namePhoneLoginButton = "PHONE SIGN IN";
 		public static final String nameBackButton = "BackToWelcomeButton";
 		public static final String nameEmailLoginButton = "EMAIL SIGN IN";
+		public static final String nameMaybeLater = "MAYBE LATER";
 	}
 	
 	public final class PeoplePickerPage {
@@ -648,6 +653,16 @@ public final class IOSLocators {
 		public static final String nameGiphyCancelRequestButton = "rejectButton";
 		
 		public static final String nameGiphySendButton = "acceptButton";
+		
+	}
+	
+	public final class SketchPageElements {
+		
+		public static final String nameSketchSendButton = "SketchConfirmButton";
+		
+		public static final String nameSketchUndoButton = "SketchUndoButton";
+		
+		public static final String nameSketchCancelButton = "SketchCancelButton";
 		
 	}
 	

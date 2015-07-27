@@ -120,6 +120,7 @@ public final class BackendAPIWrappers {
 			}
 			break;
 		case ByPhoneNumber:
+		case ByPhoneNumberOnly:
 			while (true) {
 				try {
 					BackendREST.bookPhoneNumber(user.getPhoneNumber());
@@ -140,7 +141,9 @@ public final class BackendAPIWrappers {
 			BackendREST.registerNewUser(user.getPhoneNumber(), user.getName(),
 					activationCode);
 			changeUserPassword(user, null, user.getPassword());
-			attachUserEmailUsingBackdoor(user);
+			if (strategy != RegistrationStrategy.ByPhoneNumberOnly) {
+				attachUserEmailUsingBackdoor(user);
+			}
 			break;
 		default:
 			throw new RuntimeException(String.format(
@@ -190,7 +193,7 @@ public final class BackendAPIWrappers {
 				phoneNumber.toString()));
 	}
 
-	private final static int MAX_ACTIVATION_CODE_GET_RETRIES = 5;
+	private final static int MAX_ACTIVATION_CODE_GET_RETRIES = 6;
 	private final static int BACKEND_ERROR_PHONE_NUMBER_NOT_BOOKED = 404;
 
 	public static String getActivationCodeByPhoneNumber(PhoneNumber phoneNumber)
@@ -209,7 +212,7 @@ public final class BackendAPIWrappers {
 							.format("The phone number '%s' seems to be not booked yet. Trying to get the activation code one more time (%d of %d)...",
 									phoneNumber.toString(), ntry,
 									MAX_ACTIVATION_CODE_GET_RETRIES));
-					Thread.sleep(1000 * ntry);
+					Thread.sleep(2000 * ntry);
 				} else {
 					throw e;
 				}
@@ -219,7 +222,7 @@ public final class BackendAPIWrappers {
 		throw savedException;
 	}
 
-	private final static int MAX_LOGIN_CODE_QUERIES = 7;
+	private final static int MAX_LOGIN_CODE_QUERIES = 6;
 
 	public static String getLoginCodeByPhoneNumber(PhoneNumber phoneNumber)
 			throws Exception {
@@ -235,7 +238,7 @@ public final class BackendAPIWrappers {
 								phoneNumber.toString(), ntry,
 								MAX_LOGIN_CODE_QUERIES));
 				savedException = e;
-				Thread.sleep(1000 * ntry);
+				Thread.sleep(2000 * ntry);
 			}
 			ntry++;
 		} while (ntry <= MAX_LOGIN_CODE_QUERIES);

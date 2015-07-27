@@ -411,7 +411,8 @@ public class GroupPopoverPageSteps {
 	public void ISeeXParticipants(int amount) throws Exception {
 		assertThat("People information under conversation name",
 				((GroupPopoverContainer) PagesCollection.popoverPage)
-						.getPeopleCountInfo(), equalTo(String.valueOf(amount)));
+						.getPeopleCountInfo(), equalTo(String.valueOf(amount)
+						+ " PEOPLE"));
 		assertThat("Actual amount of people in popover",
 				((GroupPopoverContainer) PagesCollection.popoverPage)
 						.getPeopleCount(), equalTo(amount));

@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -67,7 +68,7 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.namePlusButton)
 	protected WebElement plusButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameOpenConversationDetails)
 	protected WebElement openConversationDetails;
 
@@ -97,7 +98,7 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCallButton)
 	private WebElement callButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCloseButton)
 	private WebElement closeButton;
 
@@ -145,6 +146,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameGifButton)
 	private WebElement openGifPreviewButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCursorSketchButton)
+	private WebElement openSketchButton;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
 	private String connectingLabel = "CONNECTING TO %s.";
@@ -187,7 +191,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean waitForCursorInputVisible() throws Exception {
-		if(DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.name(IOSLocators.DialogPage.nameCloseButton), 2)) {
+		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.name(IOSLocators.DialogPage.nameCloseButton), 2)) {
 			closeButton.click();
 		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -314,11 +319,8 @@ public class DialogPage extends IOSPage {
 					IOSLocators.xpathLastMessageFormat, messagesList.size());
 			WebElement el = this.getDriver().findElementByXPath(
 					lastMessageXPath);
-			this.getDriver().tap(
-					1,
-					el.getLocation().x + 30,
-					el.getLocation().y + el.getSize().height
-							+ (el.getSize().height / 2), 1);
+			this.getDriver().tap(1, el.getLocation().x + 30,
+					el.getLocation().y + 2 * el.getSize().height, 1);
 		}
 	}
 
@@ -476,6 +478,11 @@ public class DialogPage extends IOSPage {
 		return page;
 	}
 
+	public boolean isYoutubeContainerVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(IOSLocators.xpathYoutubeConversationCell), 10);
+	}
+	
 	public boolean isMediaContainerVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell), 10);
@@ -947,6 +954,18 @@ public class DialogPage extends IOSPage {
 
 	public void openGifPreviewPage() {
 		openGifPreviewButton.click();
+	}
+	
+	public void openSketch() {
+		openSketchButton.click();
+	}
+
+	public boolean isMyNameInDialogDisplayed(String name) throws Exception {
+		WebElement el = getDriver().findElement(
+				By.xpath(String.format(
+						IOSLocators.DialogPage.xpathMyNameInDialog,
+						name.toUpperCase())));
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), el);
 	}
 
 }
