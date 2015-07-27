@@ -1,22 +1,19 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.reporter.IDeviceSysLogListener;
 import com.wearezeta.auto.ios.reporter.IOSPerformanceReportGenerator;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
-import com.wearezeta.auto.common.PerformanceCommon;
 import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
-import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.performance.PerformanceCommon;
+import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.common.process.AsyncProcess;
 
 import cucumber.api.java.After;
@@ -30,7 +27,7 @@ public class PerformanceSteps {
 
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
-	
+
 	private static final int PERF_MON_INIT_DELAY = 5000; // milliseconds
 	private static final int PERF_MON_STOP_TIMEOUT = 60 * 1000; // milliseconds
 	private static final String ACTIVITY_MONITOR_TEMPLATE_PATH = "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate";
@@ -51,10 +48,12 @@ public class PerformanceSteps {
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
 			.getInstance();
 
+	@SuppressWarnings("unused")
 	private DialogPage getDialogPage() throws Exception {
 		return (DialogPage) pagesCollecton.getPage(DialogPage.class);
 	}
 
+	@SuppressWarnings("unused")
 	private ContactListPage getContactListPage() throws Exception {
 		return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
 	}
@@ -73,52 +72,45 @@ public class PerformanceSteps {
 	public void WhenIStartTestCycleForNMinutes(int timeout) throws Exception {
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
-				// Send messages in response to a random visible chat
-				for (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) {
-					// Get list of visible dialogs, remove self user name from
-					// this list
-					boolean isLoaded = getContactListPage()
-							.waitForContactListToLoad();
-					if (!isLoaded) {
-						getDialogPage()
-								.swipeRight(
-										500,
-										DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
-										30);
-					}
-					isLoaded = getContactListPage().waitForContactListToLoad();
-					Assert.assertTrue("Contact list didn't load", isLoaded);
-					ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
-							getContactListPage().GetVisibleContacts());
-
-					final int MAX_ENTRIES_ON_SCREEN = 8;
-					int randomRange = (visibleContactsList.size() > MAX_ENTRIES_ON_SCREEN) ? MAX_ENTRIES_ON_SCREEN
-							: (visibleContactsList.size() - 1);
-					int randomChatIdx;
-					String convName;
-					do {
-						randomChatIdx = perfCommon.random.nextInt(randomRange);
-						convName = visibleContactsList.get(randomChatIdx)
-								.getText();
-					} while (convName.contains("tst"));
-					getContactListPage().tapOnContactByIndex(
-							visibleContactsList, randomChatIdx);
-
-					// Emulating reading of previously received messages
-					// This is broken in iOS simulator, known Apple bug
-					// Using "external" swipe is unstable for a long perf test
-					// PagesCollection.dialogPage.swipeDown(500);
-
-					// Writing response
-					getDialogPage().tapOnCursorInput();
-					getDialogPage().sendMessageUsingScript(
-							CommonUtils.generateGUID());
-
-					// Swipe back to the convo list
-					getDialogPage().swipeRight(500,
-							DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL,
-							30);
-				}
+				/*
+				 * // Send messages in response to a random visible chat for
+				 * (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) { //
+				 * Get list of visible dialogs, remove self user name from //
+				 * this list boolean isLoaded = getContactListPage()
+				 * .waitForContactListToLoad(); if (!isLoaded) { getDialogPage()
+				 * .swipeRight( 500,
+				 * DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 30); }
+				 * isLoaded = getContactListPage().waitForContactListToLoad();
+				 * Assert.assertTrue("Contact list didn't load", isLoaded);
+				 * ArrayList<WebElement> visibleContactsList = new
+				 * ArrayList<WebElement>(
+				 * getContactListPage().GetVisibleContacts());
+				 * 
+				 * final int MAX_ENTRIES_ON_SCREEN = 8; int randomRange =
+				 * (visibleContactsList.size() > MAX_ENTRIES_ON_SCREEN) ?
+				 * MAX_ENTRIES_ON_SCREEN : (visibleContactsList.size() - 1); int
+				 * randomChatIdx; String convName; do { randomChatIdx =
+				 * perfCommon.random.nextInt(randomRange); convName =
+				 * visibleContactsList.get(randomChatIdx) .getText(); } while
+				 * (convName.contains("tst"));
+				 * getContactListPage().tapOnContactByIndex(
+				 * visibleContactsList, randomChatIdx);
+				 * 
+				 * // Emulating reading of previously received messages // This
+				 * is broken in iOS simulator, known Apple bug // Using
+				 * "external" swipe is unstable for a long perf test //
+				 * PagesCollection.dialogPage.swipeDown(500);
+				 * 
+				 * // Writing response getDialogPage().tapOnCursorInput();
+				 * getDialogPage().sendMessageUsingScript(
+				 * CommonUtils.generateGUID());
+				 * 
+				 * // Swipe back to the convo list
+				 * getDialogPage().swipeRight(500,
+				 * DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 30);
+				 * 
+				 * }
+				 */
 			}
 		}, timeout);
 	}
@@ -145,9 +137,9 @@ public class PerformanceSteps {
 		@SuppressWarnings("unused")
 		String conv = String.format(CONVERSATION_NAME_TEMPLATE, messages,
 				images);
-		//TODO: implement when time could be measured
+		// TODO: implement when time could be measured
 	}
-	
+
 	/**
 	 * Start performance monitor tool for the real connected iPhone. This will
 	 * throw the RuntimeException if there is no connected iPhone or instruments
@@ -210,21 +202,17 @@ public class PerformanceSteps {
 	}
 
 	private void exportTraceToCSV() throws Exception {
-/*
-		String script = String.format(CommonUtils
-				.readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
-
-		ScriptEngineManager mgr = new ScriptEngineManager();
-		ScriptEngine engine = mgr.getEngineByName("AppleScriptEngine");
-		log.debug("Script engine: " + engine);
-		log.debug("Script to execute: " + script);
-		try {
-			engine.eval(script);
-		} catch (Exception e) {
-			log.debug(e.getMessage());
-			e.printStackTrace();
-		}
-*/
+		/*
+		 * String script = String.format(CommonUtils
+		 * .readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
+		 * 
+		 * ScriptEngineManager mgr = new ScriptEngineManager(); ScriptEngine
+		 * engine = mgr.getEngineByName("AppleScriptEngine");
+		 * log.debug("Script engine: " + engine);
+		 * log.debug("Script to execute: " + script); try { engine.eval(script);
+		 * } catch (Exception e) { log.debug(e.getMessage());
+		 * e.printStackTrace(); }
+		 */
 		int result = -1;
 		int count = 0;
 		while (result != 0 && count < 3) {
@@ -259,7 +247,7 @@ public class PerformanceSteps {
 				.updateReportDataWithCurrentRun(listener.getOutput()));
 		Assert.assertTrue(IOSPerformanceReportGenerator.generateRunReport());
 	}
-	
+
 	@Before("@performance")
 	public void StartLogListener() {
 		// for Jenkins slaves we should define that environment has display
@@ -269,7 +257,7 @@ public class PerformanceSteps {
 		} catch (Exception e) {
 		}
 	}
-	
+
 	@After("@performance")
 	public void CloseInstruments() {
 		try {

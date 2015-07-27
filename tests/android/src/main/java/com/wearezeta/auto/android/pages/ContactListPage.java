@@ -52,6 +52,12 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(id = idContactListNames)
 	private List<WebElement> contactListNames;
 
+	private static final String xpathNonEmptyContacts = "//*[@id='"
+			+ idContactListNames
+			+ "' and @value and string-length(@value) > 0 and not(starts-with(@value, '…'))]";
+	private static final Function<Integer, String> xpathNonEmptyContactByIdx = idx -> String
+			.format("(%s)[%d]", xpathNonEmptyContacts, idx);
+
 	@FindBy(id = idEditText)
 	private WebElement cursorInput;
 
@@ -104,8 +110,50 @@ public class ContactListPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
+	public String getFirstVisibleConversationName() throws Exception {
+		final int maxTries = 5;
+		final long millisecondsDelay = 20000;
+		int ntry = 1;
+		do {
+			try {
+				final int itemsCount = getDriver().findElements(
+						By.xpath(xpathNonEmptyContacts)).size();
+				for (int i = 1; i <= itemsCount; i++) {
+					final By locator = By.xpath(xpathNonEmptyContactByIdx
+							.apply(i));
+					if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+							locator, 1)) {
+						final String name = getDriver().findElement(locator)
+								.getText();
+						if ((name instanceof String) && name.length() > 0) {
+							return name;
+						}
+					}
+				}
+			} catch (WebDriverException e) {
+				e.printStackTrace();
+				// Ignore silently
+			}
+			Thread.sleep(millisecondsDelay);
+			ntry++;
+		} while (ntry <= maxTries);
+		throw new AssertionError(
+				"There are no visible conversations in the list after "
+						+ millisecondsDelay * maxTries / 1000 + " seconds");
+	}
+
 	public void tapOnName(final String name) throws Exception {
 		findInContactList(name, 5)
+				.orElseThrow(
+						() -> new IllegalStateException(
+								String.format(
+										"The conversation '%s' does not exist in the conversations list",
+										name))).click();
+	}
+
+	public void tapOnName(final String name, int maxSwipesInList)
+			throws Exception {
+		findInContactList(name, maxSwipesInList)
 				.orElseThrow(
 						() -> new IllegalStateException(
 								String.format(
@@ -125,8 +173,7 @@ public class ContactListPage extends AndroidPage {
 			throws Exception {
 		try {
 			contacts.get(id).click();
-			log.debug("Trying to open contact " + id + ". It's name: "
-					+ contacts.get(id).getAttribute("value"));
+			log.debug("Trying to open contact #" + (id + 1));
 		} catch (Exception e) {
 			log.debug("Failed to find element in contact list.");
 			throw e;
@@ -280,7 +327,8 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	public boolean isVisibleMissedCallIcon() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), missedCallIcon);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				missedCallIcon);
 	}
 
 	public PersonalInfoPage tapOnMyAvatar() throws Exception {

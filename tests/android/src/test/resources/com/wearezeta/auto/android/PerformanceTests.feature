@@ -4,13 +4,13 @@ Feature: Performance Tests
   Scenario Outline: Normal usage
     Given There are <UsersNumber> shared users with name prefix <UserNamePrefix>
     Given User <Name> is Me
-    Given I sign in using my email
     Given Myself is connected to all other users
-    Given I see Contact list with contacts
-    When I test conversation loading time for conversation with 300 messages and 30 images
-    When I start test cycle for <Time> minutes
+    Given I receive <MsgsCount> messages from contact <Sender>
+    Given I sign in using my email
+    When I start test cycle for <Time> minutes with messages received from <Sender>
     Then I generate performance report for <UsersNumber> users
 
     Examples: 
-      | Name      | UsersNumber       | UserNamePrefix    | Time                 |
-      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfExecutionTime} |
+      | Name      | UsersNumber       | UserNamePrefix    | Time            | MsgsCount | Sender        |
+      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 101       | user2Name     |
+#      | user1Name | 1001                | perf1000user         | 2               | 101      | user2Name     |

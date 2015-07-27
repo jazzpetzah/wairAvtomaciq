@@ -1,15 +1,8 @@
 package com.wearezeta.auto.osx.steps;
 
-import java.util.ArrayList;
-
-import org.junit.Assert;
-import org.openqa.selenium.WebElement;
-
-import com.wearezeta.auto.common.PerformanceCommon;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
+import com.wearezeta.auto.common.performance.PerformanceCommon;
+import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.osx.pages.ContactListPage;
-import com.wearezeta.auto.osx.pages.ConversationPage;
 import com.wearezeta.auto.osx.pages.PagesCollection;
 import com.wearezeta.common.process.AsyncProcess;
 
@@ -27,7 +20,9 @@ public class PerformanceSteps {
 
 	private AsyncProcess perfMon = null;
 
+	@SuppressWarnings("unused")
 	private String randomMessage;
+	@SuppressWarnings("unused")
 	private static final String picturename = "testing.jpg";
 
 	/**
@@ -46,67 +41,51 @@ public class PerformanceSteps {
 				.instantiatePage(ContactListPage.class);
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
-				// Send messages cycle by UI
-				for (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) {
-					ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>(
-							PagesCollection.contactListPage.getContacts());
-					visibleContactsList.remove(0);
-
-					final int contactIdx = perfCommon.random
-							.nextInt(visibleContactsList.size() - 1);
-					String contact = visibleContactsList.get(contactIdx)
-							.getText();
-					PagesCollection.contactListPage.openConversation(contact,
-							false);
-
-					PagesCollection.conversationPage = (ConversationPage) PagesCollection.contactListPage
-							.instantiatePage(ConversationPage.class);
-					int numberMessages = PagesCollection.conversationPage
-							.getNumberOfMessageEntries(contact);
-					int numberPictures = PagesCollection.conversationPage
-							.getNumberOfImageEntries();
-					if (numberMessages > 0 || numberPictures > 0) {
-						try {
-							PagesCollection.conversationPage
-									.scrollDownToLastMessage();
-						} catch (Exception exep) {
-							System.out.println("no need to scroll");
-						}
-					}
-					randomMessage = CommonUtils.generateGUID();
-					PagesCollection.conversationPage
-							.writeNewMessage(randomMessage);
-					PagesCollection.conversationPage.sendNewMessage();
-					try {
-						PagesCollection.conversationPage
-								.scrollDownToLastMessage();
-						PagesCollection.conversationPage
-								.scrollDownToLastMessage();
-					} catch (Exception ex) {
-						perfCommon.getLogger().debug("Scrolling fail: ", ex);
-					}
-					try {
-						PagesCollection.choosePicturePage = PagesCollection.mainMenuPage
-								.sendImage();
-						Assert.assertTrue(PagesCollection.choosePicturePage
-								.isVisible());
-
-						PagesCollection.choosePicturePage
-								.openImage(picturename);
-					} catch (Exception ex) {
-						perfCommon.getLogger().debug("Image posting failed: ",
-								ex);
-					}
-					try {
-						PagesCollection.conversationPage
-								.scrollDownToLastMessage();
-					} catch (Exception exep) {
-						perfCommon.getLogger().debug("Scrolling fail: ", exep);
-					}
-				}
-
-				minimizeClient();
-				restoreClient();
+				/*
+				 * // Send messages cycle by UI for (int i = 0; i <
+				 * PerformanceCommon.SEND_MESSAGE_NUM; i++) {
+				 * ArrayList<WebElement> visibleContactsList = new
+				 * ArrayList<WebElement>(
+				 * PagesCollection.contactListPage.getContacts());
+				 * visibleContactsList.remove(0);
+				 * 
+				 * final int contactIdx = perfCommon.random
+				 * .nextInt(visibleContactsList.size() - 1); String contact =
+				 * visibleContactsList.get(contactIdx) .getText();
+				 * PagesCollection.contactListPage.openConversation(contact,
+				 * false);
+				 * 
+				 * PagesCollection.conversationPage = (ConversationPage)
+				 * PagesCollection.contactListPage
+				 * .instantiatePage(ConversationPage.class); int numberMessages
+				 * = PagesCollection.conversationPage
+				 * .getNumberOfMessageEntries(contact); int numberPictures =
+				 * PagesCollection.conversationPage .getNumberOfImageEntries();
+				 * if (numberMessages > 0 || numberPictures > 0) { try {
+				 * PagesCollection.conversationPage .scrollDownToLastMessage();
+				 * } catch (Exception exep) {
+				 * System.out.println("no need to scroll"); } } randomMessage =
+				 * CommonUtils.generateGUID(); PagesCollection.conversationPage
+				 * .writeNewMessage(randomMessage);
+				 * PagesCollection.conversationPage.sendNewMessage(); try {
+				 * PagesCollection.conversationPage .scrollDownToLastMessage();
+				 * PagesCollection.conversationPage .scrollDownToLastMessage();
+				 * } catch (Exception ex) {
+				 * perfCommon.getLogger().debug("Scrolling fail: ", ex); } try {
+				 * PagesCollection.choosePicturePage =
+				 * PagesCollection.mainMenuPage .sendImage();
+				 * Assert.assertTrue(PagesCollection.choosePicturePage
+				 * .isVisible());
+				 * 
+				 * PagesCollection.choosePicturePage .openImage(picturename); }
+				 * catch (Exception ex) {
+				 * perfCommon.getLogger().debug("Image posting failed: ", ex); }
+				 * try { PagesCollection.conversationPage
+				 * .scrollDownToLastMessage(); } catch (Exception exep) {
+				 * perfCommon.getLogger().debug("Scrolling fail: ", exep); } }
+				 * 
+				 * minimizeClient(); restoreClient();
+				 */
 			}
 		}, timeout);
 	}

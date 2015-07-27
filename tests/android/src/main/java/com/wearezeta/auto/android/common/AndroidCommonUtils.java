@@ -198,14 +198,9 @@ public class AndroidCommonUtils extends CommonUtils {
 				isWifiEnabled);
 	}
 
-	public static String getRxLogResourceFilePathFromConfig(Class<?> c)
+	public static String getPerfReportPathFromConfig(Class<?> c)
 			throws Exception {
-		return CommonUtils.getValueFromConfig(c, "resourceFilePath");
-	}
-
-	public static String getRxLogResultsPathFromConfig(Class<?> c)
-			throws Exception {
-		return CommonUtils.getValueFromConfig(c, "resultsPath");
+		return CommonUtils.getValueFromConfig(c, "perfReportPath");
 	}
 
 	public static String getAndroidClientInfoPathFromConfig(Class<?> c)

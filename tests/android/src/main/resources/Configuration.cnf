@@ -13,6 +13,5 @@ androidAppiumLogPath=${androidAppiumLogPath}
 defaultEmail=${defaultEmail}
 androidAddressBookMailAccount=${androidAddressBookMailAccount}
 androidVersion=${androidVersion}
-resourceFilePath=${resourceFilePath}
-resultsPath=${resultsPath}
+perfReportPath=${perfReportPath}
 backendType=${backendType}
