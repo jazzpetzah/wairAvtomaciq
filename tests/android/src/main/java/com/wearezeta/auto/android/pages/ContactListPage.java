@@ -10,7 +10,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-import com.thoughtworks.selenium.SeleniumException;
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
@@ -131,7 +130,7 @@ public class ContactListPage extends AndroidPage {
 						}
 					}
 				}
-			} catch (SeleniumException e) {
+			} catch (WebDriverException e) {
 				e.printStackTrace();
 				// Ignore silently
 			}
