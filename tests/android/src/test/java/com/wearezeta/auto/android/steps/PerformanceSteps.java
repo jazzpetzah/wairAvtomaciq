@@ -40,7 +40,9 @@ public class PerformanceSteps {
 	 * @step. ^I receive (\\d+) messages? from contact (.*)
 	 * 
 	 * @param msgsCount
-	 *            count of messages to send
+	 *            count of messages to send. This should be greater or equal to
+	 *            the maximum count of messages in convo window (which is
+	 *            currently equal to 100)
 	 * @param asContact
 	 *            from which contact should we send these messages
 	 * @throws Exception
@@ -48,13 +50,12 @@ public class PerformanceSteps {
 	@Given("^I receive (\\d+) messages? from contact (.*)")
 	public void IReceiveXMessagesFromContact(int msgsCount, String asContact)
 			throws Exception {
-		assert msgsCount >= MAX_MSGS_IN_CONVO_WINDOW * 2 : String
-				.format("The count of messages to send (%d) should be greater or equal to the max "
-						+ "count of messages in conversation window multiplied by 2 (%d)",
-						msgsCount, MAX_MSGS_IN_CONVO_WINDOW * 2);
+		assert msgsCount >= MAX_MSGS_IN_CONVO_WINDOW : String.format(
+				"The count of messages to send (%d) should be greater or equal to the max "
+						+ "count of messages in conversation window (%d)",
+				msgsCount, MAX_MSGS_IN_CONVO_WINDOW);
 		asContact = usrMgr.findUserByNameOrNameAlias(asContact).getName();
-		perfCommon.sendMultipleMessagesIntoConversation(asContact,
-				msgsCount * 2);
+		perfCommon.sendMultipleMessagesIntoConversation(asContact, msgsCount);
 	}
 
 	/**
