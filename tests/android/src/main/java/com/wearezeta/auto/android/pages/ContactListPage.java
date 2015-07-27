@@ -54,7 +54,7 @@ public class ContactListPage extends AndroidPage {
 
 	private static final String xpathNonEmptyContacts = "//*[@id='"
 			+ idContactListNames
-			+ "' and @value and string-length(@value) > 0]";
+			+ "' and @value and string-length(@value) > 0 and not(starts-with(@value, '…'))]";
 	private static final Function<Integer, String> xpathNonEmptyContactByIdx = idx -> String
 			.format("(%s)[%d]", xpathNonEmptyContacts, idx);
 
