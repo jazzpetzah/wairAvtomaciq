@@ -77,7 +77,7 @@ public final class AndroidLogListener {
 					+ String.format("adb logcat -v time -s %s", this.tags);
 		}
 		final String[] cmd = new String[] { "/bin/bash", "-c", adbCmd };
-		listener = new AsyncProcess(cmd, false, false);
+		listener = new AsyncProcess(cmd, (this.tags != null), (this.tags != null));
 		listener.start();
 	}
 
@@ -111,15 +111,15 @@ public final class AndroidLogListener {
 		log.debug("\n\n\n=== CAPTURED STDERR LOGS ===\n");
 		System.out.println(listener.getStdErr().trim());
 		log.debug("\n=== END OF CAPTURED STDERR LOGS ===\n\n\n");
-		log.debug("\n\n\n=== CAPTURED STDOUT LOGS ===\n");
-		for (String line : listener.getStdOut().trim().split("\n")) {
-			for (String excPatt : excludePatterns) {
-				if (!line.contains(excPatt)) {
-					System.out.println(line);
-				}
-			}
-		}
-		log.debug("\n=== END OF CAPTURED STDOUT LOGS ===\n\n\n");
+		// log.debug("\n\n\n=== CAPTURED STDOUT LOGS ===\n");
+		// for (String line : listener.getStdOut().trim().split("\n")) {
+		// for (String excPatt : excludePatterns) {
+		// if (!line.contains(excPatt)) {
+		// System.out.println(line);
+		// }
+		// }
+		// }
+		// log.debug("\n=== END OF CAPTURED STDOUT LOGS ===\n\n\n");
 	}
 
 	public static void forceStopAll() {

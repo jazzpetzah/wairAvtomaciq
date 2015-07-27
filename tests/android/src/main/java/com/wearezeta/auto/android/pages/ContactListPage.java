@@ -151,6 +151,16 @@ public class ContactListPage extends AndroidPage {
 										name))).click();
 	}
 
+	public void tapOnName(final String name, int maxSwipesInList)
+			throws Exception {
+		findInContactList(name, maxSwipesInList)
+				.orElseThrow(
+						() -> new IllegalStateException(
+								String.format(
+										"The conversation '%s' does not exist in the conversations list",
+										name))).click();
+	}
+
 	public void contactListSwipeUp(int time) {
 		elementSwipeUp(contactListFrame, time);
 	}

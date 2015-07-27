@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android.steps;
 
 import org.junit.Assert;
+import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidLogListener;
@@ -79,6 +80,29 @@ public class PerformanceSteps {
 				getContactListPage().isAnyConversationVisible());
 	}
 
+	private void visitConversationWhenAvailable(final String destConvoName)
+			throws Exception {
+		final int maxRetries = 15;
+		int ntry = 1;
+		do {
+			try {
+				getContactListPage().tapOnName(destConvoName, 0);
+			} catch (IllegalStateException | WebDriverException e) {
+				if (ntry >= maxRetries) {
+					throw e;
+				} else {
+					e.printStackTrace();
+				}
+			}
+			Thread.sleep(3000);
+			ntry++;
+		} while (!getDialogPage().isDialogVisible() && ntry <= maxRetries);
+		assert getDialogPage().isDialogVisible() : "The conversation has not been opened after "
+				+ maxRetries + " retries";
+		getDialogPage().tapDialogPageBottom();
+		getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
+	}
+
 	/**
 	 * Starts standard actions loop (read messages/send messages) to measure
 	 * application performance
@@ -116,35 +140,13 @@ public class PerformanceSteps {
 		assert destConvoName.equals(firstConvoName) : String
 				.format("The very first conversation name '%s' is not the same as expected one ('%s')",
 						firstConvoName, destConvoName);
+
+		// Visit the conversation for the first time
+		visitConversationWhenAvailable(destConvoName);
+
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
-				final int maxRetries = 10;
-				int ntry = 1;
-				do {
-					try {
-						getContactListPage().tapOnName(destConvoName);
-					} catch (IllegalStateException e) {
-						if (ntry >= maxRetries) {
-							throw e;
-						} else {
-							e.printStackTrace();
-						}
-					}
-					Thread.sleep(3000);
-					ntry++;
-				} while (!getDialogPage().isDialogVisible()
-						&& ntry <= maxRetries);
-				assert getDialogPage().isDialogVisible() : "The conversation has not been opened after "
-						+ maxRetries + " retries";
-				getDialogPage().tapDialogPageBottom();
-
-				final int maxSwipeRetries = 3;
-				int swipeRetry = 1;
-				do {
-					getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
-					swipeRetry++;
-				} while (getDialogPage().isDialogVisible()
-						&& swipeRetry <= maxSwipeRetries);
+				visitConversationWhenAvailable(destConvoName);
 			}
 		}, timeout);
 	}
