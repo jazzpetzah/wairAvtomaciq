@@ -121,7 +121,15 @@ public class PerformanceSteps {
 				final int maxRetries = 10;
 				int ntry = 1;
 				do {
-					getContactListPage().tapOnName(destConvoName);
+					try {
+						getContactListPage().tapOnName(destConvoName);
+					} catch (IllegalStateException e) {
+						if (ntry >= maxRetries) {
+							throw e;
+						} else {
+							e.printStackTrace();
+						}
+					}
 					Thread.sleep(3000);
 					ntry++;
 				} while (!getDialogPage().isDialogVisible()
@@ -129,7 +137,14 @@ public class PerformanceSteps {
 				assert getDialogPage().isDialogVisible() : "The conversation has not been opened after "
 						+ maxRetries + " retries";
 				getDialogPage().tapDialogPageBottom();
-				getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
+
+				final int maxSwipeRetries = 3;
+				int swipeRetry = 1;
+				do {
+					getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
+					swipeRetry++;
+				} while (getDialogPage().isDialogVisible()
+						&& swipeRetry <= maxSwipeRetries);
 			}
 		}, timeout);
 	}
