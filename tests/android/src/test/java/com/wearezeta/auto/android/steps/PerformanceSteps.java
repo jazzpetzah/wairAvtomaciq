@@ -1,32 +1,33 @@
 package com.wearezeta.auto.android.steps;
 
-import java.util.ArrayList;
+import org.junit.Assert;
+import org.openqa.selenium.WebDriverException;
 
-import org.apache.log4j.Logger;
-import org.openqa.selenium.WebElement;
-
-import com.wearezeta.auto.android.common.reporter.AndroidPerformanceReportGenerator;
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.android.common.AndroidLogListener;
+import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
+import com.wearezeta.auto.android.common.reporter.AndroidPerfReportModel;
+import com.wearezeta.auto.android.common.reporter.AndroidPerformanceHelpers;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
-import com.wearezeta.auto.common.PerformanceCommon;
-import com.wearezeta.auto.common.CommonUtils;
-import com.wearezeta.auto.common.PerformanceCommon.PerformanceLoop;
-import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.performance.PerformanceCommon;
+import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
 
-	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
-			.getSimpleName());
-
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
 	private static final int DEFAULT_SWIPE_TIME = 500;
-	private static final long DEFAULT_WAIT_TIME = 1000;
+	private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
 
 	private ContactListPage getContactListPage() throws Exception {
 		return (ContactListPage) pagesCollection.getPage(ContactListPage.class);
@@ -36,163 +37,140 @@ public class PerformanceSteps {
 		return (DialogPage) pagesCollection.getPage(DialogPage.class);
 	}
 
-	public ArrayList<WebElement> resetVisibleContactList() throws Exception {
-		ArrayList<WebElement> visibleContactsList = new ArrayList<WebElement>();
-		int counter = 0;
+	/**
+	 * Send multiple messages from one of my contacts using the backend
+	 * 
+	 * @step. ^I receive (\\d+) messages? from contact (.*)
+	 * 
+	 * @param msgsCount
+	 *            count of messages to send. This should be greater or equal to
+	 *            the maximum count of messages in convo window (which is
+	 *            currently equal to 100)
+	 * @param asContact
+	 *            from which contact should we send these messages
+	 * @throws Exception
+	 */
+	@Given("^I receive (\\d+) messages? from contact (.*)")
+	public void IReceiveXMessagesFromContact(int msgsCount, String asContact)
+			throws Exception {
+		assert msgsCount >= MAX_MSGS_IN_CONVO_WINDOW : String.format(
+				"The count of messages to send (%d) should be greater or equal to the max "
+						+ "count of messages in conversation window (%d)",
+				msgsCount, MAX_MSGS_IN_CONVO_WINDOW);
+		asContact = usrMgr.findUserByNameOrNameAlias(asContact).getName();
+		perfCommon.sendMultipleMessagesIntoConversation(asContact, msgsCount);
+	}
+
+	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
+		final int maxTries = 3;
+		final long millisecondsDelay = 20000;
+		int ntry = 1;
 		do {
-			Thread.sleep(DEFAULT_WAIT_TIME);
-			visibleContactsList = new ArrayList<WebElement>(
-					getContactListPage().GetVisibleContacts());
-			counter++;
-		} while ((visibleContactsList.isEmpty() || visibleContactsList == null)
-				&& counter != 3);
-		visibleContactsList.remove(0);
-		return visibleContactsList;
+			try {
+				getContactListPage().verifyContactListIsFullyLoaded();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			Thread.sleep(millisecondsDelay);
+			ntry++;
+		} while (!getContactListPage().isAnyConversationVisible()
+				&& ntry <= maxTries);
+		Assert.assertTrue(
+				"No conversations are visible in the conversations list, but some are expected",
+				getContactListPage().isAnyConversationVisible());
+	}
+
+	private void visitConversationWhenAvailable(final String destConvoName)
+			throws Exception {
+		final int maxRetries = 15;
+		int ntry = 1;
+		do {
+			try {
+				getContactListPage().tapOnName(destConvoName, 0);
+			} catch (IllegalStateException | WebDriverException e) {
+				if (ntry >= maxRetries) {
+					throw e;
+				} else {
+					e.printStackTrace();
+				}
+			}
+			Thread.sleep(3000);
+			ntry++;
+		} while (!getDialogPage().isDialogVisible() && ntry <= maxRetries);
+		assert getDialogPage().isDialogVisible() : "The conversation has not been opened after "
+				+ maxRetries + " retries";
+		getDialogPage().tapDialogPageBottom();
+		getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 	}
 
 	/**
 	 * Starts standard actions loop (read messages/send messages) to measure
 	 * application performance
 	 * 
-	 * @step. ^I start testing cycle for (\\d+) minutes$
+	 * @step. ^I start test cycle for (\\d+) minutes? with messages received
+	 *        from (.*)
 	 * 
 	 * @param timeout
 	 *            number of minutes to run the loop
+	 * @param fromContact
+	 *            contact name/alias, from which I received messages
 	 * @throws Exception
 	 */
-	@When("^I start test cycle for (\\d+) minutes$")
-	public void WhenIStartTestCycleForNMinutes(int timeout) throws Exception {
+	@When("^I start test cycle for (\\d+) minutes? with messages received from (.*)")
+	public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact)
+			throws Exception {
+		waitUntilConversationsListIsFullyLoaded();
+		final String destConvoName = usrMgr.findUserByNameOrNameAlias(
+				fromContact).getName();
+		String firstConvoName = getContactListPage()
+				.getFirstVisibleConversationName();
+		int ntry = 1;
+		do {
+			// This contact, which received messages, should be the first
+			// contact in the visible convo list now
+			if (destConvoName.equals(firstConvoName)) {
+				break;
+			} else {
+				Thread.sleep(10000);
+			}
+			firstConvoName = getContactListPage()
+					.getFirstVisibleConversationName();
+			ntry++;
+		} while (ntry <= 3);
+		assert destConvoName.equals(firstConvoName) : String
+				.format("The very first conversation name '%s' is not the same as expected one ('%s')",
+						firstConvoName, destConvoName);
+
+		// Visit the conversation for the first time
+		visitConversationWhenAvailable(destConvoName);
+
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
-				// Send message to random visible chat
-				for (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) {
-					// --Get list of visible dialogs visible dialog
-					getContactListPage().waitForConversationListLoad();
-					ArrayList<WebElement> visibleContactsList = resetVisibleContactList();
-					// --
-					int randomInt;
-					String convName;
-					do {
-						randomInt = perfCommon.random
-								.nextInt(visibleContactsList.size() - 1);
-						convName = visibleContactsList.get(randomInt).getText();
-					} while (convName.contains("tst"));
-					try {
-						getContactListPage().tapOnContactByPosition(
-								visibleContactsList, randomInt);
-					} catch (Exception e) {
-						visibleContactsList = resetVisibleContactList();
-						getContactListPage().tapOnContactByPosition(
-								visibleContactsList, randomInt);
-					}
-					getDialogPage().isDialogVisible();
-					getDialogPage().tapDialogPageBottom();
-					getDialogPage().typeMessage(CommonUtils.generateGUID());
-					Thread.sleep(DEFAULT_WAIT_TIME);
-					if (perfCommon.random.nextBoolean()) {
-						getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
-						getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
-						try {
-							getContactListPage().tapOnContactByPosition(
-									visibleContactsList, randomInt);
-						} catch (Exception e) {
-							visibleContactsList = resetVisibleContactList();
-							getContactListPage().tapOnContactByPosition(
-									visibleContactsList, randomInt);
-						}
-						getDialogPage().isDialogVisible();
-						getDialogPage().tapDialogPageBottom();
-
-						Thread.sleep(DEFAULT_WAIT_TIME);
-						boolean successful = false;
-						int count = 0;
-						do {
-							try {
-								getDialogPage().sendFrontCameraImage();
-								successful = true;
-							} catch (Throwable e) {
-								log.debug("Camera image was not send before. Workaround...");
-								for (int y = 0; y < 2; y++) {
-									getDialogPage().swipeDown(
-											DEFAULT_SWIPE_TIME);
-								}
-								getDialogPage()
-										.navigateBack(DEFAULT_SWIPE_TIME);
-								visibleContactsList = resetVisibleContactList();
-								getContactListPage().tapOnContactByPosition(
-										visibleContactsList, randomInt);
-							}
-							count++;
-						} while (!successful && count < 2);
-					}
-					for (int y = 0; y < 2; y++) {
-						getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
-					}
-					getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
-				}
-
-				/*
-				 * Broke swipe in dialogs
-				 * PagesCollection.dialogPage.minimizeApplication(); isMinimized
-				 * = true;
-				 */
+				visitConversationWhenAvailable(destConvoName);
 			}
 		}, timeout);
 	}
 
 	/**
-	 * Tests loading time of conversation with specified number of messages and
-	 * images
+	 * Generates android performance report and saves it by path provided in the
+	 * configuration file, option "perfReportPath". The previous report is going
+	 * to be silently deleted if it already exists in this folder
 	 * 
-	 * @step. ^I test conversation loading time for conversation with (\\d+)
-	 *        messages and (\\d+) images$
+	 * @step. ^I generate performance report for (\\d+) users?$
 	 * 
-	 * @param messages
-	 *            number of messages in conversation
-	 * @param images
-	 *            number of images in conversation
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I test conversation loading time for conversation with (\\d+) messages and (\\d+) images$")
-	public void ITestConversationLoadingTimeForConversation(int messages,
-			int images) throws Exception {
-		final String CONVERSATION_NAME_TEMPLATE = "perf%stxt%simgtst";
-		String conv = String.format(CONVERSATION_NAME_TEMPLATE, messages,
-				images);
-		int count = 0;
-		while (count < 10) {
-			count++;
-			boolean isPassed = true;
-			try {
-				getContactListPage().tapOnName(conv);
-			} catch (Exception e) {
-				isPassed = false;
-				getContactListPage().contactListSwipeUp(1000);
-			}
-			if (isPassed)
-				break;
-		}
-		getDialogPage().isDialogVisible();
-		for (int y = 0; y < 2; y++) {
-			getDialogPage().swipeDown(DEFAULT_SWIPE_TIME);
-		}
-		getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
-	}
-
-	/**
-	 * Generates android performance report
-	 * 
-	 * @step. ^I generate performance report$
+	 * @param usersCount
+	 *            count of users in the test (self user + all contacts)
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I generate performance report for (\\d+) users$")
+	@Then("^I generate performance report for (\\d+) users?$")
 	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
-		CommonAndroidSteps.listener.stopListeningLogcat();
-		AndroidPerformanceReportGenerator.collectExecutionData(usersCount,
-				CommonAndroidSteps.listener.getOutput());
-		AndroidPerformanceReportGenerator.storeRunResultsToCSV();
+		final AndroidPerfReportModel dataModel = new AndroidPerfReportModel();
+		dataModel.setContactsCount(usersCount - 1);
+		final String logOutput = AndroidLogListener.getInstance(
+				ListenerType.PERF).getStdOut();
+		dataModel.loadDataFromLogCat(logOutput);
+		AndroidPerformanceHelpers.storeWidgetDataAsJSON(dataModel,
+				AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
 	}
 }

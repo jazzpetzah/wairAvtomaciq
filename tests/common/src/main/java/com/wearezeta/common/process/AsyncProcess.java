@@ -66,14 +66,13 @@ public class AsyncProcess {
 												logLine + "\n");
 									}
 								}
-
 							}
 						}
 					} catch (IOException e) {
 						break;
 					}
 					try {
-						Thread.sleep(IS_RUNNING_CHECK_INTERVAL);
+						Thread.sleep(1);
 					} catch (InterruptedException e) {
 						break;
 					}

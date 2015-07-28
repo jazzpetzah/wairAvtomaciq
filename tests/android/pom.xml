@@ -25,9 +25,8 @@
 		<defaultEmail>smoketester@wire.com</defaultEmail>
 		<androidAddressBookMailAccount>smoketester@wearezeta.com</androidAddressBookMailAccount>
 		<pictureResultsPath>${user.home}/Downloads/</pictureResultsPath>
+		<perfReportPath>${user.home}/Documents/performance.json</perfReportPath>
 		<androidVersion>44</androidVersion>
-		<resourceFilePath>/Project/</resourceFilePath>
-		<resultsPath>/results/</resultsPath>
 		<backendType>staging</backendType>
 	</properties>
 

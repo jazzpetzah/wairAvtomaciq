@@ -12,19 +12,11 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class CallingOverlayPage extends AndroidPage {
-	@SuppressWarnings("unused")
-	private static final String idCallingMute = "cib__calling_mute";
-
-	@SuppressWarnings("unused")
-	private static final String idCallingAccept = "gtv__calling__accept";
-
 	private static final String idCallingOverlayContainer = "coc__calling__overlay_container";
 
-	private static final String idOngoingCallMicrobar = "ocpv__ongoing";
+	private static final String idOngoingCallMicrobar = "v__calling__top_bar";
 
-	private static final String idOngoingCallMinibar = "ocpv__ongoing_small";
-
-	private static final String idIncominCallerAvatar = "civ__calling";
+	private static final String idOngoingCallMinibar = "coc__calling__overlay_container";
 
 	private static final String idIgnoreButton = "cib__calling_mute";
 	@FindBy(id = idIgnoreButton)
@@ -34,10 +26,17 @@ public class CallingOverlayPage extends AndroidPage {
 	@FindBy(id = idAcceptButton)
 	private WebElement acceptButton;
 
-	private static final Function<String, String> xpathCallingBarCaptionByName = name -> String
-			.format("//*[@id='ttv__calling__message' and @value = '%s']", name);
-
 	private static final String idCallMessage = "ttv__calling__message";
+
+	private static final Function<String, String> xpathCallingBarCaptionByName = name -> String
+			.format("//*[@id='%s' and contains(@value, '%s')]", idCallMessage,
+					name.toUpperCase());
+
+	private static final String idIncomingCallerAvatarsContainer = "rv__calling__container";
+
+	private static final Function<String, String> xpathCallingBarAvatarByName = name -> String
+			.format("//*[@id='%s']//*[@value='%s']",
+					idIncomingCallerAvatarsContainer, name.toUpperCase());
 
 	private static final String idCallingDismiss = "cib__calling__dismiss";
 
@@ -57,7 +56,7 @@ public class CallingOverlayPage extends AndroidPage {
 
 	private static final int VISIBILITY_TIMEOUT_SECONDS = 5;
 
-	public boolean isVisible() throws Exception {
+	public boolean waitUntilVisible() throws Exception {
 		final By locator = By.id(idCallingOverlayContainer);
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
 				VISIBILITY_TIMEOUT_SECONDS);
@@ -75,9 +74,15 @@ public class CallingOverlayPage extends AndroidPage {
 		ignoreButton.click();
 	}
 
-	public boolean waitUntilNameAppearsOnCallingBar(String name)
+	public boolean waitUntilNameAppearsOnCallingBarCaption(String name)
 			throws Exception {
 		final By locator = By.xpath(xpathCallingBarCaptionByName.apply(name));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilNameAppearsOnCallingBarAvatar(String name)
+			throws Exception {
+		final By locator = By.xpath(xpathCallingBarAvatarByName.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
@@ -90,7 +95,7 @@ public class CallingOverlayPage extends AndroidPage {
 
 	public boolean incominCallerAvatarIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idIncominCallerAvatar));
+				By.id(idIncomingCallerAvatarsContainer));
 	}
 
 	public boolean callingMessageIsVisible() throws Exception {

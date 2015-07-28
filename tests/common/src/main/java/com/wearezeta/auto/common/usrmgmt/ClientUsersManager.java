@@ -435,7 +435,8 @@ public class ClientUsersManager {
 					break;
 				}
 			} catch (BackendRequestException e) {
-				if (e.getReturnCode() == HttpStatus.SC_FORBIDDEN) {
+				if (e.getReturnCode() == HttpStatus.SC_FORBIDDEN
+						|| e.getReturnCode() == HttpStatus.SC_BAD_REQUEST) {
 					lastExistingUserIndex -= SHARED_USERS_MIN_CREATION_INTERVAL;
 				} else {
 					throw e;

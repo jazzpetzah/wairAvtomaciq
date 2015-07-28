@@ -110,10 +110,12 @@ public final class CommonCallingSteps2 {
 				callStatusesListToObject(expectedStatuses), secondsTimeout);
 	}
 
+	// TODO rename to 'stopAllWaitingCalls' if necessary
 	public void UserXStopsIncomingCalls(String userAsNameAlias)
 			throws Exception {
 		ClientUser userAs = usrMgr.findUserByNameOrNameAlias(userAsNameAlias);
-		CallingServiceClient.stopInstance(getInstanceByParticipant(userAs));
+		CallingServiceClient.stopCall(getInstanceByParticipant(userAs),
+				getWaitingCallByParticipant(userAs));
 	}
 
 	public void cleanup() throws Exception {
@@ -244,7 +246,7 @@ public final class CommonCallingSteps2 {
 		instanceType = instanceType.toUpperCase();
 		if (instanceType.equals("WEBDRIVER")) {
 			instanceType = "CHROME";
-			log.warn("Please use CHROME instead of WEBDRIVER as instance type for calling! WEBDRIVER will be removed in future versions.");
+			log.warn("Please use CHROME or FIREFOX instead of WEBDRIVER as instance type for calling! WEBDRIVER will be removed in future versions.");
 		}
 		return InstanceType.valueOf(instanceType);
 	}

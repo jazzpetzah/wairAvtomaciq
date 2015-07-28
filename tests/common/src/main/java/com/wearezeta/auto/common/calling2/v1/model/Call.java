@@ -51,4 +51,11 @@ public class Call {
 		this.creationTime = creationTime;
 	}
 
+	@Override
+	public String toString() {
+		return "Call{" + "id=" + id + ", status=" + status
+				+ ", conversationId=" + conversationId + ", timeout=" + timeout
+				+ ", creationTime=" + creationTime + '}';
+	}
+
 }

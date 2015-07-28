@@ -280,24 +280,24 @@ Feature: Calling
   # This has to work even in browsers, which don't support calling
   @regression @calling @id2014
   Scenario Outline: Verify I get missed call notification when someone calls me
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to Me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I open self profile
-    When <Contact> calls me using <CallBackend>
+    When <Contact1> calls me using <CallBackend>
     And I wait for 1 seconds
-    And <Contact> stops all calls to me
+    And <Contact1> stops all calls to me
     And I wait for 1 seconds
-    Then I see missed call notification for conversation <Contact>
-    When I open conversation with <Contact>
-    Then I do not see missed call notification for conversation <Contact>
-    Then I see conversation with missed call from <Contact>
+    Then I see missed call notification for conversation <Contact1>
+    When I open conversation with <Contact1>
+    Then I do not see missed call notification for conversation <Contact1>
+    Then I see conversation with missed call from <Contact1>
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | autocall    |
+      | Login      | Password      | Name      | Contact1   | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name  | autocall    |
 
   @staging @calling @id1882
   Scenario Outline: People trying to call me while I'm not signed in
@@ -353,7 +353,7 @@ Feature: Calling
     And I see my avatar on top of Contact list
     And I open conversation with <Contact1>
     When <Contact1> calls me using <CallBackend>
-    And I see the calling bar from user <Contact1>
+    And I see the calling bar
     When I silence the incoming call
     When I open conversation with <Contact2>
     Then I do not see the calling bar
@@ -399,7 +399,7 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-         | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+      | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
   @staging @calling @id1907
   Scenario Outline: Verify call button is not visible in the conversation view while incoming call is in progress
@@ -455,9 +455,11 @@ Feature: Calling
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
     When I open conversation with <OtherContact>
-    Then I see the calling bar
+    Then I do not see the calling bar
     When I call
-    Then I see the calling bar
+    Then I do not see the calling bar
+    When I open call conversation with <Contact>
+    And I see the calling bar
     When I end the call
     Then I do not see the calling bar
 

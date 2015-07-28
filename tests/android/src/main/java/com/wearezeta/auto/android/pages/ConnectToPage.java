@@ -8,7 +8,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
-import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -95,14 +94,13 @@ public class ConnectToPage extends AndroidPage {
 				.apply(contactName));
 		int ntry = 1;
 		do {
-			if (DriverUtils
-					.waitUntilLocatorIsDisplayed(getDriver(), locator, 3)) {
-				this.waitUntilIgnoreButtonIsVisible();
-				this.swipeUpCoordinates(1000, 50);
-			} else {
+			if (DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3)) {
 				this.waitUntilIgnoreButtonIsVisible();
 				this.swipeDownCoordinates(1000, 50);
 				return;
+			} else {
+				this.waitUntilIgnoreButtonIsVisible();
+				this.swipeUpCoordinates(1000, 50);
 			}
 			ntry++;
 		} while (ntry <= maxScrolls);

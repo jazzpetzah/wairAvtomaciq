@@ -42,6 +42,7 @@ public final class WebAppLocators {
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 		public static final String cssParentContactListItem = "div#conversation-list";
+		public static final String cssConversationListTopBar = "div.conversation-list-top-bar";
 
 		public static final String cssIncomingPendingConvoItem = cssParentContactListItem
 				+ " [data-uie-name=item-pending-requests]";
@@ -70,9 +71,14 @@ public final class WebAppLocators {
 						+ "*[@data-uie-name='status-silence']", name);
 
 		public static final Function<String, String> cssContactListEntryByName = (
+				name) -> String
+				.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s']",
+						cssParentContactListItem, name);
+
+		public static final Function<String, String> cssCallConversationByName = (
 				name) -> String.format(
-				"%s div[data-uie-name=item-conversation][data-uie-value='%s']",
-				cssParentContactListItem, name);
+				"%s div[data-uie-name='item-call'][data-uie-value='%s']",
+				cssConversationListTopBar, name);
 
 		public static final Function<String, String> cssArchiveListEntryByName = (
 				name) -> String
@@ -83,7 +89,7 @@ public final class WebAppLocators {
 				name) -> cssContactListEntryByName.apply(name)
 				+ "+ div span[data-uie-name='go-options']";
 
-		public static final String cssSelfProfileAvatar = "[data-uie-name=go-self-profile]";
+		public static final String cssSelfProfileAvatar = "[data-uie-name='go-self-profile']";
 
 		public static final String xpathOngoingCallListItem = "//div[@data-uie-name='item-call']";
 
@@ -120,8 +126,7 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathUnreadDotByContactName = (
 				name) -> String
-				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
-						+ "*//*[@data-uie-name='status-unread' and contains(@class, 'conversation-list')]",
+				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/..//*[@data-uie-name='status-unread']",
 						name);
 	}
 
@@ -199,7 +204,7 @@ public final class WebAppLocators {
 
 		public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']";
 
-		public static final String classPingMessage = "pinged";
+		public static final String cssPingMessage = ".pinged";
 
 		// special message identifier
 
@@ -235,10 +240,10 @@ public final class WebAppLocators {
 
 		// bars (call bar)
 
-		public static String xpathCallingBarRoot = "//div[contains(@class, 'call-controls-wrapper') and contains(@class, 'on')]";
+		public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
-				.format("//div[contains(@class, 'call-controls') and div/div/span[text()='%s']]",
+				.format("//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]/div/div/div/div/div[contains(@class, 'cc-avatar-label') and text()='%s']",
 						text);
 
 		public static String xpathAcceptCallButton = xpathCallingBarRoot

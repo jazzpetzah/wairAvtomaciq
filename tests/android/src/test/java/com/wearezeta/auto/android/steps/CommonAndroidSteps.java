@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.steps;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
@@ -20,8 +19,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.android.common.AndroidLoggingUtils;
-import com.wearezeta.auto.android.common.reporter.LogcatListener;
+import com.wearezeta.auto.android.common.AndroidLogListener;
+import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android.pages.registration.WelcomePage;
 import com.wearezeta.auto.common.CommonCallingSteps;
@@ -59,13 +58,10 @@ public class CommonAndroidSteps {
 	private static final Logger log = ZetaLogger
 			.getLog(CommonAndroidSteps.class.getSimpleName());
 
-	public static LogcatListener listener = new LogcatListener();
-
 	private static ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	public static final Platform CURRENT_PLATFORM = Platform.Android;
-	private long testStartedTimestamp = Long.MAX_VALUE;
 
 	public static final String PATH_ON_DEVICE = "/mnt/sdcard/DCIM/Camera/userpicture.jpg";
 	public static final int DEFAULT_SWIPE_TIME = 1500;
@@ -186,7 +182,7 @@ public class CommonAndroidSteps {
 	}
 
 	private void initFirstPage(boolean isUnicode) throws Exception {
-		testStartedTimestamp = new Date().getTime();
+		AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
 				getUrl(), getPath(), isUnicode, this.getClass());
 		pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
@@ -195,8 +191,7 @@ public class CommonAndroidSteps {
 
 	@Before("@performance")
 	public void setUpPerformance() throws Exception {
-		listener.startListeningLogcat();
-
+		AndroidLogListener.getInstance(ListenerType.PERF).start();
 		try {
 			AndroidCommonUtils.disableHints();
 		} catch (Exception e) {
@@ -862,7 +857,10 @@ public class CommonAndroidSteps {
 				e.printStackTrace();
 			}
 		}
-		AndroidLoggingUtils.writeDeviceLogsToConsole(testStartedTimestamp);
+
+		AndroidLogListener.forceStopAll();
+		AndroidLogListener.writeDeviceLogsToConsole(AndroidLogListener
+				.getInstance(ListenerType.DEFAULT));
 
 		commonSteps.getUserManager().resetUsers();
 	}
@@ -919,10 +917,10 @@ public class CommonAndroidSteps {
 	public void IAddPredefinedUsersToAddressBook() throws Exception {
 		AndroidCommonUtils.addPreDefinedUsersToAddressBook();
 	}
-	
+
 	/**
-	 * Checks to see that a device runs the target version, and if not, 
-	 * throws a pending exception to skip this test without failing
+	 * Checks to see that a device runs the target version, and if not, throws a
+	 * pending exception to skip this test without failing
 	 * 
 	 * @step. ^My device runs Android (.*) or higher$
 	 * 
@@ -932,7 +930,7 @@ public class CommonAndroidSteps {
 	public void MyDeviceRunsAndroid(String targetVersion) throws Exception {
 		if (AndroidCommonUtils.compareAndroidVersion(targetVersion) < 0) {
 			throw new PendingException("This test isn't suitable to run on "
-				+ "anything lower than Android " + targetVersion);
+					+ "anything lower than Android " + targetVersion);
 		}
 	}
 
@@ -945,5 +943,5 @@ public class CommonAndroidSteps {
 	public void DeleteDeployedContacts() throws Exception {
 		AndroidCommonUtils.removeTestContactsFromAddressBook();
 	}
-	
+
 }

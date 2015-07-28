@@ -39,4 +39,11 @@ public final class InstanceRequest {
 		return timeout;
 	}
 
+	@Override
+	public String toString() {
+		return "InstanceRequest{" + "email=" + email + ", password=" + password
+				+ ", backend=" + backend + ", instanceType=" + instanceType
+				+ ", timeout=" + timeout + '}';
+	}
+
 }

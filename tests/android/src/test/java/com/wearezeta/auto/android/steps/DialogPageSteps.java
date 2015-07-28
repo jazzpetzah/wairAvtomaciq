@@ -25,6 +25,11 @@ public class DialogPageSteps {
 		return (DialogPage) pagesCollection.getPage(DialogPage.class);
 	}
 
+	private CallingOverlayPage getCallingOverlayPage() throws Exception {
+		return (CallingOverlayPage) pagesCollection
+				.getPage(CallingOverlayPage.class);
+	}
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private static final String ANDROID_LONG_MESSAGE = CommonUtils
@@ -283,9 +288,9 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Checks to see if call overlay is present
+	 * Checks to see if call overlay is present or not
 	 * 
-	 * @step. ^I see call overlay$
+	 * @step. ^I( do not)? see call overlay$
 	 * @param shouldNotSee
 	 *            is set to null if " do not" part does not exist
 	 * 
@@ -294,12 +299,12 @@ public class DialogPageSteps {
 	@Then("^I( do not)? see call overlay$")
 	public void WhenISeeCallOverlay(String shouldNotSee) throws Exception {
 		if (shouldNotSee == null) {
-			Assert.assertTrue("Call overlay not visible", getDialogPage()
-					.checkCallingOverlay());
+			Assert.assertTrue("Call overlay not visible",
+					getCallingOverlayPage().waitUntilVisible());
 		} else {
 			Assert.assertTrue(
 					"Call overlay is visible, it should have been dismissed",
-					getDialogPage().checkNoCallingOverlay());
+					getCallingOverlayPage().waitUntilNotVisible());
 		}
 	}
 
@@ -519,7 +524,8 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Navigates back to the contact list page using back button (disabled using a swipe right)
+	 * Navigates back to the contact list page using back button (disabled using
+	 * a swipe right)
 	 * 
 	 * @step. ^I navigate back from dialog page$
 	 * 
@@ -527,7 +533,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I navigate back from dialog page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
-//		getDialogPage().navigateBack(1000);
+		// getDialogPage().navigateBack(1000);
 		getDialogPage().navigateBack();
 		getDialogPage().initContactListPage();
 	}
@@ -707,7 +713,7 @@ public class DialogPageSteps {
 	@When("I dismiss calling bar by swipe$")
 	public void IDismissCalling() throws Exception {
 		Assert.assertTrue("Call overlay is not visible, nothing to swipe",
-				getDialogPage().checkCallingOverlay());
+				getCallingOverlayPage().waitUntilVisible());
 		getDialogPage().swipeByCoordinates(1500, 30, 25, 30, 5);
 	}
 }
