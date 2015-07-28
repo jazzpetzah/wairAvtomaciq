@@ -205,7 +205,7 @@ public final class WebAppLocators {
 
 		public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']";
 
-		public static final String classPingMessage = "pinged";
+		public static final String cssPingMessage = ".pinged";
 
 		// special message identifier
 

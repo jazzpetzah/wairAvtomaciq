@@ -30,24 +30,23 @@ public final class CommonRESTHandlers {
 	private static final int MAX_SINGLE_ENTITY_LENGTH_IN_LOG = 400;
 
 	private static String formatLogRecord(Object entity) {
-		String result;
+		String result = EMPTY_LOG_RECORD;
 		if (entity != null) {
-			result = "<" + entity.getClass().getSimpleName() + ">";
 			if (entity instanceof String) {
 				result = ((String) entity);
 				if (result.length() == 0) {
 					result = EMPTY_LOG_RECORD;
 				} else if (result.length() > MAX_SINGLE_ENTITY_LENGTH_IN_LOG) {
 					result = result.substring(0,
-							MAX_SINGLE_ENTITY_LENGTH_IN_LOG) + "...";
+							MAX_SINGLE_ENTITY_LENGTH_IN_LOG) + " ...";
 				}
+			} else {
+				result = entity.toString().substring(0,
+						MAX_SINGLE_ENTITY_LENGTH_IN_LOG)
+						+ " ...";
 			}
-			return result;
-		} else {
-			result = "<null>";
-			return result;
 		}
-
+		return result;
 	}
 
 	public <T> T httpPost(Builder webResource, Object entity,
