@@ -71,7 +71,8 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> cssContactListEntryByName = (
 				name) -> String
-				.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s']",
+				.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s'], %s div[data-uie-name='item-call'][data-uie-value='%s']",
+						cssParentContactListItem, name,
 						cssParentContactListItem, name);
 
 		public static final Function<String, String> cssArchiveListEntryByName = (
