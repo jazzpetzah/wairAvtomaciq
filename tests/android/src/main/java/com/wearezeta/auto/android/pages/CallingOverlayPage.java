@@ -56,7 +56,7 @@ public class CallingOverlayPage extends AndroidPage {
 
 	private static final int VISIBILITY_TIMEOUT_SECONDS = 5;
 
-	public boolean isVisible() throws Exception {
+	public boolean waitUntilVisible() throws Exception {
 		final By locator = By.id(idCallingOverlayContainer);
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
 				VISIBILITY_TIMEOUT_SECONDS);
