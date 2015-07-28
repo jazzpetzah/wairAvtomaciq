@@ -14,11 +14,9 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class CallingOverlayPage extends AndroidPage {
 	private static final String idCallingOverlayContainer = "coc__calling__overlay_container";
 
-	private static final String idOngoingCallMicrobar = "ocpv__ongoing";
+	private static final String idOngoingCallMicrobar = "v__calling__top_bar";
 
-	private static final String idOngoingCallMinibar = "ocpv__ongoing_small";
-
-	private static final String idIncominCallerAvatar = "civ__calling";
+	private static final String idOngoingCallMinibar = "coc__calling__overlay_container";
 
 	private static final String idIgnoreButton = "cib__calling_mute";
 	@FindBy(id = idIgnoreButton)
@@ -34,9 +32,11 @@ public class CallingOverlayPage extends AndroidPage {
 			.format("//*[@id='%s' and contains(@value, '%s')]", idCallMessage,
 					name.toUpperCase());
 
+	private static final String idIncomingCallerAvatarsContainer = "rv__calling__container";
+
 	private static final Function<String, String> xpathCallingBarAvatarByName = name -> String
-			.format("//*[@id='rv__calling__container']//*[@value='%s']",
-					name.toUpperCase());
+			.format("//*[@id='%s']//*[@value='%s']",
+					idIncomingCallerAvatarsContainer, name.toUpperCase());
 
 	private static final String idCallingDismiss = "cib__calling__dismiss";
 
@@ -95,7 +95,7 @@ public class CallingOverlayPage extends AndroidPage {
 
 	public boolean incominCallerAvatarIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idIncominCallerAvatar));
+				By.id(idIncomingCallerAvatarsContainer));
 	}
 
 	public boolean callingMessageIsVisible() throws Exception {

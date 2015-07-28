@@ -174,12 +174,9 @@ public class CallingPageSteps {
 		Assert.assertTrue(getCallingOverlayPage().callingOverlayIsVisible());
 		Assert.assertTrue(getCallingOverlayPage()
 				.incominCallerAvatarIsVisible());
-		Assert.assertTrue(getCallingOverlayPage().callingMessageIsVisible());
 		Assert.assertTrue(getCallingOverlayPage().callingDismissIsVisible());
 		Assert.assertTrue(getCallingOverlayPage().callingSpeakerIsVisible());
 		Assert.assertTrue(getCallingOverlayPage().callingMicMuteIsVisible());
-		Assert.assertFalse(getCallingOverlayPage()
-				.ongoingCallMinibarIsVisible());
 	}
 
 	/**
