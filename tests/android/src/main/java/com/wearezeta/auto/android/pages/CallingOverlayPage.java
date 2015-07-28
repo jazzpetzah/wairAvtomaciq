@@ -12,12 +12,6 @@ import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class CallingOverlayPage extends AndroidPage {
-	@SuppressWarnings("unused")
-	private static final String idCallingMute = "cib__calling_mute";
-
-	@SuppressWarnings("unused")
-	private static final String idCallingAccept = "gtv__calling__accept";
-
 	private static final String idCallingOverlayContainer = "coc__calling__overlay_container";
 
 	private static final String idOngoingCallMicrobar = "ocpv__ongoing";
@@ -38,6 +32,10 @@ public class CallingOverlayPage extends AndroidPage {
 
 	private static final Function<String, String> xpathCallingBarCaptionByName = name -> String
 			.format("//*[@id='%s' and contains(@value, '%s')]", idCallMessage,
+					name.toUpperCase());
+
+	private static final Function<String, String> xpathCallingBarAvatarByName = name -> String
+			.format("//*[@id='rv__calling__container']//*[@value='%s']",
 					name.toUpperCase());
 
 	private static final String idCallingDismiss = "cib__calling__dismiss";
@@ -76,9 +74,15 @@ public class CallingOverlayPage extends AndroidPage {
 		ignoreButton.click();
 	}
 
-	public boolean waitUntilNameAppearsOnCallingBar(String name)
+	public boolean waitUntilNameAppearsOnCallingBarCaption(String name)
 			throws Exception {
 		final By locator = By.xpath(xpathCallingBarCaptionByName.apply(name));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilNameAppearsOnCallingBarAvatar(String name)
+			throws Exception {
+		final By locator = By.xpath(xpathCallingBarAvatarByName.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 

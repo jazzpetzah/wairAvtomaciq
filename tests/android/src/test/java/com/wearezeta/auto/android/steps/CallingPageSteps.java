@@ -56,7 +56,7 @@ public class CallingPageSteps {
 		Assert.assertTrue(String.format(
 				"The current caller name differs from the expected value '%s'",
 				expectedCallerName), getCallingOverlayPage()
-				.waitUntilNameAppearsOnCallingBar(expectedCallerName));
+				.waitUntilNameAppearsOnCallingBarCaption(expectedCallerName));
 	}
 
 	/**
@@ -71,9 +71,9 @@ public class CallingPageSteps {
 	public void ISeeStartedCallMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
 		Assert.assertTrue(
-				String.format("'%s' name is not visible on calling bar",
+				String.format("The name '%s' is not visible on calling bar",
 						contact),
-				getCallingOverlayPage().waitUntilNameAppearsOnCallingBar(
+				getCallingOverlayPage().waitUntilNameAppearsOnCallingBarAvatar(
 						contact));
 	}
 
