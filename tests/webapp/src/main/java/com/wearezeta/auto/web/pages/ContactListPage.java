@@ -548,7 +548,7 @@ public class ContactListPage extends WebPage {
 				.xpath(WebAppLocators.ContactListPage.xpathUnreadDotByContactName
 						.apply(name));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				locator, 3);
+				locator);
 		final WebElement entry = getDriver().findElement(locator);
 		return AccentColor.getByRgba(entry.getCssValue("background-color"));
 	}
