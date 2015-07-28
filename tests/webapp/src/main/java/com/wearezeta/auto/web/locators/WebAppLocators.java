@@ -241,8 +241,10 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
 				.format(xpathCallingBarRoot
-						+ "/div/div/div/div/div[contains(@class, 'cc-avatar-label') and text()='%s']",
-						text);
+						+ "/div/div/div/div/div[contains(@class, 'cc-avatar-label') and text()='%s']|"
+						+ xpathCallingBarRoot
+						+ "/div/div/div/span[contains(@class, 'cc-label-bold') and text()='%s']",
+						text, text);
 
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-check')]";
