@@ -41,7 +41,13 @@ public final class CommonRESTHandlers {
 							MAX_SINGLE_ENTITY_LENGTH_IN_LOG) + " ...";
 				}
 			} else {
-				result = entity.getClass().getSimpleName();
+				result = entity.toString();
+				if (result.length() == 0) {
+					result = EMPTY_LOG_RECORD;
+				} else if (result.length() > MAX_SINGLE_ENTITY_LENGTH_IN_LOG) {
+					result = result.substring(0,
+							MAX_SINGLE_ENTITY_LENGTH_IN_LOG) + " ...";
+				}
 			}
 		}
 		return result;

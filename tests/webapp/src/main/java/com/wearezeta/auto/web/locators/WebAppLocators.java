@@ -126,8 +126,7 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathUnreadDotByContactName = (
 				name) -> String
-				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
-						+ "*//*[@data-uie-name='status-unread' and contains(@class, 'conversation-list')]",
+				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/..//*[@data-uie-name='status-unread']",
 						name);
 	}
 

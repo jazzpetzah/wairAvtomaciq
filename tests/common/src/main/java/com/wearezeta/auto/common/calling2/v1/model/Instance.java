@@ -89,9 +89,9 @@ public class Instance {
 		return "InstanceDTO{" + "id=" + id + ", instanceStatus="
 				+ instanceStatus + ", email=" + email + ", password="
 				+ password + ", currentCall=" + currentCall + ", backend="
-				+ backend + ", instanceType=" + instanceType + ", screenshot="
-				+ screenshot + ", timeout=" + timeout + ", created=" + created
-				+ '}';
+				+ backend + ", instanceType=" + instanceType
+				+ ", screenshot=<skipped>, timeout=" + timeout + ", created="
+				+ created + '}';
 	}
 
 }
