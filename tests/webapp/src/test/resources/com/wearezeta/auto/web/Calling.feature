@@ -299,7 +299,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name  | autocall    |
 
-  @staging @calling @id1882 @torun
+  @staging @calling @id1882
   Scenario Outline: People trying to call me while I'm not signed in
     Given My browser supports calling
     Given There are 2 users where <Name> is me
