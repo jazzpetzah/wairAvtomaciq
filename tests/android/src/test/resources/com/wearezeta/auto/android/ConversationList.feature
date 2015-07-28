@@ -47,28 +47,30 @@ Feature: Conversation List
 
   @id2177 @regression
   Scenario Outline: I can open and close people picker by UI button or swipe
-    Given There is 1 user where <Name> is me
+    Given There are 2 users where <Name> is me
+    # We need at least 1 user in the convo list, otherwise it will be impossible to swipe
+    Given <Contact> is connected to me
     Given I sign in using my email or phone number
-    Given I see Contact list with no contacts
+    Given I see Contact list with contacts
     When I press Open StartUI
     And I see People picker page
     And I press Clear button
-    Then I see Contact list with no contacts
+    Then I see Contact list with contacts
     And I do not see TOP PEOPLE
     When I press Open StartUI
     And I see People picker page
     And I swipe down people picker
-    Then I see Contact list with no contacts
+    Then I see Contact list with contacts
     And I do not see TOP PEOPLE
 
     Examples: 
-      | Name      |
-      | user1Name |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @id1514 @regression
-  Scenario Outline: Verify unsilince the conversation
+  Scenario Outline: Verify unsilence the conversation
     Given There are 2 users where <Name> is me
-    Given <Contact1> is connected to <Name>
+    Given <Contact1> is connected to me
     Given <Contact1> is silenced to user <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts

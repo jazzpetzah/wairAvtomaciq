@@ -71,7 +71,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssCallButton)
 	private WebElement callButton;
 
-	@FindBy(how = How.CLASS_NAME, using = WebAppLocators.ConversationPage.classPingMessage)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPingMessage)
 	private WebElement pingMessage;
 
 	@FindBy(css = WebAppLocators.ConversationPage.cssLastTextMessage)
@@ -281,7 +281,7 @@ public class ConversationPage extends WebPage {
 
 	public boolean isPingMessageVisible(String message) throws Exception {
 		final By locator = By
-				.className(WebAppLocators.ConversationPage.classPingMessage);
+				.cssSelector(WebAppLocators.ConversationPage.cssPingMessage);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, PING_MESSAGE_TIMEOUT) : "Ping message has not been shown within "
 				+ PING_MESSAGE_TIMEOUT + " second(s) timeout";
@@ -290,8 +290,9 @@ public class ConversationPage extends WebPage {
 	}
 
 	public int numberOfPingMessagesVisible() throws Exception {
-		return getDriver().findElementsByClassName(
-				WebAppLocators.ConversationPage.classPingMessage).size() - 1;
+		return getDriver().findElements(
+				By.cssSelector(WebAppLocators.ConversationPage.cssPingMessage))
+				.size();
 	}
 
 	public boolean isCallButtonVisible() throws Exception {
@@ -335,7 +336,7 @@ public class ConversationPage extends WebPage {
 
 	public String getMissedCallMessage() throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
+				.cssSelector(WebAppLocators.ConversationPage.cssLastAction);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
 				+ MISSED_CALL_MSG_TIMOEUT + " second(s) timeout";

@@ -94,14 +94,13 @@ public class ConnectToPage extends AndroidPage {
 				.apply(contactName));
 		int ntry = 1;
 		do {
-			if (DriverUtils
-					.waitUntilLocatorIsDisplayed(getDriver(), locator, 3)) {
-				this.waitUntilIgnoreButtonIsVisible();
-				this.swipeUpCoordinates(1000, 50);
-			} else {
+			if (DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3)) {
 				this.waitUntilIgnoreButtonIsVisible();
 				this.swipeDownCoordinates(1000, 50);
 				return;
+			} else {
+				this.waitUntilIgnoreButtonIsVisible();
+				this.swipeUpCoordinates(1000, 50);
 			}
 			ntry++;
 		} while (ntry <= maxScrolls);

@@ -281,7 +281,7 @@ Feature: Calling
   @regression @calling @id2014
   Scenario Outline: Verify I get missed call notification when someone calls me
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -299,7 +299,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name  | autocall    |
 
-  @staging @calling @id1882
+  @staging @calling @id1882 @torun
   Scenario Outline: People trying to call me while I'm not signed in
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -313,6 +313,7 @@ Feature: Calling
     And I wait for 5 seconds
     Then I see the calling bar from user <Contact>
     And <Contact> stops all calls to me
+    And I wait for 5 seconds
     Then I see missed call notification for conversation <Contact>
 
     Examples: 
@@ -458,7 +459,7 @@ Feature: Calling
     Then I do not see the calling bar
     When I call
     Then I do not see the calling bar
-    When I open call conversation with <Contact>
+    And I open conversation with <Contact>
     And I see the calling bar
     When I end the call
     Then I do not see the calling bar

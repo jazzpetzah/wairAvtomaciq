@@ -25,4 +25,11 @@ public class CallRequest {
 	public Long getTimeout() {
 		return timeout;
 	}
+
+	@Override
+	public String toString() {
+		return "CallRequest{" + "conversationId=" + conversationId
+				+ ", timeout=" + timeout + '}';
+	}
+
 }

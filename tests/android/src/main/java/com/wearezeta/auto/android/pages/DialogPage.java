@@ -167,10 +167,6 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idSketch)
 	private WebElement sketchBtn;
 
-	private static final String idCallingMessage = "ttv__calling__message";
-	@FindBy(id = idCallingMessage)
-	private WebElement callingMessageText;
-
 	private static final String idCall = "cursor_menu_item_calling";
 	@FindBy(id = idCall)
 	private WebElement callBtn;
@@ -320,20 +316,6 @@ public class DialogPage extends AndroidPage {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), dstButton);
 		return getElementScreenshot(dstButton).orElseThrow(
 				IllegalStateException::new);
-	}
-
-	private static final int CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS = 15;
-
-	public boolean checkNoCallingOverlay() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-				By.id(idCallingMessage),
-				CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS);
-	}
-
-	public boolean checkCallingOverlay() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCallingMessage),
-				CALLING_OVERLAY_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	public void typeAndSendMessage(String message) throws Exception {
