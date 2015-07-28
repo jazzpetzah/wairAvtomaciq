@@ -243,6 +243,7 @@ public class RegistrationPage extends IOSPage {
 		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.name(IOSLocators.RegistrationPage.nameSelectPictureButton));
 		selectPictureButton.click();
+		DriverUtils.waitUntilElementClickable(getDriver(), photoButton);
 		photoButton.click();
 		return new CameraRollPage(this.getLazyDriver());
 	}
