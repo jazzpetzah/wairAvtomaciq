@@ -662,11 +662,12 @@ Feature: Conversation View
     Then I see message in the dialog
 
     Examples: 
+      @staging @id3196
+
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SimpleGroup   |
 
-  @staging @id3196
-  Scenario Outline: Play/pause SoundCloud media link from the media bar
+  Scenario Outline: Play/pause SoundCloud media link from the media bar [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Name> sent long message to conversation <Contact>
@@ -693,7 +694,7 @@ Feature: Conversation View
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
   @staging @id3197
-  Scenario Outline: Play/pause SoundCloud media link from the media bar
+  Scenario Outline: Play/pause SoundCloud media link from the media bar [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Name> sent long message to conversation <Contact>
@@ -718,3 +719,142 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+
+  @staging @id3198
+  Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent long message to conversation <Contact1>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap on text input
+    And I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I tap on text input
+    Then I dont see media bar on dialog page
+
+    Examples: 
+      | Name      | Contact1  | SoundCloudLink                                                                       |
+      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+
+  @staging @id3199
+  Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent long message to conversation <Contact1>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap on text input
+    And I see media link <SoundCloudLink> and media in dialog
+    And I tap media link
+    And I scroll media out of sight until media bar appears
+    And I tap on text input
+    Then I dont see media bar on dialog page
+
+    Examples: 
+      | Name      | Contact1  | SoundCloudLink                                                                       |
+      | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+
+  @staging @id2380
+  Scenario Outline: Tap the cursor to get to the end of the conversation [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I send long message
+    And I scroll to the beginning of the conversation
+    And I tap on text input
+    Then I see last message in the dialog
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3200
+  Scenario Outline: Tap the cursor to get to the end of the conversation [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I send long message
+    And I scroll to the beginning of the conversation
+    And I tap on text input
+    Then I see last message in the dialog
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id2417
+  Scenario Outline: Verify you can see conversation images in fullscreen
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
+    And I see new photo in the dialog
+    And I memorize message send time
+    And I tap and hold image to open full screen
+    And I see Full Screen Page opened
+    And I see sender first name <Name> on fullscreen page
+    And I see send date on fullscreen page
+    And I see download button shown on fullscreen page
+    And I tap on fullscreen page
+    And I verify image caption and download button are not shown
+    And I tap on fullscreen page
+    And I tap close fullscreen page button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3201
+  Scenario Outline: Verify you can see conversation images in fullscreen
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
+    And I see new photo in the dialog
+    And I memorize message send time
+    And I tap and hold image to open full screen
+    And I see Full Screen Page opened
+    And I see sender first name <Name> on fullscreen page
+    And I see send date on fullscreen page
+    And I see download button shown on fullscreen page
+    And I tap on fullscreen page
+    And I verify image caption and download button are not shown
+    And I tap on fullscreen page
+    And I tap close fullscreen page button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

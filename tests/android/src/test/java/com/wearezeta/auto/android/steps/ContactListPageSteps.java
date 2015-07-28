@@ -22,14 +22,14 @@ public class ContactListPageSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
-	 * Verify whether conversations list is visible and no contacts are there
+	 * Verify whether conversations list is visible or not
 	 * 
 	 * @step. ^I see Contact list with (no )?contacts$
 	 * 
 	 * @throws Exception
 	 */
 	@Given("^I see Contact list with (no )?contacts$")
-	public void GivenISeeContactListWithNoContacts(String shouldNotBeVisible)
+	public void GivenISeeContactList(String shouldNotBeVisible)
 			throws Exception {
 		getContactListPage().verifyContactListIsFullyLoaded();
 		if (shouldNotBeVisible == null) {

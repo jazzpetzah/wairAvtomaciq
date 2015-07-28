@@ -512,7 +512,8 @@ public class PersonalInfoPageSteps {
 	 * @step. ^I set my accent color via the colorpicker to (.*)$
 	 * 
 	 * @param color
-	 *             should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 *            should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed,
+	 *            BrightOrange, SoftPink, Violet
 	 * @throws Exception
 	 */
 	@When("^I set my accent color via the colorpicker to (.*)$")
@@ -520,20 +521,23 @@ public class PersonalInfoPageSteps {
 			throws Exception {
 		getPersonalInfoPage().setAccentColor(color);
 	}
-	
+
 	/**
 	 * Changes the accent color by sliding to relevant one by coordinates at the
 	 * color picker
 	 * 
 	 * @step. ^I slide my accent color via the colorpicker from (.*) to (.*)$
-	 * 
-	 * @param color
-	 *            should be StrongBlue, StrongLimeGreen, BrightYellow, VividRed, BrightOrange, SoftPink, Violet
+	 * @param startColor
+	 *            should be one of - StrongBlue, StrongLimeGreen, BrightYellow,
+	 *            VividRed, BrightOrange, SoftPink, Violet
+	 * @param endColor
+	 *            should be one of - StrongBlue, StrongLimeGreen, BrightYellow,
+	 *            VividRed, BrightOrange, SoftPink, Violet
 	 * @throws Exception
 	 */
 	@When("^I slide my accent color via the colorpicker from (.*) to (.*)$")
-	public void ISlideMyAccentColorViaTheColorpicker(String startColor, String endColor)
-			throws Exception {
+	public void ISlideMyAccentColorViaTheColorpicker(String startColor,
+			String endColor) throws Exception {
 		getPersonalInfoPage().swipeAccentColor(startColor, endColor);
 	}
 
