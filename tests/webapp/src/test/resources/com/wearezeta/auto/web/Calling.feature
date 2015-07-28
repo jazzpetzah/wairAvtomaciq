@@ -459,7 +459,7 @@ Feature: Calling
     Then I do not see the calling bar
     When I call
     Then I do not see the calling bar
-    When I open call conversation with <Contact>
+    And I open conversation with <Contact>
     And I see the calling bar
     When I end the call
     Then I do not see the calling bar

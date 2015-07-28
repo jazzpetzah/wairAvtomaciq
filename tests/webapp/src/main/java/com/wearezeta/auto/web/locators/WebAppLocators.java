@@ -42,7 +42,6 @@ public final class WebAppLocators {
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 		public static final String cssParentContactListItem = "div#conversation-list";
-		public static final String cssConversationListTopBar = "div.conversation-list-top-bar";
 
 		public static final String cssIncomingPendingConvoItem = cssParentContactListItem
 				+ " [data-uie-name=item-pending-requests]";
@@ -74,11 +73,6 @@ public final class WebAppLocators {
 				name) -> String
 				.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s']",
 						cssParentContactListItem, name);
-
-		public static final Function<String, String> cssCallConversationByName = (
-				name) -> String.format(
-				"%s div[data-uie-name='item-call'][data-uie-value='%s']",
-				cssConversationListTopBar, name);
 
 		public static final Function<String, String> cssArchiveListEntryByName = (
 				name) -> String

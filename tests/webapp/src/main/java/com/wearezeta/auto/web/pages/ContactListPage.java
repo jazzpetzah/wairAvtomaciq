@@ -352,23 +352,6 @@ public class ContactListPage extends WebPage {
 		return new ConversationPage(this.getLazyDriver());
 	}
 
-	public ConversationPage openCallConversation(String conversationName)
-			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By entryLocator = By
-				.cssSelector(WebAppLocators.ContactListPage.cssCallConversationByName
-						.apply(conversationName));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				entryLocator, OPEN_CONVO_LIST_ENTRY_TIMEOUT) : "Conversation item '"
-				+ conversationName
-				+ "' has not been found in the conversations list within "
-				+ OPEN_CONVO_LIST_ENTRY_TIMEOUT + " second(s) timeout";
-		selectEntryWithRetry(entryLocator,
-				WebAppLocators.ContactListPage.cssCallConversationByName
-						.apply(conversationName));
-		return new ConversationPage(this.getLazyDriver());
-	}
-
 	public PendingConnectionsPage openConnectionRequestsList() throws Exception {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
