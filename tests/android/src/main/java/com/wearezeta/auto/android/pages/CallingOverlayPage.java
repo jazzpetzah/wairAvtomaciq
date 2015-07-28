@@ -34,10 +34,11 @@ public class CallingOverlayPage extends AndroidPage {
 	@FindBy(id = idAcceptButton)
 	private WebElement acceptButton;
 
-	private static final Function<String, String> xpathCallingBarCaptionByName = name -> String
-			.format("//*[@id='ttv__calling__message' and @value = '%s']", name);
-
 	private static final String idCallMessage = "ttv__calling__message";
+
+	private static final Function<String, String> xpathCallingBarCaptionByName = name -> String
+			.format("//*[@id='%s' and contains(@value, '%s')]", idCallMessage,
+					name.toUpperCase());
 
 	private static final String idCallingDismiss = "cib__calling__dismiss";
 
