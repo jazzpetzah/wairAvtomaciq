@@ -201,6 +201,8 @@ public final class WebAppLocators {
 
 		public static final String cssFirstAction = cssMessage + " .action";
 
+		public static final String cssLastAction = cssLastMessage + " .action";
+
 		public static final String xpathLastImageEntry = "(//*[@data-uie-name='go-image-detail' and @data-uie-visible='true'])[last()]";
 
 		public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']";
@@ -244,7 +246,8 @@ public final class WebAppLocators {
 		public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
-				.format("//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]/div/div/div/div/div[contains(@class, 'cc-avatar-label') and text()='%s']",
+				.format(xpathCallingBarRoot
+						+ "/div/div/div/span[contains(@class, 'cc-label-bold') and text()='%s']",
 						text);
 
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
