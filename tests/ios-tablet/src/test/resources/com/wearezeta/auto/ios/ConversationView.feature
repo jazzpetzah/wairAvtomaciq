@@ -799,7 +799,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @staging @id2417
-  Scenario Outline: Verify you can see conversation images in fullscreen
+  Scenario Outline: Verify you can see conversation images in fullscreen [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
@@ -829,7 +829,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @staging @id3201
-  Scenario Outline: Verify you can see conversation images in fullscreen
+  Scenario Outline: Verify you can see conversation images in fullscreen [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
@@ -854,6 +854,159 @@ Feature: Conversation View
     And I tap on fullscreen page
     And I tap close fullscreen page button
     Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3202
+  Scenario Outline: I can send and play inline youtube link [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I post media link <YouTubeLink>
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
+    Then I see youtube link <YouTubeLink> and media in dialog
+    And I click video container for the first time
+    And I see video player page is opened
+
+    Examples: 
+      | Name      | Contact   | YouTubeLink                                |
+      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
+
+  @staging @id3203
+  Scenario Outline: I can send and play inline youtube link [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I post media link <YouTubeLink>
+    Then I see youtube link <YouTubeLink> and media in dialog
+    And I click video container for the first time
+    And I see video player page is opened
+
+    Examples: 
+      | Name      | Contact   | YouTubeLink                                |
+      | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
+
+  @staging @id3204
+  Scenario Outline: Verify appearance of title bar for conversation, restored from background [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I close the app for <CloseAppTime> seconds
+    Then I see title bar in conversation name <Contact>
+
+    Examples: 
+      | Name      | Contact   | CloseAppTime |
+      | user1Name | user2Name | 2            |
+
+  @staging @id3205
+  Scenario Outline: Verify appearance of title bar for conversation, restored from background [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I close the app for <CloseAppTime> seconds
+    Then I see title bar in conversation name <Contact>
+
+    Examples: 
+      | Name      | Contact   | CloseAppTime |
+      | user1Name | user2Name | 2            |
+
+  @staging @id2418
+  Scenario Outline: Rotate image in fullscreen mode [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given User <Contact> change name to <NewName>
+    Given User <Contact> change accent color to <Color>
+    Given Myself is connected to <Contact>
+    Given Contact <Contact> sends image <Picture> to single user conversation <Name>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I see new photo in the dialog
+    And I memorize message send time
+    And I tap and hold image to open full screen
+    And I see Full Screen Page opened
+    And I rotate UI to landscape
+    Then I see image rotated in fullscreen mode
+
+    Examples: 
+      | Name      | Contact   | Picture     | Color        | NewName          |
+      | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
+
+  @staging @id3206
+  Scenario Outline: Rotate image in fullscreen mode [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given User <Contact> change name to <NewName>
+    Given User <Contact> change accent color to <Color>
+    Given Myself is connected to <Contact>
+    Given Contact <Contact> sends image <Picture> to single user conversation <Name>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I see new photo in the dialog
+    And I memorize message send time
+    And I tap and hold image to open full screen
+    And I see Full Screen Page opened
+    And I rotate UI to portrait
+    Then I see image rotated in fullscreen mode
+
+    Examples: 
+      | Name      | Contact   | Picture     | Color        | NewName          |
+      | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
+
+  @staging @id2451 
+  Scenario Outline: Verify archiving conversation from ellipsis menu [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>    
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I open conversation details
+    And I open ellipsis menu
+    And I click archive menu button
+    And I swipe right on the personal page
+    Then I dont see conversation <Contact> in contact list
+    And I open archived conversations on iPad
+    Then I see user <Contact> in contact list
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3192
+  Scenario Outline: Verify archiving conversation from ellipsis menu [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I open conversation details
+    And I open ellipsis menu
+    And I click archive menu button
+    Then I dont see conversation <Contact> in contact list
+    And I open archived conversations on iPad
+    Then I see user <Contact> in contact list
 
     Examples: 
       | Name      | Contact   |

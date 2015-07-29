@@ -336,7 +336,7 @@ public class ConversationPage extends WebPage {
 
 	public String getMissedCallMessage() throws Exception {
 		final By locator = By
-				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
+				.cssSelector(WebAppLocators.ConversationPage.cssLastAction);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				locator, MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
 				+ MISSED_CALL_MSG_TIMOEUT + " second(s) timeout";

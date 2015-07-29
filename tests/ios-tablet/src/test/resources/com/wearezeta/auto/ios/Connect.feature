@@ -69,7 +69,7 @@ Feature: Connect
       | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
       | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
 
-  @staging @id2119
+  @regression @id2119
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -187,7 +187,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @staging @id3012
+  @regression @id3012
   Scenario Outline: Verify transitions between connection requests (ignoring) [LANDSCAPE]
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -428,7 +428,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @staging @id1492
+  @regression @id1492
   Scenario Outline: Verify you can send an invitation via mail [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -453,7 +453,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3017
+  @regression @id3017
   Scenario Outline: Verify you can send an invitation via mail [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -482,7 +482,7 @@ Feature: Connect
   @staging @id2768 @deployAddressBook @noAcceptAlert
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There are 1 user where <Name> is me
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I dismiss alert
     And I see Contact list with my name <Name>
     And I open search by taping on it
