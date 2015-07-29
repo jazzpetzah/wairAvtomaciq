@@ -298,7 +298,7 @@ public final class IOSLocators {
 	
 	public static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
 	
-	public static final String nameOtherProfilePagePendingLabel = "CANCEL REQUEST";
+	public static final String xpathOtherProfilePagePendingLabel = "//UIAStaticText[contains(@name, 'Let’s connect')]";
 	
 	public static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
 	
