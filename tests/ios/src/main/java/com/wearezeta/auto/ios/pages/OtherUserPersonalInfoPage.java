@@ -36,7 +36,7 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameExitOtherUserPersonalInfoPageButton)
 	private WebElement exitOtherPersonalInfoPageButton;
 
-	@FindBy(how = How.NAME, using = IOSLocators.DialogInfoPage.nameArchiveButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.DialogInfoPage.xpathArchiveButton)
 	private WebElement archiveButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageNameField)
