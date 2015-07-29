@@ -162,10 +162,9 @@ public class DialogPageSteps {
 	@Then("^I see title bar in conversation name (.*)$")
 	public void ThenITitleBar(String convName) throws Exception {
 		String chatName = usrMgr.findUserByNameOrNameAlias(convName).getName();
-		Assert.assertTrue("Title bar is not on the page", getDialogPage()
-				.isTitleBarDisplayed());
-		Assert.assertTrue("Title bar has incorrect name", getDialogPage()
-				.isTitleBarNamed(chatName));
+		//Title bar is gone quite fast so it may fail because of this
+		Assert.assertTrue("Title bar with name - " + chatName+ " is not on the page", getDialogPage()
+				.isTitleBarDisplayed(chatName));
 	}
 
 	/**
@@ -330,7 +329,7 @@ public class DialogPageSteps {
 	public void IMemorizeMessageSendTime() throws Exception {
 		sendDate = getDialogPage().getSendTime();
 	}
-	
+
 	@Then("I see youtube link (.*) and media in dialog")
 	public void ISeeYoutubeLinkAndMediaInDialog(String link) throws Exception {
 		Assert.assertTrue("Media is missing in dialog", getDialogPage()
@@ -755,7 +754,7 @@ public class DialogPageSteps {
 		getDialogPage().sendStringToInput(message);
 		getDialogPage().openGifPreviewPage();
 	}
-	
+
 	/**
 	 * Opens the sketch feature
 	 * 
@@ -766,7 +765,6 @@ public class DialogPageSteps {
 	public void ITapSketchButton() throws Exception {
 		getDialogPage().openSketch();
 	}
-	
 
 	/**
 	 * Verify my user name in conversation view

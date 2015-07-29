@@ -49,7 +49,7 @@ public final class WebAppLocators {
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
 		public static final Function<String, String> xpathListItemRootWithControlsByName = name -> String
-				.format("//li[contains(@class, 'show-controls') and .//*[@data-uie-name='item-conversation' and @data-uie-value='%s']]",
+				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following-sibling::div[contains(@class, 'controls')]",
 						name);
 
 		public static final Function<String, String> xpathArchiveButtonByContactName = (
@@ -71,17 +71,20 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> cssContactListEntryByName = (
 				name) -> String
-				.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s']",
+				.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s'], %s div[data-uie-name='item-call'][data-uie-value='%s']",
+						cssParentContactListItem, name,
+						cssParentContactListItem, name);
+
+		public static final Function<String, String> cssOptionsButtonByContactName = (
+				name) -> String
+				.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s']+ div span[data-uie-name='go-options']",
+						cssParentContactListItem, name,
 						cssParentContactListItem, name);
 
 		public static final Function<String, String> cssArchiveListEntryByName = (
 				name) -> String
 				.format("%s div[data-uie-name='item-conversation-archived'][data-uie-value='%s']",
 						cssParentContactListItem, name);
-
-		public static final Function<String, String> cssOptionsButtonByContactName = (
-				name) -> cssContactListEntryByName.apply(name)
-				+ "+ div span[data-uie-name='go-options']";
 
 		public static final String cssSelfProfileAvatar = "[data-uie-name='go-self-profile']";
 
@@ -240,8 +243,10 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
 				.format(xpathCallingBarRoot
+						+ "/div/div/div/div/div[contains(@class, 'cc-avatar-label') and text()='%s']|"
+						+ xpathCallingBarRoot
 						+ "/div/div/div/span[contains(@class, 'cc-label-bold') and text()='%s']",
-						text);
+						text, text);
 
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-check')]";

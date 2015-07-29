@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @regression @calling @id1860
+  @regression @calling @debug @id1860
   Scenario Outline: Verify I can send text, image and ping while in the same convo
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -28,7 +28,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | webdriver   | 120     |
 
-  @regression @calling @id2080
+  @regression @calling @debug @id2080
   Scenario Outline: Verify I can get pinged by callee during call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -53,7 +53,7 @@ Feature: Calling
        | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
        | user1Email | user1Password | user1Name | user2Name | pinged | pinged again | webdriver   | 120     |
 
-  @staging @calling @id1892
+  @staging @calling @debug @id1892
   Scenario Outline: Verify the corresponding conversations list item gets sticky on outgoing call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -76,7 +76,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
 
-  @regression @calling @id1891
+  @regression @calling @debug @id1891
   Scenario Outline: Verify the corresponding conversations list item gets sticky on incoming call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -97,7 +97,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
-  @smoke @calling @id2237
+  @smoke @calling @debug @id2237
   Scenario Outline: Verify I can call a user twice in a row
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -205,7 +205,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | webdriver   | 120     |
 
-  @smoke @calling @id1839
+  @smoke @calling @debug @id1839
   Scenario Outline: Verify I can not call in browsers without WebRTC
     Given My browser does not support calling
     Given There are 2 users where <Name> is me
@@ -258,7 +258,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | webdriver   | 120     |
 
-  @regression @calling @id2013
+  @regression @calling @debug @id2013
   Scenario Outline: Verify I get missed call notification when I call
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -278,7 +278,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name |
 
   # This has to work even in browsers, which don't support calling
-  @regression @calling @id2014
+  @regression @calling @debug @id2014
   Scenario Outline: Verify I get missed call notification when someone calls me
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -299,7 +299,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name  | autocall    |
 
-  @staging @calling @id1882 @torun
+  @staging @calling @debug @id1882
   Scenario Outline: People trying to call me while I'm not signed in
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -320,7 +320,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
 
-  @regression @calling @id1875
+  @regression @calling @debug @id1875
   Scenario Outline: Already on call and try to make another call (caller)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -342,7 +342,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
-  @regression @calling @id1906
+  @regression @calling @debug @id1906
   Scenario Outline: Verify I can make another call while current one is ignored
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -367,7 +367,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1   | Contact2  | CallBackend | CallWaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | autocall    | webdriver       | 120     |
 
-  @regression @calling @id1883
+  @regression @calling @debug @id1883
   Scenario Outline: Verify I can not see blocked contact trying to call me
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -385,7 +385,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | autocall    | 120     |
 
-  @regression @calling @id1884
+  @regression @calling @debug @id1884
   Scenario Outline: Verify I can see muted conversation person trying to call me
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -441,7 +441,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @calling @id2477
+  @regression @calling @debug @id2477
   Scenario Outline: Already on call and try to make another call (adressee)
     Given My browser supports calling
     Given There are 3 users where <Name> is me

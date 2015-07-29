@@ -146,7 +146,7 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameGifButton)
 	private WebElement openGifPreviewButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCursorSketchButton)
 	private WebElement openSketchButton;
 
@@ -482,7 +482,7 @@ public class DialogPage extends IOSPage {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathYoutubeConversationCell), 10);
 	}
-	
+
 	public boolean isMediaContainerVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell), 10);
@@ -898,14 +898,13 @@ public class DialogPage extends IOSPage {
 		}
 	}
 
-	public boolean isTitleBarDisplayed() throws InterruptedException {
-		// wait for the title bar to animate onto the page
-		Thread.sleep(1000);
-		// check if the title bar is off the page or not
-		return titleBar.getLocation().y >= 0;
+	public boolean isTitleBarDisplayed(String name) throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(String.format(IOSLocators.xpathDialogTitleBar, name)));
 	}
 
 	public boolean isTitleBarNamed(String chatName) {
+		log.debug("Title bar name is : " + titleBar.getAttribute("name"));
 		return titleBar.getAttribute("name").equals(chatName.toUpperCase());
 	}
 
@@ -955,7 +954,7 @@ public class DialogPage extends IOSPage {
 	public void openGifPreviewPage() {
 		openGifPreviewButton.click();
 	}
-	
+
 	public void openSketch() {
 		openSketchButton.click();
 	}

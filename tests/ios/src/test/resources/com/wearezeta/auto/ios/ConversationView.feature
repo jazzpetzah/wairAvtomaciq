@@ -459,6 +459,7 @@ Feature: Conversation View
     Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
     And Contact <Contact> sends image <Picture> to single user conversation <Name>
     When I tap on contact name <Contact>
     And I see dialog page
