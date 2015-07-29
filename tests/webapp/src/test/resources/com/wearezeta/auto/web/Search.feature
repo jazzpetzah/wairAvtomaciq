@@ -195,3 +195,20 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | Message1 |
+
+  @staging @id3207
+  Scenario Outline: Verify you can search by email
+    Given There are 2 users where <Name> is me
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I see my avatar on top of Contact list
+    And I wait until <Email2> exists in backend search results
+    And I see Contacts Upload dialog
+    And I close Contacts Upload dialog
+    And I open People Picker from Contact List
+    And I type <Email2> in search field of People Picker
+    Then I see user <Name2> found in People Picker
+
+    Examples: 
+      | Login      | Password      | Name      | Name2     | Email2     |
+      | user1Email | user1Password | user1Name | user2Name | user2Email |
