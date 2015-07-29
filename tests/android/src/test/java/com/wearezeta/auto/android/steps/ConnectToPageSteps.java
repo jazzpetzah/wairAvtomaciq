@@ -75,7 +75,7 @@ public class ConnectToPageSteps {
 	 */
 	@Then("^I swipe up on connect page$")
 	public void ISwipeUpOnConnectPage() throws Exception {
-		getConnectToPage().waitUntilIgnoreButtonIsVisible();
+		getConnectToPage().waitUntilIgnoreButtonIsClickable();
 		getConnectToPage().swipeUpCoordinates(1000, 50);
 		// It is very hard to detect when swipe animation is finished that is
 		// why this hardcoded sleep is needed here
