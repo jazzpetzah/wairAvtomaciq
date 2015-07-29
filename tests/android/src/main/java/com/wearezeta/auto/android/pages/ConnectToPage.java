@@ -77,7 +77,7 @@ public class ConnectToPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	private static final int MAX_SCROLLS = 5;
+	private static final int MAX_SCROLLS = 8;
 
 	public boolean isConnectToHeaderVisible(String text) throws Exception {
 		final By locator = By.xpath(xpathConnectToHeaderByText.apply(text));
@@ -95,15 +95,16 @@ public class ConnectToPage extends AndroidPage {
 		int ntry = 1;
 		do {
 			if (DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3)) {
-				this.waitUntilIgnoreButtonIsVisible();
+				this.waitUntilIgnoreButtonIsClickable();
 				this.swipeDownCoordinates(1000, 50);
 				return;
 			} else {
-				this.waitUntilIgnoreButtonIsVisible();
+				this.waitUntilIgnoreButtonIsClickable();
 				this.swipeUpCoordinates(1000, 50);
 			}
 			ntry++;
 		} while (ntry <= maxScrolls);
+		this.waitUntilIgnoreButtonIsClickable();
 		throw new RuntimeException(
 				String.format(
 						"Failed to find user %s in the inbox after scrolling %s users!",
@@ -156,7 +157,7 @@ public class ConnectToPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	public void waitUntilIgnoreButtonIsVisible() throws Exception {
+	public void waitUntilIgnoreButtonIsClickable() throws Exception {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(connectIgnoreBtn));
 	}
