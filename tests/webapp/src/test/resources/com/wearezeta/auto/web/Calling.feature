@@ -56,46 +56,58 @@ Feature: Calling
   @staging @calling @debug @id1892
   Scenario Outline: Verify the corresponding conversations list item gets sticky on outgoing call
     Given My browser supports calling
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given <Contact> starts waiting instance using <CallBackend>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1> starts waiting instance using <CallBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    And I open conversation with <Contact>
+    And I open conversation with <Contact1>
+    When User <Contact2> pinged in the conversation with <Contact2>
+    And I see conversation <Contact2> is on the top
     And I call
-    Then I see ongoing call item with name <Contact> is shown on top of conversations list
-    Then <Contact> accepts next incoming call automatically
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
-    Then I see ongoing call item with name <Contact> is shown on top of conversations list
+    And I see conversation <Contact1> is on the top
+    Then <Contact1> accepts next incoming call automatically
+    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see the calling bar from user <Contact1>
+    When User <Contact2> pinged in the conversation with <Contact2>
+    And I see conversation <Contact1> is on the top
     And I end the call
-    Then <Contact> stops all waiting instances
+    When User <Contact2> pinged in the conversation with <Contact2>
+    And I see conversation <Contact2> is on the top
+    Then <Contact1> stops all waiting instances
 
     Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+         | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
+         | user1Email | user1Password | user1Name | user2Name  | user3Name  | webdriver   | 120     |
 
-  @regression @calling @debug @id1891
+  @staging @calling @debug @id1891
   Scenario Outline: Verify the corresponding conversations list item gets sticky on incoming call
     Given My browser supports calling
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
-    And I open conversation with <Contact>
-    And <Contact> calls me using <CallBackend>
-    Then I see ongoing call item with name <Contact> is shown on top of conversations list
-    And I accept the incoming call
-    Then <Contact> verifies that call status to Myself is changed to active in <Timeout> seconds
+    And I open conversation with <Contact1>
+    When User <Contact2> pinged in the conversation with <Contact2>
+    And I see conversation <Contact2> is on the top
+    And <Contact1> calls me using <CallBackend>
     And I see the calling bar
-    Then I see ongoing call item with name <Contact> is shown on top of conversations list
+    And I see conversation <Contact1> is on the top
+    When I accept the incoming call
+    Then I see the calling bar from user <Contact1>
+    And I see conversation <Contact1> is on the top
+    When User <Contact2> pinged in the conversation with <Contact2>
+    And I see conversation <Contact1> is on the top
     And I end the call
+    When User <Contact2> pinged in the conversation with <Contact2>
+    And I see conversation <Contact2> is on the top
 
-    Examples: 
-      | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | autocall    | 120     |
+       Examples: 
+       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
+       | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | 120     |
 
   @smoke @calling @debug @id2237
   Scenario Outline: Verify I can call a user twice in a row
