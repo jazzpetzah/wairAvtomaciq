@@ -40,7 +40,8 @@ public class ImageFullScreenPageSteps {
 				AssertionError::new);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + filename);
-		double score = ImageUtil.getOverlapScore(referenceImage, templateImage);
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		System.out.print("SCORE: " + score);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= "
@@ -118,7 +119,7 @@ public class ImageFullScreenPageSteps {
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
 				.getImagesPath() + "rotatedFullscreenImage.png");
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
-				ImageUtil.RESIZE_NORESIZE);
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		System.out.print("SCORE: " + score);
 		Assert.assertTrue(
 				"Overlap between two images has no enough score. Expected >= "

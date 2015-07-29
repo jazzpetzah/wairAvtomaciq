@@ -52,7 +52,7 @@ public final class IOSLocators {
 	
 	public static final String xpathDialogTextMessage = "//UIATableCell/UIATextView";
 	
-	public static final String xpathDialogTitleBar = "//UIAApplication[1]/UIAWindow[2]/UIAStaticText[1]";
+	public static final String xpathDialogTitleBar = "//UIAStaticText[@name='%s']";
 	
 	public static final String xpathFormatDialogTextMessage = "//UIATableCell/UIATextView[@value='%s']";
 	
@@ -298,7 +298,7 @@ public final class IOSLocators {
 	
 	public static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
 	
-	public static final String nameOtherProfilePagePendingLabel = "CANCEL REQUEST";
+	public static final String xpathOtherProfilePagePendingLabel = "//UIAStaticText[contains(@name, 'Let’s connect')]";
 	
 	public static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
 	
@@ -358,7 +358,7 @@ public final class IOSLocators {
 	//Video Player Locators
 	///////////////////////
 	
-	public static final String xpathVideoMainPage = "//UIAWindow[UIAButton[@name='Done']]";
+	public static final String xpathVideoMainPage = "//UIAWebView/UIAButton[@name='Home']";
 	
 	public static final String nameVideoDoneButton = "Done";
 	
@@ -597,7 +597,7 @@ public final class IOSLocators {
 	public final class DialogInfoPage {
 		public static final String nameEllipsisMenuButton = "metaControllerRightButton";
 		
-		public static final String nameArchiveButton = "ARCHIVE";
+		public static final String xpathArchiveButton = "//UIAButton[@name='ARCHIVE'][last()]";
 	}
 	
 	public final class ContactListPage {

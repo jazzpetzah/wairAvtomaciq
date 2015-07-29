@@ -34,7 +34,7 @@ class CliHandlerBase(object):
         parser = argparse.ArgumentParser()
         self._build_options(parser)
         return parser
-    
+
     def _invoke(self):
         raise NotImplementedError('Should be implemented in a subclass')
 
@@ -44,7 +44,7 @@ class CliHandlerBase(object):
         while True:
             try:
                 return self._invoke()
-            except requests.exceptions.ConnectionError as e:
+            except (requests.exceptions.ConnectionError, TypeError) as e:
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
                     raise e
