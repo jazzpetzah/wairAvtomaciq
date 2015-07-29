@@ -42,7 +42,6 @@ public final class WebAppLocators {
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
 		public static final String cssParentContactListItem = "div#conversation-list";
-		public static final String cssConversationListTopBar = "div.conversation-list-top-bar";
 
 		public static final String cssIncomingPendingConvoItem = cssParentContactListItem
 				+ " [data-uie-name=item-pending-requests]";
@@ -72,13 +71,9 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> cssContactListEntryByName = (
 				name) -> String
-				.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s']",
+				.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s'], %s div[data-uie-name='item-call'][data-uie-value='%s']",
+						cssParentContactListItem, name,
 						cssParentContactListItem, name);
-
-		public static final Function<String, String> cssCallConversationByName = (
-				name) -> String.format(
-				"%s div[data-uie-name='item-call'][data-uie-value='%s']",
-				cssConversationListTopBar, name);
 
 		public static final Function<String, String> cssArchiveListEntryByName = (
 				name) -> String
@@ -200,6 +195,8 @@ public final class WebAppLocators {
 
 		public static final String cssFirstAction = cssMessage + " .action";
 
+		public static final String cssLastAction = cssLastMessage + " .action";
+
 		public static final String xpathLastImageEntry = "(//*[@data-uie-name='go-image-detail' and @data-uie-visible='true'])[last()]";
 
 		public static final String cssImageEntries = "[data-uie-name='go-image-detail'][data-uie-visible='true']";
@@ -243,8 +240,11 @@ public final class WebAppLocators {
 		public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
-				.format("//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]/div/div/div/div/div[contains(@class, 'cc-avatar-label') and text()='%s']",
-						text);
+				.format(xpathCallingBarRoot
+						+ "/div/div/div/div/div[contains(@class, 'cc-avatar-label') and text()='%s']|"
+						+ xpathCallingBarRoot
+						+ "/div/div/div/span[contains(@class, 'cc-label-bold') and text()='%s']",
+						text, text);
 
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-check')]";

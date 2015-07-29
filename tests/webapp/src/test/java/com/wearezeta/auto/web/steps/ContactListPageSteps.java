@@ -121,23 +121,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Opens current call conversation by choosing it from Contact List
-	 *
-	 * @step. ^I open call conversation with (.*)
-	 *
-	 * @param contact
-	 *            conversation name string
-	 *
-	 * @throws Exception
-	 */
-	@Given("^I open call conversation with (.*)")
-	public void GivenIOpenCallConversationWith(String contact) throws Exception {
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		PagesCollection.conversationPage = PagesCollection.contactListPage
-				.openCallConversation(contact);
-	}
-
-	/**
 	 * Verifies whether the particular conversation is selected in the list
 	 * 
 	 * @step. ^I see conversation with (.*) is selected in conversations list$
