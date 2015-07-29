@@ -112,7 +112,7 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathMissedCallNotificationByContactName = (
 				name) -> String
-				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[local-name() = 'svg' and @data-uie-name='status-unread']",
+				.format("//*[@data-uie-name='item-message' and @data-uie-value='call' and div[contains(@class,'action') and text()='%s called']]//div[contains(@class,'call-icon')]",
 						name);
 
 		public static final Function<String, String> xpathPingIconByContactName = (
