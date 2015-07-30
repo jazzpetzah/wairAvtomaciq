@@ -15,7 +15,9 @@ import com.wearezeta.auto.common.performance.PerfReportModel;
 public class AndroidPerfReportModel extends PerfReportModel {
 	private static final String APP_LAUNCH_TIME_REGEX = "App launch time ([\\d]+)";
 
-	private static final String LOGIN_SUCCESS_REGEX = "Login success after ([\\d]+)";
+	private static final String LOGIN_STARTED_REGEX = "Login pressed at ([\\d]+)";
+
+	private static final String LOGIN_COMPLETED_REGEX = "Login completed at ([\\d]+)";
 
 	private static final String CONVERSATION_PAGE_VISIBLE_REGEX = "Conversation page visible after ([\\d]+)";
 
@@ -81,7 +83,14 @@ public class AndroidPerfReportModel extends PerfReportModel {
 
 	public void loadDataFromLogCat(final String output) {
 		this.setAppStartupTime(readLogValue(APP_LAUNCH_TIME_REGEX, output));
-		this.setSignInTime(readLogValue(LOGIN_SUCCESS_REGEX, output));
+		List<Long> signInStartedTimestamps = readLogValues(LOGIN_STARTED_REGEX,
+				output);
+		List<Long> signInCompletedTimestamps = readLogValues(
+				LOGIN_COMPLETED_REGEX, output);
+		// The last recorded value contains what we need
+		this.setSignInTime(signInCompletedTimestamps
+				.get(signInCompletedTimestamps.size() - 1)
+				- signInStartedTimestamps.get(0));
 		this.clearConvoStartupTimes();
 		for (long timeMillis : readLogValues(CONVERSATION_PAGE_VISIBLE_REGEX,
 				output)) {

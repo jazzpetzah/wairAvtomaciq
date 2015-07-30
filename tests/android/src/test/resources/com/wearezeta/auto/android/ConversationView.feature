@@ -333,7 +333,7 @@ Feature: Conversation View
     When I click on the giphy send button
     Then I see dialog page
     And I see new photo in the dialog
-    And Last message is <Message> • via giphy.com
+    And Last message is <Message> · via giphy.com
 
     Examples: 
       | Name      | Contact   | Message |
