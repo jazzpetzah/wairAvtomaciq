@@ -65,7 +65,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | ColorName  | Contact   |
       | user1Email | user1Password | user1Name | StrongBlue | user2Name |
 
-  @staging @id2998
+  @regression @id2998
   Scenario Outline: Verify you silence the conversation when you press ⌥⇧⌘L (Mac) or alt + ctrl + L (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
