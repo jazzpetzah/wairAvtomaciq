@@ -57,6 +57,17 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
 
+	// options popover bubble
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssArchiveButton)
+	private WebElement archiveButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssMuteButton)
+	private WebElement muteButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssUnmuteButton)
+	private WebElement unmuteButton;
+
 	public ContactListPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -206,52 +217,31 @@ public class ContactListPage extends WebPage {
 		openArchivedConvosButton.click();
 	}
 
-	public void clickArchiveConversationForContact(String conversationName)
-			throws Exception {
-		waitForOptionButtonsToBeClickable(conversationName);
-
-		final By archiveLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathArchiveButtonByContactName
-						.apply(conversationName));
-		final WebElement archiveButton = this.getDriver().findElement(
-				archiveLocator);
+	public void clickArchiveConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
 		archiveButton.click();
 	}
 
-	public void clickMuteConversationForContact(String conversationName)
-			throws Exception {
-		waitForOptionButtonsToBeClickable(conversationName);
-
-		final By muteLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
-						.apply(conversationName));
-		final WebElement muteButton = this.getDriver().findElement(muteLocator);
+	public void clickMuteConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
 		muteButton.click();
 	}
 
-	private void waitForOptionButtonsToBeClickable(String conversationName)
-			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By archiveLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathArchiveButtonByContactName
-						.apply(conversationName));
-		final By muteLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
-						.apply(conversationName));
-		final By unmuteLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathUnmuteButtonByContactName
-						.apply(conversationName));
-		final WebElement archiveButton = this.getDriver().findElement(
-				archiveLocator);
+	private void waitForOptionButtonsToBeClickable() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				archiveButton);
-		assert (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				muteLocator, 3) && DriverUtils.waitUntilElementClickable(
-				this.getDriver(), this.getDriver().findElement(muteLocator), 3))
-				|| (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-						unmuteLocator, 3) && DriverUtils
-						.waitUntilElementClickable(this.getDriver(), this
-								.getDriver().findElement(unmuteLocator), 3));
+		assert (DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ContactListPage.cssMuteButton),
+						3) && DriverUtils.waitUntilElementClickable(
+				this.getDriver(), muteButton, 3))
+				|| (DriverUtils
+						.waitUntilLocatorIsDisplayed(
+								this.getDriver(),
+								By.cssSelector(WebAppLocators.ContactListPage.cssUnmuteButton),
+								3) && DriverUtils.waitUntilElementClickable(
+						this.getDriver(), this.unmuteButton, 3));
 	}
 
 	public boolean isConversationMuted(String conversationName)
@@ -382,15 +372,8 @@ public class ContactListPage extends WebPage {
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
-	public void clickUnmuteConversationForContact(String conversationName)
-			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By locator = By
-				.xpath(WebAppLocators.ContactListPage.xpathUnmuteButtonByContactName
-						.apply(conversationName));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				locator, 5);
-		final WebElement unmuteButton = this.getDriver().findElement(locator);
+	public void clickUnmuteConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
 		unmuteButton.click();
 	}
 
@@ -527,39 +510,7 @@ public class ContactListPage extends WebPage {
 				locator, 3);
 	}
 
-	public void hoverMuteButtonForContact(String conversationName)
-			throws Exception {
-		waitForOptionButtonsToBeClickable(conversationName);
-		if (!WebAppExecutionContext.getBrowser()
-				.isSupportingNativeMouseActions()) {
-			DriverUtils.addClassToParent(this.getDriver(),
-					getListElementByName(conversationName, false), "hover");
-		} else {
-			DriverUtils.moveMouserOver(this.getDriver(),
-					getListElementByName(conversationName, false));
-		}
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		if (!WebAppExecutionContext.getBrowser()
-				.isSupportingNativeMouseActions()) {
-			DriverUtils.removeClassFromParent(this.getDriver(),
-					getListElementByName(conversationName, false), "hover");
-		}
-	}
-
-	public String getMuteButtonToolTip(String conversationName)
-			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By muteLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
-						.apply(conversationName));
-		final WebElement muteButton = this.getDriver().findElement(muteLocator);
-		if (WebAppExecutionContext.getBrowser()
-				.isSupportingNativeMouseActions()) {
-			DriverUtils.moveMouserOver(this.getDriver(), muteButton);
-		} else {
-			// safari workaround
-			DriverUtils.addClass(this.getDriver(), muteButton, "hover");
-		}
+	public String getMuteButtonToolTip() throws Exception {
 		return muteButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 
