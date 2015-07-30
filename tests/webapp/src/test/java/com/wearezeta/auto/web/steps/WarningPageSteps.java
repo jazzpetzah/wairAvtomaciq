@@ -30,9 +30,9 @@ public class WarningPageSteps {
 					PagesCollection.warningPage
 							.isMissingWebRTCSupportWarningBarVisible());
 		} else {
-			Assert.assertFalse("Missing WebRTC support warning bar is visible",
+			Assert.assertTrue("Missing WebRTC support warning bar is visible",
 					PagesCollection.warningPage
-							.isMissingWebRTCSupportWarningBarVisible());
+							.isMissingWebRTCSupportWarningBarInvisible());
 		}
 	}
 
@@ -83,9 +83,9 @@ public class WarningPageSteps {
 					PagesCollection.warningPage
 							.isAnotherCallWarningModalVisible());
 		} else {
-			Assert.assertFalse("Another call warning modal is visible",
+			Assert.assertTrue("Another call warning modal is visible",
 					PagesCollection.warningPage
-							.isAnotherCallWarningModalVisible());
+							.isAnotherCallWarningModalInvisible());
 		}
 	}
 

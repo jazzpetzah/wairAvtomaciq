@@ -13,10 +13,10 @@ import org.openqa.selenium.support.How;
 
 public class WarningPage extends WebPage {
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.WarningPage.xpathMissingWebRTCSupportWarningBarClose)
+	@FindBy(how = How.CSS, using = WebAppLocators.WarningPage.cssMissingWebRTCSupportWarningBarClose)
 	private WebElement missingWebRTCSupportWarningBarCloseButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.WarningPage.xpathAnotherCallWarningModalClose)
+	@FindBy(how = How.CSS, using = WebAppLocators.WarningPage.cssAnotherCallWarningModalClose)
 	private WebElement anotherCallWarningModalCloseButton;
 
 	public WarningPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
@@ -24,9 +24,15 @@ public class WarningPage extends WebPage {
 	}
 
 	public boolean isMissingWebRTCSupportWarningBarVisible() throws Exception {
-		final String xpath = WebAppLocators.WarningPage.xpathMissingWebRTCSupportWarningBar;
+		final String css = WebAppLocators.WarningPage.cssMissingWebRTCSupportWarningBar;
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(xpath));
+				By.cssSelector(css));
+	}
+
+	public boolean isMissingWebRTCSupportWarningBarInvisible() throws Exception {
+		final String css = WebAppLocators.WarningPage.cssMissingWebRTCSupportWarningBar;
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.cssSelector(css));
 	}
 
 	public boolean isLinkWithCaptionInMissingWebRTCSupportWarningBarVisible(
@@ -46,15 +52,22 @@ public class WarningPage extends WebPage {
 
 	public boolean isAnotherCallWarningModalVisible() throws Exception {
 		final By locator = By
-				.xpath(WebAppLocators.WarningPage.xpathAnotherCallWarningModal);
+				.cssSelector(WebAppLocators.WarningPage.cssAnotherCallWarningModal);
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
+	}
+
+	public boolean isAnotherCallWarningModalInvisible() throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.WarningPage.cssAnotherCallWarningModal);
+		return DriverUtils
+				.waitUntilLocatorDissapears(this.getDriver(), locator);
 	}
 
 	public void clickCloseAnotherCallWarningModal() throws Exception {
 		DriverUtils.waitUntilElementClickable(this.getDriver(),
 				anotherCallWarningModalCloseButton);
 		final By locator = By
-				.xpath(WebAppLocators.WarningPage.xpathAnotherCallWarningModal);
+				.cssSelector(WebAppLocators.WarningPage.cssAnotherCallWarningModal);
 
 		anotherCallWarningModalCloseButton.click();
 		DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
@@ -67,7 +80,7 @@ public class WarningPage extends WebPage {
 						.apply(caption));
 		WebElement button = getDriver().findElement(buttonLocator);
 		final By modalLocator = By
-				.xpath(WebAppLocators.WarningPage.xpathAnotherCallWarningModal);
+				.cssSelector(WebAppLocators.WarningPage.cssAnotherCallWarningModal);
 		boolean clickable = DriverUtils.waitUntilElementClickable(
 				this.getDriver(), button);
 
