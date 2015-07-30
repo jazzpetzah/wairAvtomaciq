@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public enum Browser {
 	Safari("safari"), InternetExplorer("internetexplorer"), Chrome("chrome"), Firefox(
-			"firefox"), Opera("opera");
+			"firefox"), Opera("opera"), Edge("edge");
 
 	private final String stringRepresentation;
 

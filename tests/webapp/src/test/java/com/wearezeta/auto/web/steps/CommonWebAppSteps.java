@@ -238,6 +238,9 @@ public class CommonWebAppSteps {
 			capabilities = DesiredCapabilities.internetExplorer();
 			setCustomIEProfile(capabilities);
 			break;
+		case Edge:
+			capabilities = DesiredCapabilities.internetExplorer();
+			break;
 		default:
 			throw new NotImplementedException(
 					"Unsupported/incorrect browser name is set: " + browserName);
