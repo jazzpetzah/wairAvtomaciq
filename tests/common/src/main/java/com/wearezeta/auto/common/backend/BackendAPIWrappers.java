@@ -888,6 +888,14 @@ public final class BackendAPIWrappers {
 				getConversationWithSingleUser(user, mutedUser), null, muted,
 				null);
 	}
+	
+	public static void updateGroupConvMutedState(ClientUser user,
+			String groupConvName, boolean muted) throws Exception {
+		tryLoginByUser(user);
+		BackendREST.updateConvSelfInfo(generateAuthToken(user),
+				getConversationIdByName(user, groupConvName), null, muted,
+				null);
+	}
 
 	public static void archiveUserConv(ClientUser ownerUser,
 			ClientUser archivedUser) throws Exception {

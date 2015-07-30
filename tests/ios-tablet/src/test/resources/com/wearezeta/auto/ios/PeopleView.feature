@@ -379,11 +379,36 @@ Feature: People View
       | Name      | Contact2  | Contact3   | GroupChatName   |
       | user1Name | user2Name | user3Name  | 1on1FromGroup   |
   
-  #@staging @id2455
-  #Scenario Outline: Verify unsilince the conversation [PORTRAIT]   
+  @torun @staging @id2455
+  Scenario Outline: Verify unsilince the conversation [PORTRAIT] 
+  	Given There are 3 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Name> silenced group conversation with <GroupChatName>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>  
+    And I see conversation <GroupChatName> got silenced before
+    
+    Examples: 
+      | Name      | Contact1   | Contact2  | Color    | GroupChatName |
+      | user1Name | user2Name  | user3Name | Violet   | SILENCE   	  |
    
-  #@staging @id3208
-  #Scenario Outline: Verify unsilince the conversation [LANDSCAPE]
+  @staging @id3208
+  Scenario Outline: Verify unsilince the conversation [LANDSCAPE]
+  	Given There are 3 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Name> silenced group conversation with <GroupChatName>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name> 
+    And I see conversation <GroupChatName> got silenced before
+    
+    Examples: 
+      | Name      | Contact1   | Contact2  | Color    | GroupChatName |
+      | user1Name | user2Name  | user3Name | Violet   | SILENCE   	  |
   
   @staging @id2456
   Scenario Outline: Verify silence the conversation [PORTRAIT]
@@ -408,7 +433,7 @@ Feature: People View
       | Name      | Contact1   | Contact2  | Color    | GroupChatName |
       | user1Name | user2Name  | user3Name | Violet   | SILENCE   	  |
   
-  @torun @staging @id3209
+  @staging @id3209
   Scenario Outline: Verify silence the conversation [LANDSCAPE]
   	Given There are 3 users where <Name> is me
     Given User <Name> change accent color to <Color>
