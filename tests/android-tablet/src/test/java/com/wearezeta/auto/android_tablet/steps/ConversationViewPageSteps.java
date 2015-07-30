@@ -41,6 +41,18 @@ public class ConversationViewPageSteps {
 		Assert.assertTrue("The conversation view is not currently visible",
 				getConversationViewPage().waitUntilVisible());
 	}
+	
+	/**
+	 * Tap the Show Tools button on conversation view
+	 * 
+	 * @step. ^I tap Show Tools button on [Cc]onversation view page$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap Show Tools button on [Cc]onversation view page$")
+	public void ITapShowToolsButton() throws Exception {
+		getConversationViewPage().tapShowInstrumentsButton();
+	}
 
 	/**
 	 * Tap the Show Details button on conversation view

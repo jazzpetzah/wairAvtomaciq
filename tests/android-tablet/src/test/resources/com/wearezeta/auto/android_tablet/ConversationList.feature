@@ -10,6 +10,7 @@ Feature: Conversation List
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Single user popover
     And I tap Options button on Single user popover
@@ -33,6 +34,7 @@ Feature: Conversation List
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Single user popover
     And I tap Options button on Single user popover

@@ -74,17 +74,18 @@ Feature: Self Profile
       
   @regression @id667
   Scenario Outline: Verify changing and applying accent color
-  	Given There are 1 users where <Name> is me
-  	Given User <Name> change name to <NewName>
-  	Given User <Name> change accent color to <Color>
+  	Given There are 2 users where <Name> is me
+  	Given Myself is connected to <Contact>
+  	Given User <Contact> sent long message to conversation <Name>
+  	Given User <Name> change accent color to <Color1>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
-    And I change my accent color via the colorpicker
+    And I slide my accent color via the colorpicker from <Color1> to <Color2>
     And I close self profile
-    Then I see my names <Name> accent color is changed
+    Then I see 5 unread message indicator in list for contact <Contact>
    
     Examples: 
-      | Name      | NewName           | Color  |
-      | user1Name | AccentColorChange | Violet |
+      | Name      | Color1  | Color2          |Contact   |
+      | user1Name | Violet  | StrongLimeGreen |user2Name |
   

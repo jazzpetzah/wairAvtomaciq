@@ -24,6 +24,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	@FindBy(id = DialogPage.idParticipantsBtn)
 	private WebElement showDetailsButton;
+	
+	private static final String idShowToolsButton = "cursor_button_open";
+	@FindBy(id = idShowToolsButton)
+	private WebElement showToolsButton;
 
 	@FindBy(id = idEditText)
 	private WebElement inputField;
@@ -111,5 +115,9 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		final By locator = By.id(idIsTypingAvatar);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "IsTyping avatar is not visible in the conversation view";
 		getDriver().findElement(locator).click();
+	}
+
+	public void tapShowInstrumentsButton() throws InterruptedException {
+		showToolsButton.click();
 	}
 }

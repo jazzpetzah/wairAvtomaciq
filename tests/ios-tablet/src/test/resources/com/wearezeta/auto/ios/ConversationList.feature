@@ -358,18 +358,16 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Color           |
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
-  @regression @id2465 
+  #outdated test - play youtube functionality changed
+  @staging @id2465
   Scenario Outline: Verify Play/pause Youtube media from conversation list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
     And I type and send long message and media link <YouTubeLink>
-    And I click play video button
-    And I rotate UI to portrait
     And I click play video button
     And I swipe right on Dialog page
     Then I see play/pause button next to username <Contact> in contact list

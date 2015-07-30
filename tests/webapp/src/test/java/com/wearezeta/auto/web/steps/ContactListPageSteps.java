@@ -139,43 +139,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Verifies whether the particular ongoing call with given conversation name
-	 * is shown on top of conversation list
-	 *
-	 * @step. ^I see ongoing call item with name (.*) is shown on top of
-	 *        conversations list$
-	 *
-	 * @param convoName
-	 *            conversation name
-	 * @throws Exception
-	 */
-	@Then("^I see ongoing call item with name (.*) is shown on top of conversations list$")
-	public void ISeeOngoingCallWithNameInConvoList(String convoName)
-			throws Exception {
-		convoName = usrMgr.replaceAliasesOccurences(convoName,
-				FindBy.NAME_ALIAS);
-		Assert.assertTrue(
-				String.format(
-						"Ongoing call with name '%s' should be shown on top of conversation list",
-						convoName), PagesCollection.contactListPage
-						.isOngoingCallItemWithConvNameVisible(convoName));
-	}
-
-	/**
-	 * Verifies whether an ongoing call is shown on top of conversation list
-	 *
-	 * @step. ^I see ongoing call item is shown on top of conversations list$
-	 *
-	 * @throws Exception
-	 */
-	@Then("^I see ongoing call item is shown on top of conversations list$")
-	public void ISeeOngoingCallWithNameInConvoList() throws Exception {
-		Assert.assertTrue(
-				"Ongoing call should be shown on top of conversation list",
-				PagesCollection.contactListPage.isOngoingCallItemVisible());
-	}
-
-	/**
 	 * Unarchives conversation 'name'
 	 * 
 	 * @step. I unarchive conversation with (.*)
@@ -219,8 +182,7 @@ public class ContactListPageSteps {
 	public void IClickArchiveButton(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
-		PagesCollection.contactListPage
-				.clickArchiveConversationForContact(contact);
+		PagesCollection.contactListPage.clickArchiveConversation();
 	}
 
 	/**
@@ -321,8 +283,7 @@ public class ContactListPageSteps {
 	public void ISetMutedStateFor(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
-		PagesCollection.contactListPage
-				.clickMuteConversationForContact(contact);
+		PagesCollection.contactListPage.clickMuteConversation();
 	}
 
 	/**
@@ -339,8 +300,7 @@ public class ContactListPageSteps {
 	public void ISetUnmutedStateFor(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
-		PagesCollection.contactListPage
-				.clickUnmuteConversationForContact(contact);
+		PagesCollection.contactListPage.clickUnmuteConversation();
 	}
 
 	/**
@@ -575,31 +535,14 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * I hover mute button for the particular conversation
-	 * 
-	 * @step. ^I hover mute button for conversation (.*)
-	 * 
-	 * @param contact
-	 *            conversation name string
-	 * @throws Exception
-	 */
-	@When("^I hover mute button for conversation (.*)$")
-	public void IHoverMuteButtonFor(String contact) throws Exception {
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		PagesCollection.contactListPage.hoverMuteButtonForContact(contact);
-	}
-
-	/**
 	 * Verifies whether silence button tool tip is correct or not.
 	 *
-	 * @step. ^I see correct tooltip for silence button$
+	 * @step. ^I see correct tooltip for silence button in options popover$
 	 * @throws Exception
 	 *
 	 */
-	@Then("^I see correct tooltip for silence button in conversation (.*)$")
-	public void ISeeCorrectTooltipForSilenceButton(String contact)
-			throws Exception {
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+	@Then("^I see correct tooltip for silence button in options popover$")
+	public void ISeeCorrectTooltipForSilenceButton() throws Exception {
 		String tooltip = TOOLTIP_SILENCE + " ";
 		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
 			tooltip = tooltip + SHORTCUT_SILENCE_WIN;
@@ -607,13 +550,14 @@ public class ContactListPageSteps {
 			tooltip = tooltip + SHORTCUT_SILENCE_MAC;
 		}
 		assertThat("Silence button tooltip",
-				PagesCollection.contactListPage.getMuteButtonToolTip(contact),
+				PagesCollection.contactListPage.getMuteButtonToolTip(),
 				equalTo(tooltip));
 	}
 
 	/**
 	 * Types shortcut combination to mute or unmute the conversation
 	 * 
+	 * @param contact
 	 * @step. ^I type shortcut combination to mute the conversation (.*)$
 	 * @throws Exception
 	 */
@@ -622,6 +566,21 @@ public class ContactListPageSteps {
 			throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.pressShortCutToMuteOrUnmute(contact);
+
+	}
+
+	/**
+	 * Verifies a conversation is on top of conversation list
+	 *
+	 * @param conv
+	 * @step. ^I see conversation (.*) is on the top$
+	 * @throws Exception
+	 */
+	@When("^I see conversation (.*) is on the top$")
+	public void ISeeConversationWithNameOnTop(String conv) throws Exception {
+		conv = usrMgr.replaceAliasesOccurences(conv, FindBy.NAME_ALIAS);
+		int itemIndex = PagesCollection.contactListPage.getItemIndex(conv);
+		assertThat("Conversation is not on the top", itemIndex, equalTo(1));
 
 	}
 }

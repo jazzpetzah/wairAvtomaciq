@@ -62,7 +62,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2531 @noAcceptAlert
+  @regression @id2531 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -82,7 +82,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id2928 @noAcceptAlert
+  @regression @id2928 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -126,7 +126,7 @@ Feature: Search
       | Name      | UserCount | Contact   |
       | user1Name | 2         | user2Name |
 
-  @staging @id2929
+  @regression @id2929
   Scenario Outline: Start 1:1 chat with users from Top Connections [LANDSCAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -150,7 +150,7 @@ Feature: Search
       | Name      | UserCount | Contact   |
       | user1Name | 2         | user2Name |
 
-  @staging @id2550
+  @regression @id2550
   Scenario Outline: Start group chat with users from Top Connections [PORTRAIT]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -158,7 +158,6 @@ Feature: Search
     Given Contact <Name> send message to user <Contact>
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    #And I wait for 30 seconds
     And I open search by taping on it
     And I see People picker page
     And I re-enter the people picker if top people list is not there
@@ -169,7 +168,7 @@ Feature: Search
     And I open group conversation details
     And I change group conversation name to <ConvoName>
     And I dismiss popover on iPad
-    And I return to the chat list
+    And I swipe right on group chat page
     Then I see first item in contact list named <ConvoName>
 
     Examples: 

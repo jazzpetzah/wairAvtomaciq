@@ -77,7 +77,9 @@ Feature: Connect
     When I tap the conversation <WaitingMess>
     And I see the Incoming connections page
     And I accept incoming connection request from <Contact> on Incoming connections page
-    Then I see the conversation <Contact> in my conversations list
+    Then I see the conversation view
+    And I navigate back
+    And I see the conversation <Contact> in my conversations list
     And I do not see the conversation <WaitingMess> in my conversations list
 
     Examples: 
@@ -114,7 +116,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | GroupChatName        | Message |
       | user1Name | user2Name | user3Name | NonConnectedUserChat | Yo man! |
 
-  @id2989 @staging
+  @id2989 @regression
   Scenario Outline: I can send connection request to user from search results by email
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
