@@ -476,10 +476,14 @@ public class ContactListPage extends IOSPage {
 		if (deviceType.equals("iPhone 6 Plus")) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "unsilenceTestiPhone6plus.png");
-		} else {
+		} else if (deviceType.equals("iPhone 6")){
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "unsilenceTestiPhone6.png");
+		} else if (deviceType.equals("iPad Air")){
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "unsilenceTestiPadAir.png");
 		}
+		
 		double score = ImageUtil.getOverlapScore(silencedConversation,
 				referenceImage, 0);
 		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
