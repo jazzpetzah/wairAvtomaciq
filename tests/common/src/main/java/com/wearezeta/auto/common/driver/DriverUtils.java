@@ -254,7 +254,7 @@ public class DriverUtils {
 		final int yOffset = (int) Math.round(elementSize.height
 				* (percentY / 100.0));
 		try {
-			driver.swipe(coords.x, coords.y + yOffset, coords.x - xOffset,
+			driver.swipe(coords.x + xOffset, coords.y + yOffset, coords.x,
 					coords.y + yOffset, time);
 		} catch (Exception ex) {
 			ex.printStackTrace();

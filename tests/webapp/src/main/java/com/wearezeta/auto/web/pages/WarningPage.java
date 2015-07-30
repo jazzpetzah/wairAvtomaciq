@@ -13,27 +13,80 @@ import org.openqa.selenium.support.How;
 
 public class WarningPage extends WebPage {
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.WarningPage.xpathWarningClose)
-	private WebElement warningCloseButton;
+	@FindBy(how = How.CSS, using = WebAppLocators.WarningPage.cssMissingWebRTCSupportWarningBarClose)
+	private WebElement missingWebRTCSupportWarningBarCloseButton;
+
+	@FindBy(how = How.CSS, using = WebAppLocators.WarningPage.cssAnotherCallWarningModalClose)
+	private WebElement anotherCallWarningModalCloseButton;
 
 	public WarningPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 
-	public boolean isVisible() throws Exception {
-		final String xpath = WebAppLocators.WarningPage.xpathWarning;
+	public boolean isMissingWebRTCSupportWarningBarVisible() throws Exception {
+		final String css = WebAppLocators.WarningPage.cssMissingWebRTCSupportWarningBar;
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(xpath));
+				By.cssSelector(css));
 	}
 
-	public boolean isLinkWithCaptionVisible(String caption) throws Exception {
-		final String locator = WebAppLocators.WarningPage.xpathLinkByCaption
-				.apply(caption);
+	public boolean isMissingWebRTCSupportWarningBarInvisible() throws Exception {
+		final String css = WebAppLocators.WarningPage.cssMissingWebRTCSupportWarningBar;
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.cssSelector(css));
+	}
+
+	public boolean isLinkWithCaptionInMissingWebRTCSupportWarningBarVisible(
+			String caption) throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.WarningPage.xpathMissingWebRTCSupportWarningBarLinkByCaption
+						.apply(caption));
 		return DriverUtils.waitUntilElementClickable(this.getDriver(),
-				getDriver().findElement(By.xpath(locator)), 5);
+				getDriver().findElement(locator));
 	}
 
-	public void closeWarning() {
-		warningCloseButton.click();
+	public void clickCloseMissingWebRTCSupportWarningBar() throws Exception {
+		DriverUtils.waitUntilElementClickable(this.getDriver(),
+				missingWebRTCSupportWarningBarCloseButton);
+		missingWebRTCSupportWarningBarCloseButton.click();
+	}
+
+	public boolean isAnotherCallWarningModalVisible() throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.WarningPage.cssAnotherCallWarningModal);
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
+	}
+
+	public boolean isAnotherCallWarningModalInvisible() throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.WarningPage.cssAnotherCallWarningModal);
+		return DriverUtils
+				.waitUntilLocatorDissapears(this.getDriver(), locator);
+	}
+
+	public void clickCloseAnotherCallWarningModal() throws Exception {
+		DriverUtils.waitUntilElementClickable(this.getDriver(),
+				anotherCallWarningModalCloseButton);
+		final By locator = By
+				.cssSelector(WebAppLocators.WarningPage.cssAnotherCallWarningModal);
+
+		anotherCallWarningModalCloseButton.click();
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+	}
+
+	public boolean clickButtonWithCaptionInAnotherCallWarningModal(
+			String caption) throws Exception {
+		final By buttonLocator = By
+				.xpath(WebAppLocators.WarningPage.xpathAnotherCallWarningModalButtonByCaption
+						.apply(caption));
+		WebElement button = getDriver().findElement(buttonLocator);
+		final By modalLocator = By
+				.cssSelector(WebAppLocators.WarningPage.cssAnotherCallWarningModal);
+		boolean clickable = DriverUtils.waitUntilElementClickable(
+				this.getDriver(), button);
+
+		button.click();
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(), modalLocator);
+
+		return clickable;
 	}
 }

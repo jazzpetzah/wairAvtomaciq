@@ -65,7 +65,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | ColorName  | Contact   |
       | user1Email | user1Password | user1Name | StrongBlue | user2Name |
 
-  @staging @id2998
+  @regression @id2998
   Scenario Outline: Verify you silence the conversation when you press ⌥⇧⌘L (Mac) or alt + ctrl + L (Win)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -75,8 +75,7 @@ Feature: Conversation List
     And I open conversation with <Contact>
     And I see that conversation <Contact> is not muted
     When I click on options button for conversation <Contact>
-    And I hover mute button for conversation <Contact>
-    Then I see correct tooltip for silence button in conversation <Contact>
+    Then I see correct tooltip for silence button in options popover
     When I type shortcut combination to mute or unmute the conversation <Contact>
     Then I see that conversation <Contact> is muted
     When I type shortcut combination to mute or unmute the conversation <Contact>

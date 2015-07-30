@@ -540,7 +540,7 @@ public class CommonIOSSteps {
 	 */
 	@When("^I swipe left in current window$")
 	public void ISwipeLeftInCurrentWindow() throws Exception {
-		pagesCollecton.getCommonPage().swipeLeft(500);
+		pagesCollecton.getCommonPage().swipeLeft(1000);
 	}
 
 	/**
