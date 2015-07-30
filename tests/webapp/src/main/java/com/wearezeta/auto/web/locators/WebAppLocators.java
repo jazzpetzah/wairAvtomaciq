@@ -416,17 +416,30 @@ public final class WebAppLocators {
 
 	public static final class WarningPage {
 
-		private static final String xpathRootDiv = "//div[@id='warnings']";
+		private static final String xpathWarningBarRootDiv = "//div[@id='warnings']";
+		private static final String xpathWarningModalRootDiv = "//div[@id='modals']";
 
-		public static final String xpathWarning = xpathRootDiv
+		public static final String xpathMissingWebRTCSupportWarningBar = xpathWarningBarRootDiv
 				+ "//div[@class='warning']";
 
-		public static final String xpathWarningClose = xpathRootDiv
+		public static final String xpathMissingWebRTCSupportWarningBarClose = xpathWarningBarRootDiv
 				+ "//span[contains(@class, 'warning-bar-close')]";
 
-		public static final Function<String, String> xpathLinkByCaption = (name) -> String
+		public static final Function<String, String> xpathMissingWebRTCSupportWarningBarLinkByCaption = (
+				name) -> String
 				.format("%s//div[contains(@class, 'warning-bar-message')]//a[text()='%s']",
-						xpathRootDiv, name);
+						xpathWarningBarRootDiv, name);
+
+		public static final String xpathAnotherCallWarningModal = xpathWarningModalRootDiv
+				+ "//div[contains(@class, 'modal-call-second') and contains(@class, 'modal-show')]";
+
+		public static final String xpathAnotherCallWarningModalClose = xpathAnotherCallWarningModal
+				+ "//div[contains(@class, 'icon-close')]";
+
+		public static final Function<String, String> xpathAnotherCallWarningModalButtonByCaption = (
+				name) -> String.format(
+				"%s//div[contains(@class, 'button') and text()='%s']",
+				xpathAnotherCallWarningModal, name);
 	}
 
 	public static final class PhoneNumberVerificationPage {

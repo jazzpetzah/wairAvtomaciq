@@ -454,7 +454,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @calling @debug @id2477
+  @staging @calling @debug @id2477
   Scenario Outline: Already on call and try to make another call (adressee)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -471,10 +471,20 @@ Feature: Calling
     When I open conversation with <OtherContact>
     Then I do not see the calling bar
     When I call
+    Then I see another call warning modal
+    And I close the another call warning modal
+    And I do not see another call warning modal
     Then I do not see the calling bar
     And I open conversation with <Contact>
     And I see the calling bar
-    When I end the call
+    When I open conversation with <OtherContact>
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    And I click on "End Call" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    And I open conversation with <Contact>
     Then I do not see the calling bar
 
     Examples: 
