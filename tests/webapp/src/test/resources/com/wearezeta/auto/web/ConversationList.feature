@@ -75,8 +75,7 @@ Feature: Conversation List
     And I open conversation with <Contact>
     And I see that conversation <Contact> is not muted
     When I click on options button for conversation <Contact>
-    And I hover mute button for conversation <Contact>
-    Then I see correct tooltip for silence button in conversation <Contact>
+    Then I see correct tooltip for silence button in options popover
     When I type shortcut combination to mute or unmute the conversation <Contact>
     Then I see that conversation <Contact> is muted
     When I type shortcut combination to mute or unmute the conversation <Contact>

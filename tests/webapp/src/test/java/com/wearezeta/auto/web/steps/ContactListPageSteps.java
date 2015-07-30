@@ -182,8 +182,7 @@ public class ContactListPageSteps {
 	public void IClickArchiveButton(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
-		PagesCollection.contactListPage
-				.clickArchiveConversationForContact(contact);
+		PagesCollection.contactListPage.clickArchiveConversation();
 	}
 
 	/**
@@ -284,8 +283,7 @@ public class ContactListPageSteps {
 	public void ISetMutedStateFor(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
-		PagesCollection.contactListPage
-				.clickMuteConversationForContact(contact);
+		PagesCollection.contactListPage.clickMuteConversation();
 	}
 
 	/**
@@ -302,8 +300,7 @@ public class ContactListPageSteps {
 	public void ISetUnmutedStateFor(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
 		PagesCollection.contactListPage.clickOptionsButtonForContact(contact);
-		PagesCollection.contactListPage
-				.clickUnmuteConversationForContact(contact);
+		PagesCollection.contactListPage.clickUnmuteConversation();
 	}
 
 	/**
@@ -538,31 +535,14 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * I hover mute button for the particular conversation
-	 * 
-	 * @step. ^I hover mute button for conversation (.*)
-	 * 
-	 * @param contact
-	 *            conversation name string
-	 * @throws Exception
-	 */
-	@When("^I hover mute button for conversation (.*)$")
-	public void IHoverMuteButtonFor(String contact) throws Exception {
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		PagesCollection.contactListPage.hoverMuteButtonForContact(contact);
-	}
-
-	/**
 	 * Verifies whether silence button tool tip is correct or not.
 	 *
-	 * @step. ^I see correct tooltip for silence button$
+	 * @step. ^I see correct tooltip for silence button in options popover$
 	 * @throws Exception
 	 *
 	 */
-	@Then("^I see correct tooltip for silence button in conversation (.*)$")
-	public void ISeeCorrectTooltipForSilenceButton(String contact)
-			throws Exception {
-		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+	@Then("^I see correct tooltip for silence button in options popover$")
+	public void ISeeCorrectTooltipForSilenceButton() throws Exception {
 		String tooltip = TOOLTIP_SILENCE + " ";
 		if (WebAppExecutionContext.isCurrentPlatformWindows()) {
 			tooltip = tooltip + SHORTCUT_SILENCE_WIN;
@@ -570,7 +550,7 @@ public class ContactListPageSteps {
 			tooltip = tooltip + SHORTCUT_SILENCE_MAC;
 		}
 		assertThat("Silence button tooltip",
-				PagesCollection.contactListPage.getMuteButtonToolTip(contact),
+				PagesCollection.contactListPage.getMuteButtonToolTip(),
 				equalTo(tooltip));
 	}
 
