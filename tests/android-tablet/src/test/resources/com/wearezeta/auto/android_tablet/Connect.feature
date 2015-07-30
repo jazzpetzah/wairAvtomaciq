@@ -77,7 +77,9 @@ Feature: Connect
     When I tap the conversation <WaitingMess>
     And I see the Incoming connections page
     And I accept incoming connection request from <Contact> on Incoming connections page
-    Then I see the conversation <Contact> in my conversations list
+    Then I see the conversation view
+    And I navigate back
+    And I see the conversation <Contact> in my conversations list
     And I do not see the conversation <WaitingMess> in my conversations list
 
     Examples: 
