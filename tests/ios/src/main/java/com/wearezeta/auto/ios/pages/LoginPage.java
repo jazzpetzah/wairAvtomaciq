@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import junit.framework.Assert;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
@@ -170,6 +172,7 @@ public class LoginPage extends IOSPage {
 				By.xpath(IOSLocators.xpathLoginButton), 40)) {
 			return new ContactListPage(this.getLazyDriver());
 		} else {
+			Assert.fail("Something happened during login");
 			return null;
 		}
 	}
