@@ -359,7 +359,7 @@ Feature: Conversation List
       | user1Name | user2Name | user3Name | StrongLimeGreen |
 
   #outdated test - play youtube functionality changed
-  @staging @id2465 @torun
+  @staging @id2465
   Scenario Outline: Verify Play/pause Youtube media from conversation list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
