@@ -378,3 +378,36 @@ Feature: People View
     Examples: 
       | Name      | Contact2  | Contact3   | GroupChatName   |
       | user1Name | user2Name | user3Name  | 1on1FromGroup   |
+  
+  #@staging @id2455
+  #Scenario Outline: Verify unsilince the conversation [PORTRAIT]   
+   
+  #@staging @id3208
+  #Scenario Outline: Verify unsilince the conversation [LANDSCAPE]
+  
+  @torun @staging @id2456
+  Scenario Outline: Verify silence the conversation [PORTRAIT]
+  	Given There are 2 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given <Contact> is connected to <Name>
+    Given User <Contact> change accent color to <Color>
+    Given User <Contact> change name to <NewName>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I open conversation details
+    And I press conversation menu button on iPad
+    And I press menu silence button
+    And I close user profile page to return to dialog page
+    And I see dialog page
+    And I return to the chat list
+    And I see Contact list with my name <Name>
+    Then I see conversation <Contact> is silenced
+
+    Examples: 
+      | Name      | Contact   | Color    | NewName |
+      | user1Name | user2Name | Violet   | SILENCE |
+  
+  #@staging @id3209
+  #Scenario Outline: Verify silence the conversation [LANDSCAPE]
