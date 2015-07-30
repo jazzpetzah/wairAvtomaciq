@@ -137,7 +137,7 @@ public final class WebAppLocators {
 		public static final String xpathGearMenuRoot = "//div[@id='setting-bubble' and contains(@class, 'bubble-show')]";
 
 		public static final Function<String, String> xpathGearMenuItemByName = (
-				name) -> String.format("%s//a[text()='%s']", xpathGearMenuRoot,
+				name) -> String.format("%s//li[text()='%s']", xpathGearMenuRoot,
 				name);
 
 		public static final String xpathSelfUserName = "//*[@data-uie-name='enter-name']/span";
