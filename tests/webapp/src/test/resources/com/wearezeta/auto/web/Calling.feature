@@ -454,7 +454,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @calling @debug @id2477
+  @regression @calling @debug @id2477
   Scenario Outline: Already on call and try to make another call (adressee)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
