@@ -39,10 +39,10 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathPopoverAvatarCollectionView)
 	private WebElement avatarPopoverCollectionView;
 	
-	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathSilenceButtonEllipsisMenue)
+	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathSilenceButtonEllipsisMenu)
 	private WebElement silenceEllipsisButton;
 	
-	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathNotifyButtonEllipsisMenue)
+	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathNotifyButtonEllipsisMenu)
 	private WebElement notifyEllipsisButton;
 	
 	public void openConversationMenuOnPopover() throws Exception {
