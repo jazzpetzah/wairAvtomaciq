@@ -389,6 +389,15 @@ Feature: People View
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>  
     And I see conversation <GroupChatName> got silenced before
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I press conversation menu button on iPad
+    And I click NOTIFY button on iPad ellipsis menu
+    And I exit the group info iPad popover
+    And I see dialog page
+    And I swipe right on Dialog page
+    Then I see conversation <GroupChatName> is unsilenced
     
     Examples: 
       | Name      | Contact1   | Contact2  | Color    | GroupChatName |
@@ -405,6 +414,14 @@ Feature: People View
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name> 
     And I see conversation <GroupChatName> got silenced before
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I press conversation menu button on iPad
+    And I click NOTIFY button on iPad ellipsis menu
+    And I exit the group info iPad popover
+    And I see dialog page
+    Then I see conversation <GroupChatName> is unsilenced
     
     Examples: 
       | Name      | Contact1   | Contact2  | Color    | GroupChatName |
@@ -426,7 +443,6 @@ Feature: People View
     And I exit the group info iPad popover
     And I see dialog page
     And I swipe right on Dialog page
-    And I see Contact list with my name <Name>
     Then I see conversation <GroupChatName> is silenced
 
     Examples: 
@@ -449,7 +465,6 @@ Feature: People View
     And I click SILENCE button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I see dialog page
-    And I see Contact list with my name <Name>
     Then I see conversation <GroupChatName> is silenced
 
     Examples: 
