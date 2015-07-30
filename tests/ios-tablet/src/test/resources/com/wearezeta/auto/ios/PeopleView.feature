@@ -470,10 +470,10 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | Color  | GroupChatName |
       | user1Name | user2Name | user3Name | Violet | SILENCE       |
-      
+
   @staging @id3220
   Scenario Outline: Add someone to a group conversation [PORTRAIT]
-  	Given There are 4 users where <Name> is me
+    Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
@@ -486,15 +486,14 @@ Feature: People View
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
-    
-    
+
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3 | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | user4Name| AddContact    | 4                  |
-  
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
+      | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
+
   @staging @id3221
   Scenario Outline: Add someone to a group conversation [LANDSCAPE]
-  	Given There are 4 users where <Name> is me
+    Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I rotate UI to landscape
@@ -508,8 +507,7 @@ Feature: People View
     And I click on connected user <Contact3> on People picker on iPad popover
     And I click on Add to Conversation button on iPad popover
     Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
-    
+
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
-      | user1Name | user2Name | user3Name | user4Name | AddContact    | 4				   |
-  
+      | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
