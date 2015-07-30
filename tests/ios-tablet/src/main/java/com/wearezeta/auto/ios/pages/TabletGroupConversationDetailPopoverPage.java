@@ -38,7 +38,10 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 	
 	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathPopoverAvatarCollectionView)
 	private WebElement avatarPopoverCollectionView;
-
+	
+	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletGroupConversationDetailPopoverPage.xpathSilenceButtonEllipsisMenue)
+	private WebElement silenceEllipsisButton;
+	
 	public void openConversationMenuOnPopover() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.name(IOSLocators.nameConversationMenu));
@@ -122,6 +125,8 @@ public class TabletGroupConversationDetailPopoverPage extends GroupChatInfoPage 
 				.className("UIACollectionCell"));
 	}
 
-
+	public void pressSilenceEllipsisButton(){
+		silenceEllipsisButton.click();
+	}
 
 }

@@ -385,29 +385,48 @@ Feature: People View
   #@staging @id3208
   #Scenario Outline: Verify unsilince the conversation [LANDSCAPE]
   
-  @torun @staging @id2456
+  @staging @id2456
   Scenario Outline: Verify silence the conversation [PORTRAIT]
-  	Given There are 2 users where <Name> is me
+  	Given There are 3 users where <Name> is me
     Given User <Name> change accent color to <Color>
-    Given <Contact> is connected to <Name>
-    Given User <Contact> change accent color to <Color>
-    Given User <Contact> change name to <NewName>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
+    When I tap on group chat with name <GroupChatName>
     And I see dialog page
-    And I open conversation details
+    And I open group conversation details
     And I press conversation menu button on iPad
-    And I press menu silence button
-    And I close user profile page to return to dialog page
+    And I click SILENCE button on iPad ellipsis menu
+    And I exit the group info iPad popover
     And I see dialog page
-    And I return to the chat list
+    And I swipe right on Dialog page
     And I see Contact list with my name <Name>
-    Then I see conversation <Contact> is silenced
+    Then I see conversation <GroupChatName> is silenced
 
     Examples: 
-      | Name      | Contact   | Color    | NewName |
-      | user1Name | user2Name | Violet   | SILENCE |
+      | Name      | Contact1   | Contact2  | Color    | GroupChatName |
+      | user1Name | user2Name  | user3Name | Violet   | SILENCE   	  |
   
-  #@staging @id3209
-  #Scenario Outline: Verify silence the conversation [LANDSCAPE]
+  @torun @staging @id3209
+  Scenario Outline: Verify silence the conversation [LANDSCAPE]
+  	Given There are 3 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I press conversation menu button on iPad
+    And I click SILENCE button on iPad ellipsis menu
+    And I exit the group info iPad popover
+    And I see dialog page
+    And I see Contact list with my name <Name>
+    Then I see conversation <GroupChatName> is silenced
+
+    Examples: 
+      | Name      | Contact1   | Contact2  | Color    | GroupChatName |
+      | user1Name | user2Name  | user3Name | Violet   | SILENCE   	  |

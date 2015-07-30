@@ -462,7 +462,7 @@ public class CommonUtils {
 			WebElement element, AppiumDriver driver, String deviceName)
 			throws Exception {
 		int multiply = 3;
-		if (deviceName.equals("iPhone 6")) {
+		if (deviceName.equals("iPhone 6")||deviceName.equals("iPad Air")) {
 			multiply = 2;
 		}
 		org.openqa.selenium.Point elementLocation = element.getLocation();

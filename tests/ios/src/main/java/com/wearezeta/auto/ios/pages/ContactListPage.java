@@ -1,8 +1,11 @@
 package com.wearezeta.auto.ios.pages;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
 import java.util.concurrent.Future;
+
+import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
@@ -432,6 +435,8 @@ public class ContactListPage extends IOSPage {
 		silencedConversation = CommonUtils.getElementScreenshot(element,
 				this.getDriver(), CommonUtils.getDeviceName(this.getClass()))
 				.orElseThrow(IllegalStateException::new);
+//		File outputfile = new File("silenceiPadAir.png");
+//		ImageIO.write(silencedConversation, "png", outputfile);
 		if (deviceType.equals("iPhone 6 Plus") && isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "silenceiPhone6plus.png");
@@ -444,6 +449,12 @@ public class ContactListPage extends IOSPage {
 		} else if (deviceType.equals("iPhone 6") && !isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "verifyUnsilenceTestIphone6.png");
+		} else if (deviceType.equals("iPad Air") && isSilenced){
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "silenceiPadAir.png");
+		} else if (deviceType.equals("iPad Air") && !isSilenced){
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "verifyUnsilenceTestIPadAir.png");
 		}
 		double score = ImageUtil.getOverlapScore(silencedConversation,
 				referenceImage, 0);

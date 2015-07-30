@@ -173,5 +173,15 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 		Assert.assertTrue(getTabletGroupConversationDetailPopoverPage()
 				.areParticipantAvatarCorrectOniPadPopover(contact));
 	}
+	
+	/**
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I click SILENCE button on iPad ellipsis menu$")
+	public void IClickSILENCEButtonOniPadEllipsisMenu() throws Throwable {
+		getTabletGroupConversationDetailPopoverPage().pressSilenceEllipsisButton();
+	}
+
 
 }
