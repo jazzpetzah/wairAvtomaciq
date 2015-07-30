@@ -379,7 +379,7 @@ Feature: People View
       | Name      | Contact2  | Contact3   | GroupChatName   |
       | user1Name | user2Name | user3Name  | 1on1FromGroup   |
   
-  @torun @staging @id2455
+  @staging @id2455
   Scenario Outline: Verify unsilince the conversation [PORTRAIT] 
   	Given There are 3 users where <Name> is me
     Given User <Name> change accent color to <Color>
