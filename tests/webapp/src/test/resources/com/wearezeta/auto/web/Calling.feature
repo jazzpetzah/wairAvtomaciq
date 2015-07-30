@@ -333,8 +333,8 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | 120     |
 
-  @regression @calling @debug @id1875
-  Scenario Outline: Already on call and try to make another call (caller)
+  @regression @calling @debug @id2477
+   Scenario Outline: Already on call and try to make another call (callee)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<OtherContact>
@@ -344,11 +344,24 @@ Feature: Calling
     And I open conversation with <Contact>
     When <Contact> calls me using <CallBackend>
     And I see the calling bar from user <Contact>
+    And I accept the incoming call
     When I open conversation with <OtherContact>
-    Then I see the calling bar from user <Contact>
+    Then I do not see the calling bar
     When I call
-    Then I see the calling bar from user <Contact>
-    When I silence the incoming call
+    Then I see another call warning modal
+    And I close the another call warning modal
+    And I do not see another call warning modal
+    Then I do not see the calling bar
+    And I open conversation with <Contact>
+    And I see the calling bar
+    When I open conversation with <OtherContact>
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    And I click on "End Call" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    And I open conversation with <Contact>
     Then I do not see the calling bar
 
     Examples: 
@@ -454,8 +467,8 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @regression @calling @debug @id2477
-  Scenario Outline: Already on call and try to make another call (adressee)
+  @regression @calling @debug @id1875
+  Scenario Outline: Already on call and try to make another call (caller)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<OtherContact>
