@@ -52,17 +52,11 @@ public final class WebAppLocators {
 				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following-sibling::div[contains(@class, 'controls')]",
 						name);
 
-		public static final Function<String, String> xpathArchiveButtonByContactName = (
-				name) -> xpathListItemRootWithControlsByName.apply(name)
-				+ "//*[@data-uie-name='do-archive']";
+		public static final String cssArchiveButton = "[data-uie-name='do-archive']";
 
-		public static final Function<String, String> xpathMuteButtonByContactName = (
-				name) -> xpathListItemRootWithControlsByName.apply(name)
-				+ "//*[@data-uie-name='do-silence']";
+		public static final String cssMuteButton = "[data-uie-name='do-silence']";
 
-		public static final Function<String, String> xpathUnmuteButtonByContactName = (
-				name) -> xpathListItemRootWithControlsByName.apply(name)
-				+ "//*[@data-uie-name='do-notify']";
+		public static final String cssUnmuteButton = "[data-uie-name='do-notify']";
 
 		public static final Function<String, String> xpathMuteIconByContactName = (
 				name) -> String.format(
@@ -143,7 +137,7 @@ public final class WebAppLocators {
 		public static final String xpathGearMenuRoot = "//div[@id='setting-bubble' and contains(@class, 'bubble-show')]";
 
 		public static final Function<String, String> xpathGearMenuItemByName = (
-				name) -> String.format("%s//a[text()='%s']", xpathGearMenuRoot,
+				name) -> String.format("%s//li[text()='%s']", xpathGearMenuRoot,
 				name);
 
 		public static final String xpathSelfUserName = "//*[@data-uie-name='enter-name']/span";

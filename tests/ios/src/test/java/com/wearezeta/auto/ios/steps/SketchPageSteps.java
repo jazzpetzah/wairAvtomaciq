@@ -1,12 +1,10 @@
 package com.wearezeta.auto.ios.steps;
 
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.SketchPage;
 
 import cucumber.api.java.en.When;
 
 public class SketchPageSteps {
-	
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
 			.getInstance();
 	
