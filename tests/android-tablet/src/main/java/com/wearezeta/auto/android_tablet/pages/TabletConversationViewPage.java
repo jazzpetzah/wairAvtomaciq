@@ -24,17 +24,20 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	@FindBy(id = DialogPage.idParticipantsBtn)
 	private WebElement showDetailsButton;
-	
+
 	private static final String idShowToolsButton = "cursor_button_open";
 	@FindBy(id = idShowToolsButton)
 	private WebElement showToolsButton;
+
+	private static final String idCaret = "caret";
+	@FindBy(id = idCaret)
+	private WebElement caret;
 
 	@FindBy(id = idEditText)
 	private WebElement inputField;
 
 	public static final Function<String, String> xpathInputFieldByValue = value -> String
-			.format("//*[@id='%s' and @value='%s']",
-					idEditText, value);
+			.format("//*[@id='%s' and @value='%s']", idEditText, value);
 
 	public static final Function<String, String> xpathConversationMessageByValue = value -> String
 			.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
@@ -75,7 +78,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	}
 
 	public void tapTextInput() {
-		inputField.click();
+		caret.click();
 	}
 
 	public void typeMessage(String message) {
@@ -83,7 +86,7 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	}
 
 	public void sendMessage() throws Exception {
-		inputField.sendKeys("\n");
+		getDriver().tapSendButton();
 	}
 
 	public boolean waitUntilMessageIsVisible(String expectedMessage)
