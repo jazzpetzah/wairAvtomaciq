@@ -468,9 +468,6 @@ public class DialogPageSteps {
 				.getLastMessageFromDialog().toLowerCase());
 		Assert.assertTrue("View did not scroll back", getDialogPage()
 				.isMediaContainerVisible());
-		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
-		mediaState = getDialogPage().getMediaState();
-		Assert.assertEquals(playingState, mediaState);
 	}
 
 	@When("I tap and hold image to open full screen")
