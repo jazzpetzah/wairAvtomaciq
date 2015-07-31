@@ -929,17 +929,21 @@ Feature: Conversation View
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
-  @staging @id2418
+  @staging @id2418 
   Scenario Outline: Rotate image in fullscreen mode [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given User <Contact> change name to <NewName>
     Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to single user conversation <Name>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
     And I see new photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
@@ -957,18 +961,22 @@ Feature: Conversation View
     Given User <Contact> change name to <NewName>
     Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to single user conversation <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
     And I see new photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I rotate UI to portrait
-    Then I see image rotated in fullscreen mode
+    Then I see image rotated to portrait in fullscreen mode
 
     Examples: 
       | Name      | Contact   | Picture     | Color        | NewName          |
