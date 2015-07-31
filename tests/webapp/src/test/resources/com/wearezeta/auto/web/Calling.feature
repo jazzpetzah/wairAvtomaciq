@@ -506,7 +506,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | webdriver   | 120     |
 
-  @staging @calling @group @debug @id3058 @torun
+  @staging @calling @group @debug @id3058
   Scenario Outline: Verify initiator is not a host for the call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -535,7 +535,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | webdriver   | 120     |
 
 
-  @staging @calling @group @debug @id3064 @torun
+  @staging @calling @group @debug @id3064
   Scenario Outline: Verify accepting group call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
