@@ -174,4 +174,27 @@ public class TabletGroupConversationDetailPopoverPageSteps {
 				.areParticipantAvatarCorrectOniPadPopover(contact));
 	}
 
+	/**
+	 * Clicks on the SILENCE button in the iPad popover ellipsis menu
+	 * 
+	 * @step. ^I click SILENCE button on iPad ellipsis menu$
+	 * @throws Throwable
+	 */
+	@When("^I click SILENCE button on iPad ellipsis menu$")
+	public void IClickSILENCEButtonOniPadEllipsisMenu() throws Throwable {
+		getTabletGroupConversationDetailPopoverPage()
+				.pressSilenceEllipsisButton();
+	}
+
+	/**
+	 * Clicks on the NOTIFY button in the iPad popover ellipsis menu
+	 * 
+	 * @step. ^I click NOTIFY button on iPad ellipsis menu$
+	 * @throws Throwable
+	 */
+	@When("^I click NOTIFY button on iPad ellipsis menu$")
+	public void IClickNOTIFYButtonOniPadEllipsisMenu() throws Throwable {
+		getTabletGroupConversationDetailPopoverPage().pressNotifyEllipsisButton();
+	}
+
 }

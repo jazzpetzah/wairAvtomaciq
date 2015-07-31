@@ -39,6 +39,8 @@ public final class IOSTabletLocators {
 		public static final String xpathGroupConvTotalNumber = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAStaticText[contains(@name,'PEOPLE')]";
 		public static final String namePeopleCountWord = " PEOPLE";
 		public static final String xpathPopoverAvatarCollectionView = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIACollectionView[1]";
+		public static final String xpathSilenceButtonEllipsisMenu = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAButton[@name='SILENCE']";
+		public static final String xpathNotifyButtonEllipsisMenu = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAPopover[1]/UIAButton[@name='NOTIFY']";
 	}
 	
 }
