@@ -505,3 +505,57 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | webdriver   | 120     |
+
+  @staging @calling @group @debug @id3058
+  Scenario Outline: Verify initiator is not a host for the call
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given <Contact1> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> starts waiting instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    When I call
+    Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar from user <Contact1>
+    And I see the calling bar from user <Contact2>
+    When I end the call
+    Then I do not see the calling bar
+    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | webdriver   | 120     |
+
+
+  @staging @calling @group @debug @id3064
+  Scenario Outline: Verify accepting group call
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    When <Contact1> calls <ChatName> using <CallBackend>
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
+    When I accept the incoming call
+    And I see the calling bar from user <Contact1>
+    And I see the calling bar from user <Contact2>
+    When I end the call
+    Then I do not see the calling bar
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | autocall    | webdriver   | 120     |
