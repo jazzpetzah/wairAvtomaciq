@@ -570,6 +570,74 @@ public class ContactListPageSteps {
 	}
 
 	/**
+	 * Click the leave option
+	 * 
+	 * @step. ^I click the option to leave in the options popover$
+	 * @throws Exception
+	 */
+	@When("^I click the option to leave in the options popover$")
+	public void IClickLeaveButton() throws Exception {
+		PagesCollection.contactListPage.clickLeaveConversation();
+	}
+
+	/**
+	 * Click the block option
+	 * 
+	 * @step. ^I click the option to block in the options popover$
+	 * @throws Exception
+	 */
+	@When("^I click the option to block in the options popover$")
+	public void IClickBlockButton() throws Exception {
+		PagesCollection.contactListPage.clickBlockConversation();
+	}
+
+	/**
+	 * Verifies the modal is visible
+	 * 
+	 * @step. ^I see a leave warning modal$
+	 * @throws Exception
+	 */
+	@Then("^I see a leave warning modal$")
+	public void ISeeALeaveWarning() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isLeaveWarningModalVisible());
+	}
+
+	/**
+	 * Click the cancel button
+	 * 
+	 * @step. ^I click cancel button in the leave warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click cancel button in the leave warning$")
+	public void IClickCancelButtonOnLeaveWarning() throws Throwable {
+		PagesCollection.contactListPage.clickCancelOnLeaveWarning();
+	}
+
+	/**
+	 * Verifies the modal is visible
+	 * 
+	 * @step. ^I see a block warning modal$
+	 * @throws Exception
+	 */
+	@Then("^I see a block warning modal$")
+	public void ISeeABlockWarning() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isBlockWarningModalVisible());
+	}
+
+	/**
+	 * Click the cancel button
+	 * 
+	 * @step. ^I click cancel button in the block warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click cancel button in the block warning$")
+	public void IClickCancelButtonOnBlockWarning() throws Throwable {
+		PagesCollection.contactListPage.clickCancelOnBlockWarning();
+	}
+
+	/**
 	 * Verifies a conversation is on top of conversation list
 	 *
 	 * @param conv

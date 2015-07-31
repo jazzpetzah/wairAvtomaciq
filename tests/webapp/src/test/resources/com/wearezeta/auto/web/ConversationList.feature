@@ -84,3 +84,40 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id3211
+  Scenario Outline: Verify I can cancel leaving a 1:1 conversation from conversation list
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I click on options button for conversation <Contact>
+    And I click the option to block in the options popover
+    Then I see a block warning modal
+    And I click cancel button in the block warning
+    Then I see Contact list with name <Contact>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id3214
+  Scenario Outline: Verify I can cancel leaving a group conversation from conversation list
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    When I click on options button for conversation <ChatName>
+    And I click the option to leave in the options popover
+    Then I see a leave warning modal
+    And I click cancel button in the leave warning
+    Then I see Contact list with name <ChatName>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | Leave1:1Chat |
