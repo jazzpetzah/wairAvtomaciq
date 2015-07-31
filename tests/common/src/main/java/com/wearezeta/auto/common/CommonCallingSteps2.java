@@ -10,6 +10,7 @@ import java.util.concurrent.TimeoutException;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.calling2.v1.CallingServiceClient;
+import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
 import com.wearezeta.auto.common.calling2.v1.model.Instance;
@@ -18,6 +19,10 @@ import com.wearezeta.auto.common.calling2.v1.model.InstanceType;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public final class CommonCallingSteps2 {
 
@@ -122,12 +127,25 @@ public final class CommonCallingSteps2 {
     }
 
     public void cleanup() throws Exception {
+        ExecutorService executor = Executors.newCachedThreadPool();
         if (instanceMapping.size() > 0) {
             log.debug("Executing asynchronous cleanup of call instance leftovers...");
         }
         for (Map.Entry<String, Instance> entry : instanceMapping.entrySet()) {
-            // will also stop all related calls
-            CallingServiceClient.stopInstance(entry.getValue());
+            CompletableFuture.runAsync(() -> {
+                final Instance instance = entry.getValue();
+                try {
+                    CallingServiceClient.stopInstance(instance);
+                } catch (CallingServiceInstanceException ex) {
+                    log.warn(String.format("Could not properly shut down instance '%s'", instance.getId()), ex);
+                }
+            }, executor);
+        }
+        executor.shutdown();
+        executor.awaitTermination(5, TimeUnit.SECONDS);
+        if (!executor.isShutdown()) {
+            log.warn("Could not finish all async calling cleanup tasks! Forcing executor shutdown ...");
+            executor.shutdownNow();
         }
         instanceMapping.clear();
     }
