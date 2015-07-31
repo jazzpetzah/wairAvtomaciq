@@ -155,7 +155,7 @@ public final class CommonCallingSteps2 {
     }
 
     private static String makeKey(ClientUser from, String conversationId) {
-        StringBuilder key = new StringBuilder(from.getEmail());
+        StringBuilder key = new StringBuilder(makeKey(from));
         key.append(":").append(conversationId);
         return key.toString();
     }
@@ -208,7 +208,6 @@ public final class CommonCallingSteps2 {
         throws CallNotFoundException {
         final String key = makeKey(userAs);
         if (instanceMapping.containsKey(key)) {
-
             return instanceMapping.get(key);
         } else {
             throw new CallNotFoundException(String.format(
@@ -221,7 +220,6 @@ public final class CommonCallingSteps2 {
         throws CallNotFoundException {
         final String callKey = makeKey(userAs);
         if (callMapping.containsKey(callKey)) {
-
             return callMapping.get(callKey);
         } else {
             throw new CallNotFoundException(String.format(
@@ -233,7 +231,6 @@ public final class CommonCallingSteps2 {
         throws CallNotFoundException {
         final String callKey = makeKey(userAs, conversationId);
         if (callMapping.containsKey(callKey)) {
-
             return callMapping.get(callKey);
         } else {
             throw new CallNotFoundException(String.format(
