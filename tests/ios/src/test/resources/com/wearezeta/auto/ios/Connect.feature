@@ -54,7 +54,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
-    And I swipe up on group chat page
+    And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
     And I click Connect button on connect to dialog
     And I exit the group info page

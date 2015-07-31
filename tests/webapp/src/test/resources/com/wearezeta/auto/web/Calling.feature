@@ -385,7 +385,9 @@ Feature: Calling
     When I open conversation with <Contact2>
     Then I do not see the calling bar
     When I call
-    Then I see the calling bar from user <Contact2>
+    And I see the calling bar
+    Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar from user <Contact2>
     When I end the call
     Then I do not see the calling bar
 
