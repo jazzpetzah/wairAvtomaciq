@@ -40,7 +40,8 @@ class ExecuteJob(CliHandlerBase):
     def _invoke(self):
         parser = self._get_parser()
         args = parser.parse_args()
-        job = self._jenkins.get_job(args.name)
+        job_name = self._normalize_job_name(args.name)
+        job = self._jenkins.get_job(job_name)
         start_time = datetime.now()
         job.invoke(securitytoken=args.token,
                    block=args.block,
