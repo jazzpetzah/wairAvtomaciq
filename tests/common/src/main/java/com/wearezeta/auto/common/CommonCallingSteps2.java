@@ -51,6 +51,20 @@ public final class CommonCallingSteps2 {
         this.client = new CallingServiceClient();
         this.usrMgr = ClientUsersManager.getInstance();
         this.executor = Executors.newCachedThreadPool();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                executor.shutdown();
+                try {
+                    executor.awaitTermination(5, TimeUnit.SECONDS);
+                } catch (InterruptedException ex) {
+                    log.log(null, ex);
+                }
+                if (!executor.isTerminated()) {
+                    log.warn("Could not finish all async calling cleanup tasks! Forcing executor shutdown ...");
+                    executor.shutdownNow();
+                }
+            }
+        });
     }
 
     public static class CallNotFoundException extends Exception {
@@ -225,12 +239,6 @@ public final class CommonCallingSteps2 {
                 }
             }, executor);
         }
-        executor.shutdown();
-        executor.awaitTermination(5, TimeUnit.SECONDS);
-        if (!executor.isShutdown()) {
-            log.warn("Could not finish all async calling cleanup tasks! Forcing executor shutdown ...");
-            executor.shutdownNow();
-        }
         instanceMapping.clear();
     }
 
@@ -349,18 +357,14 @@ public final class CommonCallingSteps2 {
     }
 
     private String getConversationId(ClientUser userAs, String name) throws NoSuchUserException, Exception {
-        ClientUser convUser = usrMgr.findUserByNameOrNameAlias(name);
-        System.out.println("Name:" + convUser.getName());
-
         String convId;
         try {
-            log.warn("getting conversation ID by conversation name");
             // get conv id from pure conv name
             convId = BackendAPIWrappers.getConversationIdByName(
                 userAs, name);
         } catch (Exception e) {
-            log.warn("getting conversation ID by username");
             // get conv id from username
+            final ClientUser convUser = usrMgr.findUserByNameOrNameAlias(name);
             convId = BackendAPIWrappers.getConversationIdByName(
                 userAs, convUser.getName());
         }
