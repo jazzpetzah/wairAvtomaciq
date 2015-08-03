@@ -86,7 +86,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id2852 @staging
+  @id2852 @regression
   Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -99,6 +99,7 @@ Feature: Connect
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
