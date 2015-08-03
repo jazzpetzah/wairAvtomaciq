@@ -569,6 +569,41 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | chrome      | 120     |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | firefox     | 120     |
 
+  @staging @calling @group @debug @id3231
+  Scenario Outline: Verify initiating group call
+    Given My browser supports calling
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1> starts waiting instance using <WaitBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> starts waiting instance using <WaitBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> starts waiting instance using <WaitBackend>
+    Given <Contact4> accepts next incoming call automatically
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    When I call
+    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar from user <Contact1>
+    And I see the calling bar from user <Contact2>
+    And I see the calling bar from user <Contact3>
+    And I see the calling bar from user <Contact4>
+    When I end the call
+    Then I do not see the calling bar
+
+    Examples: 
+       | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
+       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 120     |
+       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | firefox     | 120     |
+
 
   @staging @calling @group @debug @id3065
   Scenario Outline: Verify ignoring group call
