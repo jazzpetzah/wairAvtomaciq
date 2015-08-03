@@ -18,6 +18,7 @@ import com.wearezeta.auto.common.calling2.v1.model.InstanceType;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -77,8 +78,8 @@ public final class CommonCallingSteps2 {
     public void callToConversation(String callerName,
         String conversationName, String instanceType) throws Exception {
         ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
-        final String convId = BackendAPIWrappers.getConversationIdByName(
-            userAs, conversationName);
+
+        final String convId = getConversationId(userAs, conversationName);
 
         final Instance instance = client.startInstance(userAs,
             instanceTypeFix(instanceType));
@@ -106,8 +107,7 @@ public final class CommonCallingSteps2 {
         String conversationName, String expectedStatuses, int secondsTimeout)
         throws Exception {
         ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
-        final String convId = BackendAPIWrappers.getConversationIdByName(
-            userAs, conversationName);
+        final String convId = getConversationId(userAs, conversationName);
         waitForExpectedCallStatuses(getInstanceByParticipant(userAs),
             getCallByParticipantAndConversationId(userAs, convId),
             callStatusesListToObject(expectedStatuses), secondsTimeout);
@@ -146,8 +146,7 @@ public final class CommonCallingSteps2 {
     public void stopCall(String callerName,
         String conversationName) throws Exception {
         ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
-        final String convId = BackendAPIWrappers.getConversationIdByName(
-            userAs, conversationName);
+        final String convId = getConversationId(userAs, conversationName);
         client.stopCall(getInstanceByParticipant(userAs),
             getCallByParticipantAndConversationId(userAs, convId));
     }
@@ -358,5 +357,24 @@ public final class CommonCallingSteps2 {
             log.warn("Please use CHROME or FIREFOX instead of WEBDRIVER as instance type for calling! WEBDRIVER will be removed in future versions.");
         }
         return InstanceType.valueOf(instanceType);
+    }
+
+    private String getConversationId(ClientUser userAs, String name) throws NoSuchUserException, Exception {
+        ClientUser convUser = usrMgr.findUserByNameOrNameAlias(name);
+        System.out.println("Name:" + convUser.getName());
+
+        String convId;
+        try {
+            log.warn("getting conversation ID by conversation name");
+            // get conv id from pure conv name
+            convId = BackendAPIWrappers.getConversationIdByName(
+                userAs, name);
+        } catch (Exception e) {
+            log.warn("getting conversation ID by username");
+            // get conv id from username
+            convId = BackendAPIWrappers.getConversationIdByName(
+                userAs, convUser.getName());
+        }
+        return convId;
     }
 }
