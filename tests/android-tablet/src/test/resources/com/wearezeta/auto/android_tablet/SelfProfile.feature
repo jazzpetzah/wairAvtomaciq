@@ -40,6 +40,7 @@ Feature: Self Profile
     Given I see the conversations list with conversations
     When I tap the conversation <Contact>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     Then I see the Single user popover
     And I see the user name <Contact> on Single user popover
@@ -58,6 +59,7 @@ Feature: Self Profile
     Given I see the conversations list with conversations
     When I tap the conversation <Contact>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     Then I see the Single user popover
     And I see the user name <Contact> on Single user popover
