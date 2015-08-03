@@ -11,6 +11,7 @@ Feature: People View
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
     And I tap Options button on Group popover
@@ -34,6 +35,7 @@ Feature: People View
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
@@ -79,6 +81,7 @@ Feature: People View
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
     And I tap Options button on Group popover
@@ -102,6 +105,7 @@ Feature: People View
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover

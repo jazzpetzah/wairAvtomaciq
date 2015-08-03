@@ -13,7 +13,6 @@ import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceExc
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
 import com.wearezeta.auto.common.calling2.v1.model.Instance;
-import com.wearezeta.auto.common.calling2.v1.model.InstanceStatus;
 import com.wearezeta.auto.common.calling2.v1.model.InstanceType;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -276,16 +275,6 @@ public final class CommonCallingSteps2 {
                 log.warn("Please use DESTROYED or NON_EXISTENT instead of READY to check the state of a call! READY will be removed in future versions.");
             }
             result.add(CallStatus.valueOf(clearedStatus));
-        }
-        return result;
-    }
-
-    private static List<InstanceStatus> instanceStatusesListToObject(
-        String expectedStatuses) {
-        List<InstanceStatus> result = new ArrayList<>();
-        String[] allStatuses = expectedStatuses.split(",");
-        for (String status : allStatuses) {
-            result.add(InstanceStatus.valueOf(status.trim()));
         }
         return result;
     }
