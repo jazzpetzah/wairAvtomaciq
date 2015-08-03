@@ -593,3 +593,28 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | autocall    | webdriver   | 120     |
+
+
+  @staging @calling @group @debug @id3065
+  Scenario Outline: Verify ignoring group call
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    When <Contact1> calls <ChatName> using <CallBackend>
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
+    When I silence the incoming call
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
+    Then I do not see the calling bar
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | autocall    | webdriver   | 120     |
