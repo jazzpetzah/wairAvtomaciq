@@ -13,4 +13,4 @@ defaultEmailListenerServiceHost=${defaultEmailListenerServiceHost}
 defaultEmailListenerServicePort=${defaultEmailListenerServicePort}
 makeScreenshots=${makeScreenshots}
 initNodeIp=${initNodeIp}
-opencvLibPath=${openCVLibPath}
+openCVLibPath=${openCVLibPath}

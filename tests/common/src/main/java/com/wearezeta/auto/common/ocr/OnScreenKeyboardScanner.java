@@ -47,12 +47,12 @@ public class OnScreenKeyboardScanner {
 		try {
 			System.load(CommonUtils
 					.getOpenCVLibPathFromConfig(OnScreenKeyboardScanner.class));
+			isOpenCVLibLoaded = true;
 		} catch (UnsatisfiedLinkError e) {
 			log.warn("Some OpenCV features will not be available. Please make sure you have all OpenCV libraries installed on your system and the path in config is correct!\n"
 					+ "You can run 'brew install homebrew/science/opencv --with-java' from the command line to install all the necessary components");
 			throw e;
 		}
-		isOpenCVLibLoaded = true;
 	}
 
 	public OnScreenKeyboardScanner() throws Exception {
@@ -70,7 +70,7 @@ public class OnScreenKeyboardScanner {
 			squaresFound = findScquaresInMat(image, thresholdProducer);
 			if (!squaresFound.isEmpty()) {
 				rows = detectRows(squaresFound);
-				if (!rows.isEmpty()) {
+				if (rows.size() >= 3) {
 					break;
 				}
 			}
