@@ -51,7 +51,7 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
  
-  @smoke @id201
+  @id201 @smoke 
   Scenario Outline: Change user picture with front camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
