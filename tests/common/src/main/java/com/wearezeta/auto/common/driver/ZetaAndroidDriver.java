@@ -38,7 +38,7 @@ import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.ocr.OnScreenKeyboard;
+import com.wearezeta.auto.common.ocr.OnScreenKeyboardScanner;
 
 import io.appium.java_client.android.AndroidDriver;
 
@@ -384,7 +384,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 	public void tapSendButton() throws Exception {
 		final File screenshot = getScreenshotInFile();
 		try {
-			final List<List<Rect>> keyboardButtons = OnScreenKeyboard
+			final List<List<Rect>> keyboardButtons = new OnScreenKeyboardScanner()
 					.getButtonCoordinates(screenshot.getCanonicalPath());
 			int sendButtonRow = -1;
 			if (CommonUtils.getIsTabletFromConfig(this.getClass())) {

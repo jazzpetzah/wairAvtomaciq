@@ -34,28 +34,37 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 /**
  * http://stackoverflow.com/questions/23289387/extract-words-in-rectangles-from-
  */
-public class OnScreenKeyboard {
-	private static final Logger log = ZetaLogger.getLog(OnScreenKeyboard.class
-			.getSimpleName());
+public class OnScreenKeyboardScanner {
+	private static final Logger log = ZetaLogger
+			.getLog(OnScreenKeyboardScanner.class.getSimpleName());
 
-	static {
+	private static boolean isOpenCVLibLoaded = false;
+
+	private static synchronized void loadOpenCVLibrary() throws Exception {
+		if (isOpenCVLibLoaded) {
+			return;
+		}
 		try {
 			System.load(CommonUtils
-					.getOpenCVLibPathFromConfig(OnScreenKeyboard.class));
+					.getOpenCVLibPathFromConfig(OnScreenKeyboardScanner.class));
 		} catch (UnsatisfiedLinkError e) {
 			log.warn("Some OpenCV features will not be available. Please make sure you have all OpenCV libraries installed on your system and the path in config is correct!\n"
 					+ "You can run 'brew install homebrew/science/opencv --with-java' from the command line to install all the necessary components");
-		} catch (Exception e) {
-			e.printStackTrace();
+			throw e;
 		}
+		isOpenCVLibLoaded = true;
 	}
 
-	public static List<List<Rect>> getButtonCoordinates(String screenshotPath) {
+	public OnScreenKeyboardScanner() throws Exception {
+		loadOpenCVLibrary();
+	}
+
+	public List<List<Rect>> getButtonCoordinates(String screenshotPath) {
 		final Mat image = Highgui.imread(screenshotPath);
 		List<MatOfPoint> squaresFound = new ArrayList<>();
 		final List<Function<Mat, Mat>> thresholdProducers = new ArrayList<>();
-		thresholdProducers.add(OnScreenKeyboard::tresholdImage2);
-		thresholdProducers.add(OnScreenKeyboard::tresholdImage1);
+		thresholdProducers.add(OnScreenKeyboardScanner::tresholdImage2);
+		thresholdProducers.add(OnScreenKeyboardScanner::tresholdImage1);
 		List<List<Rect>> rows = new ArrayList<>();
 		for (Function<Mat, Mat> thresholdProducer : thresholdProducers) {
 			squaresFound = findScquaresInMat(image, thresholdProducer);
