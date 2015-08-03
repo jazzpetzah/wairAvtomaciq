@@ -15,4 +15,5 @@ defaultEmail=${defaultEmail}
 deviceName=${deviceName}
 backendType=${backendType}
 pathToAddressBook=${Root}/${pathToAddressBook}
+perfReportPath=${perfReportPath}
 performanceDataFolder=${performanceDataFolder}

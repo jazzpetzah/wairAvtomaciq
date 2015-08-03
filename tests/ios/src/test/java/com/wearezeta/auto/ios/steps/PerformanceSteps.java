@@ -3,11 +3,13 @@ package com.wearezeta.auto.ios.steps;
 import java.io.File;
 
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
 import com.wearezeta.auto.ios.reporter.IDeviceSysLogListener;
+import com.wearezeta.auto.ios.reporter.IOSLogListener;
+import com.wearezeta.auto.ios.reporter.IOSPerfReportModel;
+import com.wearezeta.auto.ios.reporter.IOSPerformanceHelpers;
 import com.wearezeta.auto.ios.reporter.IOSPerformanceReportGenerator;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.common.CommonUtils;
@@ -232,20 +234,18 @@ public class PerformanceSteps {
 	/**
 	 * Generates iOS performance report
 	 * 
-	 * @step. ^I generate performance report$
+	 * @step. ^I generate performance report for (\\d+) users?$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I generate performance report for (\\d+) users$")
+	@Then("^I generate performance report for (\\d+) users?$")
 	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
-		IOSPerformanceReportGenerator.setUsersCount(usersCount);
-		listener.stopListeningLogcat();
-		log.debug(listener.getOutput());
-		Thread.sleep(5000);
-		exportTraceToCSV();
-		Assert.assertTrue(IOSPerformanceReportGenerator
-				.updateReportDataWithCurrentRun(listener.getOutput()));
-		Assert.assertTrue(IOSPerformanceReportGenerator.generateRunReport());
+		final IOSPerfReportModel dataModel = new IOSPerfReportModel();
+		dataModel.setContactsCount(usersCount - 1);
+		final String logOutput = IOSLogListener.getInstance().getStdOut();
+		dataModel.loadDataFromLog(logOutput);
+		IOSPerformanceHelpers.storeWidgetDataAsJSON(dataModel,
+				IOSCommonUtils.getPerfReportPathFromConfig(getClass()));
 	}
 
 	@Before("@performance")

@@ -156,4 +156,10 @@ public class IOSCommonUtils {
 			throws Exception {
 		return CommonUtils.getValueFromConfig(c, "performanceDataFolder");
 	}
+	
+	public static String getPerfReportPathFromConfig(Class<?> c)
+			throws Exception {
+		return CommonUtils.getValueFromConfig(c, "perfReportPath");
+	}
+
 }
