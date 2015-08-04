@@ -280,6 +280,16 @@ public class DialogPage extends IOSPage {
 		DriverUtils.swipeRight(this.getDriver(), conversationInput, 1000);
 	}
 
+	public void swipeLeftOptionsButtons() throws Exception {
+		int inputMiddle = conversationInput.getLocation().y + conversationInput.getSize().height/2;
+		int windowSize = dialogWindow.getSize().height;
+		int swipeLocation = inputMiddle*100/windowSize;
+		DriverUtils
+				.swipeLeftCoordinates(
+						getDriver(),
+						1000, swipeLocation);
+	}
+
 	public CameraRollPage pressAddPictureButton() throws Exception {
 		CameraRollPage page;
 		addPictureButton.click();
@@ -964,6 +974,50 @@ public class DialogPage extends IOSPage {
 						IOSLocators.DialogPage.xpathMyNameInDialog,
 						name.toUpperCase())));
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(), el);
+	}
+
+	public void clickPlusButton() {
+		plusButton.click();
+	}
+
+	public boolean isPlusButtonVisible() throws Exception {
+		return DriverUtils
+				.isElementPresentAndDisplayed(getDriver(), plusButton);
+	}
+
+	public boolean waitPlusButtonNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.name(IOSLocators.namePlusButton));
+	}
+
+	public boolean isOpenConversationDetailsButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				openConversationDetails);
+	}
+
+	public boolean isCallButtonVisible() throws Exception {
+		return DriverUtils
+				.isElementPresentAndDisplayed(getDriver(), callButton);
+	}
+
+	public boolean isCameraButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				addPictureButton);
+	}
+
+	public boolean isOpenScetchButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				openSketchButton);
+	}
+
+	public boolean isCloseButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				closeButton);
+	}
+
+	public void clickCloseButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), closeButton);
+		closeButton.click();
 	}
 
 }

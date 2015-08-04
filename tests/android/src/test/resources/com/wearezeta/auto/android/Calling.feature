@@ -1,5 +1,6 @@
 Feature: Calling
 
+  #CallBackend available values: 'autocall', 'webdriver'
   @id373 @calling_basic
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
@@ -30,7 +31,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | webdriver   |
+      | user1Name | user2Name | autocall    |
 
   @id1497 @calling_basic
   Scenario Outline: Receive call while Wire is running in the background
@@ -172,3 +173,130 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | webdriver   |
+
+  @idXXX
+  Scenario Outline: Calling bar buttons are clickable and change their states in a group call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    And I see dialog page
+    And I swipe on text input
+    And I press Call button
+    Then I see call overlay
+    When I remember the current state of <MuteBtnName> button
+    And I press Mute button
+    Then I see <MuteBtnName> button state is changed
+    When I remember the current state of <SpeakerBtnName> button
+    And I press Speaker button
+    Then I see <SpeakerBtnName> button state is changed
+    When I press Cancel call button
+    Then I do not see call overlay
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName    | SpeakerBtnName | MuteBtnName |
+      | user1Name | user2Name | user3Name | ChatForGroupCall | Speaker        | Mute        |
+
+  @idXXX
+  Scenario Outline: I can start group call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    And I see dialog page
+    And I swipe on text input
+    And I press Call button
+    Then I see call overlay
+    When <Contact1> calls <GroupChatName> using <CallBackend>
+    And <Contact2> calls <GroupChatName> using <CallBackend>
+    #alternative accept call method for webdriver backend
+    #And <Contact2> starts waiting instance using <CallBackend>
+    #And <Contact2> accepts next incoming call automatically
+    Then I see calling overlay Big bar
+    When <Contact1> stops all calls to <GroupChatName>
+    And <Contact2> stops all calls to <GroupChatName>
+
+    #And <Contact2> stops all waiting instances
+    Examples: 
+      | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
+      | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
+
+  @idXXX
+  Scenario Outline: I can join group call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    And <Contact1> calls <GroupChatName> using <CallBackend>
+    And <Contact2> calls <GroupChatName> using <CallBackend>
+    #alternative accept call method for webdriver backend
+    #And <Contact2> starts waiting instance using <CallBackend>
+    #And <Contact2> accepts next incoming call automatically
+    Then I see call overlay
+    And I answer the call from the overlay bar
+    Then I do not see join group call overlay
+    And I see calling overlay Big bar
+    When <Contact1> stops all calls to <GroupChatName>
+    And <Contact2> stops all calls to <GroupChatName>
+
+    #And <Contact2> stops all waiting instances
+    Examples: 
+      | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
+      | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
+
+  @idXXX
+  Scenario Outline: I can join group call after I silenced it
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    And <Contact1> calls <GroupChatName> using <CallBackend>
+    And <Contact2> calls <GroupChatName> using <CallBackend>
+    Then I see call overlay
+    When I click the ignore call button
+    Then I see "JOIN CALL" button
+    When I press join group call button
+    Then I do not see "JOIN CALL" button
+    And I see calling overlay Big bar
+    And <Contact1> stops all calls to <GroupChatName>
+    And <Contact2> stops all calls to <GroupChatName>
+    Then I do not see join group call overlay
+
+    Examples: 
+      | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
+      | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
+
+  @idXXX
+  Scenario Outline: I can join group call after I leave it
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    And <Contact1> calls <GroupChatName> using <CallBackend>
+    And <Contact2> calls <GroupChatName> using <CallBackend>
+    Then I see call overlay
+    When I answer the call from the overlay bar
+    Then I do not see join group call overlay
+    And I see calling overlay Big bar
+    When I press Cancel call button
+    Then I see "JOIN CALL" button
+    When I press join group call button
+    Then I do not see "JOIN CALL" button
+    And I see calling overlay Big bar
+    And <Contact1> stops all calls to <GroupChatName>
+    And <Contact2> stops all calls to <GroupChatName>
+    Then I do not see join group call overlay
+
+    Examples: 
+      | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
+      | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |

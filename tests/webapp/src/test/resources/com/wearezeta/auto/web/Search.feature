@@ -163,6 +163,8 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
+    # Wait for the backend to process the top people list
+    And I wait for 10 seconds
     And I open People Picker from Contact List
     And I wait till Top People list appears
     When I select <Contact1> from Top People
@@ -196,7 +198,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | Message1 |
 
-  @staging @id3207
+  @smoke @id3207
   Scenario Outline: Verify you can search by email
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
