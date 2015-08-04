@@ -181,6 +181,7 @@ public class PerformanceSteps {
 		try {
 			IOSLogListener.getInstance().start();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
