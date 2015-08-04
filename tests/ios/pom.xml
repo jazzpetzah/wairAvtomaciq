@@ -30,7 +30,6 @@
 		<perfDuration>1</perfDuration> <!-- Performance test duration, minutes -->
 		<perfUsersCount>11</perfUsersCount> <!-- The number of contacts for perf test -->
 		<backendType>staging</backendType>
-		<performanceDataFolder>/Project/iOS_Performance_Reports/</performanceDataFolder>
 		<perfReportPath>{user.home}/Documents/performance.json</perfReportPath>
 	</properties>
 

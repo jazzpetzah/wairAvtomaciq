@@ -35,11 +35,7 @@ public class AndroidPerfReportModel extends PerfReportModel {
 		try {
 			final ClientDeviceInfo deviceInfo = AndroidCommonUtils
 					.readDeviceInfo();
-			// FIXME: handle other network types
-			this.setNetworkType(deviceInfo.isWifiEnabled() ? NetworkType.WiFi
-					: NetworkType.FourG);
-			this.setDeviceName(deviceInfo.getDeviceName());
-			this.setDeviceOSVersion(deviceInfo.getOperatingSystemBuild());
+			loadValuesFromDeviceInfo(deviceInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());

@@ -17,6 +17,7 @@ public class IOSPerfReportModel extends PerfReportModel {
 
 	private static final String LOGIN_SUCCESS_REGEX = "Login success after ([\\d]+)";
 
+	// FIXME: replace with message without mistakes after developers will fix it
 	private static final String CONVERSATION_PAGE_VISIBLE_REGEX = "Convesation loaded afther ([\\d]+)";
 
 	private static final Logger log = ZetaLogger
@@ -24,7 +25,8 @@ public class IOSPerfReportModel extends PerfReportModel {
 
 	public IOSPerfReportModel() {
 		try {
-			this.setBuildNumber(IOSCommonUtils.readClientVersionFromPlist().getClientBuildNumber());
+			this.setBuildNumber(IOSCommonUtils.readClientVersionFromPlist()
+					.getClientBuildNumber());
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
@@ -32,11 +34,7 @@ public class IOSPerfReportModel extends PerfReportModel {
 
 		try {
 			final ClientDeviceInfo deviceInfo = IOSCommonUtils.readDeviceInfo();
-			// FIXME: handle other network types
-			this.setNetworkType(deviceInfo.isWifiEnabled() ? NetworkType.WiFi
-					: NetworkType.FourG);
-			this.setDeviceName(deviceInfo.getDeviceName());
-			this.setDeviceOSVersion(deviceInfo.getOperatingSystemBuild());
+			loadValuesFromDeviceInfo(deviceInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
@@ -50,8 +48,7 @@ public class IOSPerfReportModel extends PerfReportModel {
 		final List<Long> result = new ArrayList<>();
 		while (matcher.find()) {
 			try {
-				result.add(Long.parseLong(matcher
-						.group(1)));
+				result.add(Long.parseLong(matcher.group(1)));
 			} catch (NumberFormatException e) {
 				log.error(e);
 			}
@@ -65,8 +62,7 @@ public class IOSPerfReportModel extends PerfReportModel {
 		final Matcher matcher = pattern.matcher(output);
 		while (matcher.find()) {
 			try {
-				return Long.parseLong(matcher
-						.group(1));
+				return Long.parseLong(matcher.group(1));
 			} catch (NumberFormatException e) {
 				log.error(e);
 			}
