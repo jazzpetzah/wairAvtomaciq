@@ -186,4 +186,16 @@ public class CallPageSteps {
 		Assert.assertTrue("Mute call button is not selected",
 				getStartedCallPage().isMuteCallButtonSelected());
 	}
+	
+	/**
+	 * Verify that incoming group calling UI is visible
+	 * 
+	 * @step. ^I see incoming group calling message$
+	 * @throws Exception
+	 */
+	@When("^I see incoming group calling message$")
+	public void ISeeIncomingGroupCallingMessage() throws Exception {
+		Assert.assertTrue(getIncomingCallPage().isGroupCallingMessageVisible());
+	}
+	
 }
