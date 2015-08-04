@@ -38,7 +38,7 @@ public final class IOSLogListener {
 		String syslogCmd = "idevicesyslog";
 		
 		final String[] cmd = new String[] { "/bin/bash", "-c", syslogCmd };
-		listener = new AsyncProcess(cmd, true, true);
+		listener = new AsyncProcess(cmd, false, false);
 		listener.start();
 	}
 
