@@ -168,13 +168,12 @@ public class ContactListPage extends IOSPage {
 		return new DialogPage(this.getLazyDriver());
 	}
 
-	public String getFirstDialogName(String name) throws Exception {
+	public String getFirstDialogName() throws Exception {
 
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.xpath(String
-				.format(IOSLocators.xpathFirstInContactList, name)));
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(String.format(IOSLocators.xpathFirstInContactList)));
 		WebElement contact = this.getDriver().findElement(
-				By.xpath(String.format(IOSLocators.xpathFirstInContactList,
-						name)));
+				By.xpath(String.format(IOSLocators.xpathFirstInContactList)));
 		return contact.getText();
 	}
 
@@ -444,10 +443,10 @@ public class ContactListPage extends IOSPage {
 		} else if (deviceType.equals("iPhone 6") && !isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "verifyUnsilenceTestIphone6.png");
-		} else if (deviceType.equals("iPad Air") && isSilenced){
+		} else if (deviceType.equals("iPad Air") && isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "silenceiPadAir.png");
-		} else if (deviceType.equals("iPad Air") && !isSilenced){
+		} else if (deviceType.equals("iPad Air") && !isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "verifyUnsilenceTestiPadAir.png");
 		}
@@ -471,14 +470,14 @@ public class ContactListPage extends IOSPage {
 		if (deviceType.equals("iPhone 6 Plus")) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "unsilenceTestiPhone6plus.png");
-		} else if (deviceType.equals("iPhone 6")){
+		} else if (deviceType.equals("iPhone 6")) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "unsilenceTestiPhone6.png");
-		} else if (deviceType.equals("iPad Air")){
+		} else if (deviceType.equals("iPad Air")) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "unsilenceTestiPadAir.png");
 		}
-		
+
 		double score = ImageUtil.getOverlapScore(silencedConversation,
 				referenceImage, 0);
 		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {

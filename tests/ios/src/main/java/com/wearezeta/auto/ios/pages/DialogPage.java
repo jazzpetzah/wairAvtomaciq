@@ -966,4 +966,15 @@ public class DialogPage extends IOSPage {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(), el);
 	}
 
+	/**
+	 * Navigates back by swipe and initialize ContactListPage
+	 * 
+	 * @throws Exception
+	 */
+	public ContactListPage navigateBack(int timeMilliseconds) throws Exception {
+		swipeRight(timeMilliseconds,
+				DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 30);
+		return new ContactListPage(this.getLazyDriver());
+	}
+
 }
