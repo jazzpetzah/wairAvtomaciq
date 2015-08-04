@@ -177,6 +177,15 @@ public class ContactListPage extends IOSPage {
 		return contact.getText();
 	}
 
+	public String getDialogNameByIndex(int index) throws Exception {
+
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(String.format(IOSLocators.xpathContactListEntryWithIndex, index)));
+		WebElement contact = this.getDriver().findElement(
+				By.xpath(String.format(IOSLocators.xpathContactListEntryWithIndex, index)));
+		return contact.getText();
+	}
+
 	private WebElement findNameInContactList(String name) throws Exception {
 		Boolean flag = true;
 		WebElement contact = null;

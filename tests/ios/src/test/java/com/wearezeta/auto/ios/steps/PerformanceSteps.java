@@ -158,6 +158,8 @@ public class PerformanceSteps {
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
 				visitConversationWhenAvailable(destConvoName);
+				String secondConvoName = getContactListPage().getDialogNameByIndex(2);
+				visitConversationWhenAvailable(secondConvoName);
 			}
 		}, timeout);
 	}

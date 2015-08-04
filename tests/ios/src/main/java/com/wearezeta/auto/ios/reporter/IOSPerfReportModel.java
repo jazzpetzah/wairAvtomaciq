@@ -46,9 +46,11 @@ public class IOSPerfReportModel extends PerfReportModel {
 		final Pattern pattern = Pattern.compile(patternStr);
 		final Matcher matcher = pattern.matcher(output);
 		final List<Long> result = new ArrayList<>();
+		int i = 1;
 		while (matcher.find()) {
 			try {
-				result.add(Long.parseLong(matcher.group(1)));
+				if (i++ % 2 != 0)
+					result.add(Long.parseLong(matcher.group(1)));
 			} catch (NumberFormatException e) {
 				log.error(e);
 			}

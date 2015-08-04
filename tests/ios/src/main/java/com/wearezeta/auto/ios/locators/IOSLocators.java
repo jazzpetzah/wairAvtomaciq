@@ -112,6 +112,8 @@ public final class IOSLocators {
 
 	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
 	
+	public static final String xpathContactListEntryWithIndex = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[%d]/UIAStaticText[1]";
+
 	public static final String xpathConnectMessageLabel = "//UIAStaticText[starts-with(@name, 'CONNECTING TO')]";
 	
 	public static final String xpathUnicUserPickerSearchResult = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]";
