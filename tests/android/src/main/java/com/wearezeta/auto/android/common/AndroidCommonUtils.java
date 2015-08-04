@@ -14,8 +14,11 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.ScreenOrientation;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
@@ -391,6 +394,27 @@ public class AndroidCommonUtils extends CommonUtils {
 
 	public static void type(String message) throws Exception {
 		executeAdb("shell input text " + message);
+	}
+
+	public static Dimension getScreenSize(final ZetaAndroidDriver drv)
+			throws Exception {
+		final String output = getAdbOutput("shell dumpsys window");
+		final Pattern patt = Pattern.compile("init=(\\d+)x(\\d+)");
+		final Matcher m = patt.matcher(output);
+		if (m.find()) {
+			if (drv.getOrientation() == ScreenOrientation.LANDSCAPE) {
+				return new Dimension(Integer.parseInt(m.group(2)),
+						Integer.parseInt(m.group(1)));
+			} else {
+				return new Dimension(Integer.parseInt(m.group(1)),
+						Integer.parseInt(m.group(2)));
+			}
+		} else {
+			throw new AssertionError(
+					String.format(
+							"Failed to get device screen dimensions from ADB output\n%s",
+							output));
+		}
 	}
 
 	/**

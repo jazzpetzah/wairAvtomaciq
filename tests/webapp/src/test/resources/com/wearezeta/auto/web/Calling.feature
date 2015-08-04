@@ -570,7 +570,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | chrome      | 120     |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | firefox     | 120     |
 
-  @staging @calling @group @debug @id3057
+  @staging @calling @group @debug @id3057 @torun
   Scenario Outline: Verify impossibility to connect 6th person to the call
     Given My browser supports calling
     Given There are 6 users where <Name> is me
