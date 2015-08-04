@@ -68,6 +68,28 @@ public class ContactListPage extends WebPage {
 	@FindBy(css = WebAppLocators.ContactListPage.cssUnmuteButton)
 	private WebElement unmuteButton;
 
+	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveButton)
+	private WebElement leaveButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssBlockButton)
+	private WebElement blockButton;
+
+	// leave warning
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveModalCancelButton)
+	private WebElement leaveModalCancelButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveModalActionButton)
+	private WebElement leaveModalActionButton;
+
+	// block warning
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssBlockModalCancelButton)
+	private WebElement blockModalCancelButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssBlockModalActionButton)
+	private WebElement blockModalActionButton;
+
 	public ContactListPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -377,6 +399,16 @@ public class ContactListPage extends WebPage {
 		unmuteButton.click();
 	}
 
+	public void clickLeaveConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
+		leaveButton.click();
+	}
+
+	public void clickBlockConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
+		blockButton.click();
+	}
+
 	public ConversationPage unarchiveConversation(String conversationName)
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, true);
@@ -523,6 +555,24 @@ public class ContactListPage extends WebPage {
 			throw new PendingException(
 					"Webdriver does not support shortcuts for Mac browsers");
 		}
+	}
+
+	public boolean isLeaveWarningModalVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.cssSelector(WebAppLocators.ContactListPage.cssLeaveModal));
+	}
+
+	public void clickCancelOnLeaveWarning() {
+		leaveModalCancelButton.click();
+	}
+
+	public boolean isBlockWarningModalVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.cssSelector(WebAppLocators.ContactListPage.cssBlockModal));
+	}
+
+	public void clickCancelOnBlockWarning() {
+		blockModalCancelButton.click();
 	}
 
 }
