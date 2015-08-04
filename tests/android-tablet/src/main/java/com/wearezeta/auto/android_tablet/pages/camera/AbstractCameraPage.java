@@ -41,6 +41,8 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
 	}
 
 	public void tapTakePhotoButton() throws Exception {
+		// FIXME: Add valid timer for camera view initilization
+		Thread.sleep(5000);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idTakePhotoButton));
 		takePhotoButton.click();
