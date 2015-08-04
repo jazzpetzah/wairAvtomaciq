@@ -574,6 +574,8 @@ public final class IOSLocators {
 		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'IS CALLING')]";
 				
 		public static final String nameIgnoreCallButton = "IgnoreButton";
+		
+		public static final String xpathGroupCallingMessage = "//UIAStaticText[contains(@value, 'IS CALLING IN')]";
 	}
 	
 	public final class DialogPage {
