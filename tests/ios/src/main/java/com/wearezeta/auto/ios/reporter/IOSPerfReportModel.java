@@ -18,7 +18,7 @@ public class IOSPerfReportModel extends PerfReportModel {
 	private static final String LOGIN_SUCCESS_REGEX = "Login success after ([\\d]+)";
 
 	// FIXME: replace with message without mistakes after developers will fix it
-	private static final String CONVERSATION_PAGE_VISIBLE_REGEX = "Convesation loaded afther ([\\d]+)";
+	private static final String CONVERSATION_PAGE_VISIBLE_REGEX = "Conver?sation loaded afth?er ([\\d]+)";
 
 	private static final Logger log = ZetaLogger
 			.getLog(IOSPerfReportModel.class.getSimpleName());

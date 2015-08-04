@@ -12,7 +12,7 @@ public final class IOSLogListener {
 	private static IOSLogListener instance = null;
 
 	public static synchronized IOSLogListener getInstance() {
-		if (instance != null) {
+		if (instance == null) {
 			instance = new IOSLogListener();
 		}
 		return instance;
