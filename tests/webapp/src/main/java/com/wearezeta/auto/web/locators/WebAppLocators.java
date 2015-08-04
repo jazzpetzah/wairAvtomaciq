@@ -169,12 +169,12 @@ public final class WebAppLocators {
 
     public static final class ConversationPage {
 
-		// content
+        // content
         public static final String idConversation = "conversation";
 
         public static final String idMessageList = "message-list";
 
-		// messages (including images, text, missed call notifications, pings)
+        // messages (including images, text, missed call notifications, pings)
         public static final String cssMessage = "[data-uie-name='item-message']";
 
         public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
@@ -197,7 +197,7 @@ public final class WebAppLocators {
 
         public static final String cssPingMessage = ".pinged";
 
-		// special message identifier
+        // special message identifier
         public static final Function<String, String> xpathMessageEntryByText = text -> String
             .format("//*[@data-uie-name='item-message']//div[contains(@class, 'text') and text()='%s']",
                 text);
@@ -209,7 +209,7 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathEmbeddedYoutubeVideoById = text -> String
             .format("//iframe[contains(@src, '%s')]", text);
 
-		// input area (text input + buttons)
+        // input area (text input + buttons)
         // This is needed for IE workaround
         public static final String classNameShowParticipantsButton = "show-participants";
 
@@ -227,7 +227,7 @@ public final class WebAppLocators {
 
         public static final String idGIFButton = "show-extensions";
 
-		// bars (call bar)
+        // bars (call bar)
         public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";
 
         public static final Function<String, String> xpathCallingBarRootByName = text -> String
@@ -246,7 +246,7 @@ public final class WebAppLocators {
         public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot
             + "//*[contains(@class, 'icon-minus')]";
 
-		// image fullscreen
+        // image fullscreen
         public static final String cssModalDialog = ".modal-show";
 
         public static final String xpathXButton = "//div[contains(@class, 'detail-view-close-button')]//*[@data-uie-name='do-close-detail-view']";
@@ -422,6 +422,12 @@ public final class WebAppLocators {
         public static final String cssAnotherCallWarningModalClose = cssAnotherCallWarningModal
             + " .icon-close";
 
+        public static final String cssFullCallWarningModal = cssWarningModalRootDiv
+            + " .modal-call-voice-channel-full.modal-show";
+
+        public static final String cssFullCallWarningModalClose = cssFullCallWarningModal
+            + " .icon-close";
+
         public static final Function<String, String> xpathMissingWebRTCSupportWarningBarLinkByCaption = (
             name) -> String
             .format("%s//div[contains(@class, 'warning-bar-message')]//a[text()='%s']",
@@ -430,6 +436,11 @@ public final class WebAppLocators {
         public static final Function<String, String> xpathAnotherCallWarningModalButtonByCaption = (
             name) -> String
             .format("%s//div[contains(@class, 'modal-call-second') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
+                xpathWarningModalRootDiv, name);
+
+        public static final Function<String, String> xpathFullCallWarningModalButtonByCaption = (
+            name) -> String
+            .format("%s//div[contains(@class, 'modal-call-voice-channel-full') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
                 xpathWarningModalRootDiv, name);
     }
 
