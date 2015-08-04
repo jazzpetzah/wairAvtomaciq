@@ -108,11 +108,11 @@ public final class AndroidLogListener {
 
 	public static void writeDeviceLogsToConsole(
 			final AndroidLogListener listener) throws Exception {
-		log.debug("\n\n\n=== CAPTURED STDERR LOGS ===\n");
+		log.debug("=== CAPTURED STDERR LOGS ===\n");
 		System.out.println(listener.getStdErr().trim());
-		log.debug("\n=== END OF CAPTURED STDERR LOGS ===\n\n\n");
+		log.debug("=== END OF CAPTURED STDERR LOGS ===\n\n\n");
 
-		log.debug("\n\n\n=== CAPTURED STDOUT LOGS ===\n");
+		log.debug("=== CAPTURED STDOUT LOGS ===\n");
 		for (String line : listener.getStdOut().trim().split("\n")) {
 			for (String incPatt : stdoutIncludePatterns) {
 				if (line.contains(incPatt)) {
@@ -120,7 +120,7 @@ public final class AndroidLogListener {
 				}
 			}
 		}
-		log.debug("\n=== END OF CAPTURED STDOUT LOGS ===\n\n\n");
+		log.debug("=== END OF CAPTURED STDOUT LOGS ===\n\n\n");
 	}
 
 	public static void forceStopAll() {
