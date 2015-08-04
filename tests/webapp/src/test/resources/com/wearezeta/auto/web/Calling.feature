@@ -666,3 +666,23 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | autocall    | chrome      | 120     |
+
+  @calling @group @durational
+  Scenario Outline: Verify initiating group call several times
+    Given My browser supports calling
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1> starts waiting instance using <WaitBackend>
+    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact3> starts waiting instance using <WaitBackend>
+    Given <Contact4> starts waiting instance using <WaitBackend>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    Then I call 100 times
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 120     |
