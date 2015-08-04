@@ -53,6 +53,18 @@ public class ConversationViewPageSteps {
 	public void ITapShowToolsButton() throws Exception {
 		getConversationViewPage().tapShowInstrumentsButton();
 	}
+	
+	/**
+	 * Tap the Close Tools button on conversation view
+	 * 
+	 * @step. ^I tap Close Tools button on [Cc]onversation view page$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap Close Tools button on [Cc]onversation view page$")
+	public void ITapCloseToolsButton() throws Exception {
+		getConversationViewPage().tapCloseInstrumentsButton();
+	}
 
 	/**
 	 * Tap the Show Details button on conversation view

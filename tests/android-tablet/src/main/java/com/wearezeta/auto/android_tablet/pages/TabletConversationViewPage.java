@@ -29,6 +29,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	@FindBy(id = idShowToolsButton)
 	private WebElement showToolsButton;
 
+	private static final String idCloseToolsButton = "cursor_button_close";
+	@FindBy(id = idCloseToolsButton)
+	private WebElement closeToolsButton;
+
 	private static final String idCaret = "caret";
 	@FindBy(id = idCaret)
 	private WebElement caret;
@@ -122,5 +126,9 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	public void tapShowInstrumentsButton() throws InterruptedException {
 		showToolsButton.click();
+	}
+
+	public void tapCloseInstrumentsButton() {
+		closeToolsButton.click();
 	}
 }

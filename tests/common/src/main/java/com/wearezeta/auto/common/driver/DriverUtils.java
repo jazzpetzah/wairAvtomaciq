@@ -4,6 +4,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.NetworkConnectionSetting;
 import io.appium.java_client.android.AndroidDriver;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -70,25 +71,13 @@ public class DriverUtils {
 	public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver,
 			final WebElement element) {
 		try {
-			// log.info("Element size " + element.getSize().width + "x"
-			// + element.getSize().width);
-			// log.info("Element location " + element.getLocation().x + ":"
-			// + element.getLocation().y);
-			// log.info("Screen size " + driver
-			// .manage().window().getSize().width + ":"
-			// + driver
-			// .manage().window().getSize().height);
-			if (element.isDisplayed()
-					&& element.getLocation().x >= 0
-					&& element.getLocation().y >= 0
-					&& element.getLocation().x < driver.manage().window()
-							.getSize().width
-					&& element.getLocation().y < driver.manage().window()
-							.getSize().height) {
-				return true;
-			} else {
-				return false;
-			}
+			final Rectangle elementRect = new Rectangle(
+					element.getLocation().x, element.getLocation().y,
+					element.getSize().width, element.getSize().height);
+			final Rectangle screenRect = new Rectangle(0, 0, driver.manage()
+					.window().getSize().width, driver.manage().window()
+					.getSize().height);
+			return (element.isDisplayed() && elementRect.intersects(screenRect));
 		} catch (NoSuchElementException e) {
 			return false;
 		}

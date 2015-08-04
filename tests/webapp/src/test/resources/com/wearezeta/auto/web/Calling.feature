@@ -26,7 +26,7 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | webdriver   | 120     |
+      | user1Email | user1Password | user1Name | user2Name | pinged | userpicture_landscape.jpg | chrome      | 120     |
 
   @regression @calling @debug @id2080
   Scenario Outline: Verify I can get pinged by callee during call
@@ -50,8 +50,8 @@ Feature: Calling
     Then <Contact> stops all waiting instances
 
     Examples: 
-       | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
-       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again | webdriver   | 120     |
+      | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name | pinged | pinged again | chrome      | 120     |
 
   @staging @calling @debug @id1892
   Scenario Outline: Verify the corresponding conversations list item gets sticky on outgoing call
@@ -79,8 +79,8 @@ Feature: Calling
     Then <Contact1> stops all waiting instances
 
     Examples: 
-         | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
-         | user1Email | user1Password | user1Name | user2Name  | user3Name  | webdriver   | 120     |
+      | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | chrome      | 120     |
 
   @staging @calling @debug @id1891
   Scenario Outline: Verify the corresponding conversations list item gets sticky on incoming call
@@ -105,9 +105,9 @@ Feature: Calling
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
 
-       Examples: 
-       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
-       | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | 120     |
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | 120     |
 
   @smoke @calling @debug @id2237
   Scenario Outline: Verify I can call a user twice in a row
@@ -134,7 +134,7 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 120     |
 
   @regression @calling @id1866
   Scenario Outline: Verify I can call a user for more than 15 mins
@@ -185,7 +185,7 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | webdriver   | 120     |
+      | user1Email | user1Password | user1Name | user2Name | chrome      | 120     |
 
   @staging @calling @id1902
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
@@ -215,7 +215,7 @@ Feature: Calling
 
 	Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name  | webdriver   | 120     |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | chrome      | 120     |
 
   @smoke @calling @debug @id1839
   Scenario Outline: Verify I can not call in browsers without WebRTC
@@ -268,7 +268,7 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | webdriver   | 120     |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | chrome      | 120     |
 
   @regression @calling @debug @id2013
   Scenario Outline: Verify I get missed call notification when I call
@@ -393,7 +393,7 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | CallBackend | CallWaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name | autocall    | webdriver       | 120     |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | autocall    | chrome          | 120     |
 
   @regression @calling @debug @id1883
   Scenario Outline: Verify I can not see blocked contact trying to call me
@@ -504,7 +504,7 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name | user3Name    | webdriver   | 120     |
+      | user1Email | user1Password | user1Name | user2Name | user3Name    | chrome      | 120     |
 
   @staging @calling @group @debug @id3058
   Scenario Outline: Verify initiator is not a host for the call
@@ -532,33 +532,77 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | webdriver   | 120     |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | chrome      | 120     |
 
 
   @staging @calling @group @debug @id3064
   Scenario Outline: Verify accepting group call
     Given My browser supports calling
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Contact2> starts waiting instance using <WaitBackend>
     Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> starts waiting instance using <WaitBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> starts waiting instance using <WaitBackend>
+    Given <Contact4> accepts next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     When <Contact1> calls <ChatName> using <CallBackend>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     When I accept the incoming call
     And I see the calling bar from user <Contact1>
     And I see the calling bar from user <Contact2>
+    And I see the calling bar from user <Contact3>
+    And I see the calling bar from user <Contact4>
     When I end the call
     Then I do not see the calling bar
 
     Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | autocall    | webdriver   | 120     |
+      | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  | ChatName              | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | chrome      | 120     |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | firefox     | 120     |
+
+  @staging @calling @group @debug @id3231
+  Scenario Outline: Verify initiating group call
+    Given My browser supports calling
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1> starts waiting instance using <WaitBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> starts waiting instance using <WaitBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> starts waiting instance using <WaitBackend>
+    Given <Contact4> accepts next incoming call automatically
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    When I call
+    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar from user <Contact1>
+    And I see the calling bar from user <Contact2>
+    And I see the calling bar from user <Contact3>
+    And I see the calling bar from user <Contact4>
+    When I end the call
+    Then I do not see the calling bar
+
+    Examples: 
+       | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
+       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | chrome      | 120     |
+       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | firefox     | 120     |
 
 
   @staging @calling @group @debug @id3065
@@ -583,4 +627,4 @@ Feature: Calling
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | autocall    | webdriver   | 120     |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | autocall    | chrome      | 120     |

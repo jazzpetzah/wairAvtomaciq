@@ -45,8 +45,10 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
 				By.id(idTakePhotoButton));
 		takePhotoButton.click();
 		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idTakePhotoButton), 2)) {
+				By.id(idTakePhotoButton))) {
 			takePhotoButton.click();
+			assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+					By.id(idTakePhotoButton)) : "The Take Photo button is still visible after the second click";
 		}
 	}
 

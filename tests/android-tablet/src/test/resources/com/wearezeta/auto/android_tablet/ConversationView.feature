@@ -124,6 +124,7 @@ Feature: Conversation View
     And I see the conversation <Contact1> in my conversations list
     And I tap the conversation <Contact1>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Single user popover
     When I tap Add People button on Single user popover
@@ -150,6 +151,7 @@ Feature: Conversation View
     And I see the conversation <Contact1> in my conversations list
     And I tap the conversation <Contact1>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Single user popover
     When I tap Add People button on Single user popover
@@ -216,6 +218,7 @@ Feature: Conversation View
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     When I tap Show Details button on conversation view page
     Then I see the Single user popover
     And I see the user name <Contact> on Single user popover
@@ -225,8 +228,11 @@ Feature: Conversation View
     Then I see the Single user popover
     When I tap in the center of Single user popover
     Then I see the Single user popover
-    When I tap the text input in the conversation view
-    Then I do not see the Single user popover
+    When I tap Close Tools button on conversation view page
+    And I tap the text input in the conversation view
+    And I tap Show Tools button on conversation view page
+    When I tap Show Details button on conversation view page
+    Then I see the Single user popover
 
     Examples: 
       | Name      | Contact   | Orientation |
@@ -244,18 +250,17 @@ Feature: Conversation View
     And I tap the conversation <Contact>
     And I see the conversation view
     When I tap the text input in the conversation view
-    And I tap IsTyping avatar in the conversation view
+    And I tap Show Details button on conversation view page
     Then I do not see the Single user popover
-    When I tap Show Details button on conversation view page
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
     Then I see the Single user popover
     When I rotate UI to landscape
     Then I do not see the Single user popover
-    When I tap Show Details button on conversation view page
+    When I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
     Then I see the Single user popover
     When I rotate UI to portrait
-    Then I do not see the Single user popover
-    When I tap the text input in the conversation view
-    And I tap IsTyping avatar in the conversation view
     Then I do not see the Single user popover
 
     Examples: 
