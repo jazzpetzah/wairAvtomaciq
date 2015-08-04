@@ -49,7 +49,7 @@ public class IOSCommonUtils {
 		String deviceName = (String) IOSPage
 				.executeScript("UIATarget.localTarget().model();");
 		String gsmNetworkType = "";
-		Boolean isWifiEnabled = null;
+		Boolean isWifiEnabled = true;
 
 		return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType,
 				isWifiEnabled);
