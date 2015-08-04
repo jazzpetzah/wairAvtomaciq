@@ -74,6 +74,9 @@ public class ContactListPage extends WebPage {
 	@FindBy(css = WebAppLocators.ContactListPage.cssBlockButton)
 	private WebElement blockButton;
 
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteButton)
+	private WebElement deleteButton;
+
 	// leave warning
 
 	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveModalCancelButton)
@@ -89,6 +92,14 @@ public class ContactListPage extends WebPage {
 
 	@FindBy(css = WebAppLocators.ContactListPage.cssBlockModalActionButton)
 	private WebElement blockModalActionButton;
+
+	// delete warning
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalCancelButton)
+	private WebElement deleteModalCancelButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalActionButton)
+	private WebElement deleteModalActionButton;
 
 	public ContactListPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -575,4 +586,17 @@ public class ContactListPage extends WebPage {
 		blockModalCancelButton.click();
 	}
 
+	public void clickDeleteConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
+		deleteButton.click();
+	}
+
+	public boolean isDeleteWarningModalVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.cssSelector(WebAppLocators.ContactListPage.cssDeleteModal));
+	}
+
+	public void clickDeleteOnDeleteWarning() {
+		deleteModalActionButton.click();
+	}
 }

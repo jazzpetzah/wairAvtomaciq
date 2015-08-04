@@ -58,7 +58,7 @@ public final class WebAppLocators {
 
 		public static final String cssUnmuteButton = "[data-uie-name='do-notify']";
 
-		public static final String cssDeleteButton = "[data-uie-name='do-delete']";
+		public static final String cssDeleteButton = "[data-uie-name='do-clear']";
 
 		public static final String cssBlockButton = "[data-uie-name='do-block']";
 
@@ -135,6 +135,11 @@ public final class WebAppLocators {
 		public static final String cssBlockModal = ".modal-block";
 		public static final String cssBlockModalCancelButton = ".modal-block .modal-close.button-inverted";
 		public static final String cssBlockModalActionButton = ".modal-block .modal-close.modal-action";
+
+		// delete warning
+		public static final String cssDeleteModal = ".modal-clear";
+		public static final String cssDeleteModalCancelButton = ".modal-delete .modal-close.button-inverted";
+		public static final String cssDeleteModalActionButton = ".modal-delete .modal-close.modal-action";
 	}
 
 	public static final class SettingsPage {

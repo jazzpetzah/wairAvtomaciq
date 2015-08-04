@@ -119,5 +119,24 @@ Feature: Conversation List
     Then I see Contact list with name <ChatName>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | Leave1:1Chat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
+
+  @staging @id3218 @torun
+  Scenario Outline: Verify I can delete a group conversation from conversation list
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    When I click on options button for conversation <ChatName>
+    And I click delete in the options popover
+    Then I see a delete warning modal
+    And I click delete button in the delete warning
+    Then I do not see Contact list with name <ChatName>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat |
