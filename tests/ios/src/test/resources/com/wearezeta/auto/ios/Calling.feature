@@ -250,3 +250,20 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | webdriver   | autocall     | 120     |
+  
+  @torun @staging @id2682
+  Scenario Outline: Verify accepting group call in foreground
+  	Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
+    Given <Contact1> starts waiting instance using <CallBackend>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And <Contact1> calls me using <CallBackend2>
+    
+    Examples: 
+      | Name      | Contact1    | Contact2    | Contact3  | GroupChatName | CallBackend | CallBackend2 |
+      | user1Name | user2Name   | user3Name   | user4Name | GROUPCALL     | webdriver   | autocall 	   |
+  	
