@@ -1,6 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps;
+import com.wearezeta.auto.common.CommonCallingSteps2;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -8,6 +9,7 @@ import cucumber.api.java.en.When;
 public class CallingSteps {
 	private final CommonCallingSteps commonCallingSteps = CommonCallingSteps
 			.getInstance();
+	private final CommonCallingSteps2 commonCallingSteps2 = CommonCallingSteps2.getInstance();
 
 	/**
 	 * Make call to a specific user. You may instantiate more than one incoming
@@ -26,8 +28,9 @@ public class CallingSteps {
 	@When("(.*) calls (.*) using (\\w+)$")
 	public void UserXCallsToUserYUsingCallBackend(String userFromNameAlias,
 			String userToNameAlias, String callBackend) throws Exception {
-		commonCallingSteps.UserXCallsToUserYUsingCallBackend(userFromNameAlias,
-				userToNameAlias, callBackend);
+//		commonCallingSteps.UserXCallsToUserYUsingCallBackend(userFromNameAlias,
+//				userToNameAlias, callBackend);
+		commonCallingSteps2.callToConversation(userFromNameAlias, userToNameAlias, callBackend);
 	}
 
 	/**
@@ -98,8 +101,9 @@ public class CallingSteps {
 	@Then("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")
 	public void UserXVerifesCallStatusToUserY(String userFromNameAlias,
 			String expectedStatuses, int timeoutSeconds) throws Exception {
-		commonCallingSteps.UserXVerifesWaitingInstanceStatus(userFromNameAlias,
-				expectedStatuses, timeoutSeconds);
+//		commonCallingSteps.UserXVerifesWaitingInstanceStatus(userFromNameAlias,
+//				expectedStatuses, timeoutSeconds);
+		commonCallingSteps2.verifyAcceptingCallStatus(userFromNameAlias, expectedStatuses, timeoutSeconds);
 	}
 
 	/**
@@ -117,8 +121,9 @@ public class CallingSteps {
 	@When("(.*) starts? waiting instance using (\\w+)$")
 	public void UserXStartsWaitingInstance(String userAsNameAlias,
 			String callingServiceBackend) throws Exception {
-		commonCallingSteps.UserXStartsWaitingInstance(userAsNameAlias,
-				callingServiceBackend);
+//		commonCallingSteps.UserXStartsWaitingInstance(userAsNameAlias,
+//				callingServiceBackend);
+		commonCallingSteps2.startWaitingInstance(userAsNameAlias, callingServiceBackend);
 	}
 
 	/**
@@ -135,8 +140,9 @@ public class CallingSteps {
 	@When("(.*) accepts? next incoming call automatically$")
 	public void UserXAcceptsNextIncomingCallAutomatically(String userAsNameAlias)
 			throws Exception {
-		commonCallingSteps
-				.UserXAcceptsNextIncomingCallAutomatically(userAsNameAlias);
+//		commonCallingSteps
+//				.UserXAcceptsNextIncomingCallAutomatically(userAsNameAlias);
+		commonCallingSteps2.acceptNextCall(userAsNameAlias);
 	}
 
 	/**
