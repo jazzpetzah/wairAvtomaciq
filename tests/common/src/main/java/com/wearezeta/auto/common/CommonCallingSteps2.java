@@ -17,6 +17,7 @@ import com.wearezeta.auto.common.calling2.v1.model.InstanceType;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -50,6 +51,20 @@ public final class CommonCallingSteps2 {
         this.client = new CallingServiceClient();
         this.usrMgr = ClientUsersManager.getInstance();
         this.executor = Executors.newCachedThreadPool();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                executor.shutdown();
+                try {
+                    executor.awaitTermination(5, TimeUnit.SECONDS);
+                } catch (InterruptedException ex) {
+                    log.log(null, ex);
+                }
+                if (!executor.isTerminated()) {
+                    log.warn("Could not finish all async calling cleanup tasks! Forcing executor shutdown ...");
+                    executor.shutdownNow();
+                }
+            }
+        });
     }
 
     public static class CallNotFoundException extends Exception {
@@ -76,8 +91,8 @@ public final class CommonCallingSteps2 {
     public void callToConversation(String callerName,
         String conversationName, String instanceType) throws Exception {
         ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
-        final String convId = BackendAPIWrappers.getConversationIdByName(
-            userAs, conversationName);
+
+        final String convId = getConversationId(userAs, conversationName);
 
         final Instance instance = client.startInstance(userAs,
             instanceTypeFix(instanceType));
@@ -105,8 +120,7 @@ public final class CommonCallingSteps2 {
         String conversationName, String expectedStatuses, int secondsTimeout)
         throws Exception {
         ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
-        final String convId = BackendAPIWrappers.getConversationIdByName(
-            userAs, conversationName);
+        final String convId = getConversationId(userAs, conversationName);
         waitForExpectedCallStatuses(getInstanceByParticipant(userAs),
             getCallByParticipantAndConversationId(userAs, convId),
             callStatusesListToObject(expectedStatuses), secondsTimeout);
@@ -145,8 +159,7 @@ public final class CommonCallingSteps2 {
     public void stopCall(String callerName,
         String conversationName) throws Exception {
         ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
-        final String convId = BackendAPIWrappers.getConversationIdByName(
-            userAs, conversationName);
+        final String convId = getConversationId(userAs, conversationName);
         client.stopCall(getInstanceByParticipant(userAs),
             getCallByParticipantAndConversationId(userAs, convId));
     }
@@ -225,12 +238,6 @@ public final class CommonCallingSteps2 {
                     log.warn(String.format("Could not properly shut down instance '%s'", instance.getId()), ex);
                 }
             }, executor);
-        }
-        executor.shutdown();
-        executor.awaitTermination(5, TimeUnit.SECONDS);
-        if (!executor.isShutdown()) {
-            log.warn("Could not finish all async calling cleanup tasks! Forcing executor shutdown ...");
-            executor.shutdownNow();
         }
         instanceMapping.clear();
     }
@@ -347,5 +354,20 @@ public final class CommonCallingSteps2 {
             log.warn("Please use CHROME or FIREFOX instead of WEBDRIVER as instance type for calling! WEBDRIVER will be removed in future versions.");
         }
         return InstanceType.valueOf(instanceType);
+    }
+
+    private String getConversationId(ClientUser userAs, String name) throws NoSuchUserException, Exception {
+        String convId;
+        try {
+            // get conv id from pure conv name
+            convId = BackendAPIWrappers.getConversationIdByName(
+                userAs, name);
+        } catch (Exception e) {
+            // get conv id from username
+            final ClientUser convUser = usrMgr.findUserByNameOrNameAlias(name);
+            convId = BackendAPIWrappers.getConversationIdByName(
+                userAs, convUser.getName());
+        }
+        return convId;
     }
 }

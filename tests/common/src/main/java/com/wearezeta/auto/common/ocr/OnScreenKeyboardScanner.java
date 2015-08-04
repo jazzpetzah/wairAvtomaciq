@@ -78,7 +78,7 @@ public class OnScreenKeyboardScanner {
 		if (rows.isEmpty()) {
 			throw new RuntimeException(
 					"The current OCR algorithm cannot find any buttons.\n"
-							+ "Please try to set the on-screen keyboard look and feel to Google Keyboard->'Holo White' "
+							+ "Please try to set the on-screen keyboard look and feel to Google Keyboard->'Holo Blue' "
 							+ "and make sure the keyboard is visible on the screenshot.");
 		}
 		return rows;
