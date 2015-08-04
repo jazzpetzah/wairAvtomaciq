@@ -279,7 +279,7 @@ public class ContactListPage extends AndroidPage {
 	}
 
 	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
-	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = 45;
+	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 2;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
 		CommonSteps.getInstance().WaitForTime(1);

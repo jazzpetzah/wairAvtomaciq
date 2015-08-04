@@ -81,6 +81,12 @@ public final class CommonSteps {
 		}
 		BackendAPIWrappers.createGroupConversation(chatOwner, participants,
 				chatName);
+		// Set nameAlias for the group
+		// Required for group calling tests
+		ClientUser groupUser = new ClientUser();
+		groupUser.setName(chatName);
+		groupUser.addNameAlias(chatName);
+		usrMgr.appendCustomUser(groupUser);
 	}
 
 	private static final String OTHER_USERS_ALIAS = "all other";
@@ -125,10 +131,11 @@ public final class CommonSteps {
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
-	public void ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(Platform currentPlatform, int count,
-			String myNameAlias) throws Exception {
-		usrMgr.createUsersOnBackend(count, RegistrationStrategy
-				.ByPhoneNumberOnly);
+	public void ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
+			Platform currentPlatform, int count, String myNameAlias)
+			throws Exception {
+		usrMgr.createUsersOnBackend(count,
+				RegistrationStrategy.ByPhoneNumberOnly);
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
@@ -258,13 +265,14 @@ public final class CommonSteps {
 
 		BackendAPIWrappers.updateConvMutedState(user, mutedUser, true);
 	}
-	
+
 	public void MuteConversationWithGroup(String usersToNameAliases,
 			String muteConversationWithGroup) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
-		BackendAPIWrappers.updateGroupConvMutedState(user, muteConversationWithGroup, true);
+		BackendAPIWrappers.updateGroupConvMutedState(user,
+				muteConversationWithGroup, true);
 	}
-	
+
 	public void UnarchiveConversationWithUser(String usersToNameAliases,
 			String archiveConversationWithUser) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);

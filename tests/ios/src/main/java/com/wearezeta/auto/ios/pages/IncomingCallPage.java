@@ -17,7 +17,7 @@ public class IncomingCallPage extends CallPage {
 	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameAcceptCallButton)
 	private WebElement acceptCallButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.nameEndCallButton)
+	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameEndCallButton)
 	private WebElement endCallButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathCallingMessage)
@@ -40,7 +40,7 @@ public class IncomingCallPage extends CallPage {
 	}
 
 	public boolean isCallingMessageVisible(String contact) throws Exception {
-		return getDriver().findElementByXPath(
+		return getDriver().findElementByName(
 				String.format(
 						IOSLocators.IncomingCallPage.nameCallingMessageUser,
 						contact)).isDisplayed();

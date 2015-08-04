@@ -14,6 +14,10 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 public class CallingOverlayPage extends AndroidPage {
 	private static final String idCallingOverlayContainer = "coc__calling__overlay_container";
 
+	private static final String idGroupCallingJoinOverlayContainer = "ll__group_call__not_joined_container";
+	@FindBy(id = idGroupCallingJoinOverlayContainer)
+	private WebElement joinGroupCallButton;
+
 	private static final String idOngoingCallMicrobar = "v__calling__top_bar";
 
 	private static final String idOngoingCallMinibar = "coc__calling__overlay_container";
@@ -25,6 +29,11 @@ public class CallingOverlayPage extends AndroidPage {
 	private static final String idAcceptButton = "gtv__calling__accept";
 	@FindBy(id = idAcceptButton)
 	private WebElement acceptButton;
+
+	private static final String idJoinButton = "ttv__group_call__not_joined_text";
+	private static final Function<String, String> xpathJoinButton = name -> String
+			.format("//*[@id='%s' and contains(@value, '%s')]", idJoinButton,
+					name.toUpperCase());
 
 	private static final String idCallMessage = "ttv__calling__message";
 
@@ -121,6 +130,37 @@ public class CallingOverlayPage extends AndroidPage {
 	public boolean callingOverlayIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCallingOverlayContainer));
+	}
+
+	public boolean waitUntilGroupCallJoinVisible() throws Exception {
+		final By locator = By.id(idGroupCallingJoinOverlayContainer);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
+				VISIBILITY_TIMEOUT_SECONDS);
+	}
+
+	public boolean waitUntilGroupCallJoinNotVisible() throws Exception {
+		final By locator = By.id(idGroupCallingJoinOverlayContainer);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
+				VISIBILITY_TIMEOUT_SECONDS);
+	}
+
+	public boolean waitUntilJoinGroupCallButtonVisible(String name)
+			throws Exception {
+		final By locator = By.xpath(xpathJoinButton.apply(name));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, VISIBILITY_TIMEOUT_SECONDS);
+	}
+	
+	public boolean waitUntilJoinGroupCallButtonNotVisible(String name)
+			throws Exception {
+		final By locator = By.xpath(xpathJoinButton.apply(name));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, VISIBILITY_TIMEOUT_SECONDS);
+	}
+	
+	public DialogPage joinGroupCall() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idGroupCallingJoinOverlayContainer)) : "Accept button is not visible";
+		joinGroupCallButton.click();
+		return new DialogPage(getLazyDriver());
 	}
 
 	public boolean ongoingCallMicrobarIsVisible() throws Exception {
