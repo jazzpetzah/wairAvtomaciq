@@ -431,7 +431,6 @@ Feature: Connect
     Then I see Cancel request confirmation popover
     When I click Yes button on Cancel request confirmation popover
     Then I do not see Pending Outgoing Connection popover
-    When I close People Picker
     Then I do not see Contact list with name <Contact1>
     When I open self profile
     And I click gear button on self profile page
