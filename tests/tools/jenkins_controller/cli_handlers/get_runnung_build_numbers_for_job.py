@@ -20,7 +20,8 @@ class GetRunningBuildNumbersForJob(CliHandlerBase):
     def _invoke(self):
         parser = self._get_parser()
         args = parser.parse_args()
-        job = self._jenkins.get_job(args.name)
+        job_name = self._normalize_job_name(args.name)
+        job = self._jenkins.get_job(job_name)
         self._wait_while_job_in_queue(job, args.queue_timeout)
         running_build_numbers = []
         try:

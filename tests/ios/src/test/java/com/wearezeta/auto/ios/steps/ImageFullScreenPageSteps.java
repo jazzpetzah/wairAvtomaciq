@@ -1,7 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
 import java.awt.image.BufferedImage;
-
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.IOSConstants;
@@ -25,7 +24,7 @@ public class ImageFullScreenPageSteps {
 				.getPage(ImageFullScreenPage.class);
 	}
 
-	public static final double FULLSCREEN_SCORE = 0.35;
+	public static final double FULLSCREEN_SCORE = 0.7;
 
 	BufferedImage referenceImage;
 
@@ -117,7 +116,30 @@ public class ImageFullScreenPageSteps {
 		referenceImage = getImageFullScreenPage().takeScreenshot().orElseThrow(
 				AssertionError::new);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + "rotatedFullscreenImage.png");
+				.getImagesPath() + "userpicture_ios_check_landscape.png");
+		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+		System.out.print("SCORE: " + score);
+		Assert.assertTrue(
+				"Overlap between two images has no enough score. Expected >= "
+						+ FULLSCREEN_SCORE + " , current = " + score,
+				score >= FULLSCREEN_SCORE);
+	}
+	
+	/**
+	 * When the image is shown in fullscreen mode, the device gets rotated
+	 * 
+	 * @step. I see image rotated to portrait in fullscreen mode
+	 * @throws Exception
+	 */
+	@Then("^I see image rotated to portrait in fullscreen mode$")
+	public void ISeeImageRotatedPortraitInFullscreenMode() throws Exception {
+		Thread.sleep(2000);
+		referenceImage = getImageFullScreenPage().takeScreenshot().orElseThrow(
+				AssertionError::new);
+
+		BufferedImage templateImage = ImageUtil.readImageFromFile(IOSPage
+				.getImagesPath() + "userpicture_ipad_check.png");
 		double score = ImageUtil.getOverlapScore(referenceImage, templateImage,
 				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 		System.out.print("SCORE: " + score);

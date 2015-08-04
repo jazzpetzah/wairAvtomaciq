@@ -19,6 +19,23 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
+  @staging @id908
+  Scenario Outline: Verify starting outgoing call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I press call button
+    Then I see mute call, end call and speakers buttons
+    And I see calling to contact <Contact> message
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
   @regression @id2067 @id909
   Scenario Outline: Verify starting and ending outgoing call by same person
     Given There are 2 users where <Name> is me
