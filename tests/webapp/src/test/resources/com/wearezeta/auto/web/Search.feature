@@ -163,6 +163,8 @@ Feature: Search
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
+    # Wait for the backend to process the top people list
+    And I wait for 10 seconds
     And I open People Picker from Contact List
     And I wait till Top People list appears
     When I select <Contact1> from Top People
