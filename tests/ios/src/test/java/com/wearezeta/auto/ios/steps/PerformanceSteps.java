@@ -29,7 +29,7 @@ public class PerformanceSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private static final int DEFAULT_SWIPE_TIME = 500;
-	private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
+	private static final int MAX_MSGS_IN_CONVO_WINDOW = 50;
 
 	private DialogPage getDialogPage() throws Exception {
 		return (DialogPage) pagesCollection.getPage(DialogPage.class);
@@ -47,7 +47,7 @@ public class PerformanceSteps {
 	 * @param msgsCount
 	 *            count of messages to send. This should be greater or equal to
 	 *            the maximum count of messages in convo window (which is
-	 *            currently equal to 100)
+	 *            currently equal to 50 for iOS)
 	 * @param asContact
 	 *            from which contact should we send these messages
 	 * @throws Exception

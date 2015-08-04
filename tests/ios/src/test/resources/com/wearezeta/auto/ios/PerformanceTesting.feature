@@ -11,5 +11,5 @@ Feature: Performance Tests
     Then I generate performance report for <UsersNumber> users
 
     Examples: 
-      | Name      | UsersNumber       | UserNamePrefix    | Time            | MsgsCount | Sender        |
-      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 101       | user2Name     |
+      | Name      | UsersNumber       | UserNamePrefix    | Time            | MsgsCount | Sender    |
+      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 51        | user2Name |
