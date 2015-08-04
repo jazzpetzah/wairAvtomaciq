@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.steps;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
 
@@ -9,6 +10,7 @@ import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.reporter.IOSPerfReportModel;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.performance.PerformanceHelpers;
@@ -22,6 +24,8 @@ import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
 
+	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
+	
 	private final IOSPagesCollection pagesCollection = IOSPagesCollection
 			.getInstance();
 	private final PerformanceCommon perfCommon = PerformanceCommon
@@ -107,6 +111,7 @@ public class PerformanceSteps {
 		} while (!getDialogPage().isCursorInputVisible() && ntry <= maxRetries);
 		assert getDialogPage().isCursorInputVisible() : "The conversation has not been opened after "
 				+ maxRetries + " retries";
+		log.debug("Conversation page with contact " + destConvoName + " opened.");
 		getDialogPage().tapOnCursorInput();
 		getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 	}
