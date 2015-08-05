@@ -654,6 +654,8 @@ public final class IOSLocators {
 		
 		public static final String nameGiphyTitleButton = "titleButton";
 		
+		public static final String xpathGithyImage = "//UIAButton[@name='rejectButton']/preceding-sibling::UIAImage[1]";
+		
 		public static final String nameGiphyCancelRequestButton = "rejectButton";
 		
 		public static final String nameGiphySendButton = "acceptButton";
