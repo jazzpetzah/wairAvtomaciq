@@ -68,7 +68,7 @@ public class PerformanceSteps {
 	}
 
 	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
-		final int maxTries = 3;
+		final int maxTries = 7;
 		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		do {
