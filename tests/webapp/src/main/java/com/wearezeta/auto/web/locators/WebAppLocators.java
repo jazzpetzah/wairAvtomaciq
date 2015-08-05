@@ -138,8 +138,8 @@ public final class WebAppLocators {
 
 		// delete warning
 		public static final String cssDeleteModal = ".modal-clear";
-		public static final String cssDeleteModalCancelButton = ".modal-delete .modal-close.button-inverted";
-		public static final String cssDeleteModalActionButton = ".modal-delete .modal-close.modal-action";
+		public static final String cssDeleteModalCancelButton = ".modal-clear .modal-close.button-inverted";
+		public static final String cssDeleteModalActionButton = ".modal-clear .modal-close.modal-action";
 	}
 
 	public static final class SettingsPage {
