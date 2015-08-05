@@ -147,6 +147,9 @@ public class PerformanceSteps {
 			}
 			firstConvoName = getContactListPage().getFirstDialogName();
 			ntry++;
+			if (!destConvoName.equals(firstConvoName)) {
+				IReceiveXMessagesFromContact(1, fromContact);
+			}
 		} while (ntry <= 3);
 		assert destConvoName.equals(firstConvoName) : String
 				.format("The very first conversation name '%s' is not the same as expected one ('%s')",
