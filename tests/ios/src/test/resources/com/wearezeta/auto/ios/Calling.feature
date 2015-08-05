@@ -209,7 +209,7 @@ Feature: Calling
     And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
-    #And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I close the app for 5 seconds
     And I see mute call, end call and speakers buttons
     And I end started call
@@ -266,7 +266,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | webdriver   | autocall     | 30      |
 
   @staging @id2682
   Scenario Outline: Verify accepting group call in foreground
