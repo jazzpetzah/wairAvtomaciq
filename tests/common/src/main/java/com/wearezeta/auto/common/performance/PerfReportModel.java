@@ -7,6 +7,8 @@ import java.util.NoSuchElementException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.wearezeta.auto.common.misc.ClientDeviceInfo;
+
 public abstract class PerfReportModel {
 	private static final String UNKNOWN_VALUE = "Unknown";
 
@@ -154,5 +156,13 @@ public abstract class PerfReportModel {
 		for (int i = 0; i < convoLoadTimes.length(); i++) {
 			this.addConvoStartupTime(convoLoadTimes.getLong(i));
 		}
+	}
+	
+	protected void loadValuesFromDeviceInfo(ClientDeviceInfo deviceInfo) {
+		// FIXME: handle other network types
+		this.setNetworkType(deviceInfo.isWifiEnabled() ? NetworkType.WiFi
+				: NetworkType.FourG);
+		this.setDeviceName(deviceInfo.getDeviceName());
+		this.setDeviceOSVersion(deviceInfo.getOperatingSystemBuild());
 	}
 }

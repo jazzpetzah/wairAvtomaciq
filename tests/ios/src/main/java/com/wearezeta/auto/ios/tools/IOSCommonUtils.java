@@ -49,7 +49,7 @@ public class IOSCommonUtils {
 		String deviceName = (String) IOSPage
 				.executeScript("UIATarget.localTarget().model();");
 		String gsmNetworkType = "";
-		Boolean isWifiEnabled = null;
+		Boolean isWifiEnabled = true;
 
 		return new ClientDeviceInfo(os, osBuild, deviceName, gsmNetworkType,
 				isWifiEnabled);
@@ -152,8 +152,9 @@ public class IOSCommonUtils {
 		log.debug(collectedLogEntries);
 	}
 
-	public static String getPerformanceDataFolderFromConfig(Class<?> c)
+	public static String getPerfReportPathFromConfig(Class<?> c)
 			throws Exception {
-		return CommonUtils.getValueFromConfig(c, "performanceDataFolder");
+		return CommonUtils.getValueFromConfig(c, "perfReportPath");
 	}
+
 }

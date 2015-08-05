@@ -1,14 +1,14 @@
-package com.wearezeta.auto.android.common.reporter;
+package com.wearezeta.auto.common.performance;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 
-public class AndroidPerformanceHelpers {
+public class PerformanceHelpers {
 
 	public static void storeWidgetDataAsJSON(
-			final AndroidPerfReportModel model, final String path)
+			final PerfReportModel model, final String path)
 			throws IOException {
 		FileUtils.writeStringToFile(new File(path), model.asJSON().toString(4));
 	}
