@@ -1072,3 +1072,34 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @staging @id2961
+  Scenario Outline: Verify preview is opened after tapping on GIF button
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type tag for giphy preview <GiphyTag> and open preview overlay
+    And I see giphy preview page
+
+    Examples: 
+      | Name      | Contact   | GiphyTag |
+      | user1Name | user2Name | Wow    |
+
+  @staging @id3249
+  Scenario Outline: Verify preview is opened after tapping on GIF button
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type tag for giphy preview <GiphyTag> and open preview overlay
+    And I see giphy preview page
+
+    Examples: 
+      | Name      | Contact   | GiphyTag |
+      | user1Name | user2Name | Wow    |
