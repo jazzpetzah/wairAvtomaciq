@@ -109,6 +109,7 @@ public class PerformanceSteps {
 			}
 			Thread.sleep(3000);
 			ntry++;
+			log.debug(getDialogPage().getPageSource());
 		} while (!getDialogPage().isCursorInputVisible() && ntry <= maxRetries);
 		assert getDialogPage().isCursorInputVisible() : "The conversation has not been opened after "
 				+ maxRetries + " retries";
