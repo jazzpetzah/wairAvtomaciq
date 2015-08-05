@@ -24,8 +24,9 @@ import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
 
-	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
-	
+	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
+			.getSimpleName());
+
 	private final IOSPagesCollection pagesCollection = IOSPagesCollection
 			.getInstance();
 	private final PerformanceCommon perfCommon = PerformanceCommon
@@ -68,10 +69,11 @@ public class PerformanceSteps {
 	}
 
 	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
-		final int maxTries = 7;
+		final int maxTries = 10;
 		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		do {
+			log.debug("Waiting for contact list. Iteration #" + ntry);
 			try {
 				boolean isLoaded = getContactListPage()
 						.waitForContactListToLoad();
@@ -111,8 +113,18 @@ public class PerformanceSteps {
 		} while (!getDialogPage().isCursorInputVisible() && ntry <= maxRetries);
 		assert getDialogPage().isCursorInputVisible() : "The conversation has not been opened after "
 				+ maxRetries + " retries";
-		log.debug("Conversation page with contact " + destConvoName + " opened.");
-		getDialogPage().tapOnCursorInput();
+		log.debug("Conversation page with contact " + destConvoName
+				+ " opened.");
+		ntry = 1;
+		boolean isFailed = true;
+		do {
+			try {
+				getDialogPage().tapOnCursorInput();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			isFailed = false;
+		} while (ntry++ <= 3 && isFailed);
 		getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 	}
 
@@ -160,9 +172,10 @@ public class PerformanceSteps {
 
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
-				visitConversationWhenAvailable(destConvoName);
-				String secondConvoName = getContactListPage().getDialogNameByIndex(2);
+				String secondConvoName = getContactListPage()
+						.getDialogNameByIndex(2);
 				visitConversationWhenAvailable(secondConvoName);
+				visitConversationWhenAvailable(destConvoName);
 			}
 		}, timeout);
 	}
