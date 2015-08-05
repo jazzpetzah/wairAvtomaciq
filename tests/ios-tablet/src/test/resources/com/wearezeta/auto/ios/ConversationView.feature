@@ -525,7 +525,7 @@ Feature: Conversation View
   Scenario Outline: Verify I can send gif from preview [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -545,7 +545,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -564,7 +564,7 @@ Feature: Conversation View
   Scenario Outline: I can send a sketch[PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -583,7 +583,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
