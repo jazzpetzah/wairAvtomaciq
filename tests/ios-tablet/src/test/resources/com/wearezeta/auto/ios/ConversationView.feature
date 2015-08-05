@@ -1074,7 +1074,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @staging @id2961
-  Scenario Outline: Verify preview is opened after tapping on GIF button
+  Scenario Outline: Verify preview is opened after tapping on GIF button [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
@@ -1089,7 +1089,7 @@ Feature: Conversation View
       | user1Name | user2Name | Wow    |
 
   @staging @id3249
-  Scenario Outline: Verify preview is opened after tapping on GIF button
+  Scenario Outline: Verify preview is opened after tapping on GIF button [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
