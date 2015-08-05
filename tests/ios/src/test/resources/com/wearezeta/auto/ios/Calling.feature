@@ -169,8 +169,7 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | webdriver   | 120     |
-
-  #this is broken not because of service version 2, but the functionality is broken, steps dont do what they should  
+  
   @calling_basic @id2645
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody
     Given There are 3 users where <Name> is me
@@ -233,7 +232,7 @@ Feature: Calling
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
     Then I see mute call, end call and speakers buttons
-    #And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
@@ -252,18 +251,18 @@ Feature: Calling
     And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
-    #And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I end started call
     Then I dont see calling page
-    #And <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
+    And <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
     And <Contact> calls me using <CallBackend2>
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
     And I see mute call, end call and speakers buttons
-    #And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
+    And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And <Contact> stops all calls to me
     And I dont see calling page
-    #And <Contact> verifies that call status to me is changed to inactive in <Timeout> seconds
+    And <Contact> verifies that call status to me is changed to inactive in <Timeout> seconds
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
