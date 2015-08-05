@@ -21,6 +21,11 @@ public final class AndroidLogListener {
 	static {
 		stdoutIncludePatterns.addAll(Arrays.asList(new String[] { "E/" }));
 	}
+	private static final List<String> stdoutExcludePatterns = new ArrayList<>();
+	static {
+		stdoutExcludePatterns.addAll(Arrays
+				.asList(new String[] { "/SELENDROID" }));
+	}
 
 	public static enum ListenerType {
 		DEFAULT(null), PERF("LoadTimeLoggerController");
@@ -117,9 +122,19 @@ public final class AndroidLogListener {
 
 		final StringBuilder stdout = new StringBuilder();
 		for (String line : listener.getStdOut().trim().split("\n")) {
+			boolean isLineAdded = false;
 			for (String incPatt : stdoutIncludePatterns) {
 				if (line.contains(incPatt)) {
-					stdout.append(line + "\n");
+					for (String excPatt : stdoutExcludePatterns) {
+						if (!line.contains(excPatt)) {
+							stdout.append(line + "\n");
+							isLineAdded = true;
+							break;
+						}
+					}
+				}
+				if (isLineAdded) {
+					break;
 				}
 			}
 		}
