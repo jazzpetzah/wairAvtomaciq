@@ -24,14 +24,6 @@ public class CallingServiceClient {
 				CommonUtils.getBackendType(CallingServiceClient.class)
 						.toUpperCase(), callBackend).getString("id");
 	}
-	
-//	public static String callToGroup(ClientUser userA, String convName, CallingServiceBackend callBackend){
-////		String email = userA.getEmail();
-////		String password = userA.getPassword();
-////		String conversationId = BackendAPIWrappers.getConversationIdByName(userA, convName);
-////		String backend = CommonUtils.getBackendType(CallingServiceClient.class).toUpperCase();
-//		return CallingServiceREST.makeCall(userA.getEmail(), userA.getPassword(), BackendAPIWrappers.getConversationIdByName(userA, convName),CommonUtils.getBackendType(CallingServiceClient.class).toUpperCase(), callBackend);
-//	}
 
 	private static void waitForCallStatuses(String callId,
 			CallingServiceStatus[] expectedStatuses, int secondsTimeout)
