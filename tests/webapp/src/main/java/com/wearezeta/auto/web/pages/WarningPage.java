@@ -19,6 +19,9 @@ public class WarningPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.WarningPage.cssAnotherCallWarningModalClose)
 	private WebElement anotherCallWarningModalCloseButton;
 
+	@FindBy(how = How.CSS, using = WebAppLocators.WarningPage.cssFullCallWarningModalClose)
+	private WebElement fullCallWarningModalCloseButton;
+
 	public WarningPage(Future<ZetaWebAppDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -81,6 +84,46 @@ public class WarningPage extends WebPage {
 		WebElement button = getDriver().findElement(buttonLocator);
 		final By modalLocator = By
 				.cssSelector(WebAppLocators.WarningPage.cssAnotherCallWarningModal);
+		boolean clickable = DriverUtils.waitUntilElementClickable(
+				this.getDriver(), button);
+
+		button.click();
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(), modalLocator);
+
+		return clickable;
+	}
+
+	public boolean isFullCallWarningModalVisible() throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.WarningPage.cssFullCallWarningModal);
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
+	}
+
+	public boolean isFullCallWarningModalInvisible() throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.WarningPage.cssFullCallWarningModal);
+		return DriverUtils
+				.waitUntilLocatorDissapears(this.getDriver(), locator);
+	}
+
+	public void clickCloseFullCallWarningModal() throws Exception {
+		DriverUtils.waitUntilElementClickable(this.getDriver(),
+				fullCallWarningModalCloseButton);
+		final By locator = By
+				.cssSelector(WebAppLocators.WarningPage.cssFullCallWarningModalClose);
+
+		fullCallWarningModalCloseButton.click();
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+	}
+
+	public boolean clickButtonWithCaptionInFullCallWarningModal(String caption)
+			throws Exception {
+		final By buttonLocator = By
+				.xpath(WebAppLocators.WarningPage.xpathFullCallWarningModalButtonByCaption
+						.apply(caption));
+		WebElement button = getDriver().findElement(buttonLocator);
+		final By modalLocator = By
+				.cssSelector(WebAppLocators.WarningPage.cssFullCallWarningModal);
 		boolean clickable = DriverUtils.waitUntilElementClickable(
 				this.getDriver(), button);
 

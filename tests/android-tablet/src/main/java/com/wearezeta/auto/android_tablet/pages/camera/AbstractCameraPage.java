@@ -41,22 +41,18 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
 	}
 
 	public void tapTakePhotoButton() throws Exception {
-		// FIXME: Add valid timer for camera view initilization
-		Thread.sleep(5000);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idTakePhotoButton));
 		takePhotoButton.click();
-		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idTakePhotoButton))) {
-			takePhotoButton.click();
-			assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-					By.id(idTakePhotoButton)) : "The Take Photo button is still visible after the second click";
-		}
 	}
 
 	public void confirmPictureSelection() throws Exception {
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathConfirmButton))) {
+			takePhotoButton.click();
+		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(xpathConfirmButton));
+				By.xpath(xpathConfirmButton)) : "Picture selection confirmation has not been shown after the timeout";
 		okConfirmButton.click();
 		ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
 	}

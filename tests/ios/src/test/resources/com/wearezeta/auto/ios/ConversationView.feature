@@ -606,3 +606,28 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @staging @id3093
+  Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see plus button next to text input
+    And I swipe the text input cursor
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I see plus button is not shown
+    And I swipe left on options buttons
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I click Close input options button
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |

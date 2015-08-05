@@ -207,4 +207,16 @@ public class CallingPageSteps {
 		Assert.assertFalse(getCallingOverlayPage().callingSpeakerIsVisible());
 		Assert.assertTrue(getCallingOverlayPage().callingMicMuteIsVisible());
 	}
+	
+	/**
+	 * Press on the join group call button
+	 * 
+	 * @step. ^I press join group call button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I press join group call button$")
+	public void WhenIPressJoinGroupCallButton() throws Exception {
+		getCallingOverlayPage().joinGroupCall();
+	}
 }
