@@ -51,7 +51,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @id1262 @smoke
-  Scenario Outline: Add people to 1:1 chat
+  Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -108,7 +108,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id145 @regression
+  @id145 @smoke
   Scenario Outline: Send Upper and Lower case to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -299,7 +299,7 @@ Feature: Conversation View
       | Name      | Contact1  | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @id2814 @verification
+  @id3242 @verification
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

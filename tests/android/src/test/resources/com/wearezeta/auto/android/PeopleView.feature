@@ -1,6 +1,6 @@
 Feature: People View
 
-  @id83 @id87 @regression
+  @id87 @regression
   Scenario Outline: I can access user details page from group chat and see user name, email and photo
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
