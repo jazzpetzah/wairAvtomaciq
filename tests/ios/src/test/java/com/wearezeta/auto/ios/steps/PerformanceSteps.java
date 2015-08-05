@@ -75,11 +75,11 @@ public class PerformanceSteps {
 		do {
 			log.debug("Waiting for contact list. Iteration #" + ntry);
 			try {
-				boolean isLoaded = getContactListPage()
+				boolean /*isLoaded = getContactListPage()
 						.waitForContactListToLoad();
 				if (!isLoaded) {
 					getDialogPage().navigateBack(500);
-				}
+				}*/
 				isLoaded = getContactListPage().waitForContactListToLoad();
 			} catch (Exception e) {
 				e.printStackTrace();
