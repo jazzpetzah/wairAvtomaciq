@@ -268,7 +268,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | webdriver   | autocall     | 120     |
 
-  @torun @staging @id2682
+  @staging @id2682
   Scenario Outline: Verify accepting group call in foreground
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
