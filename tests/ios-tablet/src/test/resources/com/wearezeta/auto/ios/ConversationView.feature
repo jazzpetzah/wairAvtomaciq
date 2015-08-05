@@ -525,7 +525,7 @@ Feature: Conversation View
   Scenario Outline: Verify I can send gif from preview [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -545,7 +545,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
@@ -564,7 +564,7 @@ Feature: Conversation View
   Scenario Outline: I can send a sketch[PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -583,7 +583,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -1021,3 +1021,85 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id3097 @id3098
+  Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I Sign in on tablet using my email
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see plus button next to text input
+    And I swipe the text input cursor
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I see plus button is not shown
+    And I swipe left on options buttons
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I click Close input options button
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @staging @id3237 @id3238
+  Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see plus button next to text input
+    And I swipe the text input cursor
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I see plus button is not shown
+    And I swipe left on options buttons
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I click Close input options button
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @staging @id2961
+  Scenario Outline: Verify preview is opened after tapping on GIF button [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type tag for giphy preview <GiphyTag> and open preview overlay
+    And I see giphy preview page
+
+    Examples: 
+      | Name      | Contact   | GiphyTag |
+      | user1Name | user2Name | Wow    |
+
+  @staging @id3249
+  Scenario Outline: Verify preview is opened after tapping on GIF button [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I type tag for giphy preview <GiphyTag> and open preview overlay
+    And I see giphy preview page
+
+    Examples: 
+      | Name      | Contact   | GiphyTag |
+      | user1Name | user2Name | Wow    |

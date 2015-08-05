@@ -1,7 +1,7 @@
 Feature: Self Profile
 
   @id205 @smoke
-  Scenario Outline: Change user picture
+  Scenario Outline: Change user picture with gallery image
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
@@ -52,7 +52,7 @@ Feature: Self Profile
       | user1Name | NewTestName |
  
   @id201 @smoke 
-  Scenario Outline: Change user picture with front camera
+  Scenario Outline: Change user picture with camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
