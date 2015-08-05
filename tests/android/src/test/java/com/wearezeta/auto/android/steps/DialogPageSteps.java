@@ -716,4 +716,51 @@ public class DialogPageSteps {
 				getCallingOverlayPage().waitUntilVisible());
 		getDialogPage().swipeByCoordinates(1500, 30, 25, 30, 5);
 	}
+
+	/**
+	 * Checks to see if join group call overlay is present or not
+	 * 
+	 * @step. ^I( do not)? see join group call overlay$
+	 * @param shouldNotSee
+	 *            is set to null if " do not" part does not exist
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see join group call overlay$")
+	public void WhenISeeGroupCallJoinOverlay(String shouldNotSee)
+			throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("Join group call overlay not visible",
+					getCallingOverlayPage().waitUntilGroupCallJoinVisible());
+		} else {
+			Assert.assertTrue(
+					"Join group call overlay is visible, it should have been dismissed",
+					getCallingOverlayPage().waitUntilGroupCallJoinNotVisible());
+		}
+	}
+
+	/**
+	 * Checks to see if join group call overlay is present or not
+	 * 
+	 * @step. ^I see \"(.*)\" button$
+	 * @param name
+	 *            text on the button
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see \"(.*)\" button$")
+	public void WhenISeeGroupCallJoinButton(String shouldNotSee, String name)
+			throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(name
+					+ " button with not visible in group call overlay",
+					getCallingOverlayPage()
+							.waitUntilJoinGroupCallButtonVisible(name));
+		} else {
+			Assert.assertTrue(name
+					+ " button with not visible in group call overlay",
+					getCallingOverlayPage()
+							.waitUntilJoinGroupCallButtonNotVisible(name));
+		}
+	}
 }

@@ -556,6 +556,7 @@ Feature: Calling
     And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
     And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
+    And I see the calling bar
     When I accept the incoming call
     And I see the calling bar from user <Contact1>
     And I see the calling bar from user <Contact2>
@@ -568,6 +569,43 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | chrome      | 120     |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | autocall    | firefox     | 120     |
+
+  @staging @calling @group @debug @id3057
+  Scenario Outline: Verify impossibility to connect 6th person to the call
+    Given My browser supports calling
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> starts waiting instance using <WaitBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> starts waiting instance using <WaitBackend>
+    Given <Contact4> accepts next incoming call automatically
+    Given <Contact5> starts waiting instance using <WaitBackend>
+    Given <Contact5> accepts next incoming call automatically
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    When <Contact1> calls <ChatName> using <CallBackend>
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact5> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
+    And I see the calling bar
+    When I accept the incoming call
+    Then I see full call warning modal
+    And I close the full call warning modal
+    When I call
+    Then I see full call warning modal
+    And I click on "Ok" button in full call warning modal
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  | Contact5  | ChatName              | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | user6Name | GroupCallConversation | autocall    | chrome      | 120     |
+
 
   @staging @calling @group @debug @id3231
   Scenario Outline: Verify initiating group call

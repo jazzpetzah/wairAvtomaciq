@@ -11,14 +11,14 @@ public class WarningPageSteps {
 
 	/**
 	 * Verifies whether the 'missing WebRTC support warning bar' is visible
-	 * 
+	 *
 	 * @param doNot
 	 *            is null when 'do not' part is not present
 	 * @step. ^I see a warning$
-	 * 
+	 *
 	 * @throws Exception
 	 *             if the 'missing WebRTC support warning bar' is not currently
-	 *             * visible
+	 *             visible
 	 */
 	@Then("^I( do not)? see a warning$")
 	public void ISeeWarning(String doNot) throws Exception {
@@ -119,6 +119,62 @@ public class WarningPageSteps {
 						+ "' in another call warning modal was not clickable",
 				PagesCollection.warningPage
 						.clickButtonWithCaptionInAnotherCallWarningModal(buttonCaption));
+	}
+
+	/**
+	 * Verifies whether the 'full call warning modal' is visible
+	 *
+	 * @param doNot
+	 *            is null when 'do not' part is not present
+	 * @step. ^I( do not)? see full call warning modal$
+	 *
+	 * @throws Exception
+	 *             if the 'full call warning modal' is not currently visible
+	 */
+	@Then("^I( do not)? see full call warning modal$")
+	public void ISeeFullCallWarningModal(String doNot) throws Exception {
+		PagesCollection.warningPage = (WarningPage) PagesCollection.loginPage
+				.instantiatePage(WarningPage.class);
+		if (doNot == null) {
+			Assert.assertTrue("Full call warning modal is not visible",
+					PagesCollection.warningPage.isFullCallWarningModalVisible());
+		} else {
+			Assert.assertTrue("Full call warning modal is visible",
+					PagesCollection.warningPage
+							.isFullCallWarningModalInvisible());
+		}
+	}
+
+	/**
+	 * Closes the 'full call warning modal'.
+	 *
+	 * @throws java.lang.Exception
+	 * @step. ^I close the full call warning modal$
+	 *
+	 */
+	@Then("^I close the full call warning modal$")
+	public void IClickCloseFullCallWarningModal() throws Exception {
+		PagesCollection.warningPage.clickCloseFullCallWarningModal();
+	}
+
+	/**
+	 * Ends the current call, closes the 'full call warning modal' and initiates
+	 * the new call.
+	 *
+	 * @param buttonCaption
+	 *            the caption of the button to click
+	 * @throws java.lang.Exception
+	 * @step. ^I click on \"(.*)\" button in full call warning modal$
+	 *
+	 */
+	@Then("^I click on \"(.*)\" button in full call warning modal$")
+	public void IClickButtonInFullCallWarningModal(String buttonCaption)
+			throws Exception {
+		Assert.assertTrue(
+				"Button '" + buttonCaption
+						+ "' in full call warning modal was not clickable",
+				PagesCollection.warningPage
+						.clickButtonWithCaptionInFullCallWarningModal(buttonCaption));
 	}
 
 }
