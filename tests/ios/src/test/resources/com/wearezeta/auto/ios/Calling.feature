@@ -284,9 +284,6 @@ Feature: Calling
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     And <Contact1> calls <GroupChatName> using <CallBackend2>
-    And <Contact2> verifies that waiting instance status is changed to ready in <Timeout> seconds
-    And <Contact3> verifies that waiting instance status is changed to ready in <Timeout> seconds
-    And <Contact4> verifies that waiting instance status is changed to ready in <Timeout> seconds
     And I see incoming group calling message
     And I accept incoming call
     Then I see mute call, end call and speakers buttons
