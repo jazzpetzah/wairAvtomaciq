@@ -81,7 +81,6 @@ public class PerformanceSteps {
 					getDialogPage().navigateBack(500);
 				}
 				isLoaded = getContactListPage().waitForContactListToLoad();
-				Assert.assertTrue("Contact list didn't load", isLoaded);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
