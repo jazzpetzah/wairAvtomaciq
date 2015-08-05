@@ -285,10 +285,10 @@ public class PeoplePickerPageSteps {
 
 		if (donot == null) {
 			Assert.assertTrue(PagesCollection.peoplePickerPage
-					.isUserFound(name));
+					.isGroupConversationFound(name));
 		} else {
 			Assert.assertTrue(PagesCollection.peoplePickerPage
-					.isUserNotFound(name));
+					.isGroupConversationNotFound(name));
 		}
 	}
 }
