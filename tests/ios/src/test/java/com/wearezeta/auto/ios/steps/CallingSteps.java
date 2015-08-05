@@ -29,8 +29,6 @@ public class CallingSteps {
 	@When("(.*) calls (.*) using (\\w+)$")
 	public void UserXCallsToUserYUsingCallBackend(String userFromNameAlias,
 			String userToNameAlias, String callBackend) throws Exception {
-		// commonCallingSteps.UserXCallsToUserYUsingCallBackend(userFromNameAlias,
-		// userToNameAlias, callBackend);
 		commonCallingSteps2.callToConversation(userFromNameAlias,
 				userToNameAlias, callBackend);
 	}
@@ -49,8 +47,6 @@ public class CallingSteps {
 	@When("(.*) stops? all calls to (.*)")
 	public void UserXStopsCallsToUserY(String userFromNameAlias,
 			String userToNameAlias) throws Exception {
-//		commonCallingSteps.UserXStopsCallsToUserY(userFromNameAlias,
-//				userToNameAlias);
 		commonCallingSteps2.stopCall(userFromNameAlias, userToNameAlias);
 	}
 
@@ -77,7 +73,7 @@ public class CallingSteps {
 	public void UserXVerifesCallStatusToUserY(String userFromNameAlias,
 			String userToNameAlias, String expectedStatuses, int timeoutSeconds)
 			throws Exception {
-		commonCallingSteps.UserXVerifesCallStatusToUserY(userFromNameAlias,
+		commonCallingSteps2.verifyCallingStatus(userFromNameAlias,
 				userToNameAlias, expectedStatuses, timeoutSeconds);
 	}
 
@@ -104,8 +100,6 @@ public class CallingSteps {
 	@Then("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")
 	public void UserXVerifesCallStatusToUserY(String userFromNameAlias,
 			String expectedStatuses, int timeoutSeconds) throws Exception {
-		// commonCallingSteps.UserXVerifesWaitingInstanceStatus(userFromNameAlias,
-		// expectedStatuses, timeoutSeconds);
 		commonCallingSteps2.verifyAcceptingCallStatus(userFromNameAlias,
 				expectedStatuses, timeoutSeconds);
 	}
@@ -125,8 +119,6 @@ public class CallingSteps {
 	@When("(.*) starts? waiting instance using (\\w+)$")
 	public void UserXStartsWaitingInstance(String userAsNameAlias,
 			String callingServiceBackend) throws Exception {
-		// commonCallingSteps.UserXStartsWaitingInstance(userAsNameAlias,
-		// callingServiceBackend);
 		commonCallingSteps2.startWaitingInstance(userAsNameAlias,
 				callingServiceBackend);
 	}
@@ -145,8 +137,6 @@ public class CallingSteps {
 	@When("(.*) accepts? next incoming call automatically$")
 	public void UserXAcceptsNextIncomingCallAutomatically(String userAsNameAlias)
 			throws Exception {
-		// commonCallingSteps
-		// .UserXAcceptsNextIncomingCallAutomatically(userAsNameAlias);
 		commonCallingSteps2.acceptNextCall(userAsNameAlias);
 	}
 
@@ -162,7 +152,6 @@ public class CallingSteps {
 	@When("(.*) stops? all waiting instances$")
 	public void UserXStopsIncomingCalls(String userAsNameAlias)
 			throws Exception {
-		//commonCallingSteps.UserXStopsIncomingCalls(userAsNameAlias);
 		commonCallingSteps2.stopWaitingCall(userAsNameAlias);
 	}
 }
