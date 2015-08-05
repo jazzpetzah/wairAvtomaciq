@@ -6,8 +6,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.common.process.AsyncProcess;
 
 public final class IOSLogListener {
-	private static final Logger log = ZetaLogger
-			.getLog(IOSLogListener.class.getSimpleName());
+	private static final Logger log = ZetaLogger.getLog(IOSLogListener.class
+			.getSimpleName());
 
 	private static IOSLogListener instance = null;
 
@@ -36,7 +36,7 @@ public final class IOSLogListener {
 			this.stop();
 		}
 		String syslogCmd = "idevicesyslog";
-		
+
 		final String[] cmd = new String[] { "/bin/bash", "-c", syslogCmd };
 		listener = new AsyncProcess(cmd, false, false);
 		listener.start();
@@ -67,21 +67,19 @@ public final class IOSLogListener {
 		return this.listener.getStderr();
 	}
 
-	public static void writeDeviceLogsToConsole(
-			final IOSLogListener listener) throws Exception {
+	public static void writeDeviceLogsToConsole(final IOSLogListener listener)
+			throws Exception {
 		log.debug("\n\n\n=== CAPTURED STDERR LOGS ===\n");
 		System.out.println(listener.getStdErr().trim());
 		log.debug("\n=== END OF CAPTURED STDERR LOGS ===\n\n\n");
 	}
 
 	public static void forceStopAll() {
-		if (instance != null) {
-			if (instance.isRunning()) {
-				try {
-					instance.stop();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		if (instance != null && instance.isRunning()) {
+			try {
+				instance.stop();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 	}
