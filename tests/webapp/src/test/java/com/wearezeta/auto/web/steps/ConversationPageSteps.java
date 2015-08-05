@@ -247,10 +247,17 @@ public class ConversationPageSteps {
 	 * @throws AssertionError
 	 *             if action message did not appear in conversation
 	 */
-	@Then("^I see (.*) action in conversation$")
-	public void ThenISeeActionInConversation(String message) throws Exception {
-		Assert.assertTrue(PagesCollection.conversationPage
-				.isActionMessageSent(message));
+	@Then("^I( do not)? see (.*) action in conversation$")
+	public void ThenISeeActionInConversation(String doNot, String message)
+			throws Exception {
+		if (doNot == null) {
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isActionMessageSent(message));
+		} else {
+			Assert.assertFalse(PagesCollection.conversationPage
+					.isActionMessageSent(message));
+
+		}
 	}
 
 	/**
@@ -640,7 +647,8 @@ public class ConversationPageSteps {
 	 * @throws java.lang.Exception
 	 */
 	@Then("^I( do not)? see picture (.*) in fullscreen$")
-	public void ISeePictureInFullscreen(String doNot, String pictureName) throws Exception {
+	public void ISeePictureInFullscreen(String doNot, String pictureName)
+			throws Exception {
 		if (doNot == null) {
 			Assert.assertTrue(PagesCollection.conversationPage
 					.isPictureInModalDialog());

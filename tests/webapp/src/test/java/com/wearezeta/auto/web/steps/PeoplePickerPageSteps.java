@@ -266,4 +266,29 @@ public class PeoplePickerPageSteps {
 		Assert.assertTrue(searchMissingMessage,
 				PagesCollection.peoplePickerPage.isSearchOpened());
 	}
+
+	/**
+	 * Verify if group conversation is found by Search in People Picker
+	 * 
+	 * @step. ^I( do not)? see group conversation (.*) found in People Picker$
+	 * 
+	 * @param donot
+	 *            if null method returns true if found otherwise true if not
+	 *            found
+	 * @param name
+	 *            group conversation name string
+	 * @throws Exception
+	 */
+	@When("^I( do not)? see group conversation (.*) found in People Picker$")
+	public void ISeeGroupFoundInPeoplePicker(String donot, String name)
+			throws Exception {
+
+		if (donot == null) {
+			Assert.assertTrue(PagesCollection.peoplePickerPage
+					.isUserFound(name));
+		} else {
+			Assert.assertTrue(PagesCollection.peoplePickerPage
+					.isUserNotFound(name));
+		}
+	}
 }
