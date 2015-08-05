@@ -49,8 +49,9 @@ public class CallingSteps {
 	@When("(.*) stops? all calls to (.*)")
 	public void UserXStopsCallsToUserY(String userFromNameAlias,
 			String userToNameAlias) throws Exception {
-		commonCallingSteps.UserXStopsCallsToUserY(userFromNameAlias,
-				userToNameAlias);
+//		commonCallingSteps.UserXStopsCallsToUserY(userFromNameAlias,
+//				userToNameAlias);
+		commonCallingSteps2.stopCall(userFromNameAlias, userToNameAlias);
 	}
 
 	/**
@@ -161,6 +162,7 @@ public class CallingSteps {
 	@When("(.*) stops? all waiting instances$")
 	public void UserXStopsIncomingCalls(String userAsNameAlias)
 			throws Exception {
-		commonCallingSteps.UserXStopsIncomingCalls(userAsNameAlias);
+		//commonCallingSteps.UserXStopsIncomingCalls(userAsNameAlias);
+		commonCallingSteps2.stopWaitingCall(userAsNameAlias);
 	}
 }
