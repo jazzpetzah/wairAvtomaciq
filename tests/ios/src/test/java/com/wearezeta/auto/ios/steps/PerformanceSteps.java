@@ -86,7 +86,7 @@ public class PerformanceSteps {
 			}
 			Thread.sleep(millisecondsDelay);
 			ntry++;
-		} while (getContactListPage().GetVisibleContacts().size() != 0
+		} while (getContactListPage().GetVisibleContacts().size() == 0
 				&& ntry <= maxTries);
 		Assert.assertTrue(
 				"No conversations are visible in the conversations list, but some are expected",
