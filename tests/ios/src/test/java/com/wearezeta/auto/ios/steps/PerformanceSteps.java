@@ -64,8 +64,13 @@ public class PerformanceSteps {
 				"The count of messages to send (%d) should be greater or equal to the max "
 						+ "count of messages in conversation window (%d)",
 				msgsCount, MAX_MSGS_IN_CONVO_WINDOW);
-		asContact = usrMgr.findUserByNameOrNameAlias(asContact).getName();
-		perfCommon.sendMultipleMessagesIntoConversation(asContact, msgsCount);
+		sendXMessagesFromContact(asContact, msgsCount);
+	}
+
+	private void sendXMessagesFromContact(String contact, int msgsCount)
+			throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		perfCommon.sendMultipleMessagesIntoConversation(contact, msgsCount);
 	}
 
 	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
@@ -75,11 +80,11 @@ public class PerformanceSteps {
 		do {
 			log.debug("Waiting for contact list. Iteration #" + ntry);
 			try {
-				boolean /*isLoaded = getContactListPage()
-						.waitForContactListToLoad();
-				if (!isLoaded) {
-					getDialogPage().navigateBack(500);
-				}*/
+				boolean /*
+						 * isLoaded = getContactListPage()
+						 * .waitForContactListToLoad(); if (!isLoaded) {
+						 * getDialogPage().navigateBack(500); }
+						 */
 				isLoaded = getContactListPage().waitForContactListToLoad();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -160,7 +165,7 @@ public class PerformanceSteps {
 			firstConvoName = getContactListPage().getFirstDialogName();
 			ntry++;
 			if (!destConvoName.equals(firstConvoName)) {
-				IReceiveXMessagesFromContact(1, fromContact);
+				sendXMessagesFromContact(fromContact, 1);
 			}
 		} while (ntry <= 3);
 		assert destConvoName.equals(firstConvoName) : String
