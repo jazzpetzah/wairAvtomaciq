@@ -1021,3 +1021,54 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id3097 @id3098
+  Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I Sign in on tablet using my email
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see plus button next to text input
+    And I swipe the text input cursor
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I see plus button is not shown
+    And I swipe left on options buttons
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I click Close input options button
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @staging @id3237 @id3238
+  Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see plus button next to text input
+    And I swipe the text input cursor
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I see plus button is not shown
+    And I swipe left on options buttons
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I click Close input options button
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |

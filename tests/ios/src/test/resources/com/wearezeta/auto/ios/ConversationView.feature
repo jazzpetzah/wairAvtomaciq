@@ -607,7 +607,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3093
+  @staging @id3093 @id3092
   Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
