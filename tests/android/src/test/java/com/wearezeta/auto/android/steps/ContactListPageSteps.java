@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -248,5 +249,19 @@ public class ContactListPageSteps {
 	@When("^I open People Picker$")
 	public void IOpenPeoplePicker() throws Exception {
 		getContactListPage().openPeoplePicker();
+	}
+
+	/**
+	 * Tap the corresponding item in conversation settings menu
+	 * 
+	 * @step. ^I select (.*) From conversation settings menu$
+	 * 
+	 * @param itemName
+	 *            menu item name
+	 * @throws Exception
+	 */
+	@And("^I select (.*) from conversation settings menu$")
+	public void ISelectConvoSettingsMenuItem(String itemName) throws Exception {
+		getContactListPage().selectConvoSettingsMenuItem(itemName);
 	}
 }
