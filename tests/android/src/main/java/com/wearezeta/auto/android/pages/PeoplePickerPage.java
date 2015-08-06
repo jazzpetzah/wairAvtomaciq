@@ -158,6 +158,7 @@ public class PeoplePickerPage extends AndroidPage {
 	public AndroidPage selectContact(String contactName) throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				pickerSearchUser, 5);
+		pickerSearchUser.click();
 		final Map<By, AndroidPage> pagesMapping = new HashMap<By, AndroidPage>();
 		pagesMapping.put(By.id(OtherUserPersonalInfoPage.idUnblockBtn),
 				new OtherUserPersonalInfoPage(this.getLazyDriver()));
@@ -175,7 +176,7 @@ public class PeoplePickerPage extends AndroidPage {
 			}
 			scanTry++;
 		}
-		pickerSearchUser.click();
+		DriverUtils.tapInTheCenterOfTheElement(getDriver(), pickerSearchUser);
 		return new DialogPage(this.getLazyDriver());
 	}
 
