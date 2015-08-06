@@ -170,18 +170,14 @@ public class PerformanceSteps {
 				.format("The very first conversation name '%s' is not the same as expected one ('%s')",
 						firstConvoName, destConvoName);
 
-		// Visit the conversation for the first time
-		String secondConvoName = getContactListPage()
-				.getDialogNameByIndex(2);
-		visitConversationWhenAvailable(secondConvoName);
 		visitConversationWhenAvailable(destConvoName);
 
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
+				visitConversationWhenAvailable(destConvoName);
 				String secondConvoName = getContactListPage()
 						.getDialogNameByIndex(2);
 				visitConversationWhenAvailable(secondConvoName);
-				visitConversationWhenAvailable(destConvoName);
 			}
 		}, timeout);
 	}
