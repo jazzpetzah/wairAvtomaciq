@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
@@ -99,6 +101,7 @@ public class PerformanceSteps {
 		int ntry = 1;
 		do {
 			try {
+				log.debug("Tapping on conversation: " + new Date());
 				getContactListPage().tapOnName(destConvoName);
 			} catch (IllegalStateException | WebDriverException e) {
 				if (ntry >= maxRetries) {
@@ -168,6 +171,9 @@ public class PerformanceSteps {
 						firstConvoName, destConvoName);
 
 		// Visit the conversation for the first time
+		String secondConvoName = getContactListPage()
+				.getDialogNameByIndex(2);
+		visitConversationWhenAvailable(secondConvoName);
 		visitConversationWhenAvailable(destConvoName);
 
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
