@@ -99,6 +99,10 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(id = idSearchButton)
 	private WebElement searchButton;
 
+	private static final Function<String, String> xpathConvoSettingsMenuItemByName = name -> String
+			.format("//*[starts-with(@id, 'ttv__conversation_settings') and @value='%s']",
+					name.toUpperCase());
+
 	private static final String xpathTopConversationsListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
 	private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
 
@@ -366,5 +370,13 @@ public class ContactListPage extends AndroidPage {
 			}
 		}
 		return true;
+	}
+
+	public void selectConvoSettingsMenuItem(String itemName) throws Exception {
+		final By locator = By.xpath(xpathConvoSettingsMenuItemByName
+				.apply(itemName));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("Conversation menu item '%s' could not be found on the current screen");
+		getDriver().findElement(locator).click();
 	}
 }

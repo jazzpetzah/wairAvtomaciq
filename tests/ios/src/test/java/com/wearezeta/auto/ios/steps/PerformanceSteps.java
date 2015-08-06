@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios.steps;
 
+import java.util.Date;
+
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
@@ -24,8 +26,9 @@ import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
 
-	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class.getSimpleName());
-	
+	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
+			.getSimpleName());
+
 	private final IOSPagesCollection pagesCollection = IOSPagesCollection
 			.getInstance();
 	private final PerformanceCommon perfCommon = PerformanceCommon
@@ -63,29 +66,29 @@ public class PerformanceSteps {
 				"The count of messages to send (%d) should be greater or equal to the max "
 						+ "count of messages in conversation window (%d)",
 				msgsCount, MAX_MSGS_IN_CONVO_WINDOW);
-		asContact = usrMgr.findUserByNameOrNameAlias(asContact).getName();
-		perfCommon.sendMultipleMessagesIntoConversation(asContact, msgsCount);
+		sendXMessagesFromContact(asContact, msgsCount);
+	}
+
+	private void sendXMessagesFromContact(String contact, int msgsCount)
+			throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		perfCommon.sendMultipleMessagesIntoConversation(contact, msgsCount);
 	}
 
 	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
-		final int maxTries = 7;
+		final int maxTries = 10;
 		final long millisecondsDelay = 20000;
 		int ntry = 1;
 		do {
+			log.debug("Waiting for contact list. Iteration #" + ntry);
 			try {
-				boolean isLoaded = getContactListPage()
-						.waitForContactListToLoad();
-				if (!isLoaded) {
-					getDialogPage().navigateBack(500);
-				}
-				isLoaded = getContactListPage().waitForContactListToLoad();
-				Assert.assertTrue("Contact list didn't load", isLoaded);
+				getContactListPage().waitForContactListToLoad();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			Thread.sleep(millisecondsDelay);
 			ntry++;
-		} while (getContactListPage().GetVisibleContacts().size() != 0
+		} while (getContactListPage().GetVisibleContacts().size() == 0
 				&& ntry <= maxTries);
 		Assert.assertTrue(
 				"No conversations are visible in the conversations list, but some are expected",
@@ -98,6 +101,7 @@ public class PerformanceSteps {
 		int ntry = 1;
 		do {
 			try {
+				log.debug("Tapping on conversation: " + new Date());
 				getContactListPage().tapOnName(destConvoName);
 			} catch (IllegalStateException | WebDriverException e) {
 				if (ntry >= maxRetries) {
@@ -108,11 +112,22 @@ public class PerformanceSteps {
 			}
 			Thread.sleep(3000);
 			ntry++;
+			getDialogPage().getPageSource();
 		} while (!getDialogPage().isCursorInputVisible() && ntry <= maxRetries);
 		assert getDialogPage().isCursorInputVisible() : "The conversation has not been opened after "
 				+ maxRetries + " retries";
-		log.debug("Conversation page with contact " + destConvoName + " opened.");
-		getDialogPage().tapOnCursorInput();
+		log.debug("Conversation page with contact " + destConvoName
+				+ " opened.");
+		ntry = 1;
+		boolean isFailed = true;
+		do {
+			try {
+				getDialogPage().tapOnCursorInput();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			isFailed = false;
+		} while (ntry++ <= 3 && isFailed);
 		getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 	}
 
@@ -148,7 +163,7 @@ public class PerformanceSteps {
 			firstConvoName = getContactListPage().getFirstDialogName();
 			ntry++;
 			if (!destConvoName.equals(firstConvoName)) {
-				IReceiveXMessagesFromContact(1, fromContact);
+				sendXMessagesFromContact(fromContact, 1);
 			}
 		} while (ntry <= 3);
 		assert destConvoName.equals(firstConvoName) : String
@@ -156,13 +171,17 @@ public class PerformanceSteps {
 						firstConvoName, destConvoName);
 
 		// Visit the conversation for the first time
+		String secondConvoName = getContactListPage()
+				.getDialogNameByIndex(2);
+		visitConversationWhenAvailable(secondConvoName);
 		visitConversationWhenAvailable(destConvoName);
 
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
-				visitConversationWhenAvailable(destConvoName);
-				String secondConvoName = getContactListPage().getDialogNameByIndex(2);
+				String secondConvoName = getContactListPage()
+						.getDialogNameByIndex(2);
 				visitConversationWhenAvailable(secondConvoName);
+				visitConversationWhenAvailable(destConvoName);
 			}
 		}, timeout);
 	}

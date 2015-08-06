@@ -10,10 +10,12 @@ Feature: Archive
     Given I see Contact list with contacts
     And I see contact list with name <Contact1>
     When I swipe right on a <Contact1>
+    And I select ARCHIVE from conversation settings menu
     Then I do not see contact list with name <Contact1>
     And I swipe up contact list
     And I see contact list with name <Contact1>
     And I swipe right on a <Contact1>
+    And I select UNARCHIVE from conversation settings menu
     And I see dialog page
 
     Examples: 
@@ -29,10 +31,12 @@ Feature: Archive
     Given I see Contact list with contacts
     And I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
+    And I tap ARCHIVE in conversation settings menu
     Then I do not see contact list with name <GroupChatName>
     And I swipe up contact list
     And I see contact list with name <GroupChatName>
     And I swipe right on a <GroupChatName>
+    And I select UNARCHIVE from conversation settings menu
     And I see dialog page
 
     Examples: 
