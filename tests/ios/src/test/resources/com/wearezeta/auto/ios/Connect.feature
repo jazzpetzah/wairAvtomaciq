@@ -131,8 +131,7 @@ Feature: Connect
     And I see user <Contact> found on People picker page
     And I tap on user on pending name on People picker page <Contact>
     And I see <Contact> user pending profile page
-    And I click on start conversation button on pending profile page
-    Then I see <Contact> user pending profile page
+    And I see cancel request button on pending profile page
 
     Examples: 
       | Name      | Contact   | Contact2  |
@@ -195,7 +194,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on user on pending name on People picker page <Contact>
-    Then I see <Contact> user pending profile page
+    Then I see cancel request button on pending profile page
 
     Examples: 
       | Name      | Contact   | ContactEmail |
