@@ -3,9 +3,11 @@ package com.wearezeta.auto.common.rest;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -170,7 +172,7 @@ public final class CommonRESTHandlers {
 		return returnString;
 	}
 
-	public <T> T httpGet(Builder webResource, Class<T> responseEntityType,
+	public <T> T httpGet(Builder webResource, GenericType<T> responseEntityType,
 			int[] acceptableResponseCodes) throws RESTError {
 		log.debug("GET REQUEST...");
 		Response response = null;
@@ -201,7 +203,7 @@ public final class CommonRESTHandlers {
 
 	public String httpGet(Builder webResource, int[] acceptableResponseCodes)
 			throws RESTError {
-		String returnString = httpGet(webResource, String.class,
+		String returnString = httpGet(webResource, new GenericType<String>() {},
 				acceptableResponseCodes);
 		returnString = returnString == null ? "" : returnString;
 		return returnString;

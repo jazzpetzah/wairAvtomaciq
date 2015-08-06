@@ -2,16 +2,21 @@ package com.wearezeta.auto.common.calling2.v1;
 
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
+import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.calling2.v1.model.Instance;
 import com.wearezeta.auto.common.calling2.v1.model.InstanceRequest;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import com.wearezeta.auto.common.rest.RESTError;
+
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
@@ -20,7 +25,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.Configuration;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
@@ -130,10 +137,22 @@ public class InstanceResource {
 		try {
 			return restHandler.httpGet(
 					buildDefaultRequest(target, MediaType.APPLICATION_JSON),
-					Instance.class, new int[] { HttpStatus.SC_OK });
+					new GenericType<Instance>() {}, new int[] { HttpStatus.SC_OK });
 		} catch (RESTError ex) {
 			throw new CallingServiceInstanceException(ex);
 		}
 	}
 
+	public List<Flow> getFlows(Instance instance)
+			throws CallingServiceInstanceException {
+		final String target = String.format("%s/api/v%s/instance/%s/flows",
+				callingServiceAdress, callingServiceVersion, instance.getId());
+		try {
+			return restHandler.httpGet(
+					buildDefaultRequest(target, MediaType.APPLICATION_JSON),
+					new GenericType<List>() {}, new int[] { HttpStatus.SC_OK });
+		} catch (RESTError ex) {
+			throw new CallingServiceInstanceException(ex);
+		}
+	}
 }
