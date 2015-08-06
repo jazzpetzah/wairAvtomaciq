@@ -46,9 +46,15 @@ public class IOSPerfReportModel extends PerfReportModel {
 		final Pattern pattern = Pattern.compile(patternStr);
 		final Matcher matcher = pattern.matcher(output);
 		final List<Long> result = new ArrayList<>();
+		int count = 0;
 		while (matcher.find()) {
 			try {
-				result.add(Long.parseLong(matcher.group(1)));
+				//workaround for false entry on contact list update
+				long time = Long.parseLong(matcher.group(1));
+				if (count++ == 0 && time > 1000) {
+					continue;
+				}
+				result.add(time);
 			} catch (NumberFormatException e) {
 				log.error(e);
 			}
