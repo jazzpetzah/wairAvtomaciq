@@ -51,7 +51,8 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id311 @deployAddressBook @noAcceptAlert
+  #regression
+  @staging @id311 @deployAddressBook @noAcceptAlert
   Scenario Outline: Verify uploading address book to the server
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

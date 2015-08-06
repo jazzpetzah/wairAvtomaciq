@@ -92,7 +92,7 @@ Feature: People View
       | Name      | Contact1    | Contact2   | GroupChatName |
       | user1Name | user2Name   | user3Name  | TESTCHAT      |
 
-  @regression @id1396
+  @staging @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given User <Contact1> change avatar picture to <Picture>
@@ -265,7 +265,7 @@ Feature: People View
       | Name      | Contact1    | Contact2   | Contact3  |
       | user1Name | user2Name   | user3Name  | user4Name |
            
-  @regression @id559
+  @staging @id559
   Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -300,7 +300,7 @@ Feature: People View
       | Name      | Contact1    | Contact2   | Contact3  |
       | user1Name | user2Name   | user3Name  | user4Name |
       
-  @regression @id1462
+  @staging @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
     Given User <Name> change accent color to <Color>
