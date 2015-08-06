@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.AccentColor;
@@ -14,6 +15,7 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.backend.ConnectionStatus;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -25,6 +27,10 @@ public final class CommonSteps {
 	public static final String CONNECTION_MESSAGE = "Hello!";
 	private static final int BACKEND_USER_SYNC_TIMEOUT = 45; // seconds
 	private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 90; // seconds
+	
+	@SuppressWarnings("unused")
+	private static final Logger log = ZetaLogger.getLog(CommonSteps.class
+			.getSimpleName());
 
 	private String pingId = null;
 

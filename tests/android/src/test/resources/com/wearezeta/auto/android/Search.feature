@@ -99,7 +99,7 @@ Feature: Search
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName           |
-      | user1Name | user3Name | user2Name | PeoplePicker GroupChat2 |
+      | user1Name | user2Name | user3Name | PeoplePicker GroupChat2 |
 
   @id2214 @regression
   Scenario Outline: I can dismiss PYMK by Hide button
@@ -143,4 +143,3 @@ Feature: Search
     Examples: 
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
-      
