@@ -79,20 +79,15 @@ public class PerformanceSteps {
 		final int maxTries = 10;
 		final long millisecondsDelay = 20000;
 		int ntry = 1;
-		do {
+		int visibleContactsSize;
+		while ((visibleContactsSize = getContactListPage().GetVisibleContacts().size()) == 0 && ntry <= maxTries) {
 			log.debug("Waiting for contact list. Iteration #" + ntry);
-			try {
-				getContactListPage().waitForContactListToLoad();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
 			Thread.sleep(millisecondsDelay);
 			ntry++;
-		} while (getContactListPage().GetVisibleContacts().size() == 0
-				&& ntry <= maxTries);
+		}
 		Assert.assertTrue(
 				"No conversations are visible in the conversations list, but some are expected",
-				getContactListPage().GetVisibleContacts().size() > 0);
+				visibleContactsSize > 0);
 	}
 
 	private void visitConversationWhenAvailable(final String destConvoName)
@@ -170,18 +165,14 @@ public class PerformanceSteps {
 				.format("The very first conversation name '%s' is not the same as expected one ('%s')",
 						firstConvoName, destConvoName);
 
-		// Visit the conversation for the first time
-		String secondConvoName = getContactListPage()
-				.getDialogNameByIndex(2);
-		visitConversationWhenAvailable(secondConvoName);
 		visitConversationWhenAvailable(destConvoName);
 
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
+				visitConversationWhenAvailable(destConvoName);
 				String secondConvoName = getContactListPage()
 						.getDialogNameByIndex(2);
 				visitConversationWhenAvailable(secondConvoName);
-				visitConversationWhenAvailable(destConvoName);
 			}
 		}, timeout);
 	}

@@ -929,7 +929,7 @@ Feature: Conversation View
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
-  @staging @id2418 
+  @staging @id2418
   Scenario Outline: Rotate image in fullscreen mode [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given User <Contact> change name to <NewName>
@@ -982,10 +982,10 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | Color        | NewName          |
       | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
 
-  @staging @id2451 
+  @staging @id2451
   Scenario Outline: Verify archiving conversation from ellipsis menu [PORTRAIT]
     Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>    
+    Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -1086,7 +1086,7 @@ Feature: Conversation View
 
     Examples: 
       | Name      | Contact   | GiphyTag |
-      | user1Name | user2Name | Wow    |
+      | user1Name | user2Name | Wow      |
 
   @staging @id3249
   Scenario Outline: Verify preview is opened after tapping on GIF button [LANDSCAPE]
@@ -1102,4 +1102,37 @@ Feature: Conversation View
 
     Examples: 
       | Name      | Contact   | GiphyTag |
-      | user1Name | user2Name | Wow    |
+      | user1Name | user2Name | Wow      |
+
+  @staging @id2958 @id2959
+  Scenario Outline: Verify preview is opened after tapping on GIF button [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I send random giphy
+    And I click hide keyboard button
+    And I see giphy in conversation
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3251 @id3252
+  Scenario Outline: Verify preview is opened after tapping on GIF button [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I send random giphy
+    And I click hide keyboard button
+    And I see giphy in conversation
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

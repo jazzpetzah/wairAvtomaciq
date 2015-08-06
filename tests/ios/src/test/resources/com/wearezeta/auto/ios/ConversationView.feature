@@ -646,3 +646,18 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Happy    |
+
+  @staging @id2792 @id2786
+  Scenario Outline: Verify preview is opened after tapping on GIF button
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I send random giphy
+    And I see giphy in conversation
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

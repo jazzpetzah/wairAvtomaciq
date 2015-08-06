@@ -307,9 +307,6 @@ public class ContactListPage extends IOSPage {
 		boolean waitForUser = DriverUtils.waitUntilLocatorAppears(
 				this.getDriver(),
 				By.xpath(IOSLocators.xpathMyUserInContactList));
-		if (!waitForUser) {
-			log.debug(this.getDriver().getPageSource());
-		}
 		return waitForUser;
 	}
 

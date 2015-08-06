@@ -50,7 +50,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1262 @smoke
+  @id1262 @smoke_mute @staging
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -61,8 +61,8 @@ Feature: Conversation View
     And I tap conversation details button
     And I see <Contact1> user profile page
     And I press add contact button
-    # FIXME: This step forces the whole view to disappear unexpectedly
-    # And I enter "<Contact2>" into Search input on People Picker page
+    And I tap on Search input on People picker page
+    And I enter "<Contact2>" into Search input on People Picker page
     And I see user <Contact2> found on People picker page
     And I tap on user name found on People picker page <Contact2>
     And I see Add to conversation button
