@@ -27,7 +27,7 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
 		Assert.assertTrue("Close button not displayed",
 				getOtherUserOnPendingProfilePage().isClosePageButtonVisible());
 		Assert.assertTrue("Pending label is not displayed",
-				getOtherUserOnPendingProfilePage().isPendingLabelVisible());
+				getOtherUserOnPendingProfilePage().isCancelRequestButtonVisible());
 	}
 
 	@When("^I click on start conversation button on pending profile page$")
