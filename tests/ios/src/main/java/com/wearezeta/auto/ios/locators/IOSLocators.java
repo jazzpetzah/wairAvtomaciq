@@ -594,6 +594,8 @@ public final class IOSLocators {
 		
 		public static final String xpathMyNameInDialog = "//UIAStaticText[@name='%s'][last()]";
 		
+		public static final String xpathGiphyImage = "//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']";
+		
 	}
 	
 	public final class DialogInfoPage {
@@ -657,6 +659,8 @@ public final class IOSLocators {
 		public static final String nameGiphyCancelRequestButton = "rejectButton";
 		
 		public static final String nameGiphySendButton = "acceptButton";
+		
+		public static final String nameNoGifsText = "OOOPS, NO MORE GIFS";
 		
 	}
 	
