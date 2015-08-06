@@ -308,7 +308,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id416
+  @staging @id416
   Scenario Outline: Keyboard up and navigate to main convo list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -437,7 +437,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | SoundCloudLink                                                                       |
       | user1Name | user2Name | user3Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @regression @id1137
+  @staging @id1137
   Scenario Outline: Verify appearance of title bar for conversation, restored from background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
