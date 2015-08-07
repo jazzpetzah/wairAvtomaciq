@@ -76,6 +76,7 @@ class RestartNodesWithLabels(CliHandlerBase):
                     else:
                         node_labels = set()
                     if expected_labels.issubset(node_labels):
+                        print('Found matching node "{}". Restarting...'.format(node.name))
                         hostname = et.find('.//host').text
                         workers.append(Process(target=self._restart_node_and_wait,
                                     args=(node, hostname, args.node_user, args.node_password)))
