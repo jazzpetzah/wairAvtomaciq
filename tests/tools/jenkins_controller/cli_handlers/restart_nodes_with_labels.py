@@ -31,7 +31,7 @@ class RestartNodesWithLabels(CliHandlerBase):
         client = paramiko.SSHClient()
         try:
             client.load_system_host_keys()
-            client.set_missing_host_key_policy(paramiko.WarningPolicy)
+            client.set_missing_host_key_policy(paramiko.WarningPolicy())
             client.connect(hostname, username=username, password=password)
             client.exec_command('sudo shutdown -r now')
         finally:
