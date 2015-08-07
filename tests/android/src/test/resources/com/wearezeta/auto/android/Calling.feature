@@ -174,7 +174,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | webdriver   |
 
-  @idXXX
+  @id3239 @regression
   Scenario Outline: Calling bar buttons are clickable and change their states in a group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -199,7 +199,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName    | SpeakerBtnName | MuteBtnName |
       | user1Name | user2Name | user3Name | ChatForGroupCall | Speaker        | Mute        |
 
-  @idXXX
+  @id3240 @regression
   Scenario Outline: I can start group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -225,8 +225,8 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @idXXX
-  Scenario Outline: I can join group call
+  @id3172 @staging
+  Scenario Outline: I can join group call in foreground
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -250,8 +250,8 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @idXXX
-  Scenario Outline: I can join group call after I silenced it
+  @id3174 @staging
+  Scenario Outline: I can join group call after I ignored it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -263,6 +263,7 @@ Feature: Calling
     Then I see call overlay
     When I click the ignore call button
     Then I see "JOIN CALL" button
+    And I wait for 45 seconds
     When I press join group call button
     Then I do not see "JOIN CALL" button
     And I see calling overlay Big bar
@@ -274,7 +275,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @idXXX
+  @id3168 @staging
   Scenario Outline: I can join group call after I leave it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -290,6 +291,7 @@ Feature: Calling
     And I see calling overlay Big bar
     When I press Cancel call button
     Then I see "JOIN CALL" button
+    And I wait for 20 seconds
     When I press join group call button
     Then I do not see "JOIN CALL" button
     And I see calling overlay Big bar

@@ -98,7 +98,7 @@ public final class IOSLocators {
 	
 	public static final String namePingButton = "ComposeControllerPingButton";
 	
-	public static final String xpathCameraLibraryButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[4]"; 
+	public static final String xpathCameraLibraryButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[5]"; 
 	
 	public static final String nameCameraRollCancel = "Cancel";
 	
@@ -110,8 +110,10 @@ public final class IOSLocators {
 	
 	public static final String xpathMyUserInContactList = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
 
-	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[2]/UIAStaticText[1]";
+	public static final String xpathFirstInContactList = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText[1]";
 	
+	public static final String xpathContactListEntryWithIndex = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[%d]/UIAStaticText[1]";
+
 	public static final String xpathConnectMessageLabel = "//UIAStaticText[starts-with(@name, 'CONNECTING TO')]";
 	
 	public static final String xpathUnicUserPickerSearchResult = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell[1]";
@@ -132,7 +134,7 @@ public final class IOSLocators {
 	
 	public static final String xpathNameMediaContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]";
 	
-	public static final String xpathPhotoButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[4]";
+	public static final String xpathPhotoButton = "//UIAWindow[@name='ZClientMainWindow']/UIAButton[5]";
 	
 	public static final String nameAlbum = "Saved Photos";
 	
@@ -299,6 +301,8 @@ public final class IOSLocators {
 	public static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
 	
 	public static final String xpathOtherProfilePagePendingLabel = "//UIAStaticText[contains(@name, 'Let’s connect')]";
+	
+	public static final String xpathOtherProfileCancelRequestButton = "//UIAStaticText[contains(@name, 'CANCEL REQUEST')]";
 	
 	public static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
 	
@@ -592,6 +596,8 @@ public final class IOSLocators {
 		
 		public static final String xpathMyNameInDialog = "//UIAStaticText[@name='%s'][last()]";
 		
+		public static final String xpathGiphyImage = "//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']";
+		
 	}
 	
 	public final class DialogInfoPage {
@@ -650,9 +656,13 @@ public final class IOSLocators {
 		
 		public static final String nameGiphyTitleButton = "titleButton";
 		
+		public static final String xpathGithyImage = "//UIAButton[@name='rejectButton']/preceding-sibling::UIAImage[1]";
+		
 		public static final String nameGiphyCancelRequestButton = "rejectButton";
 		
 		public static final String nameGiphySendButton = "acceptButton";
+		
+		public static final String nameNoGifsText = "OOOPS, NO MORE GIFS";
 		
 	}
 	

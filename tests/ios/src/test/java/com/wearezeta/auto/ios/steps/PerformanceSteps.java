@@ -1,251 +1,197 @@
 package com.wearezeta.auto.ios.steps;
 
-import java.io.File;
+import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.ios.pages.DialogPage;
-import com.wearezeta.auto.ios.reporter.IDeviceSysLogListener;
-import com.wearezeta.auto.ios.reporter.IOSPerformanceReportGenerator;
+import com.wearezeta.auto.ios.reporter.IOSLogListener;
+import com.wearezeta.auto.ios.reporter.IOSPerfReportModel;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
-import com.wearezeta.common.process.AsyncProcess;
+import com.wearezeta.auto.common.performance.PerformanceHelpers;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PerformanceSteps {
+
 	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
 			.getSimpleName());
 
+	private final IOSPagesCollection pagesCollection = IOSPagesCollection
+			.getInstance();
 	private final PerformanceCommon perfCommon = PerformanceCommon
 			.getInstance();
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	private static final int PERF_MON_INIT_DELAY = 5000; // milliseconds
-	private static final int PERF_MON_STOP_TIMEOUT = 60 * 1000; // milliseconds
-	private static final String ACTIVITY_MONITOR_TEMPLATE_PATH = "/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/Resources/templates/Activity\\ Monitor.tracetemplate";
-	private static final String WIRE_ACTIVITY_MONITOR_TEMPLATE_PATH = "/Project/WireActivityMonitor.tracetemplate";
+	private static final int DEFAULT_SWIPE_TIME = 500;
+	private static final int MAX_MSGS_IN_CONVO_WINDOW = 50;
 
-	public static IDeviceSysLogListener listener = new IDeviceSysLogListener();
-
-	private AsyncProcess perfMon = null;
-
-	public AsyncProcess getPerfMon() {
-		return perfMon;
-	}
-
-	public void setPerfMon(AsyncProcess perfMon) {
-		this.perfMon = perfMon;
-	}
-
-	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
-			.getInstance();
-
-	@SuppressWarnings("unused")
 	private DialogPage getDialogPage() throws Exception {
-		return (DialogPage) pagesCollecton.getPage(DialogPage.class);
+		return (DialogPage) pagesCollection.getPage(DialogPage.class);
 	}
 
-	@SuppressWarnings("unused")
 	private ContactListPage getContactListPage() throws Exception {
-		return (ContactListPage) pagesCollecton.getPage(ContactListPage.class);
+		return (ContactListPage) pagesCollection.getPage(ContactListPage.class);
+	}
+
+	/**
+	 * Send multiple messages from one of my contacts using the backend
+	 * 
+	 * @step. ^I receive (\\d+) messages? from contact (.*)
+	 * 
+	 * @param msgsCount
+	 *            count of messages to send. This should be greater or equal to
+	 *            the maximum count of messages in convo window (which is
+	 *            currently equal to 50 for iOS)
+	 * @param asContact
+	 *            from which contact should we send these messages
+	 * @throws Exception
+	 */
+	@Given("^I receive (\\d+) messages? from contact (.*)")
+	public void IReceiveXMessagesFromContact(int msgsCount, String asContact)
+			throws Exception {
+		assert msgsCount >= MAX_MSGS_IN_CONVO_WINDOW : String.format(
+				"The count of messages to send (%d) should be greater or equal to the max "
+						+ "count of messages in conversation window (%d)",
+				msgsCount, MAX_MSGS_IN_CONVO_WINDOW);
+		sendXMessagesFromContact(asContact, msgsCount);
+	}
+
+	private void sendXMessagesFromContact(String contact, int msgsCount)
+			throws Exception {
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		perfCommon.sendMultipleMessagesIntoConversation(contact, msgsCount);
+	}
+
+	private void waitUntilConversationsListIsFullyLoaded() throws Exception {
+		final int maxTries = 10;
+		final long millisecondsDelay = 20000;
+		int ntry = 1;
+		int visibleContactsSize;
+		while ((visibleContactsSize = getContactListPage().GetVisibleContacts().size()) == 0 && ntry <= maxTries) {
+			log.debug("Waiting for contact list. Iteration #" + ntry);
+			Thread.sleep(millisecondsDelay);
+			ntry++;
+		}
+		Assert.assertTrue(
+				"No conversations are visible in the conversations list, but some are expected",
+				visibleContactsSize > 0);
+	}
+
+	private void visitConversationWhenAvailable(final String destConvoName)
+			throws Exception {
+		final int maxRetries = 15;
+		int ntry = 1;
+		do {
+			try {
+				log.debug("Tapping on conversation: " + new Date());
+				getContactListPage().tapOnName(destConvoName);
+			} catch (IllegalStateException | WebDriverException e) {
+				if (ntry >= maxRetries) {
+					throw e;
+				} else {
+					e.printStackTrace();
+				}
+			}
+			Thread.sleep(3000);
+			ntry++;
+			getDialogPage().getPageSource();
+		} while (!getDialogPage().isCursorInputVisible() && ntry <= maxRetries);
+		assert getDialogPage().isCursorInputVisible() : "The conversation has not been opened after "
+				+ maxRetries + " retries";
+		log.debug("Conversation page with contact " + destConvoName
+				+ " opened.");
+		ntry = 1;
+		boolean isFailed = true;
+		do {
+			try {
+				getDialogPage().tapOnCursorInput();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			isFailed = false;
+		} while (ntry++ <= 3 && isFailed);
+		getDialogPage().navigateBack(DEFAULT_SWIPE_TIME);
 	}
 
 	/**
 	 * Starts standard actions loop (read messages/send messages) to measure
 	 * application performance
 	 * 
-	 * @step. ^I start test cycle for (\\d+) minutes$
+	 * @step. ^I start test cycle for (\\d+) minutes? with messages received
+	 *        from (.*)
 	 * 
 	 * @param timeout
 	 *            number of minutes to run the loop
+	 * @param fromContact
+	 *            contact name/alias, from which I received messages
 	 * @throws Exception
 	 */
-	@When("^I start test cycle for (\\d+) minutes$")
-	public void WhenIStartTestCycleForNMinutes(int timeout) throws Exception {
+	@When("^I start test cycle for (\\d+) minutes? with messages received from (.*)")
+	public void WhenIStartTestCycleForNMinutes(int timeout, String fromContact)
+			throws Exception {
+		waitUntilConversationsListIsFullyLoaded();
+		final String destConvoName = usrMgr.findUserByNameOrNameAlias(
+				fromContact).getName();
+		String firstConvoName = getContactListPage().getFirstDialogName();
+		int ntry = 1;
+		do {
+			// This contact, which received messages, should be the first
+			// contact in the visible convo list now
+			if (destConvoName.equals(firstConvoName)) {
+				break;
+			} else {
+				Thread.sleep(10000);
+			}
+			firstConvoName = getContactListPage().getFirstDialogName();
+			ntry++;
+			if (!destConvoName.equals(firstConvoName)) {
+				sendXMessagesFromContact(fromContact, 1);
+			}
+		} while (ntry <= 3);
+		assert destConvoName.equals(firstConvoName) : String
+				.format("The very first conversation name '%s' is not the same as expected one ('%s')",
+						firstConvoName, destConvoName);
+
+		visitConversationWhenAvailable(destConvoName);
+
 		perfCommon.runPerformanceLoop(new PerformanceLoop() {
 			public void run() throws Exception {
-				/*
-				 * // Send messages in response to a random visible chat for
-				 * (int i = 0; i < PerformanceCommon.SEND_MESSAGE_NUM; i++) { //
-				 * Get list of visible dialogs, remove self user name from //
-				 * this list boolean isLoaded = getContactListPage()
-				 * .waitForContactListToLoad(); if (!isLoaded) { getDialogPage()
-				 * .swipeRight( 500,
-				 * DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 30); }
-				 * isLoaded = getContactListPage().waitForContactListToLoad();
-				 * Assert.assertTrue("Contact list didn't load", isLoaded);
-				 * ArrayList<WebElement> visibleContactsList = new
-				 * ArrayList<WebElement>(
-				 * getContactListPage().GetVisibleContacts());
-				 * 
-				 * final int MAX_ENTRIES_ON_SCREEN = 8; int randomRange =
-				 * (visibleContactsList.size() > MAX_ENTRIES_ON_SCREEN) ?
-				 * MAX_ENTRIES_ON_SCREEN : (visibleContactsList.size() - 1); int
-				 * randomChatIdx; String convName; do { randomChatIdx =
-				 * perfCommon.random.nextInt(randomRange); convName =
-				 * visibleContactsList.get(randomChatIdx) .getText(); } while
-				 * (convName.contains("tst"));
-				 * getContactListPage().tapOnContactByIndex(
-				 * visibleContactsList, randomChatIdx);
-				 * 
-				 * // Emulating reading of previously received messages // This
-				 * is broken in iOS simulator, known Apple bug // Using
-				 * "external" swipe is unstable for a long perf test //
-				 * PagesCollection.dialogPage.swipeDown(500);
-				 * 
-				 * // Writing response getDialogPage().tapOnCursorInput();
-				 * getDialogPage().sendMessageUsingScript(
-				 * CommonUtils.generateGUID());
-				 * 
-				 * // Swipe back to the convo list
-				 * getDialogPage().swipeRight(500,
-				 * DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 30);
-				 * 
-				 * }
-				 */
+				visitConversationWhenAvailable(destConvoName);
+				String secondConvoName = getContactListPage()
+						.getDialogNameByIndex(2);
+				visitConversationWhenAvailable(secondConvoName);
 			}
 		}, timeout);
 	}
 
 	/**
-	 * Tests loading time of conversation with specified number of messages and
-	 * images
-	 * 
-	 * @step. ^I test conversation loading time for conversation with (\\d+)
-	 *        messages and (\\d+) images$
-	 * 
-	 * @param messages
-	 *            number of messages in conversation
-	 * @param images
-	 *            number of images in conversation
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I test conversation loading time for conversation with (\\d+) messages and (\\d+) images$")
-	public void ITestConversationLoadingTimeForConversation(int messages,
-			int images) throws Exception {
-		final String CONVERSATION_NAME_TEMPLATE = "perf%stxt%simgtst";
-		@SuppressWarnings("unused")
-		String conv = String.format(CONVERSATION_NAME_TEMPLATE, messages,
-				images);
-		// TODO: implement when time could be measured
-	}
-
-	/**
-	 * Start performance monitor tool for the real connected iPhone. This will
-	 * throw the RuntimeException if there is no connected iPhone or instruments
-	 * failed to start. All the collected perf logs will be saved in $HOME
-	 * folder
-	 * 
-	 * @step. ^I start performance monitoring for the connected iPhone$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I start performance monitoring for the connected iPhone$")
-	public void IStartPerfMon() throws Exception {
-		final String iPhoneUDID = IOSCommonUtils.getConnectediPhoneUDID(true);
-		String templatePath = (new File(WIRE_ACTIVITY_MONITOR_TEMPLATE_PATH))
-				.exists() ? WIRE_ACTIVITY_MONITOR_TEMPLATE_PATH
-				: ACTIVITY_MONITOR_TEMPLATE_PATH;
-		final int INSTRUMENTS_TIMEOUT_MS = 7200000;
-		final String[] cmd = {
-				"/bin/bash",
-				"-c",
-				String.format("cd $HOME && instruments -v -t %s -w %s -l %s",
-						templatePath, iPhoneUDID, INSTRUMENTS_TIMEOUT_MS) };
-		final AsyncProcess ap = new AsyncProcess(cmd, true, true);
-		ap.start();
-		Thread.sleep(PERF_MON_INIT_DELAY);
-		if (ap.isRunning()) {
-			setPerfMon(ap);
-		} else {
-			throw new RuntimeException(
-					"There are failures while starting perf monitor. Please check the log for more details.");
-		}
-	}
-
-	/**
-	 * Stop performance monitor tool for the real connected iPhone and flush
-	 * performance logs. This will throw RuntimeException if 'I start
-	 * performance monitoring for the connected iPhone' step has not been
-	 * invoked before
-	 * 
-	 * @step. ^I finish performance monitoring for the connected iPhone$
-	 * 
-	 * @throws Exception
-	 */
-	@Then("^I finish performance monitoring for the connected iPhone$")
-	public void IStopPerfMon() throws Exception {
-		if (this.getPerfMon() == null) {
-			throw new RuntimeException(
-					"Please call the Start monitor step first");
-		}
-		if (!this.getPerfMon().isRunning()) {
-			throw new RuntimeException(
-					"Performance monitor has been unexpectedly killed before. Please check execution logs to get more details.");
-		}
-		// the real process id will be this parentPid + 1, because bash forks
-		// a separate process from the command line that we provide
-		final int monitorPid = this.getPerfMon().getPid() + 1;
-		// Sending SIGINT to properly terminate perf monitor
-		this.getPerfMon().stop(2, new int[] { monitorPid },
-				PERF_MON_STOP_TIMEOUT);
-	}
-
-	private void exportTraceToCSV() throws Exception {
-		/*
-		 * String script = String.format(CommonUtils
-		 * .readTextFileFromResources("/scripts/export_trace_to_csv.txt"));
-		 * 
-		 * ScriptEngineManager mgr = new ScriptEngineManager(); ScriptEngine
-		 * engine = mgr.getEngineByName("AppleScriptEngine");
-		 * log.debug("Script engine: " + engine);
-		 * log.debug("Script to execute: " + script); try { engine.eval(script);
-		 * } catch (Exception e) { log.debug(e.getMessage());
-		 * e.printStackTrace(); }
-		 */
-		int result = -1;
-		int count = 0;
-		while (result != 0 && count < 3) {
-			result = CommonUtils
-					.executeOsXCommand(new String[] {
-							"bash",
-							"-c",
-							String.format(
-									"echo %s| sudo -S osascript %sexport_data.scpt",
-									CommonUtils
-											.getJenkinsSuperUserPassword(CommonUtils.class),
-									IOSPerformanceReportGenerator.REPORT_DATA_PATH) });
-			count++;
-		}
-	}
-
-	/**
 	 * Generates iOS performance report
 	 * 
-	 * @step. ^I generate performance report$
+	 * @step. ^I generate performance report for (\\d+) users?$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I generate performance report for (\\d+) users$")
+	@Then("^I generate performance report for (\\d+) users?$")
 	public void ThenIGeneratePerformanceReport(int usersCount) throws Exception {
-		IOSPerformanceReportGenerator.setUsersCount(usersCount);
-		listener.stopListeningLogcat();
-		log.debug(listener.getOutput());
-		Thread.sleep(5000);
-		exportTraceToCSV();
-		Assert.assertTrue(IOSPerformanceReportGenerator
-				.updateReportDataWithCurrentRun(listener.getOutput()));
-		Assert.assertTrue(IOSPerformanceReportGenerator.generateRunReport());
+		final IOSPerfReportModel dataModel = new IOSPerfReportModel();
+		dataModel.setContactsCount(usersCount - 1);
+		final String logOutput = IOSLogListener.getInstance().getStdOut();
+		dataModel.loadDataFromLog(logOutput);
+		PerformanceHelpers.storeWidgetDataAsJSON(dataModel,
+				IOSCommonUtils.getPerfReportPathFromConfig(getClass()));
 	}
 
 	@Before("@performance")
@@ -253,16 +199,15 @@ public class PerformanceSteps {
 		// for Jenkins slaves we should define that environment has display
 		CommonUtils.defineNoHeadlessEnvironment();
 		try {
-			listener.startListeningLogcat();
+			IOSLogListener.getInstance().start();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
 	@After("@performance")
-	public void CloseInstruments() {
-		try {
-			IStopPerfMon();
-		} catch (Exception e) {
-		}
+	public void StopLogListener() throws Exception {
+		IOSLogListener.forceStopAll();
+		IOSLogListener.writeDeviceLogsToConsole(IOSLogListener.getInstance());
 	}
 }

@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
+import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -117,7 +118,8 @@ public class CallingSteps {
 	@When("(.*) starts? waiting instance using (\\w+)$")
 	public void UserXStartsWaitingInstance(String callee,
 			String callingServiceBackend) throws Exception {
-		commonCallingSteps.startWaitingInstance(callee, callingServiceBackend);
+		commonCallingSteps.startWaitingInstances(splitAliases(callee),
+				callingServiceBackend);
 	}
 
 	/**

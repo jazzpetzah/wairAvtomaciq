@@ -131,8 +131,7 @@ Feature: Connect
     And I see user <Contact> found on People picker page
     And I tap on user on pending name on People picker page <Contact>
     And I see <Contact> user pending profile page
-    And I click on start conversation button on pending profile page
-    Then I see <Contact> user pending profile page
+    And I see cancel request button on pending profile page
 
     Examples: 
       | Name      | Contact   | Contact2  |
@@ -195,7 +194,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on user on pending name on People picker page <Contact>
-    Then I see <Contact> user pending profile page
+    Then I see cancel request button on pending profile page
 
     Examples: 
       | Name      | Contact   | ContactEmail |
@@ -255,7 +254,8 @@ Feature: Connect
       | Name      | UnconnectedUser | ContactEmail | StartLetter |Color        |
       | user1Name | user2Name       | user2Email   | T           |BrightOrange |
       
-  @regression @id2768 @deployAddressBook @noAcceptAlert
+  #regression
+  @staging @id2768 @deployAddressBook @noAcceptAlert
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number

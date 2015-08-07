@@ -2,17 +2,14 @@ Feature: Performance Tests
 
   @performance
   Scenario Outline: Normal usage
-    Given There are <UsersCount> shared users with name prefix <UserNamePrefix>
+    Given There are <UsersNumber> shared users with name prefix <UserNamePrefix>
     Given User <Name> is Me
     Given Myself is connected to all other users
-    When I start performance monitoring for the connected iPhone
-    And I sign in using my email
-    And I see Contact list with my name <Name>
-    And I test conversation loading time for conversation with 300 messages and 30 images
-    And I start test cycle for <Time> minutes
-    Then I finish performance monitoring for the connected iPhone
-    And I generate performance report for <UsersCount> users
+    Given I receive <MsgsCount> messages from contact <Sender>
+    Given I sign in using my email
+    When I start test cycle for <Time> minutes with messages received from <Sender>
+    Then I generate performance report for <UsersNumber> users
 
     Examples: 
-      | Login      | Name      | Password      | UsersCount        | Time            | UserNamePrefix |
-      | user1Email | user1Name | user1Password | ${perfUsersCount} | ${perfDuration} | perf           |
+      | Name      | UsersNumber       | UserNamePrefix    | Time            | MsgsCount | Sender    |
+      | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 51        | user3Name |

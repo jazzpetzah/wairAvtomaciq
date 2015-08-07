@@ -50,8 +50,8 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1262 @smoke
-  Scenario Outline: Add people to 1:1 chat
+  @id1262 @smoke_mute @staging
+  Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -61,8 +61,8 @@ Feature: Conversation View
     And I tap conversation details button
     And I see <Contact1> user profile page
     And I press add contact button
-    # FIXME: This step forces the whole view to disappear unexpectedly
-    # And I enter "<Contact2>" into Search input on People Picker page
+    And I tap on Search input on People picker page
+    And I enter "<Contact2>" into Search input on People Picker page
     And I see user <Contact2> found on People picker page
     And I tap on user name found on People picker page <Contact2>
     And I see Add to conversation button
@@ -108,7 +108,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id145 @regression
+  @id145 @smoke
   Scenario Outline: Send Upper and Lower case to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -299,7 +299,7 @@ Feature: Conversation View
       | Name      | Contact1  | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @id2814 @verification
+  @id3242 @verification
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
