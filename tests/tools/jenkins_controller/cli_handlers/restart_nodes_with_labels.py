@@ -63,6 +63,7 @@ class RestartNodesWithLabels(CliHandlerBase):
         parser = self._get_parser()
         args = parser.parse_args()
         expected_labels = self._normalize_labels(args.labels.split(','))
+        count_of_nodes_to_restart = 0
         try:
             workers = []
             for _, node in self._jenkins.get_nodes().iteritems():
@@ -81,10 +82,10 @@ class RestartNodesWithLabels(CliHandlerBase):
                         workers.append(Process(target=self._restart_node_and_wait,
                                     args=(node, hostname, args.node_user, args.node_password)))
                         workers[-1].start()
-            node_names = [w.join() for w in workers]
-            restarted_node_names = filter(lambda x: isinstance(x, basestring), node_names)
+                        count_of_nodes_to_restart += 1
+            [w.join() for w in workers]
         except ImportError:
             # nodes.py tries to import pdb in case of error
             # intercepting this and raise connection error to retry on the higher level 
             raise requests.exceptions.ConnectionError("Just retry")
-        return restarted_node_names
+        return count_of_nodes_to_restart
