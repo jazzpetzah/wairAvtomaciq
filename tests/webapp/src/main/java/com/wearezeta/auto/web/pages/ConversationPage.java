@@ -554,20 +554,29 @@ public class ConversationPage extends WebPage {
 			throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
-		assert DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
-		final List<WebElement> actionMessages = this.getDriver().findElements(
-				locator);
-		// Get the most recent action message only
-		final String actionMessageInUI = actionMessages.get(
-				actionMessages.size() - 1).getText();
-		for (String part : parts) {
-			if (!actionMessageInUI.toUpperCase().contains(part.toUpperCase())) {
-				log.error(String
-						.format("'%s' substring has not been found in '%s' action message",
-								part, actionMessageInUI));
-				return true;
+		
+		DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
+
+		if (this.getDriver().findElements(locator).isEmpty()) {
+			return true;
+		} else {
+			assert DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+					locator);
+			final List<WebElement> actionMessages = this.getDriver()
+					.findElements(locator);
+			// Get the most recent action message only
+			final String actionMessageInUI = actionMessages.get(
+					actionMessages.size() - 1).getText();
+			for (String part : parts) {
+				if (!actionMessageInUI.toUpperCase().contains(
+						part.toUpperCase())) {
+					log.error(String
+							.format("'%s' substring has not been found in '%s' action message",
+									part, actionMessageInUI));
+					return true;
+				}
 			}
+			return false;
 		}
-		return false;
 	}
 }
