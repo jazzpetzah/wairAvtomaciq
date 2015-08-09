@@ -254,8 +254,8 @@ public class ConversationPageSteps {
 			Assert.assertTrue(PagesCollection.conversationPage
 					.isActionMessageSent(message));
 		} else {
-			Assert.assertFalse(PagesCollection.conversationPage
-					.isActionMessageSent(message));
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isActionMessageNotSent(message));
 
 		}
 	}
