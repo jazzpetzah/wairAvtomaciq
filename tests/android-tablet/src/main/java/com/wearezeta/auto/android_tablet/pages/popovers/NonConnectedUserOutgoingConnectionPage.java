@@ -16,7 +16,7 @@ class NonConnectedUserOutgoingConnectionPage extends AbstractOutgoingConnectionP
 	}
 
 	@Override
-	protected By getBlockButtonLocator() {
+	protected By getConnectButtonLocator() {
 		return By.id(idConnectButton);
 	}
 

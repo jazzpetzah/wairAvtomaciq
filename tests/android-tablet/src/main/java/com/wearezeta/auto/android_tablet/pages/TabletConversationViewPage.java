@@ -47,8 +47,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
 					value);
 
-	public static final String idIsTypingAvatar = "civ__cursor__self_user_avatar";
-
 	public TabletConversationViewPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -116,12 +114,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	public boolean waitUntilAPictureAppears() throws Exception {
 		final By locator = By.id(DialogPage.idDialogImages);
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-	}
-
-	public void tapIsTypingAvatar() throws Exception {
-		final By locator = By.id(idIsTypingAvatar);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "IsTyping avatar is not visible in the conversation view";
-		getDriver().findElement(locator).click();
 	}
 
 	public void tapShowInstrumentsButton() throws InterruptedException {

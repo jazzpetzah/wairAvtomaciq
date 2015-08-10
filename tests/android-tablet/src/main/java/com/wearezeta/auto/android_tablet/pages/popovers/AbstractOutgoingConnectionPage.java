@@ -28,7 +28,7 @@ abstract class AbstractOutgoingConnectionPage extends AbstractPopoverPage {
 		super(lazyDriver, container);
 	}
 
-	protected abstract By getBlockButtonLocator();
+	protected abstract By getConnectButtonLocator();
 
 	public boolean isNameVisible(String name) throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -47,7 +47,7 @@ abstract class AbstractOutgoingConnectionPage extends AbstractPopoverPage {
 
 	public void tapConnectButton() throws Exception {
 		final WebElement connectButton = getDriver().findElement(
-				getBlockButtonLocator());
+				getConnectButtonLocator());
 		assert DriverUtils
 				.waitUntilElementClickable(getDriver(), connectButton);
 		connectButton.click();
