@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android_tablet.pages;
 
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -24,6 +26,11 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 	public static final String idCreateConversationButton = "ll_pickuser_confirmbutton";
 	@FindBy(id = idCreateConversationButton)
 	private WebElement createConversationButton;
+
+	private static final Function<String, String> xpathFoundAvatarByName = name -> String
+			.format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']"
+					+ "/preceding-sibling::*[@id='cv_pickuser__searchuser_chathead']",
+					name);
 
 	public TabletPeoplePickerPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
@@ -79,4 +86,23 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 		this.hideKeyboard();
 		createConversationButton.click();
 	}
+
+	public Optional<BufferedImage> takeAvatarScreenshot(String name)
+			throws Exception {
+		final By locator = By.xpath(xpathFoundAvatarByName.apply(name));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("User avatar for '%s' is not visible", name);
+		final WebElement theAvatar = getDriver().findElement(locator);
+		return this.getElementScreenshot(theAvatar);
+	}
+
+	public boolean waitUntilAvatarIsVisible(String name) {
+		try {
+			this.getAndroidPeoplePickerPage().waitUserPickerFindUser(name);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 }
