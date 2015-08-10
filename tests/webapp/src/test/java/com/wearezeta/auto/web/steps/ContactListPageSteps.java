@@ -609,7 +609,7 @@ public class ContactListPageSteps {
 	 * @step. ^I click cancel button in the leave warning$
 	 * @throws Throwable
 	 */
-	@Then("^I click cancel button in the leave warning$")
+	@Then("^I click cancel button in the leave warning for group conversations$")
 	public void IClickCancelButtonOnLeaveWarning() throws Throwable {
 		PagesCollection.contactListPage.clickCancelOnLeaveWarning();
 	}
@@ -638,6 +638,17 @@ public class ContactListPageSteps {
 	}
 
 	/**
+	 * Click the block button
+	 * 
+	 * @step. ^I click block button in the block warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click block button in the block warning$")
+	public void IClickBlockButtonOnBlockWarning() throws Throwable {
+		PagesCollection.contactListPage.clickBlockOnBlockWarning();
+	}
+
+	/**
 	 * Verifies a conversation is on top of conversation list
 	 *
 	 * @param conv
@@ -650,5 +661,96 @@ public class ContactListPageSteps {
 		int itemIndex = PagesCollection.contactListPage.getItemIndex(conv);
 		assertThat("Conversation is not on the top", itemIndex, equalTo(1));
 
+	}
+
+	/**
+	 * Click the delete option
+	 * 
+	 * @step. ^I click delete in the options popover$
+	 * @throws Exception
+	 */
+	@When("^I click delete in the options popover$")
+	public void IClickDeleteButton() throws Exception {
+		PagesCollection.contactListPage.clickDeleteConversation();
+	}
+
+	/**
+	 * Verifies the delete modal is visible
+	 * 
+	 * @step. ^I see a delete warning modal for group conversations$
+	 * @throws Exception
+	 */
+	@Then("^I see a delete warning modal for group conversations$")
+	public void ISeeDeleteWarningForGroup() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isDeleteWarningModalForGroupVisible());
+	}
+
+	/**
+	 * Click the delete button in the delete warning
+	 * 
+	 * @step. ^I click delete button in the delete warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click delete button in the delete warning for group conversations$")
+	public void IClickDeleteButtonOnDeleteWarning() throws Throwable {
+		PagesCollection.contactListPage.clickDeleteOnDeleteWarning();
+	}
+
+	/**
+	 * Click the leave button in the leave warning
+	 * 
+	 * @step. ^I click leave button in the leave warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click leave button in the leave warning$")
+	public void IClickLeaveButtonOnLeaveWarning() throws Throwable {
+		PagesCollection.contactListPage.clickLeaveOnLeaveWarning();
+	}
+
+	/**
+	 * Click Leave checkbox on a delete warning modal for group conversations
+	 * 
+	 * @step. ^I click Leave checkbox on a delete warning modal for group
+	 *        conversations$
+	 * @throws Throwable
+	 */
+	@Then("^I click Leave checkbox on a delete warning modal for group conversations$")
+	public void IClickLeaveCheckboxOnDeleteWarning() throws Throwable {
+		PagesCollection.contactListPage.clickLeaveCheckboxOnDeleteWarning();
+	}
+
+	/**
+	 * Click the cancel button in the delete warning
+	 * 
+	 * @step. ^I click cancel button in the delete warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click cancel button in the delete warning for group conversations$")
+	public void IClickCancelButtonOnDeleteWarning() throws Throwable {
+		PagesCollection.contactListPage.clickCancelOnDeleteWarning();
+	}
+
+	/**
+	 * Verifies the delete modal is visible
+	 * 
+	 * @step. ^I see a delete warning modal for 1:1 conversations$
+	 * @throws Exception
+	 */
+	@Then("^I see a delete warning modal for 1:1 conversations$")
+	public void ISeeDeleteWarningForSingle() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isDeleteWarningModalSingleVisible());
+	}
+
+	/**
+	 * Click the delete button in the delete warning
+	 * 
+	 * @step. ^I click delete button in the delete warning for 1:1 conversation$
+	 * @throws Throwable
+	 */
+	@Then("^I click delete button in the delete warning for 1:1 conversations$")
+	public void IClickDeleteButtonOnDeleteWarningForSingle() throws Throwable {
+		PagesCollection.contactListPage.clickDeleteOnDeleteWarningSingle();
 	}
 }

@@ -58,7 +58,7 @@ public final class WebAppLocators {
 
 		public static final String cssUnmuteButton = "[data-uie-name='do-notify']";
 
-		public static final String cssDeleteButton = "[data-uie-name='do-delete']";
+		public static final String cssDeleteButton = "[data-uie-name='do-clear']";
 
 		public static final String cssBlockButton = "[data-uie-name='do-block']";
 
@@ -135,6 +135,18 @@ public final class WebAppLocators {
 		public static final String cssBlockModal = ".modal-block";
 		public static final String cssBlockModalCancelButton = ".modal-block .modal-close.button-inverted";
 		public static final String cssBlockModalActionButton = ".modal-block .modal-close.modal-action";
+
+		// delete warning for group conversations
+		public static final String cssDeleteModalGroup = ".modal-clear-group";
+		public static final String cssDeleteModalCancelButtonGroup = ".modal-clear-group .modal-close.button-inverted";
+		public static final String cssDeleteModalActionButtonGroup = ".modal-clear-group .modal-close.modal-action";
+		public static final String cssDeleteModalLeaveCheckboxGroup = "[data-uie-name='enter-leave-conversation']";
+
+		// delete warning for 1:1 conversation
+		public static final String cssDeleteModalSingle = ".modal-clear";
+		public static final String cssDeleteModalCancelButtonSingle = ".modal-clear .modal-close.button-inverted";
+		public static final String cssDeleteModalActionButtonSingle = ".modal-clear .modal-close.modal-action";
+
 	}
 
 	public static final class SettingsPage {
@@ -307,6 +319,11 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
 				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
+				xpathRoot, name);
+
+		public static final Function<String, String> xpathSearchResultGroupByName = (
+				name) -> String.format(
+				"%s//*[@data-uie-name='item-group' and .//*[text()='%s']]",
 				xpathRoot, name);
 
 		public static final String cssCloseSearchButton = ".search-header span[data-uie-name='do-close']";

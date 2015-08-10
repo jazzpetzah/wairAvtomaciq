@@ -74,6 +74,9 @@ public class ContactListPage extends WebPage {
 	@FindBy(css = WebAppLocators.ContactListPage.cssBlockButton)
 	private WebElement blockButton;
 
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteButton)
+	private WebElement deleteButton;
+
 	// leave warning
 
 	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveModalCancelButton)
@@ -89,6 +92,20 @@ public class ContactListPage extends WebPage {
 
 	@FindBy(css = WebAppLocators.ContactListPage.cssBlockModalActionButton)
 	private WebElement blockModalActionButton;
+
+	// delete warning
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalCancelButtonGroup)
+	private WebElement deleteModalCancelButtonGroup;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalActionButtonGroup)
+	private WebElement deleteModalActionButtonGroup;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalLeaveCheckboxGroup)
+	private WebElement deleteModalLeaveCheckboxGroup;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalActionButtonSingle)
+	private WebElement deleteModalActionButtonSingle;
 
 	public ContactListPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -575,4 +592,46 @@ public class ContactListPage extends WebPage {
 		blockModalCancelButton.click();
 	}
 
+	public void clickBlockOnBlockWarning() {
+		blockModalActionButton.click();
+	}
+
+	public void clickDeleteConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
+		deleteButton.click();
+	}
+
+	public boolean isDeleteWarningModalForGroupVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ContactListPage.cssDeleteModalGroup));
+	}
+
+	public void clickDeleteOnDeleteWarning() {
+		deleteModalActionButtonGroup.click();
+	}
+
+	public void clickLeaveOnLeaveWarning() {
+		leaveModalActionButton.click();
+	}
+
+	public void clickLeaveCheckboxOnDeleteWarning() {
+		deleteModalLeaveCheckboxGroup.click();
+	}
+
+	public void clickCancelOnDeleteWarning() {
+		deleteModalCancelButtonGroup.click();
+	}
+
+	public boolean isDeleteWarningModalSingleVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ContactListPage.cssDeleteModalSingle));
+	}
+
+	public void clickDeleteOnDeleteWarningSingle() {
+		deleteModalActionButtonSingle.click();
+	}
 }

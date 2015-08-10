@@ -1,10 +1,6 @@
 package com.wearezeta.auto.ios.reporter;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -41,39 +37,15 @@ public class IOSPerfReportModel extends PerfReportModel {
 		}
 	}
 
-	private static List<Long> readLogValues(final String patternStr,
+	@Override
+	protected List<Long> readLogValues(final String patternStr,
 			final String output) {
-		final Pattern pattern = Pattern.compile(patternStr);
-		final Matcher matcher = pattern.matcher(output);
-		final List<Long> result = new ArrayList<>();
-		int count = 0;
-		while (matcher.find()) {
-			try {
-				//workaround for false entry on contact list update
-				long time = Long.parseLong(matcher.group(1));
-				if (count++ == 0 && time > 1000) {
-					continue;
-				}
-				result.add(time);
-			} catch (NumberFormatException e) {
-				log.error(e);
-			}
+		final List<Long> result = super.readLogValues(patternStr, output);
+		// workaround for false entry on contact list update
+		if (result.size() > 0 && result.get(0) > 1000) {
+			result.remove(0);
 		}
 		return result;
-	}
-
-	private static long readLogValue(final String patternStr,
-			final String output) {
-		final Pattern pattern = Pattern.compile(patternStr);
-		final Matcher matcher = pattern.matcher(output);
-		while (matcher.find()) {
-			try {
-				return Long.parseLong(matcher.group(1));
-			} catch (NumberFormatException e) {
-				log.error(e);
-			}
-		}
-		return 0;
 	}
 
 	public void loadDataFromLog(final String output) {

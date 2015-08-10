@@ -501,9 +501,6 @@ public class DialogPage extends IOSPage {
 	public VideoPlayerPage clickOnVideoContainerFirstTime() throws Exception {
 		VideoPlayerPage page = new VideoPlayerPage(this.getLazyDriver());
 		youtubeCell.click();
-		if (!page.isVideoPlayerPageOpened()) {
-			youtubeCell.click();
-		}
 
 		return page;
 	}

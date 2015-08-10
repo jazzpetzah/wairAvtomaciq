@@ -1,9 +1,9 @@
 Feature: Self Profile
 
   @id2264 @smoke
-  Scenario Outline: ZClient change name in portrait mode
+  Scenario Outline: I can change my name in portrait mode
     Given There is 1 user where <Name> is me
-    Given I rotate UI to portrait
+    Given I rotate UI to <Orientation>
     Given I sign in using my email
     Given I see the conversations list with no conversations
     When I tap my avatar on top of conversations list
@@ -17,7 +17,7 @@ Feature: Self Profile
       | user1Name | NewTestName |
 
   @id2250 @smoke
-  Scenario Outline: ZClient change name in landscape mode
+  Scenario Outline: I can change my name in landscape mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
@@ -31,46 +31,8 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id2261 @smoke
-  Scenario Outline: Check contact personal info in portrait mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I see the conversations list with conversations
-    When I tap the conversation <Contact>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
-    Then I see the Single user popover
-    And I see the user name <Contact> on Single user popover
-    And I see the user email <ContactEmail> on Single user popover
-
-    Examples: 
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
-
-  @id2247 @smoke
-  Scenario Outline: Check contact personal info in landscape mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I sign in using my email
-    Given I see the conversations list with conversations
-    When I tap the conversation <Contact>
-    And I see the conversation view
-    And I tap Show Tools button on conversation view page
-    And I tap Show Details button on conversation view page
-    Then I see the Single user popover
-    And I see the user name <Contact> on Single user popover
-    And I see the user email <ContactEmail> on Single user popover
-
-    Examples: 
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
-
   @id2288 @smoke
-  Scenario Outline: Change user picture in portrait mode
+  Scenario Outline: Change profile picture using existing from gallery in portrait mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
@@ -91,7 +53,7 @@ Feature: Self Profile
       | user1Name |
 
   @id2289 @smoke
-  Scenario Outline: Change user picture in landscape mode
+  Scenario Outline: Change profile picture using existing from gallery in landscape mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
