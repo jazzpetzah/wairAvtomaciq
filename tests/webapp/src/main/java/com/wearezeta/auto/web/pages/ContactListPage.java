@@ -599,4 +599,8 @@ public class ContactListPage extends WebPage {
 	public void clickDeleteOnDeleteWarning() {
 		deleteModalActionButton.click();
 	}
+
+	public void clickLeaveOnLeaveWarning() {
+		leaveModalActionButton.click();
+	}
 }

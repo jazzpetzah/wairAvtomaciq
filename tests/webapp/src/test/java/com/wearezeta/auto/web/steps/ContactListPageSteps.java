@@ -685,4 +685,15 @@ public class ContactListPageSteps {
 	public void IClickDeleteButtonOnDeleteWarning() throws Throwable {
 		PagesCollection.contactListPage.clickDeleteOnDeleteWarning();
 	}
+
+	/**
+	 * Click the leave button in the leave warning
+	 * 
+	 * @step. ^I click leave button in the leave warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click leave button in the leave warning$")
+	public void IClickLeaveButtonOnLeaveWarning() throws Throwable {
+		PagesCollection.contactListPage.clickLeaveOnLeaveWarning();
+	}
 }

@@ -156,6 +156,41 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Msg1    | Login2     | Password2     | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | message | user2Email | user2Password | LEFT    |
 
+  @staging @id3213
+  Scenario Outline: Verify I can leave a group conversation from conversation list
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    When I click on options button for conversation <ChatName>
+    And I click the option to leave in the options popover
+    And I see a leave warning modal
+    And I click leave button in the leave warning
+    Then I see Contact list with name <ChatName>
+    And I see Archive button at the bottom of my Contact list
+    When I open archive
+    And I unarchive conversation <ChatName>
+    Then I do not see Archive button at the bottom of my Contact list
+    And I see <Action> action for me in conversation
+    When User <Contact1> sent message <Msg1> to conversation <ChatName>
+    Then I do not see text message <Msg1>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And User <Contact1> is me
+    And I see Sign In page
+    And I Sign in using login <Login2> and password <Password2>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    Then I see <Action> action for <Name> in conversation
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Msg1    | Login2     | Password2     | Action |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | message | user2Email | user2Password | LEFT    |
+
   @staging @id3222
   Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
