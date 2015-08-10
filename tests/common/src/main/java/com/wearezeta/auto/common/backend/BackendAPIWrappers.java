@@ -386,7 +386,7 @@ public final class BackendAPIWrappers {
 			String chatName, String imagePath) throws Exception {
 		FileInputStream fis = new FileInputStream(imagePath);
 		try {
-			sendPictureToChatByName(userFrom, chatName, imagePath);
+			sendPictureToChatByName(userFrom, chatName, fis);
 		} finally {
 			fis.close();
 		}
