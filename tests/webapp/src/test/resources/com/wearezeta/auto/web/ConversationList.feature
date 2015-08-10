@@ -86,7 +86,7 @@ Feature: Conversation List
       | user1Email | user1Password | user1Name | user2Name |
 
   @staging @id3211
-  Scenario Outline: Verify I can cancel leaving a 1:1 conversation from conversation list
+  Scenario Outline: Verify I can cancel blocking a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
@@ -155,6 +155,35 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Msg1    | Login2     | Password2     | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | message | user2Email | user2Password | LEFT    |
+
+  @staging @id3210
+  Scenario Outline: Verify I can block a 1:1 conversation from conversation list
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact>
+    When I click on options button for conversation <Contact>
+    And I click the option to block in the options popover
+    Then I see a block warning modal
+    And I click block button in the block warning
+    Then I do not see Contact list with name <Contact>
+    When User <Contact> sent message <Msg1> to conversation <Name>
+    Then I do not see Contact list with name <Contact>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And User <Contact> is me
+    And I see Sign In page
+    And I Sign in using login <Login2> and password <Password2>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Name>
+    Then I do not see <Action> action for <Name> in conversation
+
+    Examples: 
+      | Login      | Password      | Name      | Contact   | Login2     | Password2     | Msg1    | Action |
+      | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password | message | LEFT   |
 
   @staging @id3213
   Scenario Outline: Verify I can leave a group conversation from conversation list

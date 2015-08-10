@@ -638,6 +638,17 @@ public class ContactListPageSteps {
 	}
 
 	/**
+	 * Click the block button
+	 * 
+	 * @step. ^I click block button in the block warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click block button in the block warning$")
+	public void IClickBlockButtonOnBlockWarning() throws Throwable {
+		PagesCollection.contactListPage.clickBlockOnBlockWarning();
+	}
+
+	/**
 	 * Verifies a conversation is on top of conversation list
 	 *
 	 * @param conv

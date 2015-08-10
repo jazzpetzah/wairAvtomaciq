@@ -592,6 +592,10 @@ public class ContactListPage extends WebPage {
 		blockModalCancelButton.click();
 	}
 
+	public void clickBlockOnBlockWarning() {
+		blockModalActionButton.click();
+	}
+
 	public void clickDeleteConversation() throws Exception {
 		waitForOptionButtonsToBeClickable();
 		deleteButton.click();
