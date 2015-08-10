@@ -131,4 +131,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	public void tapCloseInstrumentsButton() {
 		closeToolsButton.click();
 	}
+
+	public boolean waitUntilMessageIsNotVisible(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathConversationMessageByValue
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
 }

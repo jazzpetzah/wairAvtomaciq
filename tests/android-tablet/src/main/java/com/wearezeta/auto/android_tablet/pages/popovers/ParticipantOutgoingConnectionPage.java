@@ -20,7 +20,7 @@ class ParticipantOutgoingConnectionPage extends AbstractOutgoingConnectionPage {
 	}
 
 	@Override
-	protected By getConnectButtonLocator() {
+	protected By getBlockButtonLocator() {
 		return By.id(idConnectButton);
 	}
 

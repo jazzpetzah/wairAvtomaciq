@@ -34,5 +34,4 @@ public class SingleConnectedUserDetalsPage extends
 		final By locator = By.xpath(xpathEmailByValue.apply(expectedEmail));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
-
 }
