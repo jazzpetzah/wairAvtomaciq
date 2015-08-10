@@ -288,13 +288,13 @@ public class ConversationPageSteps {
 	 *
 	 */
 	@Then("^I( do not)? see (.*) action for (.*) in conversation$")
-	public void ThenISeeActionForContactInConversation(String shouldNot,
+	public void ThenISeeActionForContactInConversation(String doNot,
 			String message, String contacts) throws Exception {
 		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);
 		parts.addAll(CommonSteps.splitAliases(contacts));
-		if (shouldNot == null) {
+		if (doNot == null) {
 			assertThat("Check action",
 					PagesCollection.conversationPage.getLastActionMessage(),
 					containsString(message));
