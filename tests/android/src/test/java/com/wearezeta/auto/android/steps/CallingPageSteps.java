@@ -1,19 +1,14 @@
 package com.wearezeta.auto.android.steps;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.CallingLockscreenPage;
 import com.wearezeta.auto.android.pages.CallingOverlayPage;
-import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.When;
 
 public class CallingPageSteps {
-	
-	private static final Logger log = ZetaLogger.getLog(CallingPageSteps.class.getSimpleName());
-	
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 			.getInstance();
 
