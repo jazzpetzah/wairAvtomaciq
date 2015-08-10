@@ -187,5 +187,5 @@ Feature: Conversation List
     And I see ping message <PING>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message  | Action  | PING   |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello    | STARTED | pinged |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message | Action  | PING   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello   | STARTED | pinged |
