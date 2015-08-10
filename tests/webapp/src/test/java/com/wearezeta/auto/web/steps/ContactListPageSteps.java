@@ -609,7 +609,7 @@ public class ContactListPageSteps {
 	 * @step. ^I click cancel button in the leave warning$
 	 * @throws Throwable
 	 */
-	@Then("^I click cancel button in the leave warning for group conversations$")
+	@Then("^I click cancel button in the leave warning$")
 	public void IClickCancelButtonOnLeaveWarning() throws Throwable {
 		PagesCollection.contactListPage.clickCancelOnLeaveWarning();
 	}

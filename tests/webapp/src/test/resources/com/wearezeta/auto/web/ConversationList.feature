@@ -114,8 +114,8 @@ Feature: Conversation List
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click the option to leave in the options popover
-    Then I see a leave warning modal for group conversations
-    And I click cancel button in the leave warning for group conversations
+    Then I see a leave warning modal
+    And I click cancel button in the leave warning
     Then I see Contact list with name <ChatName>
 
     Examples: 
@@ -198,7 +198,7 @@ Feature: Conversation List
     And I click the option to leave in the options popover
     And I see a leave warning modal
     And I click leave button in the leave warning
-    Then I see Contact list with name <ChatName>
+    Then I do not see Contact list with name <ChatName>
     And I see Archive button at the bottom of my Contact list
     When I open archive
     And I unarchive conversation <ChatName>
