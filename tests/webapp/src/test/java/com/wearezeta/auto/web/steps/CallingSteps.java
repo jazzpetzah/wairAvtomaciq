@@ -2,13 +2,19 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class CallingSteps {
+
+	private static final Logger LOG = ZetaLogger
+			.getLog(ClientUsersManager.class.getName());
 
 	private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
 			.getInstance();
@@ -160,8 +166,7 @@ public class CallingSteps {
 		WarningPageSteps warningSteps = new WarningPageSteps();
 		List<Throwable> failures = new ArrayList<>();
 		for (int i = 0; i < times; i++) {
-			System.out.println("\n\n");
-			System.out.println("STARTING CALL " + i);
+			LOG.info("\n\nSTARTING CALL " + i);
 			try {
 				UserXAcceptsNextIncomingCallAutomatically("user2Name");
 				UserXAcceptsNextIncomingCallAutomatically("user3Name");
@@ -173,7 +178,7 @@ public class CallingSteps {
 					} catch (Throwable e) {
 						warningSteps
 								.IClickButtonInAnotherCallWarningModal("End Call");
-						System.err.println(e.getMessage());
+						LOG.error(e.getMessage());
 					}
 					convSteps.ICallUser();
 					UserXVerifesCallStatusToUserY("user2Name", "active", 60);
@@ -186,15 +191,15 @@ public class CallingSteps {
 					convSteps.IWaitForCallingBar("user5Name");
 					convSteps.IEndTheCall();
 					convSteps.IDoNotCallingBar();
-					System.out.println("CALL " + i + " SUCCESSFUL");
+					LOG.info("CALL " + i + " SUCCESSFUL");
 				} catch (Throwable e) {
-					System.out.println("CALL " + i + " FAILED");
+					LOG.info("CALL " + i + " FAILED");
 					failures.add(e);
 					try {
 						convSteps.IEndTheCall();
 						convSteps.IDoNotCallingBar();
 					} catch (Throwable ex) {
-						System.err.println("Cannot stop call " + i + " " + ex);
+						LOG.error("Cannot stop call " + i + " " + ex);
 					}
 				}
 				commonCalling.stopWaitingCall("user2Name");
@@ -202,23 +207,22 @@ public class CallingSteps {
 				commonCalling.stopWaitingCall("user4Name");
 				commonCalling.stopWaitingCall("user5Name");
 			} catch (Throwable e) {
-				System.err.println("Can not waiting stop call " + i + " " + e);
+				LOG.error("Can not stop waiting call " + i + " " + e);
 				try {
 					convSteps.IEndTheCall();
 					convSteps.IDoNotCallingBar();
 				} catch (Throwable ex) {
-					System.err.println("Can not stop call " + i + " " + ex);
+					LOG.error("Can not stop call " + i + " " + ex);
 				}
 			}
 		}
 
-		System.out.println(failures.size() + " failures happened during "
-				+ times + " calls");
+		LOG.info(failures.size() + " failures happened during " + times
+				+ " calls");
 		for (Throwable failure : failures) {
-			System.err.println(failures.indexOf(failure) + ": "
-					+ failure.getMessage());
+			LOG.error(failures.indexOf(failure) + ": " + failure.getMessage());
 		}
-		System.out.println(failures.size() + " failures happened during "
-				+ times + " calls");
+		LOG.info(failures.size() + " failures happened during " + times
+				+ " calls");
 	}
 }
