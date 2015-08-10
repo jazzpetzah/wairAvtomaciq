@@ -609,7 +609,7 @@ public class ContactListPageSteps {
 	 * @step. ^I click cancel button in the leave warning$
 	 * @throws Throwable
 	 */
-	@Then("^I click cancel button in the leave warning$")
+	@Then("^I click cancel button in the leave warning for group conversations$")
 	public void IClickCancelButtonOnLeaveWarning() throws Throwable {
 		PagesCollection.contactListPage.clickCancelOnLeaveWarning();
 	}
@@ -669,7 +669,7 @@ public class ContactListPageSteps {
 	 * @step. ^I see a delete warning modal$
 	 * @throws Exception
 	 */
-	@Then("^I see a delete warning modal$")
+	@Then("^I see a delete warning modal for group conversations$")
 	public void ISeeDeleteWarning() throws Exception {
 		Assert.assertTrue(PagesCollection.contactListPage
 				.isDeleteWarningModalVisible());
@@ -681,7 +681,7 @@ public class ContactListPageSteps {
 	 * @step. ^I click delete button in the delete warning$
 	 * @throws Throwable
 	 */
-	@Then("^I click delete button in the delete warning$")
+	@Then("^I click delete button in the delete warning for group conversations$")
 	public void IClickDeleteButtonOnDeleteWarning() throws Throwable {
 		PagesCollection.contactListPage.clickDeleteOnDeleteWarning();
 	}

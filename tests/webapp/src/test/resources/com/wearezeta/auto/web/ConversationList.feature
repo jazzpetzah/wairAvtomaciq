@@ -114,8 +114,8 @@ Feature: Conversation List
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click the option to leave in the options popover
-    Then I see a leave warning modal
-    And I click cancel button in the leave warning
+    Then I see a leave warning modal for group conversations
+    And I click cancel button in the leave warning for group conversations
     Then I see Contact list with name <ChatName>
 
     Examples: 
@@ -133,8 +133,8 @@ Feature: Conversation List
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click delete in the options popover
-    Then I see a delete warning modal
-    And I click delete button in the delete warning
+    Then I see a delete warning modal for group conversations
+    And I click delete button in the delete warning for group conversations
     Then I do not see Contact list with name <ChatName>
     When I open People Picker from Contact List
     And I type <ChatName> in search field of People Picker
@@ -155,3 +155,37 @@ Feature: Conversation List
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Msg1    | Login2     | Password2     | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | message | user2Email | user2Password | LEFT    |
+
+  @staging @id3222
+  Scenario Outline: Verify I see picture, ping and call after I delete a group conversation from conversation list
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    When I click on options button for conversation <ChatName>
+    And I click delete in the options popover
+    Then I see a delete warning modal for group conversations
+    And I click delete button in the delete warning for group conversations
+    Then I do not see Contact list with name <ChatName>
+    And User <Contact1> sent message <Message> to conversation <ChatName>
+    And I open conversation with <ChatName>
+    Then I see <Action> action for <Contact1> in conversation
+    And I see <Action> action for <Contact2> in conversation
+    And I see text message <Message>
+    When I click on options button for conversation <ChatName>
+    And I click delete in the options popover
+    Then I see a delete warning modal for group conversations
+    And I click delete button in the delete warning for group conversations
+    Then I do not see Contact list with name <ChatName>
+    And User <Contact1> pinged in the conversation with <ChatName>
+    And I open conversation with <ChatName>
+    Then I see <Action> action for <Contact1> in conversation
+    And I see <Action> action for <Contact2> in conversation
+    And I see ping message <PING>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message  | Action  | PING   |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello    | STARTED | pinged |
