@@ -206,8 +206,8 @@ Feature: Conversation List
     And I see sent picture <Image> in the conversation view
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message  | Action  | PING   | Image                     | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello    | STARTED | pinged | userpicture_landscape.jpg | autocall    |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message | Action  | PING   | Image                     | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello   | STARTED | pinged | userpicture_landscape.jpg | autocall    |
 
   @staging @id3257
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list
@@ -239,6 +239,25 @@ Feature: Conversation List
     And I see my avatar on top of Contact list
     When I open conversation with <ChatName>
     Then I see <Message> action in conversation
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Msg1    | Login2     | Password2     | Message |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | message | user2Email | user2Password | LEFT    |
+
+  @staging @id3219 @torun
+  Scenario Outline: Verify I can cancel deleting a group conversation from conversation list
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    When I click on options button for conversation <ChatName>
+    And I click delete in the options popover
+    Then I see a delete warning modal for group conversations
+    And I click cancel button in the delete warning for group conversations
+    Then I see Contact list with name <ChatName>
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Msg1    | Login2     | Password2     | Message |
