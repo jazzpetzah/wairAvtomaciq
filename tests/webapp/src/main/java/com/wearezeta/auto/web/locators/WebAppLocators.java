@@ -140,6 +140,8 @@ public final class WebAppLocators {
 		public static final String cssDeleteModal = ".modal-clear-group";
 		public static final String cssDeleteModalCancelButton = ".modal-clear-group .modal-close.button-inverted";
 		public static final String cssDeleteModalActionButton = ".modal-clear-group .modal-close.modal-action";
+		public static final String cssDeleteModalLeaveCheckbox = "[data-uie-name='enter-leave-conversation']";
+
 	}
 
 	public static final class SettingsPage {
