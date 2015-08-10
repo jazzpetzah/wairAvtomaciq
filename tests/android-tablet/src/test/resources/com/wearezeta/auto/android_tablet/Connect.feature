@@ -1,7 +1,7 @@
 Feature: Connect
 
   @id2281 @smoke
-  Scenario Outline: Send connection request from search in landscape
+  Scenario Outline: Send connection request from search by name in landscape
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
@@ -25,7 +25,7 @@ Feature: Connect
       | user1Name | user2Name | Hellow friend |
 
   @id2280 @smoke
-  Scenario Outline: Send connection request from search in portrait
+  Scenario Outline: Send connection request from search by name in portrait
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
