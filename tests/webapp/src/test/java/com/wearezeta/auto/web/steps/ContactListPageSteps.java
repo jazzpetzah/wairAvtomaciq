@@ -753,4 +753,15 @@ public class ContactListPageSteps {
 	public void IClickDeleteButtonOnDeleteWarningForSingle() throws Throwable {
 		PagesCollection.contactListPage.clickDeleteOnDeleteWarningSingle();
 	}
+
+	/**
+	 * Click the cancel button in the delete warning
+	 * 
+	 * @step. ^I click cancel button in the delete warning for 1:1 conversation$
+	 * @throws Throwable
+	 */
+	@Then("^I click cancel button in the delete warning for 1:1 conversations$")
+	public void IClickCancelButtonOnDeleteWarningForSingle() throws Throwable {
+		PagesCollection.contactListPage.clickCancelOnDeleteWarningSingle();
+	}
 }
