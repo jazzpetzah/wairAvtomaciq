@@ -158,45 +158,65 @@ public class CallingSteps {
 		ConversationPageSteps convSteps = new ConversationPageSteps();
 		CommonCallingSteps2 commonCalling = CommonCallingSteps2.getInstance();
 		WarningPageSteps warningSteps = new WarningPageSteps();
-		List<String> failures = new ArrayList<>();
+		List<Throwable> failures = new ArrayList<>();
 		for (int i = 0; i < times; i++) {
-			UserXAcceptsNextIncomingCallAutomatically("user2Name");
-			UserXAcceptsNextIncomingCallAutomatically("user3Name");
-			UserXAcceptsNextIncomingCallAutomatically("user4Name");
-			UserXAcceptsNextIncomingCallAutomatically("user5Name");
+			System.out.println("\n\n");
+			System.out.println("STARTING CALL " + i);
 			try {
+				UserXAcceptsNextIncomingCallAutomatically("user2Name");
+				UserXAcceptsNextIncomingCallAutomatically("user3Name");
+				UserXAcceptsNextIncomingCallAutomatically("user4Name");
+				UserXAcceptsNextIncomingCallAutomatically("user5Name");
 				try {
-					warningSteps.ISeeAnotherCallWarningModal("not");
-				} catch (AssertionError e) {
-					warningSteps
-							.IClickButtonInAnotherCallWarningModal("End Call");
-					System.err.println(e.getMessage());
+					try {
+						warningSteps.ISeeAnotherCallWarningModal("not");
+					} catch (Throwable e) {
+						warningSteps
+								.IClickButtonInAnotherCallWarningModal("End Call");
+						System.err.println(e.getMessage());
+					}
+					convSteps.ICallUser();
+					UserXVerifesCallStatusToUserY("user2Name", "active", 60);
+					UserXVerifesCallStatusToUserY("user3Name", "active", 60);
+					UserXVerifesCallStatusToUserY("user4Name", "active", 60);
+					UserXVerifesCallStatusToUserY("user5Name", "active", 60);
+					convSteps.IWaitForCallingBar("user2Name");
+					convSteps.IWaitForCallingBar("user3Name");
+					convSteps.IWaitForCallingBar("user4Name");
+					convSteps.IWaitForCallingBar("user5Name");
+					convSteps.IEndTheCall();
+					convSteps.IDoNotCallingBar();
+					System.out.println("CALL " + i + " SUCCESSFUL");
+				} catch (Throwable e) {
+					System.out.println("CALL " + i + " FAILED");
+					failures.add(e);
+					try {
+						convSteps.IEndTheCall();
+						convSteps.IDoNotCallingBar();
+					} catch (Throwable ex) {
+						System.err.println("Cannot stop call " + i + " " + ex);
+					}
 				}
-				convSteps.ICallUser();
-				UserXVerifesCallStatusToUserY("user2Name", "active", 30);
-				UserXVerifesCallStatusToUserY("user3Name", "active", 30);
-				UserXVerifesCallStatusToUserY("user4Name", "active", 30);
-				UserXVerifesCallStatusToUserY("user5Name", "active", 30);
-				convSteps.IWaitForCallingBar("user2Name");
-				convSteps.IWaitForCallingBar("user3Name");
-				convSteps.IWaitForCallingBar("user4Name");
-				convSteps.IWaitForCallingBar("user5Name");
-				convSteps.IEndTheCall();
-				convSteps.IDoNotCallingBar();
-			} catch (Exception e) {
-				failures.add(e.getMessage());
+				commonCalling.stopWaitingCall("user2Name");
+				commonCalling.stopWaitingCall("user3Name");
+				commonCalling.stopWaitingCall("user4Name");
+				commonCalling.stopWaitingCall("user5Name");
+			} catch (Throwable e) {
+				System.err.println("Can not waiting stop call " + i + " " + e);
+				try {
+					convSteps.IEndTheCall();
+					convSteps.IDoNotCallingBar();
+				} catch (Throwable ex) {
+					System.err.println("Can not stop call " + i + " " + ex);
+				}
 			}
-
-			commonCalling.stopWaitingCall("user2Name");
-			commonCalling.stopWaitingCall("user3Name");
-			commonCalling.stopWaitingCall("user4Name");
-			commonCalling.stopWaitingCall("user5Name");
 		}
 
 		System.out.println(failures.size() + " failures happened during "
 				+ times + " calls");
-		for (String failure : failures) {
-			System.err.println(failures.indexOf(failure) + ": " + failure);
+		for (Throwable failure : failures) {
+			System.err.println(failures.indexOf(failure) + ": "
+					+ failure.getMessage());
 		}
 		System.out.println(failures.size() + " failures happened during "
 				+ times + " calls");
