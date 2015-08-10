@@ -554,14 +554,10 @@ public class ConversationPage extends WebPage {
 			throws Exception {
 		final By locator = By
 				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
-		
-		DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator);
 
-		if (this.getDriver().findElements(locator).isEmpty()) {
+		if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator)) {
 			return true;
 		} else {
-			assert DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-					locator);
 			final List<WebElement> actionMessages = this.getDriver()
 					.findElements(locator);
 			// Get the most recent action message only
