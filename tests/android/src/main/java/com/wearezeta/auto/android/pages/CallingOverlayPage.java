@@ -53,6 +53,35 @@ public class CallingOverlayPage extends AndroidPage {
 
 	private static final String idCallingMicMute = "cib__calling__mic_mute";
 
+	private static final String xpathGroupCallParticipantChathead = "//*[@id='fl__calling__container']//c";
+
+	private static final String xpathGroupCallIsFullAlertTitle = "//DialogTitle[@id='alertTitle' and @value='The call is full']";
+
+	private static final String idGroupCallIsFullOKButton = "button3";
+	@FindBy(id = idGroupCallIsFullOKButton)
+	private WebElement groupCallIsFullOKButton;
+	
+	private static final String xpathAnswerCallAlertTitle = "//DialogTitle[@id='alertTitle' and @value='Answer call?']";
+
+	private static final String idAnswerCallCancelButton = "button2";
+	@FindBy(id = idAnswerCallCancelButton)
+	private WebElement answerCallCancelButton;
+
+	private static final String idAnswerCallContinueButton = "button1";
+	@FindBy(id = idAnswerCallContinueButton)
+	private WebElement answerCallContinueButton;
+	
+	private static final String xpathEndCurrentCallAlertTitle = "//DialogTitle[@id='alertTitle' and @value='End current call?']";
+
+	private static final String idEndCurrentCallCancelButton = "button2";
+	@FindBy(id = idEndCurrentCallCancelButton)
+	private WebElement endCurrentCallCancelButton;
+
+	private static final String idEndCurrentCallContinueButton = "button1";
+	@FindBy(id = idEndCurrentCallContinueButton)
+	private WebElement endCurrentCallContinueButton;
+	
+	
 	public CallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -63,7 +92,7 @@ public class CallingOverlayPage extends AndroidPage {
 		return null;
 	}
 
-	private static final int VISIBILITY_TIMEOUT_SECONDS = 5;
+	private static final int VISIBILITY_TIMEOUT_SECONDS = 20;
 
 	public boolean waitUntilVisible() throws Exception {
 		final By locator = By.id(idCallingOverlayContainer);
@@ -147,15 +176,17 @@ public class CallingOverlayPage extends AndroidPage {
 	public boolean waitUntilJoinGroupCallButtonVisible(String name)
 			throws Exception {
 		final By locator = By.xpath(xpathJoinButton.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator, VISIBILITY_TIMEOUT_SECONDS);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator,
+				VISIBILITY_TIMEOUT_SECONDS);
 	}
-	
+
 	public boolean waitUntilJoinGroupCallButtonNotVisible(String name)
 			throws Exception {
 		final By locator = By.xpath(xpathJoinButton.apply(name));
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, VISIBILITY_TIMEOUT_SECONDS);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator,
+				VISIBILITY_TIMEOUT_SECONDS);
 	}
-	
+
 	public DialogPage joinGroupCall() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idGroupCallingJoinOverlayContainer)) : "Accept button is not visible";
@@ -171,5 +202,51 @@ public class CallingOverlayPage extends AndroidPage {
 	public boolean ongoingCallMinibarIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idOngoingCallMinibar));
+	}
+
+	public int numberOfParticipantsInGroupCall() throws Exception {
+		By searchCriteria = By.xpath(xpathGroupCallParticipantChathead);
+		return getDriver().findElements(searchCriteria).size();
+	}
+
+	public boolean isGroupCallFullAlertVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathGroupCallIsFullAlertTitle));
+	}
+	
+
+	public DialogPage closeGroupCallFullAlert() throws Exception {
+		groupCallIsFullOKButton.click();
+		return new DialogPage(getLazyDriver());
+	}
+	
+	public boolean isAnswerCallAlertVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathAnswerCallAlertTitle));
+	}
+	
+	public DialogPage answerCallContinue() throws Exception {
+		answerCallContinueButton.click();
+		return new DialogPage(getLazyDriver());
+	}
+	
+	public DialogPage answerCallCancel() throws Exception {
+		answerCallCancelButton.click();
+		return new DialogPage(getLazyDriver());
+	}
+	
+	public boolean isEndCurrentCallAlertVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathEndCurrentCallAlertTitle));
+	}
+	
+	public DialogPage endCurrentCallContinue() throws Exception {
+		endCurrentCallContinueButton.click();
+		return new DialogPage(getLazyDriver());
+	}
+	
+	public DialogPage endCurrentCallCancel() throws Exception {
+		endCurrentCallCancelButton.click();
+		return new DialogPage(getLazyDriver());
 	}
 }

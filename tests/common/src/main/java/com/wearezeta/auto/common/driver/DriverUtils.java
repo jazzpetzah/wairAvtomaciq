@@ -223,28 +223,34 @@ public class DriverUtils {
 	}
 
 	/**
+	 * Swipes from point inside element given by percent of element size.
+	 * Default swipe size is 2/3 of window.width, but is end point outsie of
+	 * screen then it is changed to 0;
 	 * 
 	 * @param driver
 	 * @param element
 	 * @param time
-	 * @param percentX
-	 *            min value is 1. Where to swipe (in percents relative to the
-	 *            original control width)
-	 * @param percentY
-	 *            min value is 1. Where to swipe (in percents relative to the
-	 *            original control height)
+	 * @param elementPercentX
+	 *            min value is 1. Starting point of swipe (in percents relative
+	 *            to the original control width)
+	 * @param elementPercentY
+	 *            min value is 1. Starting point of swipe (in percents relative
+	 *            to the original control height)
 	 */
 	public static void swipeLeft(AppiumDriver driver, WebElement element,
-			int time, int percentX, int percentY) {
+			int time, int elementPercentX, int elementPercentY) {
 		final Point coords = element.getLocation();
+		final Dimension screenSize = driver.manage().window().getSize();
 		final Dimension elementSize = element.getSize();
 		final int xOffset = (int) Math.round(elementSize.width
-				* (percentX / 100.0));
+				* (elementPercentX / 100.0));
 		final int yOffset = (int) Math.round(elementSize.height
-				* (percentY / 100.0));
+				* (elementPercentY / 100.0));
+		int endX = coords.x + xOffset - screenSize.width * 2 / 3 < 0 ? 0
+				: coords.x + xOffset - screenSize.width * 2 / 3;
 		try {
-			driver.swipe(coords.x + xOffset, coords.y + yOffset, coords.x,
-					coords.y + yOffset, time);
+			driver.swipe(coords.x + xOffset, coords.y + yOffset, endX, coords.y
+					+ yOffset, time);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
