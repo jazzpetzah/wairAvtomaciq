@@ -651,4 +651,38 @@ public class ContactListPageSteps {
 		assertThat("Conversation is not on the top", itemIndex, equalTo(1));
 
 	}
+
+	/**
+	 * Click the delete option
+	 * 
+	 * @step. ^I click delete in the options popover$
+	 * @throws Exception
+	 */
+	@When("^I click delete in the options popover$")
+	public void IClickDeleteButton() throws Exception {
+		PagesCollection.contactListPage.clickDeleteConversation();
+	}
+
+	/**
+	 * Verifies the delete modal is visible
+	 * 
+	 * @step. ^I see a delete warning modal$
+	 * @throws Exception
+	 */
+	@Then("^I see a delete warning modal$")
+	public void ISeeDeleteWarning() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isDeleteWarningModalVisible());
+	}
+
+	/**
+	 * Click the delete button in the delete warning
+	 * 
+	 * @step. ^I click delete button in the delete warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click delete button in the delete warning$")
+	public void IClickDeleteButtonOnDeleteWarning() throws Throwable {
+		PagesCollection.contactListPage.clickDeleteOnDeleteWarning();
+	}
 }

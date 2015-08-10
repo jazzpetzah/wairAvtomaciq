@@ -58,7 +58,7 @@ public final class WebAppLocators {
 
 		public static final String cssUnmuteButton = "[data-uie-name='do-notify']";
 
-		public static final String cssDeleteButton = "[data-uie-name='do-delete']";
+		public static final String cssDeleteButton = "[data-uie-name='do-clear']";
 
 		public static final String cssBlockButton = "[data-uie-name='do-block']";
 
@@ -135,6 +135,11 @@ public final class WebAppLocators {
 		public static final String cssBlockModal = ".modal-block";
 		public static final String cssBlockModalCancelButton = ".modal-block .modal-close.button-inverted";
 		public static final String cssBlockModalActionButton = ".modal-block .modal-close.modal-action";
+
+		// delete warning
+		public static final String cssDeleteModal = ".modal-clear";
+		public static final String cssDeleteModalCancelButton = ".modal-clear .modal-close.button-inverted";
+		public static final String cssDeleteModalActionButton = ".modal-clear .modal-close.modal-action";
 	}
 
 	public static final class SettingsPage {
@@ -307,6 +312,11 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
 				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
+				xpathRoot, name);
+
+		public static final Function<String, String> xpathSearchResultGroupByName = (
+				name) -> String.format(
+				"%s//*[@data-uie-name='item-group' and .//*[text()='%s']]",
 				xpathRoot, name);
 
 		public static final String cssCloseSearchButton = ".search-header span[data-uie-name='do-close']";

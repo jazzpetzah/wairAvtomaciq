@@ -119,5 +119,39 @@ Feature: Conversation List
     Then I see Contact list with name <ChatName>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName     |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | Leave1:1Chat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
+
+  @staging @id3218
+  Scenario Outline: Verify I can delete a group conversation from conversation list
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <ChatName>
+    When I click on options button for conversation <ChatName>
+    And I click delete in the options popover
+    Then I see a delete warning modal
+    And I click delete button in the delete warning
+    Then I do not see Contact list with name <ChatName>
+    When I open People Picker from Contact List
+    And I type <ChatName> in search field of People Picker
+    Then I see group conversation <ChatName> found in People Picker
+    And I close People Picker
+    When User <Contact1> sent message <Msg1> to conversation <ChatName>
+    Then I see Contact list with name <ChatName>
+    And I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And User <Contact1> is me
+    And I see Sign In page
+    And I Sign in using login <Login2> and password <Password2>
+    And I see my avatar on top of Contact list
+    When I open conversation with <ChatName>
+    Then I do not see <Message> action in conversation
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Msg1    | Login2     | Password2     | Message |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | message | user2Email | user2Password | LEFT    |
