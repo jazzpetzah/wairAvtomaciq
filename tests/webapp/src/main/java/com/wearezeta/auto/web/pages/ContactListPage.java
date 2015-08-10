@@ -610,4 +610,8 @@ public class ContactListPage extends WebPage {
 	public void clickLeaveCheckboxOnDeleteWarning() {
 		deleteModalLeaveCheckbox.click();
 	}
+
+	public void clickCancelOnDeleteWarning() {
+		deleteModalCancelButton.click();
+	}
 }

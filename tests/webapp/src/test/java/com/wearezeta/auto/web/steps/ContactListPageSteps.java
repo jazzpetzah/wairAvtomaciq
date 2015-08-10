@@ -708,4 +708,15 @@ public class ContactListPageSteps {
 	public void IClickLeaveCheckboxOnDeleteWarning() throws Throwable {
 		PagesCollection.contactListPage.clickLeaveCheckboxOnDeleteWarning();
 	}
+
+	/**
+	 * Click the cancel button in the delete warning
+	 * 
+	 * @step. ^I click cancel button in the delete warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click cancel button in the delete warning for group conversations$")
+	public void IClickCancelButtonOnDeleteWarning() throws Throwable {
+		PagesCollection.contactListPage.clickCancelOnDeleteWarning();
+	}
 }
