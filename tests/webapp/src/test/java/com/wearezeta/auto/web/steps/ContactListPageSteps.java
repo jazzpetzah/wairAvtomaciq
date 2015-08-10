@@ -666,13 +666,13 @@ public class ContactListPageSteps {
 	/**
 	 * Verifies the delete modal is visible
 	 * 
-	 * @step. ^I see a delete warning modal$
+	 * @step. ^I see a delete warning modal for group conversations$
 	 * @throws Exception
 	 */
 	@Then("^I see a delete warning modal for group conversations$")
-	public void ISeeDeleteWarning() throws Exception {
+	public void ISeeDeleteWarningForGroup() throws Exception {
 		Assert.assertTrue(PagesCollection.contactListPage
-				.isDeleteWarningModalVisible());
+				.isDeleteWarningModalForGroupVisible());
 	}
 
 	/**
@@ -718,5 +718,28 @@ public class ContactListPageSteps {
 	@Then("^I click cancel button in the delete warning for group conversations$")
 	public void IClickCancelButtonOnDeleteWarning() throws Throwable {
 		PagesCollection.contactListPage.clickCancelOnDeleteWarning();
+	}
+
+	/**
+	 * Verifies the delete modal is visible
+	 * 
+	 * @step. ^I see a delete warning modal for 1:1 conversations$
+	 * @throws Exception
+	 */
+	@Then("^I see a delete warning modal for 1:1 conversations$")
+	public void ISeeDeleteWarningForSingle() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isDeleteWarningModalSingleVisible());
+	}
+
+	/**
+	 * Click the delete button in the delete warning
+	 * 
+	 * @step. ^I click delete button in the delete warning for 1:1 conversation$
+	 * @throws Throwable
+	 */
+	@Then("^I click delete button in the delete warning for 1:1 conversations$")
+	public void IClickDeleteButtonOnDeleteWarningForSingle() throws Throwable {
+		PagesCollection.contactListPage.clickDeleteOnDeleteWarningSingle();
 	}
 }
