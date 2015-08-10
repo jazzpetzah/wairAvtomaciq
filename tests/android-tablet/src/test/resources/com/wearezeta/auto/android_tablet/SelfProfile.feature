@@ -32,7 +32,7 @@ Feature: Self Profile
       | user1Name | NewTestName |
 
   @id2288 @smoke
-  Scenario Outline: Change user picture in portrait mode
+  Scenario Outline: Change profile picture using existing from gallery in portrait mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
@@ -53,7 +53,7 @@ Feature: Self Profile
       | user1Name |
 
   @id2289 @smoke
-  Scenario Outline: Change user picture in landscape mode
+  Scenario Outline: Change profile picture using existing from gallery in landscape mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
