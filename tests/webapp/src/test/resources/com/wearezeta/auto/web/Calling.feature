@@ -664,10 +664,7 @@ Feature: Calling
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    Given <Contact1> starts waiting instance using <WaitBackend>
-    Given <Contact2> starts waiting instance using <WaitBackend>
-    Given <Contact3> starts waiting instance using <WaitBackend>
-    Given <Contact4> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <WaitBackend>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
