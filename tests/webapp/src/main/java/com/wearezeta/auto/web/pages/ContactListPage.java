@@ -603,6 +603,10 @@ public class ContactListPage extends WebPage {
 		deleteModalActionButton.click();
 	}
 
+	public void clickLeaveOnLeaveWarning() {
+		leaveModalActionButton.click();
+	}
+
 	public void clickLeaveCheckboxOnDeleteWarning() {
 		deleteModalLeaveCheckbox.click();
 	}

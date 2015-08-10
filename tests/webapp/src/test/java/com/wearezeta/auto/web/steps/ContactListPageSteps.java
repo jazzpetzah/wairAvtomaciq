@@ -687,6 +687,17 @@ public class ContactListPageSteps {
 	}
 
 	/**
+	 * Click the leave button in the leave warning
+	 * 
+	 * @step. ^I click leave button in the leave warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click leave button in the leave warning$")
+	public void IClickLeaveButtonOnLeaveWarning() throws Throwable {
+		PagesCollection.contactListPage.clickLeaveOnLeaveWarning();
+	}
+
+	/**
 	 * Click Leave checkbox on a delete warning modal for group conversations
 	 * 
 	 * @step. ^I click Leave checkbox on a delete warning modal for group
