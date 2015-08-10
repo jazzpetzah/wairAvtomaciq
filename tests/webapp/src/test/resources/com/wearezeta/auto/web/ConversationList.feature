@@ -167,9 +167,9 @@ Feature: Conversation List
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click delete in the options popover
-    Then I see a delete warning modal for group conversations
+    And I see a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
-    Then I do not see Contact list with name <ChatName>
+    And I do not see Contact list with name <ChatName>
     And User <Contact1> sent message <Message> to conversation <ChatName>
     And I open conversation with <ChatName>
     Then I see <Action> action for <Contact1> in conversation
@@ -177,18 +177,37 @@ Feature: Conversation List
     And I see text message <Message>
     When I click on options button for conversation <ChatName>
     And I click delete in the options popover
-    Then I see a delete warning modal for group conversations
+    And I see a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
-    Then I do not see Contact list with name <ChatName>
+    And I do not see Contact list with name <ChatName>
     And User <Contact1> pinged in the conversation with <ChatName>
     And I open conversation with <ChatName>
     Then I see <Action> action for <Contact1> in conversation
     And I see <Action> action for <Contact2> in conversation
     And I see ping message <PING>
+    When I click on options button for conversation <ChatName>
+    And I click delete in the options popover
+    And I see a delete warning modal for group conversations
+    And I click delete button in the delete warning for group conversations
+    And I do not see Contact list with name <ChatName>
+    And <Contact1> calls <ChatName> using <CallBackend>
+    And I open conversation with <ChatName>
+    Then I see <Action> action for <Contact1> in conversation
+    And I see <Action> action for <Contact2> in conversation
+    When I click on options button for conversation <ChatName>
+    And I click delete in the options popover
+    And I see a delete warning modal for group conversations
+    And I click delete button in the delete warning for group conversations
+    And I do not see Contact list with name <ChatName>
+    And Contact <Contact1> sends image <Image> to group conversation <ChatName>
+    And I open conversation with <ChatName>
+    Then I see <Action> action for <Contact1> in conversation
+    And I see <Action> action for <Contact2> in conversation
+    And I see sent picture <Image> in the conversation view
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message | Action  | PING   |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello   | STARTED | pinged |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message  | Action  | PING   | Image                     | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello    | STARTED | pinged | userpicture_landscape.jpg | autocall    |
 
   @staging @id3257
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list
