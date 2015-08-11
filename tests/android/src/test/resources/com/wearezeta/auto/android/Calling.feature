@@ -199,7 +199,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName    | SpeakerBtnName | MuteBtnName |
       | user1Name | user2Name | user3Name | ChatForGroupCall | Speaker        | Mute        |
 
-  @id3240 @regression
+  @id3240 @calling_basic
   Scenario Outline: I can start group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
