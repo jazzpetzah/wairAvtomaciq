@@ -63,6 +63,9 @@ public abstract class IOSPage extends BasePage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameHideKeyboardButton)
 	private WebElement keyboardHideBtn;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameSpaceButton)
+	private WebElement keyboardSpaceBtn;
 
 	private static String imagesPath = "";
 
@@ -237,6 +240,10 @@ public abstract class IOSPage extends BasePage {
 
 	public void clickHideKeyboarButton() {
 		keyboardHideBtn.click();
+	}
+	
+	public void clickSpaceKeyboardButton() {
+		keyboardSpaceBtn.click();
 	}
 
 	public static Object executeScript(String script) throws Exception {

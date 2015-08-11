@@ -289,4 +289,19 @@ public class ConversationViewPageSteps {
 						expectedMessage), getConversationViewPage()
 						.waitUntilPingMessageIsVisible(expectedMessage));
 	}
+
+	/**
+	 * Verify whether missed call notification is visible in conversation view
+	 * 
+	 * @step. ^I see missed group call notification in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see missed group call notification in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeeMissedCallNotification() throws Exception {
+		Assert.assertTrue(
+				"The expected missed group call notification is not visible in the conversation view",
+				getConversationViewPage().waitUntilGCNIsVisible());
+	}
 }

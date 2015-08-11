@@ -404,6 +404,19 @@ public class PeoplePickerPageSteps {
 				getPeoplePickerPage().isCreateConversationButtonVisible());
 	}
 
+	/**
+	 * Click on Open button from Search to start conversation with single user
+	 * 
+	 * @step. ^I click open conversation button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click open conversation button on People picker page$")
+	public void IClickOpenConversationButtonOnPeoplePickerPage()
+			throws Exception {
+		getPeoplePickerPage().clickOpenConversationButton();
+	}
+
 	@When("I click Create Conversation button on People picker page")
 	public void IClickCreateConversationButton() throws Throwable {
 		if (getPeoplePickerPage().isCreateConversationButtonVisible()) {
@@ -476,7 +489,11 @@ public class PeoplePickerPageSteps {
 	public void ISeeThatContactsAreSelected(int number) throws Exception {
 		int numberOfSelectedTopPeople = getPeoplePickerPage()
 				.getNumberOfSelectedTopPeople();
-		Assert.assertEquals(number, numberOfSelectedTopPeople);
+		Assert.assertEquals(
+				"Expected selected contacts: " + number
+						+ " but actual selected contacts: "
+						+ numberOfSelectedTopPeople, number,
+				numberOfSelectedTopPeople);
 	}
 
 	/**
