@@ -187,6 +187,8 @@ public final class CommonRESTHandlers {
 		T responseEntity;
 		try {
 			responseEntity = response.readEntity(responseEntityType);
+			this.responseHandler.verifyRequestResult(response.getStatus(),
+					acceptableResponseCodes);
 		} catch (ProcessingException | IllegalStateException
 				| NullPointerException e) {
 			responseEntity = null;
@@ -194,8 +196,6 @@ public final class CommonRESTHandlers {
 		}
 		log.debug(String.format(" >>> Response: %s",
 				formatLogRecord(responseEntity)));
-		this.responseHandler.verifyRequestResult(response.getStatus(),
-				acceptableResponseCodes);
 		return responseEntity;
 	}
 
