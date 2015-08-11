@@ -173,7 +173,7 @@ public class CallingPageSteps {
 	public void WhenISeeCallingOverlayBigBar() throws Exception {
 		Assert.assertTrue(getCallingOverlayPage().callingOverlayIsVisible());
 		Assert.assertTrue(getCallingOverlayPage()
-				.incominCallerAvatarIsVisible());
+				.incomingCallerAvatarIsVisible());
 		Assert.assertTrue(getCallingOverlayPage().callingDismissIsVisible());
 		Assert.assertTrue(getCallingOverlayPage().callingSpeakerIsVisible());
 		Assert.assertTrue(getCallingOverlayPage().callingMicMuteIsVisible());

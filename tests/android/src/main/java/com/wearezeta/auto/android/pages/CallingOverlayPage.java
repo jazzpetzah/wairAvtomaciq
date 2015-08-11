@@ -60,7 +60,7 @@ public class CallingOverlayPage extends AndroidPage {
 	private static final String idGroupCallIsFullOKButton = "button3";
 	@FindBy(id = idGroupCallIsFullOKButton)
 	private WebElement groupCallIsFullOKButton;
-	
+
 	private static final String xpathAnswerCallAlertTitle = "//DialogTitle[@id='alertTitle' and @value='Answer call?']";
 
 	private static final String idAnswerCallCancelButton = "button2";
@@ -70,7 +70,7 @@ public class CallingOverlayPage extends AndroidPage {
 	private static final String idAnswerCallContinueButton = "button1";
 	@FindBy(id = idAnswerCallContinueButton)
 	private WebElement answerCallContinueButton;
-	
+
 	private static final String xpathEndCurrentCallAlertTitle = "//DialogTitle[@id='alertTitle' and @value='End current call?']";
 
 	private static final String idEndCurrentCallCancelButton = "button2";
@@ -80,8 +80,7 @@ public class CallingOverlayPage extends AndroidPage {
 	private static final String idEndCurrentCallContinueButton = "button1";
 	@FindBy(id = idEndCurrentCallContinueButton)
 	private WebElement endCurrentCallContinueButton;
-	
-	
+
 	public CallingOverlayPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -131,7 +130,7 @@ public class CallingOverlayPage extends AndroidPage {
 		return new DialogPage(getLazyDriver());
 	}
 
-	public boolean incominCallerAvatarIsVisible() throws Exception {
+	public boolean incomingCallerAvatarIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idIncomingCallerAvatarsContainer));
 	}
@@ -213,40 +212,44 @@ public class CallingOverlayPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(xpathGroupCallIsFullAlertTitle));
 	}
-	
 
 	public DialogPage closeGroupCallFullAlert() throws Exception {
 		groupCallIsFullOKButton.click();
 		return new DialogPage(getLazyDriver());
 	}
-	
+
 	public boolean isAnswerCallAlertVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(xpathAnswerCallAlertTitle));
 	}
-	
+
 	public DialogPage answerCallContinue() throws Exception {
 		answerCallContinueButton.click();
 		return new DialogPage(getLazyDriver());
 	}
-	
+
 	public DialogPage answerCallCancel() throws Exception {
 		answerCallCancelButton.click();
 		return new DialogPage(getLazyDriver());
 	}
-	
+
 	public boolean isEndCurrentCallAlertVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(xpathEndCurrentCallAlertTitle));
 	}
-	
+
 	public DialogPage endCurrentCallContinue() throws Exception {
 		endCurrentCallContinueButton.click();
 		return new DialogPage(getLazyDriver());
 	}
-	
+
 	public DialogPage endCurrentCallCancel() throws Exception {
 		endCurrentCallCancelButton.click();
 		return new DialogPage(getLazyDriver());
+	}
+
+	public boolean incomingCallerAvatarIsInvisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idIncomingCallerAvatarsContainer));
 	}
 }
