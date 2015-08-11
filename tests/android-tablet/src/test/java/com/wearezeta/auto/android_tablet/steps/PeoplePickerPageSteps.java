@@ -1,13 +1,17 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import java.awt.image.BufferedImage;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationsListPage;
 import com.wearezeta.auto.android_tablet.pages.TabletPeoplePickerPage;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class PeoplePickerPageSteps {
@@ -78,6 +82,74 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().tapFoundItem(item);
 	}
 
+	private BufferedImage rememberedAvatar = null;
+	final static double MAX_SIMILARITY_VALUE = 0.90;
+
+	/**
+	 * Check whether the particular user avatar is visible
+	 * 
+	 * @step. ^I see (.*) avatar on [Pp]eople [Pp]icker page$
+	 * 
+	 * @param name
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@When("^I see (.*) avatar on [Pp]eople [Pp]icker page$")
+	public void ISeeContactAvatar(String name) throws Exception {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		Assert.assertTrue(String.format(
+				"The avatar for contact '%s' is not visible", name),
+				getPeoplePickerPage().waitUntilAvatarIsVisible(name));
+	}
+
+	/**
+	 * Save the screenshot of current user avatar on People Picker page
+	 * 
+	 * @step. ^I remember (.*) avatar on [Pp]eople [Pp]icker page$
+	 * 
+	 * @param name
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@When("^I remember (.*) avatar on [Pp]eople [Pp]icker page$")
+	public void ITakeScreenshotOfContactAvatar(String name) throws Exception {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		this.rememberedAvatar = getPeoplePickerPage()
+				.takeAvatarScreenshot(name).orElseThrow(
+						IllegalStateException::new);
+	}
+
+	/**
+	 * Compare the screenshot of current user avatar on People Picker page with
+	 * the previous one
+	 * 
+	 * @step. ^I verify (.*) avatar on [Pp]eople [Pp]icker page is not the same
+	 *        as the previous one$
+	 * 
+	 * @param name
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@Then("^I verify (.*) avatar on [Pp]eople [Pp]icker page is not the same as the previous one$")
+	public void IVerifyAvatarIsNotTheSame(String name) throws Exception {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		if (this.rememberedAvatar == null) {
+			throw new IllegalStateException(
+					"Please take a previous screenshot of user avatar first");
+		}
+		final BufferedImage currentAvatar = getPeoplePickerPage()
+				.takeAvatarScreenshot(name).orElseThrow(
+						IllegalStateException::new);
+		final double score = ImageUtil.getOverlapScore(currentAvatar,
+				this.rememberedAvatar,
+				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+		Assert.assertTrue(
+				String.format(
+						"The current contact avatar of '%s' is very similar to the previous one (%.2f <-> %.2f)",
+						name, score, MAX_SIMILARITY_VALUE),
+				score < MAX_SIMILARITY_VALUE);
+	}
+
 	/**
 	 * Click the X button to close People Picker
 	 * 
@@ -130,7 +202,7 @@ public class PeoplePickerPageSteps {
 		name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		getPeoplePickerPage().tapTopPeopleAvatar(name);
 	}
-	
+
 	/**
 	 * Tap the Create Conversation button
 	 * 

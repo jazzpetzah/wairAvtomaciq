@@ -1,7 +1,8 @@
-package com.wearezeta.auto.web.steps;
+package com.wearezeta.auto.android_tablet.steps;
+
+import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
-import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -15,10 +16,10 @@ public class CallingSteps {
 	 * Make call to a specific user. You may instantiate more than one incoming
 	 * call from single caller by calling this step multiple times
 	 *
-	 * @step. (.*) calls (.*) using (\\w+)$
+	 * @step. (.*) calls? (.*) using (\\w+)$
 	 *
-	 * @param caller
-	 *            caller name/alias
+	 * @param callers
+	 *            comma-separated list of caller names/aliases
 	 * @param conversationName
 	 *            destination conversation name
 	 * @param callBackend
@@ -26,11 +27,13 @@ public class CallingSteps {
 	 *            'firefox'
 	 * @throws Exception
 	 */
-	@When("(.*) calls (.*) using (\\w+)$")
-	public void UserXCallsToUserYUsingCallBackend(String caller,
+	@When("^(.*) calls? (.*) using (\\w+)$")
+	public void UsersCallToUserYUsingCallBackend(String callers,
 			String conversationName, String callBackend) throws Exception {
-		commonCallingSteps.callToConversation(caller, conversationName,
-				callBackend);
+		for (String caller : splitAliases(callers)) {
+			commonCallingSteps.callToConversation(caller, conversationName,
+					callBackend);
+		}
 	}
 
 	/**
@@ -38,27 +41,29 @@ public class CallingSteps {
 	 *
 	 * @step. (.*) stops? all calls to (.*)
 	 *
-	 * @param caller
-	 *            caller name/alias
+	 * @param callers
+	 *            comma-separated list of caller names/aliases
 	 * @param conversationName
 	 *            destination conversation name
 	 * @throws Exception
 	 */
 	@When("(.*) stops? all calls to (.*)")
-	public void UserXStopsCallsToUserY(String caller, String conversationName)
+	public void UsersStopCallsToUserY(String callers, String conversationName)
 			throws Exception {
-		commonCallingSteps.stopCall(caller, conversationName);
+		for (String caller : splitAliases(callers)) {
+			commonCallingSteps.stopCall(caller, conversationName);
+		}
 	}
 
 	/**
 	 * Verify whether call status is changed to one of the expected values after
 	 * N seconds timeout
 	 *
-	 * @step. (.*) verifies that call status to (.*) is changed to (.*) in
+	 * @step. (.*) verif(?:y|ies) that call status to (.*) is changed to (.*) in
 	 *        (\\d+) seconds?$
 	 *
-	 * @param caller
-	 *            caller name/alias
+	 * @param callers
+	 *            comma-separated list of caller name/alias
 	 * @param conversationName
 	 *            destination conversation
 	 * @param expectedStatuses
@@ -69,23 +74,25 @@ public class CallingSteps {
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
-	@Then("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
-	public void UserXVerifesCallStatusToUserY(String caller,
+	@Then("(.*) verif(?:y|ies) that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
+	public void UsersVerifyCallStatusToUserY(String callers,
 			String conversationName, String expectedStatuses, int timeoutSeconds)
 			throws Exception {
-		commonCallingSteps.verifyCallingStatus(caller, conversationName,
-				expectedStatuses, timeoutSeconds);
+		for (String caller : splitAliases(callers)) {
+			commonCallingSteps.verifyCallingStatus(caller, conversationName,
+					expectedStatuses, timeoutSeconds);
+		}
 	}
 
 	/**
 	 * Verify whether waiting instance status is changed to one of the expected
 	 * values after N seconds timeout
 	 *
-	 * @step. (.*) verifies that waiting instance status is changed to (.*) in
-	 *        (\\d+) seconds?$
+	 * @step. (.*) verif(?:y|ies) that waiting instance status is changed to
+	 *        (.*) in (\\d+) seconds?$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            comma-separated list of callee names/aliases
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
 	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
@@ -94,11 +101,13 @@ public class CallingSteps {
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
-	@Then("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")
-	public void UserXVerifesCallStatusToUserY(String callee,
+	@Then("(.*) verif(?:y|ies) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
+	public void UsersVerifyCallStatusToUserY(String callees,
 			String expectedStatuses, int timeoutSeconds) throws Exception {
-		commonCallingSteps.verifyAcceptingCallStatus(callee, expectedStatuses,
-				timeoutSeconds);
+		for (String callee : splitAliases(callees)) {
+			commonCallingSteps.verifyAcceptingCallStatus(callee,
+					expectedStatuses, timeoutSeconds);
+		}
 	}
 
 	/**
@@ -107,47 +116,51 @@ public class CallingSteps {
 	 *
 	 * @step. (.*) starts? waiting instance using (\\w+)$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            callee name/alias. Can be comma-separated list of names
 	 * @param callingServiceBackend
 	 *            available values: 'blender', 'chrome', * 'firefox'
 	 * @throws Exception
 	 */
 	@When("(.*) starts? waiting instance using (\\w+)$")
-	public void UserXStartsWaitingInstance(String callee,
+	public void UsersStartWaitingInstance(String callees,
 			String callingServiceBackend) throws Exception {
-		commonCallingSteps.startWaitingInstances(splitAliases(callee),
+		commonCallingSteps.startWaitingInstances(splitAliases(callees),
 				callingServiceBackend);
 	}
 
 	/**
-	 * Automatically accept the next incoming call for the particular user as
+	 * Automatically accept the next incoming call for the particular users as
 	 * soon as it appears in UI. Waiting instance should be already created for
 	 * this particular user
 	 *
 	 * @step. (.*) accepts? next incoming call automatically$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            callee names/aliases, one ore more comma-separated names
 	 * @throws Exception
 	 */
 	@When("(.*) accepts? next incoming call automatically$")
-	public void UserXAcceptsNextIncomingCallAutomatically(String callee)
+	public void UsersAcceptNextIncomingCallAutomatically(String callees)
 			throws Exception {
-		commonCallingSteps.acceptNextCall(callee);
+		for (String callee : splitAliases(callees)) {
+			commonCallingSteps.acceptNextCall(callee);
+		}
 	}
 
 	/**
-	 * Close all waiting instances (and incoming calls) for the particular user
+	 * Close all waiting instances (and incoming calls) for the particular users
 	 *
 	 * @step. (.*) stops? all waiting instances$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            comma-separated list of callee names/aliases
 	 * @throws Exception
 	 */
 	@When("(.*) stops? all waiting instances$")
-	public void UserXStopsIncomingCalls(String callee) throws Exception {
-		commonCallingSteps.stopWaitingCall(callee);
+	public void UsersStopIncomingCalls(String callees) throws Exception {
+		for (String callee : splitAliases(callees)) {
+			commonCallingSteps.stopWaitingCall(callee);
+		}
 	}
 }
