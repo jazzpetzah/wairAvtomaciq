@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.IncomingCallPage;
 import com.wearezeta.auto.ios.pages.StartedCallPage;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CallPageSteps {
@@ -185,7 +186,7 @@ public class CallPageSteps {
 		Assert.assertTrue("Mute call button is not selected",
 				getStartedCallPage().isMuteCallButtonSelected());
 	}
-	
+
 	/**
 	 * Verify that incoming group calling UI is visible
 	 * 
@@ -196,5 +197,18 @@ public class CallPageSteps {
 	public void ISeeIncomingGroupCallingMessage() throws Exception {
 		Assert.assertTrue(getIncomingCallPage().isGroupCallingMessageVisible());
 	}
-	
+
+	/**
+	 * Verifies the visibility of the Join Call bar
+	 * 
+	 * @step. ^I see Join Call bar$
+	 * @throws Throwable
+	 */
+	@Then("^I see Join Call bar$")
+	public void ISeeJoinCallBar() throws Throwable {
+		boolean joinCallBarIsVisible = getIncomingCallPage()
+				.isJoinCallBarVisible();
+		Assert.assertTrue("Join Call bar is not visible", joinCallBarIsVisible);
+	}
+
 }

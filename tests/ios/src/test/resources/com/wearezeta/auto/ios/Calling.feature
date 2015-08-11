@@ -308,8 +308,10 @@ Feature: Calling
     And I see incoming group calling message
     And I ignore incoming call
     Then I dont see incoming call page
+    Then I see Join Call bar
     
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name |  IgnoringGROUPCALL | firefox     | autocall     |
       | user1Name | user2Name | user3Name |  IgnoringGROUPCALL | chrome      | autocall     |
+      
