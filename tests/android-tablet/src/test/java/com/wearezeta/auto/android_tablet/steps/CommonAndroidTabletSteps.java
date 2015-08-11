@@ -188,14 +188,6 @@ public class CommonAndroidTabletSteps {
 	}
 
 	public void commonBefore() throws Exception {
-		try {
-			// async calls/waiting instances cleanup
-			CommonCallingSteps2.getInstance().cleanup();
-		} catch (Exception e) {
-			// do not fail if smt fails here
-			e.printStackTrace();
-		}
-
 		ZetaFormatter.setBuildNumber(AndroidCommonUtils
 				.readClientVersionFromAdb());
 	}

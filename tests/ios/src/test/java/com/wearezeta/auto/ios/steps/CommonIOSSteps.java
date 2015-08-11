@@ -115,14 +115,6 @@ public class CommonIOSSteps {
 	}
 
 	public void commonBefore(Future<ZetaIOSDriver> lazyDriver) throws Exception {
-		try {
-			// async calls/waiting instances cleanup
-			CommonCallingSteps2.getInstance().cleanup();
-		} catch (Exception e) {
-			// do not fail if smt fails here
-			e.printStackTrace();
-		}
-
 		ZetaFormatter.setBuildNumber(IOSCommonUtils
 				.readClientVersionFromPlist().getClientBuildNumber());
 
