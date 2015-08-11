@@ -152,36 +152,50 @@ Feature: Calling
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I end the call
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
