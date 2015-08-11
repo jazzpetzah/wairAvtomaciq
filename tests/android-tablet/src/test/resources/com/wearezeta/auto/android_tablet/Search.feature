@@ -1,5 +1,6 @@
 Feature: Search
 
+  #Need to add close by swipe, close by android back button, open by swipe, open by click on search button
   @id2249 @smoke
   Scenario Outline: Open/Close People picker in landscape mode
     Given There is 1 user where <Name> is me
@@ -15,6 +16,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
+  #Need to add close by swipe, close by android back button, open by swipe, open by click on search button
   @id2263 @smoke
   Scenario Outline: Open/Close People picker in portrait mode
     Given There is 1 user where <Name> is me

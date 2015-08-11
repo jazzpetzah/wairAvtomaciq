@@ -32,7 +32,6 @@ import org.openqa.selenium.remote.LocalFileDetector;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
 
-import com.wearezeta.auto.common.CommonCallingSteps;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -241,7 +240,7 @@ public class CommonWebAppSteps {
             setExtendedLoggingLevel(
                 capabilities,
                 WebCommonUtils
-                .getExtendedLoggingLevelInConfig(CommonCallingSteps.class));
+                .getExtendedLoggingLevelInConfig(CommonCallingSteps2.class));
         }
 
         capabilities.setCapability("platform", platform);

@@ -25,6 +25,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	@FindBy(id = DialogPage.idParticipantsBtn)
 	private WebElement showDetailsButton;
 
+	private static final String idMissedCallImage = "sci__conversation__missed_call__image";
+
 	private static final String idShowToolsButton = "cursor_button_open";
 	@FindBy(id = idShowToolsButton)
 	private WebElement showToolsButton;
@@ -122,6 +124,11 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	public void tapCloseInstrumentsButton() {
 		closeToolsButton.click();
+	}
+
+	public boolean waitUntilGCNIsVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idMissedCallImage));
 	}
 
 	public boolean waitUntilMessageIsNotVisible(String expectedMessage)
