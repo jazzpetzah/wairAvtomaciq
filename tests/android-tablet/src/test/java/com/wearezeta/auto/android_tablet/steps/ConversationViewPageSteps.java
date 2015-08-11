@@ -136,18 +136,6 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Tap the isTyping avatar near the text input field
-	 * 
-	 * @step. ^I tap IsTyping avatar in (?:the |\\s*)[Cc]onversation view$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I tap IsTyping avatar in (?:the |\\s*)[Cc]onversation view$")
-	public void ITapIsTypingAvatar() throws Exception {
-		getConversationViewPage().tapIsTypingAvatar();
-	}
-
-	/**
 	 * Type a message into the active conversation. The text input should be
 	 * already active. The message is NOT sent automatically
 	 * 
@@ -178,19 +166,32 @@ public class ConversationViewPageSteps {
 	/**
 	 * Verify whether the message is visible in the conversation view
 	 * 
-	 * @step. ^I see the message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$
+	 * @step. ^I (do not )?see the message \"(.*)\" in (?:the
+	 *        |\\s*)[Cc]onversation view$
 	 * 
 	 * @param expectedMessage
 	 *            the message to check
+	 * @param shouldNotSee
+	 *            equals to null if the message should be visible in the convo
+	 *            view
 	 * @throws Exception
 	 */
-	@Then("^I see the message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
-	public void ISeeMessage(String expectedMessage) throws Exception {
-		Assert.assertTrue(
-				String.format(
-						"The expected message '%s' is not visible in the conversation view",
-						expectedMessage), getConversationViewPage()
-						.waitUntilMessageIsVisible(expectedMessage));
+	@Then("^I (do not )?see the message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeeMessage(String shouldNotSee, String expectedMessage)
+			throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(
+					String.format(
+							"The expected message '%s' is not visible in the conversation view",
+							expectedMessage), getConversationViewPage()
+							.waitUntilMessageIsVisible(expectedMessage));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"The expected message '%s' is visible in the conversation view, but it should not",
+							expectedMessage), getConversationViewPage()
+							.waitUntilMessageIsNotVisible(expectedMessage));
+		}
 	}
 
 	/**
