@@ -86,7 +86,7 @@ Feature: Search
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
     Then I tap on first 1 top connections
-    And I click Create Conversation button on People picker page
+    And I click open conversation button on People picker page
     And I wait for 2 seconds
     And I see dialog page
 

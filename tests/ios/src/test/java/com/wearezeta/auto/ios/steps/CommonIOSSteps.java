@@ -184,6 +184,18 @@ public class CommonIOSSteps {
 	public void IClickHideKeyboardBtn() throws Exception {
 		pagesCollecton.getCommonPage().clickHideKeyboarButton();
 	}
+	
+	/**
+	 * Click on Space button on keyboard
+	 * 
+	 * @step. I click space keyboard button
+	 * 
+	 * @throws Exception
+	 */
+	@When("I click space keyboard button")
+	public void IClickSpaceKeyboardButton() throws Exception {
+		pagesCollecton.getCommonPage().clickSpaceKeyboardButton();
+	}
 
 	/**
 	 * Closes the app for a certain amount of time in seconds
