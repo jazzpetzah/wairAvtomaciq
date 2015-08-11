@@ -288,11 +288,28 @@ Feature: Calling
 	Then <Contact1> verifies that call status to Myself is changed to active in <Timeout> seconds
 	Then I see the calling bar from user <Contact1>
 	And I open conversation with <Contact2>
-	And I call
-	Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    When I call
+    Then I see another call warning modal
+    And I close the another call warning modal
+    And I do not see another call warning modal
+    Then I do not see the calling bar
+    And I open conversation with <Contact1>
+    And I see the calling bar
+    When I open conversation with <Contact2>
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    And I click on "End Call" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    When I call
+    Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar from user <Contact2>
+    And I open conversation with <Contact1>
+    Then I do not see the calling bar
+    When I open conversation with <Contact2>
     And I end the call
-    And <Contact2> stops all waiting instances
+
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | WaitBackend | Timeout |
