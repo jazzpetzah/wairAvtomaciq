@@ -131,4 +131,9 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	public void tapCloseInstrumentsButton() {
 		closeToolsButton.click();
 	}
+
+	public boolean waitUntilGCNIsVisible() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

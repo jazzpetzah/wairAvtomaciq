@@ -41,7 +41,7 @@ public class ConversationViewPageSteps {
 		Assert.assertTrue("The conversation view is not currently visible",
 				getConversationViewPage().waitUntilVisible());
 	}
-	
+
 	/**
 	 * Tap the Show Tools button on conversation view
 	 * 
@@ -53,7 +53,7 @@ public class ConversationViewPageSteps {
 	public void ITapShowToolsButton() throws Exception {
 		getConversationViewPage().tapShowInstrumentsButton();
 	}
-	
+
 	/**
 	 * Tap the Close Tools button on conversation view
 	 * 
@@ -134,12 +134,11 @@ public class ConversationViewPageSteps {
 	public void ITapTheTextInput() throws Exception {
 		getConversationViewPage().tapTextInput();
 	}
-	
+
 	/**
-	 * Tap the isTyping avatar near the text input field 
+	 * Tap the isTyping avatar near the text input field
 	 * 
-	 * @step. ^I tap IsTyping avatar in (?:the |\\s*)[Cc]onversation
-	 *        view$
+	 * @step. ^I tap IsTyping avatar in (?:the |\\s*)[Cc]onversation view$
 	 * 
 	 * @throws Exception
 	 */
@@ -288,5 +287,12 @@ public class ConversationViewPageSteps {
 						"The expected ping message '%s' is not visible in the conversation view",
 						expectedMessage), getConversationViewPage()
 						.waitUntilPingMessageIsVisible(expectedMessage));
+	}
+
+	@Then("^I see missed group call notification in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeeMissedCallNotification() throws Exception {
+		Assert.assertTrue(
+				"The expected missed group call notification is not visible in the conversation view",
+				getConversationViewPage().waitUntilGCNIsVisible());
 	}
 }
