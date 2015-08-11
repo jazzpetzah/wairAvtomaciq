@@ -107,6 +107,9 @@ public class ContactListPage extends WebPage {
 	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalActionButtonSingle)
 	private WebElement deleteModalActionButtonSingle;
 
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalCancelButtonSingle)
+	private WebElement deleteModalCancelButtonSingle;
+
 	public ContactListPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -633,5 +636,9 @@ public class ContactListPage extends WebPage {
 
 	public void clickDeleteOnDeleteWarningSingle() {
 		deleteModalActionButtonSingle.click();
+	}
+
+	public void clickCancelOnDeleteWarningSingle() {
+		deleteModalCancelButtonSingle.click();
 	}
 }
