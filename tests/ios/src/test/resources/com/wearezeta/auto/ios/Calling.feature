@@ -169,7 +169,7 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | webdriver   | 120     |
-  
+
   @calling_basic @id2645
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody
     Given There are 3 users where <Name> is me
@@ -292,10 +292,10 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     |
       | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | chrome      | autocall     |
-      
+
   @staging @id2683
   Scenario Outline: Verify ignoring group call in foreground
-  	Given There are 3 users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact2> starts waiting instance using <CallBackend>
@@ -309,9 +309,8 @@ Feature: Calling
     And I ignore incoming call
     Then I dont see incoming call page
     Then I see Join Call bar
-    
+
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName      | CallBackend | CallBackend2 |
-      | user1Name | user2Name | user3Name |  IgnoringGROUPCALL | firefox     | autocall     |
-      | user1Name | user2Name | user3Name |  IgnoringGROUPCALL | chrome      | autocall     |
-      
+      | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | IgnoringGROUPCALL | firefox     | autocall     |
+      | user1Name | user2Name | user3Name | IgnoringGROUPCALL | chrome      | autocall     |
