@@ -19,7 +19,7 @@ Feature: Registration
     And I tap Camera button on the Take Registration Picture page
     And I tap Take Picture button on the Take Registration Picture page
     And I confirm my picture on the Take Registration Picture page
-    And I see the Conversations list
+    And I see the conversations list with no conversations
     And I see my name on Self Profile page
 
     Examples: 
@@ -45,7 +45,7 @@ Feature: Registration
     And I tap Camera button on the Take Registration Picture page
     And I tap Take Picture button on the Take Registration Picture page
     And I confirm my picture on the Take Registration Picture page
-    And I see the Conversations list
+    And I see the conversations list with no conversations
     And I see my name on Self Profile page
 
     Examples: 
