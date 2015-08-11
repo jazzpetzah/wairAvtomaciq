@@ -22,7 +22,6 @@ Feature: Calling
     And I see ping message <PING>
     And I see sent picture <PictureName> in the conversation view
     And I end the call
-    Then <Contact> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
@@ -47,7 +46,6 @@ Feature: Calling
     And User <Contact> pinged twice in the conversation with <Contact>
     And I see ping message <HOTPING>
     And I end the call
-    Then <Contact> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
@@ -76,7 +74,6 @@ Feature: Calling
     And I end the call
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
-    Then <Contact1> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
@@ -130,7 +127,6 @@ Feature: Calling
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
