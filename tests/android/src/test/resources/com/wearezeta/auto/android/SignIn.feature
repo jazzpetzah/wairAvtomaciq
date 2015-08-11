@@ -14,7 +14,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id1 @smoke
+  @id3245 @smoke
   Scenario Outline: Sign in to Wire by phone
     Given There are 1 users where <Name> is me
     When I sign in using my phone number
@@ -43,7 +43,7 @@ Feature: Sign In
     #  | Login1  | Password    | Login2   |
     #  | aqaUser | aqaPassword | yourUser |
 
-  @id1413 @regression
+  @id1413 @smoke
   Scenario Outline: Negative case for sign in
     Given I see welcome screen
     When I switch to email sign in screen

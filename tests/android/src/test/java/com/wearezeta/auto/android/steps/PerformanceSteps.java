@@ -7,11 +7,11 @@ import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.common.AndroidLogListener;
 import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.common.reporter.AndroidPerfReportModel;
-import com.wearezeta.auto.android.common.reporter.AndroidPerformanceHelpers;
 import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
+import com.wearezeta.auto.common.performance.PerformanceHelpers;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Given;
@@ -170,7 +170,7 @@ public class PerformanceSteps {
 		final String logOutput = AndroidLogListener.getInstance(
 				ListenerType.PERF).getStdOut();
 		dataModel.loadDataFromLogCat(logOutput);
-		AndroidPerformanceHelpers.storeWidgetDataAsJSON(dataModel,
+		PerformanceHelpers.storeWidgetDataAsJSON(dataModel,
 				AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
 	}
 }

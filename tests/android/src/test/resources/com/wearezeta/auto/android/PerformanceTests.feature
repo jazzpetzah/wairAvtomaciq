@@ -13,4 +13,4 @@ Feature: Performance Tests
     Examples: 
       | Name      | UsersNumber       | UserNamePrefix    | Time            | MsgsCount | Sender        |
       | user1Name | ${perfUsersCount} | ${userNamePrefix} | ${perfDuration} | 101       | user2Name     |
-#      | user1Name | 1001                | perf1000user         | 2               | 101      | user2Name     |
+#      | user1Name | 11                | perf10user         | 2               | 101      | user2Name     |

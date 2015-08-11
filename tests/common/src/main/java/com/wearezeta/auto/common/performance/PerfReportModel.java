@@ -3,12 +3,21 @@ package com.wearezeta.auto.common.performance;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.misc.ClientDeviceInfo;
+
 public abstract class PerfReportModel {
 	private static final String UNKNOWN_VALUE = "Unknown";
+
+	private static final Logger log = ZetaLogger.getLog(PerfReportModel.class
+			.getSimpleName());
 
 	/**
 	 * All times are in milliseconds
@@ -154,5 +163,41 @@ public abstract class PerfReportModel {
 		for (int i = 0; i < convoLoadTimes.length(); i++) {
 			this.addConvoStartupTime(convoLoadTimes.getLong(i));
 		}
+	}
+
+	protected void loadValuesFromDeviceInfo(ClientDeviceInfo deviceInfo) {
+		// FIXME: handle other network types
+		this.setNetworkType(deviceInfo.isWifiEnabled() ? NetworkType.WiFi
+				: NetworkType.FourG);
+		this.setDeviceName(deviceInfo.getDeviceName());
+		this.setDeviceOSVersion(deviceInfo.getOperatingSystemBuild());
+	}
+
+	protected long readLogValue(final String patternStr, final String output) {
+		final Pattern pattern = Pattern.compile(patternStr);
+		final Matcher matcher = pattern.matcher(output);
+		while (matcher.find()) {
+			try {
+				return Long.parseLong(matcher.group(1));
+			} catch (NumberFormatException e) {
+				log.error(e);
+			}
+		}
+		return 0;
+	}
+
+	protected List<Long> readLogValues(final String patternStr,
+			final String output) {
+		final Pattern pattern = Pattern.compile(patternStr);
+		final Matcher matcher = pattern.matcher(output);
+		final List<Long> result = new ArrayList<>();
+		while (matcher.find()) {
+			try {
+				result.add(Long.parseLong(matcher.group(1)));
+			} catch (NumberFormatException e) {
+				log.error(e);
+			}
+		}
+		return result;
 	}
 }

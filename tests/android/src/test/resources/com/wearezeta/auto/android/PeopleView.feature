@@ -1,6 +1,6 @@
 Feature: People View
 
-  @id83 @id87 @regression
+  @id87 @regression
   Scenario Outline: I can access user details page from group chat and see user name, email and photo
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
@@ -101,7 +101,7 @@ Feature: People View
     Given Contact <Name> send message to user <Contact1>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I open People Picker
+    When I open Search by UI button
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
     And I tap on create conversation

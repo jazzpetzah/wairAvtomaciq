@@ -52,17 +52,17 @@ public final class WebAppLocators {
 				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following-sibling::div[contains(@class, 'controls')]",
 						name);
 
-		public static final Function<String, String> xpathArchiveButtonByContactName = (
-				name) -> xpathListItemRootWithControlsByName.apply(name)
-				+ "//*[@data-uie-name='do-archive']";
+		public static final String cssArchiveButton = "[data-uie-name='do-archive']";
 
-		public static final Function<String, String> xpathMuteButtonByContactName = (
-				name) -> xpathListItemRootWithControlsByName.apply(name)
-				+ "//*[@data-uie-name='do-silence']";
+		public static final String cssMuteButton = "[data-uie-name='do-silence']";
 
-		public static final Function<String, String> xpathUnmuteButtonByContactName = (
-				name) -> xpathListItemRootWithControlsByName.apply(name)
-				+ "//*[@data-uie-name='do-notify']";
+		public static final String cssUnmuteButton = "[data-uie-name='do-notify']";
+
+		public static final String cssDeleteButton = "[data-uie-name='do-clear']";
+
+		public static final String cssBlockButton = "[data-uie-name='do-block']";
+
+		public static final String cssLeaveButton = "[data-uie-name='do-leave']";
 
 		public static final Function<String, String> xpathMuteIconByContactName = (
 				name) -> String.format(
@@ -96,7 +96,7 @@ public final class WebAppLocators {
 				name);
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
-				+ "//*[@data-uie-name='item-conversation']";
+				+ "//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
 		public static final Function<Integer, String> xpathContactListEntryByIndex = (
 				idx) -> String.format("(%s)[%s]", xpathContactListEntries, idx);
 		public static final String xpathArchivedContactListEntries = xpathParentContactListItem
@@ -125,6 +125,28 @@ public final class WebAppLocators {
 				name) -> String
 				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/..//*[@data-uie-name='status-unread']",
 						name);
+
+		// leave warning
+		public static final String cssLeaveModal = ".modal-leave";
+		public static final String cssLeaveModalCancelButton = ".modal-leave .modal-close.button-inverted";
+		public static final String cssLeaveModalActionButton = ".modal-leave .modal-close.modal-action";
+
+		// block warning
+		public static final String cssBlockModal = ".modal-block";
+		public static final String cssBlockModalCancelButton = ".modal-block .modal-close.button-inverted";
+		public static final String cssBlockModalActionButton = ".modal-block .modal-close.modal-action";
+
+		// delete warning for group conversations
+		public static final String cssDeleteModalGroup = ".modal-clear-group";
+		public static final String cssDeleteModalCancelButtonGroup = ".modal-clear-group .modal-close.button-inverted";
+		public static final String cssDeleteModalActionButtonGroup = ".modal-clear-group .modal-close.modal-action";
+		public static final String cssDeleteModalLeaveCheckboxGroup = "[data-uie-name='enter-leave-conversation']";
+
+		// delete warning for 1:1 conversation
+		public static final String cssDeleteModalSingle = ".modal-clear";
+		public static final String cssDeleteModalCancelButtonSingle = ".modal-clear .modal-close.button-inverted";
+		public static final String cssDeleteModalActionButtonSingle = ".modal-clear .modal-close.modal-action";
+
 	}
 
 	public static final class SettingsPage {
@@ -143,8 +165,8 @@ public final class WebAppLocators {
 		public static final String xpathGearMenuRoot = "//div[@id='setting-bubble' and contains(@class, 'bubble-show')]";
 
 		public static final Function<String, String> xpathGearMenuItemByName = (
-				name) -> String.format("%s//a[text()='%s']", xpathGearMenuRoot,
-				name);
+				name) -> String.format("%s//li[text()='%s']",
+				xpathGearMenuRoot, name);
 
 		public static final String xpathSelfUserName = "//*[@data-uie-name='enter-name']/span";
 
@@ -176,13 +198,11 @@ public final class WebAppLocators {
 	public static final class ConversationPage {
 
 		// content
-
 		public static final String idConversation = "conversation";
 
 		public static final String idMessageList = "message-list";
 
 		// messages (including images, text, missed call notifications, pings)
-
 		public static final String cssMessage = "[data-uie-name='item-message']";
 
 		public static final String cssLastMessage = "[data-uie-name='item-message']:last-child";
@@ -206,7 +226,6 @@ public final class WebAppLocators {
 		public static final String cssPingMessage = ".pinged";
 
 		// special message identifier
-
 		public static final Function<String, String> xpathMessageEntryByText = text -> String
 				.format("//*[@data-uie-name='item-message']//div[contains(@class, 'text') and text()='%s']",
 						text);
@@ -219,7 +238,6 @@ public final class WebAppLocators {
 				.format("//iframe[contains(@src, '%s')]", text);
 
 		// input area (text input + buttons)
-
 		// This is needed for IE workaround
 		public static final String classNameShowParticipantsButton = "show-participants";
 
@@ -238,7 +256,6 @@ public final class WebAppLocators {
 		public static final String idGIFButton = "show-extensions";
 
 		// bars (call bar)
-
 		public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
@@ -258,7 +275,6 @@ public final class WebAppLocators {
 				+ "//*[contains(@class, 'icon-minus')]";
 
 		// image fullscreen
-
 		public static final String cssModalDialog = ".modal-show";
 
 		public static final String xpathXButton = "//div[contains(@class, 'detail-view-close-button')]//*[@data-uie-name='do-close-detail-view']";
@@ -303,6 +319,11 @@ public final class WebAppLocators {
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
 				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
+				xpathRoot, name);
+
+		public static final Function<String, String> xpathSearchResultGroupByName = (
+				name) -> String.format(
+				"%s//*[@data-uie-name='item-group' and .//*[text()='%s']]",
 				xpathRoot, name);
 
 		public static final String cssCloseSearchButton = ".search-header span[data-uie-name='do-close']";
@@ -403,6 +424,7 @@ public final class WebAppLocators {
 	}
 
 	public static final class ProfilePicturePage {
+
 		private static final String xpathRootDiv = "//div[@id='self-upload']";
 
 		public static final String xpathSelectPictureButton = xpathRootDiv
@@ -416,24 +438,52 @@ public final class WebAppLocators {
 
 	public static final class WarningPage {
 
-		private static final String xpathRootDiv = "//div[@id='warnings']";
+		private static final String xpathWarningBarRootDiv = "//div[@id='warnings']";
+		private static final String cssWarningBarRootDiv = "div#warnings";
+		private static final String xpathWarningModalRootDiv = "//div[@id='modals']";
+		private static final String cssWarningModalRootDiv = "div#modals";
 
-		public static final String xpathWarning = xpathRootDiv
-				+ "//div[@class='warning']";
+		public static final String cssMissingWebRTCSupportWarningBar = cssWarningBarRootDiv
+				+ " .warning";
 
-		public static final String xpathWarningClose = xpathRootDiv
-				+ "//span[contains(@class, 'warning-bar-close')]";
+		public static final String cssMissingWebRTCSupportWarningBarClose = cssWarningBarRootDiv
+				+ " .warning-bar-close";
 
-		public static final Function<String, String> xpathLinkByCaption = (name) -> String
+		public static final String cssAnotherCallWarningModal = cssWarningModalRootDiv
+				+ " .modal-call-second.modal-show";
+
+		public static final String cssAnotherCallWarningModalClose = cssAnotherCallWarningModal
+				+ " .icon-close";
+
+		public static final String cssFullCallWarningModal = cssWarningModalRootDiv
+				+ " .modal-call-voice-channel-full.modal-show";
+
+		public static final String cssFullCallWarningModalClose = cssFullCallWarningModal
+				+ " .icon-close";
+
+		public static final Function<String, String> xpathMissingWebRTCSupportWarningBarLinkByCaption = (
+				name) -> String
 				.format("%s//div[contains(@class, 'warning-bar-message')]//a[text()='%s']",
-						xpathRootDiv, name);
+						xpathWarningBarRootDiv, name);
+
+		public static final Function<String, String> xpathAnotherCallWarningModalButtonByCaption = (
+				name) -> String
+				.format("%s//div[contains(@class, 'modal-call-second') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
+						xpathWarningModalRootDiv, name);
+
+		public static final Function<String, String> xpathFullCallWarningModalButtonByCaption = (
+				name) -> String
+				.format("%s//div[contains(@class, 'modal-call-voice-channel-full') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
+						xpathWarningModalRootDiv, name);
 	}
 
 	public static final class PhoneNumberVerificationPage {
+
 		public static final String cssErrorMessage = "#form-login-phone-code [data-uie-name='status-error']";
 	}
 
 	public static final class AddEmailAddressPage {
+
 		public static final String cssErrorMessage = "#form-login-phone-mail [data-uie-name='status-error']";
 
 		public static final String cssRedDotOnEmailField = ".auth-page .has-error .form-control #wire-mail-email";
@@ -442,6 +492,7 @@ public final class WebAppLocators {
 	}
 
 	public static final class PhoneNumberLoginPage {
+
 		public static final String cssErrorMessage = "#form-login-phone [data-uie-name='status-error']";
 	}
 }

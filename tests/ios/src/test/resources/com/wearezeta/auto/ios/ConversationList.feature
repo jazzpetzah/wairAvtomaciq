@@ -86,6 +86,7 @@ Feature: Conversation List
     When I see Contact list with my name <Name>
     And I open archived conversations
     And I tap on contact name <GroupChatName>
+    And I see dialog page
     And I return to the chat list
     Then I see first item in contact list named <GroupChatName>
 

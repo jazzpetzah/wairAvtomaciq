@@ -57,6 +57,59 @@ public class ContactListPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idConversationInput)
 	private WebElement conversationInput;
 
+	// options popover bubble
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssArchiveButton)
+	private WebElement archiveButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssMuteButton)
+	private WebElement muteButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssUnmuteButton)
+	private WebElement unmuteButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveButton)
+	private WebElement leaveButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssBlockButton)
+	private WebElement blockButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteButton)
+	private WebElement deleteButton;
+
+	// leave warning
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveModalCancelButton)
+	private WebElement leaveModalCancelButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveModalActionButton)
+	private WebElement leaveModalActionButton;
+
+	// block warning
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssBlockModalCancelButton)
+	private WebElement blockModalCancelButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssBlockModalActionButton)
+	private WebElement blockModalActionButton;
+
+	// delete warning
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalCancelButtonGroup)
+	private WebElement deleteModalCancelButtonGroup;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalActionButtonGroup)
+	private WebElement deleteModalActionButtonGroup;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalLeaveCheckboxGroup)
+	private WebElement deleteModalLeaveCheckboxGroup;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalActionButtonSingle)
+	private WebElement deleteModalActionButtonSingle;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalCancelButtonSingle)
+	private WebElement deleteModalCancelButtonSingle;
+
 	public ContactListPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -206,52 +259,31 @@ public class ContactListPage extends WebPage {
 		openArchivedConvosButton.click();
 	}
 
-	public void clickArchiveConversationForContact(String conversationName)
-			throws Exception {
-		waitForOptionButtonsToBeClickable(conversationName);
-
-		final By archiveLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathArchiveButtonByContactName
-						.apply(conversationName));
-		final WebElement archiveButton = this.getDriver().findElement(
-				archiveLocator);
+	public void clickArchiveConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
 		archiveButton.click();
 	}
 
-	public void clickMuteConversationForContact(String conversationName)
-			throws Exception {
-		waitForOptionButtonsToBeClickable(conversationName);
-
-		final By muteLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
-						.apply(conversationName));
-		final WebElement muteButton = this.getDriver().findElement(muteLocator);
+	public void clickMuteConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
 		muteButton.click();
 	}
 
-	private void waitForOptionButtonsToBeClickable(String conversationName)
-			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By archiveLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathArchiveButtonByContactName
-						.apply(conversationName));
-		final By muteLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
-						.apply(conversationName));
-		final By unmuteLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathUnmuteButtonByContactName
-						.apply(conversationName));
-		final WebElement archiveButton = this.getDriver().findElement(
-				archiveLocator);
+	private void waitForOptionButtonsToBeClickable() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
 				archiveButton);
-		assert (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				muteLocator, 3) && DriverUtils.waitUntilElementClickable(
-				this.getDriver(), this.getDriver().findElement(muteLocator), 3))
-				|| (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-						unmuteLocator, 3) && DriverUtils
-						.waitUntilElementClickable(this.getDriver(), this
-								.getDriver().findElement(unmuteLocator), 3));
+		assert (DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ContactListPage.cssMuteButton),
+						3) && DriverUtils.waitUntilElementClickable(
+				this.getDriver(), muteButton, 3))
+				|| (DriverUtils
+						.waitUntilLocatorIsDisplayed(
+								this.getDriver(),
+								By.cssSelector(WebAppLocators.ContactListPage.cssUnmuteButton),
+								3) && DriverUtils.waitUntilElementClickable(
+						this.getDriver(), this.unmuteButton, 3));
 	}
 
 	public boolean isConversationMuted(String conversationName)
@@ -382,16 +414,19 @@ public class ContactListPage extends WebPage {
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
-	public void clickUnmuteConversationForContact(String conversationName)
-			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By locator = By
-				.xpath(WebAppLocators.ContactListPage.xpathUnmuteButtonByContactName
-						.apply(conversationName));
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				locator, 5);
-		final WebElement unmuteButton = this.getDriver().findElement(locator);
+	public void clickUnmuteConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
 		unmuteButton.click();
+	}
+
+	public void clickLeaveConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
+		leaveButton.click();
+	}
+
+	public void clickBlockConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
+		blockButton.click();
 	}
 
 	public ConversationPage unarchiveConversation(String conversationName)
@@ -453,24 +488,6 @@ public class ContactListPage extends WebPage {
 		} catch (Exception e) {
 			return false;
 		}
-	}
-
-	public boolean isOngoingCallItemVisible() throws Exception {
-		return DriverUtils
-				.waitUntilLocatorAppears(
-						this.getDriver(),
-						By.xpath(WebAppLocators.ContactListPage.xpathOngoingCallListItem),
-						3);
-	}
-
-	public boolean isOngoingCallItemWithConvNameVisible(String convName)
-			throws Exception {
-		convName = fixDefaultGroupConvoName(convName, false);
-		return DriverUtils
-				.waitUntilLocatorAppears(
-						this.getDriver(),
-						By.xpath(WebAppLocators.ContactListPage.xpathOngoingCallListItemWithConvName
-								.apply(convName)));
 	}
 
 	public int getItemIndex(String convoName) throws Exception {
@@ -545,39 +562,7 @@ public class ContactListPage extends WebPage {
 				locator, 3);
 	}
 
-	public void hoverMuteButtonForContact(String conversationName)
-			throws Exception {
-		waitForOptionButtonsToBeClickable(conversationName);
-		if (!WebAppExecutionContext.getBrowser()
-				.isSupportingNativeMouseActions()) {
-			DriverUtils.addClassToParent(this.getDriver(),
-					getListElementByName(conversationName, false), "hover");
-		} else {
-			DriverUtils.moveMouserOver(this.getDriver(),
-					getListElementByName(conversationName, false));
-		}
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		if (!WebAppExecutionContext.getBrowser()
-				.isSupportingNativeMouseActions()) {
-			DriverUtils.removeClassFromParent(this.getDriver(),
-					getListElementByName(conversationName, false), "hover");
-		}
-	}
-
-	public String getMuteButtonToolTip(String conversationName)
-			throws Exception {
-		conversationName = fixDefaultGroupConvoName(conversationName, false);
-		final By muteLocator = By
-				.xpath(WebAppLocators.ContactListPage.xpathMuteButtonByContactName
-						.apply(conversationName));
-		final WebElement muteButton = this.getDriver().findElement(muteLocator);
-		if (WebAppExecutionContext.getBrowser()
-				.isSupportingNativeMouseActions()) {
-			DriverUtils.moveMouserOver(this.getDriver(), muteButton);
-		} else {
-			// safari workaround
-			DriverUtils.addClass(this.getDriver(), muteButton, "hover");
-		}
+	public String getMuteButtonToolTip() throws Exception {
 		return muteButton.getAttribute(TITLE_ATTRIBUTE_LOCATOR);
 	}
 
@@ -592,4 +577,68 @@ public class ContactListPage extends WebPage {
 		}
 	}
 
+	public boolean isLeaveWarningModalVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.cssSelector(WebAppLocators.ContactListPage.cssLeaveModal));
+	}
+
+	public void clickCancelOnLeaveWarning() {
+		leaveModalCancelButton.click();
+	}
+
+	public boolean isBlockWarningModalVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.cssSelector(WebAppLocators.ContactListPage.cssBlockModal));
+	}
+
+	public void clickCancelOnBlockWarning() {
+		blockModalCancelButton.click();
+	}
+
+	public void clickBlockOnBlockWarning() {
+		blockModalActionButton.click();
+	}
+
+	public void clickDeleteConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
+		deleteButton.click();
+	}
+
+	public boolean isDeleteWarningModalForGroupVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ContactListPage.cssDeleteModalGroup));
+	}
+
+	public void clickDeleteOnDeleteWarning() {
+		deleteModalActionButtonGroup.click();
+	}
+
+	public void clickLeaveOnLeaveWarning() {
+		leaveModalActionButton.click();
+	}
+
+	public void clickLeaveCheckboxOnDeleteWarning() {
+		deleteModalLeaveCheckboxGroup.click();
+	}
+
+	public void clickCancelOnDeleteWarning() {
+		deleteModalCancelButtonGroup.click();
+	}
+
+	public boolean isDeleteWarningModalSingleVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ContactListPage.cssDeleteModalSingle));
+	}
+
+	public void clickDeleteOnDeleteWarningSingle() {
+		deleteModalActionButtonSingle.click();
+	}
+
+	public void clickCancelOnDeleteWarningSingle() {
+		deleteModalCancelButtonSingle.click();
+	}
 }

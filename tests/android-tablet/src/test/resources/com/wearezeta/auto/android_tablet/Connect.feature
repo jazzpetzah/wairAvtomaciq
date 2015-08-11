@@ -1,7 +1,7 @@
 Feature: Connect
 
   @id2281 @smoke
-  Scenario Outline: Send connection request from search in landscape
+  Scenario Outline: Send connection request from search by name in landscape
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
@@ -25,7 +25,7 @@ Feature: Connect
       | user1Name | user2Name | Hellow friend |
 
   @id2280 @smoke
-  Scenario Outline: Send connection request from search in portrait
+  Scenario Outline: Send connection request from search by name in portrait
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
@@ -77,14 +77,16 @@ Feature: Connect
     When I tap the conversation <WaitingMess>
     And I see the Incoming connections page
     And I accept incoming connection request from <Contact> on Incoming connections page
-    Then I see the conversation <Contact> in my conversations list
+    Then I see the conversation view
+    And I navigate back
+    And I see the conversation <Contact> in my conversations list
     And I do not see the conversation <WaitingMess> in my conversations list
 
     Examples: 
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id2852 @staging
+  @id2852 @regression
   Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -97,6 +99,7 @@ Feature: Connect
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
@@ -114,7 +117,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | GroupChatName        | Message |
       | user1Name | user2Name | user3Name | NonConnectedUserChat | Yo man! |
 
-  @id2989 @staging
+  @id2989 @regression
   Scenario Outline: I can send connection request to user from search results by email
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait

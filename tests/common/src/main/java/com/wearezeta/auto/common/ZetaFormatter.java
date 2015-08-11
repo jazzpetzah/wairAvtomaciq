@@ -32,6 +32,7 @@ import gherkin.formatter.model.Result;
 import gherkin.formatter.model.Scenario;
 import gherkin.formatter.model.ScenarioOutline;
 import gherkin.formatter.model.Step;
+import gherkin.formatter.model.Tag;
 
 public class ZetaFormatter implements Formatter, Reporter {
 	private String feature = "";
@@ -75,10 +76,21 @@ public class ZetaFormatter implements Formatter, Reporter {
 		log.debug("Feature: " + feature);
 	}
 
+	private static String formatTags(List<Tag> tags) {
+		final StringBuilder result = new StringBuilder();
+		result.append("[ ");
+		for (Tag tag : tags) {
+			result.append(tag.getName() + " ");
+		}
+		result.append("]");
+		return result.toString();
+	}
+
 	@Override
 	public void scenario(Scenario arg0) {
 		scenario = arg0.getName();
-		log.debug("\n\nScenario: " + scenario);
+		log.debug(String.format("\n\nScenario: %s %s", scenario,
+				formatTags(arg0.getTags())));
 	}
 
 	@Override

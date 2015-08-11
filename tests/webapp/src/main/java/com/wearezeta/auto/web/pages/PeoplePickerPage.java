@@ -270,4 +270,18 @@ public class PeoplePickerPage extends WebPage {
 			}
 		});
 	}
+
+	public boolean isGroupConversationFound(String name) throws Exception {
+		String foundGroupXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultGroupByName
+				.apply(name);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.xpath(foundGroupXpath));
+	}
+
+	public boolean isGroupConversationNotFound(String name) throws Exception {
+		String foundGroupXpath = WebAppLocators.PeoplePickerPage.xpathSearchResultGroupByName
+				.apply(name);
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.xpath(foundGroupXpath));
+	}
 }

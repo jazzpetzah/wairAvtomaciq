@@ -17,10 +17,14 @@ public final class AndroidLogListener {
 
 	public static final String ADB_PREFIX = "";
 
-	private static final List<String> excludePatterns = new ArrayList<>();
+	private static final List<String> stdoutIncludePatterns = new ArrayList<>();
 	static {
-		excludePatterns.addAll(Arrays.asList(new String[] { "I/SELENDROID",
-				"D/wifi", "W/ResourceType" }));
+		stdoutIncludePatterns.addAll(Arrays.asList(new String[] { "E/" }));
+	}
+	private static final List<String> stdoutExcludePatterns = new ArrayList<>();
+	static {
+		stdoutExcludePatterns.addAll(Arrays
+				.asList(new String[] { "/SELENDROID" }));
 	}
 
 	public static enum ListenerType {
@@ -77,7 +81,8 @@ public final class AndroidLogListener {
 					+ String.format("adb logcat -v time -s %s", this.tags);
 		}
 		final String[] cmd = new String[] { "/bin/bash", "-c", adbCmd };
-		listener = new AsyncProcess(cmd, (this.tags != null), (this.tags != null));
+		listener = new AsyncProcess(cmd, (this.tags != null),
+				(this.tags != null));
 		listener.start();
 	}
 
@@ -108,18 +113,36 @@ public final class AndroidLogListener {
 
 	public static void writeDeviceLogsToConsole(
 			final AndroidLogListener listener) throws Exception {
-		log.debug("\n\n\n=== CAPTURED STDERR LOGS ===\n");
-		System.out.println(listener.getStdErr().trim());
-		log.debug("\n=== END OF CAPTURED STDERR LOGS ===\n\n\n");
-		// log.debug("\n\n\n=== CAPTURED STDOUT LOGS ===\n");
-		// for (String line : listener.getStdOut().trim().split("\n")) {
-		// for (String excPatt : excludePatterns) {
-		// if (!line.contains(excPatt)) {
-		// System.out.println(line);
-		// }
-		// }
-		// }
-		// log.debug("\n=== END OF CAPTURED STDOUT LOGS ===\n\n\n");
+		final String stderr = listener.getStdErr();
+		if (stderr.length() > 0) {
+			log.debug("=== CAPTURED STDERR LOGS ===\n");
+			System.out.println(stderr.trim());
+			log.debug("=== END OF CAPTURED STDERR LOGS ===\n\n\n");
+		}
+
+		final StringBuilder stdout = new StringBuilder();
+		for (String line : listener.getStdOut().trim().split("\n")) {
+			boolean isLineAdded = false;
+			for (String incPatt : stdoutIncludePatterns) {
+				if (line.contains(incPatt)) {
+					for (String excPatt : stdoutExcludePatterns) {
+						if (!line.contains(excPatt)) {
+							stdout.append(line + "\n");
+							isLineAdded = true;
+							break;
+						}
+					}
+				}
+				if (isLineAdded) {
+					break;
+				}
+			}
+		}
+		if (stdout.toString().length() > 0) {
+			log.debug("=== CAPTURED STDOUT LOGS ===\n");
+			System.out.println(stdout.toString().trim());
+			log.debug("=== END OF CAPTURED STDOUT LOGS ===\n\n\n");
+		}
 	}
 
 	public static void forceStopAll() {

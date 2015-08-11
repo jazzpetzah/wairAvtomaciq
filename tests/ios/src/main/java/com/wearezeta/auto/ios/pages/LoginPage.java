@@ -99,16 +99,16 @@ public class LoginPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangedPasswordConfirmationText)
 	private WebElement changedPasswordPageConfirmation;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.namePhoneLoginButton)
 	private WebElement phoneLoginButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameEmailLoginButton)
 	private WebElement emailLoginButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameBackButton)
 	private WebElement backButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameMaybeLater)
 	private WebElement maybeLater;
 
@@ -170,7 +170,7 @@ public class LoginPage extends IOSPage {
 				By.xpath(IOSLocators.xpathLoginButton), 40)) {
 			return new ContactListPage(this.getLazyDriver());
 		} else {
-			return null;
+			throw new AssertionError("Login button is still visible after the timeout");
 		}
 	}
 
@@ -229,9 +229,10 @@ public class LoginPage extends IOSPage {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.name(IOSLocators.nameLoginField));
 	}
-	
+
 	public void dismisSettingsWaring() throws Exception {
-		if (DriverUtils.waitUntilLocatorAppears(getDriver(), By.name(IOSLocators.LoginPage.nameMaybeLater))) {
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.LoginPage.nameMaybeLater))) {
 			maybeLater.click();
 		}
 	}

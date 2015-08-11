@@ -261,8 +261,8 @@ Feature: People View
     Then I see the correct avatar picture for user <Contact2> on iPad
 
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName | Picture                      | Color        | Color2       |ParticipantsNumber |
-      | user1Name | user2Name | user3Name | GroupInfo     | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | 3				   |
+      | Name      | Contact1  | Contact2  | GroupChatName | Picture                      | Color        | Color2       | ParticipantsNumber |
+      | user1Name | user2Name | user3Name | GroupInfo     | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | 3                  |
 
   @staging @id2432
   Scenario Outline: Check any users personal info in group conversation [PORTRAIT]
@@ -335,10 +335,10 @@ Feature: People View
     Examples: 
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
-     
+
   @staging @id2612
   Scenario Outline: Verify opening 1-to-1 conversation from group conversation details [PORTRAIT]
-  	Given There are 3 users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
     Given I Sign in on tablet using my email
@@ -354,12 +354,12 @@ Feature: People View
     Then I see message in the dialog
 
     Examples: 
-      | Name      | Contact2  | Contact3   | GroupChatName   |
-      | user1Name | user2Name | user3Name  | 1on1FromGroup   |
-  
+      | Name      | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | 1on1FromGroup |
+
   @staging @id3087
   Scenario Outline: Verify opening 1-to-1 conversation from group conversation details [LANDSCAPE]
-  	Given There are 3 users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
     Given I rotate UI to landscape
@@ -376,5 +376,138 @@ Feature: People View
     Then I see message in the dialog
 
     Examples: 
-      | Name      | Contact2  | Contact3   | GroupChatName   |
-      | user1Name | user2Name | user3Name  | 1on1FromGroup   |
+      | Name      | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | 1on1FromGroup |
+
+  @staging @id2455
+  Scenario Outline: Verify unsilince the conversation [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Name> silenced group conversation with <GroupChatName>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I see conversation <GroupChatName> got silenced before
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I press conversation menu button on iPad
+    And I click NOTIFY button on iPad ellipsis menu
+    And I exit the group info iPad popover
+    And I see dialog page
+    And I swipe right on Dialog page
+    Then I see conversation <GroupChatName> is unsilenced
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Color  | GroupChatName |
+      | user1Name | user2Name | user3Name | Violet | SILENCE       |
+
+  @staging @id3208
+  Scenario Outline: Verify unsilince the conversation [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Name> silenced group conversation with <GroupChatName>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I see conversation <GroupChatName> got silenced before
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I press conversation menu button on iPad
+    And I click NOTIFY button on iPad ellipsis menu
+    And I exit the group info iPad popover
+    And I see dialog page
+    Then I see conversation <GroupChatName> is unsilenced
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Color  | GroupChatName |
+      | user1Name | user2Name | user3Name | Violet | SILENCE       |
+
+  @staging @id2456
+  Scenario Outline: Verify silence the conversation [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I press conversation menu button on iPad
+    And I click SILENCE button on iPad ellipsis menu
+    And I exit the group info iPad popover
+    And I see dialog page
+    And I swipe right on Dialog page
+    Then I see conversation <GroupChatName> is silenced
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Color  | GroupChatName |
+      | user1Name | user2Name | user3Name | Violet | SILENCE       |
+
+  @staging @id3209
+  Scenario Outline: Verify silence the conversation [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I press conversation menu button on iPad
+    And I click SILENCE button on iPad ellipsis menu
+    And I exit the group info iPad popover
+    And I see dialog page
+    Then I see conversation <GroupChatName> is silenced
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Color  | GroupChatName |
+      | user1Name | user2Name | user3Name | Violet | SILENCE       |
+
+  @staging @id3220
+  Scenario Outline: Add someone to a group conversation [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I press Add button
+    And I see People picker page on iPad popover
+    And I click on connected user <Contact3> on People picker on iPad popover
+    And I click on Add to Conversation button on iPad popover
+    Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
+      | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
+
+  @staging @id3221
+  Scenario Outline: Add someone to a group conversation [LANDSCAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I press Add button
+    And I see People picker page on iPad popover
+    And I click on connected user <Contact3> on People picker on iPad popover
+    And I click on Add to Conversation button on iPad popover
+    Then I see that number of participants <ParticipantsNumber> is correct on iPad popover
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
+      | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |

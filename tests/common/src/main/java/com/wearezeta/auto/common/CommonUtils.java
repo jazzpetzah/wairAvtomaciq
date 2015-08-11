@@ -272,6 +272,12 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "defaultEmailServer");
 	}
 
+
+	public static String getOpenCVLibPathFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "openCVLibPath");
+	}
+	
 	public static String getDriverTimeoutFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "driverTimeoutSeconds");
@@ -462,7 +468,7 @@ public class CommonUtils {
 			WebElement element, AppiumDriver driver, String deviceName)
 			throws Exception {
 		int multiply = 3;
-		if (deviceName.equals("iPhone 6")) {
+		if (deviceName.equals("iPhone 6")||deviceName.equals("iPad Air")) {
 			multiply = 2;
 		}
 		org.openqa.selenium.Point elementLocation = element.getLocation();

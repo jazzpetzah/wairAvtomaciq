@@ -1,5 +1,43 @@
 Feature: People View
 
+  @id2261 @smoke
+  Scenario Outline: Check contact personal info in portrait mode
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    When I tap the conversation <Contact>
+    And I see the conversation view
+    And I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    Then I see the Single user popover
+    And I see the user name <Contact> on Single user popover
+    And I see the user email <ContactEmail> on Single user popover
+
+    Examples: 
+      | Name      | Contact   | ContactEmail |
+      | user1Name | user2Name | user2Email   |
+
+  @id2247 @smoke
+  Scenario Outline: Check contact personal info in landscape mode
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    When I tap the conversation <Contact>
+    And I see the conversation view
+    And I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    Then I see the Single user popover
+    And I see the user name <Contact> on Single user popover
+    And I see the user email <ContactEmail> on Single user popover
+
+    Examples: 
+      | Name      | Contact   | ContactEmail |
+      | user1Name | user2Name | user2Email   |
+
   @id2257 @smoke
   Scenario Outline: Leave group conversation in portrait mode
     Given There are 3 users where <Name> is me
@@ -11,6 +49,7 @@ Feature: People View
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
     And I tap Options button on Group popover
@@ -34,6 +73,7 @@ Feature: People View
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
@@ -79,6 +119,7 @@ Feature: People View
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
     And I tap Options button on Group popover
@@ -102,6 +143,7 @@ Feature: People View
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     And I see the conversation view
+    And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover

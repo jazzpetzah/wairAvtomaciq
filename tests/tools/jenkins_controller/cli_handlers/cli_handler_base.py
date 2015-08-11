@@ -35,6 +35,13 @@ class CliHandlerBase(object):
         self._build_options(parser)
         return parser
 
+    def _normalize_job_name(self, raw_name):
+        at_pos = raw_name.find('@')
+        if at_pos >= 0:
+            return raw_name[:at_pos]
+        else:
+            return raw_name
+
     def _invoke(self):
         raise NotImplementedError('Should be implemented in a subclass')
 
@@ -44,7 +51,8 @@ class CliHandlerBase(object):
         while True:
             try:
                 return self._invoke()
-            except (requests.exceptions.ConnectionError, TypeError) as e:
+            except (requests.exceptions.ConnectionError,
+                    TypeError) as e:
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
                     raise e

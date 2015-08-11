@@ -599,7 +599,7 @@ public class CommonAndroidTabletSteps {
 	/**
 	 * User A sends a simple text message to user B
 	 * 
-	 * @step. ^Contact (.*) send message to user (.*)$
+	 * @step. ^Contact (.*) sends? message to user (.*)$
 	 * 
 	 * @param msgFromUserNameAlias
 	 *            the user who sends the message
@@ -609,11 +609,33 @@ public class CommonAndroidTabletSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@When("^Contact (.*) send message to user (.*)$")
+	@When("^Contact (.*) sends? message to user (.*)$")
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
 			String dstUserNameAlias) throws Exception {
 		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
 				dstUserNameAlias, CommonUtils.generateRandomString(10));
+	}
+
+	/**
+	 * Send a particular text message via the backend
+	 * 
+	 * @step. ^Contact (.*) sends? message "(.*)" to user (.*)$
+	 * 
+	 * @param msgFromUserNameAlias
+	 *            the user who sends the message
+	 * @param msg
+	 *            the message to send
+	 * @param dstUserNameAlias
+	 *            The user to receive the message
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^Contact (.*) sends? message \"(.*)\" to user (.*)$")
+	public void UserSendMessageXToConversation(String msgFromUserNameAlias,
+			String msg, String dstUserNameAlias) throws Exception {
+		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
+				dstUserNameAlias, msg);
 	}
 
 	/**

@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -150,6 +149,9 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCursorSketchButton)
 	private WebElement openSketchButton;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathGiphyImage)
+	private WebElement giphyImage;
+
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
 	private String connectingLabel = "CONNECTING TO %s.";
 
@@ -279,6 +281,14 @@ public class DialogPage extends IOSPage {
 
 	public void swipeInputCursor() throws Exception {
 		DriverUtils.swipeRight(this.getDriver(), conversationInput, 1000);
+	}
+
+	public void swipeLeftOptionsButtons() throws Exception {
+		int inputMiddle = conversationInput.getLocation().y
+				+ conversationInput.getSize().height / 2;
+		int windowSize = dialogWindow.getSize().height;
+		int swipeLocation = inputMiddle * 100 / windowSize;
+		DriverUtils.swipeLeftCoordinates(getDriver(), 1000, swipeLocation);
 	}
 
 	public CameraRollPage pressAddPictureButton() throws Exception {
@@ -491,9 +501,6 @@ public class DialogPage extends IOSPage {
 	public VideoPlayerPage clickOnVideoContainerFirstTime() throws Exception {
 		VideoPlayerPage page = new VideoPlayerPage(this.getLazyDriver());
 		youtubeCell.click();
-		if (!page.isVideoPlayerPageOpened()) {
-			youtubeCell.click();
-		}
 
 		return page;
 	}
@@ -965,6 +972,66 @@ public class DialogPage extends IOSPage {
 						IOSLocators.DialogPage.xpathMyNameInDialog,
 						name.toUpperCase())));
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(), el);
+	}
+
+	/**
+	 * Navigates back by swipe and initialize ContactListPage
+	 * 
+	 * @throws Exception
+	 */
+	public ContactListPage navigateBack(int timeMilliseconds) throws Exception {
+		swipeRight(timeMilliseconds,
+				DriverUtils.SWIPE_X_DEFAULT_PERCENTAGE_HORIZONTAL, 30);
+		return new ContactListPage(this.getLazyDriver());
+	}
+
+	public void clickPlusButton() {
+		plusButton.click();
+	}
+
+	public boolean isPlusButtonVisible() throws Exception {
+		return DriverUtils
+				.isElementPresentAndDisplayed(getDriver(), plusButton);
+	}
+
+	public boolean waitPlusButtonNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.name(IOSLocators.namePlusButton));
+	}
+
+	public boolean isOpenConversationDetailsButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				openConversationDetails);
+	}
+
+	public boolean isCallButtonVisible() throws Exception {
+		return DriverUtils
+				.isElementPresentAndDisplayed(getDriver(), callButton);
+	}
+
+	public boolean isCameraButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				addPictureButton);
+	}
+
+	public boolean isOpenScetchButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				openSketchButton);
+	}
+
+	public boolean isCloseButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				closeButton);
+	}
+
+	public void clickCloseButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), closeButton);
+		closeButton.click();
+	}
+
+	public boolean isGiphyImageVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(IOSLocators.DialogPage.xpathGiphyImage));
 	}
 
 }

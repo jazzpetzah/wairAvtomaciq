@@ -18,6 +18,8 @@ import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.IOSConstants;
 import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.LoginPage;
@@ -39,7 +41,7 @@ public class CommonIOSSteps {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
 	private Date testStartedDate;
-
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
 			.getInstance();
 
@@ -276,15 +278,36 @@ public class CommonIOSSteps {
 	 * @param userToNameAlias
 	 *            user that mutes the conversation
 	 * @param mutedUserNameAlias
-	 *            name of group conversation to mute
+	 *            name of single conversation to mute
 	 * @throws Exception
 	 * 
 	 */
 	@When("^(.*) silenced conversation with (.*)$")
 	public void MuteConversationWithUser(String userToNameAlias,
 			String mutedUserNameAlias) throws Exception {
+		mutedUserNameAlias = usrMgr.replaceAliasesOccurences(mutedUserNameAlias,
+				FindBy.NAME_ALIAS);
 		commonSteps.MuteConversationWithUser(userToNameAlias,
 				mutedUserNameAlias);
+	}
+	
+	/**
+	 * Silences group conversation in backend
+	 * 
+	 * @step. ^(.*) silenced group conversation with (.*)$
+	 * 
+	 * @param userToNameAlias
+	 *            user that mutes the conversation
+	 * @param groupName
+	 *            name of group conversation to mute
+	 * @throws Exception
+	 * 
+	 */
+	@When("^(.*) silenced group conversation with (.*)$")
+	public void MuteGroupConversationWithUser(String userToNameAlias,
+			String groupName) throws Exception {
+		commonSteps.MuteConversationWithGroup(userToNameAlias,
+				groupName);
 	}
 
 	/**
@@ -517,7 +540,7 @@ public class CommonIOSSteps {
 	 */
 	@When("^I swipe left in current window$")
 	public void ISwipeLeftInCurrentWindow() throws Exception {
-		pagesCollecton.getCommonPage().swipeLeft(500);
+		pagesCollecton.getCommonPage().swipeLeft(1000);
 	}
 
 	/**

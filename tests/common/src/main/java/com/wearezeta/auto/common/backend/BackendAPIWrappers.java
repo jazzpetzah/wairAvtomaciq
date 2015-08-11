@@ -386,7 +386,7 @@ public final class BackendAPIWrappers {
 			String chatName, String imagePath) throws Exception {
 		FileInputStream fis = new FileInputStream(imagePath);
 		try {
-			sendPictureToChatByName(userFrom, chatName, imagePath);
+			sendPictureToChatByName(userFrom, chatName, fis);
 		} finally {
 			fis.close();
 		}
@@ -886,6 +886,14 @@ public final class BackendAPIWrappers {
 		tryLoginByUser(user);
 		BackendREST.updateConvSelfInfo(generateAuthToken(user),
 				getConversationWithSingleUser(user, mutedUser), null, muted,
+				null);
+	}
+	
+	public static void updateGroupConvMutedState(ClientUser user,
+			String groupConvName, boolean muted) throws Exception {
+		tryLoginByUser(user);
+		BackendREST.updateConvSelfInfo(generateAuthToken(user),
+				getConversationIdByName(user, groupConvName), null, muted,
 				null);
 	}
 

@@ -21,7 +21,7 @@ public class CallingPageSteps {
 		return (CallingLockscreenPage) pagesCollection
 				.getPage(CallingLockscreenPage.class);
 	}
-
+	
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private static final long CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS = 5000;
@@ -207,4 +207,136 @@ public class CallingPageSteps {
 		Assert.assertFalse(getCallingOverlayPage().callingSpeakerIsVisible());
 		Assert.assertTrue(getCallingOverlayPage().callingMicMuteIsVisible());
 	}
+
+	/**
+	 * Press on the join group call button
+	 * 
+	 * @step. ^I press join group call button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I press join group call button$")
+	public void WhenIPressJoinGroupCallButton() throws Exception {
+		getCallingOverlayPage().joinGroupCall();
+	}
+
+	/**
+	 * Check whether expected number of users present in call
+	 * 
+	 * @step. ^I see (\\d+) users? take part in call$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see (\\d+) users? take part in call$")
+	public void ISeeXUsersTakePartInGroupCall(int expectedUsersCount)
+			throws Exception {
+		int actualUsersCount;
+		boolean check = false;
+		int count = 0;
+		do {
+			actualUsersCount = getCallingOverlayPage()
+					.numberOfParticipantsInGroupCall();
+			check = (actualUsersCount == expectedUsersCount);
+		} while (!check && count < 3);
+		Assert.assertTrue(String.format(
+				"Number of users (%s) not as expected (%s)", actualUsersCount,
+				expectedUsersCount), check);
+	}
+	
+	/**
+	 * Check if alert notifying that group call is full appears
+	 * 
+	 * @step. ^I see group call is full alert$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see group call is full alert$")
+	public void ISeeGroupCallIsFullAlert() throws Exception {
+		Assert.assertTrue(getCallingOverlayPage().isGroupCallFullAlertVisible());
+	}
+	
+	/**
+	 * Check whether expected number of users present in group call
+	 * 
+	 * @step. ^I close group call is full alert$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I close group call is full alert$")
+	public void ICloseGroupCallIsFullAlert() throws Exception {
+		getCallingOverlayPage().closeGroupCallFullAlert();
+	}
+	
+	/**
+	 * Check that answer call alert appears if there is another call during ongoing call
+	 * 
+	 * @step. ^I see answer call alert$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see answer call alert$")
+	public void ISeeAnswerCallAlert() throws Exception {
+		Assert.assertTrue(getCallingOverlayPage().isAnswerCallAlertVisible());
+	}
+	
+	/**
+	 * Cancels another call on answer call alert
+	 * 
+	 * @step. ^I cancel new call from answer call alert$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I cancel new call from answer call alert$")
+	public void ICancelNewCallFromAlert() throws Exception {
+		getCallingOverlayPage().answerCallCancel();
+	}
+	
+	/**
+	 * Accepts another call on answer call alert
+	 * 
+	 * @step. ^I start new call from answer call alert$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I start new call from answer call alert$")
+	public void IStartNewCallFromAnswerCallAlert() throws Exception {
+		getCallingOverlayPage().answerCallContinue();
+	}
+	
+	/**
+	 * Check that end current call alert appears if there is another call during ongoing call
+	 * 
+	 * @step. ^I see end current call alert$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see end current call alert$")
+	public void ISeeEndCurrentCallAlert() throws Exception {
+		Assert.assertTrue(getCallingOverlayPage().isEndCurrentCallAlertVisible());
+	}
+	
+	/**
+	 * Cancels another call on end current call alert
+	 * 
+	 * @step. ^I cancel new call from end current call alert$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I cancel new call from end current call alert$")
+	public void ICancelNewCallFromEndCurrentCallAlert() throws Exception {
+		getCallingOverlayPage().endCurrentCallCancel();
+	}
+	
+	/**
+	 * I start another call on answer call alert
+	 * 
+	 * @step. ^I start new call from end current call alert$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I start new call from end current call alert$")
+	public void IStartNewCallFromEndCurrentCallAlert() throws Exception {
+		getCallingOverlayPage().endCurrentCallContinue();
+	}
+	
 }

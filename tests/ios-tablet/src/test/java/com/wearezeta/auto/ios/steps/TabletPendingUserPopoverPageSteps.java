@@ -41,6 +41,9 @@ public class TabletPendingUserPopoverPageSteps {
 						usrMgr.findUserByNameOrNameAlias(user).getName()));
 		Assert.assertTrue("Pending label is not displayed",
 				getTabletPendingUserPopoverPage().isPendingLabelVisible());
+		// TODO Above method is about connection text verification. Currently
+		// Pending label is missing(bug issue). Once it is back method should be
+		// updated.
 	}
 
 	/**

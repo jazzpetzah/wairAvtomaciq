@@ -7,6 +7,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -119,15 +120,15 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Presses on search bar in the conversation List to open start UI Sets the
-	 * people picker page
+	 * Presses on search bar in the conversation List to open search (people
+	 * picker)
 	 * 
-	 * @step. ^I press Open StartUI$
+	 * @step. ^I open Search by tap$
 	 * @throws Exception
 	 */
-	@When("^I press Open StartUI")
-	public void WhenIPressOpenStartUI() throws Exception {
-		getContactListPage().pressOpenStartUI();
+	@When("^I open Search by tap")
+	public void WhenITapOnSearchBox() throws Exception {
+		getContactListPage().tapOnSearchBox();
 	}
 
 	/**
@@ -238,15 +239,29 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Open People Picker by clicking the Search button in the right top corner
-	 * of convo list
+	 * Open Search by clicking the Search button in the right top corner of
+	 * convo list
 	 * 
-	 * @step. ^I open People Picker$
+	 * @step. ^I open Search by UI button$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I open People Picker$")
+	@When("^I open Search by UI button$")
 	public void IOpenPeoplePicker() throws Exception {
-		getContactListPage().openPeoplePicker();
+		getContactListPage().tapOnSearchButton();
+	}
+
+	/**
+	 * Tap the corresponding item in conversation settings menu
+	 * 
+	 * @step. ^I select (.*) From conversation settings menu$
+	 * 
+	 * @param itemName
+	 *            menu item name
+	 * @throws Exception
+	 */
+	@And("^I select (.*) from conversation settings menu$")
+	public void ISelectConvoSettingsMenuItem(String itemName) throws Exception {
+		getContactListPage().selectConvoSettingsMenuItem(itemName);
 	}
 }

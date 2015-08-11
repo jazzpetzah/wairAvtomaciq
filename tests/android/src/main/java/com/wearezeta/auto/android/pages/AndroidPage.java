@@ -70,9 +70,9 @@ public abstract class AndroidPage extends BasePage {
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	public void selectFirstGalleryPhoto() throws Exception {
-		final Dimension screenDimension = getDriver().manage().window()
-				.getSize();
-		final int xDivider = 6;
+		final Dimension screenDimension = AndroidCommonUtils.getScreenSize(this
+				.getDriver());
+		final int xDivider = 7;
 		final int yDivider = 8;
 		int y = screenDimension.height / 2;
 		do {

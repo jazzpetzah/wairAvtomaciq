@@ -64,9 +64,9 @@ public class PeoplePickerPage extends AndroidPage {
 
 	private static final String idPickerSearchUsers = "ttv_pickuser__searchuser_name";
 	@FindBy(id = idPickerSearchUsers)
-	private List<WebElement> pickerSearchUsers;
-	@FindBy(id = idPickerSearchUsers)
 	private WebElement pickerSearchUser;
+	private static final Function<String, String> xpathPickerUserByName = name -> String
+			.format("//*[@id='%s' and @value='%s']", idPickerSearchUsers, name);
 
 	private static final String idPickerTopPeopleHeader = "ttv_pickuser__list_header_title";
 	@FindBy(id = idPickerTopPeopleHeader)
@@ -158,6 +158,7 @@ public class PeoplePickerPage extends AndroidPage {
 	public AndroidPage selectContact(String contactName) throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				pickerSearchUser, 5);
+		pickerSearchUser.click();
 		final Map<By, AndroidPage> pagesMapping = new HashMap<By, AndroidPage>();
 		pagesMapping.put(By.id(OtherUserPersonalInfoPage.idUnblockBtn),
 				new OtherUserPersonalInfoPage(this.getLazyDriver()));
@@ -175,7 +176,7 @@ public class PeoplePickerPage extends AndroidPage {
 			}
 			scanTry++;
 		}
-		pickerSearchUser.click();
+		DriverUtils.tapInTheCenterOfTheElement(getDriver(), pickerSearchUser);
 		return new DialogPage(this.getLazyDriver());
 	}
 
@@ -215,22 +216,11 @@ public class PeoplePickerPage extends AndroidPage {
 				pickerSearch);
 	}
 
-	// FIXME: find better locator
 	public void waitUserPickerFindUser(String contactName) throws Exception {
-		for (int i = 0; i < 50; i++) {
-			List<WebElement> elements = pickerSearchUsers;
-			for (WebElement element : elements) {
-				try {
-					if (element.getText().toLowerCase()
-							.equals(contactName.toLowerCase())) {
-						return;
-					}
-				} catch (Exception ex) {
-					continue;
-				}
-			}
-			Thread.sleep(100);
-		}
+		final By locator = By.xpath(xpathPickerUserByName.apply(contactName));
+		assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : String
+				.format("User '%s' does not exist in the People Picker list",
+						contactName);
 	}
 
 	public ContactListPage navigateBack() throws Exception {

@@ -9,7 +9,7 @@ Feature: Search
     When I tap the Search input
     And I see People Picker page
     And I close People Picker
-    Then I see the conversations list
+    Then I see the conversations list with no conversations
 
     Examples: 
       | Name      |
@@ -24,7 +24,7 @@ Feature: Search
     When I tap the Search input
     And I see People Picker page
     And I close People Picker
-    Then I see the conversations list
+    Then I see the conversations list with no conversations
 
     Examples: 
       | Name      |
