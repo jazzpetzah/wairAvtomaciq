@@ -34,6 +34,11 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 				.name(IOSLocators.nameOtherProfilePageCloseButton));
 	}
 
+	public boolean isCancelRequestButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
+				.xpath(IOSLocators.xpathOtherProfileCancelRequestButton));
+	}
+	
 	public boolean isPendingLabelVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
 				.xpath(IOSLocators.xpathOtherProfilePagePendingLabel));

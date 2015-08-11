@@ -247,10 +247,17 @@ public class ConversationPageSteps {
 	 * @throws AssertionError
 	 *             if action message did not appear in conversation
 	 */
-	@Then("^I see (.*) action in conversation$")
-	public void ThenISeeActionInConversation(String message) throws Exception {
-		Assert.assertTrue(PagesCollection.conversationPage
-				.isActionMessageSent(message));
+	@Then("^I( do not)? see (.*) action in conversation$")
+	public void ThenISeeActionInConversation(String doNot, String message)
+			throws Exception {
+		if (doNot == null) {
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isActionMessageSent(message));
+		} else {
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isActionMessageNotSent(message));
+
+		}
 	}
 
 	/**
@@ -280,16 +287,22 @@ public class ConversationPageSteps {
 	 * @throws Exception
 	 *
 	 */
-	@Then("^I see (.*) action for (.*) in conversation$")
-	public void ThenISeeActionForContactInConversation(String message,
-			String contacts) throws Exception {
+	@Then("^I( do not)? see (.*) action for (.*) in conversation$")
+	public void ThenISeeActionForContactInConversation(String doNot,
+			String message, String contacts) throws Exception {
 		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);
 		parts.addAll(CommonSteps.splitAliases(contacts));
-		assertThat("Check action",
-				PagesCollection.conversationPage.getLastActionMessage(),
-				containsString(message));
+		if (doNot == null) {
+			assertThat("Check action",
+					PagesCollection.conversationPage.getLastActionMessage(),
+					containsString(message));
+		} else {
+			assertThat("Check action",
+					PagesCollection.conversationPage.getLastActionMessage(),
+					not(containsString(message)));
+		}
 	}
 
 	/**
@@ -640,7 +653,8 @@ public class ConversationPageSteps {
 	 * @throws java.lang.Exception
 	 */
 	@Then("^I( do not)? see picture (.*) in fullscreen$")
-	public void ISeePictureInFullscreen(String doNot, String pictureName) throws Exception {
+	public void ISeePictureInFullscreen(String doNot, String pictureName)
+			throws Exception {
 		if (doNot == null) {
 			Assert.assertTrue(PagesCollection.conversationPage
 					.isPictureInModalDialog());

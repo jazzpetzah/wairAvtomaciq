@@ -11,7 +11,7 @@ try:
     from jenkinsapi.jenkins import Jenkins
 except ImportError:
     import subprocess
-    subprocess.check_call(['sudo', 'easy_install', 'jenkinsapi'])
+    subprocess.check_call(['easy_install', '--user', 'jenkinsapi'])
     from jenkinsapi.jenkins import Jenkins
 
 from cli_handlers.cli_handler_base import get_handler, get_handler_names

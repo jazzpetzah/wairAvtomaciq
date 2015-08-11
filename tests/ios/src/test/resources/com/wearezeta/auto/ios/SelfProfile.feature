@@ -1,6 +1,7 @@
 Feature: Self Profile
 
-  @smoke @id344
+  #smoke
+  @staging @id344
   Scenario Outline: Change your profile picture
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

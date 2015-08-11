@@ -65,7 +65,7 @@ public class ContactListPage extends AndroidPage {
 	private List<WebElement> frameLayout;
 
 	@FindBy(id = PeoplePickerPage.idPickerSearch)
-	private WebElement openStartUI;
+	private WebElement searchBox;
 
 	private static final String idSelfUserAvatar = "civ__searchbox__self_user_avatar";
 	@FindBy(id = idSelfUserAvatar)
@@ -98,6 +98,10 @@ public class ContactListPage extends AndroidPage {
 	private static final String idSearchButton = "gtv_pickuser__searchbutton";
 	@FindBy(id = idSearchButton)
 	private WebElement searchButton;
+
+	private static final Function<String, String> xpathConvoSettingsMenuItemByName = name -> String
+			.format("//*[starts-with(@id, 'ttv__conversation_settings') and @value='%s']",
+					name.toUpperCase());
 
 	private static final String xpathTopConversationsListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
 	private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
@@ -242,8 +246,8 @@ public class ContactListPage extends AndroidPage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public PeoplePickerPage pressOpenStartUI() throws Exception {
-		openStartUI.click();
+	public PeoplePickerPage tapOnSearchBox() throws Exception {
+		searchBox.click();
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
@@ -338,7 +342,7 @@ public class ContactListPage extends AndroidPage {
 		return new PersonalInfoPage(getLazyDriver());
 	}
 
-	public PeoplePickerPage openPeoplePicker() throws Exception {
+	public PeoplePickerPage tapOnSearchButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), searchButton);
 		searchButton.click();
 		return new PeoplePickerPage(getLazyDriver());
@@ -366,5 +370,13 @@ public class ContactListPage extends AndroidPage {
 			}
 		}
 		return true;
+	}
+
+	public void selectConvoSettingsMenuItem(String itemName) throws Exception {
+		final By locator = By.xpath(xpathConvoSettingsMenuItemByName
+				.apply(itemName));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("Conversation menu item '%s' could not be found on the current screen");
+		getDriver().findElement(locator).click();
 	}
 }

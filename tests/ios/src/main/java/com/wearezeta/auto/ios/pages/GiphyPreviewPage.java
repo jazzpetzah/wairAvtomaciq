@@ -30,6 +30,9 @@ public class GiphyPreviewPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.GiphyPreviewPage.nameGiphySendButton)
 	private WebElement giphySendButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.GiphyPreviewPage.nameNoGifsText)
+	private WebElement noGifsText;
 
 	public GiphyPreviewPage(Future<ZetaIOSDriver> driver) throws Exception {
 		super(driver);
@@ -76,5 +79,9 @@ public class GiphyPreviewPage extends IOSPage {
 				giphySendButton);
 	}
 	
+	public boolean isNoGifsTextVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				noGifsText);
+	}
 	
 }
