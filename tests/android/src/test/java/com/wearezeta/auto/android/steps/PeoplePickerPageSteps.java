@@ -276,11 +276,11 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Navigates back to the conversation list by swiping down
 	 * 
-	 * @step. ^I navigate back to Conversations List$
+	 * @step. ^I navigate back to Conversations List( by back button)?$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I navigate back to Conversations List")
+	@When("^I navigate back to Conversations List( by back button)?")
 	public void WhenINavigateBackToConversationsList() throws Exception {
 		getPeoplePickerPage().navigateBack();
 	}
