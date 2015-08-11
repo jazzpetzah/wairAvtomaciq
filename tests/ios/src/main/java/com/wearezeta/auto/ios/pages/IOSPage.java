@@ -54,6 +54,9 @@ public abstract class IOSPage extends BasePage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardDeleteButton)
 	private WebElement keyboardDeleteBtn;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardGoButton)
+	private WebElement keyboardGoBtn;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardReturnButton)
 	private WebElement keyboardReturnBtn;
@@ -222,6 +225,10 @@ public abstract class IOSPage extends BasePage {
 
 	public void clickKeyboardDeleteButton() {
 		keyboardDeleteBtn.click();
+	}
+	
+	public void clickKeyboardGoButton() {
+		keyboardGoBtn.click();
 	}
 
 	public void clickKeyboardReturnButton() {
