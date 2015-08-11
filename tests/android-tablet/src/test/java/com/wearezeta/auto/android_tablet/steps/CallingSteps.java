@@ -67,9 +67,9 @@ public class CallingSteps {
 	 * @param conversationName
 	 *            destination conversation
 	 * @param expectedStatuses
-	 *            comma-separated list of expected call statuses. Available
-	 *            values: "starting", "waiting", "active", "active_muted",
-	 *            "stopping", "inactive"
+	 *            comma-separated list of expected call statuses. See
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
+	 *            for more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
@@ -94,9 +94,9 @@ public class CallingSteps {
 	 * @param callees
 	 *            comma-separated list of callee names/aliases
 	 * @param expectedStatuses
-	 *            comma-separated list of expected call statuses. Available
-	 *            values: "starting", "waiting", "active", "active_muted",
-	 *            "stopping", "inactive"
+	 *            comma-separated list of expected call statuses. See
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
+	 *            for more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception

@@ -11,9 +11,10 @@ Feature: Calling
     And I see the conversation <GroupChatName> in my conversations list
     And I tap the conversation <GroupChatName>
     When <Contact1> calls <GroupChatName> using <CallBackend>
-    And I wait for 5 seconds
+    And I see calling overlay Big bar
     And <Contact1> stops all calls to <GroupChatName>
-    Then I see missed group call notification in the conversation view
+    Then I do not see calling overlay Big bar
+    And I see missed group call notification in the conversation view
 
     Examples: 
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
