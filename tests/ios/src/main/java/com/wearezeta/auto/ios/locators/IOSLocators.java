@@ -276,7 +276,7 @@ public final class IOSLocators {
 
 	public static final String xpathAboutPageWireLogo = "//UIAApplication[1]/UIAWindow[2]/UIAImage[1]";
 	
-	public static final String nameAboutCloseButton = "";
+	public static final String xpathAboutCloseButton = "//UIAApplication/UIAWindow/UIAButton[1]";
 	
 	public static final String nameWireWebsiteButton = "wire.com";
 	
