@@ -295,7 +295,7 @@ Feature: Calling
       
   @staging @id2683
   Scenario Outline: Verify ignoring group call in foreground
-  	Given There are 5 users where <Name> is me
+  	Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given <Contact2> starts waiting instance using <CallBackend>
