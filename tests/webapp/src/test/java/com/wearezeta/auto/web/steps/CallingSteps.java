@@ -3,7 +3,6 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -13,8 +12,8 @@ import org.apache.log4j.Logger;
 
 public class CallingSteps {
 
-	private static final Logger LOG = ZetaLogger
-			.getLog(ClientUsersManager.class.getName());
+	private static final Logger LOG = ZetaLogger.getLog(CallingSteps.class
+			.getName());
 
 	private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
 			.getInstance();
