@@ -51,12 +51,14 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
  
-  @id201 @smoke 
+  @id201 @smoke
   Scenario Outline: Change user picture with camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
     When I tap on my avatar
+    # Wait until self profile image is loaded into UI
+    And I wait for 20 seconds
     And I tap on personal info screen
     And I remember my current profile picture
     And I tap change photo button
