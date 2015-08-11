@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 public enum Browser {
 	Safari("safari"), InternetExplorer("internetexplorer"), Chrome("chrome"), Firefox(
-			"firefox"), Opera("opera"), Edge("edge");
+			"firefox"), Opera("opera"), MicrosoftEdge("MicrosoftEdge");
 
 	private final String stringRepresentation;
 
@@ -88,6 +88,24 @@ public enum Browser {
 			return true;
 		default:
 			return false;
+		}
+	}
+
+	public boolean hasOtherResizingWindowBug() {
+		switch (this) {
+		case MicrosoftEdge:
+			return true;
+		default:
+			return false;
+		}
+	}
+
+	public boolean hasImplicitWaitSupport() {
+		switch (this) {
+		case MicrosoftEdge:
+			return false;
+		default:
+			return true;
 		}
 	}
 
