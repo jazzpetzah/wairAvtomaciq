@@ -68,7 +68,7 @@ Feature: Search
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat1 | 5    |
 
   @id327 @smoke
-  Scenario Outline: Open/Close People picker
+  Scenario Outline: Open Search by tap in search box and close by UI button
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
@@ -80,6 +80,33 @@ Feature: Search
     Examples: 
       | Name      |
       | user1Name |
+      
+  @id2177 @regression
+  Scenario Outline: Open/Close Search by different actions
+    Given There are 2 users where <Name> is me
+    # We need at least 1 user in the convo list, otherwise it will be impossible to swipe
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I open Search by tap
+    And I see People picker page
+    And I press Clear button
+    Then I see Contact list with contacts
+    And I do not see TOP PEOPLE
+    When I open Search by UI button
+    And I see People picker page
+    And I swipe down people picker
+    Then I see Contact list with contacts
+    And I do not see TOP PEOPLE
+    When I swipe down contact list
+    And I see People picker page
+    And I navigate back to Conversations List
+    Then I see Contact list with contacts
+    And I do not see TOP PEOPLE
+    
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @id319 @regression
   Scenario Outline: I can create group chat from Search

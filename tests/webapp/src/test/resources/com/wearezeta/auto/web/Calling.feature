@@ -22,7 +22,6 @@ Feature: Calling
     And I see ping message <PING>
     And I see sent picture <PictureName> in the conversation view
     And I end the call
-    Then <Contact> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
@@ -47,7 +46,6 @@ Feature: Calling
     And User <Contact> pinged twice in the conversation with <Contact>
     And I see ping message <HOTPING>
     And I end the call
-    Then <Contact> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
@@ -76,7 +74,6 @@ Feature: Calling
     And I end the call
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
-    Then <Contact1> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
@@ -130,7 +127,6 @@ Feature: Calling
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
@@ -206,11 +202,10 @@ Feature: Calling
 	Given My browser supports calling
 	Given There are 3 users where <Name> is me
 	Given Myself is connected to <Contact1>,<Contact2>
-	Given <Contact1> starts waiting instance using <CallBackend>
-	Given <Contact1> accepts next incoming call automatically
-	Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
-	Given <Contact2> starts waiting instance using <CallBackend>
-	Given <Contact2> accepts next incoming call automatically
+    Given <Contact1>,<Contact2> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
 	Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
 	Given I switch to Sign In page
 	Given I Sign in using login <Login> and password <Password>
@@ -219,13 +214,28 @@ Feature: Calling
 	And I call
 	Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
 	Then I see the calling bar from user <Contact1>
-	And I open conversation with <Contact2>
-	And I call
-	Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-	Then I see the calling bar from user <Contact2>
+    And I open conversation with <Contact2>
+    When I call
+    Then I see another call warning modal
+    And I close the another call warning modal
+    And I do not see another call warning modal
+    Then I do not see the calling bar
+    And I open conversation with <Contact1>
+    And I see the calling bar
+    When I open conversation with <Contact2>
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    And I click on "End Call" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    When I call
+    Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see the calling bar from user <Contact2>
+    And I open conversation with <Contact1>
+    Then I do not see the calling bar
+	When I open conversation with <Contact2>
 	And I end the call
-    And <Contact1> stops all waiting instances
-    And <Contact2> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
@@ -274,11 +284,28 @@ Feature: Calling
 	Then <Contact1> verifies that call status to Myself is changed to active in <Timeout> seconds
 	Then I see the calling bar from user <Contact1>
 	And I open conversation with <Contact2>
-	And I call
-	Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    When I call
+    Then I see another call warning modal
+    And I close the another call warning modal
+    And I do not see another call warning modal
+    Then I do not see the calling bar
+    And I open conversation with <Contact1>
+    And I see the calling bar
+    When I open conversation with <Contact2>
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    And I click on "End Call" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    When I call
+    Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar from user <Contact2>
+    And I open conversation with <Contact1>
+    Then I do not see the calling bar
+    When I open conversation with <Contact2>
     And I end the call
-    And <Contact2> stops all waiting instances
+
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | WaitBackend | Timeout |
@@ -526,7 +553,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2> starts waiting instance using <CallBackend>
     Given <Contact1> accepts next incoming call automatically
     Given <Contact2> accepts next incoming call automatically
     Given I switch to Sign In page
