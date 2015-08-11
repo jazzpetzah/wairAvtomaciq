@@ -136,10 +136,17 @@ public final class WebAppLocators {
 		public static final String cssBlockModalCancelButton = ".modal-block .modal-close.button-inverted";
 		public static final String cssBlockModalActionButton = ".modal-block .modal-close.modal-action";
 
-		// delete warning
-		public static final String cssDeleteModal = ".modal-clear-group";
-		public static final String cssDeleteModalCancelButton = ".modal-clear-group .modal-close.button-inverted";
-		public static final String cssDeleteModalActionButton = ".modal-clear-group .modal-close.modal-action";
+		// delete warning for group conversations
+		public static final String cssDeleteModalGroup = ".modal-clear-group";
+		public static final String cssDeleteModalCancelButtonGroup = ".modal-clear-group .modal-close.button-inverted";
+		public static final String cssDeleteModalActionButtonGroup = ".modal-clear-group .modal-close.modal-action";
+		public static final String cssDeleteModalLeaveCheckboxGroup = "[data-uie-name='enter-leave-conversation']";
+
+		// delete warning for 1:1 conversation
+		public static final String cssDeleteModalSingle = ".modal-clear";
+		public static final String cssDeleteModalCancelButtonSingle = ".modal-clear .modal-close.button-inverted";
+		public static final String cssDeleteModalActionButtonSingle = ".modal-clear .modal-close.modal-action";
+
 	}
 
 	public static final class SettingsPage {

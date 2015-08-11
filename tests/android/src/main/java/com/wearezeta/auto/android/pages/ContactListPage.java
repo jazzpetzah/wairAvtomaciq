@@ -65,7 +65,7 @@ public class ContactListPage extends AndroidPage {
 	private List<WebElement> frameLayout;
 
 	@FindBy(id = PeoplePickerPage.idPickerSearch)
-	private WebElement openStartUI;
+	private WebElement searchBox;
 
 	private static final String idSelfUserAvatar = "civ__searchbox__self_user_avatar";
 	@FindBy(id = idSelfUserAvatar)
@@ -246,8 +246,8 @@ public class ContactListPage extends AndroidPage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public PeoplePickerPage pressOpenStartUI() throws Exception {
-		openStartUI.click();
+	public PeoplePickerPage tapOnSearchBox() throws Exception {
+		searchBox.click();
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
@@ -342,7 +342,7 @@ public class ContactListPage extends AndroidPage {
 		return new PersonalInfoPage(getLazyDriver());
 	}
 
-	public PeoplePickerPage openPeoplePicker() throws Exception {
+	public PeoplePickerPage tapOnSearchButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), searchButton);
 		searchButton.click();
 		return new PeoplePickerPage(getLazyDriver());
