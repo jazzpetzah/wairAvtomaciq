@@ -16,22 +16,6 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id317 @smoke
-  Scenario Outline: Send Hello and Hey to contact
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe on text input
-    And I press Ping button
-    Then I see Ping message <Msg> in the dialog
-
-    Examples: 
-      | Name      | Contact   | Msg        |
-      | user1Name | user2Name | YOU PINGED |
-
   @id318 @smoke
   Scenario Outline: Send Camera picture to contact
     Given There are 2 users where <Name> is me
@@ -173,7 +157,7 @@ Feature: Conversation View
       | user1Name | user2Name | 畑 はたけ hatake field of crops |
 
   @id163 @regression
-  Scenario Outline: Send image using existing camera rolls (portrait) in 1:1 chat
+  Scenario Outline: Send existing image from gallery (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -194,7 +178,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @id162 @regression
-  Scenario Outline: Send image using existing camera rolls (landscape) in 1:1 chat
+  Scenario Outline: Send existing image from gallery (landscape) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
