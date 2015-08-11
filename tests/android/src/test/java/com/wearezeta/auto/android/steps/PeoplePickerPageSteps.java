@@ -489,7 +489,7 @@ public class PeoplePickerPageSteps {
 			getPeoplePickerPage().tapClearButton();
 			Thread.sleep(3000);
 			((ContactListPage) pagesCollection.getPage(ContactListPage.class))
-					.openPeoplePicker();
+					.tapOnSearchButton();
 			getPeoplePickerPage().hideKeyboard();
 		}
 		getPeoplePickerPage().hideKeyboard();
@@ -523,7 +523,7 @@ public class PeoplePickerPageSteps {
 			new LoginSteps().ISignInUsingMyEmail();
 			new ContactListPageSteps().GivenISeeContactList();
 			((ContactListPage) pagesCollection.getPage(ContactListPage.class))
-					.openPeoplePicker();
+					.tapOnSearchButton();
 		}
 		if (!getPeoplePickerPage().isTopPeopleHeaderVisible()) {
 			throw new AssertionError(String.format(
