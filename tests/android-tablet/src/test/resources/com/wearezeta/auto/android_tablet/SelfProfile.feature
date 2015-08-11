@@ -3,7 +3,7 @@ Feature: Self Profile
   @id2264 @smoke
   Scenario Outline: I can change my name in portrait mode
     Given There is 1 user where <Name> is me
-    Given I rotate UI to <Orientation>
+    Given I rotate UI to portrait
     Given I sign in using my email
     Given I see the conversations list with no conversations
     When I tap my avatar on top of conversations list
