@@ -9,7 +9,7 @@ import org.junit.Assert;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import com.wearezeta.auto.common.CommonCallingSteps;
+import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
@@ -117,8 +117,7 @@ public class CommonIOSSteps {
 	public void commonBefore(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		try {
 			// async calls/waiting instances cleanup
-			CommonCallingSteps.getInstance().cleanupWaitingInstances();
-			CommonCallingSteps.getInstance().cleanupCalls();
+			CommonCallingSteps2.getInstance().cleanup();
 		} catch (Exception e) {
 			// do not fail if smt fails here
 			e.printStackTrace();
@@ -457,8 +456,7 @@ public class CommonIOSSteps {
 	public void tearDown() throws Exception {
 		try {
 			// async calls/waiting instances cleanup
-			CommonCallingSteps.getInstance().cleanupWaitingInstances();
-			CommonCallingSteps.getInstance().cleanupCalls();
+			CommonCallingSteps2.getInstance().cleanup();
 		} catch (Exception e) {
 			// do not fail if smt fails here
 			e.printStackTrace();
