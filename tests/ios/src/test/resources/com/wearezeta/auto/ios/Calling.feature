@@ -160,7 +160,7 @@ Feature: Calling
     And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    #And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I lock screen for 5 seconds
     And I see mute call, end call and speakers buttons
     And I end started call
@@ -266,4 +266,51 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | webdriver   | autocall     | 30      |
+
+  @staging @id2682
+  Scenario Outline: Verify accepting group call in foreground
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact2> starts waiting instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> starts waiting instance using <CallBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> starts waiting instance using <CallBackend>
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And <Contact1> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I accept incoming call
+    Then I see mute call, end call and speakers buttons
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | chrome      | autocall     |
+
+  @staging @id2683
+  Scenario Outline: Verify ignoring group call in foreground
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact2> starts waiting instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And <Contact1> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I ignore incoming call
+    Then I dont see incoming call page
+    Then I see Join Call bar
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | IgnoringGROUPCALL | firefox     | autocall     |
+      | user1Name | user2Name | user3Name | IgnoringGROUPCALL | chrome      | autocall     |

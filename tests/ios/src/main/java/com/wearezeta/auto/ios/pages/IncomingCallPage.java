@@ -28,6 +28,9 @@ public class IncomingCallPage extends CallPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameCallingMessageUser)
 	private WebElement callingMessageUser;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameJoinCallButton)
+	private WebElement joinCallButton;
 
 	public IncomingCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -65,5 +68,14 @@ public class IncomingCallPage extends CallPage {
 	public boolean isCallingMessageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(IOSLocators.IncomingCallPage.xpathCallingMessage), 10);
+	}
+	
+	public boolean isGroupCallingMessageVisible() throws Exception{
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(IOSLocators.IncomingCallPage.xpathGroupCallingMessage), 10);
+	}
+
+	public boolean isJoinCallBarVisible() {
+		return joinCallButton.isDisplayed();
 	}
 }

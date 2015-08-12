@@ -59,9 +59,9 @@ public class ConnectToPageSteps {
 
 	@When("I click Connect button on connect to dialog")
 	public void IClickConnectButtonConnectDialog() throws Throwable {
-		if (getConnectToPage().isKeyboardVisible()) {
-			getConnectToPage().clickKeyboardGoButton();
-		}
+//		if (getConnectToPage().isKeyboardVisible()) {
+//			getConnectToPage().clickKeyboardGoButton();
+//		}
 		getConnectToPage().sendInvitation();
 	}
 

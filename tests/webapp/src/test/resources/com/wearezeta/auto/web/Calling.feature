@@ -553,7 +553,7 @@ Feature: Calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2> starts waiting instance using <CallBackend>
     Given <Contact1> accepts next incoming call automatically
     Given <Contact2> accepts next incoming call automatically
     Given I switch to Sign In page
