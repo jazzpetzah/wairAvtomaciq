@@ -16,7 +16,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | webdriver   |
+      | user1Name | user2Name | autocall    |
 
   @id1503 @calling_basic
   Scenario Outline: Silence an incoming call
@@ -48,7 +48,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | webdriver   |
+      | user1Name | user2Name | autocall    |
 
   @id1499 @calling_basic
   Scenario Outline: Receive call while mobile in sleeping mode(screen locked)
@@ -65,7 +65,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | webdriver   |
+      | user1Name | user2Name | autocall    |
 
   @id347 @regression
   Scenario Outline: Send text, image and knock while in the call with same user
@@ -97,7 +97,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Message                   | Msg        |
-      | user1Name | user2Name | webdriver   | simple message in english | YOU PINGED |
+      | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
   @id2210 @regression
   Scenario Outline: Calling bar buttons are clickable and change their states
@@ -122,7 +122,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName |
-      | user1Name | user2Name | webdriver   | Speaker        | Mute        |
+      | user1Name | user2Name | autocall    | Speaker        | Mute        |
 
   @id2212 @regression
   Scenario Outline: Correct calling bar in different places
@@ -136,7 +136,7 @@ Feature: Calling
     Then I see calling overlay Big bar
     And I navigate back from dialog page
     And I see Contact list
-    And I press Open StartUI
+    And I open Search by tap
     And I see People picker page
     And I see calling overlay Micro bar
     And I press Clear button
@@ -153,7 +153,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend |
-      | user1Name | user2Name | user3Name | webdriver   |
+      | user1Name | user2Name | user3Name | autocall    |
 
   @id2211 @regression
   Scenario Outline: I can dismiss calling bar by swipe
@@ -172,7 +172,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | webdriver   |
+      | user1Name | user2Name | autocall    |
 
   @id3239 @regression
   Scenario Outline: Calling bar buttons are clickable and change their states in a group call
@@ -199,7 +199,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName    | SpeakerBtnName | MuteBtnName |
       | user1Name | user2Name | user3Name | ChatForGroupCall | Speaker        | Mute        |
 
-  @id3240 @regression
+  @id3240 @calling_basic
   Scenario Outline: I can start group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

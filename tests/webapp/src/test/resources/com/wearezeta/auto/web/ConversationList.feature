@@ -114,8 +114,8 @@ Feature: Conversation List
     And I open conversation with <ChatName>
     When I click on options button for conversation <ChatName>
     And I click the option to leave in the options popover
-    Then I see a leave warning modal for group conversations
-    And I click cancel button in the leave warning for group conversations
+    Then I see a leave warning modal
+    And I click cancel button in the leave warning
     Then I see Contact list with name <ChatName>
 
     Examples: 
@@ -198,7 +198,7 @@ Feature: Conversation List
     And I click the option to leave in the options popover
     And I see a leave warning modal
     And I click leave button in the leave warning
-    Then I see Contact list with name <ChatName>
+    Then I do not see Contact list with name <ChatName>
     And I see Archive button at the bottom of my Contact list
     When I open archive
     And I unarchive conversation <ChatName>
@@ -354,8 +354,26 @@ Feature: Conversation List
     And I Sign in using login <Login2> and password <Password2>
     And I see my avatar on top of Contact list
     When I open conversation with <Name>
-    Then I do not see <Message> action in conversation
+    Then I do not see <Action> action in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Message | Msg1    | Login2     | Password2     |
-      | user1Email | user1Password | user1Name | user2Name | LEFT    | message | user2Email | user2Password |
+      | Login      | Password      | Name      | Contact1  | Action | Msg1    | Login2     | Password2     |
+      | user1Email | user1Password | user1Name | user2Name | LEFT   | message | user2Email | user2Password |
+
+  @staging @id3216
+  Scenario Outline: Verify I can cancel deleting a 1:1 conversation from conversation list
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact1>
+    When I click on options button for conversation <Contact1>
+    And I click delete in the options popover
+    Then I see a delete warning modal for 1:1 conversations
+    And I click cancel button in the delete warning for 1:1 conversations
+    Then I see Contact list with name <Contact1>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Msg1    |
+      | user1Email | user1Password | user1Name | user2Name | message |

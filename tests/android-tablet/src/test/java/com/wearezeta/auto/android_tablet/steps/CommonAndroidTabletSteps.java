@@ -20,7 +20,7 @@ import com.wearezeta.auto.android.common.AndroidLogListener.ListenerType;
 import com.wearezeta.auto.android.pages.AndroidPage;
 import com.wearezeta.auto.android_tablet.common.ScreenOrientationHelper;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
-import com.wearezeta.auto.common.CommonCallingSteps;
+import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.Platform;
@@ -188,15 +188,6 @@ public class CommonAndroidTabletSteps {
 	}
 
 	public void commonBefore() throws Exception {
-		try {
-			// async calls/waiting instances cleanup
-			CommonCallingSteps.getInstance().cleanupWaitingInstances();
-			CommonCallingSteps.getInstance().cleanupCalls();
-		} catch (Exception e) {
-			// do not fail if smt fails here
-			e.printStackTrace();
-		}
-
 		ZetaFormatter.setBuildNumber(AndroidCommonUtils
 				.readClientVersionFromAdb());
 	}
@@ -217,8 +208,7 @@ public class CommonAndroidTabletSteps {
 	public void tearDown() throws Exception {
 		try {
 			// async calls/waiting instances cleanup
-			CommonCallingSteps.getInstance().cleanupWaitingInstances();
-			CommonCallingSteps.getInstance().cleanupCalls();
+			CommonCallingSteps2.getInstance().cleanup();
 		} catch (Exception e) {
 			// do not fail if smt fails here
 			e.printStackTrace();
@@ -599,7 +589,7 @@ public class CommonAndroidTabletSteps {
 	/**
 	 * User A sends a simple text message to user B
 	 * 
-	 * @step. ^Contact (.*) send message to user (.*)$
+	 * @step. ^Contact (.*) sends? message to user (.*)$
 	 * 
 	 * @param msgFromUserNameAlias
 	 *            the user who sends the message
@@ -609,11 +599,33 @@ public class CommonAndroidTabletSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@When("^Contact (.*) send message to user (.*)$")
+	@When("^Contact (.*) sends? message to user (.*)$")
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
 			String dstUserNameAlias) throws Exception {
 		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
 				dstUserNameAlias, CommonUtils.generateRandomString(10));
+	}
+
+	/**
+	 * Send a particular text message via the backend
+	 * 
+	 * @step. ^Contact (.*) sends? message "(.*)" to user (.*)$
+	 * 
+	 * @param msgFromUserNameAlias
+	 *            the user who sends the message
+	 * @param msg
+	 *            the message to send
+	 * @param dstUserNameAlias
+	 *            The user to receive the message
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^Contact (.*) sends? message \"(.*)\" to user (.*)$")
+	public void UserSendMessageXToConversation(String msgFromUserNameAlias,
+			String msg, String dstUserNameAlias) throws Exception {
+		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
+				dstUserNameAlias, msg);
 	}
 
 	/**
