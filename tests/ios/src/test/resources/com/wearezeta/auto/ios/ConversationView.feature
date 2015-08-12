@@ -570,7 +570,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id2977
+  @regression @id2977
   Scenario Outline: Verify I can send gif from preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -589,7 +589,7 @@ Feature: Conversation View
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Happy    |
 
-  @staging @id2976
+  @regression @id2976
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -607,7 +607,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3093 @id3092
+  @regression @id3093 @id3092
   Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -632,7 +632,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id2787
+  @regression @id2787
   Scenario Outline: Verify preview is opened after tapping on GIF button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -647,7 +647,7 @@ Feature: Conversation View
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Happy    |
 
-  @staging @id2792 @id2786
+  @regression @id2792 @id2786
   Scenario Outline: Verify preview is opened after tapping on GIF button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
