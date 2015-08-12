@@ -197,4 +197,16 @@ public class CallingPageSteps {
 		Assert.assertTrue(String.format("The button '%s' is %svisible",
 				buttonName, (shouldNotSee == null) ? "" : "in"), result);
 	}
+
+	/**
+	 * Swipe up on calling overlay to dismiss it
+	 * 
+	 * @step. ^I swipe up on (?:\\s*|the )calling overlay$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I swipe up on (?:\\s*|the )calling overlay$")
+	public void ISwipeUp() throws Exception {
+		getCallingOverlayPage().dismissBySwipeUp();
+	}
 }
