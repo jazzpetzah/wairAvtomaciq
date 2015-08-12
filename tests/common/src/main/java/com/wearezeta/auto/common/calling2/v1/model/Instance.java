@@ -16,6 +16,7 @@ public class Instance {
 	private final BackendType backend;
 	private final InstanceType instanceType;
 	private String screenshot;
+	private String name;
 	private final long timeout;
 	private final long created;
 
@@ -27,6 +28,7 @@ public class Instance {
 			@JsonProperty("password") String password,
 			@JsonProperty("backend") BackendType backend,
 			@JsonProperty("instanceType") InstanceType instanceType,
+			@JsonProperty("name") String name,
 			@JsonProperty("timeout") long timeout,
 			@JsonProperty("created") long created) {
 		this.id = id;
@@ -36,6 +38,7 @@ public class Instance {
 		this.password = password;
 		this.backend = backend;
 		this.instanceType = instanceType;
+		this.name = name;
 		this.timeout = timeout;
 		this.created = created;
 	}
@@ -80,8 +83,8 @@ public class Instance {
 		return screenshot;
 	}
 
-	public void setScreenshot(String screenshot) {
-		this.screenshot = screenshot;
+	public String getName() {
+		return name;
 	}
 
 	@Override

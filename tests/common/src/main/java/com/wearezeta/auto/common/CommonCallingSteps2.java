@@ -98,7 +98,7 @@ public final class CommonCallingSteps2 {
 		final String convId = getConversationId(userAs, conversationName);
 
 		final Instance instance = client.startInstance(userAs,
-				instanceTypeFix(instanceType));
+				instanceTypeFix(instanceType), ZetaFormatter.getScenario());
 		addInstance(instance, userAs);
 
 		final Call call = client.callToUser(instance, convId);
@@ -197,7 +197,7 @@ public final class CommonCallingSteps2 {
 		ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
 
 		final Instance instance = client.startInstance(userAs,
-				instanceTypeFix(instanceType));
+				instanceTypeFix(instanceType), ZetaFormatter.getScenario());
 		addInstance(instance, userAs);
 	}
 
@@ -227,7 +227,8 @@ public final class CommonCallingSteps2 {
 			createTasks[calleeIndex] = CompletableFuture.supplyAsync(() -> {
 				try {
 					final Instance instance = client.startInstance(userAs,
-							instanceTypeFix(instanceType));
+							instanceTypeFix(instanceType),
+							ZetaFormatter.getScenario());
 					addInstance(instance, userAs);
 					return instance;
 				} catch (CallingServiceInstanceException ex) {
