@@ -69,3 +69,39 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
+
+  @id3124 @staging
+  Scenario Outline: I can dismiss calling bar by swipe (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And <Contact> calls me using <CallBackend>
+    And I see calling overlay Big bar
+    When I swipe up on the calling overlay
+    Then I do not see calling overlay Big bar
+
+    Examples: 
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
+
+  @id2911 @staging
+  Scenario Outline: I can dismiss calling bar by swipe (landscape)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And <Contact> calls me using <CallBackend>
+    And I see calling overlay Big bar
+    When I swipe up on the calling overlay
+    Then I do not see calling overlay Big bar
+
+    Examples: 
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
