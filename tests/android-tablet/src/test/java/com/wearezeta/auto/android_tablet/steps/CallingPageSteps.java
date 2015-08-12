@@ -9,7 +9,6 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletCallingOverlayPage;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -22,9 +21,6 @@ public class CallingPageSteps {
 		return (TabletCallingOverlayPage) pagesCollection
 				.getPage(TabletCallingOverlayPage.class);
 	}
-
-	@SuppressWarnings("unused")
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
 	 * Check calling Big bar is visible or not
