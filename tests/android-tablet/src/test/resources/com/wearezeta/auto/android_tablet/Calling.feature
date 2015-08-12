@@ -69,3 +69,46 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
+
+  @id2842 @staging
+  Scenario Outline: I see miss call notification on the list and inside conversation view (portrait)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    When <Contact> calls me using <CallBackend>
+    And I see calling overlay Big bar
+    And <Contact> stops all calls to me
+    Then I do not see calling overlay Big bar
+    And I see missed call notification near <Contact> conversation list item
+    When I tap the conversation <Contact>
+    Then I see missed call notification in the conversation view
+    When I navigate back
+    Then I do not see missed call notification near <Contact> conversation list item
+
+    Examples: 
+      | CallBackend | Name      | Contact   |
+      | autocall    | user1Name | user2Name |
+
+  @id3125 @staging
+  Scenario Outline: I see miss call notification on the list and inside conversation view (landscape)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    When <Contact> calls me using <CallBackend>
+    And I see calling overlay Big bar
+    And <Contact> stops all calls to me
+    Then I do not see calling overlay Big bar
+    And I see missed call notification near <Contact> conversation list item
+    When I tap the conversation <Contact>
+    Then I see missed call notification in the conversation view
+    Then I do not see missed call notification near <Contact> conversation list item
+
+    Examples: 
+      | CallBackend | Name      | Contact   |
+      | autocall    | user1Name | user2Name |

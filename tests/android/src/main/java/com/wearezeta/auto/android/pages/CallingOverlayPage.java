@@ -270,4 +270,9 @@ public class CallingOverlayPage extends AndroidPage {
 	public void tapDismissButton() {
 		dismissButton.click();
 	}
+
+	public boolean ongoingCallMinibarIsInvisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idOngoingCallMinibar));
+	}
 }

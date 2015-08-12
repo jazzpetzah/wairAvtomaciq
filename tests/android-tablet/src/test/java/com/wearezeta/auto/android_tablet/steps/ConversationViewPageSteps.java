@@ -293,15 +293,17 @@ public class ConversationViewPageSteps {
 	/**
 	 * Verify whether missed call notification is visible in conversation view
 	 * 
-	 * @step. ^I see missed group call notification in (?:the
+	 * @step. ^I see missed (?:group |\\s*)call notification in (?:the
 	 *        |\\s*)[Cc]onversation view$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see missed group call notification in (?:the |\\s*)[Cc]onversation view$")
+	@Then("^I see missed (?:group |\\s*)call notification in (?:the |\\s*)[Cc]onversation view$")
 	public void ISeeMissedCallNotification() throws Exception {
+		// Notifications for both group and 1:1 calls have the same locators so
+		// we don't really care
 		Assert.assertTrue(
-				"The expected missed group call notification is not visible in the conversation view",
+				"The expected missed call notification is not visible in the conversation view",
 				getConversationViewPage().waitUntilGCNIsVisible());
 	}
 }
