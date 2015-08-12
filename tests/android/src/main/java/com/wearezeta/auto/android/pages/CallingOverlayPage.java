@@ -48,10 +48,16 @@ public class CallingOverlayPage extends AndroidPage {
 					idIncomingCallerAvatarsContainer, name.toUpperCase());
 
 	private static final String idCallingDismiss = "cib__calling__dismiss";
+	@FindBy(id = idCallingDismiss)
+	private WebElement dismissButton;
 
-	private static final String idCallingSpeaker = "cib__calling__speaker";
+	public static final String idCallingSpeaker = "cib__calling__speaker";
+	@FindBy(id = idCallingSpeaker)
+	public WebElement speakerButton;
 
 	private static final String idCallingMicMute = "cib__calling__mic_mute";
+	@FindBy(id = idCallingMicMute)
+	public WebElement muteMicButton;
 
 	private static final String xpathGroupCallParticipantChathead = "//*[@id='fl__calling__container']//c";
 
@@ -251,5 +257,17 @@ public class CallingOverlayPage extends AndroidPage {
 	public boolean incomingCallerAvatarIsInvisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(idIncomingCallerAvatarsContainer));
+	}
+
+	public void tapMuteMicButton() {
+		muteMicButton.click();
+	}
+
+	public void tapSpeakerButton() {
+		speakerButton.click();
+	}
+
+	public void tapDismissButton() {
+		dismissButton.click();
 	}
 }
