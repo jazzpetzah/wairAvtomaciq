@@ -254,20 +254,21 @@ Feature: Conversation List
     And I see a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
     And I do not see Contact list with name <ChatName>
-    And <Contact1> calls <ChatName> using <CallBackend>
-    And I open conversation with <ChatName>
-    Then I see <Action> action for <Contact1> in conversation
-    And I see <Action> action for <Contact2> in conversation
-    When I click on options button for conversation <ChatName>
-    And I click delete in the options popover
-    And I see a delete warning modal for group conversations
-    And I click delete button in the delete warning for group conversations
-    And I do not see Contact list with name <ChatName>
     And Contact <Contact1> sends image <Image> to group conversation <ChatName>
     And I open conversation with <ChatName>
     Then I see <Action> action for <Contact1> in conversation
     And I see <Action> action for <Contact2> in conversation
     And I see sent picture <Image> in the conversation view
+    When I click on options button for conversation <ChatName>
+    And I click delete in the options popover
+    And I see a delete warning modal for group conversations
+    And I click delete button in the delete warning for group conversations
+    And I do not see Contact list with name <ChatName>
+    And <Contact1> calls <ChatName> using <CallBackend>
+    And I open conversation with <ChatName>
+    Then I see <Action> action for <Contact1> in conversation
+    And I see <Action> action for <Contact2> in conversation
+    And <Contact1> stops all calls to me
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message | Action  | PING   | Image                     | CallBackend |
