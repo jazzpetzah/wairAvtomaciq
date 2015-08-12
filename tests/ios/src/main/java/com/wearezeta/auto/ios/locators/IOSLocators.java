@@ -576,13 +576,19 @@ public final class IOSLocators {
 		
 		public static final String nameEndCallButton = "LeaveCallButton";
 				
-		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'IS CALLING')]";
+		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, '%s') and contains(@name, ' IS CALLING')]";
 				
 		public static final String nameIgnoreCallButton = "IgnoreButton";
 		
 		public static final String xpathGroupCallingMessage = "//UIAStaticText[contains(@value, 'IS CALLING IN')]";
 		
 		public static final String nameJoinCallButton = "JOIN CALL";
+		
+		public static final String nameSecondCallAlert = "Answer call?";
+		
+		public static final String nameEndCallAlertButton = "End Call";
+		
+		public static final String classNameUIACollectionCell = "UIACollectionCell";
 	}
 	
 	public final class DialogPage {
