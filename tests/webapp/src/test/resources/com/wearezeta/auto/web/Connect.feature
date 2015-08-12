@@ -354,7 +354,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
-  @staging @id2764
+  @regression @id2764
   Scenario Outline: I want to cancel a pending request from search
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
