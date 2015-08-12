@@ -97,6 +97,7 @@ public final class CommonCallingSteps2 {
 
 		final String convId = getConversationId(userAs, conversationName);
 
+		System.out.println("################# " + ZetaFormatter.getScenario());
 		final Instance instance = client.startInstance(userAs,
 				instanceTypeFix(instanceType), ZetaFormatter.getScenario());
 		addInstance(instance, userAs);
@@ -195,6 +196,7 @@ public final class CommonCallingSteps2 {
 	public void startWaitingInstance(String calleeName, String instanceType)
 			throws Exception {
 		ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
+		System.out.println("################# " + ZetaFormatter.getScenario());
 
 		final Instance instance = client.startInstance(userAs,
 				instanceTypeFix(instanceType), ZetaFormatter.getScenario());
@@ -221,11 +223,13 @@ public final class CommonCallingSteps2 {
 			String instanceType) throws Exception {
 		CompletableFuture<?>[] createTasks = new CompletableFuture[calleeNames
 				.size()];
+		System.out.println("################# " + ZetaFormatter.getScenario());
 		for (String calleeName : calleeNames) {
 			ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
 			int calleeIndex = calleeNames.indexOf(calleeName);
 			createTasks[calleeIndex] = CompletableFuture.supplyAsync(() -> {
 				try {
+
 					final Instance instance = client.startInstance(userAs,
 							instanceTypeFix(instanceType),
 							ZetaFormatter.getScenario());

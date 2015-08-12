@@ -41,11 +41,15 @@ public final class InstanceRequest {
 		return timeout;
 	}
 
+	public String getName() {
+		return name;
+	}
+
 	@Override
 	public String toString() {
 		return "InstanceRequest{" + "email=" + email + ", password=" + password
 				+ ", backend=" + backend + ", instanceType=" + instanceType
-				+ ", timeout=" + timeout + '}';
+				+ ", name=" + name + ", timeout=" + timeout + '}';
 	}
 
 }

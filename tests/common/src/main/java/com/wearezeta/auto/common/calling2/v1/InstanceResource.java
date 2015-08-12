@@ -42,6 +42,8 @@ public class InstanceResource {
 	public InstanceResource(String callingServiceAdress,
 			String callingServiceVersion) {
 		ClientConfig config = new ClientConfig();
+		// config.register(new LoggingFilter(java.util.logging.Logger
+		// .getLogger(InstanceResource.class.getName()), true));
 		client = initClient(config);
 		this.callingServiceAdress = callingServiceAdress;
 		this.callingServiceVersion = callingServiceVersion;

@@ -30,7 +30,7 @@ import org.glassfish.jersey.client.ClientConfig;
 public class CallResource {
 
 	private static final org.apache.log4j.Logger LOG = ZetaLogger
-			.getLog(CallingServiceClient.class.getSimpleName());
+			.getLog(CallingServiceClient.class.getName());
 
 	private static final int MAX_REQUEST_RETRY_COUNT = 2;
 
@@ -43,6 +43,8 @@ public class CallResource {
 	public CallResource(String callingServiceAdress,
 			String callingServiceVersion) {
 		ClientConfig config = new ClientConfig();
+		// config.register(new LoggingFilter(java.util.logging.Logger
+		// .getLogger(CallResource.class.getName()), true));
 		client = initClient(config);
 		this.callingServiceAdress = callingServiceAdress;
 		this.callingServiceVersion = callingServiceVersion;
