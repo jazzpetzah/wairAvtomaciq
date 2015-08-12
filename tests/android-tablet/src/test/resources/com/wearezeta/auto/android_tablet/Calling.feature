@@ -20,3 +20,52 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
+  @id2910 @staging
+  Scenario Outline: Calling bar buttons are clickable and change its state (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And <Contact> calls me using <CallBackend>
+    And I see calling overlay Big bar
+    And I tap <AcceptBtnName> button on the calling overlay
+    When I remember the current state of <MuteBtnName> button on the calling overlay
+    And I tap <MuteBtnName> button on the calling overlay
+    Then I see <MuteBtnName> button state is changed on the calling overlay
+    And I tap <MuteBtnName> button on the calling overlay
+    Then I see <MuteBtnName> button state is not changed on the calling overlay
+    And I do not see <SpeakerBtnName> button on the calling overlay
+    When I tap <DismissBtnName> button on the calling overlay
+    Then I do not see calling overlay Big bar
+
+    Examples: 
+      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
+      | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
+
+  @id3123 @staging
+  Scenario Outline: Calling bar buttons are clickable and change its state (landscape)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And <Contact> calls me using <CallBackend>
+    And I see calling overlay Big bar
+    And I tap <AcceptBtnName> button on the calling overlay
+    When I remember the current state of <MuteBtnName> button on the calling overlay
+    And I tap <MuteBtnName> button on the calling overlay
+    Then I see <MuteBtnName> button state is changed on the calling overlay
+    And I tap <MuteBtnName> button on the calling overlay
+    Then I see <MuteBtnName> button state is not changed on the calling overlay
+    And I do not see <SpeakerBtnName> button on the calling overlay
+    When I tap <DismissBtnName> button on the calling overlay
+    Then I do not see calling overlay Big bar
+
+    Examples: 
+      | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
+      | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
