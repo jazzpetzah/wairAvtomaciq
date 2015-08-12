@@ -220,8 +220,6 @@ Feature: Settings
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>
-    Then I see chathead of contact <Contact2>
-    And I wait for 5 seconds
     Then I do not see chathead of contact <Contact2>
 
     Examples: 
