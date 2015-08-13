@@ -347,7 +347,7 @@ public class PeoplePickerPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I do (short|long) swipe right the first PYMK item on [Pp]eople [Pp]icker page$")
-	public void IDoShortSwipeOnFirstPYMKItem(String swipeType) throws Exception {
+	public void IDoSwipeOnFirstPYMKItem(String swipeType) throws Exception {
 		final SwipeType swipeEnumType = SwipeType.valueOf(swipeType
 				.toUpperCase());
 		switch (swipeEnumType) {
