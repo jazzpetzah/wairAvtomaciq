@@ -145,7 +145,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | webdriver   | 960     |
 
   @calling_basic @id2296
   Scenario Outline: Screenlock device when in the call
@@ -182,6 +182,7 @@ Feature: Calling
     And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
+    And I wait for 5 seconds
     And <Contact2> calls me using <CallBackend2>
     And I dont see incoming calling message from contact <Contact2>
     And <Contact1> accepts next incoming call automatically
@@ -262,7 +263,6 @@ Feature: Calling
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And <Contact> stops all calls to me
     And I dont see calling page
-    And <Contact> verifies that call status to me is changed to inactive in <Timeout> seconds
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
