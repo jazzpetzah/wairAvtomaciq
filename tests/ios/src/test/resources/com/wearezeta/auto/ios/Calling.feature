@@ -402,7 +402,7 @@ Feature: Calling
 
 
   @staging @id2678
-  Scenario Outline: Verify leaving and coming back to the call
+  Scenario Outline: Verify leaving and coming back to the call in 20 sec
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
@@ -421,6 +421,8 @@ Feature: Calling
     And I see <NumberOfAvatars> avatars in the group call bar
     And I end started call
     Then I see Join Call bar
+    And I wait for 20 seconds
+    And I see Join Call bar
     And I rejoin call by clicking Join button
     Then I see mute call, end call and speakers buttons
     Then I see <NumberOfAvatars> avatars in the group call bar
