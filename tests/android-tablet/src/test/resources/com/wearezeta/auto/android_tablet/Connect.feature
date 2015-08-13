@@ -250,45 +250,61 @@ Feature: Connect
       | user1Name | user2Name | user3Name | Hellow friend |
 
   @id2914 @staging
-  Scenario Outline: Dismiss PYMK by hide button (portrait)
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Contact2>
+  Scenario Outline: Dismiss PYMK item (portrait)
+    Given There are 4 users where <Name> is me
+    Given <Contact1> is connected to <Contact2>,<Contact3>
     Given Myself is connected to <Contact1>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I see the Conversations list with conversations
-    When I tap Search input
+    And I tap Search input
     And I see People Picker page
     And I hide keyboard
-    And I remember the name of the first PYMK item on People Picker page
+    When I remember the name of the first PYMK item on People Picker page
     And I do short swipe right the first PYMK item on People Picker page
     And I tap Hide button in the first PYMK item on People Picker page
     Then I do not see the previously remembered PYMK item on People Picker page
     When I close People Picker
     Then I do not see conversations list with the previously remembered PYMK item
+    And I tap Search input
+    And I see People Picker page
+    And I hide keyboard
+    When I remember the name of the first PYMK item on People Picker page
+    And I do long swipe right the first PYMK item on People Picker page
+    Then I do not see the previously remembered PYMK item on People Picker page
+    When I close People Picker
+    Then I do not see conversations list with the previously remembered PYMK item
 
     Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
 
   @id3116 @staging
   Scenario Outline: Dismiss PYMK by hide button (landscape)
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Contact2>
+    Given There are 4 users where <Name> is me
+    Given <Contact1> is connected to <Contact2>,<Contact3>
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I see the Conversations list with conversations
-    When I tap Search input
+    And I tap Search input
     And I see People Picker page
     And I hide keyboard
-    And I remember the name of the first PYMK item on People Picker page
+    When I remember the name of the first PYMK item on People Picker page
     And I do short swipe right the first PYMK item on People Picker page
     And I tap Hide button in the first PYMK item on People Picker page
     Then I do not see the previously remembered PYMK item on People Picker page
     When I close People Picker
     Then I do not see conversations list with the previously remembered PYMK item
+    And I tap Search input
+    And I see People Picker page
+    And I hide keyboard
+    When I remember the name of the first PYMK item on People Picker page
+    And I do long swipe right the first PYMK item on People Picker page
+    Then I do not see the previously remembered PYMK item on People Picker page
+    When I close People Picker
+    Then I do not see conversations list with the previously remembered PYMK item
 
     Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
