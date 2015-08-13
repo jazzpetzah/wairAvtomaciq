@@ -1,8 +1,10 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.By.ByClassName;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -31,6 +33,12 @@ public class IncomingCallPage extends CallPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameJoinCallButton)
 	private WebElement joinCallButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameSecondCallAlert)
+	private WebElement secondCallAlert;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameEndCallAlertButton)
+	private WebElement endCallAlertButton;
 
 	public IncomingCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -76,5 +84,23 @@ public class IncomingCallPage extends CallPage {
 
 	public boolean isJoinCallBarVisible() {
 		return joinCallButton.isDisplayed();
+	}
+
+	public boolean isSecondCallAlertVisible() {
+		return secondCallAlert.isDisplayed();
+	}
+
+	public void pressEndCallAlertButton() {
+		endCallAlertButton.click();
+	
+	}
+	
+	public int getNumberOfGroupCallAvatar() throws Exception{
+		int numberOfGroupCallAvatars = 0;
+		List<WebElement> groupCallAvatars = getDriver().findElementsByClassName(IOSLocators.IncomingCallPage.classNameUIACollectionCell);
+		for (WebElement avatar : groupCallAvatars) {
+		    numberOfGroupCallAvatars ++;
+		}
+		return numberOfGroupCallAvatars;
 	}
 }

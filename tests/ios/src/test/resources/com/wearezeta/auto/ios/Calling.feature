@@ -314,3 +314,28 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend | CallBackend2 |
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | firefox     | autocall     |
       | user1Name | user2Name | user3Name | IgnoringGROUPCALL | chrome      | autocall     |
+
+  @staging @id2686
+  Scenario Outline: Verify receiving group call during 1-to-1 call (and accepting it)
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When <Contact1> calls me using <CallBackend2>
+    And I accept incoming call
+    Then I see mute call, end call and speakers buttons
+    When <Contact2> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I accept incoming call
+    And I see Accept second call alert
+    And I press End Call button on alert
+    Then I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars in the group call bar
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | GROUPCALL     | firefox     | autocall     | 4               |

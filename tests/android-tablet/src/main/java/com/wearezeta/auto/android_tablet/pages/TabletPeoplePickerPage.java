@@ -105,4 +105,20 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 		}
 	}
 
+	public String getFirstPYMKItemName() throws Exception {
+		return getAndroidPeoplePickerPage().getPYMKItemName(1);
+	}
+
+	public void tapPlusButtonOnFirstPYMKItem() throws Exception {
+		getAndroidPeoplePickerPage().clickPlusOnPYMKItem(1);
+	}
+
+	public boolean waitUntilPYMKItemInvisible(String name) throws Exception {
+		return getAndroidPeoplePickerPage().waitUntilPYMKItemIsInvisible(name);
+	}
+
+	public void tapFirstPYMKItem() throws Exception {
+		getAndroidPeoplePickerPage().tapPYMKItem(1);
+	}
+
 }
