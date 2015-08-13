@@ -273,7 +273,7 @@ Feature: Connect
       | user1Name | vb003    | Dorothy  |
 
   @staging @id3223
-  Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations
+  Scenario Outline: Verify possibility of disconnecting from conversation list
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
     Given I sign in using my email or phone number
