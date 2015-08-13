@@ -275,6 +275,11 @@ public class CallingOverlayPage extends AndroidPage {
 		dismissButton.click();
 	}
 
+	public boolean ongoingCallMinibarIsInvisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idOngoingCallMinibar));
+	}
+
 	public void dismissBySwipeUp() throws Exception {
 		final Point coords = callingOverlayContainer.getLocation();
 		final Dimension elementSize = callingOverlayContainer.getSize();
