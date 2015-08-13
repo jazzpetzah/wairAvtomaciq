@@ -95,7 +95,7 @@ public class Instance {
 				+ ", email=" + email + ", password=" + password
 				+ ", currentCall=" + currentCall + ", backend=" + backend
 				+ ", instanceType=" + instanceType
-				+ ", screenshot=<skipped>, name=" + name + ", timeout="
+				+ ", screenshot=<suppressed>, name=" + name + ", timeout="
 				+ timeout + ", created=" + created + '}';
 	}
 
