@@ -140,3 +140,53 @@ Feature: Connect
     Examples: 
       | Name      | Contact   | ContactEmail | Message       |
       | user1Name | user2Name | user2Email   | Hellow friend |
+
+  @id2915 @staging
+  Scenario Outline: Connect to someone from PYMK by clicking + (portrait)
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Contact2>
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    When I tap Search input
+    And I see People Picker page
+    And I hide keyboard
+    And I remember the name of the first PYMK item on People Picker page
+    And I tap + button on the first PYMK item on People Picker page
+    Then I do not see the previously remembered PYMK item on People Picker page
+    When I close People Picker
+    Then I see conversations list with the previously remembered PYMK item
+    When I tap Search input
+    And I see People Picker page
+    And I hide keyboard
+    Then I do not see the previously remembered PYMK item on People Picker page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @id3117 @staging
+  Scenario Outline: Connect to someone from PYMK by clicking + (landscape)
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Contact2>
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    When I tap Search input
+    And I see People Picker page
+    And I hide keyboard
+    And I remember the name of the first PYMK item on People Picker page
+    And I tap + button on the first PYMK item on People Picker page
+    Then I do not see the previously remembered PYMK item on People Picker page
+    When I close People Picker
+    Then I see conversations list with the previously remembered PYMK item
+    When I tap Search input
+    And I see People Picker page
+    And I hide keyboard
+    Then I do not see the previously remembered PYMK item on People Picker page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |

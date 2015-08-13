@@ -214,4 +214,76 @@ public class PeoplePickerPageSteps {
 	public void ITapCreateConversationButton() throws Exception {
 		getPeoplePickerPage().tapCreateConversationButton();
 	}
+
+	private String firstPYMKItemName = null;
+
+	/**
+	 * Stores the name of the first PYMK item into the internal data structure
+	 * 
+	 * @step. ^I remember the name of the first PYMK item on [Pp]eople [Pp]icker
+	 *        page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I remember the name of the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void IRememberTheFirstPYMKItem() throws Exception {
+		firstPYMKItemName = getPeoplePickerPage().getFirstPYMKItemName();
+	}
+
+	/**
+	 * Tap the + button next to the frist PYMK item
+	 * 
+	 * @step. ^I tap \\+ button on the first PYMK item on [Pp]eople [Pp]icker
+	 *        page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap \\+ button on the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void ITapPlusButtonOnFirstPYMKItem() throws Exception {
+		getPeoplePickerPage().tapPlusButtonOnFirstPYMKItem();
+	}
+
+	/**
+	 * Verify whether the previously remembered PYMK item is not visible in the
+	 * PYMK list
+	 * 
+	 * @step. ^I do not see the previously remembered PYMK item on [Pp]eople
+	 *        [Pp]icker page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I do not see the previously remembered PYMK item on [Pp]eople [Pp]icker page$")
+	public void IDoNotSeeRememberedPYMKItem() throws Exception {
+		if (firstPYMKItemName == null) {
+			throw new IllegalStateException(
+					"Please call the corresponding step to remember the PYMK item name first");
+		}
+		Assert.assertTrue(
+				String.format(
+						"The previously remembered PYMK item '%s' is still visible in PYMK list",
+						firstPYMKItemName), getPeoplePickerPage()
+						.waitUntilPYMKItemInvisible(this.firstPYMKItemName));
+	}
+
+	/**
+	 * Verify whether the previously remembered PYMK item exists in convo list
+	 * 
+	 * @step. ^I see conversations list with the previously remembered PYMK
+	 *        item$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see conversations list with the previously remembered PYMK item$")
+	public void ISeeThePreviouslyRememberedPYMKItemInConvoList()
+			throws Exception {
+		if (firstPYMKItemName == null) {
+			throw new IllegalStateException(
+					"Please call the corresponding step to remember the PYMK item name first");
+		}
+		Assert.assertTrue(
+				String.format(
+						"The previously remembered PYMK item '%s' does not exist in the conversations list",
+						this.firstPYMKItemName), getConversationsListPage()
+						.waitUntilConversationIsVisible(this.firstPYMKItemName));
+	}
 }
