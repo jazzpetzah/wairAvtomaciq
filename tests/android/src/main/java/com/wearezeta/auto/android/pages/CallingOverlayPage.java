@@ -134,9 +134,19 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public DialogPage acceptCall() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idAcceptButton)) : "Accept button is not visible";
-		acceptButton.click();
+		boolean acceptButtonVisible = DriverUtils.waitUntilLocatorIsDisplayed(
+				getDriver(), By.id(idAcceptButton));
+		boolean joinGroupCallVisible = true;
+		if (acceptButtonVisible) {
+			acceptButton.click();
+		} else {
+			joinGroupCallVisible = DriverUtils.waitUntilLocatorIsDisplayed(
+					getDriver(), By.id(idGroupCallingJoinOverlayContainer));
+			if (joinGroupCallVisible) {
+				joinGroupCallButton.click();
+			}
+		}
+		assert acceptButtonVisible || joinGroupCallVisible : "No Accept or JOIN CALL button visible";
 		return new DialogPage(getLazyDriver());
 	}
 
@@ -198,7 +208,7 @@ public class CallingOverlayPage extends AndroidPage {
 
 	public DialogPage joinGroupCall() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idGroupCallingJoinOverlayContainer)) : "Accept button is not visible";
+				By.id(idGroupCallingJoinOverlayContainer)) : "JOIN CALL button is not visible";
 		joinGroupCallButton.click();
 		return new DialogPage(getLazyDriver());
 	}
