@@ -685,8 +685,8 @@ public final class IOSLocators {
 	/////////////
 	//Chathead
 	/////////////
-	public static final String xpathChatheadName = "//UIAStaticText[@name='%s']";
-	public static final String xpathChatheadMessage = "//UIAStaticText[@name='%s']";
+	public static final String xpathChatheadName = "//UIAElement/following-sibling::UIAStaticText[@name='%s']";
+	public static final String xpathChatheadMessage = "//UIAElement/following-sibling::UIAStaticText[@name='%s']";
 	public static final String nameChatheadAvatarImage = "ChatheadAvatarImage";
 	
 	///////////////////

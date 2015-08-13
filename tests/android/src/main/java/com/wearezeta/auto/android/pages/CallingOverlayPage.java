@@ -4,6 +4,8 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -13,6 +15,8 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class CallingOverlayPage extends AndroidPage {
 	private static final String idCallingOverlayContainer = "coc__calling__overlay_container";
+	@FindBy(id = idCallingOverlayContainer)
+	private WebElement callingOverlayContainer;
 
 	private static final String idGroupCallingJoinOverlayContainer = "ll__group_call__not_joined_container";
 	@FindBy(id = idGroupCallingJoinOverlayContainer)
@@ -269,5 +273,15 @@ public class CallingOverlayPage extends AndroidPage {
 
 	public void tapDismissButton() {
 		dismissButton.click();
+	}
+
+	public void dismissBySwipeUp() throws Exception {
+		final Point coords = callingOverlayContainer.getLocation();
+		final Dimension elementSize = callingOverlayContainer.getSize();
+		// We cannot swipe in the middle because of
+		// https://wearezeta.atlassian.net/browse/AN-2568
+		this.getDriver().swipe(coords.x + elementSize.width / 4,
+				coords.y + elementSize.height - 20,
+				coords.x + elementSize.width / 4, coords.y, 1000);
 	}
 }

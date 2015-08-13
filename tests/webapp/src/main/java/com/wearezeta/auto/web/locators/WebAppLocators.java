@@ -253,7 +253,7 @@ public final class WebAppLocators {
 
 		public static final String cssCallButton = "[data-uie-name='do-call']";
 
-		public static final String idGIFButton = "show-extensions";
+		public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
 		// bars (call bar)
 		public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";

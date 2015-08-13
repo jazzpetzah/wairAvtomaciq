@@ -722,7 +722,7 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging @id3198
+  @regression @id3198
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -743,7 +743,7 @@ Feature: Conversation View
       | Name      | Contact1  | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging @id3199
+  @regression @id3199
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -861,7 +861,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3202
+  @regression @id3202
   Scenario Outline: I can send and play inline youtube link [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -880,7 +880,7 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @staging @id3203
+  @regression @id3203
   Scenario Outline: I can send and play inline youtube link [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -929,7 +929,7 @@ Feature: Conversation View
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
-  @staging @id2418
+  @regression @id2418
   Scenario Outline: Rotate image in fullscreen mode [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given User <Contact> change name to <NewName>
@@ -955,7 +955,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | Color        | NewName          |
       | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
 
-  @staging @id3206
+  @regression @id3206
   Scenario Outline: Rotate image in fullscreen mode [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given User <Contact> change name to <NewName>
@@ -982,7 +982,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | Color        | NewName          |
       | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
 
-  @staging @id2451
+  @regression @id2451
   Scenario Outline: Verify archiving conversation from ellipsis menu [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1002,7 +1002,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3192
+  @regression @id3192
   Scenario Outline: Verify archiving conversation from ellipsis menu [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1022,7 +1022,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3097 @id3098
+  @regression @id3097 @id3098
   Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1047,7 +1047,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3237 @id3238
+  @regression @id3237 @id3238
   Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1073,7 +1073,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id2961
+  @regression @id2961
   Scenario Outline: Verify preview is opened after tapping on GIF button [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1088,7 +1088,7 @@ Feature: Conversation View
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Wow      |
 
-  @staging @id3249
+  @regression @id3249
   Scenario Outline: Verify preview is opened after tapping on GIF button [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1104,7 +1104,7 @@ Feature: Conversation View
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Wow      |
 
-  @staging @id2958 @id2959
+  @regression @id2958 @id2959
   Scenario Outline: Verify preview is opened after tapping on GIF button [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1120,7 +1120,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3251 @id3252
+  @regression @id3251 @id3252
   Scenario Outline: Verify preview is opened after tapping on GIF button [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
