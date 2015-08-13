@@ -292,3 +292,64 @@ Feature: Connect
     Examples: 
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
+
+  @id2845 @staging
+  Scenario Outline: Ignore a connect request and reconnect later from search (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversation
+    And I see the conversation <WaitingMess> in my conversations list
+    When I tap the conversation <WaitingMess>
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact> on Incoming connections page
+    Then I do not see the conversation <Contact> in my conversations list
+    And I do not see the conversation <WaitingMess> in my conversations list
+    When I navigate back
+    And I wait until <Contact> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    And I see Outgoing Connection popover
+    And I see the name <Contact> on Incoming Connection popover
+    And I tap Accept button on Incoming Connection popover
+    And I do not see Incoming Connection popover
+    And I see People Picker page
+    And I close People Picker
+    Then I see the conversation <Contact> in my conversations list
+
+    Examples: 
+      | Name      | Contact   | WaitingMess      |
+      | user1Name | user2Name | 1 person waiting |
+
+  @id3127 @staging
+  Scenario Outline: Ignore a connect request and reconnect later from search (landscape)
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversation
+    And I see the conversation <WaitingMess> in my conversations list
+    When I tap the conversation <WaitingMess>
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact> on Incoming connections page
+    Then I do not see the conversation <Contact> in my conversations list
+    And I do not see the conversation <WaitingMess> in my conversations list
+    And I wait until <Contact> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    And I see Outgoing Connection popover
+    And I see the name <Contact> on Incoming Connection popover
+    And I tap Accept button on Incoming Connection popover
+    And I do not see Incoming Connection popover
+    And I see People Picker page
+    And I close People Picker
+    Then I see the conversation <Contact> in my conversations list
+
+    Examples: 
+      | Name      | Contact   | WaitingMess      |
+      | user1Name | user2Name | 1 person waiting |
