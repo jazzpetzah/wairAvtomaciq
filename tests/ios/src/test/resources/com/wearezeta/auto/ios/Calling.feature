@@ -368,6 +368,38 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | ChatName | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | RenameGROUPCALL | firefox     | autocall     | NewName  | 5               |
+      
+  @staging @id2696
+  Scenario Outline: Verify leaving group conversation during the group call
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact2> starts waiting instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> starts waiting instance using <CallBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> starts waiting instance using <CallBackend>
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And <Contact1> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I accept incoming call
+    And I open group conversation details
+    And I press leave converstation button
+    And I see leave conversation alert
+    Then I press leave
+    And I open archived conversations
+    And I see user <GroupChatName> in contact list
+    And I tap on group chat with name <GroupChatName>
+    Then I dont see calling page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | LEAVEINGROUPCALL   | firefox     | autocall     |
+
 
   @staging @id2678
   Scenario Outline: Verify leaving and coming back to the call
