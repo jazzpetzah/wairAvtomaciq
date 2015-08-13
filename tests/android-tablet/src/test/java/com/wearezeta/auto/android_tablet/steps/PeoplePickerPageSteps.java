@@ -214,4 +214,147 @@ public class PeoplePickerPageSteps {
 	public void ITapCreateConversationButton() throws Exception {
 		getPeoplePickerPage().tapCreateConversationButton();
 	}
+
+	private String firstPYMKItemName = null;
+
+	private String getFirstPYMKItemNameOrThrowError() {
+		if (this.firstPYMKItemName == null) {
+			throw new IllegalStateException(
+					"Please call the corresponding step to remember the PYMK item name first");
+		} else {
+			return this.firstPYMKItemName;
+		}
+	}
+
+	/**
+	 * Stores the name of the first PYMK item into the internal data structure
+	 * 
+	 * @step. ^I remember the name of the first PYMK item on [Pp]eople [Pp]icker
+	 *        page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I remember the name of the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void IRememberTheFirstPYMKItem() throws Exception {
+		firstPYMKItemName = getPeoplePickerPage().getFirstPYMKItemName();
+	}
+
+	/**
+	 * Tap the + button next to the frist PYMK item
+	 * 
+	 * @step. ^I tap \\+ button on the first PYMK item on [Pp]eople [Pp]icker
+	 *        page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap \\+ button on the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void ITapPlusButtonOnFirstPYMKItem() throws Exception {
+		getPeoplePickerPage().tapPlusButtonOnFirstPYMKItem();
+	}
+
+	/**
+	 * Verify whether the previously remembered PYMK item is not visible in the
+	 * PYMK list
+	 * 
+	 * @step. ^I do not see the previously remembered PYMK item on [Pp]eople
+	 *        [Pp]icker page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I do not see the previously remembered PYMK item on [Pp]eople [Pp]icker page$")
+	public void IDoNotSeeRememberedPYMKItem() throws Exception {
+		Assert.assertTrue(
+				String.format(
+						"The previously remembered PYMK item '%s' is still visible in PYMK list",
+						firstPYMKItemName),
+				getPeoplePickerPage().waitUntilPYMKItemInvisible(
+						this.getFirstPYMKItemNameOrThrowError()));
+	}
+
+	/**
+	 * Verify whether the previously remembered PYMK item exists in convo list
+	 * 
+	 * @step. ^I (do not )?see conversations list with the previously remembered
+	 *        PYMK item$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if "do not " part does not exist in the step
+	 *            description
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see conversations list with the previously remembered PYMK item$")
+	public void ISeeThePreviouslyRememberedPYMKItemInConvoList(
+			String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(
+					String.format(
+							"The previously remembered PYMK item '%s' does not exist in the conversations list",
+							this.getFirstPYMKItemNameOrThrowError()),
+					getConversationsListPage().waitUntilConversationIsVisible(
+							this.getFirstPYMKItemNameOrThrowError()));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"The previously remembered PYMK item '%s' exist in the conversations list, but it should not",
+							this.getFirstPYMKItemNameOrThrowError()),
+					getConversationsListPage()
+							.waitUntilConversationIsInvisible(
+									this.getFirstPYMKItemNameOrThrowError()));
+		}
+	}
+
+	/**
+	 * Switch to the conversation. whose name is the same as the previously
+	 * remembered one. Conversations list should be already visible
+	 * 
+	 * @step. ^I switch to the conversation with the previously remembered PYMK
+	 *        item$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I switch to the conversation with the previously remembered PYMK item$")
+	public void ISwitchToPreviouslyRememberedConvoName() throws Exception {
+		getConversationsListPage().tapConversation(
+				this.getFirstPYMKItemNameOrThrowError());
+	}
+
+	/**
+	 * Tap the first item in PYMK list
+	 * 
+	 * @step. ^I tap the first PYMK item on [Pp]eople [Pp]icker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void ITapFirstPYMKItem() throws Exception {
+		getPeoplePickerPage().tapFirstPYMKItem();
+	}
+
+	/**
+	 * Does short swipe right on the first PYMK item
+	 * 
+	 * @step. ^I do short swipe right the first PYMK item on [Pp]eople [Pp]icker
+	 *        page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I do short swipe right the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void IDoShortSwipeOnFirstPYMKItem() throws Exception {
+		getPeoplePickerPage().shortSwipeRightFirstPYMKItem();
+	}
+
+	/**
+	 * Tap Hide button in the first PYMK item. The button should be already
+	 * visible
+	 * 
+	 * @step. ^I tap Hide button in the first PYMK item on [Pp]eople [Pp]icker
+	 *        page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Hide button in the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void ITapHideButtonInFirstPYMKItem() throws Exception {
+		getPeoplePickerPage().tapHideButtonInFirstPYMKItem();
+	}
 }

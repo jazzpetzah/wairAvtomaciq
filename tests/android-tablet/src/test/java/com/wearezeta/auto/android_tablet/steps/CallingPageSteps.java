@@ -50,6 +50,28 @@ public class CallingPageSteps {
 	}
 
 	/**
+	 * Check calling Mini bar is visible or not
+	 * 
+	 * @step. ^I (do not )?see calling overlay Mini bar$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null is "do not " part is NOT present
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I (do not )?see calling overlay Mini bar$")
+	public void WhenISeeCallingOverlayMiniBar(String shouldNotSee)
+			throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(getCallingOverlayPage()
+					.ongoingCallMinibarIsVisible());
+		} else {
+			Assert.assertTrue(getCallingOverlayPage()
+					.ongoingCallMinibarIsInvisible());
+		}
+	}
+
+	/**
 	 * Tap the corresponding button on call overlay
 	 * 
 	 * @step. ^I tap (.*) button on (?:\\s*|the )calling overlay$
@@ -196,5 +218,17 @@ public class CallingPageSteps {
 		}
 		Assert.assertTrue(String.format("The button '%s' is %svisible",
 				buttonName, (shouldNotSee == null) ? "" : "in"), result);
+	}
+
+	/**
+	 * Swipe up on calling overlay to dismiss it
+	 * 
+	 * @step. ^I swipe up on (?:\\s*|the )calling overlay$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I swipe up on (?:\\s*|the )calling overlay$")
+	public void ISwipeUp() throws Exception {
+		getCallingOverlayPage().dismissBySwipeUp();
 	}
 }

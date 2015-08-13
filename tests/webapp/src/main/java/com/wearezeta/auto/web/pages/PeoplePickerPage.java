@@ -232,9 +232,11 @@ public class PeoplePickerPage extends WebPage {
 	}
 
 	public void clickNameInTopPeople(String name) throws Exception {
-		String topPeopleItemLocator = WebAppLocators.PeoplePickerPage.xpathTopPeopleListByName
+		String topPeopleItemLocator = WebAppLocators.PeoplePickerPage.cssTopPeopleListByName
 				.apply(name);
-		getDriver().findElement(By.xpath(topPeopleItemLocator)).click();
+		DriverUtils.isElementPresentAndDisplayed(getDriver(), getDriver()
+				.findElement(By.cssSelector(topPeopleItemLocator)));
+		getDriver().findElement(By.cssSelector(topPeopleItemLocator)).click();
 	}
 
 	public ArrayList<String> getNamesOfSelectedTopPeople() throws Exception {

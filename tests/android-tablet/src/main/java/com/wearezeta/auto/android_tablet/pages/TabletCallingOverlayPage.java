@@ -63,4 +63,16 @@ public class TabletCallingOverlayPage extends AndroidTabletPage {
 	public void tapDismissButton() throws Exception {
 		getCallingOverlayPage().tapDismissButton();
 	}
+
+	public boolean ongoingCallMinibarIsVisible() throws Exception {
+		return getCallingOverlayPage().ongoingCallMinibarIsVisible();
+	}
+
+	public boolean ongoingCallMinibarIsInvisible() throws Exception {
+		return getCallingOverlayPage().ongoingCallMinibarIsInvisible();
+	}
+
+	public void dismissBySwipeUp() throws Exception {
+		getCallingOverlayPage().dismissBySwipeUp();
+	}
 }

@@ -37,6 +37,10 @@ public class ContactListPage extends AndroidPage {
 			.format("%s/parent::*//*[@id='tv_conv_list_media_player']",
 					xpathContactByName.apply(convoName));
 
+	private static final Function<String, String> xpathMissedCallNotificationByConvoName = convoName -> String
+			.format("%s/parent::*//*[@id='sci__list__missed_call']",
+					xpathContactByName.apply(convoName));
+
 	@FindBy(id = PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
@@ -378,5 +382,19 @@ public class ContactListPage extends AndroidPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
 				.format("Conversation menu item '%s' could not be found on the current screen");
 		getDriver().findElement(locator).click();
+	}
+
+	public boolean waitUntilMissedCallNotificationVisible(String convoName)
+			throws Exception {
+		final By locator = By.xpath(xpathMissedCallNotificationByConvoName
+				.apply(convoName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilMissedCallNotificationInvisible(String convoName)
+			throws Exception {
+		final By locator = By.xpath(xpathMissedCallNotificationByConvoName
+				.apply(convoName));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 }
