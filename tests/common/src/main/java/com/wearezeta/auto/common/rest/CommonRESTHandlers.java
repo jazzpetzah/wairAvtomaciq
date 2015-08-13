@@ -59,6 +59,7 @@ public final class CommonRESTHandlers {
 			Class<T> responseEntityType, int[] acceptableResponseCodes)
 			throws RESTError {
 		log.debug("POST REQUEST...");
+		log.debug(String.format(" >>> Input data: %s", formatLogRecord(entity)));
 		Response response = null;
 		int tryNum = 0;
 		do {
@@ -75,15 +76,15 @@ public final class CommonRESTHandlers {
 		T responseEntity;
 		try {
 			responseEntity = response.readEntity(responseEntityType);
+			log.debug(String.format(" >>> Response: %s",
+					formatLogRecord(responseEntity)));
+			this.responseHandler.verifyRequestResult(response.getStatus(),
+					acceptableResponseCodes);
 		} catch (ProcessingException | IllegalStateException
 				| NullPointerException e) {
 			responseEntity = null;
 			log.warn(e.getMessage());
 		}
-		log.debug(String.format(" >>> Input data: %s\n >>> Response: %s",
-				formatLogRecord(entity), formatLogRecord(responseEntity)));
-		this.responseHandler.verifyRequestResult(response.getStatus(),
-				acceptableResponseCodes);
 		return responseEntity;
 	}
 
@@ -99,6 +100,7 @@ public final class CommonRESTHandlers {
 			Class<T> responseEntityType, int[] acceptableResponseCodes)
 			throws RESTError {
 		log.debug("PUT REQUEST...");
+		log.debug(String.format(" >>> Input data: %s", formatLogRecord(entity)));
 		Response response = null;
 		int tryNum = 0;
 		do {
@@ -115,15 +117,15 @@ public final class CommonRESTHandlers {
 		T responseEntity;
 		try {
 			responseEntity = response.readEntity(responseEntityType);
+			log.debug(String.format(" >>> Response: %s",
+					formatLogRecord(responseEntity)));
+			this.responseHandler.verifyRequestResult(response.getStatus(),
+					acceptableResponseCodes);
 		} catch (ProcessingException | IllegalStateException
 				| NullPointerException e) {
 			responseEntity = null;
 			log.warn(e.getMessage());
 		}
-		log.debug(String.format(" >>> Input data: %s\n >>> Response: %s",
-				formatLogRecord(entity), formatLogRecord(responseEntity)));
-		this.responseHandler.verifyRequestResult(response.getStatus(),
-				acceptableResponseCodes);
 		return responseEntity;
 	}
 
@@ -152,15 +154,15 @@ public final class CommonRESTHandlers {
 		T responseEntity;
 		try {
 			responseEntity = response.readEntity(responseEntityType);
+			log.debug(String.format(" >>> Response: %s",
+					formatLogRecord(responseEntity)));
+			this.responseHandler.verifyRequestResult(response.getStatus(),
+					acceptableResponseCodes);
 		} catch (ProcessingException | IllegalStateException
 				| NullPointerException e) {
 			responseEntity = null;
 			log.warn(e.getMessage());
 		}
-		log.debug(String.format(" >>> Response: %s",
-				formatLogRecord(responseEntity)));
-		this.responseHandler.verifyRequestResult(response.getStatus(),
-				acceptableResponseCodes);
 		return responseEntity;
 	}
 
@@ -189,15 +191,15 @@ public final class CommonRESTHandlers {
 		T responseEntity;
 		try {
 			responseEntity = response.readEntity(responseEntityType);
+			log.debug(String.format(" >>> Response: %s",
+					formatLogRecord(responseEntity)));
+			this.responseHandler.verifyRequestResult(response.getStatus(),
+					acceptableResponseCodes);
 		} catch (ProcessingException | IllegalStateException
 				| NullPointerException e) {
 			responseEntity = null;
 			log.warn(e.getMessage());
 		}
-		log.debug(String.format(" >>> Response: %s",
-				formatLogRecord(responseEntity)));
-		this.responseHandler.verifyRequestResult(response.getStatus(),
-				acceptableResponseCodes);
 		return responseEntity;
 	}
 

@@ -24,8 +24,8 @@ Feature: People View
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples: 
-      | Name      | Contact1    | Contact2    |
-      | user1Name | user2Name   | user3Name   |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @regression @id489
   Scenario Outline: Add user to a group conversation
@@ -49,9 +49,9 @@ Feature: People View
     And I can see You Added <Contact3> message
 
     Examples: 
-      | Name      | Contact1    | Contact2    | Contact3  | Number | GroupChatName |
-      | user1Name | user2Name   | user3Name   | user4Name | 4      | TESTCHAT      |
-      
+      | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | 4      | TESTCHAT      |
+
   @regression @id1389
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
@@ -70,8 +70,8 @@ Feature: People View
     And I see You Left message in group chat
 
     Examples: 
-      | Name      | Contact1    | Contact2   | GroupChatName |
-      | user1Name | user2Name   | user3Name  | TESTCHAT      |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TESTCHAT      |
 
   @smoke @id1390
   Scenario Outline: Remove from group chat
@@ -80,7 +80,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-	When I tap on group chat with name <GroupChatName>
+    When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I select contact <Contact2>
     And I click Remove
@@ -89,10 +89,10 @@ Feature: People View
     Then I see that <Contact2> is not present on group chat page
 
     Examples: 
-      | Name      | Contact1    | Contact2   | GroupChatName |
-      | user1Name | user2Name   | user3Name  | TESTCHAT      |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @regression @id1396
+  @staging @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given User <Contact1> change avatar picture to <Picture>
@@ -111,9 +111,9 @@ Feature: People View
     And I see the correct participant <Contact1> avatar
     And I see the correct participant <Contact2> avatar
 
-    Examples:
-      | Name      | Contact1    | Contact2   | ParticipantNumber | Picture                      | Color        | Color1       |
-      | user1Name | user2Name   | user3Name  | 3                 | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow |
+    Examples: 
+      | Name      | Contact1  | Contact2  | ParticipantNumber | Picture                      | Color        | Color1       |
+      | user1Name | user2Name | user3Name | 3                 | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow |
 
   @smoke @id1406
   Scenario Outline: I can edit the conversation name
@@ -122,7 +122,7 @@ Feature: People View
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
-	When I tap on group chat with name <GroupChatName>
+    When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I change group conversation name to <ChatName>
     Then I see correct conversation name <ChatName>
@@ -131,9 +131,9 @@ Feature: People View
     And I return to the chat list
     And I see in contact list group chat named <ChatName>
 
-    Examples:
-      | Name      | Contact1    | Contact2   | ChatName | GroupChatName |
-      | user1Name | user2Name   | user3Name  | QAtest   | TESTCHAT      |
+    Examples: 
+      | Name      | Contact1  | Contact2  | ChatName | GroupChatName |
+      | user1Name | user2Name | user3Name | QAtest   | TESTCHAT      |
 
   @regression @id531
   Scenario Outline: I can see the individual user profile if I select someone in participants view
@@ -148,8 +148,8 @@ Feature: People View
     Then I see <Contact2> user profile page
 
     Examples: 
-      | Name      | Contact1    | Contact2   |
-      | user1Name | user2Name   | user3Name  |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @regression @id339
   Scenario Outline: Tap on participant profiles in group info page participant view
@@ -165,7 +165,7 @@ Feature: People View
     And I tap on <GroupCreator> and check email visible and name
     And I tap on <NonConnectedContact> and check email invisible and name
 
-    Examples:
+    Examples: 
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
@@ -184,8 +184,8 @@ Feature: People View
     Then I see message in the dialog
 
     Examples: 
-      | Name      | Contact1    | Contact2   | GroupChatName |
-      | user1Name | user2Name   | user3Name  | TESTCHAT      |
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | TESTCHAT      |
 
   @regression @id393
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
@@ -205,7 +205,7 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-	# broken functionality           
+  # broken functionality
   @regression @id555
   Scenario Outline: Verify you can add people from 1:1 people view (view functionality)
     Given There are 3 users where <Name> is me
@@ -232,9 +232,9 @@ Feature: People View
     And I see user <Contact2> on People picker page is NOT selected
 
     Examples: 
-      | Name      | Contact1    | Contact2   |
-      | user1Name | user2Name   | user3Name  |
-            
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
   @regression @id556
   Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
     Given There are 4 users where <Name> is me
@@ -262,10 +262,10 @@ Feature: People View
     And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 
-      | Name      | Contact1    | Contact2   | Contact3  |
-      | user1Name | user2Name   | user3Name  | user4Name |
-           
-  @regression @id559
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+
+  @staging @id559
   Scenario Outline: Verify you can add people from 1:1 people view (cancel view)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -297,9 +297,9 @@ Feature: People View
     And I don't see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 
-      | Name      | Contact1    | Contact2   | Contact3  |
-      | user1Name | user2Name   | user3Name  | user4Name |
-      
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+
   @regression @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
@@ -321,9 +321,9 @@ Feature: People View
     Then I see conversation <Contact> is silenced
 
     Examples: 
-      | Name      | Contact   | Color    | NewName |
-      | user1Name | user2Name | Violet   | SILENCE |
-      
+      | Name      | Contact   | Color  | NewName |
+      | user1Name | user2Name | Violet | SILENCE |
+
   @regression @id1335
   Scenario Outline: Verify unsilence the conversation
     Given There are 2 users where <Name> is me

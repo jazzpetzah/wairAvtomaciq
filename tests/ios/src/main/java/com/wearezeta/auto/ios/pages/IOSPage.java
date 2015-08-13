@@ -54,12 +54,18 @@ public abstract class IOSPage extends BasePage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardDeleteButton)
 	private WebElement keyboardDeleteBtn;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardGoButton)
+	private WebElement keyboardGoBtn;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardReturnButton)
 	private WebElement keyboardReturnBtn;
 
 	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameHideKeyboardButton)
 	private WebElement keyboardHideBtn;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameSpaceButton)
+	private WebElement keyboardSpaceBtn;
 
 	private static String imagesPath = "";
 
@@ -223,6 +229,10 @@ public abstract class IOSPage extends BasePage {
 	public void clickKeyboardDeleteButton() {
 		keyboardDeleteBtn.click();
 	}
+	
+	public void clickKeyboardGoButton() {
+		keyboardGoBtn.click();
+	}
 
 	public void clickKeyboardReturnButton() {
 		keyboardReturnBtn.click();
@@ -230,6 +240,10 @@ public abstract class IOSPage extends BasePage {
 
 	public void clickHideKeyboarButton() {
 		keyboardHideBtn.click();
+	}
+	
+	public void clickSpaceKeyboardButton() {
+		keyboardSpaceBtn.click();
 	}
 
 	public static Object executeScript(String script) throws Exception {

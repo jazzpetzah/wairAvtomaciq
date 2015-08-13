@@ -7,7 +7,7 @@ import org.openqa.selenium.By;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class OutgoingConnectionPopover extends AbstractPopoverContainer {
-	public static final String idRootLocator = "fl__participant_dialog__main__container";
+	static final String idRootLocator = "fl__participant_dialog__main__container";
 
 	private NonConnectedUserOutgoingConnectionPage outgoingConnectionPage;
 

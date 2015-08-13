@@ -115,7 +115,7 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutPageWireLogo)
 	private WebElement aboutPageWireLogo;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameAboutCloseButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutCloseButton)
 	private WebElement aboutCloseButton;
 
 	public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {

@@ -65,7 +65,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPingButton)
 	private WebElement pingButton;
 
-	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idGIFButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssGIFButton)
 	private WebElement gifButton;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssCallButton)
@@ -153,6 +153,12 @@ public class ConversationPage extends WebPage {
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);
 		return isActionMessageSent(parts);
+	}
+
+	public boolean isActionMessageNotSent(String message) throws Exception {
+		Set<String> parts = new HashSet<String>();
+		parts.add(message);
+		return isActionMessageNotSent(parts);
 	}
 
 	public boolean isMessageSent(String message) throws Exception {
@@ -541,6 +547,32 @@ public class ConversationPage extends WebPage {
 		} else {
 			throw new PendingException(
 					"Webdriver does not support shortcuts for Mac browsers");
+		}
+	}
+
+	public boolean isActionMessageNotSent(final Set<String> parts)
+			throws Exception {
+		final By locator = By
+				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
+
+		if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator)) {
+			return true;
+		} else {
+			final List<WebElement> actionMessages = this.getDriver()
+					.findElements(locator);
+			// Get the most recent action message only
+			final String actionMessageInUI = actionMessages.get(
+					actionMessages.size() - 1).getText();
+			for (String part : parts) {
+				if (!actionMessageInUI.toUpperCase().contains(
+						part.toUpperCase())) {
+					log.error(String
+							.format("'%s' substring has not been found in '%s' action message",
+									part, actionMessageInUI));
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }

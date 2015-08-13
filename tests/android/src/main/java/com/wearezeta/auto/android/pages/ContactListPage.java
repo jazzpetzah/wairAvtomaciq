@@ -37,6 +37,10 @@ public class ContactListPage extends AndroidPage {
 			.format("%s/parent::*//*[@id='tv_conv_list_media_player']",
 					xpathContactByName.apply(convoName));
 
+	private static final Function<String, String> xpathMissedCallNotificationByConvoName = convoName -> String
+			.format("%s/parent::*//*[@id='sci__list__missed_call']",
+					xpathContactByName.apply(convoName));
+
 	@FindBy(id = PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
@@ -65,7 +69,7 @@ public class ContactListPage extends AndroidPage {
 	private List<WebElement> frameLayout;
 
 	@FindBy(id = PeoplePickerPage.idPickerSearch)
-	private WebElement openStartUI;
+	private WebElement searchBox;
 
 	private static final String idSelfUserAvatar = "civ__searchbox__self_user_avatar";
 	@FindBy(id = idSelfUserAvatar)
@@ -246,8 +250,8 @@ public class ContactListPage extends AndroidPage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public PeoplePickerPage pressOpenStartUI() throws Exception {
-		openStartUI.click();
+	public PeoplePickerPage tapOnSearchBox() throws Exception {
+		searchBox.click();
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
@@ -342,7 +346,7 @@ public class ContactListPage extends AndroidPage {
 		return new PersonalInfoPage(getLazyDriver());
 	}
 
-	public PeoplePickerPage openPeoplePicker() throws Exception {
+	public PeoplePickerPage tapOnSearchButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), searchButton);
 		searchButton.click();
 		return new PeoplePickerPage(getLazyDriver());
@@ -378,5 +382,19 @@ public class ContactListPage extends AndroidPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
 				.format("Conversation menu item '%s' could not be found on the current screen");
 		getDriver().findElement(locator).click();
+	}
+
+	public boolean waitUntilMissedCallNotificationVisible(String convoName)
+			throws Exception {
+		final By locator = By.xpath(xpathMissedCallNotificationByConvoName
+				.apply(convoName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilMissedCallNotificationInvisible(String convoName)
+			throws Exception {
+		final By locator = By.xpath(xpathMissedCallNotificationByConvoName
+				.apply(convoName));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 }

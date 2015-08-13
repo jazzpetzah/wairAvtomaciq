@@ -58,7 +58,7 @@ public final class WebAppLocators {
 
 		public static final String cssUnmuteButton = "[data-uie-name='do-notify']";
 
-		public static final String cssDeleteButton = "[data-uie-name='do-delete']";
+		public static final String cssDeleteButton = "[data-uie-name='do-clear']";
 
 		public static final String cssBlockButton = "[data-uie-name='do-block']";
 
@@ -135,6 +135,18 @@ public final class WebAppLocators {
 		public static final String cssBlockModal = ".modal-block";
 		public static final String cssBlockModalCancelButton = ".modal-block .modal-close.button-inverted";
 		public static final String cssBlockModalActionButton = ".modal-block .modal-close.modal-action";
+
+		// delete warning for group conversations
+		public static final String cssDeleteModalGroup = ".modal-clear-group";
+		public static final String cssDeleteModalCancelButtonGroup = ".modal-clear-group .modal-close.button-inverted";
+		public static final String cssDeleteModalActionButtonGroup = ".modal-clear-group .modal-close.modal-action";
+		public static final String cssDeleteModalLeaveCheckboxGroup = "[data-uie-name='enter-leave-conversation']";
+
+		// delete warning for 1:1 conversation
+		public static final String cssDeleteModalSingle = ".modal-clear";
+		public static final String cssDeleteModalCancelButtonSingle = ".modal-clear .modal-close.button-inverted";
+		public static final String cssDeleteModalActionButtonSingle = ".modal-clear .modal-close.modal-action";
+
 	}
 
 	public static final class SettingsPage {
@@ -241,7 +253,7 @@ public final class WebAppLocators {
 
 		public static final String cssCallButton = "[data-uie-name='do-call']";
 
-		public static final String idGIFButton = "show-extensions";
+		public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
 		// bars (call bar)
 		public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";
@@ -309,6 +321,11 @@ public final class WebAppLocators {
 				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 				xpathRoot, name);
 
+		public static final Function<String, String> xpathSearchResultGroupByName = (
+				name) -> String.format(
+				"%s//*[@data-uie-name='item-group' and .//*[text()='%s']]",
+				xpathRoot, name);
+
 		public static final String cssCloseSearchButton = ".search-header span[data-uie-name='do-close']";
 
 		public static final Function<String, String> cssDismissIconByName = (
@@ -330,9 +347,9 @@ public final class WebAppLocators {
 
 		public static final String xpathTopPeople = "//*[@data-uie-name='status-top-people']";
 
-		public static final Function<String, String> xpathTopPeopleListByName = (
+		public static final Function<String, String> cssTopPeopleListByName = (
 				name) -> String
-				.format("(//user-list[contains(@params, 'top_users')]//*[@data-uie-name='item-user' and .//*[text()='%s']])",
+				.format(".people-picker-list-top-conversations [data-uie-value='%s'] user-avatar",
 						name);
 
 		public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"

@@ -118,7 +118,7 @@ Feature: Search
     And I see top people list on People picker page
     Then I tap on first 1 top connections
     #And I click Go button to create 1:1 conversation
-    And I click Create Conversation button on People picker page
+    And I click open conversation button on People picker page
     And I wait for 2 seconds
     And I see dialog page
 
@@ -142,7 +142,7 @@ Feature: Search
     And I see top people list on People picker page
     Then I tap on first 1 top connections
     #And I click Go button to create 1:1 conversation
-    And I click Create Conversation button on People picker page
+    And I click open conversation button on People picker page
     And I wait for 2 seconds
     And I see dialog page
 
@@ -465,13 +465,14 @@ Feature: Search
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
+    And I click space keyboard button
     Then I see that <Number> contacts are selected
 
     Examples: 
       | Name      | UserCount | Contact   | Number |
       | user1Name | 7         | user2Name | 4      |
 
-  @regression @id2936
+  @regression @id2936 
   Scenario Outline: Verify search is possible after selection users from Top People [LANDSAPE]
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -488,6 +489,7 @@ Feature: Search
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
+    And I click space keyboard button
     Then I see that <Number> contacts are selected
 
     Examples: 

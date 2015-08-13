@@ -722,7 +722,7 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging @id3198
+  @regression @id3198
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -743,7 +743,7 @@ Feature: Conversation View
       | Name      | Contact1  | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging @id3199
+  @regression @id3199
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -861,7 +861,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3202
+  @regression @id3202
   Scenario Outline: I can send and play inline youtube link [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -880,7 +880,7 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @staging @id3203
+  @regression @id3203
   Scenario Outline: I can send and play inline youtube link [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -929,7 +929,7 @@ Feature: Conversation View
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
-  @staging @id2418 
+  @regression @id2418
   Scenario Outline: Rotate image in fullscreen mode [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given User <Contact> change name to <NewName>
@@ -955,7 +955,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | Color        | NewName          |
       | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
 
-  @staging @id3206
+  @regression @id3206
   Scenario Outline: Rotate image in fullscreen mode [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given User <Contact> change name to <NewName>
@@ -982,10 +982,10 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | Color        | NewName          |
       | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
 
-  @staging @id2451 
+  @regression @id2451
   Scenario Outline: Verify archiving conversation from ellipsis menu [PORTRAIT]
     Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>    
+    Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -1002,7 +1002,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3192
+  @regression @id3192
   Scenario Outline: Verify archiving conversation from ellipsis menu [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1022,7 +1022,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3097 @id3098
+  @regression @id3097 @id3098
   Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1047,7 +1047,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3237 @id3238
+  @regression @id3237 @id3238
   Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1073,7 +1073,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id2961
+  @regression @id2961
   Scenario Outline: Verify preview is opened after tapping on GIF button [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1086,9 +1086,9 @@ Feature: Conversation View
 
     Examples: 
       | Name      | Contact   | GiphyTag |
-      | user1Name | user2Name | Wow    |
+      | user1Name | user2Name | Wow      |
 
-  @staging @id3249
+  @regression @id3249
   Scenario Outline: Verify preview is opened after tapping on GIF button [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1102,4 +1102,97 @@ Feature: Conversation View
 
     Examples: 
       | Name      | Contact   | GiphyTag |
-      | user1Name | user2Name | Wow    |
+      | user1Name | user2Name | Wow      |
+
+  @regression @id2958 @id2959
+  Scenario Outline: Verify preview is opened after tapping on GIF button [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I send random giphy
+    And I click hide keyboard button
+    And I see giphy in conversation
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @regression @id3251 @id3252
+  Scenario Outline: Verify preview is opened after tapping on GIF button [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I send random giphy
+    And I click hide keyboard button
+    And I see giphy in conversation
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3100
+  Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given Me sent connection request to <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    And I click Close input options button
+    And I navigate back to conversations view
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I press leave converstation button
+    And I see leave conversation alert
+    Then I press leave
+    And I open archived conversations on iPad
+    And I see user <GroupChatName> in contact list
+    And I tap on group chat with name <GroupChatName>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
+      | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
+
+  @staging @id3267
+  Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [LANDSCAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given Me sent connection request to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    And I click Close input options button
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I press leave converstation button
+    And I see leave conversation alert
+    Then I press leave
+    And I open archived conversations on iPad
+    And I see user <GroupChatName> in contact list
+    And I tap on group chat with name <GroupChatName>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
+      | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |

@@ -13,7 +13,7 @@ import cucumber.api.java.en.When;
 public class SketchPageSteps {
 
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
-		.getInstance();
+			.getInstance();
 
 	private SketchPage getSketchPage() throws Exception {
 		return (SketchPage) pagesCollection.getPage(SketchPage.class);
@@ -27,16 +27,17 @@ public class SketchPageSteps {
 	 * Draws a sketch consisting of at least numColors colors in random patterns
 	 * around the canvas
 	 * 
-	 * @step. ^I draw a sketch with (.*) colors$
+	 * @step. ^I draw a sketch( on image)? with (.*) colors$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I draw a sketch with (.*) colors$")
-	public void WhenIDrawASketchWithXColors(int numColors) throws Exception {
+	@When("^I draw a sketch( on image)? with (.*) colors$")
+	public void WhenIDrawASketchWithXColors(String onImage, int numColors)
+			throws Exception {
 		SketchPage page = getSketchPage();
-
+		boolean isOnImage = (onImage == null) ? false : true;
 		for (int i = 0; i < numColors; i++) {
-			page.setColor(i);
+			page.setColor(i, isOnImage);
 			int numLines = 3;
 			page.drawRandomLines(numLines);
 		}
@@ -54,7 +55,7 @@ public class SketchPageSteps {
 	@When("^I remember what my sketch looks like$")
 	public void WhenIRememberWhatMySketchLooksLike() throws Exception {
 		sketch = getSketchPage().screenshotCanvas().orElseThrow(
-			AssertionError::new);
+				AssertionError::new);
 	}
 
 	/**
@@ -82,13 +83,14 @@ public class SketchPageSteps {
 		final double MAX_OVERLAP_SCORE = 0.95;
 
 		BufferedImage lastImageInConversation = getDialogPage()
-			.getLastImageInConversation().orElseThrow(AssertionError::new);
-
+				.getLastImageInConversation().orElseThrow(AssertionError::new);
 		double score = ImageUtil.getOverlapScore(sketch,
-			lastImageInConversation, ImageUtil.RESIZE_NORESIZE);
+				lastImageInConversation, ImageUtil.RESIZE_NORESIZE);
 
 		if (score < MAX_OVERLAP_SCORE) {
-			Assert.fail();
+			Assert.fail(String.format(
+					"Score %s is less than expected score - %s", score,
+					MAX_OVERLAP_SCORE));
 		}
 	}
 

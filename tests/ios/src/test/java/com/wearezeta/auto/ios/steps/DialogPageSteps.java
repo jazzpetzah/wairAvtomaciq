@@ -771,6 +771,31 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Sends random giphy in conversation
+	 *
+	 * @step. I send random giphy
+	 *
+	 * @throws Exception
+	 */
+	@When("I send random giphy")
+	public void ISendRandomGiphy() throws Exception {
+		getDialogPage().sendMessageUsingScript(IOSConstants.RANDOM_GIPHY);
+	}
+
+	/**
+	 * Verify giphy is presented in conversation
+	 * 
+	 * @step. I see giphy in conversation
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see giphy in conversation")
+	public void ISeeGiphyInConversation() throws Exception {
+		Assert.assertTrue("There is no giphy in conversation", getDialogPage()
+				.isGiphyImageVisible());
+	}
+
+	/**
 	 * Opens the sketch feature
 	 * 
 	 * @step. ^I tap on sketch button in cursor$
@@ -903,12 +928,32 @@ public class DialogPageSteps {
 		ISeeSketchButtonShown();
 		ISeePingButtonShown();
 	}
+	
+	/**
+	 * Verify that only Details button is shown. Rest button should not be visible
+	 * 
+	 * @step. I see only Details button. Call, Camera, Sketch, Ping are not shown
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see only Details button. Call, Camera, Sketch, Ping are not shown")
+	public void ISeeOnlyDetailsButtonRestNotShown() throws Exception {
+		ISeeDetailsButtonShown();
+		Assert.assertFalse("Call button is visible", getDialogPage()
+				.isCallButtonVisible());
+		Assert.assertFalse("Camera button is visible", getDialogPage()
+				.isCameraButtonVisible());
+		Assert.assertFalse("Sketch button is visible", getDialogPage()
+				.isOpenScetchButtonVisible());
+		Assert.assertFalse("Ping button is visible", getDialogPage()
+				.isPingButtonVisible());
+	}
 
 	/**
 	 * Verify Close button in options is shown
 	 * 
-	 *  @step. ^I see Close input options button is visible$
-	 *  
+	 * @step. ^I see Close input options button is visible$
+	 * 
 	 * @throws Exception
 	 */
 	@When("^I see Close input options button is visible$")
@@ -916,12 +961,12 @@ public class DialogPageSteps {
 		Assert.assertTrue("Close button is not visible", getDialogPage()
 				.isCloseButtonVisible());
 	}
-	
+
 	/**
 	 * Verify Close button in options is NOT shown
 	 * 
-	 *  @step. ^I see Close input options button is not visible$
-	 *  
+	 * @step. ^I see Close input options button is not visible$
+	 * 
 	 * @throws Exception
 	 */
 	@When("^I see Close input options button is not visible$")
@@ -929,9 +974,9 @@ public class DialogPageSteps {
 		Assert.assertFalse("Close button is visible", getDialogPage()
 				.isCloseButtonVisible());
 	}
-	
+
 	/**
-	 * Click on plus button  next to text input
+	 * Click on plus button next to text input
 	 * 
 	 * @step. ^I click plus button next to text input$
 	 * 
@@ -941,7 +986,7 @@ public class DialogPageSteps {
 	public void IClickPlusButton() throws Exception {
 		getDialogPage().clickPlusButton();
 	}
-	
+
 	/**
 	 * Click on close button in input options
 	 * 

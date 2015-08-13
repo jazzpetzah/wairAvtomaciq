@@ -35,8 +35,9 @@ import gherkin.formatter.model.Step;
 import gherkin.formatter.model.Tag;
 
 public class ZetaFormatter implements Formatter, Reporter {
-	private String feature = "";
-	private String scenario = "";
+
+	private static String feature = "";
+	private static String scenario = "";
 	private Queue<String> step = new LinkedList<String>();
 
 	private static final Logger log = ZetaLogger.getLog(ZetaFormatter.class
@@ -246,4 +247,11 @@ public class ZetaFormatter implements Formatter, Reporter {
 		ZetaFormatter.buildNumber = buildNumber;
 	}
 
+	public static String getFeature() {
+		return feature;
+	}
+
+	public static String getScenario() {
+		return scenario;
+	}
 }

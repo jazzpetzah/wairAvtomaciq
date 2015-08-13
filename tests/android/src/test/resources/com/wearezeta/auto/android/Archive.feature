@@ -31,7 +31,7 @@ Feature: Archive
     Given I see Contact list with contacts
     And I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
-    And I tap ARCHIVE in conversation settings menu
+    And I select ARCHIVE from conversation settings menu
     Then I do not see contact list with name <GroupChatName>
     And I swipe up contact list
     And I see contact list with name <GroupChatName>

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.ios.pages;
 
+import java.util.List;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
@@ -28,7 +29,19 @@ public class IncomingCallPage extends CallPage {
 	
 	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameCallingMessageUser)
 	private WebElement callingMessageUser;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameJoinCallButton)
+	private WebElement joinCallButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameSecondCallAlert)
+	private WebElement secondCallAlert;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameEndCallAlertButton)
+	private WebElement endCallAlertButton;
 
+	@FindBy(how = How.CLASS_NAME, using = IOSLocators.IncomingCallPage.classNameUIACollectionCell)
+	private List<WebElement> numberOfGroupCallAvatars;
+	
 	public IncomingCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -47,10 +60,9 @@ public class IncomingCallPage extends CallPage {
 	}
 
 	public boolean isUserCallingMessageShown(String contact) throws Exception {
-		String locator = String.format(
-				IOSLocators.IncomingCallPage.nameCallingMessageUser, contact);
+
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(locator));
+				By.name(IOSLocators.IncomingCallPage.nameCallingMessageUser));
 	}
 
 	public StartedCallPage acceptIncomingCallClick() throws Exception {
@@ -65,5 +77,27 @@ public class IncomingCallPage extends CallPage {
 	public boolean isCallingMessageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(IOSLocators.IncomingCallPage.xpathCallingMessage), 10);
+	}
+	
+	public boolean isGroupCallingMessageVisible() throws Exception{
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(IOSLocators.IncomingCallPage.xpathGroupCallingMessage), 10);
+	}
+
+	public boolean isJoinCallBarVisible() {
+		return joinCallButton.isDisplayed();
+	}
+
+	public boolean isSecondCallAlertVisible() {
+		return secondCallAlert.isDisplayed();
+	}
+
+	public void pressEndCallAlertButton() {
+		endCallAlertButton.click();
+	
+	}
+	
+	public int getNumberOfGroupCallAvatar() throws Exception{
+		return numberOfGroupCallAvatars.size();
 	}
 }

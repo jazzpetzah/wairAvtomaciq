@@ -159,4 +159,37 @@ public class ConversationsListPageSteps {
 		}
 	}
 
+	/**
+	 * Verify whether missed call indicator is shown near the corresponding
+	 * convo list item
+	 * 
+	 * @step. ^I (do not )?see missed call notification near (.*) conversation
+	 *        list item$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if "do not " part does not exist in the step
+	 * @param convoName
+	 *            conversation name/alias
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see missed call notification near (.*) conversation list item$")
+	public void ISeeMissedCallNotification(String shouldNotSee, String convoName)
+			throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
+		if (shouldNotSee == null) {
+			Assert.assertTrue(
+					String.format(
+							"Missed call notification is not visible for conversation list item '%s'",
+							convoName), getConversationsListPage()
+							.waitUntilMissedCallNotificationVisible(convoName));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"Missed call notification is still visible for conversation list item '%s'",
+							convoName),
+					getConversationsListPage()
+							.waitUntilMissedCallNotificationInvisible(convoName));
+		}
+	}
 }
