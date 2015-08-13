@@ -190,3 +190,61 @@ Feature: Connect
     Examples: 
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
+
+  @id2892 @staging
+  Scenario Outline: Connect to someone from PYMK by tap and typing connect message (portrait)
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Contact2>
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    When I tap Search input
+    And I see People Picker page
+    And I hide keyboard
+    And I remember the name of the first PYMK item on People Picker page
+    And I tap the first PYMK item on People Picker page
+    And I see Outgoing Connection popover
+    And I enter connection message "<Message>" on Outgoing Connection popover
+    And I tap Connect button on Outgoing Connection popover
+    And I do not see Outgoing Connection popover
+    And I see People Picker page
+    And I hide keyboard
+    And I do not see the previously remembered PYMK item on People Picker page
+    And I close People Picker
+    Then I see conversations list with the previously remembered PYMK item
+    When I switch to the conversation with the previously remembered PYMK item
+    Then I see the outgoing invitation message "<Message>" on conversation view page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message       |
+      | user1Name | user2Name | user3Name | Hellow friend |
+
+  @id3114 @staging
+  Scenario Outline: Connect to someone from PYMK by tap and typing connect message (landscape)
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Contact2>
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    When I tap Search input
+    And I see People Picker page
+    And I hide keyboard
+    And I remember the name of the first PYMK item on People Picker page
+    And I tap the first PYMK item on People Picker page
+    And I see Outgoing Connection popover
+    And I enter connection message "<Message>" on Outgoing Connection popover
+    And I tap Connect button on Outgoing Connection popover
+    And I do not see Outgoing Connection popover
+    And I see People Picker page
+    And I hide keyboard
+    And I do not see the previously remembered PYMK item on People Picker page
+    And I close People Picker
+    Then I see conversations list with the previously remembered PYMK item
+    When I switch to the conversation with the previously remembered PYMK item
+    Then I see the outgoing invitation message "<Message>" on conversation view page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message       |
+      | user1Name | user2Name | user3Name | Hellow friend |

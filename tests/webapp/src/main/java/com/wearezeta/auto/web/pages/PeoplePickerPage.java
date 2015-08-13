@@ -234,6 +234,8 @@ public class PeoplePickerPage extends WebPage {
 	public void clickNameInTopPeople(String name) throws Exception {
 		String topPeopleItemLocator = WebAppLocators.PeoplePickerPage.xpathTopPeopleListByName
 				.apply(name);
+		DriverUtils.waitUntilElementClickable(getDriver(), getDriver()
+				.findElement(By.xpath(topPeopleItemLocator)));
 		getDriver().findElement(By.xpath(topPeopleItemLocator)).click();
 	}
 
