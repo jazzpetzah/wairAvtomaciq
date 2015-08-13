@@ -347,9 +347,9 @@ public final class WebAppLocators {
 
 		public static final String xpathTopPeople = "//*[@data-uie-name='status-top-people']";
 
-		public static final Function<String, String> xpathTopPeopleListByName = (
+		public static final Function<String, String> cssTopPeopleListByName = (
 				name) -> String
-				.format("(//user-list[contains(@params, 'top_users')]//*[@data-uie-name='item-user' and .//*[text()='%s']])",
+				.format(".people-picker-list-top-conversations [data-uie-value='%s'] user-avatar",
 						name);
 
 		public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"
