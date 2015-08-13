@@ -150,7 +150,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @id2602
+  @regression @id2602
   Scenario Outline: Verify switching on/off chatheads [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
@@ -190,7 +190,7 @@ Feature: Settings
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
 
-  @staging @id3084
+  @regression @id3084
   Scenario Outline: Verify switching on/off chatheads [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
