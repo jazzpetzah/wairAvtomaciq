@@ -121,4 +121,12 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 		getAndroidPeoplePickerPage().tapPYMKItem(1);
 	}
 
+	public void shortSwipeRightFirstPYMKItem() throws Exception {
+		getAndroidPeoplePickerPage().shortSwipeRigthOnPYMKItem(1);
+	}
+
+	public void tapHideButtonInFirstPYMKItem() throws Exception {
+		getAndroidPeoplePickerPage().clickHideButtonOnPYMKItem(1);
+	}
+
 }

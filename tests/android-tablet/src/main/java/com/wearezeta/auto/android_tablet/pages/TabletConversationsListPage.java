@@ -131,4 +131,16 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		return getContactListPage().isNoConversationsVisible();
 	}
 
+	public boolean waitUntilMissedCallNotificationVisible(String convoName)
+			throws Exception {
+		return getContactListPage().waitUntilMissedCallNotificationVisible(
+				convoName);
+	}
+
+	public boolean waitUntilMissedCallNotificationInvisible(String convoName)
+			throws Exception {
+		return getContactListPage().waitUntilMissedCallNotificationInvisible(
+				convoName);
+	}
+
 }

@@ -283,7 +283,7 @@ Feature: Conversation View
       | Name      | Contact1  | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @id3242 @verification
+  @id3242 @staging
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -297,6 +297,51 @@ Feature: Conversation View
     When I remember what my sketch looks like
     And I send my sketch
     Then I verify that my sketch is the same as what I drew
+
+    Examples: 
+      | Name      | Contact1  | NumColors |
+      | user1Name | user2Name | 6         |
+
+  @id3243 @staging
+  Scenario Outline: I can send sketch on image from gallery
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe on text input
+    And I press Add Picture button
+    And I press "Gallery" button
+    And I rotate UI to portrait
+    And I wait for 1 second
+    And I select picture for dialog
+    And I press "Sketch Image Paint" button
+    And I draw a sketch on image with <NumColors> colors
+    Then I remember what my sketch looks like
+    And I send my sketch
+    And I verify that my sketch is the same as what I drew
+
+    Examples: 
+      | Name      | Contact1  | NumColors |
+      | user1Name | user2Name | 6         |
+
+  @id3244 @staging
+  Scenario Outline: I can send sketch on photo
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe on text input
+    And I press Add Picture button
+    And I press "Take Photo" button
+    And I press "Sketch Image Paint" button
+    And I draw a sketch on image with <NumColors> colors
+    Then I remember what my sketch looks like
+    And I send my sketch
+    And I verify that my sketch is the same as what I drew
 
     Examples: 
       | Name      | Contact1  | NumColors |
