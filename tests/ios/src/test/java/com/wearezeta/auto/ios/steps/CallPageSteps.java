@@ -252,4 +252,15 @@ public class CallPageSteps {
 		Assert.assertEquals(numberOfAvatars, actualNumberOfAvatars);
 	}
 
+	/**
+	 * Rejoin group call by clicking the join button
+	 * 
+	 * @step. ^I rejoin call by clicking Join button$
+	 * @throws Throwable
+	 */
+	@When("^I rejoin call by clicking Join button$")
+	public void IRejoinCallByClickingJoinButton() throws Throwable {
+		getIncomingCallPage().clickJoinCallButton();
+	}
+
 }
