@@ -85,7 +85,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id3211
+  @regression @id3211
   Scenario Outline: Verify I can cancel blocking a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -103,7 +103,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
-  @staging @id3214
+  @regression @id3214
   Scenario Outline: Verify I can cancel leaving a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -122,7 +122,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName       |
       | user1Email | user1Password | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @staging @id3218
+  @regression @id3218
   Scenario Outline: Verify I can delete a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -156,7 +156,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Msg1    | Login2     | Password2     | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | message | user2Email | user2Password | LEFT    |
 
-  @staging @id3210
+  @regression @id3210
   Scenario Outline: Verify I can block a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -185,7 +185,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact   | Login2     | Password2     | Msg1    | Action |
       | user1Email | user1Password | user1Name | user2Name | user2Email | user2Password | message | LEFT   |
 
-  @staging @id3213
+  @regression @id3213
   Scenario Outline: Verify I can leave a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -254,26 +254,26 @@ Feature: Conversation List
     And I see a delete warning modal for group conversations
     And I click delete button in the delete warning for group conversations
     And I do not see Contact list with name <ChatName>
-    And <Contact1> calls <ChatName> using <CallBackend>
-    And I open conversation with <ChatName>
-    Then I see <Action> action for <Contact1> in conversation
-    And I see <Action> action for <Contact2> in conversation
-    When I click on options button for conversation <ChatName>
-    And I click delete in the options popover
-    And I see a delete warning modal for group conversations
-    And I click delete button in the delete warning for group conversations
-    And I do not see Contact list with name <ChatName>
     And Contact <Contact1> sends image <Image> to group conversation <ChatName>
     And I open conversation with <ChatName>
     Then I see <Action> action for <Contact1> in conversation
     And I see <Action> action for <Contact2> in conversation
     And I see sent picture <Image> in the conversation view
+    When I click on options button for conversation <ChatName>
+    And I click delete in the options popover
+    And I see a delete warning modal for group conversations
+    And I click delete button in the delete warning for group conversations
+    And I do not see Contact list with name <ChatName>
+    And <Contact1> calls <ChatName> using <CallBackend>
+    And I open conversation with <ChatName>
+    Then I see <Action> action for <Contact1> in conversation
+    And I see <Action> action for <Contact2> in conversation
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message | Action  | PING   | Image                     | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello   | STARTED | pinged | userpicture_landscape.jpg | autocall    |
 
-  @staging @id3257
+  @regression @id3257
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -308,7 +308,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Msg1    | Login2     | Password2     | Message |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | message | user2Email | user2Password | LEFT    |
 
-  @staging @id3219
+  @regression @id3219
   Scenario Outline: Verify I can cancel deleting a group conversation from conversation list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -327,7 +327,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        |
       | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat |
 
-  @staging @id3215
+  @regression @id3215
   Scenario Outline: Verify I can delete a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -360,7 +360,7 @@ Feature: Conversation List
       | Login      | Password      | Name      | Contact1  | Action | Msg1    | Login2     | Password2     |
       | user1Email | user1Password | user1Name | user2Name | LEFT   | message | user2Email | user2Password |
 
-  @staging @id3216
+  @regression @id3216
   Scenario Outline: Verify I can cancel deleting a 1:1 conversation from conversation list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

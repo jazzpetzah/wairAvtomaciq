@@ -58,10 +58,9 @@ public class IncomingCallPage extends CallPage {
 	}
 
 	public boolean isUserCallingMessageShown(String contact) throws Exception {
-		String locator = String.format(
-				IOSLocators.IncomingCallPage.xpathCallingMessage, contact);
+
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(locator));
+				By.name(IOSLocators.IncomingCallPage.nameCallingMessageUser));
 	}
 
 	public StartedCallPage acceptIncomingCallClick() throws Exception {
