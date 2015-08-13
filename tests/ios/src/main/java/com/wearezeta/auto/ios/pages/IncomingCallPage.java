@@ -101,4 +101,8 @@ public class IncomingCallPage extends CallPage {
 	public int getNumberOfGroupCallAvatar() throws Exception{
 		return numberOfGroupCallAvatars.size();
 	}
+
+	public void clickJoinCallButton() {
+		joinCallButton.click();
+	}
 }
