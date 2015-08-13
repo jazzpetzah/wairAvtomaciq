@@ -268,7 +268,6 @@ Feature: Conversation List
     And I open conversation with <ChatName>
     Then I see <Action> action for <Contact1> in conversation
     And I see <Action> action for <Contact2> in conversation
-    And <Contact1> stops all calls to me
 
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message | Action  | PING   | Image                     | CallBackend |
