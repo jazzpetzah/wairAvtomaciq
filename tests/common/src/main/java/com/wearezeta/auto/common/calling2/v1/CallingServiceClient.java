@@ -21,11 +21,12 @@ public class CallingServiceClient {
 			.getLog(CallingServiceClient.class.getSimpleName());
 
 	private static final String API_VERSION = "1";
+	private static final boolean TRACE = false;
 	private final InstanceResource INSTANCE_RESOURCE = new InstanceResource(
-			getApiRoot(), API_VERSION);
+			getApiRoot(), API_VERSION, TRACE);
 
 	private final CallResource CALL_RESOURCE = new CallResource(getApiRoot(),
-			API_VERSION);
+			API_VERSION, TRACE);
 
 	public Instance startInstance(ClientUser userAs, InstanceType instanceType,
 			String name) throws CallingServiceInstanceException {
