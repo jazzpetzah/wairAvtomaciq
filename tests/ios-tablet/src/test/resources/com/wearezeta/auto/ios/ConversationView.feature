@@ -1136,3 +1136,63 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id3100
+  Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given Me sent connection request to <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    And I click Close input options button
+    And I navigate back to conversations view
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I press leave converstation button
+    And I see leave conversation alert
+    Then I press leave
+    And I open archived conversations on iPad
+    And I see user <GroupChatName> in contact list
+    And I tap on group chat with name <GroupChatName>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
+      | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
+
+  @staging @id3267
+  Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [LANDSCAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given Me sent connection request to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    And I click Close input options button
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I press leave converstation button
+    And I see leave conversation alert
+    Then I press leave
+    And I open archived conversations on iPad
+    And I see user <GroupChatName> in contact list
+    And I tap on group chat with name <GroupChatName>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
+      | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |

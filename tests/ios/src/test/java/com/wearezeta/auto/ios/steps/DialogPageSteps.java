@@ -928,6 +928,26 @@ public class DialogPageSteps {
 		ISeeSketchButtonShown();
 		ISeePingButtonShown();
 	}
+	
+	/**
+	 * Verify that only Details button is shown. Rest button should not be visible
+	 * 
+	 * @step. I see only Details button. Call, Camera, Sketch, Ping are not shown
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see only Details button. Call, Camera, Sketch, Ping are not shown")
+	public void ISeeOnlyDetailsButtonRestNotShown() throws Exception {
+		ISeeDetailsButtonShown();
+		Assert.assertFalse("Call button is visible", getDialogPage()
+				.isCallButtonVisible());
+		Assert.assertFalse("Camera button is visible", getDialogPage()
+				.isCameraButtonVisible());
+		Assert.assertFalse("Sketch button is visible", getDialogPage()
+				.isOpenScetchButtonVisible());
+		Assert.assertFalse("Ping button is visible", getDialogPage()
+				.isPingButtonVisible());
+	}
 
 	/**
 	 * Verify Close button in options is shown

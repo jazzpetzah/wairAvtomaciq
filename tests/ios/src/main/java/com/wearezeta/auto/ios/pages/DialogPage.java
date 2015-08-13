@@ -174,8 +174,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean isPingButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.namePingButton));
+		return DriverUtils.isElementPresentAndDisplayed(this.getDriver(),
+				pingButton);
 	}
 
 	public void pressPingButton() {
