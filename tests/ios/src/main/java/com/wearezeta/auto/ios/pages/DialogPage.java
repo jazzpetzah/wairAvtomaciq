@@ -382,24 +382,29 @@ public class DialogPage extends IOSPage {
 	private final int TOP_BORDER_WIDTH = 40;
 
 	public IOSPage openConversationDetailsClick() throws Exception {
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				openConversationDetails)) {
+			openConversationDetails.click();
+		} else {
+			for (int i = 0; i < 3; i++) {
+				if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+						By.name(IOSLocators.namePlusButton))) {
+					plusButton.click();
+					openConversationDetails.click();
+				}
+				if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+						By.name(IOSLocators.nameAddContactToChatButton), 2)
+						|| DriverUtils
+								.waitUntilLocatorIsDisplayed(
+										this.getDriver(),
+										By.name(IOSLocators.nameOtherUserAddContactToChatButton),
+										2)) {
+					break;
+				} else {
+					swipeUp(1000);
+				}
+			}
 
-		for (int i = 0; i < 3; i++) {
-			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.namePlusButton))) {
-				plusButton.click();
-				openConversationDetails.click();
-			}
-			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.nameAddContactToChatButton), 2)
-					|| DriverUtils
-							.waitUntilLocatorIsDisplayed(
-									this.getDriver(),
-									By.name(IOSLocators.nameOtherUserAddContactToChatButton),
-									2)) {
-				break;
-			} else {
-				swipeUp(1000);
-			}
 		}
 
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());

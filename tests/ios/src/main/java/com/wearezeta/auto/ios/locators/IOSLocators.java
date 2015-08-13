@@ -302,11 +302,16 @@ public final class IOSLocators {
 	
 	public static final String xpathOtherProfilePagePendingLabel = "//UIAStaticText[contains(@name, 'Let’s connect')]";
 	
-	public static final String xpathOtherProfileCancelRequestButton = "//UIAStaticText[contains(@name, 'CANCEL REQUEST')]";
-	
 	public static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
 	
 	public static final String nameOtherProfilePageCloseButton = "OtherUserProfileCloseButton";
+	
+	public static final class OtherUserProfilePage {
+		public static final String xpathOtherProfileCancelRequestButton = "//UIAStaticText[contains(@name, 'CANCEL REQUEST')]/preceding-sibling::UIAButton[@name='OtherUserMetaControllerLeftButton']";
+		public static final String nameCancelRequestConfirmationLabel = "Cancel Request?";
+		public static final String xpathCancelRequestNoButton = "//UIAStaticText[@name='Cancel Request?']/following-sibling::UIAButton[@name='NO']";
+		public static final String xpathCancelRequestYesButton = "//UIAStaticText[@name='Cancel Request?']/following-sibling::UIAButton[@name='YES']";
+	}
 	 
 	///////////////////////
 	//Camera page locators
