@@ -117,8 +117,6 @@ public class CallPageSteps {
 	@When("^I see incoming calling message for contact (.*)$")
 	public void ISeeIncomingCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		// Assert.assertTrue(getIncomingCallPage().isUserCallingMessageShown(
-		// contact.toUpperCase()));
 		Assert.assertTrue(getIncomingCallPage().isCallingMessageVisible());
 	}
 
@@ -250,7 +248,7 @@ public class CallPageSteps {
 	public void ISeeAvatarsInTheGroupCallBar(int numberOfAvatars)
 			throws Throwable {
 		int actualNumberOfAvatars = getIncomingCallPage()
-				.isNumberOfGroupCallAvatarCorrect();
+				.getNumberOfGroupCallAvatar();
 		Assert.assertEquals(numberOfAvatars, actualNumberOfAvatars);
 	}
 

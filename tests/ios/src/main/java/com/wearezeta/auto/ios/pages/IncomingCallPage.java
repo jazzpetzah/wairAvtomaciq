@@ -95,7 +95,7 @@ public class IncomingCallPage extends CallPage {
 	
 	}
 	
-	public int isNumberOfGroupCallAvatarCorrect() throws Exception{
+	public int getNumberOfGroupCallAvatar() throws Exception{
 		int numberOfGroupCallAvatars = 0;
 		List<WebElement> groupCallAvatars = getDriver().findElementsByClassName(IOSLocators.IncomingCallPage.classNameUIACollectionCell);
 		for (WebElement avatar : groupCallAvatars) {
