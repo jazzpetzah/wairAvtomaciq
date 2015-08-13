@@ -117,4 +117,8 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 		return getAndroidPeoplePickerPage().waitUntilPYMKItemIsInvisible(name);
 	}
 
+	public void tapFirstPYMKItem() throws Exception {
+		getAndroidPeoplePickerPage().tapPYMKItem(1);
+	}
+
 }
