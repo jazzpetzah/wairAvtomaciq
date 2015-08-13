@@ -15,7 +15,8 @@ public class Instance {
 	private final Call currentCall;
 	private final BackendType backend;
 	private final InstanceType instanceType;
-	private String screenshot;
+	private final String screenshot;
+	private final String name;
 	private final long timeout;
 	private final long created;
 
@@ -26,7 +27,9 @@ public class Instance {
 			@JsonProperty("email") String email,
 			@JsonProperty("password") String password,
 			@JsonProperty("backend") BackendType backend,
+			@JsonProperty("screenshot") String screenshot,
 			@JsonProperty("instanceType") InstanceType instanceType,
+			@JsonProperty("name") String name,
 			@JsonProperty("timeout") long timeout,
 			@JsonProperty("created") long created) {
 		this.id = id;
@@ -35,7 +38,9 @@ public class Instance {
 		this.email = email;
 		this.password = password;
 		this.backend = backend;
+		this.screenshot = screenshot;
 		this.instanceType = instanceType;
+		this.name = name;
 		this.timeout = timeout;
 		this.created = created;
 	}
@@ -80,18 +85,18 @@ public class Instance {
 		return screenshot;
 	}
 
-	public void setScreenshot(String screenshot) {
-		this.screenshot = screenshot;
+	public String getName() {
+		return name;
 	}
 
 	@Override
 	public String toString() {
-		return "InstanceDTO{" + "id=" + id + ", instanceStatus="
-				+ instanceStatus + ", email=" + email + ", password="
-				+ password + ", currentCall=" + currentCall + ", backend="
-				+ backend + ", instanceType=" + instanceType
-				+ ", screenshot=<skipped>, timeout=" + timeout + ", created="
-				+ created + '}';
+		return "Instance{" + "id=" + id + ", instanceStatus=" + instanceStatus
+				+ ", email=" + email + ", password=" + password
+				+ ", currentCall=" + currentCall + ", backend=" + backend
+				+ ", instanceType=" + instanceType
+				+ ", screenshot=<suppressed>, name=" + name + ", timeout="
+				+ timeout + ", created=" + created + '}';
 	}
 
 }

@@ -26,11 +26,12 @@ import javax.ws.rs.core.MediaType;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.filter.LoggingFilter;
 
 public class CallResource {
 
 	private static final org.apache.log4j.Logger LOG = ZetaLogger
-			.getLog(CallingServiceClient.class.getSimpleName());
+			.getLog(CallingServiceClient.class.getName());
 
 	private static final int MAX_REQUEST_RETRY_COUNT = 2;
 
@@ -41,8 +42,12 @@ public class CallResource {
 			CallResource::verifyRequestResult, MAX_REQUEST_RETRY_COUNT);
 
 	public CallResource(String callingServiceAdress,
-			String callingServiceVersion) {
+			String callingServiceVersion, boolean trace) {
 		ClientConfig config = new ClientConfig();
+		if (trace) {
+			config.register(new LoggingFilter(java.util.logging.Logger
+					.getLogger(InstanceResource.class.getName()), true));
+		}
 		client = initClient(config);
 		this.callingServiceAdress = callingServiceAdress;
 		this.callingServiceVersion = callingServiceVersion;

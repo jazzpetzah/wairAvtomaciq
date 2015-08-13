@@ -123,6 +123,29 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
+	 * Verify whether the particular outgoing invitation message is visible in
+	 * conversation view
+	 * 
+	 * @step. ^I see the outgoing invitation message \"(.*)\" on [Cc]onversation
+	 *        view page$
+	 * 
+	 * @param expectedMessage
+	 *            the expected message text
+	 * @throws Exception
+	 */
+	@Then("^I see the outgoing invitation message \"(.*)\" on [Cc]onversation view page$")
+	public void ISeeOutgoungInvitationMessage(String expectedMessage)
+			throws Exception {
+		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(
+				String.format(
+						"The outgoing invitation message containing text '%s' is not visible in the conversation view",
+						expectedMessage), getConversationViewPage()
+						.waitForOutgoingInvitationMessage(expectedMessage));
+	}
+
+	/**
 	 * Tap the text input field in the conversation view to start typing
 	 * 
 	 * @step. ^I tap (?:the |\\s*)text input in (?:the |\\s*)[Cc]onversation
