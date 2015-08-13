@@ -101,6 +101,10 @@ public class DialogPage extends AndroidPage {
 	@FindBy(xpath = xpathConfirmOKButton)
 	private WebElement okButton;
 
+	private static final String idSketchImagePaintButton = "gtv__sketch_image_paint_button";
+	@FindBy(id = idSketchImagePaintButton)
+	private WebElement sketchImagePaintButton;
+
 	@FindBy(id = idDialogImages)
 	private WebElement image;
 
@@ -272,7 +276,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void tapSketchBtn() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), pingBtn);
+		assert DriverUtils.waitUntilElementClickable(getDriver(), sketchBtn);
 		sketchBtn.click();
 	}
 
@@ -430,6 +434,12 @@ public class DialogPage extends AndroidPage {
 		okButton.click();
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.xpath(xpathConfirmOKButton));
+	}
+
+	public void drawSketchOnImage() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				sketchImagePaintButton);
+		sketchImagePaintButton.click();
 	}
 
 	public void takePhoto() throws Exception {

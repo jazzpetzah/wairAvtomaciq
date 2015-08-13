@@ -213,14 +213,10 @@ Feature: Calling
     Then I see call overlay
     When <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    #alternative accept call method for webdriver backend
-    #And <Contact2> starts waiting instance using <CallBackend>
-    #And <Contact2> accepts next incoming call automatically
     Then I see calling overlay Big bar
     When <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    #And <Contact2> stops all waiting instances
     Examples: 
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
@@ -235,9 +231,6 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    #alternative accept call method for webdriver backend
-    #And <Contact2> starts waiting instance using <CallBackend>
-    #And <Contact2> accepts next incoming call automatically
     Then I see call overlay
     And I answer the call from the overlay bar
     Then I do not see join group call overlay
@@ -245,7 +238,6 @@ Feature: Calling
     When <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
-    #And <Contact2> stops all waiting instances
     Examples: 
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
@@ -489,4 +481,26 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
+
+  @id3170 @staging
+  Scenario Outline: Verify accepting group call in background
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email
+    Given I see Contact list with contacts
+    When I minimize the application
+    And <Contact1> calls <GroupChatName> using <CallBackend>
+    And <Contact2> calls <GroupChatName> using <CallBackend>
+    Then I see the call lock screen
+    And I see a call from <GroupChatName> in the call lock screen
+    And I answer the call from the lock screen
+    And I see calling overlay Big bar
+    And I see 3 users take part in call
+    And <Contact1> stops all calls to <GroupChatName>
+    And <Contact2> stops all calls to <GroupChatName>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallChat | autocall    |
 
