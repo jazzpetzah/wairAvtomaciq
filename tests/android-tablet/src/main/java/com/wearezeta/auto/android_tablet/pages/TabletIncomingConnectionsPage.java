@@ -56,4 +56,16 @@ public class TabletIncomingConnectionsPage extends AndroidTabletPage {
 				.format("Ignore request button for '%s' is not visible", name);
 		getDriver().findElement(locator).click();
 	}
+
+	public boolean waitUntilEmailVisible(String expectedEmail) throws Exception {
+		final By locator = By.xpath(xpathIncomingRequestEmailByValue
+				.apply(expectedEmail));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilNameVisible(String expectedName) throws Exception {
+		final By locator = By.xpath(xpathIncomingRequestContainerByName
+				.apply(expectedName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
 }
