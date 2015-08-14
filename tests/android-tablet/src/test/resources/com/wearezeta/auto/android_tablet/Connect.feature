@@ -274,45 +274,172 @@ Feature: Connect
       | user1Name | user2Name | user3Name | Hellow friend |
 
   @id2914 @staging
-  Scenario Outline: Dismiss PYMK by hide button (portrait)
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Contact2>
+  Scenario Outline: Dismiss PYMK item (portrait)
+    Given There are 4 users where <Name> is me
+    Given <Contact1> is connected to <Contact2>,<Contact3>
     Given Myself is connected to <Contact1>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I see the Conversations list with conversations
-    When I tap Search input
+    And I tap Search input
     And I see People Picker page
     And I hide keyboard
-    And I remember the name of the first PYMK item on People Picker page
+    When I remember the name of the first PYMK item on People Picker page
     And I do short swipe right the first PYMK item on People Picker page
     And I tap Hide button in the first PYMK item on People Picker page
     Then I do not see the previously remembered PYMK item on People Picker page
     When I close People Picker
     Then I do not see conversations list with the previously remembered PYMK item
+    And I tap Search input
+    And I see People Picker page
+    And I hide keyboard
+    When I remember the name of the first PYMK item on People Picker page
+    And I do long swipe right the first PYMK item on People Picker page
+    Then I do not see the previously remembered PYMK item on People Picker page
+    When I close People Picker
+    Then I do not see conversations list with the previously remembered PYMK item
 
     Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
 
   @id3116 @staging
-  Scenario Outline: Dismiss PYMK by hide button (landscape)
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Contact2>
+  Scenario Outline: Dismiss PYMK item (landscape)
+    Given There are 4 users where <Name> is me
+    Given <Contact1> is connected to <Contact2>,<Contact3>
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I see the Conversations list with conversations
-    When I tap Search input
+    And I tap Search input
     And I see People Picker page
     And I hide keyboard
-    And I remember the name of the first PYMK item on People Picker page
+    When I remember the name of the first PYMK item on People Picker page
     And I do short swipe right the first PYMK item on People Picker page
     And I tap Hide button in the first PYMK item on People Picker page
     Then I do not see the previously remembered PYMK item on People Picker page
     When I close People Picker
     Then I do not see conversations list with the previously remembered PYMK item
+    And I tap Search input
+    And I see People Picker page
+    And I hide keyboard
+    When I remember the name of the first PYMK item on People Picker page
+    And I do long swipe right the first PYMK item on People Picker page
+    Then I do not see the previously remembered PYMK item on People Picker page
+    When I close People Picker
+    Then I do not see conversations list with the previously remembered PYMK item
 
     Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+
+  @id2845 @staging
+  Scenario Outline: Ignore a connect request and reconnect later from search (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversation
+    And I see the conversation <WaitingMess> in my conversations list
+    When I tap the conversation <WaitingMess>
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact> on Incoming connections page
+    Then I do not see the conversation <Contact> in my conversations list
+    And I do not see the conversation <WaitingMess> in my conversations list
+    When I navigate back
+    And I wait until <Contact> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    And I see Outgoing Connection popover
+    And I see the name <Contact> on Incoming Connection popover
+    And I tap Accept button on Incoming Connection popover
+    And I do not see Incoming Connection popover
+    And I see People Picker page
+    And I close People Picker
+    Then I see the conversation <Contact> in my conversations list
+
+    Examples: 
+      | Name      | Contact   | WaitingMess      |
+      | user1Name | user2Name | 1 person waiting |
+
+  @id3127 @staging
+  Scenario Outline: Ignore a connect request and reconnect later from search (landscape)
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversation
+    And I see the conversation <WaitingMess> in my conversations list
+    When I tap the conversation <WaitingMess>
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact> on Incoming connections page
+    Then I do not see the conversation <Contact> in my conversations list
+    And I do not see the conversation <WaitingMess> in my conversations list
+    And I wait until <Contact> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    And I see Outgoing Connection popover
+    And I see the name <Contact> on Incoming Connection popover
+    And I tap Accept button on Incoming Connection popover
+    And I do not see Incoming Connection popover
+    And I see People Picker page
+    And I close People Picker
+    Then I see the conversation <Contact> in my conversations list
+
+    Examples: 
+      | Name      | Contact   | WaitingMess      |
+      | user1Name | user2Name | 1 person waiting |
+
+  @id2844 @staging
+  Scenario Outline: Inbox count increasing/decreasing correctly (portrait)
+    Given There are 4 users where <Name> is me
+    Given <Contact1> sent connection request to me
+    Given <Contact2> sent connection request to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversation
+    And I see the conversation <WaitingMess2> in my conversations list
+    When I tap the conversation <WaitingMess2>
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact2> on Incoming connections page
+    And I navigate back
+    Then I see the conversation <WaitingMess1> in my conversations list
+    When I tap the conversation <WaitingMess1>
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact1> on Incoming connections page
+    And I navigate back
+    Then I see the Conversations list with no conversations
+    When <Contact3> sent connection request to me
+    Then I see the conversation <WaitingMess1> in my conversations list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | WaitingMess2     | WaitingMess1     |
+      | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |
+
+  @id3118 @staging
+  Scenario Outline: Inbox count increasing/decreasing correctly (landscape)
+    Given There are 4 users where <Name> is me
+    Given <Contact1> sent connection request to me
+    Given <Contact2> sent connection request to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversation
+    And I see the conversation <WaitingMess2> in my conversations list
+    When I tap the conversation <WaitingMess2>
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact2> on Incoming connections page
+    Then I see the conversation <WaitingMess1> in my conversations list
+    When I tap the conversation <WaitingMess1>
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact1> on Incoming connections page
+    Then I see the Conversations list with no conversations
+    When <Contact3> sent connection request to me
+    Then I see the conversation <WaitingMess1> in my conversations list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | WaitingMess2     | WaitingMess1     |
+      | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |

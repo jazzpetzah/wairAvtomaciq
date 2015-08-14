@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.By.ByClassName;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -54,9 +53,9 @@ public class IncomingCallPage extends CallPage {
 	}
 
 	public boolean isCallingMessageVisible(String contact) throws Exception {
-		return getDriver().findElementByName(
+		return getDriver().findElementByXPath(
 				String.format(
-						IOSLocators.IncomingCallPage.nameCallingMessageUser,
+						IOSLocators.IncomingCallPage.xpathCallingMessage,
 						contact)).isDisplayed();
 	}
 

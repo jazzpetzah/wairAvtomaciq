@@ -497,8 +497,8 @@ Feature: Connect
       | Name      | Contact1 | Contact2 |
       | user1Name | vb003    | Dorothy  |
 
-  @staging @id3223 
-  Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [PORTRAIT]
+  @staging @id3223
+  Scenario Outline: Verify possibility of disconnecting from conversation list  [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
     Given I Sign in on tablet using my email
@@ -518,7 +518,7 @@ Feature: Connect
       | user1Name | user2Name |
 
   @staging @id3268
-  Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [LANDSCAPE]
+  Scenario Outline: Verify possibility of disconnecting from conversation list  [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
     Given I rotate UI to landscape

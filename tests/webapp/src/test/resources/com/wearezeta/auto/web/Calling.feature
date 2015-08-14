@@ -596,10 +596,17 @@ Feature: Calling
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the calling bar
     When I accept the incoming call
-    And I see the calling bar from user <Contact1>
+    Then I see the calling bar from user <Contact1>
     And I see the calling bar from user <Contact2>
     And I see the calling bar from user <Contact3>
     And I see the calling bar from user <Contact4>
+    And I wait for 20 seconds
+    And <Contact2> verifies to have 4 flows
+    And <Contact3> verifies to have 4 flows
+    And <Contact4> verifies to have 4 flows
+    And <Contact2> verifies that all flows have greater than 0 bytes
+    And <Contact3> verifies that all flows have greater than 0 bytes
+    And <Contact4> verifies that all flows have greater than 0 bytes
     When I end the call
     Then I do not see the calling bar
 

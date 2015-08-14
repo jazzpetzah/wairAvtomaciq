@@ -581,7 +581,7 @@ public final class IOSLocators {
 		
 		public static final String nameEndCallButton = "LeaveCallButton";
 				
-		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, '%s') and contains(@name, ' IS CALLING')]";
+		public static final String xpathCallingMessage = "//UIAStaticText[contains(@value, '%s') and contains(@value, ' IS CALLING')]";
 				
 		public static final String nameIgnoreCallButton = "IgnoreButton";
 		

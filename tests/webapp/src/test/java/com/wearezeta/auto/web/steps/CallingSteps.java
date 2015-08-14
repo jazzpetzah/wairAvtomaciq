@@ -1,10 +1,13 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
+import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class CallingSteps {
 
@@ -102,6 +105,37 @@ public class CallingSteps {
 	}
 
 	/**
+	 * Verify that the instance has X active flows
+	 * 
+	 * @param callee
+	 *            callee name/alias
+	 * @param numberOfFlows
+	 *            expected number of flows
+	 * @throws Exception
+	 */
+	@Then("(.*) verifies to have (\\d+) flows?$")
+	public void UserXVerifesHavingXFlows(String callee, int numberOfFlows)
+			throws Exception {
+		assertThat(commonCallingSteps.getFlows(callee), hasSize(numberOfFlows));
+	}
+
+	/**
+	 * Verify that each flow of the instance had incoming and outgoing bytes
+	 * running over the line
+	 * 
+	 * @param callee
+	 *            callee name/alias
+	 * @throws Exception
+	 */
+	@Then("(.*) verifies that all flows have greater than 0 bytes$")
+	public void UserXVerifesHavingXFlows(String callee) throws Exception {
+		for (Flow flow : commonCallingSteps.getFlows(callee)) {
+			assertThat("incoming bytes", flow.getBytesIn(), greaterThan(0L));
+			assertThat("outgoing bytes", flow.getBytesOut(), greaterThan(0L));
+		}
+	}
+
+    /**
 	 * Execute waiting instance as 'userAsNameAlias' user on calling server
 	 * using 'callingServiceBackend' tool
 	 *
