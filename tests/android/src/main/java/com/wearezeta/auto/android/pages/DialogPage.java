@@ -745,6 +745,12 @@ public class DialogPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
+	public boolean waitForPingMessageWithTextDisappears(String expectedText)
+			throws Exception {
+		final By locator = By.xpath(xpathPingMessageByText.apply(expectedText));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
 	public boolean isGroupChatDialogContainsNames(List<String> names)
 			throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
