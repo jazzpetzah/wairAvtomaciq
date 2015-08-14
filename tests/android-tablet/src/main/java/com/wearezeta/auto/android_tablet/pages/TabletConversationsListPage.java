@@ -143,4 +143,12 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 				convoName);
 	}
 
+	public void doShortSwipeDown() throws Exception {
+		getContactListPage().doShortSwipeDown();
+	}
+
+	public void doLongSwipeDown() throws Exception {
+		getContactListPage().doLongSwipeDown();
+	}
+
 }
