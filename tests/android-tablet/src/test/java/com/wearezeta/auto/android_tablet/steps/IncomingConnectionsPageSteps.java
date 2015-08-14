@@ -8,6 +8,7 @@ import com.wearezeta.auto.android_tablet.pages.TabletIncomingConnectionsPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class IncomingConnectionsPageSteps {
@@ -69,5 +70,44 @@ public class IncomingConnectionsPageSteps {
 			throw new NoSuchElementException(String.format(
 					"Action '%s' is not supported yet", actionStr));
 		}
+	}
+
+	/**
+	 * Verify whether the particular email is visible on Incoming connections
+	 * page
+	 * 
+	 * @step. ^I see email (.*) on Incoming connections page$
+	 * 
+	 * @param expectedEmail
+	 *            email or alias
+	 * @throws Exception
+	 */
+	@Then("^I see email (.*) on Incoming connections page$")
+	public void ISeeEmail(String expectedEmail) throws Exception {
+		expectedEmail = usrMgr.findUserByEmailOrEmailAlias(expectedEmail)
+				.getEmail();
+		Assert.assertTrue(String.format(
+				"The email '%s' is not visible on Incoming connections page",
+				expectedEmail), getIncomingConnectionsPage()
+				.waitUntilEmailVisible(expectedEmail));
+	}
+
+	/**
+	 * Verify whether the particular name is visible on Incoming connections
+	 * page
+	 * 
+	 * @step. ^I see name (.*) on Incoming connections page$
+	 * 
+	 * @param expectedName
+	 *            name or alias
+	 * @throws Exception
+	 */
+	@Then("^I see name (.*) on Incoming connections page$")
+	public void ISeeNamel(String expectedName) throws Exception {
+		expectedName = usrMgr.findUserByNameOrNameAlias(expectedName).getName();
+		Assert.assertTrue(String.format(
+				"The name '%s' is not visible on Incoming connections page",
+				expectedName), getIncomingConnectionsPage()
+				.waitUntilNameVisible(expectedName));
 	}
 }

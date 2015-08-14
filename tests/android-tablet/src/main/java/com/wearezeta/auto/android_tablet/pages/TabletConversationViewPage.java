@@ -148,4 +148,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 				.apply(expectedMessage));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
+
+	public boolean waitUntilPingMessageIsInvisible(String expectedMessage)
+			throws Exception {
+		return getDialogPage().waitForPingMessageWithTextDisappears(
+				expectedMessage);
+	}
 }

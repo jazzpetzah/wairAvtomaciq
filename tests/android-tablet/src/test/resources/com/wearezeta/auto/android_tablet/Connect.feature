@@ -86,13 +86,44 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id2852 @regression
-  Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation
+  @id2852 @staging
+  Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to Myself,<Contact2>
     Given <Contact1> has group chat <GroupChatName> with Myself,<Contact2>
     Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I do not see the conversation <Contact2> in my conversations list
+    And I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    And I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    And I see the participant avatar <Contact2> on Group popover
+    And I tap the participant avatar <Contact2> on Group popover
+    When I enter connection message "<Message>" on Group popover
+    And I tap Connect button on Group popover
+    Then I see Pending button on Group popover
+    When I tap Show Details button on conversation view page
+    Then I do not see the Group popover
+    And I see the conversation <Contact2> in my conversations list
+    And I tap the conversation <Contact2>
+    And I see the message "<Message>" in the conversation view
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName        | Message |
+      | user1Name | user2Name | user3Name | NonConnectedUserChat | Yo man! |
+
+  @id3119 @staging
+  Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to Myself,<Contact2>
+    Given <Contact1> has group chat <GroupChatName> with Myself,<Contact2>
+    Given I rotate UI to landscape
     Given I sign in using my email
     Given I see the Conversations list with conversations
     And I do not see the conversation <Contact2> in my conversations list
@@ -443,3 +474,37 @@ Feature: Connect
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | WaitingMess2     | WaitingMess1     |
       | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |
+
+  @id2869 @staging
+  Scenario Outline: I can see a new inbox for connection when receive new connection request (portrait)
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with no conversations
+    When <Contact> sent connection request to me
+    Then I see the conversation <WaitingMsg> in my conversations list
+    When I tap the conversation <WaitingMsg>
+    Then I see the Incoming connections page
+    And I see email <ContactEmail> on Incoming connections page
+    And I see name <Contact> on Incoming connections page
+
+    Examples: 
+      | Name      | Contact   | ContactEmail | WaitingMsg       |
+      | user1Name | user2Name | user2Email   | 1 person waiting |
+
+  @id3135 @staging
+  Scenario Outline: I can see a new inbox for connection when receive new connection request (landscape)
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with no conversations
+    When <Contact> sent connection request to me
+    Then I see the conversation <WaitingMsg> in my conversations list
+    When I tap the conversation <WaitingMsg>
+    Then I see the Incoming connections page
+    And I see email <ContactEmail> on Incoming connections page
+    And I see name <Contact> on Incoming connections page
+
+    Examples: 
+      | Name      | Contact   | ContactEmail | WaitingMsg       |
+      | user1Name | user2Name | user2Email   | 1 person waiting |
