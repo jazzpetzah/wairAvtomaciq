@@ -496,3 +496,43 @@ Feature: Connect
     Examples: 
       | Name      | Contact1 | Contact2 |
       | user1Name | vb003    | Dorothy  |
+
+  @staging @id3223
+  Scenario Outline: Verify possibility of disconnecting from conversation list  [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    And I open conversation details
+    And I click Cancel request button
+    Then I see Cancel request confirmation page
+    And I confirm Cancel request by click on Yes button
+    And I swipe right on the personal page
+    Then I dont see conversation <Contact> in contact list
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @staging @id3268
+  Scenario Outline: Verify possibility of disconnecting from conversation list  [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    And I open conversation details
+    And I click Cancel request button
+    Then I see Cancel request confirmation page
+    And I confirm Cancel request by click on Yes button
+    Then I dont see conversation <Contact> in contact list
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
