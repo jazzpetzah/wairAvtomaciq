@@ -443,3 +443,37 @@ Feature: Connect
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | WaitingMess2     | WaitingMess1     |
       | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |
+
+  @id2869 @staging
+  Scenario Outline: I can see a new inbox for connection when receive new connection request (portrait)
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with no conversations
+    When <Contact> sent connection request to me
+    Then I see the conversation <WaitingMsg> in my conversations list
+    When I tap the conversation <WaitingMsg>
+    Then I see the Incoming connections page
+    And I see email <ContactEmail> on Incoming connections page
+    And I see name <Contact> on Incoming connections page
+
+    Examples: 
+      | Name      | Contact   | ContactEmail | WaitingMsg       |
+      | user1Name | user2Name | user2Email   | 1 person waiting |
+
+  @id3135 @staging
+  Scenario Outline: I can see a new inbox for connection when receive new connection request (landscape)
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with no conversations
+    When <Contact> sent connection request to me
+    Then I see the conversation <WaitingMsg> in my conversations list
+    When I tap the conversation <WaitingMsg>
+    Then I see the Incoming connections page
+    And I see email <ContactEmail> on Incoming connections page
+    And I see name <Contact> on Incoming connections page
+
+    Examples: 
+      | Name      | Contact   | ContactEmail | WaitingMsg       |
+      | user1Name | user2Name | user2Email   | 1 person waiting |
