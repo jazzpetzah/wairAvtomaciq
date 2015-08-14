@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android_tablet.steps;
 
 import java.awt.image.BufferedImage;
+import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
@@ -331,17 +332,35 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().tapFirstPYMKItem();
 	}
 
+	private static enum SwipeType {
+		LONG, SHORT;
+	}
+
 	/**
-	 * Does short swipe right on the first PYMK item
+	 * Does short/long swipe right on the first PYMK item
 	 * 
-	 * @step. ^I do short swipe right the first PYMK item on [Pp]eople [Pp]icker
-	 *        page$
+	 * @step. ^I do (short|long) swipe right the first PYMK item on [Pp]eople
+	 *        [Pp]icker page$
+	 * @param swipeType
+	 *            see SwipeType enum for more details about possible values
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I do short swipe right the first PYMK item on [Pp]eople [Pp]icker page$")
-	public void IDoShortSwipeOnFirstPYMKItem() throws Exception {
-		getPeoplePickerPage().shortSwipeRightFirstPYMKItem();
+	@When("^I do (short|long) swipe right the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void IDoSwipeOnFirstPYMKItem(String swipeType) throws Exception {
+		final SwipeType swipeEnumType = SwipeType.valueOf(swipeType
+				.toUpperCase());
+		switch (swipeEnumType) {
+		case LONG:
+			getPeoplePickerPage().longSwipeRightFirstPYMKItem();
+			break;
+		case SHORT:
+			getPeoplePickerPage().shortSwipeRightFirstPYMKItem();
+			break;
+		default:
+			throw new NoSuchElementException(String.format(
+					"Swipe type '%s' is not supported", swipeEnumType.name()));
+		}
 	}
 
 	/**
