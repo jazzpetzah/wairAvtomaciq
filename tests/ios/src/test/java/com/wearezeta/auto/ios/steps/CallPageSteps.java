@@ -117,7 +117,7 @@ public class CallPageSteps {
 	@When("^I see incoming calling message for contact (.*)$")
 	public void ISeeIncomingCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(getIncomingCallPage().isCallingMessageVisible());
+		Assert.assertTrue(getIncomingCallPage().isCallingMessageVisible(contact.toUpperCase()));
 	}
 
 	/**

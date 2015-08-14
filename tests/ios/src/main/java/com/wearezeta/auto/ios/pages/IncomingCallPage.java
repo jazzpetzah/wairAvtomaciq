@@ -53,9 +53,9 @@ public class IncomingCallPage extends CallPage {
 	}
 
 	public boolean isCallingMessageVisible(String contact) throws Exception {
-		return getDriver().findElementByName(
+		return getDriver().findElementByXPath(
 				String.format(
-						IOSLocators.IncomingCallPage.nameCallingMessageUser,
+						IOSLocators.IncomingCallPage.xpathCallingMessage,
 						contact)).isDisplayed();
 	}
 
