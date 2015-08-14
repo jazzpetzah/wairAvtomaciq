@@ -32,6 +32,7 @@ public final class CommonCallingSteps2 {
 	public static final Logger LOG = ZetaLogger
 			.getLog(CommonCallingSteps2.class.getName());
 
+	private static final int INSTANCE_START_TIMEOUT_SECONDS = 120;
 	private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
 	private static CommonCallingSteps2 singleton = null;
 
@@ -244,10 +245,12 @@ public final class CommonCallingSteps2 {
 			});
 		}
 		try {
-			CompletableFuture.allOf(createTasks).get(1, TimeUnit.MINUTES);
+			CompletableFuture.allOf(createTasks).get(
+					INSTANCE_START_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 		} catch (TimeoutException e) {
-			LOG.error(String
-					.format("Could not start all waiting instances in time"), e);
+			LOG.error(String.format(
+					"Could not start all waiting instances in '%d' seconds",
+					INSTANCE_START_TIMEOUT_SECONDS), e);
 		}
 
 	}
