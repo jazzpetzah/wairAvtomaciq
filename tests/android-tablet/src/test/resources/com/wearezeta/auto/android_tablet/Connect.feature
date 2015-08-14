@@ -277,9 +277,6 @@ Feature: Connect
   Scenario Outline: Dismiss PYMK item (portrait)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,<Contact3>
-  Scenario Outline: Dismiss PYMK by hide button (portrait)
-    Given There are 3 users where <Name> is me
-    Given <Contact1> is connected to <Contact2>
     Given Myself is connected to <Contact1>
     Given I rotate UI to portrait
     Given I sign in using my email
@@ -307,7 +304,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name | user4Name |
 
   @id3116 @staging
-  Scenario Outline: Dismiss PYMK by hide button (landscape)
+  Scenario Outline: Dismiss PYMK item (landscape)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,<Contact3>
     Given Myself is connected to <Contact1>
