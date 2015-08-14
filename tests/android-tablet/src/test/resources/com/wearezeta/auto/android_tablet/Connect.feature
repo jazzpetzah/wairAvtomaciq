@@ -377,3 +377,53 @@ Feature: Connect
     Examples: 
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
+
+  @id2844 @staging
+  Scenario Outline: Inbox count increasing/decreasing correctly (portrait)
+    Given There are 4 users where <Name> is me
+    Given <Contact1> sent connection request to me
+    Given <Contact2> sent connection request to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversation
+    And I see the conversation <WaitingMess2> in my conversations list
+    When I tap the conversation <WaitingMess2>
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact2> on Incoming connections page
+    And I navigate back
+    Then I see the conversation <WaitingMess1> in my conversations list
+    When I tap the conversation <WaitingMess1>
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact1> on Incoming connections page
+    And I navigate back
+    Then I see the Conversations list with no conversations
+    When <Contact3> sent connection request to me
+    Then I see the conversation <WaitingMess1> in my conversations list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | WaitingMess2     | WaitingMess1     |
+      | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |
+
+  @id3118 @staging
+  Scenario Outline: Inbox count increasing/decreasing correctly (landscape)
+    Given There are 4 users where <Name> is me
+    Given <Contact1> sent connection request to me
+    Given <Contact2> sent connection request to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversation
+    And I see the conversation <WaitingMess2> in my conversations list
+    When I tap the conversation <WaitingMess2>
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact2> on Incoming connections page
+    Then I see the conversation <WaitingMess1> in my conversations list
+    When I tap the conversation <WaitingMess1>
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact1> on Incoming connections page
+    Then I see the Conversations list with no conversations
+    When <Contact3> sent connection request to me
+    Then I see the conversation <WaitingMess1> in my conversations list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | WaitingMess2     | WaitingMess1     |
+      | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |
