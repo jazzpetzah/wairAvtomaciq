@@ -8,6 +8,8 @@ import java.util.function.Function;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -327,5 +329,21 @@ public class PeoplePickerPage extends AndroidPage {
 		final By locator = By.xpath(xpathPYMKItemByIdx.apply(index));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "The first PYMK item is not visible";
 		getDriver().findElement(locator).click();
+	}
+
+	public void doShortSwipeDown() throws Exception {
+		final Point coords = content.getLocation();
+		final Dimension elementSize = content.getSize();
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height / 10, 500);
+	}
+
+	public void doLongSwipeDown() throws Exception {
+		final Point coords = content.getLocation();
+		final Dimension elementSize = content.getSize();
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height / 4 * 3, 2000);
 	}
 }

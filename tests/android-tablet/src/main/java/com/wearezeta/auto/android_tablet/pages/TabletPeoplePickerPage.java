@@ -133,4 +133,12 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 		getAndroidPeoplePickerPage().longSwipeRigthOnPYMKItem(1);
 	}
 
+	public void doShortSwipeDown() throws Exception {
+		getAndroidPeoplePickerPage().doShortSwipeDown();
+	}
+
+	public void doLongSwipeDown() throws Exception {
+		getAndroidPeoplePickerPage().doLongSwipeDown();
+	}
+
 }

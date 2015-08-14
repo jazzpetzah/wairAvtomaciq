@@ -82,11 +82,11 @@ Feature: Calling
     And I see calling overlay Big bar
     And <Contact> stops all calls to me
     Then I do not see calling overlay Big bar
-    And I see missed call notification near <Contact> conversation list item
+    And I see missed call notification near <Contact> conversations list item
     When I tap the conversation <Contact>
     Then I see missed call notification in the conversation view
     When I navigate back
-    Then I do not see missed call notification near <Contact> conversation list item
+    Then I do not see missed call notification near <Contact> conversations list item
 
     Examples: 
       | CallBackend | Name      | Contact   |
@@ -104,10 +104,10 @@ Feature: Calling
     And I see calling overlay Big bar
     And <Contact> stops all calls to me
     Then I do not see calling overlay Big bar
-    And I see missed call notification near <Contact> conversation list item
+    And I see missed call notification near <Contact> conversations list item
     When I tap the conversation <Contact>
     Then I see missed call notification in the conversation view
-    Then I do not see missed call notification near <Contact> conversation list item
+    Then I do not see missed call notification near <Contact> conversations list item
 
     Examples: 
       | CallBackend | Name      | Contact   |
