@@ -297,20 +297,34 @@ public class ConversationViewPageSteps {
 	/**
 	 * Verify whether ping message is visible in the current conversation view
 	 * 
-	 * @step. ^I see the [Pp]ing message \"<(.*)>\" in (?:the
+	 * @step. ^I (do not )?see the [Pp]ing message \"<(.*)>\" in (?:the
 	 *        |\\s*)[Cc]onversation view$
 	 * 
+	 * @param shouldNotBeVisible
+	 *            equals to null if "do not" part does not exist in the step
+	 *            signature
 	 * @param expectedMessage
 	 *            the text of expected ping message
 	 * @throws Exception
 	 */
-	@Then("^I see the [Pp]ing message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
-	public void ISeePingMessage(String expectedMessage) throws Exception {
-		Assert.assertTrue(
-				String.format(
-						"The expected ping message '%s' is not visible in the conversation view",
-						expectedMessage), getConversationViewPage()
-						.waitUntilPingMessageIsVisible(expectedMessage));
+	@Then("^I (do not )?see the [Pp]ing message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeePingMessage(String shouldNotBeVisible,
+			String expectedMessage) throws Exception {
+		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
+				FindBy.NAME_ALIAS);
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue(
+					String.format(
+							"The expected ping message '%s' is not visible in the conversation view",
+							expectedMessage), getConversationViewPage()
+							.waitUntilPingMessageIsVisible(expectedMessage));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"The ping message '%s' is still visible in the conversation view",
+							expectedMessage), getConversationViewPage()
+							.waitUntilPingMessageIsInvisible(expectedMessage));
+		}
 	}
 
 	/**

@@ -41,3 +41,45 @@
     Examples: 
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
+
+  @id2863 @staging
+  Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    When Contact <Contact1> ping conversation <GroupChatName>
+    Then I see the ping message "<PingMessage>" in the conversation view
+    When Contact <Contact1> hotping conversation <GroupChatName>
+    Then I see the ping message "<HotPingMessage>" in the conversation view
+    And I do not see the ping message "<PingMessage>" in the conversation view
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName  | PingMessage       | HotPingMessage         |
+      | user1Name | user2Name | user3Name | PingChat       | user2Name PINGED  | user2Name PINGED AGAIN |
+
+  @id3262 @staging
+  Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    When Contact <Contact1> ping conversation <GroupChatName>
+    Then I see the ping message "<PingMessage>" in the conversation view
+    When Contact <Contact1> hotping conversation <GroupChatName>
+    Then I see the ping message "<HotPingMessage>" in the conversation view
+    And I do not see the ping message "<PingMessage>" in the conversation view
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName  | PingMessage       | HotPingMessage         |
+      | user1Name | user2Name | user3Name | PingChat       | user2Name PINGED  | user2Name PINGED AGAIN |
