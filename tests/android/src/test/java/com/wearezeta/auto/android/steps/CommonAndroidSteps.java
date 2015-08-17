@@ -279,29 +279,23 @@ public class CommonAndroidSteps {
 	}
 
 	/**
-	 * Locks the device
+	 * Lock/unlock the device
 	 * 
-	 * @step. ^I lock the device$
+	 * @step. ^I (un)?lock the device$
 	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I lock the device$")
-	public void ILockTheDevice() throws Exception {
-		AndroidCommonUtils.lockScreen();
-	}
-
-	/**
-	 * Unlocks the device
-	 * 
-	 * @step. ^I unlock the device$
+	 * @param shouldUnlock
+	 *            equals to null is "un-" part does not exist
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I unlock the device$")
-	public void IUnlockTheDevice() throws Exception {
-		AndroidCommonUtils.unlockDevice();	
+	@When("^I (un)?lock the device$")
+	public void ILockUnlockTheDevice(String shouldUnlock) throws Exception {
+		if (shouldUnlock == null) {
+			AndroidCommonUtils.lockScreen();
+		} else {
+			AndroidCommonUtils.unlockDevice();
+		}
 	}
 
 	/**
