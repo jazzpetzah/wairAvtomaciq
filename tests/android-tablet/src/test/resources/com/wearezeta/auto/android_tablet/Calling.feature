@@ -113,7 +113,7 @@ Feature: Calling
       | CallBackend | Name      | Contact   |
       | autocall    | user1Name | user2Name |
 
-  @id3124 @staging
+  @id3124 @regression
   Scenario Outline: I can dismiss calling bar by swipe (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
