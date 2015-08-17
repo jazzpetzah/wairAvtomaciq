@@ -575,4 +575,13 @@ public class ConversationPage extends WebPage {
 			return false;
 		}
 	}
+
+	public void clickJoinCallBar() throws Exception {
+		final By locator = By
+				.xpath(WebAppLocators.ConversationPage.xpathJoinCallBar);
+		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Join call bar has not been shown after "
+				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
+		getDriver().findElement(locator).click();
+	}
 }

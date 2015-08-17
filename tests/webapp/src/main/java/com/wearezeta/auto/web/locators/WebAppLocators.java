@@ -265,6 +265,8 @@ public final class WebAppLocators {
 						+ "/div/div/div/span[contains(@class, 'cc-label-bold') and text()='%s']",
 						text, text);
 
+		public static String xpathJoinCallBar = "//div[contains(@class, 'join-menu') and contains(@class, 'on')]/*[contains(@class, 'join-menu-button')]";
+
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-check')]";
 
