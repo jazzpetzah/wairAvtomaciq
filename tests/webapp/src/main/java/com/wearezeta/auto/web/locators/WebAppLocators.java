@@ -8,7 +8,7 @@ public final class WebAppLocators {
 
 		public static final String xpathSuccessfullResult = "//div[@id='200']//p[contains(@class, 'title') and contains(.,'Account created')]";
 		public static final String xpathBtnOpenWebApp = "//div[contains(@class, 'success') and not(contains(@class, 'hide'))]"
-			+ "//*[contains(@class, 'btn-open-web') and contains(@class,'btn-success')]";
+				+ "//*[contains(@class, 'btn-open-web') and contains(@class,'btn-success')]";
 	}
 
 	public static final class LoginPage {
@@ -44,13 +44,13 @@ public final class WebAppLocators {
 		public static final String cssParentContactListItem = "div#conversation-list";
 
 		public static final String cssIncomingPendingConvoItem = cssParentContactListItem
-			+ " [data-uie-name=item-pending-requests]";
+				+ " [data-uie-name=item-pending-requests]";
 
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
 		public static final Function<String, String> xpathListItemRootWithControlsByName = name -> String
-			.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following-sibling::div[contains(@class, 'controls')]",
-				name);
+				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following-sibling::div[contains(@class, 'controls')]",
+						name);
 
 		public static final String cssArchiveButton = "[data-uie-name='do-archive']";
 
@@ -65,66 +65,66 @@ public final class WebAppLocators {
 		public static final String cssLeaveButton = "[data-uie-name='do-leave']";
 
 		public static final Function<String, String> xpathMuteIconByContactName = (
-			name) -> String.format(
+				name) -> String.format(
 				"//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/following::"
-				+ "*[@data-uie-name='status-silence']", name);
+						+ "*[@data-uie-name='status-silence']", name);
 
 		public static final Function<String, String> cssContactListEntryByName = (
-			name) -> String
-			.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s'], %s div[data-uie-name='item-call'][data-uie-value='%s']",
-				cssParentContactListItem, name,
-				cssParentContactListItem, name);
+				name) -> String
+				.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s'], %s div[data-uie-name='item-call'][data-uie-value='%s']",
+						cssParentContactListItem, name,
+						cssParentContactListItem, name);
 
 		public static final Function<String, String> cssOptionsButtonByContactName = (
-			name) -> String
-			.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s']+ div span[data-uie-name='go-options']",
-				cssParentContactListItem, name,
-				cssParentContactListItem, name);
+				name) -> String
+				.format("%s div[data-uie-name='item-conversation'][data-uie-value='%s']+ div span[data-uie-name='go-options']",
+						cssParentContactListItem, name,
+						cssParentContactListItem, name);
 
 		public static final Function<String, String> cssArchiveListEntryByName = (
-			name) -> String
-			.format("%s div[data-uie-name='item-conversation-archived'][data-uie-value='%s']",
-				cssParentContactListItem, name);
+				name) -> String
+				.format("%s div[data-uie-name='item-conversation-archived'][data-uie-value='%s']",
+						cssParentContactListItem, name);
 
 		public static final String cssSelfProfileAvatar = "[data-uie-name='go-self-profile']";
 
 		public static final String xpathOngoingCallListItem = "//div[@data-uie-name='item-call']";
 
 		public static final Function<String, String> xpathOngoingCallListItemWithConvName = (
-			name) -> String.format(
+				name) -> String.format(
 				"//div[@data-uie-name='item-call' and @data-uie-value='%s']",
 				name);
 
 		public static final String xpathContactListEntries = xpathParentContactListItem
-			+ "//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
+				+ "//*[@data-uie-name='item-conversation' or @data-uie-name='item-call']";
 		public static final Function<Integer, String> xpathContactListEntryByIndex = (
-			idx) -> String.format("(%s)[%s]", xpathContactListEntries, idx);
+				idx) -> String.format("(%s)[%s]", xpathContactListEntries, idx);
 		public static final String xpathArchivedContactListEntries = xpathParentContactListItem
-			+ "//*[@data-uie-name='item-conversation-archived']";
+				+ "//*[@data-uie-name='item-conversation-archived']";
 
 		// FIXME: bug in webapp -> @data-uie-value should belong to div
 		public static final Function<String, String> xpathArchivedContactListEntryByName = (
-			name) -> String
-			.format("%s//*[@data-uie-name='item-conversation-archived' and ./ancestor-or-self::*[@data-uie-value='%s']]",
-				xpathParentContactListItem, name);
+				name) -> String
+				.format("%s//*[@data-uie-name='item-conversation-archived' and ./ancestor-or-self::*[@data-uie-value='%s']]",
+						xpathParentContactListItem, name);
 
 		public static final String cssOpenPeoplePickerButton = "[data-uie-name=enter-search]";
 
 		public static final Function<String, String> xpathMissedCallNotificationByContactName = (
-			name) -> String
-			.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[local-name() = 'svg' and @data-uie-name='status-unread']",
-				name);
+				name) -> String
+				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[local-name() = 'svg' and @data-uie-name='status-unread']",
+						name);
 
 		public static final Function<String, String> xpathPingIconByContactName = (
-			name) -> String
-			.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
-				+ "*//*[@data-uie-name='status-unread' and contains(@class, 'icon-ping')]",
-				name);
+				name) -> String
+				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
+						+ "*//*[@data-uie-name='status-unread' and contains(@class, 'icon-ping')]",
+						name);
 
 		public static final Function<String, String> xpathUnreadDotByContactName = (
-			name) -> String
-			.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/..//*[@data-uie-name='status-unread']",
-				name);
+				name) -> String
+				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/..//*[@data-uie-name='status-unread']",
+						name);
 
 		// leave warning
 		public static final String cssLeaveModal = ".modal-leave";
@@ -165,7 +165,7 @@ public final class WebAppLocators {
 		public static final String xpathGearMenuRoot = "//div[@id='setting-bubble' and contains(@class, 'bubble-show')]";
 
 		public static final Function<String, String> xpathGearMenuItemByName = (
-			name) -> String.format("%s//li[text()='%s']",
+				name) -> String.format("%s//li[text()='%s']",
 				xpathGearMenuRoot, name);
 
 		public static final String xpathSelfUserName = "//*[@data-uie-name='enter-name']/span";
@@ -177,14 +177,14 @@ public final class WebAppLocators {
 		private static final String xpathAccentColorPicker = "//*[@data-uie-name='enter-accent-color']";
 
 		public static final String xpathAccentColorPickerChildren = xpathAccentColorPicker
-			+ "/div";
+				+ "/div";
 
 		public static final Function<Integer, String> xpathAccentColorDivById = (
-			id) -> String.format("%s[%s]", xpathAccentColorPickerChildren,
+				id) -> String.format("%s[%s]", xpathAccentColorPickerChildren,
 				id);
 
 		public static final String xpathCurrentAccentColorCircleDiv = xpathAccentColorPicker
-			+ "/div[contains(@class, 'selected')]/div[contains(@class,'circle')]";
+				+ "/div[contains(@class, 'selected')]/div[contains(@class,'circle')]";
 
 		public static final String xpathNameSelfUserMail = "//*[@data-uie-name='enter-email']";
 
@@ -210,10 +210,10 @@ public final class WebAppLocators {
 		public static final String cssSecondLastMessage = "[data-uie-name='item-message']:nth-last-child(2)";
 
 		public static final String cssLastTextMessage = cssLastMessage
-			+ " .text-inner";
+				+ " .text-inner";
 
 		public static final String cssSecondLastTextMessage = cssSecondLastMessage
-			+ " .text-inner";
+				+ " .text-inner";
 
 		public static final String cssFirstAction = cssMessage + " .action";
 
@@ -227,15 +227,15 @@ public final class WebAppLocators {
 
 		// special message identifier
 		public static final Function<String, String> xpathMessageEntryByText = text -> String
-			.format("//*[@data-uie-name='item-message']//div[contains(@class, 'text') and text()='%s']",
-				text);
+				.format("//*[@data-uie-name='item-message']//div[contains(@class, 'text') and text()='%s']",
+						text);
 
 		public static final Function<String, String> textMessageByText = text -> String
-			.format("//*[@data-uie-name='item-message']//*[text()='%s']",
-				text);
+				.format("//*[@data-uie-name='item-message']//*[text()='%s']",
+						text);
 
 		public static final Function<String, String> xpathEmbeddedYoutubeVideoById = text -> String
-			.format("//iframe[contains(@src, '%s')]", text);
+				.format("//iframe[contains(@src, '%s')]", text);
 
 		// input area (text input + buttons)
 		// This is needed for IE workaround
@@ -259,22 +259,22 @@ public final class WebAppLocators {
 		public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
-			.format(xpathCallingBarRoot
-				+ "/div/div/div/div/div[contains(@class, 'cc-avatar-label') and text()='%s']|"
-				+ xpathCallingBarRoot
-				+ "/div/div/div/span[contains(@class, 'cc-label-bold') and text()='%s']",
-				text, text);
+				.format(xpathCallingBarRoot
+						+ "/div/div/div/div/div[contains(@class, 'cc-avatar-label') and text()='%s']|"
+						+ xpathCallingBarRoot
+						+ "/div/div/div/span[contains(@class, 'cc-label-bold') and text()='%s']",
+						text, text);
 
 		public static String xpathJoinCallBar = "//div[contains(@class, 'join-menu') and contains(@class, 'on')]/*[contains(@class, 'join-menu-button')]";
 
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
-			+ "//*[contains(@class, 'icon-check')]";
+				+ "//*[contains(@class, 'icon-check')]";
 
 		public static String xpathEndCallButton = xpathCallingBarRoot
-			+ "//*[contains(@class, 'icon-close')]";
+				+ "//*[contains(@class, 'icon-close')]";
 
 		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot
-			+ "//*[contains(@class, 'icon-minus')]";
+				+ "//*[contains(@class, 'icon-minus')]";
 
 		// image fullscreen
 		public static final String cssModalDialog = ".modal-show";
@@ -293,21 +293,21 @@ public final class WebAppLocators {
 		public static final String xpathRequestMessagePartial = "/following-sibling::div[contains(@class, 'message')]";
 
 		public static final Function<String, String> xpathRequestByName = name -> String
-			.format("//div[contains(@class, 'connect-name') and span[text()='%s']]",
-				name);
+				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]",
+						name);
 
 		public static final Function<String, String> xpathAcceptRequestButtonByName = name -> String
-			.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='accept']",
-				name);
+				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='accept']",
+						name);
 
 		public static final Function<String, String> xpathIgnoreReqestButtonByName = name -> String
-			.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='ignore']",
-				name);
+				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='ignore']",
+						name);
 
 		public static final String xpathAllConnectionRequests = "//div[contains(@class, 'connect-request')";
 
 		public static final Function<String, String> cssRequestAvatarByUserId = id -> String
-			.format(".connect-request user-avatar[user-id='%s']", id);
+				.format(".connect-request user-avatar[user-id='%s']", id);
 	}
 
 	public static final class PeoplePickerPage {
@@ -319,43 +319,43 @@ public final class WebAppLocators {
 		public static final String xpathNameCreateConversationButton = "//*[@data-uie-name='do-add-create']";
 
 		public static final Function<String, String> xpathSearchResultByName = (
-			name) -> String.format(
+				name) -> String.format(
 				"%s//*[@data-uie-name='item-user' and .//*[text()='%s']]",
 				xpathRoot, name);
 
 		public static final Function<String, String> xpathSearchResultGroupByName = (
-			name) -> String.format(
+				name) -> String.format(
 				"%s//*[@data-uie-name='item-group' and .//*[text()='%s']]",
 				xpathRoot, name);
 
 		public static final String cssCloseSearchButton = ".search-header span[data-uie-name='do-close']";
 
 		public static final Function<String, String> cssDismissIconByName = (
-			name) -> String.format(
+				name) -> String.format(
 				"div[data-uie-value='%s'] span.icon-dismiss", name);
 
 		public static final Function<String, String> cssAddIconByName = (name) -> String
-			.format("div[data-uie-value='%s'] span.icon-add", name);
+				.format("div[data-uie-value='%s'] span.icon-add", name);
 
 		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 
 		public static final String xpathSendInvitationButton = xpathRoot
-			+ "//*[@id='invite-button']";
+				+ "//*[@id='invite-button']";
 
 		public static final Function<String, String> xpathSearchPendingResultByName = (
-			name) -> String
-			.format("%s//*[@data-uie-name='item-user' and .//*[text()='%s'] and .//div[contains(@class,'checkmark icon-check')]]",
-				xpathRoot, name);
+				name) -> String
+				.format("%s//*[@data-uie-name='item-user' and .//*[text()='%s'] and .//div[contains(@class,'checkmark icon-check')]]",
+						xpathRoot, name);
 
 		public static final String xpathTopPeople = "//*[@data-uie-name='status-top-people']";
 
 		public static final Function<String, String> cssTopPeopleListByName = (
-			name) -> String
-			.format(".people-picker-list-top-conversations [data-uie-value='%s'] user-avatar",
-				name);
+				name) -> String
+				.format(".people-picker-list-top-conversations [data-uie-value='%s'] user-avatar",
+						name);
 
 		public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"
-			+ "//*[@data-uie-name='item-user' and .//*[contains(@class,'selected')]]";
+				+ "//*[@data-uie-name='item-user' and .//*[contains(@class,'selected')]]";
 
 		public static final String cssSearchField = "[data-uie-name='enter-users']";
 	}
@@ -368,13 +368,13 @@ public final class WebAppLocators {
 		public static final String cssRootForm = "#form-create";
 
 		public static final String cssNameFiled = cssRootForm
-			+ " [data-uie-name=enter-name]";
+				+ " [data-uie-name=enter-name]";
 
 		public static final String cssEmailFiled = cssRootForm
-			+ " [data-uie-name=enter-email]";
+				+ " [data-uie-name=enter-email]";
 
 		public static final String cssPasswordFiled = cssRootForm
-			+ " [data-uie-name=enter-password]";
+				+ " [data-uie-name=enter-password]";
 
 		public static final String idCreateAccountButton = "wire-create";
 
@@ -388,18 +388,18 @@ public final class WebAppLocators {
 		public static final String xpathRootDiv = "//div[@id='self-upload']";
 
 		public static final String xpathSelectPictureButton = xpathRootDiv
-			+ "//*[@data-uie-name='do-select-picture']/following-sibling::span";
+				+ "//*[@data-uie-name='do-select-picture']/following-sibling::span";
 
 		public static final String cssSendPictureInput = "div#self-upload input[data-uie-name=do-select-picture]";
 
 		public static final String xpathConfirmPictureSelectionButton = xpathRootDiv
-			+ "//*[@data-uie-name='do-set-picture']";
+				+ "//*[@data-uie-name='do-set-picture']";
 
 		public static final String xpathNextCarouselImageBtn = xpathRootDiv
-			+ "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-right')]";
+				+ "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-right')]";
 
 		public static final String xpathPreviousCarouselImageBtn = xpathRootDiv
-			+ "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-left')]";
+				+ "//div[contains(@class, 'carousel-arrows')]//span[contains(@class, 'carousel-arrow-left')]";
 	}
 
 	public static final class ContactsUploadPage {
@@ -407,13 +407,13 @@ public final class WebAppLocators {
 		public static final String xpathRootDiv = "//div[@id='self-upload']";
 
 		public static final String xpathCloseButton = xpathRootDiv
-			+ "//*[@data-uie-name='do-close']";
+				+ "//*[@data-uie-name='do-close']";
 
 		public static final String xpathShareContactsButton = xpathRootDiv
-			+ "//*[@data-uie-name='do-google-import']";
+				+ "//*[@data-uie-name='do-google-import']";
 
 		public static final String xpathShowSearchButton = xpathRootDiv
-			+ "//*[@data-uie-name='go-search']";
+				+ "//*[@data-uie-name='go-search']";
 	}
 
 	public static final class Common {
@@ -430,10 +430,10 @@ public final class WebAppLocators {
 		private static final String xpathRootDiv = "//div[@id='self-upload']";
 
 		public static final String xpathSelectPictureButton = xpathRootDiv
-			+ "//*[@data-uie-name='do-select-picture']/following-sibling::span";
+				+ "//*[@data-uie-name='do-select-picture']/following-sibling::span";
 
 		public static final String xpathConfirmPictureSelectionButton = xpathRootDiv
-			+ "//*[@data-uie-name='do-set-picture']";
+				+ "//*[@data-uie-name='do-set-picture']";
 
 		public static String cssDropZone = "#self-upload .self-upload-center";
 	}
@@ -446,37 +446,37 @@ public final class WebAppLocators {
 		private static final String cssWarningModalRootDiv = "div#modals";
 
 		public static final String cssMissingWebRTCSupportWarningBar = cssWarningBarRootDiv
-			+ " .warning";
+				+ " .warning";
 
 		public static final String cssMissingWebRTCSupportWarningBarClose = cssWarningBarRootDiv
-			+ " .warning-bar-close";
+				+ " .warning-bar-close";
 
 		public static final String cssAnotherCallWarningModal = cssWarningModalRootDiv
-			+ " .modal-call-second.modal-show";
+				+ " .modal-call-second.modal-show";
 
 		public static final String cssAnotherCallWarningModalClose = cssAnotherCallWarningModal
-			+ " .icon-close";
+				+ " .icon-close";
 
 		public static final String cssFullCallWarningModal = cssWarningModalRootDiv
-			+ " .modal-call-voice-channel-full.modal-show";
+				+ " .modal-call-voice-channel-full.modal-show";
 
 		public static final String cssFullCallWarningModalClose = cssFullCallWarningModal
-			+ " .icon-close";
+				+ " .icon-close";
 
 		public static final Function<String, String> xpathMissingWebRTCSupportWarningBarLinkByCaption = (
-			name) -> String
-			.format("%s//div[contains(@class, 'warning-bar-message')]//a[text()='%s']",
-				xpathWarningBarRootDiv, name);
+				name) -> String
+				.format("%s//div[contains(@class, 'warning-bar-message')]//a[text()='%s']",
+						xpathWarningBarRootDiv, name);
 
 		public static final Function<String, String> xpathAnotherCallWarningModalButtonByCaption = (
-			name) -> String
-			.format("%s//div[contains(@class, 'modal-call-second') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
-				xpathWarningModalRootDiv, name);
+				name) -> String
+				.format("%s//div[contains(@class, 'modal-call-second') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
+						xpathWarningModalRootDiv, name);
 
 		public static final Function<String, String> xpathFullCallWarningModalButtonByCaption = (
-			name) -> String
-			.format("%s//div[contains(@class, 'modal-call-voice-channel-full') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
-				xpathWarningModalRootDiv, name);
+				name) -> String
+				.format("%s//div[contains(@class, 'modal-call-voice-channel-full') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
+						xpathWarningModalRootDiv, name);
 	}
 
 	public static final class PhoneNumberVerificationPage {

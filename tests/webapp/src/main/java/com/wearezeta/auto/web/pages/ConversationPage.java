@@ -40,7 +40,7 @@ public class ConversationPage extends WebPage {
 	private static final int TIMEOUT_IMAGE_MESSAGE_UPLOAD = 40; // seconds
 
 	private static final Logger log = ZetaLogger.getLog(ConversationPage.class
-		.getSimpleName());
+			.getSimpleName());
 
 	private static final String TOOLTIP_PEOPLE = "People";
 
@@ -93,18 +93,18 @@ public class ConversationPage extends WebPage {
 	private WebElement blackBorder;
 
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
-		throws Exception {
+			throws Exception {
 		super(lazyDriver);
 	}
 
 	public void writeNewMessage(String message) throws Exception {
 		if (WebAppExecutionContext.getBrowser()
-			.equals(Browser.InternetExplorer)) {
+				.equals(Browser.InternetExplorer)) {
 			// IE11 has a bug that sends the form when pressing SHIFT+ENTER
 			message = message
-				.replace(Keys.chord(Keys.SHIFT, Keys.ENTER), "\\n");
+					.replace(Keys.chord(Keys.SHIFT, Keys.ENTER), "\\n");
 			String addMessageToInput = "var a=arguments[0];a.value=a.value+'"
-				+ message + "';";
+					+ message + "';";
 			JavascriptExecutor js = (JavascriptExecutor) getDriver();
 			js.executeScript(addMessageToInput, conversationInput);
 			// since we did not press any keys, we fake input by sending a space
@@ -121,28 +121,28 @@ public class ConversationPage extends WebPage {
 
 	public String getLastActionMessage() throws Exception {
 		final By locator = By
-			.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
+				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
 		final List<WebElement> actionElements = this.getDriver().findElements(
-			locator);
+				locator);
 		return actionElements.get(actionElements.size() - 1).getText();
 	}
 
 	public boolean isActionMessageSent(final Set<String> parts)
-		throws Exception {
+			throws Exception {
 		final By locator = By
-			.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
+				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
 		assert DriverUtils.waitUntilLocatorAppears(this.getDriver(), locator);
 		final List<WebElement> actionMessages = this.getDriver().findElements(
-			locator);
+				locator);
 		// Get the most recent action message only
 		final String actionMessageInUI = actionMessages.get(
-			actionMessages.size() - 1).getText();
+				actionMessages.size() - 1).getText();
 		for (String part : parts) {
 			if (!actionMessageInUI.toUpperCase().contains(part.toUpperCase())) {
 				log.error(String
-					.format("'%s' substring has not been found in '%s' action message",
-						part, actionMessageInUI));
+						.format("'%s' substring has not been found in '%s' action message",
+								part, actionMessageInUI));
 				return false;
 			}
 		}
@@ -163,10 +163,10 @@ public class ConversationPage extends WebPage {
 
 	public boolean isMessageSent(String message) throws Exception {
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.xpathMessageEntryByText
-				.apply(message));
+				.xpath(WebAppLocators.ConversationPage.xpathMessageEntryByText
+						.apply(message));
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			locator, 5);
+				locator, 5);
 	}
 
 	public boolean isYoutubeVideoEmbedded(String url) throws Exception {
@@ -177,16 +177,16 @@ public class ConversationPage extends WebPage {
 		final String id = matcher.group();
 
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById
-				.apply(id));
+				.xpath(WebAppLocators.ConversationPage.xpathEmbeddedYoutubeVideoById
+						.apply(id));
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			locator, 5);
+				locator, 5);
 	}
 
 	public PeoplePopoverContainer clickPeopleButton(boolean isGroup)
-		throws Exception {
+			throws Exception {
 		DriverUtils.waitUntilElementClickable(this.getDriver(),
-			showParticipants);
+				showParticipants);
 		showParticipants.click();
 		if (isGroup) {
 			return new GroupPopoverContainer(this.getLazyDriver());
@@ -202,65 +202,65 @@ public class ConversationPage extends WebPage {
 
 	public boolean isPeopleButtonToolTipCorrect() {
 		return TOOLTIP_PEOPLE.equals(showParticipants
-			.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
+				.getAttribute(TITLE_ATTRIBUTE_LOCATOR));
 	}
 
 	public void sendPicture(String pictureName) throws Exception {
 		final String picturePath = WebCommonUtils
-			.getFullPicturePath(pictureName);
+				.getFullPicturePath(pictureName);
 		DriverUtils.addClass(getDriver(), conversation, "hover");
 		final String showPathInputJScript = "$(\""
-			+ WebAppLocators.ConversationPage.cssSendImageInput
-			+ "\").css({'left': -200});";
+				+ WebAppLocators.ConversationPage.cssSendImageInput
+				+ "\").css({'left': -200});";
 		this.getDriver().executeScript(showPathInputJScript);
 		assert DriverUtils
-			.waitUntilLocatorIsDisplayed(
-				this.getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput));
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssSendImageInput));
 		if (WebAppExecutionContext.getBrowser() == Browser.Safari) {
 			WebCommonUtils.sendPictureInSafari(picturePath, this.getDriver()
-				.getNodeIp());
+					.getNodeIp());
 		} else {
 			imagePathInput.sendKeys(picturePath);
 		}
 	}
 
 	public double getOverlapScoreOfLastImage(String pictureName)
-		throws Exception {
+			throws Exception {
 		final String picturePath = WebCommonUtils
-			.getFullPicturePath(pictureName);
+				.getFullPicturePath(pictureName);
 		if (!isImageMessageFound()) {
 			return 0.0;
 		}
 		// comparison of the original and sent pictures
 		BufferedImage actualImage = CommonUtils.getElementScreenshot(
-			lastImageEntry, this.getDriver()).orElseThrow(
+				lastImageEntry, this.getDriver()).orElseThrow(
 				IllegalStateException::new);
 		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
 		return ImageUtil.getOverlapScore(actualImage, expectedImage,
-			ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 	}
 
 	public double getOverlapScoreOfFullscreenImage(String pictureName)
-		throws Exception {
+			throws Exception {
 		final String picturePath = WebCommonUtils
-			.getFullPicturePath(pictureName);
+				.getFullPicturePath(pictureName);
 		if (!isImageMessageFound()) {
 			return 0.0;
 		}
 		// comparison of the fullscreen image and sent picture
 		BufferedImage actualImage = CommonUtils.getElementScreenshot(
-			fullscreenImage, this.getDriver()).orElseThrow(
+				fullscreenImage, this.getDriver()).orElseThrow(
 				IllegalStateException::new);
 		BufferedImage expectedImage = ImageUtil.readImageFromFile(picturePath);
 		return ImageUtil.getOverlapScore(actualImage, expectedImage,
-			ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
 	}
 
 	public boolean isImageMessageFound() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
-			TIMEOUT_IMAGE_MESSAGE_UPLOAD);
+				By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
+				TIMEOUT_IMAGE_MESSAGE_UPLOAD);
 	}
 
 	public int getNumberOfImagesInCurrentConversation() {
@@ -269,17 +269,17 @@ public class ConversationPage extends WebPage {
 
 	public void clickPingButton() throws Exception {
 		if (WebAppExecutionContext.getBrowser()
-			.isSupportingNativeMouseActions()) {
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
 		} else {
 			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		final By locator = By
-			.cssSelector(WebAppLocators.ConversationPage.cssPingButton);
+				.cssSelector(WebAppLocators.ConversationPage.cssPingButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			locator, 2) : "Ping button has not been shown after 2 seconds";
+				locator, 2) : "Ping button has not been shown after 2 seconds";
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-			pingButton) : "Ping button has to be clickable";
+				pingButton) : "Ping button has to be clickable";
 		pingButton.click();
 	}
 
@@ -287,44 +287,44 @@ public class ConversationPage extends WebPage {
 
 	public boolean isPingMessageVisible(String message) throws Exception {
 		final By locator = By
-			.cssSelector(WebAppLocators.ConversationPage.cssPingMessage);
+				.cssSelector(WebAppLocators.ConversationPage.cssPingMessage);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			locator, PING_MESSAGE_TIMEOUT) : "Ping message has not been shown within "
-			+ PING_MESSAGE_TIMEOUT + " second(s) timeout";
+				locator, PING_MESSAGE_TIMEOUT) : "Ping message has not been shown within "
+				+ PING_MESSAGE_TIMEOUT + " second(s) timeout";
 		return pingMessage.getText().toLowerCase()
-			.contains(message.toLowerCase());
+				.contains(message.toLowerCase());
 	}
 
 	public int numberOfPingMessagesVisible() throws Exception {
 		return getDriver().findElements(
-			By.cssSelector(WebAppLocators.ConversationPage.cssPingMessage))
-			.size();
+				By.cssSelector(WebAppLocators.ConversationPage.cssPingMessage))
+				.size();
 	}
 
 	public boolean isCallButtonVisible() throws Exception {
 		if (WebAppExecutionContext.getBrowser()
-			.isSupportingNativeMouseActions()) {
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
 		} else {
 			// safari workaround
 			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
-			5);
+				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
+				5);
 	}
 
 	public void clickCallButton() throws Exception {
 		if (WebAppExecutionContext.getBrowser()
-			.isSupportingNativeMouseActions()) {
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
 		} else {
 			// safari workaround
 			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
-			5);
+				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
+				5);
 		callButton.click();
 	}
 
@@ -332,20 +332,20 @@ public class ConversationPage extends WebPage {
 
 	public boolean isTextMessageVisible(String message) throws Exception {
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.textMessageByText
-				.apply(message));
+				.xpath(WebAppLocators.ConversationPage.textMessageByText
+						.apply(message));
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			locator, TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
+				locator, TEXT_MESSAGE_VISIBILITY_TIMEOUT_SECONDS);
 	}
 
 	private static final int MISSED_CALL_MSG_TIMOEUT = 15;
 
 	public String getMissedCallMessage() throws Exception {
 		final By locator = By
-			.cssSelector(WebAppLocators.ConversationPage.cssLastAction);
+				.cssSelector(WebAppLocators.ConversationPage.cssLastAction);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			locator, MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
-			+ MISSED_CALL_MSG_TIMOEUT + " second(s) timeout";
+				locator, MISSED_CALL_MSG_TIMOEUT) : "Missed call message is not visible after "
+				+ MISSED_CALL_MSG_TIMOEUT + " second(s) timeout";
 		return getDriver().findElement(locator).getText();
 	}
 
@@ -353,97 +353,97 @@ public class ConversationPage extends WebPage {
 
 	public void waitForCallingBarToBeDisplayed() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
-			MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been shown within "
-			+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
+				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
+				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been shown within "
+				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
 	}
 
 	public void waitForCallingBarToBeDisplayedWithName(String name)
-		throws Exception {
+			throws Exception {
 		assert DriverUtils
-			.waitUntilLocatorIsDisplayed(
-				this.getDriver(),
-				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRootByName
-					.apply(name)),
-				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar with name "
-			+ name
-			+ " has not been shown within "
-			+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRootByName
+								.apply(name)),
+						MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar with name "
+				+ name
+				+ " has not been shown within "
+				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
 	}
 
 	public void clickAcceptCallButton() throws Exception {
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.xpathAcceptCallButton);
+				.xpath(WebAppLocators.ConversationPage.xpathAcceptCallButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Accept call button has not been shown after "
-			+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
+				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Accept call button has not been shown after "
+				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
 		getDriver().findElement(locator).click();
 	}
 
 	public void clickEndCallButton() throws Exception {
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.xpathEndCallButton);
+				.xpath(WebAppLocators.ConversationPage.xpathEndCallButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "End call button has not been shown after "
-			+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
+				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "End call button has not been shown after "
+				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
 		getDriver().findElement(locator).click();
 	}
 
 	public void clickSilenceCallButton() throws Exception {
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.xpathSilenceIncomingCallButton);
+				.xpath(WebAppLocators.ConversationPage.xpathSilenceIncomingCallButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Silence call button has not been shown after "
-			+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
+				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Silence call button has not been shown after "
+				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
 		getDriver().findElement(locator).click();
 	}
 
 	public void verifyCallingBarIsNotVisible() throws Exception {
 		assert DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-			By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
-			MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been hidden within "
-			+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
+				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
+				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been hidden within "
+				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
 	}
 
 	public String getLastTextMessage() throws Exception {
 		assert DriverUtils
-			.waitUntilLocatorIsDisplayed(
-				getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
 		return lastTextMessage.getText();
 	}
 
 	public String getSecondLastTextMessage() throws Exception {
 		assert DriverUtils
-			.waitUntilLocatorIsDisplayed(
-				getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastTextMessage));
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssSecondLastTextMessage));
 		return secondLastTextMessage.getText();
 	}
 
 	public void clickOnPicture() throws Exception {
 		assert DriverUtils
-			.waitUntilLocatorIsDisplayed(
-				getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries));
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssImageEntries));
 		lastPicture.click();
 	}
 
 	public boolean isPictureInModalDialog() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
+				By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
 	}
 
 	public boolean isPictureInFullscreen() throws Exception {
 		return DriverUtils
-			.waitUntilLocatorIsDisplayed(
-				this.getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssFullscreenImage));
+				.waitUntilLocatorIsDisplayed(
+						this.getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssFullscreenImage));
 	}
 
 	public boolean isPictureNotInModalDialog() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
-			By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
+				By.cssSelector(WebAppLocators.ConversationPage.cssModalDialog));
 	}
 
 	public void clickXButton() throws Exception {
@@ -452,11 +452,11 @@ public class ConversationPage extends WebPage {
 
 	public void clickOnBlackBorder() throws Exception {
 		if (WebAppExecutionContext.getBrowser()
-			.equals(Browser.InternetExplorer)
-			|| WebAppExecutionContext.getBrowser().equals(Browser.Chrome)) {
+				.equals(Browser.InternetExplorer)
+				|| WebAppExecutionContext.getBrowser().equals(Browser.Chrome)) {
 			Actions builder = new Actions(getDriver());
 			builder.moveToElement(fullscreenImage, -10, -10).click().build()
-				.perform();
+					.perform();
 		} else {
 			blackBorder.click();
 		}
@@ -469,16 +469,16 @@ public class ConversationPage extends WebPage {
 
 	public boolean isGifVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
-			40);
+				By.xpath(WebAppLocators.ConversationPage.xpathLastImageEntry),
+				40);
 
 	}
 
 	public boolean isLastTextMessage(String expectedMessage) throws Exception {
 		return DriverUtils
-			.waitUntilLocatorIsDisplayed(
-				getDriver(),
-				By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ConversationPage.cssLastTextMessage));
 	}
 
 	public String getMessageFromInputField() {
@@ -490,24 +490,24 @@ public class ConversationPage extends WebPage {
 			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "n"));
 		} else {
 			throw new PendingException(
-				"Webdriver does not support shortcuts for Mac browsers");
+					"Webdriver does not support shortcuts for Mac browsers");
 		}
 		return new PeoplePickerPage(getLazyDriver());
 	}
 
 	public void hoverPingButton() throws Exception {
 		if (WebAppExecutionContext.getBrowser()
-			.isSupportingNativeMouseActions()) {
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
 		} else {
 			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		final By locator = By
-			.cssSelector(WebAppLocators.ConversationPage.cssPingButton);
+				.cssSelector(WebAppLocators.ConversationPage.cssPingButton);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			locator, 2) : "Ping button has not been shown after 2 seconds";
+				locator, 2) : "Ping button has not been shown after 2 seconds";
 		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-			pingButton) : "Ping button has to be clickable";
+				pingButton) : "Ping button has to be clickable";
 
 	}
 
@@ -516,7 +516,7 @@ public class ConversationPage extends WebPage {
 			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "g"));
 		} else {
 			throw new PendingException(
-				"Webdriver does not support shortcuts for Mac browsers");
+					"Webdriver does not support shortcuts for Mac browsers");
 		}
 	}
 
@@ -526,15 +526,15 @@ public class ConversationPage extends WebPage {
 
 	public void hoverCallButton() throws Exception {
 		if (WebAppExecutionContext.getBrowser()
-			.isSupportingNativeMouseActions()) {
+				.isSupportingNativeMouseActions()) {
 			DriverUtils.moveMouserOver(this.getDriver(), conversationInput);
 		} else {
 			// safari workaround
 			DriverUtils.addClass(this.getDriver(), conversation, "hover");
 		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
-			5);
+				By.cssSelector(WebAppLocators.ConversationPage.cssCallButton),
+				5);
 	}
 
 	public String getCallButtonToolTip() {
@@ -546,29 +546,29 @@ public class ConversationPage extends WebPage {
 			conversationInput.sendKeys(Keys.chord(Keys.CONTROL, Keys.ALT, "t"));
 		} else {
 			throw new PendingException(
-				"Webdriver does not support shortcuts for Mac browsers");
+					"Webdriver does not support shortcuts for Mac browsers");
 		}
 	}
 
 	public boolean isActionMessageNotSent(final Set<String> parts)
-		throws Exception {
+			throws Exception {
 		final By locator = By
-			.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
+				.cssSelector(WebAppLocators.ConversationPage.cssFirstAction);
 
 		if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(), locator)) {
 			return true;
 		} else {
 			final List<WebElement> actionMessages = this.getDriver()
-				.findElements(locator);
+					.findElements(locator);
 			// Get the most recent action message only
 			final String actionMessageInUI = actionMessages.get(
-				actionMessages.size() - 1).getText();
+					actionMessages.size() - 1).getText();
 			for (String part : parts) {
 				if (!actionMessageInUI.toUpperCase().contains(
-					part.toUpperCase())) {
+						part.toUpperCase())) {
 					log.error(String
-						.format("'%s' substring has not been found in '%s' action message",
-							part, actionMessageInUI));
+							.format("'%s' substring has not been found in '%s' action message",
+									part, actionMessageInUI));
 					return true;
 				}
 			}
@@ -578,10 +578,10 @@ public class ConversationPage extends WebPage {
 
 	public void clickJoinCallBar() throws Exception {
 		final By locator = By
-			.xpath(WebAppLocators.ConversationPage.xpathJoinCallBar);
+				.xpath(WebAppLocators.ConversationPage.xpathJoinCallBar);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-			locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Join call bar has not been shown after "
-			+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
+				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Join call bar has not been shown after "
+				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
 		getDriver().findElement(locator).click();
 	}
 }

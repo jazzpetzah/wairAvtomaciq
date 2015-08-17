@@ -39,7 +39,7 @@ public class ConversationPageSteps {
 
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
-		.getLog(ConversationPageSteps.class.getSimpleName());
+			.getLog(ConversationPageSteps.class.getSimpleName());
 
 	private String randomMessage;
 
@@ -60,7 +60,8 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I write message (.*)$
 	 *
-	 * @param message text message
+	 * @param message
+	 *            text message
 	 * @throws Exception
 	 */
 	@When("^I write message (.*)$")
@@ -74,7 +75,8 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I write (.*) new lines$
 	 *
-	 * @param amount number of lines to write
+	 * @param amount
+	 *            number of lines to write
 	 * @throws Exception
 	 */
 	@When("^I write (\\d+) new lines$")
@@ -102,12 +104,13 @@ public class ConversationPageSteps {
 	 * @step. ^I see random message in conversation$
 	 * @throws Exception
 	 *
-	 * @throws AssertionError if message did not appear in conversation
+	 * @throws AssertionError
+	 *             if message did not appear in conversation
 	 */
 	@Then("^I see random message in conversation$")
 	public void ThenISeeRandomMessageInConversation() throws Exception {
 		Assert.assertTrue(PagesCollection.conversationPage
-			.isMessageSent(randomMessage));
+				.isMessageSent(randomMessage));
 	}
 
 	/**
@@ -121,7 +124,7 @@ public class ConversationPageSteps {
 	@Then("^I see embedded youtube video of (.*)")
 	public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
 		Assert.assertTrue(PagesCollection.conversationPage
-			.isYoutubeVideoEmbedded(url));
+				.isYoutubeVideoEmbedded(url));
 	}
 
 	/**
@@ -134,7 +137,7 @@ public class ConversationPageSteps {
 	@When("^I click People button in one to one conversation$")
 	public void WhenIClickPeopleButtonIn1to1() throws Exception {
 		PagesCollection.popoverPage = PagesCollection.conversationPage
-			.clickPeopleButton(false);
+				.clickPeopleButton(false);
 	}
 
 	/**
@@ -142,7 +145,8 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I close Group Participants popover$
 	 *
-	 * @throws Exception if the popover is not visible
+	 * @throws Exception
+	 *             if the popover is not visible
 	 */
 	@When("^I close Group Participants popover$")
 	public void WhenICloseGroupParticipantsPopover() throws Exception {
@@ -158,7 +162,8 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I close Single User Profile popover$
 	 *
-	 * @throws Exception if the popover is not visible
+	 * @throws Exception
+	 *             if the popover is not visible
 	 */
 	@When("^I close Single User Profile popover$")
 	public void WhenICloseSingleUserPopover() throws Exception {
@@ -178,7 +183,7 @@ public class ConversationPageSteps {
 	@When("^I click People button in group conversation$")
 	public void WhenIClickPeopleButtonInGroup() throws Exception {
 		PagesCollection.popoverPage = PagesCollection.conversationPage
-			.clickPeopleButton(true);
+				.clickPeopleButton(true);
 	}
 
 	/**
@@ -186,8 +191,9 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I send picture (.*) to the current conversation$
 	 *
-	 * @param pictureName the name of a picture file. This file should already
-	 * exist in the ~/Documents folder
+	 * @param pictureName
+	 *            the name of a picture file. This file should already exist in
+	 *            the ~/Documents folder
 	 *
 	 * @throws Exception
 	 */
@@ -201,18 +207,19 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I see sent picture (.*) in the conversation view$
 	 *
-	 * @param pictureName the name of a picture file. This file should already
-	 * exist in the ~/Documents folder
+	 * @param pictureName
+	 *            the name of a picture file. This file should already exist in
+	 *            the ~/Documents folder
 	 * @throws Exception
 	 */
 	@Then("^I see sent picture (.*) in the conversation view$")
 	public void ISeeSentPicture(String pictureName) throws Exception {
 		assertThat("Message with image not found",
-			PagesCollection.conversationPage.isImageMessageFound());
+				PagesCollection.conversationPage.isImageMessageFound());
 		assertThat("Overlap score of image comparsion",
-			PagesCollection.conversationPage
-			.getOverlapScoreOfLastImage(pictureName),
-			greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
+				PagesCollection.conversationPage
+						.getOverlapScoreOfLastImage(pictureName),
+				greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
 	}
 
 	/**
@@ -221,13 +228,14 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I see only (\\d+) picture[s]? in the conversation$
 	 *
-	 * @param x the amount of images
+	 * @param x
+	 *            the amount of images
 	 */
 	@Then("^I see only (\\d+) picture[s]? in the conversation$")
 	public void ISeeOnlyXPicturesInConversation(int x) {
 		assertThat("Number of images in the conversation",
-			PagesCollection.conversationPage
-			.getNumberOfImagesInCurrentConversation(), equalTo(x));
+				PagesCollection.conversationPage
+						.getNumberOfImagesInCurrentConversation(), equalTo(x));
 	}
 
 	/**
@@ -236,17 +244,18 @@ public class ConversationPageSteps {
 	 * @step. ^I see (.*) action in conversation$
 	 * @throws Exception
 	 *
-	 * @throws AssertionError if action message did not appear in conversation
+	 * @throws AssertionError
+	 *             if action message did not appear in conversation
 	 */
 	@Then("^I( do not)? see (.*) action in conversation$")
 	public void ThenISeeActionInConversation(String doNot, String message)
-		throws Exception {
+			throws Exception {
 		if (doNot == null) {
 			Assert.assertTrue(PagesCollection.conversationPage
-				.isActionMessageSent(message));
+					.isActionMessageSent(message));
 		} else {
 			Assert.assertTrue(PagesCollection.conversationPage
-				.isActionMessageNotSent(message));
+					.isActionMessageNotSent(message));
 
 		}
 	}
@@ -260,7 +269,7 @@ public class ConversationPageSteps {
 	@Then("^I see correct people button tool tip$")
 	public void ThenISeeCorrectPeopleButtonToolTip() {
 		Assert.assertTrue(PagesCollection.conversationPage
-			.isPeopleButtonToolTipCorrect());
+				.isPeopleButtonToolTipCorrect());
 	}
 
 	/**
@@ -268,28 +277,31 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I see (.*) action for (.*) in conversation$
 	 *
-	 * @throws AssertionError if action message did not appear in conversation
+	 * @throws AssertionError
+	 *             if action message did not appear in conversation
 	 *
-	 * @param message constant part of the system message
-	 * @param contacts list of comma separated contact names/aliases
+	 * @param message
+	 *            constant part of the system message
+	 * @param contacts
+	 *            list of comma separated contact names/aliases
 	 * @throws Exception
 	 *
 	 */
 	@Then("^I( do not)? see (.*) action for (.*) in conversation$")
 	public void ThenISeeActionForContactInConversation(String doNot,
-		String message, String contacts) throws Exception {
+			String message, String contacts) throws Exception {
 		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);
 		parts.addAll(CommonSteps.splitAliases(contacts));
 		if (doNot == null) {
 			assertThat("Check action",
-				PagesCollection.conversationPage.getLastActionMessage(),
-				containsString(message));
+					PagesCollection.conversationPage.getLastActionMessage(),
+					containsString(message));
 		} else {
 			assertThat("Check action",
-				PagesCollection.conversationPage.getLastActionMessage(),
-				not(containsString(message)));
+					PagesCollection.conversationPage.getLastActionMessage(),
+					not(containsString(message)));
 		}
 	}
 
@@ -298,20 +310,24 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I see (.*) user (.*) action for (.*) in conversation
 	 *
-	 * @throws AssertionError if action message did not appear in conversation
+	 * @throws AssertionError
+	 *             if action message did not appear in conversation
 	 *
-	 * @param message message string
+	 * @param message
+	 *            message string
 	 *
-	 * @param user1 user who did action string
+	 * @param user1
+	 *            user who did action string
 	 *
-	 * @param contacts user(s) who was actioned string
+	 * @param contacts
+	 *            user(s) who was actioned string
 	 *
 	 * @throws Exception
 	 *
 	 */
 	@Then("^I see user (.*) action (.*) for (.*) in conversation$")
 	public void ThenISeeUserActionForContactInConversation(String user1,
-		String message, String contacts) throws Exception {
+			String message, String contacts) throws Exception {
 		user1 = usrMgr.replaceAliasesOccurences(user1, FindBy.NAME_ALIAS);
 		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
 		if (contacts.contains(usrMgr.getSelfUserOrThrowError().getName())) {
@@ -322,7 +338,7 @@ public class ConversationPageSteps {
 		parts.add(user1);
 		parts.addAll(CommonSteps.splitAliases(contacts));
 		Assert.assertTrue(PagesCollection.conversationPage
-			.isActionMessageSent(parts));
+				.isActionMessageSent(parts));
 	}
 
 	/**
@@ -359,13 +375,14 @@ public class ConversationPageSteps {
 	 * Verify ping (or ping again) message is visible in conversation
 	 *
 	 * @step. ^I see ping message (.*)$
-	 * @param message pinged/pinged again
+	 * @param message
+	 *            pinged/pinged again
 	 * @throws Exception
 	 */
 	@When("^I see ping message (.*)$")
 	public void ISeePingMessage(String message) throws Exception {
 		Assert.assertTrue(PagesCollection.conversationPage
-			.isPingMessageVisible(message));
+				.isPingMessageVisible(message));
 	}
 
 	/**
@@ -378,20 +395,20 @@ public class ConversationPageSteps {
 	@Then("^I see text message (.*)")
 	public void ISeeTextMessage(String message) throws Exception {
 		Assert.assertTrue(PagesCollection.conversationPage
-			.isTextMessageVisible(message));
+				.isTextMessageVisible(message));
 	}
 
 	private static String expandPattern(final String originalStr) {
 		final String lineBreak = "LF";
 		final Pattern p = Pattern
-			.compile("\\(\\s*'(\\w+)'\\s*\\*\\s*([0-9]+)\\s*\\)");
+				.compile("\\(\\s*'(\\w+)'\\s*\\*\\s*([0-9]+)\\s*\\)");
 		final Matcher m = p.matcher(originalStr);
 		final StringBuilder result = new StringBuilder();
 		int lastPosInOriginalString = 0;
 		while (m.find()) {
 			if (m.start() > lastPosInOriginalString) {
 				result.append(originalStr.substring(lastPosInOriginalString,
-					m.start()));
+						m.start()));
 			}
 			final String toAdd = m.group(1).replace(lineBreak, "\n");
 			final int times = Integer.parseInt(m.group(2));
@@ -402,7 +419,7 @@ public class ConversationPageSteps {
 		}
 		if (lastPosInOriginalString < originalStr.length()) {
 			result.append(originalStr.substring(lastPosInOriginalString,
-				originalStr.length()));
+					originalStr.length()));
 		}
 		return result.toString();
 	}
@@ -413,13 +430,14 @@ public class ConversationPageSteps {
 	 * Line break is equal to LF char sequence.
 	 *
 	 * @step. ^I verify the last text message equals to (.*)
-	 * @param expectedMessage the expected message
+	 * @param expectedMessage
+	 *            the expected message
 	 * @throws Exception
 	 */
 	@Then("^I verify the last text message equals to (.*)")
 	public void IVerifyLastTextMessage(String expectedMessage) throws Exception {
 		Assert.assertEquals(expandPattern(expectedMessage),
-			PagesCollection.conversationPage.getLastTextMessage());
+				PagesCollection.conversationPage.getLastTextMessage());
 	}
 
 	/**
@@ -428,14 +446,15 @@ public class ConversationPageSteps {
 	 * conversation, because otherwise you might run into a race condition.
 	 *
 	 * @step. ^I verify the second last text message equals to (.*)
-	 * @param expectedMessage the expected message
+	 * @param expectedMessage
+	 *            the expected message
 	 * @throws Exception
 	 */
 	@Then("^I verify the second last text message equals to (.*)")
 	public void IVerifySecondLastTextMessage(String expectedMessage)
-		throws Exception {
+			throws Exception {
 		assertThat(PagesCollection.conversationPage.getSecondLastTextMessage(),
-			equalTo(expectedMessage));
+				equalTo(expectedMessage));
 	}
 
 	/**
@@ -448,8 +467,8 @@ public class ConversationPageSteps {
 	@Then("^I do not see text message ?(.*)$")
 	public void IDontSeeTextMessage(String message) throws Exception {
 		Assert.assertFalse("Saw text message " + message,
-			PagesCollection.conversationPage
-			.isTextMessageVisible(message == null ? "" : message));
+				PagesCollection.conversationPage
+						.isTextMessageVisible(message == null ? "" : message));
 	}
 
 	/**
@@ -461,8 +480,8 @@ public class ConversationPageSteps {
 	@When("^I see only one ping message$")
 	public void ISeeOnlyOnePingMessage() throws Exception {
 		Assert.assertEquals(
-			PagesCollection.conversationPage.numberOfPingMessagesVisible(),
-			1);
+				PagesCollection.conversationPage.numberOfPingMessagesVisible(),
+				1);
 	}
 
 	/**
@@ -478,7 +497,8 @@ public class ConversationPageSteps {
 	/**
 	 * Verifies whether calling button is visible or not.
 	 *
-	 * @param doNot is set to null if "do not" part does not exist
+	 * @param doNot
+	 *            is set to null if "do not" part does not exist
 	 *
 	 * @step. ^I can see calling button$
 	 * @throws java.lang.Exception
@@ -487,10 +507,10 @@ public class ConversationPageSteps {
 	public void ISeeCallButton(String doNot) throws Exception {
 		if (doNot == null) {
 			Assert.assertTrue(PagesCollection.conversationPage
-				.isCallButtonVisible());
+					.isCallButtonVisible());
 		} else {
 			Assert.assertFalse(PagesCollection.conversationPage
-				.isCallButtonVisible());
+					.isCallButtonVisible());
 		}
 	}
 
@@ -503,7 +523,7 @@ public class ConversationPageSteps {
 	public void IWaitForCallingBar() throws Exception {
 		if (PagesCollection.conversationPage == null) {
 			PagesCollection.conversationPage = (ConversationPage) PagesCollection.loginPage
-				.instantiatePage(ConversationPage.class);
+					.instantiatePage(ConversationPage.class);
 		}
 		PagesCollection.conversationPage.waitForCallingBarToBeDisplayed();
 	}
@@ -511,18 +531,19 @@ public class ConversationPageSteps {
 	/**
 	 *
 	 * @step. ^I see the calling bar from user (.*)$
-	 * @param username the name of the user currently calling
+	 * @param username
+	 *            the name of the user currently calling
 	 * @throws Exception
 	 */
 	@Then("^I see the calling bar from user (.*)$")
 	public void IWaitForCallingBar(String username) throws Exception {
 		if (PagesCollection.conversationPage == null) {
 			PagesCollection.conversationPage = (ConversationPage) PagesCollection.loginPage
-				.instantiatePage(ConversationPage.class);
+					.instantiatePage(ConversationPage.class);
 		}
 		username = usrMgr.findUserByNameOrNameAlias(username).getName();
 		PagesCollection.conversationPage
-			.waitForCallingBarToBeDisplayedWithName(username);
+				.waitForCallingBarToBeDisplayedWithName(username);
 	}
 
 	/**
@@ -536,7 +557,7 @@ public class ConversationPageSteps {
 	public void IDoNotCallingBar() throws Exception {
 		if (PagesCollection.conversationPage == null) {
 			PagesCollection.conversationPage = (ConversationPage) PagesCollection.loginPage
-				.instantiatePage(ConversationPage.class);
+					.instantiatePage(ConversationPage.class);
 		}
 		PagesCollection.conversationPage.verifyCallingBarIsNotVisible();
 	}
@@ -595,17 +616,18 @@ public class ConversationPageSteps {
 	 *
 	 * @step. ^I see conversation with missed call from (.*)$
 	 *
-	 * @param contact contact name string
+	 * @param contact
+	 *            contact name string
 	 *
 	 * @throws Exception
 	 */
 	@Then("^I see conversation with missed call from (.*)$")
 	public void ThenISeeConversationWithMissedCallFrom(String contact)
-		throws Exception {
+			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
-			.toUpperCase();
+				.toUpperCase();
 		Assert.assertEquals(contact + " CALLED",
-			PagesCollection.conversationPage.getMissedCallMessage());
+				PagesCollection.conversationPage.getMissedCallMessage());
 	}
 
 	/**
@@ -618,7 +640,7 @@ public class ConversationPageSteps {
 	@Then("^I see conversation with my missed call$")
 	public void ThenISeeConversationWithMyMissedCall() throws Exception {
 		Assert.assertEquals("YOU CALLED",
-			PagesCollection.conversationPage.getMissedCallMessage());
+				PagesCollection.conversationPage.getMissedCallMessage());
 	}
 
 	/**
@@ -636,26 +658,27 @@ public class ConversationPageSteps {
 	/**
 	 * Verifies whether picture is in fullscreen or not.
 	 *
-	 * @param doNot is set to null if "do not" part does not exist
+	 * @param doNot
+	 *            is set to null if "do not" part does not exist
 	 *
 	 * @step. ^I( do not)? see picture in fullscreen$
 	 * @throws java.lang.Exception
 	 */
 	@Then("^I( do not)? see picture (.*) in fullscreen$")
 	public void ISeePictureInFullscreen(String doNot, String pictureName)
-		throws Exception {
+			throws Exception {
 		if (doNot == null) {
 			Assert.assertTrue(PagesCollection.conversationPage
-				.isPictureInModalDialog());
+					.isPictureInModalDialog());
 			Assert.assertTrue(PagesCollection.conversationPage
-				.isPictureInFullscreen());
+					.isPictureInFullscreen());
 			assertThat("Overlap score of image comparsion",
-				PagesCollection.conversationPage
-				.getOverlapScoreOfFullscreenImage(pictureName),
-				greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
+					PagesCollection.conversationPage
+							.getOverlapScoreOfFullscreenImage(pictureName),
+					greaterThan(MIN_ACCEPTABLE_IMAGE_SCORE));
 		} else {
 			Assert.assertTrue(PagesCollection.conversationPage
-				.isPictureNotInModalDialog());
+					.isPictureNotInModalDialog());
 		}
 	}
 
@@ -684,7 +707,7 @@ public class ConversationPageSteps {
 	@When("^I click GIF button$")
 	public void IClickGIFButton() throws Throwable {
 		PagesCollection.giphyPage = PagesCollection.conversationPage
-			.clickGIFButton();
+				.clickGIFButton();
 	}
 
 	@Then("^I see sent gif in the conversation view$")
@@ -695,13 +718,14 @@ public class ConversationPageSteps {
 	/**
 	 * Verify that the input text field contains message X
 	 *
-	 * @param message the message it should contain
+	 * @param message
+	 *            the message it should contain
 	 */
 	@Then("^I verify that message (.*) was cached$")
 	public void IVerifyThatMessageWasCached(String message) {
 		assertThat("Cached message in input field",
-			PagesCollection.conversationPage.getMessageFromInputField(),
-			equalTo(message));
+				PagesCollection.conversationPage.getMessageFromInputField(),
+				equalTo(message));
 	}
 
 	/**
@@ -713,7 +737,7 @@ public class ConversationPageSteps {
 	@Then("^I type shortcut combination to open search$")
 	public void ITypeShortcutCombinationToOpenSearch() throws Exception {
 		PagesCollection.peoplePickerPage = PagesCollection.conversationPage
-			.pressShortCutForSearch();
+				.pressShortCutForSearch();
 	}
 
 	/**
@@ -754,8 +778,8 @@ public class ConversationPageSteps {
 			tooltip = tooltip + SHORTCUT_PING_MAC;
 		}
 		assertThat("Ping button tooltip",
-			PagesCollection.conversationPage.getPingButtonToolTip(),
-			equalTo(tooltip));
+				PagesCollection.conversationPage.getPingButtonToolTip(),
+				equalTo(tooltip));
 	}
 
 	/**
@@ -784,8 +808,8 @@ public class ConversationPageSteps {
 			tooltip = tooltip + SHORTCUT_CALL_MAC;
 		}
 		assertThat("Call button tooltip",
-			PagesCollection.conversationPage.getCallButtonToolTip(),
-			equalTo(tooltip));
+				PagesCollection.conversationPage.getCallButtonToolTip(),
+				equalTo(tooltip));
 	}
 
 	/**
