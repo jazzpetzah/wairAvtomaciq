@@ -325,9 +325,8 @@ Feature: Connect
 
   @id676 @regression
   Scenario Outline: I want to block a person from 1:1 conversation
-    Given There are 3 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
-    Given <Contact2> is connected to <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
@@ -343,12 +342,12 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
-    And I tap on user name found on People picker page <Contact>
+    And I tap on user name found on People picker page <Contact1>
     Then User info should be shown with Block button
 
     Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @id680 @regression
   Scenario Outline: I want to see user has been blocked within the Start UI

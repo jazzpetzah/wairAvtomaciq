@@ -286,8 +286,8 @@ public class ContactListPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
-	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 2;
+	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 30;
+	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 4;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
 		CommonSteps.getInstance().WaitForTime(1);
@@ -396,5 +396,21 @@ public class ContactListPage extends AndroidPage {
 		final By locator = By.xpath(xpathMissedCallNotificationByConvoName
 				.apply(convoName));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
+	public void doShortSwipeDown() throws Exception {
+		final Point coords = contactListFrame.getLocation();
+		final Dimension elementSize = contactListFrame.getSize();
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height / 10, 500);
+	}
+
+	public void doLongSwipeDown() throws Exception {
+		final Point coords = contactListFrame.getLocation();
+		final Dimension elementSize = contactListFrame.getSize();
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height / 4 * 3, 2000);
 	}
 }

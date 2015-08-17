@@ -257,6 +257,7 @@ Feature: Calling
     Then I dont see calling page
     And <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
     And <Contact> calls me using <CallBackend2>
+    And I wait for 2 seconds
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
     And I see mute call, end call and speakers buttons

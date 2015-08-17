@@ -1,9 +1,10 @@
 package com.wearezeta.auto.common.calling2.v1;
 
+import java.util.List;
+
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceCallException;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
-
 import com.wearezeta.auto.common.calling2.v1.model.BackendType;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
@@ -12,6 +13,7 @@ import com.wearezeta.auto.common.calling2.v1.model.InstanceStatus;
 import com.wearezeta.auto.common.calling2.v1.model.InstanceType;
 import com.wearezeta.auto.common.calling2.v1.model.CallRequest;
 import com.wearezeta.auto.common.calling2.v1.model.InstanceRequest;
+import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
@@ -88,5 +90,10 @@ public class CallingServiceClient {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
 		}
+	}
+
+	public List<Flow> getFlows(Instance instance)
+			throws CallingServiceInstanceException {
+		return INSTANCE_RESOURCE.getFlows(instance);
 	}
 }

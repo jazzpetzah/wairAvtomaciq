@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android_tablet.steps;
 
 import java.awt.image.BufferedImage;
+import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
@@ -32,16 +33,26 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Verify that People Picker is visible
+	 * Verify that People Picker is visible or not
 	 * 
-	 * @step. ^I see People Picker page$
+	 * @step. ^I (do not )?see People Picker page$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            equals to null is "do not" part does not exist
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see People Picker page$")
-	public void WhenITapOnTabletCreateConversation() throws Exception {
-		Assert.assertTrue("People Picker page is not visible",
-				getPeoplePickerPage().waitUntilVisible());
+	@When("^I (do not )?see People Picker page$")
+	public void WhenITapOnTabletCreateConversation(String shouldNotBeVisible)
+			throws Exception {
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue("People Picker page is not visible",
+					getPeoplePickerPage().waitUntilVisible());
+		} else {
+			Assert.assertTrue(
+					"People Picker page is visible, but should be hidden",
+					getPeoplePickerPage().waitUntilInvisible());
+		}
 	}
 
 	/**
@@ -331,17 +342,35 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().tapFirstPYMKItem();
 	}
 
+	private static enum SwipeType {
+		LONG, SHORT;
+	}
+
 	/**
-	 * Does short swipe right on the first PYMK item
+	 * Does short/long swipe right on the first PYMK item
 	 * 
-	 * @step. ^I do short swipe right the first PYMK item on [Pp]eople [Pp]icker
-	 *        page$
+	 * @step. ^I do (short|long) swipe right the first PYMK item on [Pp]eople
+	 *        [Pp]icker page$
+	 * @param swipeType
+	 *            see SwipeType enum for more details about possible values
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I do short swipe right the first PYMK item on [Pp]eople [Pp]icker page$")
-	public void IDoShortSwipeOnFirstPYMKItem() throws Exception {
-		getPeoplePickerPage().shortSwipeRightFirstPYMKItem();
+	@When("^I do (short|long) swipe right the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void IDoSwipeOnFirstPYMKItem(String swipeType) throws Exception {
+		final SwipeType swipeEnumType = SwipeType.valueOf(swipeType
+				.toUpperCase());
+		switch (swipeEnumType) {
+		case LONG:
+			getPeoplePickerPage().longSwipeRightFirstPYMKItem();
+			break;
+		case SHORT:
+			getPeoplePickerPage().shortSwipeRightFirstPYMKItem();
+			break;
+		default:
+			throw new NoSuchElementException(String.format(
+					"Swipe type '%s' is not supported", swipeEnumType.name()));
+		}
 	}
 
 	/**
@@ -356,5 +385,32 @@ public class PeoplePickerPageSteps {
 	@When("^I tap Hide button in the first PYMK item on [Pp]eople [Pp]icker page$")
 	public void ITapHideButtonInFirstPYMKItem() throws Exception {
 		getPeoplePickerPage().tapHideButtonInFirstPYMKItem();
+	}
+
+	/**
+	 * Perform long/short swipe down on People Picker page
+	 * 
+	 * @step. ^I do (long|short) swipe down on [Pp]eople [Pp]icker page$
+	 * 
+	 * @param swipeTypeStr
+	 *            see SwipeType enum for the list of available values
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I do (long|short) swipe down on [Pp]eople [Pp]icker page$")
+	public void IDoSwipeDown(String swipeTypeStr) throws Exception {
+		final SwipeType swipeType = SwipeType.valueOf(swipeTypeStr
+				.toUpperCase());
+		switch (swipeType) {
+		case SHORT:
+			getPeoplePickerPage().doShortSwipeDown();
+			break;
+		case LONG:
+			getPeoplePickerPage().doLongSwipeDown();
+			break;
+		default:
+			throw new IllegalStateException(String.format(
+					"Swipe type '%s' is not supported", swipeTypeStr));
+		}
 	}
 }

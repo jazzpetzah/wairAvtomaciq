@@ -175,6 +175,10 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idCall)
 	private WebElement callBtn;
 
+	private static final String idCursorCloseButton = "cursor_button_close";
+	@FindBy(id = idCursorCloseButton)
+	private WebElement closeBtn;
+
 	private static final String idMute = "cib__calling__mic_mute";
 	@FindBy(id = idMute)
 	private WebElement muteBtn;
@@ -283,6 +287,11 @@ public class DialogPage extends AndroidPage {
 	public void tapCallBtn() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), callBtn);
 		callBtn.click();
+	}
+
+	public void closeInputOptions() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), closeBtn);
+		closeBtn.click();
 	}
 
 	public void tapMuteBtn() throws Exception {
@@ -734,6 +743,12 @@ public class DialogPage extends AndroidPage {
 			throws Exception {
 		final By locator = By.xpath(xpathPingMessageByText.apply(expectedText));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitForPingMessageWithTextDisappears(String expectedText)
+			throws Exception {
+		final By locator = By.xpath(xpathPingMessageByText.apply(expectedText));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
 	public boolean isGroupChatDialogContainsNames(List<String> names)
