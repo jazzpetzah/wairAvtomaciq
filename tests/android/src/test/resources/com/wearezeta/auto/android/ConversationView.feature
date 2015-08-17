@@ -326,7 +326,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id3244 @staging
+  @id3244 @regression
   Scenario Outline: I can send sketch on photo
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
