@@ -42,6 +42,9 @@ public class IncomingCallPage extends CallPage {
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.IncomingCallPage.classNameUIACollectionCell)
 	private List<WebElement> numberOfGroupCallAvatars;
 	
+	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathGroupCallFullMessage)
+	private WebElement groupCallFullMessage;
+	
 	public IncomingCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
@@ -103,5 +106,9 @@ public class IncomingCallPage extends CallPage {
 
 	public void clickJoinCallButton() {
 		joinCallButton.click();
+	}
+
+	public boolean isGroupCallFullMessageShown() {
+		return groupCallFullMessage.isDisplayed();
 	}
 }

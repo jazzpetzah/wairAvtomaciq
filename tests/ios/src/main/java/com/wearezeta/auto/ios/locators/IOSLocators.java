@@ -594,6 +594,8 @@ public final class IOSLocators {
 		public static final String nameEndCallAlertButton = "End Call";
 		
 		public static final String classNameUIACollectionCell = "UIACollectionCell";
+		
+		public static final String xpathGroupCallFullMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAAlert[@name='The call is full']";
 	}
 	
 	public final class DialogPage {
