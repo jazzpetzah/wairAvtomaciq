@@ -1,6 +1,6 @@
 Feature: Block
 
-  @id3120 @staging
+  @id3120 @regression
   Scenario Outline: I want to unblock someone from pop-over opened from search (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -33,7 +33,7 @@ Feature: Block
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @id2861 @staging
+  @id2861 @regression
   Scenario Outline: I want to unblock someone from pop-over opened from search (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -66,7 +66,7 @@ Feature: Block
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @id2859 @staging
+  @id2859 @regression
   Scenario Outline: I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -90,7 +90,7 @@ Feature: Block
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2858 @staging
+  @id2858 @regression
   Scenario Outline: I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @id3175 @staging
+  @id3175 @regression
   Scenario Outline: Verify receiving "missed call" notification (GCM) after ending group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -20,7 +20,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @id2910 @staging
+  @id2910 @regression
   Scenario Outline: Calling bar buttons are clickable and change its state (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -45,7 +45,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
-  @id3123 @staging
+  @id3123 @regression
   Scenario Outline: Calling bar buttons are clickable and change its state (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -70,7 +70,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
-  @id2842 @staging
+  @id2842 @regression
   Scenario Outline: I see miss call notification on the list and inside conversation view (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -92,7 +92,7 @@ Feature: Calling
       | CallBackend | Name      | Contact   |
       | autocall    | user1Name | user2Name |
 
-  @id3125 @staging
+  @id3125 @regression
   Scenario Outline: I see miss call notification on the list and inside conversation view (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -131,7 +131,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id2911 @staging
+  @id2911 @regression
   Scenario Outline: I can dismiss calling bar by swipe (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -149,7 +149,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id2840 @staging
+  @id2840 @regression
   Scenario Outline: Send text, image and ping while in the call with same user (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -181,7 +181,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | TextMessage  | PingMessage | AcceptBtnName |
       | user1Name | user2Name | autocall    | text message | YOU PINGED  | Accept        |
 
-  @id3113 @staging
+  @id3113 @regression
   Scenario Outline: Send text, image and ping while in the call with same user (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
