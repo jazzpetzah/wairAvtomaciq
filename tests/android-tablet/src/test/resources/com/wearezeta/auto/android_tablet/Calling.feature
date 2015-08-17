@@ -211,3 +211,24 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | CallBackend | TextMessage  | PingMessage | AcceptBtnName |
       | user1Name | user2Name | autocall    | text message | YOU PINGED  | Accept        |
+
+  @id3259 @staging
+  Scenario Outline: Receive call while Wire is running in the background (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I minimize the application
+    When <Contact> calls me using <CallBackend>
+    Then I see full screen calling overlay
+    And I do not see calling overlay Big bar
+    When I accept call on full screen calling overlay
+    Then I see calling overlay Big bar
+    And I see call participants Myself,<Contact> on the calling overlay
+    And <Contact> stops all calls to me
+
+    Examples: 
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |

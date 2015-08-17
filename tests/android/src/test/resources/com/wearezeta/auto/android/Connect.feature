@@ -337,6 +337,7 @@ Feature: Connect
     And I confirm block
     Then I do not see contact list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
+    And I wait until <Contact1> is blocked in backend search results
     And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
