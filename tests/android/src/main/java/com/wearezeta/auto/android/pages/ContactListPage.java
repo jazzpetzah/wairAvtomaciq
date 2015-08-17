@@ -37,6 +37,10 @@ public class ContactListPage extends AndroidPage {
 			.format("%s/parent::*//*[@id='tv_conv_list_media_player']",
 					xpathContactByName.apply(convoName));
 
+	private static final Function<String, String> xpathMissedCallNotificationByConvoName = convoName -> String
+			.format("%s/parent::*//*[@id='sci__list__missed_call']",
+					xpathContactByName.apply(convoName));
+
 	@FindBy(id = PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
@@ -282,8 +286,8 @@ public class ContactListPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
-	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 2;
+	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 30;
+	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 4;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
 		CommonSteps.getInstance().WaitForTime(1);
@@ -378,5 +382,35 @@ public class ContactListPage extends AndroidPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
 				.format("Conversation menu item '%s' could not be found on the current screen");
 		getDriver().findElement(locator).click();
+	}
+
+	public boolean waitUntilMissedCallNotificationVisible(String convoName)
+			throws Exception {
+		final By locator = By.xpath(xpathMissedCallNotificationByConvoName
+				.apply(convoName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilMissedCallNotificationInvisible(String convoName)
+			throws Exception {
+		final By locator = By.xpath(xpathMissedCallNotificationByConvoName
+				.apply(convoName));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
+	public void doShortSwipeDown() throws Exception {
+		final Point coords = contactListFrame.getLocation();
+		final Dimension elementSize = contactListFrame.getSize();
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height / 10, 500);
+	}
+
+	public void doLongSwipeDown() throws Exception {
+		final Point coords = contactListFrame.getLocation();
+		final Dimension elementSize = contactListFrame.getSize();
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height / 4 * 3, 2000);
 	}
 }

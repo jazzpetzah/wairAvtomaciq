@@ -101,6 +101,10 @@ public class DialogPage extends AndroidPage {
 	@FindBy(xpath = xpathConfirmOKButton)
 	private WebElement okButton;
 
+	private static final String idSketchImagePaintButton = "gtv__sketch_image_paint_button";
+	@FindBy(id = idSketchImagePaintButton)
+	private WebElement sketchImagePaintButton;
+
 	@FindBy(id = idDialogImages)
 	private WebElement image;
 
@@ -170,6 +174,10 @@ public class DialogPage extends AndroidPage {
 	private static final String idCall = "cursor_menu_item_calling";
 	@FindBy(id = idCall)
 	private WebElement callBtn;
+
+	private static final String idCursorCloseButton = "cursor_button_close";
+	@FindBy(id = idCursorCloseButton)
+	private WebElement closeBtn;
 
 	private static final String idMute = "cib__calling__mic_mute";
 	@FindBy(id = idMute)
@@ -272,13 +280,18 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void tapSketchBtn() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), pingBtn);
+		assert DriverUtils.waitUntilElementClickable(getDriver(), sketchBtn);
 		sketchBtn.click();
 	}
 
 	public void tapCallBtn() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), callBtn);
 		callBtn.click();
+	}
+
+	public void closeInputOptions() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), closeBtn);
+		closeBtn.click();
 	}
 
 	public void tapMuteBtn() throws Exception {
@@ -430,6 +443,12 @@ public class DialogPage extends AndroidPage {
 		okButton.click();
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.xpath(xpathConfirmOKButton));
+	}
+
+	public void drawSketchOnImage() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				sketchImagePaintButton);
+		sketchImagePaintButton.click();
 	}
 
 	public void takePhoto() throws Exception {
@@ -724,6 +743,12 @@ public class DialogPage extends AndroidPage {
 			throws Exception {
 		final By locator = By.xpath(xpathPingMessageByText.apply(expectedText));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitForPingMessageWithTextDisappears(String expectedText)
+			throws Exception {
+		final By locator = By.xpath(xpathPingMessageByText.apply(expectedText));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
 	public boolean isGroupChatDialogContainsNames(List<String> names)

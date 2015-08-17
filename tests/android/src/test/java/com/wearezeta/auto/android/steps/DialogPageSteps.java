@@ -176,6 +176,18 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Press close button for input options
+	 * 
+	 * @step. ^I close input options$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I close input options$")
+	public void ICloseInputOptions() throws Exception {
+		getDialogPage().closeInputOptions();
+	}
+
+	/**
 	 * Press on the sketch button in the input controls
 	 * 
 	 * @step. ^I press Sketch button$
@@ -400,6 +412,9 @@ public class DialogPageSteps {
 			break;
 		case "image close":
 			getDialogPage().closeFullScreenImage();
+			break;
+		case "sketch image paint":
+			getDialogPage().drawSketchOnImage();
 			break;
 		}
 	}

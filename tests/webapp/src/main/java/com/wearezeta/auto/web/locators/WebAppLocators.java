@@ -253,7 +253,7 @@ public final class WebAppLocators {
 
 		public static final String cssCallButton = "[data-uie-name='do-call']";
 
-		public static final String idGIFButton = "show-extensions";
+		public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
 		// bars (call bar)
 		public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";
@@ -347,9 +347,9 @@ public final class WebAppLocators {
 
 		public static final String xpathTopPeople = "//*[@data-uie-name='status-top-people']";
 
-		public static final Function<String, String> xpathTopPeopleListByName = (
+		public static final Function<String, String> cssTopPeopleListByName = (
 				name) -> String
-				.format("(//user-list[contains(@params, 'top_users')]//*[@data-uie-name='item-user' and .//*[text()='%s']])",
+				.format(".people-picker-list-top-conversations [data-uie-value='%s'] user-avatar",
 						name);
 
 		public static final String xpathSelectedTopPeopleList = "//user-list[contains('top_users')]"

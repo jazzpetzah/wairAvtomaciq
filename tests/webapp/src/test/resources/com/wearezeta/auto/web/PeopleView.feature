@@ -176,36 +176,6 @@ Feature: People View
       | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
       | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
 
-  @regression @id2271
-  Scenario Outline: Verify I can see participant profile of user I blocked in a group conversation
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <KnownContact>
-    Given <KnownContact> is connected to <UnknownContact>
-    Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>
-    Given Myself blocked <KnownContact>
-    Given I sent connection request to <UnknownContact>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    Then I see my avatar on top of Contact list
-    When I open conversation with <ChatName>
-    When I click People button in group conversation
-    Then I see Group Participants popover
-    When I click on participant <KnownContact> on Group Participants popover
-    Then I see username <KnownContact> on Group Participants popover
-    And I see an avatar on Group Participants popover
-    And I see Remove button on Group Participants popover
-    And I see Unblock button on Group Participants popover
-    And I see correct Unblock button tool tip on Group Participants popover
-    And I see Mail <KnownContactMail> on Group Participants popover
-    And Would open mail client when clicking mail on Group Participants popover
-    When I click Unblock button on Group Participants popover
-    And I confirm Unblock from group chat on Group Participants popover
-    Then I see Contact list with name <KnownContact>
-
-    Examples: 
-      | Login      | Password      | Name      | KnownContact | KnownContactMail | UnknownContact | ChatName               | Message   |
-      | user1Email | user1Password | user1Name | user2Name    | user2Email       | user3Name      | PeoplePopoverGroupChat | YOU ADDED |
-
   @regression @id1703
   Scenario Outline: Verify I can see participant profile of myself in a group conversation
     Given There are 3 users where <Name> is me

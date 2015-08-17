@@ -117,8 +117,7 @@ public class CallPageSteps {
 	@When("^I see incoming calling message for contact (.*)$")
 	public void ISeeIncomingCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(getIncomingCallPage().isUserCallingMessageShown(
-						contact.toUpperCase()));
+		Assert.assertTrue(getIncomingCallPage().isCallingMessageVisible(contact.toUpperCase()));
 	}
 
 	/**
@@ -210,6 +209,58 @@ public class CallPageSteps {
 		boolean joinCallBarIsVisible = getIncomingCallPage()
 				.isJoinCallBarVisible();
 		Assert.assertTrue("Join Call bar is not visible", joinCallBarIsVisible);
+	}
+
+	/**
+	 * Verifies that a second call is coming in alert is shown
+	 * 
+	 * @step. ^I see Accept second call alert$
+	 * @throws Throwable
+	 */
+	@When("^I see Accept second call alert$")
+	public void ISeeAcceptSecondCallAlert() throws Throwable {
+		boolean secondCallAlertIsVisible = getIncomingCallPage()
+				.isSecondCallAlertVisible();
+		Assert.assertTrue("Second call Alert is not shown",
+				secondCallAlertIsVisible);
+	}
+
+	/**
+	 * Presses the end call button on the second incoming call alert
+	 * 
+	 * @step. ^I press End Call button on alert$
+	 * @throws Throwable
+	 */
+	@When("^I press End Call button on alert$")
+	public void IPressEndCallButtonOnAlert() throws Throwable {
+		getIncomingCallPage().pressEndCallAlertButton();
+	}
+
+	/**
+	 * Verifies a number of avatars in the group call bar
+	 * 
+	 * @step. ^I see (\\d+) avatars in the group call bar$
+	 * @param numberOfAvatars
+	 *            number of avatars in group call bar
+	 * @throws Throwable
+	 */
+	@Then("^I see (\\d+) avatars in the group call bar$")
+	public void ISeeAvatarsInTheGroupCallBar(int numberOfAvatars)
+			throws Throwable {
+		int actualNumberOfAvatars = getIncomingCallPage()
+				.getNumberOfGroupCallAvatar();
+		Assert.assertEquals(numberOfAvatars, actualNumberOfAvatars);
+	}
+
+	/**
+	 * Rejoin group call by clicking the join button
+	 * 
+	 * @step. ^I rejoin call by clicking Join button$
+	 * @throws Throwable
+	 */
+	@When("^I rejoin call by clicking Join button$")
+	public void IRejoinCallByClickingJoinButton() throws Throwable {
+		getIncomingCallPage().clickJoinCallButton();
 	}
 
 }

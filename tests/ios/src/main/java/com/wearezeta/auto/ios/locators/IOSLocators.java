@@ -302,11 +302,16 @@ public final class IOSLocators {
 	
 	public static final String xpathOtherProfilePagePendingLabel = "//UIAStaticText[contains(@name, 'Let’s connect')]";
 	
-	public static final String xpathOtherProfileCancelRequestButton = "//UIAStaticText[contains(@name, 'CANCEL REQUEST')]";
-	
 	public static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
 	
 	public static final String nameOtherProfilePageCloseButton = "OtherUserProfileCloseButton";
+	
+	public static final class OtherUserProfilePage {
+		public static final String xpathOtherProfileCancelRequestButton = "//UIAStaticText[contains(@name, 'CANCEL REQUEST')]/preceding-sibling::UIAButton[@name='OtherUserMetaControllerLeftButton']";
+		public static final String nameCancelRequestConfirmationLabel = "Cancel Request?";
+		public static final String xpathCancelRequestNoButton = "//UIAStaticText[@name='Cancel Request?']/following-sibling::UIAButton[@name='NO']";
+		public static final String xpathCancelRequestYesButton = "//UIAStaticText[@name='Cancel Request?']/following-sibling::UIAButton[@name='YES']";
+	}
 	 
 	///////////////////////
 	//Camera page locators
@@ -576,13 +581,19 @@ public final class IOSLocators {
 		
 		public static final String nameEndCallButton = "LeaveCallButton";
 				
-		public static final String xpathCallingMessage = "//UIAStaticText[contains(@name, 'IS CALLING')]";
+		public static final String xpathCallingMessage = "//UIAStaticText[contains(@value, '%s') and contains(@value, ' IS CALLING')]";
 				
 		public static final String nameIgnoreCallButton = "IgnoreButton";
 		
 		public static final String xpathGroupCallingMessage = "//UIAStaticText[contains(@value, 'IS CALLING IN')]";
 		
 		public static final String nameJoinCallButton = "JOIN CALL";
+		
+		public static final String nameSecondCallAlert = "Answer call?";
+		
+		public static final String nameEndCallAlertButton = "End Call";
+		
+		public static final String classNameUIACollectionCell = "UIACollectionCell";
 	}
 	
 	public final class DialogPage {
@@ -685,8 +696,8 @@ public final class IOSLocators {
 	/////////////
 	//Chathead
 	/////////////
-	public static final String xpathChatheadName = "//UIAStaticText[@name='%s']";
-	public static final String xpathChatheadMessage = "//UIAStaticText[@name='%s']";
+	public static final String xpathChatheadName = "//UIAElement/following-sibling::UIAStaticText[@name='%s']";
+	public static final String xpathChatheadMessage = "//UIAElement/following-sibling::UIAStaticText[@name='%s']";
 	public static final String nameChatheadAvatarImage = "ChatheadAvatarImage";
 	
 	///////////////////

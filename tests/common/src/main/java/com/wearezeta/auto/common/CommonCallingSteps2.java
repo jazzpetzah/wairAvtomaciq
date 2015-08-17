@@ -1,6 +1,7 @@
 package com.wearezeta.auto.common;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,12 +13,14 @@ import com.wearezeta.auto.common.calling2.v1.CallingServiceClient;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
+import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.calling2.v1.model.Instance;
 import com.wearezeta.auto.common.calling2.v1.model.InstanceType;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -29,6 +32,7 @@ public final class CommonCallingSteps2 {
 	public static final Logger LOG = ZetaLogger
 			.getLog(CommonCallingSteps2.class.getName());
 
+	private static final int INSTANCE_START_TIMEOUT_SECONDS = 120;
 	private static final long POLLING_FREQUENCY_MILLISECONDS = 1000;
 	private static CommonCallingSteps2 singleton = null;
 
@@ -98,7 +102,7 @@ public final class CommonCallingSteps2 {
 		final String convId = getConversationId(userAs, conversationName);
 
 		final Instance instance = client.startInstance(userAs,
-				instanceTypeFix(instanceType));
+				instanceTypeFix(instanceType), ZetaFormatter.getScenario());
 		addInstance(instance, userAs);
 
 		final Call call = client.callToUser(instance, convId);
@@ -197,7 +201,7 @@ public final class CommonCallingSteps2 {
 		ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
 
 		final Instance instance = client.startInstance(userAs,
-				instanceTypeFix(instanceType));
+				instanceTypeFix(instanceType), ZetaFormatter.getScenario());
 		addInstance(instance, userAs);
 	}
 
@@ -226,8 +230,10 @@ public final class CommonCallingSteps2 {
 			int calleeIndex = calleeNames.indexOf(calleeName);
 			createTasks[calleeIndex] = CompletableFuture.supplyAsync(() -> {
 				try {
+
 					final Instance instance = client.startInstance(userAs,
-							instanceTypeFix(instanceType));
+							instanceTypeFix(instanceType),
+							ZetaFormatter.getScenario());
 					addInstance(instance, userAs);
 					return instance;
 				} catch (CallingServiceInstanceException ex) {
@@ -239,10 +245,12 @@ public final class CommonCallingSteps2 {
 			});
 		}
 		try {
-			CompletableFuture.allOf(createTasks).get(1, TimeUnit.MINUTES);
+			CompletableFuture.allOf(createTasks).get(
+					INSTANCE_START_TIMEOUT_SECONDS, TimeUnit.SECONDS);
 		} catch (TimeoutException e) {
-			LOG.error(String
-					.format("Could not start all waiting instances in time"), e);
+			LOG.error(String.format(
+					"Could not start all waiting instances in '%d' seconds",
+					INSTANCE_START_TIMEOUT_SECONDS), e);
 		}
 
 	}
@@ -435,5 +443,13 @@ public final class CommonCallingSteps2 {
 					convUser.getName());
 		}
 		return convId;
+	}
+
+	public List<Flow> getFlows(String callerName)
+			throws CallingServiceInstanceException, CallNotFoundException,
+			NoSuchUserException {
+		ClientUser userAs = usrMgr.findUserByNameOrNameAlias(callerName);
+		LOG.info("Get flows for user " + userAs.getEmail());
+		return client.getFlows(getInstanceByParticipant(userAs));
 	}
 }

@@ -22,6 +22,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			.format("//*[@id='ttv__row_conversation__connect_request__chathead_footer__label' and contains(@value, '%s')]",
 					content);
 
+	private static final Function<String, String> xpathOutgoingInvitationMessageByContent = content -> String
+			.format("//*[@id='ttv__connect_request__first_message' and @value='%s']",
+					content);
+
 	@FindBy(id = DialogPage.idParticipantsBtn)
 	private WebElement showDetailsButton;
 
@@ -136,5 +140,18 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		final By locator = By.xpath(xpathConversationMessageByValue
 				.apply(expectedMessage));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
+	public boolean waitForOutgoingInvitationMessage(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathOutgoingInvitationMessageByContent
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilPingMessageIsInvisible(String expectedMessage)
+			throws Exception {
+		return getDialogPage().waitForPingMessageWithTextDisappears(
+				expectedMessage);
 	}
 }
