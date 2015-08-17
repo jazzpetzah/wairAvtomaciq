@@ -275,51 +275,27 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I minimize the application$")
 	public void IMimizeApllication() throws Exception {
-		pagesCollection.getCommonPage().minimizeApplication();
+		AndroidCommonUtils.switchToHomeScreen();
 	}
 
 	/**
-	 * Locks the device
+	 * Lock/unlock the device
 	 * 
-	 * @step. ^I lock the device$
+	 * @step. ^I (un)?lock the device$
+	 * 
+	 * @param shouldUnlock
+	 *            equals to null is "un-" part does not exist
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I lock the device$")
-	public void ILockTheDevice() throws Exception {
-		pagesCollection.getCommonPage().lockScreen();
-	}
-
-	/**
-	 * Opens the Browser app
-	 * 
-	 * -unused
-	 * 
-	 * @step. ^I open the native browser application$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I open the native browser application$")
-	public void IOpenBrowserApp() throws Exception {
-		AndroidCommonUtils.openBroswerApplication();
-	}
-
-	/**
-	 * Opens the gallery application (com.google.android.gallery3d)
-	 * 
-	 * -unused
-	 * 
-	 * @step. ^I open the gallery application$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-
-	@When("^I open the gallery application$")
-	public void IOpenGalleryApp() throws Exception {
-		AndroidCommonUtils.openGalleryApplication();
+	@When("^I (un)?lock the device$")
+	public void ILockUnlockTheDevice(String shouldUnlock) throws Exception {
+		if (shouldUnlock == null) {
+			AndroidCommonUtils.lockScreen();
+		} else {
+			AndroidCommonUtils.unlockDevice();
+		}
 	}
 
 	/**
@@ -376,7 +352,9 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I restore the application$")
 	public void IRestoreApllication() throws Exception {
-		pagesCollection.getCommonPage().restoreApplication();
+		AndroidCommonUtils.switchToApplication(
+				CommonUtils.getAndroidPackageFromConfig(this.getClass()),
+				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
 	}
 
 	/**
@@ -760,6 +738,28 @@ public class CommonAndroidSteps {
 	public void UserWaitsUntilContactExistsInHisSearchResults(
 			String searchByNameAlias, String query) throws Exception {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
+	}
+
+	/**
+	 * Waits for a given time to verify that another user is blocked in search
+	 * results
+	 * 
+	 * @step. ^(\\w+) waits? until (.*) is blocked in backend search results$
+	 * 
+	 * @param searchByNameAlias
+	 *            the user to search for in the query results.
+	 * @param query
+	 *            the search query to pass to the backend, which will return a
+	 *            list of users.
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Given("^(\\w+) waits? until (.*) is blocked in backend search results$")
+	public void UserWaitsUntilContactIsBlockedInSearchResults(
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactBlockStateInSearch(searchByNameAlias,
+				query, true);
 	}
 
 	/**

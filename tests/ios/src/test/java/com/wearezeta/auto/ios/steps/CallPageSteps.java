@@ -117,7 +117,8 @@ public class CallPageSteps {
 	@When("^I see incoming calling message for contact (.*)$")
 	public void ISeeIncomingCallingMesage(String contact) throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertTrue(getIncomingCallPage().isCallingMessageVisible(contact.toUpperCase()));
+		Assert.assertTrue(getIncomingCallPage().isCallingMessageVisible(
+				contact.toUpperCase()));
 	}
 
 	/**
@@ -261,6 +262,17 @@ public class CallPageSteps {
 	@When("^I rejoin call by clicking Join button$")
 	public void IRejoinCallByClickingJoinButton() throws Throwable {
 		getIncomingCallPage().clickJoinCallButton();
+	}
+
+	/**
+	 * Verifies the calling to a group call message
+	 * 
+	 * @step. ^I see calling to a group message$
+	 * @throws Throwable
+	 */
+	@Then("^I see calling to a group message$")
+	public void ISeeCallingToMessage() throws Throwable {
+		Assert.assertTrue(getStartedCallPage().isCallingMessageVisible());
 	}
 
 }
