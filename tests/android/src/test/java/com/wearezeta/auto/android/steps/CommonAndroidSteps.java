@@ -763,6 +763,28 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * Waits for a given time to verify that another user is blocked in search
+	 * results
+	 * 
+	 * @step. ^(\\w+) waits? until (.*) is blocked in backend search results$
+	 * 
+	 * @param searchByNameAlias
+	 *            the user to search for in the query results.
+	 * @param query
+	 *            the search query to pass to the backend, which will return a
+	 *            list of users.
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Given("^(\\w+) waits? until (.*) is blocked in backend search results$")
+	public void UserWaitsUntilContactIsBlockedInSearchResults(
+			String searchByNameAlias, String query) throws Exception {
+		commonSteps.WaitUntilContactBlockStateInSearch(searchByNameAlias,
+				query, true);
+	}
+
+	/**
 	 * Waits for a given time to verify that another user does not exist in
 	 * search results
 	 * 

@@ -27,7 +27,7 @@ public final class CommonSteps {
 	public static final String CONNECTION_MESSAGE = "Hello!";
 	private static final int BACKEND_USER_SYNC_TIMEOUT = 45; // seconds
 	private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 90; // seconds
-	
+
 	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(CommonSteps.class
 			.getSimpleName());
@@ -429,6 +429,16 @@ public final class CommonSteps {
 		BackendAPIWrappers.waitUntilContactsFound(
 				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query, 1,
 				true, BACKEND_USER_SYNC_TIMEOUT);
+	}
+
+	public void WaitUntilContactBlockStateInSearch(String searchByNameAlias,
+			String contactAlias, boolean expectedState) throws Exception {
+		String query = usrMgr.replaceAliasesOccurences(contactAlias,
+				FindBy.NAME_ALIAS);
+		query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
+		BackendAPIWrappers.waitUntilContactBlockState(
+				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,
+				expectedState, BACKEND_USER_SYNC_TIMEOUT);
 	}
 
 	public void UserXAddedContactsToGroupChat(String userAsNameAlias,
