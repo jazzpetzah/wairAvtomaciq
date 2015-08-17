@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -412,5 +413,24 @@ public class ContactListPage extends AndroidPage {
 		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
 				coords.x + elementSize.width / 2,
 				coords.y + elementSize.height / 4 * 3, 2000);
+	}
+
+	public Optional<BufferedImage> getScreenshotOfPlayPauseButtonNextTo(
+			String convoName) throws Exception {
+		final By locator = By.xpath(xpathPlayPauseButtonByConvoName
+				.apply(convoName));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("PlayPause button is not visible next to the '%s' conversation item",
+						convoName);
+		return this.getElementScreenshot(this.getDriver().findElement(locator));
+	}
+
+	public void tapPlayPauseMediaButton(String convoName) throws Exception {
+		final By locator = By.xpath(xpathPlayPauseButtonByConvoName
+				.apply(convoName));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("PlayPause button is not visible next to the '%s' conversation item",
+						convoName);
+		this.getDriver().findElement(locator).click();
 	}
 }
