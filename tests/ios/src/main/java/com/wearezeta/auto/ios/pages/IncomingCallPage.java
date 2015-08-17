@@ -76,12 +76,12 @@ public class IncomingCallPage extends CallPage {
 
 	public boolean isCallingMessageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(IOSLocators.IncomingCallPage.xpathCallingMessage), 10);
+				By.xpath(IOSLocators.IncomingCallPage.xpathCallingMessage), 15);
 	}
 	
 	public boolean isGroupCallingMessageVisible() throws Exception{
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(IOSLocators.IncomingCallPage.xpathGroupCallingMessage), 10);
+				By.xpath(IOSLocators.IncomingCallPage.xpathGroupCallingMessage), 15);
 	}
 
 	public boolean isJoinCallBarVisible() {
@@ -99,5 +99,9 @@ public class IncomingCallPage extends CallPage {
 	
 	public int getNumberOfGroupCallAvatar() throws Exception{
 		return numberOfGroupCallAvatars.size();
+	}
+
+	public void clickJoinCallButton() {
+		joinCallButton.click();
 	}
 }

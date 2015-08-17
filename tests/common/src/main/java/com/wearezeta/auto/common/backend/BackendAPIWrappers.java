@@ -955,6 +955,32 @@ public final class BackendAPIWrappers {
 						expectedCount, query, timeoutSeconds));
 	}
 
+	public static void waitUntilContactBlockState(ClientUser searchByUser,
+			String query, boolean expectedState, int timeoutSeconds) throws Exception {
+		tryLoginByUser(searchByUser);
+		final long startTimestamp = System.currentTimeMillis();
+		int currentCount = -1;
+		while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
+			final JSONObject searchResult = BackendREST.searchForContacts(
+					generateAuthToken(searchByUser), query);
+			if (searchResult.has("documents")
+					&& (searchResult.get("documents") instanceof JSONArray)) {
+				currentCount = searchResult.getJSONArray("documents").length();
+			} else {
+				currentCount = 0;
+			}
+			JSONArray array = searchResult.getJSONArray("documents");
+			JSONObject ar = array.getJSONObject(0);
+			if (ar.getBoolean("blocked") == expectedState) {
+				return;
+			}
+			Thread.sleep(1000);
+		}
+		throw new NoContactsFoundException(String.format(
+				"%s contact were not blocked within %s second(s) timeout",
+				query, timeoutSeconds));
+	}
+
 	public static void waitUntilContactNotFound(ClientUser searchByUser,
 			String query, int timeoutSeconds) throws Exception {
 		tryLoginByUser(searchByUser);

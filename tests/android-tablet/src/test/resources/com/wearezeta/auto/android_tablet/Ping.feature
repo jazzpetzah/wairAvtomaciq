@@ -42,7 +42,7 @@
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
-  @id2863 @staging
+  @id2863 @regression
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -63,7 +63,7 @@
       | Name      | Contact1  | Contact2  | GroupChatName  | PingMessage       | HotPingMessage         |
       | user1Name | user2Name | user3Name | PingChat       | user2Name PINGED  | user2Name PINGED AGAIN |
 
-  @id3262 @staging
+  @id3262 @regression
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

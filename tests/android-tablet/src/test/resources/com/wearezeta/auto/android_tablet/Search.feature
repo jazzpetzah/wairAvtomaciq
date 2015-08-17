@@ -1,6 +1,6 @@
 Feature: Search
 
-  @id2249 @staging
+  @id2249 @regression
   Scenario Outline: Open/Close Search by different actions in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -31,7 +31,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2263 @staging
+  @id2263 @regression
   Scenario Outline: Open/Close Search by different actions in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

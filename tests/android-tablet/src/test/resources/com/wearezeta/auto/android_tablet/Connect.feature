@@ -86,7 +86,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id2852 @staging
+  @id2852 @regression
   Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -117,7 +117,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | GroupChatName        | Message |
       | user1Name | user2Name | user3Name | NonConnectedUserChat | Yo man! |
 
-  @id3119 @staging
+  @id3119 @regression
   Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -148,7 +148,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | GroupChatName        | Message |
       | user1Name | user2Name | user3Name | NonConnectedUserChat | Yo man! |
 
-  @id3089 @staging
+  @id3089 @regression
   Scenario Outline: Send connection request to user from search results by email (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -172,7 +172,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Message       |
       | user1Name | user2Name | user2Email   | Hellow friend |
 
-  @id3102 @staging
+  @id3102 @regression
   Scenario Outline: Send connection request to user from search results by email (landscape)
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -196,7 +196,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Message       |
       | user1Name | user2Name | user2Email   | Hellow friend |
 
-  @id2915 @staging
+  @id2915 @regression
   Scenario Outline: Connect to someone from PYMK by clicking + (portrait)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -221,7 +221,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3117 @staging
+  @id3117 @regression
   Scenario Outline: Connect to someone from PYMK by clicking + (landscape)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -246,7 +246,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2892 @staging
+  @id2892 @regression
   Scenario Outline: Connect to someone from PYMK by tap and typing connect message (portrait)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -275,7 +275,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Message       |
       | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id3114 @staging
+  @id3114 @regression
   Scenario Outline: Connect to someone from PYMK by tap and typing connect message (landscape)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -304,7 +304,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Message       |
       | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id2914 @staging
+  @id2914 @regression
   Scenario Outline: Dismiss PYMK item (portrait)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,<Contact3>
@@ -334,7 +334,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @id3116 @staging
+  @id3116 @regression
   Scenario Outline: Dismiss PYMK item (landscape)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,<Contact3>
@@ -364,7 +364,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @id2845 @staging
+  @id2845 @regression
   Scenario Outline: Ignore a connect request and reconnect later from search (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -395,7 +395,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id3127 @staging
+  @id3127 @regression
   Scenario Outline: Ignore a connect request and reconnect later from search (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -425,7 +425,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id2844 @staging
+  @id2844 @regression
   Scenario Outline: Inbox count increasing/decreasing correctly (portrait)
     Given There are 4 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -451,7 +451,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | WaitingMess2     | WaitingMess1     |
       | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |
 
-  @id3118 @staging
+  @id3118 @regression
   Scenario Outline: Inbox count increasing/decreasing correctly (landscape)
     Given There are 4 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -475,7 +475,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | WaitingMess2     | WaitingMess1     |
       | user1Name | user2Name | user3Name | user4Name | 2 people waiting | 1 person waiting |
 
-  @id2869 @staging
+  @id2869 @regression
   Scenario Outline: I can see a new inbox for connection when receive new connection request (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -492,7 +492,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | WaitingMsg       |
       | user1Name | user2Name | user2Email   | 1 person waiting |
 
-  @id3135 @staging
+  @id3135 @regression
   Scenario Outline: I can see a new inbox for connection when receive new connection request (landscape)
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
