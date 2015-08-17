@@ -138,20 +138,6 @@ public abstract class AndroidPage extends BasePage {
 		return this.getDriver().getOrientation();
 	}
 
-	public void minimizeApplication() throws Exception {
-		AndroidCommonUtils.switchToHomeScreen();
-	}
-
-	public void lockScreen() throws Exception {
-		AndroidCommonUtils.lockScreen();
-	}
-
-	public void restoreApplication() throws Exception {
-		AndroidCommonUtils.switchToApplication(
-				CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
-	}
-
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 		return null;
 	};

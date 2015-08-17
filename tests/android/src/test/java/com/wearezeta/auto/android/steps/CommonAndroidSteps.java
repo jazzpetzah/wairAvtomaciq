@@ -275,7 +275,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I minimize the application$")
 	public void IMimizeApllication() throws Exception {
-		pagesCollection.getCommonPage().minimizeApplication();
+		AndroidCommonUtils.switchToHomeScreen();
 	}
 
 	/**
@@ -288,38 +288,20 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I lock the device$")
 	public void ILockTheDevice() throws Exception {
-		pagesCollection.getCommonPage().lockScreen();
+		AndroidCommonUtils.lockScreen();
 	}
 
 	/**
-	 * Opens the Browser app
+	 * Unlocks the device
 	 * 
-	 * -unused
-	 * 
-	 * @step. ^I open the native browser application$
+	 * @step. ^I unlock the device$
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I open the native browser application$")
-	public void IOpenBrowserApp() throws Exception {
-		AndroidCommonUtils.openBroswerApplication();
-	}
-
-	/**
-	 * Opens the gallery application (com.google.android.gallery3d)
-	 * 
-	 * -unused
-	 * 
-	 * @step. ^I open the gallery application$
-	 * 
-	 * @throws Exception
-	 * 
-	 */
-
-	@When("^I open the gallery application$")
-	public void IOpenGalleryApp() throws Exception {
-		AndroidCommonUtils.openGalleryApplication();
+	@When("^I unlock the device$")
+	public void IUnlockTheDevice() throws Exception {
+		AndroidCommonUtils.unlockDevice();	
 	}
 
 	/**
@@ -376,7 +358,9 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I restore the application$")
 	public void IRestoreApllication() throws Exception {
-		pagesCollection.getCommonPage().restoreApplication();
+		AndroidCommonUtils.switchToApplication(
+				CommonUtils.getAndroidPackageFromConfig(this.getClass()),
+				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
 	}
 
 	/**

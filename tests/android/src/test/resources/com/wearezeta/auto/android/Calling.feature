@@ -504,3 +504,21 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallChat | autocall    |
 
+  @id2649 @staging
+  Scenario Outline: Lock device screen after initiating call
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe on text input
+    And I press Call button
+    And I see call overlay
+    When I lock the device
+    And I unlock the device
+    Then I see call overlay
+
+    Examples: 
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
