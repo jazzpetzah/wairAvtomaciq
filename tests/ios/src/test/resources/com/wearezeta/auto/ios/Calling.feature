@@ -369,7 +369,7 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | ChatName | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | RenameGROUPCALL | firefox     | autocall     | NewName  | 5               |
-      
+
   @staging @id2696
   Scenario Outline: Verify leaving group conversation during the group call
     Given There are 5 users where <Name> is me
@@ -398,9 +398,8 @@ Feature: Calling
     Then I dont see calling page
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | LEAVEINGROUPCALL   | firefox     | autocall     |
-
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | LEAVEINGROUPCALL | firefox     | autocall     |
 
   @staging @id2678
   Scenario Outline: Verify leaving and coming back to the call in 20 sec
@@ -431,6 +430,35 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | RejoinGROUPCALL | firefox     | autocall     | 5               |
+
+  @staging @id2690
+  Scenario Outline: Verify receiving 1-to-1 call during group call (and accepting it)
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When <Contact2> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I accept incoming call
+    Then I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars in the group call bar
+    When <Contact5> calls me using <CallBackend2>
+    And I see incoming calling message for contact <Contact5>
+    And I accept incoming call
+    And I see Accept second call alert
+    And I press End Call button on alert
+    Then I see mute call, end call and speakers buttons
+    Then I see <NumberOf1on1CallAvatars> avatars in the group call bar
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | NumberOf1on1CallAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUPCALL     | firefox     | autocall     | 5               | 2                       |
       
   @staging @id3270
   Scenario Outline: Verify possibility of starting group call
