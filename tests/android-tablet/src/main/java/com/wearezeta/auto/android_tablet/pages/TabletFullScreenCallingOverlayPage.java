@@ -29,12 +29,4 @@ public class TabletFullScreenCallingOverlayPage extends AndroidTabletPage {
 	public void acceptCall() throws Exception {
 		getCallingLockscreenPage().acceptCall();
 	}
-
-	public boolean waitUntilDismissButtonVisible() {
-		return true;
-	}
-
-	public boolean waitUntilDismissButtonInvisible() {
-		return true;
-	}
 }

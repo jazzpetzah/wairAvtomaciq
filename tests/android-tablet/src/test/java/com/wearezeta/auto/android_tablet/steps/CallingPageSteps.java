@@ -8,7 +8,9 @@ import java.util.Optional;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletCallingOverlayPage;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -16,6 +18,8 @@ import cucumber.api.java.en.When;
 public class CallingPageSteps {
 	private final AndroidTabletPagesCollection pagesCollection = AndroidTabletPagesCollection
 			.getInstance();
+
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private TabletCallingOverlayPage getCallingOverlayPage() throws Exception {
 		return (TabletCallingOverlayPage) pagesCollection
@@ -226,5 +230,27 @@ public class CallingPageSteps {
 	@When("^I swipe up on (?:\\s*|the )calling overlay$")
 	public void ISwipeUp() throws Exception {
 		getCallingOverlayPage().dismissBySwipeUp();
+	}
+
+	/**
+	 * Verify whether the particular call participant(s) name(s) exist on the
+	 * calling bar
+	 * 
+	 * @step. ^I see call participants? (.*) on (?:\\s*|the )calling overlay$
+	 * 
+	 * @param participants
+	 *            comma-separated list of call participants to check
+	 * @throws Exception
+	 */
+	@Then("^I see call participants? (.*) on (?:\\s*|the )calling overlay$")
+	public void ISeeCallParticipant(String participants) throws Exception {
+		for (String participant : CommonSteps.splitAliases(participants)) {
+			participant = usrMgr.findUserByNameOrNameAlias(participant)
+					.getName();
+			Assert.assertTrue(String.format(
+					"Call participant '%s' has not been shown after timeout",
+					participant), getCallingOverlayPage()
+					.waitForCallParticipantVisible(participant));
+		}
 	}
 }
