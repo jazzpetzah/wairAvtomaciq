@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -158,14 +160,12 @@ public class ImageUtil {
 				+ 1, CvType.CV_32FC1);
 		Imgproc.matchTemplate(gref, gtpl, res, Imgproc.TM_CCOEFF_NORMED);
 
-		/* Uncomment this if you want to see the images
-		try {
-			ImageIO.write(refImage, "png", new File("refImage.png"));
-			ImageIO.write(tplImage, "png", new File("tplImage.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		**/
+		/*
+		 * Uncomment this if you want to see the images try {
+		 * ImageIO.write(refImage, "png", new File("refImage.png"));
+		 * ImageIO.write(tplImage, "png", new File("tplImage.png")); } catch
+		 * (IOException e) { e.printStackTrace(); }
+		 */
 		MinMaxLocResult minMaxLocResult = Core.minMaxLoc(res);
 		return minMaxLocResult.maxVal;
 	}
@@ -192,5 +192,38 @@ public class ImageUtil {
 		g.rotate(angle, w / 2, h / 2);
 		g.drawRenderedImage(image, null);
 		return result;
+	}
+
+	/**
+	 * Calculates average similarity value between several image frames taken
+	 * within millisecondsDuration with help of elementStateScreenshoter method
+	 * 
+	 * @param elementStateScreenshoter
+	 * @param millisecondsDuration
+	 *            it is recommended set it to 4000 ms or greater for reliable
+	 *            results
+	 * @return
+	 * @throws Exception
+	 */
+	public static double getAnimationThreshold(
+			ISupplierWithException elementStateScreenshoter,
+			long millisecondsDuration, long millisecondsDelay) throws Exception {
+		final List<BufferedImage> timelineScreenshots = new ArrayList<>();
+		final long millisecondsStarted = System.currentTimeMillis();
+		do {
+			timelineScreenshots.add(elementStateScreenshoter.getScreenshot()
+					.orElseThrow(IllegalStateException::new));
+			Thread.sleep(millisecondsDelay);
+		} while (System.currentTimeMillis() - millisecondsStarted <= millisecondsDuration);
+		int idx = 0;
+		final List<Double> thresholds = new ArrayList<>();
+		while (idx < timelineScreenshots.size() - 1) {
+			thresholds.add(getOverlapScore(timelineScreenshots.get(idx + 1),
+					timelineScreenshots.get(idx),
+					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION));
+			idx++;
+		}
+		return thresholds.stream().reduce(0.0, (x, y) -> x + y)
+				/ thresholds.size();
 	}
 }

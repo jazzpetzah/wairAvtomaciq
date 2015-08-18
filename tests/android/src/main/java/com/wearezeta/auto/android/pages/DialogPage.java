@@ -108,6 +108,10 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idDialogImages)
 	private WebElement image;
 
+	private static final String idFullScreenImage = "tiv__single_image_message__image";
+	@FindBy(id = idFullScreenImage)
+	private WebElement fullScreenImage;
+
 	@FindBy(id = idDialogImages)
 	private List<WebElement> imageList;
 
@@ -896,5 +900,15 @@ public class DialogPage extends AndroidPage {
 				String.format(
 						"Failed to swipe left the text cursor on input field after %s retries!",
 						MAX_SWIPE_RETRIES));
+	}
+
+	public Optional<BufferedImage> getRecentPictureScreenshot()
+			throws Exception {
+		return this.getElementScreenshot(image);
+	}
+
+	public Optional<BufferedImage> getPreviewPictureScreenshot()
+			throws Exception {
+		return this.getElementScreenshot(fullScreenImage);
 	}
 }

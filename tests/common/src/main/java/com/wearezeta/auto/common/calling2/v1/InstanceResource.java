@@ -13,7 +13,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -142,12 +141,14 @@ public class InstanceResource {
 		try {
 			return restHandler.httpGet(
 					buildDefaultRequest(target, MediaType.APPLICATION_JSON),
-					new GenericType<Instance>() {}, new int[] { HttpStatus.SC_OK });
+					new GenericType<Instance>() {
+					}, new int[] { HttpStatus.SC_OK });
 		} catch (RESTError ex) {
 			throw new CallingServiceInstanceException(ex);
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Flow> getFlows(Instance instance)
 			throws CallingServiceInstanceException {
 		final String target = String.format("%s/api/v%s/instance/%s/flows",
@@ -155,7 +156,8 @@ public class InstanceResource {
 		try {
 			return restHandler.httpGet(
 					buildDefaultRequest(target, MediaType.APPLICATION_JSON),
-					new GenericType<List>() {}, new int[] { HttpStatus.SC_OK });
+					new GenericType<List>() {
+					}, new int[] { HttpStatus.SC_OK });
 		} catch (RESTError ex) {
 			throw new CallingServiceInstanceException(ex);
 		}

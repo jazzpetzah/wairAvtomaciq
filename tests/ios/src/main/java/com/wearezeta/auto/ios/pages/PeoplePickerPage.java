@@ -110,7 +110,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void closeShareContactsIfVisible() throws Exception {
-		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), notNowButton)) {
+		if (DriverUtils.waitUntilElementClickable(getDriver(), notNowButton, 1)) {
 			clickNotNowButton();
 		}
 	}

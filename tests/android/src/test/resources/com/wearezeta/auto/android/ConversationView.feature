@@ -326,7 +326,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id3244 @staging
+  @id3244 @regression
   Scenario Outline: I can send sketch on photo
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -367,3 +367,21 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
+
+  @id165 @staging
+  Scenario Outline: Send GIF format pic
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given Contact <Contact> sends image <GifName> to single user conversation <Name>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I scroll to the bottom of conversation view
+    Then I see new picture in the dialog
+    And I see the picture in the dialog is animated
+    When I select last photo in dialog
+    Then I see the picture in the preview is animated
+
+    Examples: 
+      | Name      | Contact   | GifName      |
+      | user1Name | user2Name | animated.gif |

@@ -675,7 +675,7 @@ Feature: Conversation View
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
     And I click Close input options button
-    And I return to the chat list   
+    And I return to the chat list
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I press leave converstation button
@@ -683,7 +683,7 @@ Feature: Conversation View
     Then I press leave
     And I open archived conversations
     And I see user <GroupChatName> in contact list
-    And I tap on group chat with name <GroupChatName>   
+    And I tap on group chat with name <GroupChatName>
     And I see plus button next to text input
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
@@ -691,3 +691,49 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
+
+  @staging @id3265 @deployPictures
+  Scenario Outline: Verify drawing on image from single view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I see new photo in the dialog
+    And I wait for 30 seconds
+    And I swipe right on Dialog page
+    And I tap on contact name <Contact>
+    And I tap and hold image to open full screen
+    And I see Full Screen Page opened
+    And I press Sketch button on image fullscreen page
+    And I draw a random sketch
+    And I send my sketch
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   | Picture     | ConversationType |
+      | user1Name | user2Name | testing.jpg | single user      |
+
+  @staging @id3263
+  Scenario Outline: Verify drawing on the image from gallery
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose a picture from camera roll
+    And I press sketch button on camera roll page
+    And I draw a random sketch
+    And I send my sketch
+    And I press Confirm button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
