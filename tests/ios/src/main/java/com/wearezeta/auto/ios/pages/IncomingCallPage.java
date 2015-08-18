@@ -81,7 +81,7 @@ public class IncomingCallPage extends CallPage {
 	
 	public boolean isGroupCallingMessageVisible() throws Exception{
 		return DriverUtils.waitUntilLocatorAppears(getDriver(),
-				By.xpath(IOSLocators.IncomingCallPage.xpathGroupCallingMessage), 15);
+				By.name(IOSLocators.IncomingCallPage.nameCallingMessageUser), 15);
 	}
 
 	public boolean isJoinCallBarVisible() {
