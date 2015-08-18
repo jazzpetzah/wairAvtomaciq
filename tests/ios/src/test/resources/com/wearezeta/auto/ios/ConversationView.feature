@@ -715,10 +715,10 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
-      
+
   @staging @id3263
   Scenario Outline: Verify drawing on the image from gallery
-  	Given There are 2 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
@@ -733,9 +733,7 @@ Feature: Conversation View
     And I send my sketch
     And I press Confirm button
     Then I see new photo in the dialog
-    
+
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-    
-  
