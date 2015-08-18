@@ -17,7 +17,6 @@ import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.IOSConstants;
@@ -39,7 +38,7 @@ public class CommonIOSSteps {
 	private static boolean skipBeforeAfter = false;
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
-	private static final String DEFAULT_USER_PICTURE = PerformanceCommon.DEFAULT_PERF_IMAGE;
+	private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
 	private Date testStartedDate;
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
@@ -175,7 +174,7 @@ public class CommonIOSSteps {
 	public void IClickHideKeyboardBtn() throws Exception {
 		pagesCollecton.getCommonPage().clickHideKeyboarButton();
 	}
-	
+
 	/**
 	 * Click on Space button on keyboard
 	 * 
@@ -288,12 +287,12 @@ public class CommonIOSSteps {
 	@When("^(.*) silenced conversation with (.*)$")
 	public void MuteConversationWithUser(String userToNameAlias,
 			String mutedUserNameAlias) throws Exception {
-		mutedUserNameAlias = usrMgr.replaceAliasesOccurences(mutedUserNameAlias,
-				FindBy.NAME_ALIAS);
+		mutedUserNameAlias = usrMgr.replaceAliasesOccurences(
+				mutedUserNameAlias, FindBy.NAME_ALIAS);
 		commonSteps.MuteConversationWithUser(userToNameAlias,
 				mutedUserNameAlias);
 	}
-	
+
 	/**
 	 * Silences group conversation in backend
 	 * 
@@ -309,8 +308,7 @@ public class CommonIOSSteps {
 	@When("^(.*) silenced group conversation with (.*)$")
 	public void MuteGroupConversationWithUser(String userToNameAlias,
 			String groupName) throws Exception {
-		commonSteps.MuteConversationWithGroup(userToNameAlias,
-				groupName);
+		commonSteps.MuteConversationWithGroup(userToNameAlias, groupName);
 	}
 
 	/**
@@ -372,18 +370,14 @@ public class CommonIOSSteps {
 	}
 
 	@When("^User (\\w+) change avatar picture to (.*)$")
-	public void IChangeUserAvatarPicture(String userNameAlias, String path)
+	public void IChangeUserAvatarPicture(String userNameAlias, String name)
 			throws Exception {
-
-		String avatar = null;
-		String rootPath = CommonUtils
+		final String rootPath = CommonUtils
 				.getSimulatorImagesPathFromConfig(getClass());
-		if (path.equals("default")) {
-			avatar = DEFAULT_USER_PICTURE;
-		} else {
-			avatar = rootPath + "/" + path;
-		}
-		commonSteps.IChangeUserAvatarPicture(userNameAlias, avatar);
+		commonSteps.IChangeUserAvatarPicture(userNameAlias, rootPath
+				+ "/"
+				+ (name.toLowerCase().equals("default") ? DEFAULT_USER_AVATAR
+						: name));
 	}
 
 	@When("^User (\\w+) change name to (.*)$")
