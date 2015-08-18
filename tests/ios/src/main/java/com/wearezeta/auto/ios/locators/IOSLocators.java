@@ -429,6 +429,8 @@ public final class IOSLocators {
 	
 	public static final String nameContactListLoadBar = "LoadBar";
 	
+	public static final String nameFullScreenSketchButton = "sketchButton";
+	
 	
 	////////////////////////////
 	//Editing menu (right click)

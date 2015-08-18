@@ -59,10 +59,23 @@ public class ConnectToPageSteps {
 
 	@When("I click Connect button on connect to dialog")
 	public void IClickConnectButtonConnectDialog() throws Throwable {
-//		if (getConnectToPage().isKeyboardVisible()) {
-//			getConnectToPage().clickKeyboardGoButton();
-//		}
+		// if (getConnectToPage().isKeyboardVisible()) {
+		// getConnectToPage().clickKeyboardGoButton();
+		// }
 		getConnectToPage().sendInvitation();
+	}
+
+	/**
+	 * Verify if connect dialog closed
+	 * 
+	 * @step. ^I see Connect dialog is closed$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Connect dialog is closed$")
+	public void ISeeConnectDialogClosed() throws Exception {
+		Assert.assertFalse("Connect dialog still shown", getConnectToPage()
+				.isConnectButtonVisible());
 	}
 
 	@When("^I input message in connect to dialog and click Send button$")
@@ -80,7 +93,8 @@ public class ConnectToPageSteps {
 	}
 
 	/**
-	 * Inputs a message with a certain number of random characters by script on iPAD
+	 * Inputs a message with a certain number of random characters by script on
+	 * iPAD
 	 * 
 	 * @step. I input message in connect dialog with (.*) characters
 	 * 
@@ -91,11 +105,13 @@ public class ConnectToPageSteps {
 
 	@When("^I input message in connect dialog with (.*) characters$")
 	public void IInputMessageWithLength(int characters) throws Exception {
-		getConnectToPage().inputCharactersIntoConnectDialogByScript(characters, false);
+		getConnectToPage().inputCharactersIntoConnectDialogByScript(characters,
+				false);
 	}
-	
+
 	/**
-	 * Inputs a message with a certain number of random characters by script on iPhone
+	 * Inputs a message with a certain number of random characters by script on
+	 * iPhone
 	 * 
 	 * @step. ^I type message in connect dialog with (.*) characters$
 	 * 
@@ -106,11 +122,13 @@ public class ConnectToPageSteps {
 
 	@When("^I type message in connect dialog with (.*) characters$")
 	public void IInputMessageWithLengthPhone(int characters) throws Exception {
-		getConnectToPage().inputCharactersIntoConnectDialogByScript(characters, true);
+		getConnectToPage().inputCharactersIntoConnectDialogByScript(characters,
+				true);
 	}
 
 	/**
-	 * Fill in a message with a certain number of random characters from keyboard
+	 * Fill in a message with a certain number of random characters from
+	 * keyboard
 	 * 
 	 * @step. I fill in (.*) characters in connect dialog
 	 * 

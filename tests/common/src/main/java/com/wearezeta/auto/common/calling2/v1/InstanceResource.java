@@ -148,6 +148,7 @@ public class InstanceResource {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Flow> getFlows(Instance instance)
 			throws CallingServiceInstanceException {
 		final String target = String.format("%s/api/v%s/instance/%s/flows",

@@ -61,6 +61,7 @@ final class BackendREST {
 
 	static {
 		log.setLevel(Level.DEBUG);
+		System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
 	}
 
 	private static Client initClient(Configuration config) {
@@ -414,12 +415,12 @@ final class BackendREST {
 		for (AssetRequest request : reqBuilder.getRequests()) {
 			Builder webResource = buildDefaultRequestWithAuth(
 					request.getEndpoint(), MediaType.APPLICATION_JSON, token)
-			// .type(request.getContentType())
 					.header("Content-Disposition",
 							request.getContentDisposition()).header(
 							"Content-Length", request.getContentLength());
 			final String output = restHandlers.httpPost(webResource,
-					request.getPayload(), new int[] { HttpStatus.SC_CREATED });
+					request.getPayload(), request.getContentType(),
+					new int[] { HttpStatus.SC_CREATED });
 			final JSONObject jsonOutput = new JSONObject(output);
 			result.put(jsonOutput, request.getAssetDataObject());
 		}
@@ -525,8 +526,8 @@ final class BackendREST {
 				String.format("assets/%s/?conv_id=%s", assetId, convId),
 				MediaType.MEDIA_TYPE_WILDCARD, token);
 		final BufferedImage assetDownload = (BufferedImage) restHandlers
-				.httpGet(webResource, new GenericType<BufferedImage>() {},
-						new int[] { HttpStatus.SC_OK });
+				.httpGet(webResource, new GenericType<BufferedImage>() {
+				}, new int[] { HttpStatus.SC_OK });
 		return assetDownload;
 	}
 
