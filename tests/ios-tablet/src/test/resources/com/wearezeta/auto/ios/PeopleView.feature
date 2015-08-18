@@ -264,7 +264,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture                      | Color        | Color2       | ParticipantsNumber |
       | user1Name | user2Name | user3Name | GroupInfo     | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | 3                  |
 
-  @staging @id2432
+  @regression @id2432
   Scenario Outline: Check any users personal info in group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<ConnectedContact>
@@ -281,7 +281,7 @@ Feature: People View
       | Name      | Contact2  | ConnectedContact | GroupChatName   |
       | user1Name | user2Name | user3Name        | SingleInfoGroup |
 
-  @staging @id3007
+  @regression @id3007
   Scenario Outline: Check any users personal info in group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<ConnectedContact>
@@ -299,7 +299,7 @@ Feature: People View
       | Name      | Contact2  | ConnectedContact | GroupChatName   |
       | user1Name | user2Name | user3Name        | SingleInfoGroup |
 
-  @staging @id3085
+  @regression @id3085
   Scenario Outline: Verify you cant start 1:1 with unconnected user in group [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
@@ -317,7 +317,7 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @staging @id3086
+  @regression @id3086
   Scenario Outline: Verify you cant start 1:1 with unconnected user in group [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
@@ -357,7 +357,7 @@ Feature: People View
       | Name      | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | 1on1FromGroup |
 
-  @staging @id3087
+  @regression @id3087
   Scenario Outline: Verify opening 1-to-1 conversation from group conversation details [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -379,7 +379,7 @@ Feature: People View
       | Name      | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | 1on1FromGroup |
 
-  @staging @id2455
+  @regression @id2455
   Scenario Outline: Verify unsilince the conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User <Name> change accent color to <Color>
@@ -403,7 +403,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Color  | GroupChatName |
       | user1Name | user2Name | user3Name | Violet | SILENCE       |
 
-  @staging @id3208
+  @regression @id3208
   Scenario Outline: Verify unsilince the conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User <Name> change accent color to <Color>
@@ -427,7 +427,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Color  | GroupChatName |
       | user1Name | user2Name | user3Name | Violet | SILENCE       |
 
-  @staging @id2456
+  @regression @id2456
   Scenario Outline: Verify silence the conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User <Name> change accent color to <Color>
@@ -449,7 +449,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Color  | GroupChatName |
       | user1Name | user2Name | user3Name | Violet | SILENCE       |
 
-  @staging @id3209
+  @regression @id3209
   Scenario Outline: Verify silence the conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User <Name> change accent color to <Color>

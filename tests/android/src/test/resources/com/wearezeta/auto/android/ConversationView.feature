@@ -16,22 +16,6 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id317 @smoke
-  Scenario Outline: Send Hello and Hey to contact
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I swipe on text input
-    And I press Ping button
-    Then I see Ping message <Msg> in the dialog
-
-    Examples: 
-      | Name      | Contact   | Msg        |
-      | user1Name | user2Name | YOU PINGED |
-
   @id318 @smoke
   Scenario Outline: Send Camera picture to contact
     Given There are 2 users where <Name> is me
@@ -173,7 +157,7 @@ Feature: Conversation View
       | user1Name | user2Name | 畑 はたけ hatake field of crops |
 
   @id163 @regression
-  Scenario Outline: Send image using existing camera rolls (portrait) in 1:1 chat
+  Scenario Outline: Send existing image from gallery (portrait) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -194,7 +178,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @id162 @regression
-  Scenario Outline: Send image using existing camera rolls (landscape) in 1:1 chat
+  Scenario Outline: Send existing image from gallery (landscape) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -299,7 +283,7 @@ Feature: Conversation View
       | Name      | Contact1  | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @id3242 @verification
+  @id3242 @staging
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -313,6 +297,51 @@ Feature: Conversation View
     When I remember what my sketch looks like
     And I send my sketch
     Then I verify that my sketch is the same as what I drew
+
+    Examples: 
+      | Name      | Contact1  | NumColors |
+      | user1Name | user2Name | 6         |
+
+  @id3243 @staging
+  Scenario Outline: I can send sketch on image from gallery
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe on text input
+    And I press Add Picture button
+    And I press "Gallery" button
+    And I rotate UI to portrait
+    And I wait for 1 second
+    And I select picture for dialog
+    And I press "Sketch Image Paint" button
+    And I draw a sketch on image with <NumColors> colors
+    Then I remember what my sketch looks like
+    And I send my sketch
+    And I verify that my sketch is the same as what I drew
+
+    Examples: 
+      | Name      | Contact1  | NumColors |
+      | user1Name | user2Name | 6         |
+
+  @id3244 @regression
+  Scenario Outline: I can send sketch on photo
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I swipe on text input
+    And I press Add Picture button
+    And I press "Take Photo" button
+    And I press "Sketch Image Paint" button
+    And I draw a sketch on image with <NumColors> colors
+    Then I remember what my sketch looks like
+    And I send my sketch
+    And I verify that my sketch is the same as what I drew
 
     Examples: 
       | Name      | Contact1  | NumColors |
@@ -338,3 +367,21 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
+
+  @id165 @staging
+  Scenario Outline: Send GIF format pic
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given Contact <Contact> sends image <GifName> to single user conversation <Name>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I scroll to the bottom of conversation view
+    Then I see new picture in the dialog
+    And I see the picture in the dialog is animated
+    When I select last photo in dialog
+    Then I see the picture in the preview is animated
+
+    Examples: 
+      | Name      | Contact   | GifName      |
+      | user1Name | user2Name | animated.gif |

@@ -38,41 +38,6 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id2253 @smoke
-  Scenario Outline: Send Hello and Hey to contact in portrait mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
-    And I tap the conversation <Contact>
-    And I see the conversation view
-    And I swipe left on text input in the conversation view
-    When I tap Ping button in the conversation view
-    Then I see the ping message "<Message>" in the conversation view
-
-    Examples: 
-      | Name      | Contact   | Message    |
-      | user1Name | user2Name | YOU PINGED |
-
-  @id2239 @smoke
-  Scenario Outline: Send Hello and Hey to contact in landscape mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I sign in using my email
-    Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
-    And I tap the conversation <Contact>
-    And I see the conversation view
-    And I swipe left on text input in the conversation view
-    When I tap Ping button in the conversation view
-    Then I see the ping message "<Message>" in the conversation view
-
-    Examples: 
-      | Name      | Contact   | Message    |
-      | user1Name | user2Name | YOU PINGED |
 
   @id2254 @smoke
   Scenario Outline: Send Camera picture to contact in portrait mode
@@ -209,7 +174,7 @@ Feature: Conversation View
       | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
   @id2047 @smoke
-  Scenario Outline: See one-to-one pop-over
+  Scenario Outline: Check ability to open and close one-to-one pop-over in different ways
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to <Orientation>
@@ -228,11 +193,15 @@ Feature: Conversation View
     Then I see the Single user popover
     When I tap in the center of Single user popover
     Then I see the Single user popover
+    When I tap outside of Single user popover
+    Then I do not see the Single user popover
     When I tap Close Tools button on conversation view page
     And I tap the text input in the conversation view
     And I tap Show Tools button on conversation view page
     When I tap Show Details button on conversation view page
     Then I see the Single user popover
+    When I navigate back
+    Then I do not see the Single user popover
 
     Examples: 
       | Name      | Contact   | Orientation |
@@ -266,3 +235,4 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+

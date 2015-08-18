@@ -6,7 +6,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I press Open StartUI
+    When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -72,7 +72,7 @@ Feature: Connect
     And <Contact4> sent connection request to me
     And I see contact list with name <WaitingMess3>
     And I wait until <Contact3> exists in backend search results
-    And I press Open StartUI
+    And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact3>" into Search input on People Picker page
@@ -103,7 +103,7 @@ Feature: Connect
     Given <Contact3> sent connection request to <Name>
     When I see contact list with name <WaitingMess1>
     And I wait until <Contact3> exists in backend search results
-    And I press Open StartUI
+    And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact3>" into Search input on People Picker page
@@ -131,7 +131,7 @@ Feature: Connect
     And I press Ignore connect button
     And I do not see contact list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
-    And I press Open StartUI
+    And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -152,7 +152,7 @@ Feature: Connect
     Given I see Contact list with contacts
     When I see contact list with name <WaitingMess>
     And I wait until <Contact> exists in backend search results
-    And I press Open StartUI
+    And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -171,7 +171,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I press Open StartUI
+    When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -194,7 +194,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I press Open StartUI
+    When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -215,7 +215,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I press Open StartUI
+    When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -259,7 +259,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I press Open StartUI
+    When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -286,7 +286,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I press Open StartUI
+    When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -325,9 +325,8 @@ Feature: Connect
 
   @id676 @regression
   Scenario Outline: I want to block a person from 1:1 conversation
-    Given There are 3 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
-    Given <Contact2> is connected to <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
@@ -338,17 +337,18 @@ Feature: Connect
     And I confirm block
     Then I do not see contact list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
-    And I press Open StartUI
+    And I wait until <Contact1> is blocked in backend search results
+    And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
-    And I tap on user name found on People picker page <Contact>
+    And I tap on user name found on People picker page <Contact1>
     Then User info should be shown with Block button
 
     Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @id680 @regression
   Scenario Outline: I want to see user has been blocked within the Start UI
@@ -356,7 +356,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I press Open StartUI
+    When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -374,7 +374,7 @@ Feature: Connect
     And I wait for 5 seconds
     Then I do not see contact list with name <Contact>
     And I wait until <Contact> exists in backend search results
-    And I press Open StartUI
+    And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -396,7 +396,7 @@ Feature: Connect
     Given I see Contact list with contacts
     When User <Contact> blocks user Myself
     And I wait <TimeoutSeconds> seconds until <Contact> does not exist in backend search results
-    And I press Open StartUI
+    And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -414,7 +414,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     And I wait until <Contact1> exists in backend search results
-    And I press Open StartUI
+    And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
@@ -436,7 +436,7 @@ Feature: Connect
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
-    When I press Open StartUI
+    When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -479,7 +479,7 @@ Feature: Connect
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I press Open StartUI
+    When I open Search by tap
     And I see People picker page
     And I keep reopening People Picker until PYMK are visible
     And I remember the name of the first PYMK item
@@ -487,7 +487,7 @@ Feature: Connect
     Then I do not see the previously remembered PYMK item
     When I press Clear button
     Then I see contact list with the previously remembered PYMK item
-    When I press Open StartUI
+    When I open Search by tap
     Then I do not see the previously remembered PYMK item
 
     Examples: 
@@ -501,7 +501,7 @@ Feature: Connect
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    And I press Open StartUI
+    And I open Search by tap
     And I see People picker page
     And I keep reopening People Picker until PYMK are visible
     And I remember the name of the first PYMK item
@@ -512,7 +512,7 @@ Feature: Connect
     And I see People picker page
     And I press Clear button
     Then I see contact list with the previously remembered PYMK item
-    When I press Open StartUI
+    When I open Search by tap
     Then I do not see the previously remembered PYMK item
 
     Examples: 
@@ -525,7 +525,7 @@ Feature: Connect
     Given I add predefined users to address book
     Given I sign in using my email or phone number
     And I see Contact list with no contacts
-    When I press Open StartUI
+    When I open Search by tap
     Then I see recommended user <Contact1> in People Picker
     And I see recommended user <Contact2> in People Picker
 

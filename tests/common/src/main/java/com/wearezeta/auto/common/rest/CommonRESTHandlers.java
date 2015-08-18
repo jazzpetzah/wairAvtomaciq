@@ -3,13 +3,16 @@ package com.wearezeta.auto.common.rest;
 import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+
 import javax.ws.rs.ProcessingException;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation.Builder;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 public final class CommonRESTHandlers {
+
 	private RESTResponseHandler responseHandler;
 	private int maxRetries = 1;
 
@@ -34,20 +37,14 @@ public final class CommonRESTHandlers {
 		if (entity != null) {
 			if (entity instanceof String) {
 				result = ((String) entity);
-				if (result.length() == 0) {
-					result = EMPTY_LOG_RECORD;
-				} else if (result.length() > MAX_SINGLE_ENTITY_LENGTH_IN_LOG) {
-					result = result.substring(0,
-							MAX_SINGLE_ENTITY_LENGTH_IN_LOG) + " ...";
-				}
 			} else {
 				result = entity.toString();
-				if (result.length() == 0) {
-					result = EMPTY_LOG_RECORD;
-				} else if (result.length() > MAX_SINGLE_ENTITY_LENGTH_IN_LOG) {
-					result = result.substring(0,
-							MAX_SINGLE_ENTITY_LENGTH_IN_LOG) + " ...";
-				}
+			}
+			if (result.length() == 0) {
+				result = EMPTY_LOG_RECORD;
+			} else if (result.length() > MAX_SINGLE_ENTITY_LENGTH_IN_LOG) {
+				result = result.substring(0, MAX_SINGLE_ENTITY_LENGTH_IN_LOG)
+						+ " ...";
 			}
 		}
 		return result;
@@ -56,13 +53,20 @@ public final class CommonRESTHandlers {
 	public <T> T httpPost(Builder webResource, Object entity,
 			Class<T> responseEntityType, int[] acceptableResponseCodes)
 			throws RESTError {
+		return httpPost(webResource, MediaType.APPLICATION_JSON, entity,
+				responseEntityType, acceptableResponseCodes);
+	}
+
+	public <T> T httpPost(Builder webResource, String contentType,
+			Object entity, Class<T> responseEntityType,
+			int[] acceptableResponseCodes) throws RESTError {
 		log.debug("POST REQUEST...");
+		log.debug(String.format(" >>> Input data: %s", formatLogRecord(entity)));
 		Response response = null;
 		int tryNum = 0;
 		do {
 			try {
-				response = webResource.post(
-						Entity.entity(entity, MediaType.APPLICATION_JSON_TYPE),
+				response = webResource.post(Entity.entity(entity, contentType),
 						Response.class);
 				break;
 			} catch (ProcessingException e) {
@@ -73,15 +77,28 @@ public final class CommonRESTHandlers {
 		T responseEntity;
 		try {
 			responseEntity = response.readEntity(responseEntityType);
+			log.debug(String.format(" >>> Response: %s",
+					formatLogRecord(responseEntity)));
+			this.responseHandler.verifyRequestResult(response.getStatus(),
+					acceptableResponseCodes);
 		} catch (ProcessingException | IllegalStateException
 				| NullPointerException e) {
 			responseEntity = null;
 			log.warn(e.getMessage());
+
+			if (!"java.lang.String".equals(responseEntityType.getName())) {
+				try {
+					String responseString = response.readEntity(String.class);
+					log.debug(String.format(" >>> Response: %s",
+							formatLogRecord(responseString)));
+					this.responseHandler.verifyRequestResult(
+							response.getStatus(), acceptableResponseCodes);
+				} catch (ProcessingException | IllegalStateException
+						| NullPointerException ex) {
+					log.warn(ex.getMessage());
+				}
+			}
 		}
-		log.debug(String.format(" >>> Input data: %s\n >>> Response: %s",
-				formatLogRecord(entity), formatLogRecord(responseEntity)));
-		this.responseHandler.verifyRequestResult(response.getStatus(),
-				acceptableResponseCodes);
 		return responseEntity;
 	}
 
@@ -93,10 +110,19 @@ public final class CommonRESTHandlers {
 		return returnString;
 	}
 
+	public String httpPost(Builder webResource, Object entity,
+			String contentType, int[] acceptableResponseCodes) throws RESTError {
+		String returnString = httpPost(webResource, contentType, entity,
+				String.class, acceptableResponseCodes);
+		returnString = returnString == null ? "" : returnString;
+		return returnString;
+	}
+
 	public <T> T httpPut(Builder webResource, Object entity,
 			Class<T> responseEntityType, int[] acceptableResponseCodes)
 			throws RESTError {
 		log.debug("PUT REQUEST...");
+		log.debug(String.format(" >>> Input data: %s", formatLogRecord(entity)));
 		Response response = null;
 		int tryNum = 0;
 		do {
@@ -113,15 +139,27 @@ public final class CommonRESTHandlers {
 		T responseEntity;
 		try {
 			responseEntity = response.readEntity(responseEntityType);
+			log.debug(String.format(" >>> Response: %s",
+					formatLogRecord(responseEntity)));
+			this.responseHandler.verifyRequestResult(response.getStatus(),
+					acceptableResponseCodes);
 		} catch (ProcessingException | IllegalStateException
 				| NullPointerException e) {
 			responseEntity = null;
 			log.warn(e.getMessage());
+			if (!"java.lang.String".equals(responseEntityType.getName())) {
+				try {
+					String responseString = response.readEntity(String.class);
+					log.debug(String.format(" >>> Response: %s",
+							formatLogRecord(responseString)));
+					this.responseHandler.verifyRequestResult(
+							response.getStatus(), acceptableResponseCodes);
+				} catch (ProcessingException | IllegalStateException
+						| NullPointerException ex) {
+					log.warn(ex.getMessage());
+				}
+			}
 		}
-		log.debug(String.format(" >>> Input data: %s\n >>> Response: %s",
-				formatLogRecord(entity), formatLogRecord(responseEntity)));
-		this.responseHandler.verifyRequestResult(response.getStatus(),
-				acceptableResponseCodes);
 		return responseEntity;
 	}
 
@@ -150,15 +188,27 @@ public final class CommonRESTHandlers {
 		T responseEntity;
 		try {
 			responseEntity = response.readEntity(responseEntityType);
+			log.debug(String.format(" >>> Response: %s",
+					formatLogRecord(responseEntity)));
+			this.responseHandler.verifyRequestResult(response.getStatus(),
+					acceptableResponseCodes);
 		} catch (ProcessingException | IllegalStateException
 				| NullPointerException e) {
 			responseEntity = null;
 			log.warn(e.getMessage());
+			if (!"java.lang.String".equals(responseEntityType.getName())) {
+				try {
+					String responseString = response.readEntity(String.class);
+					log.debug(String.format(" >>> Response: %s",
+							formatLogRecord(responseString)));
+					this.responseHandler.verifyRequestResult(
+							response.getStatus(), acceptableResponseCodes);
+				} catch (ProcessingException | IllegalStateException
+						| NullPointerException ex) {
+					log.warn(ex.getMessage());
+				}
+			}
 		}
-		log.debug(String.format(" >>> Response: %s",
-				formatLogRecord(responseEntity)));
-		this.responseHandler.verifyRequestResult(response.getStatus(),
-				acceptableResponseCodes);
 		return responseEntity;
 	}
 
@@ -170,8 +220,9 @@ public final class CommonRESTHandlers {
 		return returnString;
 	}
 
-	public <T> T httpGet(Builder webResource, Class<T> responseEntityType,
-			int[] acceptableResponseCodes) throws RESTError {
+	public <T> T httpGet(Builder webResource,
+			GenericType<T> responseEntityType, int[] acceptableResponseCodes)
+			throws RESTError {
 		log.debug("GET REQUEST...");
 		Response response = null;
 		int tryNum = 0;
@@ -187,22 +238,35 @@ public final class CommonRESTHandlers {
 		T responseEntity;
 		try {
 			responseEntity = response.readEntity(responseEntityType);
+			log.debug(String.format(" >>> Response: %s",
+					formatLogRecord(responseEntity)));
+			this.responseHandler.verifyRequestResult(response.getStatus(),
+					acceptableResponseCodes);
 		} catch (ProcessingException | IllegalStateException
 				| NullPointerException e) {
 			responseEntity = null;
 			log.warn(e.getMessage());
+			if (!"java.lang.String".equals(responseEntityType.getRawType()
+					.getName())) {
+				try {
+					String responseString = response.readEntity(String.class);
+					log.debug(String.format(" >>> Response: %s",
+							formatLogRecord(responseString)));
+					this.responseHandler.verifyRequestResult(
+							response.getStatus(), acceptableResponseCodes);
+				} catch (ProcessingException | IllegalStateException
+						| NullPointerException ex) {
+					log.warn(ex.getMessage());
+				}
+			}
 		}
-		log.debug(String.format(" >>> Response: %s",
-				formatLogRecord(responseEntity)));
-		this.responseHandler.verifyRequestResult(response.getStatus(),
-				acceptableResponseCodes);
 		return responseEntity;
 	}
 
 	public String httpGet(Builder webResource, int[] acceptableResponseCodes)
 			throws RESTError {
-		String returnString = httpGet(webResource, String.class,
-				acceptableResponseCodes);
+		String returnString = httpGet(webResource, new GenericType<String>() {
+		}, acceptableResponseCodes);
 		returnString = returnString == null ? "" : returnString;
 		return returnString;
 	}

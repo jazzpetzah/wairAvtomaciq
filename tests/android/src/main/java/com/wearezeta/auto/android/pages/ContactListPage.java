@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -37,6 +38,10 @@ public class ContactListPage extends AndroidPage {
 			.format("%s/parent::*//*[@id='tv_conv_list_media_player']",
 					xpathContactByName.apply(convoName));
 
+	private static final Function<String, String> xpathMissedCallNotificationByConvoName = convoName -> String
+			.format("%s/parent::*//*[@id='sci__list__missed_call']",
+					xpathContactByName.apply(convoName));
+
 	@FindBy(id = PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
@@ -65,7 +70,7 @@ public class ContactListPage extends AndroidPage {
 	private List<WebElement> frameLayout;
 
 	@FindBy(id = PeoplePickerPage.idPickerSearch)
-	private WebElement openStartUI;
+	private WebElement searchBox;
 
 	private static final String idSelfUserAvatar = "civ__searchbox__self_user_avatar";
 	@FindBy(id = idSelfUserAvatar)
@@ -246,8 +251,8 @@ public class ContactListPage extends AndroidPage {
 		return returnBySwipe(SwipeDirection.DOWN);
 	}
 
-	public PeoplePickerPage pressOpenStartUI() throws Exception {
-		openStartUI.click();
+	public PeoplePickerPage tapOnSearchBox() throws Exception {
+		searchBox.click();
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
 
@@ -282,8 +287,8 @@ public class ContactListPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
-	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 2;
+	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 30;
+	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 4;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
 		CommonSteps.getInstance().WaitForTime(1);
@@ -342,7 +347,7 @@ public class ContactListPage extends AndroidPage {
 		return new PersonalInfoPage(getLazyDriver());
 	}
 
-	public PeoplePickerPage openPeoplePicker() throws Exception {
+	public PeoplePickerPage tapOnSearchButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(), searchButton);
 		searchButton.click();
 		return new PeoplePickerPage(getLazyDriver());
@@ -378,5 +383,54 @@ public class ContactListPage extends AndroidPage {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
 				.format("Conversation menu item '%s' could not be found on the current screen");
 		getDriver().findElement(locator).click();
+	}
+
+	public boolean waitUntilMissedCallNotificationVisible(String convoName)
+			throws Exception {
+		final By locator = By.xpath(xpathMissedCallNotificationByConvoName
+				.apply(convoName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilMissedCallNotificationInvisible(String convoName)
+			throws Exception {
+		final By locator = By.xpath(xpathMissedCallNotificationByConvoName
+				.apply(convoName));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
+	public void doShortSwipeDown() throws Exception {
+		final Point coords = contactListFrame.getLocation();
+		final Dimension elementSize = contactListFrame.getSize();
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height / 10, 500);
+	}
+
+	public void doLongSwipeDown() throws Exception {
+		final Point coords = contactListFrame.getLocation();
+		final Dimension elementSize = contactListFrame.getSize();
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height / 4 * 3, 2000);
+	}
+
+	public Optional<BufferedImage> getScreenshotOfPlayPauseButtonNextTo(
+			String convoName) throws Exception {
+		final By locator = By.xpath(xpathPlayPauseButtonByConvoName
+				.apply(convoName));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("PlayPause button is not visible next to the '%s' conversation item",
+						convoName);
+		return this.getElementScreenshot(this.getDriver().findElement(locator));
+	}
+
+	public void tapPlayPauseMediaButton(String convoName) throws Exception {
+		final By locator = By.xpath(xpathPlayPauseButtonByConvoName
+				.apply(convoName));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("PlayPause button is not visible next to the '%s' conversation item",
+						convoName);
+		this.getDriver().findElement(locator).click();
 	}
 }

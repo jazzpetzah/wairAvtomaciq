@@ -287,16 +287,22 @@ public class ConversationPageSteps {
 	 * @throws Exception
 	 *
 	 */
-	@Then("^I see (.*) action for (.*) in conversation$")
-	public void ThenISeeActionForContactInConversation(String message,
-			String contacts) throws Exception {
+	@Then("^I( do not)? see (.*) action for (.*) in conversation$")
+	public void ThenISeeActionForContactInConversation(String doNot,
+			String message, String contacts) throws Exception {
 		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);
 		parts.addAll(CommonSteps.splitAliases(contacts));
-		assertThat("Check action",
-				PagesCollection.conversationPage.getLastActionMessage(),
-				containsString(message));
+		if (doNot == null) {
+			assertThat("Check action",
+					PagesCollection.conversationPage.getLastActionMessage(),
+					containsString(message));
+		} else {
+			assertThat("Check action",
+					PagesCollection.conversationPage.getLastActionMessage(),
+					not(containsString(message)));
+		}
 	}
 
 	/**

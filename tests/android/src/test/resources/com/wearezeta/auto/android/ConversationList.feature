@@ -45,28 +45,6 @@ Feature: Conversation List
       | Name      | Contact1  | SoudCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id2177 @regression
-  Scenario Outline: I can open and close people picker by UI button or swipe
-    Given There are 2 users where <Name> is me
-    # We need at least 1 user in the convo list, otherwise it will be impossible to swipe
-    Given <Contact> is connected to me
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I press Open StartUI
-    And I see People picker page
-    And I press Clear button
-    Then I see Contact list with contacts
-    And I do not see TOP PEOPLE
-    When I press Open StartUI
-    And I see People picker page
-    And I swipe down people picker
-    Then I see Contact list with contacts
-    And I do not see TOP PEOPLE
-
-    Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @id1514 @regression
   Scenario Outline: Verify unsilence the conversation
     Given There are 2 users where <Name> is me
@@ -88,3 +66,29 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @id1505 @staging
+  Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I tap on text input
+    And I type the message "<SoudCloudLink>" and send it
+    And I scroll to the bottom of conversation view
+    And I press PlayPause media item button
+    And I navigate back from dialog page
+    Then I see PlayPause media content button for conversation <Contact1>
+    When I tap on contact name <Contact2>
+    And I see dialog page
+    And I navigate back from dialog page
+    Then I see PlayPause media content button for conversation <Contact1>
+    When I remember the state of PlayPause button next to the <Contact1> conversation
+    And I tap PlayPause button next to the <Contact1> conversation
+    Then I see the state of PlayPause button next to the <Contact1> conversation is changed
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
+      | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |

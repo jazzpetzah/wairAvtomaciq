@@ -485,6 +485,19 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
+	 * Clicks on the open conversation button when viewing the user details of
+	 * already connected user from a group chat
+	 * 
+	 * @step. ^I click Open Conversation button on connected user page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I click Open Conversation button on connected user page$")
+	public void IClickOpenConversationButton() throws Exception {
+		getOtherUserPersonalInfoPage().tapAddContactBtn();
+	}
+
+	/**
 	 * Clicks on the pending button when viewing the user details of a pending
 	 * user from a group chat
 	 * 

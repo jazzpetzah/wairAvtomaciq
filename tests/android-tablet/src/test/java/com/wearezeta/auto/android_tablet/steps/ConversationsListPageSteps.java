@@ -159,4 +159,67 @@ public class ConversationsListPageSteps {
 		}
 	}
 
+	/**
+	 * Verify whether missed call indicator is shown near the corresponding
+	 * convo list item
+	 * 
+	 * @step. ^I (do not )?see missed call notification near (.*) conversation
+	 *        list item$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if "do not " part does not exist in the step
+	 * @param convoName
+	 *            conversation name/alias
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see missed call notification near (.*) conversations list item$")
+	public void ISeeMissedCallNotification(String shouldNotSee, String convoName)
+			throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
+		if (shouldNotSee == null) {
+			Assert.assertTrue(
+					String.format(
+							"Missed call notification is not visible for conversations list item '%s'",
+							convoName), getConversationsListPage()
+							.waitUntilMissedCallNotificationVisible(convoName));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"Missed call notification is still visible for conversations list item '%s'",
+							convoName),
+					getConversationsListPage()
+							.waitUntilMissedCallNotificationInvisible(convoName));
+		}
+	}
+
+	private static enum SwipeType {
+		SHORT, LONG;
+	}
+
+	/**
+	 * Perform long/short swipe down on conversations list
+	 * 
+	 * @step. ^I do (long|short) swipe down on conversations list$
+	 *
+	 * @param swipeTypeStr
+	 *            see SwipeType enum for the list of available values
+	 * @throws Exception
+	 */
+	@When("^I do (long|short) swipe down on conversations list$")
+	public void IDoSwipeDown(String swipeTypeStr) throws Exception {
+		final SwipeType swipeType = SwipeType.valueOf(swipeTypeStr
+				.toUpperCase());
+		switch (swipeType) {
+		case SHORT:
+			getConversationsListPage().doShortSwipeDown();
+			break;
+		case LONG:
+			getConversationsListPage().doLongSwipeDown();
+			break;
+		default:
+			throw new IllegalStateException(String.format(
+					"Swipe type '%s' is not supported", swipeTypeStr));
+		}
+	}
 }

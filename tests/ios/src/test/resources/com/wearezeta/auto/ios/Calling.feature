@@ -19,7 +19,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @staging @id908
+  @regression @id908
   Scenario Outline: Verify starting outgoing call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -55,7 +55,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @calling_basic @id896
+  @calling_basic @regression @id896
   Scenario Outline: Verify ignoring of incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -70,7 +70,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @calling_basic @id2093
+  @calling_basic @regression @id2093
   Scenario Outline: Verify accepting incoming call
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -145,7 +145,7 @@ Feature: Calling
 
     Examples: 
       | Name      | Contact   | CallBackend | Timeout |
-      | user1Name | user2Name | webdriver   | 120     |
+      | user1Name | user2Name | webdriver   | 960     |
 
   @calling_basic @id2296
   Scenario Outline: Screenlock device when in the call
@@ -160,7 +160,7 @@ Feature: Calling
     And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
-    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    #And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I lock screen for 5 seconds
     And I see mute call, end call and speakers buttons
     And I end started call
@@ -182,6 +182,7 @@ Feature: Calling
     And I swipe the text input cursor
     And I press call button
     And I see mute call, end call and speakers buttons
+    And I wait for 5 seconds
     And <Contact2> calls me using <CallBackend2>
     And I dont see incoming calling message from contact <Contact2>
     And <Contact1> accepts next incoming call automatically
@@ -256,14 +257,248 @@ Feature: Calling
     Then I dont see calling page
     And <Contact> verifies that waiting instance status is changed to ready in <Timeout> seconds
     And <Contact> calls me using <CallBackend2>
+    And I wait for 2 seconds
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
     And I see mute call, end call and speakers buttons
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And <Contact> stops all calls to me
     And I dont see calling page
-    And <Contact> verifies that call status to me is changed to inactive in <Timeout> seconds
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
-      | user1Name | user2Name | webdriver   | autocall     | 120     |
+      | user1Name | user2Name | webdriver   | autocall     | 30      |
+
+  @regression @id2682
+  Scenario Outline: Verify accepting group call in foreground
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact2> starts waiting instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> starts waiting instance using <CallBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> starts waiting instance using <CallBackend>
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And <Contact1> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I accept incoming call
+    Then I see mute call, end call and speakers buttons
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | chrome      | autocall     |
+
+  @regression @id2683
+  Scenario Outline: Verify ignoring group call in foreground
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given <Contact2> starts waiting instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And <Contact1> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I ignore incoming call
+    Then I dont see incoming call page
+    Then I see Join Call bar
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName     | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | IgnoringGROUPCALL | firefox     | autocall     |
+      | user1Name | user2Name | user3Name | IgnoringGROUPCALL | chrome      | autocall     |
+
+  @regression @id2686
+  Scenario Outline: Verify receiving group call during 1-to-1 call (and accepting it)
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When <Contact1> calls me using <CallBackend2>
+    And I accept incoming call
+    Then I see mute call, end call and speakers buttons
+    When <Contact2> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I accept incoming call
+    And I see Accept second call alert
+    And I press End Call button on alert
+    Then I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars in the group call bar
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | GROUPCALL     | firefox     | autocall     | 4               |
+
+  @regression @id2700
+  Scenario Outline: Verify renaming group during group call
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And <Contact2> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I accept incoming call
+    And I see mute call, end call and speakers buttons
+    And I open group conversation details
+    And I change group conversation name to <ChatName>
+    Then I see correct conversation name <ChatName>
+    And I exit the group info page
+    And I see you renamed conversation to <ChatName> message shown in Group Chat
+    Then I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars in the group call bar
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | ChatName | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RenameGROUPCALL | firefox     | autocall     | NewName  | 5               |
+
+  @staging @id2696
+  Scenario Outline: Verify leaving group conversation during the group call
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact2> starts waiting instance using <CallBackend>
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> starts waiting instance using <CallBackend>
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> starts waiting instance using <CallBackend>
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And <Contact1> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I accept incoming call
+    And I open group conversation details
+    And I press leave converstation button
+    And I see leave conversation alert
+    Then I press leave
+    And I open archived conversations
+    And I see user <GroupChatName> in contact list
+    And I tap on group chat with name <GroupChatName>
+    Then I dont see calling page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName    | CallBackend | CallBackend2 |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | LEAVEINGROUPCALL | firefox     | autocall     |
+
+  @regression @id2678
+  Scenario Outline: Verify leaving and coming back to the call in 20 sec
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And <Contact2> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I accept incoming call
+    And I see mute call, end call and speakers buttons
+    And I see <NumberOfAvatars> avatars in the group call bar
+    And I end started call
+    Then I see Join Call bar
+    And I wait for 20 seconds
+    And I see Join Call bar
+    And I rejoin call by clicking Join button
+    Then I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars in the group call bar
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RejoinGROUPCALL | firefox     | autocall     | 5               |
+
+  @regression @id2690
+  Scenario Outline: Verify receiving 1-to-1 call during group call (and accepting it)
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When <Contact2> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I accept incoming call
+    Then I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars in the group call bar
+    When <Contact5> calls me using <CallBackend2>
+    And I see incoming calling message for contact <Contact5>
+    And I accept incoming call
+    And I see Accept second call alert
+    And I press End Call button on alert
+    Then I see mute call, end call and speakers buttons
+    Then I see <NumberOf1on1CallAvatars> avatars in the group call bar
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | NumberOf1on1CallAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | GROUPCALL     | firefox     | autocall     | 5               | 2                       |
+
+  @regression @id3270
+  Scenario Outline: Verify possibility of starting group call
+    Given There are 10 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I press call button
+    Then I see mute call, end call and speakers buttons
+    Then I see calling to a group message
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | GroupChatName  | CallBackend | CallBackend2 | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | StartGROUPCALL | firefox     | autocall     | 5               |
+
+  @regression @id2684
+  Scenario Outline: Verify possibility to join call after 45 seconds of starting it
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    And <Contact2> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I wait for 45 seconds
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I see Join Call bar
+    And I rejoin call by clicking Join button
+    Then I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars in the group call bar
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | chrome      | autocall     | 5               |

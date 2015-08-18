@@ -8,12 +8,14 @@ import com.wearezeta.auto.common.calling2.v1.model.CallRequest;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import com.wearezeta.auto.common.rest.RESTError;
+
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
@@ -22,15 +24,18 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.Configuration;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpStatus;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.filter.LoggingFilter;
 
 public class CallResource {
 
 	private static final org.apache.log4j.Logger LOG = ZetaLogger
-			.getLog(CallingServiceClient.class.getSimpleName());
+			.getLog(CallingServiceClient.class.getName());
 
 	private static final int MAX_REQUEST_RETRY_COUNT = 2;
 
@@ -41,8 +46,12 @@ public class CallResource {
 			CallResource::verifyRequestResult, MAX_REQUEST_RETRY_COUNT);
 
 	public CallResource(String callingServiceAdress,
-			String callingServiceVersion) {
+			String callingServiceVersion, boolean trace) {
 		ClientConfig config = new ClientConfig();
+		if (trace) {
+			config.register(new LoggingFilter(java.util.logging.Logger
+					.getLogger(InstanceResource.class.getName()), true));
+		}
 		client = initClient(config);
 		this.callingServiceAdress = callingServiceAdress;
 		this.callingServiceVersion = callingServiceVersion;
@@ -148,7 +157,8 @@ public class CallResource {
 		try {
 			return restHandler.httpGet(
 					buildDefaultRequest(target, MediaType.APPLICATION_JSON),
-					Call.class, new int[] { HttpStatus.SC_OK });
+					new GenericType<Call>() {
+					}, new int[] { HttpStatus.SC_OK });
 		} catch (RESTError ex) {
 			throw new CallingServiceCallException(ex);
 		}

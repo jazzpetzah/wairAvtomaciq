@@ -249,7 +249,7 @@ public class LoginPage extends IOSPage {
 		} catch (WebDriverException ex) {
 		}
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.ContactListPage.nameSelfButton));
+				By.name(IOSLocators.ContactListPage.nameSelfButton), 1);
 	}
 
 	@Override

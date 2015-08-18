@@ -41,7 +41,7 @@ public class ConversationViewPageSteps {
 		Assert.assertTrue("The conversation view is not currently visible",
 				getConversationViewPage().waitUntilVisible());
 	}
-	
+
 	/**
 	 * Tap the Show Tools button on conversation view
 	 * 
@@ -53,7 +53,7 @@ public class ConversationViewPageSteps {
 	public void ITapShowToolsButton() throws Exception {
 		getConversationViewPage().tapShowInstrumentsButton();
 	}
-	
+
 	/**
 	 * Tap the Close Tools button on conversation view
 	 * 
@@ -123,6 +123,29 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
+	 * Verify whether the particular outgoing invitation message is visible in
+	 * conversation view
+	 * 
+	 * @step. ^I see the outgoing invitation message \"(.*)\" on [Cc]onversation
+	 *        view page$
+	 * 
+	 * @param expectedMessage
+	 *            the expected message text
+	 * @throws Exception
+	 */
+	@Then("^I see the outgoing invitation message \"(.*)\" on [Cc]onversation view page$")
+	public void ISeeOutgoungInvitationMessage(String expectedMessage)
+			throws Exception {
+		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(
+				String.format(
+						"The outgoing invitation message containing text '%s' is not visible in the conversation view",
+						expectedMessage), getConversationViewPage()
+						.waitForOutgoingInvitationMessage(expectedMessage));
+	}
+
+	/**
 	 * Tap the text input field in the conversation view to start typing
 	 * 
 	 * @step. ^I tap (?:the |\\s*)text input in (?:the |\\s*)[Cc]onversation
@@ -133,19 +156,6 @@ public class ConversationViewPageSteps {
 	@And("^I tap (?:the |\\s*)text input in (?:the |\\s*)[Cc]onversation view$")
 	public void ITapTheTextInput() throws Exception {
 		getConversationViewPage().tapTextInput();
-	}
-	
-	/**
-	 * Tap the isTyping avatar near the text input field 
-	 * 
-	 * @step. ^I tap IsTyping avatar in (?:the |\\s*)[Cc]onversation
-	 *        view$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I tap IsTyping avatar in (?:the |\\s*)[Cc]onversation view$")
-	public void ITapIsTypingAvatar() throws Exception {
-		getConversationViewPage().tapIsTypingAvatar();
 	}
 
 	/**
@@ -179,19 +189,32 @@ public class ConversationViewPageSteps {
 	/**
 	 * Verify whether the message is visible in the conversation view
 	 * 
-	 * @step. ^I see the message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$
+	 * @step. ^I (do not )?see the message \"(.*)\" in (?:the
+	 *        |\\s*)[Cc]onversation view$
 	 * 
 	 * @param expectedMessage
 	 *            the message to check
+	 * @param shouldNotSee
+	 *            equals to null if the message should be visible in the convo
+	 *            view
 	 * @throws Exception
 	 */
-	@Then("^I see the message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
-	public void ISeeMessage(String expectedMessage) throws Exception {
-		Assert.assertTrue(
-				String.format(
-						"The expected message '%s' is not visible in the conversation view",
-						expectedMessage), getConversationViewPage()
-						.waitUntilMessageIsVisible(expectedMessage));
+	@Then("^I (do not )?see the message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeeMessage(String shouldNotSee, String expectedMessage)
+			throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(
+					String.format(
+							"The expected message '%s' is not visible in the conversation view",
+							expectedMessage), getConversationViewPage()
+							.waitUntilMessageIsVisible(expectedMessage));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"The expected message '%s' is visible in the conversation view, but it should not",
+							expectedMessage), getConversationViewPage()
+							.waitUntilMessageIsNotVisible(expectedMessage));
+		}
 	}
 
 	/**
@@ -274,19 +297,50 @@ public class ConversationViewPageSteps {
 	/**
 	 * Verify whether ping message is visible in the current conversation view
 	 * 
-	 * @step. ^I see the [Pp]ing message \"<(.*)>\" in (?:the
+	 * @step. ^I (do not )?see the [Pp]ing message \"<(.*)>\" in (?:the
 	 *        |\\s*)[Cc]onversation view$
 	 * 
+	 * @param shouldNotBeVisible
+	 *            equals to null if "do not" part does not exist in the step
+	 *            signature
 	 * @param expectedMessage
 	 *            the text of expected ping message
 	 * @throws Exception
 	 */
-	@Then("^I see the [Pp]ing message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
-	public void ISeePingMessage(String expectedMessage) throws Exception {
+	@Then("^I (do not )?see the [Pp]ing message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeePingMessage(String shouldNotBeVisible,
+			String expectedMessage) throws Exception {
+		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
+				FindBy.NAME_ALIAS);
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue(
+					String.format(
+							"The expected ping message '%s' is not visible in the conversation view",
+							expectedMessage), getConversationViewPage()
+							.waitUntilPingMessageIsVisible(expectedMessage));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"The ping message '%s' is still visible in the conversation view",
+							expectedMessage), getConversationViewPage()
+							.waitUntilPingMessageIsInvisible(expectedMessage));
+		}
+	}
+
+	/**
+	 * Verify whether missed call notification is visible in conversation view
+	 * 
+	 * @step. ^I see missed (?:group |\\s*)call notification in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see missed (?:group |\\s*)call notification in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeeMissedCallNotification() throws Exception {
+		// Notifications for both group and 1:1 calls have the same locators so
+		// we don't really care
 		Assert.assertTrue(
-				String.format(
-						"The expected ping message '%s' is not visible in the conversation view",
-						expectedMessage), getConversationViewPage()
-						.waitUntilPingMessageIsVisible(expectedMessage));
+				"The expected missed call notification is not visible in the conversation view",
+				getConversationViewPage().waitUntilGCNIsVisible());
 	}
 }

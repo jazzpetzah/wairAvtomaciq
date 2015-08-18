@@ -1,8 +1,11 @@
 package com.wearezeta.auto.android.steps;
 
+import java.awt.image.BufferedImage;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.*;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -120,15 +123,15 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Presses on search bar in the conversation List to open start UI Sets the
-	 * people picker page
+	 * Presses on search bar in the conversation List to open search (people
+	 * picker)
 	 * 
-	 * @step. ^I press Open StartUI$
+	 * @step. ^I open Search by tap$
 	 * @throws Exception
 	 */
-	@When("^I press Open StartUI")
-	public void WhenIPressOpenStartUI() throws Exception {
-		getContactListPage().pressOpenStartUI();
+	@When("^I open Search by tap")
+	public void WhenITapOnSearchBox() throws Exception {
+		getContactListPage().tapOnSearchBox();
 	}
 
 	/**
@@ -220,6 +223,72 @@ public class ContactListPageSteps {
 		}
 	}
 
+	private BufferedImage previousPlayPauseBtnState = null;
+
+	/**
+	 * Save the current state of PlayPause button into the internal data
+	 * structure
+	 * 
+	 * @step. ^I remember the state of PlayPause button next to the (.*)
+	 *        conversation$
+	 * 
+	 * @param convoName
+	 *            conversation name for which the screenshot should be taken
+	 * @throws Exception
+	 */
+	@When("^I remember the state of PlayPause button next to the (.*) conversation$")
+	public void IRememberTheStateOfPlayPauseButton(String convoName)
+			throws Exception {
+		convoName = usrMgr.findUserByNameOrNameAlias(convoName).getName();
+		previousPlayPauseBtnState = getContactListPage()
+				.getScreenshotOfPlayPauseButtonNextTo(convoName).orElseThrow(
+						IllegalStateException::new);
+	}
+
+	private final static double MAX_SIMILARITY_THRESHOLD = 0.6;
+	private final static int STATE_CHANGE_TIMEOUT_SECONDS = 5;
+
+	/**
+	 * Verify whether the current screenshot of PlayPause button is different
+	 * from the previous one
+	 * 
+	 * @step. ^I see the state of PlayPause button next to the (.*) conversation
+	 *        is changed$
+	 * 
+	 * @param convoName
+	 *            conversation name/alias
+	 * @throws Exception
+	 */
+	@Then("^I see the state of PlayPause button next to the (.*) conversation is changed$")
+	public void ISeeThePlayPauseButtonStateIsChanged(String convoName)
+			throws Exception {
+		if (previousPlayPauseBtnState == null) {
+			throw new IllegalStateException(
+					"Please take a screenshot of previous button state first");
+		}
+		convoName = usrMgr.findUserByNameOrNameAlias(convoName).getName();
+		final long millisecondsStarted = System.currentTimeMillis();
+		double score = 1;
+		while (System.currentTimeMillis() - millisecondsStarted <= STATE_CHANGE_TIMEOUT_SECONDS * 1000) {
+			final BufferedImage currentPlayPauseBtnState = getContactListPage()
+					.getScreenshotOfPlayPauseButtonNextTo(convoName)
+					.orElseThrow(IllegalStateException::new);
+			score = ImageUtil.getOverlapScore(currentPlayPauseBtnState,
+					previousPlayPauseBtnState,
+					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+			if (score < MAX_SIMILARITY_THRESHOLD) {
+				break;
+			}
+			Thread.sleep(500);
+		}
+		Assert.assertTrue(
+				String.format(
+						"The current and previous states of PlayPause button seems to be very similar after %d seconds (%.2f >= %.2f)",
+						STATE_CHANGE_TIMEOUT_SECONDS, score,
+						MAX_SIMILARITY_THRESHOLD),
+				score < MAX_SIMILARITY_THRESHOLD);
+	}
+
 	/**
 	 * Verify that Play/Pause media content button is visible in Conversation
 	 * List
@@ -239,16 +308,32 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Open People Picker by clicking the Search button in the right top corner
-	 * of convo list
+	 * Tap PlayPause button next to the particular conversation name
 	 * 
-	 * @step. ^I open People Picker$
+	 * @step. ^I tap PlayPause button next to the (.*) conversation$
+	 * 
+	 * @param convoName
+	 *            conversation name/alias
+	 * @throws Exception
+	 */
+	@When("^I tap PlayPause button next to the (.*) conversation$")
+	public void ITapPlayPauseButton(String convoName) throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
+		getContactListPage().tapPlayPauseMediaButton(convoName);
+	}
+
+	/**
+	 * Open Search by clicking the Search button in the right top corner of
+	 * convo list
+	 * 
+	 * @step. ^I open Search by UI button$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I open People Picker$")
+	@When("^I open Search by UI button$")
 	public void IOpenPeoplePicker() throws Exception {
-		getContactListPage().openPeoplePicker();
+		getContactListPage().tapOnSearchButton();
 	}
 
 	/**

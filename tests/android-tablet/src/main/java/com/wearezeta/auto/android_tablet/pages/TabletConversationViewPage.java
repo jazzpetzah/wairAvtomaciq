@@ -22,8 +22,14 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			.format("//*[@id='ttv__row_conversation__connect_request__chathead_footer__label' and contains(@value, '%s')]",
 					content);
 
+	private static final Function<String, String> xpathOutgoingInvitationMessageByContent = content -> String
+			.format("//*[@id='ttv__connect_request__first_message' and @value='%s']",
+					content);
+
 	@FindBy(id = DialogPage.idParticipantsBtn)
 	private WebElement showDetailsButton;
+
+	private static final String idMissedCallImage = "sci__conversation__missed_call__image";
 
 	private static final String idShowToolsButton = "cursor_button_open";
 	@FindBy(id = idShowToolsButton)
@@ -46,8 +52,6 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	public static final Function<String, String> xpathConversationMessageByValue = value -> String
 			.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
 					value);
-
-	public static final String idIsTypingAvatar = "civ__cursor__self_user_avatar";
 
 	public TabletConversationViewPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
@@ -118,17 +122,36 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	public void tapIsTypingAvatar() throws Exception {
-		final By locator = By.id(idIsTypingAvatar);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "IsTyping avatar is not visible in the conversation view";
-		getDriver().findElement(locator).click();
-	}
-
 	public void tapShowInstrumentsButton() throws InterruptedException {
 		showToolsButton.click();
 	}
 
 	public void tapCloseInstrumentsButton() {
 		closeToolsButton.click();
+	}
+
+	public boolean waitUntilGCNIsVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idMissedCallImage));
+	}
+
+	public boolean waitUntilMessageIsNotVisible(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathConversationMessageByValue
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
+	public boolean waitForOutgoingInvitationMessage(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathOutgoingInvitationMessageByContent
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilPingMessageIsInvisible(String expectedMessage)
+			throws Exception {
+		return getDialogPage().waitForPingMessageWithTextDisappears(
+				expectedMessage);
 	}
 }

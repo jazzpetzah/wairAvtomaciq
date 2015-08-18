@@ -434,4 +434,13 @@ public class AndroidCommonUtils extends CommonUtils {
 		String deviceVersion = readDeviceInfo().getOperatingSystemBuild();
 		return deviceVersion.compareTo(targetVersion);
 	}
+
+	/**
+	 * The method uses dirty Appium hack to unlock the screen
+	 * 
+	 * @throws Exception
+	 */
+	public static void unlockDevice() throws Exception {
+		executeAdb("shell am start -n io.appium.unlock/.Unlock");
+	}
 }

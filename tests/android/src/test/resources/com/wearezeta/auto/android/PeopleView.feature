@@ -101,7 +101,7 @@ Feature: People View
     Given Contact <Name> send message to user <Contact1>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I open People Picker
+    When I open Search by UI button
     And I wait until Top People list appears
     And I tap on <Contact1> in Top People
     And I tap on create conversation
@@ -232,3 +232,21 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName  | ParticipantNumber |
       | user1Name | user2Name | user3Name | GroupInfoCheck | 3                 |
+
+  @id2292 @staging
+  Scenario Outline: Start 1to1 conversation from participants view
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>,<Contact2>
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    And I tap conversation details button
+    And I tap on group chat contact <Contact1>
+    And I see <Contact1> user profile page
+    And I click Open Conversation button on connected user page
+    Then I see Connect to <Contact1> Dialog page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     |

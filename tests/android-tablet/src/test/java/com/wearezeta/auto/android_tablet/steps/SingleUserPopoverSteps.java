@@ -209,4 +209,16 @@ public class SingleUserPopoverSteps {
 		getSingleUserPopover().tapAddToConversationButton();
 	}
 
+	/**
+	 * Tap outside the popover
+	 * 
+	 * @step. ^I tap outside of [Ss]ingle user popover$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap outside of [Ss]ingle user popover$")
+	public void ITapOutside() throws Exception {
+		getSingleUserPopover().tapOutside();
+	}
+
 }

@@ -92,6 +92,9 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameLaterButton)
 	private WebElement maybeLaterButton;
 
+	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameOpenConversationButton)
+	private WebElement openConversationButton;
+
 	private int numberTopSelected = 0;
 
 	public PeoplePickerPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -105,9 +108,9 @@ public class PeoplePickerPage extends IOSPage {
 	public void clickNotNowButton() {
 		notNowButton.click();
 	}
-	
+
 	public void closeShareContactsIfVisible() throws Exception {
-		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), notNowButton)) {
+		if (DriverUtils.waitUntilElementClickable(getDriver(), notNowButton, 1)) {
 			clickNotNowButton();
 		}
 	}
@@ -469,12 +472,22 @@ public class PeoplePickerPage extends IOSPage {
 										.format(IOSLocators.xpathPeoplePickerTopConnectionsAvatar,
 												i))).click();
 				numberTopSelected++;
-			}
-			else {
+			} else {
 				numberToTap++;
 			}
 		}
 
+	}
+
+	public boolean isOpenConversationButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				openConversationButton);
+	}
+
+	public void clickOpenConversationButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				openConversationButton);
+		openConversationButton.click();
 	}
 
 }
