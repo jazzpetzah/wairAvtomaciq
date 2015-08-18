@@ -125,7 +125,7 @@ public class ImageFullScreenPageSteps {
 						+ FULLSCREEN_SCORE + " , current = " + score,
 				score >= FULLSCREEN_SCORE);
 	}
-	
+
 	/**
 	 * When the image is shown in fullscreen mode, the device gets rotated
 	 * 
@@ -147,6 +147,17 @@ public class ImageFullScreenPageSteps {
 				"Overlap between two images has no enough score. Expected >= "
 						+ FULLSCREEN_SCORE + " , current = " + score,
 				score >= FULLSCREEN_SCORE);
+	}
+
+	/**
+	 * Presses the sketch button on the image fullscreen page
+	 * 
+	 * @step. ^I press Sketch button on image fullscreen page$
+	 * @throws Throwable
+	 */
+	@When("^I press Sketch button on image fullscreen page$")
+	public void IPressSketchButtonOnImageFullscreenPage() throws Throwable {
+		getImageFullScreenPage().clickSketchButton();
 	}
 
 }
