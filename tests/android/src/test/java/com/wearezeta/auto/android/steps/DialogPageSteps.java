@@ -465,11 +465,11 @@ public class DialogPageSteps {
 	 * Checks to see that a photo exists in the chat history. Does not check
 	 * which photo though
 	 * 
-	 * @step. ^I see new photo in the dialog$
+	 * @step. ^I see new (?:photo|picture) in the dialog$
 	 * 
 	 * @throws Throwable
 	 */
-	@Then("^I see new photo in the dialog$")
+	@Then("^I see new (?:photo|picture) in the dialog$")
 	public void ThenISeeNewPhotoInTheDialog() throws Throwable {
 		Assert.assertTrue("No new photo is present in the chat",
 				getDialogPage().isImageExists());
@@ -776,6 +776,54 @@ public class DialogPageSteps {
 					+ " button with not visible in group call overlay",
 					getCallingOverlayPage()
 							.waitUntilJoinGroupCallButtonNotVisible(name));
+		}
+	}
+
+	private static final double MAX_SIMILARITY_THRESHOLD = 0.9;
+
+	private static enum PictureDestination {
+		DIALOG, PREVIEW;
+	}
+
+	/**
+	 * Verify whether a picture in dialog/preview is animated
+	 * 
+	 * @step. ^I see the picture in the (dialog|preview) is animated$
+	 * 
+	 * @param destination
+	 *            either "dialog" or "preview"
+	 * @throws Exception
+	 */
+	@Then("^I see the picture in the (dialog|preview) is animated$")
+	public void ISeeDialogPictureIsAnimated(String destination)
+			throws Exception {
+		final PictureDestination dst = PictureDestination.valueOf(destination
+				.toUpperCase());
+		double avgThreshold;
+		// no need to wait, since screenshoting procedure itself is quite long
+		final long screenshotingDelay = 0;
+		final long screenshotingSessionDuration = 5000;
+		switch (dst) {
+		case DIALOG:
+			avgThreshold = ImageUtil.getAnimationThreshold(
+					getDialogPage()::getRecentPictureScreenshot,
+					screenshotingDelay, screenshotingSessionDuration);
+			Assert.assertTrue(
+					String.format(
+							"The picture in the conversation view seems to be static (%.2f >= %.2f)",
+							avgThreshold, MAX_SIMILARITY_THRESHOLD),
+					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+			break;
+		case PREVIEW:
+			avgThreshold = ImageUtil.getAnimationThreshold(
+					getDialogPage()::getPreviewPictureScreenshot,
+					screenshotingDelay, screenshotingSessionDuration);
+			Assert.assertTrue(
+					String.format(
+							"The picture in the image preview view seems to be static (%.2f >= %.2f)",
+							avgThreshold, MAX_SIMILARITY_THRESHOLD),
+					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+			break;
 		}
 	}
 }

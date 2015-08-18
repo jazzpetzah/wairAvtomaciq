@@ -37,36 +37,29 @@ public final class CommonRESTHandlers {
 		if (entity != null) {
 			if (entity instanceof String) {
 				result = ((String) entity);
-				if (result.length() == 0) {
-					result = EMPTY_LOG_RECORD;
-				} else if (result.length() > MAX_SINGLE_ENTITY_LENGTH_IN_LOG) {
-					result = result.substring(0,
-							MAX_SINGLE_ENTITY_LENGTH_IN_LOG) + " ...";
-				}
 			} else {
 				result = entity.toString();
-				if (result.length() == 0) {
-					result = EMPTY_LOG_RECORD;
-				} else if (result.length() > MAX_SINGLE_ENTITY_LENGTH_IN_LOG) {
-					result = result.substring(0,
-							MAX_SINGLE_ENTITY_LENGTH_IN_LOG) + " ...";
-				}
+			}
+			if (result.length() == 0) {
+				result = EMPTY_LOG_RECORD;
+			} else if (result.length() > MAX_SINGLE_ENTITY_LENGTH_IN_LOG) {
+				result = result.substring(0, MAX_SINGLE_ENTITY_LENGTH_IN_LOG)
+						+ " ...";
 			}
 		}
 		return result;
 	}
 
-	public <T> T httpPost(Builder webResource, Object entity,
-			Class<T> responseEntityType, int[] acceptableResponseCodes)
-			throws RESTError {
+	public <T> T httpPost(Builder webResource, String contantType,
+			Object entity, Class<T> responseEntityType,
+			int[] acceptableResponseCodes) throws RESTError {
 		log.debug("POST REQUEST...");
 		log.debug(String.format(" >>> Input data: %s", formatLogRecord(entity)));
 		Response response = null;
 		int tryNum = 0;
 		do {
 			try {
-				response = webResource.post(
-						Entity.entity(entity, MediaType.APPLICATION_JSON_TYPE),
+				response = webResource.post(Entity.entity(entity, contantType),
 						Response.class);
 				break;
 			} catch (ProcessingException e) {
@@ -104,8 +97,16 @@ public final class CommonRESTHandlers {
 
 	public String httpPost(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws RESTError {
-		String returnString = httpPost(webResource, entity, String.class,
-				acceptableResponseCodes);
+		String returnString = httpPost(webResource, MediaType.APPLICATION_JSON,
+				entity, String.class, acceptableResponseCodes);
+		returnString = returnString == null ? "" : returnString;
+		return returnString;
+	}
+
+	public String httpPost(Builder webResource, Object entity,
+			String contentType, int[] acceptableResponseCodes) throws RESTError {
+		String returnString = httpPost(webResource, contentType, entity,
+				String.class, acceptableResponseCodes);
 		returnString = returnString == null ? "" : returnString;
 		return returnString;
 	}

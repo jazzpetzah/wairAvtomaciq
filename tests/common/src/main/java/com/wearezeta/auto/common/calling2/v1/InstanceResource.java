@@ -114,8 +114,8 @@ public class InstanceResource {
 		try {
 			return restHandler.httpPost(
 					buildDefaultRequest(target, MediaType.APPLICATION_JSON),
-					instanceRequest, Instance.class,
-					new int[] { HttpStatus.SC_OK });
+					MediaType.APPLICATION_JSON, instanceRequest,
+					Instance.class, new int[] { HttpStatus.SC_OK });
 		} catch (RESTError ex) {
 			throw new CallingServiceInstanceException(ex);
 		}
@@ -148,6 +148,7 @@ public class InstanceResource {
 		}
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public List<Flow> getFlows(Instance instance)
 			throws CallingServiceInstanceException {
 		final String target = String.format("%s/api/v%s/instance/%s/flows",
