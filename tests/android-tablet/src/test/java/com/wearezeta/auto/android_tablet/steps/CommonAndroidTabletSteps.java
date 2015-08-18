@@ -281,7 +281,7 @@ public class CommonAndroidTabletSteps {
 	 */
 	@When("^I minimize the application$")
 	public void IMimizeApllication() throws Exception {
-		pagesCollection.getCommonPage().minimizeApplication();
+		AndroidCommonUtils.switchToHomeScreen();
 	}
 
 	/**
@@ -294,7 +294,7 @@ public class CommonAndroidTabletSteps {
 	 */
 	@When("^I lock the device$")
 	public void ILockTheDevice() throws Exception {
-		pagesCollection.getCommonPage().lockScreen();
+		AndroidCommonUtils.lockScreen();
 	}
 
 	/**
@@ -345,7 +345,9 @@ public class CommonAndroidTabletSteps {
 	 */
 	@When("^I restore the application$")
 	public void IRestoreApllication() throws Exception {
-		pagesCollection.getCommonPage().restoreApplication();
+		AndroidCommonUtils.switchToApplication(
+				CommonUtils.getAndroidPackageFromConfig(this.getClass()),
+				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
 	}
 
 	/**

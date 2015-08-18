@@ -888,13 +888,14 @@ public final class BackendAPIWrappers {
 				getConversationWithSingleUser(user, mutedUser), null, muted,
 				null);
 	}
-	
+
 	public static void updateGroupConvMutedState(ClientUser user,
 			String groupConvName, boolean muted) throws Exception {
 		tryLoginByUser(user);
-		BackendREST.updateConvSelfInfo(generateAuthToken(user),
-				getConversationIdByName(user, groupConvName), null, muted,
-				null);
+		BackendREST
+				.updateConvSelfInfo(generateAuthToken(user),
+						getConversationIdByName(user, groupConvName), null,
+						muted, null);
 	}
 
 	public static void archiveUserConv(ClientUser ownerUser,
@@ -956,28 +957,25 @@ public final class BackendAPIWrappers {
 	}
 
 	public static void waitUntilContactBlockState(ClientUser searchByUser,
-			String query, boolean expectedState, int timeoutSeconds) throws Exception {
+			String query, boolean expectedState, int timeoutSeconds)
+			throws Exception {
 		tryLoginByUser(searchByUser);
 		final long startTimestamp = System.currentTimeMillis();
-		int currentCount = -1;
 		while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
 			final JSONObject searchResult = BackendREST.searchForContacts(
 					generateAuthToken(searchByUser), query);
 			if (searchResult.has("documents")
 					&& (searchResult.get("documents") instanceof JSONArray)) {
-				currentCount = searchResult.getJSONArray("documents").length();
-			} else {
-				currentCount = 0;
-			}
-			JSONArray array = searchResult.getJSONArray("documents");
-			JSONObject ar = array.getJSONObject(0);
-			if (ar.getBoolean("blocked") == expectedState) {
-				return;
+				final JSONObject doc = searchResult.getJSONArray("documents")
+						.getJSONObject(0);
+				if (doc.getBoolean("blocked") == expectedState) {
+					return;
+				}
 			}
 			Thread.sleep(1000);
 		}
 		throw new NoContactsFoundException(String.format(
-				"%s contact were not blocked within %s second(s) timeout",
+				"%s contact was not blocked within %s second(s) timeout",
 				query, timeoutSeconds));
 	}
 

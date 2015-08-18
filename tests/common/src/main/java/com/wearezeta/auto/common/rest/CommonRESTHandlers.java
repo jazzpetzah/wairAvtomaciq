@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 public final class CommonRESTHandlers {
+
 	private RESTResponseHandler responseHandler;
 	private int maxRetries = 1;
 
@@ -84,6 +85,19 @@ public final class CommonRESTHandlers {
 				| NullPointerException e) {
 			responseEntity = null;
 			log.warn(e.getMessage());
+
+			if (!"java.lang.String".equals(responseEntityType.getName())) {
+				try {
+					String responseString = response.readEntity(String.class);
+					log.debug(String.format(" >>> Response: %s",
+							formatLogRecord(responseString)));
+					this.responseHandler.verifyRequestResult(
+							response.getStatus(), acceptableResponseCodes);
+				} catch (ProcessingException | IllegalStateException
+						| NullPointerException ex) {
+					log.warn(ex.getMessage());
+				}
+			}
 		}
 		return responseEntity;
 	}
@@ -125,6 +139,18 @@ public final class CommonRESTHandlers {
 				| NullPointerException e) {
 			responseEntity = null;
 			log.warn(e.getMessage());
+			if (!"java.lang.String".equals(responseEntityType.getName())) {
+				try {
+					String responseString = response.readEntity(String.class);
+					log.debug(String.format(" >>> Response: %s",
+							formatLogRecord(responseString)));
+					this.responseHandler.verifyRequestResult(
+							response.getStatus(), acceptableResponseCodes);
+				} catch (ProcessingException | IllegalStateException
+						| NullPointerException ex) {
+					log.warn(ex.getMessage());
+				}
+			}
 		}
 		return responseEntity;
 	}
@@ -162,6 +188,18 @@ public final class CommonRESTHandlers {
 				| NullPointerException e) {
 			responseEntity = null;
 			log.warn(e.getMessage());
+			if (!"java.lang.String".equals(responseEntityType.getName())) {
+				try {
+					String responseString = response.readEntity(String.class);
+					log.debug(String.format(" >>> Response: %s",
+							formatLogRecord(responseString)));
+					this.responseHandler.verifyRequestResult(
+							response.getStatus(), acceptableResponseCodes);
+				} catch (ProcessingException | IllegalStateException
+						| NullPointerException ex) {
+					log.warn(ex.getMessage());
+				}
+			}
 		}
 		return responseEntity;
 	}
@@ -174,8 +212,9 @@ public final class CommonRESTHandlers {
 		return returnString;
 	}
 
-	public <T> T httpGet(Builder webResource, GenericType<T> responseEntityType,
-			int[] acceptableResponseCodes) throws RESTError {
+	public <T> T httpGet(Builder webResource,
+			GenericType<T> responseEntityType, int[] acceptableResponseCodes)
+			throws RESTError {
 		log.debug("GET REQUEST...");
 		Response response = null;
 		int tryNum = 0;
@@ -199,14 +238,27 @@ public final class CommonRESTHandlers {
 				| NullPointerException e) {
 			responseEntity = null;
 			log.warn(e.getMessage());
+			if (!"java.lang.String".equals(responseEntityType.getRawType()
+					.getName())) {
+				try {
+					String responseString = response.readEntity(String.class);
+					log.debug(String.format(" >>> Response: %s",
+							formatLogRecord(responseString)));
+					this.responseHandler.verifyRequestResult(
+							response.getStatus(), acceptableResponseCodes);
+				} catch (ProcessingException | IllegalStateException
+						| NullPointerException ex) {
+					log.warn(ex.getMessage());
+				}
+			}
 		}
 		return responseEntity;
 	}
 
 	public String httpGet(Builder webResource, int[] acceptableResponseCodes)
 			throws RESTError {
-		String returnString = httpGet(webResource, new GenericType<String>() {},
-				acceptableResponseCodes);
+		String returnString = httpGet(webResource, new GenericType<String>() {
+		}, acceptableResponseCodes);
 		returnString = returnString == null ? "" : returnString;
 		return returnString;
 	}
