@@ -80,7 +80,7 @@ public class IncomingCallPage extends CallPage {
 	}
 	
 	public boolean isGroupCallingMessageVisible() throws Exception{
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.xpath(IOSLocators.IncomingCallPage.xpathGroupCallingMessage), 15);
 	}
 
