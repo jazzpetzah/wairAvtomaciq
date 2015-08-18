@@ -477,3 +477,28 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5 | Contact6 | Contact7 | Contact8 | Contact9  |GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name| user7Name| user8Name| user9Name| user10Name|StartGROUPCALL  | firefox     | autocall     | 5               |
+      
+  @staging @id2684
+  Scenario Outline: Verify possibility to join call after 45 seconds of starting it
+  	Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    And <Contact2> calls <GroupChatName> using <CallBackend2>
+    And I see incoming group calling message
+    And I wait for 45 seconds
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I see Join Call bar
+    And I rejoin call by clicking Join button
+    Then I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars in the group call bar
+    
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL   | chrome      | autocall     | 5               |
