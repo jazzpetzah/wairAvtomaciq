@@ -149,33 +149,23 @@ public abstract class ImageAssetProcessor extends AssetProcessor {
 		final String convId = originalImageAsset.getConvId();
 		final byte[] imageData = originalImageAsset.getImageData();
 		String mimeType = originalImageAsset.getMimeType();
-		if ((mimeType == MIME_TYPE_GIF && imageData.length > MAX_IMAGE_SIZE)
-				|| (mimeType != MIME_TYPE_GIF && imageData.length > MAX_NON_GIF_IMAGE_SIZE)) {
-			mimeType = MIME_TYPE_JPEG;
-		}
 		final BufferedImage originalImage = ImageIO
 				.read(new ByteArrayInputStream(imageData));
-		final byte[] processedImageData;
-		if(mimeType == MIME_TYPE_GIF){
+		byte[] processedImageData;
+		if (mimeType.equals(MIME_TYPE_GIF)) {
 			processedImageData = imageData;
-		}else{
-			processedImageData = getScaledImage(originalImage, mimeType, imageData.length, MEDIUM_DIMENSION);
+		} else {
+			processedImageData = getScaledImage(originalImage, mimeType,
+					imageData.length, MEDIUM_DIMENSION);
 		}
-
+		final ImageAssetData resultAssetData = new ImageAssetData(convId,
+				processedImageData, mimeType);
+		final BufferedImage processedImage = ImageIO
+				.read(new ByteArrayInputStream(processedImageData));
 		if (originalImageAsset.getIsInline() == true
 				&& processedImageData.length > MAX_INLINE_ITEM_SIZE) {
 			originalImageAsset.setIsInline(false);
 		}
-		ImageAssetData resultAssetData;
-		if (originalImageAsset.getIsInline() == true) {
-			resultAssetData = new ImageAssetData(convId,
-					processedImageData, mimeType);
-		} else {
-			resultAssetData = new ImageAssetData(convId, processedImageData,
-					mimeType);
-		}
-		final BufferedImage processedImage = ImageIO
-				.read(new ByteArrayInputStream(processedImageData));
 		resultAssetData.setWidth(processedImage.getWidth());
 		resultAssetData.setOriginalWidth(originalImage.getWidth());
 		resultAssetData.setHeight(processedImage.getHeight());

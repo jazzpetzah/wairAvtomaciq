@@ -1,7 +1,7 @@
 package com.wearezeta.auto.common;
 
 import java.io.File;
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -359,18 +359,8 @@ public final class CommonSteps {
 		if (new File(picturePath).exists()) {
 			BackendAPIWrappers.updateUserPicture(dstUser, picturePath);
 		} else {
-			// Trying to load the picture from resources if this does not exist
-			// on the file system
-			final ClassLoader classLoader = this.getClass().getClassLoader();
-			final InputStream imageStream = classLoader
-					.getResourceAsStream(picturePath);
-			try {
-				BackendAPIWrappers.updateUserPicture(dstUser, imageStream);
-			} finally {
-				if (imageStream != null) {
-					imageStream.close();
-				}
-			}
+			throw new IOException(String.format(
+					"The picture '%s' is not accessible", picturePath));
 		}
 	}
 
