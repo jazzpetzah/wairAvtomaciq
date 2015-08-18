@@ -237,6 +237,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
+		getPeoplePickerPage().closeShareContactsIfVisible();
 		getPeoplePickerPage().fillTextInPeoplePickerSearch(contact);
 	}
 
@@ -248,6 +249,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
+		getPeoplePickerPage().closeShareContactsIfVisible();
 		getPeoplePickerPage().fillTextInPeoplePickerSearch(email);
 	}
 
