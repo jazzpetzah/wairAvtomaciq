@@ -229,6 +229,47 @@ public class CommonIOSSteps {
 				otherParticipantsNameAlises);
 	}
 
+	/**
+	 * Removes user from group conversation
+	 * 
+	 * @step. ^User (.*) removed user (.*) from group chat (.*)
+	 * 
+	 * @param chatOwnerNameAlias
+	 *            name of the user who deletes
+	 * 
+	 * @param userToRemove
+	 *            name of the user to be removed
+	 * 
+	 * @param chatName
+	 *            name of the group conversation
+	 * @throws Exception
+	 */
+	@Given("^(.*) removed (.*) from group chat (.*)")
+	public void UserARemovedUserBFromGroupChat(String chatOwnerNameAlias,
+			String userToRemove, String chatName) throws Exception {
+		commonSteps.UserXRemoveContactFromGroupChat(chatOwnerNameAlias,
+				userToRemove, chatName);
+	}
+
+	/**
+	 * User leaves group chat
+	 * 
+	 * @step. ^(.*) leave(s) group chat (.*)$
+	 * 
+	 * @param userName
+	 *            name of the user who leaves
+	 * 
+	 * @param chatName
+	 *            chat name that user leaves
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^(.*) leave[s]* group chat (.*)$")
+	public void UserLeavesGroupChat(String userName, String chatName)
+			throws Exception {
+		commonSteps.UserXLeavesGroupChat(userName, chatName);
+	}
+
 	@Given("^(.*) is connected to (.*)$")
 	public void UserIsConnectedTo(String userFromNameAlias,
 			String usersToNameAliases) throws Exception {
