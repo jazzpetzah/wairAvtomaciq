@@ -114,8 +114,8 @@ public class InstanceResource {
 		try {
 			return restHandler.httpPost(
 					buildDefaultRequest(target, MediaType.APPLICATION_JSON),
-					MediaType.APPLICATION_JSON, instanceRequest,
-					Instance.class, new int[] { HttpStatus.SC_OK });
+					instanceRequest, Instance.class,
+					new int[] { HttpStatus.SC_OK });
 		} catch (RESTError ex) {
 			throw new CallingServiceInstanceException(ex);
 		}

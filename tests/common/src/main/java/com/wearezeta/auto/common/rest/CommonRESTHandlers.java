@@ -50,7 +50,14 @@ public final class CommonRESTHandlers {
 		return result;
 	}
 
-	public <T> T httpPost(Builder webResource, String contantType,
+	public <T> T httpPost(Builder webResource, Object entity,
+			Class<T> responseEntityType, int[] acceptableResponseCodes)
+			throws RESTError {
+		return httpPost(webResource, MediaType.APPLICATION_JSON, entity,
+				responseEntityType, acceptableResponseCodes);
+	}
+
+	public <T> T httpPost(Builder webResource, String contentType,
 			Object entity, Class<T> responseEntityType,
 			int[] acceptableResponseCodes) throws RESTError {
 		log.debug("POST REQUEST...");
@@ -59,7 +66,7 @@ public final class CommonRESTHandlers {
 		int tryNum = 0;
 		do {
 			try {
-				response = webResource.post(Entity.entity(entity, contantType),
+				response = webResource.post(Entity.entity(entity, contentType),
 						Response.class);
 				break;
 			} catch (ProcessingException e) {
@@ -97,8 +104,8 @@ public final class CommonRESTHandlers {
 
 	public String httpPost(Builder webResource, Object entity,
 			int[] acceptableResponseCodes) throws RESTError {
-		String returnString = httpPost(webResource, MediaType.APPLICATION_JSON,
-				entity, String.class, acceptableResponseCodes);
+		String returnString = httpPost(webResource, entity, String.class,
+				acceptableResponseCodes);
 		returnString = returnString == null ? "" : returnString;
 		return returnString;
 	}

@@ -368,7 +368,7 @@ public final class BackendAPIWrappers {
 			return ImageAssetProcessor.MIME_TYPE_GIF;
 		} else {
 			throw new RuntimeException(String.format(
-					"Cannoty detect MIME type for the image by path %s", path));
+					"Cannot detect MIME type for the image by path %s", path));
 		}
 	}
 

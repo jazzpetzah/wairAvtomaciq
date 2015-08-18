@@ -114,8 +114,7 @@ public class CallResource {
 		try {
 			return restHandler.httpPost(
 					buildDefaultRequest(target, MediaType.APPLICATION_JSON),
-					MediaType.APPLICATION_JSON, callRequest, Call.class,
-					new int[] { HttpStatus.SC_OK });
+					callRequest, Call.class, new int[] { HttpStatus.SC_OK });
 		} catch (RESTError ex) {
 			throw new CallingServiceCallException(ex);
 		}
@@ -130,8 +129,7 @@ public class CallResource {
 		try {
 			return restHandler.httpPost(
 					buildDefaultRequest(target, MediaType.APPLICATION_JSON),
-					MediaType.APPLICATION_JSON, callRequest, Call.class,
-					new int[] { HttpStatus.SC_OK });
+					callRequest, Call.class, new int[] { HttpStatus.SC_OK });
 		} catch (RESTError ex) {
 			throw new CallingServiceCallException(ex);
 		}
