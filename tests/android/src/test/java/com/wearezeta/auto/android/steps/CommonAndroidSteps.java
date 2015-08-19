@@ -667,7 +667,7 @@ public class CommonAndroidSteps {
 	public void UserSendXMessagesToConversation(String msgFromUserNameAlias,
 			int count, String dstUserNameAlias) throws Exception {
 		for (int i = 0; i < count; i++) {
-			UserSendMessageToConversation(msgFromUserNameAlias,
+			UserSendMessageToConversation(msgFromUserNameAlias, null,
 					dstUserNameAlias);
 		}
 	}
