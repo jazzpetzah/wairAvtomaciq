@@ -459,6 +459,8 @@ public final class IOSLocators {
 	public static final String nameYouRenamedConversationMessage = "YOU RENAMED THE CONVERSATION";
 	public static final String nameConversationBackButton = "ConversationBackButton";
 	
+	public static final String xpathPeopleViewCollectionCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']";
+	
 	
 	////////////////////////////
 	//Contact list locator
