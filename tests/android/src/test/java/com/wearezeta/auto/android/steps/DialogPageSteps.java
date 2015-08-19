@@ -465,7 +465,8 @@ public class DialogPageSteps {
 	 * Checks to see that an unsent indicator is present next to the particular
 	 * message in the chat history
 	 * 
-	 * @step. ^I see unsent indicator next to the message \"(.*)\" in the dialog$
+	 * @step. ^I see unsent indicator next to the message \"(.*)\" in the
+	 *        dialog$
 	 * 
 	 * @throws Exception
 	 */
@@ -841,12 +842,12 @@ public class DialogPageSteps {
 		double avgThreshold;
 		// no need to wait, since screenshoting procedure itself is quite long
 		final long screenshotingDelay = 0;
-		final long screenshotingSessionDuration = 5000;
+		final int maxFrames = 4;
 		switch (dst) {
 		case DIALOG:
 			avgThreshold = ImageUtil.getAnimationThreshold(
-					getDialogPage()::getRecentPictureScreenshot,
-					screenshotingDelay, screenshotingSessionDuration);
+					getDialogPage()::getRecentPictureScreenshot, maxFrames,
+					screenshotingDelay);
 			Assert.assertTrue(
 					String.format(
 							"The picture in the conversation view seems to be static (%.2f >= %.2f)",
@@ -855,8 +856,8 @@ public class DialogPageSteps {
 			break;
 		case PREVIEW:
 			avgThreshold = ImageUtil.getAnimationThreshold(
-					getDialogPage()::getPreviewPictureScreenshot,
-					screenshotingDelay, screenshotingSessionDuration);
+					getDialogPage()::getPreviewPictureScreenshot, maxFrames,
+					screenshotingDelay);
 			Assert.assertTrue(
 					String.format(
 							"The picture in the image preview view seems to be static (%.2f >= %.2f)",
