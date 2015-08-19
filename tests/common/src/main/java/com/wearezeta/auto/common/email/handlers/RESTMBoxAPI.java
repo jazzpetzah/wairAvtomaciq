@@ -9,14 +9,17 @@ import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 import org.jboss.netty.handler.timeout.ReadTimeoutException;
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.rest.CommonRESTHandlers;
 import com.wearezeta.auto.common.rest.RESTError;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
+
 import org.glassfish.jersey.client.ClientProperties;
 
 final class RESTMBoxAPI {
@@ -74,7 +77,7 @@ final class RESTMBoxAPI {
 			final String output = restHandlers.httpGet(webResource,
 					new int[] { HttpStatus.SC_OK });
 			return new JSONArray(output);
-		} catch (ReadTimeoutException e) {
+		} catch (ReadTimeoutException | JSONException e) {
 			e.printStackTrace();
 			return new JSONArray();
 		}

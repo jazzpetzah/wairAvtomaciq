@@ -191,9 +191,9 @@ Feature: Conversation View
     Then I do not see the Single user popover
     When I tap Show Details button on conversation view page
     Then I see the Single user popover
-    #When I tap in the center of Single user popover
-    When I tap on center of screen
-    #Then I see the Single user popover
+    When I tap in the center of Single user popover
+    Then I see the Single user popover
+    When I tap outside of Single user popover
     Then I do not see the Single user popover
     When I tap Close Tools button on conversation view page
     And I tap the text input in the conversation view
