@@ -462,6 +462,23 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Checks to see that an unsent indicator is present next to the particular
+	 * message in the chat history
+	 * 
+	 * @step. ^I see unsent indicator next to the message \"(.*)\" in the dialog$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see unsent indicator next to the message \"(.*)\" in the dialog$")
+	public void ThenISeeUnsentIndicatorNextToTheMessage(String msg)
+			throws Exception {
+		Assert.assertTrue(
+				String.format(
+						"Unsent indicator has not been shown next to the '%s' message in the conversation view",
+						msg), getDialogPage().waitForUnsentIndicator(msg));
+	}
+
+	/**
 	 * Checks to see that a photo exists in the chat history. Does not check
 	 * which photo though
 	 * 
@@ -847,5 +864,21 @@ public class DialogPageSteps {
 					avgThreshold < MAX_SIMILARITY_THRESHOLD);
 			break;
 		}
+	}
+
+	/**
+	 * 
+	 * Check whether unsent indicator is shown next to a new picture in the
+	 * convo view
+	 * 
+	 * @step. ^I see unsent indicator next to new picture in the dialog$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see unsent indicator next to new picture in the dialog$")
+	public void ISeeUnsentIndictatorNextToAPicture() throws Exception {
+		Assert.assertTrue(
+				"There is no unsent indicator next to a picture in the conversation view",
+				getDialogPage().waitForAPictureWithUnsentIndicator());
 	}
 }
