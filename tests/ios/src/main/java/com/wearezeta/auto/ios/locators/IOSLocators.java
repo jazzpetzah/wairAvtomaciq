@@ -274,7 +274,7 @@ public final class IOSLocators {
 	
 	public static final String nameSettingsDoneButton = "Done";
 
-	public static final String xpathAboutPageWireLogo = "//UIAApplication[1]/UIAWindow[2]/UIAImage[1]";
+	public static final String xpathAboutPageWireLogo = "//UIAApplication/UIAWindow/UIAButton[@name='wire.com']/preceding-sibling::UIAImage[1]";
 	
 	public static final String xpathAboutCloseButton = "//UIAApplication/UIAWindow/UIAButton[1]";
 	
@@ -286,7 +286,7 @@ public final class IOSLocators {
 	
 	public static final String namePrivacyPolicyButton = "Privacy Policy";
 	
-	public static final String xpathBuildNumberText = "//UIAApplication[1]/UIAWindow[2]/UIAStaticText[1]";
+	public static final String xpathBuildNumberText = "//UIAApplication/UIAWindow/UIAStaticText[contains(@name, 'Wire Swiss GmbH • version')]";
 	
 	public static final String nameCloseLegalPageButton = "WebViewCloseButton";
 	
@@ -458,6 +458,8 @@ public final class IOSLocators {
 	public static final String xpathYouAddetToGroupChatMessage = "//UIAStaticText[contains(@name, 'YOU ADDED %s')]";
 	public static final String nameYouRenamedConversationMessage = "YOU RENAMED THE CONVERSATION";
 	public static final String nameConversationBackButton = "ConversationBackButton";
+	
+	public static final String xpathPeopleViewCollectionCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']";
 	
 	
 	////////////////////////////
