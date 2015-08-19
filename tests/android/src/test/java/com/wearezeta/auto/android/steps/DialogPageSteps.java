@@ -465,14 +465,24 @@ public class DialogPageSteps {
 	 * Checks to see that a photo exists in the chat history. Does not check
 	 * which photo though
 	 * 
-	 * @step. ^I see new (?:photo|picture) in the dialog$
+	 * @step. ^I (do not )?see new (?:photo|picture) in the dialog$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if 'do not' part does not exist
 	 * 
 	 * @throws Throwable
 	 */
-	@Then("^I see new (?:photo|picture) in the dialog$")
-	public void ThenISeeNewPhotoInTheDialog() throws Throwable {
-		Assert.assertTrue("No new photo is present in the chat",
-				getDialogPage().isImageExists());
+	@Then("^I (do not )?see new (?:photo|picture) in the dialog$")
+	public void ThenISeeNewPhotoInTheDialog(String shouldNotSee)
+			throws Throwable {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("No new photo is present in the chat",
+					getDialogPage().isImageExists());
+		} else {
+			Assert.assertTrue(
+					"A photo is present in the chat, but it should not be vivible",
+					getDialogPage().isImageInvisible());
+		}
 	}
 
 	/**
@@ -663,6 +673,18 @@ public class DialogPageSteps {
 	 */
 	@Then("^Last message is (.*)$")
 	public void ThenLastMessageIs(String message) throws Exception {
+		final long millisecondsStarted = System.currentTimeMillis();
+		final int secondsTimeout = 10;
+		while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000) {
+			if (message
+					.toLowerCase()
+					.trim()
+					.equals(getDialogPage().getLastMessageFromDialog()
+							.toLowerCase().trim())) {
+				return;
+			}
+			Thread.sleep(500);
+		}
 		Assert.assertEquals(message.toLowerCase().trim(), getDialogPage()
 				.getLastMessageFromDialog().toLowerCase().trim());
 	}

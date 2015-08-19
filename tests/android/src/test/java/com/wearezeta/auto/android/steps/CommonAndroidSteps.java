@@ -630,17 +630,46 @@ public class CommonAndroidSteps {
 	 * 
 	 * @param msgFromUserNameAlias
 	 *            the user who sends the message
+	 * @param msg
+	 *            a message to send. Random string will be sent if it is empty
 	 * @param dstUserNameAlias
 	 *            The user to receive the message
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^Contact (.*) send message to user (.*)$")
+	@When("^Contact (.*) send message (.*)to user (.*)$")
 	public void UserSendMessageToConversation(String msgFromUserNameAlias,
-			String dstUserNameAlias) throws Exception {
-		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
-				dstUserNameAlias, CommonUtils.generateRandomString(10));
+			String msg, String dstUserNameAlias) throws Exception {
+		commonSteps.UserSentMessageToUser(
+				msgFromUserNameAlias,
+				dstUserNameAlias,
+				(msg == null || msg.trim().length() == 0) ? CommonUtils
+						.generateRandomString(10) : msg.trim());
+	}
+
+	/**
+	 * User A sends specified number of simple text messages to user B
+	 * 
+	 * @step. ^Contact (.*) sends (\\d+) messages? to user (.*)$
+	 * 
+	 * @param msgFromUserNameAlias
+	 *            the user who sends the message
+	 * @param count
+	 *            number of messages to send
+	 * @param dstUserNameAlias
+	 *            The user to receive the message
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^Contact (.*) sends (\\d+) messages? to user (.*)$")
+	public void UserSendXMessagesToConversation(String msgFromUserNameAlias,
+			int count, String dstUserNameAlias) throws Exception {
+		for (int i = 0; i < count; i++) {
+			UserSendMessageToConversation(msgFromUserNameAlias,
+					dstUserNameAlias);
+		}
 	}
 
 	/**
@@ -831,6 +860,13 @@ public class CommonAndroidSteps {
 	@After
 	public void tearDown() throws Exception {
 		try {
+			AndroidCommonUtils.setAirplaneMode(false);
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
+		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps2.getInstance().cleanup();
 		} catch (Exception e) {
@@ -932,6 +968,20 @@ public class CommonAndroidSteps {
 	@After("@deployAddressBook")
 	public void DeleteDeployedContacts() throws Exception {
 		AndroidCommonUtils.removeTestContactsFromAddressBook();
+	}
+
+	/**
+	 * Enable/disable airplane mode
+	 * 
+	 * @step. ^I (enable|disable) Airplane mode on the device$
+	 * 
+	 * @param action
+	 *            either 'enable' or 'disable'
+	 * @throws Exception
+	 */
+	@Given("^I (enable|disable) Airplane mode on the device$")
+	public void IChangeAirplaceMode(String action) throws Exception {
+		AndroidCommonUtils.setAirplaneMode(action.equals("enable"));
 	}
 
 }
