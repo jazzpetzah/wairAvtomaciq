@@ -502,10 +502,10 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | chrome      | autocall     | 5               |
-      
-  @torun @staging @id2697
+
+  @staging @id2697
   Scenario Outline: Verify removing people from the conversation who joined the group call
-  	Given There are 5 users where <Name> is me
+    Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
@@ -530,7 +530,7 @@ Feature: Calling
     Then I see that <Contact2> is not present on group chat page
     And I exit the group info page
     Then I see <NewNumberOfAvatars> avatars in the group call bar
-    
+
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars |NewNumberOfAvatars |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | chrome      | autocall     | 5               | 4				   |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars | NewNumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | chrome      | autocall     | 5               | 4                  |
