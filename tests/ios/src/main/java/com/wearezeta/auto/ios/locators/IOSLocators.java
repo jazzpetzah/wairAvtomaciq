@@ -673,11 +673,11 @@ public final class IOSLocators {
 	
 	public final class GiphyPreviewPage {
 		
-		public static final String nameGiphyRefreshButton = "topPanelLeftButton";
+		public static final String nameGiphyRefreshButton = "leftButton";
 		
-		public static final String nameGiphyLinkButton = "topPanelRightButton";
+		public static final String nameGiphyLinkButton = "rightButton";
 		
-		public static final String nameGiphyTitleButton = "titleButton";
+		public static final String nameGiphyTitleButton = "centerButton";
 		
 		public static final String xpathGithyImage = "//UIAButton[@name='rejectButton']/preceding-sibling::UIAImage[1]";
 		
