@@ -1,4 +1,4 @@
-Feature: Ping
+Feature: Offline
 
   @id1515 @staging
   Scenario Outline: Receive updated content when changing from offline to online
