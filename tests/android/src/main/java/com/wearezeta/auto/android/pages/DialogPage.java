@@ -911,4 +911,9 @@ public class DialogPage extends AndroidPage {
 			throws Exception {
 		return this.getElementScreenshot(fullScreenImage);
 	}
+
+	public boolean isImageInvisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.id(idDialogImages));
+	}
 }
