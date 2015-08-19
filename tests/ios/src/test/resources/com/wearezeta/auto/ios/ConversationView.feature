@@ -686,7 +686,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @staging @id3265 @deployPictures
+  @regression @id3265
   Scenario Outline: Verify drawing on image from single view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -710,7 +710,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id3263
+  @regression @id3263
   Scenario Outline: Verify drawing on the image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
