@@ -52,6 +52,14 @@ public class DialogPage extends AndroidPage {
 			.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
 					text);
 
+	private static final Function<String, String> xpathUnsentIndicatorByText = text -> String
+			.format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
+					xpathConversationMessageByText.apply(text));
+
+	private static final String xpathUnsentIndicatorForImage = "//*[@id='"
+			+ idDialogImages
+			+ "']/parent::*/parent::*//*[@id='v__row_conversation__error']";
+
 	@FindBy(id = giphyPreviewButtonId)
 	private WebElement giphyPreviewButton;
 	final By giphyPreviewButtonLocator = By.id(giphyPreviewButtonId);
@@ -430,6 +438,11 @@ public class DialogPage extends AndroidPage {
 							"Message '%s' has not been displayed after '%s' seconds timeout",
 							text, MSG_DELIVERY_TIMEOUT_SECONDS));
 		}
+	}
+
+	public boolean waitForUnsentIndicator(String text) throws Exception {
+		final By locator = By.xpath(xpathUnsentIndicatorByText.apply(text));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public boolean isImageExists() throws Exception {
@@ -915,5 +928,10 @@ public class DialogPage extends AndroidPage {
 	public boolean isImageInvisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.id(idDialogImages));
+	}
+
+	public boolean waitForAPictureWithUnsentIndicator() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.xpath(xpathUnsentIndicatorForImage));
 	}
 }
