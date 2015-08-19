@@ -522,3 +522,42 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
+
+  @id1467 @staging
+  Scenario Outline: Put client into background when in the call
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    And <Contact> calls me using <CallBackend>
+    And I see call overlay
+    And I answer the call from the overlay bar
+    When I minimize the application
+    And I wait for 10 seconds
+    And I restore the application
+    Then I see call overlay
+    And <Contact> stops all calls to me
+
+    Examples: 
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
+
+  @id369 @staging
+  Scenario Outline: Other user trying to call me while I'm already in zeta call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    And I tap on contact name <Contact1>
+    And I see dialog page
+    And <Contact1> calls me using <CallBackend>
+    And I see incoming calling message for contact <Contact1>
+    And I answer the call from the overlay bar
+    And I see started call message for contact <Contact1>
+    When <Contact2> calls me using <CallBackend>
+    Then I see incoming calling message for contact <Contact2>
+    And <Contact1>,<Contact2> stop all calls to me
+ 
+    Examples: 
+      | Name      | Contact1  | Contact2  | CallBackend |
+      | user1Name | user2Name | user3Name | autocall    |

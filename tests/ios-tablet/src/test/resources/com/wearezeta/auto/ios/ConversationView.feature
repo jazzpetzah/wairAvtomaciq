@@ -1142,6 +1142,7 @@ Feature: Conversation View
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given I leave group chat <GroupChatName>
     Given Me sent connection request to <Contact1>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
@@ -1152,14 +1153,6 @@ Feature: Conversation View
     And I click Close input options button
     And I navigate back to conversations view
     When I tap on group chat with name <GroupChatName>
-    And I open group conversation details
-    And I press leave converstation button
-    And I see leave conversation alert
-    Then I press leave
-    And I open archived conversations on iPad
-    And I see user <GroupChatName> in contact list
-    And I tap on group chat with name <GroupChatName>
-    And I see plus button next to text input
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
 
@@ -1172,6 +1165,7 @@ Feature: Conversation View
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given I leave group chat <GroupChatName>
     Given Me sent connection request to <Contact1>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
@@ -1182,14 +1176,6 @@ Feature: Conversation View
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
     And I click Close input options button
     When I tap on group chat with name <GroupChatName>
-    And I open group conversation details
-    And I press leave converstation button
-    And I see leave conversation alert
-    Then I press leave
-    And I open archived conversations on iPad
-    And I see user <GroupChatName> in contact list
-    And I tap on group chat with name <GroupChatName>
-    And I see plus button next to text input
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
 
