@@ -502,3 +502,35 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | chrome      | autocall     | 5               |
+
+  @staging @id2697
+  Scenario Outline: Verify removing people from the conversation who joined the group call
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I press call button
+    And I see mute call, end call and speakers buttons
+    And I wait for 3 seconds
+    And I see <NumberOfAvatars> avatars in the group call bar
+    And I open group conversation details
+    And I select contact <Contact2>
+    And I click Remove
+    And I see warning message
+    And I confirm remove
+    Then I see that <Contact2> is not present on group chat page
+    And I exit the group info page
+    Then I see <NewNumberOfAvatars> avatars in the group call bar
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars | NewNumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | chrome      | autocall     | 5               | 4                  |

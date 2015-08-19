@@ -684,6 +684,15 @@ public final class BackendAPIWrappers {
 				getConversationIdByName(asUser, conversationName));
 	}
 
+	public static void removeUserFromGroupConversation(ClientUser asUser,
+			ClientUser contact, String conversationName) throws Exception {
+		asUser = tryLoginByUser(asUser);
+		String userId = contact.getId();
+
+		BackendREST.removeContactFromGroupConvo(generateAuthToken(asUser),
+				userId, getConversationIdByName(asUser, conversationName));
+	}
+
 	public static void sendConversationMessage(ClientUser userFrom,
 			String convId, String message) throws Exception {
 		tryLoginByUser(userFrom);

@@ -638,6 +638,17 @@ final class BackendREST {
 		return new JSONObject(output);
 	}
 
+	public static JSONObject removeContactFromGroupConvo(AuthToken token,
+			String contactIds, String conversationId) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth(String.format(
+				"conversations/%s/members/%s", conversationId, contactIds),
+				MediaType.APPLICATION_JSON, token);
+
+		final String output = restHandlers.httpDelete(webResource, new int[] {
+				HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
+		return new JSONObject(output);
+	}
+
 	public static JSONObject uploadAddressBook(AuthToken token,
 			AddressBook addressBook) throws Exception {
 		Builder webResource = buildDefaultRequestWithAuth("onboarding/v3",

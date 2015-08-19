@@ -444,6 +444,27 @@ public final class CommonSteps {
 				contactsToAdd, chatName);
 	}
 
+	public void UserXRemoveContactFromGroupChat(String userAsNameAlias,
+			String contactToRemoveNameAlias, String chatName) throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userAsNameAlias);
+		final ClientUser userToRemove = usrMgr
+				.findUserByNameOrNameAlias(contactToRemoveNameAlias);
+
+		BackendAPIWrappers.removeUserFromGroupConversation(userAs,
+				userToRemove, chatName);
+	}
+
+	public void UserXLeavesGroupChat(String userNameAlias, String chatName)
+			throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userNameAlias);
+
+		BackendAPIWrappers.removeUserFromGroupConversation(userAs, userAs,
+				chatName);
+
+	}
+
 	private Map<String, String> profilePictureSnapshotsMap = new HashMap<String, String>();
 
 	public void UserXTakesSnapshotOfProfilePicture(String userNameAlias)

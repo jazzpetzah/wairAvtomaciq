@@ -349,4 +349,29 @@ public class ContactListPageSteps {
 	public void ISelectConvoSettingsMenuItem(String itemName) throws Exception {
 		getContactListPage().selectConvoSettingsMenuItem(itemName);
 	}
+
+	/**
+	 * Checks that correct indicator displayed if there is unread messages in
+	 * chat
+	 * 
+	 * @step. ^I see unread messages indicator is (large|small|not displayed)
+	 *        for contact (.*)$
+	 * 
+	 * @param indicator
+	 *            state of indicator (large|small|not displayed)
+	 * @param contact
+	 *            contact name
+	 * @throws Exception
+	 */
+	@And("^I see unread messages indicator is (large|small|not displayed) for contact (.*)$")
+	public void ISeeUnreadMessagesIndicatorForContact(String indicator,
+			String contact) throws Exception {
+
+		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
+		final double score = getContactListPage().getUnreadDotOverlapScore(
+				indicator, contact);
+		Assert.assertTrue(
+				"Overlap between two images has not enough score. Expected >= 0.9, current = "
+						+ score, score >= 0.9d);
+	}
 }
