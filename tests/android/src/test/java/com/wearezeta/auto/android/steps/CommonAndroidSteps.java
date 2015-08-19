@@ -644,6 +644,30 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * User A sends specified number of simple text messages to user B
+	 * 
+	 * @step. ^Contact (.*) sends (\\d+) messages? to user (.*)$
+	 * 
+	 * @param msgFromUserNameAlias
+	 *            the user who sends the message
+	 * @param count
+	 *            number of messages to send
+	 * @param dstUserNameAlias
+	 *            The user to receive the message
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^Contact (.*) sends (\\d+) messages? to user (.*)$")
+	public void UserSendXMessagesToConversation(String msgFromUserNameAlias,
+			int count, String dstUserNameAlias) throws Exception {
+		for (int i = 0; i < count; i++) {
+			UserSendMessageToConversation(msgFromUserNameAlias,
+					dstUserNameAlias);
+		}
+	}
+
+	/**
 	 * Verifies that there are N new users for a test, and makes them if they
 	 * don't exist. -unused
 	 * 

@@ -25,7 +25,7 @@ Feature: Conversation List
       | user1Name | user2Name |
 
   @id1510 @regression
-  Scenario Outline: Verify conversation list play/pause controls can change playing media state (SoundCloud) 
+  Scenario Outline: Verify conversation list play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -92,3 +92,24 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
       | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+
+  @id1513 @staging
+  Scenario Outline: Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given Contact <Contact1> sends 10 message to user <Name>
+    Given I sign in using my email or phone number
+    When I see Contact list with contacts
+    Then I see unread messages indicator is large for contact <Contact1>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I navigate back from dialog page
+    Then I see unread messages indicator is small for contact <Contact1>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I navigate back from dialog page
+    Then I see unread messages indicator is not displayed for contact <Contact1>
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
