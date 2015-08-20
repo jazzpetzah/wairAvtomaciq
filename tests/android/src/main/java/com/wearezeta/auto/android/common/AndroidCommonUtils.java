@@ -443,4 +443,35 @@ public class AndroidCommonUtils extends CommonUtils {
 	public static void unlockDevice() throws Exception {
 		executeAdb("shell am start -n io.appium.unlock/.Unlock");
 	}
+
+	public static boolean isAirplaneModeEnabled() throws Exception {
+		return getAdbOutput("shell settings get global airplane_mode_on")
+				.trim().equals("1");
+	}
+
+	public static void setAirplaneMode(boolean isEnabled) throws Exception {
+		final boolean isAlreadyEnabled = isAirplaneModeEnabled();
+		if ((!isAlreadyEnabled && isEnabled)
+				|| (!isEnabled && isAlreadyEnabled)) {
+			executeAdb("shell am start -a android.settings.AIRPLANE_MODE_SETTINGS");
+			final int maxTries = 3;
+			int ntry = 1;
+			do {
+				Thread.sleep(1000);
+				executeAdb("shell input keyevent 23");
+				if (isAirplaneModeEnabled() == isEnabled) {
+					break;
+				}
+				ntry++;
+			} while (ntry <= maxTries);
+			switchToApplication(
+					CommonUtils
+							.getAndroidPackageFromConfig(AndroidCommonUtils.class),
+					CommonUtils
+							.getAndroidActivityFromConfig(AndroidCommonUtils.class));
+			assert (ntry <= maxTries) : "ADB has failed to "
+					+ (isEnabled ? "enable" : "disable")
+					+ " airplane mode on the device";
+		}
+	}
 }

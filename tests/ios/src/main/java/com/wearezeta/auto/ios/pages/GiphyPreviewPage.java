@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -65,8 +66,7 @@ public class GiphyPreviewPage extends IOSPage {
 	}
 	
 	public boolean isGiphyImageVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				giphyImage);
+		return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(IOSLocators.GiphyPreviewPage.xpathGithyImage));
 	}
 	
 	public boolean isGiphyRejectButtonVisible() throws Exception {

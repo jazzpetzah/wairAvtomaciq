@@ -13,6 +13,8 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -36,6 +38,10 @@ public class ContactListPage extends AndroidPage {
 
 	private static final Function<String, String> xpathPlayPauseButtonByConvoName = convoName -> String
 			.format("%s/parent::*//*[@id='tv_conv_list_media_player']",
+					xpathContactByName.apply(convoName));
+
+	private static final Function<String, String> xpathMissedCallNotificationByConvoName = convoName -> String
+			.format("%s/parent::*//*[@id='sci__list__missed_call']",
 					xpathContactByName.apply(convoName));
 
 	private static final Function<String, String> xpathMissedCallNotificationByConvoName = convoName -> String
@@ -110,6 +116,10 @@ public class ContactListPage extends AndroidPage {
 
 	private static final String xpathTopConversationsListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
 	private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
+
+	private static final Function<String, String> xpathConversationListEntry = name -> String
+			.format("//b[TextView[@id='tv_conv_list_topic' and @value='%s']]//*[@id='civ__list_row']",
+					name);
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
@@ -432,5 +442,38 @@ public class ContactListPage extends AndroidPage {
 				.format("PlayPause button is not visible next to the '%s' conversation item",
 						convoName);
 		this.getDriver().findElement(locator).click();
+	}
+
+	private final String UNREAD_DOT_SMALL_IMG = "android_unread_dot_small.png";
+	private final String UNREAD_DOT_LARGE_IMG = "android_unread_dot_large.png";
+	private final String UNREAD_DOT_NO_UNREAD_DOT_IMG = "android_no_unread_dot.png";
+
+	public double getUnreadDotOverlapScore(String expected, String contact)
+			throws Exception {
+		final String EXPECTED_DOT_STATE_SMALL = "small";
+		final String EXPECTED_DOT_STATE_LARGE = "large";
+		final String EXPECTED_DOT_STATE_NOT_DISPLAYED = "not displayed";
+
+		final By locator = By.xpath(xpathConversationListEntry.apply(contact));
+		BufferedImage unreadDot = getElementScreenshot(
+				this.getDriver().findElement(locator)).orElseThrow(
+				IllegalStateException::new);
+
+		String path = null;
+
+		if (expected.equals(EXPECTED_DOT_STATE_SMALL)) {
+			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
+					+ UNREAD_DOT_SMALL_IMG;
+		} else if (expected.equals(EXPECTED_DOT_STATE_LARGE)) {
+			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
+					+ UNREAD_DOT_LARGE_IMG;
+		} else if (expected.equals(EXPECTED_DOT_STATE_NOT_DISPLAYED)) {
+			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
+					+ UNREAD_DOT_NO_UNREAD_DOT_IMG;
+		}
+		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+
+		return ImageUtil.getOverlapScore(unreadDot, templateImage,
+				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 }

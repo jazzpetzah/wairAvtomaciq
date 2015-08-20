@@ -251,7 +251,6 @@ Feature: Calling
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
     Then I see call overlay
     When I click the ignore call button
     Then I see "JOIN CALL" button
@@ -260,7 +259,6 @@ Feature: Calling
     Then I do not see "JOIN CALL" button
     And I see calling overlay Big bar
     And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
     Then I do not see join group call overlay
 
     Examples: 
@@ -541,3 +539,23 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
+
+  @id369 @staging
+  Scenario Outline: Other user trying to call me while I'm already in zeta call
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    And I tap on contact name <Contact1>
+    And I see dialog page
+    And <Contact1> calls me using <CallBackend>
+    And I see incoming calling message for contact <Contact1>
+    And I answer the call from the overlay bar
+    And I see started call message for contact <Contact1>
+    When <Contact2> calls me using <CallBackend>
+    Then I see incoming calling message for contact <Contact2>
+    And <Contact1>,<Contact2> stop all calls to me
+ 
+    Examples: 
+      | Name      | Contact1  | Contact2  | CallBackend |
+      | user1Name | user2Name | user3Name | autocall    |

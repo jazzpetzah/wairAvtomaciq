@@ -462,17 +462,45 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Checks to see that an unsent indicator is present next to the particular
+	 * message in the chat history
+	 * 
+	 * @step. ^I see unsent indicator next to the message \"(.*)\" in the
+	 *        dialog$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see unsent indicator next to the message \"(.*)\" in the dialog$")
+	public void ThenISeeUnsentIndicatorNextToTheMessage(String msg)
+			throws Exception {
+		Assert.assertTrue(
+				String.format(
+						"Unsent indicator has not been shown next to the '%s' message in the conversation view",
+						msg), getDialogPage().waitForUnsentIndicator(msg));
+	}
+
+	/**
 	 * Checks to see that a photo exists in the chat history. Does not check
 	 * which photo though
 	 * 
-	 * @step. ^I see new (?:photo|picture) in the dialog$
+	 * @step. ^I (do not )?see new (?:photo|picture) in the dialog$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if 'do not' part does not exist
 	 * 
 	 * @throws Throwable
 	 */
-	@Then("^I see new (?:photo|picture) in the dialog$")
-	public void ThenISeeNewPhotoInTheDialog() throws Throwable {
-		Assert.assertTrue("No new photo is present in the chat",
-				getDialogPage().isImageExists());
+	@Then("^I (do not )?see new (?:photo|picture) in the dialog$")
+	public void ThenISeeNewPhotoInTheDialog(String shouldNotSee)
+			throws Throwable {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("No new photo is present in the chat",
+					getDialogPage().isImageExists());
+		} else {
+			Assert.assertTrue(
+					"A photo is present in the chat, but it should not be vivible",
+					getDialogPage().isImageInvisible());
+		}
 	}
 
 	/**
@@ -663,6 +691,18 @@ public class DialogPageSteps {
 	 */
 	@Then("^Last message is (.*)$")
 	public void ThenLastMessageIs(String message) throws Exception {
+		final long millisecondsStarted = System.currentTimeMillis();
+		final int secondsTimeout = 10;
+		while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000) {
+			if (message
+					.toLowerCase()
+					.trim()
+					.equals(getDialogPage().getLastMessageFromDialog()
+							.toLowerCase().trim())) {
+				return;
+			}
+			Thread.sleep(500);
+		}
 		Assert.assertEquals(message.toLowerCase().trim(), getDialogPage()
 				.getLastMessageFromDialog().toLowerCase().trim());
 	}
@@ -802,12 +842,12 @@ public class DialogPageSteps {
 		double avgThreshold;
 		// no need to wait, since screenshoting procedure itself is quite long
 		final long screenshotingDelay = 0;
-		final long screenshotingSessionDuration = 5000;
+		final int maxFrames = 4;
 		switch (dst) {
 		case DIALOG:
 			avgThreshold = ImageUtil.getAnimationThreshold(
-					getDialogPage()::getRecentPictureScreenshot,
-					screenshotingDelay, screenshotingSessionDuration);
+					getDialogPage()::getRecentPictureScreenshot, maxFrames,
+					screenshotingDelay);
 			Assert.assertTrue(
 					String.format(
 							"The picture in the conversation view seems to be static (%.2f >= %.2f)",
@@ -816,8 +856,8 @@ public class DialogPageSteps {
 			break;
 		case PREVIEW:
 			avgThreshold = ImageUtil.getAnimationThreshold(
-					getDialogPage()::getPreviewPictureScreenshot,
-					screenshotingDelay, screenshotingSessionDuration);
+					getDialogPage()::getPreviewPictureScreenshot, maxFrames,
+					screenshotingDelay);
 			Assert.assertTrue(
 					String.format(
 							"The picture in the image preview view seems to be static (%.2f >= %.2f)",
@@ -825,5 +865,21 @@ public class DialogPageSteps {
 					avgThreshold < MAX_SIMILARITY_THRESHOLD);
 			break;
 		}
+	}
+
+	/**
+	 * 
+	 * Check whether unsent indicator is shown next to a new picture in the
+	 * convo view
+	 * 
+	 * @step. ^I see unsent indicator next to new picture in the dialog$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see unsent indicator next to new picture in the dialog$")
+	public void ISeeUnsentIndictatorNextToAPicture() throws Exception {
+		Assert.assertTrue(
+				"There is no unsent indicator next to a picture in the conversation view",
+				getDialogPage().waitForAPictureWithUnsentIndicator());
 	}
 }
