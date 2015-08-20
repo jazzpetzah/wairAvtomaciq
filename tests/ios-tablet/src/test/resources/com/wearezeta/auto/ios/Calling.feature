@@ -436,7 +436,7 @@ Feature: Calling
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And <Contact> stops all calls to me
     And I dont see calling page
-    And <Contact> verifies that call status to me is changed to inactive in <Timeout> seconds
+    And <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
@@ -467,7 +467,7 @@ Feature: Calling
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And <Contact> stops all calls to me
     And I dont see calling page
-    And <Contact> verifies that call status to me is changed to inactive in <Timeout> seconds
+    And <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
