@@ -251,7 +251,6 @@ Feature: Calling
     Given I see Contact list with contacts
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
-    And <Contact2> calls <GroupChatName> using <CallBackend>
     Then I see call overlay
     When I click the ignore call button
     Then I see "JOIN CALL" button
@@ -260,7 +259,6 @@ Feature: Calling
     Then I do not see "JOIN CALL" button
     And I see calling overlay Big bar
     And <Contact1> stops all calls to <GroupChatName>
-    And <Contact2> stops all calls to <GroupChatName>
     Then I do not see join group call overlay
 
     Examples: 
