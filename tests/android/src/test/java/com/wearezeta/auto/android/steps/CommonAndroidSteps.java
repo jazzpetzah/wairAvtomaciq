@@ -495,6 +495,28 @@ public class CommonAndroidSteps {
 	}
 
 	/**
+	 * Unarchives a given group chat from the perspective of the another user
+	 * through the backend
+	 * 
+	 * @step. ^(.*) is unarchived group chat (.*)$
+	 * 
+	 * @param currentUser
+	 *            user which have archived chat
+	 * @param groupChat
+	 *            archived group chat which should be unarchived
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Given("^(.*) is unarchived group chat (.*)$")
+	public void UserIsUnarchivedGroupChat(String currentUser, String groupChat)
+			throws Exception {
+		currentUser = usrMgr.findUserByNameOrNameAlias(currentUser).getName();
+
+		commonSteps.UnarchiveConversationWithGroup(currentUser, groupChat);
+	}
+
+	/**
 	 * Verifies that user A is in a group chat with a group of other users
 	 * 
 	 * @step. ^(.*) has group chat (.*) with (.*)$

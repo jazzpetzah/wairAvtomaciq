@@ -318,9 +318,10 @@ Feature: Conversation View
     And I select picture for dialog
     And I press "Sketch Image Paint" button
     And I draw a sketch on image with <NumColors> colors
-    Then I remember what my sketch looks like
-    And I send my sketch
-    And I verify that my sketch is the same as what I drew
+    And I remember what my sketch looks like
+    Then I send my sketch
+    And I select last photo in dialog
+    And I verify that my sketch in fullscreen is the same as what I drew
 
     Examples: 
       | Name      | Contact1  | NumColors |
@@ -368,7 +369,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id165 @staging
+  @id165 @regression
   Scenario Outline: Send GIF format pic
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

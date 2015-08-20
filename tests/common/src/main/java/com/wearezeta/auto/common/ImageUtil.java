@@ -195,26 +195,31 @@ public class ImageUtil {
 	}
 
 	/**
-	 * Calculates average similarity value between several image frames taken
-	 * within millisecondsDuration with help of elementStateScreenshoter method
+	 * Calculates average similarity value between 'maxFrames' image frames
+	 * taken with help of elementStateScreenshoter method
 	 * 
 	 * @param elementStateScreenshoter
-	 * @param millisecondsDuration
-	 *            it is recommended set it to 4000 ms or greater for reliable
-	 *            results
-	 * @return
+	 * @param maxFrames
+	 *            count of frames to compare. Is recommended to set this to 3 or
+	 *            greater
+	 * @param millisecondsDelay
+	 *            minimum delay value between each screenshot. This delay can be
+	 *            greater on real device, because it depends on the actual CPU
+	 *            performance
+	 *
+	 * @return overlap value: 0 <= value <= 1
 	 * @throws Exception
 	 */
 	public static double getAnimationThreshold(
 			ISupplierWithException elementStateScreenshoter,
-			long millisecondsDuration, long millisecondsDelay) throws Exception {
+			final int maxFrames, final long millisecondsDelay) throws Exception {
+		assert maxFrames >= 3 : "Please set maxFrames values to 3 or greater";
 		final List<BufferedImage> timelineScreenshots = new ArrayList<>();
-		final long millisecondsStarted = System.currentTimeMillis();
 		do {
 			timelineScreenshots.add(elementStateScreenshoter.getScreenshot()
 					.orElseThrow(IllegalStateException::new));
 			Thread.sleep(millisecondsDelay);
-		} while (System.currentTimeMillis() - millisecondsStarted <= millisecondsDuration);
+		} while (timelineScreenshots.size() < maxFrames);
 		int idx = 0;
 		final List<Double> thresholds = new ArrayList<>();
 		while (idx < timelineScreenshots.size() - 1) {
@@ -225,5 +230,15 @@ public class ImageUtil {
 		}
 		return thresholds.stream().reduce(0.0, (x, y) -> x + y)
 				/ thresholds.size();
+	}
+
+	public static BufferedImage rotateCCW90Degrees(BufferedImage bi) {
+		int width = bi.getWidth();
+		int height = bi.getHeight();
+		BufferedImage biFlip = new BufferedImage(height, width, bi.getType());
+		for (int i = 0; i < width; i++)
+			for (int j = 0; j < height; j++)
+				biFlip.setRGB(j, width - 1 - i, bi.getRGB(i, j));
+		return biFlip;
 	}
 }

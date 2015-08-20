@@ -94,4 +94,30 @@ public class SketchPageSteps {
 		}
 	}
 
+	/**
+	 * Compares the photo of the drawn sketch to what appears in the
+	 * conversation in fullscreen mode
+	 * 
+	 * @step. ^I verify that my sketch in fullscreen is the same as what I drew$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I verify that my sketch in fullscreen is the same as what I drew$")
+	public void WhenIVerifyThatMySketchInFullscreenMatchesWhatIDrew() throws Exception {
+		final double MAX_OVERLAP_SCORE = 0.95;
+
+		BufferedImage lastImageInConversation = getDialogPage()
+				.getLastImageInFullScreen().orElseThrow(AssertionError::new);
+
+		sketch = ImageUtil.rotateCCW90Degrees(sketch);
+		
+		double score = ImageUtil.getOverlapScore(lastImageInConversation,
+				sketch, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+
+		if (score < MAX_OVERLAP_SCORE) {
+			Assert.fail(String.format(
+					"Score %s is less than expected score - %s", score,
+					MAX_OVERLAP_SCORE));
+		}
+	}
 }

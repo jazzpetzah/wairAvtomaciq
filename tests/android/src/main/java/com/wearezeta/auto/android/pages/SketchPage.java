@@ -110,8 +110,12 @@ public class SketchPage extends AndroidPage {
 		}
 	}
 
-	public void sendSketch() {
-		sendButton.click();
+	public void sendSketch() throws Exception {
+		DriverUtils.tapInTheCenterOfTheElement(getDriver(), sendButton);
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), sendButton)) {
+			getDriver().tap(1, sendButton.getLocation().getX(),
+					sendButton.getLocation().getY(), 1);
+		}
 	}
 
 	public Optional<BufferedImage> screenshotCanvas() throws Exception {

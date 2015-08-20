@@ -25,7 +25,7 @@ public class ContactListPage extends AndroidPage {
 	private static final String xpathLoadingContactListItem = "//*[@id='tv_conv_list_topic' and contains(@value, '…')]";
 
 	public static final Function<String, String> xpathContactByName = name -> String
-			.format("//*[@id='tv_conv_list_topic' and @value='%s']", name);
+			.format("//*[@id='tv_conv_list_topic' and @value='%s' and @shown='true']", name);
 
 	public static final Function<Integer, String> xpathContactByIndex = index -> String
 			.format("(//*[@id='tv_conv_list_topic'])[%s]", index);
