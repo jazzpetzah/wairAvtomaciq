@@ -388,23 +388,22 @@ Feature: Connect
       | user1Name | user2Name | Hello friend |
 
   @id720 @staging
-  Scenario Outline: I do not want to be seen in the search results of someone I blocked
-    # moved to staging because of bug on backend
+  Scenario Outline: I want to be seen in the search results of someone I blocked
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I sign in using my email
     Given I see Contact list with contacts
     When User <Contact> blocks user Myself
-    And I wait <TimeoutSeconds> seconds until <Contact> does not exist in backend search results
-    And I open Search by tap
+    Then I wait until <Contact> exists in backend search results
+    When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
-    Then I see that no results found
+    Then I see user <Contact> found on People picker page
 
     Examples: 
-      | Name      | Contact   | TimeoutSeconds |
-      | user1Name | user2Name | 120            |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @id723 @regression
   Scenario Outline: I want to unblock someone from their Profile view
