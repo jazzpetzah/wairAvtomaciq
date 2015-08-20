@@ -620,6 +620,7 @@ public final class IOSLocators {
 		
 		public static final String xpathGiphyImage = "//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']";
 		
+		public static final String nameSoundCloudButton = "soundcloud";		
 	}
 	
 	public final class DialogInfoPage {
