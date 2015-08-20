@@ -67,7 +67,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id1505 @staging
+  @id1505 @regression
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (SoundCloud)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

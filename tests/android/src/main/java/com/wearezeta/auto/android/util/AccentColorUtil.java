@@ -13,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
-import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
@@ -146,7 +145,6 @@ public class AccentColorUtil {
 
 	private static AccentColor findSelectedAccentColor(BufferedImage screen)
 			throws IOException {
-		ImageUtil.storeImageToFile(screen, "/Users/kaleksandrov/screen.png");
 		LinkedHashMap<Color, Integer> colors = new LinkedHashMap<Color, Integer>();
 
 		for (int i = 0; i < screen.getWidth(); i++) {

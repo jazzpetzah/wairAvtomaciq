@@ -231,4 +231,14 @@ public class ImageUtil {
 		return thresholds.stream().reduce(0.0, (x, y) -> x + y)
 				/ thresholds.size();
 	}
+
+	public static BufferedImage rotateCCW90Degrees(BufferedImage bi) {
+		int width = bi.getWidth();
+		int height = bi.getHeight();
+		BufferedImage biFlip = new BufferedImage(height, width, bi.getType());
+		for (int i = 0; i < width; i++)
+			for (int j = 0; j < height; j++)
+				biFlip.setRGB(j, width - 1 - i, bi.getRGB(i, j));
+		return biFlip;
+	}
 }
