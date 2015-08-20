@@ -502,7 +502,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallChat | autocall    |
 
-  @id2649 @staging
+  @id2649 @regression
   Scenario Outline: Lock device screen after initiating call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -521,7 +521,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id1467 @staging
+  @id1467 @regression
   Scenario Outline: Put client into background when in the call
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -540,7 +540,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id369 @staging
+  @id369 @regression
   Scenario Outline: Other user trying to call me while I'm already in zeta call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
