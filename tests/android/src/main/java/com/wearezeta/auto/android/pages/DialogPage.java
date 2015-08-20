@@ -191,6 +191,10 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idCursorCloseButton)
 	private WebElement closeBtn;
 
+	private static final String idCursorCloseButton = "cursor_button_close";
+	@FindBy(id = idCursorCloseButton)
+	private WebElement closeBtn;
+
 	private static final String idMute = "cib__calling__mic_mute";
 	@FindBy(id = idMute)
 	private WebElement muteBtn;

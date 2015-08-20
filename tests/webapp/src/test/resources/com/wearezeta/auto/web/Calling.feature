@@ -601,7 +601,6 @@ Feature: Calling
     And I see the calling bar from user <Contact2>
     And I see the calling bar from user <Contact3>
     And I see the calling bar from user <Contact4>
-    And I wait for 20 seconds
     And <Contact2> verifies to have 4 flows
     And <Contact3> verifies to have 4 flows
     And <Contact4> verifies to have 4 flows

@@ -44,6 +44,10 @@ public class ContactListPage extends AndroidPage {
 			.format("%s/parent::*//*[@id='sci__list__missed_call']",
 					xpathContactByName.apply(convoName));
 
+	private static final Function<String, String> xpathMissedCallNotificationByConvoName = convoName -> String
+			.format("%s/parent::*//*[@id='sci__list__missed_call']",
+					xpathContactByName.apply(convoName));
+
 	@FindBy(id = PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 

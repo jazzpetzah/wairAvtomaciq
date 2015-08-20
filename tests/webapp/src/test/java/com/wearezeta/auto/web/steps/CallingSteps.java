@@ -113,7 +113,7 @@ public class CallingSteps {
 
 	/**
 	 * Verify that the instance has X active flows
-	 * 
+	 *
 	 * @param callee
 	 *            callee name/alias
 	 * @param numberOfFlows
@@ -129,7 +129,7 @@ public class CallingSteps {
 	/**
 	 * Verify that each flow of the instance had incoming and outgoing bytes
 	 * running over the line
-	 * 
+	 *
 	 * @param callee
 	 *            callee name/alias
 	 * @throws Exception
