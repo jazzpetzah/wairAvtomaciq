@@ -225,6 +225,7 @@ public class CallingOverlayPage extends AndroidPage {
 
 	public int numberOfParticipantsInGroupCall() throws Exception {
 		By searchCriteria = By.xpath(xpathGroupCallParticipantChathead);
+		DriverUtils.waitUntilLocatorAppears(getDriver(), searchCriteria, 5);
 		return getDriver().findElements(searchCriteria).size();
 	}
 

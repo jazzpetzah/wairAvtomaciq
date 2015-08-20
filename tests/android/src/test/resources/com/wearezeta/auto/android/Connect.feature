@@ -117,8 +117,8 @@ Feature: Connect
     And I see contact list with name <WaitingMess2>
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | WaitingMess1     | WaitingMess2      |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | 4 people waiting | 3 people waiting  |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | WaitingMess1     | WaitingMess2     |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | 4 people waiting | 3 people waiting |
 
   @id540 @regression
   Scenario Outline: I can ignore a connect request and reconnect later
@@ -526,8 +526,9 @@ Feature: Connect
     And I see Contact list with no contacts
     When I open Search by tap
     Then I see recommended user <Contact1> in People Picker
-    And I see recommended user <Contact2> in People Picker
 
+    # disabled step which checks missing contact with phone only
+    #    And I see recommended user <Contact2> in People Picker
     Examples: 
       | Name      | Contact1 | Contact2 |
       | user1Name | vb003    | Dorothy  |
