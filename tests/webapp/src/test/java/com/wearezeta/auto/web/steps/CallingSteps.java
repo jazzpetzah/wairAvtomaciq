@@ -3,13 +3,20 @@ package com.wearezeta.auto.web.steps;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+import com.wearezeta.auto.common.log.ZetaLogger;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.log4j.Logger;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class CallingSteps {
+
+	private static final Logger LOG = ZetaLogger.getLog(CallingSteps.class
+			.getName());
 
 	private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
 			.getInstance();
@@ -66,8 +73,8 @@ public class CallingSteps {
 	 *            destination conversation
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
-	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
-	 *            for more details
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
+	 *            more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
@@ -91,8 +98,8 @@ public class CallingSteps {
 	 *            callee name/alias
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
-	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
-	 *            for more details
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
+	 *            more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
@@ -135,7 +142,7 @@ public class CallingSteps {
 		}
 	}
 
-    /**
+	/**
 	 * Execute waiting instance as 'userAsNameAlias' user on calling server
 	 * using 'callingServiceBackend' tool
 	 *
@@ -183,5 +190,72 @@ public class CallingSteps {
 	@When("(.*) stops? all waiting instances$")
 	public void UserXStopsIncomingCalls(String callee) throws Exception {
 		commonCallingSteps.stopWaitingCall(callee);
+	}
+
+	@Then("^I call (\\d+) times")
+	public void ICallXTimes(int times) throws Throwable {
+		ConversationPageSteps convSteps = new ConversationPageSteps();
+		CommonCallingSteps2 commonCalling = CommonCallingSteps2.getInstance();
+		WarningPageSteps warningSteps = new WarningPageSteps();
+		List<Throwable> failures = new ArrayList<>();
+		for (int i = 0; i < times; i++) {
+			LOG.info("\n\nSTARTING CALL " + i);
+			try {
+				UserXAcceptsNextIncomingCallAutomatically("user2Name");
+				UserXAcceptsNextIncomingCallAutomatically("user3Name");
+				UserXAcceptsNextIncomingCallAutomatically("user4Name");
+				UserXAcceptsNextIncomingCallAutomatically("user5Name");
+				try {
+					try {
+						warningSteps.ISeeAnotherCallWarningModal("not");
+					} catch (Throwable e) {
+						warningSteps
+								.IClickButtonInAnotherCallWarningModal("End Call");
+						LOG.error(e.getMessage());
+					}
+					convSteps.ICallUser();
+					UserXVerifesCallStatusToUserY("user2Name", "active", 60);
+					UserXVerifesCallStatusToUserY("user3Name", "active", 60);
+					UserXVerifesCallStatusToUserY("user4Name", "active", 60);
+					UserXVerifesCallStatusToUserY("user5Name", "active", 60);
+					convSteps.IWaitForCallingBar("user2Name");
+					convSteps.IWaitForCallingBar("user3Name");
+					convSteps.IWaitForCallingBar("user4Name");
+					convSteps.IWaitForCallingBar("user5Name");
+					convSteps.IEndTheCall();
+					convSteps.IDoNotCallingBar();
+					LOG.info("CALL " + i + " SUCCESSFUL");
+				} catch (Throwable e) {
+					LOG.info("CALL " + i + " FAILED");
+					failures.add(e);
+					try {
+						convSteps.IEndTheCall();
+						convSteps.IDoNotCallingBar();
+					} catch (Throwable ex) {
+						LOG.error("Cannot stop call " + i + " " + ex);
+					}
+				}
+				commonCalling.stopWaitingCall("user2Name");
+				commonCalling.stopWaitingCall("user3Name");
+				commonCalling.stopWaitingCall("user4Name");
+				commonCalling.stopWaitingCall("user5Name");
+			} catch (Throwable e) {
+				LOG.error("Can not stop waiting call " + i + " " + e);
+				try {
+					convSteps.IEndTheCall();
+					convSteps.IDoNotCallingBar();
+				} catch (Throwable ex) {
+					LOG.error("Can not stop call " + i + " " + ex);
+				}
+			}
+		}
+
+		LOG.info(failures.size() + " failures happened during " + times
+				+ " calls");
+		for (Throwable failure : failures) {
+			LOG.error(failures.indexOf(failure) + ": " + failure.getMessage());
+		}
+		LOG.info(failures.size() + " failures happened during " + times
+				+ " calls");
 	}
 }
