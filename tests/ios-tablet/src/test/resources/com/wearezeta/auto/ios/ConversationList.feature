@@ -400,7 +400,7 @@ Feature: Conversation List
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | webdriver   |
+      | user1Name | user2Name | autocall    |
 
   @regression @id2364
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
