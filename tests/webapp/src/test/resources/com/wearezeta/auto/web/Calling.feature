@@ -755,21 +755,11 @@ Feature: Calling
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see my avatar on top of Contact list
-    And I wait for 60 seconds
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see my avatar on top of Contact list
-    And I wait for 60 seconds
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see my avatar on top of Contact list
-    And I wait for 60 seconds
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see my avatar on top of Contact list
-    And I wait for 60 seconds
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
-    And I join call
-    Then I see the calling bar
+    Then I join call
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
+    And I see the calling bar
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
