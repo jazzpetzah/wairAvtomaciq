@@ -707,7 +707,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | autocall    | chrome      | 60      |
 
 
-  @calling @group @durational @torun
+  @calling @group @durational
   Scenario Outline: Verify initiating group call several times
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -718,7 +718,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
-      Then I call 2 times
+    Then I call 2 times
 
     Examples: 
        | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
