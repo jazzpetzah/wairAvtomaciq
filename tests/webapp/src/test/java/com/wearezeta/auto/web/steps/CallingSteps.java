@@ -7,8 +7,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.log4j.Logger;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
@@ -197,14 +197,15 @@ public class CallingSteps {
 		ConversationPageSteps convSteps = new ConversationPageSteps();
 		CommonCallingSteps2 commonCalling = CommonCallingSteps2.getInstance();
 		WarningPageSteps warningSteps = new WarningPageSteps();
-		List<Throwable> failures = new ArrayList<>();
+		Map<Integer, Throwable> failures = new HashMap<>();
 		for (int i = 0; i < times; i++) {
 			LOG.info("\n\nSTARTING CALL " + i);
 			try {
-				UserXAcceptsNextIncomingCallAutomatically("user2Name");
-				UserXAcceptsNextIncomingCallAutomatically("user3Name");
-				UserXAcceptsNextIncomingCallAutomatically("user4Name");
-				UserXAcceptsNextIncomingCallAutomatically("user5Name");
+				for (int j = 2; j < 6; j++) {
+					UserXAcceptsNextIncomingCallAutomatically("user" + j
+							+ "Name");
+				}
+
 				try {
 					try {
 						warningSteps.ISeeAnotherCallWarningModal("not");
@@ -214,20 +215,19 @@ public class CallingSteps {
 						LOG.error(e.getMessage());
 					}
 					convSteps.ICallUser();
-					UserXVerifesCallStatusToUserY("user2Name", "active", 60);
-					UserXVerifesCallStatusToUserY("user3Name", "active", 60);
-					UserXVerifesCallStatusToUserY("user4Name", "active", 60);
-					UserXVerifesCallStatusToUserY("user5Name", "active", 60);
-					convSteps.IWaitForCallingBar("user2Name");
-					convSteps.IWaitForCallingBar("user3Name");
-					convSteps.IWaitForCallingBar("user4Name");
-					convSteps.IWaitForCallingBar("user5Name");
+					for (int j = 2; j < 6; j++) {
+						UserXVerifesCallStatusToUserY("user" + j + "Name",
+								"active", 60);
+					}
+					for (int j = 2; j < 6; j++) {
+						convSteps.IWaitForCallingBar("user" + j + "Name");
+					}
 					convSteps.IEndTheCall();
 					convSteps.IDoNotCallingBar();
 					LOG.info("CALL " + i + " SUCCESSFUL");
 				} catch (Throwable e) {
 					LOG.info("CALL " + i + " FAILED");
-					failures.add(e);
+					failures.put(i, e);
 					try {
 						convSteps.IEndTheCall();
 						convSteps.IDoNotCallingBar();
@@ -235,10 +235,9 @@ public class CallingSteps {
 						LOG.error("Cannot stop call " + i + " " + ex);
 					}
 				}
-				commonCalling.stopWaitingCall("user2Name");
-				commonCalling.stopWaitingCall("user3Name");
-				commonCalling.stopWaitingCall("user4Name");
-				commonCalling.stopWaitingCall("user5Name");
+				for (int j = 2; j < 6; j++) {
+					commonCalling.stopWaitingCall("user" + j + "Name");
+				}
 			} catch (Throwable e) {
 				LOG.error("Can not stop waiting call " + i + " " + e);
 				try {
@@ -252,8 +251,10 @@ public class CallingSteps {
 
 		LOG.info(failures.size() + " failures happened during " + times
 				+ " calls");
-		for (Throwable failure : failures) {
-			LOG.error(failures.indexOf(failure) + ": " + failure.getMessage());
+		for (Map.Entry<Integer, Throwable> entrySet : failures.entrySet()) {
+			LOG.error(entrySet.getKey() + ": "
+					+ entrySet.getValue().getMessage());
+
 		}
 		LOG.info(failures.size() + " failures happened during " + times
 				+ " calls");
