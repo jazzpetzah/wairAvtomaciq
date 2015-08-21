@@ -280,7 +280,7 @@ Feature: Conversation List
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
-    And <Contact> verifies that call status to me is changed to inactive in 60 seconds
+    And <Contact> verifies that call status to me is changed to destroyed in 60 seconds
     Then I see missed call indicator in list for contact <Contact>
     When Contact <Contact> send number <Number> of message to user <Name>
     Then I see missed call indicator in list for contact <Contact>
@@ -302,7 +302,7 @@ Feature: Conversation List
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
-    And <Contact> verifies that call status to me is changed to inactive in 60 seconds
+    And <Contact> verifies that call status to me is changed to DESTROYED in 60 seconds
     Then I see missed call indicator in list for contact <Contact>
     When Contact <Contact> send number <Number> of message to user <Name>
     Then I see missed call indicator in list for contact <Contact>
@@ -400,7 +400,7 @@ Feature: Conversation List
 
     Examples: 
       | Name      | Contact   | CallBackend |
-      | user1Name | user2Name | webdriver   |
+      | user1Name | user2Name | autocall    |
 
   @regression @id2364
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]

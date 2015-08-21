@@ -113,8 +113,8 @@ Feature: Settings
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
   
-  @staging @id730 @id731
-  Scenario Outline: Verify about screen contains all the required information [PORTRAIT]
+  @regression @id730 @id731
+  Scenario Outline: Verify about screen contains all the required information
     Given There is 1 user where <Name> is me
     Given User me change accent color to <Color>
     Given I sign in using my email or phone number

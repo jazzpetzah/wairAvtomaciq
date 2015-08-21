@@ -211,6 +211,10 @@ public class DialogPage extends AndroidPage {
 	@FindBy(xpath = xpathLastConversationMessage)
 	private WebElement lastConversationMessage;
 
+	private static final String idFullScreenImageImage = "tiv__single_image_message__animating_image";
+	@FindBy(id = idFullScreenImageImage)
+	private WebElement fullScreenImageImage;
+
 	public static Function<String, String> xpathInputFieldByValue = value -> String
 			.format("//*[@value='%s']", value);
 
@@ -453,6 +457,10 @@ public class DialogPage extends AndroidPage {
 	public Optional<BufferedImage> getLastImageInConversation()
 			throws Exception {
 		return getElementScreenshot(imageList.get(imageList.size() - 1));
+	}
+
+	public Optional<BufferedImage> getLastImageInFullScreen() throws Exception {
+		return getElementScreenshot(fullScreenImageImage);
 	}
 
 	public void confirm() throws Exception {

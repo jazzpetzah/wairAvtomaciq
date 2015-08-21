@@ -308,7 +308,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id416
+  @regression @id416
   Scenario Outline: Keyboard up and navigate to main convo list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

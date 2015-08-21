@@ -170,7 +170,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | webdriver   | 120     |
 
-  @calling_basic @id2645
+  @staging @id2645
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -503,7 +503,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | WaitGROUPCALL | chrome      | autocall     | 5               |
 
-  @staging @id2697
+  @regression @id2697
   Scenario Outline: Verify removing people from the conversation who joined the group call
     Given There are 5 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>

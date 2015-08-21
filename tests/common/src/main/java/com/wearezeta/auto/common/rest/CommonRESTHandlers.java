@@ -76,6 +76,7 @@ public final class CommonRESTHandlers {
 		} while (tryNum < this.maxRetries);
 		T responseEntity;
 		try {
+			response.bufferEntity();
 			responseEntity = response.readEntity(responseEntityType);
 			log.debug(String.format(" >>> Response: %s",
 					formatLogRecord(responseEntity)));
@@ -138,6 +139,7 @@ public final class CommonRESTHandlers {
 		} while (tryNum < this.maxRetries);
 		T responseEntity;
 		try {
+			response.bufferEntity();
 			responseEntity = response.readEntity(responseEntityType);
 			log.debug(String.format(" >>> Response: %s",
 					formatLogRecord(responseEntity)));
@@ -187,6 +189,7 @@ public final class CommonRESTHandlers {
 		} while (tryNum < this.maxRetries);
 		T responseEntity;
 		try {
+			response.bufferEntity();
 			responseEntity = response.readEntity(responseEntityType);
 			log.debug(String.format(" >>> Response: %s",
 					formatLogRecord(responseEntity)));
@@ -237,6 +240,7 @@ public final class CommonRESTHandlers {
 		} while (tryNum < this.maxRetries);
 		T responseEntity;
 		try {
+			response.bufferEntity();
 			responseEntity = response.readEntity(responseEntityType);
 			log.debug(String.format(" >>> Response: %s",
 					formatLogRecord(responseEntity)));
