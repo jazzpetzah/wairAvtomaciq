@@ -753,6 +753,7 @@ Feature: Calling
     When <Contact1> calls <ChatName> using <CallBackend>
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
+    And I see the calling bar
     And I wait for 60 seconds
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
