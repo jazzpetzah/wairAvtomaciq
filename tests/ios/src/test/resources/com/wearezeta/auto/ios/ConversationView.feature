@@ -686,7 +686,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @torun @regression @id3265
+  @regression @id3265
   Scenario Outline: Verify drawing on image from single view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
