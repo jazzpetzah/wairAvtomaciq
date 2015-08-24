@@ -171,9 +171,8 @@ Feature: Calling
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
-    # Uncomment this when AN-2573 is fixed
-    # When I swipe left on text input in the conversation view
-    When I tap Ping button in the conversation view
+    When I swipe left on text input in the conversation view
+    And I tap Ping button in the conversation view
     Then I see the ping message "<PingMessage>" in the conversation view
     And <Contact> stops all calls to me
 
