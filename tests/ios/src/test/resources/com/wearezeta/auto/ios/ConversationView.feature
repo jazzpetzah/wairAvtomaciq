@@ -696,9 +696,6 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I see new photo in the dialog
-    And I wait for 30 seconds
-    And I swipe right on Dialog page
-    And I tap on contact name <Contact>
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I press Sketch button on image fullscreen page

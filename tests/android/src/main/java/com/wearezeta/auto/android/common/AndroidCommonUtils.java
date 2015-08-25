@@ -464,14 +464,15 @@ public class AndroidCommonUtils extends CommonUtils {
 				}
 				ntry++;
 			} while (ntry <= maxTries);
+			assert (ntry <= maxTries) : "ADB has failed to "
+					+ (isEnabled ? "enable" : "disable")
+					+ " airplane mode on the device";
 			switchToApplication(
 					CommonUtils
 							.getAndroidPackageFromConfig(AndroidCommonUtils.class),
 					CommonUtils
 							.getAndroidActivityFromConfig(AndroidCommonUtils.class));
-			assert (ntry <= maxTries) : "ADB has failed to "
-					+ (isEnabled ? "enable" : "disable")
-					+ " airplane mode on the device";
+			Thread.sleep(3000);
 		}
 	}
 }

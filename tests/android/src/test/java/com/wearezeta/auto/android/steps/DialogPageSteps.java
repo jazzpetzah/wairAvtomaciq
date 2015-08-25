@@ -819,7 +819,7 @@ public class DialogPageSteps {
 		}
 	}
 
-	private static final double MAX_SIMILARITY_THRESHOLD = 0.9;
+	private static final double MAX_SIMILARITY_THRESHOLD = 0.95;
 
 	private static enum PictureDestination {
 		DIALOG, PREVIEW;

@@ -12,6 +12,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
@@ -40,6 +41,9 @@ public class RegistrationPage extends WebPage {
 	@FindBy(css = WebAppLocators.RegistrationPage.cssSwitchToSignInButton)
 	private WebElement switchToSignInButton;
 
+	@FindBy(css = WebAppLocators.RegistrationPage.cssSwitchToSignInButtonNotDisabled)
+	private WebElement switchToSignInButtonNotDisabled;
+
 	@FindBy(css = ".icon-envelope")
 	private WebElement verificationEnvelope;
 
@@ -61,9 +65,16 @@ public class RegistrationPage extends WebPage {
 
 	public LoginPage switchToLoginPage() throws Exception {
 		if (waitForRegistrationPageToFullyLoad()) {
-			DriverUtils.waitUntilElementClickable(getDriver(),
-					switchToSignInButton);
-			switchToSignInButton.click();
+			if (WebAppExecutionContext.getBrowser()
+					.isSupportingDiabledButtonDetection()) {
+				DriverUtils.waitUntilElementClickable(getDriver(),
+						switchToSignInButton);
+				switchToSignInButton.click();
+			} else {
+				DriverUtils.waitUntilElementClickable(getDriver(),
+						switchToSignInButtonNotDisabled);
+				switchToSignInButtonNotDisabled.click();
+			}
 		}
 
 		return new LoginPage(this.getLazyDriver(), this.getDriver().getCurrentUrl());
