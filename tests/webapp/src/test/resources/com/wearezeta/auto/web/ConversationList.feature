@@ -270,8 +270,8 @@ Feature: Conversation List
     And I see <Action> action for <Contact2> in conversation
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message | Action  | PING   | Image                     | CallBackend |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello   | STARTED | pinged | userpicture_landscape.jpg | autocall    |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName        | Message | Action | PING   | Image                     | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | DeleteGroupChat | hello   | START  | pinged | userpicture_landscape.jpg | autocall    |
 
   @regression @id3257
   Scenario Outline: Verify I can delete and leave a group conversation from conversation list
