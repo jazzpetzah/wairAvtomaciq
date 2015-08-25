@@ -331,7 +331,7 @@ public final class IOSLocators {
 	//needs name
 	public static final String xpathAvatarCollectionView = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
     
-	public static final String xpathParticipantAvatarCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
+	public static final String xpathParticipantAvatarCell = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell";
 	
 	public static final String nameErrorPageButton = "BACK";
 	
