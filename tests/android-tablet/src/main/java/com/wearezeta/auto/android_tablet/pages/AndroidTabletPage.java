@@ -51,10 +51,12 @@ public abstract class AndroidTabletPage extends AndroidPage {
 
 	@Override
 	public void selectFirstGalleryPhoto() throws Exception {
-		AndroidCommonUtils.executeAdb("shell input keyevent 19");
+		AndroidCommonUtils.executeAdb("shell input keyevent 20");
 		int ntry = 1;
 		final int maxTries = 5;
 		do {
+			Thread.sleep(500);
+			AndroidCommonUtils.executeAdb("shell input keyevent 20");
 			Thread.sleep(500);
 			AndroidCommonUtils.executeAdb("shell input keyevent 23");
 			ntry++;
