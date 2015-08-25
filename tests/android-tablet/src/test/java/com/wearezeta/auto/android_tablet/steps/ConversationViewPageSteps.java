@@ -343,4 +343,16 @@ public class ConversationViewPageSteps {
 				"The expected missed call notification is not visible in the conversation view",
 				getConversationViewPage().waitUntilGCNIsVisible());
 	}
+	
+	/**
+	 * Swipe right to show the convo list
+	 * 
+	 * @step. ^I swipe right to show (?:the |\\s*)conversations list$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I swipe right to show (?:the |\\s*)conversations list$")
+	public void ISwipeRight() throws Exception {
+		getConversationViewPage().doSwipeRight();
+	}
 }
