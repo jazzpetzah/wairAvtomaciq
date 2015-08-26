@@ -151,4 +151,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		getContactListPage().doLongSwipeDown();
 	}
 
+	public void doSwipeLeft() throws Exception {
+		DriverUtils.swipeByCoordinates(getDriver(), 1000, 95, 50, 10, 50);
+	}
 }

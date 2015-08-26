@@ -40,7 +40,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
 	private static ArrayList<String> addressBookAddedNames = new ArrayList<String>();
 
-	private static void executeAdb(final String cmdline) throws Exception {
+	public static void executeAdb(final String cmdline) throws Exception {
 		executeOsXCommand(new String[] { "/bin/bash", "-c",
 				ADB_PREFIX + "adb " + cmdline });
 	}

@@ -154,4 +154,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return getDialogPage().waitForPingMessageWithTextDisappears(
 				expectedMessage);
 	}
+
+	public void doSwipeRight() throws Exception {
+		DriverUtils.swipeByCoordinates(getDriver(), 1000, 10, 50, 90, 50);
+	}
 }

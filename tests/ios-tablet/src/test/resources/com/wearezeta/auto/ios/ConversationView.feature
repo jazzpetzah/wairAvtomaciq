@@ -1104,39 +1104,6 @@ Feature: Conversation View
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Wow      |
 
-  @regression @id2958 @id2959
-  Scenario Outline: Verify preview is opened after tapping on GIF button [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I send random giphy
-    And I click hide keyboard button
-    And I see giphy in conversation
-
-    Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
-  @regression @id3251 @id3252
-  Scenario Outline: Verify preview is opened after tapping on GIF button [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I Sign in on tablet using my email
-    And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I send random giphy
-    And I click hide keyboard button
-    And I see giphy in conversation
-
-    Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @staging @id3100
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [PORTRAIT]
     Given There are 4 users where <Name> is me

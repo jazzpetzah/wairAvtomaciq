@@ -49,7 +49,10 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 
 	public boolean waitUntilInvisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(PeoplePickerPage.idPeoplePickerClearbtn));
+				By.id(PeoplePickerPage.idPeoplePickerClearbtn))
+				|| getDriver()
+						.findElement(By.id(PeoplePickerPage.idPickerSearch))
+						.getLocation().getX() < 0;
 	}
 
 	public void tapCloseButton() throws Exception {
