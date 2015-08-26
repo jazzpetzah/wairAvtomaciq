@@ -25,3 +25,19 @@ Feature: Rotations
       | Name      |
       | user1Name |
 
+  @id2186 @staging
+  Scenario Outline: Search (people picker)
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    And I see the conversations list with no conversations
+    When I tap the Search input
+    Then I see People Picker page
+    When I rotate UI to landscape
+    Then I see People Picker page
+    When I rotate UI to portrait
+    Then I see People Picker page
+
+    Examples: 
+      | Name      |
+      | user1Name |

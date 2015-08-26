@@ -44,15 +44,16 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 
 	public boolean waitUntilVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(PeoplePickerPage.idPeoplePickerClearbtn));
+				By.id(PeoplePickerPage.idPeoplePickerClearbtn))
+				&& getAndroidPeoplePickerPage().pickerSearch.getLocation()
+						.getX() >= 0;
 	}
 
 	public boolean waitUntilInvisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(PeoplePickerPage.idPeoplePickerClearbtn))
-				|| getDriver()
-						.findElement(By.id(PeoplePickerPage.idPickerSearch))
-						.getLocation().getX() < 0;
+				|| getAndroidPeoplePickerPage().pickerSearch.getLocation()
+						.getX() < 0;
 	}
 
 	public void tapCloseButton() throws Exception {

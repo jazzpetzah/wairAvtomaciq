@@ -44,7 +44,7 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public static final String idPickerSearch = "puet_pickuser__searchbox";
 	@FindBy(id = idPickerSearch)
-	private WebElement pickerSearch;
+	public WebElement pickerSearch;
 
 	public static final String idPeoplePickerClearbtn = "gtv_pickuser__clearbutton";
 
