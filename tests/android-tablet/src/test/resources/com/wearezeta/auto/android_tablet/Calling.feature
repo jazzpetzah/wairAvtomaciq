@@ -222,7 +222,6 @@ Feature: Calling
     And I minimize the application
     When <Contact> calls me using <CallBackend>
     Then I see full screen calling overlay
-    And I do not see calling overlay Big bar
     When I accept call on full screen calling overlay
     Then I see calling overlay Big bar
     And I see call participants Myself,<Contact> on the calling overlay
