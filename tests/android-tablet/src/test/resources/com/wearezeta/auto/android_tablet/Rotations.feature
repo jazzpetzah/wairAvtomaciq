@@ -38,6 +38,28 @@ Feature: Rotations
     When I rotate UI to portrait
     Then I see People Picker page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
+
+  @id2186 @staging
+  Scenario Outline: Search (people picker)
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to me
+    Given <Contact2> is connected to <Contact1>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    When I tap the Search input
+    And I see People Picker page
+    And I enter "<Contact2>" into Search input on People Picker page
+    And I tap the found item <Contact2> on People Picker page
+    Then I see Outgoing Connection popover
+    When I rotate UI to landscape
+    Then I see Outgoing Connection popover
+    When I rotate UI to portrait
+    Then I see Outgoing Connection popover
+
+    Examples:
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
