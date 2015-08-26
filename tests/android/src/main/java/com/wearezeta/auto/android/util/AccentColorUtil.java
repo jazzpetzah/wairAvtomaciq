@@ -22,7 +22,7 @@ public class AccentColorUtil {
 			.getSimpleName());
 
 	// color constraints
-	public static final int COLOR_WIDTH_MIN_PX = 30;
+	public static final int COLOR_WIDTH_MIN_PX = 20;
 	public static final int COLOR_HEIGHT_MIN_PX = 0;
 	public static final int COLOR_WIDTH_MAX_PX = 300;
 	public static final int COLOR_HEIGHT_MAX_PX = 20;
