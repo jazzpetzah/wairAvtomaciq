@@ -482,8 +482,12 @@ public class DialogPage extends AndroidPage {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				takePhotoButton);
 		takePhotoButton.click();
-		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idDialogTakePhotoButton));
+		boolean isDisappeared = DriverUtils.waitUntilLocatorDissapears(
+				getDriver(), By.id(idDialogTakePhotoButton));
+		if (!isDisappeared)
+			log.debug("Take photo button is still seen. Page source: "
+					+ getDriver().getPageSource());
+		assert isDisappeared;
 	}
 
 	public void changeCamera() throws Exception {
