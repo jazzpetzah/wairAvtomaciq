@@ -62,7 +62,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2180 @staging
+  @id2180 @regression
   Scenario Outline: I should able to swipe to conversation when search is opened (portrait only)
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
