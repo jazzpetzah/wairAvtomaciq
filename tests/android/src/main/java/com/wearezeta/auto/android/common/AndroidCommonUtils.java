@@ -449,30 +449,20 @@ public class AndroidCommonUtils extends CommonUtils {
 				.trim().equals("1");
 	}
 
-	public static void setAirplaneMode(boolean isEnabled) throws Exception {
-		final boolean isAlreadyEnabled = isAirplaneModeEnabled();
-		if ((!isAlreadyEnabled && isEnabled)
-				|| (!isEnabled && isAlreadyEnabled)) {
-			executeAdb("shell am start -a android.settings.AIRPLANE_MODE_SETTINGS");
-			final int maxTries = 3;
-			int ntry = 1;
-			do {
-				Thread.sleep(1000);
-				executeAdb("shell input keyevent 23");
-				if (isAirplaneModeEnabled() == isEnabled) {
-					break;
-				}
-				ntry++;
-			} while (ntry <= maxTries);
-			assert (ntry <= maxTries) : "ADB has failed to "
-					+ (isEnabled ? "enable" : "disable")
-					+ " airplane mode on the device";
-			switchToApplication(
-					CommonUtils
-							.getAndroidPackageFromConfig(AndroidCommonUtils.class),
-					CommonUtils
-							.getAndroidActivityFromConfig(AndroidCommonUtils.class));
-			Thread.sleep(3000);
+	public static void setAirplaneMode(boolean expectedState) throws Exception {
+		if (isAirplaneModeEnabled() == expectedState) {
+			return;
 		}
+		executeAdb(String.format(
+				"shell settings put global airplane_mode_on %d",
+				expectedState ? 1 : 0));
+		executeAdb(String
+				.format("shell am broadcast -a android.intent.action.AIRPLANE_MODE --ez state %s",
+						expectedState ? "true" : "false"));
+		assert (isAirplaneModeEnabled() == expectedState) : "ADB has failed to "
+				+ (expectedState ? "enable" : "disable")
+				+ " airplane mode on the device";
+		// Let the app to understand that connectivity state has been changed
+		Thread.sleep(3000);
 	}
 }

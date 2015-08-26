@@ -207,6 +207,13 @@ public class CommonAndroidTabletSteps {
 	@After
 	public void tearDown() throws Exception {
 		try {
+			AndroidCommonUtils.setAirplaneMode(false);
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
+		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps2.getInstance().cleanup();
 		} catch (Exception e) {
@@ -784,4 +791,17 @@ public class CommonAndroidTabletSteps {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
+	/**
+	 * Enable/disable airplane mode
+	 * 
+	 * @step. ^I (enable|disable) Airplane mode on the device$
+	 * 
+	 * @param action
+	 *            either 'enable' or 'disable'
+	 * @throws Exception
+	 */
+	@Given("^I (enable|disable) Airplane mode on the device$")
+	public void IChangeAirplaceMode(String action) throws Exception {
+		AndroidCommonUtils.setAirplaneMode(action.equals("enable"));
+	}
 }
