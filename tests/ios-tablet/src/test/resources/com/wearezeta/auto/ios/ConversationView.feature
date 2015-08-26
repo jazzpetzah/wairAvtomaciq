@@ -913,7 +913,7 @@ Feature: Conversation View
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
-  @staging @id3205
+  @regression @id3205
   Scenario Outline: Verify appearance of title bar for conversation, restored from background [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1104,7 +1104,7 @@ Feature: Conversation View
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Wow      |
 
-  @staging @id3100
+  @regression @id3100
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -1127,7 +1127,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @staging @id3267
+  @regression @id3267
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
