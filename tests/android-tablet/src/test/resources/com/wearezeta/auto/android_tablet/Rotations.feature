@@ -21,7 +21,7 @@ Feature: Rotations
     And I change my name to <Name> on Self Profile page
     Then I see my name on Self Profile page
 
-    Examples: 
+    Examples:
       | Name      |
       | user1Name |
 
@@ -41,6 +41,26 @@ Feature: Rotations
     Examples:
       | Name      |
       | user1Name |
+
+  @id2187 @staging
+  Scenario Outline: Conversation view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given Contact <Contact> sends message "<Message>" to user Myself
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    And I see the conversations list with conversations
+    When I tap the conversation <Contact>
+    Then I see the conversation view
+    And I see the message "<Message>" in the conversation view
+    When I rotate UI to landscape
+    Then I see the message "<Message>" in the conversation view
+    When I rotate UI to portrait
+    Then I see the message "<Message>" in the conversation view
+
+    Examples: 
+      | Name      | Contact   | Message  |
+      | user1Name | user2Name | Msg1     |
 
   @id2186 @staging
   Scenario Outline: Search (people picker)
