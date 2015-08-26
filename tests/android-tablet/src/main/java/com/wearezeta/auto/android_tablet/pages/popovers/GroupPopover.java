@@ -72,4 +72,8 @@ public class GroupPopover extends AbstractPopoverContainer {
 	public boolean waitUntilPendingButtonIsVisible() throws Exception {
 		return this.outgoingConnectionPage.waitUntilPendingButtonIsVisible();
 	}
+
+	public void tapCloseButton() throws Exception {
+		this.participantsPage.tapCloseButton();
+	}
 }
