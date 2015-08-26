@@ -663,6 +663,8 @@ public final class IOSLocators {
 		public static final String xpathSuggestedContactToSwipe = "//UIACollectionCell[descendant::UIAStaticText[@name='%s']]";
 		public static final String xpathHideButtonForContact = "//UIAButton[@name='HIDE'][ancestor::UIACollectionCell[descendant::UIAStaticText[@name='%s']]]";
 		public static final String nameOpenConversationButton = "OPEN";
+		public static final String xpathCallButton = "//UIAButton[@name='OPEN']/following-sibling:: UIAButton[1]";
+		public static final String xpathSendImageButton = "//UIAButton[@name='OPEN']/following-sibling:: UIAButton[2]";
 	}
 	
 	public final class CommonIOSLocators {

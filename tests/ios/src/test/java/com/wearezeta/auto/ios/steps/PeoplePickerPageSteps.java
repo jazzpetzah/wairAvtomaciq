@@ -538,4 +538,55 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().pressInstantConnectButton();
 	}
 
+	/**
+	 * Verify that Call action button is visible
+	 * 
+	 * @step. ^I see call action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see call action button on People picker page$")
+	public void ISeeCallActionButtonOnPeoplePickerPage() throws Exception {
+		Assert.assertTrue("Call action button is not visible",
+				getPeoplePickerPage().isCallButtonVisible());
+	}
+
+	/**
+	 * Click on Call action button from Search to start call
+	 * 
+	 * @step. ^I click call action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click call action button on People picker page$")
+	public void IClickCallActionButtonOnPeoplePickerPage() throws Exception {
+		getPeoplePickerPage().clickCallButton();
+	}
+
+	/**
+	 * Verify that Send image action button is visible
+	 * 
+	 * @step. ^I see Send image action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Send image action button on People picker page$")
+	public void ISeeSendImageActionButtonOnPeoplePickerPage() throws Exception {
+		Assert.assertTrue("Send image action button is not visible",
+				getPeoplePickerPage().isSendImageButtonVisible());
+	}
+
+	/**
+	 * Click on Send image action button from Search to start call
+	 * 
+	 * @step. ^I click Send image action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Send image action button on People picker page$")
+	public void IClickSendImageActionButtonOnPeoplePickerPage()
+			throws Exception {
+		getPeoplePickerPage().clickSendImageButton();
+	}
+
 }
