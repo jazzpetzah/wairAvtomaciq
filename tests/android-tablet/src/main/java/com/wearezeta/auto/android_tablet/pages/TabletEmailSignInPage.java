@@ -51,4 +51,8 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 		getEmailSignInPage().verifyErrorMessageText(expectedMsg);
 	}
 
+	public void acceptErrorMessage()  throws Exception  {
+		getEmailSignInPage().acceptErrorMessage();
+	}
+
 }
