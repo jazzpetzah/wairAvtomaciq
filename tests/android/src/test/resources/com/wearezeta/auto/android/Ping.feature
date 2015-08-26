@@ -28,7 +28,8 @@ Feature: Ping
     And I swipe on text input
     And I press Ping button
     Then I see Ping message <Msg1> in the dialog
-    When I press Ping button
+    When I swipe on text input
+    And I press Ping button
     Then I see Ping message <Msg2> in the dialog
 
     Examples: 
