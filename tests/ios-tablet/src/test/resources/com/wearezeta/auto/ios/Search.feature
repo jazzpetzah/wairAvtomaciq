@@ -495,3 +495,47 @@ Feature: Search
     Examples: 
       | Name      | UserCount | Contact   | Number |
       | user1Name | 7         | user2Name | 4      |
+
+  @staging @id3289
+  Scenario Outline: Verify starting a call with action button [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    Then I see user <Contact> found on People picker page
+    When I tap on connected user <Contact> on People picker page
+    And I see call action button on People picker page
+    And I click call action button on People picker page
+    Then I see mute call, end call buttons
+    And I see calling to contact <Contact> message
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3290
+  Scenario Outline: Verify starting a call with action button [LANDSAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    Then I see user <Contact> found on People picker page
+    When I tap on connected user <Contact> on People picker page
+    And I see call action button on People picker page
+    And I click call action button on People picker page
+    Then I see mute call, end call buttons
+    And I see calling to contact <Contact> message
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+                      

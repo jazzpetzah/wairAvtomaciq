@@ -276,3 +276,24 @@ Feature: Search
     Examples: 
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
+
+  @staging @id3282
+  Scenario Outline: Verify starting a call with action button
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    Then I see user <Contact> found on People picker page
+    When I tap on connected user <Contact> on People picker page
+    And I see call action button on People picker page
+    And I click call action button on People picker page
+    Then I see mute call, end call and speakers buttons
+    And I see calling to contact <Contact> message
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
