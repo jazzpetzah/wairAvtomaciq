@@ -40,11 +40,9 @@ public class ResultJSON extends TestcasesStorage {
 				isPending = true;
 			} else if (!getStepStatus(step).equals("passed") && !isPending) {
 				return false;
-			} else if (isPending) {
-				if (getStepStatus(step).equals("failed")) {
-					if (!isGivenStepType(step)) {
-						return false;
-					}
+			} else if (getStepStatus(step).equals("failed")) {
+				if (!isGivenStepType(step)) {
+					return false;
 				}
 			}
 		}

@@ -60,7 +60,6 @@ public class PeoplePickerPage extends AndroidPage {
 			.format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']",
 					name);
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
@@ -122,8 +121,12 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public void tapPeopleSearch() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idPickerSearch)) : "The People Picker search input is not visible";
+		boolean isDisplayed = DriverUtils.waitUntilLocatorIsDisplayed(
+				getDriver(), By.id(idPickerSearch));
+		if (!isDisplayed)
+			log.debug("The People Picker search input is not visible: "
+					+ getDriver().getPageSource());
+		assert isDisplayed : "The People Picker search input is not visible";
 		pickerSearch.click();
 	}
 

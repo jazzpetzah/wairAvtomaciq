@@ -126,10 +126,10 @@ public class ContactListPageSteps {
 	 * Presses on search bar in the conversation List to open search (people
 	 * picker)
 	 * 
-	 * @step. ^I open Search by tap$
+	 * @step. ^I open [Ss]earch by tap$
 	 * @throws Exception
 	 */
-	@When("^I open Search by tap")
+	@When("^I open [Ss]earch by tap")
 	public void WhenITapOnSearchBox() throws Exception {
 		getContactListPage().tapOnSearchBox();
 	}

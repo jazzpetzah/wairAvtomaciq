@@ -13,7 +13,6 @@
     And I swipe left on text input in the conversation view
     When I tap Ping button in the conversation view
     Then I see the ping message "<Message1>" in the conversation view
-    When I wait for 5 seconds
     And I tap Ping button in the conversation view
     Then I see the ping message "<Message2>" in the conversation view  
 
@@ -34,7 +33,6 @@
     And I swipe left on text input in the conversation view
     When I tap Ping button in the conversation view
     Then I see the ping message "<Message1>" in the conversation view
-    When I wait for 5 seconds
     And I tap Ping button in the conversation view
     Then I see the ping message "<Message2>" in the conversation view
 

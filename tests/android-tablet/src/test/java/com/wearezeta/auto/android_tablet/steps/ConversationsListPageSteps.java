@@ -222,4 +222,17 @@ public class ConversationsListPageSteps {
 					"Swipe type '%s' is not supported", swipeTypeStr));
 		}
 	}
+
+	/**
+	 * Swipe left to show the conversation view
+	 * 
+	 * @step. ^I swipe left to show (?:the |\\s*)conversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I swipe left to show (?:the |\\s*)conversation view$")
+	public void ISwipeLeft() throws Exception {
+		getConversationsListPage().doSwipeLeft();
+	}
+
 }

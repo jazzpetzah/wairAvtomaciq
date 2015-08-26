@@ -647,21 +647,6 @@ Feature: Conversation View
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Happy    |
 
-  @regression @id2792 @id2786
-  Scenario Outline: Verify preview is opened after tapping on GIF button
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I send random giphy
-    And I see giphy in conversation
-
-    Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @regression @id3095
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations
     Given There are 4 users where <Name> is me
@@ -696,9 +681,6 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I see new photo in the dialog
-    And I wait for 30 seconds
-    And I swipe right on Dialog page
-    And I tap on contact name <Contact>
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I press Sketch button on image fullscreen page

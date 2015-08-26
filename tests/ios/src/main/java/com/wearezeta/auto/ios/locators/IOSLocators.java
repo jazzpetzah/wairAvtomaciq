@@ -300,7 +300,7 @@ public final class IOSLocators {
 	
 	public static final String nameOtherUserProfilePageCloseButton = "OtherUserProfileCloseButton";
 	
-	public static final String xpathOtherProfilePagePendingLabel = "//UIAStaticText[contains(@name, 'Let’s connect')]";
+	public static final String xpathOtherProfilePageCancelRequestLabel = "//UIAStaticText[contains(@name, 'CANCEL REQUEST')]";
 	
 	public static final String nameOtherProfilePageStartConversationButton = "OtherUserMetaControllerLeftButton";
 	
@@ -331,7 +331,7 @@ public final class IOSLocators {
 	//needs name
 	public static final String xpathAvatarCollectionView = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
     
-	public static final String xpathParticipantAvatarCell = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell";
+	public static final String xpathParticipantAvatarCell = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell";
 	
 	public static final String nameErrorPageButton = "BACK";
 	
@@ -488,7 +488,7 @@ public final class IOSLocators {
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
 	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
-	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell[1]/UIACollectionView/UIACollectionCell[%d]/UIAImage";
+	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIACollectionView/UIACollectionCell[%d]/UIAImage";
 	public static final String xpathPeoplePickerTopConnectionsName = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText";
 	public static final String xpathPeoplePickerAllTopPeople = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell";
 	public static final String nameShareButton = "SHARE CONTACTS";
@@ -501,6 +501,7 @@ public final class IOSLocators {
 	public static final String nameHideSuggestedContactButtonType = "UIAButton";
 	public static final String nameInstantConnectButton = "instantPlusConnectButton";
 	public static final String xpathSearchResultCell = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]";
+	public static final String xpathSearchResultCellAvatar = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[1]/UIAStaticText";
 	public static final String xpathSearchResultContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
 	
 	//////////////////

@@ -40,7 +40,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
 	private static ArrayList<String> addressBookAddedNames = new ArrayList<String>();
 
-	private static void executeAdb(final String cmdline) throws Exception {
+	public static void executeAdb(final String cmdline) throws Exception {
 		executeOsXCommand(new String[] { "/bin/bash", "-c",
 				ADB_PREFIX + "adb " + cmdline });
 	}
@@ -464,14 +464,15 @@ public class AndroidCommonUtils extends CommonUtils {
 				}
 				ntry++;
 			} while (ntry <= maxTries);
+			assert (ntry <= maxTries) : "ADB has failed to "
+					+ (isEnabled ? "enable" : "disable")
+					+ " airplane mode on the device";
 			switchToApplication(
 					CommonUtils
 							.getAndroidPackageFromConfig(AndroidCommonUtils.class),
 					CommonUtils
 							.getAndroidActivityFromConfig(AndroidCommonUtils.class));
-			assert (ntry <= maxTries) : "ADB has failed to "
-					+ (isEnabled ? "enable" : "disable")
-					+ " airplane mode on the device";
+			Thread.sleep(3000);
 		}
 	}
 }

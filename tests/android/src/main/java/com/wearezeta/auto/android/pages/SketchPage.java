@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -67,6 +68,12 @@ public class SketchPage extends AndroidPage {
 		if (isOnImage) {
 			selectColorFromChooser(onImageColorPicker);
 		} else {
+			boolean isDisplayed = DriverUtils.waitUntilLocatorIsDisplayed(
+					getDriver(), By.id(idColorPicker));
+			if (!isDisplayed) {
+				log.debug("Color picker is not visible: "
+						+ getDriver().getPageSource());
+			}
 			selectColorFromChooser(colorPicker);
 		}
 	}

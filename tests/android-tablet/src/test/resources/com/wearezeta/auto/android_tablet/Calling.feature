@@ -171,9 +171,8 @@ Feature: Calling
     And I tap Take Photo button in the conversation view
     And I confirm the picture for the conversation view
     Then I see a new picture in the conversation view
-    # Uncomment this when AN-2573 is fixed
-    # When I swipe left on text input in the conversation view
-    When I tap Ping button in the conversation view
+    When I swipe left on text input in the conversation view
+    And I tap Ping button in the conversation view
     Then I see the ping message "<PingMessage>" in the conversation view
     And <Contact> stops all calls to me
 
@@ -223,7 +222,6 @@ Feature: Calling
     And I minimize the application
     When <Contact> calls me using <CallBackend>
     Then I see full screen calling overlay
-    And I do not see calling overlay Big bar
     When I accept call on full screen calling overlay
     Then I see calling overlay Big bar
     And I see call participants Myself,<Contact> on the calling overlay
