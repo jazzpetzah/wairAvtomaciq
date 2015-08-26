@@ -76,4 +76,10 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 		DriverUtils.tapInTheCenterOfTheElement(this.getDriver(),
 				selfProfileView);
 	}
+
+	public boolean waitUntilOptionsMenuItemVisible(String itemName)
+			throws Exception {
+		final By locator = By.xpath(xpathOptionsMenuItemByName.apply(itemName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
 }

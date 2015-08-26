@@ -25,7 +25,8 @@ public class ContactListPage extends AndroidPage {
 	private static final String xpathLoadingContactListItem = "//*[@id='tv_conv_list_topic' and contains(@value, '…')]";
 
 	public static final Function<String, String> xpathContactByName = name -> String
-			.format("//*[@id='tv_conv_list_topic' and @value='%s' and @shown='true']", name);
+			.format("//*[@id='tv_conv_list_topic' and @value='%s' and @shown='true']",
+					name);
 
 	public static final Function<Integer, String> xpathContactByIndex = index -> String
 			.format("(//*[@id='tv_conv_list_topic'])[%s]", index);
@@ -110,7 +111,7 @@ public class ContactListPage extends AndroidPage {
 			.format("//*[starts-with(@id, 'ttv__conversation_settings') and @value='%s']",
 					name.toUpperCase());
 
-	private static final String xpathTopConversationsListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
+	// private static final String xpathTopConversationsListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
 	private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
 
 	private static final Function<String, String> xpathConversationListEntry = name -> String
@@ -293,8 +294,8 @@ public class ContactListPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 30;
-	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 4;
+	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
+	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 2;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
 		CommonSteps.getInstance().WaitForTime(1);
@@ -303,18 +304,6 @@ public class ContactListPage extends AndroidPage {
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
 				.format("It seems that conversations list has not been loaded within %s seconds (login button is still visible)",
 						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
-
-		final By topConvoListLoadingProgressLocator = By
-				.xpath(xpathTopConversationsListLoadingIndicator);
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				topConvoListLoadingProgressLocator, 5);
-		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				topConvoListLoadingProgressLocator,
-				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
-			log.warn(String
-					.format("It seems that conversations list has not been loaded within %s seconds (the progress bar is still visible)",
-							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
-		}
 
 		final By selfAvatarLocator = By.id(idSelfUserAvatar);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
