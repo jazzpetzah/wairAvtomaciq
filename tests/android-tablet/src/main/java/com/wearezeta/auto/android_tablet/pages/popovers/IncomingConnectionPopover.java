@@ -34,4 +34,8 @@ public class IncomingConnectionPopover extends AbstractPopoverContainer {
 	public void tapCloseButton() {
 		this.incomingConnectionPage.tapCloseButton();
 	}
+
+	public void tapIgnoreButton() {
+		this.incomingConnectionPage.tapIgnoreButton();
+	}
 }

@@ -78,3 +78,45 @@ Feature: Search
     Examples: 
       | Name      |
       | user1Name |
+
+  @id2848 @staging
+  Scenario Outline: I ignore someone from search and clear my inbox (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversation
+    Given I wait until <Contact> exists in backend search results
+    When I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact> on Incoming connections page
+    And I swipe right to show the conversations list
+    Then I see the Conversations list with no conversations
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id3130 @staging
+  Scenario Outline: I ignore someone from search and clear my inbox (landscape)
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversation
+    Given I wait until <Contact> exists in backend search results
+    When I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact> on Incoming connections page
+    Then I see the Conversations list with no conversations
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+ 

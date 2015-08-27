@@ -413,7 +413,7 @@ Feature: Connect
     And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
-    And I see Outgoing Connection popover
+    And I see Incoming Connection popover
     And I see the name <Contact> on Incoming Connection popover
     And I tap Accept button on Incoming Connection popover
     And I do not see Incoming Connection popover
@@ -508,3 +508,41 @@ Feature: Connect
     Examples: 
       | Name      | Contact   | ContactEmail | WaitingMsg       |
       | user1Name | user2Name | user2Email   | 1 person waiting |
+
+  @id2854 @staging
+  Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view (portrait)
+    Given There are 2 users where <Name> is me
+    Given Myself sent connection request to <Contact>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    When I tap the conversation <Contact>
+    Then I see Outgoing Pending Connection page
+    And I see <Contact> name on the Outgoing Pending Connection page
+    When <Contact> accepts all requests
+    Then I see the conversation view
+    And I see the system connection message contains "<SysMessage>" text on Conversation view page
+
+    Examples: 
+      | Name      | Contact   | SysMessage             |
+      | user1Name | user2Name | Connected to user2Name |
+
+  @id3128 @staging
+  Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view (landscape)
+    Given There are 2 users where <Name> is me
+    Given Myself sent connection request to <Contact>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    When I tap the conversation <Contact>
+    Then I see Outgoing Pending Connection page
+    And I see <Contact> name on the Outgoing Pending Connection page
+    When <Contact> accepts all requests
+    Then I see the conversation view
+    And I see the system connection message contains "<SysMessage>" text on Conversation view page
+
+    Examples: 
+      | Name      | Contact   | SysMessage             |
+      | user1Name | user2Name | Connected to user2Name |

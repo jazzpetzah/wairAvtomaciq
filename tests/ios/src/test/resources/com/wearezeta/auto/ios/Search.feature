@@ -71,7 +71,6 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-
   @regression @id1394
   Scenario Outline: Start 1:1 chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
@@ -297,3 +296,28 @@ Feature: Search
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id3282
+  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    Then I tap on first 3 top connections
+    When I see Send image action button on People picker page
+    And I click Send image action button on People picker page
+    And I press Camera Roll button
+    And I choose a picture from camera roll
+    And I press Confirm button
+    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+    And I see new photo in the dialog
+    When I navigate back to conversations view
+    Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |Contact3  |
+      | user1Name | user2Name | user3Name |user4Name |

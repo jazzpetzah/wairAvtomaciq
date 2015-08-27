@@ -552,12 +552,12 @@ public class CommonAndroidTabletSteps {
 	/**
 	 * User A accepts all requests
 	 * 
-	 * @step. ^(.*) accept all requests$
+	 * @step. ^(.*) accepts? all requests$
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^(.*) accept all requests$")
+	@When("^(.*) accepts? all requests$")
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
 		commonSteps.AcceptAllIncomingConnectionRequests(userToNameAlias);

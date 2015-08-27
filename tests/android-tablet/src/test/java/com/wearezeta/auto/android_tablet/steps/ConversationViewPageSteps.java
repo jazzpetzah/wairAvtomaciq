@@ -102,6 +102,29 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
+	 * Verify the connection system conversation message contains expected text
+	 * 
+	 * @step. ^I see the system connection message contains \"(.*)\" text on
+	 *        [Cc]onversation view page$
+	 * 
+	 * @param expectedMessage
+	 *            the message to verify
+	 * @throws Exception
+	 */
+	@Then("^I see the system connection message contains \"(.*)\" text on [Cc]onversation view page$")
+	public void ISeeTheSystemConnectionMessage(String expectedMessage)
+			throws Exception {
+		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(
+				String.format(
+						"The system connection message containing text '%s' is not visible in the conversation view",
+						expectedMessage),
+				getConversationViewPage()
+						.waitForSystemConnectionMessageContains(expectedMessage));
+	}
+
+	/**
 	 * Verify the chat header system message contains expected text
 	 * 
 	 * @step. ^I see the chat header message contains \"(.*)\" text on
