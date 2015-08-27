@@ -817,4 +817,34 @@ public class CommonAndroidTabletSteps {
 	public void ISelectGalleryPicture() throws Exception {
 		pagesCollection.getCommonPage().selectFirstGalleryPhoto();
 	}
+
+	/**
+	 * Sends an image from one user to a conversation
+	 * 
+	 * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
+	 * 
+	 * @param imageSenderUserNameAlias
+	 *            the user to sending the image
+	 * @param imageFileName
+	 *            the file path name of the image to send. The path name is
+	 *            defined relative to the image file defined in
+	 *            Configuration.cnf.
+	 * @param conversationType
+	 *            "single user" or "group" conversation.
+	 * @param dstConversationName
+	 *            the name of the conversation to send the image to.
+	 *
+	 * @throws Exception
+	 * 
+	 */
+	@When("^Contact (.*) sends image (.*) to (single user|group) conversation (.*)")
+	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+			String imageFileName, String conversationType,
+			String dstConversationName) throws Exception {
+		String imagePath = CommonUtils.getImagesPath(this.getClass())
+				+ imageFileName;
+		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
+				imagePath, dstConversationName,
+				conversationType.equals("group"));
+	}
 }

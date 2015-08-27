@@ -1,41 +1,43 @@
 Feature: Rich Media
 
-  @id2254 @smoke
-  Scenario Outline: Send Camera picture to contact in portrait mode
+  @id2830 @staging
+  Scenario Outline: Send GIF format pic (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Contact <Contact> sends image <GifName> to single user conversation <Name>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
-    And I swipe left on text input in the conversation view
-    When I tap Add Picture button in the conversation view
-    And I tap Take Photo button in the conversation view
-    And I confirm the picture for the conversation view
+    When I scroll to the bottom of the conversation view
     Then I see a new picture in the conversation view
+    And I see the picture in the conversation view is animated
+    When I tap the new picture in the conversation view
+    Then I see the picture in the preview is animated
 
     Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | GifName      |
+      | user1Name | user2Name | animated.gif |
 
-  @id2240 @smoke
-  Scenario Outline: Send Camera picture to contact in landscape mode
+  @id3141 @staging
+  Scenario Outline: Send GIF format pic (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given Contact <Contact> sends image <GifName> to single user conversation <Name>
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I see the conversations list with conversations
     And I see the conversation <Contact> in my conversations list
     And I tap the conversation <Contact>
     And I see the conversation view
-    And I swipe left on text input in the conversation view
-    When I tap Add Picture button in the conversation view
-    And I tap Take Photo button in the conversation view
-    And I confirm the picture for the conversation view
+    When I scroll to the bottom of the conversation view
     Then I see a new picture in the conversation view
+    And I see the picture in the conversation view is animated
+    When I tap the new picture in the conversation view
+    Then I see the picture in the preview is animated
 
     Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact   | GifName      |
+      | user1Name | user2Name | animated.gif |
