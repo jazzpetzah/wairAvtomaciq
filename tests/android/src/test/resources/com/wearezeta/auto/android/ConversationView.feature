@@ -342,7 +342,8 @@ Feature: Conversation View
     And I draw a sketch on image with <NumColors> colors
     Then I remember what my sketch looks like
     And I send my sketch
-    And I verify that my sketch is the same as what I drew
+    And I select last photo in dialog
+    And I verify that my sketch in fullscreen is the same as what I drew
 
     Examples: 
       | Name      | Contact1  | NumColors |

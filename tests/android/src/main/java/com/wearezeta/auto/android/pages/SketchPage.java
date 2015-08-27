@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -120,8 +121,13 @@ public class SketchPage extends AndroidPage {
 	public void sendSketch() throws Exception {
 		DriverUtils.tapInTheCenterOfTheElement(getDriver(), sendButton);
 		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), sendButton)) {
-			getDriver().tap(1, sendButton.getLocation().getX(),
-					sendButton.getLocation().getY(), 1);
+			try {
+				getDriver().tap(1, sendButton.getLocation().getX(),
+						sendButton.getLocation().getY(), 1);
+			} catch (NoSuchElementException e) {
+				log.debug("Can't find send sketch button. Page source: "
+						+ getDriver().getPageSource());
+			}
 		}
 	}
 
