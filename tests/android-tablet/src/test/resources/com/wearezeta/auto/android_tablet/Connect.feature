@@ -546,3 +546,22 @@ Feature: Connect
     Examples: 
       | Name      | Contact   | SysMessage             |
       | user1Name | user2Name | Connected to user2Name |
+
+  @id2846 @staging
+  Scenario Outline: I can receive new connection request when app in background
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with no conversations
+    When I minimize the application
+    And <Contact> sent connection request to me
+    And I restore the application
+    Then I see the conversation <WaitingMsg> in my conversations list
+    When I tap the conversation <WaitingMsg>
+    Then I see the Incoming connections page
+    And I see email <ContactEmail> on Incoming connections page
+    And I see name <Contact> on Incoming connections page
+
+    Examples:
+      | Name      | Contact   | ContactEmail | WaitingMsg       |
+      | user1Name | user2Name | user2Email   | 1 person waiting |
