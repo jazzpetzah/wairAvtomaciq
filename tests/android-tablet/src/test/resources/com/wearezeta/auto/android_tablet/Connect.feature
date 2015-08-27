@@ -546,3 +546,22 @@ Feature: Connect
     Examples: 
       | Name      | Contact   | SysMessage             |
       | user1Name | user2Name | Connected to user2Name |
+
+  @id2855 @staging @torun
+  Scenario Outline: I would not know other person has ignored my connection request
+    Given There are 2 users where <Name> is me
+    Given Myself sent connection request to <Contact>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    When I tap the conversation <Contact>
+    Then I see Outgoing Pending Connection page
+    And I see <Contact> name on the Outgoing Pending Connection page
+    When <Contact> ignores all requests
+    Then I do not see conversation view
+    And I see <Contact> name on the Outgoing Pending Connection page
+
+    Examples:
+      | Name      | Contact   |
+      | user1Name | user2Name |

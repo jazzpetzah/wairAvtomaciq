@@ -501,7 +501,7 @@ public class CommonAndroidTabletSteps {
 	/**
 	 * Allows user A to ignore all incoming connection requests
 	 * 
-	 * @step. ^(.*) ignore all requests$
+	 * @step. ^(.*) ignores? all requests$
 	 * 
 	 * @param userToNameAlias
 	 *            the user who will do the ignoring
@@ -509,7 +509,7 @@ public class CommonAndroidTabletSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@When("^(.*) ignore all requests$")
+	@When("^(.*) ignores? all requests$")
 	public void IgnoreAllIncomingConnectRequest(String userToNameAlias)
 			throws Exception {
 		commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
