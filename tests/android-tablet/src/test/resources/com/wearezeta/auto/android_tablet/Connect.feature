@@ -413,7 +413,7 @@ Feature: Connect
     And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
-    And I see Outgoing Connection popover
+    And I see Incoming Connection popover
     And I see the name <Contact> on Incoming Connection popover
     And I tap Accept button on Incoming Connection popover
     And I do not see Incoming Connection popover
