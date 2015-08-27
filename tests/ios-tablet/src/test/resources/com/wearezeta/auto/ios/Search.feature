@@ -538,4 +538,53 @@ Feature: Search
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-                      
+
+  @staging @id3291
+  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    Then I tap on first 3 top connections
+    When I see Send image action button on People picker page
+    And I click Send image action button on People picker page
+    And I press Camera Roll button
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
+    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+    And I see new photo in the dialog
+    When I navigate back to conversations view
+    Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+
+  @staging @id3292
+  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button [LANDSAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    Then I tap on first 3 top connections
+    When I see Send image action button on People picker page
+    And I click Send image action button on People picker page
+    And I press Camera Roll button
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
+    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+    And I see new photo in the dialog
+    And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
