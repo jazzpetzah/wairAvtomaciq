@@ -236,3 +236,44 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
+  @id2828 @staging
+  Scenario Outline: Send existing image from gallery in 1:1 chat (landscape)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And I see the conversation view
+    And I swipe left on text input in the conversation view
+    When I tap Add Picture button in the conversation view
+    And I tap Gallery button in the conversation view
+    And I select a picture from the Gallery
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id2829 @staging
+  Scenario Outline: Send existing image from gallery in 1:1 chat (portrait)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And I see the conversation view
+    And I swipe left on text input in the conversation view
+    When I tap Add Picture button in the conversation view
+    And I tap Gallery button in the conversation view
+    And I select a picture from the Gallery
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

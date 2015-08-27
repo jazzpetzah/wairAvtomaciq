@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android_tablet.pages;
 
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -157,5 +159,23 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	public void doSwipeRight() throws Exception {
 		DriverUtils.swipeByCoordinates(getDriver(), 1000, 10, 50, 90, 50);
+	}
+
+	public void scrollToTheBottom() throws Exception {
+		getDialogPage().tapDialogPageBottom();
+	}
+
+	public Optional<BufferedImage> getRecentPictureScreenshot()
+			throws Exception {
+		return getDialogPage().getRecentPictureScreenshot();
+	}
+
+	public Optional<BufferedImage> getPreviewPictureScreenshot()
+			throws Exception {
+		return getDialogPage().getPreviewPictureScreenshot();
+	}
+
+	public void tapRecentPicture() throws Exception {
+		getDialogPage().clickLastImageFromDialog();
 	}
 }
