@@ -269,6 +269,19 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
+	 * Tap the Select From Gallery button. The Add Picture button should be
+	 * already clicked
+	 * 
+	 * @step. ^I tap Gallery button in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap Gallery button in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapGalleryButton() throws Exception {
+		getConversationViewCameraPage().tapGalleryButton();
+	}
+
+	/**
 	 * Confirm the taken photo or selected picture
 	 * 
 	 * @step. ^I confirm the picture for (?:the |\\s*)[Cc]onversation view$
@@ -343,7 +356,7 @@ public class ConversationViewPageSteps {
 				"The expected missed call notification is not visible in the conversation view",
 				getConversationViewPage().waitUntilGCNIsVisible());
 	}
-	
+
 	/**
 	 * Swipe right to show the convo list
 	 * 

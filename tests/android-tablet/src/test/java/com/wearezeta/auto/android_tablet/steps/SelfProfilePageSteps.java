@@ -182,18 +182,6 @@ public class SelfProfilePageSteps {
 	}
 
 	/**
-	 * Select some random picture from the Gallery
-	 * 
-	 * @step. ^I select a picture from the Gallery$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I select a picture from the Gallery$")
-	public void ISelectGalleryPicture() throws Exception {
-		getSelfProfilePage().selectFirstGalleryPhoto();
-	}
-
-	/**
 	 * Tap the Confirm button to confirm the picture selection in the Gallery
 	 * 
 	 * @step. ^I confirm my picture on (?:the |\\s*)[Ss]elf [Pp]rofile page$
