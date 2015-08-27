@@ -236,3 +236,45 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
+  @id2825 @staging
+  Scenario Outline: Send image with camera in group chat (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    And I swipe left on text input in the conversation view
+    When I tap Add Picture button in the conversation view
+    And I tap Take Photo button in the conversation view
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | ChatWithImg   |
+
+  @id2827 @staging
+  Scenario Outline: Send image with camera in group chat (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    And I swipe left on text input in the conversation view
+    When I tap Add Picture button in the conversation view
+    And I tap Take Photo button in the conversation view
+    And I confirm the picture for the conversation view
+    Then I see a new picture in the conversation view
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | ChatWithImg   |
+
