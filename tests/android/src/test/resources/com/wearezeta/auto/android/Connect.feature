@@ -117,8 +117,8 @@ Feature: Connect
     And I see contact list with name <WaitingMess2>
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | WaitingMess1     | WaitingMess2      |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | 4 people waiting | 3 people waiting  |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | WaitingMess1     | WaitingMess2     |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | 4 people waiting | 3 people waiting |
 
   @id540 @regression
   Scenario Outline: I can ignore a connect request and reconnect later
@@ -325,9 +325,8 @@ Feature: Connect
 
   @id676 @regression
   Scenario Outline: I want to block a person from 1:1 conversation
-    Given There are 3 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
-    Given <Contact2> is connected to <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
@@ -338,17 +337,18 @@ Feature: Connect
     And I confirm block
     Then I do not see contact list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
+    And I wait until <Contact1> is blocked in backend search results
     And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
-    And I tap on user name found on People picker page <Contact>
+    And I tap on user name found on People picker page <Contact1>
     Then User info should be shown with Block button
 
     Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
+      | Name      | Contact1  |
+      | user1Name | user2Name |
 
   @id680 @regression
   Scenario Outline: I want to see user has been blocked within the Start UI
@@ -388,23 +388,22 @@ Feature: Connect
       | user1Name | user2Name | Hello friend |
 
   @id720 @staging
-  Scenario Outline: I do not want to be seen in the search results of someone I blocked
-    # moved to staging because of bug on backend
+  Scenario Outline: I want to be seen in the search results of someone I blocked
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
     Given I sign in using my email
     Given I see Contact list with contacts
     When User <Contact> blocks user Myself
-    And I wait <TimeoutSeconds> seconds until <Contact> does not exist in backend search results
-    And I open Search by tap
+    Then I wait until <Contact> exists in backend search results
+    When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
-    Then I see that no results found
+    Then I see user <Contact> found on People picker page
 
     Examples: 
-      | Name      | Contact   | TimeoutSeconds |
-      | user1Name | user2Name | 120            |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @id723 @regression
   Scenario Outline: I want to unblock someone from their Profile view
@@ -527,8 +526,9 @@ Feature: Connect
     And I see Contact list with no contacts
     When I open Search by tap
     Then I see recommended user <Contact1> in People Picker
-    And I see recommended user <Contact2> in People Picker
 
+    # disabled step which checks missing contact with phone only
+    #    And I see recommended user <Contact2> in People Picker
     Examples: 
       | Name      | Contact1 | Contact2 |
       | user1Name | vb003    | Dorothy  |

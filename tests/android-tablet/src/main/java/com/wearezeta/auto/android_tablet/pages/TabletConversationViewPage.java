@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android_tablet.pages;
 
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -22,8 +24,14 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			.format("//*[@id='ttv__row_conversation__connect_request__chathead_footer__label' and contains(@value, '%s')]",
 					content);
 
+	private static final Function<String, String> xpathOutgoingInvitationMessageByContent = content -> String
+			.format("//*[@id='ttv__connect_request__first_message' and @value='%s']",
+					content);
+
 	@FindBy(id = DialogPage.idParticipantsBtn)
 	private WebElement showDetailsButton;
+
+	private static final String idMissedCallImage = "sci__conversation__missed_call__image";
 
 	private static final String idShowToolsButton = "cursor_button_open";
 	@FindBy(id = idShowToolsButton)
@@ -124,10 +132,50 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		closeToolsButton.click();
 	}
 
+	public boolean waitUntilGCNIsVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idMissedCallImage));
+	}
+
 	public boolean waitUntilMessageIsNotVisible(String expectedMessage)
 			throws Exception {
 		final By locator = By.xpath(xpathConversationMessageByValue
 				.apply(expectedMessage));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
+	public boolean waitForOutgoingInvitationMessage(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathOutgoingInvitationMessageByContent
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilPingMessageIsInvisible(String expectedMessage)
+			throws Exception {
+		return getDialogPage().waitForPingMessageWithTextDisappears(
+				expectedMessage);
+	}
+
+	public void doSwipeRight() throws Exception {
+		DriverUtils.swipeByCoordinates(getDriver(), 1000, 10, 50, 90, 50);
+	}
+
+	public void scrollToTheBottom() throws Exception {
+		getDialogPage().tapDialogPageBottom();
+	}
+
+	public Optional<BufferedImage> getRecentPictureScreenshot()
+			throws Exception {
+		return getDialogPage().getRecentPictureScreenshot();
+	}
+
+	public Optional<BufferedImage> getPreviewPictureScreenshot()
+			throws Exception {
+		return getDialogPage().getPreviewPictureScreenshot();
+	}
+
+	public void tapRecentPicture() throws Exception {
+		getDialogPage().clickLastImageFromDialog();
 	}
 }

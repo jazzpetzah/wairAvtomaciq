@@ -18,11 +18,17 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.nameOtherUserProfilePageCloseButton)
 	private WebElement closePageButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherProfilePagePendingLabel)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherProfilePageCancelRequestLabel)
 	private WebElement pendingLabel;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherProfilePageStartConversationButton)
 	private WebElement startConversationButton;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.OtherUserProfilePage.xpathOtherProfileCancelRequestButton)
+	private WebElement cancelRequestButton;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.OtherUserProfilePage.xpathCancelRequestYesButton)
+	private WebElement cancelRequestConfirmationYesButton;
 
 	public OtherUserOnPendingProfilePage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
@@ -30,18 +36,34 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	}
 
 	public boolean isClosePageButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
-				.name(IOSLocators.nameOtherProfilePageCloseButton));
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.name(IOSLocators.nameOtherProfilePageCloseButton));
 	}
 
 	public boolean isCancelRequestButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
-				.xpath(IOSLocators.xpathOtherProfileCancelRequestButton));
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				cancelRequestButton);
 	}
-	
-	public boolean isPendingLabelVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(), By
-				.xpath(IOSLocators.xpathOtherProfilePagePendingLabel));
+
+	public void clickCancelRequestButton() {
+		cancelRequestButton.click();
+	}
+
+	public boolean isCancelRequestConfirmationVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorAppears(
+						getDriver(),
+						By.name(IOSLocators.OtherUserProfilePage.nameCancelRequestConfirmationLabel),
+						3);
+	}
+
+	public void clickConfirmCancelRequestButton() {
+		cancelRequestConfirmationYesButton.click();
+	}
+
+	public boolean isCancelRequestLabelVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(IOSLocators.xpathOtherProfilePageCancelRequestLabel));
 	}
 
 	public void clickStartConversationButton() {
@@ -49,7 +71,8 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	}
 
 	public boolean isUserNameDisplayed(String name) throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(), By.name(name), 10);
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.name(name), 10);
 	}
 
 	@Override

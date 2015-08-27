@@ -4,6 +4,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationViewPage;
 import com.wearezeta.auto.android_tablet.pages.camera.ConversationViewCameraPage;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
@@ -120,6 +121,29 @@ public class ConversationViewPageSteps {
 						"The chat header message containing text '%s' is not visible in the conversation view",
 						expectedMessage), getConversationViewPage()
 						.waitForChatHeaderMessageContains(expectedMessage));
+	}
+
+	/**
+	 * Verify whether the particular outgoing invitation message is visible in
+	 * conversation view
+	 * 
+	 * @step. ^I see the outgoing invitation message \"(.*)\" on [Cc]onversation
+	 *        view page$
+	 * 
+	 * @param expectedMessage
+	 *            the expected message text
+	 * @throws Exception
+	 */
+	@Then("^I see the outgoing invitation message \"(.*)\" on [Cc]onversation view page$")
+	public void ISeeOutgoungInvitationMessage(String expectedMessage)
+			throws Exception {
+		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(
+				String.format(
+						"The outgoing invitation message containing text '%s' is not visible in the conversation view",
+						expectedMessage), getConversationViewPage()
+						.waitForOutgoingInvitationMessage(expectedMessage));
 	}
 
 	/**
@@ -246,6 +270,19 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
+	 * Tap the Select From Gallery button. The Add Picture button should be
+	 * already clicked
+	 * 
+	 * @step. ^I tap Gallery button in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap Gallery button in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapGalleryButton() throws Exception {
+		getConversationViewCameraPage().tapGalleryButton();
+	}
+
+	/**
 	 * Confirm the taken photo or selected picture
 	 * 
 	 * @step. ^I confirm the picture for (?:the |\\s*)[Cc]onversation view$
@@ -272,21 +309,137 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
+	 * Tap the recent picture in the conversation view to open a preview
+	 * 
+	 * @step. ^I tap the new picture in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap the new picture in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapNewPicture() throws Exception {
+		getConversationViewPage().tapRecentPicture();
+	}
+
+	/**
 	 * Verify whether ping message is visible in the current conversation view
 	 * 
-	 * @step. ^I see the [Pp]ing message \"<(.*)>\" in (?:the
+	 * @step. ^I (do not )?see the [Pp]ing message \"<(.*)>\" in (?:the
 	 *        |\\s*)[Cc]onversation view$
 	 * 
+	 * @param shouldNotBeVisible
+	 *            equals to null if "do not" part does not exist in the step
+	 *            signature
 	 * @param expectedMessage
 	 *            the text of expected ping message
 	 * @throws Exception
 	 */
-	@Then("^I see the [Pp]ing message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
-	public void ISeePingMessage(String expectedMessage) throws Exception {
+	@Then("^I (do not )?see the [Pp]ing message \"(.*)\" in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeePingMessage(String shouldNotBeVisible,
+			String expectedMessage) throws Exception {
+		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
+				FindBy.NAME_ALIAS);
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue(
+					String.format(
+							"The expected ping message '%s' is not visible in the conversation view",
+							expectedMessage), getConversationViewPage()
+							.waitUntilPingMessageIsVisible(expectedMessage));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"The ping message '%s' is still visible in the conversation view",
+							expectedMessage), getConversationViewPage()
+							.waitUntilPingMessageIsInvisible(expectedMessage));
+		}
+	}
+
+	/**
+	 * Verify whether missed call notification is visible in conversation view
+	 * 
+	 * @step. ^I see missed (?:group |\\s*)call notification in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see missed (?:group |\\s*)call notification in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeeMissedCallNotification() throws Exception {
+		// Notifications for both group and 1:1 calls have the same locators so
+		// we don't really care
 		Assert.assertTrue(
-				String.format(
-						"The expected ping message '%s' is not visible in the conversation view",
-						expectedMessage), getConversationViewPage()
-						.waitUntilPingMessageIsVisible(expectedMessage));
+				"The expected missed call notification is not visible in the conversation view",
+				getConversationViewPage().waitUntilGCNIsVisible());
+	}
+
+	/**
+	 * Swipe right to show the convo list
+	 * 
+	 * @step. ^I swipe right to show (?:the |\\s*)conversations list$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I swipe right to show (?:the |\\s*)conversations list$")
+	public void ISwipeRight() throws Exception {
+		getConversationViewPage().doSwipeRight();
+	}
+
+	/**
+	 * Scroll to the bottom side of conversation view
+	 * 
+	 * @step. ^I scroll to the bottom of the [Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I scroll to the bottom of the [Cc]onversation view$")
+	public void IScrollToTheBottom() throws Exception {
+		getConversationViewPage().scrollToTheBottom();
+	}
+
+	private static final double MAX_SIMILARITY_THRESHOLD = 0.95;
+
+	private static enum PictureDestination {
+		CONVERSATION_VIEW, PREVIEW;
+	}
+
+	/**
+	 * Verify whether the recent picture in convo view is animated
+	 * 
+	 * @step. ^I see the picture in (?:the |\\s*)(preview|[Cc]onversation view)
+	 *        is animated$
+	 * 
+	 * @param destination
+	 *            either 'preview' or 'conversation view'
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see the picture in (?:the |\\s*)(preview|[Cc]onversation view) is animated$")
+	public void ISeePictureIsAnimated(String destination) throws Exception {
+		final PictureDestination dst = PictureDestination.valueOf(destination
+				.toUpperCase().replace(" ", "_"));
+		double avgThreshold;
+		// no need to wait, since screenshoting procedure itself is quite long
+		final long screenshotingDelay = 0;
+		final int maxFrames = 4;
+		switch (dst) {
+		case CONVERSATION_VIEW:
+			avgThreshold = ImageUtil.getAnimationThreshold(
+					getConversationViewPage()::getRecentPictureScreenshot,
+					maxFrames, screenshotingDelay);
+			Assert.assertTrue(
+					String.format(
+							"The picture in the conversation view seems to be static (%.2f >= %.2f)",
+							avgThreshold, MAX_SIMILARITY_THRESHOLD),
+					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+			break;
+		case PREVIEW:
+			avgThreshold = ImageUtil.getAnimationThreshold(
+					getConversationViewPage()::getPreviewPictureScreenshot,
+					maxFrames, screenshotingDelay);
+			Assert.assertTrue(
+					String.format(
+							"The picture in the image preview view seems to be static (%.2f >= %.2f)",
+							avgThreshold, MAX_SIMILARITY_THRESHOLD),
+					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+			break;
+		}
 	}
 }

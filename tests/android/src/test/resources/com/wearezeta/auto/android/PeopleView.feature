@@ -155,11 +155,11 @@ Feature: People View
     And I do not see 1:1 options menu
     When I press options menu button
     And I see correct 1:1 options menu
-    #Need to delete small swipe check if it will be unstable
-    When I do small swipe down
-    And I wait for 1 second
-    Then I do not see participant page
-    And I see correct 1:1 options menu
+    #Need to delete small swipe check if it will be unstableы
+    #When I do small swipe down
+    #And I wait for 1 second
+    #Then I do not see participant page
+    #And I see correct 1:1 options menu
     When I tap on center of screen
     And I press options menu button
     And I swipe left
@@ -232,3 +232,21 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName  | ParticipantNumber |
       | user1Name | user2Name | user3Name | GroupInfoCheck | 3                 |
+
+  @id2292 @staging
+  Scenario Outline: Start 1to1 conversation from participants view
+    Given There are 3 users where <Name> is me
+    Given <Contact1> is connected to <Name>,<Contact2>
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    And I tap conversation details button
+    And I tap on group chat contact <Contact1>
+    And I see <Contact1> user profile page
+    And I click Open Conversation button on connected user page
+    Then I see Connect to <Contact1> Dialog page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     |

@@ -2,7 +2,12 @@ package com.wearezeta.auto.android_tablet.pages;
 
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
+
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
+import com.wearezeta.auto.android.pages.DialogPage;
+import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
@@ -44,68 +49,22 @@ public abstract class AndroidTabletPage extends AndroidPage {
 		return null;
 	};
 
-//	@Override
-//	public AndroidTabletPage swipeRightCoordinates(int durationMilliseconds)
-//			throws Exception {
-//		return (AndroidTabletPage) super
-//				.swipeRightCoordinates(durationMilliseconds);
-//	}
-//
-//	@Override
-//	public AndroidTabletPage swipeRightCoordinates(int durationMilliseconds,
-//			int horizontalPercent) throws Exception {
-//		return (AndroidTabletPage) super.swipeRightCoordinates(
-//				durationMilliseconds, horizontalPercent);
-//	}
-//
-//	@Override
-//	public AndroidTabletPage swipeLeftCoordinates(int durationMilliseconds)
-//			throws Exception {
-//		return (AndroidTabletPage) super
-//				.swipeLeftCoordinates(durationMilliseconds);
-//	}
-//
-//	@Override
-//	public AndroidTabletPage swipeLeftCoordinates(int durationMilliseconds,
-//			int horizontalPercent) throws Exception {
-//		return (AndroidTabletPage) super.swipeLeftCoordinates(
-//				durationMilliseconds, horizontalPercent);
-//	}
-//
-//	@Override
-//	public AndroidTabletPage swipeUpCoordinates(int durationMilliseconds)
-//			throws Exception {
-//		return (AndroidTabletPage) super
-//				.swipeUpCoordinates(durationMilliseconds);
-//	}
-//
-//	@Override
-//	public AndroidTabletPage swipeUpCoordinates(int durationMilliseconds,
-//			int verticalPercent) throws Exception {
-//		return (AndroidTabletPage) super.swipeUpCoordinates(
-//				durationMilliseconds, verticalPercent);
-//	}
-//
-//	@Override
-//	public AndroidTabletPage swipeByCoordinates(int durationMilliseconds,
-//			int widthStartPercent, int hightStartPercent, int widthEndPercent,
-//			int hightEndPercent) throws Exception {
-//		return (AndroidTabletPage) super.swipeByCoordinates(
-//				durationMilliseconds, widthStartPercent, hightStartPercent,
-//				widthEndPercent, hightEndPercent);
-//	}
-//
-//	@Override
-//	public AndroidTabletPage swipeDownCoordinates(int durationMilliseconds)
-//			throws Exception {
-//		return (AndroidTabletPage) super
-//				.swipeDownCoordinates(durationMilliseconds);
-//	}
-//
-//	@Override
-//	public AndroidTabletPage swipeDownCoordinates(int durationMilliseconds,
-//			int verticalPercent) throws Exception {
-//		return (AndroidTabletPage) super.swipeDownCoordinates(
-//				durationMilliseconds, verticalPercent);
-//	}
+	@Override
+	public void selectFirstGalleryPhoto() throws Exception {
+		AndroidCommonUtils.executeAdb("shell input keyevent 20");
+		int ntry = 1;
+		final int maxTries = 5;
+		do {
+			Thread.sleep(500);
+			AndroidCommonUtils.executeAdb("shell input keyevent 20");
+			Thread.sleep(500);
+			AndroidCommonUtils.executeAdb("shell input keyevent 23");
+			ntry++;
+		} while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(DialogPage.xpathConfirmOKButton), 1)
+				&& ntry <= maxTries);
+		if (ntry > maxTries) {
+			throw new RuntimeException("Failed to tap the first gallery image!");
+		}
+	}
 }

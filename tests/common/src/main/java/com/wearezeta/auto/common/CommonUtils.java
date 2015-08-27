@@ -111,6 +111,10 @@ public class CommonUtils {
 		return getValueFromConfig(c, "deviceName");
 	}
 
+	public static String getDefaultImagesPath(Class<?> c) throws Exception {
+		return getValueFromConfig(c, "defaultImagesPath");
+	}
+	
 	public static String getImagePath(Class<?> c) throws Exception {
 		String path = getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
 		return path;
@@ -470,6 +474,8 @@ public class CommonUtils {
 		int multiply = 3;
 		if (deviceName.equals("iPhone 6")||deviceName.equals("iPad Air")) {
 			multiply = 2;
+		} else if (deviceName.equals("Android Device")) {
+			multiply = 1;
 		}
 		org.openqa.selenium.Point elementLocation = element.getLocation();
 		Dimension elementSize = element.getSize();

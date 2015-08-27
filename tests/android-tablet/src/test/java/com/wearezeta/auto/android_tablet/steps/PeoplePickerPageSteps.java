@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android_tablet.steps;
 
 import java.awt.image.BufferedImage;
+import java.util.NoSuchElementException;
 
 import org.junit.Assert;
 
@@ -32,16 +33,26 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Verify that People Picker is visible
+	 * Verify that People Picker is visible or not
 	 * 
-	 * @step. ^I see People Picker page$
+	 * @step. ^I (do not )?see People Picker page$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            equals to null is "do not" part does not exist
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see People Picker page$")
-	public void WhenITapOnTabletCreateConversation() throws Exception {
-		Assert.assertTrue("People Picker page is not visible",
-				getPeoplePickerPage().waitUntilVisible());
+	@When("^I (do not )?see People Picker page$")
+	public void WhenITapOnTabletCreateConversation(String shouldNotBeVisible)
+			throws Exception {
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue("People Picker page is not visible",
+					getPeoplePickerPage().waitUntilVisible());
+		} else {
+			Assert.assertTrue(
+					"People Picker page is visible, but should be hidden",
+					getPeoplePickerPage().waitUntilInvisible());
+		}
 	}
 
 	/**
@@ -213,5 +224,193 @@ public class PeoplePickerPageSteps {
 	@When("^I tap Create Conversation button$")
 	public void ITapCreateConversationButton() throws Exception {
 		getPeoplePickerPage().tapCreateConversationButton();
+	}
+
+	private String firstPYMKItemName = null;
+
+	private String getFirstPYMKItemNameOrThrowError() {
+		if (this.firstPYMKItemName == null) {
+			throw new IllegalStateException(
+					"Please call the corresponding step to remember the PYMK item name first");
+		} else {
+			return this.firstPYMKItemName;
+		}
+	}
+
+	/**
+	 * Stores the name of the first PYMK item into the internal data structure
+	 * 
+	 * @step. ^I remember the name of the first PYMK item on [Pp]eople [Pp]icker
+	 *        page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I remember the name of the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void IRememberTheFirstPYMKItem() throws Exception {
+		firstPYMKItemName = getPeoplePickerPage().getFirstPYMKItemName();
+	}
+
+	/**
+	 * Tap the + button next to the frist PYMK item
+	 * 
+	 * @step. ^I tap \\+ button on the first PYMK item on [Pp]eople [Pp]icker
+	 *        page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap \\+ button on the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void ITapPlusButtonOnFirstPYMKItem() throws Exception {
+		getPeoplePickerPage().tapPlusButtonOnFirstPYMKItem();
+	}
+
+	/**
+	 * Verify whether the previously remembered PYMK item is not visible in the
+	 * PYMK list
+	 * 
+	 * @step. ^I do not see the previously remembered PYMK item on [Pp]eople
+	 *        [Pp]icker page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I do not see the previously remembered PYMK item on [Pp]eople [Pp]icker page$")
+	public void IDoNotSeeRememberedPYMKItem() throws Exception {
+		Assert.assertTrue(
+				String.format(
+						"The previously remembered PYMK item '%s' is still visible in PYMK list",
+						firstPYMKItemName),
+				getPeoplePickerPage().waitUntilPYMKItemInvisible(
+						this.getFirstPYMKItemNameOrThrowError()));
+	}
+
+	/**
+	 * Verify whether the previously remembered PYMK item exists in convo list
+	 * 
+	 * @step. ^I (do not )?see conversations list with the previously remembered
+	 *        PYMK item$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if "do not " part does not exist in the step
+	 *            description
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see conversations list with the previously remembered PYMK item$")
+	public void ISeeThePreviouslyRememberedPYMKItemInConvoList(
+			String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(
+					String.format(
+							"The previously remembered PYMK item '%s' does not exist in the conversations list",
+							this.getFirstPYMKItemNameOrThrowError()),
+					getConversationsListPage().waitUntilConversationIsVisible(
+							this.getFirstPYMKItemNameOrThrowError()));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"The previously remembered PYMK item '%s' exist in the conversations list, but it should not",
+							this.getFirstPYMKItemNameOrThrowError()),
+					getConversationsListPage()
+							.waitUntilConversationIsInvisible(
+									this.getFirstPYMKItemNameOrThrowError()));
+		}
+	}
+
+	/**
+	 * Switch to the conversation. whose name is the same as the previously
+	 * remembered one. Conversations list should be already visible
+	 * 
+	 * @step. ^I switch to the conversation with the previously remembered PYMK
+	 *        item$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I switch to the conversation with the previously remembered PYMK item$")
+	public void ISwitchToPreviouslyRememberedConvoName() throws Exception {
+		getConversationsListPage().tapConversation(
+				this.getFirstPYMKItemNameOrThrowError());
+	}
+
+	/**
+	 * Tap the first item in PYMK list
+	 * 
+	 * @step. ^I tap the first PYMK item on [Pp]eople [Pp]icker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void ITapFirstPYMKItem() throws Exception {
+		getPeoplePickerPage().tapFirstPYMKItem();
+	}
+
+	private static enum SwipeType {
+		LONG, SHORT;
+	}
+
+	/**
+	 * Does short/long swipe right on the first PYMK item
+	 * 
+	 * @step. ^I do (short|long) swipe right the first PYMK item on [Pp]eople
+	 *        [Pp]icker page$
+	 * @param swipeType
+	 *            see SwipeType enum for more details about possible values
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I do (short|long) swipe right the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void IDoSwipeOnFirstPYMKItem(String swipeType) throws Exception {
+		final SwipeType swipeEnumType = SwipeType.valueOf(swipeType
+				.toUpperCase());
+		switch (swipeEnumType) {
+		case LONG:
+			getPeoplePickerPage().longSwipeRightFirstPYMKItem();
+			break;
+		case SHORT:
+			getPeoplePickerPage().shortSwipeRightFirstPYMKItem();
+			break;
+		default:
+			throw new NoSuchElementException(String.format(
+					"Swipe type '%s' is not supported", swipeEnumType.name()));
+		}
+	}
+
+	/**
+	 * Tap Hide button in the first PYMK item. The button should be already
+	 * visible
+	 * 
+	 * @step. ^I tap Hide button in the first PYMK item on [Pp]eople [Pp]icker
+	 *        page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Hide button in the first PYMK item on [Pp]eople [Pp]icker page$")
+	public void ITapHideButtonInFirstPYMKItem() throws Exception {
+		getPeoplePickerPage().tapHideButtonInFirstPYMKItem();
+	}
+
+	/**
+	 * Perform long/short swipe down on People Picker page
+	 * 
+	 * @step. ^I do (long|short) swipe down on [Pp]eople [Pp]icker page$
+	 * 
+	 * @param swipeTypeStr
+	 *            see SwipeType enum for the list of available values
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I do (long|short) swipe down on [Pp]eople [Pp]icker page$")
+	public void IDoSwipeDown(String swipeTypeStr) throws Exception {
+		final SwipeType swipeType = SwipeType.valueOf(swipeTypeStr
+				.toUpperCase());
+		switch (swipeType) {
+		case SHORT:
+			getPeoplePickerPage().doShortSwipeDown();
+			break;
+		case LONG:
+			getPeoplePickerPage().doLongSwipeDown();
+			break;
+		default:
+			throw new IllegalStateException(String.format(
+					"Swipe type '%s' is not supported", swipeTypeStr));
+		}
 	}
 }

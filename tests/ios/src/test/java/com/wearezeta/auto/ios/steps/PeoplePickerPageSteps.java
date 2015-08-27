@@ -237,6 +237,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
+		getPeoplePickerPage().closeShareContactsIfVisible();
 		getPeoplePickerPage().fillTextInPeoplePickerSearch(contact);
 	}
 
@@ -248,6 +249,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
+		getPeoplePickerPage().closeShareContactsIfVisible();
 		getPeoplePickerPage().fillTextInPeoplePickerSearch(email);
 	}
 
@@ -304,8 +306,10 @@ public class PeoplePickerPageSteps {
 	@Then("^I see the user (.*) avatar with a clock$")
 	public void ISeeUserWithAvatarClock(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		Assert.assertTrue("Avatar does not have a clock icon",
-				getPeoplePickerPage().checkAvatarClockIcon(contact) > 0.50);
+		double score = getPeoplePickerPage().checkAvatarClockIcon(contact);
+		Assert.assertTrue(
+				"Avatar with clock icon is not correct - overlap score is only: "
+						+ score, score > 0.50);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")
@@ -404,6 +408,19 @@ public class PeoplePickerPageSteps {
 				getPeoplePickerPage().isCreateConversationButtonVisible());
 	}
 
+	/**
+	 * Click on Open button from Search to start conversation with single user
+	 * 
+	 * @step. ^I click open conversation button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click open conversation button on People picker page$")
+	public void IClickOpenConversationButtonOnPeoplePickerPage()
+			throws Exception {
+		getPeoplePickerPage().clickOpenConversationButton();
+	}
+
 	@When("I click Create Conversation button on People picker page")
 	public void IClickCreateConversationButton() throws Throwable {
 		if (getPeoplePickerPage().isCreateConversationButtonVisible()) {
@@ -476,7 +493,11 @@ public class PeoplePickerPageSteps {
 	public void ISeeThatContactsAreSelected(int number) throws Exception {
 		int numberOfSelectedTopPeople = getPeoplePickerPage()
 				.getNumberOfSelectedTopPeople();
-		Assert.assertEquals(number, numberOfSelectedTopPeople);
+		Assert.assertEquals(
+				"Expected selected contacts: " + number
+						+ " but actual selected contacts: "
+						+ numberOfSelectedTopPeople, number,
+				numberOfSelectedTopPeople);
 	}
 
 	/**
@@ -515,6 +536,57 @@ public class PeoplePickerPageSteps {
 	@When("^I press the instant connect button$")
 	public void IPressTheInstantConnectButton() throws Exception {
 		getPeoplePickerPage().pressInstantConnectButton();
+	}
+
+	/**
+	 * Verify that Call action button is visible
+	 * 
+	 * @step. ^I see call action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see call action button on People picker page$")
+	public void ISeeCallActionButtonOnPeoplePickerPage() throws Exception {
+		Assert.assertTrue("Call action button is not visible",
+				getPeoplePickerPage().isCallButtonVisible());
+	}
+
+	/**
+	 * Click on Call action button from Search to start call
+	 * 
+	 * @step. ^I click call action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click call action button on People picker page$")
+	public void IClickCallActionButtonOnPeoplePickerPage() throws Exception {
+		getPeoplePickerPage().clickCallButton();
+	}
+
+	/**
+	 * Verify that Send image action button is visible
+	 * 
+	 * @step. ^I see Send image action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Send image action button on People picker page$")
+	public void ISeeSendImageActionButtonOnPeoplePickerPage() throws Exception {
+		Assert.assertTrue("Send image action button is not visible",
+				getPeoplePickerPage().isSendImageButtonVisible());
+	}
+
+	/**
+	 * Click on Send image action button from Search to start call
+	 * 
+	 * @step. ^I click Send image action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Send image action button on People picker page$")
+	public void IClickSendImageActionButtonOnPeoplePickerPage()
+			throws Exception {
+		getPeoplePickerPage().clickSendImageButton();
 	}
 
 }

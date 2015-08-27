@@ -3,6 +3,7 @@ package com.wearezeta.auto.android.steps;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
+import com.wearezeta.auto.common.CommonSteps;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -39,16 +40,18 @@ public class CallingSteps {
 	 *
 	 * @step. (.*) stops? all calls to (.*)
 	 *
-	 * @param caller
-	 *            caller name/alias
+	 * @param callers
+	 *            comma separated list of caller names/aliases
 	 * @param conversationName
 	 *            destination conversation name
 	 * @throws Exception
 	 */
 	@When("(.*) stops? all calls to (.*)")
-	public void UserXStopsCallsToUserY(String caller, String conversationName)
+	public void UserXStopsCallsToUserY(String callers, String conversationName)
 			throws Exception {
-		commonCallingSteps.stopCall(caller, conversationName);
+		for (String caller : CommonSteps.splitAliases(callers)) {
+			commonCallingSteps.stopCall(caller, conversationName);
+		}
 	}
 
 	/**
@@ -63,9 +66,9 @@ public class CallingSteps {
 	 * @param conversationName
 	 *            destination conversation
 	 * @param expectedStatuses
-	 *            comma-separated list of expected call statuses. Available
-	 *            values: "starting", "waiting", "active", "active_muted",
-	 *            "stopping", "inactive"
+	 *            comma-separated list of expected call statuses. See
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
+	 *            more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
@@ -88,9 +91,9 @@ public class CallingSteps {
 	 * @param callee
 	 *            callee name/alias
 	 * @param expectedStatuses
-	 *            comma-separated list of expected call statuses. Available
-	 *            values: "starting", "waiting", "active", "active_muted",
-	 *            "stopping", "inactive"
+	 *            comma-separated list of expected call statuses. See
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
+	 *            more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception

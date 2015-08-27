@@ -8,6 +8,8 @@ import java.util.function.Function;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -42,7 +44,7 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public static final String idPickerSearch = "puet_pickuser__searchbox";
 	@FindBy(id = idPickerSearch)
-	private WebElement pickerSearch;
+	public WebElement pickerSearch;
 
 	public static final String idPeoplePickerClearbtn = "gtv_pickuser__clearbutton";
 
@@ -58,7 +60,6 @@ public class PeoplePickerPage extends AndroidPage {
 			.format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']",
 					name);
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
@@ -120,8 +121,12 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public void tapPeopleSearch() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idPickerSearch)) : "The People Picker search input is not visible";
+		boolean isDisplayed = DriverUtils.waitUntilLocatorIsDisplayed(
+				getDriver(), By.id(idPickerSearch));
+		if (!isDisplayed)
+			log.debug("The People Picker search input is not visible: "
+					+ getDriver().getPageSource());
+		assert isDisplayed : "The People Picker search input is not visible";
 		pickerSearch.click();
 	}
 
@@ -327,5 +332,21 @@ public class PeoplePickerPage extends AndroidPage {
 		final By locator = By.xpath(xpathPYMKItemByIdx.apply(index));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "The first PYMK item is not visible";
 		getDriver().findElement(locator).click();
+	}
+
+	public void doShortSwipeDown() throws Exception {
+		final Point coords = content.getLocation();
+		final Dimension elementSize = content.getSize();
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height / 10, 500);
+	}
+
+	public void doLongSwipeDown() throws Exception {
+		final Point coords = content.getLocation();
+		final Dimension elementSize = content.getSize();
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height / 4 * 3, 2000);
 	}
 }

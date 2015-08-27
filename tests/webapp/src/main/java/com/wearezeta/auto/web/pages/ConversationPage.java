@@ -65,7 +65,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssPingButton)
 	private WebElement pingButton;
 
-	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idGIFButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssGIFButton)
 	private WebElement gifButton;
 
 	@FindBy(how = How.CSS, using = WebAppLocators.ConversationPage.cssCallButton)

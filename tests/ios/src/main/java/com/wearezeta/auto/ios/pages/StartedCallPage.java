@@ -112,4 +112,11 @@ public class StartedCallPage extends CallPage {
 		return true;
 	}
 
+	public boolean isCallingGroupMessageVisible(String group) throws Exception {
+		return getDriver().findElementByXPath(
+				String.format(
+						IOSLocators.StartedCallPage.xpathCallingMessageUser,
+						group.toUpperCase())).isDisplayed();
+	}
+
 }

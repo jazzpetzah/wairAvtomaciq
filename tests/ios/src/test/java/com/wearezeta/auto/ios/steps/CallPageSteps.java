@@ -6,6 +6,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.ios.pages.IncomingCallPage;
 import com.wearezeta.auto.ios.pages.StartedCallPage;
 
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CallPageSteps {
@@ -51,8 +52,8 @@ public class CallPageSteps {
 				getStartedCallPage().isEndCallVisible());
 		Assert.assertTrue("Mute call button is not visible",
 				getStartedCallPage().isMuteCallVisible());
-		// Assert.assertTrue("Speakers button is not visible",
-		// getStartedCallPage().isSpeakersVisible());
+		Assert.assertTrue("Speakers button is not visible",
+				getStartedCallPage().isSpeakersVisible());
 	}
 
 	/**
@@ -186,4 +187,92 @@ public class CallPageSteps {
 		Assert.assertTrue("Mute call button is not selected",
 				getStartedCallPage().isMuteCallButtonSelected());
 	}
+
+	/**
+	 * Verify that incoming group calling UI is visible
+	 * 
+	 * @step. ^I see incoming group calling message$
+	 * @throws Exception
+	 */
+	@When("^I see incoming group calling message$")
+	public void ISeeIncomingGroupCallingMessage() throws Exception {
+		Assert.assertTrue(getIncomingCallPage().isGroupCallingMessageVisible());
+	}
+
+	/**
+	 * Verifies the visibility of the Join Call bar
+	 * 
+	 * @step. ^I see Join Call bar$
+	 * @throws Throwable
+	 */
+	@Then("^I see Join Call bar$")
+	public void ISeeJoinCallBar() throws Throwable {
+		boolean joinCallBarIsVisible = getIncomingCallPage()
+				.isJoinCallBarVisible();
+		Assert.assertTrue("Join Call bar is not visible", joinCallBarIsVisible);
+	}
+
+	/**
+	 * Verifies that a second call is coming in alert is shown
+	 * 
+	 * @step. ^I see Accept second call alert$
+	 * @throws Throwable
+	 */
+	@When("^I see Accept second call alert$")
+	public void ISeeAcceptSecondCallAlert() throws Throwable {
+		boolean secondCallAlertIsVisible = getIncomingCallPage()
+				.isSecondCallAlertVisible();
+		Assert.assertTrue("Second call Alert is not shown",
+				secondCallAlertIsVisible);
+	}
+
+	/**
+	 * Presses the end call button on the second incoming call alert
+	 * 
+	 * @step. ^I press End Call button on alert$
+	 * @throws Throwable
+	 */
+	@When("^I press End Call button on alert$")
+	public void IPressEndCallButtonOnAlert() throws Throwable {
+		getIncomingCallPage().pressEndCallAlertButton();
+	}
+
+	/**
+	 * Verifies a number of avatars in the group call bar
+	 * 
+	 * @step. ^I see (\\d+) avatars in the group call bar$
+	 * @param numberOfAvatars
+	 *            number of avatars in group call bar
+	 * @throws Throwable
+	 */
+	@Then("^I see (\\d+) avatars in the group call bar$")
+	public void ISeeAvatarsInTheGroupCallBar(int numberOfAvatars)
+			throws Throwable {
+		int actualNumberOfAvatars = getIncomingCallPage()
+				.getNumberOfGroupCallAvatar();
+		Assert.assertEquals(numberOfAvatars, actualNumberOfAvatars);
+	}
+
+	/**
+	 * Rejoin group call by clicking the join button
+	 * 
+	 * @step. ^I rejoin call by clicking Join button$
+	 * @throws Throwable
+	 */
+	@When("^I rejoin call by clicking Join button$")
+	public void IRejoinCallByClickingJoinButton() throws Throwable {
+		getIncomingCallPage().clickJoinCallButton();
+	}
+
+	/**
+	 * Verifies the calling to a group call message
+	 * 
+	 * @step. ^I see calling to a group message$
+	 * @throws Throwable
+	 */
+	@Then("^I see calling to a group message$")
+	public void ISeeCallingToMessage() throws Throwable {
+		Assert.assertTrue(getStartedCallPage().isCallingMessageVisible());
+	}
+
 }

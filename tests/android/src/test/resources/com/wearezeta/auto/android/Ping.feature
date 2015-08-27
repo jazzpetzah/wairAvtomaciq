@@ -1,5 +1,21 @@
 Feature: Ping
 
+  @id317 @smoke
+  Scenario Outline: Send Ping & Hot Ping to contact
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe on text input
+    And I press Ping button
+    Then I see Ping message <Msg> in the dialog
+
+    Examples: 
+      | Name      | Contact   | Msg        |
+      | user1Name | user2Name | YOU PINGED |
+
   @id1373 @regression
   Scenario Outline: Verify you can send Ping & Hot Ping in a group conversation
     Given There are 3 users where <Name> is me
@@ -12,7 +28,8 @@ Feature: Ping
     And I swipe on text input
     And I press Ping button
     Then I see Ping message <Msg1> in the dialog
-    When I press Ping button
+    When I swipe on text input
+    And I press Ping button
     Then I see Ping message <Msg2> in the dialog
 
     Examples: 

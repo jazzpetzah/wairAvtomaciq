@@ -22,7 +22,6 @@ Feature: Calling
     And I see ping message <PING>
     And I see sent picture <PictureName> in the conversation view
     And I end the call
-    Then <Contact> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | PictureName               | CallBackend | Timeout |
@@ -47,13 +46,12 @@ Feature: Calling
     And User <Contact> pinged twice in the conversation with <Contact>
     And I see ping message <HOTPING>
     And I end the call
-    Then <Contact> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact   | PING   | HOTPING      | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | pinged | pinged again | chrome      | 60      |
 
-  @staging @calling @debug @id1892
+  @regression @calling @debug @id1892
   Scenario Outline: Verify the corresponding conversations list item gets sticky on outgoing call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -76,13 +74,12 @@ Feature: Calling
     And I end the call
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact2> is on the top
-    Then <Contact1> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | chrome      | 60      |
 
-  @staging @calling @debug @id1891
+  @regression @calling @debug @id1891
   Scenario Outline: Verify the corresponding conversations list item gets sticky on incoming call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -130,11 +127,11 @@ Feature: Calling
     And I call
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
+      | user1Email | user1Password | user1Name | user2Name | firefox     | 60      |
 
   @regression @calling @id1866
   Scenario Outline: Verify I can call a user for more than 15 mins
@@ -152,66 +149,94 @@ Feature: Calling
     Then <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I wait for 60 seconds
     And I see the calling bar
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I end the call
-    And <Contact> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @staging @calling @id1902
+  @regression @calling @id1902
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
-	Given My browser supports calling
-	Given There are 3 users where <Name> is me
-	Given Myself is connected to <Contact1>,<Contact2>
-	Given <Contact1> starts waiting instance using <CallBackend>
-	Given <Contact1> accepts next incoming call automatically
-	Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
-	Given <Contact2> starts waiting instance using <CallBackend>
-	Given <Contact2> accepts next incoming call automatically
-	Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
-	Given I switch to Sign In page
-	Given I Sign in using login <Login> and password <Password>
-	And I see my avatar on top of Contact list
-	And I open conversation with <Contact1>
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    And I open conversation with <Contact1>
 	And I call
-	Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-	Then I see the calling bar from user <Contact1>
-	And I open conversation with <Contact2>
-	And I call
-	Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-	Then I see the calling bar from user <Contact2>
+    Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see the calling bar from user <Contact1>
+    And I open conversation with <Contact2>
+    When I call
+    Then I see another call warning modal
+    And I close the another call warning modal
+    And I do not see another call warning modal
+    Then I do not see the calling bar
+    And I open conversation with <Contact1>
+    And I see the calling bar
+    When I open conversation with <Contact2>
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    And I click on "End Call" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    When I call
+    Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    Then I see the calling bar from user <Contact2>
+    And I open conversation with <Contact1>
+    Then I do not see the calling bar
+    When I open conversation with <Contact2>
 	And I end the call
-    And <Contact1> stops all waiting instances
-    And <Contact2> stops all waiting instances
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | Timeout |
@@ -243,7 +268,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 60      |
 
-  @staging @calling @id3083
+  @regression @calling @id3083
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
 	Given My browser supports calling
 	Given There are 3 users where <Name> is me
@@ -260,11 +285,28 @@ Feature: Calling
 	Then <Contact1> verifies that call status to Myself is changed to active in <Timeout> seconds
 	Then I see the calling bar from user <Contact1>
 	And I open conversation with <Contact2>
-	And I call
-	Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    When I call
+    Then I see another call warning modal
+    And I close the another call warning modal
+    And I do not see another call warning modal
+    Then I do not see the calling bar
+    And I open conversation with <Contact1>
+    And I see the calling bar
+    When I open conversation with <Contact2>
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    And I click on "End Call" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    When I call
+    Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar from user <Contact2>
+    And I open conversation with <Contact1>
+    Then I do not see the calling bar
+    When I open conversation with <Contact2>
     And I end the call
-    And <Contact2> stops all waiting instances
+
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | WaitBackend | Timeout |
@@ -311,7 +353,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1   | CallBackend |
       | user1Email | user1Password | user1Name | user2Name  | autocall    |
 
-  @staging @calling @debug @id1882
+  @regression @calling @debug @id1882
   Scenario Outline: People trying to call me while I'm not signed in
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -506,13 +548,13 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | OtherContact | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | user3Name    | chrome      | 60      |
 
-  @staging @calling @group @debug @id3058
+  @regression @calling @group @debug @id3058
   Scenario Outline: Verify initiator is not a host for the call
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
-    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2> starts waiting instance using <CallBackend>
     Given <Contact1> accepts next incoming call automatically
     Given <Contact2> accepts next incoming call automatically
     Given I switch to Sign In page
@@ -534,7 +576,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | chrome      | 60      |
 
 
-  @staging @calling @group @debug @id3064
+  @regression @calling @group @debug @id3064
   Scenario Outline: Verify accepting group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -555,10 +597,17 @@ Feature: Calling
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the calling bar
     When I accept the incoming call
-    And I see the calling bar from user <Contact1>
+    Then I see the calling bar from user <Contact1>
     And I see the calling bar from user <Contact2>
     And I see the calling bar from user <Contact3>
     And I see the calling bar from user <Contact4>
+    And I wait for 20 seconds
+    And <Contact2> verifies to have 4 flows
+    And <Contact3> verifies to have 4 flows
+    And <Contact4> verifies to have 4 flows
+    And <Contact2> verifies that all flows have greater than 0 bytes
+    And <Contact3> verifies that all flows have greater than 0 bytes
+    And <Contact4> verifies that all flows have greater than 0 bytes
     When I end the call
     Then I do not see the calling bar
 
@@ -601,7 +650,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | user6Name | GroupCallConversation | autocall    | chrome      | 60      |
 
 
-  @staging @calling @group @debug @id3231
+  @regression @calling @group @debug @id3231
   Scenario Outline: Verify initiating group call
     Given My browser supports calling
     Given There are 5 users where <Name> is me
@@ -634,7 +683,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name  | user3Name | user4Name | user5Name | GroupCallConversation | firefox     | 60      |
 
 
-  @staging @calling @group @debug @id3065
+  @regression @calling @group @debug @id3065
   Scenario Outline: Verify ignoring group call
     Given My browser supports calling
     Given There are 3 users where <Name> is me

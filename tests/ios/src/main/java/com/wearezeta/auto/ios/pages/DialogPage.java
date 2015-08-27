@@ -151,6 +151,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathGiphyImage)
 	private WebElement giphyImage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameSoundCloudButton)
+	private WebElement soundCloudButton;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
 	private String connectingLabel = "CONNECTING TO %s.";
@@ -174,8 +177,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean isPingButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.name(IOSLocators.namePingButton));
+		return DriverUtils.isElementPresentAndDisplayed(this.getDriver(),
+				pingButton);
 	}
 
 	public void pressPingButton() {
@@ -325,12 +328,8 @@ public class DialogPage extends IOSPage {
 		if (flag) {
 			mediaLinkCell.click();
 		} else {
-			String lastMessageXPath = String.format(
-					IOSLocators.xpathLastMessageFormat, messagesList.size());
-			WebElement el = this.getDriver().findElementByXPath(
-					lastMessageXPath);
-			this.getDriver().tap(1, el.getLocation().x + 30,
-					el.getLocation().y + 2 * el.getSize().height, 1);
+			this.getDriver().tap(1, soundCloudButton.getLocation().x + 200,
+					soundCloudButton.getLocation().y + 200, 1);
 		}
 	}
 
@@ -382,24 +381,29 @@ public class DialogPage extends IOSPage {
 	private final int TOP_BORDER_WIDTH = 40;
 
 	public IOSPage openConversationDetailsClick() throws Exception {
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				openConversationDetails)) {
+			openConversationDetails.click();
+		} else {
+			for (int i = 0; i < 3; i++) {
+				if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+						By.name(IOSLocators.namePlusButton))) {
+					plusButton.click();
+					openConversationDetails.click();
+				}
+				if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+						By.name(IOSLocators.nameAddContactToChatButton), 2)
+						|| DriverUtils
+								.waitUntilLocatorIsDisplayed(
+										this.getDriver(),
+										By.name(IOSLocators.nameOtherUserAddContactToChatButton),
+										2)) {
+					break;
+				} else {
+					swipeUp(1000);
+				}
+			}
 
-		for (int i = 0; i < 3; i++) {
-			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.namePlusButton))) {
-				plusButton.click();
-				openConversationDetails.click();
-			}
-			if (DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-					By.name(IOSLocators.nameAddContactToChatButton), 2)
-					|| DriverUtils
-							.waitUntilLocatorIsDisplayed(
-									this.getDriver(),
-									By.name(IOSLocators.nameOtherUserAddContactToChatButton),
-									2)) {
-				break;
-			} else {
-				swipeUp(1000);
-			}
 		}
 
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());

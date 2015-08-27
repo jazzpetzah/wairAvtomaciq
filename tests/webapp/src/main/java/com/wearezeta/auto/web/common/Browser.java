@@ -119,4 +119,13 @@ public enum Browser {
 			return false;
 		}
 	}
+
+	public boolean isSupportingDiabledButtonDetection() {
+		switch (this) {
+		case Safari:
+			return false;
+		default:
+			return true;
+		}
+	}
 }

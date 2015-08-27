@@ -27,8 +27,8 @@ public class AndroidCommonUtils extends CommonUtils {
 	private static final Logger log = ZetaLogger
 			.getLog(AndroidCommonUtils.class.getSimpleName());
 
-	private static final String stagingBackend = "[\"https://staging-nginz-https.zinfra.io\", \"https://staging-nginz-ssl.zinfra.io/await\", \"1003090516085\"]";
-	private static final String edgeBackend = "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"1003090516085\"]";
+	private static final String stagingBackend = "[\"https://staging-nginz-https.zinfra.io\", \"https://staging-nginz-ssl.zinfra.io/await\", \"723990470614\"]";
+	private static final String edgeBackend = "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"258787940529\"]";
 	private static final String productionBackend = "[\"https://prod-nginz-https.wire.com\", \"https://prod-nginz-ssl.wire.com/await\", \"782078216207\"]";
 
 	private static final String BACKEND_JSON = "customBackend.json";
@@ -40,7 +40,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
 	private static ArrayList<String> addressBookAddedNames = new ArrayList<String>();
 
-	private static void executeAdb(final String cmdline) throws Exception {
+	public static void executeAdb(final String cmdline) throws Exception {
 		executeOsXCommand(new String[] { "/bin/bash", "-c",
 				ADB_PREFIX + "adb " + cmdline });
 	}
@@ -433,5 +433,36 @@ public class AndroidCommonUtils extends CommonUtils {
 			throws Exception {
 		String deviceVersion = readDeviceInfo().getOperatingSystemBuild();
 		return deviceVersion.compareTo(targetVersion);
+	}
+
+	/**
+	 * The method uses dirty Appium hack to unlock the screen
+	 * 
+	 * @throws Exception
+	 */
+	public static void unlockDevice() throws Exception {
+		executeAdb("shell am start -n io.appium.unlock/.Unlock");
+	}
+
+	public static boolean isAirplaneModeEnabled() throws Exception {
+		return getAdbOutput("shell settings get global airplane_mode_on")
+				.trim().equals("1");
+	}
+
+	public static void setAirplaneMode(boolean expectedState) throws Exception {
+		if (isAirplaneModeEnabled() == expectedState) {
+			return;
+		}
+		executeAdb(String.format(
+				"shell settings put global airplane_mode_on %d",
+				expectedState ? 1 : 0));
+		executeAdb(String
+				.format("shell am broadcast -a android.intent.action.AIRPLANE_MODE --ez state %s",
+						expectedState ? "true" : "false"));
+		assert (isAirplaneModeEnabled() == expectedState) : "ADB has failed to "
+				+ (expectedState ? "enable" : "disable")
+				+ " airplane mode on the device";
+		// Let the app to understand that connectivity state has been changed
+		Thread.sleep(3000);
 	}
 }
