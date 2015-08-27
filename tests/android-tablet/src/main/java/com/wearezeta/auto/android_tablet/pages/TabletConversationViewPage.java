@@ -28,6 +28,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			.format("//*[@id='ttv__connect_request__first_message' and @value='%s']",
 					content);
 
+	private static final Function<String, String> xpathSystemConnectionMessageByContent = content -> String
+			.format("//*[@id='ttv__row_conversation__connect_request__chathead_footer__label' and contains(@value, '%s')]",
+					content);
+
 	@FindBy(id = DialogPage.idParticipantsBtn)
 	private WebElement showDetailsButton;
 
@@ -177,5 +181,12 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	public void tapRecentPicture() throws Exception {
 		getDialogPage().clickLastImageFromDialog();
+	}
+
+	public boolean waitForSystemConnectionMessageContains(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathSystemConnectionMessageByContent
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 }
