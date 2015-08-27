@@ -207,6 +207,13 @@ public class CommonAndroidTabletSteps {
 	@After
 	public void tearDown() throws Exception {
 		try {
+			AndroidCommonUtils.setAirplaneMode(false);
+		} catch (Exception e) {
+			// do not fail if smt fails here
+			e.printStackTrace();
+		}
+
+		try {
 			// async calls/waiting instances cleanup
 			CommonCallingSteps2.getInstance().cleanup();
 		} catch (Exception e) {
@@ -285,16 +292,23 @@ public class CommonAndroidTabletSteps {
 	}
 
 	/**
-	 * Locks the device
+	 * Lock/unlock the device
 	 * 
-	 * @step. ^I lock the device$
+	 * @step. ^I (un)?lock the device$
+	 * 
+	 * @param shouldUnlock
+	 *            equals to null is "un-" part does not exist
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I lock the device$")
-	public void ILockTheDevice() throws Exception {
-		AndroidCommonUtils.lockScreen();
+	@When("^I (un)?lock the device$")
+	public void ILockUnlockTheDevice(String shouldUnlock) throws Exception {
+		if (shouldUnlock == null) {
+			AndroidCommonUtils.lockScreen();
+		} else {
+			AndroidCommonUtils.unlockDevice();
+		}
 	}
 
 	/**
@@ -624,10 +638,32 @@ public class CommonAndroidTabletSteps {
 	 * 
 	 */
 	@When("^Contact (.*) sends? message \"(.*)\" to user (.*)$")
-	public void UserSendMessageXToConversation(String msgFromUserNameAlias,
+	public void UserSendMessageXToContact(String msgFromUserNameAlias,
 			String msg, String dstUserNameAlias) throws Exception {
 		commonSteps.UserSentMessageToUser(msgFromUserNameAlias,
 				dstUserNameAlias, msg);
+	}
+
+	/**
+	 * Send a particular text message via the backend
+	 * 
+	 * @step. ^Contact (.*) sends? message "(.*)" to conversation (.*)$
+	 * 
+	 * @param msgFromUserNameAlias
+	 *            the user who sends the message
+	 * @param msg
+	 *            the message to send
+	 * @param convoName
+	 *            destination conversation name
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^Contact (.*) sends? message \"(.*)\" to conversation (.*)$")
+	public void UserSendMessageXToConversation(String msgFromUserNameAlias,
+			String msg, String convoName) throws Exception {
+		commonSteps.UserSentMessageToConversation(msgFromUserNameAlias,
+				convoName, msg);
 	}
 
 	/**
@@ -755,4 +791,17 @@ public class CommonAndroidTabletSteps {
 		commonSteps.WaitUntilContactIsFoundInSearch(searchByNameAlias, query);
 	}
 
+	/**
+	 * Enable/disable airplane mode
+	 * 
+	 * @step. ^I (enable|disable) Airplane mode on the device$
+	 * 
+	 * @param action
+	 *            either 'enable' or 'disable'
+	 * @throws Exception
+	 */
+	@Given("^I (enable|disable) Airplane mode on the device$")
+	public void IChangeAirplaceMode(String action) throws Exception {
+		AndroidCommonUtils.setAirplaneMode(action.equals("enable"));
+	}
 }

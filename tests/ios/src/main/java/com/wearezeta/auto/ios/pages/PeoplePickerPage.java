@@ -97,6 +97,12 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameOpenConversationButton)
 	private WebElement openConversationButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.PeoplePickerPage.xpathCallButton)
+	private WebElement callButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.PeoplePickerPage.xpathSendImageButton)
+	private WebElement sendImageButton;
 
 	private int numberTopSelected = 0;
 
@@ -503,6 +509,28 @@ public class PeoplePickerPage extends IOSPage {
 		DriverUtils.waitUntilElementClickable(getDriver(),
 				openConversationButton);
 		openConversationButton.click();
+	}
+	
+	public boolean isCallButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				callButton);
+	}
+
+	public void clickCallButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				callButton);
+		callButton.click();
+	}
+	
+	public boolean isSendImageButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				sendImageButton);
+	}
+
+	public void clickSendImageButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				sendImageButton);
+		sendImageButton.click();
 	}
 
 }

@@ -45,7 +45,7 @@ public class TabletContactListPageSteps {
 	 */
 	@When("^I open archived conversations on iPad$")
 	public void IOpenArchivedConvOnIpad() throws Exception {
-		getTabletContactListPage().swipeUp(2000);
+		getTabletContactListPage().swipeUp(1000);
 	}
 
 	/**

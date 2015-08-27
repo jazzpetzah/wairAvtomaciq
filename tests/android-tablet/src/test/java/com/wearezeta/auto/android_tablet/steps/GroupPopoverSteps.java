@@ -188,4 +188,16 @@ public class GroupPopoverSteps {
 				"Pending button does not exists on the Group popover after the timeout",
 				getGroupPopover().waitUntilPendingButtonIsVisible());
 	}
+
+	/**
+	 * Tap Close button on the popover
+	 * 
+	 * @step. ^I tap Close button on [Gg]roup user popover$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Close button on [Gg]roup user popover$")
+	public void ITapCloseButton() throws Exception {
+		getGroupPopover().tapCloseButton();
+	}
 }

@@ -497,7 +497,7 @@ Feature: Connect
       | Name      | Contact1 | Contact2 |
       | user1Name | vb003    | Dorothy  |
 
-  @staging @id3223
+  @regression @id3223
   Scenario Outline: Verify possibility of disconnecting from conversation list  [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -517,7 +517,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3268
+  @regression @id3268
   Scenario Outline: Verify possibility of disconnecting from conversation list  [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -537,7 +537,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3228
+  @regression @id3228
   Scenario Outline: Verify sending connection request after disconnecting [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
@@ -563,7 +563,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3273
+  @regression @id3273
   Scenario Outline: Verify sending connection request after disconnecting [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>

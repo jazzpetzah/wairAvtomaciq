@@ -52,8 +52,8 @@ public class CallPageSteps {
 				getStartedCallPage().isEndCallVisible());
 		Assert.assertTrue("Mute call button is not visible",
 				getStartedCallPage().isMuteCallVisible());
-		// Assert.assertTrue("Speakers button is not visible",
-		// getStartedCallPage().isSpeakersVisible());
+		Assert.assertTrue("Speakers button is not visible",
+				getStartedCallPage().isSpeakersVisible());
 	}
 
 	/**

@@ -102,5 +102,16 @@ public class EmailSignInPageSteps {
 	public void ISeeErrorMessage(String expectedMsg) throws Exception {
 		getEmailSignInPage().verifyErrorMessageText(expectedMsg);
 	}
-
+	
+	/**
+	 * Tap OK button on an alert
+	 * 
+	 * @step. ^I tap OK button on the error message$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap OK button on the error message$")
+	public void ITapOKOnErrorMessage() throws Exception {
+		getEmailSignInPage().acceptErrorMessage();
+	}
 }

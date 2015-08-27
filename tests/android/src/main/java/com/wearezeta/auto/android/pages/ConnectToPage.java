@@ -95,10 +95,12 @@ public class ConnectToPage extends AndroidPage {
 		int ntry = 1;
 		do {
 			if (DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3)) {
+				log.debug("Locator had disappeared. Swipe #" + ntry);
 				this.waitUntilIgnoreButtonIsClickable();
 				this.swipeDownCoordinates(1000, 50);
 				return;
 			} else {
+				log.debug("Locator still visible. Swipe #" + ntry);
 				this.waitUntilIgnoreButtonIsClickable();
 				this.swipeUpCoordinates(1000, 50);
 			}
