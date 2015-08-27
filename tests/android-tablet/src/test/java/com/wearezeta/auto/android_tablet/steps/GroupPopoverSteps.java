@@ -190,13 +190,13 @@ public class GroupPopoverSteps {
 	}
 
 	/**
-	 * Tap Close button on the popover
+	 * Tap Close button on the group popover
 	 * 
-	 * @step. ^I tap Close button on [Gg]roup user popover$
+	 * @step. ^I tap Close button on [Gg]roup popover$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap Close button on [Gg]roup user popover$")
+	@When("^I tap Close button on [Gg]roup popover$")
 	public void ITapCloseButton() throws Exception {
 		getGroupPopover().tapCloseButton();
 	}
