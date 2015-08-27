@@ -81,7 +81,12 @@ public class ConnectToPage extends AndroidPage {
 
 	public boolean isConnectToHeaderVisible(String text) throws Exception {
 		final By locator = By.xpath(xpathConnectToHeaderByText.apply(text));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+		boolean result = DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				locator);
+		if (!result)
+			log.debug("Can't find correct connect to header. Page source: "
+					+ getDriver().getPageSource());
+		return result;
 	}
 
 	public void scrollToInboxContact(String contactName) throws Exception {
