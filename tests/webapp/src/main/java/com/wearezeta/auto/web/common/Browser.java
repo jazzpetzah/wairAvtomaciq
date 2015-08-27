@@ -82,21 +82,22 @@ public enum Browser {
 		}
 	}
 
-	public boolean hasResizingWindowBug() {
+	public boolean isSupportingMaximizingTheWindow() {
 		switch (this) {
 		case InternetExplorer:
-			return true;
-		default:
+		case MicrosoftEdge:
 			return false;
+		default:
+			return true;
 		}
 	}
 
-	public boolean hasOtherResizingWindowBug() {
+	public boolean isSupportingSettingWindowSize() {
 		switch (this) {
 		case MicrosoftEdge:
-			return true;
-		default:
 			return false;
+		default:
+			return true;
 		}
 	}
 

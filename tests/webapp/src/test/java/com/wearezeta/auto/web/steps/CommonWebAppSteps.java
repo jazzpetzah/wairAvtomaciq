@@ -163,11 +163,12 @@ public class CommonWebAppSteps {
                     capabilities);
                 // setup of the browser
                 lazyWebDriver.setFileDetector(new LocalFileDetector());
-				if (!WebAppExecutionContext.getBrowser().hasResizingWindowBug()) {
+				if (WebAppExecutionContext.getBrowser()
+						.isSupportingMaximizingTheWindow()) {
 					lazyWebDriver.manage().window().maximize();
 				} else {
-					if (!WebAppExecutionContext.getBrowser()
-							.hasOtherResizingWindowBug()) {
+					if (WebAppExecutionContext.getBrowser()
+							.isSupportingSettingWindowSize()) {
 						// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
 						lazyWebDriver
 								.manage()
