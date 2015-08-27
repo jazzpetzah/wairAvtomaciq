@@ -184,9 +184,7 @@ public class DriverUtils {
 
 	public static boolean waitUntilElementClickable(RemoteWebDriver driver,
 			final WebElement element, int timeoutSeconds) throws Exception {
-		if (!driver.getCapabilities().getBrowserName().equals("MicrosoftEdge")) {
-			turnOffImplicitWait(driver);
-		}
+		turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
 					.withTimeout(timeoutSeconds, TimeUnit.SECONDS)
