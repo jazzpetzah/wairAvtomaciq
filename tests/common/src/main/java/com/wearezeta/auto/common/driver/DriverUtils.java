@@ -135,6 +135,8 @@ public class DriverUtils {
 			return wait.until(drv -> {
 				try {
 					return (drv.findElements(by).size() == 0)
+							|| (drv.findElements(by).size() > 0 && !drv
+									.findElement(by).isDisplayed())
 							|| !isElementInScreenRect(driver,
 									driver.findElement(by));
 				} catch (WebDriverException e) {
