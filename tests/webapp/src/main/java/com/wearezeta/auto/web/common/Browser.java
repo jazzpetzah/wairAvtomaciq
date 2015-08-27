@@ -100,15 +100,6 @@ public enum Browser {
 		}
 	}
 
-	public boolean hasImplicitWaitSupport() {
-		switch (this) {
-		case MicrosoftEdge:
-			return false;
-		default:
-			return true;
-		}
-	}
-
 	public boolean isSupportingNativeMouseActions() {
 		switch (this) {
 		case Chrome:
