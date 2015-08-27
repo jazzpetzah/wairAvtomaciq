@@ -34,6 +34,7 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
@@ -803,5 +804,47 @@ public class CommonAndroidTabletSteps {
 	@Given("^I (enable|disable) Airplane mode on the device$")
 	public void IChangeAirplaceMode(String action) throws Exception {
 		AndroidCommonUtils.setAirplaneMode(action.equals("enable"));
+	}
+
+	/**
+	 * Select some random picture from the Gallery
+	 * 
+	 * @step. ^I select a picture from the Gallery$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I select a picture from the Gallery$")
+	public void ISelectGalleryPicture() throws Exception {
+		pagesCollection.getCommonPage().selectFirstGalleryPhoto();
+	}
+
+	/**
+	 * Sends an image from one user to a conversation
+	 * 
+	 * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
+	 * 
+	 * @param imageSenderUserNameAlias
+	 *            the user to sending the image
+	 * @param imageFileName
+	 *            the file path name of the image to send. The path name is
+	 *            defined relative to the image file defined in
+	 *            Configuration.cnf.
+	 * @param conversationType
+	 *            "single user" or "group" conversation.
+	 * @param dstConversationName
+	 *            the name of the conversation to send the image to.
+	 *
+	 * @throws Exception
+	 * 
+	 */
+	@When("^Contact (.*) sends image (.*) to (single user|group) conversation (.*)")
+	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+			String imageFileName, String conversationType,
+			String dstConversationName) throws Exception {
+		String imagePath = CommonUtils.getImagesPath(this.getClass())
+				+ imageFileName;
+		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
+				imagePath, dstConversationName,
+				conversationType.equals("group"));
 	}
 }
