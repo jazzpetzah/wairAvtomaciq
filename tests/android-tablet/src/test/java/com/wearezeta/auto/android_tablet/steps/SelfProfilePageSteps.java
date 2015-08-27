@@ -133,11 +133,11 @@ public class SelfProfilePageSteps {
 	 * Stores the screenshot of current Self Profile screen for the further
 	 * comparison
 	 * 
-	 * @step. ^I remember my current profile picture tablet$
+	 * @step. ^I remember my current profile picture on [Ss]elf [Pp]rofile page$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I remember my current profile picture tablet$")
+	@When("^I remember my current profile picture on [Ss]elf [Pp]rofile page$")
 	public void IRememberMyCurrentProfilePictureTablet() throws Exception {
 		savedProfileScreenshot = getSelfProfilePage().getScreenshot();
 	}
@@ -167,6 +167,18 @@ public class SelfProfilePageSteps {
 		Assert.assertTrue(
 				"Take Photo button is still not visible after the timeout",
 				getSelfProfileCameraPage().waitUntilTakePhotoButtonVisible());
+	}
+
+	/**
+	 * Tap Take Photo button on Self Profile page
+	 * 
+	 * @step. ^I tap Take Photo button on (?:the |\\s*)[Ss]elf [Pp]rofile page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I tap Take Photo button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
+	public void ITapTakePhotoButton() throws Exception {
+		getSelfProfileCameraPage().tapTakePhotoButton();
 	}
 
 	/**
