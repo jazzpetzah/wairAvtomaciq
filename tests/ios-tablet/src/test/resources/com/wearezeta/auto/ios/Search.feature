@@ -588,3 +588,38 @@ Feature: Search
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
+
+  @staging @id3295
+  Scenario Outline: Verify action buttons appear after selecting person from Top People [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on first 1 top connections
+    And I see action buttons appeared on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3296
+  Scenario Outline: Verify action buttons appear after selecting person from Top People [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on first 1 top connections
+    And I see action buttons appeared on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

@@ -589,4 +589,31 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().clickSendImageButton();
 	}
 
+	/**
+	 * Verify if Open conversation button is visible
+	 * 
+	 * @step. ^I see open conversation action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see open conversation action button on People picker page$")
+	public void ISeeOpenConversationActionButton() throws Exception {
+		Assert.assertTrue("Open conversation button is not visible",
+				getPeoplePickerPage().isOpenConversationButtonVisible());
+	}
+
+	/**
+	 * Verify if Open, Call and Send image action buttons are visible
+	 * 
+	 * @step. ^I see action buttons appeared on People picker page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see action buttons appeared on People picker page")
+	public void ISeeActionButttonsAppearedOnPeoplePickerPage() throws Exception {
+		ISeeOpenConversationActionButton();
+		ISeeCallActionButtonOnPeoplePickerPage();
+		ISeeSendImageActionButtonOnPeoplePickerPage();
+	}
+
 }

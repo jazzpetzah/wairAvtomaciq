@@ -319,5 +319,22 @@ Feature: Search
     Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
 
     Examples: 
-      | Name      | Contact1  | Contact2  |Contact3  |
-      | user1Name | user2Name | user3Name |user4Name |
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+
+  @staging @id3276
+  Scenario Outline: Verify action buttons appear after selecting person from Top People
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on first 1 top connections
+    And I see action buttons appeared on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
