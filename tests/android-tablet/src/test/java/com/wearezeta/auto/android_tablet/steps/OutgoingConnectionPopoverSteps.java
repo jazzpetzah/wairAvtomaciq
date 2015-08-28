@@ -78,15 +78,25 @@ public class OutgoingConnectionPopoverSteps {
 	}
 
 	/**
-	 * Tap the Connect button on Outgoing Connection popover
+	 * Tap the Connect/Close button on Outgoing Connection popover
 	 * 
-	 * @step. ^I tap Connect button on Outgoing Connection popover$
+	 * @step. ^I tap (Connect|Close) button on Outgoing Connection popover$
+	 * 
+	 * @param btnName
+	 *            either 'Connect' or 'Close'
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap Connect button on Outgoing Connection popover$")
-	public void ITapConnectButton() throws Exception {
-		getOutgoingConnectionPopover().tapConnectButton();
+	@When("^I tap (Connect|Close) button on Outgoing Connection popover$")
+	public void ITapConnectButton(String btnName) throws Exception {
+		switch (btnName) {
+		case "Connect":
+			getOutgoingConnectionPopover().tapConnectButton();
+			break;
+		case "Close":
+			getOutgoingConnectionPopover().tapCloseButton();
+			break;
+		}
 	}
 
 }
