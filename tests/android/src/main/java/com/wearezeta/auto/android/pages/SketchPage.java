@@ -6,7 +6,6 @@ import java.util.Random;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.ArrayUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -21,13 +20,9 @@ public class SketchPage extends AndroidPage {
 	@FindBy(id = idCanvas)
 	private WebElement canvas;
 
-	private static final String idColorPicker = "ll__color_layout";
+	private static final String idColorPicker = "cpdl__color_layout";
 	@FindBy(id = idColorPicker)
 	private WebElement colorPicker;
-
-	private static final String idOnImageColorPicker = "cpdl__color_layout";
-	@FindBy(id = idOnImageColorPicker)
-	private WebElement onImageColorPicker;
 
 	private static final String idSendButton = "tv__send_button";
 	@FindBy(id = idSendButton)
@@ -53,30 +48,15 @@ public class SketchPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public void setColor(int colorIndex, boolean isOnImage) throws Exception {
+	public void setColor(int colorIndex) throws Exception {
 		this.selectedColorIndex = colorIndex;
-		if (isOnImage) {
-			selectColorFromChooser(onImageColorPicker);
-		} else {
-			selectColorFromChooser(colorPicker);
-		}
+		selectColorFromChooser(colorPicker);
 	}
 
-	public void setColor(String color, boolean isOnImage) throws Exception {
+	public void setColor(String color) throws Exception {
 		color = color.toLowerCase().trim();
 		this.selectedColorIndex = ArrayUtils.indexOf(colors, color);
-
-		if (isOnImage) {
-			selectColorFromChooser(onImageColorPicker);
-		} else {
-			boolean isDisplayed = DriverUtils.waitUntilLocatorIsDisplayed(
-					getDriver(), By.id(idColorPicker));
-			if (!isDisplayed) {
-				log.debug("Color picker is not visible: "
-						+ getDriver().getPageSource());
-			}
-			selectColorFromChooser(colorPicker);
-		}
+		selectColorFromChooser(colorPicker);
 	}
 
 	private void selectColorFromChooser(WebElement colorPicker)
