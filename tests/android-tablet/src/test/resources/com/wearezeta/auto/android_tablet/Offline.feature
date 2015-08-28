@@ -1,7 +1,7 @@
 Feature: Offline Mode
 
-  @id2904 @staging
-  Scenario Outline: I want to see an unsent indicator when I send message or image during offline
+  @id2889 @staging
+  Scenario Outline: Receive updated content when changing from offline to online
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
