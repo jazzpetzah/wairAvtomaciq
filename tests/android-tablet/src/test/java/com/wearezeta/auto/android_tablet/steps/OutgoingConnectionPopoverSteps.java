@@ -99,4 +99,17 @@ public class OutgoingConnectionPopoverSteps {
 		}
 	}
 
+	/**
+	 * Verify that Connect button is not tappable on Outgoing Connection popover
+	 * 
+	 * @step. ^I see Connect button is not tappable on Outgoing Connection
+	 *        popover$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Connect button is not tappable on Outgoing Connection popover$")
+	public void ISeeConnectButtonIsNotTappable() throws Exception {
+		Assert.assertTrue("Connect button should not be tappable, but it is",
+				!getOutgoingConnectionPopover().isConnectButtonTappable());
+	}
 }
