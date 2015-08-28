@@ -236,7 +236,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2825 @staging
+  @id2825 @regression
   Scenario Outline: Send image with camera in group chat (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -257,7 +257,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ChatWithImg   |
 
-  @id2827 @staging
+  @id2827 @regression
   Scenario Outline: Send image with camera in group chat (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -72,7 +72,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id2833 @staging
+  @id2833 @regression
   Scenario Outline: User can change profile picture by taking camera picture (portrait)
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
@@ -92,7 +92,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id3106 @staging
+  @id3106 @regression
   Scenario Outline: User can change profile picture by taking camera picture (landscape)
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape

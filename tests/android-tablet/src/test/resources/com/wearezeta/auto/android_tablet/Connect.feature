@@ -509,7 +509,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | WaitingMsg       |
       | user1Name | user2Name | user2Email   | 1 person waiting |
 
-  @id2854 @staging
+  @id2854 @regression
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view (portrait)
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>
@@ -528,7 +528,7 @@ Feature: Connect
       | Name      | Contact   | SysMessage             |
       | user1Name | user2Name | Connected to user2Name |
 
-  @id3128 @staging
+  @id3128 @regression
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view (landscape)
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>

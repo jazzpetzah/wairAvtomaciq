@@ -79,7 +79,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @id2848 @staging
+  @id2848 @regression
   Scenario Outline: I ignore someone from search and clear my inbox (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -100,7 +100,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id3130 @staging
+  @id3130 @regression
   Scenario Outline: I ignore someone from search and clear my inbox (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
