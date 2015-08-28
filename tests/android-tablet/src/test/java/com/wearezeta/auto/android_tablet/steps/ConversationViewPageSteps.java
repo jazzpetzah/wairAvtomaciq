@@ -350,15 +350,25 @@ public class ConversationViewPageSteps {
 	/**
 	 * Verify whether there is at least one picture in the conversation view
 	 * 
-	 * @step. ^I see a new picture in (?:the |\\s*)[Cc]onversation view$
+	 * @step. ^I (do not )?see (?:a|any) new pictures? in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if 'do not' exists in step signature
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see a new picture in (?:the |\\s*)[Cc]onversation view$")
-	public void ISeeNewPicture() throws Exception {
-		Assert.assertTrue(
-				"No new pictures are visible in the conversation view",
-				getConversationViewPage().waitUntilAPictureAppears());
+	@Then("^I (do not )?see (?:a|any) new pictures? in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeeNewPicture(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(
+					"No new pictures are visible in the conversation view",
+					getConversationViewPage().waitUntilAPictureAppears());
+		} else {
+			Assert.assertTrue(
+					"Some pictures are still visible in the conversation view",
+					getConversationViewPage().waitUntilPicturesNotVisible());
+		}
 	}
 
 	/**
