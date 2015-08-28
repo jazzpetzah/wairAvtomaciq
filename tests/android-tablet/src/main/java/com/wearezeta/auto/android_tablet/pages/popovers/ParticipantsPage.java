@@ -19,6 +19,10 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
 			.format("//*[@id='%s']//*[@value='%s']/parent::*/parent::*",
 					GroupPopover.idRootLocator, name.toUpperCase());
 
+	private static final String idOpenConversationButton = "gtv__participants__left__action";
+	@FindBy(id = idOpenConversationButton)
+	private WebElement openConversationButton;
+
 	public ParticipantsPage(Future<ZetaAndroidDriver> lazyDriver,
 			GroupPopover container) throws Exception {
 		super(lazyDriver, container);
@@ -44,6 +48,10 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
 			throws Exception {
 		final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
+	public void tapOpenConversationButton() {
+		openConversationButton.click();
 	}
 
 }
