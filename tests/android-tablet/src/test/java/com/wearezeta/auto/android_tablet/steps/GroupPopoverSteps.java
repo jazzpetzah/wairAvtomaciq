@@ -200,4 +200,16 @@ public class GroupPopoverSteps {
 	public void ITapCloseButton() throws Exception {
 		getGroupPopover().tapCloseButton();
 	}
+
+	/**
+	 * Tap Open Conversation button on the group popover
+	 * 
+	 * @step. ^I tap Open Conversation button on [Gg]roup popover$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Open Conversation button on [Gg]roup popover$")
+	public void ITapOpenConversationButton() throws Exception {
+		getGroupPopover().tapOpenConversationButton();
+	}
 }
