@@ -116,11 +116,10 @@ public class SingleUserPopoverSteps {
 	public void ISeeUserEmail(String expectedEmail) throws Exception {
 		expectedEmail = usrMgr.findUserByEmailOrEmailAlias(expectedEmail)
 				.getEmail();
-		Assert.assertTrue(
-				String.format(
-						"The user email '%s' is not displayed on [Ss]imgle user popover",
-						expectedEmail), getSingleUserPopover()
-						.waitUntilUserEmailVisible(expectedEmail));
+		Assert.assertTrue(String.format(
+				"The user email '%s' is not displayed on Single user popover",
+				expectedEmail), getSingleUserPopover()
+				.waitUntilUserEmailVisible(expectedEmail));
 	}
 
 	/**
