@@ -62,7 +62,7 @@ public abstract class AndroidTabletPage extends AndroidPage {
 			AndroidCommonUtils.executeAdb("shell input keyevent 23");
 			try {
 				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-						By.xpath(DialogPage.xpathConfirmOKButton), 1)) {
+						By.xpath(DialogPage.xpathConfirmOKButton), 3)) {
 					break;
 				}
 			} catch (WebDriverException e) {
