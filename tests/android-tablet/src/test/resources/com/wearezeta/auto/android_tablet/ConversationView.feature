@@ -334,9 +334,9 @@ Feature: Conversation View
     And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
-    And I rename the conversation to "<NewGroupChatName>" on Group popover
+    When I rename the conversation to "<NewGroupChatName>" on Group popover
     And I tap Close button on Group popover
-    And I do not see the Group popover
+    Then I do not see the Group popover
     And I see the conversation name system message "<NewGroupChatName>" on conversation view page
 
     Examples:
@@ -357,9 +357,9 @@ Feature: Conversation View
     And I tap Show Tools button on conversation view page
     And I tap Show Details button on conversation view page
     And I see the Group popover
-    And I rename the conversation to "<NewGroupChatName>" on Group popover
+    When I rename the conversation to "<NewGroupChatName>" on Group popover
     And I tap Close button on Group popover
-    And I do not see the Group popover
+    Then I do not see the Group popover
     And I see the conversation name system message "<NewGroupChatName>" on conversation view page
 
     Examples:
