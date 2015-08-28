@@ -280,16 +280,29 @@ public class CommonAndroidTabletSteps {
 	}
 
 	/**
-	 * Sends the application into back stack and displays the home screen.
+	 * Sends the application into back stack and displays the home screen or
+	 * restores it back to foreground
 	 * 
-	 * @step. ^I minimize the application$
+	 * @step. ^I (minimize|restore) the application$
+	 * 
+	 * @param action
+	 *            either 'minimize' or 'restore'
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I minimize the application$")
-	public void IMimizeApllication() throws Exception {
-		AndroidCommonUtils.switchToHomeScreen();
+	@When("^I (minimize|restore) the application$")
+	public void IMinimizeRestoreApllication(String action) throws Exception {
+		switch (action) {
+		case "minimize":
+			AndroidCommonUtils.switchToHomeScreen();
+			break;
+		case "restore":
+			AndroidCommonUtils.switchToApplication(
+					CommonUtils.getAndroidPackageFromConfig(this.getClass()),
+					CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+			break;
+		}
 	}
 
 	/**
@@ -349,20 +362,6 @@ public class CommonAndroidTabletSteps {
 	@When("^I tap on center of screen")
 	public void WhenITapOnCenterOfScreen() throws Throwable {
 		pagesCollection.getCommonPage().tapOnCenterOfScreen();
-	}
-
-	/**
-	 * Restores the application from a minimized state.
-	 * 
-	 * @step. ^I restore the application$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I restore the application$")
-	public void IRestoreApllication() throws Exception {
-		AndroidCommonUtils.switchToApplication(
-				CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
 	}
 
 	/**
