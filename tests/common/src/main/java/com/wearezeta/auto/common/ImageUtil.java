@@ -231,6 +231,10 @@ public class ImageUtil {
 		return thresholds.stream().reduce(0.0, (x, y) -> x + y)
 				/ thresholds.size();
 	}
+	
+	public static boolean isLandscape(BufferedImage bi) {
+		return (bi.getWidth() > bi.getHeight());
+	}
 
 	public static BufferedImage rotateCCW90Degrees(BufferedImage bi) {
 		int width = bi.getWidth();
