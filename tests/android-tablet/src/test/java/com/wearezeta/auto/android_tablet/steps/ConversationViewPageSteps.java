@@ -31,16 +31,25 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Verifies whether conversation view is currently visible
+	 * Verifies whether conversation view is currently visible or not
 	 * 
-	 * @step. ^I see (?:the |\\s*)[Cc]onversation view$
+	 * @step. ^I (do not )?see (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null is 'do not ' does not exist in step signature
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see (?:the |\\s*)[Cc]onversation view$")
-	public void ISeeConversationView() throws Exception {
-		Assert.assertTrue("The conversation view is not currently visible",
-				getConversationViewPage().waitUntilVisible());
+	@When("^I (do not )?see (?:the |\\s*)[Cc]onversation view$")
+	public void ISeeConversationView(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("The conversation view is not currently visible",
+					getConversationViewPage().waitUntilVisible());
+		} else {
+			Assert.assertTrue(
+					"The conversation view is visible, but should be hidden",
+					getConversationViewPage().waitUntilInvisible());
+		}
 	}
 
 	/**

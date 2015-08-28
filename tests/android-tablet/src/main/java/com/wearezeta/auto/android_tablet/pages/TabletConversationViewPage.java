@@ -200,4 +200,9 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 				.apply(expectedMessage));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
+
+	public boolean waitUntilInvisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idRootLocator));
+	}
 }
