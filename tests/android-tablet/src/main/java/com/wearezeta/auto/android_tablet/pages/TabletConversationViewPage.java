@@ -205,4 +205,9 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(idRootLocator));
 	}
+
+	public boolean waitUntilPicturesNotVisible() throws Exception {
+		final By locator = By.id(DialogPage.idDialogImages);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
 }
