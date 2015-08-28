@@ -119,4 +119,25 @@ Feature: Search
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
- 
+
+  @id2853 @staging
+  Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with no conversations
+    And I wait until <ContactEmail> exists in backend search results
+    When I tap Search input
+    And I see People Picker page
+    And I enter "<ContactEmail>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    And I see Outgoing Connection popover
+    And I tap Close button on Outgoing Connection popover
+    And I do not see Outgoing Connection popover
+    And I see People Picker page
+    And I close People Picker
+    Then I see the Conversations list with no conversations
+
+    Examples: 
+      | Name      | Contact   | ContactEmail |
+      | user1Name | user2Name | user2Email   |
