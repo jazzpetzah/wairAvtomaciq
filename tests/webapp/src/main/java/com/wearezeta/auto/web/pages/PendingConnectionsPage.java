@@ -69,12 +69,12 @@ public class PendingConnectionsPage extends WebPage {
 				.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(locator));
 	}
 
-	public boolean isAcceptRequestButtonForUserVisible(String userName)
+	public boolean isAcceptRequestButtonForUserVisible(String userId)
 			throws Exception {
-		String xpath = WebAppLocators.ConnectToPage.xpathAcceptRequestButtonByName
-				.apply(userName);
+		String css = WebAppLocators.ConnectToPage.cssAcceptRequestButtonByUserId
+				.apply(userId);
 		final WebElement acceptButton = getDriver()
-				.findElement(By.xpath(xpath));
+				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), acceptButton);
 		return acceptButton.isDisplayed();
 	}
@@ -89,12 +89,12 @@ public class PendingConnectionsPage extends WebPage {
 		return ignoreButton.isDisplayed();
 	}
 
-	public AccentColor getAcceptRequestButtonBgColor(String userName)
+	public AccentColor getAcceptRequestButtonBgColor(String userId)
 			throws Exception {
-		String xpath = WebAppLocators.ConnectToPage.xpathAcceptRequestButtonByName
-				.apply(userName);
+		String css = WebAppLocators.ConnectToPage.cssAcceptRequestButtonByUserId
+				.apply(userId);
 		final WebElement acceptButton = getDriver()
-				.findElement(By.xpath(xpath));
+				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), acceptButton);
 
 		String colorRgba = acceptButton.getCssValue(CSS_BACKGROUND_COLOR);
@@ -113,11 +113,11 @@ public class PendingConnectionsPage extends WebPage {
 		return AccentColor.getByRgba(colorRgba);
 	}
 
-	public void acceptRequestFromUser(String userName) throws Exception {
-		String xpath = WebAppLocators.ConnectToPage.xpathAcceptRequestButtonByName
-				.apply(userName);
+	public void acceptRequestFromUser(String userId) throws Exception {
+		String css = WebAppLocators.ConnectToPage.cssAcceptRequestButtonByUserId
+				.apply(userId);
 		final WebElement acceptButton = getDriver()
-				.findElement(By.xpath(xpath));
+				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), acceptButton);
 		acceptButton.click();
 		// it takes some time to refresh the conversations list

@@ -294,8 +294,8 @@ public final class WebAppLocators {
 				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]",
 						name);
 
-		public static final Function<String, String> xpathAcceptRequestButtonByName = name -> String
-				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='accept']",
+		public static final Function<String, String> cssAcceptRequestButtonByUserId = name -> String
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-name='do-accept']",
 						name);
 
 		public static final Function<String, String> xpathIgnoreReqestButtonByName = name -> String
