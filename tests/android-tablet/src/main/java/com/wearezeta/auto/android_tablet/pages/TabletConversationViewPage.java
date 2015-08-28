@@ -32,6 +32,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			.format("//*[@id='ttv__row_conversation__connect_request__chathead_footer__label' and contains(@value, '%s')]",
 					content);
 
+	private static final Function<String, String> xpathSystemConvoNameMessageByContent = content -> String
+			.format("//*[@id='ttv__row_conversation__new_conversation_name' and @value='%s']",
+					content);
+
 	@FindBy(id = DialogPage.idParticipantsBtn)
 	private WebElement showDetailsButton;
 
@@ -186,6 +190,13 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 	public boolean waitForSystemConnectionMessageContains(String expectedMessage)
 			throws Exception {
 		final By locator = By.xpath(xpathSystemConnectionMessageByContent
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitForConversationNameSystemMessage(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathSystemConvoNameMessageByContent
 				.apply(expectedMessage));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}

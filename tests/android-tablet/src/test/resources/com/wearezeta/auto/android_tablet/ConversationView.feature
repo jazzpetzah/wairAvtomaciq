@@ -319,3 +319,50 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @id2882 @staging
+  Scenario Outline: Verify editing the conversation name (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    And I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    And I rename the conversation to "<NewGroupChatName>" on Group popover
+    And I tap Close button on Group popover
+    And I do not see the Group popover
+    And I see the conversation name system message "<NewGroupChatName>" on conversation view page
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | NewGroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     | NewChatName      |
+
+  @id3153 @staging
+  Scenario Outline: Verify editing the conversation name (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    And I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    And I rename the conversation to "<NewGroupChatName>" on Group popover
+    And I tap Close button on Group popover
+    And I do not see the Group popover
+    And I see the conversation name system message "<NewGroupChatName>" on conversation view page
+
+    Examples:
+      | Name      | Contact1  | Contact2  | GroupChatName | NewGroupChatName |
+      | user1Name | user2Name | user3Name | GroupChat     | NewChatName      |
+

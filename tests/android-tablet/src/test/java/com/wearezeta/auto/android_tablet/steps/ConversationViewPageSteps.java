@@ -102,6 +102,27 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
+	 * Verify the last conversation name message text
+	 * 
+	 * @step. ^I see the conversation name system message \"(.*)\" on
+	 *        [Cc]onversation view page$
+	 * 
+	 * @param expectedMessage
+	 *            the expected conversation name
+	 * @throws Exception
+	 */
+	@Then("^I see the conversation name system message \"(.*)\" on [Cc]onversation view page$")
+	public void ISeeTheConversationNameSystemMessage(String expectedMessage)
+			throws Exception {
+		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(String.format(
+				"The conversation name system message does not equal to '%s'",
+				expectedMessage), getConversationViewPage()
+				.waitForConversationNameSystemMessage(expectedMessage));
+	}
+
+	/**
 	 * Verify the connection system conversation message contains expected text
 	 * 
 	 * @step. ^I see the system connection message contains \"(.*)\" text on

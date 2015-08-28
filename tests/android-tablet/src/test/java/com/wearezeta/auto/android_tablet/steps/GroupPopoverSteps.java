@@ -200,4 +200,18 @@ public class GroupPopoverSteps {
 	public void ITapCloseButton() throws Exception {
 		getGroupPopover().tapCloseButton();
 	}
+
+	/**
+	 * Change the name of group conversation from the popover
+	 * 
+	 * @step. ^I rename the conversation to \"(.*)\" on [Gg]roup popover$
+	 * 
+	 * @param newName
+	 *            the new conversation name
+	 * @throws Exception
+	 */
+	@When("^I rename the conversation to \"(.*)\" on [Gg]roup popover$")
+	public void IRenameConversation(String newName) throws Exception {
+		getGroupPopover().renameConversation(newName);
+	}
 }
