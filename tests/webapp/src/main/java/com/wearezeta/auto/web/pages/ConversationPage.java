@@ -92,6 +92,9 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idBlackBorder)
 	private WebElement blackBorder;
 
+	@FindBy(xpath = WebAppLocators.ConversationPage.xpathJoinCallBar)
+	private WebElement joinCallBar;
+
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -577,11 +580,8 @@ public class ConversationPage extends WebPage {
 	}
 
 	public void clickJoinCallBar() throws Exception {
-		final By locator = By
-				.xpath(WebAppLocators.ConversationPage.xpathJoinCallBar);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				locator, MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Join call bar has not been shown after "
-				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " seconds";
-		getDriver().findElement(locator).click();
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				joinCallBar) : "Join call bar has not been shown";
+		joinCallBar.click();
 	}
 }
