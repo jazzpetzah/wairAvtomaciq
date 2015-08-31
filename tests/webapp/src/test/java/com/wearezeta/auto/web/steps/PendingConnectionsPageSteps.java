@@ -97,7 +97,7 @@ public class PendingConnectionsPageSteps {
 	 * visible
 	 *
 	 * @step. ^I see accept button in connection request from user (.*)$
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */
@@ -132,7 +132,7 @@ public class PendingConnectionsPageSteps {
 	 *
 	 * @step. ^I see correct color for accept button in connection request from
 	 *        user (.*)$
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */
@@ -169,7 +169,7 @@ public class PendingConnectionsPageSteps {
 	 * 
 	 * @step. ^I accept connection request from user (.*)$
 	 * 
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */
