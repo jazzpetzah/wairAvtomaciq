@@ -739,7 +739,7 @@ Feature: Calling
 
 
   @staging @calling @group @debug @id3066
-  Scenario Outline: Verify possibility to join call after 5 minutes of starting it
+  Scenario Outline: Verify possibility to join call after 1 minutes of starting it
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
