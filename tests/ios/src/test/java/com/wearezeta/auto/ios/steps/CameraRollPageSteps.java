@@ -28,4 +28,15 @@ public class CameraRollPageSteps {
 		getCameraRollPage().pressConfirmButton();
 	}
 
+	/**
+	 * Presses the sketch button on the camera roll page
+	 * 
+	 * @step. ^I press sketch button on camera roll page$
+	 * @throws Throwable
+	 */
+	@When("^I press sketch button on camera roll page$")
+	public void IPressSketchButtonOnCameraRollPage() throws Throwable {
+		getCameraRollPage().clickCameraRollSketchButton();
+	}
+
 }

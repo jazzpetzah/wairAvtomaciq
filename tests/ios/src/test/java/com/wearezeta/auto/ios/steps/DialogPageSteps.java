@@ -771,18 +771,6 @@ public class DialogPageSteps {
 	}
 
 	/**
-	 * Sends random giphy in conversation
-	 *
-	 * @step. I send random giphy
-	 *
-	 * @throws Exception
-	 */
-	@When("I send random giphy")
-	public void ISendRandomGiphy() throws Exception {
-		getDialogPage().sendMessageUsingScript(IOSConstants.RANDOM_GIPHY);
-	}
-
-	/**
 	 * Verify giphy is presented in conversation
 	 * 
 	 * @step. I see giphy in conversation

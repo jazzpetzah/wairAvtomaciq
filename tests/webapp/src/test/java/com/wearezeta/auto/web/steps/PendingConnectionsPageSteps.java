@@ -7,6 +7,9 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -94,16 +97,16 @@ public class PendingConnectionsPageSteps {
 	 * visible
 	 *
 	 * @step. ^I see accept button in connection request from user (.*)$
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */
 	@Then("^I see accept button in connection request from user (.*)$")
-	public void ISeeAcceptButtonConnectionFromUser(String user)
+	public void ISeeAcceptButtonConnectionFromUser(String userAlias)
 			throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
 		Assert.assertTrue(PagesCollection.pendingConnectionsPage
-				.isAcceptRequestButtonForUserVisible(user));
+				.isAcceptRequestButtonForUserVisible(user.getId()));
 	}
 
 	/**
@@ -129,17 +132,17 @@ public class PendingConnectionsPageSteps {
 	 *
 	 * @step. ^I see correct color for accept button in connection request from
 	 *        user (.*)$
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */
 	@Then("^I see correct color for accept button in connection request from user (.*)$")
-	public void ISeeCorrectColorForAcceptButtonConnectionFromUser(String user)
-			throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+	public void ISeeCorrectColorForAcceptButtonConnectionFromUser(
+			String userAlias) throws Exception {
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
 		AccentColor accentColor = usrMgr.getSelfUser().getAccentColor();
-		Assert.assertTrue(PagesCollection.pendingConnectionsPage
-				.getAcceptRequestButtonBgColor(user).equals(accentColor));
+		assertThat(PagesCollection.pendingConnectionsPage
+				.getAcceptRequestButtonBgColor(user.getId()),equalTo(accentColor));
 	}
 
 	/**
@@ -166,14 +169,16 @@ public class PendingConnectionsPageSteps {
 	 * 
 	 * @step. ^I accept connection request from user (.*)$
 	 * 
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */
 	@When("^I accept connection request from user (.*)$")
-	public void IAcceptConnectionRequestFromUser(String user) throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		PagesCollection.pendingConnectionsPage.acceptRequestFromUser(user);
+	public void IAcceptConnectionRequestFromUser(String userAlias)
+			throws Exception {
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
+		PagesCollection.pendingConnectionsPage.acceptRequestFromUser(user
+				.getId());
 	}
 
 	/**

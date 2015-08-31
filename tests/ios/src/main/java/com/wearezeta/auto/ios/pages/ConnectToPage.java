@@ -28,7 +28,7 @@ public class ConnectToPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameSendConnectButton)
 	private WebElement sendConnectButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathConnectOtherUserButton)
 	private WebElement connectOtherUserButton;
 
@@ -54,9 +54,10 @@ public class ConnectToPage extends IOSPage {
 	public String getConnectToUserLabelValue() {
 		return sendConnectionInput.getText();
 	}
-	
+
 	public void fillTextInConnectDialogWithLengh(int numberOfCharacters) {
-		String text = CommonUtils.generateRandomStringFromAlphanumericPlusSymbolsWithLengh(numberOfCharacters);
+		String text = CommonUtils
+				.generateRandomStringFromAlphanumericPlusSymbolsWithLengh(numberOfCharacters);
 		int maxRetrys = 3;
 		int retryCounter = 0;
 		while (retryCounter < maxRetrys) {
@@ -64,7 +65,8 @@ public class ConnectToPage extends IOSPage {
 				sendConnectionInput.sendKeys(text);
 				retryCounter = maxRetrys;
 			} catch (WebDriverException ex) {
-				log.debug("Error while filling text from keyboard: " + ex.getMessage());
+				log.debug("Error while filling text from keyboard: "
+						+ ex.getMessage());
 				sendConnectionInput.clear();
 				retryCounter++;
 			}
@@ -74,20 +76,24 @@ public class ConnectToPage extends IOSPage {
 	public void fillHelloTextInConnectDialog() {
 		sendConnectionInput.sendKeys(inviteMessage);
 	}
-	
-	public void inputCharactersIntoConnectDialogByScript(int numberOfCharacters, boolean isPhone) throws Exception {
-		String text = CommonUtils.generateRandomStringFromAlphanumericPlusSymbolsWithLengh(numberOfCharacters);
+
+	public void inputCharactersIntoConnectDialogByScript(
+			int numberOfCharacters, boolean isPhone) throws Exception {
+		String text = CommonUtils
+				.generateRandomStringFromAlphanumericPlusSymbolsWithLengh(numberOfCharacters);
 		if (isPhone) {
 			scriptInputConnectDialogPhone(text);
 		} else {
 			scriptInputConnectDialog(text);
 		}
 	}
-	
+
 	private void scriptInputConnectDialogPhone(String text) throws Exception {
-		getWait().until(ExpectedConditions.elementToBeClickable(sendConnectionInput));
-		String script = String.format(IOSLocators.scriptSendConnectionInputPhone
-				+ ".setValue(\"%s\")", text);
+		getWait().until(
+				ExpectedConditions.elementToBeClickable(sendConnectionInput));
+		String script = String.format(
+				IOSLocators.scriptSendConnectionInputPhone
+						+ ".setValue(\"%s\")", text);
 		int maxRetrys = 3;
 		int retryCounter = 0;
 		while (retryCounter < maxRetrys) {
@@ -101,9 +107,10 @@ public class ConnectToPage extends IOSPage {
 		}
 		sendConnectionInput.sendKeys(" ");
 	}
-	
+
 	private void scriptInputConnectDialog(String text) throws Exception {
-		getWait().until(ExpectedConditions.elementToBeClickable(sendConnectionInput));
+		getWait().until(
+				ExpectedConditions.elementToBeClickable(sendConnectionInput));
 		String script = String.format(IOSLocators.scriptSendConnectionInput
 				+ ".setValue(\"%s\")", text);
 		int maxRetrys = 3;
@@ -165,12 +172,19 @@ public class ConnectToPage extends IOSPage {
 				By.className(IOSLocators.clasNameConnectDialogLabel));
 	}
 
-	public boolean isConnectButtonVisible() {
-		return connectOtherUserButton.isDisplayed();
+	public boolean isConnectButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				connectOtherUserButton);
 	}
 
 	public PeoplePickerPage sendInvitation() throws Exception {
-		connectOtherUserButton.click();
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				connectOtherUserButton)) {
+			connectOtherUserButton.click();
+		} else if (isKeyboardVisible()) {
+			clickKeyboardGoButton();
+			connectOtherUserButton.click();
+		}
 		return new PeoplePickerPage(this.getLazyDriver());
 	}
 

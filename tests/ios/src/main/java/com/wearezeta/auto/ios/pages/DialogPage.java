@@ -151,6 +151,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathGiphyImage)
 	private WebElement giphyImage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameSoundCloudButton)
+	private WebElement soundCloudButton;
 
 	private String connectMessage = "Hi %s, let’s connect on wire. %s";
 	private String connectingLabel = "CONNECTING TO %s.";
@@ -325,12 +328,8 @@ public class DialogPage extends IOSPage {
 		if (flag) {
 			mediaLinkCell.click();
 		} else {
-			String lastMessageXPath = String.format(
-					IOSLocators.xpathLastMessageFormat, messagesList.size());
-			WebElement el = this.getDriver().findElementByXPath(
-					lastMessageXPath);
-			this.getDriver().tap(1, el.getLocation().x + 30,
-					el.getLocation().y + 2 * el.getSize().height, 1);
+			this.getDriver().tap(1, soundCloudButton.getLocation().x + 200,
+					soundCloudButton.getLocation().y + 200, 1);
 		}
 	}
 

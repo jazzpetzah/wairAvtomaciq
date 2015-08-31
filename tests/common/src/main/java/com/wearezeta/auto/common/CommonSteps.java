@@ -1,7 +1,7 @@
 package com.wearezeta.auto.common;
 
 import java.io.File;
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -287,6 +287,14 @@ public final class CommonSteps {
 		BackendAPIWrappers.unarchiveUserConv(user, archivedUser);
 	}
 
+	public void UnarchiveConversationWithGroup(String aUser,
+			String archiveConversationWithGroup) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(aUser);
+		final String conversationIDToArchive = BackendAPIWrappers
+				.getConversationIdByName(user, archiveConversationWithGroup);
+		BackendAPIWrappers.unarchiveGroupConv(user, conversationIDToArchive);
+	}
+
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);
@@ -359,18 +367,8 @@ public final class CommonSteps {
 		if (new File(picturePath).exists()) {
 			BackendAPIWrappers.updateUserPicture(dstUser, picturePath);
 		} else {
-			// Trying to load the picture from resources if this does not exist
-			// on the file system
-			final ClassLoader classLoader = this.getClass().getClassLoader();
-			final InputStream imageStream = classLoader
-					.getResourceAsStream(picturePath);
-			try {
-				BackendAPIWrappers.updateUserPicture(dstUser, imageStream);
-			} finally {
-				if (imageStream != null) {
-					imageStream.close();
-				}
-			}
+			throw new IOException(String.format(
+					"The picture '%s' is not accessible", picturePath));
 		}
 	}
 
@@ -452,6 +450,27 @@ public final class CommonSteps {
 		}
 		BackendAPIWrappers.addContactsToGroupConversation(userAs,
 				contactsToAdd, chatName);
+	}
+
+	public void UserXRemoveContactFromGroupChat(String userAsNameAlias,
+			String contactToRemoveNameAlias, String chatName) throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userAsNameAlias);
+		final ClientUser userToRemove = usrMgr
+				.findUserByNameOrNameAlias(contactToRemoveNameAlias);
+
+		BackendAPIWrappers.removeUserFromGroupConversation(userAs,
+				userToRemove, chatName);
+	}
+
+	public void UserXLeavesGroupChat(String userNameAlias, String chatName)
+			throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userNameAlias);
+
+		BackendAPIWrappers.removeUserFromGroupConversation(userAs, userAs,
+				chatName);
+
 	}
 
 	private Map<String, String> profilePictureSnapshotsMap = new HashMap<String, String>();

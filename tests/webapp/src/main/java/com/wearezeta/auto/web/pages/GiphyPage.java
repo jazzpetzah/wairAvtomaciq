@@ -22,8 +22,7 @@ public class GiphyPage extends WebPage {
 	@FindBy(css = "#giphy-modal [data-uie-name='do-close']")
 	private WebElement closeButton;
 
-	//@FindBy(css = "#giphy-modal [data-uie-name='enter-giphy-query']")
-	@FindBy(css = "#giphy-modal input")
+	@FindBy(css = "#giphy-modal [data-uie-name='giphy-query']")
 	private WebElement searchInput;
 
 	final static String gifContainerLocator = "#giphy-modal .gif-container-item";
@@ -31,7 +30,7 @@ public class GiphyPage extends WebPage {
 	@FindBy(css = gifContainerLocator)
 	private WebElement gifContainer;
 
-	final static String giphyLinkLocator = "#giphy-modal [data-uie-name='go-giphy-link']";
+	final static String giphyLinkLocator = "#giphy-icon";
 
 	@FindBy(css = giphyLinkLocator)
 	private WebElement giphyLink;
@@ -46,7 +45,7 @@ public class GiphyPage extends WebPage {
 	}
 
 	public String getSearchTerm() {
-		return searchInput.getAttribute("value");
+		return searchInput.getText();
 	}
 
 	public boolean isGifImageVisible() throws Exception {

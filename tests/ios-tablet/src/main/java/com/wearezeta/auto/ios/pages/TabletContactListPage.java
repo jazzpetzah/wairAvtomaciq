@@ -36,7 +36,7 @@ public class TabletContactListPage extends ContactListPage {
 
 	@Override
 	public IOSPage swipeUp(int time) throws Exception {
-		DriverUtils.swipeUp(this.getDriver(), conversationListPage, 500, 50, 75);
+		DriverUtils.swipeUp(this.getDriver(), conversationListPage, time, 50, 90);
 		return returnBySwipe(SwipeDirection.UP);
 	}
 }

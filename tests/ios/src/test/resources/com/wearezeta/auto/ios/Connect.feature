@@ -287,10 +287,34 @@ Feature: Connect
     And I confirm Cancel request by click on Yes button
     And I see Details button is visible
     And I return to the chat list
-	Then I dont see conversation <Contact> in contact list
-	
+    Then I dont see conversation <Contact> in contact list
+
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
-      
-      
+
+  @regression @id3224
+  Scenario Outline: Verify sending connection request after disconnecting
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I click plus button next to text input
+    And I open conversation details    
+    And I click Cancel request button
+    And I confirm Cancel request by click on Yes button
+	And I see Details button is visible
+    And I return to the chat list
+    And I open search by taping on it
+    And I input in People picker search field user name <Contact1>
+	And I see user <Contact1> found on People picker page
+    And I tap on NOT connected user name on People picker page <Contact1>
+    And I see connect to <Contact1> dialog
+    And I click Connect button on connect to dialog
+    And I click close button to dismiss people view
+    Then I see first item in contact list named <Contact1>
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |

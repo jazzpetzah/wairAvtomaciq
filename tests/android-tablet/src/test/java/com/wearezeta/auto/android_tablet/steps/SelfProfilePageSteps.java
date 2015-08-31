@@ -47,11 +47,11 @@ public class SelfProfilePageSteps {
 	/**
 	 * Tap Options button on Self Profile page
 	 * 
-	 * @step. ^I tap Options button$"
+	 * @step. ^I tap Options button on (?:the |\\s*)[Ss]elf [Pp]rofile page$"
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap Options button$")
+	@When("^I tap Options button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
 	public void ITapOptionsButton() throws Exception {
 		getSelfProfilePage().tapOptionsButton();
 	}
@@ -59,15 +59,32 @@ public class SelfProfilePageSteps {
 	/**
 	 * Select the corresponding item from Options menu
 	 * 
-	 * @step. ^I select \"(.*)\" menu item$"
+	 * @step. ^I select \"(.*)\" menu item on (?:the |\\s*)[Ss]elf [Pp]rofile
+	 *        page$
 	 * @param itemName
 	 *            the name of existing Options menu item
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I select \"(.*)\" menu item$")
+	@When("^I select \"(.*)\" menu item on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
 	public void ISelectOptionsMenuItem(String itemName) throws Exception {
 		getSelfProfilePage().selectOptionsMenuItem(itemName);
+	}
+
+	/**
+	 * Verify whether the corresponding item from Options menu is visible
+	 * 
+	 * @step. ^I see \"(.*)\" menu item on (?:the |\\s*)[Ss]elf [Pp]rofile page$
+	 * @param itemName
+	 *            the name of an menu item
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see \"(.*)\" menu item on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
+	public void ISeeOptionsMenuItem(String itemName) throws Exception {
+		Assert.assertTrue(
+				String.format("'%s' menu item is not visible", itemName),
+				getSelfProfilePage().waitUntilOptionsMenuItemVisible(itemName));
 	}
 
 	/**
@@ -116,17 +133,17 @@ public class SelfProfilePageSteps {
 	 * Stores the screenshot of current Self Profile screen for the further
 	 * comparison
 	 * 
-	 * @step. ^I remember my current profile picture tablet$
+	 * @step. ^I remember my current profile picture on [Ss]elf [Pp]rofile page$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I remember my current profile picture tablet$")
+	@When("^I remember my current profile picture on [Ss]elf [Pp]rofile page$")
 	public void IRememberMyCurrentProfilePictureTablet() throws Exception {
 		savedProfileScreenshot = getSelfProfilePage().getScreenshot();
 	}
 
 	/**
-	 * Tap the Change Pciture button
+	 * Tap the Change Picture button
 	 * 
 	 * @step. ^I tap Change Picture button on (?:the |\\s*)[Ss]elf [Pp]rofile
 	 *        page$
@@ -139,6 +156,32 @@ public class SelfProfilePageSteps {
 	}
 
 	/**
+	 * Verify whether the Take Photo button is visible
+	 * 
+	 * @step. ^I see Take Photo button on (?:the |\\s*)[Ss]elf [Pp]rofile page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see Take Photo button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
+	public void ISeeTakePhotoButton() throws Exception {
+		Assert.assertTrue(
+				"Take Photo button is still not visible after the timeout",
+				getSelfProfileCameraPage().waitUntilTakePhotoButtonVisible());
+	}
+
+	/**
+	 * Tap Take Photo button on Self Profile page
+	 * 
+	 * @step. ^I tap Take Photo button on (?:the |\\s*)[Ss]elf [Pp]rofile page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I tap Take Photo button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
+	public void ITapTakePhotoButton() throws Exception {
+		getSelfProfileCameraPage().tapTakePhotoButton();
+	}
+
+	/**
 	 * Tap the Gallery button
 	 * 
 	 * @step. ^I tap Gallery button on (?:the |\\s*)[Ss]elf [Pp]rofile page$
@@ -148,18 +191,6 @@ public class SelfProfilePageSteps {
 	@And("^I tap Gallery button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
 	public void ITapGalleryButton() throws Exception {
 		getSelfProfileCameraPage().tapGalleryButton();
-	}
-
-	/**
-	 * Select some random picture from the Gallery
-	 * 
-	 * @step. ^I select a picture from the Gallery$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I select a picture from the Gallery$")
-	public void ISelectGalleryPicture() throws Exception {
-		getSelfProfilePage().selectFirstGalleryPhoto();
 	}
 
 	/**

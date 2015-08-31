@@ -155,7 +155,7 @@ public class InstanceResource {
 		try {
 			return restHandler.httpGet(
 					buildDefaultRequest(target, MediaType.APPLICATION_JSON),
-					new GenericType<List>() {
+					new GenericType<List<Flow>>() {
 					}, new int[] { HttpStatus.SC_OK });
 		} catch (RESTError ex) {
 			throw new CallingServiceInstanceException(ex);

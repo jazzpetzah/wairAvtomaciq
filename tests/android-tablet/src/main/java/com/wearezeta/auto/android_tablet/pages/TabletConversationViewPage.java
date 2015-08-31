@@ -1,5 +1,7 @@
 package com.wearezeta.auto.android_tablet.pages;
 
+import java.awt.image.BufferedImage;
+import java.util.Optional;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -24,6 +26,14 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 
 	private static final Function<String, String> xpathOutgoingInvitationMessageByContent = content -> String
 			.format("//*[@id='ttv__connect_request__first_message' and @value='%s']",
+					content);
+
+	private static final Function<String, String> xpathSystemConnectionMessageByContent = content -> String
+			.format("//*[@id='ttv__row_conversation__connect_request__chathead_footer__label' and contains(@value, '%s')]",
+					content);
+
+	private static final Function<String, String> xpathSystemConvoNameMessageByContent = content -> String
+			.format("//*[@id='ttv__row_conversation__new_conversation_name' and @value='%s']",
 					content);
 
 	@FindBy(id = DialogPage.idParticipantsBtn)
@@ -153,5 +163,51 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			throws Exception {
 		return getDialogPage().waitForPingMessageWithTextDisappears(
 				expectedMessage);
+	}
+
+	public void doSwipeRight() throws Exception {
+		DriverUtils.swipeByCoordinates(getDriver(), 1000, 10, 50, 90, 50);
+	}
+
+	public void scrollToTheBottom() throws Exception {
+		getDialogPage().tapDialogPageBottom();
+	}
+
+	public Optional<BufferedImage> getRecentPictureScreenshot()
+			throws Exception {
+		return getDialogPage().getRecentPictureScreenshot();
+	}
+
+	public Optional<BufferedImage> getPreviewPictureScreenshot()
+			throws Exception {
+		return getDialogPage().getPreviewPictureScreenshot();
+	}
+
+	public void tapRecentPicture() throws Exception {
+		getDialogPage().clickLastImageFromDialog();
+	}
+
+	public boolean waitForSystemConnectionMessageContains(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathSystemConnectionMessageByContent
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitForConversationNameSystemMessage(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathSystemConvoNameMessageByContent
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean waitUntilInvisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idRootLocator));
+	}
+
+	public boolean waitUntilPicturesNotVisible() throws Exception {
+		final By locator = By.id(DialogPage.idDialogImages);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 }
