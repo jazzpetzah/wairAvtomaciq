@@ -29,8 +29,6 @@ public final class PerformanceCommon {
 	private static final int MIN_WAIT_SECONDS = 2;
 	private static final int MAX_WAIT_SECONDS = 5;
 
-	public static final String DEFAULT_PERF_IMAGE = "perf/default.jpg";
-
 	private static PerformanceCommon instance = null;
 
 	private PerformanceCommon() {

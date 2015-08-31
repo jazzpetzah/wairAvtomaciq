@@ -179,10 +179,11 @@ public class ContactListPage extends IOSPage {
 
 	public String getDialogNameByIndex(int index) throws Exception {
 
-		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(String.format(IOSLocators.xpathContactListEntryWithIndex, index)));
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.xpath(String
+				.format(IOSLocators.xpathContactListEntryWithIndex, index)));
 		WebElement contact = this.getDriver().findElement(
-				By.xpath(String.format(IOSLocators.xpathContactListEntryWithIndex, index)));
+				By.xpath(String.format(
+						IOSLocators.xpathContactListEntryWithIndex, index)));
 		return contact.getText();
 	}
 
@@ -454,7 +455,9 @@ public class ContactListPage extends IOSPage {
 					.getImagesPath() + "silenceiPadAir.png");
 		} else if (deviceType.equals("iPad Air") && !isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "verifyUnsilenceTestiPadAir.png");
+					.getImagesPath()
+					+ "verifyUnsilenceTestiPadAir_"
+					+ getOrientation().toString() + ".png");
 		}
 		double score = ImageUtil.getOverlapScore(silencedConversation,
 				referenceImage, 0);

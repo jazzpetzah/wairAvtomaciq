@@ -52,6 +52,14 @@ public class DialogPage extends AndroidPage {
 			.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
 					text);
 
+	private static final Function<String, String> xpathUnsentIndicatorByText = text -> String
+			.format("%s/parent::*/parent::*//*[@id='v__row_conversation__error']",
+					xpathConversationMessageByText.apply(text));
+
+	private static final String xpathUnsentIndicatorForImage = "//*[@id='"
+			+ idDialogImages
+			+ "']/parent::*/parent::*//*[@id='v__row_conversation__error']";
+
 	@FindBy(id = giphyPreviewButtonId)
 	private WebElement giphyPreviewButton;
 	final By giphyPreviewButtonLocator = By.id(giphyPreviewButtonId);
@@ -90,8 +98,8 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idPingIcon)
 	private WebElement pingIcon;
 
-	private static final String idDialogTakePhotoButton = "gtv__camera_control__take_a_picture";
-	@FindBy(id = idDialogTakePhotoButton)
+	private static final String xpathDialogTakePhotoButton = "//*[@id='gtv__camera_control__take_a_picture' and @shown='true']";
+	@FindBy(xpath = xpathDialogTakePhotoButton)
 	private WebElement takePhotoButton;
 
 	private static final String idDialogChangeCameraButton = "gtv__camera__top_control__back_camera";
@@ -107,6 +115,10 @@ public class DialogPage extends AndroidPage {
 
 	@FindBy(id = idDialogImages)
 	private WebElement image;
+
+	private static final String idFullScreenImage = "tiv__single_image_message__image";
+	@FindBy(id = idFullScreenImage)
+	private WebElement fullScreenImage;
 
 	@FindBy(id = idDialogImages)
 	private List<WebElement> imageList;
@@ -198,6 +210,10 @@ public class DialogPage extends AndroidPage {
 	private static final String xpathLastConversationMessage = "(//*[@id='ltv__row_conversation__message'])[last()]";
 	@FindBy(xpath = xpathLastConversationMessage)
 	private WebElement lastConversationMessage;
+
+	private static final String idFullScreenImageImage = "tiv__single_image_message__animating_image";
+	@FindBy(id = idFullScreenImageImage)
+	private WebElement fullScreenImageImage;
 
 	public static Function<String, String> xpathInputFieldByValue = value -> String
 			.format("//*[@value='%s']", value);
@@ -428,6 +444,11 @@ public class DialogPage extends AndroidPage {
 		}
 	}
 
+	public boolean waitForUnsentIndicator(String text) throws Exception {
+		final By locator = By.xpath(xpathUnsentIndicatorByText.apply(text));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
 	public boolean isImageExists() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(idDialogImages));
@@ -436,6 +457,10 @@ public class DialogPage extends AndroidPage {
 	public Optional<BufferedImage> getLastImageInConversation()
 			throws Exception {
 		return getElementScreenshot(imageList.get(imageList.size() - 1));
+	}
+
+	public Optional<BufferedImage> getLastImageInFullScreen() throws Exception {
+		return getElementScreenshot(fullScreenImageImage);
 	}
 
 	public void confirm() throws Exception {
@@ -453,12 +478,12 @@ public class DialogPage extends AndroidPage {
 
 	public void takePhoto() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.id(idDialogTakePhotoButton));
+				By.xpath(xpathDialogTakePhotoButton));
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				takePhotoButton);
 		takePhotoButton.click();
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idDialogTakePhotoButton));
+				By.xpath(xpathDialogTakePhotoButton));
 	}
 
 	public void changeCamera() throws Exception {
@@ -896,5 +921,25 @@ public class DialogPage extends AndroidPage {
 				String.format(
 						"Failed to swipe left the text cursor on input field after %s retries!",
 						MAX_SWIPE_RETRIES));
+	}
+
+	public Optional<BufferedImage> getRecentPictureScreenshot()
+			throws Exception {
+		return this.getElementScreenshot(image);
+	}
+
+	public Optional<BufferedImage> getPreviewPictureScreenshot()
+			throws Exception {
+		return this.getElementScreenshot(fullScreenImage);
+	}
+
+	public boolean isImageInvisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+				By.id(idDialogImages));
+	}
+
+	public boolean waitForAPictureWithUnsentIndicator() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.xpath(xpathUnsentIndicatorForImage));
 	}
 }

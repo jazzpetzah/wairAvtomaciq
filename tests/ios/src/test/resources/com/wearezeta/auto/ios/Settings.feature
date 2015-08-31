@@ -113,3 +113,32 @@ Feature: Settings
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
   
+  @regression @id730 @id731
+  Scenario Outline: Verify about screen contains all the required information
+    Given There is 1 user where <Name> is me
+    Given User me change accent color to <Color>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on my name <Name>
+    And I click on Settings button on personal page
+    And I click on About button on personal page
+    Then I see About page
+    And I see that the About page is colored <Color>
+    And I see WireWebsiteButton
+    And I see TermsButton
+    And I see PrivacyPolicyButton
+    And I see BuildNumberText
+    And I open PrivacyPolicyPage
+    And I see PrivacyPolicyPage
+    And I close legal page
+    Then I see About page
+    And I open TermsOfUsePage
+    And I see TermsOfUsePage
+    And I close legal page
+    Then I see About page
+    And I open WireWebsite
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact   | Color  |
+      | user1Name | user2Name | Violet |

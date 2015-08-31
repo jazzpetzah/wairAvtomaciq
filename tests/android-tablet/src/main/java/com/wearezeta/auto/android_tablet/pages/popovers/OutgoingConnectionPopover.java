@@ -42,4 +42,8 @@ public class OutgoingConnectionPopover extends AbstractPopoverContainer {
 	public void tapCloseButton() {
 		this.outgoingConnectionPage.tapCloseButton();
 	}
+
+	public boolean isConnectButtonTappable() throws Exception {
+		return this.outgoingConnectionPage.isConnectButtonTappable();
+	}
 }

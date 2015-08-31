@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Future;
@@ -12,6 +13,8 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.android.pages.registration.EmailSignInPage;
 import com.wearezeta.auto.common.CommonSteps;
+import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -22,7 +25,8 @@ public class ContactListPage extends AndroidPage {
 	private static final String xpathLoadingContactListItem = "//*[@id='tv_conv_list_topic' and contains(@value, '…')]";
 
 	public static final Function<String, String> xpathContactByName = name -> String
-			.format("//*[@id='tv_conv_list_topic' and @value='%s']", name);
+			.format("//*[@id='tv_conv_list_topic' and @value='%s' and @shown='true']",
+					name);
 
 	public static final Function<Integer, String> xpathContactByIndex = index -> String
 			.format("(//*[@id='tv_conv_list_topic'])[%s]", index);
@@ -107,8 +111,13 @@ public class ContactListPage extends AndroidPage {
 			.format("//*[starts-with(@id, 'ttv__conversation_settings') and @value='%s']",
 					name.toUpperCase());
 
-	private static final String xpathTopConversationsListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
+	// private static final String xpathTopConversationsListLoadingIndicator =
+	// "//*[@id='lbv__conversation_list__loading_indicator']/*";
 	private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
+
+	private static final Function<String, String> xpathConversationListEntry = name -> String
+			.format("//b[TextView[@id='tv_conv_list_topic' and @value='%s']]//*[@id='civ__list_row']",
+					name);
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class
 			.getSimpleName());
@@ -286,8 +295,8 @@ public class ContactListPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
-	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 30;
-	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 4;
+	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
+	private static final int CONVERSATIONS_INFO_LOAD_TIMEOUT_SECONDS = CONTACT_LIST_LOAD_TIMEOUT_SECONDS * 2;
 
 	public void verifyContactListIsFullyLoaded() throws Exception {
 		CommonSteps.getInstance().WaitForTime(1);
@@ -296,18 +305,6 @@ public class ContactListPage extends AndroidPage {
 				CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : String
 				.format("It seems that conversations list has not been loaded within %s seconds (login button is still visible)",
 						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
-
-		final By topConvoListLoadingProgressLocator = By
-				.xpath(xpathTopConversationsListLoadingIndicator);
-		DriverUtils.waitUntilLocatorAppears(getDriver(),
-				topConvoListLoadingProgressLocator, 5);
-		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				topConvoListLoadingProgressLocator,
-				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
-			log.warn(String
-					.format("It seems that conversations list has not been loaded within %s seconds (the progress bar is still visible)",
-							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
-		}
 
 		final By selfAvatarLocator = By.id(idSelfUserAvatar);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -363,7 +360,8 @@ public class ContactListPage extends AndroidPage {
 			}
 		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(xpathLastContact), 3);
+				By.xpath(xpathLastContact),
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
 	}
 
 	public boolean isNoConversationsVisible() throws Exception {
@@ -412,5 +410,57 @@ public class ContactListPage extends AndroidPage {
 		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
 				coords.x + elementSize.width / 2,
 				coords.y + elementSize.height / 4 * 3, 2000);
+	}
+
+	public Optional<BufferedImage> getScreenshotOfPlayPauseButtonNextTo(
+			String convoName) throws Exception {
+		final By locator = By.xpath(xpathPlayPauseButtonByConvoName
+				.apply(convoName));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("PlayPause button is not visible next to the '%s' conversation item",
+						convoName);
+		return this.getElementScreenshot(this.getDriver().findElement(locator));
+	}
+
+	public void tapPlayPauseMediaButton(String convoName) throws Exception {
+		final By locator = By.xpath(xpathPlayPauseButtonByConvoName
+				.apply(convoName));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("PlayPause button is not visible next to the '%s' conversation item",
+						convoName);
+		this.getDriver().findElement(locator).click();
+	}
+
+	private final String UNREAD_DOT_SMALL_IMG = "android_unread_dot_small.png";
+	private final String UNREAD_DOT_LARGE_IMG = "android_unread_dot_large.png";
+	private final String UNREAD_DOT_NO_UNREAD_DOT_IMG = "android_no_unread_dot.png";
+
+	public double getUnreadDotOverlapScore(String expected, String contact)
+			throws Exception {
+		final String EXPECTED_DOT_STATE_SMALL = "small";
+		final String EXPECTED_DOT_STATE_LARGE = "large";
+		final String EXPECTED_DOT_STATE_NOT_DISPLAYED = "not displayed";
+
+		final By locator = By.xpath(xpathConversationListEntry.apply(contact));
+		BufferedImage unreadDot = getElementScreenshot(
+				this.getDriver().findElement(locator)).orElseThrow(
+				IllegalStateException::new);
+
+		String path = null;
+
+		if (expected.equals(EXPECTED_DOT_STATE_SMALL)) {
+			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
+					+ UNREAD_DOT_SMALL_IMG;
+		} else if (expected.equals(EXPECTED_DOT_STATE_LARGE)) {
+			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
+					+ UNREAD_DOT_LARGE_IMG;
+		} else if (expected.equals(EXPECTED_DOT_STATE_NOT_DISPLAYED)) {
+			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
+					+ UNREAD_DOT_NO_UNREAD_DOT_IMG;
+		}
+		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
+
+		return ImageUtil.getOverlapScore(unreadDot, templateImage,
+				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
 	}
 }

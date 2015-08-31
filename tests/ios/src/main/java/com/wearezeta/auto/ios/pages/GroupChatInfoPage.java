@@ -282,8 +282,10 @@ public class GroupChatInfoPage extends IOSPage {
 
 	public OtherUserPersonalInfoPage selectContactByName(String name)
 			throws Exception {
-		DriverUtils.mobileTapByCoordinates(this.getDriver(), getDriver()
-				.findElementByName(name.toUpperCase()));
+		DriverUtils.mobileTapByCoordinates(this.getDriver(),getDriver().findElementByXPath(
+				String.format(
+						IOSLocators.xpathPeopleViewCollectionCell,
+						name.toUpperCase())));
 
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}

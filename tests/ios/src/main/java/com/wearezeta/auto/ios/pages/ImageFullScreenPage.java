@@ -35,6 +35,9 @@ public class ImageFullScreenPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenTimeStamp)
 	private WebElement fullScreenTimeStamp;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameFullScreenSketchButton)
+	private WebElement fullScreenSketchButton;
 
 	public ImageFullScreenPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
@@ -103,6 +106,10 @@ public class ImageFullScreenPage extends IOSPage {
 		}
 		}
 		return page;
+	}
+
+	public void clickSketchButton() {
+		fullScreenSketchButton.click();
 	}
 
 }

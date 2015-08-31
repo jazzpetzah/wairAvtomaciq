@@ -18,7 +18,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.nameOtherUserProfilePageCloseButton)
 	private WebElement closePageButton;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherProfilePagePendingLabel)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherProfilePageCancelRequestLabel)
 	private WebElement pendingLabel;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameOtherProfilePageStartConversationButton)
@@ -61,9 +61,9 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 		cancelRequestConfirmationYesButton.click();
 	}
 
-	public boolean isPendingLabelVisible() throws Exception {
+	public boolean isCancelRequestLabelVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathOtherProfilePagePendingLabel));
+				By.xpath(IOSLocators.xpathOtherProfilePageCancelRequestLabel));
 	}
 
 	public void clickStartConversationButton() {

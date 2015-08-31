@@ -43,14 +43,14 @@ Feature: Self Profile
     And I see personal info page
     And I tap on my name
     Then I see edit name field with my name
-    When I clear name field 
+    When I clear name field
     And I change my name to <NewName>
     Then I see my new name <NewName>
 
     Examples: 
       | Name      | NewName     |
       | user1Name | NewTestName |
- 
+
   @id201 @smoke
   Scenario Outline: Change user picture with camera
     Given There is 1 user where <Name> is me
@@ -70,3 +70,23 @@ Feature: Self Profile
     Examples: 
       | Name      |
       | user1Name |
+
+  @id663 @regression
+  Scenario Outline: User can change accent color and it is saved after sign in sign out
+    Given There is 1 user where <Name> is me
+    Given I sign in using my email
+    Given I see Contact list with no contacts
+    And I tap on my avatar
+    When I change accent color to <AccentColor>
+    And I see color <AccentColor> selected on accent color picker
+    And I tap options button
+    And I tap sign out button
+    And I see welcome screen
+    And I sign in using my email
+    And I see Contact list with no contacts
+    And I tap on my avatar
+    Then I see color <AccentColor> selected on accent color picker
+
+    Examples: 
+      | Name      | AccentColor |
+      | user1Name | Violet      |

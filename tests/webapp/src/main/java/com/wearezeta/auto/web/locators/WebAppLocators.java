@@ -256,13 +256,13 @@ public final class WebAppLocators {
 		public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
 		// bars (call bar)
-		public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";
+		public static String xpathCallingBarRoot = "//*[contains(@class, 'call-menu') and contains(@class, 'on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
 				.format(xpathCallingBarRoot
-						+ "/div/div/div/div/div[contains(@class, 'cc-avatar-label') and text()='%s']|"
+						+ "//*[contains(@class, 'cc-avatar-label') and text()='%s']|"
 						+ xpathCallingBarRoot
-						+ "/div/div/div/span[contains(@class, 'cc-label-bold') and text()='%s']",
+						+ "//*[contains(@class, 'cc-label-bold') and text()='%s']",
 						text, text);
 
 		public static final String xpathJoinCallBar = "//div[contains(@class, 'join-menu') and contains(@class, 'on')]/*[contains(@class, 'join-menu-button')]";
@@ -296,8 +296,8 @@ public final class WebAppLocators {
 				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]",
 						name);
 
-		public static final Function<String, String> xpathAcceptRequestButtonByName = name -> String
-				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='accept']",
+		public static final Function<String, String> cssAcceptRequestButtonByUserId = name -> String
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-name='do-accept']",
 						name);
 
 		public static final Function<String, String> xpathIgnoreReqestButtonByName = name -> String

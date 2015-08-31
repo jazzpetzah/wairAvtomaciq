@@ -19,8 +19,8 @@ import javax.imageio.ImageIO;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
-import org.eclipse.jetty.http.HttpStatus;
 import org.opencv.core.Rect;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
@@ -239,7 +239,7 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		try {
 			tmpScreenshot = getScreenshotInFile();
 			result.setSessionId(this.getSessionId().toString());
-			result.setStatus(HttpStatus.OK_200);
+			result.setStatus(HttpStatus.SC_OK);
 			result.setValue(Base64.encodeBase64(IOUtils
 					.toByteArray(new FileInputStream(tmpScreenshot))));
 			return result;

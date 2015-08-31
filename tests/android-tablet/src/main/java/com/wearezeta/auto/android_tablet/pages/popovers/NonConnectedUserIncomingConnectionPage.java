@@ -28,4 +28,8 @@ class NonConnectedUserIncomingConnectionPage extends
 		acceptButton.click();
 	}
 
+	public void tapIgnoreButton() {
+		ignoreButton.click();
+	}
+
 }

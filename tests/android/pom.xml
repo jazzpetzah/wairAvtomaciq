@@ -28,6 +28,7 @@
 		<perfReportPath>${user.home}/Documents/performance.json</perfReportPath>
 		<androidVersion>44</androidVersion>
 		<backendType>staging</backendType>
+		<androidToolsPath></androidToolsPath>
 	</properties>
 
 	<dependencies>

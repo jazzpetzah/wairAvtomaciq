@@ -308,7 +308,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id416
+  @regression @id416
   Scenario Outline: Keyboard up and navigate to main convo list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -570,25 +570,6 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @regression @id2977
-  Scenario Outline: Verify I can send gif from preview
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I type tag for giphy preview <GiphyTag> and open preview overlay
-    And I wait for 5 seconds
-    And I send gif from giphy preview page
-    And I wait for 5 seconds
-    And I see dialog page
-    Then I see new photo in the dialog
-
-    Examples: 
-      | Name      | Contact   | GiphyTag |
-      | user1Name | user2Name | Happy    |
-
   @regression @id2976
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
@@ -632,41 +613,12 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @regression @id2787
-  Scenario Outline: Verify preview is opened after tapping on GIF button
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I type tag for giphy preview <GiphyTag> and open preview overlay
-    And I see giphy preview page
-
-    Examples: 
-      | Name      | Contact   | GiphyTag |
-      | user1Name | user2Name | Happy    |
-
-  @regression @id2792 @id2786
-  Scenario Outline: Verify preview is opened after tapping on GIF button
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I send random giphy
-    And I see giphy in conversation
-
-    Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
-
   @regression @id3095
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
     Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given I leave group chat <GroupChatName>
     Given Me sent connection request to <Contact1>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
@@ -675,15 +627,8 @@ Feature: Conversation View
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
     And I click Close input options button
-    And I return to the chat list   
+    And I return to the chat list
     When I tap on group chat with name <GroupChatName>
-    And I open group conversation details
-    And I press leave converstation button
-    And I see leave conversation alert
-    Then I press leave
-    And I open archived conversations
-    And I see user <GroupChatName> in contact list
-    And I tap on group chat with name <GroupChatName>   
     And I see plus button next to text input
     And I click plus button next to text input
     Then I see only Details button. Call, Camera, Sketch, Ping are not shown
@@ -691,3 +636,46 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
+
+  @regression @id3265
+  Scenario Outline: Verify drawing on image from single view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I see new photo in the dialog
+    And I tap and hold image to open full screen
+    And I see Full Screen Page opened
+    And I press Sketch button on image fullscreen page
+    And I draw a random sketch
+    And I send my sketch
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   | Picture     | ConversationType |
+      | user1Name | user2Name | testing.jpg | single user      |
+
+  @regression @id3263
+  Scenario Outline: Verify drawing on the image from gallery
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose a picture from camera roll
+    And I press sketch button on camera roll page
+    And I draw a random sketch
+    And I send my sketch
+    And I press Confirm button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
