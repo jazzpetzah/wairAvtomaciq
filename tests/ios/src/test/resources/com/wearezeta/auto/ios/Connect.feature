@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @smoke @id576 @id2541
+  @smoke @rc @id576 @id2541
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -25,7 +25,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @smoke @id1475
+  @smoke @rc @id1475
   Scenario Outline: Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -45,7 +45,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id576
+  @regression @rc @id576
   Scenario Outline: Send connection request to unconnected participant in a group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -65,7 +65,7 @@ Feature: Connect
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
-  @regression @id579
+  @regression @rc @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -91,7 +91,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @regression @id577
+  @regression @rc @id577
   Scenario Outline: Verify transitions between connection requests (connecting)
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -272,7 +272,7 @@ Feature: Connect
       | Name      | Contact1 | Contact2 |
       | user1Name | vb003    | Dorothy  |
 
-  @regression @id3223
+  @regression @rc @id3223
   Scenario Outline: Verify possibility of disconnecting from conversation list
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>

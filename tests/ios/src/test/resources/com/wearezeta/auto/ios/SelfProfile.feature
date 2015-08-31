@@ -53,7 +53,7 @@ Feature: Self Profile
       | Name      | username | Contact   |
       | user1Name | c        | user2Name |
       
-  @smoke @id1463
+  @smoke @rc @id1463
   Scenario Outline: Verify name change
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -73,7 +73,7 @@ Feature: Self Profile
       | Name      | NewUsername        | Contact   |
       | user1Name | New Name           | user2Name |
       
-  @regression @id667
+  @regression @rc @id667
   Scenario Outline: Verify changing and applying accent color
   	Given There are 2 users where <Name> is me
   	Given Myself is connected to <Contact>
