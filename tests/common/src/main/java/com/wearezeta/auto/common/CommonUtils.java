@@ -114,7 +114,7 @@ public class CommonUtils {
 	public static String getDefaultImagesPath(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "defaultImagesPath");
 	}
-	
+
 	public static String getImagePath(Class<?> c) throws Exception {
 		String path = getValueFromConfig(c, "defaultImagesPath") + USER_IMAGE;
 		return path;
@@ -276,12 +276,11 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "defaultEmailServer");
 	}
 
-
 	public static String getOpenCVLibPathFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "openCVLibPath");
 	}
-	
+
 	public static String getDriverTimeoutFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "driverTimeoutSeconds");
@@ -472,7 +471,7 @@ public class CommonUtils {
 			WebElement element, AppiumDriver driver, String deviceName)
 			throws Exception {
 		int multiply = 3;
-		if (deviceName.equals("iPhone 6")||deviceName.equals("iPad Air")) {
+		if (deviceName.equals("iPhone 6") || deviceName.equals("iPad Air")) {
 			multiply = 2;
 		} else if (deviceName.equals("Android Device")) {
 			multiply = 1;
@@ -592,5 +591,24 @@ public class CommonUtils {
 
 	public static boolean getInitNoteIpFromConfig(Class<?> c) throws Exception {
 		return Boolean.valueOf(getValueFromCommonConfig(c, "initNodeIp"));
+	}
+
+	public static String getZephyrCycleNameFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "zephyrCycleName");
+	}
+
+	public static String getZephyrPhaseNameFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "zephyrPhaseName");
+	}
+
+	public static String getZephyrServerFromConfig(Class<?> c) throws Exception {
+		return getValueFromCommonConfig(c, "zephyrServer");
+	}
+
+	public static String getJenkinsJobUrlFromConfig(Class<?> c)
+			throws Exception {
+		return getValueFromCommonConfig(c, "jenkinsJobUrl");
 	}
 }

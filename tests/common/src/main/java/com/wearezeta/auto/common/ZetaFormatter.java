@@ -3,11 +3,14 @@ package com.wearezeta.auto.common;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -21,6 +24,14 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.rc.IRCTestcasesStorage;
+import com.wearezeta.auto.common.rc.RCTestcase;
+import com.wearezeta.auto.common.rc.TestcaseResultAnalyzer;
+import com.wearezeta.auto.zephyr.ExecutedZephyrTestcase;
+import com.wearezeta.auto.zephyr.ZephyrDB;
+import com.wearezeta.auto.zephyr.ZephyrExecutionStatus;
+import com.wearezeta.auto.zephyr.ZephyrTestCycle;
+import com.wearezeta.auto.zephyr.ZephyrTestPhase;
 
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
@@ -38,7 +49,20 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	private static String feature = "";
 	private static String scenario = "";
-	private Queue<String> step = new LinkedList<String>();
+	private static Map<Step, String> steps = new LinkedHashMap<>();
+	private static IRCTestcasesStorage storage = null;
+	private static ZephyrTestPhase phase = null;
+	private static ZephyrTestCycle cycle = null;
+	@SuppressWarnings("unused")
+	private static String jenkinsJobUrl = null;
+
+	private Step getLastStep() {
+		Step out = null;
+		for (Step step : steps.keySet()) {
+			out = step;
+		}
+		return out;
+	}
 
 	private static final Logger log = ZetaLogger.getLog(ZetaFormatter.class
 			.getSimpleName());
@@ -100,7 +124,7 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	@Override
 	public void step(Step arg0) {
-		step.add(arg0.getName());
+		steps.put(arg0, null);
 	}
 
 	@Override
@@ -162,8 +186,9 @@ public class ZetaFormatter implements Formatter, Reporter {
 
 	@Override
 	public void result(Result arg0) {
-		final String stepName = step.poll();
+		final String stepName = getLastStep().getName();
 		final String stepStatus = arg0.getStatus();
+		steps.put(getLastStep(), stepStatus);
 		final long stepFinishedTimestamp = new Date().getTime();
 		boolean isScreenshotingEnabled = true;
 		try {
@@ -234,9 +259,88 @@ public class ZetaFormatter implements Formatter, Reporter {
 	public void startOfScenarioLifeCycle(Scenario scenario) {
 	}
 
+	private synchronized void syncCurrentTestResult(Set<String> normalizedTags,
+			String cycleName, String phaseName, String jenkinsJobUrl)
+			throws Exception {
+		if (phase == null) {
+			storage = new ZephyrDB(
+					CommonUtils.getZephyrServerFromConfig(getClass()));
+			cycle = ((ZephyrDB) storage).getTestCycle(cycleName);
+			phase = cycle.getPhaseByName(phaseName);
+		}
+		final ZephyrExecutionStatus actualTestResult = TestcaseResultAnalyzer
+				.analyzeSteps(steps);
+		final List<ExecutedZephyrTestcase> rcTestCases = phase.getTestcases();
+		boolean isAnyTestChanged = false;
+		for (ExecutedZephyrTestcase rcTestCase : rcTestCases) {
+			if (!Collections.disjoint(rcTestCase.getTags(), normalizedTags)) {
+				if (rcTestCase.getExecutionStatus() != actualTestResult) {
+					log.info(String
+							.format("--> Setting execution result to '%s' for RC test case #%s (Cycle '%s', Phase '%s')",
+									actualTestResult.toString(),
+									rcTestCase.getId(), cycle.getName(),
+									phase.getName()));
+					rcTestCase.setExecutionStatus(actualTestResult);
+					if (jenkinsJobUrl != null && jenkinsJobUrl.length() > 0) {
+						rcTestCase.setExecutionComment(jenkinsJobUrl);
+					}
+					isAnyTestChanged = true;
+				}
+			}
+		}
+		if (isAnyTestChanged) {
+			((ZephyrDB) storage).syncPhaseResults(phase);
+		}
+	}
+
+	private static Set<String> normalizeTags(List<Tag> tags) {
+		Set<String> result = new LinkedHashSet<>();
+		for (Tag tag : tags) {
+			if (tag.getName().startsWith(RCTestcase.MAGIC_TAG_PREFIX)) {
+				result.add(tag.getName());
+			} else {
+				result.add(RCTestcase.MAGIC_TAG_PREFIX + tag.getName());
+			}
+		}
+		return result;
+	}
+
 	@Override
 	public void endOfScenarioLifeCycle(Scenario scenario) {
-
+		String zephyrCycleName;
+		String zephyrPhaseName;
+		String jenkinsJobUrl = null;
+		try {
+			try {
+				zephyrCycleName = CommonUtils
+						.getZephyrCycleNameFromConfig(getClass());
+				zephyrPhaseName = CommonUtils
+						.getZephyrPhaseNameFromConfig(getClass());
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+			try {
+				jenkinsJobUrl = CommonUtils
+						.getJenkinsJobUrlFromConfig(getClass());
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			if (zephyrCycleName.length() > 0 && zephyrPhaseName.length() > 0) {
+				final Set<String> normalizedTags = normalizeTags(scenario
+						.getTags());
+				if (normalizedTags.contains(RCTestcase.RC_TAG)) {
+					try {
+						syncCurrentTestResult(normalizedTags, zephyrCycleName,
+								zephyrPhaseName, jenkinsJobUrl);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		} finally {
+			steps.clear();
+		}
 	}
 
 	public static String getBuildNumber() {
