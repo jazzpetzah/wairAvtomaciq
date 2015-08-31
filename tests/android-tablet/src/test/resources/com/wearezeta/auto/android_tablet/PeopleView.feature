@@ -179,7 +179,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2898 @staging
+  @id2898 @regression
   Scenario Outline: Start 1:1 conversation from group pop-over (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -204,7 +204,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Message |
       | user1Name | user2Name | user3Name | GroupChat     | Msg     |
 
-  @id3152 @staging
+  @id3152 @regression
   Scenario Outline: Start 1:1 conversation from group pop-over (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

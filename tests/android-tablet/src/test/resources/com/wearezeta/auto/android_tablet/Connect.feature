@@ -547,7 +547,7 @@ Feature: Connect
       | Name      | Contact   | SysMessage             |
       | user1Name | user2Name | Connected to user2Name |
 
-  @id2855 @staging
+  @id2855 @regression
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 2 users where <Name> is me
     Given Myself sent connection request to <Contact>
@@ -566,7 +566,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2846 @staging
+  @id2846 @regression
   Scenario Outline: I can receive new connection request when app in background
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape

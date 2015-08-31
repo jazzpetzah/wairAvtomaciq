@@ -66,7 +66,7 @@ public abstract class AndroidTabletPage extends AndroidPage {
 					break;
 				}
 			} catch (WebDriverException e) {
-				// Ignore silently
+				AndroidCommonUtils.executeAdb("shell input keyevent 19");
 			}
 			ntry++;
 		} while (ntry <= maxTries);
