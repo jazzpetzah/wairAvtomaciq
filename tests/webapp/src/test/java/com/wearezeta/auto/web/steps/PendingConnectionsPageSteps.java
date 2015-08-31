@@ -108,16 +108,16 @@ public class PendingConnectionsPageSteps {
 	 * visible
 	 *
 	 * @step. ^I see ignore button in connection request from user (.*)$
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */
 	@Then("^I see ignore button in connection request from user (.*)$")
-	public void ISeeIgnoreButtonConnectionFromUser(String user)
+	public void ISeeIgnoreButtonConnectionFromUser(String userAlias)
 			throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
 		Assert.assertTrue(PagesCollection.pendingConnectionsPage
-				.isIgnoreRequestButtonForUserVisible(user));
+				.isIgnoreRequestButtonForUserVisible(user.getId()));
 	}
 
 	/**
@@ -145,17 +145,17 @@ public class PendingConnectionsPageSteps {
 	 *
 	 * @step. ^I see correct color for ignore button in connection request from
 	 *        user (.*)$
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */
 	@Then("^I see correct color for ignore button in connection request from user (.*)$")
-	public void ISeeCorrectColorForIgnoreButtonConnectionFromUser(String user)
+	public void ISeeCorrectColorForIgnoreButtonConnectionFromUser(String userAlias)
 			throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
 		AccentColor accentColor = usrMgr.getSelfUser().getAccentColor();
 		Assert.assertTrue(PagesCollection.pendingConnectionsPage
-				.getIgnoreRequestButtonBorderColor(user).equals(accentColor));
+				.getIgnoreRequestButtonBorderColor(user.getId()).equals(accentColor));
 	}
 
 	/**
@@ -180,14 +180,16 @@ public class PendingConnectionsPageSteps {
 	 * 
 	 * @step. ^I ignore connection request from user (.*)$
 	 * 
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @throws Exception
 	 */
 	@When("^I ignore connection request from user (.*)$")
-	public void IIgnoreConnectionRequestFromUser(String user) throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		PagesCollection.pendingConnectionsPage.ignoreRequestFromUser(user);
+	public void IIgnoreConnectionRequestFromUser(String userAlias)
+			throws Exception {
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
+		PagesCollection.pendingConnectionsPage
+				.ignoreRequestFromUser(user.getId());
 	}
 
 }

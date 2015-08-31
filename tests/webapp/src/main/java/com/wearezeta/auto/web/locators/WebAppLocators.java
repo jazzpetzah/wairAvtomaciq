@@ -286,7 +286,6 @@ public final class WebAppLocators {
 
 	public static final class ConnectToPage {
 
-		public static final String xpathRequestAvatarPartial = "/../../div[contains(@class, 'sender')]//div[contains(@class, 'user-avatar-image')]";
 		public static final String cssRequestEmailPartial = " .mail";
 		public static final String cssRequestMessagePartial = " .message";
 
@@ -294,18 +293,18 @@ public final class WebAppLocators {
 				.format("[data-uie-name='connect-request'][data-uie-uid='%s']",
 						uid);
 
-		public static final Function<String, String> cssAcceptRequestButtonByUserId = name -> String
+		public static final Function<String, String> cssAcceptRequestButtonByUserId = uid -> String
 				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-name='do-accept']",
-						name);
+						uid);
 
-		public static final Function<String, String> xpathIgnoreReqestButtonByName = name -> String
-				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='ignore']",
-						name);
+		public static final Function<String, String> cssIgnoreRequestButtonById = uid -> String
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-name='do-ignore']",
+						uid);
 
-		public static final String xpathAllConnectionRequests = "//div[contains(@class, 'connect-request')";
+		public static final String cssAllConnectionRequests = "[data-uie-name='connect-request']";
 
-		public static final Function<String, String> cssRequestAvatarByUserId = id -> String
-				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] .image", id);
+		public static final Function<String, String> cssRequestAvatarByUserId = uid -> String
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] .image", uid);
 	}
 
 	public static final class PeoplePickerPage {

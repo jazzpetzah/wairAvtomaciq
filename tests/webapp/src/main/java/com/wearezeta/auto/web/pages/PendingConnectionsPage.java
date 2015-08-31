@@ -27,7 +27,7 @@ public class PendingConnectionsPage extends WebPage {
 	private static final String CSS_BACKGROUND_COLOR = "background-color";
 	private static final String CSS_BORDER_TOP_COLOR = "border-top-color";
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConnectToPage.xpathAllConnectionRequests)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConnectToPage.cssAllConnectionRequests)
 	private List<WebElement> pendingRequests;
 
 	public PendingConnectionsPage(Future<ZetaWebAppDriver> lazyDriver)
@@ -79,12 +79,12 @@ public class PendingConnectionsPage extends WebPage {
 		return acceptButton.isDisplayed();
 	}
 
-	public boolean isIgnoreRequestButtonForUserVisible(String userName)
+	public boolean isIgnoreRequestButtonForUserVisible(String userId)
 			throws Exception {
-		String xpath = WebAppLocators.ConnectToPage.xpathIgnoreReqestButtonByName
-				.apply(userName);
+		String css = WebAppLocators.ConnectToPage.cssIgnoreRequestButtonById
+				.apply(userId);
 		final WebElement ignoreButton = getDriver()
-				.findElement(By.xpath(xpath));
+				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), ignoreButton);
 		return ignoreButton.isDisplayed();
 	}
@@ -101,12 +101,12 @@ public class PendingConnectionsPage extends WebPage {
 		return AccentColor.getByRgba(colorRgba);
 	}
 
-	public AccentColor getIgnoreRequestButtonBorderColor(String userName)
+	public AccentColor getIgnoreRequestButtonBorderColor(String userId)
 			throws Exception {
-		String xpath = WebAppLocators.ConnectToPage.xpathIgnoreReqestButtonByName
-				.apply(userName);
+		String css = WebAppLocators.ConnectToPage.cssIgnoreRequestButtonById
+				.apply(userId);
 		final WebElement ignoreButton = getDriver()
-				.findElement(By.xpath(xpath));
+				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), ignoreButton);
 
 		String colorRgba = ignoreButton.getCssValue(CSS_BORDER_TOP_COLOR);
@@ -124,11 +124,11 @@ public class PendingConnectionsPage extends WebPage {
 		Thread.sleep(1000);
 	}
 
-	public void ignoreRequestFromUser(String userName) throws Exception {
-		String xpath = WebAppLocators.ConnectToPage.xpathIgnoreReqestButtonByName
-				.apply(userName);
+	public void ignoreRequestFromUser(String userId) throws Exception {
+		String css = WebAppLocators.ConnectToPage.cssIgnoreRequestButtonById
+				.apply(userId);
 		final WebElement ignoreButton = getDriver()
-				.findElement(By.xpath(xpath));
+				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), ignoreButton);
 		// Waiting till self-profile page elements will not be clickable
 		Thread.sleep(1000);
