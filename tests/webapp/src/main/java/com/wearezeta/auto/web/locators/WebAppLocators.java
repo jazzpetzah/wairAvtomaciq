@@ -305,7 +305,7 @@ public final class WebAppLocators {
 		public static final String xpathAllConnectionRequests = "//div[contains(@class, 'connect-request')";
 
 		public static final Function<String, String> cssRequestAvatarByUserId = id -> String
-				.format(".connect-request user-avatar[user-id='%s']", id);
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] .image", id);
 	}
 
 	public static final class PeoplePickerPage {
