@@ -488,7 +488,7 @@ public final class IOSLocators {
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
 	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
-	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIACollectionView/UIACollectionCell[%d]/UIAImage";
+	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]";
 	public static final String xpathPeoplePickerTopConnectionsName = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText";
 	public static final String xpathPeoplePickerAllTopPeople = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell";
 	public static final String nameShareButton = "SHARE CONTACTS";
@@ -663,8 +663,8 @@ public final class IOSLocators {
 		public static final String xpathSuggestedContactToSwipe = "//UIACollectionCell[descendant::UIAStaticText[@name='%s']]";
 		public static final String xpathHideButtonForContact = "//UIAButton[@name='HIDE'][ancestor::UIACollectionCell[descendant::UIAStaticText[@name='%s']]]";
 		public static final String nameOpenConversationButton = "OPEN";
-		public static final String xpathCallButton = "//UIAButton[@name='OPEN']/following-sibling:: UIAButton[1]";
-		public static final String xpathSendImageButton = "//UIAButton[@name='OPEN']/following-sibling:: UIAButton[2]";
+		public static final String xpathCallButton = "//UIAButton[@name='OPEN' or @name='CREATE']/following-sibling:: UIAButton[1]";
+		public static final String xpathSendImageButton = "//UIAButton[@name='OPEN' or @name='CREATE']/following-sibling:: UIAButton[2]";
 	}
 	
 	public final class CommonIOSLocators {
@@ -690,6 +690,8 @@ public final class IOSLocators {
 		public static final String nameGiphySendButton = "acceptButton";
 		
 		public static final String nameNoGifsText = "OOOPS, NO MORE GIFS";
+		
+		public static final String xpathGiphyGrid = "//UIAButton[@name='rightButton']/following-sibling::UIACollectionView/UIACollectionCell/UIAImage";
 		
 	}
 	

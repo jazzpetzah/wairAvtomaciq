@@ -181,7 +181,9 @@ public class PeoplePickerPage extends AndroidPage {
 			}
 			scanTry++;
 		}
-		DriverUtils.tapInTheCenterOfTheElement(getDriver(), pickerSearchUser);
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), pickerSearchUser)) {
+			DriverUtils.tapInTheCenterOfTheElement(getDriver(), pickerSearchUser);
+		}
 		return new DialogPage(this.getLazyDriver());
 	}
 

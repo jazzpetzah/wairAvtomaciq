@@ -3,6 +3,7 @@ package com.wearezeta.auto.android_tablet.pages;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriverException;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.AndroidPage;
@@ -59,10 +60,16 @@ public abstract class AndroidTabletPage extends AndroidPage {
 			AndroidCommonUtils.executeAdb("shell input keyevent 20");
 			Thread.sleep(500);
 			AndroidCommonUtils.executeAdb("shell input keyevent 23");
+			try {
+				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						By.xpath(DialogPage.xpathConfirmOKButton), 3)) {
+					break;
+				}
+			} catch (WebDriverException e) {
+				// Ignore silently
+			}
 			ntry++;
-		} while (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(DialogPage.xpathConfirmOKButton), 1)
-				&& ntry <= maxTries);
+		} while (ntry <= maxTries);
 		if (ntry > maxTries) {
 			throw new RuntimeException("Failed to tap the first gallery image!");
 		}

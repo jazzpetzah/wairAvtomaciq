@@ -190,14 +190,40 @@ public class GroupPopoverSteps {
 	}
 
 	/**
-	 * Tap Close button on the popover
+	 * Tap Close button on the group popover
 	 * 
-	 * @step. ^I tap Close button on [Gg]roup user popover$
+	 * @step. ^I tap Close button on [Gg]roup popover$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap Close button on [Gg]roup user popover$")
+	@When("^I tap Close button on [Gg]roup popover$")
 	public void ITapCloseButton() throws Exception {
 		getGroupPopover().tapCloseButton();
+	}
+
+	/**
+	 * Change the name of group conversation from the popover
+	 * 
+	 * @step. ^I rename the conversation to \"(.*)\" on [Gg]roup popover$
+	 * 
+	 * @param newName
+	 *            the new conversation name
+	 * @throws Exception
+	 */
+	@When("^I rename the conversation to \"(.*)\" on [Gg]roup popover$")
+	public void IRenameConversation(String newName) throws Exception {
+		getGroupPopover().renameConversation(newName);
+	}
+
+	/**
+	 * Tap Open Conversation button on the group popover
+	 * 
+	 * @step. ^I tap Open Conversation button on [Gg]roup popover$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Open Conversation button on [Gg]roup popover$")
+	public void ITapOpenConversationButton() throws Exception {
+		getGroupPopover().tapOpenConversationButton();
 	}
 }

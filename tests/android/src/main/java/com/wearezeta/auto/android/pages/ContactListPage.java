@@ -111,7 +111,8 @@ public class ContactListPage extends AndroidPage {
 			.format("//*[starts-with(@id, 'ttv__conversation_settings') and @value='%s']",
 					name.toUpperCase());
 
-	// private static final String xpathTopConversationsListLoadingIndicator = "//*[@id='lbv__conversation_list__loading_indicator']/*";
+	// private static final String xpathTopConversationsListLoadingIndicator =
+	// "//*[@id='lbv__conversation_list__loading_indicator']/*";
 	private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
 
 	private static final Function<String, String> xpathConversationListEntry = name -> String
@@ -359,7 +360,8 @@ public class ContactListPage extends AndroidPage {
 			}
 		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(xpathLastContact), 3);
+				By.xpath(xpathLastContact),
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
 	}
 
 	public boolean isNoConversationsVisible() throws Exception {

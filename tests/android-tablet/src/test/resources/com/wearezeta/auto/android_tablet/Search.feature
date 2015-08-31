@@ -78,3 +78,86 @@ Feature: Search
     Examples: 
       | Name      |
       | user1Name |
+
+  @id2848 @regression
+  Scenario Outline: I ignore someone from search and clear my inbox (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the Conversations list with conversation
+    Given I wait until <Contact> exists in backend search results
+    When I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact> on Incoming connections page
+    And I swipe right to show the conversations list
+    Then I see the Conversations list with no conversations
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id3130 @regression
+  Scenario Outline: I ignore someone from search and clear my inbox (landscape)
+    Given There are 2 users where <Name> is me
+    Given <Contact> sent connection request to me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversation
+    Given I wait until <Contact> exists in backend search results
+    When I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    And I see the Incoming connections page
+    And I ignore incoming connection request from <Contact> on Incoming connections page
+    Then I see the Conversations list with no conversations
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @id2851 @staging
+  Scenario Outline: I can't send connection message with space only
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with no conversations
+    And I wait until <ContactEmail> exists in backend search results
+    And I tap Search input
+    And I see People Picker page
+    And I enter "<ContactEmail>" into Search input on People Picker page
+    When I tap the found item <Contact> on People Picker page
+    And I see Outgoing Connection popover
+    And I see the name <Contact> on Outgoing Connection popover
+    And I enter connection message " " on Outgoing Connection popover
+    Then I see Connect button is not tappable on Outgoing Connection popover
+
+    Examples:
+      | Name      | Contact   | ContactEmail |
+      | user1Name | user2Name | user2Email   |
+
+  @id2853 @staging
+  Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
+    Given There are 2 users where <Name> is me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with no conversations
+    And I wait until <ContactEmail> exists in backend search results
+    When I tap Search input
+    And I see People Picker page
+    And I enter "<ContactEmail>" into Search input on People Picker page
+    And I tap the found item <Contact> on People Picker page
+    And I see Outgoing Connection popover
+    And I tap Close button on Outgoing Connection popover
+    And I do not see Outgoing Connection popover
+    And I see People Picker page
+    And I close People Picker
+    Then I see the Conversations list with no conversations
+
+    Examples:
+      | Name      | Contact   | ContactEmail |
+      | user1Name | user2Name | user2Email   |

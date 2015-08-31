@@ -34,6 +34,7 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.When;
 
@@ -279,16 +280,29 @@ public class CommonAndroidTabletSteps {
 	}
 
 	/**
-	 * Sends the application into back stack and displays the home screen.
+	 * Sends the application into back stack and displays the home screen or
+	 * restores it back to foreground
 	 * 
-	 * @step. ^I minimize the application$
+	 * @step. ^I (minimize|restore) the application$
+	 * 
+	 * @param action
+	 *            either 'minimize' or 'restore'
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I minimize the application$")
-	public void IMimizeApllication() throws Exception {
-		AndroidCommonUtils.switchToHomeScreen();
+	@When("^I (minimize|restore) the application$")
+	public void IMinimizeRestoreApllication(String action) throws Exception {
+		switch (action) {
+		case "minimize":
+			AndroidCommonUtils.switchToHomeScreen();
+			break;
+		case "restore":
+			AndroidCommonUtils.switchToApplication(
+					CommonUtils.getAndroidPackageFromConfig(this.getClass()),
+					CommonUtils.getAndroidActivityFromConfig(this.getClass()));
+			break;
+		}
 	}
 
 	/**
@@ -348,20 +362,6 @@ public class CommonAndroidTabletSteps {
 	@When("^I tap on center of screen")
 	public void WhenITapOnCenterOfScreen() throws Throwable {
 		pagesCollection.getCommonPage().tapOnCenterOfScreen();
-	}
-
-	/**
-	 * Restores the application from a minimized state.
-	 * 
-	 * @step. ^I restore the application$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I restore the application$")
-	public void IRestoreApllication() throws Exception {
-		AndroidCommonUtils.switchToApplication(
-				CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
 	}
 
 	/**
@@ -500,7 +500,7 @@ public class CommonAndroidTabletSteps {
 	/**
 	 * Allows user A to ignore all incoming connection requests
 	 * 
-	 * @step. ^(.*) ignore all requests$
+	 * @step. ^(.*) ignores? all requests$
 	 * 
 	 * @param userToNameAlias
 	 *            the user who will do the ignoring
@@ -508,7 +508,7 @@ public class CommonAndroidTabletSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@When("^(.*) ignore all requests$")
+	@When("^(.*) ignores? all requests$")
 	public void IgnoreAllIncomingConnectRequest(String userToNameAlias)
 			throws Exception {
 		commonSteps.IgnoreAllIncomingConnectRequest(userToNameAlias);
@@ -551,12 +551,12 @@ public class CommonAndroidTabletSteps {
 	/**
 	 * User A accepts all requests
 	 * 
-	 * @step. ^(.*) accept all requests$
+	 * @step. ^(.*) accepts? all requests$
 	 * 
 	 * @throws Exception
 	 * 
 	 */
-	@When("^(.*) accept all requests$")
+	@When("^(.*) accepts? all requests$")
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
 		commonSteps.AcceptAllIncomingConnectionRequests(userToNameAlias);
@@ -803,5 +803,47 @@ public class CommonAndroidTabletSteps {
 	@Given("^I (enable|disable) Airplane mode on the device$")
 	public void IChangeAirplaceMode(String action) throws Exception {
 		AndroidCommonUtils.setAirplaneMode(action.equals("enable"));
+	}
+
+	/**
+	 * Select some random picture from the Gallery
+	 * 
+	 * @step. ^I select a picture from the Gallery$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I select a picture from the Gallery$")
+	public void ISelectGalleryPicture() throws Exception {
+		pagesCollection.getCommonPage().selectFirstGalleryPhoto();
+	}
+
+	/**
+	 * Sends an image from one user to a conversation
+	 * 
+	 * @step. ^Contact (.*) sends image (.*) to (.*) conversation (.*)$
+	 * 
+	 * @param imageSenderUserNameAlias
+	 *            the user to sending the image
+	 * @param imageFileName
+	 *            the file path name of the image to send. The path name is
+	 *            defined relative to the image file defined in
+	 *            Configuration.cnf.
+	 * @param conversationType
+	 *            "single user" or "group" conversation.
+	 * @param dstConversationName
+	 *            the name of the conversation to send the image to.
+	 *
+	 * @throws Exception
+	 * 
+	 */
+	@When("^Contact (.*) sends image (.*) to (single user|group) conversation (.*)")
+	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
+			String imageFileName, String conversationType,
+			String dstConversationName) throws Exception {
+		String imagePath = CommonUtils.getImagesPath(this.getClass())
+				+ imageFileName;
+		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
+				imagePath, dstConversationName,
+				conversationType.equals("group"));
 	}
 }

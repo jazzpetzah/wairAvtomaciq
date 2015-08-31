@@ -76,4 +76,12 @@ public class GroupPopover extends AbstractPopoverContainer {
 	public void tapCloseButton() throws Exception {
 		this.participantsPage.tapCloseButton();
 	}
+
+	public void renameConversation(String newName) throws Exception {
+		this.participantsPage.renameConversation(newName);
+	}
+
+	public void tapOpenConversationButton() {
+		this.participantsPage.tapOpenConversationButton();
+	}
 }

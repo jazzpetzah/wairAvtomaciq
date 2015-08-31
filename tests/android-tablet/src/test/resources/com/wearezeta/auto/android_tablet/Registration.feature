@@ -52,7 +52,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2821 @staging
+  @id2821 @regression
   Scenario Outline: Verify automatic email verification is performed (portrait)
     Given I see welcome screen
     Given I rotate UI to portrait
@@ -75,7 +75,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id3105 @staging
+  @id3105 @regression
   Scenario Outline: Verify automatic email verification is performed (landscape)
     Given I see welcome screen
     Given I rotate UI to landscape
@@ -98,7 +98,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2823 @staging
+  @id2823 @regression
   Scenario Outline: Verify Sign In progress behaviour while there are probelms with internet connectivity
     Given I see welcome screen
     Given I rotate UI to landscape

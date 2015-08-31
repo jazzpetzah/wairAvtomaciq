@@ -4,6 +4,7 @@ import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationViewPage;
 import com.wearezeta.auto.android_tablet.pages.camera.ConversationViewCameraPage;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
@@ -30,16 +31,25 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Verifies whether conversation view is currently visible
+	 * Verifies whether conversation view is currently visible or not
 	 * 
-	 * @step. ^I see (?:the |\\s*)[Cc]onversation view$
+	 * @step. ^I (do not )?see (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null is 'do not ' does not exist in step signature
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see (?:the |\\s*)[Cc]onversation view$")
-	public void ISeeConversationView() throws Exception {
-		Assert.assertTrue("The conversation view is not currently visible",
-				getConversationViewPage().waitUntilVisible());
+	@When("^I (do not )?see (?:the |\\s*)[Cc]onversation view$")
+	public void ISeeConversationView(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("The conversation view is not currently visible",
+					getConversationViewPage().waitUntilVisible());
+		} else {
+			Assert.assertTrue(
+					"The conversation view is visible, but should be hidden",
+					getConversationViewPage().waitUntilInvisible());
+		}
 	}
 
 	/**
@@ -98,6 +108,50 @@ public class ConversationViewPageSteps {
 						"The system message containing text '%s' is not visible in the conversation view",
 						expectedMessage), getConversationViewPage()
 						.waitForSystemMessageContains(expectedMessage));
+	}
+
+	/**
+	 * Verify the last conversation name message text
+	 * 
+	 * @step. ^I see the conversation name system message \"(.*)\" on
+	 *        [Cc]onversation view page$
+	 * 
+	 * @param expectedMessage
+	 *            the expected conversation name
+	 * @throws Exception
+	 */
+	@Then("^I see the conversation name system message \"(.*)\" on [Cc]onversation view page$")
+	public void ISeeTheConversationNameSystemMessage(String expectedMessage)
+			throws Exception {
+		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(String.format(
+				"The conversation name system message does not equal to '%s'",
+				expectedMessage), getConversationViewPage()
+				.waitForConversationNameSystemMessage(expectedMessage));
+	}
+
+	/**
+	 * Verify the connection system conversation message contains expected text
+	 * 
+	 * @step. ^I see the system connection message contains \"(.*)\" text on
+	 *        [Cc]onversation view page$
+	 * 
+	 * @param expectedMessage
+	 *            the message to verify
+	 * @throws Exception
+	 */
+	@Then("^I see the system connection message contains \"(.*)\" text on [Cc]onversation view page$")
+	public void ISeeTheSystemConnectionMessage(String expectedMessage)
+			throws Exception {
+		expectedMessage = usrMgr.replaceAliasesOccurences(expectedMessage,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(
+				String.format(
+						"The system connection message containing text '%s' is not visible in the conversation view",
+						expectedMessage),
+				getConversationViewPage()
+						.waitForSystemConnectionMessageContains(expectedMessage));
 	}
 
 	/**
@@ -269,6 +323,19 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
+	 * Tap the Select From Gallery button. The Add Picture button should be
+	 * already clicked
+	 * 
+	 * @step. ^I tap Gallery button in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I tap Gallery button in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapGalleryButton() throws Exception {
+		getConversationViewCameraPage().tapGalleryButton();
+	}
+
+	/**
 	 * Confirm the taken photo or selected picture
 	 * 
 	 * @step. ^I confirm the picture for (?:the |\\s*)[Cc]onversation view$
@@ -283,15 +350,37 @@ public class ConversationViewPageSteps {
 	/**
 	 * Verify whether there is at least one picture in the conversation view
 	 * 
-	 * @step. ^I see a new picture in (?:the |\\s*)[Cc]onversation view$
+	 * @step. ^I (do not )?see (?:a|any) new pictures? in (?:the
+	 *        |\\s*)[Cc]onversation view$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if 'do not' exists in step signature
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I see a new picture in (?:the |\\s*)[Cc]onversation view$")
-	public void ISeeNewPicture() throws Exception {
-		Assert.assertTrue(
-				"No new pictures are visible in the conversation view",
-				getConversationViewPage().waitUntilAPictureAppears());
+	@Then("^I (do not )?see (?:a|any) new pictures? in (?:the |\\s*)[Cc]onversation view$")
+	public void ISeeNewPicture(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(
+					"No new pictures are visible in the conversation view",
+					getConversationViewPage().waitUntilAPictureAppears());
+		} else {
+			Assert.assertTrue(
+					"Some pictures are still visible in the conversation view",
+					getConversationViewPage().waitUntilPicturesNotVisible());
+		}
+	}
+
+	/**
+	 * Tap the recent picture in the conversation view to open a preview
+	 * 
+	 * @step. ^I tap the new picture in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap the new picture in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapNewPicture() throws Exception {
+		getConversationViewPage().tapRecentPicture();
 	}
 
 	/**
@@ -343,7 +432,7 @@ public class ConversationViewPageSteps {
 				"The expected missed call notification is not visible in the conversation view",
 				getConversationViewPage().waitUntilGCNIsVisible());
 	}
-	
+
 	/**
 	 * Swipe right to show the convo list
 	 * 
@@ -354,5 +443,66 @@ public class ConversationViewPageSteps {
 	@When("^I swipe right to show (?:the |\\s*)conversations list$")
 	public void ISwipeRight() throws Exception {
 		getConversationViewPage().doSwipeRight();
+	}
+
+	/**
+	 * Scroll to the bottom side of conversation view
+	 * 
+	 * @step. ^I scroll to the bottom of the [Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I scroll to the bottom of the [Cc]onversation view$")
+	public void IScrollToTheBottom() throws Exception {
+		getConversationViewPage().scrollToTheBottom();
+	}
+
+	private static final double MAX_SIMILARITY_THRESHOLD = 0.95;
+
+	private static enum PictureDestination {
+		CONVERSATION_VIEW, PREVIEW;
+	}
+
+	/**
+	 * Verify whether the recent picture in convo view is animated
+	 * 
+	 * @step. ^I see the picture in (?:the |\\s*)(preview|[Cc]onversation view)
+	 *        is animated$
+	 * 
+	 * @param destination
+	 *            either 'preview' or 'conversation view'
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see the picture in (?:the |\\s*)(preview|[Cc]onversation view) is animated$")
+	public void ISeePictureIsAnimated(String destination) throws Exception {
+		final PictureDestination dst = PictureDestination.valueOf(destination
+				.toUpperCase().replace(" ", "_"));
+		double avgThreshold;
+		// no need to wait, since screenshoting procedure itself is quite long
+		final long screenshotingDelay = 0;
+		final int maxFrames = 4;
+		switch (dst) {
+		case CONVERSATION_VIEW:
+			avgThreshold = ImageUtil.getAnimationThreshold(
+					getConversationViewPage()::getRecentPictureScreenshot,
+					maxFrames, screenshotingDelay);
+			Assert.assertTrue(
+					String.format(
+							"The picture in the conversation view seems to be static (%.2f >= %.2f)",
+							avgThreshold, MAX_SIMILARITY_THRESHOLD),
+					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+			break;
+		case PREVIEW:
+			avgThreshold = ImageUtil.getAnimationThreshold(
+					getConversationViewPage()::getPreviewPictureScreenshot,
+					maxFrames, screenshotingDelay);
+			Assert.assertTrue(
+					String.format(
+							"The picture in the image preview view seems to be static (%.2f >= %.2f)",
+							avgThreshold, MAX_SIMILARITY_THRESHOLD),
+					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+			break;
+		}
 	}
 }

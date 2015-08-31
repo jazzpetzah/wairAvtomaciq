@@ -211,7 +211,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | TextMessage  | PingMessage | AcceptBtnName |
       | user1Name | user2Name | autocall    | text message | YOU PINGED  | Accept        |
 
-  @id3259 @staging
+  @id3259 @regression
   Scenario Outline: Receive call while Wire is running in the background (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

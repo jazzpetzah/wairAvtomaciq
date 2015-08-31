@@ -108,7 +108,7 @@ Feature: Conversation View
       | Name      | Contact   | Message  |
       | user1Name | user2Name | aaaaAAAA |
 
-  @id146 @unicode @regression_mute @staging
+  @id146 @regression_mute @staging
   Scenario Outline: Send special chars message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -116,8 +116,11 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
+    And I set unicode input method
     And I tap on text input
-    And I type the message "<Message>" and send it
+    And I type unicode message "<Message>"
+    And I set default input method
+    And I send the message
     Then I see my message "<Message>" in the dialog
 
     Examples: 
@@ -140,7 +143,7 @@ Feature: Conversation View
       | Name      | Contact   | Message  |
       | user1Name | user2Name | :) ;) :( |
 
-  @id147 @unicode @regression_mute @staging
+  @id147 @regression_mute @staging
   Scenario Outline: Send double byte chars
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -148,8 +151,11 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact>
     And I see dialog page
+    And I set unicode input method
     And I tap on text input
-    And I type the message "<Message>" and send it
+    And I type unicode message "<Message>"
+    And I set default input method
+    And I send the message
     Then I see my message "<Message>" in the dialog
 
     Examples: 
@@ -296,7 +302,8 @@ Feature: Conversation View
     And I draw a sketch with <NumColors> colors
     When I remember what my sketch looks like
     And I send my sketch
-    Then I verify that my sketch is the same as what I drew
+    And I select last photo in dialog
+    And I verify that my sketch in fullscreen is the same as what I drew
 
     Examples: 
       | Name      | Contact1  | NumColors |
@@ -342,7 +349,8 @@ Feature: Conversation View
     And I draw a sketch on image with <NumColors> colors
     Then I remember what my sketch looks like
     And I send my sketch
-    And I verify that my sketch is the same as what I drew
+    And I select last photo in dialog
+    And I verify that my sketch in fullscreen is the same as what I drew
 
     Examples: 
       | Name      | Contact1  | NumColors |

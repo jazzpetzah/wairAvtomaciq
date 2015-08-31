@@ -294,8 +294,8 @@ public final class WebAppLocators {
 				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]",
 						name);
 
-		public static final Function<String, String> xpathAcceptRequestButtonByName = name -> String
-				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='accept']",
+		public static final Function<String, String> cssAcceptRequestButtonByUserId = name -> String
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-name='do-accept']",
 						name);
 
 		public static final Function<String, String> xpathIgnoreReqestButtonByName = name -> String
@@ -361,8 +361,6 @@ public final class WebAppLocators {
 	public static final class RegistrationPage {
 
 		public static final String cssSwitchToSignInButton = "[data-uie-name='go-sign-in']";
-
-		public static final String cssSwitchToSignInButtonNotDisabled = "[data-uie-name='go-sign-in']:not([disabled])";
 
 		public static final String xpathRootForm = "//form[@id='form-create']";
 		public static final String cssRootForm = "#form-create";

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -101,6 +102,21 @@ public class DialogPageSteps {
 	@When("^I type the message \"(.*)\"$")
 	public void ITypeMessage(String msg) throws Exception {
 		getDialogPage().typeMessage(expandMessage(msg));
+	}
+
+	/**
+	 * Types Unicode message using adb
+	 * 
+	 * @step. ^I type unicode message \"(.*)\"$
+	 * 
+	 * @param msg
+	 *            message to type
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I type unicode message \"(.*)\"$")
+	public void ITypeUnicodeMessage(String msg) throws Exception {
+		AndroidCommonUtils.typeMessageUsingAdb(msg);
 	}
 
 	/**

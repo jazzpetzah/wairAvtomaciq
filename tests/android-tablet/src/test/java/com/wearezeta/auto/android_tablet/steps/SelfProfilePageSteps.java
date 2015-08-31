@@ -133,11 +133,11 @@ public class SelfProfilePageSteps {
 	 * Stores the screenshot of current Self Profile screen for the further
 	 * comparison
 	 * 
-	 * @step. ^I remember my current profile picture tablet$
+	 * @step. ^I remember my current profile picture on [Ss]elf [Pp]rofile page$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I remember my current profile picture tablet$")
+	@When("^I remember my current profile picture on [Ss]elf [Pp]rofile page$")
 	public void IRememberMyCurrentProfilePictureTablet() throws Exception {
 		savedProfileScreenshot = getSelfProfilePage().getScreenshot();
 	}
@@ -170,6 +170,18 @@ public class SelfProfilePageSteps {
 	}
 
 	/**
+	 * Tap Take Photo button on Self Profile page
+	 * 
+	 * @step. ^I tap Take Photo button on (?:the |\\s*)[Ss]elf [Pp]rofile page$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I tap Take Photo button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
+	public void ITapTakePhotoButton() throws Exception {
+		getSelfProfileCameraPage().tapTakePhotoButton();
+	}
+
+	/**
 	 * Tap the Gallery button
 	 * 
 	 * @step. ^I tap Gallery button on (?:the |\\s*)[Ss]elf [Pp]rofile page$
@@ -179,18 +191,6 @@ public class SelfProfilePageSteps {
 	@And("^I tap Gallery button on (?:the |\\s*)[Ss]elf [Pp]rofile page$")
 	public void ITapGalleryButton() throws Exception {
 		getSelfProfileCameraPage().tapGalleryButton();
-	}
-
-	/**
-	 * Select some random picture from the Gallery
-	 * 
-	 * @step. ^I select a picture from the Gallery$
-	 * 
-	 * @throws Exception
-	 */
-	@And("^I select a picture from the Gallery$")
-	public void ISelectGalleryPicture() throws Exception {
-		getSelfProfilePage().selectFirstGalleryPhoto();
 	}
 
 	/**

@@ -1,6 +1,6 @@
 Feature: Lock/Unlock
 
-  @id2181 @staging
+  @id2181 @regression
   Scenario Outline: UI saves its state after device lock/unlock (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
