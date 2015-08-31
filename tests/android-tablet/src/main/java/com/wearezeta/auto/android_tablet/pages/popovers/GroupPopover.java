@@ -84,4 +84,16 @@ public class GroupPopover extends AbstractPopoverContainer {
 	public void tapOpenConversationButton() {
 		this.participantsPage.tapOpenConversationButton();
 	}
+
+	public boolean waitUntilUserNameVisible(String expectedName)
+			throws Exception {
+		return this.connectedParticipantPage
+				.waitUntilUserNameVisible(expectedName);
+	}
+
+	public boolean waitUntilUserEmailVisible(String expectedEmail)
+			throws Exception {
+		return this.connectedParticipantPage
+				.waitUntilUserEmailVisible(expectedEmail);
+	}
 }
