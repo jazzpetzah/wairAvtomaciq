@@ -320,7 +320,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2882 @staging
+  @id2882 @regression
   Scenario Outline: Verify editing the conversation name (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -343,7 +343,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName | NewGroupChatName |
       | user1Name | user2Name | user3Name | GroupChat     | NewChatName      |
 
-  @id3153 @staging
+  @id3153 @regression
   Scenario Outline: Verify editing the conversation name (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
