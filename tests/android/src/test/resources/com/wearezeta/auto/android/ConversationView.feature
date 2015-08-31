@@ -34,7 +34,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1262 @smoke_mute @staging
+  @id1262 @smoke
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -108,7 +108,7 @@ Feature: Conversation View
       | Name      | Contact   | Message  |
       | user1Name | user2Name | aaaaAAAA |
 
-  @id146 @regression_mute @staging
+  @id146 @regression
   Scenario Outline: Send special chars message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -143,7 +143,7 @@ Feature: Conversation View
       | Name      | Contact   | Message  |
       | user1Name | user2Name | :) ;) :( |
 
-  @id147 @regression_mute @staging
+  @id147 @regression
   Scenario Outline: Send double byte chars
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -309,7 +309,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id3243 @staging
+  @id3243 @regression
   Scenario Outline: I can send sketch on image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

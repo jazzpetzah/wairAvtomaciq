@@ -387,7 +387,7 @@ Feature: Connect
       | Name      | Contact   | Message      |
       | user1Name | user2Name | Hello friend |
 
-  @id720 @staging
+  @id720 @regression
   Scenario Outline: I want to be seen in the search results of someone I blocked
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -518,7 +518,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Message       |
       | user1Name | user2Name | user3Name | Hellow friend |
 
-  @staging @id2661 @deployAddressBook
+  @regression @id2661 @deployAddressBook
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There is 1 user where <Name> is me
     Given I add predefined users to address book
