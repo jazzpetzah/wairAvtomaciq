@@ -287,12 +287,12 @@ public final class WebAppLocators {
 	public static final class ConnectToPage {
 
 		public static final String xpathRequestAvatarPartial = "/../../div[contains(@class, 'sender')]//div[contains(@class, 'user-avatar-image')]";
-		public static final String xpathRequestEmailPartial = "/following-sibling::div[contains(@class, 'mail')]";
-		public static final String xpathRequestMessagePartial = "/following-sibling::div[contains(@class, 'message')]";
+		public static final String cssRequestEmailPartial = " .mail";
+		public static final String cssRequestMessagePartial = " .message";
 
-		public static final Function<String, String> xpathRequestByName = name -> String
-				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]",
-						name);
+		public static final Function<String, String> cssRequestById = uid -> String
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s']",
+						uid);
 
 		public static final Function<String, String> cssAcceptRequestButtonByUserId = name -> String
 				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-name='do-accept']",

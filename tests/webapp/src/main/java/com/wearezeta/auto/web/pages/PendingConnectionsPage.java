@@ -40,25 +40,25 @@ public class PendingConnectionsPage extends WebPage {
 		return pendingRequests.size();
 	}
 
-	public String getEmailByName(String userName) throws Exception {
-		String locator = WebAppLocators.ConnectToPage.xpathRequestByName
-				.apply(userName)
-				+ WebAppLocators.ConnectToPage.xpathRequestEmailPartial;
+	public String getEmailByName(String userId) throws Exception {
+		String locator = WebAppLocators.ConnectToPage.cssRequestById
+				.apply(userId)
+				+ WebAppLocators.ConnectToPage.cssRequestEmailPartial;
 		DriverUtils
-				.waitUntilLocatorAppears(this.getDriver(), By.xpath(locator));
+				.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(locator));
 
-		WebElement email = getDriver().findElement(By.xpath(locator));
+		WebElement email = getDriver().findElement(By.cssSelector(locator));
 		return email.getText();
 	}
 
 	public String getMessageByName(String userName) throws Exception {
-		String locator = WebAppLocators.ConnectToPage.xpathRequestByName
+		String locator = WebAppLocators.ConnectToPage.cssRequestById
 				.apply(userName)
-				+ WebAppLocators.ConnectToPage.xpathRequestMessagePartial;
+				+ WebAppLocators.ConnectToPage.cssRequestMessagePartial;
 		DriverUtils
-				.waitUntilLocatorAppears(this.getDriver(), By.xpath(locator));
+				.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(locator));
 
-		WebElement message = getDriver().findElement(By.xpath(locator));
+		WebElement message = getDriver().findElement(By.cssSelector(locator));
 		return message.getText();
 	}
 

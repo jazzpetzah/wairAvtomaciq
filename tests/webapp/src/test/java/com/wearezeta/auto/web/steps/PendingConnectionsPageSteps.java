@@ -4,10 +4,10 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import cucumber.api.java.en.Then;
@@ -25,32 +25,26 @@ public class PendingConnectionsPageSteps {
 	 *
 	 * @step. ^I see mail (.*)in connection request from user (.*)$
 	 *
-	 * @param user
+	 * @param userAlias
 	 *            name of user which sent connection request
 	 * @param mailAlias
 	 *            the mail alias to test for when mail alias is shown
 	 * @throws Exception
 	 */
 	@Then("^I see mail (.*)in connection request from user (.*)$")
-	public void ICanSeeEmailFromUser(String mailAlias, String user)
+	public void ICanSeeEmailFromUser(String mailAlias, String userAlias)
 			throws Exception {
-		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
 		mailAlias = mailAlias.trim();
 		if ("".equals(mailAlias)) {
 			// no mail given. just check if any text is in mail field
-			Assert.assertFalse(PagesCollection.pendingConnectionsPage
-					.getEmailByName(user).isEmpty());
+			assertThat(PagesCollection.pendingConnectionsPage
+					.getEmailByName(user.getId()), not(equalTo("")));
 		} else {
 			// mail given. strict check for mail
-			String email = null;
-			try {
-				email = usrMgr.findUserByEmailOrEmailAlias(mailAlias)
-						.getEmail();
-			} catch (NoSuchUserException e) {
-				// Ignore silently
-			}
-			Assert.assertTrue(PagesCollection.pendingConnectionsPage
-					.getEmailByName(user).equals(email));
+			String email = user.getEmail();
+			assertThat(PagesCollection.pendingConnectionsPage.getEmailByName(
+					user.getId()).toLowerCase(), equalTo(email));
 
 		}
 	}
