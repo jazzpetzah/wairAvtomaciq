@@ -22,7 +22,8 @@ public class TestcaseResultAnalyzer {
 					&& !isPending) {
 				return false;
 			} else if (stepResult.equals(Result.FAILED.toString())) {
-				if (!stepObj.getKeyword().toLowerCase().equals(GIVEN_KEYWORD)) {
+				if (!stepObj.getKeyword().toLowerCase().trim()
+						.equals(GIVEN_KEYWORD)) {
 					return false;
 				}
 			}
@@ -35,7 +36,8 @@ public class TestcaseResultAnalyzer {
 			final String stepResult = entry.getValue();
 			final Step stepObj = entry.getKey();
 			if (stepResult.equals(Result.FAILED.toString())) {
-				if (!stepObj.getKeyword().toLowerCase().equals(GIVEN_KEYWORD)) {
+				if (!stepObj.getKeyword().toLowerCase().trim()
+						.equals(GIVEN_KEYWORD)) {
 					return true;
 				}
 			}

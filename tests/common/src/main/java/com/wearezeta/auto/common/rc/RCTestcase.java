@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
 public abstract class RCTestcase {
 	public final static String MAGIC_TAG_PREFIX = "@";
 	public final static String ID_TAG_PREFIX = MAGIC_TAG_PREFIX + "id";
-	public final static String RC_TAG = ID_TAG_PREFIX + "rc";
+	public final static String RC_TAG = MAGIC_TAG_PREFIX + "rc";
 
 	// id can contain more that one value
 	// multiple values are separated by SPACE character
