@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @regression @id1333
+  @regression @rc @id1333
   Scenario Outline: Unarchive conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <ArchivedUser>
