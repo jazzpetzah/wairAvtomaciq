@@ -36,7 +36,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2 |
       | user1Name | user2Name | user3Name|
       
-  @regression @rc @id2153 @id1075
+  @regression @id2153
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
