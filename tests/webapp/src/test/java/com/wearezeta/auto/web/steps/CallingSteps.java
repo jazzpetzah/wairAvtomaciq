@@ -254,10 +254,14 @@ public class CallingSteps {
 
 		LOG.info(failures.size() + " failures happened during " + times
 				+ " calls");
-		for (Map.Entry<Integer, Throwable> entrySet : failures.entrySet()) {
-			LOG.error(entrySet.getKey() + ": "
-					+ entrySet.getValue().getMessage());
+		failures.forEach((Integer i, Throwable t) -> {
+			LOG.error(i + ": " + t.getMessage());
+		});
 
+		for (Map.Entry<Integer, Throwable> entrySet : failures.entrySet()) {
+			// will just throw the first exception to indicate failed calls in
+			// test results
+			throw entrySet.getValue();
 		}
 		LOG.info(failures.size() + " failures happened during " + times
 				+ " calls");
