@@ -208,7 +208,6 @@ public class CallingSteps {
 	@Then("^I call (\\d+) times with (.*)")
 	public void ICallXTimes(int times, String callees) throws Throwable {
 		final String MYSELF = "Myself";
-		final int flowWaitTime = 10;
 		final List<String> calleeList = splitAliases(callees);
 		final CommonSteps commonSteps = CommonSteps.getInstance();
 		final ConversationPageSteps convSteps = new ConversationPageSteps();
@@ -235,7 +234,6 @@ public class CallingSteps {
 					for (String callee : calleeList) {
 						UserXVerifesCallStatusToUserY(callee, "active", 60);
 					}
-					commonSteps.WaitForTime(flowWaitTime);
 					for (String callee : calleeList) {
 						UserXVerifesHavingXFlows(callee, calleeList.size());
 						UserXVerifesHavingXFlows(callee);
