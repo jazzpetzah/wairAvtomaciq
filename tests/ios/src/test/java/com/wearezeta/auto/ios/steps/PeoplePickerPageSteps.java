@@ -394,6 +394,21 @@ public class PeoplePickerPageSteps {
 				numberOfTopConnections, contact);
 	}
 
+	/**
+	 * Tap on top connection contact avatar by pointed id order
+	 * 
+	 * @step. I tap on (\\d+)\\w+ top connection contact
+	 * 
+	 * @param i
+	 *            contact order in top peoples
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap on (\\d+)\\w+ top connection contact$")
+	public void IClickOnTopConnectionByOrder(int i) throws Exception {
+		getPeoplePickerPage().tapOnTopConnectionAvatarByOrder(i);
+	}
+
 	@When("I click on connected user (.*) avatar on People picker page")
 	public void IClickOnUserIconToAddItToExistingGroupChat(String contact)
 			throws Throwable {
