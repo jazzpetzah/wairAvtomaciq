@@ -355,7 +355,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @IPv6 @id526
+  @regression @rc @IPv6 @id526
   Scenario Outline: I can send and play inline youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -474,7 +474,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | Color        | NewName          |
       | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
 
-  @regression @rc @id2124
+  @regression @id2124
   Scenario Outline: Verify archiving conversation from ellipsis menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -493,7 +493,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @rc @id2132
+  @regression @id2132
   Scenario Outline: Verify displaying chathead when another conversation is opened
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
@@ -613,7 +613,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @regression @rc @id3095
+  @regression @id3095
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -637,7 +637,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @regression @rc @id3265
+  @regression @id3265
   Scenario Outline: Verify drawing on image from single view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

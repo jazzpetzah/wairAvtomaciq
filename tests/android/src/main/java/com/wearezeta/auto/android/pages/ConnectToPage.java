@@ -1,5 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
+import java.util.List;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -17,6 +18,9 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = idConnectToHeader)
 	private WebElement connectToHeader;
 
+	@FindBy(id = idConnectToHeader)
+	private List<WebElement> connectToHeaders;
+
 	private static final Function<String, String> xpathConnectToHeaderByText = text -> String
 			.format("//*[@id='taet__participants__header' and @value='%s']",
 					text);
@@ -24,6 +28,9 @@ public class ConnectToPage extends AndroidPage {
 	private static final String idConnectRequestAccept = "zb__connect_request__accept_button";
 	@FindBy(id = idConnectRequestAccept)
 	private WebElement connectAcceptBtn;
+
+	@FindBy(id = idConnectRequestAccept)
+	private List<WebElement> connectAcceptBtns;
 
 	private static final String idConnectRequestIgnore = "zb__connect_request__ignore_button";
 	@FindBy(id = idConnectRequestIgnore)
@@ -104,26 +111,26 @@ public class ConnectToPage extends AndroidPage {
 		String currentContact = "";
 		String latestContact = "";
 		do {
-			currentContact = connectToHeader.getText();
-			int location = connectToHeader.getLocation().y;
+			if (connectToHeaders.size() > 1
+					&& connectToHeader.getLocation().y < 0)
+				currentContact = connectToHeaders.get(1).getText();
+			else
+				currentContact = connectToHeader.getText();
 			log.debug("Looking for: " + contactName + "; Current contact: "
-					+ currentContact);
-			if (DriverUtils.waitUntilLocatorAppears(getDriver(), locator, 3)
+					+ currentContact + "; latestContact: " + latestContact);
+			if (DriverUtils.waitUntilLocatorAppears(getDriver(), locator, 5)
 					&& currentContact.equals(contactName)) {
 				log.debug("User had appeared.");
 				tapOnCenterOfScreen();
 				this.waitUntilIgnoreButtonIsClickable();
 				return;
-			} else if (location < 0) {
-				tapOnCenterOfScreen();
-				this.waitUntilIgnoreButtonIsClickable();
-				return;
 			} else {
-				log.debug("User still invisible. Swipe #" + ntry);
 				if (latestContact.equals(currentContact)) {
+					log.debug("End of list reached. We will reset swipe count and change swipe direction.");
 					swipeUp = false;
 					ntry = 1;
 				}
+				log.debug("User still invisible. Swipe #" + ntry);
 				if (swipeUp)
 					this.swipeUpCoordinates(1000, 50);
 				else
@@ -141,7 +148,14 @@ public class ConnectToPage extends AndroidPage {
 	public DialogPage pressAcceptConnectButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				connectAcceptBtn);
-		connectAcceptBtn.click();
+		if (connectAcceptBtn.getLocation().getY() > this.getDriver().manage()
+				.window().getSize().getHeight() / 2
+				&& connectAcceptBtn.getLocation().getY() < this.getDriver()
+						.manage().window().getSize().getHeight()) {
+			connectAcceptBtn.click();
+		} else {
+			connectAcceptBtns.get(1).click();
+		}
 		return new DialogPage(this.getLazyDriver());
 	}
 

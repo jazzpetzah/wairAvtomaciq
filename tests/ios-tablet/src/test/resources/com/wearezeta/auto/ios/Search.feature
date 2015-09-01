@@ -625,7 +625,7 @@ Feature: Search
       | user1Name | user2Name |
 
   @staging @id3297
-  Scenario Outline: Verify action buttons appear after choosing user from search results
+  Scenario Outline: Verify action buttons appear after choosing user from search results [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
@@ -642,7 +642,7 @@ Feature: Search
       | user1Name | user2Name |
 
   @staging @id3298
-  Scenario Outline: Verify action buttons appear after choosing user from search results
+  Scenario Outline: Verify action buttons appear after choosing user from search results [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I rotate UI to landscape
@@ -660,7 +660,7 @@ Feature: Search
       | user1Name | user2Name |
 
   @staging @id3299
-  Scenario Outline: Verify button Open is changed on Create after checking second person
+  Scenario Outline: Verify button Open is changed on Create after checking second person [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I Sign in on tablet using my email
@@ -679,7 +679,7 @@ Feature: Search
       | user1Name |
 
   @staging @id3300
-  Scenario Outline: Verify button Open is changed on Create after checking second person
+  Scenario Outline: Verify button Open is changed on Create after checking second person [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I rotate UI to landscape
@@ -689,10 +689,49 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
-    And I tap on 1st top connection contact
-    And I see open conversation action button on People picker page
-    And I tap on 2nd top connection contact
-    And I see Create Conversation button on People picker page
+    When I tap on 1st top connection contact
+    Then I see open conversation action button on People picker page
+    When I tap on 2nd top connection contact
+    Then I see Create Conversation button on People picker page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @staging @id3301
+  Scenario Outline: Verify action buttons disappear by unchecking the avatar [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    When I tap on 1st top connection contact
+    Then I see action buttons appeared on People picker page
+    When I tap on 1st top connection contact
+    Then I see action buttons disappeared on People picker page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @staging @id3302
+  Scenario Outline: Verify action buttons disappear by unchecking the avatar [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    When I tap on 1st top connection contact
+    Then I see action buttons appeared on People picker page
+    When I tap on 1st top connection contact
+    Then I see action buttons disappeared on People picker page
 
     Examples: 
       | Name      |
