@@ -3,6 +3,7 @@ Feature: People View
   @regression @id1686
   Scenario Outline: Verify you can access proﬁle information for the other participant in a 1to1 conversation
     Given There are 2 users where <Name> is me
+    Given User <Contact> changes avatar picture to default
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -11,6 +12,7 @@ Feature: People View
     And I click People button in one to one conversation
     Then I see Single User Profile popover
     And I see username <Contact> on Single User Profile popover
+    And I see Mail on Single Participant popover
     And I see Add people button on Single User Profile popover
     And I see Block button on Single User Profile popover
 
