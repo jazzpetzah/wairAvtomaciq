@@ -1,5 +1,9 @@
 package com.wearezeta.auto.web.steps;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
@@ -177,24 +181,30 @@ public class SingleUserPopoverPageSteps {
 	}
 
 	/**
-	 * Verifies Mail is visible on Single Participant popover or not
+	 * Verifies Mail is correct on Single Participant popover or not
 	 *
 	 * @param not
 	 *            * is set to null if "do not" part does not exist
-	 * @step. ^I( do not)? see Mail on Single Participant popover$
+	 * @param nameAlias
+	 *            name of user
+	 * @step. ^I( do not)? see Mail of user (.*) on Single Participant popover$
 	 *
 	 * @throws Exception
 	 */
-	@Then("^I( do not)? see Mail on Single Participant popover$")
-	public void ISeeMailOfUser(String not) throws Exception {
+	@Then("^I( do not)? see Mail of user (.*) on Single Participant popover$")
+	public void ISeeMailOfUser(String not, String userAlias) throws Exception {
 		if (not == null) {
-			Assert.assertFalse(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-					.getUserMail().isEmpty());
+			ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
+			assertThat(
+					((SingleUserPopoverContainer) PagesCollection.popoverPage)
+							.getUserMail().toLowerCase(),
+					equalTo(user.getEmail()));
 		} else {
-			Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-					.getUserMail().isEmpty());
+			assertThat(
+					((SingleUserPopoverContainer) PagesCollection.popoverPage)
+							.getUserMail(),
+					equalTo(""));
 		}
-
 	}
 
 	/**
