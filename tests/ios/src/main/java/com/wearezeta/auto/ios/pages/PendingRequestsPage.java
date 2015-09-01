@@ -91,7 +91,8 @@ public class PendingRequestsPage extends IOSPage {
 	}
 
 	public String getRequesterName() {
-		return requesterName.getText();
+		final String CONNECT_TO = "Connect to ";
+		return requesterName.getText().replace(CONNECT_TO, "");
 	}
 
 	public String getRequestMessage() {

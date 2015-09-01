@@ -128,24 +128,24 @@ public final class WebAppLocators {
 
 		// leave warning
 		public static final String cssLeaveModal = ".modal-leave";
-		public static final String cssLeaveModalCancelButton = ".modal-leave .modal-close.button-inverted";
-		public static final String cssLeaveModalActionButton = ".modal-leave .modal-close.modal-action";
+		public static final String cssLeaveModalCancelButton = ".modal-leave .modal-close";
+		public static final String cssLeaveModalActionButton = ".modal-leave .modal-action";
 
 		// block warning
 		public static final String cssBlockModal = ".modal-block";
-		public static final String cssBlockModalCancelButton = ".modal-block .modal-close.button-inverted";
-		public static final String cssBlockModalActionButton = ".modal-block .modal-close.modal-action";
+		public static final String cssBlockModalCancelButton = ".modal-block .modal-close";
+		public static final String cssBlockModalActionButton = ".modal-block .modal-action";
 
 		// delete warning for group conversations
 		public static final String cssDeleteModalGroup = ".modal-clear-group";
-		public static final String cssDeleteModalCancelButtonGroup = ".modal-clear-group .modal-close.button-inverted";
-		public static final String cssDeleteModalActionButtonGroup = ".modal-clear-group .modal-close.modal-action";
+		public static final String cssDeleteModalCancelButtonGroup = ".modal-clear-group .modal-close";
+		public static final String cssDeleteModalActionButtonGroup = ".modal-clear-group .modal-action";
 		public static final String cssDeleteModalLeaveCheckboxGroup = "[data-uie-name='enter-leave-conversation']";
 
 		// delete warning for 1:1 conversation
 		public static final String cssDeleteModalSingle = ".modal-clear";
-		public static final String cssDeleteModalCancelButtonSingle = ".modal-clear .modal-close.button-inverted";
-		public static final String cssDeleteModalActionButtonSingle = ".modal-clear .modal-close.modal-action";
+		public static final String cssDeleteModalCancelButtonSingle = ".modal-clear .modal-close";
+		public static final String cssDeleteModalActionButtonSingle = ".modal-clear .modal-action";
 
 	}
 

@@ -475,8 +475,8 @@ public final class IOSLocators {
 
 	public static final String namePendingRequestIgnoreButton = "IGNORE";
 	public static final String namePendingRequestConnectButton = "CONNECT";
-	public static final String xpathPendingRequesterName = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAScrollView[1]/UIAStaticText[1]";
-	public static final String xpathPendingRequestMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAScrollView[1]/UIAStaticText[2]";
+	public static final String xpathPendingRequesterName = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
+	public static final String xpathPendingRequestMessage = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[3]";
 
 	// ///////////////////////////
 	// People picker
