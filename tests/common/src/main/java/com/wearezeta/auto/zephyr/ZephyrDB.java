@@ -7,12 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.wearezeta.auto.common.rc.IRCTestcasesStorage;
-
+import com.wearezeta.auto.common.rc.RCTestcase;
 
 public class ZephyrDB implements IRCTestcasesStorage {
 	private Connection conn;
@@ -44,14 +43,31 @@ public class ZephyrDB implements IRCTestcasesStorage {
 		}
 	}
 
-	private String getTestcaseNameById(String realId) throws Exception {
+	private ZephyrTestcase getOriginalTestcaseById(String originalId) throws Exception {
 		PreparedStatement prepStmt = conn
-				.prepareStatement("SELECT name FROM testcase WHERE id=?");
-		prepStmt.setLong(1, Long.parseLong(realId));
+				.prepareStatement("SELECT id, name, tag, is_automated, script_name, script_path FROM testcase WHERE id=?");
+		prepStmt.setLong(1, Long.parseLong(originalId));
 		ResultSet rs = prepStmt.executeQuery();
 		try {
 			rs.next();
-			return rs.getString("name");
+			final long id = rs.getLong("id");
+			final String name = rs.getString("name");
+			String tags = rs.getString("tag");
+			if (tags == null) {
+				tags = "";
+			}
+			boolean isAutomated = rs.getBoolean("is_automated");
+			String scriptName = rs.getString("script_name");
+			if (scriptName == null) {
+				scriptName = "";
+			}
+			String scriptPath = rs.getString("script_path");
+			if (scriptPath == null) {
+				scriptPath = "";
+			}
+			return new ZephyrTestcase(Long.toString(id), name,
+					RCTestcase.extractTagsFromString(tags), isAutomated,
+					scriptName, scriptPath);
 		} finally {
 			rs.close();
 			prepStmt.close();
@@ -84,7 +100,10 @@ public class ZephyrDB implements IRCTestcasesStorage {
 						+ "INNER JOIN release_test_schedule ON test_result.release_test_schedule_id=release_test_schedule.id "
 						+ "WHERE release_test_schedule.id=?");
 		final String realId = getRealTestcaseIdByExecutedTestcaseId(executedTcId);
-		final String name = getTestcaseNameById(realId);
+		final ZephyrTestcase originalTC = getOriginalTestcaseById(realId);
+		final String name = originalTC.getName();
+		final Set<String> tags = originalTC.getTags();
+		final boolean isAutomated = originalTC.getIsAutomated();
 		prepStmt.setLong(1, executedTcId);
 		ResultSet rs = prepStmt.executeQuery();
 		try {
@@ -96,7 +115,8 @@ public class ZephyrDB implements IRCTestcasesStorage {
 						.getString("execution_status")));
 			}
 			return new ExecutedZephyrTestcase(realId,
-					Long.toString(executedTcId), name, comment, status);
+					Long.toString(executedTcId), name, comment, status, tags,
+					isAutomated);
 		} finally {
 			rs.close();
 			prepStmt.close();
@@ -146,7 +166,9 @@ public class ZephyrDB implements IRCTestcasesStorage {
 			List<ZephyrTestPhase> cyclePhases = new ArrayList<ZephyrTestPhase>();
 			while (rs.next()) {
 				final long phaseId = rs.getLong("id");
-				cyclePhases.add(createPhaseById(phaseId));
+				final ZephyrTestPhase phase = createPhaseById(phaseId);
+				updateAutomatedStatusOnPhaseTestcases(phase);
+				cyclePhases.add(phase);
 			}
 			return new ZephyrTestCycle(Long.toString(cycleId), name,
 					cyclePhases);
@@ -250,19 +272,30 @@ public class ZephyrDB implements IRCTestcasesStorage {
 				.getTestcases();
 		List<ExecutedZephyrTestcase> changedTestcases = phaseTestcases.stream()
 				.filter(x -> x.getIsChanged()).collect(Collectors.toList());
-		System.out
-				.println(String.format(
-						"\nSynchronizing %s changed testcases with Zephyr:\n%s",
-						changedTestcases.size(),
-						StringUtils.join(
-								changedTestcases.stream().map(
-										x -> "[" + x.getId() + "] "
-												+ x.getName()).collect(Collectors.toList()), "\n")));
 		for (ExecutedZephyrTestcase executedTC : changedTestcases) {
 			final long lastTestResultId = addTestcaseResult(executedTC);
 			updateTestcaseStatus(executedTC, lastTestResultId);
 		}
 		return changedTestcases.size();
+	}
+
+	private void updateAutomatedStatusOnPhaseTestcases(ZephyrTestPhase phase)
+			throws Exception {
+		PreparedStatement prepStmt = conn
+				.prepareStatement("UPDATE testcase SET is_automated=? WHERE id=?");
+		for (ExecutedZephyrTestcase tc : phase.getTestcases()) {
+			if (tc.getIsAutomated()) {
+				continue;
+			}
+			try {
+				prepStmt.setBoolean(1, true);
+				prepStmt.setLong(2, Long.parseLong(tc.getId()));
+				prepStmt.executeUpdate();
+				tc.syncIsAutomatedStatus();
+			} finally {
+				prepStmt.close();
+			}
+		}
 	}
 
 	@Override

@@ -348,13 +348,15 @@ public class ZetaFormatter implements Formatter, Reporter {
 			if (zephyrCycleName.length() > 0 && zephyrPhaseName.length() > 0) {
 				final Set<String> normalizedTags = normalizeTags(scenario
 						.getTags());
-				if (normalizedTags.contains(RCTestcase.RC_TAG)) {
-					try {
-						syncCurrentTestResult(normalizedTags, zephyrCycleName,
-								zephyrPhaseName, jenkinsJobUrl);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+				// Commented out due to the request from WebApp team
+				// if (!normalizedTags.contains(RCTestcase.RC_TAG)) {
+				// return;
+				// }
+				try {
+					syncCurrentTestResult(normalizedTags, zephyrCycleName,
+							zephyrPhaseName, jenkinsJobUrl);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		} finally {

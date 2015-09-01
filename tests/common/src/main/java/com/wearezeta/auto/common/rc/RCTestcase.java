@@ -18,7 +18,7 @@ public abstract class RCTestcase {
 	private String id = "";
 	private Set<String> tags = new LinkedHashSet<String>();
 	private String name = "";
-	private boolean isAutomated = false;
+	protected boolean isAutomated = false;
 
 	protected boolean isChanged = false;
 
