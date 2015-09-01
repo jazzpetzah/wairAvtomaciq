@@ -281,10 +281,11 @@ public class ZetaFormatter implements Formatter, Reporter {
 			if (actualIds.contains(rcTestCase.getId())) {
 				if (rcTestCase.getExecutionStatus() != actualTestResult) {
 					log.info(String
-							.format(" --> Changing execution result of RC test case #%s to '%s' (Cycle: '%s', Phase: '%s', Name: '%s')",
-									rcTestCase.getId(),
-									actualTestResult.toString(),
-									cycle.getName(), phase.getName(),
+							.format(" --> Changing execution result of RC test case #%s from '%s' to '%s' (Cycle: '%s', Phase: '%s', Name: '%s')",
+									rcTestCase.getId(), rcTestCase
+											.getExecutionStatus().toString(),
+									actualTestResult.toString(), cycle
+											.getName(), phase.getName(),
 									rcTestCase.getName()));
 					rcTestCase.setExecutionStatus(actualTestResult);
 					if (jenkinsJobUrl != null && jenkinsJobUrl.length() > 0) {
