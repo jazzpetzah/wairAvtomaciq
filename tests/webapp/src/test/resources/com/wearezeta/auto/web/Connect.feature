@@ -28,7 +28,6 @@ Feature: Connect
     Then I see connection request from one user
     When I open the list of incoming connection requests
     Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
-    And I see connection message "Hello!" in connection request from user <UnknownContact>
     And I see avatar in connection request from user <UnknownContact>
     And I see accept button in connection request from user <UnknownContact>
     And I see ignore button in connection request from user <UnknownContact>

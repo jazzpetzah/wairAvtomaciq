@@ -276,11 +276,6 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "defaultEmailServer");
 	}
 
-	public static String getOpenCVLibPathFromConfig(Class<?> c)
-			throws Exception {
-		return getValueFromCommonConfig(c, "openCVLibPath");
-	}
-
 	public static String getDriverTimeoutFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "driverTimeoutSeconds");

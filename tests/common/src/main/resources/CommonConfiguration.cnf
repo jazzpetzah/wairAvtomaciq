@@ -13,7 +13,6 @@ defaultEmailListenerServiceHost=${defaultEmailListenerServiceHost}
 defaultEmailListenerServicePort=${defaultEmailListenerServicePort}
 makeScreenshots=${makeScreenshots}
 initNodeIp=${initNodeIp}
-openCVLibPath=${openCVLibPath}
 zephyrCycleName=${zephyrCycleName}
 zephyrPhaseName=${zephyrPhaseName}
 zephyrServer=${zephyrServer}

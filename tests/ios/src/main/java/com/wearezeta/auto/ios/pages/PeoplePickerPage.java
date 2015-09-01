@@ -97,10 +97,10 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameOpenConversationButton)
 	private WebElement openConversationButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.PeoplePickerPage.xpathCallButton)
 	private WebElement callButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.PeoplePickerPage.xpathSendImageButton)
 	private WebElement sendImageButton;
 
@@ -501,8 +501,8 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public boolean isOpenConversationButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				openConversationButton);
+		return DriverUtils.waitUntilLocatorAppears(getDriver(), By
+				.name(IOSLocators.PeoplePickerPage.nameOpenConversationButton));
 	}
 
 	public void clickOpenConversationButton() throws Exception {
@@ -510,26 +510,24 @@ public class PeoplePickerPage extends IOSPage {
 				openConversationButton);
 		openConversationButton.click();
 	}
-	
+
 	public boolean isCallButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				callButton);
+		return DriverUtils
+				.isElementPresentAndDisplayed(getDriver(), callButton);
 	}
 
 	public void clickCallButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(),
-				callButton);
+		DriverUtils.waitUntilElementClickable(getDriver(), callButton);
 		callButton.click();
 	}
-	
+
 	public boolean isSendImageButtonVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				sendImageButton);
 	}
 
 	public void clickSendImageButton() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(),
-				sendImageButton);
+		DriverUtils.waitUntilElementClickable(getDriver(), sendImageButton);
 		sendImageButton.click();
 	}
 

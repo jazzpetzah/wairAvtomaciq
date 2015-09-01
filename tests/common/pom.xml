@@ -22,7 +22,6 @@
 		<defaultEmailListenerServicePort>21990</defaultEmailListenerServicePort>
 		<makeScreenshots>true</makeScreenshots>
 		<initNodeIp>true</initNodeIp>
-		<openCVLibPath>/usr/local/opt/opencv/share/OpenCV/java/libopencv_java2411.dylib</openCVLibPath>
 		<zephyrCycleName></zephyrCycleName>
 		<zephyrPhaseName></zephyrPhaseName>
 		<zephyrServer>192.168.10.45</zephyrServer>
