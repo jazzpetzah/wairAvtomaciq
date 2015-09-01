@@ -8,6 +8,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import static org.hamcrest.Matchers.*;
@@ -192,9 +193,9 @@ public class CallingSteps {
 		commonCallingSteps.stopWaitingCall(callee);
 	}
 
-	@Then("^I call (\\d+) times")
-	public void ICallXTimes(int times) throws Throwable {
-		final int numUsers = 4;
+	@Then("^I call (\\d+) times with (.*)")
+	public void ICallXTimes(int times, String callees) throws Throwable {
+		List<String> calleeList = splitAliases(callees);
 		ConversationPageSteps convSteps = new ConversationPageSteps();
 		CommonCallingSteps2 commonCalling = CommonCallingSteps2.getInstance();
 		WarningPageSteps warningSteps = new WarningPageSteps();
@@ -202,9 +203,8 @@ public class CallingSteps {
 		for (int i = 0; i < times; i++) {
 			LOG.info("\n\nSTARTING CALL " + i);
 			try {
-				for (int j = 2; j <= numUsers; j++) {
-					UserXAcceptsNextIncomingCallAutomatically("user" + j
-							+ "Name");
+				for (String callee : calleeList) {
+					UserXAcceptsNextIncomingCallAutomatically(callee);
 				}
 				LOG.info("All instances are waiting");
 				try {
@@ -216,9 +216,8 @@ public class CallingSteps {
 						LOG.error(e.getMessage());
 					}
 					convSteps.ICallUser();
-					for (int j = 2; j <= numUsers; j++) {
-						UserXVerifesCallStatusToUserY("user" + j + "Name",
-								"active", 60);
+					for (String callee : calleeList) {
+						UserXVerifesCallStatusToUserY(callee, "active", 60);
 					}
 					LOG.info("All instances are active");
 					convSteps.IWaitForCallingBar("user1Name");
@@ -235,11 +234,8 @@ public class CallingSteps {
 						LOG.error("Cannot stop call " + i + " " + ex);
 					}
 				}
-				for (int j = 3; j <= numUsers; j++) {// skipping first waiting
-														// instance because the
-														// call is automatically
-														// terminated
-					commonCalling.stopWaitingCall("user" + j + "Name");
+				for (String callee : calleeList) {
+					commonCalling.stopWaitingCall(callee);
 				}
 				LOG.info("All instances are stopped");
 			} catch (Throwable e) {
