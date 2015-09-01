@@ -600,7 +600,7 @@ public final class IOSLocators {
 		
 		public static final String nameEndCallAlertButton = "End Call";
 		
-		public static final String classNameUIACollectionCell = "UIACollectionCell";
+		public static final String xpathGroupCallAvatars = "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell";
 	}
 	
 	public final class DialogPage {
