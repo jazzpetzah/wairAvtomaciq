@@ -4,6 +4,7 @@ import os
 import pprint
 import random
 import requests
+from requests.adapters import TimeoutSauce
 import sys
 import time
 
@@ -15,6 +16,15 @@ except ImportError:
     from jenkinsapi.jenkins import Jenkins
 
 from cli_handlers.cli_handler_base import get_handler, get_handler_names
+
+
+class MyTimeout(TimeoutSauce):
+    def __init__(self, *args, **kwargs):
+        connect = kwargs.get('connect', 15)
+        read = kwargs.get('read', connect)
+        super(MyTimeout, self).__init__(connect=connect, read=read)
+
+requests.adapters.TimeoutSauce = MyTimeout
 
 
 if __name__ == '__main__':

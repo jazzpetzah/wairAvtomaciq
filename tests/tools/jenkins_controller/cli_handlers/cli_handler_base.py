@@ -52,6 +52,7 @@ class CliHandlerBase(object):
             try:
                 return self._invoke()
             except (requests.exceptions.ConnectionError,
+                    requests.packages.urllib3.exceptions.ProtocolError,
                     TypeError) as e:
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
