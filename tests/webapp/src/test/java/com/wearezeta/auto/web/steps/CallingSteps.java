@@ -202,7 +202,7 @@ public class CallingSteps {
 		for (int i = 0; i < times; i++) {
 			LOG.info("\n\nSTARTING CALL " + i);
 			try {
-				for (int j = 1; j <= numUsers; j++) {
+				for (int j = 2; j <= numUsers; j++) {
 					UserXAcceptsNextIncomingCallAutomatically("user" + j
 							+ "Name");
 				}
@@ -216,7 +216,7 @@ public class CallingSteps {
 						LOG.error(e.getMessage());
 					}
 					convSteps.ICallUser();
-					for (int j = 1; j <= numUsers; j++) {
+					for (int j = 2; j <= numUsers; j++) {
 						UserXVerifesCallStatusToUserY("user" + j + "Name",
 								"active", 60);
 					}
@@ -235,7 +235,7 @@ public class CallingSteps {
 						LOG.error("Cannot stop call " + i + " " + ex);
 					}
 				}
-				for (int j = 2; j <= numUsers; j++) {// skipping first waiting
+				for (int j = 3; j <= numUsers; j++) {// skipping first waiting
 														// instance because the
 														// call is automatically
 														// terminated
