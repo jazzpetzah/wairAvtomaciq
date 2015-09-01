@@ -221,8 +221,11 @@ public class CallingSteps {
 					}
 					LOG.info("All instances are active");
 					convSteps.IWaitForCallingBar("user1Name");
+					LOG.info("Callingbar is visible");
 					convSteps.IEndTheCall();
+					LOG.info("Terminated call");
 					convSteps.IDoNotCallingBar();
+					LOG.info("Calling bar is not visible anymore");
 					LOG.info("CALL " + i + " SUCCESSFUL");
 				} catch (Throwable e) {
 					LOG.info("CALL " + i + " FAILED");
