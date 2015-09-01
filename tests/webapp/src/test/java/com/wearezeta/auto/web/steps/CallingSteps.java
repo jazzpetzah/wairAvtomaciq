@@ -1,6 +1,7 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.log.ZetaLogger;
@@ -193,13 +194,27 @@ public class CallingSteps {
 		commonCallingSteps.stopWaitingCall(callee);
 	}
 
+	/**
+	 * Executes consecutive calls without logging out etc.
+	 *
+	 * @step. ^I call (\\d+) times with (.*)
+	 *
+	 * @param times
+	 *            number of consecutive calls
+	 * @param callees
+	 *            participants which will wait for a call
+	 * @throws java.lang.Throwable
+	 */
 	@Then("^I call (\\d+) times with (.*)")
 	public void ICallXTimes(int times, String callees) throws Throwable {
-		List<String> calleeList = splitAliases(callees);
-		ConversationPageSteps convSteps = new ConversationPageSteps();
-		CommonCallingSteps2 commonCalling = CommonCallingSteps2.getInstance();
-		WarningPageSteps warningSteps = new WarningPageSteps();
-		Map<Integer, Throwable> failures = new HashMap<>();
+		final String MYSELF = "Myself";
+		final List<String> calleeList = splitAliases(callees);
+		final CommonSteps commonSteps = CommonSteps.getInstance();
+		final ConversationPageSteps convSteps = new ConversationPageSteps();
+		final CommonCallingSteps2 commonCalling = CommonCallingSteps2
+				.getInstance();
+		final WarningPageSteps warningSteps = new WarningPageSteps();
+		final Map<Integer, Throwable> failures = new HashMap<>();
 		for (int i = 0; i < times; i++) {
 			LOG.info("\n\nSTARTING CALL " + i);
 			try {
@@ -219,8 +234,13 @@ public class CallingSteps {
 					for (String callee : calleeList) {
 						UserXVerifesCallStatusToUserY(callee, "active", 60);
 					}
+					commonSteps.WaitForTime(4);
+					for (String callee : calleeList) {
+						UserXVerifesHavingXFlows(callee, calleeList.size());
+						UserXVerifesHavingXFlows(callee);
+					}
 					LOG.info("All instances are active");
-					convSteps.IWaitForCallingBar("user1Name");
+					convSteps.IWaitForCallingBar(MYSELF);
 					LOG.info("Callingbar is visible");
 					convSteps.IEndTheCall();
 					LOG.info("Terminated call");

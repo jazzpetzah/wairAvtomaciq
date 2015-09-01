@@ -718,7 +718,7 @@ Feature: Calling
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
-    Then I call 100 times with <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Then I call 20 times with <Contact1>,<Contact2>,<Contact3>,<Contact4>
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | Contact3  | Contact4  | ChatName              | WaitBackend | Timeout |
