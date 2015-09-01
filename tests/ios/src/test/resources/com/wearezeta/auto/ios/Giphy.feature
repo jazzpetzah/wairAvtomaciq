@@ -15,7 +15,7 @@ Feature: Giphy
       | Name      | Contact   | GiphyTag |
       | user1Name | user2Name | Happy    |
 
-  @regression @rc @id2977
+  @regression @rc @IPv6 @id2977
   Scenario Outline: Verify I can send gif from preview
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
