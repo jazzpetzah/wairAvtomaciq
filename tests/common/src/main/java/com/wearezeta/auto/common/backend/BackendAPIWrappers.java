@@ -901,6 +901,13 @@ public final class BackendAPIWrappers {
 				null, false);
 	}
 
+	public static void unarchiveGroupConv(ClientUser ownerUser,
+			String conversationToUnarchive) throws Exception {
+		tryLoginByUser(ownerUser);
+		BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser),
+				conversationToUnarchive, null, null, false);
+	}
+
 	public static class NoContactsFoundException extends Exception {
 		private static final long serialVersionUID = -7682778364420522320L;
 

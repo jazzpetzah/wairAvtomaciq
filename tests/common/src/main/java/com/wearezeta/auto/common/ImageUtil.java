@@ -213,7 +213,7 @@ public class ImageUtil {
 	public static double getAnimationThreshold(
 			ISupplierWithException elementStateScreenshoter,
 			final int maxFrames, final long millisecondsDelay) throws Exception {
-		assert maxFrames >= 3 : "Please set maxFrames values to 3 or greater";
+		assert maxFrames >= 3 : "Please set maxFrames value to 3 or greater";
 		final List<BufferedImage> timelineScreenshots = new ArrayList<>();
 		do {
 			timelineScreenshots.add(elementStateScreenshoter.getScreenshot()
@@ -230,6 +230,10 @@ public class ImageUtil {
 		}
 		return thresholds.stream().reduce(0.0, (x, y) -> x + y)
 				/ thresholds.size();
+	}
+	
+	public static boolean isLandscape(BufferedImage bi) {
+		return (bi.getWidth() > bi.getHeight());
 	}
 
 	public static BufferedImage rotateCCW90Degrees(BufferedImage bi) {

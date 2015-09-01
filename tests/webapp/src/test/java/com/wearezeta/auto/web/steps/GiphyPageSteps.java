@@ -20,7 +20,7 @@ public class GiphyPageSteps {
 
 	@Then("^I verify that the search of the Giphy popup contains (.*)$")
 	public void IVerifyThatTheSearchOfTheGiphyPopupContains(String term) {
-		assertThat(PagesCollection.giphyPage.getSearchTerm(), equalTo(term));
+		assertThat(PagesCollection.giphyPage.getSearchTerm(), equalTo(term.toUpperCase()));
 	}
 
 	@Then("^I see gif image in Giphy popup$")

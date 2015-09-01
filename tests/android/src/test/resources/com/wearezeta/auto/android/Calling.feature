@@ -350,7 +350,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName       | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | MaxGroupCallNegChat | autocall    |
 
-  @id3253 @staging
+  @id3253 @calling_basic
   Scenario Outline: Verify starting outgoing 1to1 call during group call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -360,9 +360,9 @@ Feature: Calling
     When I tap on contact name <GroupChatName>
     And <Contact1> calls <GroupChatName> using <CallBackend>
     And <Contact2> calls <GroupChatName> using <CallBackend>
-    Then I see call overlay
-    When I answer the call from the overlay bar
-    Then I do not see join group call overlay
+    And I see call overlay
+    And I answer the call from the overlay bar
+    And I do not see join group call overlay
     And I see calling overlay Big bar
     And I navigate back from dialog page
     And I tap on contact name <Contact3>
@@ -370,7 +370,7 @@ Feature: Calling
     And I press Call button
     And I see answer call alert
     And I start new call from answer call alert
-    And I see calling overlay Big bar
+    Then I see calling overlay Big bar
     And <Contact3> calls <Name> using <CallBackend>
     And I see 2 users take part in call
     And I navigate back from dialog page
@@ -383,7 +383,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @id3255 @staging
+  @id3255 @calling_basic
   Scenario Outline: Verify cancel outgoing 1to1 call during group call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -439,6 +439,37 @@ Feature: Calling
     And I navigate back from dialog page
     And I tap on contact name <GroupChatName>
     And I see incoming calling message for contact <Contact3>
+    And <Contact1> stops all calls to <GroupChatName>
+    And <Contact2> stops all calls to <GroupChatName>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
+
+  #AN-2540
+  @id3176 @staging
+  Scenario Outline: Verify receiving group call during 1to1 call and accepting it
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I tap on contact name <Contact3>
+    And <Contact3> calls <Name> using <CallBackend>
+    And I see incoming calling message for contact <Contact3>
+    Then I see call overlay
+    When I answer the call from the overlay bar
+    And <Contact1> calls <GroupChatName> using <CallBackend>
+    And <Contact2> calls <GroupChatName> using <CallBackend>
+    And I see incoming calling message for contact <GroupChatName>
+    And I answer the call from the overlay bar
+    And I see end current call alert
+    And I start new call from end current call alert
+    And I see calling overlay Big bar
+    And I see 3 users take part in call
+    And I navigate back from dialog page
+    And I tap on contact name <Contact3>
+    And I see incoming calling message for contact <GroupChatName>
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
@@ -555,7 +586,37 @@ Feature: Calling
     When <Contact2> calls me using <CallBackend>
     Then I see incoming calling message for contact <Contact2>
     And <Contact1>,<Contact2> stop all calls to me
- 
+
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
+
+  @id3184 @staging
+  Scenario Outline: Verify leaving group conversation during the call
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email
+    Given I see Contact list with contacts
+    When I tap on contact name <GroupChatName>
+    And <Contact1> calls <GroupChatName> using <CallBackend>
+    And <Contact2> calls <GroupChatName> using <CallBackend>
+    And I see call overlay
+    And I answer the call from the overlay bar
+    And I do not see join group call overlay
+    And I see calling overlay Big bar
+    And I tap conversation details button
+    And I press options menu button
+    And I press Leave conversation button
+    And I confirm leaving
+    And I see Contact list
+    And <Name> is unarchived group chat <GroupChatName>
+    And I tap on contact name <GroupChatName>
+    Then I do not see "JOIN CALL" button
+    And I do not see call overlay
+    And <Contact1> stops all calls to <GroupChatName>
+    And <Contact2> stops all calls to <GroupChatName>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | GroupChatName | CallBackend |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | GroupCallChat | autocall    |

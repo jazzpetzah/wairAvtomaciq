@@ -98,8 +98,8 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idPingIcon)
 	private WebElement pingIcon;
 
-	private static final String idDialogTakePhotoButton = "gtv__camera_control__take_a_picture";
-	@FindBy(id = idDialogTakePhotoButton)
+	private static final String xpathDialogTakePhotoButton = "//*[@id='gtv__camera_control__take_a_picture' and @shown='true']";
+	@FindBy(xpath = xpathDialogTakePhotoButton)
 	private WebElement takePhotoButton;
 
 	private static final String idDialogChangeCameraButton = "gtv__camera__top_control__back_camera";
@@ -482,12 +482,12 @@ public class DialogPage extends AndroidPage {
 
 	public void takePhoto() throws Exception {
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.id(idDialogTakePhotoButton));
+				By.xpath(xpathDialogTakePhotoButton));
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				takePhotoButton);
 		takePhotoButton.click();
 		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idDialogTakePhotoButton));
+				By.xpath(xpathDialogTakePhotoButton));
 	}
 
 	public void changeCamera() throws Exception {

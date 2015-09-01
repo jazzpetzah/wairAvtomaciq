@@ -41,9 +41,13 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
 	}
 
 	public void tapTakePhotoButton() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idTakePhotoButton));
+		assert waitUntilTakePhotoButtonVisible() : "Take Photo button is not visible, but it should be";
 		takePhotoButton.click();
+	}
+
+	public boolean waitUntilTakePhotoButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idTakePhotoButton));
 	}
 
 	public void confirmPictureSelection() throws Exception {

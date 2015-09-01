@@ -215,7 +215,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
       | user1Name | user2Name | user3Name | RenameGroup   | NewName  |
 
-  @staging @id2442
+  @regression @id2442
   Scenario Outline: Verify correct group info page information [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User <Contact1> change avatar picture to <Picture>
@@ -239,7 +239,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture                      | Color        | Color2       | ParticipantsNumber |
       | user1Name | user2Name | user3Name | GroupInfo     | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | 3                  |
 
-  @staging @id2989
+  @regression @id2989
   Scenario Outline: Verify correct group info page information [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User <Contact1> change avatar picture to <Picture>
@@ -336,7 +336,7 @@ Feature: People View
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @staging @id2612
+  @regression @id2612
   Scenario Outline: Verify opening 1-to-1 conversation from group conversation details [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -471,7 +471,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Color  | GroupChatName |
       | user1Name | user2Name | user3Name | Violet | SILENCE       |
 
-  @staging @id3220
+  @regression @id3220
   Scenario Outline: Add someone to a group conversation [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -491,7 +491,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
       | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
 
-  @staging @id3221
+  @regression @id3221
   Scenario Outline: Add someone to a group conversation [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>

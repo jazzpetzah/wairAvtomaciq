@@ -79,7 +79,7 @@ public class CommonAndroidSteps {
 
 	@SuppressWarnings("unchecked")
 	public Future<ZetaAndroidDriver> resetAndroidDriver(String url,
-			String path, boolean isUnicode, Class<?> cls) throws Exception {
+			String path, Class<?> cls) throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		LoggingPreferences object = new LoggingPreferences();
 		object.enable("logcat", Level.ALL);
@@ -96,11 +96,6 @@ public class CommonAndroidSteps {
 				CommonUtils.getAndroidWaitActivitiesFromConfig(cls));
 		capabilities.setCapability("applicationName", "selendroid");
 		capabilities.setCapability("automationName", "selendroid");
-
-		if (isUnicode) {
-			capabilities.setCapability("unicodeKeyboard", true);
-			capabilities.setCapability("resetKeyboard", true);
-		}
 
 		try {
 			return (Future<ZetaAndroidDriver>) PlatformDrivers.getInstance()
@@ -181,10 +176,10 @@ public class CommonAndroidSteps {
 		// closeUpdateAlertIfAppears(drv, locator);
 	}
 
-	private void initFirstPage(boolean isUnicode) throws Exception {
+	private void initFirstPage() throws Exception {
 		AndroidLogListener.getInstance(ListenerType.DEFAULT).start();
 		final Future<ZetaAndroidDriver> lazyDriver = resetAndroidDriver(
-				getUrl(), getPath(), isUnicode, this.getClass());
+				getUrl(), getPath(), this.getClass());
 		pagesCollection.setFirstPage(new WelcomePage(lazyDriver));
 		ZetaFormatter.setLazyDriver(lazyDriver);
 	}
@@ -197,19 +192,15 @@ public class CommonAndroidSteps {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		initFirstPage(false);
+		initFirstPage();
 	}
 
-	@Before({ "~@unicode", "~@performance" })
+	@Before("~@performance")
 	public void setUp() throws Exception {
-		commonBefore();
-		initFirstPage(false);
-	}
+		AndroidCommonUtils.storeDefaultImeId();
 
-	@Before({ "@unicode", "~@performance" })
-	public void setUpUnicode() throws Exception {
 		commonBefore();
-		initFirstPage(true);
+		initFirstPage();
 	}
 
 	/**
@@ -492,6 +483,28 @@ public class CommonAndroidSteps {
 		otherUser = usrMgr.findUserByNameOrNameAlias(otherUser).getName();
 
 		commonSteps.MuteConversationWithUser(otherUser, mutedUser);
+	}
+
+	/**
+	 * Unarchives a given group chat from the perspective of the another user
+	 * through the backend
+	 * 
+	 * @step. ^(.*) is unarchived group chat (.*)$
+	 * 
+	 * @param currentUser
+	 *            user which have archived chat
+	 * @param groupChat
+	 *            archived group chat which should be unarchived
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@Given("^(.*) is unarchived group chat (.*)$")
+	public void UserIsUnarchivedGroupChat(String currentUser, String groupChat)
+			throws Exception {
+		currentUser = usrMgr.findUserByNameOrNameAlias(currentUser).getName();
+
+		commonSteps.UnarchiveConversationWithGroup(currentUser, groupChat);
 	}
 
 	/**
@@ -861,6 +874,7 @@ public class CommonAndroidSteps {
 	public void tearDown() throws Exception {
 		try {
 			AndroidCommonUtils.setAirplaneMode(false);
+			AndroidCommonUtils.resetDefaultIME();
 		} catch (Exception e) {
 			// do not fail if smt fails here
 			e.printStackTrace();
@@ -982,6 +996,31 @@ public class CommonAndroidSteps {
 	@Given("^I (enable|disable) Airplane mode on the device$")
 	public void IChangeAirplaceMode(String action) throws Exception {
 		AndroidCommonUtils.setAirplaneMode(action.equals("enable"));
+	}
+
+	/**
+	 * Sets default IME, stored previously before any IME changes
+	 * 
+	 * @step. ^I set default input method$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I set default input method$")
+	public void ISetDefaultInputMethod() throws Exception {
+		AndroidCommonUtils.resetDefaultIME();
+	}
+	
+	/**
+	 * Sets IME used to input unicode data (ADBKeyBoard.apk)
+	 * 
+	 * @step. ^I set unicode input method$
+	 * 
+	 * @throws Exception
+	 */
+	@Given("^I set unicode input method$")
+	public void ISetUnicodeInputMethod() throws Exception {
+		AndroidCommonUtils.installAdbKeyboard();
+		AndroidCommonUtils.setAdbKeyboard();
 	}
 
 }

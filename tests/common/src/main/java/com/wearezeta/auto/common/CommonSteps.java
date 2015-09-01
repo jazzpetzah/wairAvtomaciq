@@ -287,6 +287,14 @@ public final class CommonSteps {
 		BackendAPIWrappers.unarchiveUserConv(user, archivedUser);
 	}
 
+	public void UnarchiveConversationWithGroup(String aUser,
+			String archiveConversationWithGroup) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(aUser);
+		final String conversationIDToArchive = BackendAPIWrappers
+				.getConversationIdByName(user, archiveConversationWithGroup);
+		BackendAPIWrappers.unarchiveGroupConv(user, conversationIDToArchive);
+	}
+
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
 			throws Exception {
 		ClientUser userTo = usrMgr.findUserByNameOrNameAlias(userToNameAlias);

@@ -293,7 +293,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3224
+  @regression @id3224
   Scenario Outline: Verify sending connection request after disconnecting
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>

@@ -12,6 +12,7 @@ import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 
 public class RegistrationPage extends WebPage {
@@ -63,6 +64,10 @@ public class RegistrationPage extends WebPage {
 		if (waitForRegistrationPageToFullyLoad()) {
 			DriverUtils.waitUntilElementClickable(getDriver(),
 					switchToSignInButton);
+			if (!WebAppExecutionContext.getBrowser()
+					.isSupportingDiabledButtonDetection()) {
+				Thread.sleep(2000);
+			}
 			switchToSignInButton.click();
 		}
 

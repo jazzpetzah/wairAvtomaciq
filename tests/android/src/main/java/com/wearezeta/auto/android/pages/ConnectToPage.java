@@ -81,7 +81,12 @@ public class ConnectToPage extends AndroidPage {
 
 	public boolean isConnectToHeaderVisible(String text) throws Exception {
 		final By locator = By.xpath(xpathConnectToHeaderByText.apply(text));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+		boolean result = DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				locator);
+		if (!result)
+			log.debug("Can't find correct connect to header. Page source: "
+					+ getDriver().getPageSource());
+		return result;
 	}
 
 	public void scrollToInboxContact(String contactName) throws Exception {
@@ -95,10 +100,12 @@ public class ConnectToPage extends AndroidPage {
 		int ntry = 1;
 		do {
 			if (DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3)) {
+				log.debug("Locator had disappeared. Swipe #" + ntry);
 				this.waitUntilIgnoreButtonIsClickable();
 				this.swipeDownCoordinates(1000, 50);
 				return;
 			} else {
+				log.debug("Locator still visible. Swipe #" + ntry);
 				this.waitUntilIgnoreButtonIsClickable();
 				this.swipeUpCoordinates(1000, 50);
 			}

@@ -62,15 +62,24 @@ public class IncomingConnectionPopoverSteps {
 	}
 
 	/**
-	 * Tap the Connect button on Incoming Connection popover
+	 * Tap the corresponding button on Incoming Connection popover
 	 * 
-	 * @step. ^I tap Connect button on Incoming Connection popover$
+	 * @step. ^I tap (Accept|Ignore) button on Incoming Connection popover$
+	 * 
+	 * @param btnName
+	 *            either 'Accept' or 'Ignore'
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap Accept button on Incoming Connection popover$")
-	public void ITapConnectButton() throws Exception {
-		getIncomingConnectionPopover().tapAcceptButton();
+	@When("^I tap (Accept|Ignore) button on Incoming Connection popover$")
+	public void ITapButton(String btnName) throws Exception {
+		switch (btnName) {
+		case "Accept":
+			getIncomingConnectionPopover().tapAcceptButton();
+			break;
+		case "Ignore":
+			getIncomingConnectionPopover().tapIgnoreButton();
+			break;
+		}
 	}
-
 }

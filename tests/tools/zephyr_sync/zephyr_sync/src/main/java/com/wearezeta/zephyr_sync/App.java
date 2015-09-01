@@ -334,6 +334,7 @@ public class App {
 				skippedTCsCount++;
 				break;
 			default:
+				passedTCsCount++;
 				break;
 			}
 		}
