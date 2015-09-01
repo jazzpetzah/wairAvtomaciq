@@ -194,6 +194,7 @@ public class CallingSteps {
 
 	@Then("^I call (\\d+) times")
 	public void ICallXTimes(int times) throws Throwable {
+		final int numUsers = 4;
 		ConversationPageSteps convSteps = new ConversationPageSteps();
 		CommonCallingSteps2 commonCalling = CommonCallingSteps2.getInstance();
 		WarningPageSteps warningSteps = new WarningPageSteps();
@@ -201,11 +202,11 @@ public class CallingSteps {
 		for (int i = 0; i < times; i++) {
 			LOG.info("\n\nSTARTING CALL " + i);
 			try {
-				for (int j = 2; j < 6; j++) {
+				for (int j = 2; j <= numUsers; j++) {
 					UserXAcceptsNextIncomingCallAutomatically("user" + j
 							+ "Name");
 				}
-
+				LOG.info("All instances are waiting");
 				try {
 					try {
 						warningSteps.ISeeAnotherCallWarningModal("not");
@@ -215,13 +216,12 @@ public class CallingSteps {
 						LOG.error(e.getMessage());
 					}
 					convSteps.ICallUser();
-					for (int j = 2; j < 6; j++) {
+					for (int j = 2; j <= numUsers; j++) {
 						UserXVerifesCallStatusToUserY("user" + j + "Name",
 								"active", 60);
 					}
-					for (int j = 2; j < 6; j++) {
-						convSteps.IWaitForCallingBar("user" + j + "Name");
-					}
+					LOG.info("All instances are active");
+					convSteps.IWaitForCallingBar("user1Name");
 					convSteps.IEndTheCall();
 					convSteps.IDoNotCallingBar();
 					LOG.info("CALL " + i + " SUCCESSFUL");
@@ -235,9 +235,10 @@ public class CallingSteps {
 						LOG.error("Cannot stop call " + i + " " + ex);
 					}
 				}
-				for (int j = 2; j < 6; j++) {
+				for (int j = 2; j <= numUsers; j++) {
 					commonCalling.stopWaitingCall("user" + j + "Name");
 				}
+				LOG.info("All instances are stopped");
 			} catch (Throwable e) {
 				LOG.error("Can not stop waiting call " + i + " " + e);
 				try {
