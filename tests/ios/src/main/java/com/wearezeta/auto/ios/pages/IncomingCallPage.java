@@ -39,7 +39,7 @@ public class IncomingCallPage extends CallPage {
 	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameEndCallAlertButton)
 	private WebElement endCallAlertButton;
 
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.IncomingCallPage.classNameUIACollectionCell)
+	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathGroupCallAvatars)
 	private List<WebElement> numberOfGroupCallAvatars;
 	
 	public IncomingCallPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {

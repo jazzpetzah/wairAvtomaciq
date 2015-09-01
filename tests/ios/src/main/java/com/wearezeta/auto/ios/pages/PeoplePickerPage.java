@@ -500,6 +500,14 @@ public class PeoplePickerPage extends IOSPage {
 
 	}
 
+	public void tapOnTopConnectionAvatarByOrder(int i) throws Exception {
+		getDriver().findElement(
+				By.xpath(String.format(
+						IOSLocators.xpathPeoplePickerTopConnectionsAvatar, i)))
+				.click();
+
+	}
+
 	public boolean isOpenConversationButtonVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(getDriver(), By
 				.name(IOSLocators.PeoplePickerPage.nameOpenConversationButton));

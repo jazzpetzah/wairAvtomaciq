@@ -189,7 +189,8 @@ public class ZephyrDB extends TestcasesStorage {
 				.prepareStatement("SELECT release_test_schedule.comment AS comment, test_result.execution_status as execution_status "
 						+ "FROM test_result "
 						+ "INNER JOIN release_test_schedule ON test_result.release_test_schedule_id=release_test_schedule.id "
-						+ "WHERE release_test_schedule.id=?");
+						+ "WHERE release_test_schedule.id=? "
+						+ "ORDER BY test_result.id DESC LIMIT 1");
 		final String realId = getRealTestcaseIdByExecutedTestcaseId(executedTcId);
 		final String name = getTestcaseNameById(realId);
 		prepStmt.setLong(1, executedTcId);
@@ -357,14 +358,13 @@ public class ZephyrDB extends TestcasesStorage {
 				.getTestcases();
 		List<ExecutedZephyrTestcase> changedTestcases = phaseTestcases.stream()
 				.filter(x -> x.getIsChanged()).collect(Collectors.toList());
-		System.out
-				.println(String.format(
-						"\nSynchronizing %s changed testcases with Zephyr:\n%s",
-						changedTestcases.size(),
-						StringUtils.join(
-								changedTestcases.stream().map(
-										x -> "[" + x.getId() + "] "
-												+ x.getName()).collect(Collectors.toList()), "\n")));
+		System.out.println(String.format(
+				"\nSynchronizing %s changed testcases with Zephyr:\n%s",
+				changedTestcases.size(),
+				StringUtils.join(
+						changedTestcases.stream()
+								.map(x -> "[" + x.getId() + "] " + x.getName())
+								.collect(Collectors.toList()), "\n")));
 		for (ExecutedZephyrTestcase executedTC : changedTestcases) {
 			final long lastTestResultId = addTestcaseResult(executedTC);
 			updateTestcaseStatus(executedTC, lastTestResultId);
