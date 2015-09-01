@@ -4,6 +4,8 @@ import java.util.concurrent.Future;
 import java.util.function.Function;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,6 +16,8 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ConnectToPage extends AndroidPage {
 	public static final String idConnectToHeader = "taet__participants__header";
+	@FindBy(id = idConnectToHeader)
+	private WebElement connectToHeader;
 
 	private static final Function<String, String> xpathConnectToHeaderByText = text -> String
 			.format("//*[@id='taet__participants__header' and @value='%s']",
@@ -98,20 +102,38 @@ public class ConnectToPage extends AndroidPage {
 		final By locator = By.xpath(xpathConnectToHeaderByText
 				.apply(contactName));
 		int ntry = 1;
+		Boolean swipeUp = true;
+		String currentContact = "";
+		String latestContact = "";
 		do {
-			if (DriverUtils.waitUntilLocatorDissapears(getDriver(), locator, 3)) {
-				log.debug("Locator had disappeared. Swipe #" + ntry);
+			currentContact = connectToHeader.getText();
+			int location = connectToHeader.getLocation().y;
+			log.debug("Looking for: " + contactName + "; Current contact: "
+					+ currentContact);
+			if (DriverUtils.waitUntilLocatorAppears(getDriver(), locator, 3)
+					&& currentContact.equals(contactName)) {
+				log.debug("User had appeared.");
+				tapOnCenterOfScreen();
 				this.waitUntilIgnoreButtonIsClickable();
-				this.swipeDownCoordinates(1000, 50);
+				return;
+			} else if (location < 0) {
+				tapOnCenterOfScreen();
+				this.waitUntilIgnoreButtonIsClickable();
 				return;
 			} else {
-				log.debug("Locator still visible. Swipe #" + ntry);
-				this.waitUntilIgnoreButtonIsClickable();
-				this.swipeUpCoordinates(1000, 50);
+				log.debug("User still invisible. Swipe #" + ntry);
+				if (latestContact.equals(currentContact)) {
+					swipeUp = false;
+					ntry = 1;
+				}
+				if (swipeUp)
+					this.swipeUpCoordinates(1000, 50);
+				else
+					this.swipeDownCoordinates(1000, 50);
 			}
+			latestContact = currentContact;
 			ntry++;
 		} while (ntry <= maxScrolls);
-		this.waitUntilIgnoreButtonIsClickable();
 		throw new RuntimeException(
 				String.format(
 						"Failed to find user %s in the inbox after scrolling %s users!",
