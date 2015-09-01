@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.core.MatOfPoint;
@@ -28,35 +29,21 @@ import org.opencv.core.Size;
 import org.opencv.highgui.Highgui;
 import org.opencv.imgproc.Imgproc;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 
 /**
  * http://stackoverflow.com/questions/23289387/extract-words-in-rectangles-from-
  */
 public class OnScreenKeyboardScanner {
+	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger
 			.getLog(OnScreenKeyboardScanner.class.getSimpleName());
 
-	private static boolean isOpenCVLibLoaded = false;
-
-	private static synchronized void loadOpenCVLibrary() throws Exception {
-		if (isOpenCVLibLoaded) {
-			return;
-		}
-		try {
-			System.load(CommonUtils
-					.getOpenCVLibPathFromConfig(OnScreenKeyboardScanner.class));
-			isOpenCVLibLoaded = true;
-		} catch (UnsatisfiedLinkError e) {
-			log.warn("Some OpenCV features will not be available. Please make sure you have all OpenCV libraries installed on your system and the path in config is correct!\n"
-					+ "You can run 'brew install homebrew/science/opencv --with-java' from the command line to install all the necessary components");
-			throw e;
-		}
+	static {
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 	}
 
 	public OnScreenKeyboardScanner() throws Exception {
-		loadOpenCVLibrary();
 	}
 
 	public List<List<Rect>> getButtonCoordinates(String screenshotPath) {

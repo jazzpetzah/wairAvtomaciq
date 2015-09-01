@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
@@ -138,5 +139,9 @@ public class SingleUserPopoverContainer extends PeoplePopoverContainer {
 
 	public String getMailHref() throws Exception {
 		return getCurrentUserInfoPage().getMailHref();
+	}
+
+	public BufferedImage getAvatar() throws IllegalStateException, Exception {
+		return getCurrentUserInfoPage().getAvatar();
 	}
 }

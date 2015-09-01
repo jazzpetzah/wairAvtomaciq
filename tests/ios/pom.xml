@@ -39,7 +39,7 @@
 			<artifactId>opencsv</artifactId>
 			<version>3.3</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.wearezeta.auto</groupId>
 			<artifactId>auto-common</artifactId>
@@ -106,7 +106,7 @@
 			<artifactId>jfreechart</artifactId>
 			<version>1.0.13</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
