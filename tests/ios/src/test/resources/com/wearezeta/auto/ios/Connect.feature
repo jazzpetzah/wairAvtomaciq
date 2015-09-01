@@ -267,6 +267,7 @@ Feature: Connect
     And I accept alert
     Then I see CONNECT label
     And I see user <Contact1> found on People picker page
+
     #And I see user <Contact2> found on People picker page
     Examples: 
       | Name      | Contact1 | Contact2 |
@@ -301,19 +302,42 @@ Feature: Connect
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    And I open conversation details    
+    And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-	And I see Details button is visible
+    And I see Details button is visible
     And I return to the chat list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
-	And I see user <Contact1> found on People picker page
+    And I see user <Contact1> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact1>
     And I see connect to <Contact1> dialog
     And I click Connect button on connect to dialog
     And I click close button to dismiss people view
     Then I see first item in contact list named <Contact1>
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @staging @id3225
+  Scenario Outline: Verify possibility of disconnecting from Search UI
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
+    And I see the user <Contact1> avatar with a clock
+    And I tap on NOT connected user name on People picker page <Contact1>
+    And I click Cancel request button
+    And I see Cancel request confirmation page
+    And I confirm Cancel request by click on Yes button
+    And I see user <Contact1> found on People picker page
+    Then I see the user <Contact1> avatar without the pending clock
 
     Examples: 
       | Name      | Contact1  |
