@@ -54,7 +54,7 @@ public abstract class IOSPage extends BasePage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardDeleteButton)
 	private WebElement keyboardDeleteBtn;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardGoButton)
 	private WebElement keyboardGoBtn;
 
@@ -63,7 +63,7 @@ public abstract class IOSPage extends BasePage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameHideKeyboardButton)
 	private WebElement keyboardHideBtn;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameSpaceButton)
 	private WebElement keyboardSpaceBtn;
 
@@ -229,7 +229,7 @@ public abstract class IOSPage extends BasePage {
 	public void clickKeyboardDeleteButton() {
 		keyboardDeleteBtn.click();
 	}
-	
+
 	public void clickKeyboardGoButton() {
 		keyboardGoBtn.click();
 	}
@@ -241,7 +241,7 @@ public abstract class IOSPage extends BasePage {
 	public void clickHideKeyboarButton() {
 		keyboardHideBtn.click();
 	}
-	
+
 	public void clickSpaceKeyboardButton() {
 		keyboardSpaceBtn.click();
 	}
@@ -295,6 +295,20 @@ public abstract class IOSPage extends BasePage {
 		} catch (Exception e) {
 			// do nothing
 		}
+	}
+
+	public void dismissAllAlerts() throws Exception {
+		int count = 0;
+		final int NUMBER_OF_RETRIES = 3;
+		final int ALERT_WAITING_TIMEOUT = 3;
+		do {
+			try {
+				this.getDriver().switchTo().alert().dismiss();
+			} catch (Exception e) {
+				// do nothing
+			}
+		} while (DriverUtils.waitUntilAlertAppears(this.getDriver(),
+				ALERT_WAITING_TIMEOUT) && count++ < NUMBER_OF_RETRIES);
 	}
 
 	public void rotateScreen(ScreenOrientation orientation) throws Exception {
