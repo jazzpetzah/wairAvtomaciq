@@ -537,9 +537,9 @@ Feature: Calling
       
   @torun @staging @id2673
   Scenario Outline: Verify impossibility to connect 6th person to the call
-  	Given There are 10 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>
-    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>,<Contact6>,<Contact7>,<Contact8>,<Contact9>
+  	Given There are 6 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
     Given <Contact1> accepts next incoming call automatically
     Given <Contact2> accepts next incoming call automatically
@@ -550,16 +550,14 @@ Feature: Calling
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
     When <Contact5> calls <GroupChatName> using <CallBackend2>
+    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see incoming group calling message
     And I accept incoming call
-    #And I see mute call, end call and speakers buttons
-    #And I see <NumberOfAvatars> avatars in the group call bar
-    #And I end started call
-    #Then I see Join Call bar
-    #And <Contact4> accepts next incoming call automatically
-    #And I rejoin call by clicking Join button
     Then I see group call is Full message
     
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5 |Contact6  | Contact7 | Contact8 | Contact9  | GroupChatName   | CallBackend | CallBackend2 |NumberOfAvatars|
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name| user7Name| user8Name| user9Name| user10Name| FullGROUPCALL   | firefox     | autocall     | 5			 |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5 | GroupChatName   | CallBackend | CallBackend2 |NumberOfAvatars| Timeout |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name| FullGROUPCALL   | chrome      | autocall     | 5			    |  60 	  |
