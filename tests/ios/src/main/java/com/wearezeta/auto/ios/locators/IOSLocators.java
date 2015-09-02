@@ -78,7 +78,7 @@ public final class IOSLocators {
 
 	public static final String xpathLastVideoFormat = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[%s]/UIAWebView[1]";
 
-	public static final String namePickerSearch = "textViewSearch";
+	public static final String xpathPickerSearch = "//UIATextView[@name='textViewSearch' and @visible='true']";
 
 	public static final String namePickerClearButton = "PeoplePickerClearButton";
 
@@ -667,6 +667,8 @@ public final class IOSLocators {
 		public static final String nameOpenConversationButton = "OPEN";
 		public static final String xpathCallButton = "//UIAButton[@name='OPEN' or @name='CREATE']/following-sibling:: UIAButton[1]";
 		public static final String xpathSendImageButton = "//UIAButton[@name='OPEN' or @name='CREATE']/following-sibling:: UIAButton[2]";
+
+		public static final String xpathFormatFoundContact = "//UIAStaticText[@name='%s' and @visible='true']";
 	}
 
 	public final class CommonIOSLocators {
