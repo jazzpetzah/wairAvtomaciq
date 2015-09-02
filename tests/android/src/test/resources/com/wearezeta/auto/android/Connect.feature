@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id191 @id193 @smoke
+  @id191 @id193 @smoke @rc
   Scenario Outline: Send connection request from search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -23,7 +23,7 @@ Feature: Connect
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @id323 @smoke
+  @id323 @smoke @rc
   Scenario Outline: Accept incoming connection request from conversation list
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
@@ -38,7 +38,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id1411 @regression
+  @id1411 @regression @rc
   Scenario Outline: I can see a new inbox for connection when receive new connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -233,7 +233,7 @@ Feature: Connect
       | Name      | Contact   | Message |
       | user1Name | user2Name | Test    |
 
-  @id541 @regression
+  @id541 @regression @rc
   Scenario Outline: I can receive new connection request when app in background
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -253,7 +253,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id553 @regression
+  @id553 @regression @rc
   Scenario Outline: I want to see that the other person has accepted the connect request in the conversation view
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -280,7 +280,7 @@ Feature: Connect
       | Name      | Contact   | Message |
       | user1Name | user2Name | Test    |
 
-  @id552 @regression
+  @id552 @regression @rc
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -429,7 +429,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id1405 @regression
+  @id1405 @regression @rc
   Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search)
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -471,7 +471,7 @@ Feature: Connect
       | Name      | Contact   | Message          | Picture     |
       | user1Name | user2Name | Hello my friend! | testing.jpg |
 
-  @id2215 @regression
+  @id2215 @regression @rc
   Scenario Outline: I can connect to someone from PYMK by clicking +
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -493,7 +493,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2216 @regression
+  @id2216 @regression @rc
   Scenario Outline: I can connect to someone from PYMK by tap and typing connect message
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>

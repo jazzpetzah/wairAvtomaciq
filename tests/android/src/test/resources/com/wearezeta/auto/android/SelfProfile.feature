@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @id205 @smoke
+  @id205 @smoke @rc
   Scenario Outline: Change user picture with gallery image
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -19,8 +19,8 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id325 @smoke
-  Scenario Outline: Check contact personal info
+  @id325 @smoke @rc
+  Scenario Outline: Check contact personal info in one to one conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -34,7 +34,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id328 @smoke
+  @id328 @smoke @rc
   Scenario Outline: I can change my name
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -51,8 +51,8 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id201 @smoke
-  Scenario Outline: Change user picture with camera
+  @id201 @smoke @rc
+  Scenario Outline: Change user picture using camera
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
