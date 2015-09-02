@@ -5,8 +5,8 @@ import imp
 import pprint
 import random
 import re
-import requests
 import time
+import traceback
 import os
 
 
@@ -51,12 +51,12 @@ class CliHandlerBase(object):
         while True:
             try:
                 return self._invoke()
-            except (requests.exceptions.ConnectionError,
-                    requests.packages.urllib3.exceptions.ProtocolError,
-                    TypeError) as e:
+            except Exception as e:
+                traceback.print_exc()
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
                     raise e
+                print 'Sleeping a while before retry #{} of {}...'.format(try_num, MAX_TRY_COUNT)
                 time.sleep(random.randint(2, 10))
 
 
