@@ -56,7 +56,7 @@ class CliHandlerBase(object):
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
                     raise e
-                print 'Sleeping a while before retry #{} of {}...'.format(try_num + 1, MAX_TRY_COUNT)
+                print 'Sleeping a while before retry #{} of {}...'.format(try_num, MAX_TRY_COUNT)
                 time.sleep(random.randint(2, 10))
 
 
