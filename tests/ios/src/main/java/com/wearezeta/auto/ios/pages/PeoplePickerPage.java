@@ -509,8 +509,11 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public boolean isOpenConversationButtonVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(getDriver(), By
-				.name(IOSLocators.PeoplePickerPage.nameOpenConversationButton));
+		DriverUtils.waitUntilLocatorAppears(getDriver(), By
+				.name(IOSLocators.PeoplePickerPage.nameOpenConversationButton),
+				5);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				openConversationButton);
 	}
 
 	public void clickOpenConversationButton() throws Exception {

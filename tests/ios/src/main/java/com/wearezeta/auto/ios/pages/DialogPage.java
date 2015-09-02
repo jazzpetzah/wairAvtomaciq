@@ -221,9 +221,11 @@ public class DialogPage extends IOSPage {
 
 	public StartedCallPage clickOnCallButtonForContact(String contact)
 			throws Exception {
-		WebElement el = this.getDriver().findElementByXPath(
-				String.format(IOSLocators.xpathUserMessageEntry, contact));
-		el.findElement(By.className("UIAButton")).click();
+		this.getDriver()
+				.findElement(
+						By.xpath(String
+								.format(IOSLocators.xpathFormatMissedCallButtonForContact,
+										contact.toUpperCase()))).click();
 		return new StartedCallPage(getLazyDriver());
 	}
 

@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @smoke @rc @id576 @id2541
+  @smoke @id3272
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -200,7 +200,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @regression @id2536
+  @regression @rc @id2536
   Scenario Outline: Verify you can send an invitation via mail
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -259,7 +259,7 @@ Feature: Connect
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There are 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I dismiss alert
+    And I dismiss all alerts
     And I dismiss settings warning
     And I open search by taping on it
     And I see Upload contacts dialog

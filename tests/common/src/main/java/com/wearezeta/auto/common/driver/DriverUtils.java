@@ -200,15 +200,22 @@ public class DriverUtils {
 		}
 	}
 
-	public static void waitUntilAlertAppears(AppiumDriver driver)
+	public static boolean waitUntilAlertAppears(AppiumDriver driver)
 			throws Exception {
+		return waitUntilAlertAppears(driver, 20);
+	}
+
+	public static boolean waitUntilAlertAppears(AppiumDriver driver,
+			long timeout) throws Exception {
 		DriverUtils.turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(20, TimeUnit.SECONDS)
+					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-			wait.until(ExpectedConditions.alertIsPresent());
+			return (wait.until(ExpectedConditions.alertIsPresent()) != null);
+		} catch (TimeoutException e) {
+			return false;
 		} finally {
 			restoreImplicitWait(driver);
 		}

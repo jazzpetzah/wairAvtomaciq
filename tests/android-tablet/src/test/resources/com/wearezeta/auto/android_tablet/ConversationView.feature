@@ -278,7 +278,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | ChatWithImg   |
 
-  @id2828 @staging
+  @id2828 @regression
   Scenario Outline: Send existing image from gallery in 1:1 chat (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -299,7 +299,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2829 @staging
+  @id2829 @regression
   Scenario Outline: Send existing image from gallery in 1:1 chat (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

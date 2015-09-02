@@ -1,6 +1,6 @@
 Feature: Giphy
 
-  @regression @rc @id2787
+  @regression @id2787
   Scenario Outline: Verify preview is opened after tapping on GIF button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
