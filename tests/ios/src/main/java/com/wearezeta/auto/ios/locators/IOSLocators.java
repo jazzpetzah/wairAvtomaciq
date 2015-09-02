@@ -58,6 +58,8 @@ public final class IOSLocators {
 
 	public static final String xpathUserMessageEntry = "//UIATableCell[@name='%s']";
 
+	public static final String xpathFormatMissedCallButtonForContact = "//UIATableCell[UIAStaticText[@name='%s CALLED']]/UIAButton[@name='ConversationMissedCallButton']";
+
 	public static final String nameConversationCursorInput = "ConversationTextInputField";
 
 	public static final String nameTextInput = "ComposeControllerTextView";
