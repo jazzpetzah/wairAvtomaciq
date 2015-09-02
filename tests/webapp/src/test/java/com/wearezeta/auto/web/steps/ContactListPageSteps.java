@@ -399,11 +399,8 @@ public class ContactListPageSteps {
 	@Then("^I( do not)? see missed call notification for conversation (.*)$")
 	public void isCallMissedVisibleForContact(String shouldNotBeVisible,
 			String conversationName) throws Exception {
-		try {
-			conversationName = usrMgr.replaceAliasesOccurences(
-					conversationName, FindBy.NAME_ALIAS);
-		} catch (Exception e) {
-		}
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
 		if (shouldNotBeVisible == null) {
 			assertTrue(
 					String.format(
@@ -438,11 +435,8 @@ public class ContactListPageSteps {
 	public void isJoinedGroupCallNotificationVisibleForConversation(
 			String shouldNotBeVisible, String conversationName)
 			throws Exception {
-		try {
-			conversationName = usrMgr.replaceAliasesOccurences(
-					conversationName, FindBy.NAME_ALIAS);
-		} catch (Exception e) {
-		}
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
 		if (shouldNotBeVisible == null) {
 			assertTrue(
 					String.format(
@@ -477,11 +471,8 @@ public class ContactListPageSteps {
 	public void isUnjoinedGroupCallNotificationVisibleForConversation(
 			String shouldNotBeVisible, String conversationName)
 			throws Exception {
-		try {
-			conversationName = usrMgr.replaceAliasesOccurences(
-					conversationName, FindBy.NAME_ALIAS);
-		} catch (Exception e) {
-		}
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
 		if (shouldNotBeVisible == null) {
 			assertTrue(
 					String.format(

@@ -239,7 +239,7 @@ public class ContactListPage extends WebPage {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
 				.apply(conversationName);
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(locator));
 	}
 
@@ -257,7 +257,7 @@ public class ContactListPage extends WebPage {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final String locator = WebAppLocators.ContactListPage.xpathJoinedGroupCallNotificationByConversationName
 				.apply(conversationName);
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(locator));
 	}
 
@@ -275,7 +275,7 @@ public class ContactListPage extends WebPage {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final String locator = WebAppLocators.ContactListPage.xpathUnjoinedGroupCallNotificationByConversationName
 				.apply(conversationName);
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(locator));
 	}
 
