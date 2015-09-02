@@ -34,7 +34,7 @@ Feature: Search
   Scenario Outline: Verify denying address book uploading
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I dismiss alert
+    And I dismiss all alerts
     And I dismiss settings warning
     And I open search by taping on it
     And I see Upload contacts dialog
@@ -57,7 +57,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I dismiss alert
+    And I dismiss all alerts
     And I dismiss settings warning
     And I open search by taping on it
     And I see Upload contacts dialog
