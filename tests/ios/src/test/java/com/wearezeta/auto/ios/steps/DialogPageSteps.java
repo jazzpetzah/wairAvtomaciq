@@ -1004,4 +1004,20 @@ public class DialogPageSteps {
 		Assert.assertEquals(link.toLowerCase(), getDialogPage()
 				.getLastMessageFromDialog().toLowerCase());
 	}
+
+	/**
+	 * Verifies that vimeo link and the video container is visible
+	 * 
+	 * @step. ^I see vimeo link (.*) and media in dialog$
+	 * @param link
+	 *            of vimeo video
+	 * @throws Throwable
+	 */
+	@Then("^I see vimeo link (.*) and media in dialog$")
+	public void ISeeVimeoLinkAndMediaInDialog(String link) throws Throwable {
+		Assert.assertTrue("Media is missing in dialog", getDialogPage()
+				.isYoutubeContainerVisible());
+		Assert.assertEquals(link.toLowerCase(), getDialogPage()
+				.getLastMessageFromDialog().toLowerCase());
+	}
 }
