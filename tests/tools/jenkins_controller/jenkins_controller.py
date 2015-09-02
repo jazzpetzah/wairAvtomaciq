@@ -4,7 +4,6 @@ import os
 import pprint
 import random
 import requests
-from requests.adapters import TimeoutSauce
 import sys
 import time
 
@@ -16,15 +15,7 @@ except ImportError:
     from jenkinsapi.jenkins import Jenkins
 
 from cli_handlers.cli_handler_base import get_handler, get_handler_names
-
-
-class MyTimeout(TimeoutSauce):
-    def __init__(self, *args, **kwargs):
-        connect = kwargs.get('connect', 15)
-        read = kwargs.get('read', connect)
-        super(MyTimeout, self).__init__(connect=connect, read=read)
-
-requests.adapters.TimeoutSauce = MyTimeout
+from customized_requester import CustomRequester
 
 
 if __name__ == '__main__':
@@ -32,10 +23,11 @@ if __name__ == '__main__':
     try_num = 0
     while True:
         try:
-            jenkins = Jenkins(
-                  os.getenv('JENKINS_URL', 'http://192.168.10.44:8080'),
-                  os.getenv('JENKINS_USER', 'auto'),
-                  os.getenv('JENKINS_PASSWORD', 'aqa123456!'))
+            base_url = os.getenv('JENKINS_URL', 'http://192.168.10.44:8080')
+            user = os.getenv('JENKINS_USER', 'auto')
+            password = os.getenv('JENKINS_PASSWORD', 'aqa123456!')
+            jenkins = Jenkins(base_url, user, password,
+                              requester=CustomRequester(user, password, base_url))
             break
         except requests.exceptions.ConnectionError as e:
             try_num += 1
