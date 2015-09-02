@@ -377,6 +377,21 @@ public class PeoplePickerPageSteps {
 				numberOfTopConnections, contact);
 	}
 
+	/**
+	 * Tap on top connection contact avatar by pointed id order
+	 * 
+	 * @step. I tap on (\\d+)\\w+ top connection contact
+	 * 
+	 * @param i
+	 *            contact order in top peoples
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap on (\\d+)\\w+ top connection contact$")
+	public void IClickOnTopConnectionByOrder(int i) throws Exception {
+		getPeoplePickerPage().tapOnTopConnectionAvatarByOrder(i);
+	}
+
 	@When("I click on connected user (.*) avatar on People picker page")
 	public void IClickOnUserIconToAddItToExistingGroupChat(String contact)
 			throws Throwable {
@@ -609,11 +624,27 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see action buttons appeared on People picker page")
+	@When("^I see action buttons appeared on People picker page$")
 	public void ISeeActionButttonsAppearedOnPeoplePickerPage() throws Exception {
 		ISeeOpenConversationActionButton();
 		ISeeCallActionButtonOnPeoplePickerPage();
 		ISeeSendImageActionButtonOnPeoplePickerPage();
 	}
-
+	
+	/**
+	 * Verify that Open, Call and Send image action buttons are NOT visible
+	 * 
+	 * @step. ^I see action buttons disappeared on People picker page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see action buttons disappeared on People picker page$")
+	public void ISeeActionButttonsDisappearedOnPeoplePickerPage() throws Exception {
+		Assert.assertFalse("Open conversation button is still visible",
+				getPeoplePickerPage().isOpenConversationButtonVisible());
+		Assert.assertFalse("Call action button is still visible",
+				getPeoplePickerPage().isCallButtonVisible());
+		Assert.assertFalse("Send image action button is still visible",
+				getPeoplePickerPage().isSendImageButtonVisible());
+	}
 }

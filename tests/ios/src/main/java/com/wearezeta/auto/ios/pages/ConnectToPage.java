@@ -48,7 +48,7 @@ public class ConnectToPage extends IOSPage {
 	}
 
 	public Boolean isConnectToUserDialogVisible() {
-		return sendConnectionInput.isDisplayed();
+		return connectOtherUserButton.isDisplayed();
 	}
 
 	public String getConnectToUserLabelValue() {

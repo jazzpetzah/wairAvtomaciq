@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @regression @id855
+  @regression @rc @id855
   Scenario Outline: Verify swipe right tutorial appearance
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -14,7 +14,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @id330
+  @smoke @rc @IPv6 @id330
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -47,7 +47,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @id332 @id1470
+  @smoke @rc @IPv6 @id332 @id1470
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -81,7 +81,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id1468
+  @regression @rc @IPv6 @id1468
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -355,7 +355,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id526
+  @regression @rc @IPv6 @id526
   Scenario Outline: I can send and play inline youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -512,7 +512,7 @@ Feature: Conversation View
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
 
-  @regression @id1476
+  @regression @rc @id1476
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -540,7 +540,7 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                            |
       | user1Name | user2Name | https://soundcloud.com/isabella-emanuelsson/david-guetta-she-wolf-falling |
 
-  @smoke @id2762
+  @smoke @IPv6 @id2762
   Scenario Outline: Receive message from contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -555,7 +555,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @id2763 @deployPictures
+  @smoke @IPv6 @id2763 @deployPictures
   Scenario Outline: Receive a camera roll picture from user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -570,7 +570,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @regression @id2976
+  @regression @rc @id2976
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -588,7 +588,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @regression @id3093 @id3092
+  @regression @rc @id3093 @id3092
   Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -658,7 +658,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @regression @id3263
+  @regression @rc @id3263
   Scenario Outline: Verify drawing on the image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

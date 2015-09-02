@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @smoke @id589
+  @smoke @rc @id589
   Scenario Outline: Register new user using photo album
     Given I see sign in screen
     When I enter phone number for user <Name>

@@ -14,7 +14,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @id729 @regression
+  @regression @rc @id729 
   Scenario Outline: Attempt to open About screen in settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

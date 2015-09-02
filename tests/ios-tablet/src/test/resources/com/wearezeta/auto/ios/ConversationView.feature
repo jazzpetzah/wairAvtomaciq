@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @regression @id2419
+  @regression @rc @id2419
   Scenario Outline: Vefiry sending message [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -83,7 +83,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2407 @deployPictures
+  @regression @rc @id2407 @deployPictures
   Scenario Outline: Verify sending image [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

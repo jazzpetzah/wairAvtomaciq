@@ -52,7 +52,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  | Number | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | 4      | TESTCHAT      |
 
-  @regression @id1389
+  @regression @rc @id1389
   Scenario Outline: Leave from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -73,7 +73,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @smoke @id1390
+  @smoke @rc @id1390
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -92,7 +92,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @staging @id1396
+  @staging @rc @id1396
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given User <Contact1> change avatar picture to <Picture>
@@ -115,7 +115,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ParticipantNumber | Picture                      | Color        | Color1       |
       | user1Name | user2Name | user3Name | 3                 | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow |
 
-  @smoke @id1406
+  @smoke @rc @id1406
   Scenario Outline: I can edit the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -151,7 +151,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id339
+  @regression @rc @id339
   Scenario Outline: Tap on participant profiles in group info page participant view
     Given There are 3 users where <Name> is me
     Given <GroupCreator> is connected to me
@@ -235,7 +235,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id556
+  @regression @rc @id556
   Scenario Outline: Verify you can add people from 1:1 people view (via keyboard button)
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -300,7 +300,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @regression @id1462
+  @regression @rc @id1462
   Scenario Outline: Verify silence the conversation
     Given There are 2 users where <Name> is me
     Given User <Name> change accent color to <Color>
@@ -324,7 +324,7 @@ Feature: People View
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
 
-  @regression @id1335
+  @regression @rc @id1335
   Scenario Outline: Verify unsilence the conversation
     Given There are 2 users where <Name> is me
     Given User <Name> change accent color to <Color>

@@ -92,6 +92,9 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idBlackBorder)
 	private WebElement blackBorder;
 
+	@FindBy(xpath = WebAppLocators.ConversationPage.xpathJoinCallBar)
+	private WebElement joinCallBar;
+
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -574,5 +577,11 @@ public class ConversationPage extends WebPage {
 			}
 			return false;
 		}
+	}
+
+	public void clickJoinCallBar() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
+				joinCallBar) : "Join call bar has not been shown";
+		joinCallBar.click();
 	}
 }
