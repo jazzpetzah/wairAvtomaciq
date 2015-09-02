@@ -680,7 +680,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
       
-  @torun @staging @id2781
+  @staging @id2781
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
   	Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -689,6 +689,7 @@ Feature: Conversation View
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
+    Then I see vimeo link <VimeoLink> but NO media player 
     
     Examples: 
       | Name      | Contact   | VimeoLink                    |
