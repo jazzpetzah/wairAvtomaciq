@@ -97,17 +97,21 @@ Feature: Conversation List
   Scenario Outline: Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given Contact <Contact1> sends 10 message to user <Name>
     Given I sign in using my email or phone number
-    When I see Contact list with contacts
+    And I see Contact list with contacts
+    And I tap on contact name <Contact1>
+    And I see dialog page
+    And I navigate back from dialog page
+    And I see unread messages indicator is not displayed for contact <Contact1>
+    When Contact <Contact1> sends 2 messages to user <Name>
+    Then I see unread messages indicator is small for contact <Contact1>
+    When Contact <Contact1> sends 8 messages to user <Name>
     Then I see unread messages indicator is large for contact <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I navigate back from dialog page
-    Then I see unread messages indicator is small for contact <Contact1>
-    When I tap on contact name <Contact1>
-    And I see dialog page
-    And I navigate back from dialog page
+    And I tap on text input
+    And I press back button
+    And I press back button
     Then I see unread messages indicator is not displayed for contact <Contact1>
 
     Examples: 

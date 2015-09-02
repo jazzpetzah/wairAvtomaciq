@@ -120,7 +120,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2851 @staging
+  @id2851 @regression
   Scenario Outline: I can't send connection message with space only
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -140,7 +140,7 @@ Feature: Search
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id2853 @staging
+  @id2853 @regression
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape

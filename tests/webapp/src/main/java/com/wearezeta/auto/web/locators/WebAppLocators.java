@@ -128,24 +128,24 @@ public final class WebAppLocators {
 
 		// leave warning
 		public static final String cssLeaveModal = ".modal-leave";
-		public static final String cssLeaveModalCancelButton = ".modal-leave .modal-close.button-inverted";
-		public static final String cssLeaveModalActionButton = ".modal-leave .modal-close.modal-action";
+		public static final String cssLeaveModalCancelButton = ".modal-leave .modal-close";
+		public static final String cssLeaveModalActionButton = ".modal-leave .modal-action";
 
 		// block warning
 		public static final String cssBlockModal = ".modal-block";
-		public static final String cssBlockModalCancelButton = ".modal-block .modal-close.button-inverted";
-		public static final String cssBlockModalActionButton = ".modal-block .modal-close.modal-action";
+		public static final String cssBlockModalCancelButton = ".modal-block .modal-close";
+		public static final String cssBlockModalActionButton = ".modal-block .modal-action";
 
 		// delete warning for group conversations
 		public static final String cssDeleteModalGroup = ".modal-clear-group";
-		public static final String cssDeleteModalCancelButtonGroup = ".modal-clear-group .modal-close.button-inverted";
-		public static final String cssDeleteModalActionButtonGroup = ".modal-clear-group .modal-close.modal-action";
+		public static final String cssDeleteModalCancelButtonGroup = ".modal-clear-group .modal-close";
+		public static final String cssDeleteModalActionButtonGroup = ".modal-clear-group .modal-action";
 		public static final String cssDeleteModalLeaveCheckboxGroup = "[data-uie-name='enter-leave-conversation']";
 
 		// delete warning for 1:1 conversation
 		public static final String cssDeleteModalSingle = ".modal-clear";
-		public static final String cssDeleteModalCancelButtonSingle = ".modal-clear .modal-close.button-inverted";
-		public static final String cssDeleteModalActionButtonSingle = ".modal-clear .modal-close.modal-action";
+		public static final String cssDeleteModalCancelButtonSingle = ".modal-clear .modal-close";
+		public static final String cssDeleteModalActionButtonSingle = ".modal-clear .modal-action";
 
 	}
 
@@ -256,14 +256,16 @@ public final class WebAppLocators {
 		public static final String cssGIFButton = "[data-uie-name='do-giphy-popover']";
 
 		// bars (call bar)
-		public static String xpathCallingBarRoot = "//call-menu[contains(@class, 'call-menu') and contains(@class, 'on')]";
+		public static String xpathCallingBarRoot = "//*[contains(@class, 'call-menu') and contains(@class, 'on')]";
 
 		public static final Function<String, String> xpathCallingBarRootByName = text -> String
 				.format(xpathCallingBarRoot
-						+ "/div/div/div/div/div[contains(@class, 'cc-avatar-label') and text()='%s']|"
+						+ "//*[contains(@class, 'cc-avatar-label') and text()='%s']|"
 						+ xpathCallingBarRoot
-						+ "/div/div/div/span[contains(@class, 'cc-label-bold') and text()='%s']",
+						+ "//*[contains(@class, 'cc-label-bold') and text()='%s']",
 						text, text);
+
+		public static final String xpathJoinCallBar = "//div[contains(@class, 'join-menu') and contains(@class, 'on')]/*[contains(@class, 'join-menu-button')]";
 
 		public static String xpathAcceptCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-check')]";
@@ -286,26 +288,25 @@ public final class WebAppLocators {
 
 	public static final class ConnectToPage {
 
-		public static final String xpathRequestAvatarPartial = "/../../div[contains(@class, 'sender')]//div[contains(@class, 'user-avatar-image')]";
-		public static final String xpathRequestEmailPartial = "/following-sibling::div[contains(@class, 'mail')]";
-		public static final String xpathRequestMessagePartial = "/following-sibling::div[contains(@class, 'message')]";
+		public static final String cssRequestEmailPartial = " .mail";
+		public static final String cssRequestMessagePartial = " .message";
 
-		public static final Function<String, String> xpathRequestByName = name -> String
-				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]",
-						name);
+		public static final Function<String, String> cssRequestById = uid -> String
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s']",
+						uid);
 
-		public static final Function<String, String> cssAcceptRequestButtonByUserId = name -> String
+		public static final Function<String, String> cssAcceptRequestButtonByUserId = uid -> String
 				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-name='do-accept']",
-						name);
+						uid);
 
-		public static final Function<String, String> xpathIgnoreReqestButtonByName = name -> String
-				.format("//div[contains(@class, 'connect-name') and span[text()='%s']]/following-sibling::div/div[@id='ignore']",
-						name);
+		public static final Function<String, String> cssIgnoreRequestButtonById = uid -> String
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-name='do-ignore']",
+						uid);
 
-		public static final String xpathAllConnectionRequests = "//div[contains(@class, 'connect-request')";
+		public static final String cssAllConnectionRequests = "[data-uie-name='connect-request']";
 
-		public static final Function<String, String> cssRequestAvatarByUserId = id -> String
-				.format(".connect-request user-avatar[user-id='%s']", id);
+		public static final Function<String, String> cssRequestAvatarByUserId = uid -> String
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] .image", uid);
 	}
 
 	public static final class PeoplePickerPage {

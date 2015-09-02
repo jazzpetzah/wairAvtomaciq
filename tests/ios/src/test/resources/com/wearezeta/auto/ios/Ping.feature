@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @regression @id1357
+  @regression @rc @id1357
   Scenario Outline: Verify you can send Ping in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @smoke @id340
+  @smoke @rc @id340
   Scenario Outline: Sign in to ZClient
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -29,7 +29,7 @@ Feature: Sign In
   #Examples:
   #| Login   | Password    | UserA   | UserB       |
   #| aqaUser | aqaPassword | aqaUser | aqaContact1 |
-  @regression @id1398 @noAcceptAlert
+  @regression @rc @id1398 @noAcceptAlert
   Scenario Outline: Notification if SignIn credentials are wrong
     Given I see sign in screen
     When I press Sign in button
@@ -42,7 +42,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @staging @id1479 @id1403
+  @staging @rc @id1479 @id1403
   Scenario Outline: Verify possibility of reseting password (welcome page)
     Given I see sign in screen
     And I press Sign in button

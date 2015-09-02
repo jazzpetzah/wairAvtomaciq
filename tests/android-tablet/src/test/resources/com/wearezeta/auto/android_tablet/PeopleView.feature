@@ -179,7 +179,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2898 @staging
+  @id2898 @regression
   Scenario Outline: Start 1:1 conversation from group pop-over (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -204,7 +204,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Message |
       | user1Name | user2Name | user3Name | GroupChat     | Msg     |
 
-  @id3152 @staging
+  @id3152 @regression
   Scenario Outline: Start 1:1 conversation from group pop-over (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -228,3 +228,49 @@ Feature: People View
     Examples:
       | Name      | Contact1  | Contact2  | GroupChatName | Message |
       | user1Name | user2Name | user3Name | GroupChat     | Msg     |
+
+  @id2824 @staging
+  Scenario Outline: I can access user details page from group details pop-over (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    And I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    When I see the participant avatar <Contact1> on Group popover
+    And I tap the participant avatar <Contact1> on Group popover
+    Then I see the user name <Contact1> on Group popover
+    And I see the user email <Contact1Email> on Group popover
+
+    Examples:
+      | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName |
+      | user1Name | user2Name  | user2Email    | user3Name | GroupChat     |
+
+  @id3150 @staging
+  Scenario Outline: I can access user details page from group details pop-over (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    And I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    When I see the participant avatar <Contact1> on Group popover
+    And I tap the participant avatar <Contact1> on Group popover
+    Then I see the user name <Contact1> on Group popover
+    And I see the user email <Contact1Email> on Group popover
+
+    Examples:
+      | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName |
+      | user1Name | user2Name  | user2Email    | user3Name | GroupChat     |

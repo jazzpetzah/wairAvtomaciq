@@ -17,6 +17,10 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 	@FindBy(id = PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement closePeoplePickerBtn;
 
+	public static final String idPickerSearch = "puet_pickuser__searchbox";
+	@FindBy(id = idPickerSearch)
+	public WebElement pickerSearch;
+
 	public static final String xpathTopPeopleHeader = "//*[@id='ttv_pickuser__list_header_title' and @value='TOP PEOPLE']";
 
 	public static final Function<String, String> xpathTopPeopleAvatarByName = name -> String
@@ -45,15 +49,13 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 	public boolean waitUntilVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(PeoplePickerPage.idPeoplePickerClearbtn))
-				&& getAndroidPeoplePickerPage().pickerSearch.getLocation()
-						.getX() >= 0;
+				&& pickerSearch.getLocation().getX() >= 0;
 	}
 
 	public boolean waitUntilInvisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(PeoplePickerPage.idPeoplePickerClearbtn))
-				|| getAndroidPeoplePickerPage().pickerSearch.getLocation()
-						.getX() < 0;
+				|| pickerSearch.getLocation().getX() < 0;
 	}
 
 	public void tapCloseButton() throws Exception {

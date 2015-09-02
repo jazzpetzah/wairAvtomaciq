@@ -71,7 +71,7 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id663 @staging
+  @id663 @regression
   Scenario Outline: User can change accent color and it is saved after sign in sign out
     Given There is 1 user where <Name> is me
     Given I sign in using my email

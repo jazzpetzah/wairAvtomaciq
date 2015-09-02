@@ -226,4 +226,41 @@ public class GroupPopoverSteps {
 	public void ITapOpenConversationButton() throws Exception {
 		getGroupPopover().tapOpenConversationButton();
 	}
+
+	/**
+	 * Verify whether the particular user name is visible on Group popover
+	 * 
+	 * @step. ^I see (?:the |\\s*)user name (.*) on [Gg]roup popover$"
+	 * 
+	 * @param expectedName
+	 *            user name/alias
+	 * @throws Exception
+	 */
+	@Then("^I see (?:the |\\s*)user name (.*) on [Gg]roup popover$")
+	public void ISeeUserName(String expectedName) throws Exception {
+		expectedName = usrMgr.findUserByNameOrNameAlias(expectedName).getName();
+		Assert.assertTrue(String.format(
+				"The user name '%s' is not displayed on Group popover",
+				expectedName),
+				getGroupPopover().waitUntilUserNameVisible(expectedName));
+	}
+
+	/**
+	 * Verify whether the particular user email is visible on Group popover
+	 * 
+	 * @step. ^I see (?:the |\\s*)user email (.*) on [Gg]roup popover$"
+	 * 
+	 * @param expectedEmail
+	 *            user email/alias
+	 * @throws Exception
+	 */
+	@Then("^I see (?:the |\\s*)user email (.*) on [Gg]roup popover$")
+	public void ISeeUserEmail(String expectedEmail) throws Exception {
+		expectedEmail = usrMgr.findUserByEmailOrEmailAlias(expectedEmail)
+				.getEmail();
+		Assert.assertTrue(String.format(
+				"The user email '%s' is not displayed on Group popover",
+				expectedEmail),
+				getGroupPopover().waitUntilUserEmailVisible(expectedEmail));
+	}
 }
