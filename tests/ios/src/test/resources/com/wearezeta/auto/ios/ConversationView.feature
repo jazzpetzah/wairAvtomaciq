@@ -679,3 +679,34 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+      
+  @staging @id2781
+  Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
+  	Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> but NO media player 
+    
+    Examples: 
+      | Name      | Contact   | VimeoLink                    |
+      | user1Name | user2Name | https://vimeo.com/categories |
+  
+
+  @staging @id2780
+  Scenario Outline: Verify player is displayed for vimeo links with video IDs
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> and media in dialog
+
+    Examples: 
+      | Name      | Contact1  | VimeoLink                   |
+      | user1Name | user2Name | https://vimeo.com/129426512 |
