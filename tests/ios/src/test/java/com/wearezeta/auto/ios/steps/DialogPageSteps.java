@@ -916,11 +916,13 @@ public class DialogPageSteps {
 		ISeeSketchButtonShown();
 		ISeePingButtonShown();
 	}
-	
+
 	/**
-	 * Verify that only Details button is shown. Rest button should not be visible
+	 * Verify that only Details button is shown. Rest button should not be
+	 * visible
 	 * 
-	 * @step. I see only Details button. Call, Camera, Sketch, Ping are not shown
+	 * @step. I see only Details button. Call, Camera, Sketch, Ping are not
+	 *        shown
 	 * 
 	 * @throws Exception
 	 */
@@ -985,5 +987,21 @@ public class DialogPageSteps {
 	@When("^I click Close input options button$")
 	public void IClickCloseButtonInputOptions() throws Exception {
 		getDialogPage().clickCloseButton();
+	}
+
+	/**
+	 * Verifies that vimeo link and the video container is visible
+	 * 
+	 * @step. ^I see vimeo link (.*) and media in dialog$
+	 * @param link
+	 *            of vimeo video
+	 * @throws Throwable
+	 */
+	@Then("^I see vimeo link (.*) and media in dialog$")
+	public void ISeeVimeoLinkAndMediaInDialog(String link) throws Throwable {
+		Assert.assertTrue("Media is missing in dialog", getDialogPage()
+				.isYoutubeContainerVisible());
+		Assert.assertEquals(link.toLowerCase(), getDialogPage()
+				.getLastMessageFromDialog().toLowerCase());
 	}
 }
