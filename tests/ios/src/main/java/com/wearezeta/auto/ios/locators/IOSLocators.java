@@ -239,7 +239,7 @@ public final class IOSLocators {
 
 	public static final String xpathOtherPersonalInfoPageNameField = "//UIAWindow[@name='ZClientMainWindow']/UIAStaticText[4]";
 
-	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAWindow[@name='ZClientMainWindow']/UIATextView[contains(@name, 'wire.com')]";
+	public static final String xpathOtherPersonalInfoPageEmailField = "//UIAWindow[@name='ZClientMainWindow']/UIATextView[contains(@name, 'WIRE.COM')]";
 
 	// /////////////////////
 	// Self profile page
@@ -334,7 +334,7 @@ public final class IOSLocators {
 	public static final String nameCameraRollSketchButton = "editNotConfirmedImageButton";
 
 	// needs name
-	public static final String xpathAvatarCollectionView = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
+	public static final String xpathAvatarCollectionView = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]";
 
 	public static final String xpathParticipantAvatarCell = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView[2]/UIACollectionCell";
 
@@ -364,11 +364,11 @@ public final class IOSLocators {
 
 	public static final String xpathCloseColorModeButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[4]";
 
-	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'people')]";
+	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'PEOPLE')]";
 
 	public static final String addPeopleCountTextSubstring = "Add";
 
-	public static final String peopleCountTextSubstring = " people";
+	public static final String peopleCountTextSubstring = " PEOPLE";
 
 	// /////////////////////
 	// Video Player Locators
@@ -487,10 +487,10 @@ public final class IOSLocators {
 	public static final String namePeoplePickerContactsLabel = "CONTACTS";
 	public static final String namePeoplePickerOtheraLabel = "OTHERS";
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
-	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
+	public static final String xpathPeoplePickerUserAvatar = "//UIACollectionCell[descendant::UIAButton[@name='HIDE'] and UIAStaticText[@name='%s']]";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]";
-	public static final String xpathPeoplePickerTopConnectionsName = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText";
+	public static final String xpathPeoplePickerTopConnectionsName = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText[last()]";
 	public static final String xpathPeoplePickerAllTopPeople = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell";
 	public static final String nameShareButton = "SHARE CONTACTS";
 	public static final String nameContinueUploadButton = "SHARE CONTACTS";
