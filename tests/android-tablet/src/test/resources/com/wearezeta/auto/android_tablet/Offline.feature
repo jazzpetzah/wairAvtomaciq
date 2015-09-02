@@ -1,6 +1,6 @@
 Feature: Offline Mode
 
-  @id2889 @regression
+  @id2889 @regression @rc
   Scenario Outline: Receive updated content when changing from offline to online
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
