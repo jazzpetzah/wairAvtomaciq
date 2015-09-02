@@ -115,6 +115,18 @@ public final class WebAppLocators {
 				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[local-name() = 'svg' and @data-uie-name='status-unread']",
 						name);
 
+		// TODO
+		public static final Function<String, String> xpathJoinedGroupCallNotificationByConversationName = (
+				name) -> String
+				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[local-name() = 'svg' and @data-uie-name='status-joined-gc']",
+						name);
+
+		// TODO
+		public static final Function<String, String> xpathUnjoinedGroupCallNotificationByConversationName = (
+				name) -> String
+				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[local-name() = 'svg' and @data-uie-name='status-unjoined-gc']",
+						name);
+
 		public static final Function<String, String> xpathPingIconByContactName = (
 				name) -> String
 				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
@@ -306,7 +318,8 @@ public final class WebAppLocators {
 		public static final String cssAllConnectionRequests = "[data-uie-name='connect-request']";
 
 		public static final Function<String, String> cssRequestAvatarByUserId = uid -> String
-				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] .image", uid);
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] .image",
+						uid);
 	}
 
 	public static final class PeoplePickerPage {
