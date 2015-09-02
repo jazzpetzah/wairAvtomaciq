@@ -693,3 +693,47 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | autocall    | chrome      | 60      |
+
+  @staging @calling @id3073
+  Scenario Outline: Verify receiving 1-to-1 call during group call
+    Given My browser supports calling
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <ChatName1>
+    And I call
+    Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar from user <Contact1>
+    And I see the calling bar from user <Contact2>
+#   And I see joined group call notification for conversation <ChatName1>
+    When <Contact3> calls me using <CallBackend>
+    Then I see the calling bar from user <Contact3>
+    When I silence the incoming call
+    And I open conversation with <ChatName1>
+    Then I see the calling bar from user <Contact1>
+    And I see the calling bar from user <Contact2>
+    When I open conversation with <Contact3>
+    Then I do not see the calling bar
+    When <Contact3> stops all calls to me
+    And <Contact3> calls me using <CallBackend>
+    When I accept the incoming call
+    Then I see another call warning modal
+    When I click on "End Call" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see the calling bar from user <Contact3>
+#   And I see joined group call notification for conversation <ChatName2>
+#   And I do not see joined group call notification for conversation <ChatName1>
+#   And I see unjoined group call notification for conversation <ChatName1>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2   | Contact3  | ChatName1 | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | user4Name | GC1       | autocall    | chrome      | 60      |
