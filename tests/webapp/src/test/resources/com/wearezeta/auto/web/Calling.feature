@@ -694,7 +694,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | autocall    | chrome      | 60      |
 
-  @staging @calling @group @id3073
+  @staging @calling @group @debug @id3073
   Scenario Outline: Verify receiving 1-to-1 call during group call
     Given My browser supports calling
     Given There are 4 users where <Name> is me
