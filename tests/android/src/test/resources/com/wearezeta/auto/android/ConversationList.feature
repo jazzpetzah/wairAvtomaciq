@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @id324 @smoke
+  @id324 @smoke @rc
   Scenario Outline: Mute conversation
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -24,7 +24,7 @@ Feature: Conversation List
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id1510 @regression
+  @id1510 @regression @rc
   Scenario Outline: Verify conversation list play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
     Given <Name> is connected to <Contact1>
@@ -93,8 +93,8 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | SoudCloudLink                                              |
       | user1Name | user2Name | user3Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id1513 @staging
-  Scenario Outline: Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
+  @id1513 @staging @rc
+  Scenario Outline: (STAGING) Verify messages are marked as read as you look at them so that you can know when there is unread content in a conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number

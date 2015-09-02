@@ -18,7 +18,7 @@ from jenkinsapi.jenkins import Requester
 # requests_log.propagate = True
 
 
-REQUEST_TIMEOUT_SECONDS = 7
+REQUEST_TIMEOUT_SECONDS = 15
 
 
 class CustomRequester(Requester):

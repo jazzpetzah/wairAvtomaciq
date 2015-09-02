@@ -384,12 +384,14 @@ Feature: Conversation List
   Scenario Outline: Verify muting ongoing call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> change accent color to BrightOrange
     Given <Contact> starts waiting instance using <CallBackend>
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
     And I tap on contact name <Contact>
     And I see dialog page
     And <Contact> calls me using <CallBackend>
+    And I see incoming calling message for contact <Contact>
     And I accept incoming call
     And I see mute call, end call buttons
     And I swipe right on Dialog page
