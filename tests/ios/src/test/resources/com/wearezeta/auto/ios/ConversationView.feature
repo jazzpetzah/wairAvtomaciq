@@ -355,7 +355,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @IPv6 @id526
+  @regression @rc @IPv6 @id526
   Scenario Outline: I can send and play inline youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -474,7 +474,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | Color        | NewName          |
       | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
 
-  @regression @rc @id2124
+  @regression @id2124
   Scenario Outline: Verify archiving conversation from ellipsis menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -493,7 +493,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @rc @id2132
+  @regression @id2132
   Scenario Outline: Verify displaying chathead when another conversation is opened
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
@@ -613,7 +613,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @regression @rc @id3095
+  @regression @id3095
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -637,7 +637,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
 
-  @regression @rc @id3265
+  @regression @id3265
   Scenario Outline: Verify drawing on image from single view
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -679,3 +679,34 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+      
+  @staging @id2781
+  Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
+  	Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> but NO media player 
+    
+    Examples: 
+      | Name      | Contact   | VimeoLink                    |
+      | user1Name | user2Name | https://vimeo.com/categories |
+  
+
+  @staging @id2780
+  Scenario Outline: Verify player is displayed for vimeo links with video IDs
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> and media in dialog
+
+    Examples: 
+      | Name      | Contact1  | VimeoLink                   |
+      | user1Name | user2Name | https://vimeo.com/129426512 |

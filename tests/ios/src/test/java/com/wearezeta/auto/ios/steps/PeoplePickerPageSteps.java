@@ -641,11 +641,27 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see action buttons appeared on People picker page")
+	@When("^I see action buttons appeared on People picker page$")
 	public void ISeeActionButttonsAppearedOnPeoplePickerPage() throws Exception {
 		ISeeOpenConversationActionButton();
 		ISeeCallActionButtonOnPeoplePickerPage();
 		ISeeSendImageActionButtonOnPeoplePickerPage();
 	}
-
+	
+	/**
+	 * Verify that Open, Call and Send image action buttons are NOT visible
+	 * 
+	 * @step. ^I see action buttons disappeared on People picker page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see action buttons disappeared on People picker page$")
+	public void ISeeActionButttonsDisappearedOnPeoplePickerPage() throws Exception {
+		Assert.assertFalse("Open conversation button is still visible",
+				getPeoplePickerPage().isOpenConversationButtonVisible());
+		Assert.assertFalse("Call action button is still visible",
+				getPeoplePickerPage().isCallButtonVisible());
+		Assert.assertFalse("Send image action button is still visible",
+				getPeoplePickerPage().isSendImageButtonVisible());
+	}
 }

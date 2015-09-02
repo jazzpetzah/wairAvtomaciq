@@ -116,7 +116,6 @@ Feature: People View
     And Would open mail client when clicking mail on Group Participants popover
     And I see Pending button on Group Participants popover
     And I see correct pending button tool tip on Group Participants popover
-    And I see Pending text box on Group Participants popover
     When I click Pending button on Group Participants popover
     And I click confirm connect button on Group Participants popover
     Then I see conversation with <UnknownContact> is selected in conversations list

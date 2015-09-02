@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id2281 @smoke
+  @id2281 @smoke @rc
   Scenario Outline: Send connection request from search by name in landscape
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -24,7 +24,7 @@ Feature: Connect
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @id2280 @smoke
+  @id2280 @smoke @rc
   Scenario Outline: Send connection request from search by name in portrait
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -48,7 +48,7 @@ Feature: Connect
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @id2245 @smoke
+  @id2245 @smoke @rc
   Scenario Outline: Accept connection request in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -66,7 +66,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id2259 @smoke
+  @id2259 @smoke @rc
   Scenario Outline: Accept connection request in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to me
@@ -148,7 +148,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | GroupChatName        | Message |
       | user1Name | user2Name | user3Name | NonConnectedUserChat | Yo man! |
 
-  @id3089 @regression
+  @id3089 @regression @rc
   Scenario Outline: Send connection request to user from search results by email (portrait)
     Given There are 2 users where <Name> is me
     Given I rotate UI to portrait
@@ -172,7 +172,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Message       |
       | user1Name | user2Name | user2Email   | Hellow friend |
 
-  @id3102 @regression
+  @id3102 @regression @rc
   Scenario Outline: Send connection request to user from search results by email (landscape)
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape
@@ -196,7 +196,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Message       |
       | user1Name | user2Name | user2Email   | Hellow friend |
 
-  @id2915 @regression
+  @id2915 @regression @rc
   Scenario Outline: Connect to someone from PYMK by clicking + (portrait)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -221,7 +221,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id3117 @regression
+  @id3117 @regression @rc
   Scenario Outline: Connect to someone from PYMK by clicking + (landscape)
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>
@@ -304,7 +304,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Message       |
       | user1Name | user2Name | user3Name | Hellow friend |
 
-  @id2914 @regression
+  @id2914 @regression @rc
   Scenario Outline: Dismiss PYMK item (portrait)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,<Contact3>
@@ -334,7 +334,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @id3116 @regression
+  @id3116 @regression @rc
   Scenario Outline: Dismiss PYMK item (landscape)
     Given There are 4 users where <Name> is me
     Given <Contact1> is connected to <Contact2>,<Contact3>
@@ -566,7 +566,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2846 @regression
+  @id2846 @regression @rc
   Scenario Outline: I can receive new connection request when app in background
     Given There are 2 users where <Name> is me
     Given I rotate UI to landscape

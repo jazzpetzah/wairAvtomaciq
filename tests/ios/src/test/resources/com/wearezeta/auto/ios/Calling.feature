@@ -431,7 +431,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | RejoinGROUPCALL | firefox     | autocall     | 5               |
 
-  @regression @rc @id2690
+  @regression @id2690
   Scenario Outline: Verify receiving 1-to-1 call during group call (and accepting it)
     Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>

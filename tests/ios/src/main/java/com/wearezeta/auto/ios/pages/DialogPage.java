@@ -110,7 +110,7 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathMediaConversationCell)
 	private WebElement mediaLinkCell;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathYoutubeConversationCell)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathYoutubeVimeoConversationCell)
 	private WebElement youtubeCell;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarPlayPauseButton)
@@ -221,9 +221,11 @@ public class DialogPage extends IOSPage {
 
 	public StartedCallPage clickOnCallButtonForContact(String contact)
 			throws Exception {
-		WebElement el = this.getDriver().findElementByXPath(
-				String.format(IOSLocators.xpathUserMessageEntry, contact));
-		el.findElement(By.className("UIAButton")).click();
+		this.getDriver()
+				.findElement(
+						By.xpath(String
+								.format(IOSLocators.xpathFormatMissedCallButtonForContact,
+										contact.toUpperCase()))).click();
 		return new StartedCallPage(getLazyDriver());
 	}
 
@@ -494,7 +496,7 @@ public class DialogPage extends IOSPage {
 
 	public boolean isYoutubeContainerVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathYoutubeConversationCell), 10);
+				By.xpath(IOSLocators.xpathYoutubeVimeoConversationCell), 10);
 	}
 
 	public boolean isMediaContainerVisible() throws Exception {

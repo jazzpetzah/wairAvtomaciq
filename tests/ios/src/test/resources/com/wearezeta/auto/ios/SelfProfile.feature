@@ -73,7 +73,7 @@ Feature: Self Profile
       | Name      | NewUsername        | Contact   |
       | user1Name | New Name           | user2Name |
       
-  @regression @rc @id667
+  @regression @id667
   Scenario Outline: Verify changing and applying accent color
   	Given There are 2 users where <Name> is me
   	Given Myself is connected to <Contact>

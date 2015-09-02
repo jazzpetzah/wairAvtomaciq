@@ -152,6 +152,18 @@ public class CommonIOSSteps {
 	}
 
 	/**
+	 * Dismiss all alerts that appears before timeout
+	 * 
+	 * @step. ^I dismiss all alerts$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I dismiss all alerts$")
+	public void IDismissAllAlerts() throws Exception {
+		pagesCollecton.getCommonPage().dismissAllAlerts();
+	}
+
+	/**
 	 * Hide keyboard using mobile command
 	 * 
 	 * @step. ^I hide keyboard$

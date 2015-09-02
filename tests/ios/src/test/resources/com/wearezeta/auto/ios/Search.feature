@@ -34,7 +34,7 @@ Feature: Search
   Scenario Outline: Verify denying address book uploading
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
-    And I dismiss alert
+    And I dismiss all alerts
     And I dismiss settings warning
     And I open search by taping on it
     And I see Upload contacts dialog
@@ -57,7 +57,7 @@ Feature: Search
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
-    And I dismiss alert
+    And I dismiss all alerts
     And I dismiss settings warning
     And I open search by taping on it
     And I see Upload contacts dialog
@@ -93,7 +93,7 @@ Feature: Search
       | Name      | UserCount | Contact   |
       | user1Name | 4         | user2Name |
 
-  @regression @rc @id1150 
+  @regression @rc @id1150
   Scenario Outline: Start group chat with users from Top Connections
     Given There are <UserCount> users where <Name> is me
     Given Myself is connected to all other users
@@ -119,7 +119,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount | Contact   |
       | user1Name | TopGroupTest | 4         | user2Name |
 
-  @regression @rc @id1454 
+  @regression @rc @id1454
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
     Given User <UnconnectedUser> name starts with <StartLetter>
@@ -332,8 +332,8 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
-    And I tap on first 1 top connections
-    And I see action buttons appeared on People picker page
+    When I tap on first 1 top connections
+    Then I see action buttons appeared on People picker page
 
     Examples: 
       | Name      | Contact   |
@@ -349,8 +349,8 @@ Feature: Search
     And I see People picker page
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
-    And I see action buttons appeared on People picker page
+    When I tap on connected user <Contact> on People picker page
+    Then I see action buttons appeared on People picker page
 
     Examples: 
       | Name      | Contact   |
@@ -366,11 +366,30 @@ Feature: Search
     And I see People picker page
     And I re-enter the people picker if top people list is not there
     And I see top people list on People picker page
-    And I tap on 1st top connection contact
-    And I see open conversation action button on People picker page
-    And I tap on 2nd top connection contact
-    And I see Create Conversation button on People picker page
+    When I tap on 1st top connection contact
+    Then I see open conversation action button on People picker page
+    When I tap on 2nd top connection contact
+    Then I see Create Conversation button on People picker page
 
     Examples: 
-      | Name      | 
+      | Name      |
+      | user1Name |
+
+  @staging @id3278
+  Scenario Outline: Verify action buttons disappear by unchecking the avatar
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    When I tap on 1st top connection contact
+    Then I see action buttons appeared on People picker page
+    When I tap on 1st top connection contact
+    Then I see action buttons disappeared on People picker page
+
+    Examples: 
+      | Name      |
       | user1Name |

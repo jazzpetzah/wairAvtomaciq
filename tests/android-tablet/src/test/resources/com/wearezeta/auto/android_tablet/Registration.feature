@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @id2286 @smoke
+  @id2286 @smoke @rc
   Scenario Outline: Register new user using front camera in landscape mode
     Given I see welcome screen
     Given I rotate UI to landscape
@@ -26,7 +26,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2287 @smoke
+  @id2287 @smoke @rc
   Scenario Outline: Register new user using front camera in portrait mode
     Given I see welcome screen
     Given I rotate UI to portrait

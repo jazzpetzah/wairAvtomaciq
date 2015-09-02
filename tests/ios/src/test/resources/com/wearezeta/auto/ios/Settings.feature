@@ -14,7 +14,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @id729 @regression
+  @regression @rc @id729 
   Scenario Outline: Attempt to open About screen in settings
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -73,7 +73,7 @@ Feature: Settings
       | Name      |
       | user1Name |
       
-  @regression @rc @id2146
+  @regression @id2146
   Scenario Outline: Verify switching on/off chatheads
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>

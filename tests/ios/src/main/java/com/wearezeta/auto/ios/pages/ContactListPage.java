@@ -28,7 +28,7 @@ public class ContactListPage extends IOSPage {
 			.getSimpleName());
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
-	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.85;
+	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
 	private final int CONV_SWIPE_TIME = 1500;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
@@ -583,20 +583,59 @@ public class ContactListPage extends IOSPage {
 							+ "unreadMessageIndicator0_iPad.png");
 				}
 
-			} else {
-				referenceImage = ImageUtil
-						.readImageFromFile(IOSPage.getImagesPath()
-								+ "unreadMessageIndicator0_iPhone.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator0_iPhone6.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6 Plus")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator0_iPhone6Plus.png");
 			}
 		} else if (numberOfMessages == 1) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadMessageIndicator1.png");
+			if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 6")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator1_iPhone6.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6 Plus")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator1_iPhone6Plus.png");
+			} else {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath() + "unreadMessageIndicator1.png");
+			}
 		} else if (numberOfMessages > 1 && numberOfMessages < 10) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadMessageIndicator5.png");
+			if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 6")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator5_iPhone6.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6 Plus")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator5_iPhone6Plus.png");
+			} else {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath() + "unreadMessageIndicator5.png");
+			}
 		} else if (numberOfMessages >= 10) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadMessageIndicator10.png");
+			if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 6")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator10_iPhone6.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6 Plus")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator10_iPhone6Plus.png");
+			} else {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath() + "unreadMessageIndicator10.png");
+			}
 		}
 
 		score = ImageUtil.getOverlapScore(referenceImage,

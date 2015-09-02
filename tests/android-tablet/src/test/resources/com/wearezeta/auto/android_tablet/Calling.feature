@@ -20,7 +20,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @id2910 @regression
+  @id2910 @regression @rc
   Scenario Outline: Calling bar buttons are clickable and change its state (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -45,7 +45,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
-  @id3123 @regression
+  @id3123 @regression @rc
   Scenario Outline: Calling bar buttons are clickable and change its state (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -211,7 +211,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | TextMessage  | PingMessage | AcceptBtnName |
       | user1Name | user2Name | autocall    | text message | YOU PINGED  | Accept        |
 
-  @id3259 @regression
+  @id3259 @regression @rc
   Scenario Outline: Receive call while Wire is running in the background (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

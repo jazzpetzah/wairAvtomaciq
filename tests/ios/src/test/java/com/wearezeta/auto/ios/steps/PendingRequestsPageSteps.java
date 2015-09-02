@@ -64,4 +64,16 @@ public class PendingRequestsPageSteps {
 		Assert.assertTrue(getPendingRequestsPage().isAutoMessageCorrect());
 	}
 
+	/**
+	 * Verifies that ignore and connect button alert is visible
+	 * 
+	 * @step. ^I see accept ignore request alert$
+	 * @throws Throwable
+	 */
+	@When("^I see accept ignore request alert$")
+	public void ISeeAcceptIgnoreRequestAlert() throws Throwable {
+		Assert.assertTrue(getPendingRequestsPage().isConnectButtonDisplayed());
+		Assert.assertTrue(getPendingRequestsPage().isIgnoreButtonDisplayed());
+	}
+
 }

@@ -43,8 +43,8 @@ Feature: Sign In
     #  | Login1  | Password    | Login2   |
     #  | aqaUser | aqaPassword | yourUser |
 
-  @id1413 @smoke
-  Scenario Outline: Negative case for sign in
+  @id1413 @smoke @rc
+  Scenario Outline: User should be notified if the details he enetered on the sign in screen are incorrect
     Given I see welcome screen
     When I switch to email sign in screen
     And I have entered login <Login>

@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @id9 @smoke
+  @id9 @smoke @rc
   Scenario Outline: Register new user by phone and set profile picture using camera
     Given I see welcome screen
     And I input a new phone number for user <Name>
