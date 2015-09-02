@@ -34,8 +34,8 @@ if __name__ == '__main__':
         try:
             jenkins = Jenkins(
                   os.getenv('JENKINS_URL', 'http://192.168.10.44:8080'),
-                  os.getenv('JENKINS_USER', 'root'),
-                  os.getenv('JENKINS_PASSWORD', 'aqa123456'))
+                  os.getenv('JENKINS_USER', 'auto'),
+                  os.getenv('JENKINS_PASSWORD', 'aqa123456!'))
             break
         except requests.exceptions.ConnectionError as e:
             try_num += 1
