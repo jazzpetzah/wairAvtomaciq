@@ -681,7 +681,7 @@ Feature: Conversation View
       | user1Name | user2Name |
 
   @staging @id2780
-  Scenario Outline: Verify player is displaed for vimeo links with video IDs
+  Scenario Outline: Verify player is displayed for vimeo links with video IDs
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given User <Name> sent message <VimeoLink> to conversation <Contact1>
