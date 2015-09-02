@@ -1,7 +1,7 @@
 Feature: Search
 
   @id218 @regression
-  Scenario Outline: I can do full name search for existing 1:1 non-archive
+  Scenario Outline: I can search for contact by full name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -18,7 +18,7 @@ Feature: Search
       | user1Name | user2Name |
 
   @id220 @regression
-  Scenario Outline: I can do full name search for existing group convo non-archive
+  Scenario Outline: I can search group conversation by full name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -34,8 +34,8 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat |
 
-  @id223 @regression
-  Scenario Outline: I can do partial name search for existing 1:1
+  @id223 @regression @rc
+  Scenario Outline: I can search for contact by partial name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
@@ -51,7 +51,7 @@ Feature: Search
       | user1Name | user2Name | 12   |
 
   @id225 @regression
-  Scenario Outline: I can do partial name search for existing group convo non-archive
+  Scenario Outline: I can search group converation by partial name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
@@ -67,7 +67,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName           | Size |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat1 | 5    |
 
-  @id327 @smoke
+  @id327 @smoke @rc
   Scenario Outline: Open Search by tap in search box and close by UI button
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -108,8 +108,8 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id319 @regression
-  Scenario Outline: I can create group chat from Search
+  @id319 @regression @rc
+  Scenario Outline: I can create group chat from Search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
@@ -128,7 +128,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName           |
       | user1Name | user2Name | user3Name | PeoplePicker GroupChat2 |
 
-  @id2214 @regression
+  @id2214 @regression @rc
   Scenario Outline: I can dismiss PYMK by Hide button
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -150,7 +150,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2213 @regression
+  @id2213 @regression @rc
   Scenario Outline: I can dismiss PYMK by swipe
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>

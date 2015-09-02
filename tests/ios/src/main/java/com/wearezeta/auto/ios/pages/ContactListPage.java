@@ -28,7 +28,7 @@ public class ContactListPage extends IOSPage {
 			.getSimpleName());
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
-	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.85;
+	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
 	private final int CONV_SWIPE_TIME = 1500;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
