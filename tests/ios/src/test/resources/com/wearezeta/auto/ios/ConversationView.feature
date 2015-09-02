@@ -679,3 +679,18 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id2780
+  Scenario Outline: Verify player is displaed for vimeo links with video IDs
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> and media in dialog
+
+    Examples: 
+      | Name      | Contact1  | VimeoLink                   |
+      | user1Name | user2Name | https://vimeo.com/129426512 |
