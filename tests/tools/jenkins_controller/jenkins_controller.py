@@ -23,7 +23,9 @@ if __name__ == '__main__':
     try_num = 0
     while True:
         try:
-            base_url = os.getenv('JENKINS_URL', 'http://192.168.10.44:8080')
+            base_url = os.getenv('INTERNAL_JENKINS_URL', None)
+            if base_url is None:
+                base_url = os.getenv('JENKINS_URL', 'http://192.168.10.44:8080')
             user = os.getenv('JENKINS_USER', 'auto')
             password = os.getenv('JENKINS_PASSWORD', 'aqa123456!')
             jenkins = Jenkins(base_url, user, password,
