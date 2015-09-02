@@ -364,11 +364,11 @@ public final class IOSLocators {
 
 	public static final String xpathCloseColorModeButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[4]";
 
-	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'people')]";
+	public static String xpathNumberPeopleText = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAStaticText[contains(@name, 'PEOPLE')]";
 
 	public static final String addPeopleCountTextSubstring = "Add";
 
-	public static final String peopleCountTextSubstring = " people";
+	public static final String peopleCountTextSubstring = " PEOPLE";
 
 	// /////////////////////
 	// Video Player Locators
