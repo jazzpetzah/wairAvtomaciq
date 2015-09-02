@@ -267,6 +267,7 @@ Feature: Connect
     And I accept alert
     Then I see CONNECT label
     And I see user <Contact1> found on People picker page
+
     #And I see user <Contact2> found on People picker page
     Examples: 
       | Name      | Contact1 | Contact2 |
@@ -301,14 +302,14 @@ Feature: Connect
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I click plus button next to text input
-    And I open conversation details    
+    And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-	And I see Details button is visible
+    And I see Details button is visible
     And I return to the chat list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
-	And I see user <Contact1> found on People picker page
+    And I see user <Contact1> found on People picker page
     And I tap on NOT connected user name on People picker page <Contact1>
     And I see connect to <Contact1> dialog
     And I click Connect button on connect to dialog
@@ -318,3 +319,30 @@ Feature: Connect
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @staging @id586
+  Scenario Outline: Verify ignoring a connection request from another person (People view)
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact3> sent connection request to me
+    Given <Contact1> is connected to <Contact2>,<Contact3>
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I select contact <Contact3>
+    And I see <Contact3> user pending profile page
+    And I click on start conversation button on pending profile page
+    And I see accept ignore request alert
+    And I click on Ignore button on Pending requests page
+    And I close user profile page to return to dialog page
+    And I exit the group info page
+    And I return to the chat list
+    Then I dont see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
