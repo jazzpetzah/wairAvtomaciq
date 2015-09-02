@@ -5,6 +5,7 @@ import imp
 import pprint
 import random
 import re
+import sys
 import time
 import traceback
 import os
@@ -56,7 +57,7 @@ class CliHandlerBase(object):
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
                     raise e
-                print 'Sleeping a while before retry #{} of {}...'.format(try_num, MAX_TRY_COUNT)
+                sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
                 time.sleep(random.randint(2, 10))
 
 

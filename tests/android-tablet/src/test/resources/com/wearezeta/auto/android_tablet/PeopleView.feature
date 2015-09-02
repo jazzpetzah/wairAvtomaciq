@@ -229,7 +229,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Message |
       | user1Name | user2Name | user3Name | GroupChat     | Msg     |
 
-  @id2824 @staging
+  @id2824 @regression
   Scenario Outline: I can access user details page from group details pop-over (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -252,7 +252,7 @@ Feature: People View
       | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName |
       | user1Name | user2Name  | user2Email    | user3Name | GroupChat     |
 
-  @id3150 @staging
+  @id3150 @regression
   Scenario Outline: I can access user details page from group details pop-over (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
