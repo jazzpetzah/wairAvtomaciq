@@ -487,7 +487,7 @@ public final class IOSLocators {
 	public static final String namePeoplePickerContactsLabel = "CONTACTS";
 	public static final String namePeoplePickerOtheraLabel = "OTHERS";
 	public static final String NamePeoplePickerTopPeopleLabel = "TOP PEOPLE";
-	public static final String xpathPeoplePickerUserAvatar = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell/UIAStaticText[@name='%s']/..";
+	public static final String xpathPeoplePickerUserAvatar = "//UIACollectionCell[descendant::UIAButton[@name='HIDE'] and UIAStaticText[@name='%s']]";
 	public static final String namePeoplePickerAddToConversationButton = "ADD TO CONVERSATION";
 	public static final String xpathPeoplePickerTopConnectionsAvatar = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]";
 	public static final String xpathPeoplePickerTopConnectionsName = "//UIAWindow[@name='ZClientMainWindow']/UIACollectionView/UIACollectionCell/UIACollectionView/UIACollectionCell[%d]/UIAStaticText[last()]";
