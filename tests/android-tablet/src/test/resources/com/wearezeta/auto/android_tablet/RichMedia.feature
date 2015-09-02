@@ -1,6 +1,6 @@
 Feature: Rich Media
 
-  @id2830 @regression
+  @id2830 @regression @rc
   Scenario Outline: Send GIF format pic (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -21,7 +21,7 @@ Feature: Rich Media
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @id3141 @regression
+  @id3141 @regression @rc
   Scenario Outline: Send GIF format pic (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

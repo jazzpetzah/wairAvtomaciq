@@ -23,7 +23,7 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class PeoplePickerPage extends IOSPage {
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePickerSearch)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPickerSearch)
 	private WebElement peoplePickerSearch;
 
 	@FindBy(how = How.NAME, using = IOSLocators.namePickerClearButton)
@@ -141,7 +141,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public Boolean isPeoplePickerPageVisible() throws Exception {
 		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.namePickerSearch));
+				By.xpath(IOSLocators.xpathPickerSearch));
 		Thread.sleep(1000);
 		clickLaterButton();
 		return result;
@@ -207,7 +207,13 @@ public class PeoplePickerPage extends IOSPage {
 
 	public ConnectToPage clickOnNotConnectedUser(String name) throws Exception {
 		ConnectToPage page;
-		getDriver().findElement(By.name(name)).click();
+		WebElement foundContact = getDriver().findElement(
+				By.xpath(String.format(
+						IOSLocators.PeoplePickerPage.xpathFormatFoundContact,
+						name)));
+		DriverUtils.waitUntilElementClickable(getDriver(), foundContact);
+		foundContact.click();
+
 		page = new ConnectToPage(this.getLazyDriver());
 		return page;
 	}

@@ -16,7 +16,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id318 @smoke
+  @id318 @smoke @rc
   Scenario Outline: Send Camera picture to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -34,7 +34,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1262 @smoke
+  @id1262 @smoke @rc
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -59,7 +59,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id320 @smoke
+  @id320 @smoke @rc
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -76,7 +76,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | GroupChatName     | Message |
       | user1Name | user2Name | user3Name | SendMessGroupChat | Yo      |
 
-  @id143 @regression
+  @id143 @regression @rc
   Scenario Outline: Send Long Message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -183,7 +183,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id162 @regression
+  @id162 @regression @rc
   Scenario Outline: Send existing image from gallery (landscape) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -234,7 +234,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1504 @regression
+  @id1504 @regression @rc
   Scenario Outline: Verify you can play/pause media from the Media Bar (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -273,8 +273,8 @@ Feature: Conversation View
       | Name      | Contact1  | SoudCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id170 @regression
-  Scenario Outline: Verify you can send and play youtube link
+  @id170 @regression @rc
+  Scenario Outline: Verify you can send youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I sign in using my email or phone number
@@ -289,7 +289,7 @@ Feature: Conversation View
       | Name      | Contact1  | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @id3242 @staging
+  @id3242 @staging @rc
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -309,7 +309,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id3243 @regression
+  @id3243 @regression @rc
   Scenario Outline: I can send sketch on image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -356,7 +356,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id2990 @regression
+  @id2990 @regression @rc
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -377,7 +377,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id165 @regression
+  @id165 @regression @rc
   Scenario Outline: Send GIF format pic
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

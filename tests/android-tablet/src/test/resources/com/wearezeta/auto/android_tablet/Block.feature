@@ -66,7 +66,7 @@ Feature: Block
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @id2859 @regression
+  @id2859 @regression @rc
   Scenario Outline: I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -90,7 +90,7 @@ Feature: Block
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2858 @regression
+  @id2858 @regression @rc
   Scenario Outline: I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
