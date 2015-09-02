@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.util.concurrent.Future;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -14,7 +15,7 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 public class GiphyPreviewPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.GiphyPreviewPage.nameGiphyRefreshButton)
-	private WebElement giphyRefreshButton;
+	private WebElement giphyMoreButton;
 
 	@FindBy(how = How.NAME, using = IOSLocators.GiphyPreviewPage.nameGiphyLinkButton)
 	private WebElement giphyLinkButton;
@@ -51,7 +52,7 @@ public class GiphyPreviewPage extends IOSPage {
 	
 	public boolean isGiphyRefreshButtonVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				giphyRefreshButton);
+				giphyMoreButton);
 	}
 	
 	public boolean isGiphyLinkButtonVisible() throws Exception {
@@ -65,8 +66,7 @@ public class GiphyPreviewPage extends IOSPage {
 	}
 	
 	public boolean isGiphyImageVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				giphyImage);
+		return DriverUtils.waitUntilLocatorAppears(getDriver(), By.xpath(IOSLocators.GiphyPreviewPage.xpathGithyImage));
 	}
 	
 	public boolean isGiphyRejectButtonVisible() throws Exception {
@@ -82,6 +82,16 @@ public class GiphyPreviewPage extends IOSPage {
 	public boolean isNoGifsTextVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				noGifsText);
+	}
+	
+	public void clickGiphyMoreButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), giphyMoreButton);
+		giphyMoreButton.click();
+	}
+	
+	public boolean isGiphyGridShown() throws Exception {
+		int i = this.getDriver().findElements(By.xpath(IOSLocators.GiphyPreviewPage.xpathGiphyGrid)).size();
+		return i > 2;
 	}
 	
 }

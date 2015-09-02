@@ -43,8 +43,8 @@ public class PeoplePickerPage extends AndroidPage {
 					name);
 
 	public static final String idPickerSearch = "puet_pickuser__searchbox";
-	@FindBy(id = idPickerSearch)
-	private WebElement pickerSearch;
+	// @FindBy(id = idPickerSearch)
+	// public WebElement pickerSearch;
 
 	public static final String idPeoplePickerClearbtn = "gtv_pickuser__clearbutton";
 
@@ -60,7 +60,6 @@ public class PeoplePickerPage extends AndroidPage {
 			.format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']",
 					name);
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
@@ -121,9 +120,30 @@ public class PeoplePickerPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
+	public WebElement findCorrectPickerSearch() throws Exception {
+		WebElement result = null;
+		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id(idPickerSearch));
+		List<WebElement> pickerSearches = getDriver().findElements(
+				By.id(idPickerSearch));
+		for (WebElement candidate : pickerSearches) {
+			if (DriverUtils
+					.isElementPresentAndDisplayed(getDriver(), candidate)
+					&& candidate.getLocation().getX() >= 0
+					&& candidate.getLocation().getY() >= 0) {
+				result = candidate;
+			}
+		}
+		return result;
+	}
+
 	public void tapPeopleSearch() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idPickerSearch)) : "The People Picker search input is not visible";
+		WebElement pickerSearch = findCorrectPickerSearch();
+		boolean isDisplayed = DriverUtils.isElementPresentAndDisplayed(
+				getDriver(), pickerSearch);
+		if (!isDisplayed)
+			log.debug("The People Picker search input is not visible: "
+					+ getDriver().getPageSource());
+		assert isDisplayed : "The People Picker search input is not visible";
 		pickerSearch.click();
 	}
 
@@ -135,11 +155,13 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public void typeTextInPeopleSearch(String text) throws Exception {
+		WebElement pickerSearch = findCorrectPickerSearch();
 		pickerSearch.clear();
 		pickerSearch.sendKeys(text);
 	}
 
 	public void addTextToPeopleSearch(String text) throws Exception {
+		WebElement pickerSearch = findCorrectPickerSearch();
 		pickerSearch.sendKeys(text);
 	}
 
@@ -178,7 +200,11 @@ public class PeoplePickerPage extends AndroidPage {
 			}
 			scanTry++;
 		}
-		DriverUtils.tapInTheCenterOfTheElement(getDriver(), pickerSearchUser);
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				pickerSearchUser)) {
+			DriverUtils.tapInTheCenterOfTheElement(getDriver(),
+					pickerSearchUser);
+		}
 		return new DialogPage(this.getLazyDriver());
 	}
 
@@ -214,6 +240,7 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isPeoplePickerPageVisible() throws Exception {
+		WebElement pickerSearch = findCorrectPickerSearch();
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				pickerSearch);
 	}

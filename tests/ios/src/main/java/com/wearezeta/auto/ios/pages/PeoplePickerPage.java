@@ -23,7 +23,7 @@ import com.wearezeta.auto.ios.locators.IOSLocators;
 
 public class PeoplePickerPage extends IOSPage {
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePickerSearch)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPickerSearch)
 	private WebElement peoplePickerSearch;
 
 	@FindBy(how = How.NAME, using = IOSLocators.namePickerClearButton)
@@ -86,6 +86,9 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultCell)
 	private WebElement searchResultCell;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultCellAvatar)
+	private WebElement searchResultAvatar;
+
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathSearchResultContainer)
 	private WebElement searchResultContainer;
 
@@ -94,6 +97,12 @@ public class PeoplePickerPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.PeoplePickerPage.nameOpenConversationButton)
 	private WebElement openConversationButton;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.PeoplePickerPage.xpathCallButton)
+	private WebElement callButton;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.PeoplePickerPage.xpathSendImageButton)
+	private WebElement sendImageButton;
 
 	private int numberTopSelected = 0;
 
@@ -110,7 +119,7 @@ public class PeoplePickerPage extends IOSPage {
 	}
 
 	public void closeShareContactsIfVisible() throws Exception {
-		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), notNowButton)) {
+		if (DriverUtils.waitUntilElementClickable(getDriver(), notNowButton, 1)) {
 			clickNotNowButton();
 		}
 	}
@@ -132,7 +141,7 @@ public class PeoplePickerPage extends IOSPage {
 
 	public Boolean isPeoplePickerPageVisible() throws Exception {
 		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.namePickerSearch));
+				By.xpath(IOSLocators.xpathPickerSearch));
 		Thread.sleep(1000);
 		clickLaterButton();
 		return result;
@@ -155,19 +164,31 @@ public class PeoplePickerPage extends IOSPage {
 		BufferedImage clockImage = getAvatarClockIconScreenShot(name);
 		path = CommonUtils.getAvatarWithClockIconPathIOS(GroupChatPage.class);
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		double score = ImageUtil.getOverlapScore(clockImage, templateImage, 1);
+		double score = ImageUtil.getOverlapScore(clockImage, templateImage,
+				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+
 		return score;
 	}
 
 	public BufferedImage getAvatarClockIconScreenShot(String name)
 			throws Exception {
-		return getScreenshotByCoordinates(
-				searchResultCell.getLocation().x,
-				searchResultCell.getLocation().y * 2,
-				searchResultCell.getSize().height * 5 / 2,
-				searchResultCell.getLocation().y
-						+ searchResultCell.getSize().height * 4 / 5)
-				.orElseThrow(IllegalStateException::new);
+		int multiply = 1;
+		String device = CommonUtils.getDeviceName(this.getClass());
+		if (device.equalsIgnoreCase("iPhone 6")
+				|| device.equalsIgnoreCase("iPad Air")) {
+			multiply = 2;
+		} else if (device.equalsIgnoreCase("iPhone 6 Plus")) {
+			multiply = 3;
+		}
+
+		int x = multiply * searchResultCell.getLocation().x;
+		int y = multiply * searchResultCell.getLocation().y;
+		int w = multiply
+				* (searchResultCell.getLocation().x + searchResultCell
+						.getSize().width / 4);
+		int h = multiply * searchResultCell.getSize().height;
+		return getScreenshotByCoordinates(x, y, w, h).orElseThrow(
+				IllegalStateException::new);
 	}
 
 	public void fillTextInPeoplePickerSearch(String text) {
@@ -186,7 +207,13 @@ public class PeoplePickerPage extends IOSPage {
 
 	public ConnectToPage clickOnNotConnectedUser(String name) throws Exception {
 		ConnectToPage page;
-		getDriver().findElement(By.name(name)).click();
+		WebElement foundContact = getDriver().findElement(
+				By.xpath(String.format(
+						IOSLocators.PeoplePickerPage.xpathFormatFoundContact,
+						name)));
+		DriverUtils.waitUntilElementClickable(getDriver(), foundContact);
+		foundContact.click();
+
 		page = new ConnectToPage(this.getLazyDriver());
 		return page;
 	}
@@ -479,7 +506,18 @@ public class PeoplePickerPage extends IOSPage {
 
 	}
 
+	public void tapOnTopConnectionAvatarByOrder(int i) throws Exception {
+		getDriver().findElement(
+				By.xpath(String.format(
+						IOSLocators.xpathPeoplePickerTopConnectionsAvatar, i)))
+				.click();
+
+	}
+
 	public boolean isOpenConversationButtonVisible() throws Exception {
+		DriverUtils.waitUntilLocatorAppears(getDriver(), By
+				.name(IOSLocators.PeoplePickerPage.nameOpenConversationButton),
+				5);
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				openConversationButton);
 	}
@@ -488,6 +526,26 @@ public class PeoplePickerPage extends IOSPage {
 		DriverUtils.waitUntilElementClickable(getDriver(),
 				openConversationButton);
 		openConversationButton.click();
+	}
+
+	public boolean isCallButtonVisible() throws Exception {
+		return DriverUtils
+				.isElementPresentAndDisplayed(getDriver(), callButton);
+	}
+
+	public void clickCallButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), callButton);
+		callButton.click();
+	}
+
+	public boolean isSendImageButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				sendImageButton);
+	}
+
+	public void clickSendImageButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), sendImageButton);
+		sendImageButton.click();
 	}
 
 }

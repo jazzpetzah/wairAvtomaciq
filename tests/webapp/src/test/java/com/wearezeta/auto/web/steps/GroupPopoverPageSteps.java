@@ -640,7 +640,7 @@ public class GroupPopoverPageSteps {
 				String email = null;
 				try {
 					email = usrMgr.findUserByEmailOrEmailAlias(mailAlias)
-							.getEmail();
+							.getEmail().toUpperCase();
 				} catch (NoSuchUserException e) {
 					// Ignore silently
 				}

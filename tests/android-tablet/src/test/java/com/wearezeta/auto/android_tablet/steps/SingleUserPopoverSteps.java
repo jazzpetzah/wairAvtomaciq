@@ -116,11 +116,10 @@ public class SingleUserPopoverSteps {
 	public void ISeeUserEmail(String expectedEmail) throws Exception {
 		expectedEmail = usrMgr.findUserByEmailOrEmailAlias(expectedEmail)
 				.getEmail();
-		Assert.assertTrue(
-				String.format(
-						"The user email '%s' is not displayed on [Ss]imgle user popover",
-						expectedEmail), getSingleUserPopover()
-						.waitUntilUserEmailVisible(expectedEmail));
+		Assert.assertTrue(String.format(
+				"The user email '%s' is not displayed on Single user popover",
+				expectedEmail), getSingleUserPopover()
+				.waitUntilUserEmailVisible(expectedEmail));
 	}
 
 	/**
@@ -207,6 +206,18 @@ public class SingleUserPopoverSteps {
 	@And("^I tap (?:the |\\s*)Add To Conversation button on [Ss]ingle user popover$")
 	public void ITapAddToConversationButton() throws Exception {
 		getSingleUserPopover().tapAddToConversationButton();
+	}
+
+	/**
+	 * Tap outside the popover
+	 * 
+	 * @step. ^I tap outside of [Ss]ingle user popover$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap outside of [Ss]ingle user popover$")
+	public void ITapOutside() throws Exception {
+		getSingleUserPopover().tapOutside();
 	}
 
 }

@@ -8,7 +8,7 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class SelfProfileCameraPage extends AbstractCameraPage {
 	public static final String idChangePictureButton = "gtv__camera_control__change_image_source";
-		
+
 	public SelfProfileCameraPage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -18,5 +18,4 @@ public class SelfProfileCameraPage extends AbstractCameraPage {
 	protected By getLensButtonLocator() {
 		return By.id(idChangePictureButton);
 	}
-
 }

@@ -18,6 +18,14 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
 	public static final Function<String, String> xpathParticipantAvatarByName = name -> String
 			.format("//*[@id='%s']//*[@value='%s']/parent::*/parent::*",
 					GroupPopover.idRootLocator, name.toUpperCase());
+	
+	private static final String idConvoNameInput = "taet__participants__header__editable";
+	@FindBy(id = idConvoNameInput)
+	private WebElement convoNameInput;
+
+	private static final String idOpenConversationButton = "gtv__participants__left__action";
+	@FindBy(id = idOpenConversationButton)
+	private WebElement openConversationButton;
 
 	public ParticipantsPage(Future<ZetaAndroidDriver> lazyDriver,
 			GroupPopover container) throws Exception {
@@ -44,6 +52,17 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
 			throws Exception {
 		final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
+	public void renameConversation(String newName) throws Exception {
+		convoNameInput.click();
+		convoNameInput.clear();
+		convoNameInput.sendKeys(newName);
+		getDriver().tapSendButton();
+	}
+
+	public void tapOpenConversationButton() {
+		openConversationButton.click();
 	}
 
 }

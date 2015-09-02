@@ -39,4 +39,10 @@ abstract class AbstractOutgoingConnectionPage extends AbstractConnectionPage {
 		connectButton.click();
 	}
 
+	public boolean isConnectButtonTappable() throws Exception {
+		final WebElement connectButton = getDriver().findElement(
+				getConnectButtonLocator());
+		return DriverUtils.waitUntilElementClickable(getDriver(),
+				connectButton, 2);
+	}
 }

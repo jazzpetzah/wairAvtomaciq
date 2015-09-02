@@ -71,16 +71,21 @@ public class DriverUtils {
 	public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver,
 			final WebElement element) {
 		try {
-			final Rectangle elementRect = new Rectangle(
-					element.getLocation().x, element.getLocation().y,
-					element.getSize().width, element.getSize().height);
-			final Rectangle screenRect = new Rectangle(0, 0, driver.manage()
-					.window().getSize().width, driver.manage().window()
-					.getSize().height);
-			return (element.isDisplayed() && elementRect.intersects(screenRect));
+			return (element.isDisplayed() && isElementInScreenRect(driver,
+					element));
 		} catch (NoSuchElementException e) {
 			return false;
 		}
+	}
+
+	private static boolean isElementInScreenRect(RemoteWebDriver driver,
+			final WebElement el) {
+		final Rectangle elementRect = new Rectangle(el.getLocation().x,
+				el.getLocation().y, el.getSize().width, el.getSize().height);
+		final Rectangle screenRect = new Rectangle(0, 0, driver.manage()
+				.window().getSize().width,
+				driver.manage().window().getSize().height);
+		return elementRect.intersects(screenRect);
 	}
 
 	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
@@ -132,14 +137,8 @@ public class DriverUtils {
 					return (drv.findElements(by).size() == 0)
 							|| (drv.findElements(by).size() > 0 && !drv
 									.findElement(by).isDisplayed())
-							|| (drv.findElement(by).getLocation().x > drv
-									.manage().window().getSize().width)
-							|| (drv.findElement(by).getLocation().y > drv
-									.manage().window().getSize().height)
-							|| (drv.findElements(by).size() > 0 && drv
-									.findElement(by).getLocation().x < 0)
-							|| (drv.findElements(by).size() > 0 && drv
-									.findElement(by).getLocation().y < 0);
+							|| !isElementInScreenRect(driver,
+									driver.findElement(by));
 				} catch (WebDriverException e) {
 					return true;
 				}
@@ -201,15 +200,22 @@ public class DriverUtils {
 		}
 	}
 
-	public static void waitUntilAlertAppears(AppiumDriver driver)
+	public static boolean waitUntilAlertAppears(AppiumDriver driver)
 			throws Exception {
+		return waitUntilAlertAppears(driver, 20);
+	}
+
+	public static boolean waitUntilAlertAppears(AppiumDriver driver,
+			long timeout) throws Exception {
 		DriverUtils.turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(20, TimeUnit.SECONDS)
+					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-			wait.until(ExpectedConditions.alertIsPresent());
+			return (wait.until(ExpectedConditions.alertIsPresent()) != null);
+		} catch (TimeoutException e) {
+			return false;
 		} finally {
 			restoreImplicitWait(driver);
 		}

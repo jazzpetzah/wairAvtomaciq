@@ -37,12 +37,43 @@ public class GiphyPreviewPageSteps {
 	 */
 	@When("^I see giphy preview page$")
 	public void ISeeGiphyPreviewPage() throws Exception {
-		Assert.assertTrue("Giphy Refresh Button is not visible", getGiphyPreviewPage().isGiphyRefreshButtonVisible());
-		Assert.assertTrue("Giphy Link Button is not visible", getGiphyPreviewPage().isGiphyLinkButtonVisible());
-		Assert.assertTrue("Giphy Title Button is not visible", getGiphyPreviewPage().isGiphyTitleButtonVisible());
-		Assert.assertTrue("Giphy Image is not visible", getGiphyPreviewPage().isGiphyImageVisible());
-		Assert.assertTrue("Giphy Reject Button is not visible", getGiphyPreviewPage().isGiphyRejectButtonVisible());
-		Assert.assertTrue("Giphy Send Button is not visible", getGiphyPreviewPage().isGiphySendButtonVisible());
+		Assert.assertTrue("Giphy Refresh Button is not visible",
+				getGiphyPreviewPage().isGiphyRefreshButtonVisible());
+		Assert.assertTrue("Giphy Link Button is not visible",
+				getGiphyPreviewPage().isGiphyLinkButtonVisible());
+		Assert.assertTrue("Giphy Title Button is not visible",
+				getGiphyPreviewPage().isGiphyTitleButtonVisible());
+		Assert.assertTrue("Giphy Image is not visible", getGiphyPreviewPage()
+				.isGiphyImageVisible());
+		Assert.assertTrue("Giphy Reject Button is not visible",
+				getGiphyPreviewPage().isGiphyRejectButtonVisible());
+		Assert.assertTrue("Giphy Send Button is not visible",
+				getGiphyPreviewPage().isGiphySendButtonVisible());
+	}
+	
+	/**
+	 * Click on more gifs button
+	 * 
+	 * @step. ^I click more giphy button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click more giphy button$")
+	public void IClickMoreGiphyButton() throws Exception {
+		getGiphyPreviewPage().clickGiphyMoreButton();
+	}
+
+	/**
+	 * Verify that giphy grid is shown
+	 * 
+	 * @step. ^I see giphy grid preview$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see giphy grid preview$")
+	public void ISeeGiphyGridPreview() throws Exception {
+		Assert.assertTrue("Giphy grid is not shown", getGiphyPreviewPage()
+				.isGiphyGridShown());
 	}
 
 }

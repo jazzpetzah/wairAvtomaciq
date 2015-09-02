@@ -163,18 +163,22 @@ public class CommonWebAppSteps {
                     capabilities);
                 // setup of the browser
                 lazyWebDriver.setFileDetector(new LocalFileDetector());
-                if (WebAppExecutionContext.getBrowser().hasResizingWindowBug()) {
-                    // http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
-                    lazyWebDriver
-                        .manage()
-                        .window()
-                        .setSize(
-                            new Dimension(
-                                WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
-                                WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
-                } else {
-                    lazyWebDriver.manage().window().maximize();
-                }
+				if (WebAppExecutionContext.getBrowser()
+						.isSupportingMaximizingTheWindow()) {
+					lazyWebDriver.manage().window().maximize();
+				} else {
+					if (WebAppExecutionContext.getBrowser()
+							.isSupportingSettingWindowSize()) {
+						// http://stackoverflow.com/questions/14373371/ie-is-continously-maximizing-and-minimizing-when-test-suite-executes
+						lazyWebDriver
+								.manage()
+								.window()
+								.setSize(
+										new Dimension(
+												WebAppConstants.MIN_WEBAPP_WINDOW_WIDTH,
+												WebAppConstants.MIN_WEBAPP_WINDOW_HEIGHT));
+					}
+				}
                 if (WebAppExecutionContext.getBrowser().equals(Browser.Safari)) {
                     WebCommonUtils.clearHistoryInSafari(lazyWebDriver
                         .getNodeIp());
@@ -206,35 +210,38 @@ public class CommonWebAppSteps {
     }
 
     private static DesiredCapabilities getCustomCapabilities(String platform,
-        String osName, String osVersion, String browserName,
-        String browserVersion, String uniqueTestName) throws Exception {
-        final DesiredCapabilities capabilities;
-        Browser browser = Browser.fromString(browserName);
-        switch (browser) {
-            case Chrome:
-                capabilities = DesiredCapabilities.chrome();
-                setCustomChromeProfile(capabilities);
-                break;
-            case Opera:
-                capabilities = DesiredCapabilities.chrome();
-                setCustomOperaProfile(capabilities);
-                break;
-            case Firefox:
-                capabilities = DesiredCapabilities.firefox();
-                setCustomFirefoxProfile(capabilities);
-                break;
-            case Safari:
-                capabilities = DesiredCapabilities.safari();
-                setCustomSafariProfile(capabilities);
-                break;
-            case InternetExplorer:
-                capabilities = DesiredCapabilities.internetExplorer();
-                setCustomIEProfile(capabilities);
-                break;
-            default:
-                throw new NotImplementedException(
-                    "Unsupported/incorrect browser name is set: " + browserName);
-        }
+			String osName, String osVersion, String browserName,
+			String browserVersion, String uniqueTestName) throws Exception {
+		final DesiredCapabilities capabilities;
+		Browser browser = Browser.fromString(browserName);
+		switch (browser) {
+		case Chrome:
+			capabilities = DesiredCapabilities.chrome();
+			setCustomChromeProfile(capabilities);
+			break;
+		case Opera:
+			capabilities = DesiredCapabilities.chrome();
+			setCustomOperaProfile(capabilities);
+			break;
+		case Firefox:
+			capabilities = DesiredCapabilities.firefox();
+			setCustomFirefoxProfile(capabilities);
+			break;
+		case Safari:
+			capabilities = DesiredCapabilities.safari();
+			setCustomSafariProfile(capabilities);
+			break;
+		case InternetExplorer:
+			capabilities = DesiredCapabilities.internetExplorer();
+			setCustomIEProfile(capabilities);
+			break;
+		case MicrosoftEdge:
+			capabilities = DesiredCapabilities.edge();
+			break;
+		default:
+			throw new NotImplementedException(
+					"Unsupported/incorrect browser name is set: " + browserName);
+		}
 
         if (browser.isSupportingConsoleLogManagement()) {
             setExtendedLoggingLevel(

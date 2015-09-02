@@ -138,20 +138,6 @@ public abstract class AndroidPage extends BasePage {
 		return this.getDriver().getOrientation();
 	}
 
-	public void minimizeApplication() throws Exception {
-		AndroidCommonUtils.switchToHomeScreen();
-	}
-
-	public void lockScreen() throws Exception {
-		AndroidCommonUtils.lockScreen();
-	}
-
-	public void restoreApplication() throws Exception {
-		AndroidCommonUtils.switchToApplication(
-				CommonUtils.getAndroidPackageFromConfig(this.getClass()),
-				CommonUtils.getAndroidActivityFromConfig(this.getClass()));
-	}
-
 	public AndroidPage returnBySwipe(SwipeDirection direction) throws Exception {
 		return null;
 	};
@@ -316,32 +302,50 @@ public abstract class AndroidPage extends BasePage {
 	public static final int SWIPE_DEFAULT_PERCENTAGE_END = 90;
 	public static final int SWIPE_DEFAULT_PERCENTAGE = 50;
 
+	/**
+	 * Swipe from x = 90% of width to x = 10% of width. y = height/2
+	 */
 	public void swipeRightCoordinates(int durationMilliseconds)
 			throws Exception {
 		swipeRightCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
 	}
 
+	/**
+	 * Swipe from x = 10% of width to x = 90% of width. y = heightPercent
+	 */
 	public void swipeRightCoordinates(int durationMilliseconds,
 			int heightPercent) throws Exception {
 		swipeByCoordinates(durationMilliseconds,
 				SWIPE_DEFAULT_PERCENTAGE_START, heightPercent,
 				SWIPE_DEFAULT_PERCENTAGE_END, heightPercent);
 	}
-
+	
+	/**
+	 * Swipe from x = 90% of width to x = 10% of width. y = height/2
+	 */
 	public void swipeLeftCoordinates(int durationMilliseconds) throws Exception {
 		swipeLeftCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
 	}
 
+	/**
+	 * Swipe from x = 90% of width to x = 10% of width. y = heightPercent
+	 */
 	public void swipeLeftCoordinates(int durationMilliseconds, int heightPercent)
 			throws Exception {
 		swipeByCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE_END,
 				heightPercent, SWIPE_DEFAULT_PERCENTAGE_START, heightPercent);
 	}
 
+	/**
+	 * Swipe from y = 90% of hight to y = 10% of hight. x = width/2
+	 */
 	public void swipeUpCoordinates(int durationMilliseconds) throws Exception {
 		swipeUpCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
 	}
 
+	/**
+	 * Swipe from y = 90% of hight to y = 10% of hight. x = widthPercent
+	 */
 	public void swipeUpCoordinates(int durationMilliseconds, int widthPercent)
 			throws Exception {
 		swipeByCoordinates(durationMilliseconds, widthPercent,
@@ -349,10 +353,15 @@ public abstract class AndroidPage extends BasePage {
 				SWIPE_DEFAULT_PERCENTAGE_START);
 	}
 
+	/**
+	 * Swipe from y = 10% of hight to y = 90% of hight. x = width/2
+	 */
 	public void swipeDownCoordinates(int durationMilliseconds) throws Exception {
 		swipeDownCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
 	}
-
+	/**
+	 * Swipe from y = 10% of hight to y = 90% of hight. x = widthPercent
+	 */
 	public void swipeDownCoordinates(int durationMilliseconds, int widthPercent)
 			throws Exception {
 		swipeByCoordinates(durationMilliseconds, widthPercent,

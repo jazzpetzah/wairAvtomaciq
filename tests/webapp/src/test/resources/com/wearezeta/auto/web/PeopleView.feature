@@ -3,6 +3,7 @@ Feature: People View
   @regression @id1686
   Scenario Outline: Verify you can access proﬁle information for the other participant in a 1to1 conversation
     Given There are 2 users where <Name> is me
+    Given User <Contact> changes avatar picture to <Avatar>
     Given Myself is connected to <Contact>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
@@ -11,12 +12,14 @@ Feature: People View
     And I click People button in one to one conversation
     Then I see Single User Profile popover
     And I see username <Contact> on Single User Profile popover
+    And I see Mail of user <Contact> on Single Participant popover
+    And I see avatar <Avatar> of user <Contact> on Single Participant popover
     And I see Add people button on Single User Profile popover
     And I see Block button on Single User Profile popover
 
     Examples: 
-      | Login      | Password      | Name      | Contact   |
-      | user1Email | user1Password | user1Name | user2Name |
+      | Login      | Password      | Name      | Contact   | Avatar                   |
+      | user1Email | user1Password | user1Name | user2Name | userpicture_portrait.jpg |
 
   @regression @id1692
   Scenario Outline: Leave from group chat
@@ -83,7 +86,6 @@ Feature: People View
     And I do not see Mail on Group Participants popover
     And I see Pending button on Group Participants popover
     And I see correct pending button tool tip on Group Participants popover
-    And I see Pending text box on Group Participants popover
     When I click Pending button on Group Participants popover
     Then I see conversation with <UnknownContact> is selected in conversations list
 
@@ -114,7 +116,6 @@ Feature: People View
     And Would open mail client when clicking mail on Group Participants popover
     And I see Pending button on Group Participants popover
     And I see correct pending button tool tip on Group Participants popover
-    And I see Pending text box on Group Participants popover
     When I click Pending button on Group Participants popover
     And I click confirm connect button on Group Participants popover
     Then I see conversation with <UnknownContact> is selected in conversations list
@@ -224,46 +225,45 @@ Feature: People View
     When I click ignore connect button on Group Participants popover
     Then I do not see connection request from one user
 
-      Examples:
-	 | Login      | Password      | Name      | KnownContact  | UnknownContact  | UnknownContactMail | ChatName               | Message   |
-	 | user1Email | user1Password | user1Name | user2Name     | user3Name       | user3Email         | PeoplePopoverGroupChat | YOU ADDED |
+    Examples: 
+      | Login      | Password      | Name      | KnownContact | UnknownContact | UnknownContactMail | ChatName               | Message   |
+      | user1Email | user1Password | user1Name | user2Name    | user3Name      | user3Email         | PeoplePopoverGroupChat | YOU ADDED |
 
-   @regression @id1700
-   Scenario Outline: Verify users can properly leave a group conversation on the other end
-      Given There are 4 users where <Name> is me
-      Given Myself is connected to <KnownContact>
-      Given <KnownContact> is connected to <UnknownContact>,<UnknownContact2>
-      Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>,<UnknownContact2>
-      Given User <KnownContact> changes avatar picture to default
-      Given <UnknownContact> sent connection request to me
-      Given I switch to Sign In page
-      Given I Sign in using login <Login> and password <Password>
-      Then I see my avatar on top of Contact list
-      When I open conversation with <ChatName>
-      When I click People button in group conversation
-      Then I see Group Participants popover
-      And I see Myself,<KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
-      And I do not see Archive button at the bottom of my Contact list
-      When I click Leave button on Group Participants popover
-      And I click confirm leave group conversation on Group Participants popover
-      Then I see Archive button at the bottom of my Contact list
-      And I do not see Contact list with name <ChatName>
-      When I open archive
-      Then I see archive list with name <ChatName>
-      When I open self profile
-      And I click gear button on self profile page
-      And I select Sign out menu item on self profile page
-      And I Sign in using login <KnownContact> and password <KnownContactPassword>
-      And I open conversation with <ChatName>
-      Then I see <MessageLeft> action for <Name> in conversation
-      When I click People button in group conversation
-      Then I see Group Participants popover
-      And I see <KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
+  @regression @id1700
+  Scenario Outline: Verify users can properly leave a group conversation on the other end
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <KnownContact>
+    Given <KnownContact> is connected to <UnknownContact>,<UnknownContact2>
+    Given <KnownContact> has group chat <ChatName> with Myself,<UnknownContact>,<UnknownContact2>
+    Given User <KnownContact> changes avatar picture to default
+    Given <UnknownContact> sent connection request to me
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <ChatName>
+    When I click People button in group conversation
+    Then I see Group Participants popover
+    And I see Myself,<KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
+    And I do not see Archive button at the bottom of my Contact list
+    When I click Leave button on Group Participants popover
+    And I click confirm leave group conversation on Group Participants popover
+    Then I see Archive button at the bottom of my Contact list
+    And I do not see Contact list with name <ChatName>
+    When I open archive
+    Then I see archive list with name <ChatName>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And I Sign in using login <KnownContact> and password <KnownContactPassword>
+    And I open conversation with <ChatName>
+    Then I see <MessageLeft> action for <Name> in conversation
+    When I click People button in group conversation
+    Then I see Group Participants popover
+    And I see <KnownContact>,<UnknownContact>,<UnknownContact2> displayed on Group Participants popover
 
-      Examples:
-	 | Login      | Password      | Name      | KnownContact  | KnownContactPassword | UnknownContact  | UnknownContact2 | ChatName               | MessageLeft |
-	 | user1Email | user1Password | user1Name | user2Name     | user2Password        | user3Name       | user4Name       | PeoplePopoverGroupChat | LEFT        |
-
+    Examples: 
+      | Login      | Password      | Name      | KnownContact | KnownContactPassword | UnknownContact | UnknownContact2 | ChatName               | MessageLeft |
+      | user1Email | user1Password | user1Name | user2Name    | user2Password        | user3Name      | user4Name       | PeoplePopoverGroupChat | LEFT        |
 
   @smoke @id1687
   Scenario Outline: Verify you can add participants to the group conversation by searching the user directory
@@ -364,7 +364,7 @@ Feature: People View
       | user1Email | user1Password | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION WITH | STARTED A CONVERSATION WITH |
 
   @regression @id1557
-  Scenario Outline: Verify you can unblock someone from a group conversation 
+  Scenario Outline: Verify you can unblock someone from a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
@@ -383,5 +383,5 @@ Feature: People View
     Then I see Contact list with name <Contact1>
 
     Examples: 
-      | Login      | Password      | Name      | Contact1   | Contact2  | ChatName               |
-      | user1Email | user1Password | user1Name | user2Name  | user3Name | PeoplePopoverGroupChat |
+      | Login      | Password      | Name      | Contact1  | Contact2  | ChatName               |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | PeoplePopoverGroupChat |

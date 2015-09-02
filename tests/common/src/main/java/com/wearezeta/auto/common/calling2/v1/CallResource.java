@@ -157,7 +157,8 @@ public class CallResource {
 		try {
 			return restHandler.httpGet(
 					buildDefaultRequest(target, MediaType.APPLICATION_JSON),
-					new GenericType<Call>() {}, new int[] { HttpStatus.SC_OK });
+					new GenericType<Call>() {
+					}, new int[] { HttpStatus.SC_OK });
 		} catch (RESTError ex) {
 			throw new CallingServiceCallException(ex);
 		}

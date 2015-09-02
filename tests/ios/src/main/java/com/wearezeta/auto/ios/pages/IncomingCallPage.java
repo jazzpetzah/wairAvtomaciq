@@ -39,7 +39,7 @@ public class IncomingCallPage extends CallPage {
 	@FindBy(how = How.NAME, using = IOSLocators.IncomingCallPage.nameEndCallAlertButton)
 	private WebElement endCallAlertButton;
 
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.IncomingCallPage.classNameUIACollectionCell)
+	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathGroupCallAvatars)
 	private List<WebElement> numberOfGroupCallAvatars;
 	
 	@FindBy(how = How.XPATH, using = IOSLocators.IncomingCallPage.xpathGroupCallFullMessage)
@@ -83,8 +83,8 @@ public class IncomingCallPage extends CallPage {
 	}
 	
 	public boolean isGroupCallingMessageVisible() throws Exception{
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(IOSLocators.IncomingCallPage.xpathGroupCallingMessage), 15);
+		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.IncomingCallPage.nameCallingMessageUser), 15);
 	}
 
 	public boolean isJoinCallBarVisible() {

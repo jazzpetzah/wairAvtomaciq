@@ -53,7 +53,7 @@ Feature: Self Profile
       | Name      | username | Contact   |
       | user1Name | c        | user2Name |
       
-  @smoke @id1463
+  @smoke @rc @id1463
   Scenario Outline: Verify name change
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

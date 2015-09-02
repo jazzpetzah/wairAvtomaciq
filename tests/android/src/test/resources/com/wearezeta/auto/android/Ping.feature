@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @id317 @smoke
+  @id317 @smoke @rc
   Scenario Outline: Send Ping & Hot Ping to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -28,14 +28,15 @@ Feature: Ping
     And I swipe on text input
     And I press Ping button
     Then I see Ping message <Msg1> in the dialog
-    When I press Ping button
+    When I swipe on text input
+    And I press Ping button
     Then I see Ping message <Msg2> in the dialog
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName     | Msg1        | Msg2             |
       | user1Name | user3Name | user2Name | SendPingGroupChat | YOU PINGED  | YOU PINGED AGAIN |
 
-  @id1374 @regression
+  @id1374 @regression @rc
   Scenario Outline: Verify you can receive Ping & Hot Ping in a group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

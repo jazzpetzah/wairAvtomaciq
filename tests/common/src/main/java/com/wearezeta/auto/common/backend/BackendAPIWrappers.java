@@ -1,10 +1,8 @@
 package com.wearezeta.auto.common.backend;
 
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URLConnection;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,7 +14,6 @@ import java.util.UUID;
 import java.util.concurrent.Future;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -353,60 +350,43 @@ public final class BackendAPIWrappers {
 	}
 
 	public static void sendPictureToSingleUserConversation(ClientUser userFrom,
-			ClientUser userTo, String imagePath) throws Exception {
-		FileInputStream fis = new FileInputStream(imagePath);
-		try {
-			sendPictureToSingleUserConversation(userFrom, userTo, fis);
-		} finally {
-			fis.close();
-		}
-	}
-
-	public static void sendPictureToSingleUserConversation(ClientUser userFrom,
-			ClientUser userTo, InputStream image) throws Exception {
+			ClientUser userTo, String path) throws Exception {
 		userFrom = tryLoginByUser(userFrom);
-
-		byte[] srcImageAsByteArray = IOUtils.toByteArray(image);
+		final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(path));
 		BackendREST.sendPicture(generateAuthToken(userFrom),
 				getConversationWithSingleUser(userFrom, userTo),
-				srcImageAsByteArray, guessMimeType(image));
+				srcImageAsByteArray, getImageMimeType(path));
 	}
 
-	private static String guessMimeType(InputStream stream) throws IOException {
-		String imageMimeType = URLConnection.guessContentTypeFromStream(stream);
-		if (imageMimeType == null) {
-			// hardcode as there is no good way to check it when reading a
-			// resource from jar
-			imageMimeType = "image/jpeg";
-		}
-		return imageMimeType;
-	}
-
-	public static void sendPictureToChatByName(ClientUser userFrom,
-			String chatName, String imagePath) throws Exception {
-		FileInputStream fis = new FileInputStream(imagePath);
-		try {
-			sendPictureToChatByName(userFrom, chatName, fis);
-		} finally {
-			fis.close();
+	private static String getImageMimeType(String path) {
+		if (path.toLowerCase().endsWith(".png")) {
+			return ImageAssetProcessor.MIME_TYPE_PNG;
+		} else if (path.toLowerCase().endsWith(".jpg")
+				|| path.toLowerCase().endsWith(".jpeg")) {
+			return ImageAssetProcessor.MIME_TYPE_JPEG;
+		} else if (path.toLowerCase().endsWith(".gif")) {
+			return ImageAssetProcessor.MIME_TYPE_GIF;
+		} else {
+			throw new RuntimeException(String.format(
+					"Cannot detect MIME type for the image by path %s", path));
 		}
 	}
 
 	public static void sendPictureToChatById(ClientUser userFrom,
-			String chatId, InputStream src) throws Exception {
+			String chatId, String path) throws Exception {
 		userFrom = tryLoginByUser(userFrom);
-		byte[] srcImageAsByteArray = IOUtils.toByteArray(src);
+		final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(path));
 		BackendREST.sendPicture(generateAuthToken(userFrom), chatId,
-				srcImageAsByteArray, guessMimeType(src));
+				srcImageAsByteArray, getImageMimeType(path));
 	}
 
 	public static void sendPictureToChatByName(ClientUser userFrom,
-			String chatName, InputStream src) throws Exception {
+			String chatName, String path) throws Exception {
 		userFrom = tryLoginByUser(userFrom);
-		byte[] srcImageAsByteArray = IOUtils.toByteArray(src);
+		final byte[] srcImageAsByteArray = Files.readAllBytes(Paths.get(path));
 		BackendREST.sendPicture(generateAuthToken(userFrom),
 				getConversationIdByName(userFrom, chatName),
-				srcImageAsByteArray, guessMimeType(src));
+				srcImageAsByteArray, getImageMimeType(path));
 	}
 
 	public static String getConversationIdByName(ClientUser ownerUser,
@@ -704,6 +684,15 @@ public final class BackendAPIWrappers {
 				getConversationIdByName(asUser, conversationName));
 	}
 
+	public static void removeUserFromGroupConversation(ClientUser asUser,
+			ClientUser contact, String conversationName) throws Exception {
+		asUser = tryLoginByUser(asUser);
+		String userId = contact.getId();
+
+		BackendREST.removeContactFromGroupConvo(generateAuthToken(asUser),
+				userId, getConversationIdByName(asUser, conversationName));
+	}
+
 	public static void sendConversationMessage(ClientUser userFrom,
 			String convId, String message) throws Exception {
 		tryLoginByUser(userFrom);
@@ -820,14 +809,15 @@ public final class BackendAPIWrappers {
 				assetId);
 	}
 
-	public static void updateUserPicture(ClientUser user, InputStream picture)
+	public static void updateUserPicture(ClientUser user, String picturePath)
 			throws Exception {
 		tryLoginByUser(user);
 		final String convId = user.getId();
-		final byte[] srcImageAsByteArray = IOUtils.toByteArray(picture);
+		final byte[] srcImageAsByteArray = Files.readAllBytes(Paths
+				.get(picturePath));
 
 		ImageAssetData srcImgData = new ImageAssetData(convId,
-				srcImageAsByteArray, guessMimeType(picture));
+				srcImageAsByteArray, getImageMimeType(picturePath));
 		srcImgData.setIsPublic(true);
 		srcImgData.setCorrelationId(String.valueOf(UUID.randomUUID()));
 		srcImgData.setNonce(srcImgData.getCorrelationId());
@@ -844,16 +834,6 @@ public final class BackendAPIWrappers {
 		}
 		BackendREST.updateSelfInfo(generateAuthToken(user), null,
 				processedAssets, null);
-	}
-
-	public static void updateUserPicture(ClientUser user, String picturePath)
-			throws Exception {
-		final InputStream fis = new FileInputStream(picturePath);
-		try {
-			updateUserPicture(user, fis);
-		} finally {
-			fis.close();
-		}
 	}
 
 	public static void updateUserName(ClientUser user, String newName)
@@ -888,13 +868,14 @@ public final class BackendAPIWrappers {
 				getConversationWithSingleUser(user, mutedUser), null, muted,
 				null);
 	}
-	
+
 	public static void updateGroupConvMutedState(ClientUser user,
 			String groupConvName, boolean muted) throws Exception {
 		tryLoginByUser(user);
-		BackendREST.updateConvSelfInfo(generateAuthToken(user),
-				getConversationIdByName(user, groupConvName), null, muted,
-				null);
+		BackendREST
+				.updateConvSelfInfo(generateAuthToken(user),
+						getConversationIdByName(user, groupConvName), null,
+						muted, null);
 	}
 
 	public static void archiveUserConv(ClientUser ownerUser,
@@ -918,6 +899,13 @@ public final class BackendAPIWrappers {
 		BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser),
 				getConversationWithSingleUser(ownerUser, archivedUser), null,
 				null, false);
+	}
+
+	public static void unarchiveGroupConv(ClientUser ownerUser,
+			String conversationToUnarchive) throws Exception {
+		tryLoginByUser(ownerUser);
+		BackendREST.updateConvSelfInfo(generateAuthToken(ownerUser),
+				conversationToUnarchive, null, null, false);
 	}
 
 	public static class NoContactsFoundException extends Exception {
@@ -956,28 +944,25 @@ public final class BackendAPIWrappers {
 	}
 
 	public static void waitUntilContactBlockState(ClientUser searchByUser,
-			String query, boolean expectedState, int timeoutSeconds) throws Exception {
+			String query, boolean expectedState, int timeoutSeconds)
+			throws Exception {
 		tryLoginByUser(searchByUser);
 		final long startTimestamp = System.currentTimeMillis();
-		int currentCount = -1;
 		while (System.currentTimeMillis() - startTimestamp <= timeoutSeconds * 1000) {
 			final JSONObject searchResult = BackendREST.searchForContacts(
 					generateAuthToken(searchByUser), query);
 			if (searchResult.has("documents")
 					&& (searchResult.get("documents") instanceof JSONArray)) {
-				currentCount = searchResult.getJSONArray("documents").length();
-			} else {
-				currentCount = 0;
-			}
-			JSONArray array = searchResult.getJSONArray("documents");
-			JSONObject ar = array.getJSONObject(0);
-			if (ar.getBoolean("blocked") == expectedState) {
-				return;
+				final JSONObject doc = searchResult.getJSONArray("documents")
+						.getJSONObject(0);
+				if (doc.getBoolean("blocked") == expectedState) {
+					return;
+				}
 			}
 			Thread.sleep(1000);
 		}
 		throw new NoContactsFoundException(String.format(
-				"%s contact were not blocked within %s second(s) timeout",
+				"%s contact was not blocked within %s second(s) timeout",
 				query, timeoutSeconds));
 	}
 

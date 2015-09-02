@@ -3,7 +3,6 @@ package com.wearezeta.auto.ios.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.ios.pages.IncomingCallPage;
 import com.wearezeta.auto.ios.pages.StartedCallPage;
 
@@ -53,8 +52,8 @@ public class CallPageSteps {
 				getStartedCallPage().isEndCallVisible());
 		Assert.assertTrue("Mute call button is not visible",
 				getStartedCallPage().isMuteCallVisible());
-		// Assert.assertTrue("Speakers button is not visible",
-		// getStartedCallPage().isSpeakersVisible());
+		Assert.assertTrue("Speakers button is not visible",
+				getStartedCallPage().isSpeakersVisible());
 	}
 
 	/**

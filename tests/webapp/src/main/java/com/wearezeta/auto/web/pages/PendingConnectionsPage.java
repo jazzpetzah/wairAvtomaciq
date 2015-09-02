@@ -27,7 +27,7 @@ public class PendingConnectionsPage extends WebPage {
 	private static final String CSS_BACKGROUND_COLOR = "background-color";
 	private static final String CSS_BORDER_TOP_COLOR = "border-top-color";
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.ConnectToPage.xpathAllConnectionRequests)
+	@FindBy(how = How.CSS, using = WebAppLocators.ConnectToPage.cssAllConnectionRequests)
 	private List<WebElement> pendingRequests;
 
 	public PendingConnectionsPage(Future<ZetaWebAppDriver> lazyDriver)
@@ -40,25 +40,25 @@ public class PendingConnectionsPage extends WebPage {
 		return pendingRequests.size();
 	}
 
-	public String getEmailByName(String userName) throws Exception {
-		String locator = WebAppLocators.ConnectToPage.xpathRequestByName
-				.apply(userName)
-				+ WebAppLocators.ConnectToPage.xpathRequestEmailPartial;
+	public String getEmailByName(String userId) throws Exception {
+		String locator = WebAppLocators.ConnectToPage.cssRequestById
+				.apply(userId)
+				+ WebAppLocators.ConnectToPage.cssRequestEmailPartial;
 		DriverUtils
-				.waitUntilLocatorAppears(this.getDriver(), By.xpath(locator));
+				.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(locator));
 
-		WebElement email = getDriver().findElement(By.xpath(locator));
+		WebElement email = getDriver().findElement(By.cssSelector(locator));
 		return email.getText();
 	}
 
 	public String getMessageByName(String userName) throws Exception {
-		String locator = WebAppLocators.ConnectToPage.xpathRequestByName
+		String locator = WebAppLocators.ConnectToPage.cssRequestById
 				.apply(userName)
-				+ WebAppLocators.ConnectToPage.xpathRequestMessagePartial;
+				+ WebAppLocators.ConnectToPage.cssRequestMessagePartial;
 		DriverUtils
-				.waitUntilLocatorAppears(this.getDriver(), By.xpath(locator));
+				.waitUntilLocatorAppears(this.getDriver(), By.cssSelector(locator));
 
-		WebElement message = getDriver().findElement(By.xpath(locator));
+		WebElement message = getDriver().findElement(By.cssSelector(locator));
 		return message.getText();
 	}
 
@@ -69,66 +69,66 @@ public class PendingConnectionsPage extends WebPage {
 				.waitUntilLocatorIsDisplayed(this.getDriver(), By.cssSelector(locator));
 	}
 
-	public boolean isAcceptRequestButtonForUserVisible(String userName)
+	public boolean isAcceptRequestButtonForUserVisible(String userId)
 			throws Exception {
-		String xpath = WebAppLocators.ConnectToPage.xpathAcceptRequestButtonByName
-				.apply(userName);
+		String css = WebAppLocators.ConnectToPage.cssAcceptRequestButtonByUserId
+				.apply(userId);
 		final WebElement acceptButton = getDriver()
-				.findElement(By.xpath(xpath));
+				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), acceptButton);
 		return acceptButton.isDisplayed();
 	}
 
-	public boolean isIgnoreRequestButtonForUserVisible(String userName)
+	public boolean isIgnoreRequestButtonForUserVisible(String userId)
 			throws Exception {
-		String xpath = WebAppLocators.ConnectToPage.xpathIgnoreReqestButtonByName
-				.apply(userName);
+		String css = WebAppLocators.ConnectToPage.cssIgnoreRequestButtonById
+				.apply(userId);
 		final WebElement ignoreButton = getDriver()
-				.findElement(By.xpath(xpath));
+				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), ignoreButton);
 		return ignoreButton.isDisplayed();
 	}
 
-	public AccentColor getAcceptRequestButtonBgColor(String userName)
+	public AccentColor getAcceptRequestButtonBgColor(String userId)
 			throws Exception {
-		String xpath = WebAppLocators.ConnectToPage.xpathAcceptRequestButtonByName
-				.apply(userName);
+		String css = WebAppLocators.ConnectToPage.cssAcceptRequestButtonByUserId
+				.apply(userId);
 		final WebElement acceptButton = getDriver()
-				.findElement(By.xpath(xpath));
+				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), acceptButton);
 
 		String colorRgba = acceptButton.getCssValue(CSS_BACKGROUND_COLOR);
 		return AccentColor.getByRgba(colorRgba);
 	}
 
-	public AccentColor getIgnoreRequestButtonBorderColor(String userName)
+	public AccentColor getIgnoreRequestButtonBorderColor(String userId)
 			throws Exception {
-		String xpath = WebAppLocators.ConnectToPage.xpathIgnoreReqestButtonByName
-				.apply(userName);
+		String css = WebAppLocators.ConnectToPage.cssIgnoreRequestButtonById
+				.apply(userId);
 		final WebElement ignoreButton = getDriver()
-				.findElement(By.xpath(xpath));
+				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), ignoreButton);
 
 		String colorRgba = ignoreButton.getCssValue(CSS_BORDER_TOP_COLOR);
 		return AccentColor.getByRgba(colorRgba);
 	}
 
-	public void acceptRequestFromUser(String userName) throws Exception {
-		String xpath = WebAppLocators.ConnectToPage.xpathAcceptRequestButtonByName
-				.apply(userName);
+	public void acceptRequestFromUser(String userId) throws Exception {
+		String css = WebAppLocators.ConnectToPage.cssAcceptRequestButtonByUserId
+				.apply(userId);
 		final WebElement acceptButton = getDriver()
-				.findElement(By.xpath(xpath));
+				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), acceptButton);
 		acceptButton.click();
 		// it takes some time to refresh the conversations list
 		Thread.sleep(1000);
 	}
 
-	public void ignoreRequestFromUser(String userName) throws Exception {
-		String xpath = WebAppLocators.ConnectToPage.xpathIgnoreReqestButtonByName
-				.apply(userName);
+	public void ignoreRequestFromUser(String userId) throws Exception {
+		String css = WebAppLocators.ConnectToPage.cssIgnoreRequestButtonById
+				.apply(userId);
 		final WebElement ignoreButton = getDriver()
-				.findElement(By.xpath(xpath));
+				.findElement(By.cssSelector(css));
 		DriverUtils.waitUntilElementClickable(this.getDriver(), ignoreButton);
 		// Waiting till self-profile page elements will not be clickable
 		Thread.sleep(1000);

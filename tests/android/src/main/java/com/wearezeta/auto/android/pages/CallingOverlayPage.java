@@ -36,8 +36,8 @@ public class CallingOverlayPage extends AndroidPage {
 
 	private static final String idJoinButton = "ttv__group_call__not_joined_text";
 	private static final Function<String, String> xpathJoinButton = name -> String
-			.format("//*[@id='%s' and contains(@value, '%s')]", idJoinButton,
-					name.toUpperCase());
+			.format("//*[@id='%s' and contains(@value, '%s') and @shown='true']",
+					idJoinButton, name.toUpperCase());
 
 	private static final String idCallMessage = "ttv__calling__message";
 
@@ -225,6 +225,7 @@ public class CallingOverlayPage extends AndroidPage {
 
 	public int numberOfParticipantsInGroupCall() throws Exception {
 		By searchCriteria = By.xpath(xpathGroupCallParticipantChathead);
+		DriverUtils.waitUntilLocatorAppears(getDriver(), searchCriteria, 5);
 		return getDriver().findElements(searchCriteria).size();
 	}
 
