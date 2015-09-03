@@ -761,7 +761,7 @@ Feature: Calling
     And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     And I see the calling bar from user <Contact1>
     And I see the calling bar from user <Contact2>
-#   And I see joined group call notification for conversation <ChatName1>
+    And I see joined group call notification for conversation <ChatName1>
     When <Contact3> calls me using <CallBackend>
     Then I see the calling bar from user <Contact3>
     When I silence the incoming call
@@ -774,12 +774,12 @@ Feature: Calling
     And <Contact3> calls me using <CallBackend>
     When I accept the incoming call
     Then I see another call warning modal
-    When I click on "End Call" button in another call warning modal
+    When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
     And I see the calling bar from user <Contact3>
-#   And I see joined group call notification for conversation <ChatName2>
-#   And I do not see joined group call notification for conversation <ChatName1>
-#   And I see unjoined group call notification for conversation <ChatName1>
+    And I see joined group call notification for conversation <Contact3>
+    And I do not see joined group call notification for conversation <ChatName1>
+    And I see unjoined group call notification for conversation <ChatName1>
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | Contact3  | ChatName1 | CallBackend | WaitBackend | Timeout |
