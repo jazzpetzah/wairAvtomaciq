@@ -45,8 +45,8 @@ public class ExecutedZephyrTestcase extends RCTestcase {
 	}
 
 	// ! This method is for internal usage only
-	void syncIsAutomatedStatus() {
-		this.isAutomated = true;
+	void syncIsAutomatedStatus(boolean newStatus) {
+		this.isAutomated = newStatus;
 	}
 
 	@Override

@@ -271,28 +271,36 @@ public class ZephyrDB implements IRCTestcasesStorage {
 	public int syncPhaseResults(ZephyrTestPhase phase) throws Exception {
 		final List<ExecutedZephyrTestcase> phaseTestcases = phase
 				.getTestcases();
-		List<ExecutedZephyrTestcase> changedTestcases = phaseTestcases.stream()
-				.filter(x -> x.getIsChanged()).collect(Collectors.toList());
+		final List<ExecutedZephyrTestcase> changedTestcases = phaseTestcases
+				.stream().filter(x -> x.getIsChanged())
+				.collect(Collectors.toList());
 		for (ExecutedZephyrTestcase executedTC : changedTestcases) {
 			final long lastTestResultId = addTestcaseResult(executedTC);
 			updateTestcaseStatus(executedTC, lastTestResultId);
-			updateAutomatedStatusOnTestcase(executedTC);
+			updateAutomatedStatusOnTestcase(executedTC, true);
+		}
+		final List<ExecutedZephyrTestcase> nonAutomatedTestcases = phaseTestcases
+				.stream()
+				.filter(x -> (!x.getIsChanged() && x.getExecutionStatus() == ZephyrExecutionStatus.Undefined))
+				.collect(Collectors.toList());
+		for (ExecutedZephyrTestcase nonAutomatedTC : nonAutomatedTestcases) {
+			updateAutomatedStatusOnTestcase(nonAutomatedTC, false);
 		}
 		return changedTestcases.size();
 	}
 
-	private void updateAutomatedStatusOnTestcase(ExecutedZephyrTestcase tc)
-			throws Exception {
-		if (tc.getIsAutomated()) {
+	private void updateAutomatedStatusOnTestcase(ExecutedZephyrTestcase tc,
+			boolean newStatus) throws Exception {
+		if (tc.getIsAutomated() == newStatus) {
 			return;
 		}
 		PreparedStatement prepStmt = conn
 				.prepareStatement("UPDATE testcase SET is_automated=? WHERE id=?");
 		try {
-			prepStmt.setBoolean(1, true);
+			prepStmt.setBoolean(1, newStatus);
 			prepStmt.setLong(2, Long.parseLong(tc.getId()));
 			prepStmt.executeUpdate();
-			tc.syncIsAutomatedStatus();
+			tc.syncIsAutomatedStatus(newStatus);
 		} finally {
 			prepStmt.close();
 		}
