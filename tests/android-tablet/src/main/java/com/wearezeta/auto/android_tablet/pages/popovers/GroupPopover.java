@@ -96,4 +96,15 @@ public class GroupPopover extends AbstractPopoverContainer {
 		return this.connectedParticipantPage
 				.waitUntilUserEmailVisible(expectedEmail);
 	}
+
+	public boolean waitUntilConversationNameVisible(String expectedName)
+			throws Exception {
+		return this.participantsPage
+				.waitUntilConversationNameVisible(expectedName);
+	}
+
+	public boolean waitUntilSubheaderIsVisible(String expectedText) throws Exception {
+		return this.participantsPage.waitUntilSubheaderIsVisible(expectedText);
+
+	}
 }

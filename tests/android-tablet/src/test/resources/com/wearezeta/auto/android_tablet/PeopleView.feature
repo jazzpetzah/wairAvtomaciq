@@ -273,3 +273,47 @@ Feature: People View
     Examples:
       | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName |
       | user1Name | user2Name  | user2Email    | user3Name | GroupChat     |
+
+  @id2856 @staging
+  Scenario Outline: I see conversation name, number of participants and their avatars in group pop-over (portrait)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    And I tap Show Tools button on conversation view page
+    When I tap Show Details button on conversation view page
+    Then I see the Group popover
+    And I see the participant avatars <Name>,<Contact1>,<Contact2> on Group popover
+    And I see the conversation name "<GroupChatName>" on Group popover
+    And I see "<Subheader>" subheader on Group popover
+
+    Examples:
+      | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName | Subheader |
+      | user1Name | user2Name  | user2Email    | user3Name | GroupChat     | 3 PEOPLE  |
+
+  @id3154 @staging
+  Scenario Outline: I see conversation name, number of participants and their avatars in group pop-over (landscape)
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    And I tap Show Tools button on conversation view page
+    When I tap Show Details button on conversation view page
+    Then I see the Group popover
+    And I see the participant avatars <Name>,<Contact1>,<Contact2> on Group popover
+    And I see the conversation name "<GroupChatName>" on Group popover
+    And I see "<Subheader>" subheader on Group popover
+
+    Examples:
+      | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName | Subheader |
+      | user1Name | user2Name  | user2Email    | user3Name | GroupChat     | 3 PEOPLE  |
