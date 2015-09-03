@@ -198,7 +198,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @regression @calling @id1902
+  @regression @calling @debug @id1902
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -278,7 +278,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 60      |
 
-  @regression @calling @id3083
+  @regression @calling @debug @id3083
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
 	Given My browser supports calling
 	Given There are 3 users where <Name> is me
