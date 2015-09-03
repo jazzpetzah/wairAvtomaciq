@@ -214,12 +214,14 @@ public class PeoplePickerPageSteps {
 
 	@When("I re-enter the people picker if CONNECT label is not there")
 	public void IRetryPeoplePickerIfNoConnectLabel() throws Exception {
-		while (!getPeoplePickerPage().isConnectLabelVisible()) {
-			IClickCloseButtonDismissPeopleView();
-			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-				getСontactListPage().swipeDown(1000);
+		for (int i = 0; i < 3; i++) {
+			if (!getPeoplePickerPage().isConnectLabelVisible()) {
+				IClickCloseButtonDismissPeopleView();
+				Thread.sleep(5000);
+				getСontactListPage().openSearch();
+				getPeoplePickerPage().closeShareContactsIfVisible();
 			} else {
-				getСontactListPage().swipeDownSimulator();
+				break;
 			}
 		}
 	}
@@ -647,7 +649,7 @@ public class PeoplePickerPageSteps {
 		ISeeCallActionButtonOnPeoplePickerPage();
 		ISeeSendImageActionButtonOnPeoplePickerPage();
 	}
-	
+
 	/**
 	 * Verify that Open, Call and Send image action buttons are NOT visible
 	 * 
@@ -656,7 +658,8 @@ public class PeoplePickerPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I see action buttons disappeared on People picker page$")
-	public void ISeeActionButttonsDisappearedOnPeoplePickerPage() throws Exception {
+	public void ISeeActionButttonsDisappearedOnPeoplePickerPage()
+			throws Exception {
 		Assert.assertFalse("Open conversation button is still visible",
 				getPeoplePickerPage().isOpenConversationButtonVisible());
 		Assert.assertFalse("Call action button is still visible",

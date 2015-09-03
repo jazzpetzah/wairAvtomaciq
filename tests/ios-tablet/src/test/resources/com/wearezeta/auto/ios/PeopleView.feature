@@ -1,6 +1,6 @@
 Feature: People View
 
-  @regression @id600
+  @regression @rc @id600
   Scenario Outline: Start group chat with users from contact list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -43,7 +43,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id2434
+  @regression @rc @id2434
   Scenario Outline: Start group chat from 1:1 conversation [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -66,7 +66,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @regression @id2653
+  @regression @rc @id2653
   Scenario Outline: Start group chat from 1:1 conversation [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
@@ -89,7 +89,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @smoke @regression @id2445
+  @smoke @rc @id2445
   Scenario Outline: Verify leaving group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -130,7 +130,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveGroup    |
 
-  @regression @id2441
+  @regression @rc @id2441
   Scenario Outline: Verify removing from group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -171,7 +171,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | RemoveGroup   |
 
-  @regression @id2446
+  @regression @rc @id2446
   Scenario Outline: Verify editing the conversation name [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -215,7 +215,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | ChatName |
       | user1Name | user2Name | user3Name | RenameGroup   | NewName  |
 
-  @regression @id2442
+  @regression @rc @id2442
   Scenario Outline: Verify correct group info page information [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User <Contact1> change avatar picture to <Picture>
@@ -264,7 +264,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName | Picture                      | Color        | Color2       | ParticipantsNumber |
       | user1Name | user2Name | user3Name | GroupInfo     | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | 3                  |
 
-  @regression @id2432
+  @regression @rc @id2432
   Scenario Outline: Check any users personal info in group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<ConnectedContact>
@@ -311,7 +311,8 @@ Feature: People View
     And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <NonConnectedContact>
-    Then I see connect to <NonConnectedContact> dialog
+    Then I see Connect label on Other user profile popover
+    And I see Connect Button on Other user profile popover
 
     Examples: 
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
@@ -330,13 +331,14 @@ Feature: People View
     And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <NonConnectedContact>
-    Then I see connect to <NonConnectedContact> dialog
+    Then I see Connect label on Other user profile popover
+    And I see Connect Button on Other user profile popover
 
     Examples: 
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
       | user1Name | user2Name    | user3Name           | TESTCHAT      |
 
-  @regression @id2612
+  @regression @rc @id2612
   Scenario Outline: Verify opening 1-to-1 conversation from group conversation details [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -379,7 +381,7 @@ Feature: People View
       | Name      | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | 1on1FromGroup |
 
-  @regression @id2455
+  @regression @rc @id2455
   Scenario Outline: Verify unsilince the conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User <Name> change accent color to <Color>
@@ -427,7 +429,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Color  | GroupChatName |
       | user1Name | user2Name | user3Name | Violet | SILENCE       |
 
-  @regression @id2456
+  @regression @rc @id2456
   Scenario Outline: Verify silence the conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User <Name> change accent color to <Color>

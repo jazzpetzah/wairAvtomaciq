@@ -279,13 +279,6 @@ public class ZephyrDB implements IRCTestcasesStorage {
 			updateTestcaseStatus(executedTC, lastTestResultId);
 			updateAutomatedStatusOnTestcase(executedTC, true);
 		}
-		final List<ExecutedZephyrTestcase> nonAutomatedTestcases = phaseTestcases
-				.stream()
-				.filter(x -> (!x.getIsChanged() && x.getExecutionStatus() == ZephyrExecutionStatus.Undefined))
-				.collect(Collectors.toList());
-		for (ExecutedZephyrTestcase nonAutomatedTC : nonAutomatedTestcases) {
-			updateAutomatedStatusOnTestcase(nonAutomatedTC, false);
-		}
 		return changedTestcases.size();
 	}
 

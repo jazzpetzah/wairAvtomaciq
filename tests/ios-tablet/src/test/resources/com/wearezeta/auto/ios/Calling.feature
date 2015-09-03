@@ -473,7 +473,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | webdriver   | autocall     | 120     |
 
-  @regression @id2361
+  @regression @rc @id2361
   Scenario Outline: Verify mute button is absent when you turn from portrait to landscape [PORTRAIT to LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

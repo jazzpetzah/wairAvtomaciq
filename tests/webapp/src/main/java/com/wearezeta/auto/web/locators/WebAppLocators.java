@@ -318,6 +318,14 @@ public final class WebAppLocators {
 		public static final Function<String, String> cssRequestAvatarByUserId = uid -> String
 				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] .image",
 						uid);
+
+		public static final Function<String, String> cssKnownConnectionAvatarsById = uid -> String
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] user-avatar",
+						uid);
+
+		public static final Function<String, String> cssKnownConnectionOthersTextById = uid -> String
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] [data-uie-value='others']",
+						uid);
 	}
 
 	public static final class PeoplePickerPage {
@@ -429,6 +437,8 @@ public final class WebAppLocators {
 	public static final class Common {
 
 		public static final String CONTACT_LIST_ONE_PERSON_WAITING = "1 person waiting";
+
+		public static final String CONTACT_LIST_X_PEOPLE_WAITING = " people waiting";
 
 		public static final String TITLE_ATTRIBUTE_LOCATOR = "title";
 

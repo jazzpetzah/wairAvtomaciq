@@ -9,7 +9,6 @@ import com.wearezeta.auto.web.pages.PagesCollection;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -156,6 +155,45 @@ public class PendingConnectionsPageSteps {
 		AccentColor accentColor = usrMgr.getSelfUser().getAccentColor();
 		Assert.assertTrue(PagesCollection.pendingConnectionsPage
 				.getIgnoreRequestButtonBorderColor(user.getId()).equals(accentColor));
+	}
+
+	/**
+	 * Check number of avatars under "you both know"
+	 * 
+	 * @step. ^I see an amount of (\\d+) avatars in known connections in
+	 *        connection request from user (.*)$
+	 * @param amount
+	 *            amount of avatars
+	 * @param nameAlias
+	 *            name of user who sent connection request
+	 * @throws Throwable
+	 */
+	@When("^I see an amount of (\\d+) avatars? in known connections in connection request from user (.*)$")
+	public void ISeeXAvatarsInConnectionRequest(int amount, String nameAlias)
+			throws Throwable {
+		ClientUser user = usrMgr.findUserBy(nameAlias, FindBy.NAME_ALIAS);
+		assertThat(
+				PagesCollection.pendingConnectionsPage.getAmountOfKnownConnectionAvatars(user
+						.getId()), equalTo(amount));
+	}
+
+	/**
+	 * Check number of others (not avatars) under "you both know"
+	 * 
+	 * @step. ^I see an amount of (\\d+) others in known connections in connection request from user (.*)$
+	 * @param amount
+	 *            amount of avatars
+	 * @param nameAlias
+	 *            name of user who sent connection request
+	 * @throws Throwable
+	 */
+	@When("^I see an amount of (\\d+) others in known connections in connection request from user (.*)$")
+	public void ISeeXOthersInConnectionRequest(int amount, String nameAlias)
+			throws Throwable {
+		ClientUser user = usrMgr.findUserBy(nameAlias, FindBy.NAME_ALIAS);
+		assertThat(
+				PagesCollection.pendingConnectionsPage.getOthersTextOfKnownConnections(user
+						.getId()), equalTo("+" + amount));
 	}
 
 	/**

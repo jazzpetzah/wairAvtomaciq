@@ -198,7 +198,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @regression @calling @id1902
+  @regression @calling @debug @id1902
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
@@ -227,10 +227,18 @@ Feature: Calling
     Then I do not see the calling bar
     When I call
     Then I see another call warning modal
-    When I click on "Continue" button in another call warning modal
+    When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     Then I do not see the calling bar
     When I call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    When I click on "Continue" button in another call warning modal
+    Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar from user <Contact2>
     And I open conversation with <Contact1>
@@ -268,7 +276,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 60      |
 
-  @regression @calling @id3083
+  @regression @calling @debug @id3083
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
 	Given My browser supports calling
 	Given There are 3 users where <Name> is me
@@ -296,10 +304,18 @@ Feature: Calling
     Then I do not see the calling bar
     When I call
     Then I see another call warning modal
-    When I click on "Continue" button in another call warning modal
+    When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     Then I do not see the calling bar
     When I call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    When I click on "Continue" button in another call warning modal
+    Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar from user <Contact2>
     And I open conversation with <Contact1>
