@@ -189,7 +189,7 @@ Feature: Self Profile
     When I tap on my name <Name>
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
-    And I swipe right on the personal page
+    And I close self profile
     And I see Contact list with my name <NewUsername>
     And I tap on contact name <Contact>
     Then I see my user name <NewUsername> in conversation
@@ -208,7 +208,7 @@ Feature: Self Profile
     When I tap on my name <Name>
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
-    And I swipe right on the personal page
+    And I close self profile
     And I see Contact list with my name <NewUsername>
     And I tap on contact name <Contact>
     Then I see my user name <NewUsername> in conversation
@@ -227,7 +227,7 @@ Feature: Self Profile
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
-    And I swipe right on the personal page
+    And I close self profile
     Then I see 5 unread message indicator in list for contact <Contact>
 
     Examples: 
