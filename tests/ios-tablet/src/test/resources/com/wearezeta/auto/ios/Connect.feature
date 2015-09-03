@@ -588,3 +588,50 @@ Feature: Connect
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @staging @id3229
+  Scenario Outline: Verify possibility of disconnecting from Search UI [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
+    And I see the user <Contact1> avatar with a clock
+    And I tap on NOT connected user name on People picker page <Contact1>
+    And I click Cancel request button
+    And I see Cancel request confirmation page
+    And I confirm Cancel request by click on Yes button
+    And I see user <Contact1> found on People picker page
+    Then I see the user <Contact1> avatar without the pending clock
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @staging @id3304
+  Scenario Outline: Verify possibility of disconnecting from Search UI [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
+    And I see the user <Contact1> avatar with a clock
+    And I tap on NOT connected user name on People picker page <Contact1>
+    And I click Cancel request button
+    And I see Cancel request confirmation page
+    And I confirm Cancel request by click on Yes button
+    And I see user <Contact1> found on People picker page
+    Then I see the user <Contact1> avatar without the pending clock
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
