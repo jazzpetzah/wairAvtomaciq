@@ -233,7 +233,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  | ParticipantNumber |
       | user1Name | user2Name | user3Name | GroupInfoCheck | 3                 |
 
-  @id2292 @staging
+  @id2292 @regression
   Scenario Outline: Start 1to1 conversation from participants view
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
@@ -245,6 +245,7 @@ Feature: People View
     And I tap on group chat contact <Contact1>
     And I see <Contact1> user profile page
     And I click Open Conversation button on connected user page
+    And I wait for 3 seconds
     Then I see Connect to <Contact1> Dialog page
 
     Examples: 
