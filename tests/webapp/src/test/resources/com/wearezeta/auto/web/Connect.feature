@@ -38,6 +38,37 @@ Feature: Connect
       | Login      | Password      | Name      | UnknownContact | UnknownContactMail | Message   |
       | user1Email | user1Password | user1Name | user2Name      | user2Email         | YOU ADDED |
 
+  @regression @id3303
+  Scenario Outline: Verify pending user profiles contain known people information
+    Given There are 11 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <UnknownContact1> is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <UnknownContact2> is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <UnknownContact3> is connected to <Contact1>,<Contact2>,<Contact3>
+    Given <UnknownContact4> is connected to <Contact1>,<Contact2>
+    Given <UnknownContact5> is connected to <Contact1>
+    Given <UnknownContact1> sent connection request to me
+    Given <UnknownContact2> sent connection request to me
+    Given <UnknownContact3> sent connection request to me
+    Given <UnknownContact4> sent connection request to me
+    Given <UnknownContact5> sent connection request to me
+    # We need to wait for the backend
+    Given I wait for 15 seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see connection request from 5 user
+    When I open the list of incoming connection requests
+    Then I see an amount of 3 avatars in known connections in connection request from user <UnknownContact1>
+    And I see an amount of 2 others in known connections in connection request from user <UnknownContact1>
+    And I see an amount of 4 avatars in known connections in connection request from user <UnknownContact2>
+    And I see an amount of 3 avatars in known connections in connection request from user <UnknownContact3>
+    And I see an amount of 2 avatars in known connections in connection request from user <UnknownContact4>
+    And I see an amount of 1 avatars in known connections in connection request from user <UnknownContact5>
+
+    Examples:
+      | Login      | Password      | Name      | UnknownContact1 | UnknownContact2 | UnknownContact3 | UnknownContact4 | UnknownContact5 | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  |
+      | user1Email | user1Password | user1Name | user2Name       | user3Name       | user4Name       | user5Name       | user6Name       | user7Name | user8Name | user9Name | user10Name | user11Name |
+
   @smoke @id1571
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
