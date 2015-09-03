@@ -5,13 +5,11 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ContactListPage;
-import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Then;

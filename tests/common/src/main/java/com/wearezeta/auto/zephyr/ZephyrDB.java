@@ -96,7 +96,7 @@ public class ZephyrDB implements IRCTestcasesStorage {
 	private ExecutedZephyrTestcase createExecutedTestcaseById(long executedTcId)
 			throws Exception {
 		PreparedStatement prepStmt = conn
-				.prepareStatement("SELECT release_test_schedule.comment AS comment, test_result.execution_status as execution_status "
+				.prepareStatement("SELECT test_result.id AS id, release_test_schedule.comment AS comment, test_result.execution_status as execution_status "
 						+ "FROM test_result "
 						+ "INNER JOIN release_test_schedule ON test_result.release_test_schedule_id=release_test_schedule.id "
 						+ "WHERE release_test_schedule.id=? "
