@@ -257,10 +257,14 @@ public class ContactListPageSteps {
 								+ WebAppLocators.Common.CONTACT_LIST_X_PEOPLE_WAITING));
 			}
 		} else {
-			assertThat(
-					PagesCollection.contactListPage
-							.getIncomingPendingItemText(),
-					equalTo(""));
+			String itemText = "";
+			try {
+				itemText = PagesCollection.contactListPage
+						.getIncomingPendingItemText();
+			} catch (AssertionError e) {
+				log.debug(e.getMessage());
+			}
+			assertThat(itemText, equalTo(""));
 		}
 	}
 
