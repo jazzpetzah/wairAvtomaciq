@@ -342,14 +342,14 @@ Feature: Calling
     When I open conversation with <ChatName2>
     Then I do not see the calling bar
     When <Contact4> stops all calls to <ChatName2>
-    When <Contact4> calls <ChatName2> using <CallBackend>
+    And <Contact4> calls <ChatName2> using <CallBackend>
     Then I see the calling bar
     When I accept the incoming call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     When <Contact4> stops all calls to <ChatName2>
-    When <Contact4> calls <ChatName2> using <CallBackend>
+    And <Contact4> calls <ChatName2> using <CallBackend>
     Then I see the calling bar
     When I accept the incoming call
     Then I see another call warning modal
@@ -785,14 +785,14 @@ Feature: Calling
     When I open conversation with <Contact3>
     Then I do not see the calling bar
     When <Contact3> stops all calls to me
-    When <Contact3> calls me using <CallBackend>
+    And <Contact3> calls me using <CallBackend>
     Then I see the calling bar
     When I accept the incoming call
     Then I see another call warning modal
     When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     When <Contact3> stops all calls to me
-    When <Contact3> calls me using <CallBackend>
+    And <Contact3> calls me using <CallBackend>
     Then I see the calling bar
     When I accept the incoming call
     Then I see another call warning modal
