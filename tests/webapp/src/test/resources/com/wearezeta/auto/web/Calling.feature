@@ -227,7 +227,7 @@ Feature: Calling
     Then I do not see the calling bar
     When I call
     Then I see another call warning modal
-    And I click on "End Call" button in another call warning modal
+    When I click on "Continue" button in another call warning modal
     Then I do not see another call warning modal
     Then I do not see the calling bar
     When I call
@@ -296,7 +296,7 @@ Feature: Calling
     Then I do not see the calling bar
     When I call
     Then I see another call warning modal
-    And I click on "End Call" button in another call warning modal
+    When I click on "Continue" button in another call warning modal
     Then I do not see another call warning modal
     Then I do not see the calling bar
     When I call
@@ -307,10 +307,57 @@ Feature: Calling
     When I open conversation with <Contact2>
     And I end the call
 
-
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | chrome      | 60      |
+
+   @staging @calling @group @debug @id3071
+   Scenario Outline: Verify receiving group call during group call
+    Given My browser supports calling
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName2> with <Contact3>,<Contact4>
+    Given <Contact1>,<Contact2>,<Contact3> starts waiting instance using <WaitBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <ChatName1>
+    And I call
+    Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar from user <Contact1>
+    And I see the calling bar from user <Contact2>
+    And I see joined group call notification for conversation <ChatName1>
+    When <Contact4> calls <ChatName2> using <CallBackend>
+    Then I see the calling bar
+    When I silence the incoming call
+    And I open conversation with <ChatName1>
+    Then I see the calling bar from user <Contact1>
+    And I see the calling bar from user <Contact2>
+    When I open conversation with <ChatName2>
+    Then I do not see the calling bar
+    When <Contact4> stops all calls to <ChatName2>
+    And <Contact3> accepts next incoming call automatically
+    And <Contact4> calls <ChatName2> using <CallBackend>
+    Then <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
+    When I accept the incoming call
+    Then I see another call warning modal
+    When I click on "Answer" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see the calling bar from user <Contact3>
+    And I see the calling bar from user <Contact4>
+    And I see joined group call notification for conversation <ChatName2>
+    And I do not see joined group call notification for conversation <ChatName1>
+    And I see unjoined group call notification for conversation <ChatName1>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2   | Contact3   | Contact4   | ChatName1 | ChatName2 | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | user4Name  | user5Name  | GC1       | GC2       | autocall    | chrome      | 60      |
 
   @regression @calling @debug @id2013
   Scenario Outline: Verify I get missed call notification when I call
