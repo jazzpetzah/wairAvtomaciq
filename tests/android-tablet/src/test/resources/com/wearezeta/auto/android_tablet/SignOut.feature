@@ -1,7 +1,7 @@
 Feature: Sign Out
 
-  @id2266 @smoke
-  Scenario Outline: Sign out from ZClient in portrait mode
+  @id2266 @smoke @rc
+  Scenario Outline: Sign out from Wire in portrait mode
     Given There is 1 user where <Name> is me
     Given I see welcome screen
     Given I rotate UI to portrait
@@ -17,8 +17,8 @@ Feature: Sign Out
       | Name      |
       | user1Name |
 
-  @id2251 @smoke
-  Scenario Outline: Sign out from ZClient in landscape mode
+  @id2251 @smoke @rc
+  Scenario Outline: Sign out from Wire in landscape mode
     Given There is 1 user where <Name> is me
     Given I see welcome screen
     Given I rotate UI to landscape

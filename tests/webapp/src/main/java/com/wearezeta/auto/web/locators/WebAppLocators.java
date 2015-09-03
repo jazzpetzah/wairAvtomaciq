@@ -115,6 +115,16 @@ public final class WebAppLocators {
 				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[local-name() = 'svg' and @data-uie-name='status-unread']",
 						name);
 
+		public static final Function<String, String> xpathJoinedGroupCallNotificationByConversationName = (
+				name) -> String
+				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[@data-uie-name='status-call' and @data-uie-value='participating-in-group-call']",
+						name);
+
+		public static final Function<String, String> xpathUnjoinedGroupCallNotificationByConversationName = (
+				name) -> String
+				.format("//*[contains(@class, 'conversation-list-item') and div[@data-uie-value='%s']]//*[@data-uie-name='status-call' and @data-uie-value='not-participating-in-group-call']",
+						name);
+
 		public static final Function<String, String> xpathPingIconByContactName = (
 				name) -> String
 				.format("//*[@data-uie-name='item-conversation' and @data-uie-value='%s']/parent::"
@@ -306,7 +316,8 @@ public final class WebAppLocators {
 		public static final String cssAllConnectionRequests = "[data-uie-name='connect-request']";
 
 		public static final Function<String, String> cssRequestAvatarByUserId = uid -> String
-				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] .image", uid);
+				.format("[data-uie-name='connect-request'][data-uie-uid='%s'] .image",
+						uid);
 	}
 
 	public static final class PeoplePickerPage {
@@ -469,12 +480,12 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathAnotherCallWarningModalButtonByCaption = (
 				name) -> String
-				.format("%s//div[contains(@class, 'modal-call-second') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
+				.format("%s//div[@data-uie-name='modal-call-second' and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
 						xpathWarningModalRootDiv, name);
 
 		public static final Function<String, String> xpathFullCallWarningModalButtonByCaption = (
 				name) -> String
-				.format("%s//div[contains(@class, 'modal-call-voice-channel-full') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
+				.format("%s//div[@data-uie-name='modal-call-conversation-full') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
 						xpathWarningModalRootDiv, name);
 	}
 

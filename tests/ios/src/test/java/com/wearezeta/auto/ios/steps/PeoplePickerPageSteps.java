@@ -309,7 +309,24 @@ public class PeoplePickerPageSteps {
 		double score = getPeoplePickerPage().checkAvatarClockIcon(contact);
 		Assert.assertTrue(
 				"Avatar with clock icon is not correct - overlap score is only: "
-						+ score, score > 0.50);
+						+ score, score > 0.49);
+	}
+
+	/**
+	 * Verifies that pending clock is not visible on searched avatar
+	 * 
+	 * @step. ^I see the user (.*) avatar without the pending clock$
+	 * @param name
+	 *            of contact without pending clock
+	 * @throws Throwable
+	 */
+	@Then("^I see the user (.*) avatar without the pending clock$")
+	public void ISeeTheUserAvatarWithoutThePendingClock(String name)
+			throws Throwable {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		double score = getPeoplePickerPage().checkAvatarClockIcon(name);
+		Assert.assertFalse("Avatar icon still has a clock - overlap score is: "
+				+ score, score < 0.50);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")
