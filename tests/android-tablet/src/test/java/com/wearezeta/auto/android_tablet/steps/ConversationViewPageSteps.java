@@ -522,7 +522,7 @@ public class ConversationViewPageSteps {
 				String.format(
 						"Unsent indicator is not visible next to the '%s' message",
 						msg), getConversationViewPage()
-						.waitUntilUnsentIndicatorInVisible(msg));
+						.waitUntilUnsentIndicatorIsVisible(msg));
 	}
 
 	/**
@@ -537,6 +537,6 @@ public class ConversationViewPageSteps {
 	public void ISeeUnsentIndicatorNextToAPicture() throws Exception {
 		Assert.assertTrue("Unsent indicator is not visible next to a picture",
 				getConversationViewPage()
-						.waitUntilUnsentIndicatorInVisibleForAPicture());
+						.waitUntilUnsentIndicatorIsVisibleForAPicture());
 	}
 }

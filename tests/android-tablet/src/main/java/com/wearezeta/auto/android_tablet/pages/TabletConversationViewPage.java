@@ -211,12 +211,12 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
-	public boolean waitUntilUnsentIndicatorInVisible(String msg)
+	public boolean waitUntilUnsentIndicatorIsVisible(String msg)
 			throws Exception {
 		return getDialogPage().waitForUnsentIndicator(msg);
 	}
 
-	public boolean waitUntilUnsentIndicatorInVisibleForAPicture()
+	public boolean waitUntilUnsentIndicatorIsVisibleForAPicture()
 			throws Exception {
 		return getDialogPage().waitForAPictureWithUnsentIndicator();
 	}
