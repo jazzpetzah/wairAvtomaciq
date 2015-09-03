@@ -217,7 +217,7 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Checks that connection request is displayed in Conversation List or not
+	 * Checks that one connection request is displayed in Conversation List or not
 	 *
 	 * @param doNot
 	 *            is set to null if "do not" part does not exist
@@ -227,20 +227,41 @@ public class ContactListPageSteps {
 	 */
 	@When("^I( do not)? see connection request from one user$")
 	public void IDoNotSeeIncomingConnection(String doNot) throws Exception {
+		IDoNotSeeXIncomingConnection(doNot, 1);
+	}
+
+	/**
+	 * Checks that connection requests are displayed in Conversation List or not
+	 *
+	 * @param doNot
+	 *            is set to null if "do not" part does not exist
+	 * @param amount
+	 *            amount of requests
+	 * @step. ^I(do not)? see connection request from one user$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I( do not)? see connection requests? from (\\d+) user$")
+	public void IDoNotSeeXIncomingConnection(String doNot, int amount) throws Exception {
 		if (doNot == null) {
-			Assert.assertTrue(PagesCollection.contactListPage
-					.getIncomingPendingItemText()
-					.equals(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
-		} else {
-			String itemText = "";
-			try {
-				itemText = PagesCollection.contactListPage
-						.getIncomingPendingItemText();
-			} catch (AssertionError e) {
-				log.debug(e.getMessage());
+			if (amount == 1) {
+				assertThat(
+						PagesCollection.contactListPage
+								.getIncomingPendingItemText(),
+						equalTo(amount
+								+ WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+			} else {
+				assertThat(
+						PagesCollection.contactListPage
+								.getIncomingPendingItemText(),
+						equalTo(amount
+								+ WebAppLocators.Common.CONTACT_LIST_X_PEOPLE_WAITING));
 			}
-			Assert.assertFalse(itemText
-					.equals(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+		} else {
+			assertThat(
+					PagesCollection.contactListPage
+							.getIncomingPendingItemText(),
+					equalTo(""));
 		}
 	}
 
