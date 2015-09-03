@@ -64,7 +64,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2413 @deployPictures
+  @regression @rc @id2413 @deployPictures
   Scenario Outline: Verify sending image [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

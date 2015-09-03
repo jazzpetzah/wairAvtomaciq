@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @regression @id2587
+  @regression @rc @id2587
   Scenario Outline: Verify user can access settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -150,7 +150,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @regression @id2602
+  @regression @rc @id2602
   Scenario Outline: Verify switching on/off chatheads [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>

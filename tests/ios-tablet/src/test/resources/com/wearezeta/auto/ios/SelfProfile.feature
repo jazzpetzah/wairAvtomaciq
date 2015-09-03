@@ -69,7 +69,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2574
+  @regression @rc @id2574
   Scenario Outline: Change your profile picture [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -106,7 +106,7 @@ Feature: Self Profile
       | Name      | Picture                             | Contact   |
       | user1Name | userpicture_ios_check_landscape.png | user2Name |
 
-  @regression @id2582
+  @regression @rc @id2582
   Scenario Outline: Attempt to enter a name with 0 chars [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -217,7 +217,7 @@ Feature: Self Profile
       | Name      | NewUsername | Contact   |
       | user1Name | NewName     | user2Name |
 
-  @regression @id2571
+  @regression @rc @id2571
   Scenario Outline: Verify changing and applying accent color [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
