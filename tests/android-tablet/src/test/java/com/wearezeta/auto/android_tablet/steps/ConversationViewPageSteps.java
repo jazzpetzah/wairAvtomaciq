@@ -505,4 +505,38 @@ public class ConversationViewPageSteps {
 			break;
 		}
 	}
+
+	/**
+	 * Verify whether unsent indicator is visible next to the particular message
+	 * 
+	 * @step. ^I see unsent indicator next to the message \"(.*)\" in the
+	 *        [Cc]onversation view$
+	 * 
+	 * @param msg
+	 *            the expected message text
+	 * @throws Exception
+	 */
+	@Then("^I see unsent indicator next to the message \"(.*)\" in the [Cc]onversation view$")
+	public void ISeeUnsentIndicatorNextTo(String msg) throws Exception {
+		Assert.assertTrue(
+				String.format(
+						"Unsent indicator is not visible next to the '%s' message",
+						msg), getConversationViewPage()
+						.waitUntilUnsentIndicatorIsVisible(msg));
+	}
+
+	/**
+	 * Verify whether unsent indicator is visible next to a picture
+	 * 
+	 * @step. ^I see unsent indicator next to new picture in the [Cc]onversation
+	 *        view$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see unsent indicator next to new picture in the [Cc]onversation view$")
+	public void ISeeUnsentIndicatorNextToAPicture() throws Exception {
+		Assert.assertTrue("Unsent indicator is not visible next to a picture",
+				getConversationViewPage()
+						.waitUntilUnsentIndicatorIsVisibleForAPicture());
+	}
 }

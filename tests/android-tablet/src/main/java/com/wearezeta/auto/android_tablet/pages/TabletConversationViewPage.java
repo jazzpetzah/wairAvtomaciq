@@ -210,4 +210,14 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		final By locator = By.id(DialogPage.idDialogImages);
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
+
+	public boolean waitUntilUnsentIndicatorIsVisible(String msg)
+			throws Exception {
+		return getDialogPage().waitForUnsentIndicator(msg);
+	}
+
+	public boolean waitUntilUnsentIndicatorIsVisibleForAPicture()
+			throws Exception {
+		return getDialogPage().waitForAPictureWithUnsentIndicator();
+	}
 }
