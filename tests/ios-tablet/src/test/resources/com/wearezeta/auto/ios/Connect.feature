@@ -635,3 +635,55 @@ Feature: Connect
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @staging @id2332
+  Scenario Outline: Verify ignoring a connection request from another person (People view) [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact3> sent connection request to me
+    Given <Contact1> is connected to <Contact2>,<Contact3>
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I select user on iPad group popover <Contact3>
+    And I see <Contact3> user pending profile popover on iPad
+    And I tap on start dialog button on other user profile page
+    And I click on Ignore button on Pending requests page
+    And I go back to group info page popover
+    And I exit the group info iPad popover
+    And I swipe right on Dialog page
+    Then I dont see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
+
+  @staging @id3305
+  Scenario Outline: Verify ignoring a connection request from another person (People view) [LANDSCAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact3> sent connection request to me
+    Given <Contact1> is connected to <Contact2>,<Contact3>
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I select user on iPad group popover <Contact3>
+    And I see <Contact3> user pending profile popover on iPad
+    And I tap on start dialog button on other user profile page
+    And I click on Ignore button on Pending requests page
+    And I go back to group info page popover
+    And I exit the group info iPad popover
+    Then I dont see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
