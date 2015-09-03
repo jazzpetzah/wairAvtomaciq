@@ -239,7 +239,7 @@ public class ContactListPage extends WebPage {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
 				.apply(conversationName);
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(locator));
 	}
 
@@ -247,6 +247,42 @@ public class ContactListPage extends WebPage {
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isJoinedGroupCallNotificationVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathJoinedGroupCallNotificationByConversationName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isJoinedGroupCallNotificationInvisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathJoinedGroupCallNotificationByConversationName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isUnjoinedGroupCallNotificationVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathUnjoinedGroupCallNotificationByConversationName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isUnjoinedGroupCallNotificationInvisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathUnjoinedGroupCallNotificationByConversationName
 				.apply(conversationName);
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.xpath(locator));
