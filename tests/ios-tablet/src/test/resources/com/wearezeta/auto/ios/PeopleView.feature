@@ -311,7 +311,8 @@ Feature: People View
     And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <NonConnectedContact>
-    Then I see connect to <NonConnectedContact> dialog
+    Then I see Connect label on Other user profile popover
+    And I see Connect Button on Other user profile popover
 
     Examples: 
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
@@ -330,7 +331,8 @@ Feature: People View
     And I see dialog page
     And I open group conversation details
     And I select user on iPad group popover <NonConnectedContact>
-    Then I see connect to <NonConnectedContact> dialog
+    Then I see Connect label on Other user profile popover
+    And I see Connect Button on Other user profile popover
 
     Examples: 
       | Name      | GroupCreator | NonConnectedContact | GroupChatName |
