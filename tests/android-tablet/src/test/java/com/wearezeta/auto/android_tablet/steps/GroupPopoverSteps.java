@@ -3,6 +3,7 @@ package com.wearezeta.auto.android_tablet.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.popovers.GroupPopover;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
 import cucumber.api.java.en.And;
@@ -104,33 +105,35 @@ public class GroupPopoverSteps {
 	}
 
 	/**
-	 * Verify whether the avatar of a particular group convo participant is
+	 * Verify whether the avatars of a particular group convo participants are
 	 * visible or not on the popover
 	 * 
-	 * @step ^I see the participant avatar (.*) on [Gg]roup popover$
+	 * @step ^I see the participant avatars? (.*) on [Gg]roup popover$
 	 * 
-	 * @param name
-	 *            participant name/alias
+	 * @param names
+	 *            comma-separated participant names/aliases
 	 * @param shouldNotBeVisible
 	 *            equals to null if "do not" part is not present in the step
 	 * @throws Exception
 	 */
-	@Then("^I (do not )?see the participant avatar (.*) on [Gg]roup popover$")
-	public void ISeeParticipantAvatar(String shouldNotBeVisible, String name)
+	@Then("^I (do not )?see the participant avatars? (.*) on [Gg]roup popover$")
+	public void ISeeParticipantAvatar(String shouldNotBeVisible, String names)
 			throws Exception {
-		name = usrMgr.findUserByNameOrNameAlias(name).getName();
-		if (shouldNotBeVisible == null) {
-			Assert.assertTrue(
-					String.format(
-							"The avatar of '%s' is not visible in the conversation details popover",
-							name), getGroupPopover()
-							.waitForParticipantAvatarVisible(name));
-		} else {
-			Assert.assertTrue(
-					String.format(
-							"The avatar of '%s' is still visible in the conversation details popover",
-							name), getGroupPopover()
-							.waitForParticipantAvatarNotVisible(name));
+		for (String name : CommonSteps.splitAliases(names)) {
+			name = usrMgr.findUserByNameOrNameAlias(name).getName();
+			if (shouldNotBeVisible == null) {
+				Assert.assertTrue(
+						String.format(
+								"The avatar of '%s' is not visible in the conversation details popover",
+								name), getGroupPopover()
+								.waitForParticipantAvatarVisible(name));
+			} else {
+				Assert.assertTrue(
+						String.format(
+								"The avatar of '%s' is still visible in the conversation details popover",
+								name), getGroupPopover()
+								.waitForParticipantAvatarNotVisible(name));
+			}
 		}
 	}
 
@@ -262,5 +265,40 @@ public class GroupPopoverSteps {
 				"The user email '%s' is not displayed on Group popover",
 				expectedEmail),
 				getGroupPopover().waitUntilUserEmailVisible(expectedEmail));
+	}
+
+	/**
+	 * Verify whether the expected conversation name string is visible on group
+	 * popover
+	 * 
+	 * @step. ^I see the conversation name \"(.*)\" on [Gg]roup popover$"
+	 * 
+	 * @param expectedName
+	 *            expected group conversation name
+	 * @throws Exception
+	 */
+	@Then("^I see the conversation name \"(.*)\" on [Gg]roup popover$")
+	public void ISeeConversationName(String expectedName) throws Exception {
+		Assert.assertTrue(String.format(
+				"The conversation name '%s' is not visible on Group popover",
+				expectedName), getGroupPopover()
+				.waitUntilConversationNameVisible(expectedName));
+	}
+
+	/**
+	 * Verify whether the expected subheader is visible on group popover
+	 * 
+	 * @step. ^I see \"(.*)\" subheader on [Gg]roup popover$
+	 * 
+	 * @param expectedText
+	 *            the text of the label to verify
+	 * @throws Exception
+	 */
+	@Then("^I see \"(.*)\" subheader on [Gg]roup popover$")
+	public void ISeeLabel(String expectedText) throws Exception {
+		Assert.assertTrue(String.format(
+				"The subheader '%s' is not visible on Group popover",
+				expectedText),
+				getGroupPopover().waitUntilSubheaderIsVisible(expectedText));
 	}
 }
