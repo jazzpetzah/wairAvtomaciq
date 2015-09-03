@@ -138,6 +138,7 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
+    And I wait for 5 seconds
     Then I see Connect to <Contact> Dialog page
 
     Examples: 
