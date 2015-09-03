@@ -83,15 +83,15 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
 	}
 	
 	/**
-	 * Presses back button to return to group info popover
+	 * Presses back button to return to group info page or popover
 	 * 
-	 * @step. ^I go back to group info page popover$
+	 * @step. ^I go back to group info page or popover$
 	 * @throws Throwable
 	 */
-	@When("^I go back to group info page popover$")
-	public void IGoBackToGroupInfoPagePopover() throws Throwable {
+	@When("^I go back to group info page or popover$")
+	public void IGoBackToGroupInfoPageOrPopover() throws Throwable {
 		getOtherUserOnPendingProfilePage()
-				.clickBackButtonToReturnToGroupPopover();
+				.clickBackButtonToReturnToGroupPageOrPopover();
 	}
 
 }

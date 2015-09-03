@@ -653,7 +653,7 @@ Feature: Connect
     And I see <Contact3> user pending profile popover on iPad
     And I tap on start dialog button on other user profile page
     And I click on Ignore button on Pending requests page
-    And I go back to group info page popover
+    And I go back to group info page or popover
     And I exit the group info iPad popover
     And I swipe right on Dialog page
     Then I dont see Pending request link in contact list
@@ -680,7 +680,7 @@ Feature: Connect
     And I see <Contact3> user pending profile popover on iPad
     And I tap on start dialog button on other user profile page
     And I click on Ignore button on Pending requests page
-    And I go back to group info page popover
+    And I go back to group info page or popover
     And I exit the group info iPad popover
     Then I dont see Pending request link in contact list
 

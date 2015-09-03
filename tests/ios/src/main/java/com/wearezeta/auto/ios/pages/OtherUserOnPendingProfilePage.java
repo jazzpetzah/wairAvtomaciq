@@ -84,7 +84,7 @@ public class OtherUserOnPendingProfilePage extends IOSPage {
 		return null;
 	}
 
-	public void clickBackButtonToReturnToGroupPopover() {
+	public void clickBackButtonToReturnToGroupPageOrPopover() {
 		backButtonToGroupPopover.click();		
 	}
 }
