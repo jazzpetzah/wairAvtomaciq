@@ -510,7 +510,7 @@ Feature: Connect
     And I click Cancel request button
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
-    And I swipe right on the personal page
+    And I close self profile
     Then I dont see conversation <Contact> in contact list
 
     Examples: 
@@ -548,7 +548,7 @@ Feature: Connect
     And I open conversation details
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
-    And I swipe right on the personal page
+    And I close self profile
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page

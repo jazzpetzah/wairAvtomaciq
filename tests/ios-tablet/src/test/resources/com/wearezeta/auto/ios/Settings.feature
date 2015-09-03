@@ -165,7 +165,7 @@ Feature: Settings
     And I see the Sound alerts page
     And I switch on or off the chathead preview
     And I close the Settings
-    And I swipe right on the personal page
+    And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>
@@ -178,7 +178,7 @@ Feature: Settings
     And I see the Sound alerts page
     And I switch on or off the chathead preview
     And I close the Settings
-    And I swipe right on the personal page
+    And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>
