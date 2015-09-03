@@ -248,8 +248,7 @@ public class ContactListPageSteps {
 				assertThat(
 						PagesCollection.contactListPage
 								.getIncomingPendingItemText(),
-						equalTo(amount
-								+ WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+						equalTo(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
 			} else {
 				assertThat(
 						PagesCollection.contactListPage
