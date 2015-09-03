@@ -19,9 +19,6 @@ public class TabletPendingUserPopoverPage extends OtherUserOnPendingProfilePage 
 
 	@FindBy(how = How.XPATH, using = IOSTabletLocators.TabletPendingUserPopoverPage.xpathConnectButton)
 	private WebElement connectButton;
-	
-	@FindBy(how = How.NAME, using = IOSLocators.nameExitOtherUserPersonalInfoPageButton)
-	private WebElement backButtonToGroupPopover;
 
 	public TabletPendingUserPopoverPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
@@ -39,10 +36,6 @@ public class TabletPendingUserPopoverPage extends OtherUserOnPendingProfilePage 
 
 	public boolean isConnectButtonDisplayed() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(), connectButton);
-	}
-
-	public void clickBackButtonToReturnToGroupPopover() {
-		backButtonToGroupPopover.click();
 	}
 
 }
