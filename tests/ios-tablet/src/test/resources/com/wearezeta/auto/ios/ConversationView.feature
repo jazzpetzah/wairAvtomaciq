@@ -506,12 +506,15 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent long message to conversation <Contact>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I type and send long message and media link <SoundCloudLink>
-    And I tap media link
+    Then I see dialog page
+    And I scroll to the end of the conversation
+    And I see media link <SoundCloudLink> and media in dialog
+    When I tap media link
     And I scroll media out of sight until media bar appears
     And I see media bar on dialog page
     And I wait 150 seconds for media to stop playing
@@ -622,9 +625,7 @@ Feature: Conversation View
     And I send the message
     Then I see message in the dialog
 
-    Examples: 
-      @staging @id3196
-
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SimpleGroup   |
 

@@ -324,6 +324,17 @@ public abstract class IOSPage extends BasePage {
 		}
 
 	}
+	
+	public void rotateDeviceToRefreshElementsTree() throws Exception {
+		if (getOrientation()==ScreenOrientation.PORTRAIT) {
+			rotateLandscape();
+			rotatePortrait();
+		}
+		else {
+			rotatePortrait();
+			rotateLandscape();
+		}
+	}
 
 	private void rotateLandscape() throws Exception {
 		this.getDriver().rotate(ScreenOrientation.LANDSCAPE);

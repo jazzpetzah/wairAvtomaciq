@@ -500,6 +500,12 @@ public class DialogPage extends IOSPage {
 	}
 
 	public boolean isMediaContainerVisible() throws Exception {
+		boolean isVisible = DriverUtils.waitUntilLocatorAppears(
+				this.getDriver(),
+				By.xpath(IOSLocators.xpathMediaConversationCell), 10);
+		if (!isVisible) {
+			rotateDeviceToRefreshElementsTree();
+		}
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell), 10);
 	}
