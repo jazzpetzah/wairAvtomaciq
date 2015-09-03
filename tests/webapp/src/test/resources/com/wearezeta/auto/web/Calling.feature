@@ -227,6 +227,16 @@ Feature: Calling
     Then I do not see the calling bar
     When I call
     Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
     When I click on "Continue" button in another call warning modal
     Then I do not see another call warning modal
     Then I do not see the calling bar
@@ -293,6 +303,16 @@ Feature: Calling
     And I open conversation with <Contact1>
     And I see the calling bar
     When I open conversation with <Contact2>
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
     Then I do not see the calling bar
     When I call
     Then I see another call warning modal

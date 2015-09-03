@@ -1,6 +1,6 @@
 Feature: Registration
 
-  @regression @id1392
+  @regression @rc @id1392
   Scenario Outline: Automatic email verification [PORTRAIT]
     Given I see sign in screen
     When I enter name <Name>
@@ -41,7 +41,7 @@ Feature: Registration
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @regression @id2476
+  @regression @rc @id2476
   Scenario Outline: Verify registration with email [PORTRAIT]
     Given I see sign in screen
     When I enter name <Name>

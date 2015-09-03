@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @regression @id2607
+  @regression @rc @id2607
   Scenario Outline: Sign in to ZClient [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -56,7 +56,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @regression @id2608
+  @regression @rc @id2608
   Scenario Outline: Verify possibility of reseting password (welcome page) [PORTRAIT]
     Given I see sign in screen
     And I press Sign in button
