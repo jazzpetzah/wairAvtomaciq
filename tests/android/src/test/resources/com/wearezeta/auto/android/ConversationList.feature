@@ -109,9 +109,8 @@ Feature: Conversation List
     Then I see unread messages indicator is large for contact <Contact1>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I tap on text input
-    And I press back button
-    And I press back button
+    And I scroll to the bottom of conversation view
+    And I navigate back from dialog page
     Then I see unread messages indicator is not displayed for contact <Contact1>
 
     Examples: 

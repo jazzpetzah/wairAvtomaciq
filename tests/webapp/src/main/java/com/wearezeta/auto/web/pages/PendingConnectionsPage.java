@@ -134,4 +134,18 @@ public class PendingConnectionsPage extends WebPage {
 		Thread.sleep(1000);
 		ignoreButton.click();
 	}
+
+	public int getAmountOfKnownConnectionAvatars(String userId)
+			throws Exception {
+		String css = WebAppLocators.ConnectToPage.cssKnownConnectionAvatarsById
+				.apply(userId);
+		return getDriver().findElements(By.cssSelector(css)).size();
+	}
+
+	public String getOthersTextOfKnownConnections(String userId)
+			throws Exception {
+		String css = WebAppLocators.ConnectToPage.cssKnownConnectionOthersTextById
+				.apply(userId);
+		return getDriver().findElement(By.cssSelector(css)).getText();
+	}
 }
