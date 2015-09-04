@@ -1,6 +1,6 @@
 Feature: Ping
 
-  @id317 @smoke @rc
+  @id317 @smoke @rc @rc42
   Scenario Outline: Send Ping & Hot Ping to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
