@@ -341,15 +341,13 @@ Feature: Calling
     When I open conversation with <ChatName1>
     And I call
     Then <Contact1>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from user <Contact1>
-    And I see the calling bar from user <Contact2>
+    And I see the calling bar from user <Contact1>,<Contact2>
     And I see joined group call notification for conversation <ChatName1>
     When <Contact4> calls <ChatName2> using <CallBackend>
     Then I see the calling bar
     When I silence the incoming call
     And I open conversation with <ChatName1>
-    Then I see the calling bar from user <Contact1>
-    And I see the calling bar from user <Contact2>
+    Then I see the calling bar from user <Contact1>,<Contact2>
     When I open conversation with <ChatName2>
     Then I do not see the calling bar
     When <Contact4> stops all calls to <ChatName2>
@@ -374,8 +372,7 @@ Feature: Calling
     Then I see another call warning modal
     When I click on "Answer" button in another call warning modal
     Then I do not see another call warning modal
-    And I see the calling bar from user <Contact3>
-    And I see the calling bar from user <Contact4>
+    And I see the calling bar from user <Contact3>,<Contact4>
     And I see joined group call notification for conversation <ChatName2>
     And I do not see joined group call notification for conversation <ChatName1>
     And I see unjoined group call notification for conversation <ChatName1>
@@ -562,8 +559,7 @@ Feature: Calling
     And I open conversation with <ChatName>
     When I call
     Then <Contact1>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from user <Contact1>
-    And I see the calling bar from user <Contact2>
+    And I see the calling bar from user <Contact1>,<Contact2>
     When I end the call
     Then I do not see the calling bar
     And <Contact1>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
@@ -590,10 +586,7 @@ Feature: Calling
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the calling bar
     When I accept the incoming call
-    Then I see the calling bar from user <Contact1>
-    And I see the calling bar from user <Contact2>
-    And I see the calling bar from user <Contact3>
-    And I see the calling bar from user <Contact4>
+    Then I see the calling bar from user <Contact1>,<Contact2>,<Contact3>,<Contact4>
     And I wait for 20 seconds
     And <Contact2> verifies to have 4 flows
     And <Contact3> verifies to have 4 flows
@@ -651,10 +644,7 @@ Feature: Calling
     And I open conversation with <ChatName>
     When I call
     And <Contact1>,<Contact2>,<Contact3>,<Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from user <Contact1>
-    And I see the calling bar from user <Contact2>
-    And I see the calling bar from user <Contact3>
-    And I see the calling bar from user <Contact4>
+    And I see the calling bar from user <Contact1>,<Contact2>,<Contact3>,<Contact4>
     When I end the call
     Then I do not see the calling bar
 
@@ -758,15 +748,13 @@ Feature: Calling
     When I open conversation with <ChatName1>
     And I call
     Then <Contact1>,<Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from user <Contact1>
-    And I see the calling bar from user <Contact2>
+    And I see the calling bar from user <Contact1>,<Contact2>
     And I see joined group call notification for conversation <ChatName1>
     When <Contact3> calls me using <CallBackend>
     Then I see the calling bar from user <Contact3>
     When I silence the incoming call
     And I open conversation with <ChatName1>
-    Then I see the calling bar from user <Contact1>
-    And I see the calling bar from user <Contact2>
+    Then I see the calling bar from user <Contact1>,<Contact2>
     When I open conversation with <Contact3>
     Then I do not see the calling bar
     When <Contact3> stops all calls to me
