@@ -984,7 +984,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3097 @id3098
+  @regression @rc @id3097 @id3098
   Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1035,7 +1035,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @regression @id3100
+  @regression @rc @id3100
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
