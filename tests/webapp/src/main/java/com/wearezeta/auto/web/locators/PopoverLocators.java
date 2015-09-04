@@ -21,7 +21,7 @@ public final class PopoverLocators {
 
 	public static final class ConnectToPopover {
 
-		public static final String xpathRootLocator = "//*[@id='people-picker-user-bubble' | @id='participants-bubble']";
+		public static final String xpathRootLocator = "//*[@id='people-picker-user-bubble' or @id='participants-bubble']";
 
 		public static final class ConnectToPage {
 

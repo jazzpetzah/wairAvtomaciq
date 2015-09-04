@@ -411,7 +411,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  |
       | user1Email | user1Password | user1Name | user2Name | user1Email    | user1Password    | user3Name |
 
-  @staging @id2766 @torun
+  @staging @id2766
   Scenario Outline: I want to cancel a pending request from 1:1 conversation
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>
