@@ -66,8 +66,8 @@ public class CallingSteps {
 	 *            destination conversation
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
-	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
-	 *            for more details
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
+	 *            more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
@@ -87,21 +87,21 @@ public class CallingSteps {
 	 * @step. (.*) verifies that waiting instance status is changed to (.*) in
 	 *        (\\d+) seconds?$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            list of callee names/aliases
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
-	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
-	 *            for more details
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
+	 *            more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
 	@Then("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")
-	public void UserXVerifesCallStatusToUserY(String callee,
+	public void UserXVerifesCallStatusToUserY(String callees,
 			String expectedStatuses, int timeoutSeconds) throws Exception {
-		commonCallingSteps.verifyAcceptingCallStatus(callee, expectedStatuses,
-				timeoutSeconds);
+		commonCallingSteps.verifyAcceptingCallStatus(splitAliases(callees),
+				expectedStatuses, timeoutSeconds);
 	}
 
 	/**
@@ -135,7 +135,7 @@ public class CallingSteps {
 		}
 	}
 
-    /**
+	/**
 	 * Execute waiting instance as 'userAsNameAlias' user on calling server
 	 * using 'callingServiceBackend' tool
 	 *
@@ -161,14 +161,14 @@ public class CallingSteps {
 	 *
 	 * @step. (.*) accepts? next incoming call automatically$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            list of callee names/aliases
 	 * @throws Exception
 	 */
 	@When("(.*) accepts? next incoming call automatically$")
-	public void UserXAcceptsNextIncomingCallAutomatically(String callee)
+	public void UserXAcceptsNextIncomingCallAutomatically(String callees)
 			throws Exception {
-		commonCallingSteps.acceptNextCall(callee);
+		commonCallingSteps.acceptNextCall(splitAliases(callees));
 	}
 
 	/**
