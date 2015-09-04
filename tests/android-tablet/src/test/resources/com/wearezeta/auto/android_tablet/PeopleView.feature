@@ -274,7 +274,7 @@ Feature: People View
       | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName |
       | user1Name | user2Name  | user2Email    | user3Name | GroupChat     |
 
-  @id2856 @staging
+  @id2856 @regression @rc
   Scenario Outline: I see conversation name, number of participants and their avatars in group pop-over (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -296,7 +296,7 @@ Feature: People View
       | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName | Subheader |
       | user1Name | user2Name  | user2Email    | user3Name | GroupChat     | 3 PEOPLE  |
 
-  @id3154 @staging
+  @id3154 @regression @rc
   Scenario Outline: I see conversation name, number of participants and their avatars in group pop-over (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

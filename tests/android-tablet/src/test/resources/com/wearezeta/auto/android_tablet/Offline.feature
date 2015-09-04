@@ -26,7 +26,7 @@ Feature: Offline Mode
       | Name      | Contact   | Message1 | Message2  | Picture     |
       | user1Name | user2Name | FirstMsg | SecondMsg | testing.jpg |
 
-  @id2904 @staging
+  @id2904 @regression @rc
   Scenario Outline: I want to see an unsent indicator when I send message or image during offline
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
