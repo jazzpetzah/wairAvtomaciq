@@ -113,7 +113,7 @@ Feature: Calling
       | CallBackend | Name      | Contact   |
       | autocall    | user1Name | user2Name |
 
-  @id3124 @regression
+  @id3124 @regression @rc
   Scenario Outline: I can dismiss calling bar by swipe (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -131,7 +131,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id2911 @regression
+  @id2911 @regression @rc
   Scenario Outline: I can dismiss calling bar by swipe (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
