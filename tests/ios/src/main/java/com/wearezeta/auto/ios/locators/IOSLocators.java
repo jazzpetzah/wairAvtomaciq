@@ -86,7 +86,7 @@ public final class IOSLocators {
 
 	public static final String nameConnectOtherUserButton = "CONNECT";
 
-	public static final String xpathConnectOtherUserButton = "//UIAButton[@name='CONNECT']";
+	public static final String xpathConnectOtherUserButton = "//*[@name='CONNECT']";
 
 	public static final String nameIgnoreOtherUserButton = "IGNORE";
 
