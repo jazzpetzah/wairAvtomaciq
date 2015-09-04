@@ -115,7 +115,7 @@ public class PersonalInfoPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutPageWireLogo)
 	private WebElement aboutPageWireLogo;
 
-	@FindBy(how = How.NAME, using = IOSLocators.nameAboutCloseButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutCloseButton)
 	private WebElement aboutCloseButton;
 
 	public PersonalInfoPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
@@ -171,11 +171,17 @@ public class PersonalInfoPage extends IOSPage {
 		if (!color.equals("Violet")) {
 			return false;
 		}
+		String aboutLogo = ABOUT_LOGO_IMAGE;
+		String deviceType = CommonUtils.getDeviceName(this.getClass());
 		BufferedImage coloredLogoImage = getElementScreenshot(aboutPageWireLogo)
 				.orElseThrow(IllegalStateException::new);
-		System.out.println(IOSPage.getImagesPath() + ABOUT_LOGO_IMAGE);
+		if (deviceType.equals("iPhone 6") || deviceType.equals("iPhone 6 Plus")) {
+			aboutLogo = ABOUT_LOGO_IMAGE.replace(".png", "_iPhone.png");
+		} else if (deviceType.equals("iPad Air")) {
+			aboutLogo = ABOUT_LOGO_IMAGE.replace(".png", "_iPad.png");
+		}
 		BufferedImage realLogoImage = ImageUtil.readImageFromFile(IOSPage
-				.getImagesPath() + ABOUT_LOGO_IMAGE);
+				.getImagesPath() + aboutLogo);
 		double score = ImageUtil.getOverlapScore(realLogoImage,
 				coloredLogoImage,
 				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);

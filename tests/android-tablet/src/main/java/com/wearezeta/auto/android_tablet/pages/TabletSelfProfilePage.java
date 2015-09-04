@@ -19,7 +19,7 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 	public static final String idSelfProfileView = "ll_self_form";
 	@FindBy(id = idSelfProfileView)
 	private WebElement selfProfileView;
-	
+
 	public static final Function<String, String> xpathSelfNameByContent = content -> String
 			.format("//*[@id='ttv__profile__name' and @value='%s']", content);
 
@@ -64,7 +64,7 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 	public void changeSelfNameTo(String newName) throws Exception {
 		selfNameInput.clear();
 		selfNameInput.sendKeys(newName);
-		this.getDriver().navigate().back();
+		this.getDriver().tapSendButton();
 	}
 
 	public BufferedImage getScreenshot() throws Exception {
@@ -75,5 +75,11 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 	public void tapInTheCenter() throws Exception {
 		DriverUtils.tapInTheCenterOfTheElement(this.getDriver(),
 				selfProfileView);
+	}
+
+	public boolean waitUntilOptionsMenuItemVisible(String itemName)
+			throws Exception {
+		final By locator = By.xpath(xpathOptionsMenuItemByName.apply(itemName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 }

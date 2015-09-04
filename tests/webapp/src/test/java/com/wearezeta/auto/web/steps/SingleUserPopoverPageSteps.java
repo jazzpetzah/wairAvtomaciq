@@ -1,7 +1,18 @@
 package com.wearezeta.auto.web.steps;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThan;
+
+import java.awt.image.BufferedImage;
+
+import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
+import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
 
@@ -9,9 +20,13 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 public class SingleUserPopoverPageSteps {
+
+	public static final Logger log = ZetaLogger
+			.getLog(SingleUserPopoverPageSteps.class.getSimpleName());
 
 	private static final String MAILTO = "mailto:";
 	private static final String CAPTION_PENDING = "Pending";
@@ -177,24 +192,62 @@ public class SingleUserPopoverPageSteps {
 	}
 
 	/**
-	 * Verifies Mail is visible on Single Participant popover or not
+	 * Verifies Mail is correct on Single Participant popover or not
 	 *
 	 * @param not
 	 *            * is set to null if "do not" part does not exist
-	 * @step. ^I( do not)? see Mail on Single Participant popover$
+	 * @param userAlias
+	 *            name of user
+	 * @step. ^I( do not)? see Mail of user (.*) on Single Participant popover$
 	 *
 	 * @throws Exception
 	 */
-	@Then("^I( do not)? see Mail on Single Participant popover$")
-	public void ISeeMailOfUser(String not) throws Exception {
+	@Then("^I( do not)? see Mail of user (.*) on Single Participant popover$")
+	public void ISeeMailOfUser(String not, String userAlias) throws Exception {
 		if (not == null) {
-			Assert.assertFalse(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-					.getUserMail().isEmpty());
+			ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
+			assertThat(
+					((SingleUserPopoverContainer) PagesCollection.popoverPage)
+							.getUserMail().toLowerCase(),
+					equalTo(user.getEmail()));
 		} else {
-			Assert.assertTrue(((SingleUserPopoverContainer) PagesCollection.popoverPage)
-					.getUserMail().isEmpty());
+			assertThat(
+					((SingleUserPopoverContainer) PagesCollection.popoverPage)
+							.getUserMail(),
+					equalTo(""));
 		}
+	}
 
+	/**
+	 * Verifies avatar is correct on Single Participant popover or not
+	 *
+	 * @param not
+	 *            * is set to null if "do not" part does not exist
+	 * @param avatar
+	 *            file name of image file in resources/images
+	 * @param userAlias
+	 *            name of user
+	 * @step. ^I( do not)? see avatar of user (.*) on Single Participant popover$
+	 *
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see avatar (.*) of user (.*) on Single Participant popover$")
+	public void ISeeAvatarOfUser(String not, String avatar, String userAlias) throws Exception {
+		final String picturePath = WebCommonUtils.getFullPicturePath(avatar);
+		BufferedImage expectedAvatar = ImageUtil.readImageFromFile(picturePath);
+		BufferedImage actualAvatar = ((SingleUserPopoverContainer) PagesCollection.popoverPage)
+				.getAvatar();
+		double overlapScore = ImageUtil.getOverlapScore(actualAvatar,
+				expectedAvatar,
+				ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
+		log.info("Overlap score: " + overlapScore);
+		if (not == null) {
+			assertThat("Overlap score of image comparsion", overlapScore,
+					greaterThanOrEqualTo(0.3));
+		} else {
+			assertThat("Overlap score of image comparsion", overlapScore,
+					lessThan(0.3));
+		}
 	}
 
 	/**

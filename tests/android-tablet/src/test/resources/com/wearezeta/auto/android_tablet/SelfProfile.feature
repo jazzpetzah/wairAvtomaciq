@@ -1,7 +1,7 @@
 Feature: Self Profile
 
-  @id2264 @smoke
-  Scenario Outline: ZClient change name in portrait mode
+  @id2264 @smoke @rc
+  Scenario Outline: I can change my name in portrait mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
@@ -16,8 +16,8 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id2250 @smoke
-  Scenario Outline: ZClient change name in landscape mode
+  @id2250 @smoke @rc
+  Scenario Outline: I can change my name in landscape mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
@@ -31,44 +31,8 @@ Feature: Self Profile
       | Name      | NewName     |
       | user1Name | NewTestName |
 
-  @id2261 @smoke
-  Scenario Outline: Check contact personal info in portrait mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to portrait
-    Given I sign in using my email
-    Given I see the conversations list with conversations
-    When I tap the conversation <Contact>
-    And I see the conversation view
-    And I tap Show Details button on conversation view page
-    Then I see the Single user popover
-    And I see the user name <Contact> on Single user popover
-    And I see the user email <ContactEmail> on Single user popover
-
-    Examples: 
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
-
-  @id2247 @smoke
-  Scenario Outline: Check contact personal info in landscape mode
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I sign in using my email
-    Given I see the conversations list with conversations
-    When I tap the conversation <Contact>
-    And I see the conversation view
-    And I tap Show Details button on conversation view page
-    Then I see the Single user popover
-    And I see the user name <Contact> on Single user popover
-    And I see the user email <ContactEmail> on Single user popover
-
-    Examples: 
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
-
-  @id2288 @smoke
-  Scenario Outline: Change user picture in portrait mode
+  @id2288 @smoke @rc
+  Scenario Outline: Change profile picture using existing from gallery in portrait mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to portrait
     Given I sign in using my email
@@ -76,7 +40,7 @@ Feature: Self Profile
     When I tap my avatar on top of conversations list
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
-    And I remember my current profile picture tablet
+    And I remember my current profile picture on Self Profile page
     And I tap Change Picture button on Self Profile page
     And I tap Gallery button on Self Profile page
     And I select a picture from the Gallery
@@ -88,18 +52,57 @@ Feature: Self Profile
       | Name      |
       | user1Name |
 
-  @id2289 @smoke
-  Scenario Outline: Change user picture in landscape mode
+  @id2289 @smoke @rc
+  Scenario Outline: Change profile picture using existing from gallery in landscape mode
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I see the conversations list with no conversations
     And I see my name on Self Profile page
     And I tap in the center of Self Profile page
-    And I remember my current profile picture tablet
+    And I remember my current profile picture on Self Profile page
     And I tap Change Picture button on Self Profile page
     And I tap Gallery button on Self Profile page
     And I select a picture from the Gallery
+    And I confirm my picture on the Self Profile page
+    And I tap in the center of Self Profile page
+    Then I verify that my current profile picture is different from the previous one
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @id2833 @regression
+  Scenario Outline: User can change profile picture by taking camera picture (portrait)
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with no conversations
+    When I tap my avatar on top of conversations list
+    And I see my name on Self Profile page
+    And I tap in the center of Self Profile page
+    And I remember my current profile picture on Self Profile page
+    And I tap Change Picture button on Self Profile page
+    And I tap Take Photo button on Self Profile page
+    And I confirm my picture on the Self Profile page
+    And I tap in the center of Self Profile page
+    Then I verify that my current profile picture is different from the previous one
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @id3106 @regression
+  Scenario Outline: User can change profile picture by taking camera picture (landscape)
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with no conversations
+    When I see my name on Self Profile page
+    And I tap in the center of Self Profile page
+    And I remember my current profile picture on Self Profile page
+    And I tap Change Picture button on Self Profile page
+    And I tap Take Photo button on Self Profile page
     And I confirm my picture on the Self Profile page
     And I tap in the center of Self Profile page
     Then I verify that my current profile picture is different from the previous one

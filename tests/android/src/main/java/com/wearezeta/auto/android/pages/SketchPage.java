@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -19,7 +20,7 @@ public class SketchPage extends AndroidPage {
 	@FindBy(id = idCanvas)
 	private WebElement canvas;
 
-	private static final String idColorPicker = "ll__color_layout";
+	private static final String idColorPicker = "cpdl__color_layout";
 	@FindBy(id = idColorPicker)
 	private WebElement colorPicker;
 
@@ -29,7 +30,7 @@ public class SketchPage extends AndroidPage {
 
 	// Colors should be in the order they appear in the color picker
 	public static final String[] colors = { "white", "black", "blue", "green",
-		"yellow", "red", "orange", "pink", "purple" };
+			"yellow", "red", "orange", "pink", "purple" };
 
 	private int selectedColorIndex = 0; // default to white
 
@@ -40,8 +41,8 @@ public class SketchPage extends AndroidPage {
 	 */
 	private final int COLOR_PICKER_PADDING_DP = 24;
 
-	private int colorPickerPadding = (int) (COLOR_PICKER_PADDING_DP
-		* AndroidCommonUtils.getScreenDensity());
+	private int colorPickerPadding = (int) (COLOR_PICKER_PADDING_DP * AndroidCommonUtils
+			.getScreenDensity());
 
 	public SketchPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -49,40 +50,41 @@ public class SketchPage extends AndroidPage {
 
 	public void setColor(int colorIndex) throws Exception {
 		this.selectedColorIndex = colorIndex;
-		selectColorFromChooser();
+		selectColorFromChooser(colorPicker);
 	}
 
 	public void setColor(String color) throws Exception {
 		color = color.toLowerCase().trim();
 		this.selectedColorIndex = ArrayUtils.indexOf(colors, color);
-		selectColorFromChooser();
+		selectColorFromChooser(colorPicker);
 	}
 
-	private void selectColorFromChooser() throws Exception {
+	private void selectColorFromChooser(WebElement colorPicker)
+			throws Exception {
 		int numColors = colors.length;
 		double colorPickerElementWidth = colorPicker.getSize().width;
 		// the actual select area is a bit smaller than the width of the element
 		double colorPickerSelectorWidth = colorPickerElementWidth - 2
-			* colorPickerPadding;
+				* colorPickerPadding;
 
 		double colorWidth = colorPickerSelectorWidth / numColors;
 
 		double colorPosition = colorWidth * selectedColorIndex
-			+ ((0.5) * colorWidth);
+				+ ((0.5) * colorWidth);
 		double percentX = (colorPickerPadding + colorPosition)
-			/ colorPickerElementWidth * 100;
+				/ colorPickerElementWidth * 100;
 		int percentY = 50;
 
 		DriverUtils.tapOnPercentOfElement(this.getDriver(), colorPicker,
-			(int) percentX, percentY);
+				(int) percentX, percentY);
 	}
 
 	public void drawLinesOnCanvas(int percentStartX, int percentStartY,
-		int percentEndX, int percentEndY) throws Exception {
+			int percentEndX, int percentEndY) throws Exception {
 		int swipeDuration = 300;
 		DriverUtils.swipeElementPointToPoint(this.getDriver(), canvas,
-			swipeDuration, percentStartX, percentStartY, percentEndX,
-			percentEndY);
+				swipeDuration, percentStartX, percentStartY, percentEndX,
+				percentEndY);
 	}
 
 	public void drawRandomLines(int numLines) throws Exception {
@@ -96,8 +98,17 @@ public class SketchPage extends AndroidPage {
 		}
 	}
 
-	public void sendSketch() {
-		sendButton.click();
+	public void sendSketch() throws Exception {
+		DriverUtils.tapInTheCenterOfTheElement(getDriver(), sendButton);
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), sendButton)) {
+			try {
+				getDriver().tap(1, sendButton.getLocation().getX(),
+						sendButton.getLocation().getY(), 1);
+			} catch (NoSuchElementException e) {
+				log.debug("Can't find send sketch button. Page source: "
+						+ getDriver().getPageSource());
+			}
+		}
 	}
 
 	public Optional<BufferedImage> screenshotCanvas() throws Exception {

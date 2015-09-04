@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
@@ -32,6 +33,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
@@ -40,6 +42,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation.Builder;
 import javax.ws.rs.core.Configuration;
+
 import org.glassfish.jersey.client.ClientConfig;
 
 // Backend API calls should be invoked indirectly via API Wrappers class
@@ -58,6 +61,7 @@ final class BackendREST {
 
 	static {
 		log.setLevel(Level.DEBUG);
+		System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
 	}
 
 	private static Client initClient(Configuration config) {
@@ -411,12 +415,12 @@ final class BackendREST {
 		for (AssetRequest request : reqBuilder.getRequests()) {
 			Builder webResource = buildDefaultRequestWithAuth(
 					request.getEndpoint(), MediaType.APPLICATION_JSON, token)
-			// .type(request.getContentType())
 					.header("Content-Disposition",
 							request.getContentDisposition()).header(
 							"Content-Length", request.getContentLength());
 			final String output = restHandlers.httpPost(webResource,
-					request.getPayload(), new int[] { HttpStatus.SC_CREATED });
+					request.getPayload(), request.getContentType(),
+					new int[] { HttpStatus.SC_CREATED });
 			final JSONObject jsonOutput = new JSONObject(output);
 			result.put(jsonOutput, request.getAssetDataObject());
 		}
@@ -522,8 +526,8 @@ final class BackendREST {
 				String.format("assets/%s/?conv_id=%s", assetId, convId),
 				MediaType.MEDIA_TYPE_WILDCARD, token);
 		final BufferedImage assetDownload = (BufferedImage) restHandlers
-				.httpGet(webResource, BufferedImage.class,
-						new int[] { HttpStatus.SC_OK });
+				.httpGet(webResource, new GenericType<BufferedImage>() {
+				}, new int[] { HttpStatus.SC_OK });
 		return assetDownload;
 	}
 
@@ -631,6 +635,17 @@ final class BackendREST {
 		final String output = restHandlers.httpPost(webResource,
 				requestBody.toString(), new int[] { HttpStatus.SC_OK,
 						HttpStatus.SC_NO_CONTENT });
+		return new JSONObject(output);
+	}
+
+	public static JSONObject removeContactFromGroupConvo(AuthToken token,
+			String contactIds, String conversationId) throws Exception {
+		Builder webResource = buildDefaultRequestWithAuth(String.format(
+				"conversations/%s/members/%s", conversationId, contactIds),
+				MediaType.APPLICATION_JSON, token);
+
+		final String output = restHandlers.httpDelete(webResource, new int[] {
+				HttpStatus.SC_OK, HttpStatus.SC_NO_CONTENT });
 		return new JSONObject(output);
 	}
 

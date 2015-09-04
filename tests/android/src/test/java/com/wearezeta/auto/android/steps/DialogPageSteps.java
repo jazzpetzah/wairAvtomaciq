@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
 import com.wearezeta.auto.android.pages.*;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.CommonUtils;
@@ -104,6 +105,21 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Types Unicode message using adb
+	 * 
+	 * @step. ^I type unicode message \"(.*)\"$
+	 * 
+	 * @param msg
+	 *            message to type
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I type unicode message \"(.*)\"$")
+	public void ITypeUnicodeMessage(String msg) throws Exception {
+		AndroidCommonUtils.typeMessageUsingAdb(msg);
+	}
+
+	/**
 	 * Sends the message by pressing the keyboard send button
 	 * 
 	 * @step. ^I send the message$
@@ -173,6 +189,18 @@ public class DialogPageSteps {
 	@When("^I press Call button$")
 	public void WhenIPressCallButton() throws Exception {
 		getDialogPage().tapCallBtn();
+	}
+
+	/**
+	 * Press close button for input options
+	 * 
+	 * @step. ^I close input options$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I close input options$")
+	public void ICloseInputOptions() throws Exception {
+		getDialogPage().closeInputOptions();
 	}
 
 	/**
@@ -401,6 +429,9 @@ public class DialogPageSteps {
 		case "image close":
 			getDialogPage().closeFullScreenImage();
 			break;
+		case "sketch image paint":
+			getDialogPage().drawSketchOnImage();
+			break;
 		}
 	}
 
@@ -447,17 +478,45 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Checks to see that an unsent indicator is present next to the particular
+	 * message in the chat history
+	 * 
+	 * @step. ^I see unsent indicator next to the message \"(.*)\" in the
+	 *        dialog$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see unsent indicator next to the message \"(.*)\" in the dialog$")
+	public void ThenISeeUnsentIndicatorNextToTheMessage(String msg)
+			throws Exception {
+		Assert.assertTrue(
+				String.format(
+						"Unsent indicator has not been shown next to the '%s' message in the conversation view",
+						msg), getDialogPage().waitForUnsentIndicator(msg));
+	}
+
+	/**
 	 * Checks to see that a photo exists in the chat history. Does not check
 	 * which photo though
 	 * 
-	 * @step. ^I see new photo in the dialog$
+	 * @step. ^I (do not )?see new (?:photo|picture) in the dialog$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if 'do not' part does not exist
 	 * 
 	 * @throws Throwable
 	 */
-	@Then("^I see new photo in the dialog$")
-	public void ThenISeeNewPhotoInTheDialog() throws Throwable {
-		Assert.assertTrue("No new photo is present in the chat",
-				getDialogPage().isImageExists());
+	@Then("^I (do not )?see new (?:photo|picture) in the dialog$")
+	public void ThenISeeNewPhotoInTheDialog(String shouldNotSee)
+			throws Throwable {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("No new photo is present in the chat",
+					getDialogPage().isImageExists());
+		} else {
+			Assert.assertTrue(
+					"A photo is present in the chat, but it should not be vivible",
+					getDialogPage().isImageInvisible());
+		}
 	}
 
 	/**
@@ -648,6 +707,18 @@ public class DialogPageSteps {
 	 */
 	@Then("^Last message is (.*)$")
 	public void ThenLastMessageIs(String message) throws Exception {
+		final long millisecondsStarted = System.currentTimeMillis();
+		final int secondsTimeout = 10;
+		while (System.currentTimeMillis() - millisecondsStarted <= secondsTimeout * 1000) {
+			if (message
+					.toLowerCase()
+					.trim()
+					.equals(getDialogPage().getLastMessageFromDialog()
+							.toLowerCase().trim())) {
+				return;
+			}
+			Thread.sleep(500);
+		}
 		Assert.assertEquals(message.toLowerCase().trim(), getDialogPage()
 				.getLastMessageFromDialog().toLowerCase().trim());
 	}
@@ -715,5 +786,116 @@ public class DialogPageSteps {
 		Assert.assertTrue("Call overlay is not visible, nothing to swipe",
 				getCallingOverlayPage().waitUntilVisible());
 		getDialogPage().swipeByCoordinates(1500, 30, 25, 30, 5);
+	}
+
+	/**
+	 * Checks to see if join group call overlay is present or not
+	 * 
+	 * @step. ^I( do not)? see join group call overlay$
+	 * @param shouldNotSee
+	 *            is set to null if " do not" part does not exist
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see join group call overlay$")
+	public void WhenISeeGroupCallJoinOverlay(String shouldNotSee)
+			throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue("Join group call overlay not visible",
+					getCallingOverlayPage().waitUntilGroupCallJoinVisible());
+		} else {
+			Assert.assertTrue(
+					"Join group call overlay is visible, it should have been dismissed",
+					getCallingOverlayPage().waitUntilGroupCallJoinNotVisible());
+		}
+	}
+
+	/**
+	 * Checks to see if join group call overlay is present or not
+	 * 
+	 * @step. ^I see \"(.*)\" button$
+	 * @param name
+	 *            text on the button
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see \"(.*)\" button$")
+	public void WhenISeeGroupCallJoinButton(String shouldNotSee, String name)
+			throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(name
+					+ " button with not visible in group call overlay",
+					getCallingOverlayPage()
+							.waitUntilJoinGroupCallButtonVisible(name));
+		} else {
+			Assert.assertTrue(name
+					+ " button with not visible in group call overlay",
+					getCallingOverlayPage()
+							.waitUntilJoinGroupCallButtonNotVisible(name));
+		}
+	}
+
+	private static final double MAX_SIMILARITY_THRESHOLD = 0.95;
+
+	private static enum PictureDestination {
+		DIALOG, PREVIEW;
+	}
+
+	/**
+	 * Verify whether a picture in dialog/preview is animated
+	 * 
+	 * @step. ^I see the picture in the (dialog|preview) is animated$
+	 * 
+	 * @param destination
+	 *            either "dialog" or "preview"
+	 * @throws Exception
+	 */
+	@Then("^I see the picture in the (dialog|preview) is animated$")
+	public void ISeeDialogPictureIsAnimated(String destination)
+			throws Exception {
+		final PictureDestination dst = PictureDestination.valueOf(destination
+				.toUpperCase());
+		double avgThreshold;
+		// no need to wait, since screenshoting procedure itself is quite long
+		final long screenshotingDelay = 0;
+		final int maxFrames = 4;
+		switch (dst) {
+		case DIALOG:
+			avgThreshold = ImageUtil.getAnimationThreshold(
+					getDialogPage()::getRecentPictureScreenshot, maxFrames,
+					screenshotingDelay);
+			Assert.assertTrue(
+					String.format(
+							"The picture in the conversation view seems to be static (%.2f >= %.2f)",
+							avgThreshold, MAX_SIMILARITY_THRESHOLD),
+					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+			break;
+		case PREVIEW:
+			avgThreshold = ImageUtil.getAnimationThreshold(
+					getDialogPage()::getPreviewPictureScreenshot, maxFrames,
+					screenshotingDelay);
+			Assert.assertTrue(
+					String.format(
+							"The picture in the image preview view seems to be static (%.2f >= %.2f)",
+							avgThreshold, MAX_SIMILARITY_THRESHOLD),
+					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+			break;
+		}
+	}
+
+	/**
+	 * 
+	 * Check whether unsent indicator is shown next to a new picture in the
+	 * convo view
+	 * 
+	 * @step. ^I see unsent indicator next to new picture in the dialog$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see unsent indicator next to new picture in the dialog$")
+	public void ISeeUnsentIndictatorNextToAPicture() throws Exception {
+		Assert.assertTrue(
+				"There is no unsent indicator next to a picture in the conversation view",
+				getDialogPage().waitForAPictureWithUnsentIndicator());
 	}
 }

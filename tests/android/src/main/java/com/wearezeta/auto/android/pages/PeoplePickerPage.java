@@ -8,6 +8,8 @@ import java.util.function.Function;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -41,8 +43,8 @@ public class PeoplePickerPage extends AndroidPage {
 					name);
 
 	public static final String idPickerSearch = "puet_pickuser__searchbox";
-	@FindBy(id = idPickerSearch)
-	private WebElement pickerSearch;
+	// @FindBy(id = idPickerSearch)
+	// public WebElement pickerSearch;
 
 	public static final String idPeoplePickerClearbtn = "gtv_pickuser__clearbutton";
 
@@ -58,15 +60,14 @@ public class PeoplePickerPage extends AndroidPage {
 			.format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']",
 					name);
 
-	@SuppressWarnings("unused")
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
 	private static final String idPickerSearchUsers = "ttv_pickuser__searchuser_name";
 	@FindBy(id = idPickerSearchUsers)
-	private List<WebElement> pickerSearchUsers;
-	@FindBy(id = idPickerSearchUsers)
 	private WebElement pickerSearchUser;
+	private static final Function<String, String> xpathPickerUserByName = name -> String
+			.format("//*[@id='%s' and @value='%s']", idPickerSearchUsers, name);
 
 	private static final String idPickerTopPeopleHeader = "ttv_pickuser__list_header_title";
 	@FindBy(id = idPickerTopPeopleHeader)
@@ -119,9 +120,30 @@ public class PeoplePickerPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
+	public WebElement findCorrectPickerSearch() throws Exception {
+		WebElement result = null;
+		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id(idPickerSearch));
+		List<WebElement> pickerSearches = getDriver().findElements(
+				By.id(idPickerSearch));
+		for (WebElement candidate : pickerSearches) {
+			if (DriverUtils
+					.isElementPresentAndDisplayed(getDriver(), candidate)
+					&& candidate.getLocation().getX() >= 0
+					&& candidate.getLocation().getY() >= 0) {
+				result = candidate;
+			}
+		}
+		return result;
+	}
+
 	public void tapPeopleSearch() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idPickerSearch)) : "The People Picker search input is not visible";
+		WebElement pickerSearch = findCorrectPickerSearch();
+		boolean isDisplayed = DriverUtils.isElementPresentAndDisplayed(
+				getDriver(), pickerSearch);
+		if (!isDisplayed)
+			log.debug("The People Picker search input is not visible: "
+					+ getDriver().getPageSource());
+		assert isDisplayed : "The People Picker search input is not visible";
 		pickerSearch.click();
 	}
 
@@ -133,11 +155,13 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public void typeTextInPeopleSearch(String text) throws Exception {
+		WebElement pickerSearch = findCorrectPickerSearch();
 		pickerSearch.clear();
 		pickerSearch.sendKeys(text);
 	}
 
 	public void addTextToPeopleSearch(String text) throws Exception {
+		WebElement pickerSearch = findCorrectPickerSearch();
 		pickerSearch.sendKeys(text);
 	}
 
@@ -158,6 +182,7 @@ public class PeoplePickerPage extends AndroidPage {
 	public AndroidPage selectContact(String contactName) throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				pickerSearchUser, 5);
+		pickerSearchUser.click();
 		final Map<By, AndroidPage> pagesMapping = new HashMap<By, AndroidPage>();
 		pagesMapping.put(By.id(OtherUserPersonalInfoPage.idUnblockBtn),
 				new OtherUserPersonalInfoPage(this.getLazyDriver()));
@@ -175,7 +200,11 @@ public class PeoplePickerPage extends AndroidPage {
 			}
 			scanTry++;
 		}
-		pickerSearchUser.click();
+		if (DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				pickerSearchUser)) {
+			DriverUtils.tapInTheCenterOfTheElement(getDriver(),
+					pickerSearchUser);
+		}
 		return new DialogPage(this.getLazyDriver());
 	}
 
@@ -211,26 +240,16 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isPeoplePickerPageVisible() throws Exception {
+		WebElement pickerSearch = findCorrectPickerSearch();
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				pickerSearch);
 	}
 
-	// FIXME: find better locator
 	public void waitUserPickerFindUser(String contactName) throws Exception {
-		for (int i = 0; i < 50; i++) {
-			List<WebElement> elements = pickerSearchUsers;
-			for (WebElement element : elements) {
-				try {
-					if (element.getText().toLowerCase()
-							.equals(contactName.toLowerCase())) {
-						return;
-					}
-				} catch (Exception ex) {
-					continue;
-				}
-			}
-			Thread.sleep(100);
-		}
+		final By locator = By.xpath(xpathPickerUserByName.apply(contactName));
+		assert DriverUtils.waitUntilLocatorAppears(getDriver(), locator) : String
+				.format("User '%s' does not exist in the People Picker list",
+						contactName);
 	}
 
 	public ContactListPage navigateBack() throws Exception {
@@ -337,5 +356,21 @@ public class PeoplePickerPage extends AndroidPage {
 		final By locator = By.xpath(xpathPYMKItemByIdx.apply(index));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : "The first PYMK item is not visible";
 		getDriver().findElement(locator).click();
+	}
+
+	public void doShortSwipeDown() throws Exception {
+		final Point coords = content.getLocation();
+		final Dimension elementSize = content.getSize();
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height / 10, 500);
+	}
+
+	public void doLongSwipeDown() throws Exception {
+		final Point coords = content.getLocation();
+		final Dimension elementSize = content.getSize();
+		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
+				coords.x + elementSize.width / 2,
+				coords.y + elementSize.height / 4 * 3, 2000);
 	}
 }

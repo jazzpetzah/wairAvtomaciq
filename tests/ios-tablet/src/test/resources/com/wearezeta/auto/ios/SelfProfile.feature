@@ -69,7 +69,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2574
+  @regression @rc @id2574
   Scenario Outline: Change your profile picture [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -87,7 +87,7 @@ Feature: Self Profile
       | Name      | Picture                   | Contact   |
       | user1Name | userpicture_ios_check.png | user2Name |
 
-  @staging @id3159
+  @regression @id3159
   Scenario Outline: Change your profile picture [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -106,7 +106,7 @@ Feature: Self Profile
       | Name      | Picture                             | Contact   |
       | user1Name | userpicture_ios_check_landscape.png | user2Name |
 
-  @staging @id2582
+  @regression @rc @id2582
   Scenario Outline: Attempt to enter a name with 0 chars [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -123,7 +123,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3160
+  @regression @id3160
   Scenario Outline: Attempt to enter a name with 0 chars [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -141,7 +141,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2583
+  @regression @id2583
   Scenario Outline: Verify 2 chars limit [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -160,7 +160,7 @@ Feature: Self Profile
       | Name      | username1char | username2chars | Contact   |
       | user1Name | c             | AB             | user2Name |
 
-  @staging @id3161
+  @regression @id3161
   Scenario Outline: Verify 2 chars limit [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -180,7 +180,7 @@ Feature: Self Profile
       | Name      | username1char | username2chars | Contact   |
       | user1Name | c             | AB             | user2Name |
 
-  @staging @id3162
+  @regression @id3162
   Scenario Outline: Verify name change [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -189,7 +189,7 @@ Feature: Self Profile
     When I tap on my name <Name>
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
-    And I swipe right on the personal page
+    And I close self profile
     And I see Contact list with my name <NewUsername>
     And I tap on contact name <Contact>
     Then I see my user name <NewUsername> in conversation
@@ -198,7 +198,7 @@ Feature: Self Profile
       | Name      | NewUsername | Contact   |
       | user1Name | NewName     | user2Name |
 
-  @staging @id3163
+  @regression @id3163
   Scenario Outline: Verify name change [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -208,7 +208,7 @@ Feature: Self Profile
     When I tap on my name <Name>
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
-    And I swipe right on the personal page
+    And I close self profile
     And I see Contact list with my name <NewUsername>
     And I tap on contact name <Contact>
     Then I see my user name <NewUsername> in conversation
@@ -217,7 +217,7 @@ Feature: Self Profile
       | Name      | NewUsername | Contact   |
       | user1Name | NewName     | user2Name |
 
-  @staging @id2571
+  @regression @rc @id2571
   Scenario Outline: Verify changing and applying accent color [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -227,14 +227,14 @@ Feature: Self Profile
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
-    And I swipe right on the personal page
+    And I close self profile
     Then I see 5 unread message indicator in list for contact <Contact>
 
     Examples: 
       | Name      | NewName           | Color1 | Color2          | Contact   |
       | user1Name | AccentColorChange | Violet | StrongLimeGreen | user2Name |
 
-  @staging @id3191
+  @regression @id3191
   Scenario Outline: Verify changing and applying accent color [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -245,6 +245,7 @@ Feature: Self Profile
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
+    And I close self profile
     Then I see 5 unread message indicator in list for contact <Contact>
 
     Examples: 

@@ -116,11 +116,11 @@ public class ConversationPageSteps {
 
 	/**
 	 * Verifies whether YouTube video is visible
-	 * 
+	 *
 	 * @step. ^I see embedded youtube video of (.*)
-	 * 
+	 *
 	 * @throws Exception
-	 * 
+	 *
 	 */
 	@Then("^I see embedded youtube video of (.*)")
 	public void ThenISeeEmbeddedYoutubeVideoOf(String url) throws Exception {
@@ -226,9 +226,9 @@ public class ConversationPageSteps {
 	/**
 	 * Verifies that only x images are in the conversation. Helps with checking
 	 * for doubles.
-	 * 
+	 *
 	 * @step. ^I see only (\\d+) picture[s]? in the conversation$
-	 * 
+	 *
 	 * @param x
 	 *            the amount of images
 	 */
@@ -248,10 +248,17 @@ public class ConversationPageSteps {
 	 * @throws AssertionError
 	 *             if action message did not appear in conversation
 	 */
-	@Then("^I see (.*) action in conversation$")
-	public void ThenISeeActionInConversation(String message) throws Exception {
-		Assert.assertTrue(PagesCollection.conversationPage
-				.isActionMessageSent(message));
+	@Then("^I( do not)? see (.*) action in conversation$")
+	public void ThenISeeActionInConversation(String doNot, String message)
+			throws Exception {
+		if (doNot == null) {
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isActionMessageSent(message));
+		} else {
+			Assert.assertTrue(PagesCollection.conversationPage
+					.isActionMessageNotSent(message));
+
+		}
 	}
 
 	/**
@@ -281,16 +288,22 @@ public class ConversationPageSteps {
 	 * @throws Exception
 	 *
 	 */
-	@Then("^I see (.*) action for (.*) in conversation$")
-	public void ThenISeeActionForContactInConversation(String message,
-			String contacts) throws Exception {
+	@Then("^I( do not)? see (.*) action for (.*) in conversation$")
+	public void ThenISeeActionForContactInConversation(String doNot,
+			String message, String contacts) throws Exception {
 		contacts = usrMgr.replaceAliasesOccurences(contacts, FindBy.NAME_ALIAS);
 		Set<String> parts = new HashSet<String>();
 		parts.add(message);
 		parts.addAll(CommonSteps.splitAliases(contacts));
-		assertThat("Check action",
-				PagesCollection.conversationPage.getLastActionMessage(),
-				containsString(message));
+		if (doNot == null) {
+			assertThat("Check action",
+					PagesCollection.conversationPage.getLastActionMessage(),
+					containsString(message));
+		} else {
+			assertThat("Check action",
+					PagesCollection.conversationPage.getLastActionMessage(),
+					not(containsString(message)));
+		}
 	}
 
 	/**
@@ -432,7 +445,7 @@ public class ConversationPageSteps {
 	 * Verify the text of the second last text message in conversation. This
 	 * step should only be used after verifying the last message of the
 	 * conversation, because otherwise you might run into a race condition.
-	 * 
+	 *
 	 * @step. ^I verify the second last text message equals to (.*)
 	 * @param expectedMessage
 	 *            the expected message
@@ -487,7 +500,7 @@ public class ConversationPageSteps {
 	 *
 	 * @param doNot
 	 *            is set to null if "do not" part does not exist
-	 * 
+	 *
 	 * @step. ^I can see calling button$
 	 * @throws java.lang.Exception
 	 */
@@ -563,6 +576,18 @@ public class ConversationPageSteps {
 	}
 
 	/**
+	 * Joins ongoing call by clicking the join call bar
+	 *
+	 * @step. ^I join call$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I join call$")
+	public void IJoinCall() throws Exception {
+		PagesCollection.conversationPage.clickJoinCallBar();
+	}
+
+	/**
 	 * Silences the incoming call by clicking the corresponding button on the
 	 * calling bar
 	 *
@@ -608,7 +633,7 @@ public class ConversationPageSteps {
 
 	/**
 	 * Verify that conversation contains my missed call
-	 * 
+	 *
 	 * @step. ^I see conversation with my missed call$
 	 *
 	 * @throws Exception
@@ -636,7 +661,7 @@ public class ConversationPageSteps {
 	 *
 	 * @param doNot
 	 *            is set to null if "do not" part does not exist
-	 * 
+	 *
 	 * @step. ^I( do not)? see picture in fullscreen$
 	 * @throws java.lang.Exception
 	 */
@@ -693,7 +718,7 @@ public class ConversationPageSteps {
 
 	/**
 	 * Verify that the input text field contains message X
-	 * 
+	 *
 	 * @param message
 	 *            the message it should contain
 	 */
@@ -706,7 +731,7 @@ public class ConversationPageSteps {
 
 	/**
 	 * Types shortcut combination to open search
-	 * 
+	 *
 	 * @step. ^I type shortcut combination to open search$
 	 * @throws Exception
 	 */
@@ -718,7 +743,7 @@ public class ConversationPageSteps {
 
 	/**
 	 * Hovers ping button
-	 * 
+	 *
 	 * @step. ^I hover ping button$
 	 * @throws Exception
 	 */
@@ -729,7 +754,7 @@ public class ConversationPageSteps {
 
 	/**
 	 * Types shortcut combination to ping
-	 * 
+	 *
 	 * @step. ^I type shortcut combination to ping$
 	 * @throws Exception
 	 */
@@ -790,7 +815,7 @@ public class ConversationPageSteps {
 
 	/**
 	 * Types shortcut combination to call
-	 * 
+	 *
 	 * @step. ^I type shortcut combination to ping$
 	 * @throws Exception
 	 */

@@ -68,6 +68,48 @@ public class ContactListPage extends WebPage {
 	@FindBy(css = WebAppLocators.ContactListPage.cssUnmuteButton)
 	private WebElement unmuteButton;
 
+	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveButton)
+	private WebElement leaveButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssBlockButton)
+	private WebElement blockButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteButton)
+	private WebElement deleteButton;
+
+	// leave warning
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveModalCancelButton)
+	private WebElement leaveModalCancelButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveModalActionButton)
+	private WebElement leaveModalActionButton;
+
+	// block warning
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssBlockModalCancelButton)
+	private WebElement blockModalCancelButton;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssBlockModalActionButton)
+	private WebElement blockModalActionButton;
+
+	// delete warning
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalCancelButtonGroup)
+	private WebElement deleteModalCancelButtonGroup;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalActionButtonGroup)
+	private WebElement deleteModalActionButtonGroup;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalLeaveCheckboxGroup)
+	private WebElement deleteModalLeaveCheckboxGroup;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalActionButtonSingle)
+	private WebElement deleteModalActionButtonSingle;
+
+	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteModalCancelButtonSingle)
+	private WebElement deleteModalCancelButtonSingle;
+
 	public ContactListPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -197,7 +239,7 @@ public class ContactListPage extends WebPage {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
 				.apply(conversationName);
-		return DriverUtils.waitUntilLocatorAppears(getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(locator));
 	}
 
@@ -205,6 +247,42 @@ public class ContactListPage extends WebPage {
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, false);
 		final String locator = WebAppLocators.ContactListPage.xpathMissedCallNotificationByContactName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isJoinedGroupCallNotificationVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathJoinedGroupCallNotificationByConversationName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isJoinedGroupCallNotificationInvisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathJoinedGroupCallNotificationByConversationName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isUnjoinedGroupCallNotificationVisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathUnjoinedGroupCallNotificationByConversationName
+				.apply(conversationName);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(locator));
+	}
+
+	public boolean isUnjoinedGroupCallNotificationInvisibleForConversation(
+			String conversationName) throws Exception {
+		conversationName = fixDefaultGroupConvoName(conversationName, false);
+		final String locator = WebAppLocators.ContactListPage.xpathUnjoinedGroupCallNotificationByConversationName
 				.apply(conversationName);
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.xpath(locator));
@@ -377,6 +455,16 @@ public class ContactListPage extends WebPage {
 		unmuteButton.click();
 	}
 
+	public void clickLeaveConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
+		leaveButton.click();
+	}
+
+	public void clickBlockConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
+		blockButton.click();
+	}
+
 	public ConversationPage unarchiveConversation(String conversationName)
 			throws Exception {
 		conversationName = fixDefaultGroupConvoName(conversationName, true);
@@ -525,4 +613,68 @@ public class ContactListPage extends WebPage {
 		}
 	}
 
+	public boolean isLeaveWarningModalVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.cssSelector(WebAppLocators.ContactListPage.cssLeaveModal));
+	}
+
+	public void clickCancelOnLeaveWarning() {
+		leaveModalCancelButton.click();
+	}
+
+	public boolean isBlockWarningModalVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.cssSelector(WebAppLocators.ContactListPage.cssBlockModal));
+	}
+
+	public void clickCancelOnBlockWarning() {
+		blockModalCancelButton.click();
+	}
+
+	public void clickBlockOnBlockWarning() {
+		blockModalActionButton.click();
+	}
+
+	public void clickDeleteConversation() throws Exception {
+		waitForOptionButtonsToBeClickable();
+		deleteButton.click();
+	}
+
+	public boolean isDeleteWarningModalForGroupVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ContactListPage.cssDeleteModalGroup));
+	}
+
+	public void clickDeleteOnDeleteWarning() {
+		deleteModalActionButtonGroup.click();
+	}
+
+	public void clickLeaveOnLeaveWarning() {
+		leaveModalActionButton.click();
+	}
+
+	public void clickLeaveCheckboxOnDeleteWarning() {
+		deleteModalLeaveCheckboxGroup.click();
+	}
+
+	public void clickCancelOnDeleteWarning() {
+		deleteModalCancelButtonGroup.click();
+	}
+
+	public boolean isDeleteWarningModalSingleVisible() throws Exception {
+		return DriverUtils
+				.waitUntilLocatorIsDisplayed(
+						getDriver(),
+						By.cssSelector(WebAppLocators.ContactListPage.cssDeleteModalSingle));
+	}
+
+	public void clickDeleteOnDeleteWarningSingle() {
+		deleteModalActionButtonSingle.click();
+	}
+
+	public void clickCancelOnDeleteWarningSingle() {
+		deleteModalCancelButtonSingle.click();
+	}
 }

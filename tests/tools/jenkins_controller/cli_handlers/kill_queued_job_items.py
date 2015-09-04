@@ -13,7 +13,8 @@ class KillQueuedJobItems(CliHandlerBase):
         parser = self._get_parser()
         args = parser.parse_args()
         queue = self._jenkins.get_queue()
-        job_items_in_queue = queue.get_queue_items_for_job(args.name)
+        job_name = self._normalize_job_name(args.name)
+        job_items_in_queue = queue.get_queue_items_for_job(job_name)
         killed_items_count = 0
         for job_item_in_queue in job_items_in_queue:
             queue.delete_item(job_item_in_queue)

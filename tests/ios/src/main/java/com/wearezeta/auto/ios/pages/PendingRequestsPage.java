@@ -91,7 +91,8 @@ public class PendingRequestsPage extends IOSPage {
 	}
 
 	public String getRequesterName() {
-		return requesterName.getText();
+		final String CONNECT_TO = "Connect to ";
+		return requesterName.getText().replace(CONNECT_TO, "");
 	}
 
 	public String getRequestMessage() {
@@ -122,6 +123,11 @@ public class PendingRequestsPage extends IOSPage {
 		}
 		}
 		return page;
+	}
+
+	public boolean isIgnoreButtonDisplayed() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.name(IOSLocators.namePendingRequestIgnoreButton), 5);
 	}
 
 }

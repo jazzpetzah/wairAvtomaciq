@@ -35,6 +35,8 @@ public class PasswordChangeRequestPage extends WebPage {
 
 	public PasswordChangeRequestSuccessfullPage clickChangePasswordButton()
 			throws Exception {
+		DriverUtils
+				.waitUntilElementClickable(getDriver(), changePasswordButton);
 		changePasswordButton.click();
 
 		return new PasswordChangeRequestSuccessfullPage(this.getLazyDriver());

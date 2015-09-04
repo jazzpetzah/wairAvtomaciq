@@ -1,13 +1,13 @@
 Feature: Search
 
   @id218 @regression
-  Scenario Outline: I can do full name search for existing 1:1 non-archive
+  Scenario Outline: I can search for contact by full name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     And I wait until <Contact> exists in backend search results
-    When I press Open StartUI
+    When I open search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
@@ -18,13 +18,13 @@ Feature: Search
       | user1Name | user2Name |
 
   @id220 @regression
-  Scenario Outline: I can do full name search for existing group convo non-archive
+  Scenario Outline: I can search group conversation by full name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I press Open StartUI
+    When I open search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<GroupChatName>" into Search input on People Picker page
@@ -34,13 +34,13 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat |
 
-  @id223 @regression
-  Scenario Outline: I can do partial name search for existing 1:1
+  @id223 @regression @rc
+  Scenario Outline: I can search for contact by partial name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I press Open StartUI
+    When I open search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field part <Size> of user name to connect to <Contact>
@@ -51,13 +51,13 @@ Feature: Search
       | user1Name | user2Name | 12   |
 
   @id225 @regression
-  Scenario Outline: I can do partial name search for existing group convo non-archive
+  Scenario Outline: I can search group converation by partial name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I press Open StartUI
+    When I open search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I input in search field part <Size> of user name to connect to <GroupChatName>
@@ -67,12 +67,12 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName           | Size |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat1 | 5    |
 
-  @id327 @smoke
-  Scenario Outline: Open/Close People picker
+  @id327 @smoke @rc
+  Scenario Outline: Open Search by tap in search box and close by UI button
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
-    When I press Open StartUI
+    When I open search by tap
     And I see People picker page
     And I press Clear button
     Then I see Contact list
@@ -80,14 +80,41 @@ Feature: Search
     Examples: 
       | Name      |
       | user1Name |
+      
+  @id2177 @regression
+  Scenario Outline: Open/Close Search by different actions
+    Given There are 2 users where <Name> is me
+    # We need at least 1 user in the convo list, otherwise it will be impossible to swipe
+    Given <Contact> is connected to me
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I open Search by tap
+    And I see People picker page
+    And I press Clear button
+    Then I see Contact list with contacts
+    And I do not see TOP PEOPLE
+    When I open Search by UI button
+    And I see People picker page
+    And I swipe down people picker
+    Then I see Contact list with contacts
+    And I do not see TOP PEOPLE
+    When I swipe down contact list
+    And I see People picker page
+    And I navigate back to Conversations List
+    Then I see Contact list with contacts
+    And I do not see TOP PEOPLE
+    
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
-  @id319 @regression
-  Scenario Outline: I can create group chat from Search
+  @id319 @regression @rc
+  Scenario Outline: I can create group chat from Search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I press Open StartUI
+    When I open search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
@@ -99,16 +126,16 @@ Feature: Search
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName           |
-      | user1Name | user3Name | user2Name | PeoplePicker GroupChat2 |
+      | user1Name | user2Name | user3Name | PeoplePicker GroupChat2 |
 
-  @id2214 @regression
+  @id2214 @regression @rc
   Scenario Outline: I can dismiss PYMK by Hide button
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I press Open StartUI
+    When I open search by tap
     And I see People picker page
     And I keep reopening People Picker until PYMK are visible
     And I remember the name of the first PYMK item
@@ -116,31 +143,30 @@ Feature: Search
     And I click hide button on the first PYMK item
     Then I do not see the previously remembered PYMK item
     When I press Clear button
-    And I press Open StartUI
+    And I open search by tap
     Then I do not see the previously remembered PYMK item
 
     Examples: 
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2213 @regression
+  @id2213 @regression @rc
   Scenario Outline: I can dismiss PYMK by swipe
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I press Open StartUI
+    When I open search by tap
     And I see People picker page
     And I keep reopening People Picker until PYMK are visible
     And I remember the name of the first PYMK item
     And I do long swipe right on the first PYMK item
     Then I do not see the previously remembered PYMK item
     When I press Clear button
-    And I press Open StartUI
+    And I open search by tap
     Then I do not see the previously remembered PYMK item
 
     Examples: 
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
-      

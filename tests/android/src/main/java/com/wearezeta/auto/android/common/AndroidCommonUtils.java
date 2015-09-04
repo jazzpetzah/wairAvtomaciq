@@ -14,8 +14,11 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.ScreenOrientation;
 
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
@@ -24,8 +27,8 @@ public class AndroidCommonUtils extends CommonUtils {
 	private static final Logger log = ZetaLogger
 			.getLog(AndroidCommonUtils.class.getSimpleName());
 
-	private static final String stagingBackend = "[\"https://staging-nginz-https.zinfra.io\", \"https://staging-nginz-ssl.zinfra.io/await\", \"1003090516085\"]";
-	private static final String edgeBackend = "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"1003090516085\"]";
+	private static final String stagingBackend = "[\"https://staging-nginz-https.zinfra.io\", \"https://staging-nginz-ssl.zinfra.io/await\", \"723990470614\"]";
+	private static final String edgeBackend = "[\"https://edge-nginz-https.zinfra.io\", \"https://edge-nginz-ssl.zinfra.io/await\", \"258787940529\"]";
 	private static final String productionBackend = "[\"https://prod-nginz-https.wire.com\", \"https://prod-nginz-ssl.wire.com/await\", \"782078216207\"]";
 
 	private static final String BACKEND_JSON = "customBackend.json";
@@ -37,7 +40,7 @@ public class AndroidCommonUtils extends CommonUtils {
 
 	private static ArrayList<String> addressBookAddedNames = new ArrayList<String>();
 
-	private static void executeAdb(final String cmdline) throws Exception {
+	public static void executeAdb(final String cmdline) throws Exception {
 		executeOsXCommand(new String[] { "/bin/bash", "-c",
 				ADB_PREFIX + "adb " + cmdline });
 	}
@@ -211,6 +214,11 @@ public class AndroidCommonUtils extends CommonUtils {
 	public static String getAndroidAppiumLogPathFromConfig(Class<?> c)
 			throws Exception {
 		return CommonUtils.getValueFromConfig(c, "androidAppiumLogPath");
+	}
+
+	public static String getAndroidToolsPathFromConfig(Class<?> c)
+			throws Exception {
+		return CommonUtils.getValueFromConfig(c, "androidToolsPath");
 	}
 
 	public static String getAndroidAddressBookMailAccountFromConfig(Class<?> c)
@@ -393,6 +401,27 @@ public class AndroidCommonUtils extends CommonUtils {
 		executeAdb("shell input text " + message);
 	}
 
+	public static Dimension getScreenSize(final ZetaAndroidDriver drv)
+			throws Exception {
+		final String output = getAdbOutput("shell dumpsys window");
+		final Pattern patt = Pattern.compile("init=(\\d+)x(\\d+)");
+		final Matcher m = patt.matcher(output);
+		if (m.find()) {
+			if (drv.getOrientation() == ScreenOrientation.LANDSCAPE) {
+				return new Dimension(Integer.parseInt(m.group(2)),
+						Integer.parseInt(m.group(1)));
+			} else {
+				return new Dimension(Integer.parseInt(m.group(1)),
+						Integer.parseInt(m.group(2)));
+			}
+		} else {
+			throw new AssertionError(
+					String.format(
+							"Failed to get device screen dimensions from ADB output\n%s",
+							output));
+		}
+	}
+
 	/**
 	 * Compares the Android of the plugged-in device with the input (target)
 	 * version that you wish to check for. For exmaple, if you want to check
@@ -409,5 +438,79 @@ public class AndroidCommonUtils extends CommonUtils {
 			throws Exception {
 		String deviceVersion = readDeviceInfo().getOperatingSystemBuild();
 		return deviceVersion.compareTo(targetVersion);
+	}
+
+	/**
+	 * The method uses dirty Appium hack to unlock the screen
+	 * 
+	 * @throws Exception
+	 */
+	public static void unlockDevice() throws Exception {
+		executeAdb("shell am start -n io.appium.unlock/.Unlock");
+	}
+
+	public static boolean isAirplaneModeEnabled() throws Exception {
+		return getAdbOutput("shell settings get global airplane_mode_on")
+				.trim().equals("1");
+	}
+
+	public static void setAirplaneMode(boolean expectedState) throws Exception {
+		if (isAirplaneModeEnabled() == expectedState) {
+			return;
+		}
+		executeAdb(String.format(
+				"shell settings put global airplane_mode_on %d",
+				expectedState ? 1 : 0));
+		executeAdb(String
+				.format("shell am broadcast -a android.intent.action.AIRPLANE_MODE --ez state %s",
+						expectedState ? "true" : "false"));
+		assert (isAirplaneModeEnabled() == expectedState) : "ADB has failed to "
+				+ (expectedState ? "enable" : "disable")
+				+ " airplane mode on the device";
+		// Let the app to understand that connectivity state has been changed
+		Thread.sleep(3000);
+	}
+
+	public static boolean isPackageInstalled(String androidPackage)
+			throws Exception {
+		String output = getAdbOutput("shell pm list packages -3 "
+				+ androidPackage);
+		return output.contains(androidPackage);
+
+	}
+
+	private static final String ADB_KEYBOARD_PACKAGE = "com.android.adbkeyboard";
+	private static final String ADB_KEYBOARD_IME_ID = "com.android.adbkeyboard/.AdbIME";
+
+	private static String defaultImeId = "";
+
+	public static void installAdbKeyboard() throws Exception {
+		if (!isPackageInstalled(ADB_KEYBOARD_PACKAGE)) {
+			executeAdb(String.format("install %s/ADBKeyBoard.apk",
+					getAndroidToolsPathFromConfig(AndroidCommonUtils.class)));
+		}
+	}
+
+	public static void storeDefaultImeId() throws Exception {
+		defaultImeId = getAdbOutput(
+				"shell settings get secure default_input_method").trim();
+	}
+
+	public static void resetDefaultIME() throws Exception {
+		setIME(defaultImeId);
+	}
+
+	public static void setAdbKeyboard() throws Exception {
+		storeDefaultImeId();
+		setIME(ADB_KEYBOARD_IME_ID);
+	}
+
+	private static void setIME(String imeId) throws Exception {
+		executeAdb("shell ime set " + imeId);
+	}
+
+	public static void typeMessageUsingAdb(String message) throws Exception {
+		executeAdb(String.format(
+				"shell am broadcast -a ADB_INPUT_TEXT --es msg '%s'", message));
 	}
 }

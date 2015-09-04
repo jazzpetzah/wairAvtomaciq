@@ -131,4 +131,27 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		return getContactListPage().isNoConversationsVisible();
 	}
 
+	public boolean waitUntilMissedCallNotificationVisible(String convoName)
+			throws Exception {
+		return getContactListPage().waitUntilMissedCallNotificationVisible(
+				convoName);
+	}
+
+	public boolean waitUntilMissedCallNotificationInvisible(String convoName)
+			throws Exception {
+		return getContactListPage().waitUntilMissedCallNotificationInvisible(
+				convoName);
+	}
+
+	public void doShortSwipeDown() throws Exception {
+		getContactListPage().doShortSwipeDown();
+	}
+
+	public void doLongSwipeDown() throws Exception {
+		getContactListPage().doLongSwipeDown();
+	}
+
+	public void doSwipeLeft() throws Exception {
+		DriverUtils.swipeByCoordinates(getDriver(), 1000, 95, 50, 10, 50);
+	}
 }

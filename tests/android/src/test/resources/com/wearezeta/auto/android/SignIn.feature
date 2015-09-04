@@ -14,7 +14,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id1 @smoke
+  @id3245 @smoke
   Scenario Outline: Sign in to Wire by phone
     Given There are 1 users where <Name> is me
     When I sign in using my phone number
@@ -43,8 +43,8 @@ Feature: Sign In
     #  | Login1  | Password    | Login2   |
     #  | aqaUser | aqaPassword | yourUser |
 
-  @id1413 @regression
-  Scenario Outline: Negative case for sign in
+  @id1413 @smoke @rc
+  Scenario Outline: User should be notified if the details he enetered on the sign in screen are incorrect
     Given I see welcome screen
     When I switch to email sign in screen
     And I have entered login <Login>

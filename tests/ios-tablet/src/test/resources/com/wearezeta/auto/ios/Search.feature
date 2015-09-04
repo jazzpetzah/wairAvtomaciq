@@ -62,11 +62,11 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2531 @noAcceptAlert
+  @staging @id2531 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
-    And I dismiss alert
+    And I dismiss all alerts
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see Upload contacts dialog
@@ -82,7 +82,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id2928 @noAcceptAlert
+  @staging @id2928 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -118,7 +118,7 @@ Feature: Search
     And I see top people list on People picker page
     Then I tap on first 1 top connections
     #And I click Go button to create 1:1 conversation
-    And I click Create Conversation button on People picker page
+    And I click open conversation button on People picker page
     And I wait for 2 seconds
     And I see dialog page
 
@@ -142,7 +142,7 @@ Feature: Search
     And I see top people list on People picker page
     Then I tap on first 1 top connections
     #And I click Go button to create 1:1 conversation
-    And I click Create Conversation button on People picker page
+    And I click open conversation button on People picker page
     And I wait for 2 seconds
     And I see dialog page
 
@@ -202,7 +202,7 @@ Feature: Search
       | Name      | ConvoName    | UserCount | Contact   |
       | user1Name | TopGroupTest | 3         | user2Name |
 
-  @regression @id1456 
+  @regression @rc @id2342 @id1456
   Scenario Outline: Verify you can unblock someone from search list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -217,7 +217,7 @@ Feature: Search
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
-    And I unblock user
+    And I unblock user on iPad
     And I type the message
     And I send the message
     Then I see message in the dialog
@@ -243,7 +243,7 @@ Feature: Search
     And I see user <Contact> found on People picker page
     And I click hide keyboard button
     And I tap on connected user <Contact> on People picker page
-    And I unblock user
+    And I unblock user on iPad
     And I type the message
     And I send the message
     Then I see message in the dialog
@@ -465,6 +465,7 @@ Feature: Search
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
+    And I click space keyboard button
     Then I see that <Number> contacts are selected
 
     Examples: 
@@ -488,8 +489,250 @@ Feature: Search
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
+    And I click space keyboard button
     Then I see that <Number> contacts are selected
 
     Examples: 
       | Name      | UserCount | Contact   | Number |
       | user1Name | 7         | user2Name | 4      |
+
+  @staging @id3289
+  Scenario Outline: Verify starting a call with action button [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    Then I see user <Contact> found on People picker page
+    When I tap on connected user <Contact> on People picker page
+    And I see call action button on People picker page
+    And I click call action button on People picker page
+    Then I see mute call, end call buttons
+    And I see calling to contact <Contact> message
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3290
+  Scenario Outline: Verify starting a call with action button [LANDSAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    Then I see user <Contact> found on People picker page
+    When I tap on connected user <Contact> on People picker page
+    And I see call action button on People picker page
+    And I click call action button on People picker page
+    Then I see mute call, end call buttons
+    And I see calling to contact <Contact> message
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3291
+  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    Then I tap on first 3 top connections
+    When I see Send image action button on People picker page
+    And I click Send image action button on People picker page
+    And I press Camera Roll button
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
+    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+    And I see new photo in the dialog
+    When I navigate back to conversations view
+    Then I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+
+  @staging @id3292
+  Scenario Outline: Verify sharing a photo to a newly created group conversation with action button [LANDSAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    Then I tap on first 3 top connections
+    When I see Send image action button on People picker page
+    And I click Send image action button on People picker page
+    And I press Camera Roll button
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
+    Then I see group chat page with 3 users <Contact1> <Contact2> <Contact3>
+    And I see new photo in the dialog
+    And I see in contact list group chat with <Contact1> <Contact2> <Contact3>
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+
+  @staging @id3295
+  Scenario Outline: Verify action buttons appear after selecting person from Top People [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on first 1 top connections
+    And I see action buttons appeared on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3296
+  Scenario Outline: Verify action buttons appear after selecting person from Top People [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on first 1 top connections
+    And I see action buttons appeared on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3297
+  Scenario Outline: Verify action buttons appear after choosing user from search results [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    And I see action buttons appeared on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3298
+  Scenario Outline: Verify action buttons appear after choosing user from search results [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    And I see action buttons appeared on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3299
+  Scenario Outline: Verify button Open is changed on Create after checking second person [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 1st top connection contact
+    And I see open conversation action button on People picker page
+    And I tap on 2nd top connection contact
+    And I see Create Conversation button on People picker page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @staging @id3300
+  Scenario Outline: Verify button Open is changed on Create after checking second person [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    When I tap on 1st top connection contact
+    Then I see open conversation action button on People picker page
+    When I tap on 2nd top connection contact
+    Then I see Create Conversation button on People picker page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @staging @id3301
+  Scenario Outline: Verify action buttons disappear by unchecking the avatar [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    When I tap on 1st top connection contact
+    Then I see action buttons appeared on People picker page
+    When I tap on 1st top connection contact
+    Then I see action buttons disappeared on People picker page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @staging @id3302
+  Scenario Outline: Verify action buttons disappear by unchecking the avatar [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    When I tap on 1st top connection contact
+    Then I see action buttons appeared on People picker page
+    When I tap on 1st top connection contact
+    Then I see action buttons disappeared on People picker page
+
+    Examples: 
+      | Name      |
+      | user1Name |

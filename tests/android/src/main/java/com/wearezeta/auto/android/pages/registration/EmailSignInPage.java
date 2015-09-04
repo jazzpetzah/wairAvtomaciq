@@ -27,6 +27,10 @@ public class EmailSignInPage extends AndroidPage {
 	private static final Function<String, String> xpathLoginMessageByText = text -> String
 			.format("//*[@id='message' and @value='%s']", text);
 
+	private static final String xpathAlertOKButton = "//*[starts-with(@id, 'button') and @value='OK']";
+	@FindBy(xpath = xpathAlertOKButton)
+	private WebElement alertOKButton;
+	
 	@FindBy(id = PeoplePickerPage.idPeoplePickerClearbtn)
 	private WebElement pickerClearBtn;
 
@@ -97,5 +101,9 @@ public class EmailSignInPage extends AndroidPage {
 				.waitUntilLocatorIsDisplayed(getDriver(), locator, 15) : String
 				.format("Error message '%s' is not visible on the screen",
 						expectedMsg);
+	}
+
+	public void acceptErrorMessage() {
+		alertOKButton.click();
 	}
 }

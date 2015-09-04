@@ -5,13 +5,11 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ContactListPage;
-import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Then;
@@ -214,12 +212,14 @@ public class PeoplePickerPageSteps {
 
 	@When("I re-enter the people picker if CONNECT label is not there")
 	public void IRetryPeoplePickerIfNoConnectLabel() throws Exception {
-		while (!getPeoplePickerPage().isConnectLabelVisible()) {
-			IClickCloseButtonDismissPeopleView();
-			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-				getСontactListPage().swipeDown(1000);
+		for (int i = 0; i < 3; i++) {
+			if (!getPeoplePickerPage().isConnectLabelVisible()) {
+				IClickCloseButtonDismissPeopleView();
+				Thread.sleep(5000);
+				getСontactListPage().openSearch();
+				getPeoplePickerPage().closeShareContactsIfVisible();
 			} else {
-				getСontactListPage().swipeDownSimulator();
+				break;
 			}
 		}
 	}
@@ -237,6 +237,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
+		getPeoplePickerPage().closeShareContactsIfVisible();
 		getPeoplePickerPage().fillTextInPeoplePickerSearch(contact);
 	}
 
@@ -248,6 +249,7 @@ public class PeoplePickerPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
+		getPeoplePickerPage().closeShareContactsIfVisible();
 		getPeoplePickerPage().fillTextInPeoplePickerSearch(email);
 	}
 
@@ -304,8 +306,27 @@ public class PeoplePickerPageSteps {
 	@Then("^I see the user (.*) avatar with a clock$")
 	public void ISeeUserWithAvatarClock(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		Assert.assertTrue("Avatar does not have a clock icon",
-				getPeoplePickerPage().checkAvatarClockIcon(contact) > 0.50);
+		double score = getPeoplePickerPage().checkAvatarClockIcon(contact);
+		Assert.assertTrue(
+				"Avatar with clock icon is not correct - overlap score is only: "
+						+ score, score > 0.49);
+	}
+
+	/**
+	 * Verifies that pending clock is not visible on searched avatar
+	 * 
+	 * @step. ^I see the user (.*) avatar without the pending clock$
+	 * @param name
+	 *            of contact without pending clock
+	 * @throws Throwable
+	 */
+	@Then("^I see the user (.*) avatar without the pending clock$")
+	public void ISeeTheUserAvatarWithoutThePendingClock(String name)
+			throws Throwable {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		double score = getPeoplePickerPage().checkAvatarClockIcon(name);
+		Assert.assertFalse("Avatar icon still has a clock - overlap score is: "
+				+ score, score < 0.50);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")
@@ -373,6 +394,21 @@ public class PeoplePickerPageSteps {
 				numberOfTopConnections, contact);
 	}
 
+	/**
+	 * Tap on top connection contact avatar by pointed id order
+	 * 
+	 * @step. I tap on (\\d+)\\w+ top connection contact
+	 * 
+	 * @param i
+	 *            contact order in top peoples
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap on (\\d+)\\w+ top connection contact$")
+	public void IClickOnTopConnectionByOrder(int i) throws Exception {
+		getPeoplePickerPage().tapOnTopConnectionAvatarByOrder(i);
+	}
+
 	@When("I click on connected user (.*) avatar on People picker page")
 	public void IClickOnUserIconToAddItToExistingGroupChat(String contact)
 			throws Throwable {
@@ -402,6 +438,19 @@ public class PeoplePickerPageSteps {
 	public void ISeeCreateConversationButton() throws Exception {
 		Assert.assertTrue("Create Conversation button is not visible.",
 				getPeoplePickerPage().isCreateConversationButtonVisible());
+	}
+
+	/**
+	 * Click on Open button from Search to start conversation with single user
+	 * 
+	 * @step. ^I click open conversation button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click open conversation button on People picker page$")
+	public void IClickOpenConversationButtonOnPeoplePickerPage()
+			throws Exception {
+		getPeoplePickerPage().clickOpenConversationButton();
 	}
 
 	@When("I click Create Conversation button on People picker page")
@@ -455,11 +504,25 @@ public class PeoplePickerPageSteps {
 	 * Unblocks a blocked user by clicking the unblock button
 	 * 
 	 * @step. I unblock user
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I unblock user$")
 	public void IUnblockUser() throws Exception {
 		getPeoplePickerPage().unblockUser();
+	}
+
+	/**
+	 * Unblocks a blocked user by clicking the unblock button for iPad
+	 * 
+	 * @step. I unblock user on iPad
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I unblock user on iPad$")
+	public void IUnblockUserOniPad() throws Exception {
+		getPeoplePickerPage().unblockUserOniPad();
 	}
 
 	/**
@@ -476,7 +539,11 @@ public class PeoplePickerPageSteps {
 	public void ISeeThatContactsAreSelected(int number) throws Exception {
 		int numberOfSelectedTopPeople = getPeoplePickerPage()
 				.getNumberOfSelectedTopPeople();
-		Assert.assertEquals(number, numberOfSelectedTopPeople);
+		Assert.assertEquals(
+				"Expected selected contacts: " + number
+						+ " but actual selected contacts: "
+						+ numberOfSelectedTopPeople, number,
+				numberOfSelectedTopPeople);
 	}
 
 	/**
@@ -517,4 +584,99 @@ public class PeoplePickerPageSteps {
 		getPeoplePickerPage().pressInstantConnectButton();
 	}
 
+	/**
+	 * Verify that Call action button is visible
+	 * 
+	 * @step. ^I see call action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see call action button on People picker page$")
+	public void ISeeCallActionButtonOnPeoplePickerPage() throws Exception {
+		Assert.assertTrue("Call action button is not visible",
+				getPeoplePickerPage().isCallButtonVisible());
+	}
+
+	/**
+	 * Click on Call action button from Search to start call
+	 * 
+	 * @step. ^I click call action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click call action button on People picker page$")
+	public void IClickCallActionButtonOnPeoplePickerPage() throws Exception {
+		getPeoplePickerPage().clickCallButton();
+	}
+
+	/**
+	 * Verify that Send image action button is visible
+	 * 
+	 * @step. ^I see Send image action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Send image action button on People picker page$")
+	public void ISeeSendImageActionButtonOnPeoplePickerPage() throws Exception {
+		Assert.assertTrue("Send image action button is not visible",
+				getPeoplePickerPage().isSendImageButtonVisible());
+	}
+
+	/**
+	 * Click on Send image action button from Search to start call
+	 * 
+	 * @step. ^I click Send image action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Send image action button on People picker page$")
+	public void IClickSendImageActionButtonOnPeoplePickerPage()
+			throws Exception {
+		getPeoplePickerPage().clickSendImageButton();
+	}
+
+	/**
+	 * Verify if Open conversation button is visible
+	 * 
+	 * @step. ^I see open conversation action button on People picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see open conversation action button on People picker page$")
+	public void ISeeOpenConversationActionButton() throws Exception {
+		Assert.assertTrue("Open conversation button is not visible",
+				getPeoplePickerPage().isOpenConversationButtonVisible());
+	}
+
+	/**
+	 * Verify if Open, Call and Send image action buttons are visible
+	 * 
+	 * @step. ^I see action buttons appeared on People picker page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see action buttons appeared on People picker page$")
+	public void ISeeActionButttonsAppearedOnPeoplePickerPage() throws Exception {
+		ISeeOpenConversationActionButton();
+		ISeeCallActionButtonOnPeoplePickerPage();
+		ISeeSendImageActionButtonOnPeoplePickerPage();
+	}
+
+	/**
+	 * Verify that Open, Call and Send image action buttons are NOT visible
+	 * 
+	 * @step. ^I see action buttons disappeared on People picker page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see action buttons disappeared on People picker page$")
+	public void ISeeActionButttonsDisappearedOnPeoplePickerPage()
+			throws Exception {
+		Assert.assertFalse("Open conversation button is still visible",
+				getPeoplePickerPage().isOpenConversationButtonVisible());
+		Assert.assertFalse("Call action button is still visible",
+				getPeoplePickerPage().isCallButtonVisible());
+		Assert.assertFalse("Send image action button is still visible",
+				getPeoplePickerPage().isSendImageButtonVisible());
+	}
 }

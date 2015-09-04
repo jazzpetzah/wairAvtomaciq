@@ -436,7 +436,7 @@ Feature: Calling
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And <Contact> stops all calls to me
     And I dont see calling page
-    And <Contact> verifies that call status to me is changed to inactive in <Timeout> seconds
+    And <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
@@ -467,8 +467,31 @@ Feature: Calling
     And <Contact> verifies that call status to me is changed to active in <Timeout> seconds
     And <Contact> stops all calls to me
     And I dont see calling page
-    And <Contact> verifies that call status to me is changed to inactive in <Timeout> seconds
+    And <Contact> verifies that call status to me is changed to destroyed in <Timeout> seconds
 
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | webdriver   | autocall     | 120     |
+
+  @regression @rc @id2361
+  Scenario Outline: Verify mute button is absent when you turn from portrait to landscape [PORTRAIT to LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given <Contact> starts waiting instance using <CallBackend>
+    Given <Contact> accepts next incoming call automatically
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I press call button
+    And I see mute call, end call buttons
+    And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I swipe right on Dialog page
+    Then I see mute call button in conversation list
+    And I rotate UI to landscape
+    Then I dont see mute call button in conversation list on iPad
+
+    Examples: 
+      | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
+      | user1Name | user2Name | chrome      | autocall     | 60      |

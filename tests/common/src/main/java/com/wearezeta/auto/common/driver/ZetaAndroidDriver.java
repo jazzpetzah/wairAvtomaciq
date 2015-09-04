@@ -5,6 +5,8 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -16,8 +18,10 @@ import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
-import org.eclipse.jetty.http.HttpStatus;
+import org.opencv.core.Rect;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.ScreenOrientation;
@@ -34,6 +38,7 @@ import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.ocr.OnScreenKeyboardScanner;
 
 import io.appium.java_client.android.AndroidDriver;
 
@@ -199,6 +204,29 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		return this.touch;
 	}
 
+	private File getScreenshotInFile() throws Exception {
+		File result = File.createTempFile("tmp", ".png", null);
+		final String pathOnPhone = String.format("/sdcard/%s.png", CommonUtils
+				.generateGUID().replace("-", "").substring(0, 8));
+		final String adbCommandsChain = String.format(ADB_PREFIX
+				+ "adb shell screencap -p %1$s; " + ADB_PREFIX
+				+ "adb pull %1$s %2$s; " + ADB_PREFIX + "adb shell rm %1$s",
+				pathOnPhone, result.getCanonicalPath());
+		Runtime.getRuntime()
+				.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
+				.waitFor();
+		byte[] output = FileUtils.readFileToByteArray(result);
+		if (CommonUtils.getIsTabletFromConfig(this.getClass())) {
+			final SurfaceOrientation currentOrientation = this
+					.getSurfaceOrientation();
+			log.debug(String.format("Current screen orientation value -> %s",
+					currentOrientation.getCode()));
+			output = fixScreenshotOrientation(output, currentOrientation);
+			IOUtils.write(output, new FileOutputStream(result));
+		}
+		return result;
+	}
+
 	/**
 	 * Workaround for selendroid when it cannot take a screenshot of the screen
 	 * if main app is not in foreground
@@ -209,30 +237,11 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 		final Response result = new Response();
 		File tmpScreenshot = null;
 		try {
-			tmpScreenshot = File.createTempFile("tmp", ".png", null);
-			final String pathOnPhone = String
-					.format("/sdcard/%s.png", CommonUtils.generateGUID()
-							.replace("-", "").substring(0, 8));
-			final String adbCommandsChain = String.format(
-					ADB_PREFIX + "adb shell screencap -p %1$s; " + ADB_PREFIX
-							+ "adb pull %1$s %2$s; " + ADB_PREFIX
-							+ "adb shell rm %1$s", pathOnPhone,
-					tmpScreenshot.getCanonicalPath());
-			Runtime.getRuntime()
-					.exec(new String[] { "/bin/bash", "-c", adbCommandsChain })
-					.waitFor();
-			byte[] output = FileUtils.readFileToByteArray(tmpScreenshot);
-			if (CommonUtils.getIsTabletFromConfig(this.getClass())) {
-				final SurfaceOrientation currentOrientation = this
-						.getSurfaceOrientation();
-				log.debug(String.format(
-						"Current screen orientation value -> %s",
-						currentOrientation.getCode()));
-				output = fixScreenshotOrientation(output, currentOrientation);
-			}
+			tmpScreenshot = getScreenshotInFile();
 			result.setSessionId(this.getSessionId().toString());
-			result.setStatus(HttpStatus.OK_200);
-			result.setValue(Base64.encodeBase64(output));
+			result.setStatus(HttpStatus.SC_OK);
+			result.setValue(Base64.encodeBase64(IOUtils
+					.toByteArray(new FileInputStream(tmpScreenshot))));
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -362,6 +371,33 @@ public class ZetaAndroidDriver extends AndroidDriver implements ZetaDriver,
 			return ScreenOrientation.LANDSCAPE;
 		} else {
 			return ScreenOrientation.PORTRAIT;
+		}
+	}
+
+	/**
+	 * This method requires the on-screen keyboard to be already visible. Also,
+	 * it's important, that keyboard look and feel is set to Google Keyboard ->
+	 * Holo White
+	 * 
+	 * @throws Exception
+	 */
+	public void tapSendButton() throws Exception {
+		final File screenshot = getScreenshotInFile();
+		try {
+			final List<List<Rect>> keyboardButtons = new OnScreenKeyboardScanner()
+					.getButtonCoordinates(screenshot.getCanonicalPath());
+			int sendButtonRow = -1;
+			if (CommonUtils.getIsTabletFromConfig(this.getClass())) {
+				sendButtonRow = -3;
+			}
+			assert keyboardButtons.size() >= Math.abs(sendButtonRow) : "Send button cannot be found on the keyboard";
+			final List<Rect> dstRow = keyboardButtons.get(keyboardButtons
+					.size() + sendButtonRow);
+			final Rect dstRect = dstRow.get(dstRow.size() - 1);
+			this.tap(1, dstRect.x + dstRect.width / 2, dstRect.y
+					+ dstRect.height / 2, 50);
+		} finally {
+			screenshot.delete();
 		}
 	}
 }

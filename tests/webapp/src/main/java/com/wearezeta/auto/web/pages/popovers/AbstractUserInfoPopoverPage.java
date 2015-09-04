@@ -1,7 +1,9 @@
 package com.wearezeta.auto.web.pages.popovers;
 
+import java.awt.image.BufferedImage;
 import java.util.concurrent.Future;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.web.locators.PopoverLocators;
@@ -65,6 +67,11 @@ abstract class AbstractUserInfoPopoverPage extends AbstractPopoverPage {
 
 	public boolean isAvatarVisible() {
 		return avatar.isDisplayed();
+	}
+
+	public BufferedImage getAvatar() throws IllegalStateException, Exception {
+		return CommonUtils.getElementScreenshot(avatar, this.getDriver())
+				.orElseThrow(IllegalStateException::new);
 	}
 
 	public String getMailText() {

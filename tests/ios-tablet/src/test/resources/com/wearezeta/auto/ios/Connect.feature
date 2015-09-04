@@ -69,7 +69,7 @@ Feature: Connect
       | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
       | user1Name | user2Name       | user2Email   | 140               | T           | BrightOrange |
 
-  @regression @id2119
+  @regression @rc @id2119
   Scenario Outline: Verify sending connection request after opening profile by clicking on the name and avatar [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -120,7 +120,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @regression @id2610
+  @regression @rc @id2354 @id2610
   Scenario Outline: Send connection request to unconnected participant in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -304,7 +304,7 @@ Feature: Connect
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id2341
+  @regression @rc @id2341
   Scenario Outline: Verify you don't receive any messages from blocked person in 1to1 chat [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -428,7 +428,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @regression @id1492
+  @regression @rc @id1492
   Scenario Outline: Verify you can send an invitation via mail [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -496,3 +496,194 @@ Feature: Connect
     Examples: 
       | Name      | Contact1 | Contact2 |
       | user1Name | vb003    | Dorothy  |
+
+  @regression @id3223
+  Scenario Outline: Verify possibility of disconnecting from conversation list  [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    And I open conversation details
+    And I click Cancel request button
+    Then I see Cancel request confirmation page
+    And I confirm Cancel request by click on Yes button
+    And I close self profile
+    Then I dont see conversation <Contact> in contact list
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @regression @id3268
+  Scenario Outline: Verify possibility of disconnecting from conversation list  [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    And I open conversation details
+    And I click Cancel request button
+    Then I see Cancel request confirmation page
+    And I confirm Cancel request by click on Yes button
+    Then I dont see conversation <Contact> in contact list
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @regression @rc @id3228
+  Scenario Outline: Verify sending connection request after disconnecting [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I click plus button next to text input
+    And I open conversation details
+    And I click Cancel request button
+    And I confirm Cancel request by click on Yes button
+    And I close self profile
+    And I open search by taping on it
+    And I input in People picker search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
+    And I tap on NOT connected user name on People picker page <Contact1>
+    And I see connect to <Contact1> dialog
+    And I click Connect button on connect to dialog
+    And I see Connect dialog is closed
+    And I click close button to dismiss people view
+    Then I see first item in contact list named <Contact1>
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @regression @id3273
+  Scenario Outline: Verify sending connection request after disconnecting [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I click plus button next to text input
+    And I open conversation details
+    And I click Cancel request button
+    And I confirm Cancel request by click on Yes button
+    And I open search by taping on it
+    And I input in People picker search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
+    And I tap on NOT connected user name on People picker page <Contact1>
+    And I see connect to <Contact1> dialog
+    And I click Connect button on connect to dialog
+    And I see Connect dialog is closed
+    And I click close button to dismiss people view
+    Then I see first item in contact list named <Contact1>
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @staging @id3229
+  Scenario Outline: Verify possibility of disconnecting from Search UI [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
+    And I see the user <Contact1> avatar with a clock
+    And I tap on NOT connected user name on People picker page <Contact1>
+    And I click Cancel request button
+    And I see Cancel request confirmation page
+    And I confirm Cancel request by click on Yes button
+    And I see user <Contact1> found on People picker page
+    Then I see the user <Contact1> avatar without the pending clock
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @staging @id3304
+  Scenario Outline: Verify possibility of disconnecting from Search UI [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Me sent connection request to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact1>
+    And I see user <Contact1> found on People picker page
+    And I see the user <Contact1> avatar with a clock
+    And I tap on NOT connected user name on People picker page <Contact1>
+    And I click Cancel request button
+    And I see Cancel request confirmation page
+    And I confirm Cancel request by click on Yes button
+    And I see user <Contact1> found on People picker page
+    Then I see the user <Contact1> avatar without the pending clock
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @staging @id2332
+  Scenario Outline: Verify ignoring a connection request from another person (People view) [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact3> sent connection request to me
+    Given <Contact1> is connected to <Contact2>,<Contact3>
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I select user on iPad group popover <Contact3>
+    And I see <Contact3> user pending profile popover on iPad
+    And I tap on start dialog button on other user profile page
+    And I click on Ignore button on Pending requests page
+    And I go back to group info page or popover
+    And I exit the group info iPad popover
+    And I swipe right on Dialog page
+    Then I dont see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
+
+  @staging @id3305
+  Scenario Outline: Verify ignoring a connection request from another person (People view) [LANDSCAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact3> sent connection request to me
+    Given <Contact1> is connected to <Contact2>,<Contact3>
+    Given <Contact1> has group chat <GroupChatName> with <Name>,<Contact2>,<Contact3>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    And I open group conversation details
+    And I select user on iPad group popover <Contact3>
+    And I see <Contact3> user pending profile popover on iPad
+    And I tap on start dialog button on other user profile page
+    And I click on Ignore button on Pending requests page
+    And I go back to group info page or popover
+    And I exit the group info iPad popover
+    Then I dont see Pending request link in contact list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
+      | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |

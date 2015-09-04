@@ -41,18 +41,22 @@ public abstract class AbstractCameraPage extends AndroidTabletPage {
 	}
 
 	public void tapTakePhotoButton() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idTakePhotoButton));
+		assert waitUntilTakePhotoButtonVisible() : "Take Photo button is not visible, but it should be";
 		takePhotoButton.click();
-		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idTakePhotoButton), 2)) {
-			takePhotoButton.click();
-		}
+	}
+
+	public boolean waitUntilTakePhotoButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idTakePhotoButton));
 	}
 
 	public void confirmPictureSelection() throws Exception {
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpathConfirmButton))) {
+			takePhotoButton.click();
+		}
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(xpathConfirmButton));
+				By.xpath(xpathConfirmButton)) : "Picture selection confirmation has not been shown after the timeout";
 		okConfirmButton.click();
 		ScreenOrientationHelper.getInstance().fixOrientation(getDriver());
 	}

@@ -13,4 +13,5 @@ class HasItemsInQueue(CliHandlerBase):
         parser = self._get_parser()
         args = parser.parse_args()
         queue = self._jenkins.get_queue()
-        return bool(list(queue.get_queue_items_for_job(args.name)))
+        job_name = self._normalize_job_name(args.name)
+        return bool(list(queue.get_queue_items_for_job(job_name)))

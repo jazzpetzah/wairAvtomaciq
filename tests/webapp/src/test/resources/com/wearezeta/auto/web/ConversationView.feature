@@ -225,7 +225,7 @@ Feature: Conversation View
       | Login      | Password      | Name      | Contact   | PictureName               |
       | user1Email | user1Password | user1Name | user2Name | userpicture_landscape.jpg |
 
-  @id2891 @staging
+  @regression @id2891
   Scenario Outline: Verify you can send not-random gif with giphy button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

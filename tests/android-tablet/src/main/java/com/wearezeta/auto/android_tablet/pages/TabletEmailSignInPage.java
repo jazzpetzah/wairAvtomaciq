@@ -35,7 +35,7 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 		return new TabletConversationsListPage(getLazyDriver());
 	}
 
-	private static final int VISIBILITY_TIMEOUT_SECONDS = 15;
+	private static final int VISIBILITY_TIMEOUT_SECONDS = 60;
 
 	public boolean waitUntilNotVisible() throws Exception {
 		try {
@@ -49,6 +49,10 @@ public class TabletEmailSignInPage extends AndroidTabletPage {
 
 	public void verifyErrorMessageText(String expectedMsg) throws Exception {
 		getEmailSignInPage().verifyErrorMessageText(expectedMsg);
+	}
+
+	public void acceptErrorMessage()  throws Exception  {
+		getEmailSignInPage().acceptErrorMessage();
 	}
 
 }

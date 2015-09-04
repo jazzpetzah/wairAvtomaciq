@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @id67 @id68 @regression
+  @id67 @smoke @rc
   Scenario Outline: Open and Close settings page
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -33,8 +33,8 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @id90 @id91 @id92 @regression
-  Scenario Outline: Open Close About page from Settings page
+  @id92 @smoke @rc
+  Scenario Outline: Check About page in settings menu
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts

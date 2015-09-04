@@ -55,11 +55,17 @@ public abstract class IOSPage extends BasePage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardDeleteButton)
 	private WebElement keyboardDeleteBtn;
 
+	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardGoButton)
+	private WebElement keyboardGoBtn;
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameKeyboardReturnButton)
 	private WebElement keyboardReturnBtn;
 
 	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameHideKeyboardButton)
 	private WebElement keyboardHideBtn;
+
+	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameSpaceButton)
+	private WebElement keyboardSpaceBtn;
 
 	private static String imagesPath = "";
 
@@ -217,11 +223,17 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	public boolean isKeyboardVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), keyboard);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), keyboard)
+				&& DriverUtils.waitUntilElementClickable(getDriver(),
+						keyboard, 3);
 	}
 
 	public void clickKeyboardDeleteButton() {
 		keyboardDeleteBtn.click();
+	}
+
+	public void clickKeyboardGoButton() {
+		keyboardGoBtn.click();
 	}
 
 	public void clickKeyboardReturnButton() {
@@ -230,6 +242,10 @@ public abstract class IOSPage extends BasePage {
 
 	public void clickHideKeyboarButton() {
 		keyboardHideBtn.click();
+	}
+
+	public void clickSpaceKeyboardButton() {
+		keyboardSpaceBtn.click();
 	}
 
 	public static Object executeScript(String script) throws Exception {
@@ -283,6 +299,20 @@ public abstract class IOSPage extends BasePage {
 		}
 	}
 
+	public void dismissAllAlerts() throws Exception {
+		int count = 0;
+		final int NUMBER_OF_RETRIES = 3;
+		final int ALERT_WAITING_TIMEOUT = 3;
+		do {
+			try {
+				this.getDriver().switchTo().alert().dismiss();
+			} catch (Exception e) {
+				// do nothing
+			}
+		} while (DriverUtils.waitUntilAlertAppears(this.getDriver(),
+				ALERT_WAITING_TIMEOUT) && count++ < NUMBER_OF_RETRIES);
+	}
+
 	public void rotateScreen(ScreenOrientation orientation) throws Exception {
 		switch (orientation) {
 		case LANDSCAPE:
@@ -295,6 +325,16 @@ public abstract class IOSPage extends BasePage {
 			break;
 		}
 
+	}
+
+	public void rotateDeviceToRefreshElementsTree() throws Exception {
+		if (getOrientation() == ScreenOrientation.PORTRAIT) {
+			rotateLandscape();
+			rotatePortrait();
+		} else {
+			rotatePortrait();
+			rotateLandscape();
+		}
 	}
 
 	private void rotateLandscape() throws Exception {

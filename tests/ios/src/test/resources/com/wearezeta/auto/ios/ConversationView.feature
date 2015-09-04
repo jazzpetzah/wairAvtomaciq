@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @regression @id855
+  @regression @rc @id855
   Scenario Outline: Verify swipe right tutorial appearance
     Given There are 2 user where <Name> is me
     Given Myself is connected to <Contact>
@@ -14,7 +14,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @id330
+  @smoke @rc @IPv6 @id330
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -47,7 +47,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @id332 @id1470
+  @smoke @rc @IPv6 @id332 @id1470
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -81,7 +81,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id1468
+  @regression @rc @IPv6 @id1468
   Scenario Outline: Play/pause SoundCloud media link from the media bar
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -355,7 +355,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id526
+  @regression @rc @IPv6 @id526
   Scenario Outline: I can send and play inline youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -437,7 +437,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  | SoundCloudLink                                                                       |
       | user1Name | user2Name | user3Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @regression @id1137
+  @staging @id1137
   Scenario Outline: Verify appearance of title bar for conversation, restored from background
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -512,7 +512,7 @@ Feature: Conversation View
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
 
-  @regression @id1476
+  @regression @rc @id1476
   Scenario Outline: Play/pause controls can change playing media state (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -540,7 +540,7 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                            |
       | user1Name | user2Name | https://soundcloud.com/isabella-emanuelsson/david-guetta-she-wolf-falling |
 
-  @smoke @id2762
+  @smoke @IPv6 @id2762
   Scenario Outline: Receive message from contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -555,7 +555,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @id2763 @deployPictures
+  @smoke @IPv6 @id2763 @deployPictures
   Scenario Outline: Receive a camera roll picture from user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -570,26 +570,7 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | ConversationType |
       | user1Name | user2Name | testing.jpg | single user      |
 
-  @staging @id2977
-  Scenario Outline: Verify I can send gif from preview
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I type tag for giphy preview <GiphyTag> and open preview overlay
-    And I wait for 5 seconds
-    And I send gif from giphy preview page
-    And I wait for 5 seconds
-    And I see dialog page
-    Then I see new photo in the dialog
-
-    Examples: 
-      | Name      | Contact   | GiphyTag |
-      | user1Name | user2Name | Happy    |
-
-  @staging @id2976
+  @regression @rc @id2976
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -606,3 +587,126 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
+
+  @regression @rc @id3093 @id3092
+  Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see plus button next to text input
+    And I swipe the text input cursor
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I see plus button is not shown
+    And I swipe left on options buttons
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I click Close input options button
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @regression @id3095
+  Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given I leave group chat <GroupChatName>
+    Given Me sent connection request to <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    And I click Close input options button
+    And I return to the chat list
+    When I tap on group chat with name <GroupChatName>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
+      | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
+
+  @regression @id3265
+  Scenario Outline: Verify drawing on image from single view
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    And Contact <Contact> sends image <Picture> to <ConversationType> conversation <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I see new photo in the dialog
+    And I tap and hold image to open full screen
+    And I see Full Screen Page opened
+    And I press Sketch button on image fullscreen page
+    And I draw a random sketch
+    And I send my sketch
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   | Picture     | ConversationType |
+      | user1Name | user2Name | testing.jpg | single user      |
+
+  @regression @rc @id3263
+  Scenario Outline: Verify drawing on the image from gallery
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose a picture from camera roll
+    And I press sketch button on camera roll page
+    And I draw a random sketch
+    And I send my sketch
+    And I press Confirm button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+      
+  @staging @id2781
+  Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
+  	Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> but NO media player 
+    
+    Examples: 
+      | Name      | Contact   | VimeoLink                    |
+      | user1Name | user2Name | https://vimeo.com/categories |
+  
+
+  @staging @id2780
+  Scenario Outline: Verify player is displayed for vimeo links with video IDs
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> and media in dialog
+
+    Examples: 
+      | Name      | Contact1  | VimeoLink                   |
+      | user1Name | user2Name | https://vimeo.com/129426512 |

@@ -217,7 +217,7 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Checks that connection request is displayed in Conversation List or not
+	 * Checks that one connection request is displayed in Conversation List or not
 	 *
 	 * @param doNot
 	 *            is set to null if "do not" part does not exist
@@ -227,10 +227,35 @@ public class ContactListPageSteps {
 	 */
 	@When("^I( do not)? see connection request from one user$")
 	public void IDoNotSeeIncomingConnection(String doNot) throws Exception {
+		IDoNotSeeXIncomingConnection(doNot, 1);
+	}
+
+	/**
+	 * Checks that connection requests are displayed in Conversation List or not
+	 *
+	 * @param doNot
+	 *            is set to null if "do not" part does not exist
+	 * @param amount
+	 *            amount of requests
+	 * @step. ^I(do not)? see connection request from one user$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I( do not)? see connection requests? from (\\d+) user$")
+	public void IDoNotSeeXIncomingConnection(String doNot, int amount) throws Exception {
 		if (doNot == null) {
-			Assert.assertTrue(PagesCollection.contactListPage
-					.getIncomingPendingItemText()
-					.equals(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+			if (amount == 1) {
+				assertThat(
+						PagesCollection.contactListPage
+								.getIncomingPendingItemText(),
+						equalTo(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+			} else {
+				assertThat(
+						PagesCollection.contactListPage
+								.getIncomingPendingItemText(),
+						equalTo(amount
+								+ WebAppLocators.Common.CONTACT_LIST_X_PEOPLE_WAITING));
+			}
 		} else {
 			String itemText = "";
 			try {
@@ -239,8 +264,7 @@ public class ContactListPageSteps {
 			} catch (AssertionError e) {
 				log.debug(e.getMessage());
 			}
-			Assert.assertFalse(itemText
-					.equals(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+			assertThat(itemText, equalTo(""));
 		}
 	}
 
@@ -399,11 +423,8 @@ public class ContactListPageSteps {
 	@Then("^I( do not)? see missed call notification for conversation (.*)$")
 	public void isCallMissedVisibleForContact(String shouldNotBeVisible,
 			String conversationName) throws Exception {
-		try {
-			conversationName = usrMgr.replaceAliasesOccurences(
-					conversationName, FindBy.NAME_ALIAS);
-		} catch (Exception e) {
-		}
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
 		if (shouldNotBeVisible == null) {
 			assertTrue(
 					String.format(
@@ -418,6 +439,78 @@ public class ContactListPageSteps {
 							conversationName),
 					PagesCollection.contactListPage
 							.isMissedCallInvisibleForContact(conversationName));
+		}
+	}
+
+	/**
+	 * Verify whether joined call notification is present for the given
+	 * conversation.
+	 *
+	 *
+	 * @step. ^I( do not)? see joined group call notification for conversation
+	 *        (.*)$
+	 * @param conversationName
+	 *            name of the conversation
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist in the step
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see joined group call notification for conversation (.*)$")
+	public void isJoinedGroupCallNotificationVisibleForConversation(
+			String shouldNotBeVisible, String conversationName)
+			throws Exception {
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
+		if (shouldNotBeVisible == null) {
+			assertTrue(
+					String.format(
+							"The joined group call notification in conversation '%s' should be visible",
+							conversationName),
+					PagesCollection.contactListPage
+							.isJoinedGroupCallNotificationVisibleForConversation(conversationName));
+		} else {
+			assertTrue(
+					String.format(
+							"The joined group call notification in conversation '%s' should NOT be visible",
+							conversationName),
+					PagesCollection.contactListPage
+							.isJoinedGroupCallNotificationInvisibleForConversation(conversationName));
+		}
+	}
+
+	/**
+	 * Verify whether unjoined group call notification is present for the given
+	 * conversation.
+	 *
+	 *
+	 * @step. ^I( do not)? see unjoined group call notification for conversation
+	 *        (.*)$
+	 * @param conversationName
+	 *            name of the conversation
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist in the step
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see unjoined group call notification for conversation (.*)$")
+	public void isUnjoinedGroupCallNotificationVisibleForConversation(
+			String shouldNotBeVisible, String conversationName)
+			throws Exception {
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
+		if (shouldNotBeVisible == null) {
+			assertTrue(
+					String.format(
+							"The unjoined group call notification in conversation '%s' should be visible",
+							conversationName),
+					PagesCollection.contactListPage
+							.isUnjoinedGroupCallNotificationVisibleForConversation(conversationName));
+		} else {
+			assertTrue(
+					String.format(
+							"The unjoined group call notification in conversation '%s' should NOT be visible",
+							conversationName),
+					PagesCollection.contactListPage
+							.isUnjoinedGroupCallNotificationInvisibleForConversation(conversationName));
 		}
 	}
 
@@ -570,6 +663,85 @@ public class ContactListPageSteps {
 	}
 
 	/**
+	 * Click the leave option
+	 * 
+	 * @step. ^I click the option to leave in the options popover$
+	 * @throws Exception
+	 */
+	@When("^I click the option to leave in the options popover$")
+	public void IClickLeaveButton() throws Exception {
+		PagesCollection.contactListPage.clickLeaveConversation();
+	}
+
+	/**
+	 * Click the block option
+	 * 
+	 * @step. ^I click the option to block in the options popover$
+	 * @throws Exception
+	 */
+	@When("^I click the option to block in the options popover$")
+	public void IClickBlockButton() throws Exception {
+		PagesCollection.contactListPage.clickBlockConversation();
+	}
+
+	/**
+	 * Verifies the modal is visible
+	 * 
+	 * @step. ^I see a leave warning modal$
+	 * @throws Exception
+	 */
+	@Then("^I see a leave warning modal$")
+	public void ISeeALeaveWarning() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isLeaveWarningModalVisible());
+	}
+
+	/**
+	 * Click the cancel button
+	 * 
+	 * @step. ^I click cancel button in the leave warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click cancel button in the leave warning$")
+	public void IClickCancelButtonOnLeaveWarning() throws Throwable {
+		PagesCollection.contactListPage.clickCancelOnLeaveWarning();
+	}
+
+	/**
+	 * Verifies the modal is visible
+	 * 
+	 * @step. ^I see a block warning modal$
+	 * @throws Exception
+	 */
+	@Then("^I see a block warning modal$")
+	public void ISeeABlockWarning() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isBlockWarningModalVisible());
+	}
+
+	/**
+	 * Click the cancel button
+	 * 
+	 * @step. ^I click cancel button in the block warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click cancel button in the block warning$")
+	public void IClickCancelButtonOnBlockWarning() throws Throwable {
+		PagesCollection.contactListPage.clickCancelOnBlockWarning();
+	}
+
+	/**
+	 * Click the block button
+	 * 
+	 * @step. ^I click block button in the block warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click block button in the block warning$")
+	public void IClickBlockButtonOnBlockWarning() throws Throwable {
+		PagesCollection.contactListPage.clickBlockOnBlockWarning();
+	}
+
+	/**
 	 * Verifies a conversation is on top of conversation list
 	 *
 	 * @param conv
@@ -582,5 +754,107 @@ public class ContactListPageSteps {
 		int itemIndex = PagesCollection.contactListPage.getItemIndex(conv);
 		assertThat("Conversation is not on the top", itemIndex, equalTo(1));
 
+	}
+
+	/**
+	 * Click the delete option
+	 * 
+	 * @step. ^I click delete in the options popover$
+	 * @throws Exception
+	 */
+	@When("^I click delete in the options popover$")
+	public void IClickDeleteButton() throws Exception {
+		PagesCollection.contactListPage.clickDeleteConversation();
+	}
+
+	/**
+	 * Verifies the delete modal is visible
+	 * 
+	 * @step. ^I see a delete warning modal for group conversations$
+	 * @throws Exception
+	 */
+	@Then("^I see a delete warning modal for group conversations$")
+	public void ISeeDeleteWarningForGroup() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isDeleteWarningModalForGroupVisible());
+	}
+
+	/**
+	 * Click the delete button in the delete warning
+	 * 
+	 * @step. ^I click delete button in the delete warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click delete button in the delete warning for group conversations$")
+	public void IClickDeleteButtonOnDeleteWarning() throws Throwable {
+		PagesCollection.contactListPage.clickDeleteOnDeleteWarning();
+	}
+
+	/**
+	 * Click the leave button in the leave warning
+	 * 
+	 * @step. ^I click leave button in the leave warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click leave button in the leave warning$")
+	public void IClickLeaveButtonOnLeaveWarning() throws Throwable {
+		PagesCollection.contactListPage.clickLeaveOnLeaveWarning();
+	}
+
+	/**
+	 * Click Leave checkbox on a delete warning modal for group conversations
+	 * 
+	 * @step. ^I click Leave checkbox on a delete warning modal for group
+	 *        conversations$
+	 * @throws Throwable
+	 */
+	@Then("^I click Leave checkbox on a delete warning modal for group conversations$")
+	public void IClickLeaveCheckboxOnDeleteWarning() throws Throwable {
+		PagesCollection.contactListPage.clickLeaveCheckboxOnDeleteWarning();
+	}
+
+	/**
+	 * Click the cancel button in the delete warning
+	 * 
+	 * @step. ^I click cancel button in the delete warning$
+	 * @throws Throwable
+	 */
+	@Then("^I click cancel button in the delete warning for group conversations$")
+	public void IClickCancelButtonOnDeleteWarning() throws Throwable {
+		PagesCollection.contactListPage.clickCancelOnDeleteWarning();
+	}
+
+	/**
+	 * Verifies the delete modal is visible
+	 * 
+	 * @step. ^I see a delete warning modal for 1:1 conversations$
+	 * @throws Exception
+	 */
+	@Then("^I see a delete warning modal for 1:1 conversations$")
+	public void ISeeDeleteWarningForSingle() throws Exception {
+		Assert.assertTrue(PagesCollection.contactListPage
+				.isDeleteWarningModalSingleVisible());
+	}
+
+	/**
+	 * Click the delete button in the delete warning
+	 * 
+	 * @step. ^I click delete button in the delete warning for 1:1 conversation$
+	 * @throws Throwable
+	 */
+	@Then("^I click delete button in the delete warning for 1:1 conversations$")
+	public void IClickDeleteButtonOnDeleteWarningForSingle() throws Throwable {
+		PagesCollection.contactListPage.clickDeleteOnDeleteWarningSingle();
+	}
+
+	/**
+	 * Click the cancel button in the delete warning
+	 * 
+	 * @step. ^I click cancel button in the delete warning for 1:1 conversation$
+	 * @throws Throwable
+	 */
+	@Then("^I click cancel button in the delete warning for 1:1 conversations$")
+	public void IClickCancelButtonOnDeleteWarningForSingle() throws Throwable {
+		PagesCollection.contactListPage.clickCancelOnDeleteWarningSingle();
 	}
 }

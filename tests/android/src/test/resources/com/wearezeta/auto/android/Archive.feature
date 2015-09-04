@@ -10,17 +10,19 @@ Feature: Archive
     Given I see Contact list with contacts
     And I see contact list with name <Contact1>
     When I swipe right on a <Contact1>
+    And I select ARCHIVE from conversation settings menu
     Then I do not see contact list with name <Contact1>
     And I swipe up contact list
     And I see contact list with name <Contact1>
     And I swipe right on a <Contact1>
+    And I select UNARCHIVE from conversation settings menu
     And I see dialog page
 
     Examples: 
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id1512 @regression
+  @id1512 @regression @rc
   Scenario Outline: Verify you can archive and unarchive group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -29,10 +31,12 @@ Feature: Archive
     Given I see Contact list with contacts
     And I see contact list with name <GroupChatName>
     When I swipe right on a <GroupChatName>
+    And I select ARCHIVE from conversation settings menu
     Then I do not see contact list with name <GroupChatName>
     And I swipe up contact list
     And I see contact list with name <GroupChatName>
     And I swipe right on a <GroupChatName>
+    And I select UNARCHIVE from conversation settings menu
     And I see dialog page
 
     Examples: 

@@ -1,9 +1,7 @@
 package com.wearezeta.auto.android.common.reporter;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
@@ -35,11 +33,7 @@ public class AndroidPerfReportModel extends PerfReportModel {
 		try {
 			final ClientDeviceInfo deviceInfo = AndroidCommonUtils
 					.readDeviceInfo();
-			// FIXME: handle other network types
-			this.setNetworkType(deviceInfo.isWifiEnabled() ? NetworkType.WiFi
-					: NetworkType.FourG);
-			this.setDeviceName(deviceInfo.getDeviceName());
-			this.setDeviceOSVersion(deviceInfo.getOperatingSystemBuild());
+			loadValuesFromDeviceInfo(deviceInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage());
@@ -50,35 +44,17 @@ public class AndroidPerfReportModel extends PerfReportModel {
 		return nano / 1000000L;
 	}
 
-	private static List<Long> readLogValues(final String patternStr,
-			final String output) {
-		final Pattern pattern = Pattern.compile(patternStr);
-		final Matcher matcher = pattern.matcher(output);
-		final List<Long> result = new ArrayList<>();
-		while (matcher.find()) {
-			try {
-				result.add(nanosecondsToMilliseconds(Long.parseLong(matcher
-						.group(1))));
-			} catch (NumberFormatException e) {
-				log.error(e);
-			}
-		}
-		return result;
+	@Override
+	protected long readLogValue(final String patternStr, final String output) {
+		return nanosecondsToMilliseconds(super.readLogValue(patternStr, output));
 	}
 
-	private static long readLogValue(final String patternStr,
+	@Override
+	protected List<Long> readLogValues(final String patternStr,
 			final String output) {
-		final Pattern pattern = Pattern.compile(patternStr);
-		final Matcher matcher = pattern.matcher(output);
-		while (matcher.find()) {
-			try {
-				return nanosecondsToMilliseconds(Long.parseLong(matcher
-						.group(1)));
-			} catch (NumberFormatException e) {
-				log.error(e);
-			}
-		}
-		return 0;
+		final List<Long> result = super.readLogValues(patternStr, output);
+		return result.stream().map(x -> nanosecondsToMilliseconds(x))
+				.collect(Collectors.toList());
 	}
 
 	public void loadDataFromLogCat(final String output) {

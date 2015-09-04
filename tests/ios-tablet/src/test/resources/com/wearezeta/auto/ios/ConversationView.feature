@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @regression @id2419
+  @regression @rc @id2419
   Scenario Outline: Vefiry sending message [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -64,7 +64,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2413 @deployPictures
+  @regression @rc @id2413 @deployPictures
   Scenario Outline: Verify sending image [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -83,7 +83,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2407 @deployPictures
+  @regression @rc @id2407 @deployPictures
   Scenario Outline: Verify sending image [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -506,12 +506,15 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent long message to conversation <Contact>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I type and send long message and media link <SoundCloudLink>
-    And I tap media link
+    Then I see dialog page
+    And I scroll to the end of the conversation
+    And I see media link <SoundCloudLink> and media in dialog
+    When I tap media link
     And I scroll media out of sight until media bar appears
     And I see media bar on dialog page
     And I wait 150 seconds for media to stop playing
@@ -521,50 +524,11 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @regression @id2978
-  Scenario Outline: Verify I can send gif from preview [PORTRAIT]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I type tag for giphy preview <GiphyTag> and open preview overlay
-    And I wait for 5 seconds
-    And I send gif from giphy preview page
-    And I wait for 5 seconds
-    And I see dialog page
-    Then I see new photo in the dialog
-
-    Examples: 
-      | Name      | Contact   | GiphyTag |
-      | user1Name | user2Name | Happy    |
-
-  @regression @id2979
-  Scenario Outline: Verify I can send gif from preview [LANDSCAPE]
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
-    Given I sign in using my email or phone number
-    And I see Contact list with my name <Name>
-    When I tap on contact name <Contact>
-    And I see dialog page
-    And I type tag for giphy preview <GiphyTag> and open preview overlay
-    And I wait for 5 seconds
-    And I send gif from giphy preview page
-    And I wait for 5 seconds
-    And I see dialog page
-    Then I see new photo in the dialog
-
-    Examples: 
-      | Name      | Contact   | GiphyTag |
-      | user1Name | user2Name | Happy    |
-
   @regression @id2987
   Scenario Outline: I can send a sketch[PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -583,7 +547,7 @@ Feature: Conversation View
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given I rotate UI to landscape
-    Given I sign in using my email or phone number
+    Given I Sign in on tablet using my email
     Given I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
@@ -661,9 +625,7 @@ Feature: Conversation View
     And I send the message
     Then I see message in the dialog
 
-    Examples: 
-      @staging @id3196
-
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SimpleGroup   |
 
@@ -707,6 +669,7 @@ Feature: Conversation View
     And I see dialog page
     And I tap on text input
     And I tap on contact name <Contact>
+    And I click hide keyboard button
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
     And I scroll media out of sight until media bar appears
@@ -721,7 +684,7 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging @id3198
+  @regression @id3198
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -742,7 +705,7 @@ Feature: Conversation View
       | Name      | Contact1  | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging @id3199
+  @regression @id3199
   Scenario Outline: Verify the Media Bar disappears when playing media is back in view - SoundCloud [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -860,7 +823,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3202
+  @regression @id3202
   Scenario Outline: I can send and play inline youtube link [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -879,7 +842,7 @@ Feature: Conversation View
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @staging @id3203
+  @regression @id3203
   Scenario Outline: I can send and play inline youtube link [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -912,7 +875,7 @@ Feature: Conversation View
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
-  @staging @id3205
+  @regression @id3205
   Scenario Outline: Verify appearance of title bar for conversation, restored from background [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -928,17 +891,21 @@ Feature: Conversation View
       | Name      | Contact   | CloseAppTime |
       | user1Name | user2Name | 2            |
 
-  @staging @id2418
+  @regression @id2418
   Scenario Outline: Rotate image in fullscreen mode [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given User <Contact> change name to <NewName>
     Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to single user conversation <Name>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
     And I see new photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
@@ -950,33 +917,37 @@ Feature: Conversation View
       | Name      | Contact   | Picture     | Color        | NewName          |
       | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
 
-  @staging @id3206
+  @regression @id3206
   Scenario Outline: Rotate image in fullscreen mode [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given User <Contact> change name to <NewName>
     Given User <Contact> change accent color to <Color>
     Given Myself is connected to <Contact>
-    Given Contact <Contact> sends image <Picture> to single user conversation <Name>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
+    And I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose a picture from camera roll on iPad popover
+    And I press Confirm button on iPad popover
     And I see new photo in the dialog
     And I memorize message send time
     And I tap and hold image to open full screen
     And I see Full Screen Page opened
     And I rotate UI to portrait
-    Then I see image rotated in fullscreen mode
+    Then I see image rotated to portrait in fullscreen mode
 
     Examples: 
       | Name      | Contact   | Picture     | Color        | NewName          |
       | user1Name | user2Name | testing.jpg | BrightOrange | RotateFullscreen |
 
-  @staging @id2451 
+  @regression @id2451
   Scenario Outline: Verify archiving conversation from ellipsis menu [PORTRAIT]
     Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>    
+    Given Myself is connected to <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
@@ -984,7 +955,7 @@ Feature: Conversation View
     And I open conversation details
     And I open ellipsis menu
     And I click archive menu button
-    And I swipe right on the personal page
+    And I close self profile
     Then I dont see conversation <Contact> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
@@ -993,7 +964,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3192
+  @regression @id3192
   Scenario Outline: Verify archiving conversation from ellipsis menu [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -1012,3 +983,162 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @regression @id3097 @id3098
+  Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I Sign in on tablet using my email
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see plus button next to text input
+    And I swipe the text input cursor
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I see plus button is not shown
+    And I swipe left on options buttons
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I click Close input options button
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @regression @id3237 @id3238
+  Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    Given I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see plus button next to text input
+    And I swipe the text input cursor
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I see plus button is not shown
+    And I swipe left on options buttons
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see Buttons: Details, Call, Camera, Sketch, Ping
+    And I click Close input options button
+    And I see Close input options button is not visible
+    And I see plus button next to text input
+
+    Examples: 
+      | Name      | Contact1  |
+      | user1Name | user2Name |
+
+  @regression @id3100
+  Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given I leave group chat <GroupChatName>
+    Given Me sent connection request to <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    And I click Close input options button
+    And I navigate back to conversations view
+    When I tap on group chat with name <GroupChatName>
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
+      | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
+
+  @regression @id3267
+  Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [LANDSCAPE]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact2>,<Contact3>
+    Given Myself has group chat <GroupChatName> with <Contact2>,<Contact3>
+    Given I leave group chat <GroupChatName>
+    Given Me sent connection request to <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see plus button next to text input
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+    And I click Close input options button
+    When I tap on group chat with name <GroupChatName>
+    And I click plus button next to text input
+    Then I see only Details button. Call, Camera, Sketch, Ping are not shown
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
+      | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
+
+  @staging @id3306
+  Scenario Outline: Verify player is displayed for vimeo links with video IDs [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> and media in dialog
+
+    Examples: 
+      | Name      | Contact1  | VimeoLink                   |
+      | user1Name | user2Name | https://vimeo.com/129426512 |
+
+  @staging @id3307
+  Scenario Outline: Verify player is displayed for vimeo links with video IDs [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> and media in dialog
+
+    Examples: 
+      | Name      | Contact1  | VimeoLink                   |
+      | user1Name | user2Name | https://vimeo.com/129426512 |
+
+  @staging @id3308
+  Scenario Outline: Verify player isn't displayed for vimeo links without video IDs [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> but NO media player
+
+    Examples: 
+      | Name      | Contact   | VimeoLink                    |
+      | user1Name | user2Name | https://vimeo.com/categories |
+
+  @staging @id3309
+  Scenario Outline: Verify player isn't displayed for vimeo links without video IDs [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> but NO media player
+
+    Examples: 
+      | Name      | Contact   | VimeoLink                    |
+      | user1Name | user2Name | https://vimeo.com/categories |

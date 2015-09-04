@@ -1,6 +1,6 @@
 Feature: Settings
 
-  @regression @id2587
+  @regression @rc @id2587
   Scenario Outline: Verify user can access settings [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
@@ -150,7 +150,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @staging @id2602
+  @regression @rc @id2602
   Scenario Outline: Verify switching on/off chatheads [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
@@ -165,7 +165,7 @@ Feature: Settings
     And I see the Sound alerts page
     And I switch on or off the chathead preview
     And I close the Settings
-    And I swipe right on the personal page
+    And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>
@@ -178,7 +178,7 @@ Feature: Settings
     And I see the Sound alerts page
     And I switch on or off the chathead preview
     And I close the Settings
-    And I swipe right on the personal page
+    And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>
@@ -190,7 +190,7 @@ Feature: Settings
       | Name      | Contact   | Contact2  | NewName  | Picture                      |
       | user1Name | user2Name | user3Name | CHATHEAD | aqaPictureContact600_800.jpg |
 
-  @staging @id3084
+  @regression @id3084
   Scenario Outline: Verify switching on/off chatheads [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given User <Contact2> change avatar picture to <Picture>
@@ -206,6 +206,7 @@ Feature: Settings
     And I see the Sound alerts page
     And I switch on or off the chathead preview
     And I close the Settings
+    And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>
@@ -217,11 +218,10 @@ Feature: Settings
     And I see the Sound alerts page
     And I switch on or off the chathead preview
     And I close the Settings
+    And I close self profile
     When I tap on contact name <Contact>
     And I see dialog page
     And Contact <Contact2> sends random message to user <Name>
-    Then I see chathead of contact <Contact2>
-    And I wait for 5 seconds
     Then I do not see chathead of contact <Contact2>
 
     Examples: 

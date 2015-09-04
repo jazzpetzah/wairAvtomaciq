@@ -28,7 +28,7 @@ public class ContactListPage extends IOSPage {
 			.getSimpleName());
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
-	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.85;
+	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
 	private final int CONV_SWIPE_TIME = 1500;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
@@ -168,13 +168,22 @@ public class ContactListPage extends IOSPage {
 		return new DialogPage(this.getLazyDriver());
 	}
 
-	public String getFirstDialogName(String name) throws Exception {
+	public String getFirstDialogName() throws Exception {
+
+		DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(String.format(IOSLocators.xpathFirstInContactList)));
+		WebElement contact = this.getDriver().findElement(
+				By.xpath(String.format(IOSLocators.xpathFirstInContactList)));
+		return contact.getText();
+	}
+
+	public String getDialogNameByIndex(int index) throws Exception {
 
 		DriverUtils.waitUntilLocatorAppears(this.getDriver(), By.xpath(String
-				.format(IOSLocators.xpathFirstInContactList, name)));
+				.format(IOSLocators.xpathContactListEntryWithIndex, index)));
 		WebElement contact = this.getDriver().findElement(
-				By.xpath(String.format(IOSLocators.xpathFirstInContactList,
-						name)));
+				By.xpath(String.format(
+						IOSLocators.xpathContactListEntryWithIndex, index)));
 		return contact.getText();
 	}
 
@@ -299,9 +308,6 @@ public class ContactListPage extends IOSPage {
 		boolean waitForUser = DriverUtils.waitUntilLocatorAppears(
 				this.getDriver(),
 				By.xpath(IOSLocators.xpathMyUserInContactList));
-		if (!waitForUser) {
-			log.debug(this.getDriver().getPageSource());
-		}
 		return waitForUser;
 	}
 
@@ -444,6 +450,14 @@ public class ContactListPage extends IOSPage {
 		} else if (deviceType.equals("iPhone 6") && !isSilenced) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "verifyUnsilenceTestIphone6.png");
+		} else if (deviceType.equals("iPad Air") && isSilenced) {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "silenceiPadAir.png");
+		} else if (deviceType.equals("iPad Air") && !isSilenced) {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath()
+					+ "verifyUnsilenceTestiPadAir_"
+					+ getOrientation().toString() + ".png");
 		}
 		double score = ImageUtil.getOverlapScore(silencedConversation,
 				referenceImage, 0);
@@ -465,10 +479,14 @@ public class ContactListPage extends IOSPage {
 		if (deviceType.equals("iPhone 6 Plus")) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "unsilenceTestiPhone6plus.png");
-		} else {
+		} else if (deviceType.equals("iPhone 6")) {
 			referenceImage = ImageUtil.readImageFromFile(IOSPage
 					.getImagesPath() + "unsilenceTestiPhone6.png");
+		} else if (deviceType.equals("iPad Air")) {
+			referenceImage = ImageUtil.readImageFromFile(IOSPage
+					.getImagesPath() + "unsilenceTestiPadAir.png");
 		}
+
 		double score = ImageUtil.getOverlapScore(silencedConversation,
 				referenceImage, 0);
 		if (score <= MIN_ACCEPTABLE_IMAGE_VALUE) {
@@ -565,20 +583,59 @@ public class ContactListPage extends IOSPage {
 							+ "unreadMessageIndicator0_iPad.png");
 				}
 
-			} else {
-				referenceImage = ImageUtil
-						.readImageFromFile(IOSPage.getImagesPath()
-								+ "unreadMessageIndicator0_iPhone.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator0_iPhone6.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6 Plus")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator0_iPhone6Plus.png");
 			}
 		} else if (numberOfMessages == 1) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadMessageIndicator1.png");
+			if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 6")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator1_iPhone6.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6 Plus")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator1_iPhone6Plus.png");
+			} else {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath() + "unreadMessageIndicator1.png");
+			}
 		} else if (numberOfMessages > 1 && numberOfMessages < 10) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadMessageIndicator5.png");
+			if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 6")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator5_iPhone6.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6 Plus")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator5_iPhone6Plus.png");
+			} else {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath() + "unreadMessageIndicator5.png");
+			}
 		} else if (numberOfMessages >= 10) {
-			referenceImage = ImageUtil.readImageFromFile(IOSPage
-					.getImagesPath() + "unreadMessageIndicator10.png");
+			if (CommonUtils.getDeviceName(this.getClass()).equals("iPhone 6")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator10_iPhone6.png");
+			} else if (CommonUtils.getDeviceName(this.getClass()).equals(
+					"iPhone 6 Plus")) {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath()
+						+ "unreadMessageIndicator10_iPhone6Plus.png");
+			} else {
+				referenceImage = ImageUtil.readImageFromFile(IOSPage
+						.getImagesPath() + "unreadMessageIndicator10.png");
+			}
 		}
 
 		score = ImageUtil.getOverlapScore(referenceImage,

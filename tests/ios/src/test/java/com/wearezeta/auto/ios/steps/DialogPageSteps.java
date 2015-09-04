@@ -162,9 +162,10 @@ public class DialogPageSteps {
 	@Then("^I see title bar in conversation name (.*)$")
 	public void ThenITitleBar(String convName) throws Exception {
 		String chatName = usrMgr.findUserByNameOrNameAlias(convName).getName();
-		//Title bar is gone quite fast so it may fail because of this
-		Assert.assertTrue("Title bar with name - " + chatName+ " is not on the page", getDialogPage()
-				.isTitleBarDisplayed(chatName));
+		// Title bar is gone quite fast so it may fail because of this
+		Assert.assertTrue("Title bar with name - " + chatName
+				+ " is not on the page",
+				getDialogPage().isTitleBarDisplayed(chatName));
 	}
 
 	/**
@@ -256,6 +257,23 @@ public class DialogPageSteps {
 		for (int i = 0; i < 3; i++) {
 			getDialogPage().swipeInputCursor();
 			if (getDialogPage().isPingButtonVisible()) {
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Swipe left on text input to close options buttons
+	 * 
+	 * @step. ^I swipe left on options buttons$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I swipe left on options buttons$")
+	public void ISwipeLeftTextInput() throws Exception {
+		for (int i = 0; i < 3; i++) {
+			getDialogPage().swipeLeftOptionsButtons();
+			if (getDialogPage().isPlusButtonVisible()) {
 				break;
 			}
 		}
@@ -468,9 +486,6 @@ public class DialogPageSteps {
 				.getLastMessageFromDialog().toLowerCase());
 		Assert.assertTrue("View did not scroll back", getDialogPage()
 				.isMediaContainerVisible());
-		String playingState = IOSLocators.MEDIA_STATE_PLAYING;
-		mediaState = getDialogPage().getMediaState();
-		Assert.assertEquals(playingState, mediaState);
 	}
 
 	@When("I tap and hold image to open full screen")
@@ -756,6 +771,19 @@ public class DialogPageSteps {
 	}
 
 	/**
+	 * Verify giphy is presented in conversation
+	 * 
+	 * @step. I see giphy in conversation
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see giphy in conversation")
+	public void ISeeGiphyInConversation() throws Exception {
+		Assert.assertTrue("There is no giphy in conversation", getDialogPage()
+				.isGiphyImageVisible());
+	}
+
+	/**
 	 * Opens the sketch feature
 	 * 
 	 * @step. ^I tap on sketch button in cursor$
@@ -780,5 +808,216 @@ public class DialogPageSteps {
 	public void ISeeMyNameInDialog(String name) throws Exception {
 		Assert.assertTrue("My name: " + name + " is not displayed in dialog",
 				getDialogPage().isMyNameInDialogDisplayed(name));
+	}
+
+	/**
+	 * Verify is plus button is visible
+	 * 
+	 * @step. ^I see plus button next to text input$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see plus button next to text input$")
+	public void ISeePluseButtonNextInput() throws Exception {
+		Assert.assertTrue("Plus button is not visible", getDialogPage()
+				.isPlusButtonVisible());
+	}
+
+	/**
+	 * Verify is plus button is not visible
+	 * 
+	 * @step. ^I see plus button is not shown$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see plus button is not shown$")
+	public void ISeePlusButtonNotShown() throws Exception {
+		Assert.assertTrue("Plus button is still shown", getDialogPage()
+				.waitPlusButtonNotVisible());
+	}
+
+	/**
+	 * Verify Details button is visible
+	 * 
+	 * @step. ^I see Details button is visible$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Details button is visible$")
+	public void ISeeDetailsButtonShown() throws Exception {
+		Assert.assertTrue("Details button is not visible", getDialogPage()
+				.isOpenConversationDetailsButtonVisible());
+	}
+
+	/**
+	 * Verify Call button is visible
+	 * 
+	 * @step. ^I see Call button is visible$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Call button is visible$")
+	public void ISeeCalButtonShown() throws Exception {
+		Assert.assertTrue("Call button is not visible", getDialogPage()
+				.isCallButtonVisible());
+	}
+
+	/**
+	 * Verify Camera button is visible
+	 * 
+	 * @step. ^I see Camera button is visible$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Camera button is visible$")
+	public void ISeeCameraButtonShown() throws Exception {
+		Assert.assertTrue("Camera button is not visible", getDialogPage()
+				.isCameraButtonVisible());
+	}
+
+	/**
+	 * Verify Sketch button is visible
+	 * 
+	 * @step. ^I see Sketch button is visible$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Sketch button is visible$")
+	public void ISeeSketchButtonShown() throws Exception {
+		Assert.assertTrue("Sketch button is not visible", getDialogPage()
+				.isOpenScetchButtonVisible());
+	}
+
+	/**
+	 * Verify Ping button is visible
+	 * 
+	 * @step. ^I see Ping button is visible$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Ping button is visible$")
+	public void ISeePingButtonShown() throws Exception {
+		Assert.assertTrue("Ping button is not visible", getDialogPage()
+				.isPingButtonVisible());
+	}
+
+	/**
+	 * Verify Buttons: Details, Call, Camera, Sketch, Ping are visible
+	 * 
+	 * @step. ^I see Buttons: Details, Call, Camera, Sketch, Ping$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Buttons: Details, Call, Camera, Sketch, Ping$")
+	public void ISeeButtonsDetailsCallCameraSketchPing() throws Exception {
+		ISeeDetailsButtonShown();
+		ISeeCalButtonShown();
+		ISeeCameraButtonShown();
+		ISeeSketchButtonShown();
+		ISeePingButtonShown();
+	}
+
+	/**
+	 * Verify that only Details button is shown. Rest button should not be
+	 * visible
+	 * 
+	 * @step. I see only Details button. Call, Camera, Sketch, Ping are not
+	 *        shown
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see only Details button. Call, Camera, Sketch, Ping are not shown")
+	public void ISeeOnlyDetailsButtonRestNotShown() throws Exception {
+		ISeeDetailsButtonShown();
+		Assert.assertFalse("Call button is visible", getDialogPage()
+				.isCallButtonVisible());
+		Assert.assertFalse("Camera button is visible", getDialogPage()
+				.isCameraButtonVisible());
+		Assert.assertFalse("Sketch button is visible", getDialogPage()
+				.isOpenScetchButtonVisible());
+		Assert.assertFalse("Ping button is visible", getDialogPage()
+				.isPingButtonVisible());
+	}
+
+	/**
+	 * Verify Close button in options is shown
+	 * 
+	 * @step. ^I see Close input options button is visible$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Close input options button is visible$")
+	public void ISeeCloseButtonInputOptionsVisible() throws Exception {
+		Assert.assertTrue("Close button is not visible", getDialogPage()
+				.isCloseButtonVisible());
+	}
+
+	/**
+	 * Verify Close button in options is NOT shown
+	 * 
+	 * @step. ^I see Close input options button is not visible$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Close input options button is not visible$")
+	public void ISeeCloseButtonInputOptionsNotVisible() throws Exception {
+		Assert.assertFalse("Close button is visible", getDialogPage()
+				.isCloseButtonVisible());
+	}
+
+	/**
+	 * Click on plus button next to text input
+	 * 
+	 * @step. ^I click plus button next to text input$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click plus button next to text input$")
+	public void IClickPlusButton() throws Exception {
+		getDialogPage().clickPlusButton();
+	}
+
+	/**
+	 * Click on close button in input options
+	 * 
+	 * @step. ^I click close button next to text input$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Close input options button$")
+	public void IClickCloseButtonInputOptions() throws Exception {
+		getDialogPage().clickCloseButton();
+	}
+
+	/**
+	 * Verifies that vimeo link without ID is shown but NO player
+	 * 
+	 * @step. ^I see vimeo link (.*) but NO media player$
+	 * @param link
+	 *            of the vimeo video without ID
+	 * @throws Throwable
+	 */
+	@Then("^I see vimeo link (.*) but NO media player$")
+	public void ISeeVimeoLinkButNOMediaPlayer(String link) throws Throwable {
+		Assert.assertFalse("Media player is shown in dialog", getDialogPage()
+				.isYoutubeContainerVisible());
+		Assert.assertEquals(link.toLowerCase(), getDialogPage()
+				.getLastMessageFromDialog().toLowerCase());
+	}
+
+	/**
+	 * Verifies that vimeo link and the video container is visible
+	 * 
+	 * @step. ^I see vimeo link (.*) and media in dialog$
+	 * @param link
+	 *            of vimeo video
+	 * @throws Throwable
+	 */
+	@Then("^I see vimeo link (.*) and media in dialog$")
+	public void ISeeVimeoLinkAndMediaInDialog(String link) throws Throwable {
+		Assert.assertTrue("Media is missing in dialog", getDialogPage()
+				.isYoutubeContainerVisible());
+		Assert.assertEquals(link.toLowerCase(), getDialogPage()
+				.getLastMessageFromDialog().toLowerCase());
 	}
 }

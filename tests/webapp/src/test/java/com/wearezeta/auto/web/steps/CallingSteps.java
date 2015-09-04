@@ -1,120 +1,156 @@
 package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
+import com.wearezeta.auto.common.calling2.v1.model.Flow;
+import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
 
 public class CallingSteps {
+
 	private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
 			.getInstance();
 
 	/**
 	 * Make call to a specific user. You may instantiate more than one incoming
 	 * call from single caller by calling this step multiple times
-	 * 
+	 *
 	 * @step. (.*) calls (.*) using (\\w+)$
-	 * 
-	 * @param userFromNameAlias
+	 *
+	 * @param caller
 	 *            caller name/alias
-	 * @param userToNameAlias
-	 *            destination name/alias
+	 * @param conversationName
+	 *            destination conversation name
 	 * @param callBackend
-	 *            call backend. Available values: 'autocall', 'webdriver'
+	 *            call backend. Available values: 'autocall', 'chrome',
+	 *            'firefox'
 	 * @throws Exception
 	 */
 	@When("(.*) calls (.*) using (\\w+)$")
-	public void UserXCallsToUserYUsingCallBackend(String userFromNameAlias,
-			String userToNameAlias, String callBackend) throws Exception {
-		commonCallingSteps.UserXCallsToUserYUsingCallBackend(userFromNameAlias,
-				userToNameAlias, callBackend);
+	public void UserXCallsToUserYUsingCallBackend(String caller,
+			String conversationName, String callBackend) throws Exception {
+		commonCallingSteps.callToConversation(caller, conversationName,
+				callBackend);
 	}
 
 	/**
-	 * Stop all outgoing calls on the caller side (for all call backends)
-	 * 
+	 * Stop call on the caller side
+	 *
 	 * @step. (.*) stops? all calls to (.*)
-	 * 
-	 * @param userFromNameAlias
+	 *
+	 * @param caller
 	 *            caller name/alias
-	 * @param userToNameAlias
-	 *            destination name/alias
+	 * @param conversationName
+	 *            destination conversation name
 	 * @throws Exception
 	 */
 	@When("(.*) stops? all calls to (.*)")
-	public void UserXStopsCallsToUserY(String userFromNameAlias,
-			String userToNameAlias) throws Exception {
-		commonCallingSteps.UserXStopsCallsToUserY(userFromNameAlias,
-				userToNameAlias);
+	public void UserXStopsCallsToUserY(String caller, String conversationName)
+			throws Exception {
+		commonCallingSteps.stopCall(caller, conversationName);
 	}
 
 	/**
 	 * Verify whether call status is changed to one of the expected values after
 	 * N seconds timeout
-	 * 
+	 *
 	 * @step. (.*) verifies that call status to (.*) is changed to (.*) in
 	 *        (\\d+) seconds?$
-	 * 
-	 * @param userFromNameAlias
+	 *
+	 * @param caller
 	 *            caller name/alias
-	 * @param userToNameAlias
-	 *            destination name/alias
+	 * @param conversationName
+	 *            destination conversation
 	 * @param expectedStatuses
-	 *            comma-separated list of expected call statuses. Available
-	 *            values: "starting", "waiting", "active", "active_muted",
-	 *            "stopping", "inactive"
+	 *            comma-separated list of expected call statuses. See
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
+	 *            for more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
 	@Then("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
-	public void UserXVerifesCallStatusToUserY(String userFromNameAlias,
-			String userToNameAlias, String expectedStatuses, int timeoutSeconds)
+	public void UserXVerifesCallStatusToUserY(String caller,
+			String conversationName, String expectedStatuses, int timeoutSeconds)
 			throws Exception {
-		commonCallingSteps.UserXVerifesCallStatusToUserY(userFromNameAlias,
-				userToNameAlias, expectedStatuses, timeoutSeconds);
+		commonCallingSteps.verifyCallingStatus(caller, conversationName,
+				expectedStatuses, timeoutSeconds);
 	}
 
 	/**
 	 * Verify whether waiting instance status is changed to one of the expected
 	 * values after N seconds timeout
-	 * 
+	 *
 	 * @step. (.*) verifies that waiting instance status is changed to (.*) in
 	 *        (\\d+) seconds?$
-	 * 
-	 * @param userFromNameAlias
-	 *            caller name/alias
+	 *
+	 * @param callee
+	 *            callee name/alias
 	 * @param expectedStatuses
-	 *            comma-separated list of expected call statuses. Available
-	 *            values: "starting", "waiting", "active", "active_muted",
-	 *            "stopping", "inactive"
+	 *            comma-separated list of expected call statuses. See
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
+	 *            for more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
 	@Then("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")
-	public void UserXVerifesCallStatusToUserY(String userFromNameAlias,
+	public void UserXVerifesCallStatusToUserY(String callee,
 			String expectedStatuses, int timeoutSeconds) throws Exception {
-		commonCallingSteps.UserXVerifesWaitingInstanceStatus(userFromNameAlias,
-				expectedStatuses, timeoutSeconds);
+		commonCallingSteps.verifyAcceptingCallStatus(callee, expectedStatuses,
+				timeoutSeconds);
 	}
 
 	/**
+	 * Verify that the instance has X active flows
+	 * 
+	 * @param callee
+	 *            callee name/alias
+	 * @param numberOfFlows
+	 *            expected number of flows
+	 * @throws Exception
+	 */
+	@Then("(.*) verifies to have (\\d+) flows?$")
+	public void UserXVerifesHavingXFlows(String callee, int numberOfFlows)
+			throws Exception {
+		assertThat(commonCallingSteps.getFlows(callee), hasSize(numberOfFlows));
+	}
+
+	/**
+	 * Verify that each flow of the instance had incoming and outgoing bytes
+	 * running over the line
+	 * 
+	 * @param callee
+	 *            callee name/alias
+	 * @throws Exception
+	 */
+	@Then("(.*) verifies that all flows have greater than 0 bytes$")
+	public void UserXVerifesHavingXFlows(String callee) throws Exception {
+		for (Flow flow : commonCallingSteps.getFlows(callee)) {
+			assertThat("incoming bytes", flow.getBytesIn(), greaterThan(0L));
+			assertThat("outgoing bytes", flow.getBytesOut(), greaterThan(0L));
+		}
+	}
+
+    /**
 	 * Execute waiting instance as 'userAsNameAlias' user on calling server
 	 * using 'callingServiceBackend' tool
-	 * 
+	 *
 	 * @step. (.*) starts? waiting instance using (\\w+)$
-	 * 
-	 * @param userAsNameAlias
-	 *            call receiver's name/alias
+	 *
+	 * @param callee
+	 *            callee name/alias
 	 * @param callingServiceBackend
-	 *            available values: 'blender', 'webdriver'
+	 *            available values: 'blender', 'chrome', * 'firefox'
 	 * @throws Exception
 	 */
 	@When("(.*) starts? waiting instance using (\\w+)$")
-	public void UserXStartsWaitingInstance(String userAsNameAlias,
+	public void UserXStartsWaitingInstance(String callee,
 			String callingServiceBackend) throws Exception {
-		commonCallingSteps.UserXStartsWaitingInstance(userAsNameAlias,
+		commonCallingSteps.startWaitingInstances(splitAliases(callee),
 				callingServiceBackend);
 	}
 
@@ -122,32 +158,30 @@ public class CallingSteps {
 	 * Automatically accept the next incoming call for the particular user as
 	 * soon as it appears in UI. Waiting instance should be already created for
 	 * this particular user
-	 * 
+	 *
 	 * @step. (.*) accepts? next incoming call automatically$
-	 * 
-	 * @param userAsNameAlias
-	 *            call receiver's name/alias
+	 *
+	 * @param callee
+	 *            callee name/alias
 	 * @throws Exception
 	 */
 	@When("(.*) accepts? next incoming call automatically$")
-	public void UserXAcceptsNextIncomingCallAutomatically(String userAsNameAlias)
+	public void UserXAcceptsNextIncomingCallAutomatically(String callee)
 			throws Exception {
-		commonCallingSteps
-				.UserXAcceptsNextIncomingCallAutomatically(userAsNameAlias);
+		commonCallingSteps.acceptNextCall(callee);
 	}
 
 	/**
 	 * Close all waiting instances (and incoming calls) for the particular user
-	 * 
+	 *
 	 * @step. (.*) stops? all waiting instances$
-	 * 
-	 * @param userAsNameAlias
-	 *            user name/alias
+	 *
+	 * @param callee
+	 *            callee name/alias
 	 * @throws Exception
 	 */
 	@When("(.*) stops? all waiting instances$")
-	public void UserXStopsIncomingCalls(String userAsNameAlias)
-			throws Exception {
-		commonCallingSteps.UserXStopsIncomingCalls(userAsNameAlias);
+	public void UserXStopsIncomingCalls(String callee) throws Exception {
+		commonCallingSteps.stopWaitingCall(callee);
 	}
 }

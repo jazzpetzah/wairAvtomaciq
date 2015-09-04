@@ -28,6 +28,10 @@ public class CameraRollPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameConfirmPictureButton)
 	private WebElement confirmPictureButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameCameraRollSketchButton)
+	private WebElement cameraRollSketchButton;
+	
 
 	public CameraRollPage(Future<ZetaIOSDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -87,6 +91,10 @@ public class CameraRollPage extends IOSPage {
 		}
 		}
 		return page;
+	}
+
+	public void clickCameraRollSketchButton() {
+		cameraRollSketchButton.click();
 	}
 
 }

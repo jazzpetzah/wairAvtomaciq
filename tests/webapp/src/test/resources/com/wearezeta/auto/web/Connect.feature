@@ -4,11 +4,13 @@ Feature: Connect
   Scenario Outline: Accept connection request
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
+    Given User me change accent color to VividRed
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     When I see connection request from one user
     And I open the list of incoming connection requests
+    And I see correct color for accept button in connection request from user <Contact>
     And I accept connection request from user <Contact>
     Then I see Contact list with name <Contact>
 
@@ -26,7 +28,6 @@ Feature: Connect
     Then I see connection request from one user
     When I open the list of incoming connection requests
     Then I see mail <UnknownContactMail> in connection request from user <UnknownContact>
-    And I see connection message "Hello!" in connection request from user <UnknownContact>
     And I see avatar in connection request from user <UnknownContact>
     And I see accept button in connection request from user <UnknownContact>
     And I see ignore button in connection request from user <UnknownContact>
@@ -36,6 +37,37 @@ Feature: Connect
     Examples: 
       | Login      | Password      | Name      | UnknownContact | UnknownContactMail | Message   |
       | user1Email | user1Password | user1Name | user2Name      | user2Email         | YOU ADDED |
+
+  @staging @id3303
+  Scenario Outline: Verify pending user profiles contain known people information
+    Given There are 11 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <UnknownContact1> is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <UnknownContact2> is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <UnknownContact3> is connected to <Contact1>,<Contact2>,<Contact3>
+    Given <UnknownContact4> is connected to <Contact1>,<Contact2>
+    Given <UnknownContact5> is connected to <Contact1>
+    Given <UnknownContact1> sent connection request to me
+    Given <UnknownContact2> sent connection request to me
+    Given <UnknownContact3> sent connection request to me
+    Given <UnknownContact4> sent connection request to me
+    Given <UnknownContact5> sent connection request to me
+    # We need to wait for the backend
+    Given I wait for 15 seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see connection request from 5 user
+    When I open the list of incoming connection requests
+    Then I see an amount of 3 avatars in known connections in connection request from user <UnknownContact1>
+    And I see an amount of 2 others in known connections in connection request from user <UnknownContact1>
+    And I see an amount of 4 avatars in known connections in connection request from user <UnknownContact2>
+    And I see an amount of 3 avatars in known connections in connection request from user <UnknownContact3>
+    And I see an amount of 2 avatars in known connections in connection request from user <UnknownContact4>
+    And I see an amount of 1 avatars in known connections in connection request from user <UnknownContact5>
+
+    Examples:
+      | Login      | Password      | Name      | UnknownContact1 | UnknownContact2 | UnknownContact3 | UnknownContact4 | UnknownContact5 | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  |
+      | user1Email | user1Password | user1Name | user2Name       | user3Name       | user4Name       | user5Name       | user6Name       | user7Name | user8Name | user9Name | user10Name | user11Name |
 
   @smoke @id1571
   Scenario Outline: Verify sending a connection request to user chosen from search
@@ -226,7 +258,7 @@ Feature: Connect
       | Login      | Password      | Name      | Contact1  | Contact2  | ChatName             | Login2     | Password2     | Name2     | ChatName                 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | SendMessageGroupChat | user2Email | user2Password | user2Name | GroupChatWithBlockedUser |
 
-  @smoke @id1563
+  @smoke @id3212
   Scenario Outline: Verify you dont receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <User1> is me
     Given Myself is connected to <User2>
@@ -310,7 +342,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact1  | Contact2  |
       | user1Name | user1Email | user1Password | user2Name | user3Name |
 
-  @regression @id2548
+  @legacy @id2548
   Scenario Outline: Verify you get auto-connected to people on sign-in
     Given There is 2 user where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
@@ -331,7 +363,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
-  @regression @id2748
+  @legacy @id2748
   Scenario Outline: Verify you get auto-connected to people while being logged-in
     Given There is 2 user where <Me> is me
     # we need to wait a bit, otherwise backend throws a 429 status
@@ -354,28 +386,7 @@ Feature: Connect
       | Me        | MyEmail    | MyPassword    | Contact   |
       | user1Name | user1Email | user1Password | user2Name |
 
-  @staging @id1564 @muted
-  Scenario Outline: Impossibility of starting 1:1 conversation with pending user (Search view)
-    Given There are 3 users where <Name> is me
-    Given I sent connection request to <Contact1>
-    Given Myself is connected to <Contact2>
-    Given I switch to Sign In page
-    Given I Sign in using login <Login> and password <Password>
-    And I see my avatar on top of Contact list
-    When I open People Picker from Contact List
-    And I wait for 2 seconds
-    And I type <Contact1> in search field of People Picker
-    Then I see user <Contact1> found in People Picker
-    When I click on pending user <Contact1> found in People Picker
-    And I see Pending Outgoing Connection popover
-    When I click Pending button on Pending Outgoing Connection popover
-    Then I see conversation with <Contact1> is selected in conversations list
-
-    Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
-
-  @staging @id2764
+  @regression @id2764
   Scenario Outline: I want to cancel a pending request from search
     Given There are 3 users where <Name> is me
     Given I sent connection request to <Contact1>

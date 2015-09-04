@@ -1,9 +1,10 @@
 package com.wearezeta.auto.common.calling2.v1;
 
+import java.util.List;
+
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceCallException;
 import com.wearezeta.auto.common.calling2.v1.exception.CallingServiceInstanceException;
-
 import com.wearezeta.auto.common.calling2.v1.model.BackendType;
 import com.wearezeta.auto.common.calling2.v1.model.Call;
 import com.wearezeta.auto.common.calling2.v1.model.CallStatus;
@@ -12,6 +13,7 @@ import com.wearezeta.auto.common.calling2.v1.model.InstanceStatus;
 import com.wearezeta.auto.common.calling2.v1.model.InstanceType;
 import com.wearezeta.auto.common.calling2.v1.model.CallRequest;
 import com.wearezeta.auto.common.calling2.v1.model.InstanceRequest;
+import com.wearezeta.auto.common.calling2.v1.model.Flow;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 
@@ -21,55 +23,55 @@ public class CallingServiceClient {
 			.getLog(CallingServiceClient.class.getSimpleName());
 
 	private static final String API_VERSION = "1";
-	private static final InstanceResource INSTANCE_RESOURCE = new InstanceResource(
-			getApiRoot(), API_VERSION);
+	private static final boolean TRACE = false;
+	private final InstanceResource INSTANCE_RESOURCE = new InstanceResource(
+			getApiRoot(), API_VERSION, TRACE);
 
-	private static final CallResource CALL_RESOURCE = new CallResource(
-			getApiRoot(), API_VERSION);
+	private final CallResource CALL_RESOURCE = new CallResource(getApiRoot(),
+			API_VERSION, TRACE);
 
-	public static Instance startInstance(ClientUser userAs,
-			InstanceType instanceType) throws CallingServiceInstanceException {
+	public Instance startInstance(ClientUser userAs, InstanceType instanceType,
+			String name) throws CallingServiceInstanceException {
 		InstanceRequest instanceRequest = new InstanceRequest(
 				userAs.getEmail(), userAs.getPassword(), getBackendType(),
-				instanceType);
+				instanceType, name);
 		return INSTANCE_RESOURCE.createInstance(instanceRequest);
 	}
 
-	public static Instance stopInstance(Instance instance)
+	public Instance stopInstance(Instance instance)
 			throws CallingServiceInstanceException {
 		return INSTANCE_RESOURCE.destroyInstance(instance);
 	}
 
-	public static InstanceStatus getInstanceStatus(Instance instance)
+	public InstanceStatus getInstanceStatus(Instance instance)
 			throws CallingServiceInstanceException {
 		return INSTANCE_RESOURCE.getInstance(instance).getStatus();
 	}
 
-	public static Call acceptNextIncomingCall(Instance instance)
+	public Call acceptNextIncomingCall(Instance instance)
 			throws CallingServiceCallException {
 		CallRequest callRequest = new CallRequest();
 
 		return CALL_RESOURCE.acceptNext(instance, callRequest);
 	}
 
-	public static Call callToUser(Instance instance, String convId)
+	public Call callToUser(Instance instance, String convId)
 			throws CallingServiceCallException {
 		CallRequest callRequest = new CallRequest(convId);
 		return CALL_RESOURCE.start(instance, callRequest);
 	}
 
-	public static CallStatus getCallStatus(Instance instance, Call call)
+	public CallStatus getCallStatus(Instance instance, Call call)
 			throws CallingServiceCallException {
 		return CALL_RESOURCE.getCall(instance, call).getStatus();
 	}
 
-	public static Call stopCall(Instance instance, Call call)
+	public Call stopCall(Instance instance, Call call)
 			throws CallingServiceCallException {
 		return CALL_RESOURCE.stop(instance, call);
 	}
 
 	// TODO: mute/unmute/listen/speak
-
 	private static BackendType getBackendType() {
 		try {
 			return BackendType.valueOf(CommonUtils.getBackendType(
@@ -88,5 +90,10 @@ public class CallingServiceClient {
 			e.printStackTrace();
 			throw new RuntimeException(e.getMessage());
 		}
+	}
+
+	public List<Flow> getFlows(Instance instance)
+			throws CallingServiceInstanceException {
+		return INSTANCE_RESOURCE.getFlows(instance);
 	}
 }

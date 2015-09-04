@@ -26,14 +26,72 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
 				getOtherUserOnPendingProfilePage().isUserNameDisplayed(name));
 		Assert.assertTrue("Close button not displayed",
 				getOtherUserOnPendingProfilePage().isClosePageButtonVisible());
+		Assert.assertTrue("Cancel request button is not displayed",
+				getOtherUserOnPendingProfilePage()
+						.isCancelRequestButtonVisible());
+	}
+
+	@When("^I see cancel request button on pending profile page$")
+	public void ISeeCancelRequestButtonOnPendingProfilePage() throws Exception {
 		Assert.assertTrue("Pending label is not displayed",
-				getOtherUserOnPendingProfilePage().isPendingLabelVisible());
+				getOtherUserOnPendingProfilePage()
+						.isCancelRequestButtonVisible());
+	}
+
+	/**
+	 * Click on Cancel request button
+	 * 
+	 * @step. I click Cancel request button
+	 * 
+	 * @throws Exception
+	 */
+	@When("I click Cancel request button")
+	public void IClickCancelRequestButton() throws Exception {
+		getOtherUserOnPendingProfilePage().clickCancelRequestButton();
 	}
 
 	@When("^I click on start conversation button on pending profile page$")
 	public void WhenIClickOnStartConversatonButtonOnPendingProfilePage()
 			throws Exception {
 		getOtherUserOnPendingProfilePage().clickStartConversationButton();
+	}
+
+	/**
+	 * Verify if Cancel request confirmation page is shown
+	 * 
+	 * @step. I see Cancel request confirmation page
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see Cancel request confirmation page")
+	public void ISeeCancelRequestConfirmationPage() throws Exception {
+		Assert.assertTrue("Cancel request confirmation page is not shown",
+				getOtherUserOnPendingProfilePage()
+						.isCancelRequestConfirmationVisible());
+	}
+
+	/**
+	 * Click on yes button on Confirm Cancel Request page
+	 * 
+	 * @step. I confirm Cancel request by click on Yes button
+	 * 
+	 * @throws Exception
+	 */
+	@When("I confirm Cancel request by click on Yes button")
+	public void IConfirCancelReques() throws Exception {
+		getOtherUserOnPendingProfilePage().clickConfirmCancelRequestButton();
+	}
+	
+	/**
+	 * Presses back button to return to group info page or popover
+	 * 
+	 * @step. ^I go back to group info page or popover$
+	 * @throws Throwable
+	 */
+	@When("^I go back to group info page or popover$")
+	public void IGoBackToGroupInfoPageOrPopover() throws Throwable {
+		getOtherUserOnPendingProfilePage()
+				.clickBackButtonToReturnToGroupPageOrPopover();
 	}
 
 }

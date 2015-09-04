@@ -4,6 +4,7 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.NetworkConnectionSetting;
 import io.appium.java_client.android.AndroidDriver;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -70,28 +71,21 @@ public class DriverUtils {
 	public static boolean isElementPresentAndDisplayed(RemoteWebDriver driver,
 			final WebElement element) {
 		try {
-			// log.info("Element size " + element.getSize().width + "x"
-			// + element.getSize().width);
-			// log.info("Element location " + element.getLocation().x + ":"
-			// + element.getLocation().y);
-			// log.info("Screen size " + driver
-			// .manage().window().getSize().width + ":"
-			// + driver
-			// .manage().window().getSize().height);
-			if (element.isDisplayed()
-					&& element.getLocation().x >= 0
-					&& element.getLocation().y >= 0
-					&& element.getLocation().x < driver.manage().window()
-							.getSize().width
-					&& element.getLocation().y < driver.manage().window()
-							.getSize().height) {
-				return true;
-			} else {
-				return false;
-			}
+			return (element.isDisplayed() && isElementInScreenRect(driver,
+					element));
 		} catch (NoSuchElementException e) {
 			return false;
 		}
+	}
+
+	private static boolean isElementInScreenRect(RemoteWebDriver driver,
+			final WebElement el) {
+		final Rectangle elementRect = new Rectangle(el.getLocation().x,
+				el.getLocation().y, el.getSize().width, el.getSize().height);
+		final Rectangle screenRect = new Rectangle(0, 0, driver.manage()
+				.window().getSize().width,
+				driver.manage().window().getSize().height);
+		return elementRect.intersects(screenRect);
 	}
 
 	public static boolean waitUntilLocatorIsDisplayed(RemoteWebDriver driver,
@@ -143,14 +137,8 @@ public class DriverUtils {
 					return (drv.findElements(by).size() == 0)
 							|| (drv.findElements(by).size() > 0 && !drv
 									.findElement(by).isDisplayed())
-							|| (drv.findElement(by).getLocation().x > drv
-									.manage().window().getSize().width)
-							|| (drv.findElement(by).getLocation().y > drv
-									.manage().window().getSize().height)
-							|| (drv.findElements(by).size() > 0 && drv
-									.findElement(by).getLocation().x < 0)
-							|| (drv.findElements(by).size() > 0 && drv
-									.findElement(by).getLocation().y < 0);
+							|| !isElementInScreenRect(driver,
+									driver.findElement(by));
 				} catch (WebDriverException e) {
 					return true;
 				}
@@ -212,15 +200,22 @@ public class DriverUtils {
 		}
 	}
 
-	public static void waitUntilAlertAppears(AppiumDriver driver)
+	public static boolean waitUntilAlertAppears(AppiumDriver driver)
 			throws Exception {
+		return waitUntilAlertAppears(driver, 20);
+	}
+
+	public static boolean waitUntilAlertAppears(AppiumDriver driver,
+			long timeout) throws Exception {
 		DriverUtils.turnOffImplicitWait(driver);
 		try {
 			Wait<WebDriver> wait = new FluentWait<WebDriver>(driver)
-					.withTimeout(20, TimeUnit.SECONDS)
+					.withTimeout(timeout, TimeUnit.SECONDS)
 					.pollingEvery(1, TimeUnit.SECONDS)
 					.ignoring(NoSuchElementException.class);
-			wait.until(ExpectedConditions.alertIsPresent());
+			return (wait.until(ExpectedConditions.alertIsPresent()) != null);
+		} catch (TimeoutException e) {
+			return false;
 		} finally {
 			restoreImplicitWait(driver);
 		}
@@ -234,28 +229,34 @@ public class DriverUtils {
 	}
 
 	/**
+	 * Swipes from point inside element given by percent of element size.
+	 * Default swipe size is 2/3 of window.width, but is end point outsie of
+	 * screen then it is changed to 0;
 	 * 
 	 * @param driver
 	 * @param element
 	 * @param time
-	 * @param percentX
-	 *            min value is 1. Where to swipe (in percents relative to the
-	 *            original control width)
-	 * @param percentY
-	 *            min value is 1. Where to swipe (in percents relative to the
-	 *            original control height)
+	 * @param elementPercentX
+	 *            min value is 1. Starting point of swipe (in percents relative
+	 *            to the original control width)
+	 * @param elementPercentY
+	 *            min value is 1. Starting point of swipe (in percents relative
+	 *            to the original control height)
 	 */
 	public static void swipeLeft(AppiumDriver driver, WebElement element,
-			int time, int percentX, int percentY) {
+			int time, int elementPercentX, int elementPercentY) {
 		final Point coords = element.getLocation();
+		final Dimension screenSize = driver.manage().window().getSize();
 		final Dimension elementSize = element.getSize();
 		final int xOffset = (int) Math.round(elementSize.width
-				* (percentX / 100.0));
+				* (elementPercentX / 100.0));
 		final int yOffset = (int) Math.round(elementSize.height
-				* (percentY / 100.0));
+				* (elementPercentY / 100.0));
+		int endX = coords.x + xOffset - screenSize.width * 2 / 3 < 0 ? 0
+				: coords.x + xOffset - screenSize.width * 2 / 3;
 		try {
-			driver.swipe(coords.x, coords.y + yOffset, coords.x - xOffset,
-					coords.y + yOffset, time);
+			driver.swipe(coords.x + xOffset, coords.y + yOffset, endX, coords.y
+					+ yOffset, time);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

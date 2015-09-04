@@ -1,12 +1,13 @@
 package com.wearezeta.auto.common;
 
 import java.io.File;
-import java.io.InputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.backend.AccentColor;
@@ -14,6 +15,7 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.backend.ConnectionStatus;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
@@ -25,6 +27,10 @@ public final class CommonSteps {
 	public static final String CONNECTION_MESSAGE = "Hello!";
 	private static final int BACKEND_USER_SYNC_TIMEOUT = 45; // seconds
 	private static final int BACKEND_SUGGESTIONS_SYNC_TIMEOUT = 90; // seconds
+
+	@SuppressWarnings("unused")
+	private static final Logger log = ZetaLogger.getLog(CommonSteps.class
+			.getSimpleName());
 
 	private String pingId = null;
 
@@ -81,6 +87,12 @@ public final class CommonSteps {
 		}
 		BackendAPIWrappers.createGroupConversation(chatOwner, participants,
 				chatName);
+		// Set nameAlias for the group
+		// Required for group calling tests
+		ClientUser groupUser = new ClientUser();
+		groupUser.setName(chatName);
+		groupUser.addNameAlias(chatName);
+		usrMgr.appendCustomUser(groupUser);
 	}
 
 	private static final String OTHER_USERS_ALIAS = "all other";
@@ -125,10 +137,11 @@ public final class CommonSteps {
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
-	public void ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(Platform currentPlatform, int count,
-			String myNameAlias) throws Exception {
-		usrMgr.createUsersOnBackend(count, RegistrationStrategy
-				.ByPhoneNumberOnly);
+	public void ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
+			Platform currentPlatform, int count, String myNameAlias)
+			throws Exception {
+		usrMgr.createUsersOnBackend(count,
+				RegistrationStrategy.ByPhoneNumberOnly);
 		usrMgr.setSelfUser(usrMgr.findUserByNameOrNameAlias(myNameAlias));
 	}
 
@@ -259,12 +272,27 @@ public final class CommonSteps {
 		BackendAPIWrappers.updateConvMutedState(user, mutedUser, true);
 	}
 
+	public void MuteConversationWithGroup(String usersToNameAliases,
+			String muteConversationWithGroup) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
+		BackendAPIWrappers.updateGroupConvMutedState(user,
+				muteConversationWithGroup, true);
+	}
+
 	public void UnarchiveConversationWithUser(String usersToNameAliases,
 			String archiveConversationWithUser) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);
 		ClientUser archivedUser = usrMgr
 				.findUserByNameOrNameAlias(archiveConversationWithUser);
 		BackendAPIWrappers.unarchiveUserConv(user, archivedUser);
+	}
+
+	public void UnarchiveConversationWithGroup(String aUser,
+			String archiveConversationWithGroup) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(aUser);
+		final String conversationIDToArchive = BackendAPIWrappers
+				.getConversationIdByName(user, archiveConversationWithGroup);
+		BackendAPIWrappers.unarchiveGroupConv(user, conversationIDToArchive);
 	}
 
 	public void AcceptAllIncomingConnectionRequests(String userToNameAlias)
@@ -339,18 +367,8 @@ public final class CommonSteps {
 		if (new File(picturePath).exists()) {
 			BackendAPIWrappers.updateUserPicture(dstUser, picturePath);
 		} else {
-			// Trying to load the picture from resources if this does not exist
-			// on the file system
-			final ClassLoader classLoader = this.getClass().getClassLoader();
-			final InputStream imageStream = classLoader
-					.getResourceAsStream(picturePath);
-			try {
-				BackendAPIWrappers.updateUserPicture(dstUser, imageStream);
-			} finally {
-				if (imageStream != null) {
-					imageStream.close();
-				}
-			}
+			throw new IOException(String.format(
+					"The picture '%s' is not accessible", picturePath));
 		}
 	}
 
@@ -411,6 +429,16 @@ public final class CommonSteps {
 				true, BACKEND_USER_SYNC_TIMEOUT);
 	}
 
+	public void WaitUntilContactBlockStateInSearch(String searchByNameAlias,
+			String contactAlias, boolean expectedState) throws Exception {
+		String query = usrMgr.replaceAliasesOccurences(contactAlias,
+				FindBy.NAME_ALIAS);
+		query = usrMgr.replaceAliasesOccurences(query, FindBy.EMAIL_ALIAS);
+		BackendAPIWrappers.waitUntilContactBlockState(
+				usrMgr.findUserByNameOrNameAlias(searchByNameAlias), query,
+				expectedState, BACKEND_USER_SYNC_TIMEOUT);
+	}
+
 	public void UserXAddedContactsToGroupChat(String userAsNameAlias,
 			String contactsToAddNameAliases, String chatName) throws Exception {
 		final ClientUser userAs = usrMgr
@@ -422,6 +450,27 @@ public final class CommonSteps {
 		}
 		BackendAPIWrappers.addContactsToGroupConversation(userAs,
 				contactsToAdd, chatName);
+	}
+
+	public void UserXRemoveContactFromGroupChat(String userAsNameAlias,
+			String contactToRemoveNameAlias, String chatName) throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userAsNameAlias);
+		final ClientUser userToRemove = usrMgr
+				.findUserByNameOrNameAlias(contactToRemoveNameAlias);
+
+		BackendAPIWrappers.removeUserFromGroupConversation(userAs,
+				userToRemove, chatName);
+	}
+
+	public void UserXLeavesGroupChat(String userNameAlias, String chatName)
+			throws Exception {
+		final ClientUser userAs = usrMgr
+				.findUserByNameOrNameAlias(userNameAlias);
+
+		BackendAPIWrappers.removeUserFromGroupConversation(userAs, userAs,
+				chatName);
+
 	}
 
 	private Map<String, String> profilePictureSnapshotsMap = new HashMap<String, String>();
