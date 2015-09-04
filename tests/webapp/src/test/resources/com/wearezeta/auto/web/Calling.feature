@@ -587,7 +587,7 @@ Feature: Calling
     And I see the calling bar
     When I accept the incoming call
     Then I see the calling bar from user <Contact1>,<Contact2>,<Contact3>,<Contact4>
-    And I wait for 20 seconds
+    And I wait for 10 seconds
     And <Contact2> verifies to have 4 flows
     And <Contact3> verifies to have 4 flows
     And <Contact4> verifies to have 4 flows
