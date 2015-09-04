@@ -322,7 +322,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
-    And I unblock user
+    And I unblock user on iPad
     And I wait for 5 seconds
     And I see new photo in the dialog
     And I see message in the dialog
@@ -356,7 +356,7 @@ Feature: Connect
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
-    And I unblock user
+    And I unblock user on iPad
     And I wait for 5 seconds
     And I see new photo in the dialog
     And I see message in the dialog
