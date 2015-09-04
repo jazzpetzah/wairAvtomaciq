@@ -80,7 +80,7 @@ public final class IOSLocators {
 
 	public static final String xpathPickerSearch = "//UIATextView[@name='textViewSearch' and @visible='true']";
 
-	public static final String namePickerClearButton = "PeoplePickerClearButton";
+	public static final String xpathPickerClearButton = "//*[@name='PeoplePickerClearButton' and @visible='true']";
 
 	public static final String nameSendConnectButton = "SEND";
 
