@@ -4,6 +4,7 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.SessionNotCreatedException;
@@ -36,6 +37,7 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CommonAndroidTabletSteps {
@@ -845,5 +847,27 @@ public class CommonAndroidTabletSteps {
 		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
 				imagePath, dstConversationName,
 				conversationType.equals("group"));
+	}
+
+	/**
+	 * Verify whether the app is in foreground
+	 * 
+	 * @step. ^I see the Wire app is (not )?in foreground$
+	 * 
+	 * @param shouldNotBeInForeground
+	 *            equals to null if 'not' part does not exist in step signature
+	 */
+	@Then("^I see the Wire app is (not )?in foreground$")
+	public void ISeeAppInForgeround(String shouldNotBeInForeground)
+			throws Exception {
+		final String packageId = AndroidCommonUtils
+				.getAndroidPackageFromConfig(getClass());
+		if (shouldNotBeInForeground == null) {
+			Assert.assertTrue("Wire is currently not in foreground",
+					AndroidCommonUtils.isAppInForeground(packageId));
+		} else {
+			Assert.assertFalse("Wire is currently still in foreground",
+					AndroidCommonUtils.isAppInForeground(packageId));
+		}
 	}
 }
