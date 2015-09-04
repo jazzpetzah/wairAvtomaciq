@@ -80,13 +80,13 @@ public final class IOSLocators {
 
 	public static final String xpathPickerSearch = "//UIATextView[@name='textViewSearch' and @visible='true']";
 
-	public static final String namePickerClearButton = "PeoplePickerClearButton";
+	public static final String xpathPickerClearButton = "//*[@name='PeoplePickerClearButton' and @visible='true']";
 
 	public static final String nameSendConnectButton = "SEND";
 
 	public static final String nameConnectOtherUserButton = "CONNECT";
 
-	public static final String xpathConnectOtherUserButton = "//*[@name='CONNECT']";
+	public static final String xpathConnectOtherUserButton = "//*[@name='CONNECT' and @visible='true']";
 
 	public static final String nameIgnoreOtherUserButton = "IGNORE";
 
@@ -281,7 +281,7 @@ public final class IOSLocators {
 
 	public static final String xpathAboutPageWireLogo = "//UIAApplication/UIAWindow/UIAButton[@name='wire.com']/preceding-sibling::UIAImage[1]";
 
-	public static final String xpathAboutCloseButton = "//UIAApplication/UIAWindow/UIAButton[1]";
+	public static final String xpathAboutCloseButton = "//UIAButton[@name='wire.com']/preceding-sibling::UIAButton[1]";
 
 	public static final String nameWireWebsiteButton = "wire.com";
 
