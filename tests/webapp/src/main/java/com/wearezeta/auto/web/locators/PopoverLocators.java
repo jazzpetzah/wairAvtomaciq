@@ -11,7 +11,7 @@ public final class PopoverLocators {
 		public static final String xpathAddButton = "//*[@data-uie-name='do-add-people']";
 		public static final String xpathSearchInputField = "//input[@type='text' and contains(@class, 'search-input')]";
 		public static final String cssSearchResultItems = ".participants-search .search-list-item";
-		public static final String xpathCreateConversationButton = "//div[contains(@class, 'search-button-add')]";
+		public static final String cssCreateGroupConversationButton = "#participants-bubble [data-uie-name='do-create']";
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
 				"//*[@data-uie-name='item-user' and .//*[text()='%s']]", name);
