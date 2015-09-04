@@ -224,7 +224,7 @@ public abstract class IOSPage extends BasePage {
 
 	public boolean isKeyboardVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(), keyboard)
-				&& !DriverUtils.waitUntilElementClickable(getDriver(),
+				&& DriverUtils.waitUntilElementClickable(getDriver(),
 						keyboard, 3);
 	}
 
