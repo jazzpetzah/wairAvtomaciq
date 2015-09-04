@@ -62,11 +62,11 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2531 @noAcceptAlert
+  @staging @id2531 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I Sign in on tablet using my email
-    And I dismiss alert
+    And I dismiss all alerts
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see Upload contacts dialog
@@ -82,7 +82,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @regression @id2928 @noAcceptAlert
+  @staging @id2928 @noAcceptAlert
   Scenario Outline: Verify denying address book uploading [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
@@ -217,7 +217,7 @@ Feature: Search
     And I input in People picker search field user name <Contact>
     And I see user <Contact> found on People picker page
     And I tap on connected user <Contact> on People picker page
-    And I unblock user
+    And I unblock user on iPad
     And I type the message
     And I send the message
     Then I see message in the dialog
@@ -243,7 +243,7 @@ Feature: Search
     And I see user <Contact> found on People picker page
     And I click hide keyboard button
     And I tap on connected user <Contact> on People picker page
-    And I unblock user
+    And I unblock user on iPad
     And I type the message
     And I send the message
     Then I see message in the dialog
