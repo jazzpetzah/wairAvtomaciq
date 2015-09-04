@@ -175,7 +175,7 @@ public final class WebAppLocators {
 
 		public static final String idMessageList = "message-list";
 
-		public static final String xpathUserAvatar = "//div[contains(@class, 'user-avatar') and contains(@class,'pending')]";
+		public static final String cssUserAvatar = ".user-avatar and .pending";
 
 		// messages (including images, text, missed call notifications, pings)
 

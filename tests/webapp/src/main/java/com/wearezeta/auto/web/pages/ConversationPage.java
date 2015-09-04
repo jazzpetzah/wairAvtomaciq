@@ -93,7 +93,7 @@ public class ConversationPage extends WebPage {
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idBlackBorder)
 	private WebElement blackBorder;
 
-	@FindBy(xpath = WebAppLocators.ConversationPage.xpathUserAvatar)
+	@FindBy(css = WebAppLocators.ConversationPage.cssUserAvatar)
 	private WebElement userAvatar;
 
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
