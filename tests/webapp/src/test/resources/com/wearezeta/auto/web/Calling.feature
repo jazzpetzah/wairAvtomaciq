@@ -588,12 +588,8 @@ Feature: Calling
     When I accept the incoming call
     Then I see the calling bar from user <Contact1>,<Contact2>,<Contact3>,<Contact4>
     And I wait for 10 seconds
-    And <Contact2> verifies to have 4 flows
-    And <Contact3> verifies to have 4 flows
-    And <Contact4> verifies to have 4 flows
-    And <Contact2> verifies that all flows have greater than 0 bytes
-    And <Contact3> verifies that all flows have greater than 0 bytes
-    And <Contact4> verifies that all flows have greater than 0 bytes
+    And <Contact2>,<Contact3>,<Contact4> verifies to have 4 flows
+    And <Contact2>,<Contact3>,<Contact4> verifies that all flows have greater than 0 bytes
     When I end the call
     Then I do not see the calling bar
 
