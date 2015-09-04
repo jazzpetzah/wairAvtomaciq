@@ -334,7 +334,7 @@ public final class WebAppLocators {
 
 		public static final String cssNameSearchInput = "[data-uie-name='enter-users']";
 
-		public static final String xpathNameCreateConversationButton = "//*[@data-uie-name='do-add-create']";
+		public static final String cssOpenOrCreateConversationButton = "[data-uie-name='do-add-create'],[data-uie-name='do-open']";
 
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(

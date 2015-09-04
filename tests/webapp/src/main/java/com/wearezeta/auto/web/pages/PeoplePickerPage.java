@@ -35,7 +35,7 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssNameSearchInput)
 	private WebElement searchInput;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathNameCreateConversationButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssOpenOrCreateConversationButton)
 	private WebElement openOrCreateConversationButton;
 
 	@FindBy(css = WebAppLocators.PeoplePickerPage.cssCloseSearchButton)
