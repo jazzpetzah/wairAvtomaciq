@@ -57,7 +57,7 @@ public class CallingSteps {
 	 * Verify whether call status is changed to one of the expected values after
 	 * N seconds timeout
 	 *
-	 * @step. (.*) verifies that call status to (.*) is changed to (.*) in
+	 * @step. (.*) verif(?:ies|y) that call status to (.*) is changed to (.*) in
 	 *        (\\d+) seconds?$
 	 *
 	 * @param caller
@@ -107,6 +107,7 @@ public class CallingSteps {
 	/**
 	 * Verify that the instance has X active flows
 	 * 
+	 * @step. (.*) verif(?:ies|y) to have (\\d+) flows?$
 	 * @param callees
 	 *            comma separated list of callee names/aliases
 	 * @param numberOfFlows
@@ -125,6 +126,8 @@ public class CallingSteps {
 	/**
 	 * Verify that each flow of the instance had incoming and outgoing bytes
 	 * running over the line
+	 *
+	 * @step. (.*) verif(?:ies|y) that all flows have greater than 0 bytes$
 	 * 
 	 * @param callees
 	 *            comma separated list of callee names/aliases
