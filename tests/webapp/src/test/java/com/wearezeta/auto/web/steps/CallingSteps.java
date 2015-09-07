@@ -72,7 +72,7 @@ public class CallingSteps {
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
-	@Then("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
+	@Then("(.*) verif(?:ies|y) that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
 	public void UserXVerifesCallStatusToUserY(String caller,
 			String conversationName, String expectedStatuses, int timeoutSeconds)
 			throws Exception {
@@ -113,7 +113,7 @@ public class CallingSteps {
 	 *            expected number of flows
 	 * @throws Exception
 	 */
-	@Then("(.*) verifies to have (\\d+) flows?$")
+	@Then("(.*) verif(?:ies|y) to have (\\d+) flows?$")
 	public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
 			throws Exception {
 		for (String callee : splitAliases(callees)) {
@@ -130,7 +130,7 @@ public class CallingSteps {
 	 *            comma separated list of callee names/aliases
 	 * @throws Exception
 	 */
-	@Then("(.*) verifies that all flows have greater than 0 bytes$")
+	@Then("(.*) verif(?:ies|y) that all flows have greater than 0 bytes$")
 	public void UserXVerifesHavingXFlows(String callees) throws Exception {
 		for (String callee : splitAliases(callees)) {
 			for (Flow flow : commonCallingSteps.getFlows(callee)) {

@@ -68,7 +68,7 @@ Feature: Calling
     And I see conversation <Contact1> is on the top
     Then <Contact1> accepts next incoming call automatically
     And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    Then I see the calling bar from users <Contact1>
+    Then I see the calling bar from user <Contact1>
     When User <Contact2> pinged in the conversation with <Contact2>
     And I see conversation <Contact1> is on the top
     And I end the call
@@ -588,8 +588,8 @@ Feature: Calling
     When I accept the incoming call
     Then I see the calling bar from users <Contact1>,<Contact2>,<Contact3>,<Contact4>
     And I wait for 10 seconds
-    And <Contact2>,<Contact3>,<Contact4> verifies to have 4 flows
-    And <Contact2>,<Contact3>,<Contact4> verifies that all flows have greater than 0 bytes
+    And <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    And <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
     When I end the call
     Then I do not see the calling bar
 
