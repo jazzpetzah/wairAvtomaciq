@@ -216,3 +216,41 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Name2     | Email2     |
       | user1Email | user1Password | user1Name | user2Name | user2Email |
+
+  @staging @id3321
+  Scenario Outline: Verify More button is shown in Top People list when you have more than 8 people in Top people
+    Given There are 10 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>, <Contact3>, <Contact4>, <Contact5>, <Contact6>, <Contact7>, <Contact8>, <Contact9>
+    Given User Me sent message <Message1> to conversation <Contact1>
+    Given User <Contact1> sent message <Message1> to conversation <Name>
+    Given User Me sent message <Message1> to conversation <Contact2>
+    Given User <Contact2> sent message <Message1> to conversation <Name>
+    Given User Me sent message <Message1> to conversation <Contact3>
+    Given User <Contact3> sent message <Message1> to conversation <Name>
+    Given User Me sent message <Message1> to conversation <Contact4>
+    Given User <Contact4> sent message <Message1> to conversation <Name>
+    Given User Me sent message <Message1> to conversation <Contact5>
+    Given User <Contact5> sent message <Message1> to conversation <Name>
+    Given User Me sent message <Message1> to conversation <Contact6>
+    Given User <Contact6> sent message <Message1> to conversation <Name>
+    Given User Me sent message <Message1> to conversation <Contact7>
+    Given User <Contact7> sent message <Message1> to conversation <Name>
+    Given User Me sent message <Message1> to conversation <Contact8>
+    Given User <Contact8> sent message <Message1> to conversation <Name>
+    Given User Me sent message <Message1> to conversation <Contact9>
+    Given User <Contact9> sent message <Message1> to conversation <Name>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    When I see my avatar on top of Contact list
+    # Wait a bit until top people were calculated by backend
+    And I wait for 10 seconds
+    And I open People Picker from Contact List
+    And I wait till Top People list appears
+    Then I see 8 people in Top people list
+    And I see More button
+    When I click on More button
+    Then I see 9 people in Top people list
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Message1 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | Message1 |
