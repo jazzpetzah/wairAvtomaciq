@@ -176,29 +176,42 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Verify whether Send Invitation button is visible on People Picker page
+	 * Verify whether Bring Your Friends button is visible on People Picker page
 	 * 
-	 * @step. ^I see Send Invitation button on People Picker page$
+	 * @step. ^I see Bring Your Friends button on People Picker page$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see Send Invitation button on People Picker page$")
+	@When("^I see Bring Your Friends button on People Picker page$")
 	public void ISeeSendInvitationButton() throws Exception {
 		PagesCollection.peoplePickerPage
-				.waitUntilSendInvitationButtonIsVisible();
+				.waitUntilBringYourFriendsButtonIsVisible();
 	}
 
 	/**
-	 * Click Send Invitation button on People Picker page
+	 * Verify whether Gmail Import button is visible on People Picker page
 	 * 
-	 * @step. ^I click Send Invitation button on People Picker page$
+	 * @step. ^I do not see Gmail Import button on People Picker page$
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I click Send Invitation button on People Picker page$")
+	@When("^I do not see Gmail Import button on People Picker page$")
+	public void IDoNotSeeGmailImportButton() throws Exception {
+		PagesCollection.bringYourFriendsPopover
+				.waitUntilGmailImportButtonIsNotVisible();
+	}
+
+	/**
+	 * Click Bring Your Friends button on People Picker page
+	 * 
+	 * @step. ^I click Bring Your Friends button on People Picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Bring Your Friends button on People Picker page$")
 	public void IClickSendInvitationButton() throws Exception {
-		PagesCollection.popoverPage = PagesCollection.peoplePickerPage
-				.clickSendInvitationButton();
+		PagesCollection.bringYourFriendsPopover = PagesCollection.peoplePickerPage
+				.clickBringYourFriendsButton();
 	}
 
 	/**

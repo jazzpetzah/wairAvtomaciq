@@ -95,12 +95,12 @@ Feature: Search
     Given I Sign in using login <Login> and password <Password>
     And I see Contacts Upload dialog
     And I click Show Search button on Contacts Upload dialog
-    And I see Send Invitation button on People Picker page
-    When I click Send Invitation button on People Picker page
-    Then I see Send Invitation popover
-    When I remember invitation link on Send Invitation popover
-    And I click Send Invitation button on People Picker page
-    Then I do not see Send Invitation popover
+    And I see Bring Your Friends button on People Picker page
+    When I click Bring Your Friends button on People Picker page
+    Then I see Bring Your Friends popover
+    When I click Invite button on Bring Your Friends popover
+    And I remember invitation link on Bring Your Friends popover
+    Then I do not see Bring Your Friends popover
     When I navigate to previously remembered invitation link
     Then I see You are invited page
 

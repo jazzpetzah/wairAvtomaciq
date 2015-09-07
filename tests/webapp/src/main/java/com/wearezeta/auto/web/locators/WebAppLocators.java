@@ -357,7 +357,7 @@ public final class WebAppLocators {
 
 		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 
-		public static final String xpathSendInvitationButton = xpathRoot
+		public static final String xpathBringYourFriendsButton = xpathRoot
 				+ "//*[@id='invite-button']";
 
 		public static final Function<String, String> xpathSearchPendingResultByName = (

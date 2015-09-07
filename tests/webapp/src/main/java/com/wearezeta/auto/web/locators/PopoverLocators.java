@@ -46,17 +46,17 @@ public final class PopoverLocators {
 		}
 	}
 
-	public static final class SendInvitationPopover {
+	public static final class BringYourFriendsPopover {
 
-		public static final String xpathRootLocator = "//div[@id='invite-bubble']";
+		public static final String idRootLocator = "invite-bubble";
 
-		public static final class SendInvitationPage {
+		public static final String cssInvitationTextarea = "#invite-bubble textarea";
 
-			public static final String xpathInvitationText = xpathRootLocator
-					+ "//textarea";
-			
-			public static final String cssInvitationText = ".invite-link-box .message"; 
-		}
+		public static final String cssInvitationText = ".invite-link-box .message";
+
+		public static final String cssInvitationButton = "#invite-bubble [data-uie-name='go-share-invite']";
+
+		public static final String cssGmailImportButton = "#invite-bubble [data-uie-name='go-import-google']";
 	}
 
 	public static final class SingleUserPopover {
