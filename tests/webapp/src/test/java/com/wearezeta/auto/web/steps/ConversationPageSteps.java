@@ -17,6 +17,7 @@ import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
@@ -821,5 +822,11 @@ public class ConversationPageSteps {
 	@Then("^I type shortcut combination to start a call$")
 	public void ITypeShortcutCombinationToCall() throws Exception {
 		PagesCollection.conversationPage.pressShortCutForCall();
+	}
+
+	@And("^I click on pending user avatar$")
+	public void IClickOnPendingUserAvatar() throws Exception {
+		PagesCollection.popoverPage = PagesCollection.conversationPage
+				.clickUserAvatar();
 	}
 }
