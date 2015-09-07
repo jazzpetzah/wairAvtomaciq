@@ -57,7 +57,7 @@ public class CallingSteps {
 	 * Verify whether call status is changed to one of the expected values after
 	 * N seconds timeout
 	 *
-	 * @step. (.*) verifies that call status to (.*) is changed to (.*) in
+	 * @step. (.*) verif(?:ies|y) that call status to (.*) is changed to (.*) in
 	 *        (\\d+) seconds?$
 	 *
 	 * @param caller
@@ -66,13 +66,13 @@ public class CallingSteps {
 	 *            destination conversation
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
-	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
-	 *            for more details
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
+	 *            more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
-	@Then("(.*) verifies that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
+	@Then("(.*) verif(?:ies|y) that call status to (.*) is changed to (.*) in (\\d+) seconds?$")
 	public void UserXVerifesCallStatusToUserY(String caller,
 			String conversationName, String expectedStatuses, int timeoutSeconds)
 			throws Exception {
@@ -84,73 +84,82 @@ public class CallingSteps {
 	 * Verify whether waiting instance status is changed to one of the expected
 	 * values after N seconds timeout
 	 *
-	 * @step. (.*) verifies that waiting instance status is changed to (.*) in
-	 *        (\\d+) seconds?$
+	 * @step. (.*) verif(?:ies|y) that waiting instance status is changed to
+	 *        (.*) in * (\\d+) seconds?$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            comma separated list of callee names/aliases
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
-	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
-	 *            for more details
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
+	 *            more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
-	@Then("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")
-	public void UserXVerifesCallStatusToUserY(String callee,
+	@Then("(.*) verif(?:ies|y) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
+	public void UserXVerifesCallStatusToUserY(String callees,
 			String expectedStatuses, int timeoutSeconds) throws Exception {
-		commonCallingSteps.verifyAcceptingCallStatus(callee, expectedStatuses,
-				timeoutSeconds);
+		commonCallingSteps.verifyAcceptingCallStatus(splitAliases(callees),
+				expectedStatuses, timeoutSeconds);
 	}
 
 	/**
 	 * Verify that the instance has X active flows
 	 * 
-	 * @param callee
-	 *            callee name/alias
+	 * @step. (.*) verif(?:ies|y) to have (\\d+) flows?$
+	 * @param callees
+	 *            comma separated list of callee names/aliases
 	 * @param numberOfFlows
 	 *            expected number of flows
 	 * @throws Exception
 	 */
-	@Then("(.*) verifies to have (\\d+) flows?$")
-	public void UserXVerifesHavingXFlows(String callee, int numberOfFlows)
+	@Then("(.*) verif(?:ies|y) to have (\\d+) flows?$")
+	public void UserXVerifesHavingXFlows(String callees, int numberOfFlows)
 			throws Exception {
-		assertThat(commonCallingSteps.getFlows(callee), hasSize(numberOfFlows));
+		for (String callee : splitAliases(callees)) {
+			assertThat(commonCallingSteps.getFlows(callee),
+					hasSize(numberOfFlows));
+		}
 	}
 
 	/**
 	 * Verify that each flow of the instance had incoming and outgoing bytes
 	 * running over the line
+	 *
+	 * @step. (.*) verif(?:ies|y) that all flows have greater than 0 bytes$
 	 * 
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            comma separated list of callee names/aliases
 	 * @throws Exception
 	 */
-	@Then("(.*) verifies that all flows have greater than 0 bytes$")
-	public void UserXVerifesHavingXFlows(String callee) throws Exception {
-		for (Flow flow : commonCallingSteps.getFlows(callee)) {
-			assertThat("incoming bytes", flow.getBytesIn(), greaterThan(0L));
-			assertThat("outgoing bytes", flow.getBytesOut(), greaterThan(0L));
+	@Then("(.*) verif(?:ies|y) that all flows have greater than 0 bytes$")
+	public void UserXVerifesHavingXFlows(String callees) throws Exception {
+		for (String callee : splitAliases(callees)) {
+			for (Flow flow : commonCallingSteps.getFlows(callee)) {
+				assertThat("incoming bytes", flow.getBytesIn(), greaterThan(0L));
+				assertThat("outgoing bytes", flow.getBytesOut(),
+						greaterThan(0L));
+			}
 		}
 	}
 
-    /**
+	/**
 	 * Execute waiting instance as 'userAsNameAlias' user on calling server
 	 * using 'callingServiceBackend' tool
 	 *
 	 * @step. (.*) starts? waiting instance using (\\w+)$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            comma separated callee name/alias
 	 * @param callingServiceBackend
 	 *            available values: 'blender', 'chrome', * 'firefox'
 	 * @throws Exception
 	 */
 	@When("(.*) starts? waiting instance using (\\w+)$")
-	public void UserXStartsWaitingInstance(String callee,
+	public void UserXStartsWaitingInstance(String callees,
 			String callingServiceBackend) throws Exception {
-		commonCallingSteps.startWaitingInstances(splitAliases(callee),
+		commonCallingSteps.startWaitingInstances(splitAliases(callees),
 				callingServiceBackend);
 	}
 
@@ -161,14 +170,14 @@ public class CallingSteps {
 	 *
 	 * @step. (.*) accepts? next incoming call automatically$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            comma separated list of callee names/aliases
 	 * @throws Exception
 	 */
 	@When("(.*) accepts? next incoming call automatically$")
-	public void UserXAcceptsNextIncomingCallAutomatically(String callee)
+	public void UserXAcceptsNextIncomingCallAutomatically(String callees)
 			throws Exception {
-		commonCallingSteps.acceptNextCall(callee);
+		commonCallingSteps.acceptNextCall(splitAliases(callees));
 	}
 
 	/**
