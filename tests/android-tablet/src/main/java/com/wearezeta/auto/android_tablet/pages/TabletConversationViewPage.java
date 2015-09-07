@@ -220,4 +220,8 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			throws Exception {
 		return getDialogPage().waitForAPictureWithUnsentIndicator();
 	}
+
+	public void tapPlayPauseButton() throws Exception {
+		getDialogPage().tapPlayPauseBtn();
+	}
 }

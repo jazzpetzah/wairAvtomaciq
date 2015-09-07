@@ -539,4 +539,16 @@ public class ConversationViewPageSteps {
 				getConversationViewPage()
 						.waitUntilUnsentIndicatorIsVisibleForAPicture());
 	}
+
+	/**
+	 * Tap Play/Pause button in the recent SoundCloud player preview
+	 * 
+	 * @step. ^I tap (?:Play|Puase) button in the [Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap (?:Play|Puase) button in the [Cc]onversation view$")
+	public void ITapPlayPauseButton() throws Exception {
+		getConversationViewPage().tapPlayPauseButton();
+	}
 }
