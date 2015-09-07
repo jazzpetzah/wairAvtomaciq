@@ -539,4 +539,41 @@ public class ConversationViewPageSteps {
 				getConversationViewPage()
 						.waitUntilUnsentIndicatorIsVisibleForAPicture());
 	}
+
+	/**
+	 * Verify whether Close Picture Preview button is visible
+	 * 
+	 * @step. ^I (do not )?see Close Picture Preview button in the
+	 *        [Cc]onversation view$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            equals to null if 'do not' part does not exist in step
+	 *            signature
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see Close Picture Preview button in the [Cc]onversation view$")
+	public void ISeeClosePreview(String shouldNotBeVisible) throws Exception {
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue("Close Picture Preview button is not visible",
+					getConversationViewPage()
+							.waitUntilClosePicturePreviewButtonVisible());
+		} else {
+			Assert.assertTrue("Close Picture Preview button is still visible",
+					getConversationViewPage()
+							.waitUntilClosePicturePreviewButtonInvisible());
+		}
+	}
+
+	/**
+	 * Tap the Close Picture Preview button
+	 * 
+	 * @step. ^I tap Close Picture Preview button in the [Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Close Picture Preview button in the [Cc]onversation view$")
+	public void ITapClosePreviewButton() throws Exception {
+		getConversationViewPage().tapClosePicturePreviewButton();
+	}
 }

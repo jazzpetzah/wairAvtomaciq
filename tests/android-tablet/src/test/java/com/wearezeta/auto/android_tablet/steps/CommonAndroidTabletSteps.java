@@ -354,15 +354,15 @@ public class CommonAndroidTabletSteps {
 	}
 
 	/**
-	 * Taps on the center of the screen
+	 * Taps in the center of the screen
 	 * 
-	 * @step. ^I tap on center of screen$
+	 * @step. ^I tap in the center of the screen$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
-	@When("^I tap on center of screen")
-	public void WhenITapOnCenterOfScreen() throws Throwable {
+	@When("^I tap in the center of the screen$")
+	public void WhenITapOnCenterOfScreen() throws Exception {
 		pagesCollection.getCommonPage().tapOnCenterOfScreen();
 	}
 
@@ -379,7 +379,7 @@ public class CommonAndroidTabletSteps {
 	 */
 	@Given("^(.*) sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
-			String usersToNameAliases) throws Throwable {
+			String usersToNameAliases) throws Exception {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
 				usersToNameAliases);
 	}
@@ -399,7 +399,7 @@ public class CommonAndroidTabletSteps {
 	 */
 	@Given("^(.*) has an accent color (.*)$")
 	public void GivenUserHasAnAccentColor(String name, String colorName)
-			throws Throwable {
+			throws Exception {
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
@@ -422,7 +422,7 @@ public class CommonAndroidTabletSteps {
 	 * 
 	 */
 	@Given("^(.*) has a name (.*)$")
-	public void GivenUserHasAName(String name, String newName) throws Throwable {
+	public void GivenUserHasAName(String name, String newName) throws Exception {
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
