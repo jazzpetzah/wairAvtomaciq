@@ -21,7 +21,7 @@ public final class PopoverLocators {
 
 	public static final class ConnectToPopover {
 
-		public static final String xpathRootLocator = "//div[@id='people-picker-user-bubble']";
+		public static final String xpathRootLocator = "//*[@id='people-picker-user-bubble' or @id='participants-bubble']";
 
 		public static final class ConnectToPage {
 
@@ -31,17 +31,17 @@ public final class PopoverLocators {
 			public static final String xpathConnectButton = xpathRootLocator
 					+ "//*[@data-uie-name='do-connect']";
 		}
-		
+
 		public static final class PendingOutgoingConnectionPage {
 
 			public static final String xpathCancelRequestButton = xpathRootLocator
 					+ "//*[@data-uie-name='go-cancel']";
 		}
-		
+
 		public static final class CancelRequestConfirmationPage {
-			
+
 			public static final String xpathNoButton = "//*[@data-uie-name='do-cancel']";
-		
+
 			public static final String xpathYesButton = "//*[@data-uie-name='do-confirm']";
 		}
 	}
@@ -73,7 +73,7 @@ public final class PopoverLocators {
 			public static final String xpathOpenConversationButton = xpathRootLocator
 					+ xpathPageRootLocator
 					+ "//*[@data-uie-name='go-conversation']";
-			
+
 			public static final String xpathUnblockButton = xpathPageRootLocator
 					+ "//*[@data-uie-name='do-unblock']";
 		}
