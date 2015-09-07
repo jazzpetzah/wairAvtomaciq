@@ -103,8 +103,18 @@ public class GroupPopover extends AbstractPopoverContainer {
 				.waitUntilConversationNameVisible(expectedName);
 	}
 
-	public boolean waitUntilSubheaderIsVisible(String expectedText) throws Exception {
+	public boolean waitUntilSubheaderIsVisible(String expectedText)
+			throws Exception {
 		return this.participantsPage.waitUntilSubheaderIsVisible(expectedText);
 
+	}
+
+	public boolean waitUntilMenuItemIsVisible(String itemName) throws Exception {
+		return participantsPage.isMenuItemVisible(itemName);
+	}
+
+	public boolean waitUntilMenuItemIsInvisible(String itemName)
+			throws Exception {
+		return participantsPage.isMenuItemInvisible(itemName);
 	}
 }

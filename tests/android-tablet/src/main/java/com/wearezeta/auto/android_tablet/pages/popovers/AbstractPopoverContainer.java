@@ -3,6 +3,8 @@ package com.wearezeta.auto.android_tablet.pages.popovers;
 import java.util.concurrent.Future;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.android_tablet.pages.AndroidTabletPage;
@@ -36,5 +38,16 @@ public abstract class AbstractPopoverContainer extends AndroidTabletPage {
 	public void tapOutside() throws Exception {
 		final WebElement self = this.getDriver().findElement(getLocator());
 		DriverUtils.tapOutsideOfTheElement(getDriver(), self, 30, -30);
+	}
+
+	public void doShortSwipeDown() throws Exception {
+		final WebElement self = this.getDriver().findElement(getLocator());
+		final Point coords = self.getLocation();
+		final Dimension elementSize = self.getSize();
+		final int xOffset = elementSize.width / 2;
+		final int yOffset = (int) Math.round(elementSize.height * 0.15);
+		this.getDriver().swipe(coords.x + xOffset,
+				coords.y + elementSize.height / 20, coords.x + xOffset,
+				coords.y + elementSize.height / 20 + yOffset, 500);
 	}
 }
