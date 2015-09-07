@@ -84,11 +84,11 @@ public class CallingSteps {
 	 * Verify whether waiting instance status is changed to one of the expected
 	 * values after N seconds timeout
 	 *
-	 * @step. (.*) verifies that waiting instance status is changed to (.*) in
-	 *        (\\d+) seconds?$
+	 * @step. (.*) verif(?:ies|y) that waiting instance status is changed to
+	 *        (.*) in * (\\d+) seconds?$
 	 *
 	 * @param callees
-	 *            list of callee names/aliases
+	 *            comma separated list of callee names/aliases
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
 	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
@@ -97,7 +97,7 @@ public class CallingSteps {
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
-	@Then("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")
+	@Then("(.*) verif(?:ies|y) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
 	public void UserXVerifesCallStatusToUserY(String callees,
 			String expectedStatuses, int timeoutSeconds) throws Exception {
 		commonCallingSteps.verifyAcceptingCallStatus(splitAliases(callees),
@@ -108,7 +108,7 @@ public class CallingSteps {
 	 * Verify that the instance has X active flows
 	 * 
 	 * @param callees
-	 *            list of callee names/aliases
+	 *            comma separated list of callee names/aliases
 	 * @param numberOfFlows
 	 *            expected number of flows
 	 * @throws Exception
@@ -127,7 +127,7 @@ public class CallingSteps {
 	 * running over the line
 	 * 
 	 * @param callees
-	 *            list of callee names/aliases
+	 *            comma separated list of callee names/aliases
 	 * @throws Exception
 	 */
 	@Then("(.*) verifies that all flows have greater than 0 bytes$")
@@ -147,16 +147,16 @@ public class CallingSteps {
 	 *
 	 * @step. (.*) starts? waiting instance using (\\w+)$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            comma separated callee name/alias
 	 * @param callingServiceBackend
 	 *            available values: 'blender', 'chrome', * 'firefox'
 	 * @throws Exception
 	 */
 	@When("(.*) starts? waiting instance using (\\w+)$")
-	public void UserXStartsWaitingInstance(String callee,
+	public void UserXStartsWaitingInstance(String callees,
 			String callingServiceBackend) throws Exception {
-		commonCallingSteps.startWaitingInstances(splitAliases(callee),
+		commonCallingSteps.startWaitingInstances(splitAliases(callees),
 				callingServiceBackend);
 	}
 
@@ -168,7 +168,7 @@ public class CallingSteps {
 	 * @step. (.*) accepts? next incoming call automatically$
 	 *
 	 * @param callees
-	 *            list of callee names/aliases
+	 *            comma separated list of callee names/aliases
 	 * @throws Exception
 	 */
 	@When("(.*) accepts? next incoming call automatically$")

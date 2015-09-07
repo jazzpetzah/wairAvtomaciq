@@ -532,12 +532,12 @@ public class ConversationPageSteps {
 
 	/**
 	 *
-	 * @step. ^I see the calling bar from user (.*)$
+	 * @step. ^I see the calling bar from users? (.*)$
 	 * @param participants
-	 *            * the name of the user currently calling
+	 *            comma separated list of usernames currently calling
 	 * @throws Exception
 	 */
-	@Then("^I see the calling bar from user (.*)$")
+	@Then("^I see the calling bar from users? (.*)$")
 	public void IWaitForCallingBar(String participants) throws Exception {
 		if (PagesCollection.conversationPage == null) {
 			PagesCollection.conversationPage = (ConversationPage) PagesCollection.loginPage
