@@ -49,6 +49,11 @@ public abstract class AbstractConversationDetailsPage extends
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
+	public boolean isMenuItemInvisible(String itemName) throws Exception {
+		final By locator = By.xpath(xpathOptionMenuItemByName.apply(itemName));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
 	public void tapAddPeopleButton() {
 		addPeopleButton.click();
 	}
