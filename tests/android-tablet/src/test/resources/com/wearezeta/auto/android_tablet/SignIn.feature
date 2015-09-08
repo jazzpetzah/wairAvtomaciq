@@ -60,7 +60,7 @@ Feature: Sign In
       | Login | Password | ErrMessage                          |
       | aaa   | aaa      | Please enter a valid email address. |
 
-  @id2906 @staging
+  @id2906 @regression @rc
   Scenario Outline: Verify reset password button works from sign-in page
     Given I see Welcome screen
     Given I rotate UI to landscape
