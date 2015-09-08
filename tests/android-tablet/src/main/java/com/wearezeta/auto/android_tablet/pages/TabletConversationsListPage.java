@@ -159,4 +159,14 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 			throws Exception {
 		return getContactListPage().isPlayPauseMediaButtonVisible(convoName);
 	}
+
+	public void doLongSwipeUp() throws Exception {
+		getContactListPage().doLongSwipeUp();
+	}
+
+	public void swipeRightListItem(String name) throws Exception {
+		final By locator = By.xpath(ContactListPage.xpathContactByName
+				.apply(name));
+		this.elementSwipeRight(getDriver().findElement(locator), 1000);
+	}
 }

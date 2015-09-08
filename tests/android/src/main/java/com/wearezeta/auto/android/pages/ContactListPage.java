@@ -178,8 +178,8 @@ public class ContactListPage extends AndroidPage {
 										name))).click();
 	}
 
-	public void contactListSwipeUp(int time) {
-		elementSwipeUp(contactListFrame, time);
+	public void doLongSwipeUp() {
+		elementSwipeUp(contactListFrame, 2000);
 	}
 
 	public void waitForConversationListLoad() throws Exception {
