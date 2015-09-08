@@ -200,4 +200,14 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 		result.setSize(playPauseButtonWidth, convoElement.getSize().height);
 		return result;
 	}
+
+	public void doLongSwipeUp() throws Exception {
+		getContactListPage().doLongSwipeUp();
+	}
+
+	public void swipeRightListItem(String name) throws Exception {
+		final By locator = By.xpath(ContactListPage.xpathContactByName
+				.apply(name));
+		this.elementSwipeRight(getDriver().findElement(locator), 1000);
+	}
 }

@@ -142,7 +142,7 @@ public class ContactListPageSteps {
 	 */
 	@When("^I swipe up contact list$")
 	public void ISwipeUpContactList() throws Exception {
-		getContactListPage().contactListSwipeUp(1000);
+		getContactListPage().doLongSwipeUp();
 	}
 
 	/**

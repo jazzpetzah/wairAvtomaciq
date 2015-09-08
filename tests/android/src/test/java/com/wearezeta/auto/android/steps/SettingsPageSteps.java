@@ -3,13 +3,11 @@ package com.wearezeta.auto.android.steps;
 import org.junit.Assert;
 
 import com.wearezeta.auto.android.pages.SettingsPage;
-import com.wearezeta.auto.common.CommonSteps;
 
 import cucumber.api.java.en.Then;
 
 public class SettingsPageSteps {
 
-	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private final AndroidPagesCollection pagesCollection = AndroidPagesCollection
 		.getInstance();
 
