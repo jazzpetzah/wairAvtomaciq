@@ -26,11 +26,8 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
-    And I long swipe right to archive conversation <Contact2>
-    Then I dont see conversation <Contact2> in contact list
     And I open archived conversations
     Then I see user <Contact> in contact list
-    Then I see user <Contact2> in contact list
 
     Examples: 
       | Name      | Contact   | Contact2 |
