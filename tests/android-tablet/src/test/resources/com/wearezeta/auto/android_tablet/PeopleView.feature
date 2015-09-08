@@ -375,3 +375,29 @@ Feature: People View
     Examples:
       | Name      | Contact1   | Contact2  | GroupChatName | ItemLeave |
       | user1Name | user2Name  | user3Name | GroupChat     | LEAVE     |
+
+  @id2883 @staging
+  Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to Myself,<Contact2>
+    Given <Contact1> has group chat <GroupChatName> with Myself,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the Conversations list with conversations
+    And I do not see the conversation <Contact2> in my conversations list
+    And I see the conversation <GroupChatName> in my conversations list
+    And I tap the conversation <GroupChatName>
+    And I see the conversation view
+    And I tap Show Tools button on conversation view page
+    And I tap Show Details button on conversation view page
+    And I see the Group popover
+    And I see the participant avatar <Contact2> on Group popover
+    And I tap the participant avatar <Contact2> on Group popover
+    When I tap Open Conversation button on Group popover
+    Then I see the Group popover
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName        |
+      | user1Name | user2Name | user3Name | NonConnectedUserChat |
+      
