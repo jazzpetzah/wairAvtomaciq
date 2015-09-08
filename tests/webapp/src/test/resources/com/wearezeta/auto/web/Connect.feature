@@ -90,6 +90,25 @@ Feature: Connect
       | Login      | Password      | Name      | Contact   |
       | user1Email | user1Password | user1Name | user2Name |
 
+  @regression @id3322
+  Scenario Outline: Verify sending a connection request to user from conversation view
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
+    Given <Contact1> has group chat <ChatName> with <Name>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open conversation with <ChatName>
+    And I click on avatar of user <Contact2> in conversation view
+    And I see Connect To popover
+    And I click Connect button on Connect To popover
+    Then I see Contact list with name <Contact2>
+
+    Examples: 
+      | Login      | Password      | Name      | ChatName | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | id3322   | user2Name | user3Name |
+
   @smoke @id2043
   Scenario Outline: Verify 1to1 conversation is successfully created for sender end after connection is accepted
     Given There are 2 users where <Name> is me
