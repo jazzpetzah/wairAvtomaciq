@@ -8,8 +8,11 @@ import com.wearezeta.auto.web.pages.external.PasswordChangeRequestSuccessfullPag
 import com.wearezeta.auto.web.pages.external.PasswordChangeSuccessfullPage;
 import com.wearezeta.auto.web.pages.external.YouAreInvitedPage;
 import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 
 public class PagesCollection extends AbstractPagesCollection {
+
+	public static BringYourFriendsPopoverPage bringYourFriendsPopover = null;
 
 	public static LoginPage loginPage = null;
 

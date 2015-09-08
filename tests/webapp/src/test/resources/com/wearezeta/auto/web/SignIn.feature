@@ -125,7 +125,10 @@ Feature: Sign In
     And I see Google login popup
     When I sign up at Google with email <Gmail> and password <GmailPassword>
     Then I see Search is opened
-    And I see Send Invitation button on People Picker page
+    And I see Bring Your Friends button on People Picker page
+    When I click Bring Your Friends button on People Picker page
+    Then I remember invitation link on Bring Your Friends popover
+    And I do not see Gmail Import button on People Picker page
 
     Examples: 
       | Email      | Password      | Name      | Gmail                       | GmailPassword |

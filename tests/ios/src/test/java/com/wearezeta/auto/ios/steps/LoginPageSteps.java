@@ -10,6 +10,8 @@ import java.util.concurrent.Future;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
+import com.wearezeta.auto.common.email.PasswordResetMessage;
+import com.wearezeta.auto.common.email.WireMessage;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -40,7 +42,6 @@ public class LoginPageSteps {
 				.getPage(RegistrationPage.class);
 	}
 
-	private ClientUser userToRegister = null;
 	private Future<String> activationMessage;
 	private static final String stagingURLForgot = "https://staging-website.zinfra.io/forgot/";
 
@@ -446,17 +447,11 @@ public class LoginPageSteps {
 		email = usrMgr.replaceAliasesOccurences(email, FindBy.EMAIL_ALIAS);
 		getLoginPage().tapEmailFieldToChangePassword(email);
 
-		userToRegister = new ClientUser();
-		this.userToRegister.setName("SmoketesterReset");
-		this.userToRegister.clearNameAliases();
-		this.userToRegister.addNameAlias("SmoketesterReset");
-		this.userToRegister.setEmail(email);
-		this.userToRegister.clearEmailAliases();
-		this.userToRegister.addEmailAlias(email);
-
 		// activate the user, to get access to the mails
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+		expectedHeaders.put("Delivered-To", email);
+		expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME,
+				PasswordResetMessage.MESSAGE_PURPOSE);
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
 				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 	}
@@ -496,22 +491,8 @@ public class LoginPageSteps {
 	 */
 	@When("^I type in new password (.*)$")
 	public void ITypeInNewPassword(String newPassword) throws Exception {
+		usrMgr.getSelfUserOrThrowError().setPassword(newPassword);
 		getLoginPage().tapPasswordFieldToChangePassword(newPassword);
-	}
-
-	/**
-	 * Verifys that the confirmation page for changed password is visible
-	 * 
-	 * @step. ^I see password changed confirmation page$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I see password changed confirmation page$")
-	public void ISeePasswordChangedConfirmationPage() throws Exception {
-		boolean confirmationIsVisible = getLoginPage()
-				.passwordConfiamtionIsVisible();
-		Assert.assertTrue("Password changed confirmation is not visible",
-				confirmationIsVisible);
 	}
 
 	/**

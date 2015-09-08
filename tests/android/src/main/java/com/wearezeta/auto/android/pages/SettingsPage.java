@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.*;
 
 public class SettingsPage extends AndroidPage {
@@ -35,13 +36,15 @@ public class SettingsPage extends AndroidPage {
 
 	private static final String xpathSettingPageChangePassword = "//*[@id='title' and @value='Change Password']";
 
+	private final CommonSteps commonSteps = CommonSteps.getInstance();
+	
 	public SettingsPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
 	}
 
 	public boolean isSettingsPageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-			By.xpath(xpathSettingPageTitle));
+			By.xpath(xpathSettingPageTitle), 5);
 	}
 
 	public boolean isChangePasswordVisible() throws Exception {
@@ -51,10 +54,12 @@ public class SettingsPage extends AndroidPage {
 
 	public void clickServicesButton() throws Exception {
 		servicesButton.click();
+		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathServicesButton));
 	}
 
 	public void clickConnectWithSpotifyButton() throws Exception {
 		connectToSpotifyButton.click();
+		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.xpath(xpathConnectToSpotifyButton), 3);
 	}
 
 	public void openSpotifyLoginFields() throws Exception {
@@ -67,12 +72,14 @@ public class SettingsPage extends AndroidPage {
 	public void enterSpotifyUsername(String username) throws Exception {
 		DriverUtils.tapOnPercentOfElement(getDriver(), spotifyWebView, 50,
 			percentageToSpotifyUsernameField);
+		commonSteps.WaitForTime(2);
 		AndroidCommonUtils.type(username);
 	}
 
 	public void enterSpotifyPassword(String password) throws Exception {
 		DriverUtils.tapOnPercentOfElement(getDriver(), spotifyWebView, 50,
 			percentageToSpotifyPasswordField);
+		commonSteps.WaitForTime(3);
 		AndroidCommonUtils.type(password);
 	}
 

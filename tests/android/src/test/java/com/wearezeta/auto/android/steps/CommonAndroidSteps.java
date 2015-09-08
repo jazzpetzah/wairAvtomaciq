@@ -213,6 +213,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I press back button$")
 	public void PressBackButton() throws Exception {
+		commonSteps.WaitForTime(1);
 		pagesCollection.getCommonPage().navigateBack();
 	}
 

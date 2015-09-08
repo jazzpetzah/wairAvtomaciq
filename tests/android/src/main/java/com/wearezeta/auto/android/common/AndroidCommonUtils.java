@@ -513,4 +513,15 @@ public class AndroidCommonUtils extends CommonUtils {
 		executeAdb(String.format(
 				"shell am broadcast -a ADB_INPUT_TEXT --es msg '%s'", message));
 	}
+
+	public static boolean isAppInForeground(String packageId) throws Exception {
+		final String output = getAdbOutput("shell dumpsys window windows");
+		for (String line : output.split("\n")) {
+			if ((line.contains("mCurrentFocus") || line.contains("mFocusedApp"))
+					&& line.contains(packageId)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

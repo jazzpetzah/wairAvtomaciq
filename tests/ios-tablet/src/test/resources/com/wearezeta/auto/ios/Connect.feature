@@ -483,7 +483,7 @@ Feature: Connect
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book
     Given There are 1 user where <Name> is me
     Given I Sign in on tablet using my email
-    And I dismiss alert
+    And I dismiss all alerts
     And I see Contact list with my name <Name>
     And I open search by taping on it
     And I see Upload contacts dialog

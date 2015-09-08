@@ -41,10 +41,10 @@ public final class WebAppLocators {
 	public static final class ContactListPage {
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
-		public static final String cssParentContactListItem = "div#conversation-list";
+		public static final String cssParentContactListItem = "#conversation-list";
 
 		public static final String cssIncomingPendingConvoItem = cssParentContactListItem
-				+ " [data-uie-name=item-pending-requests]";
+				+ " [data-uie-name='item-pending-requests']";
 
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
@@ -212,6 +212,8 @@ public final class WebAppLocators {
 
 		public static final String idMessageList = "message-list";
 
+		public static final String cssUserAvatar = ".user-avatar and .pending";
+
 		// messages (including images, text, missed call notifications, pings)
 		public static final String cssMessage = "[data-uie-name='item-message']";
 
@@ -357,7 +359,7 @@ public final class WebAppLocators {
 
 		public static final String classNamePeoplePickerVisible = "people-picker-is-visible";
 
-		public static final String xpathSendInvitationButton = xpathRoot
+		public static final String xpathBringYourFriendsButton = xpathRoot
 				+ "//*[@id='invite-button']";
 
 		public static final Function<String, String> xpathSearchPendingResultByName = (
@@ -495,7 +497,7 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathFullCallWarningModalButtonByCaption = (
 				name) -> String
-				.format("%s//div[@data-uie-name='modal-call-conversation-full') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
+				.format("%s//div[@data-uie-name='modal-call-voice-channel-full' and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
 						xpathWarningModalRootDiv, name);
 	}
 

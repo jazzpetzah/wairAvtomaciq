@@ -69,6 +69,36 @@ public class GroupPopoverSteps {
 	}
 
 	/**
+	 * Check whether the particular menu item exists on group popover
+	 * 
+	 * @step. ^I (do not )?see (.*) menu item on [Gg]roup popover$
+	 * 
+	 * @param itemName
+	 *            the name of menu item
+	 * @param shouldNotBeVisible
+	 *            equals to 'null' if 'do not' part does not exist in step
+	 *            signature
+	 * @throws Exception
+	 */
+	@When("^I (do not )?see (.*) menu item on [Gg]roup popover$")
+	public void ISeeMenuItem(String shouldNotBeVisible, String itemName)
+			throws Exception {
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue(
+					String.format(
+							"Menu item '%s' is not visible on Group popover",
+							itemName), getGroupPopover()
+							.waitUntilMenuItemIsVisible(itemName));
+		} else {
+			Assert.assertTrue(
+					String.format(
+							"Menu item '%s' is visible on Group popover, but should be hidden",
+							itemName), getGroupPopover()
+							.waitUntilMenuItemIsInvisible(itemName));
+		}
+	}
+
+	/**
 	 * Tap confirm leave button on the Group popover
 	 * 
 	 * @step. ^I confirm leaving (?:the |\\s*)group chat on [Gg]roup popover$
@@ -300,5 +330,17 @@ public class GroupPopoverSteps {
 				"The subheader '%s' is not visible on Group popover",
 				expectedText),
 				getGroupPopover().waitUntilSubheaderIsVisible(expectedText));
+	}
+	
+	/**
+	 * Performs short swipe down on popover
+	 * 
+	 * @step. ^I do short swipe down on [Gg]roup popover$"
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I do short swipe down on [Gg]roup popover$")
+	public void IDoShortSwipeDown() throws Exception {
+		getGroupPopover().doShortSwipeDown();
 	}
 }

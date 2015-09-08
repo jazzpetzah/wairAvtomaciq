@@ -142,8 +142,8 @@ public final class CommonCallingSteps2 {
 	 * Migration: UserXVerifesWaitingInstanceStatus(String userAsNameAlias,
 	 * String expectedStatuses, int secondsTimeout)
 	 *
-	 * @param calleeName
-	 *            the name of the callee
+	 * @param calleeNames
+	 *            list of the names of the callees
 	 * @param expectedStatuses
 	 *            the expected status
 	 * @param secondsTimeout
@@ -151,12 +151,15 @@ public final class CommonCallingSteps2 {
 	 * @throws Exception
 	 * @see com.wearezeta.auto.common.calling2.v1.model.CallStatus
 	 */
-	public void verifyAcceptingCallStatus(String calleeName,
+	public void verifyAcceptingCallStatus(List<String> calleeNames,
 			String expectedStatuses, int secondsTimeout) throws Exception {
-		ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
-		waitForExpectedCallStatuses(getInstanceByParticipant(userAs),
-				getWaitingCallByParticipant(userAs),
-				callStatusesListToObject(expectedStatuses), secondsTimeout);
+		for (String calleeName : calleeNames) {
+			final ClientUser userAs = usrMgr
+					.findUserByNameOrNameAlias(calleeName);
+			waitForExpectedCallStatuses(getInstanceByParticipant(userAs),
+					getWaitingCallByParticipant(userAs),
+					callStatusesListToObject(expectedStatuses), secondsTimeout);
+		}
 	}
 
 	/**
@@ -262,15 +265,18 @@ public final class CommonCallingSteps2 {
 	 * Migration: UserXAcceptsNextIncomingCallAutomatically(String
 	 * userAsNameAlias)
 	 *
-	 * @param calleeName
-	 *            the name of the callee
+	 * @param calleeNames
+	 *            list of names of the callees
 	 * @throws Exception
 	 */
-	public void acceptNextCall(String calleeName) throws Exception {
-		ClientUser userAs = usrMgr.findUserByNameOrNameAlias(calleeName);
-		Call call = client
-				.acceptNextIncomingCall(getInstanceByParticipant(userAs));
-		addCall(call, userAs);
+	public void acceptNextCall(List<String> calleeNames) throws Exception {
+		for (String calleeName : calleeNames) {
+			final ClientUser userAs = usrMgr
+					.findUserByNameOrNameAlias(calleeName);
+			final Call call = client
+					.acceptNextIncomingCall(getInstanceByParticipant(userAs));
+			addCall(call, userAs);
+		}
 	}
 
 	/**

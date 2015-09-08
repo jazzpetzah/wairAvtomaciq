@@ -21,7 +21,7 @@ public final class PopoverLocators {
 
 	public static final class ConnectToPopover {
 
-		public static final String xpathRootLocator = "//div[@id='people-picker-user-bubble']";
+		public static final String xpathRootLocator = "//*[@id='people-picker-user-bubble' or @id='participants-bubble']";
 
 		public static final class ConnectToPage {
 
@@ -31,32 +31,32 @@ public final class PopoverLocators {
 			public static final String xpathConnectButton = xpathRootLocator
 					+ "//*[@data-uie-name='do-connect']";
 		}
-		
+
 		public static final class PendingOutgoingConnectionPage {
 
 			public static final String xpathCancelRequestButton = xpathRootLocator
 					+ "//*[@data-uie-name='go-cancel']";
 		}
-		
+
 		public static final class CancelRequestConfirmationPage {
-			
+
 			public static final String xpathNoButton = "//*[@data-uie-name='do-cancel']";
-		
+
 			public static final String xpathYesButton = "//*[@data-uie-name='do-confirm']";
 		}
 	}
 
-	public static final class SendInvitationPopover {
+	public static final class BringYourFriendsPopover {
 
-		public static final String xpathRootLocator = "//div[@id='invite-bubble']";
+		public static final String idRootLocator = "invite-bubble";
 
-		public static final class SendInvitationPage {
+		public static final String cssInvitationTextarea = "#invite-bubble textarea";
 
-			public static final String xpathInvitationText = xpathRootLocator
-					+ "//textarea";
-			
-			public static final String cssInvitationText = ".invite-link-box .message"; 
-		}
+		public static final String cssInvitationText = ".invite-link-box .message";
+
+		public static final String cssInvitationButton = "#invite-bubble [data-uie-name='go-share-invite']";
+
+		public static final String cssGmailImportButton = "#invite-bubble [data-uie-name='go-import-google']";
 	}
 
 	public static final class SingleUserPopover {
@@ -73,7 +73,7 @@ public final class PopoverLocators {
 			public static final String xpathOpenConversationButton = xpathRootLocator
 					+ xpathPageRootLocator
 					+ "//*[@data-uie-name='go-conversation']";
-			
+
 			public static final String xpathUnblockButton = xpathPageRootLocator
 					+ "//*[@data-uie-name='do-unblock']";
 		}

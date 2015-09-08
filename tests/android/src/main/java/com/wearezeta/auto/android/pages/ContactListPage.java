@@ -290,9 +290,15 @@ public class ContactListPage extends AndroidPage {
 
 	public boolean isPlayPauseMediaButtonVisible(String convoName)
 			throws Exception {
-		final By locator = By.xpath(xpathPlayPauseButtonByConvoName
-				.apply(convoName));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+		try {
+			final WebElement element = getDriver().findElement(
+					By.xpath(xpathPlayPauseButtonByConvoName.apply(convoName)));
+			return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+					element);
+		} catch (InvalidElementStateException e) {
+			// Selendroid bug
+			return true;
+		}
 	}
 
 	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
@@ -360,8 +366,7 @@ public class ContactListPage extends AndroidPage {
 			}
 		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(xpathLastContact),
-				CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+				By.xpath(xpathLastContact), CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
 	}
 
 	public boolean isNoConversationsVisible() throws Exception {

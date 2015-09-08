@@ -289,7 +289,7 @@ Feature: Conversation View
       | Name      | Contact1  | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @id3242 @staging @rc @rc42
+  @id3242 @regression @rc @rc42
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

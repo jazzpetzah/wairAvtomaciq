@@ -25,7 +25,7 @@ import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.SendInvitationPopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 
 public class PeoplePickerPage extends WebPage {
 
@@ -41,8 +41,8 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(css = WebAppLocators.PeoplePickerPage.cssCloseSearchButton)
 	private WebElement closeSearchButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathSendInvitationButton)
-	private WebElement sendInvitationButton;
+	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathBringYourFriendsButton)
+	private WebElement bringYourFriendsButton;
 
 	@FindBy(xpath = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']")
 	private List<WebElement> suggestions;
@@ -150,22 +150,22 @@ public class PeoplePickerPage extends WebPage {
 
 	private static final int BUTTON_VISIBILITY_TIMEOUT_SECONDS = 5;
 
-	public void waitUntilSendInvitationButtonIsVisible() throws Exception {
+	public void waitUntilBringYourFriendsButtonIsVisible() throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.xpath(WebAppLocators.PeoplePickerPage.xpathSendInvitationButton),
-						BUTTON_VISIBILITY_TIMEOUT_SECONDS) : "Send Invitation button is not visible after "
+						By.xpath(WebAppLocators.PeoplePickerPage.xpathBringYourFriendsButton),
+						BUTTON_VISIBILITY_TIMEOUT_SECONDS) : "Bring Your Friends button is not visible after "
 				+ BUTTON_VISIBILITY_TIMEOUT_SECONDS + " seconds timeout";
 	}
 
-	public SendInvitationPopoverContainer clickSendInvitationButton()
+	public BringYourFriendsPopoverPage clickBringYourFriendsButton()
 			throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				sendInvitationButton);
-		sendInvitationButton.click();
+				bringYourFriendsButton);
+		bringYourFriendsButton.click();
 
-		return new SendInvitationPopoverContainer(this.getLazyDriver());
+		return new BringYourFriendsPopoverPage(this.getLazyDriver());
 	}
 
 	public int getNumberOfSuggestions() {

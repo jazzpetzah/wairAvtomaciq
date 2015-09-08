@@ -2,6 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import static org.junit.Assert.assertTrue;
 
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -372,30 +373,34 @@ public class CommonWebAppSteps {
             CURRENT_PLATFORM, count, myNameAlias);
     }
 
-    /**
-     * Set avatar picture for a particular user
-     *
-     * @step. ^User (\\w+) changes? avatar picture to (.*)
-     *
-     * @param userNameAlias user name/alias
-     * @param path path to a picture on a local file system or 'default' to set
-     * the default picture
-     * @throws Exception
-     */
-    @When("^User (\\w+) changes? avatar picture to (.*)")
-    public void IChangeUserAvatarPicture(String userNameAlias, String path)
-        throws Exception {
-        String avatar = null;
-        final String rootPath = "/images/";
-        if (path.equals("default")) {
-            avatar = DEFAULT_USER_PICTURE;
-        } else {
-            avatar = rootPath + path;
-        }
-        avatar = CommonWebAppSteps.class.getResource(avatar).getPath();
-        log.debug("Change avatar of user " + userNameAlias + " to " + avatar);
-        commonSteps.IChangeUserAvatarPicture(userNameAlias, avatar);
-    }
+	/**
+	 * Set avatar picture for a particular user
+	 *
+	 * @step. ^User (\\w+) changes? avatar picture to (.*)
+	 *
+	 * @param userNameAlias
+	 *            user name/alias
+	 * @param path
+	 *            path to a picture on a local file system or 'default' to set
+	 *            the default picture
+	 * @throws Exception
+	 */
+	@When("^User (\\w+) changes? avatar picture to (.*)")
+	public void IChangeUserAvatarPicture(String userNameAlias, String path)
+			throws Exception {
+		String avatar = null;
+		final String rootPath = "/images/";
+		if (path.equals("default")) {
+			avatar = DEFAULT_USER_PICTURE;
+		} else {
+			avatar = rootPath + path;
+		}
+		URI uri = new URI(CommonWebAppSteps.class.getResource(avatar)
+				.toString());
+		log.debug("Change avatar of user " + userNameAlias + " to "
+				+ uri.getPath());
+		commonSteps.IChangeUserAvatarPicture(userNameAlias, uri.getPath());
+	}
 
     /**
      * Creates connection between to users

@@ -154,4 +154,9 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 	public void doSwipeLeft() throws Exception {
 		DriverUtils.swipeByCoordinates(getDriver(), 1000, 95, 50, 10, 50);
 	}
+
+	public boolean waitUntilPlayPauseButtonVisibleNextTo(String convoName)
+			throws Exception {
+		return getContactListPage().isPlayPauseMediaButtonVisible(convoName);
+	}
 }

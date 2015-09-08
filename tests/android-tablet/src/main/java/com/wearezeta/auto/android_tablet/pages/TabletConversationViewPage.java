@@ -220,4 +220,23 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 			throws Exception {
 		return getDialogPage().waitForAPictureWithUnsentIndicator();
 	}
+
+	public void tapPlayPauseButton() throws Exception {
+		getDialogPage().tapPlayPauseBtn();
+	}
+
+	public boolean waitUntilClosePicturePreviewButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCloseImageBtn));
+	}
+
+	public boolean waitUntilClosePicturePreviewButtonInvisible()
+			throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idCloseImageBtn));
+	}
+
+	public void tapClosePicturePreviewButton() throws Exception {
+		getDriver().findElement(By.id(idCloseImageBtn)).click();
+	}
 }
