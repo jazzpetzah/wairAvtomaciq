@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -100,6 +101,7 @@ public class SketchPage extends AndroidPage {
 
 	public void sendSketch() throws Exception {
 		DriverUtils.tapInTheCenterOfTheElement(getDriver(), sendButton);
+		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idSendButton), 5);
 		if (DriverUtils.isElementPresentAndDisplayed(getDriver(), sendButton)) {
 			try {
 				getDriver().tap(1, sendButton.getLocation().getX(),
