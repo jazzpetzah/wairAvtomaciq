@@ -615,9 +615,11 @@ Feature: Calling
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the calling bar
     When I accept the incoming call
+    And I wait for 1 seconds
     Then I see full call warning modal
     And I close the full call warning modal
-    When I call
+    When I join call
+    And I wait for 1 seconds
     Then I see full call warning modal
     And I click on "Ok" button in full call warning modal
 
