@@ -81,5 +81,17 @@ public class OtherUserOnPendingPersonalInfoPageSteps {
 	public void IConfirCancelReques() throws Exception {
 		getOtherUserOnPendingProfilePage().clickConfirmCancelRequestButton();
 	}
+	
+	/**
+	 * Presses back button to return to group info page or popover
+	 * 
+	 * @step. ^I go back to group info page or popover$
+	 * @throws Throwable
+	 */
+	@When("^I go back to group info page or popover$")
+	public void IGoBackToGroupInfoPageOrPopover() throws Throwable {
+		getOtherUserOnPendingProfilePage()
+				.clickBackButtonToReturnToGroupPageOrPopover();
+	}
 
 }

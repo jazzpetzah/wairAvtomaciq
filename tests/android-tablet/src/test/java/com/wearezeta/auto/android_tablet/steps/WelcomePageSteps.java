@@ -5,6 +5,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.android_tablet.pages.TabletWelcomePage;
 
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class WelcomePageSteps {
@@ -50,5 +51,35 @@ public class WelcomePageSteps {
 	@When("^I tap Register button$")
 	public void ITapRegisterButton() throws Exception {
 		getWelcomePage().tapRegisterButton();
+	}
+
+	/**
+	 * Verify whether the particular link is visible on Welcome page
+	 * 
+	 * @step. ^I see \"(.*)\" link on [Ww]elcome screen$
+	 * 
+	 * @param linkText
+	 *            the text of the link
+	 * @throws Exception
+	 */
+	@Then("^I see \"(.*)\" link on [Ww]elcome screen$")
+	public void ISeeLink(String linkText) throws Exception {
+		Assert.assertTrue(String.format(
+				"'%s' link is not visible on Welcome screen", linkText),
+				getWelcomePage().waitUntilLinkVisible(linkText));
+	}
+
+	/**
+	 * Tap the corresponding link on welcome page
+	 * 
+	 * @step. ^I tap \"(.*)\" link on [Ww]elcome screen$
+	 * 
+	 * @param linkText
+	 *            the text of the link
+	 * @throws Exception
+	 */
+	@When("^I tap \"(.*)\" link on [Ww]elcome screen$")
+	public void ITapLink(String linkText) throws Exception {
+		getWelcomePage().tapLink(linkText);
 	}
 }

@@ -205,7 +205,7 @@ public class SelfProfilePageSteps {
 		getSelfProfileCameraPage().confirmPictureSelection();
 	}
 
-	private static final double MAX_SCREENSHOTS_OVERLAP_SCORE = 0.5;
+	private static final double MAX_SCREENSHOTS_OVERLAP_SCORE = 0.6;
 	private static final long PROFILE_PICTURE_UPDATE_TIMEOUT_MILLISECONDS = 10000;
 
 	/**
@@ -236,7 +236,7 @@ public class SelfProfilePageSteps {
 		} while (System.currentTimeMillis() - millisecondsStarted <= PROFILE_PICTURE_UPDATE_TIMEOUT_MILLISECONDS);
 		Assert.assertTrue(
 				String.format(
-						"The overlap value between the previous and the curernt profile picture is greater than expected (%.2f > %.02f)",
+						"The overlap value between the previous and the current profile picture is greater than expected (%.2f > %.02f)",
 						overlapScore, MAX_SCREENSHOTS_OVERLAP_SCORE),
 				overlapScore <= MAX_SCREENSHOTS_OVERLAP_SCORE);
 	}

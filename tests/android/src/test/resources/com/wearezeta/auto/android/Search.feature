@@ -34,7 +34,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat |
 
-  @id223 @regression @rc
+  @id223 @regression @rc @rc42
   Scenario Outline: I can search for contact by partial name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -127,6 +127,24 @@ Feature: Search
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName           |
       | user1Name | user2Name | user3Name | PeoplePicker GroupChat2 |
+      
+  @id1395 @smoke @rc @rc42
+  Scenario Outline: Verify starting 1:1 conversation with a person from Top People
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Contact <Contact1> send message to user <Name>
+    Given Contact <Name> send message to user <Contact1>
+    Given I sign in using my email or phone number
+    Given I see Contact list with contacts
+    When I open Search by UI button
+    And I wait until Top People list appears
+    And I tap on <Contact1> in Top People
+    And I tap on create conversation
+    Then I see dialog page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id2214 @regression @rc
   Scenario Outline: I can dismiss PYMK by Hide button
@@ -150,7 +168,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2213 @regression @rc
+  @id2213 @regression @rc @rc42
   Scenario Outline: I can dismiss PYMK by swipe
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>

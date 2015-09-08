@@ -68,8 +68,8 @@ public class CallingSteps {
 	 *            destination conversation
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
-	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
-	 *            for more details
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
+	 *            more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
@@ -95,8 +95,8 @@ public class CallingSteps {
 	 *            comma-separated list of callee names/aliases
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
-	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus
-	 *            for more details
+	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
+	 *            more details
 	 * @param timeoutSeconds
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
@@ -104,10 +104,8 @@ public class CallingSteps {
 	@Then("(.*) verif(?:y|ies) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
 	public void UsersVerifyCallStatusToUserY(String callees,
 			String expectedStatuses, int timeoutSeconds) throws Exception {
-		for (String callee : splitAliases(callees)) {
-			commonCallingSteps.verifyAcceptingCallStatus(callee,
-					expectedStatuses, timeoutSeconds);
-		}
+		commonCallingSteps.verifyAcceptingCallStatus(splitAliases(callees),
+				expectedStatuses, timeoutSeconds);
 	}
 
 	/**
@@ -143,9 +141,7 @@ public class CallingSteps {
 	@When("(.*) accepts? next incoming call automatically$")
 	public void UsersAcceptNextIncomingCallAutomatically(String callees)
 			throws Exception {
-		for (String callee : splitAliases(callees)) {
-			commonCallingSteps.acceptNextCall(callee);
-		}
+		commonCallingSteps.acceptNextCall(splitAliases(callees));
 	}
 
 	/**

@@ -223,7 +223,9 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	public boolean isKeyboardVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), keyboard);
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(), keyboard)
+				&& DriverUtils.waitUntilElementClickable(getDriver(),
+						keyboard, 3);
 	}
 
 	public void clickKeyboardDeleteButton() {
@@ -323,6 +325,16 @@ public abstract class IOSPage extends BasePage {
 			break;
 		}
 
+	}
+
+	public void rotateDeviceToRefreshElementsTree() throws Exception {
+		if (getOrientation() == ScreenOrientation.PORTRAIT) {
+			rotateLandscape();
+			rotatePortrait();
+		} else {
+			rotatePortrait();
+			rotateLandscape();
+		}
 	}
 
 	private void rotateLandscape() throws Exception {

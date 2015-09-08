@@ -38,6 +38,37 @@ Feature: Connect
       | Login      | Password      | Name      | UnknownContact | UnknownContactMail | Message   |
       | user1Email | user1Password | user1Name | user2Name      | user2Email         | YOU ADDED |
 
+  @staging @id3303
+  Scenario Outline: Verify pending user profiles contain known people information
+    Given There are 11 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <UnknownContact1> is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <UnknownContact2> is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given <UnknownContact3> is connected to <Contact1>,<Contact2>,<Contact3>
+    Given <UnknownContact4> is connected to <Contact1>,<Contact2>
+    Given <UnknownContact5> is connected to <Contact1>
+    Given <UnknownContact1> sent connection request to me
+    Given <UnknownContact2> sent connection request to me
+    Given <UnknownContact3> sent connection request to me
+    Given <UnknownContact4> sent connection request to me
+    Given <UnknownContact5> sent connection request to me
+    # We need to wait for the backend
+    Given I wait for 15 seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see connection request from 5 user
+    When I open the list of incoming connection requests
+    Then I see an amount of 3 avatars in known connections in connection request from user <UnknownContact1>
+    And I see an amount of 2 others in known connections in connection request from user <UnknownContact1>
+    And I see an amount of 4 avatars in known connections in connection request from user <UnknownContact2>
+    And I see an amount of 3 avatars in known connections in connection request from user <UnknownContact3>
+    And I see an amount of 2 avatars in known connections in connection request from user <UnknownContact4>
+    And I see an amount of 1 avatars in known connections in connection request from user <UnknownContact5>
+
+    Examples:
+      | Login      | Password      | Name      | UnknownContact1 | UnknownContact2 | UnknownContact3 | UnknownContact4 | UnknownContact5 | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  |
+      | user1Email | user1Password | user1Name | user2Name       | user3Name       | user4Name       | user5Name       | user6Name       | user7Name | user8Name | user9Name | user10Name | user11Name |
+
   @smoke @id1571
   Scenario Outline: Verify sending a connection request to user chosen from search
     Given There are 2 users where <Name> is me
@@ -123,7 +154,6 @@ Feature: Connect
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And User <Name2> is me
-    And I switch to Sign In page
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
     And I see my avatar on top of Contact list
@@ -260,9 +290,9 @@ Feature: Connect
     And I Sign in using login <User1Email> and password <User1Password>
     Then I see Contact list with name <User2>
     When I open conversation with <User2>
+
     # Uncommented last step because of WEBAPP-862
     # Then I see text message <Msg2>
-
     Examples: 
       | User1     | User1Email | User1Password | User2     | User2Email | User2Password | Msg1     | Msg2     | Picture1                  | Picture2                 |
       | user1Name | user1Email | user2Password | user2Name | user2Email | user2Password | Message1 | Message2 | userpicture_landscape.jpg | userpicture_portrait.jpg |
@@ -378,6 +408,39 @@ Feature: Connect
     When I click Yes button on Cancel request confirmation popover
     Then I do not see Pending Outgoing Connection popover
     When I close People Picker
+    Then I do not see Contact list with name <Contact1>
+    When I open self profile
+    And I click gear button on self profile page
+    And I select Sign out menu item on self profile page
+    And User <Contact1> is me
+    And I Sign in using login <Contact1Email> and password <Contact1Password>
+    Then I see my avatar on top of Contact list
+    And I do not see Contact list with name <Name>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact1Email | Contact1Password | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user1Email    | user1Password    | user3Name |
+
+  @staging @id2766
+  Scenario Outline: I want to cancel a pending request from 1:1 conversation
+    Given There are 3 users where <Name> is me
+    Given I sent connection request to <Contact1>
+    Given Myself is connected to <Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open conversation with <Contact1>
+    Then I see CONNECTING TO action for <Contact1> in conversation
+    And I click on pending user avatar
+    And I see Pending Outgoing Connection popover
+    When I click Cancel request on Pending Outgoing Connection popover
+    Then I see Cancel request confirmation popover
+    When I click No button on Cancel request confirmation popover
+    Then I see Pending Outgoing Connection popover
+    When I click Cancel request on Pending Outgoing Connection popover
+    Then I see Cancel request confirmation popover
+    When I click Yes button on Cancel request confirmation popover
+    Then I do not see Pending Outgoing Connection popover
     Then I do not see Contact list with name <Contact1>
     When I open self profile
     And I click gear button on self profile page

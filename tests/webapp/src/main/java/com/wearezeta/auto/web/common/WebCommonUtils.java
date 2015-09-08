@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Set;
@@ -23,9 +24,6 @@ public class WebCommonUtils extends CommonUtils {
 
 	private static final Logger log = ZetaLogger.getLog(WebCommonUtils.class
 			.getSimpleName());
-
-	private static final String sshKeyPath = WebCommonUtils.class.getResource(
-			"/ssh/jenkins_ssh_key").getPath();
 
 	public static String getHubHostFromConfig(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "hubHost");
@@ -49,12 +47,20 @@ public class WebCommonUtils extends CommonUtils {
 		return String.format("%s/Documents", System.getProperty("user.home"));
 	}
 
+	private static String getSshKeyPath() throws URISyntaxException {
+		URI sshKeyUri = new URI(WebCommonUtils.class.getResource(
+				"/ssh/jenkins_ssh_key").toString());
+
+		return sshKeyUri.getPath();
+	}
+
 	public static String getFullPicturePath(String pictureName)
 			throws URISyntaxException {
 		String path = null;
 		URL url = WebCommonUtils.class.getResource("/images/" + pictureName);
 		if (url != null) {
-			path = url.getPath();
+			URI uri = new URI(url.toString());
+			path = uri.getPath();
 		}
 		log.debug("Full picture path: " + path);
 		return path;
@@ -65,29 +71,30 @@ public class WebCommonUtils extends CommonUtils {
 		setCorrectPermissionsOfKeyFile();
 		// only get files via resources when there is no leading /
 		if (srcPath.charAt(0) != '/') {
-			srcPath = WebCommonUtils.class.getResource("/" + srcPath).getPath();
+			URI uri = new URI(WebCommonUtils.class.getResource("/" + srcPath).toString());
+			srcPath = uri.getPath();
 		}
 		String commandTemplate = "scp -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s %s@%s:%s";
-		String command = String.format(commandTemplate, sshKeyPath, srcPath,
+		String command = String.format(commandTemplate, getSshKeyPath(), srcPath,
 				getJenkinsSuperUserLogin(CommonUtils.class), node, dstPath);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}
 
-	private static void setCorrectPermissionsOfKeyFile() {
-		File keyFile = new File(sshKeyPath);
+	private static void setCorrectPermissionsOfKeyFile() throws URISyntaxException {
+		File keyFile = new File(getSshKeyPath());
 		if (!keyFile.setReadable(false, false)
 				|| !keyFile.setReadable(true, true)) {
 			log.info(String.format(
 					"Failed to make SSH File '%s' readable by owner",
-					sshKeyPath));
+					getSshKeyPath()));
 		}
 		if (!keyFile.setWritable(false, false)
 				|| !keyFile.setWritable(true, true)) {
 			log.info(String.format(
 					"Failed to make SSH File '%s' writable by owner",
-					sshKeyPath));
+					getSshKeyPath()));
 		}
 	}
 
@@ -96,7 +103,7 @@ public class WebCommonUtils extends CommonUtils {
 		setCorrectPermissionsOfKeyFile();
 		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s %s";
-		String command = String.format(commandTemplate, sshKeyPath,
+		String command = String.format(commandTemplate, getSshKeyPath(),
 				getJenkinsSuperUserLogin(CommonUtils.class), node, cmd);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
@@ -107,7 +114,7 @@ public class WebCommonUtils extends CommonUtils {
 		setCorrectPermissionsOfKeyFile();
 		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s osascript %s";
-		String command = String.format(commandTemplate, sshKeyPath,
+		String command = String.format(commandTemplate, getSshKeyPath(),
 				getJenkinsSuperUserLogin(CommonUtils.class), node, scriptPath);
 		if (WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
 				command }) == 255) {

@@ -69,7 +69,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id2574
+  @regression @rc @id2574
   Scenario Outline: Change your profile picture [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -106,7 +106,7 @@ Feature: Self Profile
       | Name      | Picture                             | Contact   |
       | user1Name | userpicture_ios_check_landscape.png | user2Name |
 
-  @regression @id2582
+  @regression @rc @id2582
   Scenario Outline: Attempt to enter a name with 0 chars [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -189,7 +189,7 @@ Feature: Self Profile
     When I tap on my name <Name>
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
-    And I swipe right on the personal page
+    And I close self profile
     And I see Contact list with my name <NewUsername>
     And I tap on contact name <Contact>
     Then I see my user name <NewUsername> in conversation
@@ -208,7 +208,7 @@ Feature: Self Profile
     When I tap on my name <Name>
     And I tap to edit my name
     And I change name <Name> to <NewUsername>
-    And I swipe right on the personal page
+    And I close self profile
     And I see Contact list with my name <NewUsername>
     And I tap on contact name <Contact>
     Then I see my user name <NewUsername> in conversation
@@ -217,7 +217,7 @@ Feature: Self Profile
       | Name      | NewUsername | Contact   |
       | user1Name | NewName     | user2Name |
 
-  @regression @id2571
+  @regression @rc @id2571
   Scenario Outline: Verify changing and applying accent color [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -227,7 +227,7 @@ Feature: Self Profile
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
-    And I swipe right on the personal page
+    And I close self profile
     Then I see 5 unread message indicator in list for contact <Contact>
 
     Examples: 
@@ -245,6 +245,7 @@ Feature: Self Profile
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
     And I slide my accent color via the colorpicker from <Color1> to <Color2>
+    And I close self profile
     Then I see 5 unread message indicator in list for contact <Contact>
 
     Examples: 

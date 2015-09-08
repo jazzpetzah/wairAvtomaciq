@@ -12,10 +12,10 @@ Feature: Sign In
     And I see the Conversations list with no conversations
     Then I see my name on Self Profile page
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
-      
+
   @id2248 @smoke
   Scenario Outline: Sign in to Wire in landscape mode
     Given There is 1 user where <Name> is me
@@ -28,7 +28,7 @@ Feature: Sign In
     And I see the Conversations list with no conversations
     Then I see my name on Self Profile page
 
-    Examples: 
+    Examples:
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
@@ -42,7 +42,7 @@ Feature: Sign In
     And I tap Sign In button
     Then I see error message "<ErrMessage>"
 
-    Examples: 
+    Examples:
       | Login | Password | ErrMessage                          |
       | aaa   | aaa      | Please enter a valid email address. |
 
@@ -56,6 +56,19 @@ Feature: Sign In
     And I tap Sign In button
     Then I see error message "<ErrMessage>"
 
-    Examples: 
+    Examples:
       | Login | Password | ErrMessage                          |
       | aaa   | aaa      | Please enter a valid email address. |
+
+  @id2906 @regression @rc
+  Scenario Outline: Verify reset password button works from sign-in page
+    Given I see Welcome screen
+    Given I rotate UI to landscape
+    When I switch to email sign in screen
+    Then I see "<LinkText>" link on Welcome screen
+    When I tap "<LinkText>" link on Welcome screen
+    Then I see the Wire app is not in foreground
+
+    Examples:
+      | LinkText         |
+      | Forgot Password? |

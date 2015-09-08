@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id191 @id193 @smoke @rc
+  @id191 @id193 @smoke @rc @rc42
   Scenario Outline: Send connection request from search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -38,7 +38,7 @@ Feature: Connect
       | Name      | Contact   | WaitingMess      |
       | user1Name | user2Name | 1 person waiting |
 
-  @id1411 @regression @rc
+  @id1411 @regression @rc @rc42
   Scenario Outline: I can see a new inbox for connection when receive new connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -138,6 +138,7 @@ Feature: Connect
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I Connect with contact by pressing button
+    And I wait for 5 seconds
     Then I see Connect to <Contact> Dialog page
 
     Examples: 
@@ -471,7 +472,7 @@ Feature: Connect
       | Name      | Contact   | Message          | Picture     |
       | user1Name | user2Name | Hello my friend! | testing.jpg |
 
-  @id2215 @regression @rc
+  @id2215 @regression @rc @rc42
   Scenario Outline: I can connect to someone from PYMK by clicking +
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Contact2>

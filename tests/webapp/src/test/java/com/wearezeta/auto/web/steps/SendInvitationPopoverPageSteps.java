@@ -2,7 +2,6 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.web.pages.PagesCollection;
 import com.wearezeta.auto.web.pages.external.YouAreInvitedPage;
-import com.wearezeta.auto.web.pages.popovers.SendInvitationPopoverContainer;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -12,37 +11,46 @@ public class SendInvitationPopoverPageSteps {
 	private String invitationLink = null;
 
 	/**
-	 * Verifies whether Send Invitation popover is visible or not
+	 * Verifies whether Bring Your Friends popover is visible or not
 	 * 
-	 * @step. ^I( do not)? see Send Invitation popover$
+	 * @step. ^I( do not)? see Bring Your Friends popover$
 	 * 
 	 * @param shouldNotBeVisible
 	 *            is set to null if "do not" part is not provided
 	 * @throws Exception
 	 */
-	@Then("^I( do not)? see Send Invitation popover$")
+	@Then("^I( do not)? see Bring Your Friends popover$")
 	public void ISeeSendInvitationPopover(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
-			((SendInvitationPopoverContainer) PagesCollection.popoverPage)
-					.waitUntilVisibleOrThrowException();
+			PagesCollection.bringYourFriendsPopover.isVisible();
 		} else {
-			((SendInvitationPopoverContainer) PagesCollection.popoverPage)
-					.waitUntilNotVisibleOrThrowException();
+			PagesCollection.bringYourFriendsPopover.isNotVisible();
 		}
+	}
+
+	/**
+	 * Click Invite button on Bring Your Friends popover
+	 * 
+	 * @step. ^I click Invite button on Bring Your Friends popover$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I click Invite button on Bring Your Friends popover$")
+	public void IClickInviteButton() throws Exception {
+		PagesCollection.bringYourFriendsPopover.clickInviteButton();
 	}
 
 	/**
 	 * Save invitation link from the corresponding popover into internal
 	 * variable
 	 * 
-	 * @step. ^I remember invitation link on Send Invitation popover$
+	 * @step. ^I remember invitation link on Bring Your Friends popover$
 	 * 
 	 */
-	@When("^I remember invitation link on Send Invitation popover$")
+	@When("^I remember invitation link on Bring Your Friends popover$")
 	public void IRemeberInvitationLink() {
-		invitationLink = ((SendInvitationPopoverContainer) PagesCollection.popoverPage)
-				.parseInvitationLink();
+		invitationLink = PagesCollection.bringYourFriendsPopover.parseInvitationLink();
 	}
 
 	/**

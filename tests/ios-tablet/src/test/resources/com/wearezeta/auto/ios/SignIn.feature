@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @regression @id2607
+  @regression @rc @id2607
   Scenario Outline: Sign in to ZClient [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -56,7 +56,7 @@ Feature: Sign In
       | WrongMail  | WrongPassword |
       | wrongwrong | wrong         |
 
-  @regression @id2608
+  @regression @rc @id2608
   Scenario Outline: Verify possibility of reseting password (welcome page) [PORTRAIT]
     Given I see sign in screen
     And I press Sign in button
@@ -68,14 +68,13 @@ Feature: Sign In
     And I copy link from email and past it into Safari
     And I type in new password <NewPassword>
     And I press Change Password button in browser
-    And I see password changed confirmation page
     And Return to Wire app
-    And I Sign in using login <Login> and password <NewPassword>
+    And I sign in using my email
     Then I see Contact list with my name <Name>
 
     Examples: 
-      | Login                         | Password      | Name             | NewPassword  |
-      | smoketester.ios@wearezeta.com | user1Password | SmoketesterReset | aqa123456789 |
+      | Login      | Password      | Name      | NewPassword  |
+      | user1Email | user1Password | user1Name | aqa123456789 |
 
   @regression @id2923
   Scenario Outline: Verify possibility of reseting password (welcome page) [LANDSCAPE]
@@ -90,11 +89,10 @@ Feature: Sign In
     And I copy link from email and past it into Safari
     And I type in new password <NewPassword>
     And I press Change Password button in browser
-    And I see password changed confirmation page
     And Return to Wire app
-    And I Sign in using login <Login> and password <NewPassword>
+    And I sign in using my email
     Then I see Contact list with my name <Name>
 
     Examples: 
-      | Login                         | Password      | Name             | NewPassword  |
-      | smoketester.ios@wearezeta.com | user1Password | SmoketesterReset | aqa123456789 |
+      | Login      | Password      | Name      | NewPassword  |
+      | user1Email | user1Password | user1Name | aqa123456789 |

@@ -21,7 +21,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
       | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
 
-  @id321 @smoke @rc
+  @id321 @smoke @rc @rc42
   Scenario Outline: Leave group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -40,7 +40,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @id322 @smoke @rc
+  @id322 @smoke @rc @rc42
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -93,25 +93,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
       | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatar TestContact |
 
-  @id1395 @smoke @rc
-  Scenario Outline: Verify starting 1:1 conversation with a person from Top People
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
-    Given Contact <Contact1> send message to user <Name>
-    Given Contact <Name> send message to user <Contact1>
-    Given I sign in using my email or phone number
-    Given I see Contact list with contacts
-    When I open Search by UI button
-    And I wait until Top People list appears
-    And I tap on <Contact1> in Top People
-    And I tap on create conversation
-    Then I see dialog page
-
-    Examples: 
-      | Name      | Contact1  | Contact2  |
-      | user1Name | user2Name | user3Name |
-
-  @id1507 @regression @rc
+  @id1507 @regression @rc @rc42
   Scenario Outline: Verify editing the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -233,7 +215,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  | ParticipantNumber |
       | user1Name | user2Name | user3Name | GroupInfoCheck | 3                 |
 
-  @id2292 @staging
+  @id2292 @regression
   Scenario Outline: Start 1to1 conversation from participants view
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
@@ -245,6 +227,7 @@ Feature: People View
     And I tap on group chat contact <Contact1>
     And I see <Contact1> user profile page
     And I click Open Conversation button on connected user page
+    And I wait for 3 seconds
     Then I see Connect to <Contact1> Dialog page
 
     Examples: 

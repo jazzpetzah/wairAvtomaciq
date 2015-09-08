@@ -217,7 +217,7 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Checks that connection request is displayed in Conversation List or not
+	 * Checks that one connection request is displayed in Conversation List or not
 	 *
 	 * @param doNot
 	 *            is set to null if "do not" part does not exist
@@ -227,10 +227,35 @@ public class ContactListPageSteps {
 	 */
 	@When("^I( do not)? see connection request from one user$")
 	public void IDoNotSeeIncomingConnection(String doNot) throws Exception {
+		IDoNotSeeXIncomingConnection(doNot, 1);
+	}
+
+	/**
+	 * Checks that connection requests are displayed in Conversation List or not
+	 *
+	 * @param doNot
+	 *            is set to null if "do not" part does not exist
+	 * @param amount
+	 *            amount of requests
+	 * @step. ^I(do not)? see connection request from one user$
+	 *
+	 * @throws Exception
+	 */
+	@When("^I( do not)? see connection requests? from (\\d+) user$")
+	public void IDoNotSeeXIncomingConnection(String doNot, int amount) throws Exception {
 		if (doNot == null) {
-			Assert.assertTrue(PagesCollection.contactListPage
-					.getIncomingPendingItemText()
-					.equals(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+			if (amount == 1) {
+				assertThat(
+						PagesCollection.contactListPage
+								.getIncomingPendingItemText(),
+						equalTo(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+			} else {
+				assertThat(
+						PagesCollection.contactListPage
+								.getIncomingPendingItemText(),
+						equalTo(amount
+								+ WebAppLocators.Common.CONTACT_LIST_X_PEOPLE_WAITING));
+			}
 		} else {
 			String itemText = "";
 			try {
@@ -239,8 +264,7 @@ public class ContactListPageSteps {
 			} catch (AssertionError e) {
 				log.debug(e.getMessage());
 			}
-			Assert.assertFalse(itemText
-					.equals(WebAppLocators.Common.CONTACT_LIST_ONE_PERSON_WAITING));
+			assertThat(itemText, equalTo(""));
 		}
 	}
 
@@ -399,11 +423,8 @@ public class ContactListPageSteps {
 	@Then("^I( do not)? see missed call notification for conversation (.*)$")
 	public void isCallMissedVisibleForContact(String shouldNotBeVisible,
 			String conversationName) throws Exception {
-		try {
-			conversationName = usrMgr.replaceAliasesOccurences(
-					conversationName, FindBy.NAME_ALIAS);
-		} catch (Exception e) {
-		}
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
 		if (shouldNotBeVisible == null) {
 			assertTrue(
 					String.format(
@@ -418,6 +439,78 @@ public class ContactListPageSteps {
 							conversationName),
 					PagesCollection.contactListPage
 							.isMissedCallInvisibleForContact(conversationName));
+		}
+	}
+
+	/**
+	 * Verify whether joined call notification is present for the given
+	 * conversation.
+	 *
+	 *
+	 * @step. ^I( do not)? see joined group call notification for conversation
+	 *        (.*)$
+	 * @param conversationName
+	 *            name of the conversation
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist in the step
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see joined group call notification for conversation (.*)$")
+	public void isJoinedGroupCallNotificationVisibleForConversation(
+			String shouldNotBeVisible, String conversationName)
+			throws Exception {
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
+		if (shouldNotBeVisible == null) {
+			assertTrue(
+					String.format(
+							"The joined group call notification in conversation '%s' should be visible",
+							conversationName),
+					PagesCollection.contactListPage
+							.isJoinedGroupCallNotificationVisibleForConversation(conversationName));
+		} else {
+			assertTrue(
+					String.format(
+							"The joined group call notification in conversation '%s' should NOT be visible",
+							conversationName),
+					PagesCollection.contactListPage
+							.isJoinedGroupCallNotificationInvisibleForConversation(conversationName));
+		}
+	}
+
+	/**
+	 * Verify whether unjoined group call notification is present for the given
+	 * conversation.
+	 *
+	 *
+	 * @step. ^I( do not)? see unjoined group call notification for conversation
+	 *        (.*)$
+	 * @param conversationName
+	 *            name of the conversation
+	 * @param shouldNotBeVisible
+	 *            is set to null if "do not" part does not exist in the step
+	 * @throws Exception
+	 */
+	@Then("^I( do not)? see unjoined group call notification for conversation (.*)$")
+	public void isUnjoinedGroupCallNotificationVisibleForConversation(
+			String shouldNotBeVisible, String conversationName)
+			throws Exception {
+		conversationName = usrMgr.replaceAliasesOccurences(conversationName,
+				FindBy.NAME_ALIAS);
+		if (shouldNotBeVisible == null) {
+			assertTrue(
+					String.format(
+							"The unjoined group call notification in conversation '%s' should be visible",
+							conversationName),
+					PagesCollection.contactListPage
+							.isUnjoinedGroupCallNotificationVisibleForConversation(conversationName));
+		} else {
+			assertTrue(
+					String.format(
+							"The unjoined group call notification in conversation '%s' should NOT be visible",
+							conversationName),
+					PagesCollection.contactListPage
+							.isUnjoinedGroupCallNotificationInvisibleForConversation(conversationName));
 		}
 	}
 

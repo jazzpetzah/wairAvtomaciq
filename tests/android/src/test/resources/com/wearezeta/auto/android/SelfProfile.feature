@@ -1,6 +1,6 @@
 Feature: Self Profile
 
-  @id205 @smoke @rc
+  @id205 @smoke @rc @rc42
   Scenario Outline: Change user picture with gallery image
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -34,7 +34,7 @@ Feature: Self Profile
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id328 @smoke @rc
+  @id328 @smoke @rc @rc42
   Scenario Outline: I can change my name
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

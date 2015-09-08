@@ -500,9 +500,7 @@ public class ContactListPage extends IOSPage {
 		WebElement archiveButton = this
 				.getDriver()
 				.findElement(
-						By.xpath(String
-								.format(IOSLocators.ContactListPage.xpathArchiveConversationButton,
-										conversation)));
+						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
 		return DriverUtils.waitUntilElementClickable(getDriver(),
 				archiveButton, 3);
 	}
@@ -512,10 +510,8 @@ public class ContactListPage extends IOSPage {
 		WebElement archiveButton = this
 				.getDriver()
 				.findElement(
-						By.xpath(String
-								.format(IOSLocators.ContactListPage.xpathArchiveConversationButton,
-										conversation)));
-		archiveButton.click();
+						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
+		DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
 	}
 
 	public void archiveConversation(String conversation) throws Exception {

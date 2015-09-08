@@ -505,4 +505,87 @@ public class ConversationViewPageSteps {
 			break;
 		}
 	}
+
+	/**
+	 * Verify whether unsent indicator is visible next to the particular message
+	 * 
+	 * @step. ^I see unsent indicator next to the message \"(.*)\" in the
+	 *        [Cc]onversation view$
+	 * 
+	 * @param msg
+	 *            the expected message text
+	 * @throws Exception
+	 */
+	@Then("^I see unsent indicator next to the message \"(.*)\" in the [Cc]onversation view$")
+	public void ISeeUnsentIndicatorNextTo(String msg) throws Exception {
+		Assert.assertTrue(
+				String.format(
+						"Unsent indicator is not visible next to the '%s' message",
+						msg), getConversationViewPage()
+						.waitUntilUnsentIndicatorIsVisible(msg));
+	}
+
+	/**
+	 * Verify whether unsent indicator is visible next to a picture
+	 * 
+	 * @step. ^I see unsent indicator next to new picture in the [Cc]onversation
+	 *        view$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see unsent indicator next to new picture in the [Cc]onversation view$")
+	public void ISeeUnsentIndicatorNextToAPicture() throws Exception {
+		Assert.assertTrue("Unsent indicator is not visible next to a picture",
+				getConversationViewPage()
+						.waitUntilUnsentIndicatorIsVisibleForAPicture());
+	}
+
+	/**
+	 * Verify whether Close Picture Preview button is visible
+	 * 
+	 * @step. ^I (do not )?see Close Picture Preview button in the
+	 *        [Cc]onversation view$
+	 * 
+	 * @param shouldNotBeVisible
+	 *            equals to null if 'do not' part does not exist in step
+	 *            signature
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see Close Picture Preview button in the [Cc]onversation view$")
+	public void ISeeClosePreview(String shouldNotBeVisible) throws Exception {
+		if (shouldNotBeVisible == null) {
+			Assert.assertTrue("Close Picture Preview button is not visible",
+					getConversationViewPage()
+							.waitUntilClosePicturePreviewButtonVisible());
+		} else {
+			Assert.assertTrue("Close Picture Preview button is still visible",
+					getConversationViewPage()
+							.waitUntilClosePicturePreviewButtonInvisible());
+		}
+	}
+
+	/**
+	 * Tap the Close Picture Preview button
+	 * 
+	 * @step. ^I tap Close Picture Preview button in the [Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Close Picture Preview button in the [Cc]onversation view$")
+	public void ITapClosePreviewButton() throws Exception {
+		getConversationViewPage().tapClosePicturePreviewButton();
+	}
+
+	/**
+	 * Tap Play/Pause button in the recent SoundCloud player preview
+	 * 
+	 * @step. ^I tap (?:Play|Puase) button in the [Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap (?:Play|Puase) button in the [Cc]onversation view$")
+	public void ITapPlayPauseButton() throws Exception {
+		getConversationViewPage().tapPlayPauseButton();
+	}
 }

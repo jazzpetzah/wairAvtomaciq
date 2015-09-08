@@ -360,8 +360,7 @@ public class ContactListPage extends AndroidPage {
 			}
 		}
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.xpath(xpathLastContact),
-				CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
+				By.xpath(xpathLastContact), CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
 	}
 
 	public boolean isNoConversationsVisible() throws Exception {
