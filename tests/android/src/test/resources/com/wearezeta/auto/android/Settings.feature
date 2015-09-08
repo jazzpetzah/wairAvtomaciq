@@ -49,7 +49,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @id3006 @staging
+  @id3006 @regression
   Scenario Outline: I can sign into spotify using my premium account
     Given My device runs Android <TargetDeviceVersion> or higher
     Given There are 2 users where <Name> is me
