@@ -1,8 +1,14 @@
 package com.wearezeta.auto.android_tablet.steps;
 
+import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Assert;
 
 import com.wearezeta.auto.android_tablet.pages.TabletConversationsListPage;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 
@@ -236,8 +242,16 @@ public class ConversationsListPageSteps {
 	}
 
 	/**
+	 * It is mandatory to locate PlayPause button by coordinates because
+	 * Selendroid constantly throws InvalidElementStateException if we try to
+	 * get it with findElement(s). And this happens only in tablets
+	 * 
+	 */
+	private Map<String, Rectangle> playPauseButtonCoords = new HashMap<>();
+
+	/**
 	 * Verifies whether Play/Pause button is visible next to the corrresponding
-	 * conversation name item
+	 * conversation name item.
 	 * 
 	 * @step. ^I see (?:Play|Pause) button next to the conversation name (.*)
 	 * 
@@ -257,4 +271,107 @@ public class ConversationsListPageSteps {
 						.waitUntilPlayPauseButtonVisibleNextTo(convoName));
 	}
 
+	private BufferedImage previousPlayPauseBtnState = null;
+
+	/**
+	 * Save the current state of PlayPause button into the internal data
+	 * structure
+	 * 
+	 * @step. ^I remember the state of (?:Play|Pause) button next to the
+	 *        conversation name (.*)
+	 * 
+	 * @param convoName
+	 *            conversation name for which the screenshot should be taken
+	 * @throws Exception
+	 */
+	@When("^I remember the state of (?:Play|Pause) button next to the conversation name (.*)")
+	public void IRememberTheStateOfPlayPauseButton(String convoName)
+			throws Exception {
+		convoName = usrMgr.findUserByNameOrNameAlias(convoName).getName();
+		previousPlayPauseBtnState = getConversationsListPage()
+				.getScreenshotOfPlayPauseButton(
+						playPauseButtonCoords.get(convoName)).orElseThrow(
+						IllegalStateException::new);
+	}
+
+	private final static double MAX_SIMILARITY_THRESHOLD = 0.6;
+	private final static int STATE_CHANGE_TIMEOUT_SECONDS = 5;
+
+	/**
+	 * Verify whether the current screenshot of PlayPause button is different
+	 * from the previous one
+	 * 
+	 * @step. ^I see the state of (?:Play|Pause) button next to the conversation
+	 *        name (.*) is changed$
+	 * 
+	 * @param convoName
+	 *            conversation name/alias
+	 * @throws Exception
+	 */
+	@Then("^I see the state of (?:Play|Pause) button next to the conversation name (.*) is changed$")
+	public void ISeeThePlayPauseButtonStateIsChanged(String convoName)
+			throws Exception {
+		if (previousPlayPauseBtnState == null) {
+			throw new IllegalStateException(
+					"Please take a screenshot of previous button state first");
+		}
+		convoName = usrMgr.findUserByNameOrNameAlias(convoName).getName();
+		final long millisecondsStarted = System.currentTimeMillis();
+		double score = 1;
+		while (System.currentTimeMillis() - millisecondsStarted <= STATE_CHANGE_TIMEOUT_SECONDS * 1000) {
+			final BufferedImage currentPlayPauseBtnState = getConversationsListPage()
+					.getScreenshotOfPlayPauseButton(
+							playPauseButtonCoords.get(convoName)).orElseThrow(
+							IllegalStateException::new);
+			score = ImageUtil.getOverlapScore(currentPlayPauseBtnState,
+					previousPlayPauseBtnState,
+					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+			if (score < MAX_SIMILARITY_THRESHOLD) {
+				break;
+			}
+			Thread.sleep(500);
+		}
+		Assert.assertTrue(
+				String.format(
+						"The current and previous states of PlayPause button seems to be very similar after %d seconds (%.2f >= %.2f)",
+						STATE_CHANGE_TIMEOUT_SECONDS, score,
+						MAX_SIMILARITY_THRESHOLD),
+				score < MAX_SIMILARITY_THRESHOLD);
+	}
+
+	/**
+	 * Tap PlayPause button next to the particular conversation name
+	 * 
+	 * @step. ^I tap (?:Play|Pause) button next to the conversation name (.*)
+	 * 
+	 * @param convoName
+	 *            conversation name/alias
+	 * @throws Exception
+	 */
+	@When("^I tap (?:Play|Pause) button next to the conversation name (.*)")
+	public void ITapPlayPauseButton(String convoName) throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
+		getConversationsListPage().tapPlayPauseMediaButton(
+				playPauseButtonCoords.get(convoName));
+	}
+
+	/**
+	 * Stores the coordinates of the corresponding conversation item into the
+	 * internal structure. This step is mandatory to call before any steps,
+	 * which use Play/Pause button
+	 * 
+	 * @step. ^I remember the coordinates of conversation item (.*)
+	 * 
+	 * @param convoName
+	 *            conversation name/alias
+	 * @throws Exception
+	 */
+	@When("^I remember the coordinates of conversation item (.*)")
+	public void IRememberConvoItemCoords(String convoName) throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
+		playPauseButtonCoords.put(convoName, getConversationsListPage()
+				.calcPlayPauseButtonCoordinates(convoName));
+	}
 }
