@@ -493,7 +493,7 @@ public class ContactListPage extends WebPage {
 		final By entryLocator = By
 				.cssSelector(WebAppLocators.ContactListPage.cssIncomingPendingConvoItem);
 		assert DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				entryLocator, 3) : "There are no visible incoming pending connections in the conversations list";
+				entryLocator) : "There are no visible incoming pending connections in the conversations list";
 		return getDriver().findElement(entryLocator).getText();
 	}
 

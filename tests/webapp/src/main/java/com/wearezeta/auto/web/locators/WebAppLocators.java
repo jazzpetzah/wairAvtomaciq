@@ -41,10 +41,10 @@ public final class WebAppLocators {
 	public static final class ContactListPage {
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
-		public static final String cssParentContactListItem = "div#conversation-list";
+		public static final String cssParentContactListItem = "#conversation-list";
 
 		public static final String cssIncomingPendingConvoItem = cssParentContactListItem
-				+ " [data-uie-name=item-pending-requests]";
+				+ " [data-uie-name='item-pending-requests']";
 
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
