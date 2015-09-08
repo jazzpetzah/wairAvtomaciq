@@ -3,7 +3,6 @@ package com.wearezeta.auto.android.steps;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
-import com.wearezeta.auto.common.CommonSteps;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -49,7 +48,7 @@ public class CallingSteps {
 	@When("(.*) stops? all calls to (.*)")
 	public void UserXStopsCallsToUserY(String callers, String conversationName)
 			throws Exception {
-		for (String caller : CommonSteps.splitAliases(callers)) {
+		for (String caller : splitAliases(callers)) {
 			commonCallingSteps.stopCall(caller, conversationName);
 		}
 	}
@@ -101,9 +100,8 @@ public class CallingSteps {
 	@Then("(.*) verif(?:y|ies) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
 	public void UserXVerifesCallStatusToUserY(String callees,
 			String expectedStatuses, int timeoutSeconds) throws Exception {
-		commonCallingSteps.verifyAcceptingCallStatus(
-				CommonSteps.splitAliases(callees), expectedStatuses,
-				timeoutSeconds);
+		commonCallingSteps.verifyAcceptingCallStatus(splitAliases(callees),
+				expectedStatuses, timeoutSeconds);
 	}
 
 	/**
@@ -139,7 +137,7 @@ public class CallingSteps {
 	@When("(.*) accepts? next incoming call automatically$")
 	public void UserXAcceptsNextIncomingCallAutomatically(String callees)
 			throws Exception {
-		commonCallingSteps.acceptNextCall(CommonSteps.splitAliases(callees));
+		commonCallingSteps.acceptNextCall(splitAliases(callees));
 	}
 
 	/**
