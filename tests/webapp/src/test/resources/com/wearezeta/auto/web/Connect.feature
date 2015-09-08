@@ -154,7 +154,6 @@ Feature: Connect
     And I click gear button on self profile page
     And I select Sign out menu item on self profile page
     And User <Name2> is me
-    And I switch to Sign In page
     And I see Sign In page
     And I Sign in using login <Login2> and password <Password2>
     And I see my avatar on top of Contact list
