@@ -25,12 +25,12 @@ public class PasswordResetMessage extends WireMessage {
 		return links.get(0);
 	}
 
-	private static final String MESSAGE_PURPOSE = "PasswordReset";
+	public static final String MESSAGE_PURPOSE = "PasswordReset";
 	
 	public static boolean isPasswordResetMessage(Message msg) {
 		try {
-			return (msg.getHeader(ZETA_CODE_HEADER_NAME) != null && msg
-					.getHeader(ZETA_CODE_HEADER_NAME).equals(MESSAGE_PURPOSE));
+			return (msg.getHeader(ZETA_PURPOSE_HEADER_NAME) != null && msg
+					.getHeader(ZETA_PURPOSE_HEADER_NAME).equals(MESSAGE_PURPOSE));
 		} catch (MessagingException e) {
 			return false;
 		}

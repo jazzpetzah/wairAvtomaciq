@@ -82,23 +82,20 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.nameForgotPasswordButton)
 	private WebElement changePasswordButtonSignIn;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordEmailField)
-	private WebElement changePWEmailField;
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSafariChangePasswordEmailField)
+	private WebElement safariChangePWEmailField;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSafariURLButton)
+	private WebElement safariURLButton;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSafariGoButton)
+	private WebElement safariGoButton;
+
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathSafariEnterNewPasswordField)
+	private WebElement safariEnterNewPasswordField;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangePasswordPageChangePasswordButton)
 	private WebElement changePasswordPageChangePasswordButton;
-
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIATextField)
-	private List<WebElement> textFields;
-
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIAButton)
-	private List<WebElement> uiButtons;
-
-	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameUIASecureTextField)
-	private List<WebElement> secureTextFields;
-
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathChangedPasswordConfirmationText)
-	private WebElement changedPasswordPageConfirmation;
 
 	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.namePhoneLoginButton)
 	private WebElement phoneLoginButton;
@@ -170,7 +167,8 @@ public class LoginPage extends IOSPage {
 				By.xpath(IOSLocators.xpathLoginButton), 40)) {
 			return new ContactListPage(this.getLazyDriver());
 		} else {
-			throw new AssertionError("Login button is still visible after the timeout");
+			throw new AssertionError(
+					"Login button is still visible after the timeout");
 		}
 	}
 
@@ -328,54 +326,32 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void tapEmailFieldToChangePassword(String email) throws Exception {
-		for (WebElement textField : textFields) {
-			String valueOfField = textField.getAttribute("value");
-			if (valueOfField.equals("Email")) {
-				DriverUtils.mobileTapByCoordinates(getDriver(), textField);
-				this.inputStringFromKeyboard(email);
-			}
-		}
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				safariChangePWEmailField);
+		DriverUtils.mobileTapByCoordinates(getDriver(),
+				safariChangePWEmailField);
+		this.inputStringFromKeyboard(email);
 	}
 
 	public void tapChangePasswordButtonInWebView() throws Exception {
-		for (WebElement uiButton : uiButtons) {
-			String nameOfButton = uiButton.getAttribute("name");
-			if (nameOfButton.equals("CHANGE PASSWORD")) {
-				DriverUtils.mobileTapByCoordinates(getDriver(), uiButton);
-			}
-		}
+		DriverUtils.mobileTapByCoordinates(getDriver(),
+				changePasswordPageChangePasswordButton);
 	}
 
 	public void changeURLInBrowser(String URL) throws Exception {
-		for (WebElement uiButton : uiButtons) {
-			String nameOfButton = uiButton.getAttribute("name");
-			if (nameOfButton.equals("URL")) {
-				DriverUtils.mobileTapByCoordinates(getDriver(), uiButton);
-				this.inputStringFromKeyboard(URL);
-			}
-			for (WebElement uiButton2 : uiButtons) {
-				String nameOfButton2 = uiButton2.getAttribute("name");
-				if (nameOfButton2.equals("Go")) {
-					DriverUtils.mobileTapByCoordinates(getDriver(), uiButton2);
-				}
-			}
-		}
+		DriverUtils.mobileTapByCoordinates(getDriver(), safariURLButton);
+		this.inputStringFromKeyboard(URL);
+
+		DriverUtils.mobileTapByCoordinates(getDriver(), safariGoButton);
 	}
 
 	public void tapPasswordFieldToChangePassword(String newPassword)
 			throws Exception {
-		for (WebElement secureTextField : secureTextFields) {
-			String valueOfField = secureTextField.getAttribute("value");
-			if (valueOfField.equals("Password")) {
-				DriverUtils
-						.mobileTapByCoordinates(getDriver(), secureTextField);
-				this.inputStringFromKeyboard(newPassword);
-			}
-		}
-	}
-
-	public boolean passwordConfiamtionIsVisible() {
-		return changedPasswordPageConfirmation.isDisplayed();
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				safariEnterNewPasswordField, 5);
+		DriverUtils.mobileTapByCoordinates(getDriver(),
+				safariEnterNewPasswordField);
+		this.inputStringFromKeyboard(newPassword);
 	}
 
 	public void pressSimulatorHomeButton() throws Exception {
