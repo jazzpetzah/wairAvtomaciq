@@ -85,11 +85,11 @@ public class CallingSteps {
 	 * Verify whether waiting instance status is changed to one of the expected
 	 * values after N seconds timeout
 	 *
-	 * @step. (.*) verifies that waiting instance status is changed to (.*) in
-	 *        (\\d+) seconds?$
+	 * @step. (.*) verif(?:y|ies) that waiting instance status is changed to
+	 *        (.*) in (\\d+) seconds?$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            comma separated callee names/aliases
 	 * @param expectedStatuses
 	 *            comma-separated list of expected call statuses. See
 	 *            com.wearezeta.auto.common.calling2.v1.model.CallStatus for
@@ -98,10 +98,11 @@ public class CallingSteps {
 	 *            number of seconds to wait until call status is changed
 	 * @throws Exception
 	 */
-	@Then("(.*) verifies that waiting instance status is changed to (.*) in (\\d+) seconds?$")
-	public void UserXVerifesCallStatusToUserY(String callee,
+	@Then("(.*) verif(?:y|ies) that waiting instance status is changed to (.*) in (\\d+) seconds?$")
+	public void UserXVerifesCallStatusToUserY(String callees,
 			String expectedStatuses, int timeoutSeconds) throws Exception {
-		commonCallingSteps.verifyAcceptingCallStatus(callee, expectedStatuses,
+		commonCallingSteps.verifyAcceptingCallStatus(
+				CommonSteps.splitAliases(callees), expectedStatuses,
 				timeoutSeconds);
 	}
 
@@ -131,14 +132,14 @@ public class CallingSteps {
 	 *
 	 * @step. (.*) accepts? next incoming call automatically$
 	 *
-	 * @param callee
-	 *            callee name/alias
+	 * @param callees
+	 *            callee names/aliases
 	 * @throws Exception
 	 */
 	@When("(.*) accepts? next incoming call automatically$")
-	public void UserXAcceptsNextIncomingCallAutomatically(String callee)
+	public void UserXAcceptsNextIncomingCallAutomatically(String callees)
 			throws Exception {
-		commonCallingSteps.acceptNextCall(callee);
+		commonCallingSteps.acceptNextCall(CommonSteps.splitAliases(callees));
 	}
 
 	/**

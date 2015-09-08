@@ -221,6 +221,10 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		return getDialogPage().waitForAPictureWithUnsentIndicator();
 	}
 
+	public void tapPlayPauseButton() throws Exception {
+		getDialogPage().tapPlayPauseBtn();
+	}
+
 	public boolean waitUntilClosePicturePreviewButtonVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCloseImageBtn));

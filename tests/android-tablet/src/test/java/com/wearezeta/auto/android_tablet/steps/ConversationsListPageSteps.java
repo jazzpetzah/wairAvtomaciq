@@ -235,4 +235,26 @@ public class ConversationsListPageSteps {
 		getConversationsListPage().doSwipeLeft();
 	}
 
+	/**
+	 * Verifies whether Play/Pause button is visible next to the corrresponding
+	 * conversation name item
+	 * 
+	 * @step. ^I see (?:Play|Pause) button next to the conversation name (.*)
+	 * 
+	 * @param convoName
+	 *            conversation name/alias
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see (?:Play|Pause) button next to the conversation name (.*)")
+	public void ISeePlayPauseButton(String convoName) throws Exception {
+		convoName = usrMgr.replaceAliasesOccurences(convoName,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue(
+				String.format(
+						"Play/Pause button is not visible next to conversation item '%s'",
+						convoName), getConversationsListPage()
+						.waitUntilPlayPauseButtonVisibleNextTo(convoName));
+	}
+
 }
