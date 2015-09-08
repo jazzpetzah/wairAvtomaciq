@@ -378,6 +378,9 @@ public final class WebAppLocators {
 				+ "//*[@data-uie-name='item-user' and .//*[contains(@class,'selected')]]";
 
 		public static final String cssSearchField = "[data-uie-name='enter-users']";
+
+		public static final String cssMoreButton = "[data-uie-name='item-more']";
+
 	}
 
 	public static final class RegistrationPage {

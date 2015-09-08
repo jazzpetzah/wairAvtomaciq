@@ -217,10 +217,10 @@ Feature: Search
       | Login      | Password      | Name      | Name2     | Email2     |
       | user1Email | user1Password | user1Name | user2Name | user2Email |
 
-  @staging @id3321
+  @staging @id3321 @torun
   Scenario Outline: Verify More button is shown in Top People list when you have more than 8 people in Top people
-    Given There are 10 users where <Name> is me
-    Given Myself is connected to <Contact1>, <Contact2>, <Contact3>, <Contact4>, <Contact5>, <Contact6>, <Contact7>, <Contact8>, <Contact9>
+    Given There are 11 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>, <Contact3>, <Contact4>, <Contact5>, <Contact6>, <Contact7>, <Contact8>, <Contact9>, <Contact10>
     Given User Me sent message <Message1> to conversation <Contact1>
     Given User <Contact1> sent message <Message1> to conversation <Name>
     Given User Me sent message <Message1> to conversation <Contact2>
@@ -239,6 +239,8 @@ Feature: Search
     Given User <Contact8> sent message <Message1> to conversation <Name>
     Given User Me sent message <Message1> to conversation <Contact9>
     Given User <Contact9> sent message <Message1> to conversation <Name>
+    Given User Me sent message <Message1> to conversation <Contact10>
+    Given User <Contact10> sent message <Message1> to conversation <Name>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     When I see my avatar on top of Contact list
@@ -249,8 +251,8 @@ Feature: Search
     Then I see 8 people in Top people list
     And I see More button
     When I click on More button
-    Then I see 9 people in Top people list
+    Then I see 10 people in Top people list
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Message1 |
-      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | Message1 |
+      | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | Message1 |
+      | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | Message1 |
