@@ -87,7 +87,7 @@ public class IOSSimulatorHelper {
 
 		if (!new File(libPath).exists()) {
 			throw new Exception(String.format(
-					"IOS simulator v. %s has not been found on this system",
+					"IOS simulator v. %s has not been found on this system (lib path: " + libPath + ")",
 					simulatorVersion));
 		}
 		String result = "";
