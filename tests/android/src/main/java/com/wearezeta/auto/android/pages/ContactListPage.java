@@ -290,9 +290,9 @@ public class ContactListPage extends AndroidPage {
 
 	public boolean isPlayPauseMediaButtonVisible(String convoName)
 			throws Exception {
-		final WebElement element = getDriver().findElement(
-				By.xpath(xpathPlayPauseButtonByConvoName.apply(convoName)));
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(), element);
+		final By locator = By.xpath(xpathPlayPauseButtonByConvoName
+				.apply(convoName));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	private static final int CONTACT_LIST_LOAD_TIMEOUT_SECONDS = 60;
