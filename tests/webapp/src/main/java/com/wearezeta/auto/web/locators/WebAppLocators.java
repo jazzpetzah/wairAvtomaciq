@@ -497,7 +497,7 @@ public final class WebAppLocators {
 
 		public static final Function<String, String> xpathFullCallWarningModalButtonByCaption = (
 				name) -> String
-				.format("%s//div[@data-uie-name='modal-call-conversation-full') and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
+				.format("%s//div[@data-uie-name='modal-call-voice-channel-full' and contains(@class, 'modal-show')]//div[contains(@class, 'button') and text()='%s']",
 						xpathWarningModalRootDiv, name);
 	}
 
