@@ -277,6 +277,7 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public ContactListPage tapClearButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), pickerClearBtn);
 		pickerClearBtn.click();
 		return new ContactListPage(this.getLazyDriver());
 	}
