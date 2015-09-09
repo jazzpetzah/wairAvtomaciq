@@ -108,7 +108,7 @@ public class ContactListPage extends AndroidPage {
 	private WebElement searchButton;
 
 	private static final Function<String, String> xpathConvoSettingsMenuItemByName = name -> String
-			.format("//*[starts-with(@id, 'ttv__conversation_settings') and @value='%s']",
+			.format("//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
 					name.toUpperCase());
 
 	// private static final String xpathTopConversationsListLoadingIndicator =

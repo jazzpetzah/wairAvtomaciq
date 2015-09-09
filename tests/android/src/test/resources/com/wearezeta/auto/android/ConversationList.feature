@@ -10,7 +10,7 @@ Feature: Conversation List
     And I see dialog page
     And I tap conversation details button
     And I press options menu button
-    And I press Silence conversation button
+    And I press SILENCE conversation menu button
     #And I return to group chat page
     #Some elements seem to be missing (e.g. "X" button) so
     #Instead of searching for elements, it works perfectly fine (and faster) just to press back 3 times
@@ -56,8 +56,7 @@ Feature: Conversation List
     And I see dialog page
     And I tap conversation details button
     And I press options menu button
-    And I press Notify conversation button
-    And I press back button
+    And I press NOTIFY conversation menu button
     And I press back button
     And I navigate back from dialog page
     Then Contact <Contact1> is not muted
