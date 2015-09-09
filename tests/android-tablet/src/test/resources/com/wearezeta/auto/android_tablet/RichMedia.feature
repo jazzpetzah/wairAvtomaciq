@@ -17,7 +17,7 @@ Feature: Rich Media
     When I tap the new picture in the conversation view
     Then I see the picture in the preview is animated
 
-    Examples: 
+    Examples:
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
@@ -38,7 +38,7 @@ Feature: Rich Media
     When I tap the new picture in the conversation view
     Then I see the picture in the preview is animated
 
-    Examples: 
+    Examples:
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
@@ -94,3 +94,54 @@ Feature: Rich Media
     Examples:
       | Name      | Contact   | SoundCloudLink                                             |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
+
+  @id2991 @staging
+  Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (portrait)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And I see the conversation view
+    When I tap the text input in the conversation view
+    Then I do not see Giphy button in the conversation view
+    When I type the message "<Message>" in the conversation view
+    Then I see Giphy button in the conversation view
+    When I tap Giphy button in the conversation view
+    Then I see Giphy preview page
+    When I tap Send button on the Giphy preview page
+    Then I see the conversation view
+    And I see a new picture in the conversation view
+    And I see the picture in the conversation view is animated
+
+    Examples:
+      | Name      | Contact   | Message |
+      | user1Name | user2Name | H       |
+
+  @id3142 @staging
+  Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (landscape)
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I tap the conversation <Contact>
+    And I see the conversation view
+    When I tap the text input in the conversation view
+    Then I do not see Giphy button in the conversation view
+    When I type the message "<Message>" in the conversation view
+    Then I see Giphy button in the conversation view
+    When I tap Giphy button in the conversation view
+    Then I see Giphy preview page
+    When I tap Send button on the Giphy preview page
+    Then I see the conversation view
+    And I see a new picture in the conversation view
+    And I see the picture in the conversation view is animated
+
+    Examples:
+      | Name      | Contact   | Message |
+      | user1Name | user2Name | H       |
+ 
