@@ -318,7 +318,7 @@ Feature: People View
       | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName | Subheader |
       | user1Name | user2Name  | user2Email    | user3Name | GroupChat     | 3 PEOPLE  |
 
-  @id2895 @staging
+  @id2895 @regression @rc
   Scenario Outline: Check interaction with options menu (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -347,7 +347,7 @@ Feature: People View
       | Name      | Contact1   | Contact2  | GroupChatName | ItemLeave |
       | user1Name | user2Name  | user3Name | GroupChat     | LEAVE     |
 
-  @id3148 @staging
+  @id3148 @regression @rc
   Scenario Outline: Check interaction with options menu (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -376,7 +376,7 @@ Feature: People View
       | Name      | Contact1   | Contact2  | GroupChatName | ItemLeave |
       | user1Name | user2Name  | user3Name | GroupChat     | LEAVE     |
 
-  @id2883 @staging
+  @id2883 @regression @rc
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>

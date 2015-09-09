@@ -1,6 +1,6 @@
  Feature: Archive
  
-  @id2885 @staging
+  @id2885 @regression @rc
   Scenario Outline: Verify you can archive and unarchive conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -27,7 +27,7 @@
       | Name      | Contact1  | Contact2  | ArchiveItem | UnarchiveItem |
       | user1Name | user2Name | user3Name | ARCHIVE     | UNARCHIVE     |
 
-  @id2886 @staging
+  @id2886 @regression @rc
   Scenario Outline: Verify you can archive and unarchive conversation (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

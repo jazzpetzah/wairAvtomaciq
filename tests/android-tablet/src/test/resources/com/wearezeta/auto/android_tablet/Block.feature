@@ -122,7 +122,7 @@ Feature: Block
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2866 @staging
+  @id2866 @regression @rc
   Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

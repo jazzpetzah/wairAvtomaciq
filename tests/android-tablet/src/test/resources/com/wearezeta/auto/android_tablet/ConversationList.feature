@@ -70,7 +70,7 @@ Feature: Conversation List
       | Name      | Contact   | ItemSilence | ItemNotify |
       | user1Name | user2Name | SILENCE     | NOTIFY     |
 
-  @id2881 @staging
+  @id2881 @regression @rc
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -92,7 +92,7 @@ Feature: Conversation List
       | Name      | Contact   | SoundCloudLink                                             |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id3140 @staging
+  @id3140 @regression @rc
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

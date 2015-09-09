@@ -42,7 +42,7 @@ Feature: Rich Media
       | Name      | Contact   | GifName      |
       | user1Name | user2Name | animated.gif |
 
-  @id2884 @staging
+  @id2884 @regression @rc
   Scenario Outline: Verify you can play/pause media from the conversation list (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -68,7 +68,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                             |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id3144 @staging
+  @id3144 @regression @rc
   Scenario Outline: Verify you can play/pause media from the conversation list (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
