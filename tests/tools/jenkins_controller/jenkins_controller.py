@@ -28,7 +28,7 @@ if __name__ == '__main__':
     base_url = os.getenv('INTERNAL_JENKINS_URL', None)
     if (base_url is None) or is_external_jenkins_url_required_by(keyword):
         base_url = os.getenv('JENKINS_URL', 'http://192.168.10.44:8080/')
-    user = 'auto' + random.choice(('', '1', '2'))
+    user = 'auto' + random.choice(('', '1', '2', '3'))
     password = os.getenv('JENKINS_PASSWORD', 'aqa123456!')
     MAX_TRY_COUNT = 5
     try_num = 0
