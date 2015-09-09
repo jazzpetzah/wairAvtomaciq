@@ -242,20 +242,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
-    #FIXME: Create a method with parameter to send xx messages
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send 18 messages to user Myself
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
     And I swipe down on dialog page
