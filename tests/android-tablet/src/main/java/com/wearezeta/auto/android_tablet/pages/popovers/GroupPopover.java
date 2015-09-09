@@ -61,10 +61,6 @@ public class GroupPopover extends AbstractPopoverContainer {
 		return this.participantsPage.waitForParticipantAvatarNotVisible(name);
 	}
 
-	public void setConnectionMessage(String text) throws Exception {
-		this.outgoingConnectionPage.setMessage(text);
-	}
-
 	public void tapConnectButton() throws Exception {
 		this.outgoingConnectionPage.tapConnectButton();
 	}

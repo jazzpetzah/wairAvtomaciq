@@ -136,33 +136,6 @@ public class ConnectToPageSteps {
 	}
 
 	/**
-	 * Taps on the connection request message to put it in focus. Note: The
-	 * message is also cleared (method name does not suggest this).
-	 * 
-	 * @step. ^I tap on edit connect request field$
-	 * @throws Exception
-	 * 
-	 */
-	@When("^I tap on edit connect request field$")
-	public void WhenITapOnEditConnectRequestField() throws Exception {
-		getConnectToPage().tapEditConnectionRequest();
-	}
-
-	/**
-	 * Types a message into the connect message input area
-	 * 
-	 * @step. ^I type Connect request \"(.*)\"$
-	 * 
-	 * @param message
-	 *            The message to be sent
-	 * @throws Exception
-	 */
-	@When("^I type Connect request \"(.*)\"$")
-	public void WhenITypeConnectRequest(String message) throws Exception {
-		getConnectToPage().typeConnectionRequest(message);
-	}
-
-	/**
 	 * Checks to see if the connect button is either enabled or disabled (true
 	 * or false)
 	 * 

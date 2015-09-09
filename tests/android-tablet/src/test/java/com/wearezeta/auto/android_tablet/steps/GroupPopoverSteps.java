@@ -183,20 +183,6 @@ public class GroupPopoverSteps {
 	}
 
 	/**
-	 * Type the corresponding connection message on Group popover
-	 * 
-	 * @step. ^I enter connection message \"(.*)\" on [Gg]roup popover$
-	 * 
-	 * @param text
-	 *            the invitation message content
-	 * @throws Exception
-	 */
-	@And("^I enter connection message \"(.*)\" on [Gg]roup popover$")
-	public void IEnterConnectionMessage(String text) throws Exception {
-		getGroupPopover().setConnectionMessage(text);
-	}
-
-	/**
 	 * Tap Connect button on Group popover
 	 * 
 	 * @step. ^I tap Connect button on [Gg]roup popover$
