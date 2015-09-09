@@ -22,10 +22,6 @@ public class CallingOverlayPage extends AndroidPage {
 	@FindBy(id = idGroupCallingJoinOverlayContainer)
 	private WebElement joinGroupCallButton;
 
-	private static final String idOngoingCallMicrobar = "v__calling__top_bar";
-
-	private static final String idOngoingCallMinibar = "coc__calling__overlay_container";
-
 	private static final String idIgnoreButton = "cib__calling_mute";
 	@FindBy(id = idIgnoreButton)
 	private WebElement ignoreButton;
@@ -165,6 +161,11 @@ public class CallingOverlayPage extends AndroidPage {
 				By.id(idCallingDismiss));
 	}
 
+	public boolean callingDismissIsNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idCallingDismiss));
+	}
+
 	public boolean callingSpeakerIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCallingSpeaker));
@@ -172,6 +173,11 @@ public class CallingOverlayPage extends AndroidPage {
 
 	public boolean callingMicMuteIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCallingMicMute));
+	}
+
+	public boolean callingMicMuteIsNotVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.id(idCallingMicMute));
 	}
 
@@ -214,13 +220,13 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public boolean ongoingCallMicrobarIsVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idOngoingCallMicrobar));
+		return callingOverlayIsVisible() && callingMicMuteIsNotVisible()
+				&& callingDismissIsNotVisible();
 	}
 
 	public boolean ongoingCallMinibarIsVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idOngoingCallMinibar));
+		return callingOverlayIsVisible() && callingMicMuteIsVisible()
+				&& callingDismissIsVisible();
 	}
 
 	public int numberOfParticipantsInGroupCall() throws Exception {
@@ -287,8 +293,7 @@ public class CallingOverlayPage extends AndroidPage {
 	}
 
 	public boolean ongoingCallMinibarIsInvisible() throws Exception {
-		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idOngoingCallMinibar));
+		return ongoingCallMicrobarIsVisible();
 	}
 
 	public void dismissBySwipeUp() throws Exception {
