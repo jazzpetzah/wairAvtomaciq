@@ -53,7 +53,7 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = OtherUserPersonalInfoPage.idRightActionButton)
 	private WebElement blockButton;
 
-	@FindBy(id = idConfirmBtn)
+	@FindBy(xpath = xpathConfirmBtn)
 	private WebElement confirmBtn;
 
 	// private final CommonSteps commonSteps = CommonSteps.getInstance();

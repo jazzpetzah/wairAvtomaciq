@@ -29,7 +29,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.75;
 	public static final String LEAVE_CONVERSATION_BUTTON = "Leave conversation";
 	public static final String LEAVE_BUTTON = "LEAVE";
-	
+
 	public static final String idUnblockBtn = "zb__connect_request__unblock_button";
 	@FindBy(id = idUnblockBtn)
 	private WebElement unblockButton;
@@ -79,7 +79,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 			.format("//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
 					name.toUpperCase());
 
-
 	@FindBy(id = PeoplePickerPage.idParticipantsClose)
 	private WebElement closeButton;
 
@@ -89,7 +88,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(id = idPager)
 	private WebElement backGround;
 
-	@FindBy(id = idConfirmBtn)
+	@FindBy(xpath = xpathConfirmBtn)
 	private WebElement confirmBtn;
 
 	private static final String idLeftActionButton = "gtv__participants__left__action";
@@ -120,8 +119,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isUnblockBtnVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				getDriver().findElement(By.xpath(xpathConvOptionsMenuItemByName.apply("UNBLOCK"))));
+		return DriverUtils.isElementPresentAndDisplayed(
+				getDriver(),
+				getDriver().findElement(
+						By.xpath(xpathConvOptionsMenuItemByName
+								.apply("UNBLOCK"))));
 	}
 
 	private static By[] getOneToOneOptionsMenuLocators() {
@@ -223,9 +225,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
-		final By confirmBtnLocator = By.id(idConfirmBtn);
-		DriverUtils.waitUntilLocatorDissapears(getDriver(), confirmBtnLocator,
-				3);
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(xpathConfirmBtn), 3) : "Confirmation button is still visible after 3 seconds timeout";
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}
 
@@ -247,6 +248,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public boolean isParticipantExists(String name) throws Exception {
 		final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean isParticipantNotVisible(String name) throws Exception {
+		final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
 	public void tapOnParticipantsHeader() {

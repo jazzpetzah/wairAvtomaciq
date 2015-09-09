@@ -190,7 +190,7 @@ public class OtherUserPersonalInfoPageSteps {
 	public void WhenIPressOptionsMenuButton() throws Exception {
 		getOtherUserPersonalInfoPage().pressOptionsMenuButton();
 	}
-	
+
 	/**
 	 * Tap the corresponding item in conversation options menu
 	 * 
@@ -296,8 +296,11 @@ public class OtherUserPersonalInfoPageSteps {
 	public void ThenIDoNotSeeOnGroupChatInfoPage(String contact)
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertFalse(getOtherUserPersonalInfoPage().isParticipantExists(
-				contact));
+		Assert.assertTrue(
+				String.format(
+						"Chat participant '%s' should not be visible in participants list, but it is",
+						contact), getOtherUserPersonalInfoPage()
+						.isParticipantNotVisible(contact));
 	}
 
 	/**
