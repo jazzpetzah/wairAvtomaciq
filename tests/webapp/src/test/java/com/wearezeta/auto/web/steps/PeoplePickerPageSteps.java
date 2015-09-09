@@ -311,18 +311,14 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @step. ^I( do not)? see More button$
 	 * 
-	 * @param donot
-	 *            if null method returns true if found otherwise true if not
-	 *            found
 	 * @throws Exception
 	 */
-	@And("^I( do not)? see More button$")
-	public void ISeeMoreButton(String donot) throws Exception {
-		if (donot == null) {
-			final String searchMissingMessage = "More button is not visible on People Picker Page";
-			Assert.assertTrue(searchMissingMessage,
-					PagesCollection.peoplePickerPage.isMoreButtonVisible());
-		}
+	@And("^I see More button$")
+	public void ISeeMoreButton() throws Exception {
+		final String searchMissingMessage = "More button is not visible on People Picker Page";
+		Assert.assertTrue(searchMissingMessage,
+				PagesCollection.peoplePickerPage.isMoreButtonVisible());
+
 	}
 
 	/**

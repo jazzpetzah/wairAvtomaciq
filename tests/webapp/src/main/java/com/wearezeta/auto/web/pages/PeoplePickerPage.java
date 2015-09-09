@@ -50,7 +50,7 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathSelectedTopPeopleList)
 	private List<WebElement> selectedTopPeopleItemLocator;
 
-	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssMoreButton)
+	@FindBy(id = WebAppLocators.PeoplePickerPage.idMoreButton)
 	private WebElement moreButton;
 
 	@FindBy(xpath = "//*[contains(@class,'search-list search-list-sm')]//div[@data-uie-name='item-user']")
@@ -295,7 +295,7 @@ public class PeoplePickerPage extends WebPage {
 
 	public boolean isMoreButtonVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
-				By.cssSelector(WebAppLocators.PeoplePickerPage.cssMoreButton));
+				By.id(WebAppLocators.PeoplePickerPage.idMoreButton));
 	}
 
 	public void clickMoreButton() throws Exception {
