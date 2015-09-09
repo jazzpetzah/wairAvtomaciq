@@ -829,6 +829,7 @@ public class DialogPage extends AndroidPage {
 	// NOTE: Click happens on the text input area if participants button is not
 	// NOTE: visible
 	public void tapDialogPageBottom() throws Exception {
+		this.hideKeyboard();
 		this.swipeByCoordinates(1000, 50, 80, 50, 60);
 		DriverUtils.waitUntilLocatorDissapears(getDriver(), By.id(idCursorBtn),
 				5);
