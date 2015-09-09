@@ -120,26 +120,6 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2851 @regression
-  Scenario Outline: I can't send connection message with space only
-    Given There are 2 users where <Name> is me
-    Given I rotate UI to landscape
-    Given I sign in using my email
-    Given I see the Conversations list with no conversations
-    And I wait until <ContactEmail> exists in backend search results
-    And I tap Search input
-    And I see People Picker page
-    And I enter "<ContactEmail>" into Search input on People Picker page
-    When I tap the found item <Contact> on People Picker page
-    And I see Outgoing Connection popover
-    And I see the name <Contact> on Outgoing Connection popover
-    And I enter connection message " " on Outgoing Connection popover
-    Then I see Connect button is not tappable on Outgoing Connection popover
-
-    Examples:
-      | Name      | Contact   | ContactEmail |
-      | user1Name | user2Name | user2Email   |
-
   @id2853 @regression @rc
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
     Given There are 2 users where <Name> is me

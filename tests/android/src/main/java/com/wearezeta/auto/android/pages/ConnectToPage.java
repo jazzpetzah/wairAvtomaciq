@@ -40,9 +40,6 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = idPaticipantsPendingLabel)
 	private WebElement pendingText;
 
-	@FindBy(id = PeoplePickerPage.idConnectionRequiesMessage)
-	private WebElement connectionRequestMessage;
-
 	@FindBy(id = PeoplePickerPage.idSendConnectionRequestButton)
 	private WebElement sendConnectionRequestButton;
 
@@ -178,16 +175,6 @@ public class ConnectToPage extends AndroidPage {
 	public boolean isPending() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				pendingText);
-	}
-
-	public void tapEditConnectionRequest() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(PeoplePickerPage.idConnectionRequiesMessage)) : "The invitation input field is not visible";
-		connectionRequestMessage.clear();
-	}
-
-	public void typeConnectionRequest(String message) throws Exception {
-		connectionRequestMessage.sendKeys(message);
 	}
 
 	public ContactListPage pressConnectButton() throws Exception {
