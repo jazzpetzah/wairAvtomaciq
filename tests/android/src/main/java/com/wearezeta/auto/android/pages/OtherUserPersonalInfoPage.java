@@ -119,11 +119,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isUnblockBtnVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(
-				getDriver(),
-				getDriver().findElement(
-						By.xpath(xpathConvOptionsMenuItemByName
-								.apply("UNBLOCK"))));
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				unblockButton);
 	}
 
 	private static By[] getOneToOneOptionsMenuLocators() {

@@ -255,13 +255,14 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given <Contact1> is connected to <Contact2>
-    Given <Contact1> has group chat <ChatName> with Myself,<Contact2>
+    Given <Contact1> has group chat <ChatName> with <Name>, <Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <ChatName>
     And I tap conversation details button
     And I tap on group chat contact <Contact2>
     And I see connect to <Contact2> dialog
+    And I click left Connect button
     And I click Connect button on connect to page
     And I return to group chat page
     And I navigate back from dialog page
@@ -299,7 +300,7 @@ Feature: Connect
       | user1Name | user2Name |
 
   @id680 @regression
-  Scenario Outline: I want to see user has been blocked within the Start UI
+  Scenario Outline: (BUG AN-2702) I want to see user has been blocked within the Start UI
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts

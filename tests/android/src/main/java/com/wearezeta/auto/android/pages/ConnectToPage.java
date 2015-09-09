@@ -23,9 +23,9 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = idConnectToHeader)
 	private List<WebElement> connectToHeaders;
 
-	private static final Function<String, String> xpathConnectToHeaderByText = text -> String
+	private static final Function<String, String> xpathConnectToHeaderByText = name -> String
 			.format("//*[@id='taet__participants__header' and @value='%s']",
-					text);
+					name);
 
 	private static final String idConnectRequestAccept = "zb__connect_request__accept_button";
 	@FindBy(id = idConnectRequestAccept)
@@ -38,9 +38,9 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = idConnectRequestIgnore)
 	private WebElement connectIgnoreBtn;
 
-	private static final String idPaticipantsPendingLabel = "ttv__participants__left_label";
-	@FindBy(id = idPaticipantsPendingLabel)
-	private WebElement pendingText;
+	private static final Function<String, String> xpathUserDetailsLeftButton = label -> String
+			.format("//*[@id='ttv__participants__left_label' and @value='%s']",
+					label);
 
 	@FindBy(id = PeoplePickerPage.idSendConnectionRequestButton)
 	private WebElement sendConnectionRequestButton;
@@ -87,8 +87,8 @@ public class ConnectToPage extends AndroidPage {
 
 	private static final int MAX_SCROLLS = 8;
 
-	public boolean isConnectToHeaderVisible(String text) throws Exception {
-		final By locator = By.xpath(xpathConnectToHeaderByText.apply(text));
+	public boolean isConnectToHeaderVisible(String name) throws Exception {
+		final By locator = By.xpath(xpathConnectToHeaderByText.apply(name));
 		boolean result = DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				locator);
 		if (!result)
@@ -175,8 +175,20 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public boolean isPending() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				pendingText);
+		return DriverUtils.isElementPresentAndDisplayed(
+				getDriver(),
+				getDriver().findElement(
+						By.xpath(xpathUserDetailsLeftButton.apply("Pending"))));
+	}
+
+	public void pressLeftConnectButton() throws Exception {
+		final WebElement leftConnectBtn = getDriver().findElement(
+				By.xpath(xpathUserDetailsLeftButton.apply("Connect")));
+		this.getWait().until(
+				ExpectedConditions
+						.elementToBeClickable(leftConnectBtn));
+		leftConnectBtn.click();
+
 	}
 
 	public ContactListPage pressConnectButton() throws Exception {

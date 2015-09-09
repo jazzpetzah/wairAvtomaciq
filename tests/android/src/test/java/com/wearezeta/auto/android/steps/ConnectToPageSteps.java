@@ -162,7 +162,19 @@ public class ConnectToPageSteps {
 	public void ThenISeeCounterValue(int value) throws Throwable {
 		Assert.assertEquals(value, getConnectToPage().getCharCounterValue());
 	}
-
+	
+	/**
+	 * Taps the connect button to send a connection request
+	 * 
+	 * @step. ^I click left Connect button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click left Connect button$")
+	public void WhenIClickLeftConnectButton() throws Exception {
+		getConnectToPage().pressLeftConnectButton();
+	}
+	
 	/**
 	 * Taps the connect button to send a connection request
 	 * 

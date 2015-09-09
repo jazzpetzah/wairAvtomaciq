@@ -130,11 +130,11 @@ public class OtherUserPersonalInfoPageSteps {
 	 * Checks to see that a user has been blocked by looking at the "is blocked"
 	 * button on their profile page
 	 * 
-	 * @step. ^User info should be shown with Block button$
+	 * @step. ^User info should be shown with Unblock button$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^User info should be shown with Block button$")
+	@Then("^User info should be shown with Unblock button$")
 	public void UserShouldBeShownWithUnBlockButton() throws Exception {
 		Assert.assertTrue("Unblock button is not visible",
 				getOtherUserPersonalInfoPage().isUnblockBtnVisible());
