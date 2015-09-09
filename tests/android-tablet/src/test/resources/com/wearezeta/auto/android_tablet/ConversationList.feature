@@ -15,6 +15,7 @@ Feature: Conversation List
     And I see the Single user popover
     And I tap Options button on Single user popover
     When I select <ItemSilence> menu item on Single user popover
+    And I tap Options button on Single user popover
     Then I see <ItemNotify> menu item on Single user popover
     And I tap Show Details button on conversation view page
     And I do not see the Single user popover
@@ -26,6 +27,7 @@ Feature: Conversation List
     And I see the Single user popover
     And I tap Options button on Single user popover
     When I select <ItemNotify> menu item on Single user popover
+    And I tap Options button on Single user popover
     Then I see <ItemSilence> menu item on Single user popover
     And I tap Show Details button on conversation view page
     And I do not see the Single user popover
@@ -50,6 +52,7 @@ Feature: Conversation List
     And I see the Single user popover
     And I tap Options button on Single user popover
     When I select <ItemSilence> menu item on Single user popover
+    And I tap Options button on Single user popover
     Then I see <ItemNotify> menu item on Single user popover
     And I tap Show Details button on conversation view page
     And I do not see the Single user popover
@@ -61,6 +64,7 @@ Feature: Conversation List
     And I see the Single user popover
     And I tap Options button on Single user popover
     When I select <ItemNotify> menu item on Single user popover
+    And I tap Options button on Single user popover
     Then I see <ItemSilence> menu item on Single user popover
     And I tap Show Details button on conversation view page
     And I do not see the Single user popover
