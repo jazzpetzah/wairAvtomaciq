@@ -9,6 +9,7 @@ import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -303,5 +304,46 @@ public class PeoplePickerPageSteps {
 			Assert.assertTrue(PagesCollection.peoplePickerPage
 					.isGroupConversationNotFound(name));
 		}
+	}
+
+	/**
+	 * Verify if More button is shown in People Picker
+	 * 
+	 * @step. ^I see More button$
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I see More button$")
+	public void ISeeMoreButton() throws Exception {
+		final String searchMissingMessage = "More button is not visible on People Picker Page";
+		Assert.assertTrue(searchMissingMessage,
+				PagesCollection.peoplePickerPage.isMoreButtonVisible());
+
+	}
+
+	/**
+	 * Click More button on People Picker page
+	 * 
+	 * @step. ^I click on More button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click on More button$")
+	public void IClickOnMoreButton() throws Exception {
+		PagesCollection.peoplePickerPage.clickMoreButton();
+	}
+
+	/**
+	 * Verify if More button is shown in People Picker
+	 * 
+	 * @step. ^I see (\\d+) people in Top people list$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see (\\d+) people in Top people list$")
+	public void ISeeXPeopleInTopPeopleList(int count) {
+		assertThat("people suggestions",
+				PagesCollection.peoplePickerPage.getNumberOfTopPeople(),
+				equalTo(count));
 	}
 }

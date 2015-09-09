@@ -50,6 +50,12 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathSelectedTopPeopleList)
 	private List<WebElement> selectedTopPeopleItemLocator;
 
+	@FindBy(id = WebAppLocators.PeoplePickerPage.idMoreButton)
+	private WebElement moreButton;
+
+	@FindBy(xpath = "//*[contains(@class,'search-list search-list-sm')]//div[@data-uie-name='item-user']")
+	private List<WebElement> topPeople;
+
 	public PeoplePickerPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -285,5 +291,19 @@ public class PeoplePickerPage extends WebPage {
 				.apply(name);
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(foundGroupXpath));
+	}
+
+	public boolean isMoreButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.id(WebAppLocators.PeoplePickerPage.idMoreButton));
+	}
+
+	public void clickMoreButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), moreButton);
+		moreButton.click();
+	}
+
+	public int getNumberOfTopPeople() {
+		return topPeople.size();
 	}
 }
