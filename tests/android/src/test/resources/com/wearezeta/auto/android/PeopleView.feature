@@ -111,7 +111,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
       | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
 
-  @id2236 @regression
+  @id2236 @staging
   Scenario Outline: Check interaction with options menu
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -227,7 +227,8 @@ Feature: People View
     And I tap on group chat contact <Contact1>
     And I see <Contact1> user profile page
     And I click Open Conversation button on connected user page
-    And I wait for 3 seconds
+    And I tap conversation details button
+    And I close participants page by UI button
     Then I see Connect to <Contact1> Dialog page
 
     Examples: 
