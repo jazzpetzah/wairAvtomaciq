@@ -32,6 +32,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 
 public class DialogPage extends AndroidPage {
+	
 	private static final Logger log = ZetaLogger.getLog(DialogPage.class
 			.getSimpleName());
 	public static final String MEDIA_PLAY = "PLAY";
@@ -258,6 +259,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void swipeOnCursorInput() throws Exception {
+		commonSteps.WaitForTime(0.5);
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorArea));
 		final By cursorLocator = By.id(idCursorArea);
 		int ntry = 1;
@@ -268,6 +270,7 @@ public class DialogPage extends AndroidPage {
 					.findElement(cursorLocator).getLocation().getX();
 			if (currentCursorOffset > getDriver().manage().window().getSize()
 					.getWidth() / 2) {
+				commonSteps.WaitForTime(0.5);
 				return;
 			}
 			log.debug(String.format(

@@ -67,7 +67,7 @@ public abstract class AndroidPage extends BasePage {
 		super(lazyDriver);
 	}
 
-	private final CommonSteps commonSteps = CommonSteps.getInstance();
+	final protected CommonSteps commonSteps = CommonSteps.getInstance();
 
 	public void selectFirstGalleryPhoto() throws Exception {
 		final Dimension screenDimension = AndroidCommonUtils.getScreenSize(this
