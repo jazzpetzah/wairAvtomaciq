@@ -9,11 +9,8 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
-    And I long swipe right to archive conversation <Contact2>
-    Then I dont see conversation <Contact2> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
-    Then I see user <Contact2> in contact list
 
     Examples: 
       | Name      | Contact   | Contact2  |
@@ -29,11 +26,8 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
-    And I long swipe right to archive conversation <Contact2>
-    Then I dont see conversation <Contact2> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
-    Then I see user <Contact2> in contact list
 
     Examples: 
       | Name      | Contact   | Contact2  |
@@ -46,7 +40,8 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    When I long swipe right to archive conversation <GroupChatName>
+    And I swipe right on a <Contact1>
+    And I click archive button for conversation <Contact1>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
@@ -63,7 +58,8 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    And I long swipe right to archive conversation <GroupChatName>
+    And I swipe right on a <Contact1>
+    And I click archive button for conversation <Contact1>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
