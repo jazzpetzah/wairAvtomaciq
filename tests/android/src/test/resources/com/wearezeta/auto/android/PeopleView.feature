@@ -32,7 +32,7 @@ Feature: People View
     And I see dialog page
     And I tap conversation details button
     And I press options menu button
-    And I press Leave conversation button
+    And I press LEAVE conversation menu button
     And I confirm leaving
     Then I see Contact list
 
