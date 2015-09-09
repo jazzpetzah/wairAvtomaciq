@@ -273,7 +273,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name | ContactGroupChat |
 
   @id676 @regression
-  Scenario Outline: I want to block a person from 1:1 conversation
+  Scenario Outline: (BUG AN-2702) I want to block a person from 1:1 conversation
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I sign in using my email or phone number
@@ -282,7 +282,7 @@ Feature: Connect
     And I see dialog page
     And I tap conversation details button
     And I press options menu button
-    And I Press Block button
+    And I press BLOCK conversation menu button
     And I confirm block
     Then I do not see contact list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
