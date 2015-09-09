@@ -9,6 +9,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.wearezeta.auto.android.common.AndroidCommonUtils;
+import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
@@ -56,7 +58,7 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(xpath = xpathConfirmBtn)
 	private WebElement confirmBtn;
 
-	// private final CommonSteps commonSteps = CommonSteps.getInstance();
+	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	public ConnectToPage(Future<ZetaAndroidDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -78,8 +80,8 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public ContactListPage navigateBack() throws Exception {
-		// driver.navigate().back();
-		swipeRightCoordinates(1000);
+		AndroidCommonUtils.tapBackButton();
+		commonSteps.WaitForTime(0.5);
 		return new ContactListPage(this.getLazyDriver());
 	}
 
