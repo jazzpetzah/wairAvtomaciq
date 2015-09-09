@@ -141,7 +141,7 @@ public class DriverUtils {
 							|| !isElementInScreenRect(driver,
 									driver.findElement(by));
 				} catch (SessionNotFoundException e) {
-					e.printStackTrace();
+					log.debug(e.getMessage());
 					return true;
 				} catch (WebDriverException e) {
 					return true;
