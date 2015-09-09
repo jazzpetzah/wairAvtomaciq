@@ -309,7 +309,7 @@ public class PeoplePickerPageSteps {
 	/**
 	 * Verify if More button is shown in People Picker
 	 * 
-	 * @step. ^I( do not)? see More button$
+	 * @step. ^I see More button$
 	 * 
 	 * @throws Exception
 	 */
@@ -333,6 +333,13 @@ public class PeoplePickerPageSteps {
 		PagesCollection.peoplePickerPage.clickMoreButton();
 	}
 
+	/**
+	 * Verify if More button is shown in People Picker
+	 * 
+	 * @step. ^I see (\\d+) people in Top people list$
+	 * 
+	 * @throws Exception
+	 */
 	@Then("^I see (\\d+) people in Top people list$")
 	public void ISeeXPeopleInTopPeopleList(int count) {
 		assertThat("people suggestions",
