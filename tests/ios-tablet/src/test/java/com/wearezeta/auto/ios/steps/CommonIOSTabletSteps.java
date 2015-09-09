@@ -45,13 +45,6 @@ public class CommonIOSTabletSteps {
 
 	@After
 	public void tearDown() throws Exception {
-
-		if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
-			IOSCommonUtils.collectSimulatorLogs(
-					CommonUtils.getDeviceName(getClass()),
-					steps.getTestStartedDate());
-		}
-
 		commonSteps.getUserManager().resetUsers();
 	}
 
