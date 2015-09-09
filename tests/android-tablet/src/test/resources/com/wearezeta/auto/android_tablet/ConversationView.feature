@@ -102,7 +102,7 @@ Feature: Conversation View
     And I see the chat header message contains "<Contact1>" text on conversation view page
     And I see the chat header message contains "<Contact2>" text on conversation view page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Action                     |
       | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION |
 
@@ -129,7 +129,7 @@ Feature: Conversation View
     And I see the chat header message contains "<Contact1>" text on conversation view page
     And I see the chat header message contains "<Contact2>" text on conversation view page
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | Action                     |
       | user1Name | user2Name | user3Name | YOU STARTED A CONVERSATION |
 
