@@ -87,6 +87,13 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(id = idSilenceButton)
 	private WebElement silenceButton;
 
+	private static final String idOptionsMenuButton = "ttv__settings_box__item";
+	@FindBy(id = idOptionsMenuButton)
+	private List<WebElement> optionsMenuButtons;
+
+	@FindBy(id = idOptionsMenuButton)
+	private WebElement optionsMenuButton;
+
 	public static final String idUnblockBtn = "zb__connect_request__unblock_button";
 	@FindBy(id = idUnblockBtn)
 	private WebElement unblockButton;
@@ -137,9 +144,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public void pressSilenceButton() throws Exception {
-		assert DriverUtils
-				.waitUntilElementClickable(getDriver(), silenceButton);
-		silenceButton.click();
+		assert DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.id(idOptionsMenuButton));
+		assert optionsMenuButtons.get(0).getText().equals("SILENCE");
+		optionsMenuButtons.get(0).click();
 	}
 
 	public void clickBlockBtn() throws Exception {
@@ -282,7 +290,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		groupChatNameEditable.clear();
 		groupChatNameEditable.sendKeys(chatName);
 		this.pressEnter();
-		this.pressEsc();		
+		this.pressEsc();
 	}
 
 	public AndroidPage tapOnParticipant(String name) throws Exception {

@@ -16,7 +16,6 @@ Feature: Conversation List
     #Instead of searching for elements, it works perfectly fine (and faster) just to press back 3 times
     And I press back button
     And I press back button
-    And I press back button
     #And I navigate back from dialog page
     Then Contact <Contact1> is muted
 
