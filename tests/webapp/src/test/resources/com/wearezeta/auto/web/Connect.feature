@@ -104,6 +104,7 @@ Feature: Connect
     And I see Connect To popover
     And I click Connect button on Connect To popover
     Then I see Contact list with name <Contact2>
+    And I see CONNECTING TO action for <Contact2> in conversation
 
     Examples: 
       | Login      | Password      | Name      | ChatName | Contact1  | Contact2  |
