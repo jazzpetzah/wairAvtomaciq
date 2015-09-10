@@ -641,6 +641,10 @@ public final class IOSLocators {
 		public static final String nameSelfButton = "SelfButton";
 		public static final String xpathArchiveConversationButton = "//UIAButton[@name='ARCHIVE' and @visible='true']";
 		public static final String nameMuteCallButton = "MuteVoiceButton";
+		
+		public static final String xpathFormatActionMenuConversationName = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAStaticText[@name='%s']";
+		
+		public static final String xpathFormatActionMenuXButton = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAButton[@name='%s']";
 	}
 
 	public final class RegistrationPage {

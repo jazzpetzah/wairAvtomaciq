@@ -30,9 +30,9 @@ Feature: Conversation List
     Then I see user <Contact> in contact list
 
     Examples: 
-      | Name      | Contact   | Contact2 |
-      | user1Name | user2Name | user3Name|
-      
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
+
   @regression @id2153
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages
     Given There are 3 users where <Name> is me
@@ -105,8 +105,8 @@ Feature: Conversation List
     Then I see change of state for first conversation cell
 
     Examples: 
-      | Name      | Contact   | NewName  | Color        |
-      | user1Name | user2Name | PING     | BrightOrange |
+      | Name      | Contact   | NewName | Color        |
+      | user1Name | user2Name | PING    | BrightOrange |
 
   @smoke @id2761
   Scenario Outline: Verify conversations are sorted according to most recent activity
@@ -122,5 +122,42 @@ Feature: Conversation List
     Then I see first item in contact list named <Contact1>
 
     Examples: 
-      | Name      | Contact1   | Contact2   | Contact3     |Number |  Picture      |
-      | user1Name | user2Name | user3name  | user4name    | 2 	   | testing.jpg   |
+      | Name      | Contact1  | Contact2  | Contact3  | Number | Picture     |
+      | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
+
+  @staging @id3310
+  Scenario Outline: Verify action menu is opened on swipe right on the group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    Then I see conversation <GroupChatName> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Leave button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3name | ActionMenuChat |
+
+  @staging @id3311
+  Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    Then I see conversation <Contact> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Block button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

@@ -424,3 +424,79 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+
+  @staging
+  Scenario Outline: Verify action menu is opened on swipe right on the group conversation [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    Then I see conversation <GroupChatName> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Leave button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3name | ActionMenuChat |
+
+  @staging
+  Scenario Outline: Verify action menu is opened on swipe right on the group conversation [LANDSCAPE]
+    Given I rotate UI to landscape
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    Then I see conversation <GroupChatName> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Leave button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3name | ActionMenuChat |
+
+  @staging
+  Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    Then I see conversation <Contact> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Block button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging
+  Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [LANDSCAPE]
+    Given I rotate UI to landscape
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    Then I see conversation <Contact> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Block button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

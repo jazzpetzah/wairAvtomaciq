@@ -725,4 +725,21 @@ public class ContactListPage extends IOSPage {
 		return true;
 	}
 
+	public boolean isActionMenuVisibleForConversation(String conversation)
+			throws Exception {
+		String xpath = String
+				.format(IOSLocators.ContactListPage.xpathFormatActionMenuConversationName,
+						conversation.toUpperCase());
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpath));
+	}
+
+	public boolean isButtonVisibleInActionMenu(String buttonTitle)
+			throws Exception {
+		String xpath = String.format(
+				IOSLocators.ContactListPage.xpathFormatActionMenuXButton,
+				buttonTitle.toUpperCase());
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpath));
+	}
 }
