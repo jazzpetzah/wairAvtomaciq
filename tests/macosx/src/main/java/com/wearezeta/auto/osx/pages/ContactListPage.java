@@ -23,6 +23,7 @@ import com.google.common.base.Function;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXConstants;
@@ -56,8 +57,9 @@ public class ContactListPage extends MainWirePage {
 
 	public static HashMap<String, Boolean> shareContactsProcessedUsers = new HashMap<String, Boolean>();
 
-	public ContactListPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
+	public ContactListPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public boolean isVisible() throws Exception {
@@ -67,17 +69,20 @@ public class ContactListPage extends MainWirePage {
 
 	public PeoplePickerPage openPeoplePicker() throws Exception {
 		openSearchUIButton.click();
-		return new PeoplePickerPage(this.getLazyDriver());
+		return new PeoplePickerPage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 
 	public SelfProfilePage openSelfProfile() throws Exception {
 		selfProfileCLEntry.click();
-		return new SelfProfilePage(this.getLazyDriver());
+		return new SelfProfilePage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 
 	public ConnectionRequestsPage openConnectionRequests() throws Exception {
 		connectionRequestsCLEntry.click();
-		return new ConnectionRequestsPage(this.getLazyDriver());
+		return new ConnectionRequestsPage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 
 	public String readSelfProfileName() {
@@ -381,7 +386,8 @@ public class ContactListPage extends MainWirePage {
 	public PeoplePickerPage isHiddenByPeoplePicker() throws Exception {
 		if (DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.id(OSXLocators.idShareContactsLaterButton), 3)) {
-			return new PeoplePickerPage(this.getLazyDriver());
+			return new PeoplePickerPage(this.getLazyDriver(),
+					this.getSecondaryLazyDriver());
 		} else {
 			return null;
 		}

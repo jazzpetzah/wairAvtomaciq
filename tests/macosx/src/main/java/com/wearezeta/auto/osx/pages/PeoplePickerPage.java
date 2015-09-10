@@ -1,6 +1,5 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.awt.HeadlessException;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -10,16 +9,12 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.sikuli.script.App;
-import org.sikuli.script.Env;
-import org.sikuli.script.FindFailed;
-import org.sikuli.script.Screen;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXConstants;
-import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import com.wearezeta.auto.osx.common.SearchResultTypeEnum;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.popovers.ConnectToPopover;
@@ -28,6 +23,7 @@ import com.wearezeta.auto.osx.util.NSPoint;
 
 @SuppressWarnings("deprecation")
 public class PeoplePickerPage extends MainWirePage {
+
 	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
 			.getSimpleName());
 
@@ -60,8 +56,9 @@ public class PeoplePickerPage extends MainWirePage {
 	@FindBy(how = How.XPATH, using = OSXLocators.xpathPeoplePickerTopContactAvatar)
 	private WebElement peoplePickerTopContactAvatar;
 
-	public PeoplePickerPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
+	public PeoplePickerPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public WebElement findSearchField() throws Exception {
@@ -103,8 +100,9 @@ public class PeoplePickerPage extends MainWirePage {
 		searchField = null;
 		while (searchField == null) {
 			searchField = findSearchField();
-			if (++i == 10)
+			if (++i == 10) {
 				break;
+			}
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
@@ -217,9 +215,11 @@ public class PeoplePickerPage extends MainWirePage {
 
 		switch (type) {
 		case NOT_CONNECTED:
-			return new ConnectToPopover(this.getLazyDriver());
+			return new ConnectToPopover(this.getLazyDriver(),
+					this.getSecondaryLazyDriver());
 		case BLOCKED:
-			return new UnblockPopover(this.getLazyDriver());
+			return new UnblockPopover(this.getLazyDriver(),
+					this.getSecondaryLazyDriver());
 		default:
 			return null;
 		}
@@ -229,8 +229,8 @@ public class PeoplePickerPage extends MainWirePage {
 		String xpath = String
 				.format(OSXLocators.PeoplePickerPage.xpathFormatSearchResultEntry,
 						user);
-		return DriverUtils
-				.waitUntilLocatorIsDisplayed(this.getDriver(), By.xpath(xpath));
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.xpath(xpath));
 	}
 
 	public void chooseUserInSearchResults(String user, SearchResultTypeEnum type)
@@ -242,11 +242,13 @@ public class PeoplePickerPage extends MainWirePage {
 	public ConversationPage addSelectedUsersToConversation() throws Exception {
 		if (isCreateConversationButtonVisible()) {
 			createConversationButton.click();
-		} else if (isOpenConversationButtonVisible())
+		} else if (isOpenConversationButtonVisible()) {
 			openConversationButton.click();
-		else
+		} else {
 			addToConversationButton.click();
-		return new ConversationPage(this.getLazyDriver());
+		}
+		return new ConversationPage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 
 	public boolean isTopPeopleVisible() throws Exception {
@@ -280,22 +282,6 @@ public class PeoplePickerPage extends MainWirePage {
 							.getAttribute(OSXConstants.Attributes.AXSIZE)).y() > 0;
 		} else {
 			return false;
-		}
-	}
-
-	public void selectUserFromTopPeople() throws Exception {
-		peoplePickerTopContactAvatar.click();
-		Screen s = new Screen();
-		try {
-			App.focus(OSXExecutionContext.wirePath);
-			if (!isOpenConversationButtonVisible())
-				s.click(Env.getMouseLocation());
-			if (!isOpenConversationButtonVisible())
-				s.click(Env.getMouseLocation());
-		} catch (HeadlessException e) {
-			e.printStackTrace();
-		} catch (FindFailed e) {
-			e.printStackTrace();
 		}
 	}
 }

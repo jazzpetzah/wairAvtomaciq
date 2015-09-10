@@ -14,6 +14,7 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.locators.OSXLocators;
@@ -58,8 +59,9 @@ public class SelfProfilePage extends MainWirePage {
 
 	private AccentColorPicker accentColorPicker;
 
-	public SelfProfilePage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
+	public SelfProfilePage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public void openPictureSettings() throws Exception {
@@ -72,7 +74,8 @@ public class SelfProfilePage extends MainWirePage {
 
 	public ChoosePicturePage openChooseImageFileDialog() throws Exception {
 		choosePictureFromImageFileButton.click();
-		return new ChoosePicturePage(this.getLazyDriver());
+		return new ChoosePicturePage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 
 	public void openCameraDialog() {

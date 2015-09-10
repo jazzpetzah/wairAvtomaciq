@@ -4,31 +4,49 @@ import java.io.IOException;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.BasePage;
+import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
+import java.util.concurrent.TimeUnit;
 
 public abstract class OSXPage extends BasePage {
+
 	private String path = null;
+	private Future<ZetaWebAppDriver> secondaryDriver;
 
 	@Override
 	protected ZetaOSXDriver getDriver() throws Exception {
 		return (ZetaOSXDriver) super.getDriver();
 	}
-	
+
+	protected ZetaWebAppDriver getSecondaryDriver() throws Exception {
+		return (ZetaWebAppDriver) secondaryDriver.get(
+				ZetaDriver.INIT_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Future<ZetaOSXDriver> getLazyDriver() {
 		return (Future<ZetaOSXDriver>) super.getLazyDriver();
 	}
 
-	public OSXPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		this(lazyDriver, null);
+	@SuppressWarnings("unchecked")
+	protected Future<ZetaWebAppDriver> getSecondaryLazyDriver() {
+		return secondaryDriver;
 	}
 
-	public OSXPage(Future<ZetaOSXDriver> lazyDriver, String path)
+	public OSXPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		this(lazyDriver, secondaryDriver, null);
+	}
+
+	public OSXPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver, String path)
 			throws Exception {
 		super(lazyDriver);
 		this.path = path;
+		this.secondaryDriver = secondaryDriver;
 	}
 
 	public void navigateTo() throws Exception {

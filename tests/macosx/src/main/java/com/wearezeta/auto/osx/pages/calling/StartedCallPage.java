@@ -10,6 +10,7 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXConstants;
@@ -27,8 +28,9 @@ public class StartedCallPage extends CallPage {
 	@FindBy(how = How.ID, using = OSXLocators.CallPage.idMuteMicrophoneButton)
 	private WebElement muteMicrophoneButton;
 
-	public StartedCallPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
+	public StartedCallPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public boolean isOngoingCallVisible(String subscriberName) throws Exception {

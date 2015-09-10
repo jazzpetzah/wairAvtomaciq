@@ -9,6 +9,7 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.osx.locators.PopoverLocators;
 
 public class ConnectToPopover extends PopoverPage {
@@ -16,9 +17,9 @@ public class ConnectToPopover extends PopoverPage {
 	@FindBy(how = How.ID, using = PopoverLocators.ConnectToPopover.idSendRequestButton)
 	private WebElement connectButton;
 
-	public ConnectToPopover(Future<ZetaOSXDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
+	public ConnectToPopover(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public boolean isVisible() throws Exception {

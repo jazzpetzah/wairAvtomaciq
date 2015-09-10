@@ -1,10 +1,10 @@
 Feature: Calling
 
-  @staging @id951
+  @staging @id951 @torun
   Scenario Outline: Send text, image and knock in other convo while in the call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I Sign in using login <Login> and password <Password>
+#     Given I Sign in using login <Login> and password <Password>
     And I see my name <Name> in Contact list
     When <Contact1> calls me using <CallBackend>
     And I see incoming call from <Contact1>

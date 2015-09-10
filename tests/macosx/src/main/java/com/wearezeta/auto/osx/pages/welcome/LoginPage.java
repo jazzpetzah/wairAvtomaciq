@@ -13,6 +13,7 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.InputMethodEnum;
 import com.wearezeta.auto.osx.common.LoginBehaviourEnum;
@@ -49,8 +50,9 @@ public class LoginPage extends OSXPage {
 
 	private Future<String> passwordResetMessage;
 
-	public LoginPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
+	public LoginPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public boolean isVisible() throws Exception {
@@ -67,11 +69,13 @@ public class LoginPage extends OSXPage {
 		signInButton.click();
 		switch (expectedBehaviour) {
 		case SUCCESSFUL:
-			return new ContactListPage(this.getLazyDriver());
+			return new ContactListPage(this.getLazyDriver(),
+					this.getSecondaryLazyDriver());
 		case ERROR:
 			return this;
 		case NO_INTERNET:
-			return new NoInternetConnectionPage(this.getLazyDriver());
+			return new NoInternetConnectionPage(this.getLazyDriver(),
+					this.getSecondaryLazyDriver());
 		default:
 			throw new Exception(String.format(
 					"Unsupported expected sign in behaviour - %s",
@@ -148,7 +152,8 @@ public class LoginPage extends OSXPage {
 						.readTextFileFromResources(OSXConstants.Scripts.OPEN_SAFARI_WITH_URL_SCRIPT),
 						passwordResetLink);
 		this.getDriver().executeScript(script);
-		return new ChangePasswordPage(this.getLazyDriver());
+		return new ChangePasswordPage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 
 	public ChangePasswordPage openStagingForgotPasswordPage() throws Exception {
@@ -157,7 +162,8 @@ public class LoginPage extends OSXPage {
 						.readTextFileFromResources(OSXConstants.Scripts.OPEN_SAFARI_WITH_URL_SCRIPT),
 						OSXConstants.BrowserActions.STAGING_CHANGE_PASSWORD_URL);
 		this.getDriver().executeScript(script);
-		return new ChangePasswordPage(this.getLazyDriver());
+		return new ChangePasswordPage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 
 	public boolean isForgotPasswordPageAppears() throws Exception {

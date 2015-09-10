@@ -1,6 +1,5 @@
 package com.wearezeta.auto.osx.pages;
 
-import java.awt.HeadlessException;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -10,14 +9,10 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.sikuli.script.App;
-import org.sikuli.script.Env;
-import org.sikuli.script.FindFailed;
-import org.sikuli.script.Screen;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.locators.OSXLocators;
@@ -86,14 +81,15 @@ public class ConversationInfoPage extends OSXPage {
 		this.parent = parent;
 	}
 
-	public ConversationInfoPage(Future<ZetaOSXDriver> lazyDriver)
-			throws Exception {
-		this(lazyDriver, null);
+	public ConversationInfoPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		this(lazyDriver, secondaryDriver, null);
 	}
 
 	public ConversationInfoPage(Future<ZetaOSXDriver> lazyDriver,
-			ConversationPage parent) throws Exception {
-		super(lazyDriver);
+			Future<ZetaWebAppDriver> secondaryDriver, ConversationPage parent)
+			throws Exception {
+		super(lazyDriver, secondaryDriver);
 		this.parent = parent;
 	}
 
@@ -113,22 +109,6 @@ public class ConversationInfoPage extends OSXPage {
 		} catch (NoSuchElementException e) {
 			log.debug("Can't find user cell. Page source: "
 					+ this.getDriver().getPageSource());
-		}
-	}
-
-	public void selectUserIfNotSelected(String user) throws Exception {
-		Screen s = new Screen();
-		try {
-			App.focus(CommonUtils
-					.getOsxApplicationPathFromConfig(ConversationInfoPage.class));
-			if (!userIsNotExistInConversation(user))
-				s.click(Env.getMouseLocation());
-			if (!userIsNotExistInConversation(user))
-				s.click(Env.getMouseLocation());
-		} catch (HeadlessException e) {
-			e.printStackTrace();
-		} catch (FindFailed e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -155,7 +135,8 @@ public class ConversationInfoPage extends OSXPage {
 			groupChatAddPeopleButton.click();
 		}
 		confirmIfRequested();
-		return new PeoplePickerPage(this.getLazyDriver());
+		return new PeoplePickerPage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 
 	public void removeUser() throws Exception {
@@ -244,10 +225,11 @@ public class ConversationInfoPage extends OSXPage {
 		String xpath = String.format(
 				OSXLocators.xpathFormatUserProfileViewContactName, contact);
 		WebElement el = getDriver().findElement(By.xpath(xpath));
-		if (el != null)
+		if (el != null) {
 			return true;
-		else
+		} else {
 			return false;
+		}
 	}
 
 	public boolean isAddPeopleButtonExists() {
@@ -312,6 +294,7 @@ public class ConversationInfoPage extends OSXPage {
 
 	public ConnectToPopover connectToUser() throws Exception {
 		connectToUserButton.click();
-		return new ConnectToPopover(this.getLazyDriver());
+		return new ConnectToPopover(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 }

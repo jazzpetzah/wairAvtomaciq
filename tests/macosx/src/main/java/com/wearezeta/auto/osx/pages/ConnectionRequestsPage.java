@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
@@ -18,9 +19,9 @@ public class ConnectionRequestsPage extends OSXPage {
 	private static final Logger log = ZetaLogger
 			.getLog(ConnectionRequestsPage.class.getSimpleName());
 
-	public ConnectionRequestsPage(Future<ZetaOSXDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
+	public ConnectionRequestsPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public boolean isRequestFromUserWithEmailExists(String email)

@@ -10,6 +10,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
 import com.wearezeta.auto.osx.common.OSXConstants;
@@ -31,9 +32,9 @@ public class MainMenuAndDockPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.MainMenuPage.nameSignOutMenuItem)
 	private WebElement signOutMenuItem;
 
-	public MainMenuAndDockPage(Future<ZetaOSXDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver, OSXExecutionContext.wirePath);
+	public MainMenuAndDockPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver, OSXExecutionContext.wirePath);
 	}
 
 	public void signOut() throws Exception {
@@ -96,6 +97,7 @@ public class MainMenuAndDockPage extends OSXPage {
 
 	public ChoosePicturePage sendImage() throws Exception {
 		sendImageMenuItem.click();
-		return new ChoosePicturePage(this.getLazyDriver());
+		return new ChoosePicturePage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 }

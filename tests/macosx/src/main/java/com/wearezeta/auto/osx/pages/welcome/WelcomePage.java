@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.Wait;
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -41,8 +42,9 @@ public class WelcomePage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.WelcomePage.xpathAcceptTermsOfUseCheckbox)
 	private WebElement acceptTermsOfUseCheckbox;
 
-	public WelcomePage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
+	public WelcomePage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public boolean isVisible() throws Exception {
@@ -65,12 +67,14 @@ public class WelcomePage extends OSXPage {
 
 		registerButton.click();
 
-		return new RegistrationPage(this.getLazyDriver());
+		return new RegistrationPage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 
 	public LoginPage startSignIn() throws Exception {
 		signInButton.click();
-		return new LoginPage(this.getLazyDriver());
+		return new LoginPage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 
 	public void sendProblemReportIfAppears(ProblemReportPage reportPage)

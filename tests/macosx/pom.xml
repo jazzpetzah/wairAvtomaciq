@@ -15,9 +15,9 @@
 		<skipTests>true</skipTests>
 		<TestRun>DevRun</TestRun>
 		<Url>http://127.0.0.1:4622/wd/hub</Url>
-		<appPath>Wire</appPath>
+        <appPath>/Applications/WireInternal.app</appPath>
 		<generateUsers>true</generateUsers>
-		<driverTimeoutSeconds>10</driverTimeoutSeconds>
+        <driverTimeoutSeconds>10</driverTimeoutSeconds>
 		<osxClientInfoPlist>/Project/builds_info/Info_osx.plist</osxClientInfoPlist>
 		<defaultEmail>smoketester@wire.com</defaultEmail>
 		<wireConfigDomain>com.wearezeta.zclient.mac.development</wireConfigDomain>
@@ -26,12 +26,12 @@
 
 	<dependencies>
 
-		<dependency>
+        <!--		<dependency>
 			<groupId>org.sikuli</groupId>
 			<artifactId>sikuli-java</artifactId>
 			<version>1.0.1</version>
 			<type>jar</type>
-		</dependency>
+        </dependency>-->
 
 		<dependency>
 			<groupId>com.wearezeta.auto</groupId>

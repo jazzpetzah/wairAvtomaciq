@@ -10,6 +10,7 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
@@ -32,9 +33,9 @@ public class ChangePasswordPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.ChangePasswordPage.nameQuitSafariButton)
 	private WebElement quitSafariButton;
 
-	public ChangePasswordPage(Future<ZetaOSXDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
+	public ChangePasswordPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public void enterEmailForChangePasswordAndSubmit(String email)

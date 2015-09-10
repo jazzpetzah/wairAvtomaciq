@@ -23,6 +23,7 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 import com.wearezeta.auto.osx.common.OSXConstants;
@@ -85,13 +86,15 @@ public class ConversationPage extends MainWirePage {
 
 	public String currentConversationName;
 
-	public ConversationPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		this(lazyDriver, null);
+	public ConversationPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public ConversationPage(Future<ZetaOSXDriver> lazyDriver,
-			String conversationName) throws Exception {
-		super(lazyDriver);
+			Future<ZetaWebAppDriver> secondaryDriver, String conversationName)
+			throws Exception {
+		super(lazyDriver, secondaryDriver);
 		this.currentConversationName = conversationName;
 	}
 
@@ -302,8 +305,9 @@ public class ConversationPage extends MainWirePage {
 				log.debug("Current media bar position: " + mediaBarPosition);
 				log.debug("Media play state: " + getSoundCloudButtonState());
 				long endDate = new Date().getTime();
-				if (endDate - startDate > TIMEOUT_MINUTES * 60 * 1000)
+				if (endDate - startDate > TIMEOUT_MINUTES * 60 * 1000) {
 					break;
+				}
 			}
 		}
 	}
@@ -364,8 +368,9 @@ public class ConversationPage extends MainWirePage {
 				lastGroupPosition = NSPoint.fromString(lastGroup
 						.getAttribute(OSXConstants.Attributes.AXPOSITION));
 				long endDate = new Date().getTime();
-				if (endDate - startDate > TIMEOUT_MINUTES * 60 * 1000)
+				if (endDate - startDate > TIMEOUT_MINUTES * 60 * 1000) {
 					break;
+				}
 			}
 		}
 	}
@@ -394,10 +399,11 @@ public class ConversationPage extends MainWirePage {
 		NSPoint conversationPosition = NSPoint
 				.fromString(conversationScrollArea
 						.getAttribute(OSXConstants.Attributes.AXPOSITION));
-		if (mediaBarPosition.y() >= conversationPosition.y())
+		if (mediaBarPosition.y() >= conversationPosition.y()) {
 			return true;
-		else
+		} else {
 			return false;
+		}
 	}
 
 	private static int STATE_CHANGE_TIMEOUT = 60 * 2;

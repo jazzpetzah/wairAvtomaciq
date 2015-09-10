@@ -9,6 +9,7 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
 public class TransferCallPage extends CallPage {
@@ -16,8 +17,9 @@ public class TransferCallPage extends CallPage {
 	@FindBy(how = How.NAME, using = OSXLocators.CallPage.nameTransferCallHereButton)
 	private WebElement transferCallHereButton;
 
-	public TransferCallPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
+	public TransferCallPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public boolean isVisible() throws Exception {
@@ -27,6 +29,7 @@ public class TransferCallPage extends CallPage {
 
 	public StartedCallPage transferCall() throws Exception {
 		transferCallHereButton.click();
-		return new StartedCallPage(this.getLazyDriver());
+		return new StartedCallPage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 }

@@ -10,6 +10,7 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.calling.StartedCallPage;
@@ -28,9 +29,9 @@ public class CallingFloatingPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.CallingFloatingPage.nameAnswerButton)
 	private WebElement answerButton;
 
-	public CallingFloatingPage(Future<ZetaOSXDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
+	public CallingFloatingPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public boolean isWindowVisible() throws Exception {
@@ -54,7 +55,8 @@ public class CallingFloatingPage extends OSXPage {
 
 	public StartedCallPage answerCall() throws Exception {
 		answerButton.click();
-		return new StartedCallPage(this.getLazyDriver());
+		return new StartedCallPage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 
 	public void ignoreCall() {

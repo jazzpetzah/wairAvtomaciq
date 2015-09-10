@@ -13,6 +13,7 @@ import org.openqa.selenium.support.How;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXCommonUtils;
@@ -41,9 +42,10 @@ public class VerificationPage extends OSXPage {
 
 	private String activationResponse = null;
 
-	public VerificationPage(Future<ZetaOSXDriver> lazyDriver, String email)
+	public VerificationPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver, String email)
 			throws Exception {
-		super(lazyDriver);
+		super(lazyDriver, secondaryDriver);
 
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", email);

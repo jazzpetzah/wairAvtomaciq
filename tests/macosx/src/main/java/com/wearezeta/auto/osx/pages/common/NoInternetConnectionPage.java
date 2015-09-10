@@ -9,6 +9,7 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.OSXPage;
 
@@ -20,9 +21,9 @@ public class NoInternetConnectionPage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.NoInternetConnectionPage.xpathNoInternetMessage)
 	private WebElement noInternetMessage;
 
-	public NoInternetConnectionPage(Future<ZetaOSXDriver> lazyDriver)
-			throws Exception {
-		super(lazyDriver);
+	public NoInternetConnectionPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public boolean isVisible() throws Exception {

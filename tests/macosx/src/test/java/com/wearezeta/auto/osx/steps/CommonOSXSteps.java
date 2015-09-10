@@ -21,6 +21,7 @@ import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -39,6 +40,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class CommonOSXSteps {
 
@@ -99,6 +101,23 @@ public class CommonOSXSteps {
 						this::startApp, null);
 	}
 
+	@SuppressWarnings("unchecked")
+	private Future<ZetaWebAppDriver> resetOSXWebAppDriver(String url)
+			throws Exception {
+		final DesiredCapabilities capabilities = new DesiredCapabilities();
+		ChromeOptions options = new ChromeOptions();
+		// simulate a fake webcam and mic for testing
+		options.addArguments("use-fake-device-for-media-stream");
+		// allow skipping the security prompt for sharing the media device
+		options.addArguments("use-fake-ui-for-media-stream");
+		options.setBinary(OSXExecutionContext.wirePath);
+		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+		capabilities.setCapability("platformName", "ANY");
+
+		return (Future<ZetaWebAppDriver>) PlatformDrivers.getInstance()
+				.resetDriver(url, capabilities, MAX_DRIVER_CREATION_RETRIES);
+	}
+
 	private void startApp(RemoteWebDriver drv) {
 		try {
 			CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
@@ -141,12 +160,17 @@ public class CommonOSXSteps {
 
 	private void commonBefore() throws Exception {
 		this.testStartedTimestamp = new Date();
-		final Future<ZetaOSXDriver> lazyDriver = resetOSXDriver(OSXExecutionContext.appiumUrl);
 
-		PagesCollection.mainMenuPage = new MainMenuAndDockPage(lazyDriver);
-		PagesCollection.welcomePage = new WelcomePage(lazyDriver);
-		PagesCollection.loginPage = new LoginPage(lazyDriver);
-		PagesCollection.problemReportPage = new ProblemReportPage(lazyDriver);
+		final Future<ZetaOSXDriver> lazyDriver = resetOSXDriver(OSXExecutionContext.appiumUrl);
+		final Future<ZetaWebAppDriver> lazyWebappDriver = resetOSXWebAppDriver("http://localhost:9515");
+
+		PagesCollection.mainMenuPage = new MainMenuAndDockPage(lazyDriver,
+				lazyWebappDriver);
+		PagesCollection.welcomePage = new WelcomePage(lazyDriver,
+				lazyWebappDriver);
+		PagesCollection.loginPage = new LoginPage(lazyDriver, lazyWebappDriver);
+		PagesCollection.problemReportPage = new ProblemReportPage(lazyDriver,
+				lazyWebappDriver);
 
 		ZetaFormatter.setLazyDriver(lazyDriver);
 		// saving time of startup for Sync Engine
@@ -334,18 +358,18 @@ public class CommonOSXSteps {
 	/**
 	 * Changes accent color of specified user to one from the list using REST
 	 * API
-	 * 
+	 *
 	 * @step. ^User (\\w+) changes accent color to
 	 *        (StrongBlue|StrongLimeGreen|BrightYellow
 	 *        |VividRed|BrightOrange|SoftPink|Violet)$
-	 * 
+	 *
 	 * @param userNameAlias
 	 *            user name
 	 * @param newColor
 	 *            one of possible accent colors:
 	 *            StrongBlue|StrongLimeGreen|BrightYellow
 	 *            |VividRed|BrightOrange|SoftPink|Violet
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^User (\\w+) changes accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
@@ -357,9 +381,9 @@ public class CommonOSXSteps {
 	/**
 	 * Stores screenshot of the whole screen for usage during execution by
 	 * specified alias
-	 * 
+	 *
 	 * @step. ^I take fullscreen shot and save it as (.*)$
-	 * 
+	 *
 	 * @param screenshotAlias
 	 *            string id for stored screenshot
 	 * @throws Exception
@@ -379,14 +403,14 @@ public class CommonOSXSteps {
 
 	/**
 	 * Compares screenshots stored with specified aliases
-	 * 
+	 *
 	 * @step. ^I see that screen (.*) is changed in comparison with (.*)$
-	 * 
+	 *
 	 * @param resultAlias
 	 *            current screen appearance
 	 * @param previousAlias
 	 *            screen stored before
-	 * 
+	 *
 	 * @throws AssertionError
 	 *             if screenshots are similar enough
 	 */

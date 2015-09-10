@@ -18,6 +18,7 @@ import org.openqa.selenium.support.ui.Wait;
 import com.google.common.base.Function;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -55,8 +56,9 @@ public class RegistrationPage extends OSXPage {
 	@FindBy(how = How.ID, using = OSXLocators.RegistrationPage.idRegistrationBackButton)
 	private WebElement backButton;
 
-	public RegistrationPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
+	public RegistrationPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public void typeFullName(String name) {
@@ -78,7 +80,7 @@ public class RegistrationPage extends OSXPage {
 
 	public VerificationPage createAccount(String email) throws Exception {
 		VerificationPage verificationPage = new VerificationPage(
-				this.getLazyDriver(), email);
+				this.getLazyDriver(), this.getSecondaryLazyDriver(), email);
 
 		Wait<WebDriver> wait = new FluentWait<WebDriver>(this.getDriver())
 				.withTimeout(5, TimeUnit.SECONDS).pollingEvery(1,

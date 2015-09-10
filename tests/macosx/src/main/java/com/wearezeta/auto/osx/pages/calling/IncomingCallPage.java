@@ -10,6 +10,7 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 
@@ -24,8 +25,9 @@ public class IncomingCallPage extends CallPage {
 	@FindBy(how = How.ID, using = OSXLocators.CallPage.idIgnoreCallButton)
 	private WebElement ignoreCallButton;
 
-	public IncomingCallPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		super(lazyDriver);
+	public IncomingCallPage(Future<ZetaOSXDriver> lazyDriver,
+			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
+		super(lazyDriver, secondaryDriver);
 	}
 
 	public boolean isIncomingCallVisible(String subscriberName)
@@ -44,7 +46,8 @@ public class IncomingCallPage extends CallPage {
 
 	public StartedCallPage joinCall() throws Exception {
 		joinCallButton.click();
-		return new StartedCallPage(this.getLazyDriver());
+		return new StartedCallPage(this.getLazyDriver(),
+				this.getSecondaryLazyDriver());
 	}
 
 	public void ignoreCall() throws Exception {
