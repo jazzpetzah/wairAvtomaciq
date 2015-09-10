@@ -588,4 +588,39 @@ public class ConversationViewPageSteps {
 	public void ITapPlayPauseButton() throws Exception {
 		getConversationViewPage().tapPlayPauseButton();
 	}
+
+	/**
+	 * Verify whether Giphy button is visible in the convo view
+	 * 
+	 * @step. ^I (do not )?see Giphy button in the [Cc]onversation view$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if 'do not' sentence does not exist in step
+	 *            signature
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see Giphy button in the [Cc]onversation view$")
+	public void ISeeGiphyButton(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(
+					"Giphy button is not visible in the conversation view",
+					getConversationViewPage().waitUntilGiphyButtonVisible());
+		} else {
+			Assert.assertTrue(
+					"Giphy button is visible in the conversation view, but should be hidden",
+					getConversationViewPage().waitUntilGiphyButtonInvisible());
+		}
+	}
+	
+	/**
+	 * Tap Giphy button
+	 * 
+	 * @step. ^I tap Giphy button in the [Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Giphy button in the [Cc]onversation view$")
+	public void ITapGiphyButton() throws Exception {
+		getConversationViewPage().tapGiphyButton();
+	}
 }

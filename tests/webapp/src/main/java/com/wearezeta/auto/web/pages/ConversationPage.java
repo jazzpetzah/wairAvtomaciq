@@ -563,6 +563,16 @@ public class ConversationPage extends WebPage {
 		return new ConnectToPopoverContainer(this.getLazyDriver());
 	}
 
+	public ConnectToPopoverContainer clickUserAvatar(String userId)
+			throws Exception {
+		String css = WebAppLocators.ConversationPage.cssUserAvatarById
+				.apply(userId);
+		final WebElement avatar = getDriver().findElement(By.cssSelector(css));
+		DriverUtils.waitUntilElementClickable(this.getDriver(), avatar);
+		avatar.click();
+		return new ConnectToPopoverContainer(this.getLazyDriver());
+	}
+
 	public boolean isActionMessageNotSent(final Set<String> parts)
 			throws Exception {
 		final By locator = By
