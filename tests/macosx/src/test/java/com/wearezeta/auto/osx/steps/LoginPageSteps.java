@@ -275,7 +275,7 @@ public class LoginPageSteps {
 		expectedHeaders.put("Delivered-To", email);
 		PagesCollection.loginPage.setPasswordResetMessage(IMAPSMailbox
 				.getInstance().getMessage(expectedHeaders,
-						BackendAPIWrappers.UI_ACTIVATION_TIMEOUT));
+						BackendAPIWrappers.ACTIVATION_TIMEOUT));
 		PagesCollection.changePasswordPage
 				.enterEmailForChangePasswordAndSubmit(email);
 	}
