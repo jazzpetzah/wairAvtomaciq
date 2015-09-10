@@ -273,7 +273,7 @@ Feature: Connect
       | user1Name | user2Name | user3Name | ContactGroupChat |
 
   @id676 @regression
-  Scenario Outline: (BUG AN-2702) I want to block a person from 1:1 conversation
+  Scenario Outline: I want to block a person from 1:1 conversation
     Given There are 2 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given I sign in using my email or phone number
@@ -284,6 +284,8 @@ Feature: Connect
     And I press options menu button
     And I press BLOCK conversation menu button
     And I confirm block
+    And I press back button
+    And I navigate back from dialog page
     Then I do not see contact list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact1> is blocked in backend search results
@@ -293,14 +295,14 @@ Feature: Connect
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
     And I tap on user name found on People picker page <Contact1>
-    Then User info should be shown with Block button
+    Then User info should be shown with Unblock button
 
     Examples: 
       | Name      | Contact1  |
       | user1Name | user2Name |
 
   @id680 @regression
-  Scenario Outline: (BUG AN-2702) I want to see user has been blocked within the Start UI
+  Scenario Outline: I want to see user has been blocked within the Start UI
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
     Given I see Contact list with no contacts
@@ -318,6 +320,7 @@ Feature: Connect
     And I see that connection is pending
     And I click Block button on connect to page
     And I confirm block on connect to page
+    And I press back button
     And I wait for 5 seconds
     Then I do not see contact list with name <Contact>
     And I wait until <Contact> exists in backend search results
@@ -327,7 +330,7 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I see user <Contact> found on People picker page
     And I tap on user name found on People picker page <Contact>
-    Then User info should be shown with Block button
+    Then User info should be shown with Unblock button
     And I click Unblock button
 
     Examples: 
