@@ -359,6 +359,7 @@ Feature: Connect
     When I tap the conversation <WaitingMess>
     And I see the Incoming connections page
     And I ignore incoming connection request from <Contact> on Incoming connections page
+    And I swipe right to show the conversations list
     Then I do not see the conversation <Contact> in my conversations list
     And I do not see the conversation <WaitingMess> in my conversations list
     When I navigate back
