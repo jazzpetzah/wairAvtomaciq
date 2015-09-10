@@ -81,6 +81,9 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameMuteCallButton)
 	private WebElement muteCallButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
+	private WebElement leaveActionMenuButton;
 
 	private int oldLocation = 0;
 
@@ -749,5 +752,9 @@ public class ContactListPage extends IOSPage {
 				.findElement(
 						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
 		DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
+	}
+
+	public void clickLeaveButtonInActionMenu() {
+		leaveActionMenuButton.click();
 	}
 }
