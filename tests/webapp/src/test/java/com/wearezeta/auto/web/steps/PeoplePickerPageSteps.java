@@ -338,7 +338,6 @@ public class PeoplePickerPageSteps {
 	 * 
 	 * @step. ^I see (\\d+) people in Top people list$
 	 * 
-	 * @throws Exception
 	 */
 	@Then("^I see (\\d+) people in Top people list$")
 	public void ISeeXPeopleInTopPeopleList(int count) {
