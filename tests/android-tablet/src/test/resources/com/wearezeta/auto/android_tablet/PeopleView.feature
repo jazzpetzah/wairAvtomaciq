@@ -105,8 +105,8 @@ Feature: People View
     When I tap Remove button on Group popover
     And I confirm removal from the group chat on Group popover
     Then I do not see the participant avatar <Contact2> on Group popover
-    And I tap Show Details button on conversation view page
-    And I do not see the Group popover
+    When I tap Close button on Group popover
+    Then I do not see the Group popover
     And I see the system message contains "<Action> <Contact2>" text on conversation view page
 
     Examples: 
@@ -132,8 +132,8 @@ Feature: People View
     When I tap Remove button on Group popover
     And I confirm removal from the group chat on Group popover
     Then I do not see the participant avatar <Contact2> on Group popover
-    And I tap Show Details button on conversation view page
-    And I do not see the Group popover
+    When I tap Close button on Group popover
+    Then I do not see the Group popover
     And I see the system message contains "<Action> <Contact2>" text on conversation view page
 
     Examples: 
