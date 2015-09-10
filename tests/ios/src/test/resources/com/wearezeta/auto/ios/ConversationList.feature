@@ -161,10 +161,10 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-      
-  @torun @staging @id3313
+
+  @staging @id3313
   Scenario Outline: Verify archiving from the action menu
-   	Given There are 2 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
@@ -175,8 +175,7 @@ Feature: Conversation List
     Then I dont see conversation <Contact> in contact list
     And I open archived conversations
     Then I see user <Contact> in contact list
-    
+
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-  
