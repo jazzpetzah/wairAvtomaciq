@@ -742,4 +742,12 @@ public class ContactListPage extends IOSPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(xpath));
 	}
+
+	public void clickArchiveButtonInActionMenu() throws Exception {
+		WebElement archiveButton = this
+				.getDriver()
+				.findElement(
+						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
+		DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
+	}
 }

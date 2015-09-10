@@ -719,4 +719,15 @@ public class ContactListPageSteps {
 				+ " in opened action menu.", getContactListPage()
 				.isButtonVisibleInActionMenu(buttonTitle));
 	}
+
+	/**
+	 * Clicks the Archive button in action menu of contact list
+	 * 
+	 * @step. ^I press Archive button in action menu in Contact List$
+	 * @throws Throwable
+	 */
+	@When("^I press Archive button in action menu in Contact List$")
+	public void IPressArchiveButtonInActionMenuInContactList() throws Throwable {
+		getContactListPage().clickArchiveButtonInActionMenu();
+	}
 }

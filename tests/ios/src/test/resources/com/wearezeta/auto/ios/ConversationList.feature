@@ -161,3 +161,21 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id3313
+  Scenario Outline: Verify archiving from the action menu
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    And I see conversation <Contact> name in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I press Archive button in action menu in Contact List
+    Then I dont see conversation <Contact> in contact list
+    And I open archived conversations
+    Then I see user <Contact> in contact list
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
