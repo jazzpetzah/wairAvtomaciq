@@ -72,46 +72,52 @@ Feature: Calling
 
   @id2842 @regression
   Scenario Outline: I see miss call notification on the list and inside conversation view (portrait)
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
-    When <Contact> calls me using <CallBackend>
+    And I see the conversation <Contact1> in my conversations list
+    And I tap the conversation <Contact1>
+    And I see the conversation <Contact2> in my conversations list
+    When <Contact2> calls me using <CallBackend>
     And I see calling overlay Big bar
-    And <Contact> stops all calls to me
+    And <Contact2> stops all calls to me
     Then I do not see calling overlay Big bar
-    And I see missed call notification near <Contact> conversations list item
-    When I tap the conversation <Contact>
+    When I swipe right to show the conversations list
+    Then I see missed call notification near <Contact2> conversations list item
+    When I tap the conversation <Contact2>
     Then I see missed call notification in the conversation view
     When I navigate back
-    Then I do not see missed call notification near <Contact> conversations list item
+    Then I do not see missed call notification near <Contact2> conversations list item
 
-    Examples: 
-      | CallBackend | Name      | Contact   |
-      | autocall    | user1Name | user2Name |
+    Examples:
+      | CallBackend | Name      | Contact1  | Contact2  |
+      | autocall    | user1Name | user2Name | user3Name |
 
   @id3125 @regression
   Scenario Outline: I see miss call notification on the list and inside conversation view (landscape)
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
-    Given I rotate UI to landscape
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to portrait
     Given I sign in using my email
     Given I see the conversations list with conversations
-    And I see the conversation <Contact> in my conversations list
-    When <Contact> calls me using <CallBackend>
+    And I see the conversation <Contact1> in my conversations list
+    And I tap the conversation <Contact1>
+    And I see the conversation <Contact2> in my conversations list
+    When <Contact2> calls me using <CallBackend>
     And I see calling overlay Big bar
-    And <Contact> stops all calls to me
+    And <Contact2> stops all calls to me
     Then I do not see calling overlay Big bar
-    And I see missed call notification near <Contact> conversations list item
-    When I tap the conversation <Contact>
+    And I see missed call notification near <Contact2> conversations list item
+    When I tap the conversation <Contact2>
     Then I see missed call notification in the conversation view
-    Then I do not see missed call notification near <Contact> conversations list item
+    When I navigate back
+    Then I do not see missed call notification near <Contact2> conversations list item
 
-    Examples: 
-      | CallBackend | Name      | Contact   |
-      | autocall    | user1Name | user2Name |
+    Examples:
+      | CallBackend | Name      | Contact1  | Contact2  |
+      | autocall    | user1Name | user2Name | user3Name |
 
   @id3124 @regression @rc
   Scenario Outline: I can dismiss calling bar by swipe (portrait)
