@@ -48,7 +48,7 @@ import gherkin.formatter.model.Step;
 import gherkin.formatter.model.Tag;
 
 public class ZetaFormatter implements Formatter, Reporter {
-	private static final String rcNotificationsRecepients = "vova@wire.com,sergeii.khyzhniak@wire.com,nick@wire.com";
+	private static final String rcNotificationsRecepients = "vova@wire.com,sergeii.khyzhniak@wire.com,nick@wire.com,dasha@wire.com";
 
 	private static String feature = "";
 	private static String scenario = "";
