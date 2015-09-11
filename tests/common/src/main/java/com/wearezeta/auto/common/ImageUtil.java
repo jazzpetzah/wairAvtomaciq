@@ -228,10 +228,9 @@ public class ImageUtil {
 					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION));
 			idx++;
 		}
-		return thresholds.stream().reduce(0.0, (x, y) -> x + y)
-				/ thresholds.size();
+		return thresholds.stream().min(Double::compare).orElse(100.0);
 	}
-	
+
 	public static boolean isLandscape(BufferedImage bi) {
 		return (bi.getWidth() > bi.getHeight());
 	}
