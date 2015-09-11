@@ -34,9 +34,9 @@ public class CommonUtils {
 	private static final String IOS_PING_IMAGE = "ios_ping_image.png";
 	private static final String IOS_HOT_PING_IMAGE = "ios_hot_ping_image.png";
 	private static final String IOS_AVATAR_CLOCK_IMAGE = "new_avatarclock.png";
-	private static final String MEDIABAR_PLAY_IMAGE = "android_mediabar_play_image.png";
-	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image.png";
-	private static final String MEDIA_PLAY_IMAGE = "android_media_play_image.png";
+	private static final String MEDIABAR_PLAY_IMAGE = "android_mediabar_play_image_(white).png";
+	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image_(white).png";
+	private static final String MEDIA_PLAY_IMAGE = "android_media_play_image_(white).png";
 	private static final String MEDIA_PAUSE_IMAGE = "android_media_pause_image.png";
 	private static final String ALPHANUMERIC_PLUS_SYMBOLS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
 

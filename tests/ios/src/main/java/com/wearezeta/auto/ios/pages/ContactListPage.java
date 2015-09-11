@@ -81,6 +81,9 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameMuteCallButton)
 	private WebElement muteCallButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
+	private WebElement leaveActionMenuButton;
 
 	private int oldLocation = 0;
 
@@ -725,4 +728,33 @@ public class ContactListPage extends IOSPage {
 		return true;
 	}
 
+	public boolean isActionMenuVisibleForConversation(String conversation)
+			throws Exception {
+		String xpath = String
+				.format(IOSLocators.ContactListPage.xpathFormatActionMenuConversationName,
+						conversation.toUpperCase());
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpath));
+	}
+
+	public boolean isButtonVisibleInActionMenu(String buttonTitle)
+			throws Exception {
+		String xpath = String.format(
+				IOSLocators.ContactListPage.xpathFormatActionMenuXButton,
+				buttonTitle.toUpperCase());
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpath));
+	}
+
+	public void clickArchiveButtonInActionMenu() throws Exception {
+		WebElement archiveButton = this
+				.getDriver()
+				.findElement(
+						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
+		DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
+	}
+
+	public void clickLeaveButtonInActionMenu() {
+		leaveActionMenuButton.click();
+	}
 }

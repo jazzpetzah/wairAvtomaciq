@@ -677,7 +677,7 @@ public class CommonAndroidSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@When("^Contact (.*) sends (\\d+) messages? to user (.*)$")
+	@When("^Contact (.*) send[s]* (\\d+) messages? to user (.*)$")
 	public void UserSendXMessagesToConversation(String msgFromUserNameAlias,
 			int count, String dstUserNameAlias) throws Exception {
 		for (int i = 0; i < count; i++) {

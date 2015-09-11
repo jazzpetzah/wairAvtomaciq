@@ -13,7 +13,6 @@ Feature: Connect
     And I tap the found item <Contact> on People Picker page
     And I see Outgoing Connection popover
     And I see the name <Contact> on Outgoing Connection popover
-    And I enter connection message "<Message>" on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
     And I see People Picker page
@@ -21,8 +20,8 @@ Feature: Connect
     Then I see the conversation <Contact> in my conversations list
 
     Examples: 
-      | Name      | Contact   | Message       |
-      | user1Name | user2Name | Hellow friend |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @id2280 @smoke @rc
   Scenario Outline: Send connection request from search by name in portrait
@@ -37,7 +36,6 @@ Feature: Connect
     And I tap the found item <Contact> on People Picker page
     And I see Outgoing Connection popover
     And I see the name <Contact> on Outgoing Connection popover
-    And I enter connection message "<Message>" on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
     And I see People Picker page
@@ -45,8 +43,8 @@ Feature: Connect
     Then I see the conversation <Contact> in my conversations list
 
     Examples: 
-      | Name      | Contact   | Message       |
-      | user1Name | user2Name | Hellow friend |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @id2245 @smoke @rc
   Scenario Outline: Accept connection request in landscape mode
@@ -104,18 +102,15 @@ Feature: Connect
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
-    When I enter connection message "<Message>" on Group popover
     And I tap Connect button on Group popover
     Then I see Pending button on Group popover
     When I tap Show Details button on conversation view page
     Then I do not see the Group popover
     And I see the conversation <Contact2> in my conversations list
-    And I tap the conversation <Contact2>
-    And I see the message "<Message>" in the conversation view
 
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName        | Message |
-      | user1Name | user2Name | user3Name | NonConnectedUserChat | Yo man! |
+      | Name      | Contact1  | Contact2  | GroupChatName        |
+      | user1Name | user2Name | user3Name | NonConnectedUserChat |
 
   @id3119 @regression
   Scenario Outline: I want to send connection request by selecting unconnected user from a group conversation (landscape)
@@ -135,18 +130,15 @@ Feature: Connect
     And I see the Group popover
     And I see the participant avatar <Contact2> on Group popover
     And I tap the participant avatar <Contact2> on Group popover
-    When I enter connection message "<Message>" on Group popover
     And I tap Connect button on Group popover
     Then I see Pending button on Group popover
     When I tap Show Details button on conversation view page
     Then I do not see the Group popover
     And I see the conversation <Contact2> in my conversations list
-    And I tap the conversation <Contact2>
-    And I see the message "<Message>" in the conversation view
 
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName        | Message |
-      | user1Name | user2Name | user3Name | NonConnectedUserChat | Yo man! |
+      | Name      | Contact1  | Contact2  | GroupChatName        |
+      | user1Name | user2Name | user3Name | NonConnectedUserChat |
 
   @id3089 @regression @rc
   Scenario Outline: Send connection request to user from search results by email (portrait)
@@ -161,7 +153,6 @@ Feature: Connect
     And I tap the found item <Contact> on People Picker page
     And I see Outgoing Connection popover
     And I see the name <Contact> on Outgoing Connection popover
-    And I enter connection message "<Message>" on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
     And I see People Picker page
@@ -169,8 +160,8 @@ Feature: Connect
     Then I see the conversation <Contact> in my conversations list
 
     Examples: 
-      | Name      | Contact   | ContactEmail | Message       |
-      | user1Name | user2Name | user2Email   | Hellow friend |
+      | Name      | Contact   | ContactEmail |
+      | user1Name | user2Name | user2Email   |
 
   @id3102 @regression @rc
   Scenario Outline: Send connection request to user from search results by email (landscape)
@@ -185,7 +176,6 @@ Feature: Connect
     And I tap the found item <Contact> on People Picker page
     And I see Outgoing Connection popover
     And I see the name <Contact> on Outgoing Connection popover
-    And I enter connection message "<Message>" on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
     And I see People Picker page
@@ -193,8 +183,8 @@ Feature: Connect
     Then I see the conversation <Contact> in my conversations list
 
     Examples: 
-      | Name      | Contact   | ContactEmail | Message       |
-      | user1Name | user2Name | user2Email   | Hellow friend |
+      | Name      | Contact   | ContactEmail |
+      | user1Name | user2Name | user2Email   |
 
   @id2915 @regression @rc
   Scenario Outline: Connect to someone from PYMK by clicking + (portrait)
@@ -260,7 +250,6 @@ Feature: Connect
     And I remember the name of the first PYMK item on People Picker page
     And I tap the first PYMK item on People Picker page
     And I see Outgoing Connection popover
-    And I enter connection message "<Message>" on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
     And I see People Picker page
@@ -268,12 +257,10 @@ Feature: Connect
     And I do not see the previously remembered PYMK item on People Picker page
     And I close People Picker
     Then I see conversations list with the previously remembered PYMK item
-    When I switch to the conversation with the previously remembered PYMK item
-    Then I see the outgoing invitation message "<Message>" on conversation view page
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Message       |
-      | user1Name | user2Name | user3Name | Hellow friend |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id3114 @regression
   Scenario Outline: Connect to someone from PYMK by tap and typing connect message (landscape)
@@ -289,7 +276,6 @@ Feature: Connect
     And I remember the name of the first PYMK item on People Picker page
     And I tap the first PYMK item on People Picker page
     And I see Outgoing Connection popover
-    And I enter connection message "<Message>" on Outgoing Connection popover
     And I tap Connect button on Outgoing Connection popover
     And I do not see Outgoing Connection popover
     And I see People Picker page
@@ -297,12 +283,10 @@ Feature: Connect
     And I do not see the previously remembered PYMK item on People Picker page
     And I close People Picker
     Then I see conversations list with the previously remembered PYMK item
-    When I switch to the conversation with the previously remembered PYMK item
-    Then I see the outgoing invitation message "<Message>" on conversation view page
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Message       |
-      | user1Name | user2Name | user3Name | Hellow friend |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id2914 @regression @rc
   Scenario Outline: Dismiss PYMK item (portrait)
@@ -375,6 +359,7 @@ Feature: Connect
     When I tap the conversation <WaitingMess>
     And I see the Incoming connections page
     And I ignore incoming connection request from <Contact> on Incoming connections page
+    And I swipe right to show the conversations list
     Then I do not see the conversation <Contact> in my conversations list
     And I do not see the conversation <WaitingMess> in my conversations list
     When I navigate back

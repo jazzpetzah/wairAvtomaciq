@@ -9,11 +9,8 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
-    And I long swipe right to archive conversation <Contact2>
-    Then I dont see conversation <Contact2> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
-    Then I see user <Contact2> in contact list
 
     Examples: 
       | Name      | Contact   | Contact2  |
@@ -29,11 +26,8 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
-    And I long swipe right to archive conversation <Contact2>
-    Then I dont see conversation <Contact2> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
-    Then I see user <Contact2> in contact list
 
     Examples: 
       | Name      | Contact   | Contact2  |
@@ -46,7 +40,8 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    When I long swipe right to archive conversation <GroupChatName>
+    And I swipe right on a <Contact1>
+    And I click archive button for conversation <Contact1>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
@@ -63,7 +58,8 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    And I long swipe right to archive conversation <GroupChatName>
+    And I swipe right on a <Contact1>
+    And I click archive button for conversation <Contact1>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
@@ -428,3 +424,79 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+
+  @staging
+  Scenario Outline: Verify action menu is opened on swipe right on the group conversation [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    Then I see conversation <GroupChatName> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Leave button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3name | ActionMenuChat |
+
+  @staging
+  Scenario Outline: Verify action menu is opened on swipe right on the group conversation [LANDSCAPE]
+    Given I rotate UI to landscape
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    Then I see conversation <GroupChatName> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Leave button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3name | ActionMenuChat |
+
+  @staging
+  Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    Then I see conversation <Contact> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Block button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging
+  Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [LANDSCAPE]
+    Given I rotate UI to landscape
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    Then I see conversation <Contact> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Block button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

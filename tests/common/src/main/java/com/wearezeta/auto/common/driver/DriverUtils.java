@@ -33,6 +33,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.remote.SessionNotFoundException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
@@ -139,6 +140,9 @@ public class DriverUtils {
 									.findElement(by).isDisplayed())
 							|| !isElementInScreenRect(driver,
 									driver.findElement(by));
+				} catch (SessionNotFoundException e) {
+					log.debug(e.getMessage());
+					return true;
 				} catch (WebDriverException e) {
 					return true;
 				}

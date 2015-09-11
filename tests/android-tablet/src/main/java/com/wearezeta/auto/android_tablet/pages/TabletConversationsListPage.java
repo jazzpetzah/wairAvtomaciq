@@ -52,35 +52,35 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 			getContactListPage().waitForConversationListLoad();
 		} finally {
 			// FIXME: Workaround for android bug AN-2238
-			this.fixOrientation();
-		}
-	}
+			if (ScreenOrientationHelper.getInstance().fixOrientation(
+					getDriver()) == ScreenOrientation.PORTRAIT) {
+				final int screenWidth = getDriver().manage().window().getSize()
+						.getWidth();
 
-	final static int MAX_ORIENTATION_FIX_RETRIES = 3;
+				final By overlayLocator = By
+						.id(TabletSelfProfilePage.idSelfProfileView);
+				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						overlayLocator, 1)
+						&& getDriver().findElement(overlayLocator)
+								.getLocation().getX() < screenWidth / 2) {
+					this.tapOnCenterOfScreen();
+					this.tapOnCenterOfScreen();
+					DriverUtils.swipeByCoordinates(getDriver(), 1000, 10, 50,
+							90, 50);
+					return;
+				}
 
-	private void fixOrientation() throws Exception {
-		final ScreenOrientation currentOrientation = ScreenOrientationHelper
-				.getInstance().fixOrientation(getDriver());
-		if (currentOrientation == ScreenOrientation.LANDSCAPE) {
-			// No need to swipe right in landscape orientation
-			return;
-		}
-
-		final By overlayLocator = By
-				.id(TabletSelfProfilePage.idSelfProfileView);
-		final int screenWidth = getDriver().manage().window().getSize()
-				.getWidth();
-		int ntry = 1;
-		while (getDriver().findElement(overlayLocator).getLocation().getX() < screenWidth / 2
-				&& ntry <= MAX_ORIENTATION_FIX_RETRIES) {
-			this.tapOnCenterOfScreen();
-			this.tapOnCenterOfScreen();
-			DriverUtils.swipeRight(getDriver(),
-					getDriver().findElement(overlayLocator), 1000);
-			ntry++;
-		}
-		if (ntry > MAX_ORIENTATION_FIX_RETRIES) {
-			throw new IllegalStateException("Conversations list is not visible");
+				final By convoViewLocator = By
+						.id(TabletConversationViewPage.idRootLocator);
+				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						convoViewLocator, 1)
+						&& getDriver().findElement(convoViewLocator)
+								.getLocation().getX() < screenWidth / 4) {
+					DriverUtils.swipeByCoordinates(getDriver(), 1000, 10, 50,
+							90, 50);
+					return;
+				}
+			}
 		}
 	}
 
@@ -199,5 +199,15 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 						- playPauseButtonWidth, convoElement.getLocation().y);
 		result.setSize(playPauseButtonWidth, convoElement.getSize().height);
 		return result;
+	}
+
+	public void doLongSwipeUp() throws Exception {
+		getContactListPage().doLongSwipeUp();
+	}
+
+	public void swipeRightListItem(String name) throws Exception {
+		final By locator = By.xpath(ContactListPage.xpathContactByName
+				.apply(name));
+		this.elementSwipeRight(getDriver().findElement(locator), 1000);
 	}
 }

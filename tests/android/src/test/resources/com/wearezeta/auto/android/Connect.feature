@@ -12,8 +12,6 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
     And I click Connect button on connect to page
     And I see People picker page
     And I navigate back to Conversations List
@@ -167,50 +165,6 @@ Feature: Connect
       | user1Name | user2Name | 1 person waiting |
 
   @id547 @regression
-  Scenario Outline: I can see the char counter changes when writing the first connect message
-    Given There are 3 users where <Name> is me
-    Given I sign in using my email or phone number
-    Given I see Contact list with no contacts
-    And I wait until <Contact> exists in backend search results
-    When I open Search by tap
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    And I tap on user name found on People picker page <Contact>
-    And I see connect to <Contact> dialog
-    And I tap on edit connect request field
-    Then I see counter value <CounterValue1>
-    And I see connect button enabled state is <FirstState>
-    And I type Connect request "<Message>"
-    And I see counter value <CounterValue2>
-    And I see connect button enabled state is <SecondState>
-
-    Examples: 
-      | Name      | Contact   | CounterValue1 | Message | CounterValue2 | FirstState | SecondState |
-      | user1Name | user2Name | 140           | test    | 136           | false      | true        |
-
-  @id548 @regression
-  Scenario Outline: I can not send first message with space only
-    Given There are 2 users where <Name> is me
-    Given I sign in using my email or phone number
-    Given I see Contact list with no contacts
-    And I wait until <Contact> exists in backend search results
-    When I open Search by tap
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    And I tap on user name found on People picker page <Contact>
-    And I see connect to <Contact> dialog
-    And I tap on edit connect request field
-    And I type Connect request "    "
-    Then I see counter value <CounterValue>
-    And I see connect button enabled state is <FirstState>
-
-    Examples: 
-      | Name      | Contact   | CounterValue | FirstState |
-      | user1Name | user2Name | 136          | false      |
-
-  @id554 @regression
   Scenario Outline: I would not know other person has ignored my connection request
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -222,8 +176,6 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
     And I click Connect button on connect to page
     When <Contact> ignore all requests
     And I press Clear button
@@ -266,8 +218,6 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
     And I click Connect button on connect to page
     And I wait for 2 seconds
     When <Contact> accept all requests
@@ -278,8 +228,8 @@ Feature: Connect
     And I see Connect to <Contact> Dialog page
 
     Examples: 
-      | Name      | Contact   | Message |
-      | user1Name | user2Name | Test    |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @id552 @regression @rc
   Scenario Outline: I want to discard the new connect request (sending) by returning to the search results after selecting someone I’m not connected to
@@ -293,7 +243,6 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
-    And I tap on edit connect request field
     Then I close Connect To dialog
     And I see People picker page
 
@@ -306,23 +255,22 @@ Feature: Connect
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
     Given <Contact1> is connected to <Contact2>
-    Given <Contact1> has group chat <ChatName> with Myself,<Contact2>
+    Given <Contact1> has group chat <ChatName> with <Name>, <Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
     When I tap on contact name <ChatName>
     And I tap conversation details button
     And I tap on group chat contact <Contact2>
     And I see connect to <Contact2> dialog
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
+    And I click left Connect button
     And I click Connect button on connect to page
     And I return to group chat page
     And I navigate back from dialog page
     And I see contact list with name <Contact2>
 
     Examples: 
-      | Name      | Contact1  | Contact2  | ChatName         | Message        |
-      | user1Name | user2Name | user3Name | ContactGroupChat | Yo! What's up! |
+      | Name      | Contact1  | Contact2  | ChatName         |
+      | user1Name | user2Name | user3Name | ContactGroupChat |
 
   @id676 @regression
   Scenario Outline: I want to block a person from 1:1 conversation
@@ -334,8 +282,10 @@ Feature: Connect
     And I see dialog page
     And I tap conversation details button
     And I press options menu button
-    And I Press Block button
+    And I press BLOCK conversation menu button
     And I confirm block
+    And I press back button
+    And I navigate back from dialog page
     Then I do not see contact list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact1> is blocked in backend search results
@@ -345,7 +295,7 @@ Feature: Connect
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
     And I tap on user name found on People picker page <Contact1>
-    Then User info should be shown with Block button
+    Then User info should be shown with Unblock button
 
     Examples: 
       | Name      | Contact1  |
@@ -363,8 +313,6 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
     And I click Connect button on connect to page
     And I press Clear button
     And I see contact list with name <Contact>
@@ -372,6 +320,7 @@ Feature: Connect
     And I see that connection is pending
     And I click Block button on connect to page
     And I confirm block on connect to page
+    And I press back button
     And I wait for 5 seconds
     Then I do not see contact list with name <Contact>
     And I wait until <Contact> exists in backend search results
@@ -381,12 +330,12 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I see user <Contact> found on People picker page
     And I tap on user name found on People picker page <Contact>
-    Then User info should be shown with Block button
+    Then User info should be shown with Unblock button
     And I click Unblock button
 
     Examples: 
-      | Name      | Contact   | Message      |
-      | user1Name | user2Name | Hello friend |
+      | Name      | Contact   |
+      | user1Name | user2Name |
 
   @id720 @regression
   Scenario Outline: I want to be seen in the search results of someone I blocked
@@ -506,8 +455,6 @@ Feature: Connect
     And I keep reopening People Picker until PYMK are visible
     And I remember the name of the first PYMK item
     When I tap the first PYMK item
-    And I tap on edit connect request field
-    And I type Connect request "<Message>"
     And I click Connect button on connect to page
     And I see People picker page
     And I press Clear button
@@ -516,8 +463,8 @@ Feature: Connect
     Then I do not see the previously remembered PYMK item
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Message       |
-      | user1Name | user2Name | user3Name | Hellow friend |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @regression @id2661 @deployAddressBook
   Scenario Outline: Verify you can see People you may know on Wire after uploading your address book

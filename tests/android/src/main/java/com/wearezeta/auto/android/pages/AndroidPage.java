@@ -27,7 +27,7 @@ public abstract class AndroidPage extends BasePage {
 
 	protected static final String giphyPreviewButtonId = "cursor_button_giphy";
 
-	protected static final String idConfirmBtn = "confirm";
+	protected static final String xpathConfirmBtn = "(//*[@id='confirm'])[last()]";
 
 	protected static final String idEditText = "cursor_edit_text";
 
@@ -67,7 +67,7 @@ public abstract class AndroidPage extends BasePage {
 		super(lazyDriver);
 	}
 
-	private final CommonSteps commonSteps = CommonSteps.getInstance();
+	final protected CommonSteps commonSteps = CommonSteps.getInstance();
 
 	public void selectFirstGalleryPhoto() throws Exception {
 		final Dimension screenDimension = AndroidCommonUtils.getScreenSize(this

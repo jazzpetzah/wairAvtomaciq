@@ -75,7 +75,7 @@ public class ContactListPage extends AndroidPage {
 	@FindBy(id = PeoplePickerPage.idPickerSearch)
 	private WebElement searchBox;
 
-	private static final String idSelfUserAvatar = "civ__searchbox__self_user_avatar";
+	private static final String idSelfUserAvatar = "gtv__searchbox__self_user_avatar";
 	@FindBy(id = idSelfUserAvatar)
 	protected WebElement selfUserAvatar;
 
@@ -108,7 +108,7 @@ public class ContactListPage extends AndroidPage {
 	private WebElement searchButton;
 
 	private static final Function<String, String> xpathConvoSettingsMenuItemByName = name -> String
-			.format("//*[starts-with(@id, 'ttv__conversation_settings') and @value='%s']",
+			.format("//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
 					name.toUpperCase());
 
 	// private static final String xpathTopConversationsListLoadingIndicator =
@@ -178,8 +178,8 @@ public class ContactListPage extends AndroidPage {
 										name))).click();
 	}
 
-	public void contactListSwipeUp(int time) {
-		elementSwipeUp(contactListFrame, time);
+	public void doLongSwipeUp() {
+		elementSwipeUp(contactListFrame, 2000);
 	}
 
 	public void waitForConversationListLoad() throws Exception {
@@ -432,7 +432,8 @@ public class ContactListPage extends AndroidPage {
 
 	private final String UNREAD_DOT_SMALL_IMG = "android_unread_dot_small.png";
 	private final String UNREAD_DOT_LARGE_IMG = "android_unread_dot_large.png";
-	private final String UNREAD_DOT_NO_UNREAD_DOT_IMG = "android_no_unread_dot.png";
+	private final String UNREAD_DOT_NO_UNREAD_DOT_IMG_1920 = "android_no_unread_dot_1920.png";
+	private final String UNREAD_DOT_NO_UNREAD_DOT_IMG_1280 = "android_no_unread_dot_1280.png";
 
 	public double getUnreadDotOverlapScore(String expected, String contact)
 			throws Exception {
@@ -446,16 +447,21 @@ public class ContactListPage extends AndroidPage {
 				IllegalStateException::new);
 
 		String path = null;
-
+		int hight = getDriver().manage().window().getSize().getHeight();
 		if (expected.equals(EXPECTED_DOT_STATE_SMALL)) {
 			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
 					+ UNREAD_DOT_SMALL_IMG;
 		} else if (expected.equals(EXPECTED_DOT_STATE_LARGE)) {
 			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
 					+ UNREAD_DOT_LARGE_IMG;
-		} else if (expected.equals(EXPECTED_DOT_STATE_NOT_DISPLAYED)) {
+		} else if (expected.equals(EXPECTED_DOT_STATE_NOT_DISPLAYED)
+				&& (hight <= 1280)) {
 			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
-					+ UNREAD_DOT_NO_UNREAD_DOT_IMG;
+					+ UNREAD_DOT_NO_UNREAD_DOT_IMG_1280;
+		} else if (expected.equals(EXPECTED_DOT_STATE_NOT_DISPLAYED)
+				&& (hight > 1280)) {
+			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
+					+ UNREAD_DOT_NO_UNREAD_DOT_IMG_1920;
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 
