@@ -16,3 +16,4 @@ deviceName=${deviceName}
 backendType=${backendType}
 pathToAddressBook=${Root}/${pathToAddressBook}
 perfReportPath=${perfReportPath}
+rcNotificationsRecepients=${rcNotificationsRecepients}

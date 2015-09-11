@@ -48,8 +48,6 @@ import gherkin.formatter.model.Step;
 import gherkin.formatter.model.Tag;
 
 public class ZetaFormatter implements Formatter, Reporter {
-	private static final String rcNotificationsRecepients = "vova@wire.com,sergeii.khyzhniak@wire.com,nick@wire.com,dasha@wire.com";
-
 	private static String feature = "";
 	private static String scenario = "";
 	private static Map<Step, String> steps = new LinkedHashMap<>();
@@ -316,10 +314,15 @@ public class ZetaFormatter implements Formatter, Reporter {
 								actualIds, cycle.getName(), phase.getName(),
 								RCTestcase.RC_TAG);
 				log.warn(" --> " + warningMessage + "\n\n");
-				NotificationSender.getInstance().send(
-						rcNotificationsRecepients,
-						"Achtung: an extra RC test case has been detected!",
-						warningMessage);
+				final Optional<String> rcNotificationsRecepients = CommonUtils
+						.getRCNotificationsRecepients(getClass());
+				if (rcNotificationsRecepients.isPresent()) {
+					NotificationSender
+							.getInstance()
+							.send(rcNotificationsRecepients.get(),
+									"ACHTUNG! An extra RC test case has been detected!",
+									warningMessage);
+				}
 			}
 		}
 	}

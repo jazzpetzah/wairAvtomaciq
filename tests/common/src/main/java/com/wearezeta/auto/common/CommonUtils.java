@@ -443,6 +443,11 @@ public class CommonUtils {
 		return getValueFromCommonConfig(c, "jenkinsSuLogin");
 	}
 
+	public static Optional<String> getRCNotificationsRecepients(Class<?> c)
+			throws Exception {
+		return getOptionalValueFromConfig(c, "rcNotificationsRecepients");
+	}
+
 	public static String getJenkinsSuperUserPassword(Class<?> c)
 			throws Exception {
 		return getValueFromCommonConfig(c, "jenkinsSuPassword");
