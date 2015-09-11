@@ -179,3 +179,26 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @staging @id3314
+  Scenario Outline: Verify leaving group conversation from the action menu
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I see conversation <GroupChatName> name in action menu in Contact List
+    And I see Leave button in action menu in Contact List
+    And I press Leave button in action menu in Contact List
+    And I see leave conversation alert
+    And I press leave
+    Then I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations
+    And I see user <GroupChatName> in contact list
+    And I tap on group chat with name <GroupChatName>
+    Then I see You Left message in group chat
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName   |
+      | user1Name | user2Name | user3Name | LeaveActionMenu |

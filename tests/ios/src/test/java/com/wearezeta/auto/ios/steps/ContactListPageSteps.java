@@ -730,4 +730,15 @@ public class ContactListPageSteps {
 	public void IPressArchiveButtonInActionMenuInContactList() throws Throwable {
 		getContactListPage().clickArchiveButtonInActionMenu();
 	}
+
+	/**
+	 * Clicks the Leave button in action menu of contact list
+	 * 
+	 * @step. ^I press Leave button in action menu in Contact List$
+	 * @throws Throwable
+	 */
+	@When("^I press Leave button in action menu in Contact List$")
+	public void IPressLeaveButtonInActionMenuInContactList() throws Throwable {
+		getContactListPage().clickLeaveButtonInActionMenu();
+	}
 }
