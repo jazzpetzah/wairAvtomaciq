@@ -123,4 +123,58 @@ Feature: Conversation List
 
     Examples: 
       | Name      | Contact1   | Contact2   | Contact3     |Number |  Picture      |
-      | user1Name | user2Name | user3name  | user4name    | 2 	   | testing.jpg   |
+      | user1Name | user2Name  | user3name  | user4name    | 2 	   | testing.jpg   |
+      
+  @staging @id3315
+  Scenario Outline: Verify removing the content from the group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Contact2> sends image <Image> to group conversation <GroupChatName>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <GroupChatName>
+    Then I see new photo in the dialog
+    When I return to the chat list
+    And I swipe right on a <GroupChatName>
+	And I click delete menu button
+	And I confirm delete conversation content
+	And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I search for user name <GroupChatName> and tap on it on People picker page
+    Then I see group chat page with users <Contact1>,<Contact2>
+    And I see only 1 message
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
+      | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg |
+      
+  @staging @id3318
+  Scenario Outline: Verify removing the history from 1-to1 conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> sent message <Message> to conversation <Name>
+    Given Contact <Contact1> sends image <Image> to group conversation <Name>
+    Given User <Name> sent message <Message> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    Then I see new photo in the dialog
+    When I return to the chat list
+    And I swipe right on a <Contact1>
+	And I click delete menu button
+	And I confirm delete conversation content
+	And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I search for user name <Contact1> and tap on it on People picker page
+    And I click open conversation button on People picker page
+    Then I see dialog page
+    And I see only 1 message
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |Message | Image       |
+      | user1Name | user2Name | user3Name |testing | testing.jpg |

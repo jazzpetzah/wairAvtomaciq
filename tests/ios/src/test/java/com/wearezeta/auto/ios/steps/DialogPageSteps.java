@@ -1020,4 +1020,16 @@ public class DialogPageSteps {
 		Assert.assertEquals(link.toLowerCase(), getDialogPage()
 				.getLastMessageFromDialog().toLowerCase());
 	}
+	
+	/**
+	 * Verifies amount of messages in conversation
+	 * @step. ^I see only (.*) messages?$
+	 * @param msgCount
+	 * 		expected number of messages
+	 * @throws Exception
+	 */
+	@When("^I see only (.*) messages?$")
+	public void ISeeOnlyXAmountOfMessages(int msgCount) throws Exception {
+		Assert.assertTrue(msgCount == getDialogPage().getNumberOfMessageEntries());
+	}
 }

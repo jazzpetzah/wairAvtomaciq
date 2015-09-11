@@ -628,18 +628,23 @@ public final class IOSLocators {
 		public static final String xpathGiphyImage = "//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']";
 
 		public static final String nameSoundCloudButton = "soundcloud";
+		
+		public static final String xpathMessageEntries = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell";
 	}
 
 	public final class DialogInfoPage {
 		public static final String nameEllipsisMenuButton = "metaControllerRightButton";
 
 		public static final String xpathArchiveButton = "//UIAButton[@name='SILENCE']/preceding-sibling::UIAButton[@name='ARCHIVE']";
+		
+		public static final String xpathConfirmDeleteButton = "//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']";
 	}
 
 	public final class ContactListPage {
 		public static final String nameOpenStartUI = "START A CONVERSATION";
 		public static final String nameSelfButton = "SelfButton";
 		public static final String xpathArchiveConversationButton = "//UIAButton[@name='ARCHIVE' and @visible='true']";
+		public static final String xpathDeleteConversationButton = "//UIAButton[@name='DELETE' and @visible='true']";
 		public static final String nameMuteCallButton = "MuteVoiceButton";
 	}
 
