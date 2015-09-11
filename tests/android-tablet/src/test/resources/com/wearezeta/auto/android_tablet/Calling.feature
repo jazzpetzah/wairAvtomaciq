@@ -233,6 +233,26 @@ Feature: Calling
     And I see call participants Myself,<Contact> on the calling overlay
     And <Contact> stops all calls to me
 
-    Examples: 
+    Examples:
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
+
+  @id2875 @staging
+  Scenario Outline: Receive call while tablet in sleeping mode (screen locked) (portrait)
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact> in my conversations list
+    And I lock the device
+    When <Contact> calls me using <CallBackend>
+    Then I see full screen calling overlay
+    When I accept call on full screen calling overlay
+    Then I see calling overlay Big bar
+    And I see call participants Myself,<Contact> on the calling overlay
+    And <Contact> stops all calls to me
+
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
