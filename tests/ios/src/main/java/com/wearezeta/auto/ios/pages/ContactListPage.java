@@ -29,7 +29,7 @@ public class ContactListPage extends IOSPage {
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
 	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
-	private final int CONV_SWIPE_TIME = 1500;
+	private final int CONV_SWIPE_TIME = 2000;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
@@ -275,7 +275,7 @@ public class ContactListPage extends IOSPage {
 			swipeRightOnContact(conversation);
 			count++;
 		} while ((count < 5)
-				&& !isArchiveCovnersationButtonVisible(conversation));
+				&& !isArchiveConversationButtonVisible(conversation));
 
 	}
 
@@ -436,6 +436,7 @@ public class ContactListPage extends IOSPage {
 			boolean isSilenced) throws Exception {
 		String deviceType = CommonUtils.getDeviceName(this.getClass());
 		BufferedImage silencedConversation = null;
+
 		BufferedImage referenceImage = null;
 		WebElement element = findCellInContactList(conversation);
 		silencedConversation = CommonUtils.getElementScreenshot(element,
@@ -498,17 +499,25 @@ public class ContactListPage extends IOSPage {
 		return true;
 	}
 
-	private boolean isArchiveCovnersationButtonVisible(String conversation)
+	private boolean isArchiveConversationButtonVisible(String conversation)
 			throws Exception {
-		WebElement archiveButton = this
-				.getDriver()
-				.findElement(
-						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
-		return DriverUtils.waitUntilElementClickable(getDriver(),
-				archiveButton, 3);
+		if (DriverUtils
+				.waitUntilLocatorAppears(
+						getDriver(),
+						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton),
+						3)) {
+			WebElement archiveButton = this
+					.getDriver()
+					.findElement(
+							By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
+			return DriverUtils.waitUntilElementClickable(getDriver(),
+					archiveButton, 3);
+		} else {
+			return false;
+		}
 	}
 
-	public void clickArchiveCoversationButton(String conversation)
+	public void clickArchiveConversationButton(String conversation)
 			throws Exception {
 		WebElement archiveButton = this
 				.getDriver()

@@ -202,7 +202,7 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName   |
       | user1Name | user2Name | user3Name | LeaveActionMenu |
-      
+
   @staging @id3315
   Scenario Outline: Verify removing the content from the group conversation
     Given There are 3 users where <Name> is me
@@ -217,9 +217,9 @@ Feature: Conversation List
     Then I see new photo in the dialog
     When I return to the chat list
     And I swipe right on a <GroupChatName>
-	And I click delete menu button
-	And I confirm delete conversation content
-	And I open search by taping on it
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <GroupChatName> and tap on it on People picker page
@@ -229,7 +229,7 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg |
-      
+
   @staging @id3318
   Scenario Outline: Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
@@ -243,9 +243,9 @@ Feature: Conversation List
     Then I see new photo in the dialog
     When I return to the chat list
     And I swipe right on a <Contact1>
-	And I click delete menu button
-	And I confirm delete conversation content
-	And I open search by taping on it
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for user name <Contact1> and tap on it on People picker page
@@ -254,5 +254,27 @@ Feature: Conversation List
     And I see only 1 message
 
     Examples: 
-      | Name      | Contact1  | Contact2  |Message | Image       |
-      | user1Name | user2Name | user3Name |testing | testing.jpg |
+      | Name      | Contact1  | Contact2  | Message | Image       |
+      | user1Name | user2Name | user3Name | testing | testing.jpg |
+
+  @staging @id3312
+  Scenario Outline: Verify silencing and notify from the action menu
+    Given There are 2 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given Myself is connected to <Contact>
+    Given User <Contact> change accent color to <Color>
+    Given User <Contact> change name to <NewName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I return to the chat list
+    When I swipe right on a <Contact>
+    And I press menu silence button
+    Then I see conversation <Contact> is silenced
+    When I swipe right on a <Contact>
+    And I press menu notify button
+    Then I see conversation <Contact> is unsilenced
+
+    Examples: 
+      | Name      | Contact   | Color  | NewName |
+      | user1Name | user2Name | Violet | SILENCE |
