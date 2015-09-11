@@ -281,7 +281,8 @@ public class ZetaFormatter implements Formatter, Reporter {
 			if (actualIds.contains(rcTestCase.getId())) {
 				if (rcTestCase.getExecutionStatus() != actualTestResult) {
 					log.info(String
-							.format(" --> Changing execution result of RC test case #%s from '%s' to '%s' (Cycle: '%s', Phase: '%s', Name: '%s')",
+							.format(" --> Changing execution result of RC test case #%s from '%s' to '%s' "
+									+ "(Cycle: '%s', Phase: '%s', Name: '%s')\n\n",
 									rcTestCase.getId(), rcTestCase
 											.getExecutionStatus().toString(),
 									actualTestResult.toString(), cycle
@@ -301,12 +302,14 @@ public class ZetaFormatter implements Formatter, Reporter {
 		} else {
 			if (isAnyTestFound) {
 				log.info(String
-						.format(" --> Execution result for RC test case(s) # %s has been already set to '%s' and is still the same (Cycle: '%s', Phase: '%s')",
-								actualIds, actualTestResult.toString(),
-								cycle.getName(), phase.getName()));
+						.format(" --> Execution result for RC test case(s) # %s has been already set to '%s' and is still the same "
+								+ "(Cycle: '%s', Phase: '%s')\n\n", actualIds,
+								actualTestResult.toString(), cycle.getName(),
+								phase.getName()));
 			} else {
 				log.warn(String
-						.format(" --> It seems like there is no test case(s) # %s in the cycle '%s', phase '%s'. Please double check .feature files whether the %s tag is set correctly!",
+						.format(" --> It seems like there is no test case(s) # %s in the cycle '%s', phase '%s'. "
+								+ "Please double check .feature files whether the %s tag is set correctly!\n\n",
 								actualIds, cycle.getName(), phase.getName(),
 								RCTestcase.RC_TAG));
 			}

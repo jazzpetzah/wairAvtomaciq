@@ -453,7 +453,7 @@ public class LoginPageSteps {
 		expectedHeaders.put(WireMessage.ZETA_PURPOSE_HEADER_NAME,
 				PasswordResetMessage.MESSAGE_PURPOSE);
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 	}
 
 	/**
