@@ -413,8 +413,8 @@ Feature: Connect
   @id2844 @regression
   Scenario Outline: Inbox count increasing/decreasing correctly (portrait)
     Given There are 4 users where <Name> is me
-    Given <Contact1> sent connection request to me
     Given <Contact2> sent connection request to me
+    Given <Contact1> sent connection request to me
     Given I rotate UI to portrait
     Given I sign in using my email
     Given I see the Conversations list with conversation
@@ -439,8 +439,8 @@ Feature: Connect
   @id3118 @regression
   Scenario Outline: Inbox count increasing/decreasing correctly (landscape)
     Given There are 4 users where <Name> is me
-    Given <Contact1> sent connection request to me
     Given <Contact2> sent connection request to me
+    Given <Contact1> sent connection request to me
     Given I rotate UI to landscape
     Given I sign in using my email
     Given I see the Conversations list with conversation
