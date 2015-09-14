@@ -274,9 +274,10 @@ public class CallPageSteps {
 	public void ISeeCallingToMessage() throws Throwable {
 		Assert.assertTrue(getStartedCallPage().isCallingMessageVisible());
 	}
-	
+
 	/**
 	 * Verifies that the group call is full message is shown
+	 * 
 	 * @step. ^I see group call is Full message$
 	 * @throws Throwable
 	 */
