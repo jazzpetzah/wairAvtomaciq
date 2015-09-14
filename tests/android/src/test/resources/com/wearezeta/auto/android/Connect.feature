@@ -250,7 +250,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id550 @regression
+  @id550 @staging
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -260,6 +260,7 @@ Feature: Connect
     Given I see Contact list with contacts
     When I tap on contact name <ChatName>
     And I tap conversation details button
+    #Sometimes here only one user visible
     And I tap on group chat contact <Contact2>
     And I see connect to <Contact2> dialog
     And I click left Connect button
