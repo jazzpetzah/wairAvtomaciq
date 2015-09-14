@@ -284,16 +284,23 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Tap the Ping button to send Ping event from the currently opened
+	 * Tap the Ping button to send Ping/Ping Again event from the currently opened
 	 * conversation
 	 * 
-	 * @step. ^I tap Ping button in (?:the |\\s*)[Cc]onversation view$
+	 * @step. ^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @param shouldTapTwice
+	 *            equals to null if 'twice' part does not exist in the step
+	 *            signature
 	 * 
 	 * @throws Exception
 	 */
-	@And("^I tap Ping button in (?:the |\\s*)[Cc]onversation view$")
-	public void ITapPingButton() throws Exception {
+	@And("^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapPingButton(String shouldTapTwice) throws Exception {
 		getConversationViewPage().tapPingButton();
+		if (shouldTapTwice != null) {
+			getConversationViewPage().tapPingButton();
+		}
 	}
 
 	/**
@@ -611,7 +618,7 @@ public class ConversationViewPageSteps {
 					getConversationViewPage().waitUntilGiphyButtonInvisible());
 		}
 	}
-	
+
 	/**
 	 * Tap Giphy button
 	 * 
