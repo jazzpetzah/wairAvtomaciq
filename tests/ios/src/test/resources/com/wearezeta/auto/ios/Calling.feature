@@ -287,12 +287,15 @@ Feature: Calling
     And <Contact1> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I accept incoming call
-    Then I see mute call, end call and speakers buttons
+    And I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars in the group call bar
+    And I wait for 10 seconds
+    Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | chrome      | autocall     |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | chrome      | autocall     | 5              |
 
   @regression @id2683
   Scenario Outline: Verify ignoring group call in foreground
