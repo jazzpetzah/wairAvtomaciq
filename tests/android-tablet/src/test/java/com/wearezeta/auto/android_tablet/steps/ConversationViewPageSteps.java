@@ -284,16 +284,23 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Tap the Ping button to send Ping event from the currently opened
+	 * Tap the Ping button to send Ping/Ping Again event from the currently opened
 	 * conversation
 	 * 
-	 * @step. ^I tap Ping button in (?:the |\\s*)[Cc]onversation view$
+	 * @step. ^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @param shouldTapTwice
+	 *            equals to null if 'twice' part does not exist in the step
+	 *            signature
 	 * 
 	 * @throws Exception
 	 */
-	@And("^I tap Ping button in (?:the |\\s*)[Cc]onversation view$")
-	public void ITapPingButton() throws Exception {
+	@And("^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapPingButton(String shouldTapTwice) throws Exception {
 		getConversationViewPage().tapPingButton();
+		if (shouldTapTwice != null) {
+			getConversationViewPage().tapPingButton();
+		}
 	}
 
 	/**
@@ -480,7 +487,7 @@ public class ConversationViewPageSteps {
 				.toUpperCase().replace(" ", "_"));
 		double avgThreshold;
 		// no need to wait, since screenshoting procedure itself is quite long
-		final long screenshotingDelay = 0;
+		final long screenshotingDelay = 200;
 		final int maxFrames = 4;
 		switch (dst) {
 		case CONVERSATION_VIEW:
@@ -489,9 +496,9 @@ public class ConversationViewPageSteps {
 					maxFrames, screenshotingDelay);
 			Assert.assertTrue(
 					String.format(
-							"The picture in the conversation view seems to be static (%.2f >= %.2f)",
+							"The picture in the conversation view seems to be static (%.2f > %.2f)",
 							avgThreshold, MAX_SIMILARITY_THRESHOLD),
-					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+					avgThreshold <= MAX_SIMILARITY_THRESHOLD);
 			break;
 		case PREVIEW:
 			avgThreshold = ImageUtil.getAnimationThreshold(
@@ -499,9 +506,9 @@ public class ConversationViewPageSteps {
 					maxFrames, screenshotingDelay);
 			Assert.assertTrue(
 					String.format(
-							"The picture in the image preview view seems to be static (%.2f >= %.2f)",
+							"The picture in the image preview view seems to be static (%.2f > %.2f)",
 							avgThreshold, MAX_SIMILARITY_THRESHOLD),
-					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+					avgThreshold <= MAX_SIMILARITY_THRESHOLD);
 			break;
 		}
 	}
@@ -611,7 +618,7 @@ public class ConversationViewPageSteps {
 					getConversationViewPage().waitUntilGiphyButtonInvisible());
 		}
 	}
-	
+
 	/**
 	 * Tap Giphy button
 	 * 
