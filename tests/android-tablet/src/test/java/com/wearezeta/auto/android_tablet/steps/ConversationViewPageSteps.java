@@ -480,7 +480,7 @@ public class ConversationViewPageSteps {
 				.toUpperCase().replace(" ", "_"));
 		double avgThreshold;
 		// no need to wait, since screenshoting procedure itself is quite long
-		final long screenshotingDelay = 0;
+		final long screenshotingDelay = 200;
 		final int maxFrames = 4;
 		switch (dst) {
 		case CONVERSATION_VIEW:
@@ -489,9 +489,9 @@ public class ConversationViewPageSteps {
 					maxFrames, screenshotingDelay);
 			Assert.assertTrue(
 					String.format(
-							"The picture in the conversation view seems to be static (%.2f >= %.2f)",
+							"The picture in the conversation view seems to be static (%.2f > %.2f)",
 							avgThreshold, MAX_SIMILARITY_THRESHOLD),
-					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+					avgThreshold <= MAX_SIMILARITY_THRESHOLD);
 			break;
 		case PREVIEW:
 			avgThreshold = ImageUtil.getAnimationThreshold(
@@ -499,9 +499,9 @@ public class ConversationViewPageSteps {
 					maxFrames, screenshotingDelay);
 			Assert.assertTrue(
 					String.format(
-							"The picture in the image preview view seems to be static (%.2f >= %.2f)",
+							"The picture in the image preview view seems to be static (%.2f > %.2f)",
 							avgThreshold, MAX_SIMILARITY_THRESHOLD),
-					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+					avgThreshold <= MAX_SIMILARITY_THRESHOLD);
 			break;
 		}
 	}
