@@ -273,7 +273,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | webdriver   | 120     |
 
-  @calling_basic @id2652
+  @calling_advanced @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
