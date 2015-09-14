@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @id3175 @regression
+  @id3175 @calling_basic
   Scenario Outline: Verify receiving "missed call" notification (GCM) after ending group call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -20,7 +20,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @id2910 @regression @rc
+  @id2910 @calling_basic @rc
   Scenario Outline: Calling bar buttons are clickable and change its state (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -45,7 +45,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
-  @id3123 @regression @rc
+  @id3123 @calling_basic @rc
   Scenario Outline: Calling bar buttons are clickable and change its state (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -70,7 +70,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | SpeakerBtnName | MuteBtnName | AcceptBtnName | DismissBtnName |
       | user1Name | user2Name | autocall    | Speaker        | Mute        | Accept        | Dismiss        |
 
-  @id2842 @regression
+  @id2842 @calling_basic
   Scenario Outline: I see miss call notification on the list and inside conversation view (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -95,7 +95,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  |
       | autocall    | user1Name | user2Name | user3Name |
 
-  @id3125 @regression
+  @id3125 @calling_basic
   Scenario Outline: I see miss call notification on the list and inside conversation view (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -119,7 +119,7 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  |
       | autocall    | user1Name | user2Name | user3Name |
 
-  @id3124 @regression @rc
+  @id3124 @calling_basic @rc
   Scenario Outline: I can dismiss calling bar by swipe (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -137,7 +137,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id2911 @regression @rc
+  @id2911 @calling_basic @rc
   Scenario Outline: I can dismiss calling bar by swipe (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -155,7 +155,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id2840 @regression
+  @id2840 @calling_basic
   Scenario Outline: Send text, image and ping while in the call with same user (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -187,7 +187,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | TextMessage  | PingMessage | AcceptBtnName |
       | user1Name | user2Name | autocall    | text message | YOU PINGED  | Accept        |
 
-  @id3113 @regression
+  @id3113 @calling_basic
   Scenario Outline: Send text, image and ping while in the call with same user (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -219,7 +219,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | TextMessage  | PingMessage | AcceptBtnName |
       | user1Name | user2Name | autocall    | text message | YOU PINGED  | Accept        |
 
-  @id3259 @regression @rc
+  @id3259 @calling_basic @rc
   Scenario Outline: Receive call while Wire is running in the background (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -239,7 +239,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id2875 @staging
+  @id2875 @calling_basic
   Scenario Outline: Receive call while tablet in sleeping mode (screen locked) (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
