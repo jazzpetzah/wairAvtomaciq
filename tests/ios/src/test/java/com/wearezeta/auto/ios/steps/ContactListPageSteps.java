@@ -44,9 +44,7 @@ public class ContactListPageSteps {
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
 
 		boolean loginFinished = getLoginPage().isLoginFinished();
-		if (!loginFinished) {
-			log.debug(getLoginPage().getPageSource());
-		}
+
 		Assert.assertTrue("Self profile button dind't appear in contact list",
 				loginFinished);
 	}
