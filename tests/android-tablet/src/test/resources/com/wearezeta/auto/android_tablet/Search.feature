@@ -93,6 +93,9 @@ Feature: Search
     And I tap the found item <Contact> on People Picker page
     And I see the Incoming connections page
     And I ignore incoming connection request from <Contact> on Incoming connections page
+    # Workaround for a bug
+    And I tap in the center of Self Profile page
+    And I tap in the center of Self Profile page
     And I swipe right to show the conversations list
     Then I see the Conversations list with no conversations
 

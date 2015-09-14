@@ -472,7 +472,7 @@ public class ContactListPageSteps {
 			throws Exception {
 		conversation = usrMgr.replaceAliasesOccurences(conversation,
 				FindBy.NAME_ALIAS);
-		getContactListPage().clickArchiveCoversationButton(conversation);
+		getContactListPage().clickArchiveConversationButton(conversation);
 	}
 
 	private BufferedImage referenceImage = null;

@@ -16,3 +16,4 @@ resourceFilePath=${resourceFilePath}
 resultsPath=${resultsPath}
 backendType=${backendType}
 isTablet=true
+rcNotificationsRecepients=${rcNotificationsRecepients}

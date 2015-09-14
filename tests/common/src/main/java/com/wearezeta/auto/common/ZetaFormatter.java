@@ -34,6 +34,7 @@ import com.wearezeta.auto.zephyr.ZephyrExecutionStatus;
 import com.wearezeta.auto.zephyr.ZephyrTestCycle;
 import com.wearezeta.auto.zephyr.ZephyrTestPhase;
 
+import email_notifier.NotificationSender;
 import gherkin.formatter.Formatter;
 import gherkin.formatter.Reporter;
 import gherkin.formatter.model.Background;
@@ -47,7 +48,6 @@ import gherkin.formatter.model.Step;
 import gherkin.formatter.model.Tag;
 
 public class ZetaFormatter implements Formatter, Reporter {
-
 	private static String feature = "";
 	private static String scenario = "";
 	private static Map<Step, String> steps = new LinkedHashMap<>();
@@ -307,11 +307,22 @@ public class ZetaFormatter implements Formatter, Reporter {
 								actualTestResult.toString(), cycle.getName(),
 								phase.getName()));
 			} else {
-				log.warn(String
-						.format(" --> It seems like there is no test case(s) # %s in the cycle '%s', phase '%s'. "
-								+ "Please double check .feature files whether the %s tag is set correctly!\n\n",
+				final String warningMessage = String
+						.format("It seems like there is no test case(s) # %s in Zephyr cycle '%s', phase '%s'. "
+								+ "This could slow down the whole RC run. "
+								+ "Please double check .feature files whether the %s tag is properly set!",
 								actualIds, cycle.getName(), phase.getName(),
-								RCTestcase.RC_TAG));
+								RCTestcase.RC_TAG);
+				log.warn(" --> " + warningMessage + "\n\n");
+				final Optional<String> rcNotificationsRecepients = CommonUtils
+						.getRCNotificationsRecepients(getClass());
+				if (rcNotificationsRecepients.isPresent()) {
+					NotificationSender
+							.getInstance()
+							.send(rcNotificationsRecepients.get(),
+									"ACHTUNG! An extra RC test case has been detected!",
+									warningMessage);
+				}
 			}
 		}
 	}

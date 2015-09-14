@@ -93,7 +93,7 @@ Feature: Rich Media
       | Name      | Contact   | SoundCloudLink                                             |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id2991 @staging
+  @id2991 @regression @rc
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (portrait)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -118,7 +118,7 @@ Feature: Rich Media
       | Name      | Contact   | Message |
       | user1Name | user2Name | H       |
 
-  @id3142 @staging
+  @id3142 @regression @rc
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button (landscape)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

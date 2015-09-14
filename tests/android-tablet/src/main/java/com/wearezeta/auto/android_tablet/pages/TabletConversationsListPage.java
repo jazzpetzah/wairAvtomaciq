@@ -75,7 +75,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 						convoViewLocator, 1)
 						&& getDriver().findElement(convoViewLocator)
-								.getLocation().getX() < screenWidth / 2) {
+								.getLocation().getX() < screenWidth / 4) {
 					DriverUtils.swipeByCoordinates(getDriver(), 1000, 10, 50,
 							90, 50);
 					return;

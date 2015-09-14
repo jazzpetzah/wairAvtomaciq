@@ -457,7 +457,7 @@ public class ConversationViewPageSteps {
 		getConversationViewPage().scrollToTheBottom();
 	}
 
-	private static final double MAX_SIMILARITY_THRESHOLD = 0.95;
+	private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
 
 	private static enum PictureDestination {
 		CONVERSATION_VIEW, PREVIEW;
