@@ -47,7 +47,9 @@ public class ConnectToPage extends IOSPage {
 		super(lazyDriver);
 	}
 
-	public Boolean isConnectToUserDialogVisible() {
+	public Boolean isConnectToUserDialogVisible() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				connectOtherUserButton, 5);
 		return connectOtherUserButton.isDisplayed();
 	}
 
