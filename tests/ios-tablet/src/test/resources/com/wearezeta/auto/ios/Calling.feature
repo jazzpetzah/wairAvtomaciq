@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @regression @id2709 @id2623
+  @calling_basic @id2709 @id2623
   Scenario Outline: Verify starting and ending outgoing call by same person [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2709 @id2623
+  @calling_basic @id2709 @id2623
   Scenario Outline: Verify starting and ending outgoing call by same person [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -473,7 +473,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | webdriver   | autocall     | 120     |
 
-  @regression @rc @id2361
+  @calling_basic @id2361
   Scenario Outline: Verify mute button is absent when you turn from portrait to landscape [PORTRAIT to LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
