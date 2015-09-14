@@ -534,10 +534,10 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars | NewNumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | chrome      | autocall     | 5               | 4                  |
-      
-  @torun @staging @id2673
+
+  @staging @id2673 @noAcceptAlert
   Scenario Outline: Verify impossibility to connect 6th person to the call
-  	Given There are 6 users where <Name> is me
+    Given There are 6 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
@@ -546,6 +546,8 @@ Feature: Calling
     Given <Contact3> accepts next incoming call automatically
     Given <Contact4> accepts next incoming call automatically
     Given I sign in using my email or phone number
+    And I dismiss alert
+    And I accept alert
     And I see Contact list with my name <Name>
     When I tap on group chat with name <GroupChatName>
     And I see dialog page
@@ -557,7 +559,7 @@ Feature: Calling
     And I see incoming group calling message
     And I accept incoming call
     Then I see group call is Full message
-    
+
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5 | GroupChatName   | CallBackend | CallBackend2 |NumberOfAvatars| Timeout |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name| FullGROUPCALL   | chrome      | autocall     | 5			    |  60 	  |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | chrome      | autocall     | 5               | 60      |
