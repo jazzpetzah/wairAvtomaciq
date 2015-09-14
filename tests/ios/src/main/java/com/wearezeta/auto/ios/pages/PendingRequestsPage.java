@@ -125,4 +125,9 @@ public class PendingRequestsPage extends IOSPage {
 		return page;
 	}
 
+	public boolean isIgnoreButtonDisplayed() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.name(IOSLocators.namePendingRequestIgnoreButton), 5);
+	}
+
 }

@@ -48,7 +48,7 @@ public class VerificationPage extends OSXPage {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", email);
 		activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 	}
 
 	public void reSendEmailMessage() {

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Set;
@@ -23,9 +24,6 @@ public class WebCommonUtils extends CommonUtils {
 
 	private static final Logger log = ZetaLogger.getLog(WebCommonUtils.class
 			.getSimpleName());
-
-	private static final String sshKeyPath = WebCommonUtils.class.getResource(
-			"/ssh/jenkins_ssh_key").getPath();
 
 	public static String getHubHostFromConfig(Class<?> c) throws Exception {
 		return getValueFromConfig(c, "hubHost");
@@ -49,45 +47,54 @@ public class WebCommonUtils extends CommonUtils {
 		return String.format("%s/Documents", System.getProperty("user.home"));
 	}
 
+	private static String getSshKeyPath() throws URISyntaxException {
+		URI sshKeyUri = new URI(WebCommonUtils.class.getResource(
+				"/ssh/jenkins_ssh_key").toString());
+
+		return sshKeyUri.getPath();
+	}
+
 	public static String getFullPicturePath(String pictureName)
 			throws URISyntaxException {
 		String path = null;
 		URL url = WebCommonUtils.class.getResource("/images/" + pictureName);
 		if (url != null) {
-			path = url.getPath();
+			URI uri = new URI(url.toString());
+			path = uri.getPath();
 		}
 		log.debug("Full picture path: " + path);
 		return path;
 	}
 
-	public static void putFileOnExecutionNode(String node, String srcPath,
+	public static void putFileOnExecutionNode(String node, File srcFile,
 			String dstPath) throws Exception {
 		setCorrectPermissionsOfKeyFile();
-		// only get files via resources when there is no leading /
-		if (srcPath.charAt(0) != '/') {
-			srcPath = WebCommonUtils.class.getResource("/" + srcPath).getPath();
-		}
+		// check if file exists
+		assert srcFile.exists() : "There's no file by path "
+				+ srcFile.getCanonicalPath() + " on your local file system";
+
 		String commandTemplate = "scp -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s %s@%s:%s";
-		String command = String.format(commandTemplate, sshKeyPath, srcPath,
+		String command = String.format(commandTemplate, getSshKeyPath(),
+				srcFile.getCanonicalPath(),
 				getJenkinsSuperUserLogin(CommonUtils.class), node, dstPath);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
 	}
 
-	private static void setCorrectPermissionsOfKeyFile() {
-		File keyFile = new File(sshKeyPath);
+	private static void setCorrectPermissionsOfKeyFile() throws URISyntaxException {
+		File keyFile = new File(getSshKeyPath());
 		if (!keyFile.setReadable(false, false)
 				|| !keyFile.setReadable(true, true)) {
 			log.info(String.format(
 					"Failed to make SSH File '%s' readable by owner",
-					sshKeyPath));
+					getSshKeyPath()));
 		}
 		if (!keyFile.setWritable(false, false)
 				|| !keyFile.setWritable(true, true)) {
 			log.info(String.format(
 					"Failed to make SSH File '%s' writable by owner",
-					sshKeyPath));
+					getSshKeyPath()));
 		}
 	}
 
@@ -96,7 +103,7 @@ public class WebCommonUtils extends CommonUtils {
 		setCorrectPermissionsOfKeyFile();
 		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s %s";
-		String command = String.format(commandTemplate, sshKeyPath,
+		String command = String.format(commandTemplate, getSshKeyPath(),
 				getJenkinsSuperUserLogin(CommonUtils.class), node, cmd);
 		WebCommonUtils
 				.executeOsXCommand(new String[] { "bash", "-c", command });
@@ -107,7 +114,7 @@ public class WebCommonUtils extends CommonUtils {
 		setCorrectPermissionsOfKeyFile();
 		String commandTemplate = "ssh -i %s -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "
 				+ "%s@%s osascript %s";
-		String command = String.format(commandTemplate, sshKeyPath,
+		String command = String.format(commandTemplate, getSshKeyPath(),
 				getJenkinsSuperUserLogin(CommonUtils.class), node, scriptPath);
 		if (WebCommonUtils.executeOsXCommand(new String[] { "bash", "-c",
 				command }) == 255) {
@@ -132,7 +139,6 @@ public class WebCommonUtils extends CommonUtils {
 			}
 			script = String.format(script, params);
 			File dstFileInstance = new File(dstFile);
-			dstFileInstance.getParentFile().mkdirs();
 			if (dstFileInstance.exists()) {
 				dstFileInstance.delete();
 			}
@@ -188,6 +194,8 @@ public class WebCommonUtils extends CommonUtils {
 		final String srcScriptPath = String.format("%s/%s",
 				WebAppConstants.TMP_ROOT,
 				WebAppConstants.Scripts.SAFARI_OPEN_TAB_SCRIPT);
+	    URI uri = new URI(WebCommonUtils.class.getResource(srcScriptPath).toString());
+	    File srcScript = new File(uri.getPath());
 		try {
 			formatTextInFileAndSave(scriptStream, srcScriptPath,
 					new String[] { url });
@@ -198,7 +206,7 @@ public class WebCommonUtils extends CommonUtils {
 		}
 		final String dstScriptPath = srcScriptPath;
 		try {
-			putFileOnExecutionNode(nodeIp, srcScriptPath, dstScriptPath);
+			putFileOnExecutionNode(nodeIp, srcScript, dstScriptPath);
 		} finally {
 			new File(srcScriptPath).delete();
 		}
@@ -267,36 +275,48 @@ public class WebCommonUtils extends CommonUtils {
 	 */
 	public static void sendPictureInSafari(String pictureName, String nodeIp)
 			throws Exception {
-		final ClassLoader classLoader = WebCommonUtils.class.getClassLoader();
-		final InputStream scriptStream = classLoader.getResourceAsStream(String
-				.format("%s/%s",
-						WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
-						WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT));
-		final String srcScriptPath = String.format("%s/%s",
-				WebAppConstants.TMP_ROOT,
+		// send picture through ssh
+		final File srcPicture = new File(pictureName);
+		putFileOnExecutionNode(nodeIp, srcPicture,
+				"/tmp/" + srcPicture.getName());
+
+		// check if script is really there
+		String genericScriptPath = String.format("/%s/%s",
+				WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
 				WebAppConstants.Scripts.SAFARI_SEND_PICTURE_SCRIPT);
-		final File srcImage = new File(pictureName);
-		assert srcImage.exists() : "There's no image by path "
-				+ srcImage.getCanonicalPath() + " on your local file system";
-		final File dstImage = new File(String.format("%s/%s",
-				WebAppConstants.TMP_ROOT, srcImage.getName()));
+		InputStream genericScript = null;
 		try {
-			formatTextInFileAndSave(scriptStream, srcScriptPath, new String[] {
-					dstImage.getParent(), dstImage.getName() });
-		} finally {
-			if (scriptStream != null) {
-				scriptStream.close();
-			}
-		}
-		final String dstScriptPath = srcScriptPath;
-		try {
-			putFileOnExecutionNode(nodeIp, srcImage.getAbsolutePath(),
-					dstImage.getAbsolutePath());
-			putFileOnExecutionNode(nodeIp, srcScriptPath, dstScriptPath);
-		} finally {
-			new File(srcScriptPath).delete();
+			genericScript = WebCommonUtils.class
+					.getResourceAsStream(genericScriptPath);
+		} catch (NullPointerException e) {
+			throw new AssertionError("There's no script by path "
+					+ genericScriptPath + " in your resources");
 		}
 
+		// create individual oascript
+		final String individualScriptName = "upload_" + srcPicture.getName()
+				+ ".txt";
+		File individualScript = new File(individualScriptName);
+		final File dstPicture = new File(String.format("%s/%s",
+				WebAppConstants.TMP_ROOT, srcPicture.getName()));
+		try {
+			formatTextInFileAndSave(
+					genericScript,
+					individualScriptName,
+					new String[] { dstPicture.getParent(), dstPicture.getName() });
+		} finally {
+			if (genericScript != null) {
+				genericScript.close();
+			}
+		}
+
+		// send script and execute through ssh
+		final String dstScriptPath = "/tmp/" + individualScriptName;
+		try {
+			putFileOnExecutionNode(nodeIp, individualScript, dstScriptPath);
+		} finally {
+			new File(individualScriptName).delete();
+		}
 		executeAppleScriptFileOnNode(nodeIp, dstScriptPath);
 	}
 
@@ -312,13 +332,18 @@ public class WebCommonUtils extends CommonUtils {
 	}
 
 	public static void clearHistoryInSafari(String nodeIp) throws Exception {
-		final String srcScriptPath = String.format("%s/%s",
+		final String srcScriptPath = String.format("/%s/%s",
 				WebAppConstants.Scripts.RESOURCES_SCRIPTS_ROOT,
 				WebAppConstants.Scripts.SAFARI_CLEAR_HISTORY_SCRIPT);
 		final String dstScriptPath = String.format("%s/%s",
 				WebAppConstants.TMP_ROOT,
 				WebAppConstants.Scripts.SAFARI_CLEAR_HISTORY_SCRIPT);
-	    putFileOnExecutionNode(nodeIp, srcScriptPath, dstScriptPath);
+		// get file via resources
+		URL url = WebCommonUtils.class.getResource(srcScriptPath);
+		assert url != null : "There's no file by path " + srcScriptPath
+				+ " on your resources";
+		File srcScript = new File(new URI(url.toString()).getPath());
+		putFileOnExecutionNode(nodeIp, srcScript, dstScriptPath);
 		executeAppleScriptFileOnNode(nodeIp, dstScriptPath);
 	}
 }

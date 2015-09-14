@@ -49,7 +49,7 @@ Feature: Settings
       | Name      |
       | user1Name |
 
-  @id3006 @staging
+  @id3006 @regression
   Scenario Outline: I can sign into spotify using my premium account
     Given My device runs Android <TargetDeviceVersion> or higher
     Given There are 2 users where <Name> is me
@@ -59,10 +59,16 @@ Feature: Settings
     When I tap on my avatar
     And I tap options button
     And I tap settings button
-    And I wait for 2 seconds
     Then I see settings page
+    And I tap services button
     And I navigate to the spotify login page
     And I input <SpotifyUsername> and <SpotifyPassword> into the spotify login page
+    When I press back button
+    And I press back button
+    And I tap options button
+    And I tap settings button
+    Then I see settings page
+    And I tap services button
     Then I see that I am connected to spotify
 
     Examples: 

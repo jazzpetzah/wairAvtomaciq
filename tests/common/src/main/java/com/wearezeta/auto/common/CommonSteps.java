@@ -64,7 +64,7 @@ public final class CommonSteps {
 	}
 
 	public void ConnectionRequestIsSentTo(String userFromNameAlias,
-			String usersToNameAliases) throws Throwable {
+			String usersToNameAliases) throws Exception {
 		ClientUser userFrom = usrMgr
 				.findUserByNameOrNameAlias(userFromNameAlias);
 		for (String userToNameAlias : splitAliases(usersToNameAliases)) {

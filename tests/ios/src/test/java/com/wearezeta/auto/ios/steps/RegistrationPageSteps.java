@@ -341,7 +341,7 @@ public class RegistrationPageSteps {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 		getRegistrationPage().inputPassword();
 	}
 
@@ -398,7 +398,7 @@ public class RegistrationPageSteps {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 		getRegistrationPage().createAccount();
 	}
 
@@ -418,7 +418,7 @@ public class RegistrationPageSteps {
 		String expectedRecipient = this.userToRegister.getEmail();
 		getRegistrationPage().waitUntilEmailsCountReachesExpectedValue(
 				expectedCnt, expectedRecipient,
-				BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT);
+				BackendAPIWrappers.ACTIVATION_TIMEOUT);
 	}
 
 	@Then("^I resend verification email$")
@@ -454,7 +454,7 @@ public class RegistrationPageSteps {
 		Map<String, String> expectedHeaders = new HashMap<String, String>();
 		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
 		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
+				expectedHeaders, BackendAPIWrappers.ACTIVATION_TIMEOUT);
 	}
 
 	@Then("^I verify registration address$")

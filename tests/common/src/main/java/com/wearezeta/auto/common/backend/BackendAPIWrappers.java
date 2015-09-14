@@ -39,8 +39,7 @@ import com.wearezeta.auto.image_send.SelfImageProcessor;
 // Almost all methods of this class mutate ClientUser
 // argument by performing automatic login (set id and session token attributes)
 public final class BackendAPIWrappers {
-	public static final int UI_ACTIVATION_TIMEOUT = 120; // seconds
-	public static final int BACKEND_ACTIVATION_TIMEOUT = 90; // seconds
+	public static final int ACTIVATION_TIMEOUT = 120; // seconds
 
 	private static final int REQUEST_TOO_FREQUENT_ERROR = 429;
 	private static final int LOGIN_CODE_HAS_NOT_BEEN_USED_ERROR = 403;
@@ -75,7 +74,7 @@ public final class BackendAPIWrappers {
 				forUser.getEmail());
 		// The MAX_MSG_DELIVERY_OFFSET is necessary because of small
 		// time difference between UTC and your local machine
-		return mbox.getMessage(expectedHeaders, BACKEND_ACTIVATION_TIMEOUT,
+		return mbox.getMessage(expectedHeaders, ACTIVATION_TIMEOUT,
 				new Date().getTime() - MAX_MSG_DELIVERY_OFFSET);
 	}
 

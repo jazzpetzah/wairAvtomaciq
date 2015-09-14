@@ -64,7 +64,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2413 @deployPictures
+  @regression @rc @id2413 @deployPictures
   Scenario Outline: Verify sending image [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -506,12 +506,15 @@ Feature: Conversation View
   Scenario Outline: Verify the Media Bar dissapears after playback finishes - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent long message to conversation <Contact>
+    Given User <Name> sent message <SoundCloudLink> to conversation <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
-    And I see dialog page
-    And I type and send long message and media link <SoundCloudLink>
-    And I tap media link
+    Then I see dialog page
+    And I scroll to the end of the conversation
+    And I see media link <SoundCloudLink> and media in dialog
+    When I tap media link
     And I scroll media out of sight until media bar appears
     And I see media bar on dialog page
     And I wait 150 seconds for media to stop playing
@@ -622,9 +625,7 @@ Feature: Conversation View
     And I send the message
     Then I see message in the dialog
 
-    Examples: 
-      @staging @id3196
-
+    Examples:
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SimpleGroup   |
 
@@ -954,7 +955,7 @@ Feature: Conversation View
     And I open conversation details
     And I open ellipsis menu
     And I click archive menu button
-    And I swipe right on the personal page
+    And I close self profile
     Then I dont see conversation <Contact> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
@@ -983,7 +984,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id3097 @id3098
+  @regression @rc @id3097 @id3098
   Scenario Outline: Verify opening and closing the cursor by clicking swiping right/left [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1034,7 +1035,7 @@ Feature: Conversation View
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @regression @id3100
+  @regression @rc @id3100
   Scenario Outline: Verify only people icon exists under the plus in pending/left/removed from conversations [PORTRAIT]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact2>,<Contact3>
@@ -1079,3 +1080,65 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName    |
       | user1Name | user2Name | user3Name | user4Name | ArchiveGroupChat |
+
+  @staging @id3306
+  Scenario Outline: Verify player is displayed for vimeo links with video IDs [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> and media in dialog
+
+    Examples: 
+      | Name      | Contact1  | VimeoLink                   |
+      | user1Name | user2Name | https://vimeo.com/129426512 |
+
+  @staging @id3307
+  Scenario Outline: Verify player is displayed for vimeo links with video IDs [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> and media in dialog
+
+    Examples: 
+      | Name      | Contact1  | VimeoLink                   |
+      | user1Name | user2Name | https://vimeo.com/129426512 |
+
+  @staging @id3308
+  Scenario Outline: Verify player isn't displayed for vimeo links without video IDs [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> but NO media player
+
+    Examples: 
+      | Name      | Contact   | VimeoLink                    |
+      | user1Name | user2Name | https://vimeo.com/categories |
+
+  @staging @id3309
+  Scenario Outline: Verify player isn't displayed for vimeo links without video IDs [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given User <Name> sent message <VimeoLink> to conversation <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    And I see dialog page
+    Then I see vimeo link <VimeoLink> but NO media player
+
+    Examples: 
+      | Name      | Contact   | VimeoLink                    |
+      | user1Name | user2Name | https://vimeo.com/categories |

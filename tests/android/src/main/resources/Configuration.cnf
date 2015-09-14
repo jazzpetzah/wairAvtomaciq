@@ -16,3 +16,4 @@ androidVersion=${androidVersion}
 perfReportPath=${perfReportPath}
 backendType=${backendType}
 androidToolsPath=${androidToolsPath}
+rcNotificationsRecepients=${rcNotificationsRecepients}

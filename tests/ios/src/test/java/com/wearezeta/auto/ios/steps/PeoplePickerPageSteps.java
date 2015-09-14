@@ -5,13 +5,11 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.ContactListPage;
-import com.wearezeta.auto.ios.pages.IOSPage;
 import com.wearezeta.auto.ios.pages.PeoplePickerPage;
 
 import cucumber.api.java.en.Then;
@@ -214,12 +212,14 @@ public class PeoplePickerPageSteps {
 
 	@When("I re-enter the people picker if CONNECT label is not there")
 	public void IRetryPeoplePickerIfNoConnectLabel() throws Exception {
-		while (!getPeoplePickerPage().isConnectLabelVisible()) {
-			IClickCloseButtonDismissPeopleView();
-			if (CommonUtils.getIsSimulatorFromConfig(IOSPage.class) != true) {
-				getСontactListPage().swipeDown(1000);
+		for (int i = 0; i < 3; i++) {
+			if (!getPeoplePickerPage().isConnectLabelVisible()) {
+				IClickCloseButtonDismissPeopleView();
+				Thread.sleep(5000);
+				getСontactListPage().openSearch();
+				getPeoplePickerPage().closeShareContactsIfVisible();
 			} else {
-				getСontactListPage().swipeDownSimulator();
+				break;
 			}
 		}
 	}
@@ -309,7 +309,24 @@ public class PeoplePickerPageSteps {
 		double score = getPeoplePickerPage().checkAvatarClockIcon(contact);
 		Assert.assertTrue(
 				"Avatar with clock icon is not correct - overlap score is only: "
-						+ score, score > 0.50);
+						+ score, score > 0.49);
+	}
+
+	/**
+	 * Verifies that pending clock is not visible on searched avatar
+	 * 
+	 * @step. ^I see the user (.*) avatar without the pending clock$
+	 * @param name
+	 *            of contact without pending clock
+	 * @throws Throwable
+	 */
+	@Then("^I see the user (.*) avatar without the pending clock$")
+	public void ISeeTheUserAvatarWithoutThePendingClock(String name)
+			throws Throwable {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		double score = getPeoplePickerPage().checkAvatarClockIcon(name);
+		Assert.assertFalse("Avatar icon still has a clock - overlap score is: "
+				+ score, score < 0.50);
 	}
 
 	@When("^I search for ignored user name (.*) and tap on it$")
@@ -487,11 +504,25 @@ public class PeoplePickerPageSteps {
 	 * Unblocks a blocked user by clicking the unblock button
 	 * 
 	 * @step. I unblock user
+	 * @throws Exception
 	 * 
 	 */
 	@When("^I unblock user$")
 	public void IUnblockUser() throws Exception {
 		getPeoplePickerPage().unblockUser();
+	}
+
+	/**
+	 * Unblocks a blocked user by clicking the unblock button for iPad
+	 * 
+	 * @step. I unblock user on iPad
+	 * 
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I unblock user on iPad$")
+	public void IUnblockUserOniPad() throws Exception {
+		getPeoplePickerPage().unblockUserOniPad();
 	}
 
 	/**
@@ -630,7 +661,7 @@ public class PeoplePickerPageSteps {
 		ISeeCallActionButtonOnPeoplePickerPage();
 		ISeeSendImageActionButtonOnPeoplePickerPage();
 	}
-	
+
 	/**
 	 * Verify that Open, Call and Send image action buttons are NOT visible
 	 * 
@@ -639,7 +670,8 @@ public class PeoplePickerPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I see action buttons disappeared on People picker page$")
-	public void ISeeActionButttonsDisappearedOnPeoplePickerPage() throws Exception {
+	public void ISeeActionButttonsDisappearedOnPeoplePickerPage()
+			throws Exception {
 		Assert.assertFalse("Open conversation button is still visible",
 				getPeoplePickerPage().isOpenConversationButtonVisible());
 		Assert.assertFalse("Call action button is still visible",

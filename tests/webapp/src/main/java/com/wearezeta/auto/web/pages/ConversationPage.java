@@ -12,6 +12,7 @@ import com.wearezeta.auto.web.locators.WebAppLocators;
 
 import static com.wearezeta.auto.web.locators.WebAppLocators.Common.TITLE_ATTRIBUTE_LOCATOR;
 
+import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.GroupPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.PeoplePopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.SingleUserPopoverContainer;
@@ -91,6 +92,9 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(how = How.ID, using = WebAppLocators.ConversationPage.idBlackBorder)
 	private WebElement blackBorder;
+
+	@FindBy(css = WebAppLocators.ConversationPage.cssUserAvatar)
+	private WebElement userAvatar;
 
 	@FindBy(xpath = WebAppLocators.ConversationPage.xpathJoinCallBar)
 	private WebElement joinCallBar;
@@ -551,6 +555,22 @@ public class ConversationPage extends WebPage {
 			throw new PendingException(
 					"Webdriver does not support shortcuts for Mac browsers");
 		}
+	}
+
+	public ConnectToPopoverContainer clickUserAvatar() throws Exception {
+		DriverUtils.waitUntilElementClickable(this.getDriver(), userAvatar);
+		userAvatar.click();
+		return new ConnectToPopoverContainer(this.getLazyDriver());
+	}
+
+	public ConnectToPopoverContainer clickUserAvatar(String userId)
+			throws Exception {
+		String css = WebAppLocators.ConversationPage.cssUserAvatarById
+				.apply(userId);
+		final WebElement avatar = getDriver().findElement(By.cssSelector(css));
+		DriverUtils.waitUntilElementClickable(this.getDriver(), avatar);
+		avatar.click();
+		return new ConnectToPopoverContainer(this.getLazyDriver());
 	}
 
 	public boolean isActionMessageNotSent(final Set<String> parts)

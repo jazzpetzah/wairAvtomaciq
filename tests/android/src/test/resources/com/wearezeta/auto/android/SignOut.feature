@@ -1,6 +1,6 @@
 Feature: Sign Out
 
-  @id329 @smoke @rc
+  @id329 @smoke @rc @rc42
   Scenario Outline: Sign out from Wire
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number

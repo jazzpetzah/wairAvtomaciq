@@ -26,7 +26,7 @@ public class PeoplePickerPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPickerSearch)
 	private WebElement peoplePickerSearch;
 
-	@FindBy(how = How.NAME, using = IOSLocators.namePickerClearButton)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathPickerClearButton)
 	private WebElement peoplePickerClearBtn;
 
 	@FindBy(how = How.CLASS_NAME, using = IOSLocators.classNameContactListNames)
@@ -451,8 +451,24 @@ public class PeoplePickerPage extends IOSPage {
 				By.name(IOSLocators.namePeopleYouMayKnowLabel));
 	}
 
+	private void unblockButtonDoubleClick() throws InterruptedException,
+			Exception {
+		DriverUtils
+				.iOSMultiTap(
+						getDriver(),
+						getDriver().findElement(
+								By.name(IOSLocators.nameUnblockButton)), 2);
+	}
+
 	public DialogPage unblockUser() throws Exception {
 		unblockButton.click();
+		return new DialogPage(this.getLazyDriver());
+	}
+
+	public DialogPage unblockUserOniPad() throws Exception {
+		// workaround for wierd appium behaviour - popup remains opened after 1
+		// time click
+		unblockButtonDoubleClick();
 		return new DialogPage(this.getLazyDriver());
 	}
 

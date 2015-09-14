@@ -210,4 +210,47 @@ public class TabletConversationViewPage extends AndroidTabletPage {
 		final By locator = By.id(DialogPage.idDialogImages);
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
+
+	public boolean waitUntilUnsentIndicatorIsVisible(String msg)
+			throws Exception {
+		return getDialogPage().waitForUnsentIndicator(msg);
+	}
+
+	public boolean waitUntilUnsentIndicatorIsVisibleForAPicture()
+			throws Exception {
+		return getDialogPage().waitForAPictureWithUnsentIndicator();
+	}
+
+	public void tapPlayPauseButton() throws Exception {
+		getDialogPage().tapPlayPauseBtn();
+	}
+
+	public boolean waitUntilClosePicturePreviewButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idCloseImageBtn));
+	}
+
+	public boolean waitUntilClosePicturePreviewButtonInvisible()
+			throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idCloseImageBtn));
+	}
+
+	public void tapClosePicturePreviewButton() throws Exception {
+		getDriver().findElement(By.id(idCloseImageBtn)).click();
+	}
+
+	public boolean waitUntilGiphyButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(giphyPreviewButtonId));
+	}
+
+	public boolean waitUntilGiphyButtonInvisible() throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(giphyPreviewButtonId));
+	}
+
+	public void tapGiphyButton() throws Exception {
+		this.getDriver().findElement(By.id(giphyPreviewButtonId)).click();
+	}
 }

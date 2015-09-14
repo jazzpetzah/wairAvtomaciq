@@ -5,6 +5,8 @@ Feature: Block
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
+    # This is to sync blocked state on the backend
+    Given I wait for 60 seconds
     Given I rotate UI to landscape
     Given I sign in using my email
     Given Contact <Contact> sends message "<Message>" to user Myself
@@ -38,6 +40,8 @@ Feature: Block
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
+    # This is to sync blocked state on the backend
+    Given I wait for 60 seconds
     Given I rotate UI to portrait
     Given I sign in using my email
     Given Contact <Contact> sends message "<Message>" to user Myself
@@ -66,11 +70,13 @@ Feature: Block
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @id2859 @regression
+  @id2859 @regression @rc
   Scenario Outline: I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (landscape)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
+    # This is to sync blocked state on the backend
+    Given I wait for 60 seconds
     Given I rotate UI to landscape
     Given I sign in using my email
     And I see the Conversations list with no conversations
@@ -90,11 +96,13 @@ Feature: Block
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2858 @regression
+  @id2858 @regression @rc
   Scenario Outline: I block user from 1:1 pop-over and can see blocked user in search results with blocked badge (portrait)
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
+    # This is to sync blocked state on the backend
+    Given I wait for 60 seconds
     Given I rotate UI to portrait
     Given I sign in using my email
     And I see the Conversations list with no conversations
@@ -113,3 +121,34 @@ Feature: Block
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
+
+  @id2866 @regression @rc
+  Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to me
+    Given User Myself blocks user <Contact>
+    When Contact <Contact> sends image <Picture> to single user conversation <Name>
+    And Contact <Contact> sends message "<Message>" to user Myself
+    # This is to sync blocked state on the backend
+    And I wait for 60 seconds
+    And I rotate UI to landscape
+    And I sign in using my email
+    Then I see the Conversations list with no conversations
+    When I tap Search input
+    And I see People Picker page
+    And I enter "<Contact>" into Search input on People Picker page
+    Then I see <Contact> avatar on People Picker page
+    When I tap the found item <Contact> on People Picker page
+    And I see Blocked Connection popover
+    And I tap Unblock button on Blocked Connection popover
+    And I do not see Blocked Connection popover
+    And I close the People Picker
+    Then I see the conversation <Contact> in my conversations list
+    # Workaround for https://wearezeta.atlassian.net/browse/AN-2560
+    When I tap the conversation <Contact>
+    Then I see the message "<Message>" in the conversation view
+    And I see a new picture in the conversation view
+
+    Examples:
+      | Name      | Contact   | Message | Picture     |
+      | user1Name | user2Name | Test    | testing.jpg |

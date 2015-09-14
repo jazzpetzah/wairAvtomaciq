@@ -16,7 +16,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id318 @smoke @rc
+  @id318 @smoke @rc @rc42
   Scenario Outline: Send Camera picture to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -34,7 +34,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1262 @smoke @rc
+  @id1262 @smoke @rc @rc42
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -183,7 +183,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id162 @regression @rc
+  @id162 @regression @rc @rc42
   Scenario Outline: Send existing image from gallery (landscape) in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -234,7 +234,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1504 @regression @rc
+  @id1504 @regression @rc @rc42
   Scenario Outline: Verify you can play/pause media from the Media Bar (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -242,20 +242,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
-    #FIXME: Create a method with parameter to send xx messages
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send 18 messages to user Myself
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
     And I swipe down on dialog page
@@ -273,7 +260,7 @@ Feature: Conversation View
       | Name      | Contact1  | SoudCloudLink                                              |
       | user1Name | user2Name | https://soundcloud.com/juan_mj_10/led-zeppelin-rock-n-roll |
 
-  @id170 @regression @rc
+  @id170 @regression @rc @rc42
   Scenario Outline: Verify you can send youtube link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -289,7 +276,7 @@ Feature: Conversation View
       | Name      | Contact1  | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @id3242 @staging @rc
+  @id3242 @regression @rc @rc42
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -309,7 +296,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id3243 @regression @rc
+  @id3243 @regression @rc @rc42
   Scenario Outline: I can send sketch on image from gallery
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -356,7 +343,7 @@ Feature: Conversation View
       | Name      | Contact1  | NumColors |
       | user1Name | user2Name | 6         |
 
-  @id2990 @regression @rc
+  @id2990 @regression @rc @rc42
   Scenario Outline: I can send giphy image by typing some massage and clicking GIF button
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

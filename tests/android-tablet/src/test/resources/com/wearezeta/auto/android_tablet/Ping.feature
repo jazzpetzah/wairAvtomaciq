@@ -1,6 +1,6 @@
  Feature: Ping
  
-  @id2253 @smoke
+  @id2253 @smoke @rc
   Scenario Outline: Send ping and ping again to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -13,14 +13,15 @@
     And I swipe left on text input in the conversation view
     When I tap Ping button in the conversation view
     Then I see the ping message "<Message1>" in the conversation view
+    When I swipe left on text input in the conversation view
     And I tap Ping button in the conversation view
-    Then I see the ping message "<Message2>" in the conversation view  
+    Then I see the ping message "<Message2>" in the conversation view
 
     Examples: 
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
-  @id2239 @smoke
+  @id2239 @smoke @rc
   Scenario Outline: Send ping and ping again to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -33,6 +34,7 @@
     And I swipe left on text input in the conversation view
     When I tap Ping button in the conversation view
     Then I see the ping message "<Message1>" in the conversation view
+    When I swipe left on text input in the conversation view
     And I tap Ping button in the conversation view
     Then I see the ping message "<Message2>" in the conversation view
 
@@ -40,7 +42,7 @@
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
-  @id2863 @regression
+  @id2863 @regression @rc
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -61,7 +63,7 @@
       | Name      | Contact1  | Contact2  | GroupChatName  | PingMessage       | HotPingMessage         |
       | user1Name | user2Name | user3Name | PingChat       | user2Name PINGED  | user2Name PINGED AGAIN |
 
-  @id3262 @regression
+  @id3262 @regression @rc
   Scenario Outline: Receive "Ping" and "Ping Again" in group conversation (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

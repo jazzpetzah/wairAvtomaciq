@@ -20,6 +20,7 @@
 		<generateUsers>true</generateUsers>
 		<driverTimeoutSeconds>30</driverTimeoutSeconds>
 		<pathToUserpic>img/userpicture_landscape.jpg</pathToUserpic>
+		<pathToAddressBook>AddressBook</pathToAddressBook>
 		<iosImagesPath>img/</iosImagesPath>
 		<swipeScriptPath>swipeInWindow</swipeScriptPath>
 		<iosAppiumLogPath>/Project/appium_ios.log</iosAppiumLogPath>
@@ -27,6 +28,7 @@
 		<iosClientInfoPlist>/Project/builds_info/Info_ios.plist</iosClientInfoPlist>
 		<deviceName>iPad Air</deviceName>
 		<backendType>staging</backendType>
+		<rcNotificationsRecepients>dasha@wire.com,nick@wire.com,sergeii.khyzhniak@wire.com,piotr.iazadji@wire.com</rcNotificationsRecepients>
 	</properties>
 
 	<dependencies>

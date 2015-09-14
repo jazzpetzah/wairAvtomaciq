@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android_tablet.pages;
 
 import java.util.concurrent.Future;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -14,7 +15,10 @@ public class TabletWelcomePage extends AndroidTabletPage {
 	public final static String idRegisterButton = "zb__welcome__create_account";
 	@FindBy(id = idRegisterButton)
 	private WebElement registerButton;
-	
+
+	private final static Function<String, String> xpathLinkByText = text -> String
+			.format("//*[@value='%s']", text);
+
 	public TabletWelcomePage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
@@ -32,8 +36,19 @@ public class TabletWelcomePage extends AndroidTabletPage {
 	public void tapIHaveAnAccount() throws Exception {
 		getWelcomePage().tapIHaveAnAccount();
 	}
-	
+
 	public void tapRegisterButton() throws Exception {
 		registerButton.click();
+	}
+
+	public boolean waitUntilLinkVisible(String linkText) throws Exception {
+		final By locator = By.xpath(xpathLinkByText.apply(linkText));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public void tapLink(String linkText) throws Exception {
+		final By locator = By.xpath(xpathLinkByText.apply(linkText));
+		getDriver().findElement(locator).click();
+		;
 	}
 }

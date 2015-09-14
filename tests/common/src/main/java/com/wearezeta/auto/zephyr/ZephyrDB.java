@@ -96,7 +96,7 @@ public class ZephyrDB implements IRCTestcasesStorage {
 	private ExecutedZephyrTestcase createExecutedTestcaseById(long executedTcId)
 			throws Exception {
 		PreparedStatement prepStmt = conn
-				.prepareStatement("SELECT release_test_schedule.comment AS comment, test_result.execution_status as execution_status "
+				.prepareStatement("SELECT test_result.id AS id, release_test_schedule.comment AS comment, test_result.execution_status as execution_status "
 						+ "FROM test_result "
 						+ "INNER JOIN release_test_schedule ON test_result.release_test_schedule_id=release_test_schedule.id "
 						+ "WHERE release_test_schedule.id=? "
@@ -169,7 +169,6 @@ public class ZephyrDB implements IRCTestcasesStorage {
 			while (rs.next()) {
 				final long phaseId = rs.getLong("id");
 				final ZephyrTestPhase phase = createPhaseById(phaseId);
-				updateAutomatedStatusOnPhaseTestcases(phase);
 				cyclePhases.add(phase);
 			}
 			return new ZephyrTestCycle(Long.toString(cycleId), name,
@@ -272,29 +271,29 @@ public class ZephyrDB implements IRCTestcasesStorage {
 	public int syncPhaseResults(ZephyrTestPhase phase) throws Exception {
 		final List<ExecutedZephyrTestcase> phaseTestcases = phase
 				.getTestcases();
-		List<ExecutedZephyrTestcase> changedTestcases = phaseTestcases.stream()
-				.filter(x -> x.getIsChanged()).collect(Collectors.toList());
+		final List<ExecutedZephyrTestcase> changedTestcases = phaseTestcases
+				.stream().filter(x -> x.getIsChanged())
+				.collect(Collectors.toList());
 		for (ExecutedZephyrTestcase executedTC : changedTestcases) {
 			final long lastTestResultId = addTestcaseResult(executedTC);
 			updateTestcaseStatus(executedTC, lastTestResultId);
+			updateAutomatedStatusOnTestcase(executedTC, true);
 		}
 		return changedTestcases.size();
 	}
 
-	private void updateAutomatedStatusOnPhaseTestcases(ZephyrTestPhase phase)
-			throws Exception {
+	private void updateAutomatedStatusOnTestcase(ExecutedZephyrTestcase tc,
+			boolean newStatus) throws Exception {
+		if (tc.getIsAutomated() == newStatus) {
+			return;
+		}
 		PreparedStatement prepStmt = conn
 				.prepareStatement("UPDATE testcase SET is_automated=? WHERE id=?");
 		try {
-			for (ExecutedZephyrTestcase tc : phase.getTestcases()) {
-				if (tc.getIsAutomated()) {
-					continue;
-				}
-				prepStmt.setBoolean(1, true);
-				prepStmt.setLong(2, Long.parseLong(tc.getId()));
-				prepStmt.executeUpdate();
-				tc.syncIsAutomatedStatus();
-			}
+			prepStmt.setBoolean(1, newStatus);
+			prepStmt.setLong(2, Long.parseLong(tc.getId()));
+			prepStmt.executeUpdate();
+			tc.syncIsAutomatedStatus(newStatus);
 		} finally {
 			prepStmt.close();
 		}

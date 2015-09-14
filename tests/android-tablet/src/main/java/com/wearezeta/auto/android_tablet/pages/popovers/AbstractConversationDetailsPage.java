@@ -16,7 +16,7 @@ public abstract class AbstractConversationDetailsPage extends
 	@FindBy(id = idOptionsButton)
 	private WebElement optionsButton;
 
-	public final static String idOptionsContainer = "fl__profile__settings_box";
+	public final static String idOptionsContainer = "ll__settings_box__container";
 	public final static Function<String, String> xpathOptionMenuItemByName = itemName -> String
 			.format("//*[@id='%s']//*[@value='%s']", idOptionsContainer,
 					itemName.toUpperCase());
@@ -47,6 +47,11 @@ public abstract class AbstractConversationDetailsPage extends
 	public boolean isMenuItemVisible(String itemName) throws Exception {
 		final By locator = By.xpath(xpathOptionMenuItemByName.apply(itemName));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+
+	public boolean isMenuItemInvisible(String itemName) throws Exception {
+		final By locator = By.xpath(xpathOptionMenuItemByName.apply(itemName));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
 	}
 
 	public void tapAddPeopleButton() {

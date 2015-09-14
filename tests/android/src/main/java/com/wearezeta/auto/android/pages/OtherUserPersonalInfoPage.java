@@ -30,6 +30,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public static final String LEAVE_CONVERSATION_BUTTON = "Leave conversation";
 	public static final String LEAVE_BUTTON = "LEAVE";
 
+	public static final String idUnblockBtn = "zb__connect_request__unblock_button";
+	@FindBy(id = idUnblockBtn)
+	private WebElement unblockButton;
+
 	private static final Function<String, String> xpathPartcipantNameByText = text -> String
 			.format("//*[@id='ttv__participants__header' and @value='%s']",
 					text);
@@ -63,10 +67,6 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(id = idUserProfileConfirmationMenu)
 	private WebElement confirmMenu;
 
-	private static final String idBlockButton = "ttv__conversation_settings__block";
-	@FindBy(id = idBlockButton)
-	private WebElement blockButton;
-
 	public static final String idRightActionButton = "gtv__participants__right__action";
 	@FindBy(id = idRightActionButton)
 	private WebElement rightConversationButton;
@@ -75,21 +75,9 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(id = idRenameButton)
 	private WebElement renameButton;
 
-	private static final String idArchiveButton = "ttv__conversation_settings__archive";
-	@FindBy(id = idArchiveButton)
-	private WebElement archiveButton;
-
-	private static final String idLeaveButton = "ttv__conversation_settings__leave";
-	@FindBy(id = idLeaveButton)
-	private WebElement leaveButton;
-
-	private static final String idSilenceButton = "ttv__conversation_settings__silence";
-	@FindBy(id = idSilenceButton)
-	private WebElement silenceButton;
-
-	public static final String idUnblockBtn = "zb__connect_request__unblock_button";
-	@FindBy(id = idUnblockBtn)
-	private WebElement unblockButton;
+	private static final Function<String, String> xpathConvOptionsMenuItemByName = name -> String
+			.format("//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
+					name.toUpperCase());
 
 	@FindBy(id = PeoplePickerPage.idParticipantsClose)
 	private WebElement closeButton;
@@ -100,7 +88,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	@FindBy(id = idPager)
 	private WebElement backGround;
 
-	@FindBy(id = idConfirmBtn)
+	@FindBy(xpath = xpathConfirmBtn)
 	private WebElement confirmBtn;
 
 	private static final String idLeftActionButton = "gtv__participants__left__action";
@@ -130,38 +118,16 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		rightConversationButton.click();
 	}
 
-	public ContactListPage pressLeaveButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), leaveButton);
-		leaveButton.click();
-		return new ContactListPage(this.getLazyDriver());
-	}
-
-	public void pressSilenceButton() throws Exception {
-		assert DriverUtils
-				.waitUntilElementClickable(getDriver(), silenceButton);
-		silenceButton.click();
-	}
-
-	public void clickBlockBtn() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), blockButton);
-		blockButton.click();
-	}
-
-	public AndroidPage clickUnblockBtn() throws Exception {
-		assert DriverUtils
-				.waitUntilElementClickable(getDriver(), unblockButton);
-		unblockButton.click();
-		return new DialogPage(this.getLazyDriver());
-	}
-
 	public boolean isUnblockBtnVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				unblockButton);
 	}
 
 	private static By[] getOneToOneOptionsMenuLocators() {
-		return new By[] { By.id(idBlockButton), By.id(idSilenceButton),
-				By.id(idArchiveButton) };
+		return new By[] {
+				By.xpath(xpathConvOptionsMenuItemByName.apply("BLOCK")),
+				By.xpath(xpathConvOptionsMenuItemByName.apply("SILENCE")),
+				By.xpath(xpathConvOptionsMenuItemByName.apply("ARCHIVE")) };
 	}
 
 	private static final int MENU_ITEM_VISIBILITY_TIMEOUT_SECONDS = 5;
@@ -222,6 +188,14 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		}
 	}
 
+	public void selectConvoSettingsMenuItem(String itemName) throws Exception {
+		final By locator = By.xpath(xpathConvOptionsMenuItemByName
+				.apply(itemName));
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
+				.format("Conversation menu item '%s' could not be found on the current screen");
+		getDriver().findElement(locator).click();
+	}
+
 	public boolean isOtherUserNameVisible(String expectedName) throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(xpathPartcipantNameByText.apply(expectedName)), 1)
@@ -248,9 +222,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		this.getWait().until(
 				ExpectedConditions.elementToBeClickable(confirmBtn));
 		confirmBtn.click();
-		final By confirmBtnLocator = By.id(idConfirmBtn);
-		DriverUtils.waitUntilLocatorDissapears(getDriver(), confirmBtnLocator,
-				3);
+		assert DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.xpath(xpathConfirmBtn), 3) : "Confirmation button is still visible after 3 seconds timeout";
 		return new OtherUserPersonalInfoPage(this.getLazyDriver());
 	}
 
@@ -274,6 +247,11 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
+	public boolean isParticipantNotVisible(String name) throws Exception {
+		final By locator = By.xpath(xpathParticipantAvatarByName.apply(name));
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(), locator);
+	}
+
 	public void tapOnParticipantsHeader() {
 		groupChatName.click();
 	}
@@ -282,7 +260,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		groupChatNameEditable.clear();
 		groupChatNameEditable.sendKeys(chatName);
 		this.pressEnter();
-		this.pressEsc();		
+		this.pressEsc();
 	}
 
 	public AndroidPage tapOnParticipant(String name) throws Exception {

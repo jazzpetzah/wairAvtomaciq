@@ -4,6 +4,7 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.SessionNotCreatedException;
@@ -36,6 +37,7 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
+import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class CommonAndroidTabletSteps {
@@ -352,15 +354,15 @@ public class CommonAndroidTabletSteps {
 	}
 
 	/**
-	 * Taps on the center of the screen
+	 * Taps in the center of the screen
 	 * 
-	 * @step. ^I tap on center of screen$
+	 * @step. ^I tap in the center of the screen$
 	 * 
-	 * @throws Throwable
+	 * @throws Exception
 	 * 
 	 */
-	@When("^I tap on center of screen")
-	public void WhenITapOnCenterOfScreen() throws Throwable {
+	@When("^I tap in the center of the screen$")
+	public void WhenITapOnCenterOfScreen() throws Exception {
 		pagesCollection.getCommonPage().tapOnCenterOfScreen();
 	}
 
@@ -377,7 +379,7 @@ public class CommonAndroidTabletSteps {
 	 */
 	@Given("^(.*) sent connection request to (.*)$")
 	public void GivenConnectionRequestIsSentTo(String userFromNameAlias,
-			String usersToNameAliases) throws Throwable {
+			String usersToNameAliases) throws Exception {
 		commonSteps.ConnectionRequestIsSentTo(userFromNameAlias,
 				usersToNameAliases);
 	}
@@ -397,7 +399,7 @@ public class CommonAndroidTabletSteps {
 	 */
 	@Given("^(.*) has an accent color (.*)$")
 	public void GivenUserHasAnAccentColor(String name, String colorName)
-			throws Throwable {
+			throws Exception {
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
@@ -420,7 +422,7 @@ public class CommonAndroidTabletSteps {
 	 * 
 	 */
 	@Given("^(.*) has a name (.*)$")
-	public void GivenUserHasAName(String name, String newName) throws Throwable {
+	public void GivenUserHasAName(String name, String newName) throws Exception {
 		try {
 			name = usrMgr.findUserByNameOrNameAlias(name).getName();
 		} catch (NoSuchUserException e) {
@@ -845,5 +847,27 @@ public class CommonAndroidTabletSteps {
 		commonSteps.UserSendsImageToConversation(imageSenderUserNameAlias,
 				imagePath, dstConversationName,
 				conversationType.equals("group"));
+	}
+
+	/**
+	 * Verify whether the app is in foreground
+	 * 
+	 * @step. ^I see the Wire app is (not )?in foreground$
+	 * 
+	 * @param shouldNotBeInForeground
+	 *            equals to null if 'not' part does not exist in step signature
+	 */
+	@Then("^I see the Wire app is (not )?in foreground$")
+	public void ISeeAppInForgeround(String shouldNotBeInForeground)
+			throws Exception {
+		final String packageId = AndroidCommonUtils
+				.getAndroidPackageFromConfig(getClass());
+		if (shouldNotBeInForeground == null) {
+			Assert.assertTrue("Wire is currently not in foreground",
+					AndroidCommonUtils.isAppInForeground(packageId));
+		} else {
+			Assert.assertFalse("Wire is currently still in foreground",
+					AndroidCommonUtils.isAppInForeground(packageId));
+		}
 	}
 }

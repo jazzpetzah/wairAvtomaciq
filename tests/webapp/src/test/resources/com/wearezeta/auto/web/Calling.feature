@@ -133,7 +133,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox     | 60      |
 
-  @regression @calling @id1866
+  @calling @id1866
   Scenario Outline: Verify I can call a user for more than 15 mins
     Given My browser supports calling
     Given There are 2 users where <Name> is me
@@ -198,16 +198,14 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
 
-  @regression @calling @id1902
+  @regression @calling @debug @id1902
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as caller)
     Given My browser supports calling
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts waiting instance using <CallBackend>
-    Given <Contact1> accepts next incoming call automatically
-    Given <Contact2> accepts next incoming call automatically
-    Given <Contact1> verifies that waiting instance status is changed to waiting in <Timeout> seconds
-    Given <Contact2> verifies that waiting instance status is changed to waiting in <Timeout> seconds
+    Given <Contact1>,<Contact2> accept next incoming call automatically
+    Given <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -227,10 +225,18 @@ Feature: Calling
     Then I do not see the calling bar
     When I call
     Then I see another call warning modal
-    And I click on "End Call" button in another call warning modal
+    When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     Then I do not see the calling bar
     When I call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    When I click on "Continue" button in another call warning modal
+    Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar from user <Contact2>
     And I open conversation with <Contact1>
@@ -268,7 +274,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact   | CallBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name | autocall    | 60      |
 
-  @regression @calling @id3083
+  @regression @calling @debug @id3083
   Scenario Outline: Verify that current call is terminated if you want to call someone else (as callee)
 	Given My browser supports calling
 	Given There are 3 users where <Name> is me
@@ -296,10 +302,18 @@ Feature: Calling
     Then I do not see the calling bar
     When I call
     Then I see another call warning modal
-    And I click on "End Call" button in another call warning modal
+    When I click on "Cancel" button in another call warning modal
     Then I do not see another call warning modal
     Then I do not see the calling bar
     When I call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    Then I do not see the calling bar
+    When I call
+    Then I see another call warning modal
+    When I click on "Continue" button in another call warning modal
+    Then I do not see another call warning modal
     Then <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar from user <Contact2>
     And I open conversation with <Contact1>
@@ -307,10 +321,65 @@ Feature: Calling
     When I open conversation with <Contact2>
     And I end the call
 
-
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2   | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name  | autocall    | chrome      | 60      |
+
+   @staging @calling @group @debug @id3071
+   Scenario Outline: Verify receiving group call during group call
+    Given My browser supports calling
+    Given There are 5 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
+    Given Myself has group chat <ChatName2> with <Contact3>,<Contact4>
+    Given <Contact1>,<Contact2>,<Contact3> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2> accept next incoming call automatically
+    Given <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <ChatName1>
+    And I call
+    Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar from users <Contact1>,<Contact2>
+    And I see joined group call notification for conversation <ChatName1>
+    When <Contact4> calls <ChatName2> using <CallBackend>
+    Then I see the calling bar
+    When I silence the incoming call
+    And I open conversation with <ChatName1>
+    Then I see the calling bar from users <Contact1>,<Contact2>
+    When I open conversation with <ChatName2>
+    Then I do not see the calling bar
+    When <Contact4> stops all calls to <ChatName2>
+    And <Contact4> calls <ChatName2> using <CallBackend>
+    Then I see the calling bar
+    When I accept the incoming call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    When <Contact4> stops all calls to <ChatName2>
+    And <Contact4> calls <ChatName2> using <CallBackend>
+    Then I see the calling bar
+    When I accept the incoming call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    When <Contact4> stops all calls to <ChatName2>
+    And <Contact3> accepts next incoming call automatically
+    And <Contact4> calls <ChatName2> using <CallBackend>
+    Then <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
+    When I accept the incoming call
+    Then I see another call warning modal
+    When I click on "Answer" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see the calling bar from users <Contact3>,<Contact4>
+    And I see joined group call notification for conversation <ChatName2>
+    And I do not see joined group call notification for conversation <ChatName1>
+    And I see unjoined group call notification for conversation <ChatName1>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2   | Contact3   | Contact4   | ChatName1 | ChatName2 | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | user4Name  | user5Name  | GC1       | GC2       | autocall    | chrome      | 60      |
 
   @regression @calling @debug @id2013
   Scenario Outline: Verify I get missed call notification when I call
@@ -483,21 +552,17 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts waiting instance using <CallBackend>
-    Given <Contact1> accepts next incoming call automatically
-    Given <Contact2> accepts next incoming call automatically
+    Given <Contact1>,<Contact2> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     When I call
-    Then <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from user <Contact1>
-    And I see the calling bar from user <Contact2>
+    Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar from users <Contact1>,<Contact2>
     When I end the call
     Then I do not see the calling bar
-    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
 
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | Timeout |
@@ -511,31 +576,20 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Contact2>,<Contact3>,<Contact4> starts waiting instance using <WaitBackend>
-    Given <Contact2> accepts next incoming call automatically
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     When <Contact1> calls <ChatName> using <CallBackend>
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the calling bar
     When I accept the incoming call
-    Then I see the calling bar from user <Contact1>
-    And I see the calling bar from user <Contact2>
-    And I see the calling bar from user <Contact3>
-    And I see the calling bar from user <Contact4>
-    And I wait for 20 seconds
-    And <Contact2> verifies to have 4 flows
-    And <Contact3> verifies to have 4 flows
-    And <Contact4> verifies to have 4 flows
-    And <Contact2> verifies that all flows have greater than 0 bytes
-    And <Contact3> verifies that all flows have greater than 0 bytes
-    And <Contact4> verifies that all flows have greater than 0 bytes
+    Then I see the calling bar from users <Contact1>,<Contact2>,<Contact3>,<Contact4>
+    And I wait for 10 seconds
+    And <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    And <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
     When I end the call
     Then I do not see the calling bar
 
@@ -551,25 +605,21 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
     Given <Contact2>,<Contact3>,<Contact4>,<Contact5> starts waiting instance using <WaitBackend>
-    Given <Contact2> accepts next incoming call automatically
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> accepts next incoming call automatically
-    Given <Contact5> accepts next incoming call automatically
+    Given <Contact2>,<Contact3>,<Contact4>,<Contact5> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     When <Contact1> calls <ChatName> using <CallBackend>
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact5> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact2>,<Contact3>,<Contact4>,<Contact5> verify that waiting instance status is changed to active in <Timeout> seconds
     Then <Contact1> verifies that call status to <ChatName> is changed to active in <Timeout> seconds
     And I see the calling bar
     When I accept the incoming call
+    And I wait for 1 seconds
     Then I see full call warning modal
     And I close the full call warning modal
-    When I call
+    When I join call
+    And I wait for 1 seconds
     Then I see full call warning modal
     And I click on "Ok" button in full call warning modal
 
@@ -585,23 +635,14 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>
     Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <WaitBackend>
-    Given <Contact1> accepts next incoming call automatically
-    Given <Contact2> accepts next incoming call automatically
-    Given <Contact3> accepts next incoming call automatically
-    Given <Contact4> accepts next incoming call automatically
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     When I call
-    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I see the calling bar from user <Contact1>
-    And I see the calling bar from user <Contact2>
-    And I see the calling bar from user <Contact3>
-    And I see the calling bar from user <Contact4>
+    And <Contact1>,<Contact2>,<Contact3>,<Contact4> verify that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar from users <Contact1>,<Contact2>,<Contact3>,<Contact4>
     When I end the call
     Then I do not see the calling bar
 
@@ -642,23 +683,19 @@ Feature: Calling
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <ChatName> with <Contact1>,<Contact2>
     Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
-    Given <Contact1> accepts next incoming call automatically
-    Given <Contact2> accepts next incoming call automatically
+    Given <Contact1>,<Contact2> accept next incoming call automatically
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
     And I open conversation with <ChatName>
     When I call
-    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar
     When I end the call
     Then I do not see the calling bar
-    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     When I join call
-    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
     Then I see the calling bar
 
     Examples: 
@@ -693,3 +730,56 @@ Feature: Calling
     Examples: 
       | Login      | Password      | Name      | Contact1   | Contact2  | ChatName              | CallBackend | WaitBackend | Timeout |
       | user1Email | user1Password | user1Name | user2Name  | user3Name | GroupCallConversation | autocall    | chrome      | 60      |
+
+  @staging @calling @group @debug @id3073
+  Scenario Outline: Verify receiving 1-to-1 call during group call
+    Given My browser supports calling
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>
+    Given Myself has group chat <ChatName1> with <Contact1>,<Contact2>
+    Given <Contact1>,<Contact2> starts waiting instance using <WaitBackend>
+    Given <Contact1>,<Contact2> accept next incoming call automatically
+    Given <Contact1>,<Contact2> verify that waiting instance status is changed to waiting in <Timeout> seconds
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    Then I see my avatar on top of Contact list
+    When I open conversation with <ChatName1>
+    And I call
+    Then <Contact1>,<Contact2> verify that waiting instance status is changed to active in <Timeout> seconds
+    And I see the calling bar from users <Contact1>,<Contact2>
+    And I see joined group call notification for conversation <ChatName1>
+    When <Contact3> calls me using <CallBackend>
+    Then I see the calling bar from user <Contact3>
+    When I silence the incoming call
+    And I open conversation with <ChatName1>
+    Then I see the calling bar from users <Contact1>,<Contact2>
+    When I open conversation with <Contact3>
+    Then I do not see the calling bar
+    When <Contact3> stops all calls to me
+    And <Contact3> calls me using <CallBackend>
+    Then I see the calling bar
+    When I accept the incoming call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    When <Contact3> stops all calls to me
+    And <Contact3> calls me using <CallBackend>
+    Then I see the calling bar
+    When I accept the incoming call
+    Then I see another call warning modal
+    When I click on "Cancel" button in another call warning modal
+    Then I do not see another call warning modal
+    When <Contact3> stops all calls to me
+    And <Contact3> calls me using <CallBackend>
+    When I accept the incoming call
+    Then I see another call warning modal
+    When I click on "Answer" button in another call warning modal
+    Then I do not see another call warning modal
+    And I see the calling bar from user <Contact3>
+    And I see joined group call notification for conversation <Contact3>
+    And I do not see joined group call notification for conversation <ChatName1>
+    And I see unjoined group call notification for conversation <ChatName1>
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1   | Contact2   | Contact3  | ChatName1 | CallBackend | WaitBackend | Timeout |
+      | user1Email | user1Password | user1Name | user2Name  | user3Name  | user4Name | GC1       | autocall    | chrome      | 60      |

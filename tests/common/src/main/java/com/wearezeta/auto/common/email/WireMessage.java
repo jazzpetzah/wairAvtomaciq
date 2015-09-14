@@ -8,7 +8,7 @@ public class WireMessage extends BackendMessage {
 		super(msg);
 	}
 
-	protected static final String ZETA_PURPOSE_HEADER_NAME = "X-Zeta-Purpose";
+	public static final String ZETA_PURPOSE_HEADER_NAME = "X-Zeta-Purpose";
 
 	public String getXZetaPurpose() throws MessagingException {
 		return this.getHeaderValue(ZETA_PURPOSE_HEADER_NAME);

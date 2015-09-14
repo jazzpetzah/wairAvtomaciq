@@ -516,8 +516,7 @@ public class CommonIOSSteps {
 		pagesCollecton.clearAllPages();
 		IOSKeyboard.dispose();
 
-		if (CommonUtils.getIsSimulatorFromConfig(getClass())
-				&& !skipBeforeAfter) {
+		if (CommonUtils.getIsSimulatorFromConfig(getClass())) {
 			IOSCommonUtils
 					.collectSimulatorLogs(
 							CommonUtils.getDeviceName(getClass()),

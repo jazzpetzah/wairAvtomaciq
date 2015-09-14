@@ -61,10 +61,6 @@ public class GroupPopover extends AbstractPopoverContainer {
 		return this.participantsPage.waitForParticipantAvatarNotVisible(name);
 	}
 
-	public void setConnectionMessage(String text) throws Exception {
-		this.outgoingConnectionPage.setMessage(text);
-	}
-
 	public void tapConnectButton() throws Exception {
 		this.outgoingConnectionPage.tapConnectButton();
 	}
@@ -95,5 +91,26 @@ public class GroupPopover extends AbstractPopoverContainer {
 			throws Exception {
 		return this.connectedParticipantPage
 				.waitUntilUserEmailVisible(expectedEmail);
+	}
+
+	public boolean waitUntilConversationNameVisible(String expectedName)
+			throws Exception {
+		return this.participantsPage
+				.waitUntilConversationNameVisible(expectedName);
+	}
+
+	public boolean waitUntilSubheaderIsVisible(String expectedText)
+			throws Exception {
+		return this.participantsPage.waitUntilSubheaderIsVisible(expectedText);
+
+	}
+
+	public boolean waitUntilMenuItemIsVisible(String itemName) throws Exception {
+		return participantsPage.isMenuItemVisible(itemName);
+	}
+
+	public boolean waitUntilMenuItemIsInvisible(String itemName)
+			throws Exception {
+		return participantsPage.isMenuItemInvisible(itemName);
 	}
 }

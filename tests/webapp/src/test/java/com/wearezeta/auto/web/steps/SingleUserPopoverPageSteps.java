@@ -196,7 +196,7 @@ public class SingleUserPopoverPageSteps {
 	 *
 	 * @param not
 	 *            * is set to null if "do not" part does not exist
-	 * @param nameAlias
+	 * @param userAlias
 	 *            name of user
 	 * @step. ^I( do not)? see Mail of user (.*) on Single Participant popover$
 	 *
@@ -225,7 +225,7 @@ public class SingleUserPopoverPageSteps {
 	 *            * is set to null if "do not" part does not exist
 	 * @param avatar
 	 *            file name of image file in resources/images
-	 * @param nameAlias
+	 * @param userAlias
 	 *            name of user
 	 * @step. ^I( do not)? see avatar of user (.*) on Single Participant popover$
 	 *

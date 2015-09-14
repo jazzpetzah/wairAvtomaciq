@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -9,16 +10,20 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonSteps;
+import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.pages.ConversationPage;
 import com.wearezeta.auto.web.pages.PagesCollection;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -530,20 +535,25 @@ public class ConversationPageSteps {
 
 	/**
 	 *
-	 * @step. ^I see the calling bar from user (.*)$
-	 * @param username
-	 *            the name of the user currently calling
+	 * @step. ^I see the calling bar from users? (.*)$
+	 * @param participants
+	 *            comma separated list of usernames currently calling
 	 * @throws Exception
 	 */
-	@Then("^I see the calling bar from user (.*)$")
-	public void IWaitForCallingBar(String username) throws Exception {
+	@Then("^I see the calling bar from users? (.*)$")
+	public void IWaitForCallingBar(String participants) throws Exception {
 		if (PagesCollection.conversationPage == null) {
 			PagesCollection.conversationPage = (ConversationPage) PagesCollection.loginPage
 					.instantiatePage(ConversationPage.class);
 		}
-		username = usrMgr.findUserByNameOrNameAlias(username).getName();
-		PagesCollection.conversationPage
-				.waitForCallingBarToBeDisplayedWithName(username);
+		final List<String> participantList = splitAliases(participants);
+		for (String participant : participantList) {
+			final String participantName = usrMgr.findUserByNameOrNameAlias(
+					participant).getName();
+			PagesCollection.conversationPage
+					.waitForCallingBarToBeDisplayedWithName(participantName);
+		}
+
 	}
 
 	/**
@@ -821,5 +831,26 @@ public class ConversationPageSteps {
 	@Then("^I type shortcut combination to start a call$")
 	public void ITypeShortcutCombinationToCall() throws Exception {
 		PagesCollection.conversationPage.pressShortCutForCall();
+	}
+
+	@And("^I click on pending user avatar$")
+	public void IClickOnPendingUserAvatar() throws Exception {
+		PagesCollection.popoverPage = PagesCollection.conversationPage
+				.clickUserAvatar();
+	}
+
+	/**
+	 * Click on an avatar bubble inside the conversation view
+	 * 
+	 * @step. ^I click on avatar of user (.*) in conversation view$
+	 * @param userAlias
+	 *            name of the user
+	 * @throws Exception
+	 */
+	@And("^I click on avatar of user (.*) in conversation view$")
+	public void IClickOnUserAvatar(String userAlias) throws Exception {
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
+		PagesCollection.popoverPage = PagesCollection.conversationPage
+				.clickUserAvatar(user.getId());
 	}
 }

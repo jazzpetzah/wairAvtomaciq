@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @regression @id2378 @id2568
+  @regression @rc @id2378 @id2568
   Scenario Outline: Verify archive a conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -9,17 +9,14 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
-    And I long swipe right to archive conversation <Contact2>
-    Then I dont see conversation <Contact2> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
-    Then I see user <Contact2> in contact list
 
     Examples: 
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id2755 @id2377
+  @regression @rc @id2755 @id2377
   Scenario Outline: Verify archive a conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact2>
@@ -29,11 +26,8 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
-    And I long swipe right to archive conversation <Contact2>
-    Then I dont see conversation <Contact2> in contact list
     And I open archived conversations on iPad
     Then I see user <Contact> in contact list
-    Then I see user <Contact2> in contact list
 
     Examples: 
       | Name      | Contact   | Contact2  |
@@ -46,7 +40,8 @@ Feature: Conversation List
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    When I long swipe right to archive conversation <GroupChatName>
+    And I swipe right on a <Contact1>
+    And I click archive button for conversation <Contact1>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
@@ -63,7 +58,8 @@ Feature: Conversation List
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     When I see Contact list with my name <Name>
-    And I long swipe right to archive conversation <GroupChatName>
+    And I swipe right on a <Contact1>
+    And I click archive button for conversation <Contact1>
     Then I dont see conversation <GroupChatName> in contact list
     And I open archived conversations on iPad
     Then I see user <GroupChatName> in contact list
@@ -132,7 +128,7 @@ Feature: Conversation List
       | Name      |
       | user1Name |
 
-  @regression @id2369
+  @regression @rc @id2369
   Scenario Outline: Verify Ping animation in the conversations list [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>
@@ -243,7 +239,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
-  @regression @id2360
+  @regression @rc @id2360
   Scenario Outline: Get invitation message from user [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -270,7 +266,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @regression @id2368
+  @regression @rc @id2368
   Scenario Outline: Verify missed call indicator appearance in conversation list [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -313,7 +309,7 @@ Feature: Conversation List
       | Name      | Contact   | Contact1  | Number | Color           | CallBackend |
       | user1Name | user2Name | user3Name | 2      | StrongLimeGreen | autocall    |
 
-  @regression @id2371
+  @regression @rc @id2371
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact>,<Contact1>
@@ -380,7 +376,7 @@ Feature: Conversation List
       | Name      | Contact   | YouTubeLink                                |
       | user1Name | user2Name | http://www.youtube.com/watch?v=Bb1RhktcugU |
 
-  @regression @id2566
+  @regression @rc @id2566
   Scenario Outline: Verify muting ongoing call [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -404,7 +400,7 @@ Feature: Conversation List
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @regression @id2364
+  @regression @rc @id2364
   Scenario Outline: Verify play/pause controls can change playing media state - SoundCloud [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -428,3 +424,79 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
+
+  @staging
+  Scenario Outline: Verify action menu is opened on swipe right on the group conversation [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    Then I see conversation <GroupChatName> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Leave button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3name | ActionMenuChat |
+
+  @staging
+  Scenario Outline: Verify action menu is opened on swipe right on the group conversation [LANDSCAPE]
+    Given I rotate UI to landscape
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    Then I see conversation <GroupChatName> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Leave button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3name | ActionMenuChat |
+
+  @staging
+  Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    Then I see conversation <Contact> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Block button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging
+  Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [LANDSCAPE]
+    Given I rotate UI to landscape
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    Then I see conversation <Contact> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Block button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |

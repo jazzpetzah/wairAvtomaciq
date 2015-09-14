@@ -100,6 +100,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCloseButton)
 	private WebElement closeButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathMessageEntries)
+	private List<WebElement> messageEntries;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
 	private WebElement imageCell;
@@ -110,7 +113,7 @@ public class DialogPage extends IOSPage {
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathMediaConversationCell)
 	private WebElement mediaLinkCell;
 
-	@FindBy(how = How.XPATH, using = IOSLocators.xpathYoutubeConversationCell)
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathYoutubeVimeoConversationCell)
 	private WebElement youtubeCell;
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameMediaBarPlayPauseButton)
@@ -193,6 +196,10 @@ public class DialogPage extends IOSPage {
 	public StartedCallPage pressCallButton() throws Exception {
 		callButton.click();
 		return new StartedCallPage(getLazyDriver());
+	}
+	
+	public int getNumberOfMessageEntries() {
+		return messageEntries.size();
 	}
 
 	public boolean waitForCursorInputVisible() throws Exception {
@@ -496,10 +503,16 @@ public class DialogPage extends IOSPage {
 
 	public boolean isYoutubeContainerVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.xpath(IOSLocators.xpathYoutubeConversationCell), 10);
+				By.xpath(IOSLocators.xpathYoutubeVimeoConversationCell), 10);
 	}
 
 	public boolean isMediaContainerVisible() throws Exception {
+		boolean isVisible = DriverUtils.waitUntilLocatorAppears(
+				this.getDriver(),
+				By.xpath(IOSLocators.xpathMediaConversationCell), 10);
+		if (!isVisible) {
+			rotateDeviceToRefreshElementsTree();
+		}
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathMediaConversationCell), 10);
 	}

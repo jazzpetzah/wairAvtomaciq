@@ -25,7 +25,7 @@ import com.wearezeta.auto.web.common.WebCommonUtils;
 import com.wearezeta.auto.web.locators.WebAppLocators;
 import com.wearezeta.auto.web.pages.popovers.AbstractPopoverContainer;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
-import com.wearezeta.auto.web.pages.popovers.SendInvitationPopoverContainer;
+import com.wearezeta.auto.web.pages.popovers.BringYourFriendsPopoverPage;
 
 public class PeoplePickerPage extends WebPage {
 
@@ -35,20 +35,26 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssNameSearchInput)
 	private WebElement searchInput;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathNameCreateConversationButton)
+	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssOpenOrCreateConversationButton)
 	private WebElement openOrCreateConversationButton;
 
 	@FindBy(css = WebAppLocators.PeoplePickerPage.cssCloseSearchButton)
 	private WebElement closeSearchButton;
 
-	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathSendInvitationButton)
-	private WebElement sendInvitationButton;
+	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathBringYourFriendsButton)
+	private WebElement bringYourFriendsButton;
 
 	@FindBy(xpath = "//*[contains(@class,'people-picker-list-suggestions')]//div[@data-uie-name='item-user']")
 	private List<WebElement> suggestions;
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.PeoplePickerPage.xpathSelectedTopPeopleList)
 	private List<WebElement> selectedTopPeopleItemLocator;
+
+	@FindBy(css = WebAppLocators.PeoplePickerPage.cssMoreButton)
+	private WebElement moreButton;
+
+	@FindBy(xpath = "//*[contains(@class,'search-list search-list-sm')]//div[@data-uie-name='item-user']")
+	private List<WebElement> topPeople;
 
 	public PeoplePickerPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -150,22 +156,22 @@ public class PeoplePickerPage extends WebPage {
 
 	private static final int BUTTON_VISIBILITY_TIMEOUT_SECONDS = 5;
 
-	public void waitUntilSendInvitationButtonIsVisible() throws Exception {
+	public void waitUntilBringYourFriendsButtonIsVisible() throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						getDriver(),
-						By.xpath(WebAppLocators.PeoplePickerPage.xpathSendInvitationButton),
-						BUTTON_VISIBILITY_TIMEOUT_SECONDS) : "Send Invitation button is not visible after "
+						By.xpath(WebAppLocators.PeoplePickerPage.xpathBringYourFriendsButton),
+						BUTTON_VISIBILITY_TIMEOUT_SECONDS) : "Bring Your Friends button is not visible after "
 				+ BUTTON_VISIBILITY_TIMEOUT_SECONDS + " seconds timeout";
 	}
 
-	public SendInvitationPopoverContainer clickSendInvitationButton()
+	public BringYourFriendsPopoverPage clickBringYourFriendsButton()
 			throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				sendInvitationButton);
-		sendInvitationButton.click();
+				bringYourFriendsButton);
+		bringYourFriendsButton.click();
 
-		return new SendInvitationPopoverContainer(this.getLazyDriver());
+		return new BringYourFriendsPopoverPage(this.getLazyDriver());
 	}
 
 	public int getNumberOfSuggestions() {
@@ -285,5 +291,19 @@ public class PeoplePickerPage extends WebPage {
 				.apply(name);
 		return DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(foundGroupXpath));
+	}
+
+	public boolean isMoreButtonVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.cssSelector(WebAppLocators.PeoplePickerPage.cssMoreButton));
+	}
+
+	public void clickMoreButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), moreButton);
+		moreButton.click();
+	}
+
+	public int getNumberOfTopPeople() {
+		return topPeople.size();
 	}
 }

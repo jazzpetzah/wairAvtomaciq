@@ -21,21 +21,22 @@
 		<driverTimeoutSeconds>7</driverTimeoutSeconds>
 		<defaultEmail>smoketester@wire.com</defaultEmail>
 		<!-- edge | staging | production -->
-        <backendType>staging</backendType>
+		<backendType>staging</backendType>
 		<!-- leave webappApplicationPath empty to get the default URL for the backendType -->
-        <webappApplicationPath></webappApplicationPath>
+		<webappApplicationPath></webappApplicationPath>
 		<webappImagesPath>img/</webappImagesPath>
 		<!-- The levels in descending order are: SEVERE (highest value), WARNING, 
 			INFO, CONFIG, FINE, FINER, FINEST (lowest value). In addition there is a 
 			level OFF that can be used to turn off logging, and a level ALL that can 
 			be used to enable logging of all messages. -->
 		<extendedLoggingLevel>SEVERE</extendedLoggingLevel>
+		<rcNotificationsRecepients>sven.jost@wire.com,nick@wire.com</rcNotificationsRecepients>
 
 		<!-- new -->
 		<com.wire.os.name>Windows</com.wire.os.name>
 		<com.wire.os.version>7</com.wire.os.version>
 		<com.wire.browser.name>Chrome</com.wire.browser.name>
-        <com.wire.browser.version>44.0</com.wire.browser.version>
+		<com.wire.browser.version>44.0</com.wire.browser.version>
 	</properties>
 
 	<dependencies>
@@ -126,9 +127,9 @@
 						<com.wire.os.name>${com.wire.os.name}</com.wire.os.name>
 						<com.wire.os.version>${com.wire.os.version}</com.wire.os.version>
 						<com.wire.browser.name>${com.wire.browser.name}</com.wire.browser.name>
-                        <com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
-                        <hubHost>${hubHost}</hubHost>
-                        <hubPort>${hubPort}</hubPort>
+						<com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
+						<hubHost>${hubHost}</hubHost>
+						<hubPort>${hubPort}</hubPort>
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>

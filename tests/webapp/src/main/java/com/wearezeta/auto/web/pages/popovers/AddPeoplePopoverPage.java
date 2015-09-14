@@ -15,6 +15,9 @@ class AddPeoplePopoverPage extends AbstractPopoverPage {
 	@FindBy(css = PopoverLocators.Shared.cssSearchResultItems)
 	private List<WebElement> searchResultItems;
 
+	@FindBy(css = PopoverLocators.Shared.cssCreateGroupConversationButton)
+	private WebElement createGroupConversationButton;
+
 	public AddPeoplePopoverPage(Future<ZetaWebAppDriver> lazyDriver,
 			PeoplePopoverContainer container) throws Exception {
 		super(lazyDriver, container);
@@ -38,13 +41,7 @@ class AddPeoplePopoverPage extends AbstractPopoverPage {
 		getSearchFieldElement().sendKeys(searchText);
 	}
 
-	private WebElement getCreateGroupConversationButton() throws Exception {
-		return this
-				.getSharedElement(PopoverLocators.Shared.xpathCreateConversationButton);
-	}
-
 	public void clickCreateGroupConversation() throws Exception {
-		final WebElement createGroupConversationButton = getCreateGroupConversationButton();
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				createGroupConversationButton) : "Create Group Convesation button is not clickable after timeout";
 		createGroupConversationButton.click();

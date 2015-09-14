@@ -31,9 +31,18 @@
 		<perfUsersCount>11</perfUsersCount> <!-- The number of contacts for perf test -->
 		<backendType>staging</backendType>
 		<perfReportPath>{user.home}/Documents/performance.json</perfReportPath>
+		<rcNotificationsRecepients>dasha@wire.com,nick@wire.com,sergeii.khyzhniak@wire.com,piotr.iazadji@wire.com</rcNotificationsRecepients>
 	</properties>
 
 	<dependencies>
+	
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-library</artifactId>
+			<version>1.3</version>
+			<scope>test</scope>
+		</dependency>
+	
 		<dependency>
 			<groupId>com.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
