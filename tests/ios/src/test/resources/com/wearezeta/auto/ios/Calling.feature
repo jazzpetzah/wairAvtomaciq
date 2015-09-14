@@ -287,12 +287,15 @@ Feature: Calling
     And <Contact1> calls <GroupChatName> using <CallBackend2>
     And I see incoming group calling message
     And I accept incoming call
-    Then I see mute call, end call and speakers buttons
+    And I see mute call, end call and speakers buttons
+    Then I see <NumberOfAvatars> avatars in the group call bar
+    And I wait for 10 seconds
+    Then <Contact2>,<Contact3>,<Contact4> verify to have 4 flows
+    Then <Contact2>,<Contact3>,<Contact4> verify that all flows have greater than 0 bytes
 
     Examples: 
-      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | firefox     | autocall     |
-      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | chrome      | autocall     |
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName      | CallBackend | CallBackend2 |NumberOfAvatars |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | AcceptingGROUPCALL | chrome      | autocall     | 5              |
 
   @regression @id2683
   Scenario Outline: Verify ignoring group call in foreground
@@ -534,3 +537,32 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | GroupChatName   | CallBackend | CallBackend2 | NumberOfAvatars | NewNumberOfAvatars |
       | user1Name | user2Name | user3Name | user4Name | user5Name | RemoveGROUPCALL | chrome      | autocall     | 5               | 4                  |
+
+  @staging @id2673 @noAcceptAlert
+  Scenario Outline: Verify impossibility to connect 6th person to the call
+    Given There are 6 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>
+    Given <Contact1>,<Contact2>,<Contact3>,<Contact4> starts waiting instance using <CallBackend>
+    Given <Contact1> accepts next incoming call automatically
+    Given <Contact2> accepts next incoming call automatically
+    Given <Contact3> accepts next incoming call automatically
+    Given <Contact4> accepts next incoming call automatically
+    Given I sign in using my email or phone number
+    And I dismiss alert
+    And I accept alert
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I see dialog page
+    When <Contact5> calls <GroupChatName> using <CallBackend2>
+    And <Contact1> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact2> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact3> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And <Contact4> verifies that waiting instance status is changed to active in <Timeout> seconds
+    And I see incoming group calling message
+    And I accept incoming call
+    Then I see group call is Full message
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
+      | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | chrome      | autocall     | 5               | 60      |
