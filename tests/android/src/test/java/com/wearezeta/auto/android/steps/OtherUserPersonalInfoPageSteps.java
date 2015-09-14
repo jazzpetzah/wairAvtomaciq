@@ -279,8 +279,8 @@ public class OtherUserPersonalInfoPageSteps {
 	@Then("^I see the correct number of participants in the title (.*)$")
 	public void IVerifyParticipantNumber(String realNumberOfParticipants)
 			throws Exception {
-		Assert.assertEquals(getOtherUserPersonalInfoPage().getSubHeader()
-				.toLowerCase(), realNumberOfParticipants + " people");
+		Assert.assertEquals(realNumberOfParticipants + " people",
+				getOtherUserPersonalInfoPage().getSubHeader().toLowerCase());
 	}
 
 	/**

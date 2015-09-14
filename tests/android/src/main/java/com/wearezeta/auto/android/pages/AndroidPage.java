@@ -199,21 +199,12 @@ public abstract class AndroidPage extends BasePage {
 	}
 
 	public void dialogsPagesSwipeUp(int durationMilliseconds) throws Exception {
-		Point coords = content.getLocation();
-		Dimension elementSize = content.getSize();
-		this.getDriver().swipe(coords.x + elementSize.width / 2,
-				coords.y + elementSize.height - 300,
-				coords.x + elementSize.width / 2, coords.y + 50,
-				durationMilliseconds);
+		swipeByCoordinates(durationMilliseconds, 50, 80, 50, 30);
 	}
 
 	public void dialogsPagesSwipeDown(int durationMilliseconds)
 			throws Exception {
-		Point coords = content.getLocation();
-		Dimension elementSize = content.getSize();
-		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y + 50,
-				coords.x + elementSize.width / 2,
-				coords.y + elementSize.height - 300, durationMilliseconds);
+		swipeByCoordinates(durationMilliseconds, 50, 30, 50, 80);
 	}
 
 	@Override
@@ -319,7 +310,7 @@ public abstract class AndroidPage extends BasePage {
 				SWIPE_DEFAULT_PERCENTAGE_START, heightPercent,
 				SWIPE_DEFAULT_PERCENTAGE_END, heightPercent);
 	}
-	
+
 	/**
 	 * Swipe from x = 90% of width to x = 10% of width. y = height/2
 	 */
@@ -359,6 +350,7 @@ public abstract class AndroidPage extends BasePage {
 	public void swipeDownCoordinates(int durationMilliseconds) throws Exception {
 		swipeDownCoordinates(durationMilliseconds, SWIPE_DEFAULT_PERCENTAGE);
 	}
+
 	/**
 	 * Swipe from y = 10% of hight to y = 90% of hight. x = widthPercent
 	 */
