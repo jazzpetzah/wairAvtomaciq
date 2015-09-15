@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @staging @id951 @torun
+  @staging @id951
   Scenario Outline: Send text, image and knock in other convo while in the call
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

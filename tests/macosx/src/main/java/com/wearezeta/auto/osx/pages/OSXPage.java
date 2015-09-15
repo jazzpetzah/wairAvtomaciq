@@ -1,14 +1,12 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
-import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.BasePage;
-import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.Future;
 
 public abstract class OSXPage extends BasePage {
 
@@ -21,32 +19,23 @@ public abstract class OSXPage extends BasePage {
 	}
 
 	protected ZetaWebAppDriver getSecondaryDriver() throws Exception {
-		return (ZetaWebAppDriver) secondaryDriver.get(
-				ZetaDriver.INIT_TIMEOUT_MILLISECONDS, TimeUnit.MILLISECONDS);
+		return (ZetaWebAppDriver) secondaryDriver;
 	}
 
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Future<ZetaOSXDriver> getLazyDriver() {
-		return (Future<ZetaOSXDriver>) super.getLazyDriver();
+	public OSXPage(Future<ZetaOSXDriver> osxDriver,
+			Future<ZetaWebAppDriver> webDriver) throws Exception {
+		this(osxDriver, webDriver, null);
 	}
 
-	@SuppressWarnings("unchecked")
-	protected Future<ZetaWebAppDriver> getSecondaryLazyDriver() {
-		return secondaryDriver;
+	public OSXPage(Future<ZetaOSXDriver> osxDriver) throws Exception {
+		super(osxDriver);
 	}
 
-	public OSXPage(Future<ZetaOSXDriver> lazyDriver,
-			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
-		this(lazyDriver, secondaryDriver, null);
-	}
-
-	public OSXPage(Future<ZetaOSXDriver> lazyDriver,
-			Future<ZetaWebAppDriver> secondaryDriver, String path)
-			throws Exception {
-		super(lazyDriver);
+	public OSXPage(Future<ZetaOSXDriver> osxDriver,
+			Future<ZetaWebAppDriver> webDriver, String path) throws Exception {
+		super(osxDriver);
 		this.path = path;
-		this.secondaryDriver = secondaryDriver;
+		this.secondaryDriver = webDriver;
 	}
 
 	public void navigateTo() throws Exception {
@@ -69,7 +58,7 @@ public abstract class OSXPage extends BasePage {
 
 	public static void clearPagesCollection() throws IllegalArgumentException,
 			IllegalAccessException {
-		clearPagesCollection(PagesCollection.class, OSXPage.class);
+		clearPagesCollection(OSXPagesCollection.class, OSXPage.class);
 	}
 
 	// not used in OS X

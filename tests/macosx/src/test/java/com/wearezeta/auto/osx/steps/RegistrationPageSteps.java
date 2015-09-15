@@ -1,21 +1,22 @@
 package com.wearezeta.auto.osx.steps;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.junit.Assert;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
+import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.osx.pages.ContactListPage;
-import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.SelfProfilePage;
-import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
+import com.wearezeta.auto.common.usrmgmt.UserState;
+import com.wearezeta.auto.web.pages.PagesCollection;
 
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 public class RegistrationPageSteps {
 
@@ -23,18 +24,22 @@ public class RegistrationPageSteps {
 
 	private ClientUser userToRegister = null;
 
+	private Future<String> activationMessage;
+
+	public static final int maxCheckCnt = 2;
+
 	/**
-	 * Enters name into registration Name fields
+	 * Enter user name into registration form
 	 * 
-	 * @step. I enter name (.*)
+	 * @step. ^I enter user name (.*) on Registration page$
 	 * 
 	 * @param name
-	 *            user name string
-	 * 
+	 *            user name/alias
 	 * @throws Exception
 	 */
-	@When("I enter name (.*)")
+	@When("^I enter user name (.*) on Registration page$")
 	public void IEnterName(String name) throws Exception {
+		PagesCollection.registrationPage.waitForRegistrationPageToFullyLoad();
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchUserException e) {
@@ -45,22 +50,22 @@ public class RegistrationPageSteps {
 			this.userToRegister.clearNameAliases();
 			this.userToRegister.addNameAlias(name);
 		}
-		PagesCollection.registrationPage.typeFullName(this.userToRegister
+		PagesCollection.registrationPage.enterName(this.userToRegister
 				.getName());
 	}
 
 	/**
-	 * Enters email into registration Email field
+	 * Enter user email into registration form
 	 * 
-	 * @step. I enter email (.*)
+	 * @step. ^I enter user email (.*) on Registration page$
 	 * 
 	 * @param email
-	 *            user email string
-	 * 
+	 *            user email/alias
 	 * @throws Exception
 	 */
-	@When("I enter email (.*)")
+	@When("^I enter user email (.*) on Registration page$")
 	public void IEnterEmail(String email) throws Exception {
+		boolean flag = false;
 		try {
 			String realEmail = usrMgr.findUserByEmailOrEmailAlias(email)
 					.getEmail();
@@ -69,302 +74,159 @@ public class RegistrationPageSteps {
 			if (this.userToRegister == null) {
 				this.userToRegister = new ClientUser();
 			}
-			this.userToRegister.setEmail(email);
-			this.userToRegister.clearEmailAliases();
-			this.userToRegister.addEmailAlias(email);
+			flag = true;
 		}
-		PagesCollection.registrationPage.typeEmail(this.userToRegister
-				.getEmail());
+
+		if (flag) {
+			PagesCollection.registrationPage.enterEmail(email);
+		} else {
+			PagesCollection.registrationPage.enterEmail(this.userToRegister
+					.getEmail());
+		}
 	}
 
 	/**
-	 * Enters password into registration Password field
+	 * Enter user password into registration form
 	 * 
-	 * @step. I enter password (.*)
+	 * @step. ^I enter user password \"(.*)\" on Registration page$
 	 * 
 	 * @param password
-	 *            user password string
-	 * 
+	 *            user password/alias
 	 * @throws Exception
 	 */
-	@When("I enter password (.*)")
+	@When("^I enter user password \"(.*)\" on Registration page$")
 	public void IEnterPassword(String password) throws Exception {
 		try {
 			this.userToRegister.setPassword(usrMgr.findUserByPasswordAlias(
 					password).getPassword());
 		} catch (NoSuchUserException e) {
-			if (this.userToRegister == null) {
-				this.userToRegister = new ClientUser();
-			}
 			this.userToRegister.setPassword(password);
-			this.userToRegister.clearPasswordAliases();
 			this.userToRegister.addPasswordAlias(password);
 		}
-		PagesCollection.registrationPage.typePassword(this.userToRegister
+		PagesCollection.registrationPage.enterPassword(this.userToRegister
 				.getPassword());
 	}
 
 	/**
-	 * Clicks on Create Account button and submits all entered registration
-	 * data.
+	 * Submit registration form
 	 * 
-	 * @step. I submit registration data
-	 * 
-	 * @throws Exception
-	 */
-	@When("I submit registration data")
-	public void ISubmitRegistrationData() throws Exception {
-		PagesCollection.verificationPage = PagesCollection.registrationPage
-				.createAccount(this.userToRegister.getEmail());
-		usrMgr.setSelfUser(this.userToRegister);
-	}
-
-	/**
-	 * Verifies registration address (using data from mail headers)
-	 * 
-	 * @step. I verify registration address
+	 * @step. ^I submit registration form$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("I verify registration address")
-	public void IVerifyRegistrationAddress() throws Exception {
-		BackendAPIWrappers
-				.activateRegisteredUserByEmail(PagesCollection.verificationPage
-						.getActivationMessage());
+	@When("^I submit registration form$")
+	public void ISubmitRegistration() throws Exception {
+		PagesCollection.registrationPage.submitRegistration();
 	}
 
 	/**
-	 * Chooses to take user picture using camera
+	 * Start monitoring thread for activation email. Please put this step BEFORE
+	 * you submit the registration form
 	 * 
-	 * @step. I choose register using camera
-	 */
-	@When("I choose register using camera")
-	public void IChooseRegisterUsingCamera() {
-		PagesCollection.registrationPage.chooseToTakePicture();
-	}
-
-	/**
-	 * Takes picture using camera
-	 * 
-	 * @step. I take registration picture from camera
-	 * 
-	 * @throws InterruptedException
-	 */
-	@When("I take registration picture from camera")
-	public void ITakeRegistrationPictureFromCamera()
-			throws InterruptedException {
-		PagesCollection.registrationPage.chooseToTakePicture();
-		PagesCollection.registrationPage.acceptTakenPicture();
-	}
-
-	/**
-	 * Chooses to take user picture by selecting existing image from file system
-	 * 
-	 * @step. I choose register with image
-	 */
-	@When("I choose register with image")
-	public void IChooseRegisterWithImage() {
-		PagesCollection.registrationPage.chooseToPickImage();
-	}
-
-	/**
-	 * Takes picture from selected image file on file system
-	 * 
-	 * @step. I take registration picture from image file (.*)
-	 * 
-	 * @param imageFile
-	 *            name of file to be chosen (should be placed in Documents
-	 *            folder)
+	 * @step. ^I start activation email monitoring$
 	 * 
 	 * @throws Exception
 	 */
-	@When("I take registration picture from image file (.*)")
-	public void ITakeRegistrationPictureFromImageFile(String imageFile)
-			throws Exception {
-		ChoosePicturePage choosePicturePage = (ChoosePicturePage) PagesCollection.mainMenuPage
-				.instantiatePage(ChoosePicturePage.class);
-		Assert.assertTrue(choosePicturePage.isVisible());
-
-		choosePicturePage.openImage(imageFile);
+	@When("^I start activation email monitoring$")
+	public void IStartActivationEmailMonitoring() throws Exception {
+		Map<String, String> expectedHeaders = new HashMap<String, String>();
+		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
+		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
+				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 	}
 
 	/**
-	 * Confirms taken picture
+	 * Verifiy whether email address, which is visible on email confirmation
+	 * page is the same as the expected one
 	 * 
-	 * @step. ^I accept taken picture$
+	 * @step. ^I see email (.*) on [Vv]erification page$
+	 * 
+	 * @param email
+	 *            expected email/alias
+	 * @throws NoSuchUserException
 	 */
-	@When("^I accept taken picture$")
-	public void IAcceptTakenPicture() {
-		PagesCollection.registrationPage.acceptTakenPicture();
+	@Then("^I see email (.*) on [Vv]erification page$")
+	public void ISeeVerificationEmail(String email) throws NoSuchUserException {
+		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+		assertThat(
+				PagesCollection.registrationPage.getVerificationEmailAddress(),
+				equalTo(email));
 	}
 
 	/**
-	 * Rejects taken picture
-	 * 
-	 * @step. ^I reject taken picture$
+	 * Verify whether I see an error message on the verification page
+	 *
+	 * @step. ^I see error \"(.*)\" on [Vv]erification page$
+	 *
+	 * @param message
+	 *            expected error message
+	 * @throws NoSuchUserException
 	 */
-	@When("^I reject taken picture$")
-	public void IRejectTakenPicture() {
-		PagesCollection.registrationPage.rejectTakenPicture();
+	@Then("^I see error \"(.*)\" on [Vv]erification page$")
+	public void ISeeErrorMessageOnVerificationPage(String message)
+			throws Throwable {
+		assertThat(PagesCollection.registrationPage.getErrorMessage(),
+				equalTo(message));
 	}
 
 	/**
-	 * Checks that Contact list appears with registered user name
-	 * 
-	 * @step. I see contact list of registered user
-	 * 
+	 * Checks if a red dot is shown inside the email field on the registration
+	 * form
+	 *
+	 * @step. ^I verify that a red dot is shown inside the email field on the
+	 *        registration form$
 	 * @throws Exception
 	 */
-	@Then("I see contact list of registered user")
-	public void ISeeContactListOfRegisteredUser() throws Exception {
-		PagesCollection.contactListPage = (ContactListPage) PagesCollection.mainMenuPage
-				.instantiatePage(ContactListPage.class);
-		ContactListPageSteps clSteps = new ContactListPageSteps();
-		clSteps.ISeeMyNameInContactList();
-	}
-
-	/**
-	 * Checks that Self Profile appears with registered user name
-	 * 
-	 * @step. I see self profile of registered user
-	 * 
-	 * @throws Exception
-	 */
-	@Then("I see self profile of registered user")
-	public void ISeeSelfProfileOfRegisteredUser() throws Exception {
-		PagesCollection.selfProfilePage = (SelfProfilePage) PagesCollection.mainMenuPage
-				.instantiatePage(SelfProfilePage.class);
-		SelfProfilePageSteps upSteps = new SelfProfilePageSteps();
-		upSteps.ISeeNameInUserProfile(this.userToRegister.getName());
-	}
-
-	public static final String[] INVALID_EMAILS = new String[] {
-			"abc.example.com", "abc@example@.com", "example@zeta",
-			"abc@example." };
-
-	public ArrayList<String> consideredValidEmails = new ArrayList<String>();
-
-	/**
-	 * Tries to enter list of invalid emails and gathers error messages
-	 * 
-	 * @step. I enter invalid emails
-	 * @throws Exception
-	 */
-	@Then("I enter invalid emails")
-	public void IEnterInvalidEmails() throws Exception {
-		for (String invalidEmail : INVALID_EMAILS) {
-			PagesCollection.registrationPage.typeEmail(invalidEmail);
-			if (!PagesCollection.registrationPage.isInvalidEmailMessageAppear()) {
-				consideredValidEmails.add(invalidEmail);
-			}
-			PagesCollection.registrationPage.typeEmail("");
+	@Then("^I verify that a red dot is( not)? shown inside the email field on the registration form$")
+	public void ARedDotIsShownOnTheEmailField(String not) throws Exception {
+		if (not == null) {
+			assertThat("Red dot on email field",
+					PagesCollection.registrationPage.isRedDotOnEmailField());
+		} else {
+			assertThat("Red dot on email field",
+					!PagesCollection.registrationPage.isRedDotOnEmailField());
 		}
 	}
 
 	/**
-	 * Checks that all entered invalid emails cause error messages to appear
+	 * Checks if an icon is shown
 	 * 
-	 * @step. I see that all emails not accepted
-	 * 
-	 * @throws AssertionError
-	 *             if some of invalid emails did not failed to be entered
-	 */
-	@Then("I see that all emails not accepted")
-	public void ISeeThatAllEmailsNotAccepted() {
-		Assert.assertTrue(
-				"Some of emails that should be invalid are considered valid. "
-						+ "Full list: " + Arrays.toString(INVALID_EMAILS)
-						+ "; " + "accepted: " + consideredValidEmails,
-				consideredValidEmails.size() == 0);
-
-	}
-
-	/**
-	 * Checks that entered email caused error message to appear
-	 * 
-	 * @step. I see that email invalid
+	 * @step. ^I verify that an envelope icon is shown$
 	 * @throws Exception
-	 * 
-	 * @throws AssertionError
-	 *             if no error message when email entered
 	 */
-	@Then("I see that email invalid")
-	public void ISeeThatEmailInvalid() throws Exception {
-		Assert.assertTrue("Email accepted but shouldn't be.",
-				PagesCollection.registrationPage.isInvalidEmailMessageAppear());
+	@Then("^I verify that an envelope icon is shown$")
+	public void IVerifyThatAnEnvelopeIconIsShown() throws Exception {
+		assertThat("Envelope icon not shown",
+				PagesCollection.registrationPage.isEnvelopeShown());
 	}
 
 	/**
-	 * Checks that there is no spaces in email input field when entering email
-	 * with spaces
+	 * Activate newly registered user on the backend. Don't forget to call the
+	 * 'I start activation email monitoring' step before this one
 	 * 
-	 * @step. I see email (.*) without spaces
+	 * @step. ^I verify registration email$
 	 * 
-	 * @param email
-	 *            user email string
-	 * 
-	 * @throws AssertionError
-	 *             if spaces appear in email input field
+	 * @throws Exception
 	 */
-	@Then("I see email (.*) without spaces")
-	public void ISeeEmailWithoutSpaces(String email) {
-		Assert.assertTrue("It was accepted to enter spaces in email '"
-				+ PagesCollection.registrationPage.getEnteredEmail()
-				+ "' but shouldn't be.", PagesCollection.registrationPage
-				.getEnteredEmail().equals(email.replaceAll(" ", "")));
+	@Then("^I verify registration email$")
+	public void IVerifyRegistrationEmail() throws Exception {
+		BackendAPIWrappers
+				.activateRegisteredUserByEmail(this.activationMessage);
+		userToRegister.setUserState(UserState.Created);
 	}
+
+	private static final int ACTIVATION_TIMEOUT = 15; // seconds
 
 	/**
-	 * Checks that confirmation dialog appears after picture shot or selected
+	 * Switch to Sign In page
 	 * 
-	 * @step. ^I see chosen picture confirmation request$
-	 * @throws Exception 
+	 * @step. ^I switch to [Ss]ign [Ii]n page$
 	 * 
-	 * @throws AssertionError
-	 *             if confirmation dialog doesn't appear
+	 * @throws Exception
 	 */
-	@Then("^I see chosen picture confirmation request$")
-	public void ISeeChosenPictureConfirmationRequest() throws Exception {
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isTakePictureConfirmationScreen());
+	@Given("^I switch to [Ss]ign [Ii]n page$")
+	public void ISwitchToLoginPage() throws Exception {
+		PagesCollection.loginPage = PagesCollection.registrationPage
+				.switchToLoginPage();
 	}
-
-	/**
-	 * Checks that CHOOSE PICTURE AND SELECT A COLOUR message displayed
-	 * 
-	 * @step. ^I see choose picture and colour request$
-	 * 
-	 * @throws AssertionError
-	 *             if message is not shown
-	 */
-	@Then("^I see choose picture and colour request$")
-	public void ISeeChoosePictureAndColourRequest() throws Exception {
-		Assert.assertTrue(PagesCollection.registrationPage
-				.isChoosePictureMessageVisible());
-	}
-
-	/**
-	 * Checks that CHOOSE PICTURE AND SELECT A COLOUR message not displayed
-	 * 
-	 * @step. ^I do not see choose picture and colour request$
-	 * 
-	 * @throws AssertionError
-	 *             if message is displayed
-	 */
-	@Then("^I do not see choose picture and colour request$")
-	public void IDoNotSeeChoosePictureAndColourRequest() throws Exception {
-		Assert.assertFalse(PagesCollection.registrationPage
-				.isChoosePictureMessageVisible());
-	}
-
-	/**
-	 * Navigates back to previous registration step
-	 * 
-	 * @step. ^I go to previous registration step$
-	 */
-	@When("^I go to previous registration step$")
-	public void IGoToPreviousRegistrationStep() {
-		PagesCollection.registrationPage.goBack();
-	}
-
 }

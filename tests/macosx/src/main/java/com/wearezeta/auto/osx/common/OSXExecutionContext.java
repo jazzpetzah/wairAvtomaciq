@@ -10,8 +10,8 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class OSXExecutionContext {
 
-	private static final Logger log = ZetaLogger
-			.getLog(OSXExecutionContext.class.getSimpleName());
+	private static final Logger LOG = ZetaLogger
+			.getLog(OSXExecutionContext.class.getName());
 
 	public static String appiumUrl;
 
@@ -19,8 +19,9 @@ public class OSXExecutionContext {
 
 	public static String wireConfigDomain;
 
-	public static String userDocuments = System.getProperty("user.home")
-			+ "/Documents/";
+	public static final String USER_HOME = System.getProperty("user.home");
+
+	public static final String USERNAME = System.getProperty("user.name");
 
 	public static HashMap<String, BufferedImage> screenshots = new HashMap<String, BufferedImage>();
 
@@ -29,7 +30,7 @@ public class OSXExecutionContext {
 			appiumUrl = CommonUtils
 					.getOsxAppiumUrlFromConfig(OSXExecutionContext.class);
 		} catch (Exception e) {
-			log.debug("Failed to read Appium URL from config file. "
+			LOG.debug("Failed to read Appium URL from config file. "
 					+ "Setting default value: http://localhost:4622/wd/hub");
 			appiumUrl = "http://localhost:4622/wd/hub";
 		}
@@ -38,7 +39,7 @@ public class OSXExecutionContext {
 			wirePath = CommonUtils
 					.getOsxApplicationPathFromConfig(OSXExecutionContext.class);
 		} catch (Exception e) {
-			log.debug("Failed to read Wire path from config file. "
+			LOG.debug("Failed to read Wire path from config file. "
 					+ "Setting default value: Wire");
 			wirePath = "Wire";
 		}
@@ -47,7 +48,7 @@ public class OSXExecutionContext {
 			wireConfigDomain = OSXCommonUtils
 					.getWireConfigDomainFromConfig(OSXExecutionContext.class);
 		} catch (Exception e) {
-			log.debug("Failed to read config domain for Wire. "
+			LOG.debug("Failed to read config domain for Wire. "
 					+ "Setting default value: com.wearezeta.zclient.mac.development");
 			wireConfigDomain = ConfigurationDomainEnum.DEVELOPMENT.getDomain();
 		}
