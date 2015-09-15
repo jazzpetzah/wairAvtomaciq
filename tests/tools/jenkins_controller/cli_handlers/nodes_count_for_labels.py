@@ -84,6 +84,8 @@ class NodesCountForLabels(CliHandlerBase):
                 verifier.start()
             for verifier in verifiers_chunk:
                 verifier.join(timeout=VERIFICATION_JOB_TIMEOUT)
+                if verifier.is_alive():
+                    sys.stderr.write('Verifier process for the node "{}" timed out')
         ready_nodes = []
         while not ready_nodes_queue.empty():
             ready_nodes.append(ready_nodes_queue.get_nowait().name)
@@ -137,9 +139,7 @@ class BaseNodeVerifier(Process):
         is_passed = False
         while True:
             try:
-                print 'VERIFICATION FOR {} STARTED'.format(self._node.name)
                 is_passed = self._is_verification_passed()
-                print 'VERIFICATION FOR {} FINISHED'.format(self._node.name)
                 break
             except Exception as e:
                 traceback.print_exc()
