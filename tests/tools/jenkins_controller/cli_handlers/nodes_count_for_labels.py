@@ -93,7 +93,7 @@ class NodesCountForLabels(CliHandlerBase):
         while not broken_nodes_queue.empty():
             broken_nodes.append(broken_nodes_queue.get_nowait().name)
         if broken_nodes:
-            return '{}|{}'.format(len(ready_nodes), ' '.join(broken_nodes))
+            return '{}|{}'.format(len(ready_nodes), ','.join(broken_nodes))
         else:
             return len(ready_nodes)
 
