@@ -1020,16 +1020,45 @@ public class DialogPageSteps {
 		Assert.assertEquals(link.toLowerCase(), getDialogPage()
 				.getLastMessageFromDialog().toLowerCase());
 	}
-	
+
 	/**
 	 * Verifies amount of messages in conversation
+	 * 
 	 * @step. ^I see only (.*) messages?$
 	 * @param msgCount
-	 * 		expected number of messages
+	 *            expected number of messages
 	 * @throws Exception
 	 */
 	@When("^I see only (.*) messages?$")
 	public void ISeeOnlyXAmountOfMessages(int msgCount) throws Exception {
-		Assert.assertTrue(msgCount == getDialogPage().getNumberOfMessageEntries());
+		Assert.assertTrue(msgCount == getDialogPage()
+				.getNumberOfMessageEntries());
+	}
+
+	/**
+	 * Verifies that link is seen in conversation view
+	 * 
+	 * @step. ^I see Link (.*) in dialog$
+	 * @param link
+	 *            that we sent to user
+	 * @throws Throwable
+	 */
+	@When("^I see Link (.*) in dialog$")
+	public void ISeeLinkInDialog(String link) throws Throwable {
+		Assert.assertEquals(link.toLowerCase(), getDialogPage()
+				.getLastMessageFromDialog().toLowerCase());
+	}
+
+	/**
+	 * Tap on the sent link to open it
+	 * 
+	 * @step. ^I tap on Link (.*)$
+	 * @param link
+	 *            we want to open
+	 * @throws Throwable
+	 */
+	@When("^I tap on Link (.*)$")
+	public void ITapOnLink(String link) throws Throwable {
+		getDialogPage().tapOnLink(link);
 	}
 }
