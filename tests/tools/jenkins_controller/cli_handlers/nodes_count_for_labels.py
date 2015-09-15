@@ -16,7 +16,7 @@ import xml.etree.ElementTree as ET
 from cli_handlers.cli_handler_base import CliHandlerBase
 
 
-VERIFICATION_JOB_TIMEOUT = 60 * 5 #seconds
+VERIFICATION_JOB_TIMEOUT = 60 * 3 #seconds
 
 normalize_labels = lambda labels_list: set(map(lambda x: x.strip(), labels_list))
 
@@ -65,6 +65,7 @@ class NodesCountForLabels(CliHandlerBase):
             verifiers[-1].start()
         for verifier in verifiers:
             verifier.join(timeout=VERIFICATION_JOB_TIMEOUT)
+            print 'JOIN FINISHED'
         ready_nodes = []
         while not ready_nodes_queue.empty():
             ready_nodes.append(ready_nodes_queue.get_nowait().name)
@@ -127,7 +128,9 @@ class BaseNodeVerifier(Process):
         is_passed = False
         while True:
             try:
+                print 'VERIFICATION FOR {} STARTED'.format(self._node.name)
                 is_passed = self._is_verification_passed()
+                print 'VERIFICATION FOR {} FINISHED'.format(self._node.name)
                 break
             except Exception as e:
                 traceback.print_exc()
