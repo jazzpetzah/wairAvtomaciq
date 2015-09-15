@@ -52,9 +52,9 @@ public class ConnectToPageSteps {
 	 *             if connection button is visible
 	 */
 	@When("^I see that connect button is disabled$")
-	public void IClickSendButtonConnectDialog() throws Exception {
+	public void ISeeConnectButtonDisabled() throws Exception {
 		Assert.assertFalse("Connect button is not disabled", getConnectToPage()
-				.isConnectButtonVisible());
+				.isConnectButtonVisibleAndDisabled());
 	}
 
 	@When("I click Connect button on connect to dialog")
