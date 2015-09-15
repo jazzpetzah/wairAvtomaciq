@@ -175,15 +175,15 @@ class RealAndroidDevice(BaseNodeVerifier):
                         sys.stderr.write(msg)
                         self._send_email_notification('{} node is broken'.format(self._node.name), msg)
                         return False
-                    _, stdout, _ = client.exec_command('/usr/local/bin/adb shell ping -c 1 8.8.8.8')
-                    output = stdout.read()
-                    result = result and output.find('bytes from 8.8.8.8') > 0
-                    if not result:
-                        msg = 'The device connected to node "{}" seems to be disconnected:\n{}'.\
-                                         format(self._node.name, output)
-                        sys.stderr.write(msg)
-                        self._send_email_notification('{} node is broken'.format(self._node.name), msg)
-                        return False
+                    # _, stdout, _ = client.exec_command('/usr/local/bin/adb shell ping -c 1 8.8.8.8')
+                    # output = stdout.read()
+                    # result = result and output.find('bytes from 8.8.8.8') > 0
+                    # if not result:
+                    #     msg = 'The device connected to node "{}" seems to be disconnected:\n{}'.\
+                    #                      format(self._node.name, output)
+                    #     sys.stderr.write(msg)
+                    #     self._send_email_notification('{} node is broken'.format(self._node.name), msg)
+                    #     return False
                     return result
                 finally:
                     client.close()
