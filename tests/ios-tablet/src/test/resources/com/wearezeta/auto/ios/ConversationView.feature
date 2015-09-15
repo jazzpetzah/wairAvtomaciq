@@ -1143,7 +1143,7 @@ Feature: Conversation View
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
 
-  @torun @staging @id3790
+  @staging @id3790
   Scenario Outline: Verify sending link and opening it [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -1160,7 +1160,7 @@ Feature: Conversation View
       | Name      | Contact1  | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
 
-  @staging @id3791
+  @torun @staging @id3791
   Scenario Outline: Verify sending link and opening it [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
