@@ -17,8 +17,15 @@ from cli_handlers.cli_handler_base import CliHandlerBase
 
 
 VERIFICATION_JOB_TIMEOUT = 60 * 3 #seconds
+MAX_VERIFICATION_JOBS = 4
 
 normalize_labels = lambda labels_list: set(map(lambda x: x.strip(), labels_list))
+
+def chunks(l, n):
+    """Yield successive n-sized chunks from l."""
+    for i in xrange(0, len(l), n):
+        yield l[i:i+n]
+
 
 class NodesCountForLabels(CliHandlerBase):
     def _build_options(self, parser):
@@ -57,15 +64,26 @@ class NodesCountForLabels(CliHandlerBase):
         broken_nodes_queue = Queue()
         verifiers = []
         for _, node in self._jenkins.get_nodes().iteritems():
-            verifiers.append(verifier_class(node, ready_nodes_queue, broken_nodes_queue,
-                                            expected_labels_set=expected_labels,
-                                            node_user=args.node_user, node_password=args.node_password,
-                                            ios_simulator_name=args.ios_simulator_name,
-                                            notification_receivers=args.notification_receivers))
-            verifiers[-1].start()
-        for verifier in verifiers:
-            verifier.join(timeout=VERIFICATION_JOB_TIMEOUT)
-            print 'JOIN FINISHED'
+            if node.is_online():
+                response = node.jenkins.requester.get_and_confirm_status(
+                                            "%(baseurl)s/config.xml" % node.__dict__)
+                et = ET.fromstring(response.text)
+                node_labels_str = et.find('label').text
+                if node_labels_str:
+                    node_labels = normalize_labels(node_labels_str.split(' '))
+                else:
+                    node_labels = set()
+                if not expected_labels.issubset(node_labels):
+                    continue
+                verifiers.append(verifier_class(node, et.find('.//host').text, ready_nodes_queue, broken_nodes_queue,
+                                                node_user=args.node_user, node_password=args.node_password,
+                                                ios_simulator_name=args.ios_simulator_name,
+                                                notification_receivers=args.notification_receivers))
+        for verifiers_chunk in chunks(verifiers, MAX_VERIFICATION_JOBS):
+            for verifier in verifiers_chunk:
+                verifier.start()
+            for verifier in verifiers_chunk:
+                verifier.join(timeout=VERIFICATION_JOB_TIMEOUT)
         ready_nodes = []
         while not ready_nodes_queue.empty():
             ready_nodes.append(ready_nodes_queue.get_nowait().name)
@@ -79,9 +97,10 @@ class NodesCountForLabels(CliHandlerBase):
 
 
 class BaseNodeVerifier(Process):
-    def __init__(self, node, ready_nodes_queue, broken_nodes_queue, **kwargs):
+    def __init__(self, node, node_hostname, ready_nodes_queue, broken_nodes_queue, **kwargs):
         super(BaseNodeVerifier, self).__init__()
         self._node = node
+        self._node_hostname = node_hostname
         self._ready_nodes_queue = ready_nodes_queue
         self._broken_nodes_queue = broken_nodes_queue
         self._verification_kwargs = kwargs
@@ -110,17 +129,7 @@ class BaseNodeVerifier(Process):
             traceback.print_exc()
 
     def _is_verification_passed(self):
-        if self._node.is_online():
-            response = self._node.jenkins.requester.get_and_confirm_status(
-                                            "%(baseurl)s/config.xml" % self._node.__dict__)
-            et = ET.fromstring(response.text)
-            node_labels_str = et.find('label').text
-            if node_labels_str:
-                node_labels = normalize_labels(node_labels_str.split(' '))
-            else:
-                node_labels = set()
-            return self._verification_kwargs['expected_labels_set'].issubset(node_labels)
-        return False
+        return True
 
     def run(self):
         MAX_TRY_COUNT = 2
@@ -149,46 +158,37 @@ class BaseNodeVerifier(Process):
 
 class RealAndroidDevice(BaseNodeVerifier):
     def _is_verification_passed(self):
-        if self._node.is_online():
-            response = self._node.jenkins.requester.get_and_confirm_status(
-                                            "%(baseurl)s/config.xml" % self._node.__dict__)
-            et = ET.fromstring(response.text)
-            node_labels_str = et.find('label').text
-            if node_labels_str:
-                node_labels = normalize_labels(node_labels_str.split(' '))
-            else:
-                node_labels = set()
-            if self._verification_kwargs['expected_labels_set'].issubset(node_labels):
-                hostname = et.find('.//host').text
-                client = paramiko.SSHClient()
-                try:
-                    client.load_system_host_keys()
-                    client.set_missing_host_key_policy(paramiko.WarningPolicy())
-                    client.connect(hostname, username=self._verification_kwargs['node_user'],
-                                   password=self._verification_kwargs['node_password'])
-                    _, stdout, _ = client.exec_command('/usr/local/bin/adb devices -l')
-                    output = stdout.read()
-                    result = output.find('device:') > 0 and output.find('offline') < 0
-                    if not result:
-                        msg = 'The device connected to node "{}" seems to be not accessible:\n{}'.\
-                                         format(self._node.name, output)
-                        sys.stderr.write(msg)
-                        self._send_email_notification('{} node is broken'.format(self._node.name), msg)
-                        return False
-                    # _, stdout, _ = client.exec_command('/usr/local/bin/adb shell ping -c 1 8.8.8.8')
-                    # output = stdout.read()
-                    # result = result and output.find('bytes from 8.8.8.8') > 0
-                    # if not result:
-                    #     msg = 'The device connected to node "{}" seems to be disconnected:\n{}'.\
-                    #                      format(self._node.name, output)
-                    #     sys.stderr.write(msg)
-                    #     self._send_email_notification('{} node is broken'.format(self._node.name), msg)
-                    #     return False
-                    return result
-                finally:
-                    client.close()
-        return False
-
+        result = super(RealAndroidDevice, self)._is_verification_passed()
+        if not result:
+            return False
+        client = paramiko.SSHClient()
+        try:
+            client.load_system_host_keys()
+            client.set_missing_host_key_policy(paramiko.WarningPolicy())
+            client.connect(self._node_hostname, username=self._verification_kwargs['node_user'],
+                           password=self._verification_kwargs['node_password'])
+            _, stdout, _ = client.exec_command('/usr/local/bin/adb devices -l')
+            output = stdout.read()
+            result = output.find('device:') > 0 and output.find('offline') < 0
+            if not result:
+                msg = 'The device connected to node "{}" seems to be not accessible:\n{}'.\
+                                 format(self._node.name, output)
+                sys.stderr.write(msg)
+                self._send_email_notification('{} node is broken'.format(self._node.name), msg)
+                return False
+            _, stdout, _ = client.exec_command('/usr/local/bin/adb shell ping -c 1 8.8.8.8')
+            output = stdout.read()
+            result = result and output.find('bytes from 8.8.8.8') > 0
+            if not result:
+                msg = 'The device connected to node "{}" seems to be disconnected:\n{}'.\
+                                 format(self._node.name, output)
+                sys.stderr.write(msg)
+                self._send_email_notification('{} node is broken'.format(self._node.name), msg)
+                return False
+            return result
+        finally:
+            client.close()
+s
 
 IOS_SIMULATOR_BOOT_TIMEOUT = 60 * 2 # seconds
 
@@ -203,50 +203,41 @@ class IOSSimulator(BaseNodeVerifier):
         return result
 
     def _is_verification_passed(self):
-        if self._node.is_online():
-            response = self._node.jenkins.requester.get_and_confirm_status(
-                                            "%(baseurl)s/config.xml" % self._node.__dict__)
-            et = ET.fromstring(response.text)
-            node_labels_str = et.find('label').text
-            if node_labels_str:
-                node_labels = normalize_labels(node_labels_str.split(' '))
+        result = super(IOSSimulator, self)._is_verification_passed()
+        if not result:
+            return False
+        client = paramiko.SSHClient()
+        try:
+            client.load_system_host_keys()
+            client.set_missing_host_key_policy(paramiko.WarningPolicy())
+            client.connect(self._node_hostname, username=self._verification_kwargs['node_user'],
+                           password=self._verification_kwargs['node_password'])
+            simulator_name = self._verification_kwargs['ios_simulator_name']
+            available_simulators = self._get_installed_simulators(client)
+            dst_name = filter(lambda x: x.lower().find(simulator_name.lower()) >= 0,
+                              available_simulators.iterkeys())
+            result = True
+            if dst_name:
+                simulator_name = dst_name[0]
             else:
-                node_labels = set()
-            if self._verification_kwargs['expected_labels_set'].issubset(node_labels):
-                hostname = et.find('.//host').text
-                client = paramiko.SSHClient()
-                try:
-                    client.load_system_host_keys()
-                    client.set_missing_host_key_policy(paramiko.WarningPolicy())
-                    client.connect(hostname, username=self._verification_kwargs['node_user'],
-                                   password=self._verification_kwargs['node_password'])
-                    simulator_name = self._verification_kwargs['ios_simulator_name']
-                    available_simulators = self._get_installed_simulators(client)
-                    dst_name = filter(lambda x: x.lower().find(simulator_name.lower()) >= 0,
-                                      available_simulators.iterkeys())
-                    result = True
-                    if dst_name:
-                        simulator_name = dst_name[0]
-                    else:
-                        msg = 'There is no "{}" simulator available. The list of available simulators:\n{}'.\
-                                         format(simulator_name, pformat(available_simulators))
-                        sys.stderr.write(msg)
-                        self._send_email_notification('Non-existing simulator name "{}" has been provided'.\
-                                                      format(simulator_name), msg)
-                        return True
-                    client.exec_command('/usr/bin/killall "iOS Simulator"')
-                    time.sleep(1)
-                    try:
-                        client.exec_command('/usr/bin/xcrun instruments -w "{}"'.format(simulator_name),
-                                            timeout=IOS_SIMULATOR_BOOT_TIMEOUT)
-                    except (socket.timeout, paramiko.SSHException) as e:
-                        msg = 'The "{}" simulator is still booting after {} seconds timeout.'.\
-                                         format(simulator_name, IOS_SIMULATOR_BOOT_TIMEOUT)
-                        sys.stderr.write(msg)
-                        self._send_email_notification('{} node is broken'.format(self._node.name), msg)
-                        result = False
-                    client.exec_command('/usr/bin/killall "iOS Simulator"')
-                    return result
-                finally:
-                    client.close()
-        return False
+                msg = 'There is no "{}" simulator available. The list of available simulators:\n{}'.\
+                                 format(simulator_name, pformat(available_simulators))
+                sys.stderr.write(msg)
+                self._send_email_notification('Non-existing simulator name "{}" has been provided'.\
+                                              format(simulator_name), msg)
+                return True
+            client.exec_command('/usr/bin/killall "iOS Simulator"')
+            time.sleep(1)
+            try:
+                client.exec_command('/usr/bin/xcrun instruments -w "{}"'.format(simulator_name),
+                                    timeout=IOS_SIMULATOR_BOOT_TIMEOUT)
+            except (socket.timeout, paramiko.SSHException) as e:
+                msg = 'The "{}" simulator is still booting after {} seconds timeout.'.\
+                                 format(simulator_name, IOS_SIMULATOR_BOOT_TIMEOUT)
+                sys.stderr.write(msg)
+                self._send_email_notification('{} node is broken'.format(self._node.name), msg)
+                result = False
+            client.exec_command('/usr/bin/killall "iOS Simulator"')
+            return result
+        finally:
+            client.close()
