@@ -92,10 +92,7 @@ class NodesCountForLabels(CliHandlerBase):
         broken_nodes = []
         while not broken_nodes_queue.empty():
             broken_nodes.append(broken_nodes_queue.get_nowait().name)
-        if broken_nodes:
-            return '{}|{}'.format(','.join(ready_nodes), ','.join(broken_nodes))
-        else:
-            return ','.join(ready_nodes)
+        return '{}|{}'.format(','.join(ready_nodes), ','.join(broken_nodes))
 
 
 class BaseNodeVerifier(Process):
