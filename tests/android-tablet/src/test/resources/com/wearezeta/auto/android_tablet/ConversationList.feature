@@ -1,7 +1,7 @@
 Feature: Conversation List
 
   @id2246 @smoke @rc
-  Scenario Outline: Mute and unmute conversation in landscape mode
+  Scenario Outline: Mute and unmute conversation from conversation details in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I rotate UI to landscape
@@ -38,7 +38,7 @@ Feature: Conversation List
       | user1Name | user2Name | SILENCE     | NOTIFY     |
 
   @id2260 @smoke @rc
-  Scenario Outline: Mute and unmute conversation in portrait mode
+  Scenario Outline: Mute and unmute conversation from conversation details in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I rotate UI to portrait
@@ -73,6 +73,54 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | ItemSilence | ItemNotify |
       | user1Name | user2Name | SILENCE     | NOTIFY     |
+      
+#Move to regression after stabilisation
+@id2888 @staging
+  Scenario Outline: Mute and unmute conversation from conversations list in portrait mode
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact1> in my conversations list
+    When I swipe right the conversations list item <Contact1>
+    Then I see Conversation Actions popover
+    When I select <ItemSilence> menu item on Conversation Actions popover
+    Then I do not see Conversation Actions popover
+    And I see the conversation <Contact> in my conversations list is silenced
+    When I swipe right the conversations list item <Contact1>
+    Then I see Conversation Actions popover
+    When I select <ItemNotify> menu item on Conversation Actions popover
+    Then I do not see Conversation Actions popover
+    And I see the conversation <Contact> in my conversations list is not silenced
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
+      | user1Name | user2Name | user3Name | SILENCE     | NOTIFY     |
+      
+#Move to regression after stabilisation
+@id3137 @staging
+  Scenario Outline: Mute and unmute conversation from conversations list in landscape mode
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see the conversations list with conversations
+    And I see the conversation <Contact1> in my conversations list
+    When I swipe right the conversations list item <Contact1>
+    Then I see Conversation Actions popover
+    When I select <ItemSilence> menu item on Conversation Actions popover
+    Then I do not see Conversation Actions popover
+    And I see the conversation <Contact> in my conversations list is silenced
+    When I swipe right the conversations list item <Contact1>
+    Then I see Conversation Actions popover
+    When I select <ItemNotify> menu item on Conversation Actions popover
+    Then I do not see Conversation Actions popover
+    And I see the conversation <Contact> in my conversations list is not silenced
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
+      | user1Name | user2Name | user3Name | SILENCE     | NOTIFY     |
 
   @id2881 @regression @rc
   Scenario Outline: Verify play/pause controls are visible in the list if there is active media item in other conversation (portrait)
