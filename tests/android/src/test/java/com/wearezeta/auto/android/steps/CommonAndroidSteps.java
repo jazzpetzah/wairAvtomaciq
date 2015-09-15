@@ -319,7 +319,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I tap on center of screen")
 	public void WhenITapOnCenterOfScreen() throws Throwable {
-		pagesCollection.getCommonPage().tapOnCenterOfScreen();
+		pagesCollection.getCommonPage().tapByCoordinates(50, 40);
 	}
 
 	/**
@@ -1010,7 +1010,7 @@ public class CommonAndroidSteps {
 	public void ISetDefaultInputMethod() throws Exception {
 		AndroidCommonUtils.resetDefaultIME();
 	}
-	
+
 	/**
 	 * Sets IME used to input unicode data (ADBKeyBoard.apk)
 	 * 
