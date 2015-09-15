@@ -120,6 +120,7 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public WebElement findCorrectPickerSearch() throws Exception {
 		WebElement result = null;
+		commonSteps.WaitForTime(1);
 		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id(idPickerSearch));
 		List<WebElement> pickerSearches = getDriver().findElements(
 				By.id(idPickerSearch));
