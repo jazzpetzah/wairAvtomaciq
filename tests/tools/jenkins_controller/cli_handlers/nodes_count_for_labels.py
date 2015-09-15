@@ -188,7 +188,7 @@ class RealAndroidDevice(BaseNodeVerifier):
             return result
         finally:
             client.close()
-s
+
 
 IOS_SIMULATOR_BOOT_TIMEOUT = 60 * 2 # seconds
 
