@@ -47,7 +47,9 @@ public class ConnectToPage extends IOSPage {
 		super(lazyDriver);
 	}
 
-	public Boolean isConnectToUserDialogVisible() {
+	public Boolean isConnectToUserDialogVisible() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(),
+				connectOtherUserButton, 5);
 		return connectOtherUserButton.isDisplayed();
 	}
 
@@ -173,8 +175,16 @@ public class ConnectToPage extends IOSPage {
 	}
 
 	public boolean isConnectButtonVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				connectOtherUserButton);
+		return DriverUtils.waitUntilElementClickable(getDriver(),
+				connectOtherUserButton, 10);
+	}
+
+	public boolean isConnectButtonVisibleAndDisabled() throws Exception {
+		boolean flag = (DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				connectOtherUserButton))
+				&& !(DriverUtils.waitUntilElementClickable(getDriver(),
+						connectOtherUserButton, 5));
+		return flag;
 	}
 
 	public PeoplePickerPage sendInvitation() throws Exception {

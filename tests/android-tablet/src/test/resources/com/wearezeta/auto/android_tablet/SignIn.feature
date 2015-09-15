@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @id2262 @smoke
+  @id2262 @smoke @rc
   Scenario Outline: Sign in to Wire in portrait mode
     Given There is 1 user where <Name> is me
     Given I see welcome screen
@@ -16,7 +16,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id2248 @smoke
+  @id2248 @smoke @rc
   Scenario Outline: Sign in to Wire in landscape mode
     Given There is 1 user where <Name> is me
     Given I see welcome screen
@@ -60,7 +60,7 @@ Feature: Sign In
       | Login | Password | ErrMessage                          |
       | aaa   | aaa      | Please enter a valid email address. |
 
-  @id2906 @staging
+  @id2906 @regression @rc
   Scenario Outline: Verify reset password button works from sign-in page
     Given I see Welcome screen
     Given I rotate UI to landscape

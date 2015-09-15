@@ -44,15 +44,14 @@ public class ContactListPageSteps {
 	public void GivenISeeContactListWithMyName(String name) throws Throwable {
 
 		boolean loginFinished = getLoginPage().isLoginFinished();
-		if (!loginFinished) {
-			log.debug(getLoginPage().getPageSource());
-		}
+
 		Assert.assertTrue("Self profile button dind't appear in contact list",
 				loginFinished);
 	}
-	
+
 	/**
 	 * Click MAYBE LATER on settings warning screen
+	 * 
 	 * @step. ^I dismiss settings warning$
 	 * @throws Exception
 	 */
@@ -454,7 +453,7 @@ public class ContactListPageSteps {
 				FindBy.NAME_ALIAS);
 		getContactListPage().archiveConversation(conversation);
 	}
-	
+
 	/**
 	 * Click on archive button for a conversation
 	 * 
@@ -471,7 +470,7 @@ public class ContactListPageSteps {
 			throws Exception {
 		conversation = usrMgr.replaceAliasesOccurences(conversation,
 				FindBy.NAME_ALIAS);
-		getContactListPage().clickArchiveCoversationButton(conversation);
+		getContactListPage().clickArchiveConversationButton(conversation);
 	}
 
 	private BufferedImage referenceImage = null;
@@ -680,4 +679,64 @@ public class ContactListPageSteps {
 		getContactListPage().clickMuteCallButton();
 	}
 
+	/**
+	 * Checks that conversation name appears in displayed action menu
+	 * 
+	 * @step. ^I see conversation (.*) name in action menu in [Cc]ontact
+	 *        [Ll]ist$
+	 * 
+	 * @param conversation
+	 *            conversation name
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I see conversation (.*) name in action menu in [Cc]ontact [Ll]ist$")
+	public void ISeeConversationNameInActionMenu(String conversation)
+			throws Exception {
+		conversation = usrMgr.replaceAliasesOccurences(conversation,
+				FindBy.NAME_ALIAS);
+		Assert.assertTrue("There is no conversation name " + conversation
+				+ " in opened action menu.", getContactListPage()
+				.isActionMenuVisibleForConversation(conversation));
+	}
+
+	/**
+	 * Checks that specified button is exist in displayed action menu
+	 * 
+	 * @step. ^I see (Silence|Delete|Leave|Archive|Block|Cancel) button in
+	 *        action menu in [Cc]ontact [Ll]ist$
+	 * 
+	 * @param buttonTitle
+	 *            Silence | Delete | Leave | Archive | Block | Cancel
+	 * 
+	 * @throws Exception
+	 */
+	@And("^I see (Silence|Delete|Leave|Archive|Block|Cancel) button in action menu in [Cc]ontact [Ll]ist$")
+	public void ISeeXButtonInActionMenu(String buttonTitle) throws Exception {
+		Assert.assertTrue("There is no button " + buttonTitle.toUpperCase()
+				+ " in opened action menu.", getContactListPage()
+				.isButtonVisibleInActionMenu(buttonTitle));
+	}
+
+	/**
+	 * Clicks the Archive button in action menu of contact list
+	 * 
+	 * @step. ^I press Archive button in action menu in Contact List$
+	 * @throws Throwable
+	 */
+	@When("^I press Archive button in action menu in Contact List$")
+	public void IPressArchiveButtonInActionMenuInContactList() throws Throwable {
+		getContactListPage().clickArchiveButtonInActionMenu();
+	}
+
+	/**
+	 * Clicks the Leave button in action menu of contact list
+	 * 
+	 * @step. ^I press Leave button in action menu in Contact List$
+	 * @throws Throwable
+	 */
+	@When("^I press Leave button in action menu in Contact List$")
+	public void IPressLeaveButtonInActionMenuInContactList() throws Throwable {
+		getContactListPage().clickLeaveButtonInActionMenu();
+	}
 }

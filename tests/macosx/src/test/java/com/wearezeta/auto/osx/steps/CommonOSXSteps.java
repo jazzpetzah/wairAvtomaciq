@@ -11,7 +11,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
@@ -21,8 +20,12 @@ import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
+import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
 import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
+import static com.wearezeta.auto.osx.common.OSXExecutionContext.APPIUM_HUB_URL;
+import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
 import com.wearezeta.auto.osx.pages.MainWirePage;
 import com.wearezeta.auto.osx.pages.MenuBarPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -36,19 +39,14 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.stream.Collectors;
 import org.openqa.selenium.chrome.ChromeDriverService;
 import org.openqa.selenium.chrome.ChromeOptions;
 
@@ -64,22 +62,7 @@ public class CommonOSXSteps {
 	public static final Platform CURRENT_PLATFORM = Platform.Mac;
 	public static final Platform CURRENT_SECONDARY_PLATFORM = Platform.Web;
 
-	private static final int MAX_DRIVER_CREATION_RETRIES = 3;
-
-	private String appPath = "/Applications/WireInternal.app";
-	private String electronSuffix = "/Contents/MacOS/Electron";
-	private String appiumURL = "http://127.0.0.1:4622/wd/hub";
-	private String chromeDriverPath = "/Applications/chromedriver";
-	private final String ENV = "Staging";
-	private int timeoutSeconds = 20;
 	private ChromeDriverService service;
-
-	static {
-		// for Jenkins slaves we should define that environment has display
-		CommonUtils.defineNoHeadlessEnvironment();
-		// disabling selenium logs to exclude not used output from log
-		CommonUtils.disableSeleniumLogs();
-	}
 
 	private Future<ZetaWebAppDriver> createWebDriver() throws IOException {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -88,13 +71,14 @@ public class CommonOSXSteps {
 		options.addArguments("use-fake-device-for-media-stream");
 		// allow skipping the security prompt for sharing the media device
 		options.addArguments("use-fake-ui-for-media-stream");
-		options.setBinary(appPath + electronSuffix);
+		options.setBinary(WIRE_APP_PATH + OSXExecutionContext.ELECTRON_SUFFIX);
 		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
 		capabilities.setCapability("platformName",
 				CURRENT_SECONDARY_PLATFORM.name());
 
 		service = new ChromeDriverService.Builder()
-				.usingDriverExecutable(new File(chromeDriverPath))
+				.usingDriverExecutable(
+						new File(OSXExecutionContext.CHROMEDRIVER_PATH))
 				.usingAnyFreePort().build();
 		service.start();
 		final ExecutorService pool = Executors.newFixedThreadPool(1);
@@ -119,7 +103,7 @@ public class CommonOSXSteps {
 		final ExecutorService pool = Executors.newFixedThreadPool(1);
 
 		Callable<ZetaOSXDriver> callableOSXDriver = () -> new ZetaOSXDriver(
-				new URL(appiumURL), capabilities);
+				new URL(APPIUM_HUB_URL), capabilities);
 
 		final Future<ZetaOSXDriver> lazyOSXDriver = pool
 				.submit(callableOSXDriver);
@@ -138,7 +122,7 @@ public class CommonOSXSteps {
 		// get drivers instantly
 		final ZetaOSXDriver app = osxDriver.get();
 		webDriver.get();
-		app.navigate().to(appPath);
+		app.navigate().to(WIRE_APP_PATH);
 
 		ZetaFormatter.setLazyDriver(osxDriver);
 		OSXPagesCollection.mainWirePage = new MainWirePage(osxDriver);
@@ -147,87 +131,6 @@ public class CommonOSXSteps {
 		OSXPagesCollection.menuBarPage.switchEnvironment();
 		PagesCollection.registrationPage = new RegistrationPage(webDriver);
 		PagesCollection.loginPage = new LoginPage(webDriver);
-
-	}
-
-	private void clearAppData() throws InterruptedException, IOException {
-		// TODO add to execution context
-
-		ProcessBuilder processBuilder2 = new ProcessBuilder();
-		String[] commands = new String[] {
-				"/bin/sh",
-				"-c",
-				"rm -rf "
-						+ OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/Cache &&"
-						+ "rm -f "
-						+ OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/Cookies &&"
-						+ "rm -rf "
-						+ OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/GPUCache &&"
-						+ "rm -rf "
-						+ OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/Local\\ Storage &&"
-						+ "rm -f "
-						+ OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/WebRTCIdentityStore &&"
-						+ "rm -f "
-						+ OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/WebRTCIdentityStore-journal &&"
-						+ "rm -f " + OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/Cookies-journal" };
-		processBuilder2.command(commands);
-		LOG.debug("executing commands: " + Arrays.toString(commands));
-		Process process2 = processBuilder2.start();
-		InputStream errorStream2 = process2.getErrorStream();
-		try (final BufferedReader br = new BufferedReader(
-				new InputStreamReader(errorStream2))) {
-			System.out.println(br.lines().parallel()
-					.collect(Collectors.joining("\n")));
-		} catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-		InputStream inputStream2 = process2.getInputStream();
-		try (final BufferedReader br = new BufferedReader(
-				new InputStreamReader(inputStream2))) {
-			System.out.println(br.lines().parallel()
-					.collect(Collectors.joining("\n")));
-		} catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-		process2.waitFor();
-		int exitValue2 = process2.exitValue();
-		System.out.println(exitValue2);
-
-	}
-
-	private void killAllApps() throws IOException, InterruptedException {
-		ProcessBuilder processBuilder = new ProcessBuilder();
-		String[] commands = new String[] { "/bin/sh", "-c",
-				"kill $(ps aux | grep " + appPath + " | awk '{print $2}')" };
-		processBuilder.command(commands);
-		LOG.debug("executing commands: " + Arrays.toString(commands));
-		Process process = processBuilder.start();
-		InputStream errorStream = process.getErrorStream();
-		try (final BufferedReader br = new BufferedReader(
-				new InputStreamReader(errorStream))) {
-			System.out.println(br.lines().parallel()
-					.collect(Collectors.joining("\n")));
-		} catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-		InputStream inputStream = process.getInputStream();
-		try (final BufferedReader br = new BufferedReader(
-				new InputStreamReader(inputStream))) {
-			System.out.println(br.lines().parallel()
-					.collect(Collectors.joining("\n")));
-		} catch (final IOException e) {
-			throw new RuntimeException(e);
-		}
-		process.waitFor();
-		int exitValue = process.exitValue();
-		System.out.println(exitValue);
 
 	}
 
@@ -446,7 +349,7 @@ public class CommonOSXSteps {
 		final Optional<BufferedImage> shot = OSXPagesCollection.mainWirePage
 				.takeScreenshot();
 		if (shot.isPresent()) {
-			OSXExecutionContext.screenshots.put(screenshotAlias, shot.get());
+			OSXExecutionContext.SCREENSHOTS.put(screenshotAlias, shot.get());
 		} else {
 			throw new RuntimeException(
 					"Selenium has failed to take screenshot of the current page");
@@ -468,9 +371,9 @@ public class CommonOSXSteps {
 	 */
 	@Then("^I see that screen (.*) is changed in comparison with (.*)$")
 	public void ISeeScreensAreDifferent(String resultAlias, String previousAlias) {
-		BufferedImage reference = OSXExecutionContext.screenshots
+		BufferedImage reference = OSXExecutionContext.SCREENSHOTS
 				.get(resultAlias);
-		BufferedImage template = OSXExecutionContext.screenshots
+		BufferedImage template = OSXExecutionContext.SCREENSHOTS
 				.get(previousAlias);
 		Assert.assertNotNull(reference);
 		Assert.assertNotNull(template);

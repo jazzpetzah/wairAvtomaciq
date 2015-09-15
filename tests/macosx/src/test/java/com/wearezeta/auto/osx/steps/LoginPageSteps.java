@@ -174,7 +174,10 @@ public class LoginPageSteps {
 	 */
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
-		Assert.assertTrue(PagesCollection.loginPage.isVisible());
+		LOG.debug("ISeeSignInPage");
+		boolean visible = PagesCollection.loginPage.isVisible();
+		LOG.debug("login visible: " + visible);
+		Assert.assertTrue(visible);
 	}
 
 	/**

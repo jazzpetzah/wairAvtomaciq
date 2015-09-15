@@ -1,5 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
@@ -12,6 +13,7 @@ import com.wearezeta.auto.common.CommonSteps;
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
@@ -835,5 +837,20 @@ public class ConversationPageSteps {
 	public void IClickOnPendingUserAvatar() throws Exception {
 		PagesCollection.popoverPage = PagesCollection.conversationPage
 				.clickUserAvatar();
+	}
+
+	/**
+	 * Click on an avatar bubble inside the conversation view
+	 * 
+	 * @step. ^I click on avatar of user (.*) in conversation view$
+	 * @param userAlias
+	 *            name of the user
+	 * @throws Exception
+	 */
+	@And("^I click on avatar of user (.*) in conversation view$")
+	public void IClickOnUserAvatar(String userAlias) throws Exception {
+		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
+		PagesCollection.popoverPage = PagesCollection.conversationPage
+				.clickUserAvatar(user.getId());
 	}
 }

@@ -41,6 +41,19 @@ public class SettingsPageSteps {
 	}
 
 	/**
+	 * Tap services button
+	 * 
+	 * @step. ^I tap services button$
+	 * 
+	 * @throws Throwable
+	 */
+	@Then("^I tap services button$")
+	public void IClickTheServicesButton() throws Throwable {
+		getSettingsPage().clickServicesButton();
+	}
+
+	
+	/**
 	 * Navigates to the spotify login page in the settings
 	 * 
 	 * @step. ^I navigate to the spotify login page$
@@ -48,8 +61,7 @@ public class SettingsPageSteps {
 	 * @throws Throwable
 	 */
 	@Then("^I navigate to the spotify login page$")
-	public void IClickTheServicesButton() throws Throwable {
-		getSettingsPage().clickServicesButton();
+	public void IClickTheSpotifyButton() throws Throwable {
 		getSettingsPage().clickConnectWithSpotifyButton();
 	}
 

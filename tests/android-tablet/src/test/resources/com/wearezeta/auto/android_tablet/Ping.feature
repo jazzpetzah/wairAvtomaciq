@@ -13,8 +13,9 @@
     And I swipe left on text input in the conversation view
     When I tap Ping button in the conversation view
     Then I see the ping message "<Message1>" in the conversation view
-    And I tap Ping button in the conversation view
-    Then I see the ping message "<Message2>" in the conversation view  
+    When I swipe left on text input in the conversation view
+    And I tap Ping button twice in the conversation view
+    Then I see the ping message "<Message2>" in the conversation view
 
     Examples: 
       | Name      | Contact   | Message1   | Message2         |
@@ -33,7 +34,8 @@
     And I swipe left on text input in the conversation view
     When I tap Ping button in the conversation view
     Then I see the ping message "<Message1>" in the conversation view
-    And I tap Ping button in the conversation view
+    When I swipe left on text input in the conversation view
+    And I tap Ping button twice in the conversation view
     Then I see the ping message "<Message2>" in the conversation view
 
     Examples: 

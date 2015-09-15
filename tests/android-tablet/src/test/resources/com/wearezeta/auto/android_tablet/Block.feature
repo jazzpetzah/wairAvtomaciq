@@ -122,13 +122,13 @@ Feature: Block
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id2866 @staging
+  @id2866 @regression @rc
   Scenario Outline: Verify you don't receive any messages from blocked person in 1:1 chat
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given User Myself blocks user <Contact>
-    When Contact <Contact> sends message "<Message>" to user Myself
-    And Contact <Contact> sends image <Picture> to single user conversation <Name>
+    When Contact <Contact> sends image <Picture> to single user conversation <Name>
+    And Contact <Contact> sends message "<Message>" to user Myself
     # This is to sync blocked state on the backend
     And I wait for 60 seconds
     And I rotate UI to landscape

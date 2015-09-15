@@ -87,7 +87,7 @@ Feature: Search
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
-    And I dismiss alert
+    And I dismiss all alerts
     When I see Contact list with my name <Name>
     And I open search by taping on it
     And I see Upload contacts dialog

@@ -16,7 +16,7 @@ public class MainMenuAndDockPage extends OSXPage {
 
 	public MainMenuAndDockPage(Future<ZetaOSXDriver> osxDriver,
 			Future<ZetaWebAppDriver> webDriver) throws Exception {
-		super(osxDriver, webDriver, OSXExecutionContext.wirePath);
+		super(osxDriver, webDriver, OSXExecutionContext.WIRE_APP_PATH);
 	}
 
 }

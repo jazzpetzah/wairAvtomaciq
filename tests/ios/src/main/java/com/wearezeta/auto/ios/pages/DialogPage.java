@@ -100,6 +100,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCloseButton)
 	private WebElement closeButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathMessageEntries)
+	private List<WebElement> messageEntries;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
 	private WebElement imageCell;
@@ -193,6 +196,10 @@ public class DialogPage extends IOSPage {
 	public StartedCallPage pressCallButton() throws Exception {
 		callButton.click();
 		return new StartedCallPage(getLazyDriver());
+	}
+	
+	public int getNumberOfMessageEntries() {
+		return messageEntries.size();
 	}
 
 	public boolean waitForCursorInputVisible() throws Exception {

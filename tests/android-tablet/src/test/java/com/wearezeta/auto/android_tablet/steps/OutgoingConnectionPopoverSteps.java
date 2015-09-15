@@ -62,22 +62,6 @@ public class OutgoingConnectionPopoverSteps {
 	}
 
 	/**
-	 * Types the new connection message into Outgoing Connection popover
-	 * 
-	 * @step. ^I enter connection message \"(.*)\" on Outgoing Connection
-	 *        popover$
-	 * @param message
-	 *            the invitation message to enter into outgoing connection
-	 *            popover
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I enter connection message \"(.*)\" on Outgoing Connection popover$")
-	public void IEnterConnectionMessage(String message) throws Exception {
-		getOutgoingConnectionPopover().setMessage(message);
-	}
-
-	/**
 	 * Tap the Connect/Close button on Outgoing Connection popover
 	 * 
 	 * @step. ^I tap (Connect|Close) button on Outgoing Connection popover$

@@ -1,36 +1,40 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.wearezeta.auto</groupId>
-	<artifactId>auto-macosx</artifactId>
-	<version>1.0-SNAPSHOT</version>
-	<packaging>jar</packaging>
+    <groupId>com.wearezeta.auto</groupId>
+    <artifactId>auto-macosx</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
-	<name>auto-macosx</name>
-	<url>http://maven.apache.org</url>
+    <name>auto-macosx</name>
+    <url>http://maven.apache.org</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <skipTests>false</skipTests>
-		<TestRun>DevRun</TestRun>
-		<Url>http://127.0.0.1:4622/wd/hub</Url>
-        <appPath>/Applications/WireInternal.app</appPath>
-		<generateUsers>true</generateUsers>
-        <driverTimeoutSeconds>10</driverTimeoutSeconds>
-		<osxClientInfoPlist>/Project/builds_info/Info_osx.plist</osxClientInfoPlist>
-		<defaultEmail>smoketester@wire.com</defaultEmail>
-		<wireConfigDomain>com.wearezeta.zclient.mac.development</wireConfigDomain>
-		<backendType>staging</backendType>
-	</properties>
+        <TestRun>DevRun</TestRun>
+        <osxClientInfoPlist>/Project/builds_info/Info_osx.plist</osxClientInfoPlist>
+        <defaultEmail>smoketester@wire.com</defaultEmail>
+        <wireConfigDomain>com.wearezeta.zclient.mac.development</wireConfigDomain>
+        <!--<backendType>staging</backendType>-->
+        <com.wire.app.path>/Applications/WireInternal.app</com.wire.app.path>
+        <com.wire.electron.path.suffix>/Contents/MacOS/Electron</com.wire.electron.path.suffix>
+        <com.wire.appium.hub.url>http://127.0.0.1:4622/wd/hub</com.wire.appium.hub.url>
+        <com.wire.chromedriver.path>/Applications/chromedriver</com.wire.chromedriver.path>
+        <com.wire.driver.timeout.seconds>10</com.wire.driver.timeout.seconds>
+        <com.wire.environment>Staging</com.wire.environment>
+        <pictureResultsPath>target</pictureResultsPath>
+    </properties>
 
-	<dependencies>
+    <dependencies>
 
-		<dependency>
-			<groupId>com.wearezeta.auto</groupId>
-			<artifactId>auto-common</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<type>jar</type>
+        <dependency>
+            <groupId>com.wearezeta.auto</groupId>
+            <artifactId>auto-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>jar</type>
         </dependency>
         <dependency>
             <groupId>com.wearezeta.auto</groupId>
@@ -39,139 +43,155 @@
             <type>jar</type>
         </dependency>
 
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.11</version>
-		</dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+        </dependency>
 
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>2.44.0</version>
-		</dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>2.47.1</version>
+        </dependency>
 
-		<dependency>
-			<groupId>info.cukes</groupId>
-			<artifactId>cucumber-picocontainer</artifactId>
-			<version>1.1.8</version>
-		</dependency>
-		<dependency>
-			<groupId>info.cukes</groupId>
-			<artifactId>cucumber-junit</artifactId>
-			<version>1.1.8</version>
-		</dependency>
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-picocontainer</artifactId>
+            <version>1.2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>info.cukes</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>1.2.4</version>
+        </dependency>
 
-		<dependency>
-			<groupId>io.appium</groupId>
-			<artifactId>java-client</artifactId>
-			<version>2.1.0</version>
-		</dependency>
+        <dependency>
+            <groupId>io.appium</groupId>
+            <artifactId>java-client</artifactId>
+            <version>3.1.0</version>
+        </dependency>
 
-		<dependency>
-			<groupId>com.googlecode.plist</groupId>
-			<artifactId>dd-plist</artifactId>
-			<version>1.8</version> <!-- corresponds to r108 -->
-		</dependency>
+        <dependency>
+            <groupId>com.googlecode.plist</groupId>
+            <artifactId>dd-plist</artifactId>
+            <version>1.16</version> <!-- corresponds to r108 -->
+        </dependency>
 
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20140107</version>
-		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20140107</version>
+        </dependency>
+    </dependencies>
 
-	<build>
-		<sourceDirectory>src/main/java</sourceDirectory>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>build-helper-maven-plugin</artifactId>
-				<version>1.9.1</version>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>add-source</goal>
-						</goals>
-						<configuration>
-							<sources>
-								<source>src/test/java</source>
-							</sources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>test-jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.9.1</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>
+                                <source>src/test/java</source>
+                            </sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.17</version>
-				<configuration>
-					<skipTests>${skipTests}</skipTests>
-					<includes>
-						<include>**/${TestRun}.java</include>
-					</includes>
-					<argLine>-Djava.library.path=../common/native_lib</argLine>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
-					<encoding>UTF-8</encoding>
-				</configuration>
-			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.17</version>
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
+                    <includes>
+                        <include>**/${TestRun}.java</include>
+                    </includes>
+                    <argLine>-Djava.library.path=../common/native_lib</argLine>
+                    <systemPropertyVariables>
+                        <java.awt.headless>false</java.awt.headless>
+                        <org.apache.commons.logging.Log>org.apache.commons.logging.impl.SimpleLog</org.apache.commons.logging.Log>
+                        <org.apache.commons.logging.simplelog.log.org.apache.http>warn</org.apache.commons.logging.simplelog.log.org.apache.http>
+                        <com.wire.os.name>${com.wire.os.name}</com.wire.os.name>
+                        <com.wire.os.version>${com.wire.os.version}</com.wire.os.version>
+                        <com.wire.browser.name>${com.wire.browser.name}</com.wire.browser.name>
+                        <com.wire.browser.version>${com.wire.browser.version}</com.wire.browser.version>
+                        <com.wire.app.path>${com.wire.app.path}</com.wire.app.path>
+                        <com.wire.electron.path.suffix>${com.wire.electron.path.suffix}</com.wire.electron.path.suffix>
+                        <com.wire.appium.hub.url>${com.wire.appium.hub.url}</com.wire.appium.hub.url>
+                        <com.wire.chromedriver.path>${com.wire.chromedriver.path}</com.wire.chromedriver.path>
+                        <com.wire.driver.timeout.seconds>${com.wire.driver.timeout.seconds}</com.wire.driver.timeout.seconds>
+                        <com.wire.environment>${com.wire.environment}</com.wire.environment>
+                        <wireConfigDomain>${wireConfigDomain}</wireConfigDomain>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <!-- specify UTF-8, ISO-8859-1 or any other file encoding -->
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.10.1</version>
-				<configuration>
-					<show>public</show>
-					<sourceFileIncludes>
-						<!-- This will work only since v 2.11+ (http://jira.codehaus.org/browse/MJAVADOC-365) -->
-						<include>**/*Steps.java</include>
-					</sourceFileIncludes>
-					<tags>
-						<tag>
-							<name>step.</name>
-							<placement>m</placement>
-							<head>Step Declaration:</head>
-						</tag>
-					</tags>
-				</configuration>
-			</plugin>
-		</plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.1</version>
+                <configuration>
+                    <show>public</show>
+                    <sourceFileIncludes>
+                        <!-- This will work only since v 2.11+ (http://jira.codehaus.org/browse/MJAVADOC-365) -->
+                        <include>**/*Steps.java</include>
+                    </sourceFileIncludes>
+                    <tags>
+                        <tag>
+                            <name>step.</name>
+                            <placement>m</placement>
+                            <head>Step Declaration:</head>
+                        </tag>
+                    </tags>
+                </configuration>
+            </plugin>
+        </plugins>
 
-		<resources>
-			<resource>
-				<directory>src/main/resources</directory>
-				<filtering>true</filtering>
-			</resource>
-		</resources>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
 
-	</build>
+    </build>
 </project>

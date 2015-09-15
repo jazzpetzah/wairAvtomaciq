@@ -104,7 +104,7 @@ public class ChoosePicturePage extends OSXPage {
 				+ "key code 36\n"
 				+ "end tell";
 			this.getDriver().executeScript(openImageScript);
-			this.getDriver().navigate().to(OSXExecutionContext.wirePath);
+			this.getDriver().navigate().to(OSXExecutionContext.WIRE_APP_PATH);
 		}
 	}
 }

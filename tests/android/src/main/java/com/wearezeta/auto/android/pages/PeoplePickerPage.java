@@ -48,8 +48,6 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public static final String idPeoplePickerClearbtn = "gtv_pickuser__clearbutton";
 
-	public static final String idConnectionRequiesMessage = "cet__send_connect_request__first_message";
-
 	public static final String idSendConnectionRequestButton = "zb__send_connect_request__connect_button";
 
 	private static final Function<String, String> xpathPeoplePickerGroupByName = name -> String
@@ -122,6 +120,7 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public WebElement findCorrectPickerSearch() throws Exception {
 		WebElement result = null;
+		commonSteps.WaitForTime(1);
 		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id(idPickerSearch));
 		List<WebElement> pickerSearches = getDriver().findElements(
 				By.id(idPickerSearch));
@@ -279,6 +278,7 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public ContactListPage tapClearButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), pickerClearBtn);
 		pickerClearBtn.click();
 		return new ContactListPage(this.getLazyDriver());
 	}

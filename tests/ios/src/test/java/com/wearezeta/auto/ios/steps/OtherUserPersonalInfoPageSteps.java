@@ -144,4 +144,26 @@ public class OtherUserPersonalInfoPageSteps {
 	public void IClickArchiveMenu() throws Exception {
 		getOtherUserPersonalInfoPage().clickArchiveMenuButton();
 	}
+	
+	/**
+	 * Click delete menu button in ellipsis menu
+	 * 
+	 * @step. ^I click delete menu button$
+	 * @throws Exception
+	 */
+	@When("^I click delete menu button$")
+	public void IClickDeleteMenu() throws Exception {
+		getOtherUserPersonalInfoPage().clickDeleteMenuButton();
+	}
+	
+	/**
+	 * Click delete to confirm conversation content deletion
+	 * 
+	 * @step. ^I confirm delete conversation content$
+	 * @throws Exception
+	 */
+	@When("^I confirm delete conversation content$")
+	public void IConfirmDelete() throws Exception {
+		getOtherUserPersonalInfoPage().clickConfirmDeleteButton();
+	}
 }

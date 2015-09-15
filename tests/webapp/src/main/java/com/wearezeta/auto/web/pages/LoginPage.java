@@ -19,8 +19,8 @@ import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
 
 public class LoginPage extends WebPage {
 	@SuppressWarnings("unused")
-	private static final Logger log = ZetaLogger.getLog(LoginPage.class
-			.getSimpleName());
+	private static final Logger LOG = ZetaLogger.getLog(LoginPage.class
+			.getName());
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.LoginPage.xpathCreateAccountButton)
 	private WebElement createAccountButton;
@@ -59,7 +59,7 @@ public class LoginPage extends WebPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
 	}
 

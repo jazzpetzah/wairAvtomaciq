@@ -109,4 +109,17 @@ public class TabletOtherUserInfoPageSteps {
 				getTabletOtherUserInfoPage().isConnectButtonVisible());
 	}
 
+	/**
+	 * Click on Connect button on not connected user profile popover
+	 * 
+	 * @step. ^I click Connect button on not connected user profile popover$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Connect button on not connected user profile popover$")
+	public void IClickConnectButtonOnNotConnectedUserProfilePopover()
+			throws Exception {
+		getTabletOtherUserInfoPage().clickConnectButton();
+	}
+
 }

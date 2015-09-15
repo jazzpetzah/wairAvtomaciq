@@ -41,10 +41,10 @@ public final class WebAppLocators {
 	public static final class ContactListPage {
 
 		public static final String xpathParentContactListItem = "//div[@id='conversation-list']";
-		public static final String cssParentContactListItem = "div#conversation-list";
+		public static final String cssParentContactListItem = "#conversation-list";
 
 		public static final String cssIncomingPendingConvoItem = cssParentContactListItem
-				+ " [data-uie-name=item-pending-requests]";
+				+ " [data-uie-name='item-pending-requests']";
 
 		public static final String xpathOpenArchivedConvosButton = "//*[@data-uie-name='go-archive']";
 
@@ -296,6 +296,9 @@ public final class WebAppLocators {
 		public static final String idBlackBorder = "detail-view";
 
 		public static final String cssFullscreenImage = ".detail-view-image";
+
+		public static final Function<String, String> cssUserAvatarById = id -> String
+				.format("[user-id='%s']", id);
 	}
 
 	public static final class ConnectToPage {
@@ -378,6 +381,9 @@ public final class WebAppLocators {
 				+ "//*[@data-uie-name='item-user' and .//*[contains(@class,'selected')]]";
 
 		public static final String cssSearchField = "[data-uie-name='enter-users']";
+
+		public static final String cssMoreButton = "[data-uie-name='item-more']";
+
 	}
 
 	public static final class RegistrationPage {

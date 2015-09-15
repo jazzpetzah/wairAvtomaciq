@@ -242,20 +242,7 @@ Feature: Conversation View
     Given I see Contact list with contacts
     When I tap on contact name <Contact1>
     And I see dialog page
-    #FIXME: Create a method with parameter to send xx messages
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
-    And Contact <Contact1> send message to user Myself
+    And Contact <Contact1> send 18 messages to user Myself
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
     And I swipe down on dialog page
@@ -289,7 +276,7 @@ Feature: Conversation View
       | Name      | Contact1  | YoutubeLink                                 |
       | user1Name | user2Name | https://www.youtube.com/watch?v=wTcNtgA6gHs |
 
-  @id3242 @staging @rc @rc42
+  @id3242 @regression @rc @rc42
   Scenario Outline: I can send a sketch
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

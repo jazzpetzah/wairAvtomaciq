@@ -284,16 +284,23 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Tap the Ping button to send Ping event from the currently opened
+	 * Tap the Ping button to send Ping/Ping Again event from the currently opened
 	 * conversation
 	 * 
-	 * @step. ^I tap Ping button in (?:the |\\s*)[Cc]onversation view$
+	 * @step. ^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$
+	 * 
+	 * @param shouldTapTwice
+	 *            equals to null if 'twice' part does not exist in the step
+	 *            signature
 	 * 
 	 * @throws Exception
 	 */
-	@And("^I tap Ping button in (?:the |\\s*)[Cc]onversation view$")
-	public void ITapPingButton() throws Exception {
+	@And("^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$")
+	public void ITapPingButton(String shouldTapTwice) throws Exception {
 		getConversationViewPage().tapPingButton();
+		if (shouldTapTwice != null) {
+			getConversationViewPage().tapPingButton();
+		}
 	}
 
 	/**
@@ -457,7 +464,7 @@ public class ConversationViewPageSteps {
 		getConversationViewPage().scrollToTheBottom();
 	}
 
-	private static final double MAX_SIMILARITY_THRESHOLD = 0.95;
+	private static final double MAX_SIMILARITY_THRESHOLD = 0.97;
 
 	private static enum PictureDestination {
 		CONVERSATION_VIEW, PREVIEW;
@@ -480,7 +487,7 @@ public class ConversationViewPageSteps {
 				.toUpperCase().replace(" ", "_"));
 		double avgThreshold;
 		// no need to wait, since screenshoting procedure itself is quite long
-		final long screenshotingDelay = 0;
+		final long screenshotingDelay = 200;
 		final int maxFrames = 4;
 		switch (dst) {
 		case CONVERSATION_VIEW:
@@ -489,9 +496,9 @@ public class ConversationViewPageSteps {
 					maxFrames, screenshotingDelay);
 			Assert.assertTrue(
 					String.format(
-							"The picture in the conversation view seems to be static (%.2f >= %.2f)",
+							"The picture in the conversation view seems to be static (%.2f > %.2f)",
 							avgThreshold, MAX_SIMILARITY_THRESHOLD),
-					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+					avgThreshold <= MAX_SIMILARITY_THRESHOLD);
 			break;
 		case PREVIEW:
 			avgThreshold = ImageUtil.getAnimationThreshold(
@@ -499,9 +506,9 @@ public class ConversationViewPageSteps {
 					maxFrames, screenshotingDelay);
 			Assert.assertTrue(
 					String.format(
-							"The picture in the image preview view seems to be static (%.2f >= %.2f)",
+							"The picture in the image preview view seems to be static (%.2f > %.2f)",
 							avgThreshold, MAX_SIMILARITY_THRESHOLD),
-					avgThreshold < MAX_SIMILARITY_THRESHOLD);
+					avgThreshold <= MAX_SIMILARITY_THRESHOLD);
 			break;
 		}
 	}
@@ -587,5 +594,40 @@ public class ConversationViewPageSteps {
 	@When("^I tap (?:Play|Puase) button in the [Cc]onversation view$")
 	public void ITapPlayPauseButton() throws Exception {
 		getConversationViewPage().tapPlayPauseButton();
+	}
+
+	/**
+	 * Verify whether Giphy button is visible in the convo view
+	 * 
+	 * @step. ^I (do not )?see Giphy button in the [Cc]onversation view$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if 'do not' sentence does not exist in step
+	 *            signature
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see Giphy button in the [Cc]onversation view$")
+	public void ISeeGiphyButton(String shouldNotSee) throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(
+					"Giphy button is not visible in the conversation view",
+					getConversationViewPage().waitUntilGiphyButtonVisible());
+		} else {
+			Assert.assertTrue(
+					"Giphy button is visible in the conversation view, but should be hidden",
+					getConversationViewPage().waitUntilGiphyButtonInvisible());
+		}
+	}
+
+	/**
+	 * Tap Giphy button
+	 * 
+	 * @step. ^I tap Giphy button in the [Cc]onversation view$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I tap Giphy button in the [Cc]onversation view$")
+	public void ITapGiphyButton() throws Exception {
+		getConversationViewPage().tapGiphyButton();
 	}
 }

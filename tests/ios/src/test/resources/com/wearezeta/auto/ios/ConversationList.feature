@@ -26,16 +26,13 @@ Feature: Conversation List
     When I swipe right on a <Contact>
     And I click archive button for conversation <Contact>
     Then I dont see conversation <Contact> in contact list
-    And I long swipe right to archive conversation <Contact2>
-    Then I dont see conversation <Contact2> in contact list
     And I open archived conversations
     Then I see user <Contact> in contact list
-    Then I see user <Contact2> in contact list
 
     Examples: 
-      | Name      | Contact   | Contact2 |
-      | user1Name | user2Name | user3Name|
-      
+      | Name      | Contact   | Contact2  |
+      | user1Name | user2Name | user3Name |
+
   @regression @id2153
   Scenario Outline: Verify unread dots have different size for 1, 5, 10 incoming messages
     Given There are 3 users where <Name> is me
@@ -108,8 +105,8 @@ Feature: Conversation List
     Then I see change of state for first conversation cell
 
     Examples: 
-      | Name      | Contact   | NewName  | Color        |
-      | user1Name | user2Name | PING     | BrightOrange |
+      | Name      | Contact   | NewName | Color        |
+      | user1Name | user2Name | PING    | BrightOrange |
 
   @smoke @id2761
   Scenario Outline: Verify conversations are sorted according to most recent activity
@@ -125,5 +122,159 @@ Feature: Conversation List
     Then I see first item in contact list named <Contact1>
 
     Examples: 
-      | Name      | Contact1   | Contact2   | Contact3     |Number |  Picture      |
-      | user1Name | user2Name | user3name  | user4name    | 2 	   | testing.jpg   |
+      | Name      | Contact1  | Contact2  | Contact3  | Number | Picture     |
+      | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
+
+  @staging @id3310
+  Scenario Outline: Verify action menu is opened on swipe right on the group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    Then I see conversation <GroupChatName> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Leave button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName  |
+      | user1Name | user2Name | user3name | ActionMenuChat |
+
+  @staging @id3311
+  Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    Then I see conversation <Contact> name in action menu in Contact List
+    And I see Silence button in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I see Delete button in action menu in Contact List
+    And I see Block button in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3313
+  Scenario Outline: Verify archiving from the action menu
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    And I see conversation <Contact> name in action menu in Contact List
+    And I see Archive button in action menu in Contact List
+    And I press Archive button in action menu in Contact List
+    Then I dont see conversation <Contact> in contact list
+    And I open archived conversations
+    Then I see user <Contact> in contact list
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id3314
+  Scenario Outline: Verify leaving group conversation from the action menu
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <GroupChatName>
+    And I see conversation <GroupChatName> name in action menu in Contact List
+    And I see Leave button in action menu in Contact List
+    And I press Leave button in action menu in Contact List
+    And I see leave conversation alert
+    And I press leave
+    Then I dont see conversation <GroupChatName> in contact list
+    And I open archived conversations
+    And I see user <GroupChatName> in contact list
+    And I tap on group chat with name <GroupChatName>
+    Then I see You Left message in group chat
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName   |
+      | user1Name | user2Name | user3Name | LeaveActionMenu |
+
+  @staging @id3315
+  Scenario Outline: Verify removing the content from the group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Contact1> sent message <Message> to conversation <GroupChatName>
+    Given Contact <Contact2> sends image <Image> to group conversation <GroupChatName>
+    Given User <Name> sent message <Message> to conversation <GroupChatName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <GroupChatName>
+    Then I see new photo in the dialog
+    When I return to the chat list
+    And I swipe right on a <GroupChatName>
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I search for user name <GroupChatName> and tap on it on People picker page
+    Then I see group chat page with users <Contact1>,<Contact2>
+    And I see only 1 message
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
+      | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg |
+
+  @staging @id3318
+  Scenario Outline: Verify removing the history from 1-to1 conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> sent message <Message> to conversation <Name>
+    Given Contact <Contact1> sends image <Image> to group conversation <Name>
+    Given User <Name> sent message <Message> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    Then I see new photo in the dialog
+    When I return to the chat list
+    And I swipe right on a <Contact1>
+    And I click delete menu button
+    And I confirm delete conversation content
+    And I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I search for user name <Contact1> and tap on it on People picker page
+    And I click open conversation button on People picker page
+    Then I see dialog page
+    And I see only 1 message
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Message | Image       |
+      | user1Name | user2Name | user3Name | testing | testing.jpg |
+
+  @staging @id3312
+  Scenario Outline: Verify silencing and notify from the action menu
+    Given There are 2 users where <Name> is me
+    Given User <Name> change accent color to <Color>
+    Given Myself is connected to <Contact>
+    Given User <Contact> change accent color to <Color>
+    Given User <Contact> change name to <NewName>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    And I tap on contact name <Contact>
+    And I return to the chat list
+    When I swipe right on a <Contact>
+    And I press menu silence button
+    Then I see conversation <Contact> is silenced
+    When I swipe right on a <Contact>
+    And I press menu notify button
+    Then I see conversation <Contact> is unsilenced
+
+    Examples: 
+      | Name      | Contact   | Color  | NewName |
+      | user1Name | user2Name | Violet | SILENCE |

@@ -8,12 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.dd.plist.NSDictionary;
 import com.dd.plist.PropertyListParser;
@@ -23,28 +20,17 @@ import com.wearezeta.auto.common.driver.ZetaDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
+import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
 import com.wearezeta.auto.osx.util.NSPoint;
+import java.util.Arrays;
 
 public class OSXCommonUtils extends CommonUtils {
 
 	private static final int PREFS_DAEMON_RESTART_TIMEOUT = 1000;
 
-	private static final Logger log = ZetaLogger.getLog(OSXCommonUtils.class
-			.getSimpleName());
+	private static final Logger LOG = ZetaLogger.getLog(OSXCommonUtils.class
+			.getName());
 
-	/*
-	 * Retrieves Wire process name from config
-	 */
-	public static String getWireProcessName() throws Exception {
-		String wireProcessName = OSXExecutionContext.wirePath;
-		File file = new File(wireProcessName);
-		wireProcessName = file.getName().replace(".app", "");
-		return wireProcessName;
-	}
-
-	/*
-	 * 
-	 */
 	public static String getOsXVersion() throws Exception {
 		String command = "sw_vers -productVersion";
 
@@ -71,10 +57,10 @@ public class OSXCommonUtils extends CommonUtils {
 					}
 				}
 				outputErrorStreamToLog(process.getErrorStream());
-				log.debug("Request for osx version finished with code "
+				LOG.debug("Request for osx version finished with code "
 						+ process.waitFor());
 			} catch (IOException e) {
-				log.error(e.getMessage());
+				LOG.error(e.getMessage());
 			} finally {
 				if (bufferedReader != null)
 					bufferedReader.close();
@@ -87,46 +73,12 @@ public class OSXCommonUtils extends CommonUtils {
 		return result;
 	}
 
-	public static void deleteCacheFolder() throws Exception {
-		String command = String.format(
-				"rm -rf %s/Library/Containers/%s/Data/Library/Caches",
-				System.getProperty("user.home"),
-				OSXExecutionContext.wireConfigDomain);
-		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
-	}
-
 	public static void deletePreferencesFile() throws Exception {
 		String command = String.format(
 				"rm -rf %s/Library/Preferences/%s.plist",
-				System.getProperty("user.home"),
-				OSXExecutionContext.wireConfigDomain);
+				OSXExecutionContext.USER_HOME,
+				OSXExecutionContext.CONFIG_DOMAIN);
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
-	}
-
-	public static void deleteWireLoginFromKeychain() throws Exception {
-		String command = "security delete-generic-password -s \"zeta staging-nginz-https.zinfra.io\"";
-
-		if (!getOsName().contains(OS_NAME_WINDOWS)) {
-			executeOsXCommand(new String[] { "/bin/bash", "-c", command });
-		}
-
-		command = "security delete-generic-password -s \"Wire: Credentials for wire.com\"";
-
-		if (!getOsName().contains(OS_NAME_WINDOWS)) {
-			executeOsXCommand(new String[] { "/bin/bash", "-c", command });
-		}
-	}
-
-	public static void removeAllZClientSettingsFromDefaults() throws Exception {
-		removeZClientDomain(OSXExecutionContext.wireConfigDomain);
-		resetOSXPrefsDaemon();
-	}
-
-	public static void setZClientBackendAndDisableStartUI(String bt)
-			throws Exception {
-		setZClientBackendForDomain(OSXExecutionContext.wireConfigDomain, bt);
-		disableStartUIOnFirstLogin(OSXExecutionContext.wireConfigDomain);
-		resetOSXPrefsDaemon();
 	}
 
 	public static void resetOSXPrefsDaemon() throws Exception {
@@ -140,23 +92,8 @@ public class OSXCommonUtils extends CommonUtils {
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
 	}
 
-	private static void setZClientBackendForDomain(String domain, String bt)
-			throws Exception {
-		final String setBackendTypeCmd = String.format(
-				"defaults write %s ZMBackendEnvironmentType -string %s",
-				domain, bt);
-		executeOsXCommand(new String[] { "/bin/bash", "-c", setBackendTypeCmd });
-	}
-
-	private static void disableStartUIOnFirstLogin(String domain)
-			throws Exception {
-		final String disableCmd = String.format(
-				"defaults write %s ZCSkipFirstTimeUseChecks -bool YES", domain);
-		executeOsXCommand(new String[] { "/bin/bash", "-c", disableCmd });
-	}
-
 	public static boolean isBackendTypeSet(String bt) throws Exception {
-		if (!isBackendTypeSetForDomain(OSXExecutionContext.wireConfigDomain, bt)) {
+		if (!isBackendTypeSetForDomain(OSXExecutionContext.CONFIG_DOMAIN, bt)) {
 			return false;
 		}
 		return true;
@@ -186,18 +123,10 @@ public class OSXCommonUtils extends CommonUtils {
 					.objectForKey("zmessaging");
 			zmessagingBuild = zmessagingDict.objectForKey("version").toString();
 		} catch (Exception ex) {
-			log.error("Failed to read OSX client properties.\n"
+			LOG.error("Failed to read OSX client properties.\n"
 					+ ex.getMessage());
 		}
 		return new BuildVersionInfo(clientBuild, zmessagingBuild);
-	}
-
-	public static void sendTextIntoFocusedElement(RemoteWebDriver driver,
-			String text) {
-		driver.executeScript(String
-				.format("tell application \"Wire\"\nactivate\nend tell\n"
-						+ "tell application \"System Events\"\nkeystroke \"%s\"\nend tell",
-						text));
 	}
 
 	public static ClientDeviceInfo readDeviceInfo() throws Exception {
@@ -211,18 +140,10 @@ public class OSXCommonUtils extends CommonUtils {
 		return result;
 	}
 
-	public static void killWireIfStuck() {
-		try {
-			executeOsXCommand(new String[] { "/bin/bash", "-c",
-					"kill -9 $(lsof -c Wire -t)" });
-		} catch (Exception e) {
-		}
-	}
-
 	public static NSPoint calculateScreenResolution(ZetaDriver driver)
 			throws Exception {
-		BufferedImage im = DriverUtils.takeFullScreenShot(driver)
-				.orElseThrow(IllegalStateException::new);
+		BufferedImage im = DriverUtils.takeFullScreenShot(driver).orElseThrow(
+				IllegalStateException::new);
 		return new NSPoint(im.getWidth(), im.getHeight());
 	}
 
@@ -237,11 +158,6 @@ public class OSXCommonUtils extends CommonUtils {
 		} else {
 			return false;
 		}
-	}
-
-	public static boolean osxAXValueToBoolean(String value) {
-		return value.equals(OSXConstants.Common.AX_BOOLEAN_FALSE) ? false
-				: true;
 	}
 
 	public static int screenPixelsMultiplier(AppiumDriver driver)
@@ -265,24 +181,6 @@ public class OSXCommonUtils extends CommonUtils {
 				elementSize.y() * multiply);
 	}
 
-	private static final String LOG_FILTER_REGEX = "(wire|zclient|appium)";
-
-	public static void collectSystemLogs(Date testStartedDate) throws Exception {
-		log.debug("System Logs:");
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-		final String logStartTime = sdf.format(testStartedDate);
-		final String logEndTime = sdf.format(new Date());
-		final String collectedLogEntries = CommonUtils
-				.executeOsXCommandWithOutput(new String[] {
-						"/bin/bash",
-						"-c",
-						String.format(
-								"awk -v start=%s -v stop=%s 'start <= $3 && $3 < stop' /private/var/log/system.log"
-										+ " | grep -Ei '(%s)'", logStartTime,
-								logEndTime, LOG_FILTER_REGEX) });
-		log.debug(collectedLogEntries);
-	}
-
 	public static String getOsxClientInfoPlistFromConfig(Class<?> c)
 			throws Exception {
 		return CommonUtils.getValueFromConfig(c, "osxClientInfoPlist");
@@ -291,5 +189,47 @@ public class OSXCommonUtils extends CommonUtils {
 	public static String getWireConfigDomainFromConfig(Class<?> c)
 			throws Exception {
 		return getValueFromConfig(c, "wireConfigDomain");
+	}
+
+	public static void clearAppData() throws Exception {
+		final String[] commands = new String[] {
+				"/bin/sh",
+				"-c",
+				"rm -rf "
+						+ OSXExecutionContext.USER_HOME
+						+ "/Library/Application\\ Support/Wire/Cache &&"
+						+ "rm -f "
+						+ OSXExecutionContext.USER_HOME
+						+ "/Library/Application\\ Support/Wire/Cookies &&"
+						+ "rm -rf "
+						+ OSXExecutionContext.USER_HOME
+						+ "/Library/Application\\ Support/Wire/GPUCache &&"
+						+ "rm -rf "
+						+ OSXExecutionContext.USER_HOME
+						+ "/Library/Application\\ Support/Wire/Local\\ Storage &&"
+						+ "rm -f "
+						+ OSXExecutionContext.USER_HOME
+						+ "/Library/Application\\ Support/Wire/WebRTCIdentityStore &&"
+						+ "rm -f "
+						+ OSXExecutionContext.USER_HOME
+						+ "/Library/Application\\ Support/Wire/WebRTCIdentityStore-journal &&"
+						+ "rm -f " + OSXExecutionContext.USER_HOME
+						+ "/Library/Application\\ Support/Wire/Cookies-journal" };
+
+		LOG.debug("executing commands: " + Arrays.toString(commands));
+		final String result = executeOsXCommandWithOutput(commands);
+		LOG.debug("output: " + result);
+	}
+
+	public static void killAllApps() throws Exception {
+		final String[] commands = new String[] {
+				"/bin/sh",
+				"-c",
+				"kill $(ps aux | grep " + WIRE_APP_PATH
+						+ " | awk '{print $2}')" };
+		LOG.debug("executing commands: " + Arrays.toString(commands));
+		final String result = executeOsXCommandWithOutput(commands);
+		LOG.debug("output: " + result);
+
 	}
 }

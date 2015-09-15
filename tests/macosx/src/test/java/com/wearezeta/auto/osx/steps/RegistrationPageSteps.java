@@ -1,11 +1,8 @@
 package com.wearezeta.auto.osx.steps;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
@@ -117,22 +114,6 @@ public class RegistrationPageSteps {
 	@When("^I submit registration form$")
 	public void ISubmitRegistration() throws Exception {
 		PagesCollection.registrationPage.submitRegistration();
-	}
-
-	/**
-	 * Start monitoring thread for activation email. Please put this step BEFORE
-	 * you submit the registration form
-	 * 
-	 * @step. ^I start activation email monitoring$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I start activation email monitoring$")
-	public void IStartActivationEmailMonitoring() throws Exception {
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", this.userToRegister.getEmail());
-		this.activationMessage = IMAPSMailbox.getInstance().getMessage(
-				expectedHeaders, BackendAPIWrappers.UI_ACTIVATION_TIMEOUT);
 	}
 
 	/**

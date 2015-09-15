@@ -53,7 +53,7 @@ public abstract class OSXPage extends BasePage {
 	}
 
 	public void startApp() throws Exception {
-		this.getDriver().navigate().to(OSXExecutionContext.wirePath);
+		this.getDriver().navigate().to(OSXExecutionContext.WIRE_APP_PATH);
 	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException,
