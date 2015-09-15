@@ -72,10 +72,10 @@ class NodesCountForLabels(CliHandlerBase):
         broken_nodes = []
         while not broken_nodes_queue.empty():
             broken_nodes.append(broken_nodes_queue.get_nowait().name)
-        return '{}|{}'.format(result_nodes_count, ' '.join(broken_nodes))
-
-    # def _is_exceptions_handled_in_invoke(self):
-    #     return True
+        if broken_nodes:
+            return '{}|{}'.format(result_nodes_count, ' '.join(broken_nodes))
+        else:
+            return result_nodes_count
 
 
 class BaseNodeVerifier(Process):
@@ -135,11 +135,14 @@ class BaseNodeVerifier(Process):
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
                     self._results_queue.put_nowait(False)
+                    self._broken_nodes_queue.put_nowait(self._node.name)
                     raise e
                 sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
                 time.sleep(random.randint(2, 10))
                 try_num = 0
         self._results_queue.put_nowait(is_passed)
+        if not is_passed:
+            self._broken_nodes_queue.put_nowait(self._node.name)
 
 
 class RealAndroidDevice(BaseNodeVerifier):
