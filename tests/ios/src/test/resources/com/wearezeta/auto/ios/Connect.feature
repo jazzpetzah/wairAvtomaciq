@@ -320,7 +320,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3225
+  @regression @id3225
   Scenario Outline: Verify possibility of disconnecting from Search UI
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>
