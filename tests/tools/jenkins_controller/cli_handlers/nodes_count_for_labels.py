@@ -163,7 +163,7 @@ class RealAndroidDevice(BaseNodeVerifier):
                                    password=self._verification_kwargs['node_password'])
                     _, stdout, _ = client.exec_command('/usr/local/bin/adb devices -l')
                     output = stdout.read()
-                    result = output.find('device:') > 0 and stdout.find('offline') < 0
+                    result = output.find('device:') > 0 and output.find('offline') < 0
                     if not result:
                         msg = 'The device connected to node "{}" seems to be not accessible:\n{}'.\
                                          format(self._node.name, output)
