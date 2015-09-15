@@ -174,16 +174,16 @@ class RealAndroidDevice(BaseNodeVerifier):
                 msg = 'The device connected to node "{}" seems to be not accessible:\n{}'.\
                                  format(self._node.name, output)
                 sys.stderr.write(msg)
-                self._send_email_notification('{} node is broken'.format(self._node.name), msg)
+                self._send_email_notification('"{}" node is broken'.format(self._node.name), msg)
                 return False
             _, stdout, _ = client.exec_command('/usr/local/bin/adb shell ping -c 5 8.8.8.8')
             output = stdout.read()
             result = result and output.find('bytes from 8.8.8.8') > 0
             if not result:
-                msg = 'The device connected to node "{}" seems to be disconnected:\n{}'.\
+                msg = 'The device connected to node "{}" seems to be offline:\n{}'.\
                                  format(self._node.name, output)
                 sys.stderr.write(msg)
-                self._send_email_notification('{} node is broken'.format(self._node.name), msg)
+                self._send_email_notification('"{}" node is broken'.format(self._node.name), msg)
                 return False
             return result
         finally:
@@ -220,8 +220,8 @@ class IOSSimulator(BaseNodeVerifier):
             if dst_name:
                 simulator_name = dst_name[0]
             else:
-                msg = 'There is no "{}" simulator available. The list of available simulators:\n{}'.\
-                                 format(simulator_name, pformat(available_simulators))
+                msg = 'There is no "{}" simulator available. The list of available simulators for the node "{}":\n{}'.\
+                                 format(simulator_name, self._node.name, pformat(available_simulators))
                 sys.stderr.write(msg)
                 self._send_email_notification('Non-existing simulator name "{}" has been provided'.\
                                               format(simulator_name), msg)
@@ -235,7 +235,7 @@ class IOSSimulator(BaseNodeVerifier):
                 msg = 'The "{}" simulator is still booting after {} seconds timeout.'.\
                                  format(simulator_name, IOS_SIMULATOR_BOOT_TIMEOUT)
                 sys.stderr.write(msg)
-                self._send_email_notification('{} node is broken'.format(self._node.name), msg)
+                self._send_email_notification('"{}" node is broken'.format(self._node.name), msg)
                 result = False
             client.exec_command('/usr/bin/killall "iOS Simulator"')
             return result
