@@ -1160,7 +1160,7 @@ Feature: Conversation View
       | Name      | Contact1  | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
 
-  @torun @staging @id3791
+  @staging @id3791
   Scenario Outline: Verify sending link and opening it [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
