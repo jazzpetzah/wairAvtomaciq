@@ -566,3 +566,23 @@ Feature: Calling
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | GroupChatName | CallBackend | CallBackend2 | NumberOfAvatars | Timeout |
       | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | FullGROUPCALL | chrome      | autocall     | 5               | 60      |
+
+  @calling_basic @id880
+  Scenario Outline: Verify putting client to the background during 1-to-1 call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When <Contact> calls me using <CallBackend>
+    And I see incoming calling message for contact <Contact>
+    And I accept incoming call
+    Then I see mute call, end call and speakers buttons
+    And I see started call message for contact <Contact>
+    When I close the app for 5 seconds
+    Then I see mute call, end call and speakers buttons
+    And I see started call message for contact <Contact>
+    And <Contact> verifies that call status to me is changed to active in 2 seconds
+
+    Examples: 
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
