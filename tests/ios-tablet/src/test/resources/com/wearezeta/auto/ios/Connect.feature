@@ -100,7 +100,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @regression @rc @id2354 @id2610
+  @regression @rc @id2354 @id2610 
   Scenario Outline: Send connection request to unconnected participant in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -111,7 +111,7 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
-    And I click Connect button on connect to dialog
+    And I click Connect button on not connected user profile popover
     And I exit the group info iPad popover
     And I swipe right on group chat page
     Then I see first item in contact list named <UnconnectedUser>
@@ -132,7 +132,7 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
-    And I click Connect button on connect to dialog
+    And I click Connect button on not connected user profile popover
     And I exit the group info iPad popover
     Then I see first item in contact list named <UnconnectedUser>
 
