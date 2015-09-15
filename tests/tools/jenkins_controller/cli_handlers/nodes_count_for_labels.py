@@ -53,11 +53,11 @@ class NodesCountForLabels(CliHandlerBase):
         args = parser.parse_args()
         expected_labels = normalize_labels(args.labels.split(','))
         verifier_class = self._get_verifier_class(args.apply_verification)
-        results_queue = Queue()
+        ready_nodes_queue = Queue()
         broken_nodes_queue = Queue()
         verifiers = []
         for _, node in self._jenkins.get_nodes().iteritems():
-            verifiers.append(verifier_class(node, results_queue, broken_nodes_queue,
+            verifiers.append(verifier_class(node, ready_nodes_queue, broken_nodes_queue,
                                             expected_labels_set=expected_labels,
                                             node_user=args.node_user, node_password=args.node_password,
                                             ios_simulator_name=args.ios_simulator_name,
@@ -65,24 +65,23 @@ class NodesCountForLabels(CliHandlerBase):
             verifiers[-1].start()
         for verifier in verifiers:
             verifier.join(timeout=VERIFICATION_JOB_TIMEOUT)
-        result_nodes_count = 0
-        while not results_queue.empty():
-            if results_queue.get_nowait() is True:
-                result_nodes_count += 1
+        ready_nodes = []
+        while not ready_nodes_queue.empty():
+            ready_nodes.append(ready_nodes_queue.get_nowait().name)
         broken_nodes = []
         while not broken_nodes_queue.empty():
             broken_nodes.append(broken_nodes_queue.get_nowait().name)
         if broken_nodes:
-            return '{}|{}'.format(result_nodes_count, ' '.join(broken_nodes))
+            return '{}|{}'.format(len(ready_nodes), ' '.join(broken_nodes))
         else:
-            return result_nodes_count
+            return len(ready_nodes)
 
 
 class BaseNodeVerifier(Process):
-    def __init__(self, node, results_queue, broken_nodes_queue, **kwargs):
+    def __init__(self, node, ready_nodes_queue, broken_nodes_queue, **kwargs):
         super(BaseNodeVerifier, self).__init__()
         self._node = node
-        self._results_queue = results_queue
+        self._ready_nodes_queue = ready_nodes_queue
         self._broken_nodes_queue = broken_nodes_queue
         self._verification_kwargs = kwargs
 
@@ -123,7 +122,7 @@ class BaseNodeVerifier(Process):
         return False
 
     def run(self):
-        MAX_TRY_COUNT = 5
+        MAX_TRY_COUNT = 2
         try_num = 0
         is_passed = False
         while True:
@@ -134,15 +133,15 @@ class BaseNodeVerifier(Process):
                 traceback.print_exc()
                 try_num += 1
                 if try_num >= MAX_TRY_COUNT:
-                    self._results_queue.put_nowait(False)
-                    self._broken_nodes_queue.put_nowait(self._node.name)
+                    self._broken_nodes_queue.put_nowait(self._node)
                     raise e
                 sys.stderr.write('Sleeping a while before retry #{} of {}...\n'.format(try_num, MAX_TRY_COUNT))
                 time.sleep(random.randint(2, 10))
                 try_num = 0
-        self._results_queue.put_nowait(is_passed)
-        if not is_passed:
-            self._broken_nodes_queue.put_nowait(self._node.name)
+        if is_passed:
+            self._ready_nodes_queue.put_nowait(self._node)
+        else:
+            self._broken_nodes_queue.put_nowait(self._node)
 
 
 class RealAndroidDevice(BaseNodeVerifier):
