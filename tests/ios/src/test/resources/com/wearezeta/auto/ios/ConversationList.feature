@@ -125,7 +125,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Contact3  | Number | Picture     |
       | user1Name | user2Name | user3name | user4name | 2      | testing.jpg |
 
-  @staging @id3310
+  @regression @id3310
   Scenario Outline: Verify action menu is opened on swipe right on the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -144,7 +144,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
-  @staging @id3311
+  @regression @id3311
   Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -162,7 +162,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3313
+  @regression @id3313
   Scenario Outline: Verify archiving from the action menu
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -180,7 +180,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3314
+  @regression @id3314
   Scenario Outline: Verify leaving group conversation from the action menu
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -203,7 +203,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName   |
       | user1Name | user2Name | user3Name | LeaveActionMenu |
 
-  @staging @id3315
+  @regression @id3315
   Scenario Outline: Verify removing the content from the group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -230,7 +230,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName | Message | Image       |
       | user1Name | user2Name | user3Name | TESTCHAT      | testing | testing.jpg |
 
-  @staging @id3318
+  @regression @id3318
   Scenario Outline: Verify removing the history from 1-to1 conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
