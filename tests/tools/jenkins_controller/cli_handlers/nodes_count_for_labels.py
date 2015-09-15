@@ -74,6 +74,9 @@ class NodesCountForLabels(CliHandlerBase):
             broken_nodes.append(broken_nodes_queue.get_nowait().name)
         return '{}|{}'.format(result_nodes_count, ' '.join(broken_nodes))
 
+    # def _is_exceptions_handled_in_invoke(self):
+    #     return True
+
 
 class BaseNodeVerifier(Process):
     def __init__(self, node, results_queue, broken_nodes_queue, **kwargs):
@@ -87,7 +90,7 @@ class BaseNodeVerifier(Process):
         if 'notification_receivers' not in self._verification_kwargs or \
            self._verification_kwargs['notification_receivers'] is None:
             return
-        TO = map(lambda x: x.trim(),
+        TO = map(lambda x: x.strip(),
                  self._verification_kwargs['notification_receivers'].split(','))
         gmail_user = 'smoketester@wire.com'
         gmail_pwd = 'aqa123456!'
