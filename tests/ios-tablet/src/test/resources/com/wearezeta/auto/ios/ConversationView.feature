@@ -625,7 +625,7 @@ Feature: Conversation View
     And I send the message
     Then I see message in the dialog
 
-    Examples:
+    Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | SimpleGroup   |
 
@@ -1142,3 +1142,73 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
+
+  @staging @id3792
+  Scenario Outline: Verify sending link and text in one message and opening the link [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <MessageAndLink> to conversation <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see Link <MessageAndLink> in dialog
+    And I tap on Link with a message
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact1  | MessageAndLink                  |
+      | user1Name | user2Name | Check https://www.wire.com/ out |
+
+  @staging @id3793
+  Scenario Outline: Verify sending link and text in one message and opening the link [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <MessageAndLink> to conversation <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see Link <MessageAndLink> in dialog
+    And I tap on Link with a message
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact1  | MessageAndLink                  |
+      | user1Name | user2Name | Check https://www.wire.com/ out |
+
+  @staging @id3790
+  Scenario Outline: Verify sending link and opening it [PORTRAIT]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <Link> to conversation <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see Link <Link> in dialog
+    And I tap on Link
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact1  | Link                  |
+      | user1Name | user2Name | https://www.wire.com/ |
+
+  @staging @id3791
+  Scenario Outline: Verify sending link and opening it [LANDSCAPE]
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <Link> to conversation <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see Link <Link> in dialog
+    And I tap on Link
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact1  | Link                  |
+      | user1Name | user2Name | https://www.wire.com/ |
