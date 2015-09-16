@@ -1153,7 +1153,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see Link <MessageAndLink> in dialog
-    And I tap on Link <MessageAndLink> with a message
+    And I tap on Link with a message
     Then I see WireWebsitePage
 
     Examples: 
@@ -1171,7 +1171,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see Link <MessageAndLink> in dialog
-    And I tap on Link <MessageAndLink> with a message
+    And I tap on Link with a message
     Then I see WireWebsitePage
 
     Examples: 

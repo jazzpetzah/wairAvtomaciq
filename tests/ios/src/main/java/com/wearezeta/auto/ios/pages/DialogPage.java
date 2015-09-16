@@ -1055,7 +1055,7 @@ public class DialogPage extends IOSPage {
 				By.xpath(IOSLocators.DialogPage.xpathGiphyImage));
 	}
 
-	public void tapOnLink(String link) throws Exception {	
+	public void tapOnLink() throws Exception {	
 		WebElement tapLink = this
 				.getDriver()
 				.findElement(

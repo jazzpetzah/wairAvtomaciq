@@ -1052,26 +1052,22 @@ public class DialogPageSteps {
 	/**
 	 * Tap on the sent link to open it
 	 * 
-	 * @step. ^I tap on (.*) Link$
-	 * @param link
-	 *            we want to open
+	 * @step. ^I tap on Link$
 	 * @throws Throwable
 	 */
-	@When("^I tap on (.*) Link$")
-	public void ITapOnLink(String link) throws Throwable {
-		getDialogPage().tapOnLink(link);
+	@When("^I tap on Link$")
+	public void ITapOnLink() throws Throwable {
+		getDialogPage().tapOnLink();
 	}
 
 	/**
 	 * Taps on a link that got sent together with a message
 	 * 
-	 * @step. ^I tap on Link (.*) with a message$
-	 * @param link
-	 *            to tap on
+	 * @step. ^I tap on Link with a message$
 	 * @throws Throwable
 	 */
-	@When("^I tap on Link (.*) with a message$")
-	public void ITapOnLinkWithAMessage(String link) throws Throwable {
+	@When("^I tap on Link with a message$")
+	public void ITapOnLinkWithAMessage() throws Throwable {
 		getDialogPage().tapOnLinkWithinAMessage();
 	}
 }
