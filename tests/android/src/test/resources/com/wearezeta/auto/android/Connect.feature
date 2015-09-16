@@ -312,6 +312,7 @@ Feature: Connect
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
+    And I wait for 1 second
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I click Connect button on connect to page
