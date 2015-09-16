@@ -154,6 +154,16 @@ class BaseNodeVerifier(Process):
 
 
 class RealAndroidDevice(BaseNodeVerifier):
+    def _is_connected_to_internet(self, ssh_client):
+        _, stdout, _ = ssh_client.exec_command('/usr/local/bin/adb shell ping -c 5 8.8.8.8')
+        output = stdout.read()
+        result = output.find('bytes from 8.8.8.8') > 0
+        if not result:
+            _, stdout, _ = ssh_client.exec_command('/usr/local/bin/adb shell netstat')
+            output = stdout.read()
+            result = output.find('ESTABLISHED') > 0 or output.find('LISTEN') > 0
+        return result
+
     def _is_verification_passed(self):
         result = super(RealAndroidDevice, self)._is_verification_passed()
         if not result:
@@ -173,9 +183,7 @@ class RealAndroidDevice(BaseNodeVerifier):
                 sys.stderr.write(msg)
                 self._send_email_notification('"{}" node is broken'.format(self._node.name), msg)
                 return False
-            _, stdout, _ = client.exec_command('/usr/local/bin/adb shell ping -c 5 8.8.8.8')
-            output = stdout.read()
-            result = result and output.find('bytes from 8.8.8.8') > 0
+            result = result and self._is_connected_to_internet(client)
             if not result:
                 msg = 'The device connected to node "{}" seems to be offline:\n{}'.\
                                  format(self._node.name, output)
