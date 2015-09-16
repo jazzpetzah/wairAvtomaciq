@@ -362,13 +362,15 @@ Feature: Connect
     And I swipe right to show the conversations list
     Then I do not see the conversation <Contact> in my conversations list
     And I do not see the conversation <WaitingMess> in my conversations list
-    When I navigate back
+    # Workaround for a bug
+    And I tap in the center of Self Profile page
+    When I swipe right to show the conversations list
     And I wait until <Contact> exists in backend search results
     And I tap Search input
     And I see People Picker page
     And I enter "<Contact>" into Search input on People Picker page
     And I tap the found item <Contact> on People Picker page
-    And I see Outgoing Connection popover
+    And I see Incoming Connection popover
     And I see the name <Contact> on Incoming Connection popover
     And I tap Accept button on Incoming Connection popover
     And I do not see Incoming Connection popover
