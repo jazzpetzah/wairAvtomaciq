@@ -9,8 +9,6 @@ import java.util.UUID;
 import javax.crypto.*;
 import javax.crypto.spec.*;
 
-import jersey.repackaged.com.google.common.base.Throwables;
-
 import org.apache.commons.codec.binary.Base64;
 
 public class InvitationLinkGenerator {
@@ -87,7 +85,6 @@ public class InvitationLinkGenerator {
 			restrictedField.set(null, false);
 		} catch (Exception e) {
 			e.printStackTrace();
-			Throwables.propagate(e);
 		}
 	}
 }
