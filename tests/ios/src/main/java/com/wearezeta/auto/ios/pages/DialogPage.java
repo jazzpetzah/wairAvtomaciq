@@ -1,7 +1,5 @@
 package com.wearezeta.auto.ios.pages;
 
-import io.appium.java_client.AppiumDriver;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
