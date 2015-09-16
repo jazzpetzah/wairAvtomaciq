@@ -386,5 +386,5 @@ Feature: Connect
     Then I see Pending request page
 
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName |
-      | user1Name | user2Name | user3Name | CommonCONNECT |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
