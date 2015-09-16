@@ -285,7 +285,7 @@ public final class IOSLocators {
 
 	public static final String nameWireWebsiteButton = "wire.com";
 
-	public static final String xpathWireWebsiteUrl = "//UIAElement[@label ='Wire Swiss GmbH']";
+	public static final String xpathWireWebsiteUrl = "//UIAElement[@name ='URL']";
 
 	public static final String xpathWireWebsitePageUrlValue = "//UIAApplication[1]/UIAWindow[2]/UIAButton[2]/UIAStaticText[2]";
 
