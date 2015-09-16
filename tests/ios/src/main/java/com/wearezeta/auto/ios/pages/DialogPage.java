@@ -1,5 +1,7 @@
 package com.wearezeta.auto.ios.pages;
 
+import io.appium.java_client.AppiumDriver;
+
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -1058,7 +1060,17 @@ public class DialogPage extends IOSPage {
 				.getDriver()
 				.findElement(
 						By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
+		DriverUtils.mobileTapByCoordinates(getDriver(),
+				tapLink);
+	}
+
+	public void tapOnLinkWithinAMessage() throws Exception {
+		WebElement tapLink = this
+				.getDriver()
+				.findElement(
+						By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
 		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink);
+		System.out.println(tapLink.getSize().width/2);
 	}
 
 }
