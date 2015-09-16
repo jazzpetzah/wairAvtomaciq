@@ -111,7 +111,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | OldGroupChatName | NewConversationName |
       | user1Name | user2Name | user3Name | oldGroupChat     | newGroupName        |
 
-  @id2236 @staging
+  @id2236 @regression
   Scenario Outline: Check interaction with options menu
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -147,7 +147,7 @@ Feature: People View
     And I swipe left
     And I swipe right
     And I swipe up
-    Then I see correct 1:1 options menu
+    Then I do not see 1:1 options menu
 
     Examples: 
       | Name      | Contact   |

@@ -260,7 +260,7 @@ Feature: Connect
     Given I see Contact list with contacts
     When I tap on contact name <ChatName>
     And I tap conversation details button
-    #Sometimes here only one user visible
+    #Sometimes here only one user visible (backend issue)
     And I tap on group chat contact <Contact2>
     And I see connect to <Contact2> dialog
     And I click left Connect button
