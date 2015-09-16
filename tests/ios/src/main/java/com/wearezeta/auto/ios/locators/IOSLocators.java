@@ -479,6 +479,8 @@ public final class IOSLocators {
 	public static final String namePendingRequestConnectButton = "CONNECT";
 	public static final String xpathPendingRequesterName = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
 	public static final String xpathPendingRequestMessage = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[3]";
+	public static final String xpathYouBothKnowPeopleIcon =  "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
+	public static final String nameYouBothKnowHeader = "YOU BOTH KNOW";
 
 	// ///////////////////////////
 	// People picker
