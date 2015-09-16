@@ -1069,8 +1069,7 @@ public class DialogPage extends IOSPage {
 				.getDriver()
 				.findElement(
 						By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
-		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink);
-		System.out.println(tapLink.getSize().width/2);
+		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink,-(tapLink.getSize().width/4) , 0);
 	}
 
 }
