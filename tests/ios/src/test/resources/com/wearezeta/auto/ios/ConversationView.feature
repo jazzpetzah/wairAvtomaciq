@@ -720,9 +720,26 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see Link <Link> in dialog
-    And I tap on Link <Link>
+    And I tap on <Link> Link 
     Then I see WireWebsitePage
 
     Examples: 
       | Name      | Contact1  | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
+      
+  @staging @id3789
+  Scenario Outline: Verify sending link and text in one message and opening the link
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <MessageAndLink> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see Link <MessageAndLink> in dialog
+    And I tap on <MessageAndLink> Link 
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact1  | MessageAndLink                  |
+      | user1Name | user2Name | Check https://www.wire.com/ out |
