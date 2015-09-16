@@ -258,6 +258,10 @@ public class DialogPage extends IOSPage {
 			conversationInput.sendKeys(message);
 		}
 	}
+	
+	public String getStringFromInput() throws Exception {
+			return conversationInput.getText();
+	}
 
 	public void scrollToTheEndOfConversationByTapOnCursorInput()
 			throws Exception {
