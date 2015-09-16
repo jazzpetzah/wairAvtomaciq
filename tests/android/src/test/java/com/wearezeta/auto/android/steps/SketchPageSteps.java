@@ -79,7 +79,7 @@ public class SketchPageSteps {
 	 */
 	@When("^I verify that my sketch is the same as what I drew$")
 	public void WhenIVerifyThatMySketchMatchesWhatIDrew() throws Exception {
-		final double MAX_OVERLAP_SCORE = 0.95;
+		final double MAX_OVERLAP_SCORE = 0.91;
 
 		BufferedImage lastImageInConversation = getDialogPage()
 				.getLastImageInConversation().orElseThrow(AssertionError::new);
@@ -104,7 +104,7 @@ public class SketchPageSteps {
 	@When("^I verify that my sketch in fullscreen is the same as what I drew$")
 	public void WhenIVerifyThatMySketchInFullscreenMatchesWhatIDrew()
 			throws Exception {
-		final double MAX_OVERLAP_SCORE = 0.95;
+		final double MAX_OVERLAP_SCORE = 0.91;
 
 		BufferedImage lastImageInConversation = getDialogPage()
 				.getLastImageInFullScreen().orElseThrow(AssertionError::new);
