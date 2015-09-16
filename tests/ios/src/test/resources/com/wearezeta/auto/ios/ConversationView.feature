@@ -679,7 +679,7 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-      
+
   @regression @id2781
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
     Given There are 2 users where <Name> is me
@@ -720,13 +720,13 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see Link <Link> in dialog
-    And I tap on <Link> Link 
+    And I tap on <Link> Link
     Then I see WireWebsitePage
 
     Examples: 
       | Name      | Contact1  | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
-      
+
   @staging @id3789
   Scenario Outline: Verify sending link and text in one message and opening the link
     Given There are 2 users where <Name> is me
@@ -737,7 +737,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And I see Link <MessageAndLink> in dialog
-    And I tap on <MessageAndLink> Link 
+    And I tap on <MessageAndLink> Link
     Then I see WireWebsitePage
 
     Examples: 
