@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -16,7 +16,6 @@ import org.openqa.selenium.support.FindBy;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class PeoplePickerPage extends AndroidPage {
 
@@ -43,8 +42,6 @@ public class PeoplePickerPage extends AndroidPage {
 					name);
 
 	public static final String idPickerSearch = "puet_pickuser__searchbox";
-	// @FindBy(id = idPickerSearch)
-	// public WebElement pickerSearch;
 
 	public static final String idPeoplePickerClearbtn = "gtv_pickuser__clearbutton";
 
@@ -57,9 +54,6 @@ public class PeoplePickerPage extends AndroidPage {
 	public static final Function<String, String> xpathPeoplePickerContactByName = name -> String
 			.format("//*[@id='ttv_pickuser__searchuser_name' and @value='%s']",
 					name);
-
-	private static final Logger log = ZetaLogger.getLog(PeoplePickerPage.class
-			.getSimpleName());
 
 	private static final String idPickerSearchUsers = "ttv_pickuser__searchuser_name";
 	@FindBy(id = idPickerSearchUsers)
@@ -118,9 +112,7 @@ public class PeoplePickerPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public WebElement findCorrectPickerSearch() throws Exception {
-		WebElement result = null;
-		commonSteps.WaitForTime(1);
+	public WebElement findVisiblePickerSearch() throws Exception {
 		DriverUtils.waitUntilLocatorAppears(getDriver(), By.id(idPickerSearch));
 		List<WebElement> pickerSearches = getDriver().findElements(
 				By.id(idPickerSearch));
@@ -129,21 +121,15 @@ public class PeoplePickerPage extends AndroidPage {
 					.isElementPresentAndDisplayed(getDriver(), candidate)
 					&& candidate.getLocation().getX() >= 0
 					&& candidate.getLocation().getY() >= 0) {
-				result = candidate;
+				return candidate;
 			}
 		}
-		return result;
+		throw new ElementNotVisibleException(
+				"People Picker input is not displayed");
 	}
 
 	public void tapPeopleSearch() throws Exception {
-		WebElement pickerSearch = findCorrectPickerSearch();
-		boolean isDisplayed = DriverUtils.isElementPresentAndDisplayed(
-				getDriver(), pickerSearch);
-		if (!isDisplayed)
-			log.debug("The People Picker search input is not visible: "
-					+ getDriver().getPageSource());
-		assert isDisplayed : "The People Picker search input is not visible";
-		pickerSearch.click();
+		findVisiblePickerSearch().click();
 	}
 
 	public void tapOnContactInTopPeoples(String name) throws Exception {
@@ -154,14 +140,13 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public void typeTextInPeopleSearch(String text) throws Exception {
-		WebElement pickerSearch = findCorrectPickerSearch();
+		final WebElement pickerSearch = findVisiblePickerSearch();
 		pickerSearch.clear();
 		pickerSearch.sendKeys(text);
 	}
 
 	public void addTextToPeopleSearch(String text) throws Exception {
-		WebElement pickerSearch = findCorrectPickerSearch();
-		pickerSearch.sendKeys(text);
+		findVisiblePickerSearch().sendKeys(text);
 	}
 
 	public boolean isNoResultsFoundVisible() throws Exception {
@@ -239,9 +224,12 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isPeoplePickerPageVisible() throws Exception {
-		WebElement pickerSearch = findCorrectPickerSearch();
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				pickerSearch);
+		try {
+			findVisiblePickerSearch();
+			return true;
+		} catch (ElementNotVisibleException e) {
+			return false;
+		}
 	}
 
 	public void waitUserPickerFindUser(String contactName) throws Exception {
@@ -278,7 +266,8 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public ContactListPage tapClearButton() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(getDriver(), pickerClearBtn);
+		assert DriverUtils.waitUntilElementClickable(getDriver(),
+				pickerClearBtn);
 		pickerClearBtn.click();
 		return new ContactListPage(this.getLazyDriver());
 	}
