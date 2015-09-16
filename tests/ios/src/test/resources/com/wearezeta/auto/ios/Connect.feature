@@ -370,7 +370,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
 
-  @torun @staging @id3794
+  @staging @id3794
   Scenario Outline: Verify common connections are not tappable
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
