@@ -1057,4 +1057,21 @@ public class DialogPage extends IOSPage {
 				By.xpath(IOSLocators.DialogPage.xpathGiphyImage));
 	}
 
+	public void tapOnLink() throws Exception {	
+		WebElement tapLink = this
+				.getDriver()
+				.findElement(
+						By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
+		DriverUtils.mobileTapByCoordinates(getDriver(),
+				tapLink);
+	}
+
+	public void tapOnLinkWithinAMessage() throws Exception {
+		WebElement tapLink = this
+				.getDriver()
+				.findElement(
+						By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
+		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink,-(tapLink.getSize().width/4) , 0);
+	}
+
 }

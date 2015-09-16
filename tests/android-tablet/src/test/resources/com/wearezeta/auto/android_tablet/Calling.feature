@@ -78,8 +78,8 @@ Feature: Calling
     Given I sign in using my email
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
-    And I tap the conversation <Contact1>
     And I see the conversation <Contact2> in my conversations list
+    And I tap the conversation <Contact1>
     When <Contact2> calls me using <CallBackend>
     And I see calling overlay Big bar
     And <Contact2> stops all calls to me
@@ -99,12 +99,12 @@ Feature: Calling
   Scenario Outline: I see miss call notification on the list and inside conversation view (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
-    Given I rotate UI to portrait
+    Given I rotate UI to landscape
     Given I sign in using my email
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
-    And I tap the conversation <Contact1>
     And I see the conversation <Contact2> in my conversations list
+    And I tap the conversation <Contact1>
     When <Contact2> calls me using <CallBackend>
     And I see calling overlay Big bar
     And <Contact2> stops all calls to me
@@ -112,8 +112,7 @@ Feature: Calling
     And I see missed call notification near <Contact2> conversations list item
     When I tap the conversation <Contact2>
     Then I see missed call notification in the conversation view
-    When I navigate back
-    Then I do not see missed call notification near <Contact2> conversations list item
+    And I do not see missed call notification near <Contact2> conversations list item
 
     Examples:
       | CallBackend | Name      | Contact1  | Contact2  |

@@ -682,19 +682,18 @@ Feature: Conversation View
       
   @regression @id2781
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
-  	Given There are 2 users where <Name> is me
+    Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
     Given User <Name> sent message <VimeoLink> to conversation <Contact>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
     And I see dialog page
-    Then I see vimeo link <VimeoLink> but NO media player 
-    
+    Then I see vimeo link <VimeoLink> but NO media player
+
     Examples: 
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
-  
 
   @regression @id2780
   Scenario Outline: Verify player is displayed for vimeo links with video IDs
@@ -710,25 +709,37 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | VimeoLink                   |
       | user1Name | user2Name | https://vimeo.com/129426512 |
-      
-  @staging @id3798
-  Scenario Outline: Verify input field and action buttons are not shown simultaniously
-    Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>, <Contact2>
+
+  @staging @id3788
+  Scenario Outline: Verify sending link and opening it
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <Link> to conversation <Contact1>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact1>
     And I see dialog page
-    And I type the message
-    And I return to the chat list
-    When I tap on contact name <Contact2>
-    And I see dialog page
-    And I return to the chat list
-    And I tap on contact name <Contact1>
-	And I see dialog page
-	Then I see Close input options button is not visible
-	And I see the message in input field
+    And I see Link <Link> in dialog
+    And I tap on Link
+    Then I see WireWebsitePage
 
     Examples: 
-      | Name      | Contact1   | Contact2  |
-      | user1Name | user2Name  | user3Name |
+      | Name      | Contact1  | Link                  |
+      | user1Name | user2Name | https://www.wire.com/ |
+
+  @staging @id3789
+  Scenario Outline: Verify sending link and text in one message and opening the link
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given User <Name> sent message <MessageAndLink> to conversation <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I see Link <MessageAndLink> in dialog
+    And I tap on Link
+    Then I see WireWebsitePage
+
+    Examples: 
+      | Name      | Contact1  | MessageAndLink                  |
+      | user1Name | user2Name | Check https://www.wire.com/ out |

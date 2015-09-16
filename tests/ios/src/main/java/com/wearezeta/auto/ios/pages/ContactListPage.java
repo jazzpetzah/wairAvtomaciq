@@ -263,7 +263,7 @@ public class ContactListPage extends IOSPage {
 
 	public IOSPage swipeRightOnContact(String contact) throws Exception {
 		DriverUtils.swipeRight(this.getDriver(),
-				findNameInContactList(contact), CONV_SWIPE_TIME, 70, 50);
+				findNameInContactList(contact), CONV_SWIPE_TIME, 90, 50);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
