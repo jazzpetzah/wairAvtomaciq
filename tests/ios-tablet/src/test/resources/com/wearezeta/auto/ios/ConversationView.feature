@@ -1142,3 +1142,44 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   | VimeoLink                    |
       | user1Name | user2Name | https://vimeo.com/categories |
+
+  @staging @id3799
+  Scenario Outline: Verify input field and action buttons are not shown simultaniously [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I type the message
+    When I tap on contact name <Contact2>
+    And I see dialog page
+    And I tap on contact name <Contact1>
+	And I see dialog page
+	Then I see Close input options button is not visible
+	And I see the message in input field
+
+    Examples: 
+      | Name      | Contact1   | Contact2  |
+      | user1Name | user2Name  | user3Name |
+      
+  @staging @id3800
+  Scenario Outline: Verify input field and action buttons are not shown simultaniously [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given I rotate UI to landscape
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I type the message
+    When I tap on contact name <Contact2>
+    And I see dialog page
+    And I tap on contact name <Contact1>
+	And I see dialog page
+	Then I see Close input options button is not visible
+	And I see the message in input field
+
+    Examples: 
+      | Name      | Contact1   | Contact2  |
+      | user1Name | user2Name  | user3Name |
