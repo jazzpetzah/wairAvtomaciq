@@ -10,7 +10,6 @@ import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
-import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.locators.OSXLocators;
 import com.wearezeta.auto.osx.pages.OSXPage;
@@ -29,9 +28,8 @@ public class ProblemReportPage extends OSXPage {
 	@FindBy(how = How.NAME, using = OSXLocators.ProblemReportPage.nameSendButton)
 	private WebElement sendButton;
 
-	public ProblemReportPage(Future<ZetaOSXDriver> lazyDriver,
-			Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
-		super(lazyDriver, secondaryDriver);
+	public ProblemReportPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public boolean isVisible() throws Exception {

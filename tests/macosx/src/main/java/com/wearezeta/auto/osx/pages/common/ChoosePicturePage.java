@@ -10,7 +10,6 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
-import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.USER_HOME;
@@ -20,7 +19,7 @@ import com.wearezeta.auto.osx.pages.OSXPage;
 public class ChoosePicturePage extends OSXPage {
 
 	private static final Logger log = ZetaLogger.getLog(ChoosePicturePage.class
-		.getSimpleName());
+			.getSimpleName());
 
 	@FindBy(how = How.ID, using = OSXLocators.ChoosePicturePage.idOpenButton)
 	private WebElement openButton;
@@ -34,9 +33,8 @@ public class ChoosePicturePage extends OSXPage {
 	@FindBy(how = How.XPATH, using = OSXLocators.ChoosePicturePage.xpathSelectColumnViewButton)
 	private WebElement selectColumnViewButton;
 
-	public ChoosePicturePage(Future<ZetaOSXDriver> lazyDriver,
-		Future<ZetaWebAppDriver> secondaryDriver) throws Exception {
-		super(lazyDriver, secondaryDriver);
+	public ChoosePicturePage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
+		super(lazyDriver);
 	}
 
 	public Boolean isVisible() {
@@ -49,8 +47,8 @@ public class ChoosePicturePage extends OSXPage {
 
 	public void searchForImage(String imageName) throws Exception {
 		String xpath = String.format(
-			OSXLocators.ChoosePicturePage.xpathFormatFinderImageFile,
-			imageName);
+				OSXLocators.ChoosePicturePage.xpathFormatFinderImageFile,
+				imageName);
 
 		WebElement el = getDriver().findElement(By.xpath(xpath));
 		el.click();
@@ -62,7 +60,7 @@ public class ChoosePicturePage extends OSXPage {
 			return true;
 		} catch (NoSuchElementException e) {
 			log.debug("Can't find column view selector.\n"
-				+ this.getDriver().getPageSource());
+					+ this.getDriver().getPageSource());
 			return false;
 		}
 	}
@@ -70,13 +68,13 @@ public class ChoosePicturePage extends OSXPage {
 	public void goToSelectedFavoritesFolder(String folderName) throws Exception {
 		try {
 			String xpath = String
-				.format(OSXLocators.ChoosePicturePage.xpathFormatFavoritesFolderPopUp,
-					folderName);
+					.format(OSXLocators.ChoosePicturePage.xpathFormatFavoritesFolderPopUp,
+							folderName);
 			WebElement folder = getDriver().findElement(By.xpath(xpath));
 			folder.click();
 		} catch (NoSuchElementException e) {
 			log.debug("No " + folderName + " folder found in favorites.\n"
-				+ this.getDriver().getPageSource());
+					+ this.getDriver().getPageSource());
 		}
 	}
 
@@ -94,15 +92,15 @@ public class ChoosePicturePage extends OSXPage {
 			searchForImage(filename);
 		} else {
 			String openImageScript = "tell application \"System Events\" to tell application process \"Wire\"\n"
-				+ "set frontmost to true\n"
-				+ "end tell\n"
-				+ "delay 3\n"
-				+ "tell application \"System Events\" to keystroke \""
-				+ filename
-				+ "\"\n"
-				+ "tell application \"System Events\"\n"
-				+ "key code 36\n"
-				+ "end tell";
+					+ "set frontmost to true\n"
+					+ "end tell\n"
+					+ "delay 3\n"
+					+ "tell application \"System Events\" to keystroke \""
+					+ filename
+					+ "\"\n"
+					+ "tell application \"System Events\"\n"
+					+ "key code 36\n"
+					+ "end tell";
 			this.getDriver().executeScript(openImageScript);
 			this.getDriver().navigate().to(OSXExecutionContext.WIRE_APP_PATH);
 		}
