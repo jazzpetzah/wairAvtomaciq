@@ -432,8 +432,7 @@ public class ContactListPage extends AndroidPage {
 
 	private final String UNREAD_DOT_SMALL_IMG = "android_unread_dot_small.png";
 	private final String UNREAD_DOT_LARGE_IMG = "android_unread_dot_large.png";
-	private final String UNREAD_DOT_NO_UNREAD_DOT_IMG_1920 = "android_no_unread_dot_1920.png";
-	private final String UNREAD_DOT_NO_UNREAD_DOT_IMG_1280 = "android_no_unread_dot_1280.png";
+	private final String UNREAD_DOT_NO_UNREAD_DOT_IMG = "android_no_unread_dot.png";
 
 	public double getUnreadDotOverlapScore(String expected, String contact)
 			throws Exception {
@@ -447,21 +446,15 @@ public class ContactListPage extends AndroidPage {
 				IllegalStateException::new);
 
 		String path = null;
-		int hight = getDriver().manage().window().getSize().getHeight();
 		if (expected.equals(EXPECTED_DOT_STATE_SMALL)) {
 			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
 					+ UNREAD_DOT_SMALL_IMG;
 		} else if (expected.equals(EXPECTED_DOT_STATE_LARGE)) {
 			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
 					+ UNREAD_DOT_LARGE_IMG;
-		} else if (expected.equals(EXPECTED_DOT_STATE_NOT_DISPLAYED)
-				&& (hight <= 1280)) {
+		} else if (expected.equals(EXPECTED_DOT_STATE_NOT_DISPLAYED)) {
 			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
-					+ UNREAD_DOT_NO_UNREAD_DOT_IMG_1280;
-		} else if (expected.equals(EXPECTED_DOT_STATE_NOT_DISPLAYED)
-				&& (hight > 1280)) {
-			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
-					+ UNREAD_DOT_NO_UNREAD_DOT_IMG_1920;
+					+ UNREAD_DOT_NO_UNREAD_DOT_IMG;
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 

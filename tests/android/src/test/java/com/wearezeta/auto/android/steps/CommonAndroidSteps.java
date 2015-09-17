@@ -559,7 +559,7 @@ public class CommonAndroidSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I wait for (\\d+) seconds?$")
+	@When("^I wait for\\s*(\\d+) seconds?$")
 	public void WaitForTime(int seconds) throws Exception {
 		commonSteps.WaitForTime(seconds);
 	}
