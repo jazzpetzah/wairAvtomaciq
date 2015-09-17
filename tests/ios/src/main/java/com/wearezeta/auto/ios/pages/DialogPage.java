@@ -258,6 +258,10 @@ public class DialogPage extends IOSPage {
 			conversationInput.sendKeys(message);
 		}
 	}
+	
+	public String getStringFromInput() throws Exception {
+			return conversationInput.getText();
+	}
 
 	public void scrollToTheEndOfConversationByTapOnCursorInput()
 			throws Exception {
@@ -1051,6 +1055,23 @@ public class DialogPage extends IOSPage {
 	public boolean isGiphyImageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(IOSLocators.DialogPage.xpathGiphyImage));
+	}
+
+	public void tapOnLink() throws Exception {	
+		WebElement tapLink = this
+				.getDriver()
+				.findElement(
+						By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
+		DriverUtils.mobileTapByCoordinates(getDriver(),
+				tapLink);
+	}
+
+	public void tapOnLinkWithinAMessage() throws Exception {
+		WebElement tapLink = this
+				.getDriver()
+				.findElement(
+						By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
+		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink,-(tapLink.getSize().width/4) , 0);
 	}
 
 }

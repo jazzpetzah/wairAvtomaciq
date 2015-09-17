@@ -260,7 +260,7 @@ Feature: Connect
     Given I see Contact list with contacts
     When I tap on contact name <ChatName>
     And I tap conversation details button
-    #Sometimes here only one user visible
+    #Sometimes here only one user visible (backend issue)
     And I tap on group chat contact <Contact2>
     And I see connect to <Contact2> dialog
     And I click left Connect button
@@ -312,6 +312,7 @@ Feature: Connect
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
+    And I wait for 1 second
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I click Connect button on connect to page

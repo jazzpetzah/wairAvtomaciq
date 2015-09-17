@@ -285,7 +285,7 @@ public final class IOSLocators {
 
 	public static final String nameWireWebsiteButton = "wire.com";
 
-	public static final String xpathWireWebsiteUrl = "//UIAElement[@label ='Wire Swiss GmbH']";
+	public static final String xpathWireWebsiteUrl = "//UIAElement[@name ='URL']";
 
 	public static final String xpathWireWebsitePageUrlValue = "//UIAApplication[1]/UIAWindow[2]/UIAButton[2]/UIAStaticText[2]";
 
@@ -634,6 +634,8 @@ public final class IOSLocators {
 		public static final String nameSoundCloudButton = "soundcloud";
 		
 		public static final String xpathMessageEntries = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell";
+
+		public static final String xpathSimpleMessageLink = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIATextView[1]";
 	}
 
 	public final class DialogInfoPage {

@@ -39,7 +39,7 @@ public class CommonIOSSteps {
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 	private static final String DEFAULT_USER_AVATAR = "android_dialog_sendpicture_result.png";
-	private Date testStartedDate;
+	private Date testStartedDate = new Date();
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final IOSPagesCollection pagesCollecton = IOSPagesCollection
 			.getInstance();

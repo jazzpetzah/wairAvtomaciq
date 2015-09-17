@@ -1,6 +1,6 @@
 Feature: Application
 
-  @staging @id3805 @torun
+  @staging @id3805
   Scenario Outline: Save size and position of window and check for maximum/minimum size
     When I ensure initial positioning
     And I resize the app to the max by hand
