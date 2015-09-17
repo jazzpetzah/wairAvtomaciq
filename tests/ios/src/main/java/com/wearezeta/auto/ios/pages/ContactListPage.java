@@ -29,7 +29,7 @@ public class ContactListPage extends IOSPage {
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
 	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
-	private final int CONV_SWIPE_TIME = 2000;
+	private final int CONV_SWIPE_TIME = 500;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
@@ -81,7 +81,7 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameMuteCallButton)
 	private WebElement muteCallButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
 	private WebElement leaveActionMenuButton;
 
@@ -365,6 +365,11 @@ public class ContactListPage extends IOSPage {
 
 	public boolean isDisplayedInContactList(String name) throws Exception {
 		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.name(name), 5);
+	}
+
+	public boolean contactIsNotDisplayed(String name) throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				By.name(name), 5);
 	}
 
