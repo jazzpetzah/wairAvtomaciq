@@ -133,7 +133,7 @@ Feature: Calling
       | user1Email | user1Password | user1Name | user2Name | chrome      | 60      |
       | user1Email | user1Password | user1Name | user2Name | firefox     | 60      |
 
-  @regression @calling @id1866
+  @calling @id1866
   Scenario Outline: Verify I can call a user for more than 15 mins
     Given My browser supports calling
     Given There are 2 users where <Name> is me

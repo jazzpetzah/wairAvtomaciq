@@ -27,14 +27,6 @@ public class OutgoingConnectionPopover extends AbstractPopoverContainer {
 		return this.outgoingConnectionPage.isNameVisible(name);
 	}
 
-	public String getMessage() {
-		return this.outgoingConnectionPage.getMessage();
-	}
-
-	public void setMessage(String text) throws Exception {
-		this.outgoingConnectionPage.setMessage(text);
-	}
-
 	public void tapConnectButton() throws Exception {
 		this.outgoingConnectionPage.tapConnectButton();
 	}

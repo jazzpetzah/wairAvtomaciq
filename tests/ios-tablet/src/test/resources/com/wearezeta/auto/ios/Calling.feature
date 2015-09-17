@@ -1,6 +1,6 @@
 Feature: Calling
 
-  @regression @id2709 @id2623
+  @calling_basic @id2709 @id2623
   Scenario Outline: Verify starting and ending outgoing call by same person [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: Calling
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @regression @id2709 @id2623
+  @calling_basic @id2709 @id2623
   Scenario Outline: Verify starting and ending outgoing call by same person [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -273,7 +273,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Timeout |
       | user1Name | user2Name | webdriver   | 120     |
 
-  @calling_basic @id2652
+  @calling_advanced @id2652
   Scenario Outline: 3rd person tries to call me after I initate a call to somebody [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -473,7 +473,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | webdriver   | autocall     | 120     |
 
-  @regression @rc @id2361
+  @calling_basic @id2361
   Scenario Outline: Verify mute button is absent when you turn from portrait to landscape [PORTRAIT to LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -495,3 +495,44 @@ Feature: Calling
     Examples: 
       | Name      | Contact   | CallBackend | CallBackend2 | Timeout |
       | user1Name | user2Name | chrome      | autocall     | 60      |
+
+  @calling_basic @id3811
+  Scenario Outline: Verify putting client to the background during 1-to-1 call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When <Contact> calls me using <CallBackend>
+    And I see incoming calling message for contact <Contact>
+    And I accept incoming call
+    Then I see mute call, end call and speakers buttons
+    And I see started call message for contact <Contact>
+    When I close the app for 5 seconds
+    Then I see mute call, end call and speakers buttons
+    And I see started call message for contact <Contact>
+    And <Contact> verifies that call status to me is changed to active in 2 seconds
+
+    Examples: 
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |
+
+  @calling_basic @id3812
+  Scenario Outline: Verify putting client to the background during 1-to-1 call
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When <Contact> calls me using <CallBackend>
+    And I see incoming calling message for contact <Contact>
+    And I accept incoming call
+    Then I see mute call, end call and speakers buttons
+    And I see started call message for contact <Contact>
+    When I close the app for 5 seconds
+    Then I see mute call, end call and speakers buttons
+    And I see started call message for contact <Contact>
+    And <Contact> verifies that call status to me is changed to active in 2 seconds
+
+    Examples: 
+      | Name      | Contact   | CallBackend |
+      | user1Name | user2Name | autocall    |

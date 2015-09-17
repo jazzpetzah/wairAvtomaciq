@@ -38,6 +38,12 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.DialogInfoPage.xpathArchiveButton)
 	private WebElement archiveButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.ContactListPage.xpathDeleteConversationButton)
+	private WebElement deleteButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.DialogInfoPage.xpathConfirmDeleteButton)
+	private WebElement confirmDeleteButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherPersonalInfoPageNameField)
 	private WebElement nameField;
@@ -84,6 +90,14 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	public void clickArchiveMenuButton() {
 		archiveButton.click();
+	}
+	
+	public void clickDeleteMenuButton() {
+		deleteButton.click();
+	}
+	
+	public void clickConfirmDeleteButton() {
+		confirmDeleteButton.click();
 	}
 
 	public IOSPage leavePageToGroupInfoPage() throws Exception {

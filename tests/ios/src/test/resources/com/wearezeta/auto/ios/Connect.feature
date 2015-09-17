@@ -65,7 +65,7 @@ Feature: Connect
       | Name      | GroupCreator | GroupChatName | UnconnectedUser |
       | user1Name | user2Name    | TESTCHAT      | user3Name       |
 
-  @regression @rc @id579
+  @regression @id579
   Scenario Outline: Verify transitions between connection requests (ignoring)
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -91,7 +91,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  | Contact3  | Contact4  | SentRequests |
       | user1Name | user2Name | user3Name | user4Name | user5Name | 3            |
 
-  @regression @rc @id577
+  @regression @id577
   Scenario Outline: Verify transitions between connection requests (connecting)
     Given There are 5 users where <Name> is me
     Given <Contact1> sent connection request to me
@@ -320,7 +320,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @staging @id3225
+  @regression @id3225
   Scenario Outline: Verify possibility of disconnecting from Search UI
     Given There are 2 users where <Name> is me
     Given Me sent connection request to <Contact1>

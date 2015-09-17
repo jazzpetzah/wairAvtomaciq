@@ -276,7 +276,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @staging @rc @id3282
+  @regression @rc @id3282
   Scenario Outline: Verify starting a call with action button
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -297,7 +297,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @rc @id3286
+  @regression @rc @id3286
   Scenario Outline: Verify sharing a photo to a newly created group conversation with action button
     Given There are 4 users where <Name> is me
     Given Myself is connected to all other users
@@ -322,7 +322,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @staging @id3276
+  @regression @id3276
   Scenario Outline: Verify action buttons appear after selecting person from Top People
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -339,7 +339,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3277
+  @regression @id3277
   Scenario Outline: Verify action buttons appear after choosing user from search results
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -356,7 +356,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging @id3280
+  @regression @id3280
   Scenario Outline: Verify button Open is changed on Create after checking second person
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
@@ -375,7 +375,7 @@ Feature: Search
       | Name      |
       | user1Name |
 
-  @staging @id3278
+  @regression @id3278
   Scenario Outline: Verify action buttons disappear by unchecking the avatar
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users

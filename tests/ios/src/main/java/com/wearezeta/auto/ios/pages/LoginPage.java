@@ -231,7 +231,11 @@ public class LoginPage extends IOSPage {
 	public void dismisSettingsWaring() throws Exception {
 		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
 				By.name(IOSLocators.LoginPage.nameMaybeLater))) {
-			maybeLater.click();
+			try {
+				maybeLater.click();
+			} catch (WebDriverException ex) {
+				maybeLater.click();
+			}
 		}
 	}
 

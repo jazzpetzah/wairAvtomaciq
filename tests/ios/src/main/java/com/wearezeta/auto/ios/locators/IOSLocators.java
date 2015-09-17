@@ -86,7 +86,7 @@ public final class IOSLocators {
 
 	public static final String nameConnectOtherUserButton = "CONNECT";
 
-	public static final String xpathConnectOtherUserButton = "//*[@name='CONNECT' and @visible='true']";
+	public static final String xpathConnectOtherUserButton = "//UIAButton[@name='CONNECT']";
 
 	public static final String nameIgnoreOtherUserButton = "IGNORE";
 
@@ -285,7 +285,7 @@ public final class IOSLocators {
 
 	public static final String nameWireWebsiteButton = "wire.com";
 
-	public static final String xpathWireWebsiteUrl = "//UIAElement[@label ='Wire Swiss GmbH']";
+	public static final String xpathWireWebsiteUrl = "//UIAElement[@name ='URL']";
 
 	public static final String xpathWireWebsitePageUrlValue = "//UIAApplication[1]/UIAWindow[2]/UIAButton[2]/UIAStaticText[2]";
 
@@ -607,6 +607,10 @@ public final class IOSLocators {
 		public static final String nameEndCallAlertButton = "End Call";
 
 		public static final String xpathGroupCallAvatars = "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell";
+		
+		public static final String classNameUIACollectionCell = "UIACollectionCell";
+		
+		public static final String xpathGroupCallFullMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAAlert[@name='The call is full']";
 	}
 
 	public final class DialogPage {
@@ -628,19 +632,30 @@ public final class IOSLocators {
 		public static final String xpathGiphyImage = "//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']";
 
 		public static final String nameSoundCloudButton = "soundcloud";
+		
+		public static final String xpathMessageEntries = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell";
+
+		public static final String xpathSimpleMessageLink = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIATextView[1]";
 	}
 
 	public final class DialogInfoPage {
 		public static final String nameEllipsisMenuButton = "metaControllerRightButton";
 
 		public static final String xpathArchiveButton = "//UIAButton[@name='SILENCE']/preceding-sibling::UIAButton[@name='ARCHIVE']";
+		
+		public static final String xpathConfirmDeleteButton = "//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']";
 	}
 
 	public final class ContactListPage {
 		public static final String nameOpenStartUI = "START A CONVERSATION";
 		public static final String nameSelfButton = "SelfButton";
 		public static final String xpathArchiveConversationButton = "//UIAButton[@name='ARCHIVE' and @visible='true']";
+		public static final String xpathDeleteConversationButton = "//UIAButton[@name='DELETE' and @visible='true']";
 		public static final String nameMuteCallButton = "MuteVoiceButton";
+		
+		public static final String xpathFormatActionMenuConversationName = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAStaticText[@name='%s']";
+		
+		public static final String xpathFormatActionMenuXButton = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAButton[@name='%s']";
 	}
 
 	public final class RegistrationPage {

@@ -29,7 +29,7 @@ public class ContactListPage extends IOSPage {
 
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
 	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
-	private final int CONV_SWIPE_TIME = 1500;
+	private final int CONV_SWIPE_TIME = 500;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
@@ -81,6 +81,9 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameMuteCallButton)
 	private WebElement muteCallButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
+	private WebElement leaveActionMenuButton;
 
 	private int oldLocation = 0;
 
@@ -260,7 +263,7 @@ public class ContactListPage extends IOSPage {
 
 	public IOSPage swipeRightOnContact(String contact) throws Exception {
 		DriverUtils.swipeRight(this.getDriver(),
-				findNameInContactList(contact), CONV_SWIPE_TIME, 70, 50);
+				findNameInContactList(contact), CONV_SWIPE_TIME, 90, 50);
 		return returnBySwipe(SwipeDirection.RIGHT);
 	}
 
@@ -272,7 +275,7 @@ public class ContactListPage extends IOSPage {
 			swipeRightOnContact(conversation);
 			count++;
 		} while ((count < 5)
-				&& !isArchiveCovnersationButtonVisible(conversation));
+				&& !isArchiveConversationButtonVisible(conversation));
 
 	}
 
@@ -365,6 +368,11 @@ public class ContactListPage extends IOSPage {
 				By.name(name), 5);
 	}
 
+	public boolean contactIsNotDisplayed(String name) throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.name(name), 5);
+	}
+
 	public boolean isTutorialShown() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.nameTutorialView), 10);
@@ -433,6 +441,7 @@ public class ContactListPage extends IOSPage {
 			boolean isSilenced) throws Exception {
 		String deviceType = CommonUtils.getDeviceName(this.getClass());
 		BufferedImage silencedConversation = null;
+
 		BufferedImage referenceImage = null;
 		WebElement element = findCellInContactList(conversation);
 		silencedConversation = CommonUtils.getElementScreenshot(element,
@@ -495,17 +504,25 @@ public class ContactListPage extends IOSPage {
 		return true;
 	}
 
-	private boolean isArchiveCovnersationButtonVisible(String conversation)
+	private boolean isArchiveConversationButtonVisible(String conversation)
 			throws Exception {
-		WebElement archiveButton = this
-				.getDriver()
-				.findElement(
-						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
-		return DriverUtils.waitUntilElementClickable(getDriver(),
-				archiveButton, 3);
+		if (DriverUtils
+				.waitUntilLocatorAppears(
+						getDriver(),
+						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton),
+						3)) {
+			WebElement archiveButton = this
+					.getDriver()
+					.findElement(
+							By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
+			return DriverUtils.waitUntilElementClickable(getDriver(),
+					archiveButton, 3);
+		} else {
+			return false;
+		}
 	}
 
-	public void clickArchiveCoversationButton(String conversation)
+	public void clickArchiveConversationButton(String conversation)
 			throws Exception {
 		WebElement archiveButton = this
 				.getDriver()
@@ -725,4 +742,33 @@ public class ContactListPage extends IOSPage {
 		return true;
 	}
 
+	public boolean isActionMenuVisibleForConversation(String conversation)
+			throws Exception {
+		String xpath = String
+				.format(IOSLocators.ContactListPage.xpathFormatActionMenuConversationName,
+						conversation.toUpperCase());
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpath));
+	}
+
+	public boolean isButtonVisibleInActionMenu(String buttonTitle)
+			throws Exception {
+		String xpath = String.format(
+				IOSLocators.ContactListPage.xpathFormatActionMenuXButton,
+				buttonTitle.toUpperCase());
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.xpath(xpath));
+	}
+
+	public void clickArchiveButtonInActionMenu() throws Exception {
+		WebElement archiveButton = this
+				.getDriver()
+				.findElement(
+						By.xpath(IOSLocators.ContactListPage.xpathArchiveConversationButton));
+		DriverUtils.mobileTapByCoordinates(getDriver(), archiveButton);
+	}
+
+	public void clickLeaveButtonInActionMenu() {
+		leaveActionMenuButton.click();
+	}
 }

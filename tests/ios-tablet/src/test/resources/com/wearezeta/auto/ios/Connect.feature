@@ -12,23 +12,13 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
     And I see connect to <UnconnectedUser> dialog
-    And I delete all connect message content
-    And I see that connect button is disabled
-    And I input message in connect dialog with <NumOfMessageChars> characters
-    And I fill in 3 characters in connect dialog
-    And I see message with max number of characters
     And I click Connect button on connect to dialog
-    And I click close button to dismiss people view
-    And I swipe down contact list on iPad
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in People picker search field user email <ContactEmail>
     Then I see the user <UnconnectedUser> avatar with a clock
-    And I click close button to dismiss people view
-    And I see conversation with not connected user <UnconnectedUser>
-    And I tap on contact name <UnconnectedUser>
+    When I click close button to dismiss people view
+    Then I see conversation with not connected user <UnconnectedUser>
+    When I tap on contact name <UnconnectedUser>
     And I open pending user conversation details
-    And I see <UnconnectedUser> user pending profile popover on iPad
+    Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
       | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
@@ -47,23 +37,13 @@ Feature: Connect
     And I tap on Search input on People picker page
     And I search for user name <UnconnectedUser> and tap on it on People picker page
     And I see connect to <UnconnectedUser> dialog
-    And I delete all connect message content
-    And I see that connect button is disabled
-    And I input message in connect dialog with <NumOfMessageChars> characters
-    And I fill in 3 characters in connect dialog
-    And I see message with max number of characters
     And I click Connect button on connect to dialog
-    And I click close button to dismiss people view
-    And I swipe down contact list on iPad
-    And I see People picker page
-    And I tap on Search input on People picker page
-    And I input in People picker search field user email <ContactEmail>
     Then I see the user <UnconnectedUser> avatar with a clock
-    And I click close button to dismiss people view
-    And I see conversation with not connected user <UnconnectedUser>
-    And I tap on contact name <UnconnectedUser>
+    When I click close button to dismiss people view
+    Then I see conversation with not connected user <UnconnectedUser>
+    When I tap on contact name <UnconnectedUser>
     And I open pending user conversation details
-    And I see <UnconnectedUser> user pending profile popover on iPad
+    Then I see <UnconnectedUser> user pending profile popover on iPad
 
     Examples: 
       | Name      | UnconnectedUser | ContactEmail | NumOfMessageChars | StartLetter | Color        |
@@ -120,7 +100,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @regression @rc @id2354 @id2610
+  @regression @rc @id2354 @id2610 
   Scenario Outline: Send connection request to unconnected participant in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -131,7 +111,7 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
-    And I click Connect button on connect to dialog
+    And I click Connect button on not connected user profile popover
     And I exit the group info iPad popover
     And I swipe right on group chat page
     Then I see first item in contact list named <UnconnectedUser>
@@ -152,7 +132,7 @@ Feature: Connect
     When I tap on group chat with name <GroupChatName>
     And I open group conversation details
     And I tap on not connected contact <UnconnectedUser>
-    And I click Connect button on connect to dialog
+    And I click Connect button on not connected user profile popover
     And I exit the group info iPad popover
     Then I see first item in contact list named <UnconnectedUser>
 

@@ -59,7 +59,7 @@ public class LoginPage extends WebPage {
 	}
 
 	public boolean isVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.xpath(WebAppLocators.LoginPage.xpathSignInButton));
 	}
 

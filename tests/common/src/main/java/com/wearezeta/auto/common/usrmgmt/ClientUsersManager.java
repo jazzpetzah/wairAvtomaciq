@@ -274,7 +274,7 @@ public class ClientUsersManager {
 							e.printStackTrace();
 							if (e.getReturnCode() == HttpStatus.SC_METHOD_FAILURE) {
 								sleepInterval = (intervalSeconds + random
-										.nextInt(BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT)) * 2000;
+										.nextInt(BackendAPIWrappers.ACTIVATION_TIMEOUT)) * 2000;
 								intervalSeconds *= 2;
 							}
 						} catch (Exception e) {
@@ -296,7 +296,7 @@ public class ClientUsersManager {
 			executor.execute(worker);
 		}
 		executor.shutdown();
-		final int usersCreationTimeout = BackendAPIWrappers.BACKEND_ACTIVATION_TIMEOUT
+		final int usersCreationTimeout = BackendAPIWrappers.ACTIVATION_TIMEOUT
 				* usersToCreate.size() * NUMBER_OF_REGISTRATION_RETRIES * 3;
 		if (!executor.awaitTermination(usersCreationTimeout, TimeUnit.SECONDS)) {
 			throw new RuntimeException(

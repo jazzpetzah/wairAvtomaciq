@@ -100,6 +100,9 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCloseButton)
 	private WebElement closeButton;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathMessageEntries)
+	private List<WebElement> messageEntries;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathOtherConversationCellFormat)
 	private WebElement imageCell;
@@ -194,6 +197,10 @@ public class DialogPage extends IOSPage {
 		callButton.click();
 		return new StartedCallPage(getLazyDriver());
 	}
+	
+	public int getNumberOfMessageEntries() {
+		return messageEntries.size();
+	}
 
 	public boolean waitForCursorInputVisible() throws Exception {
 		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -250,6 +257,10 @@ public class DialogPage extends IOSPage {
 			conversationInput.clear();
 			conversationInput.sendKeys(message);
 		}
+	}
+	
+	public String getStringFromInput() throws Exception {
+			return conversationInput.getText();
 	}
 
 	public void scrollToTheEndOfConversationByTapOnCursorInput()
@@ -1044,6 +1055,23 @@ public class DialogPage extends IOSPage {
 	public boolean isGiphyImageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.xpath(IOSLocators.DialogPage.xpathGiphyImage));
+	}
+
+	public void tapOnLink() throws Exception {	
+		WebElement tapLink = this
+				.getDriver()
+				.findElement(
+						By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
+		DriverUtils.mobileTapByCoordinates(getDriver(),
+				tapLink);
+	}
+
+	public void tapOnLinkWithinAMessage() throws Exception {
+		WebElement tapLink = this
+				.getDriver()
+				.findElement(
+						By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
+		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink,-(tapLink.getSize().width/4) , 0);
 	}
 
 }

@@ -199,33 +199,41 @@ public class ConversationsListPageSteps {
 		}
 	}
 
-	private static enum SwipeType {
-		SHORT, LONG;
-	}
-
 	/**
 	 * Perform long/short swipe down on conversations list
 	 * 
-	 * @step. ^I do (long|short) swipe down on conversations list$
+	 * @step. ^I do (long|short) swipe (down|up) on conversations list$
 	 *
-	 * @param swipeTypeStr
-	 *            see SwipeType enum for the list of available values
+	 * @param swipeTypeShortLong
+	 *            either short or long
+	 * @param swipeTypeUpDown
+	 *            either up or down
 	 * @throws Exception
 	 */
-	@When("^I do (long|short) swipe down on conversations list$")
-	public void IDoSwipeDown(String swipeTypeStr) throws Exception {
-		final SwipeType swipeType = SwipeType.valueOf(swipeTypeStr
-				.toUpperCase());
-		switch (swipeType) {
-		case SHORT:
-			getConversationsListPage().doShortSwipeDown();
-			break;
-		case LONG:
-			getConversationsListPage().doLongSwipeDown();
-			break;
-		default:
-			throw new IllegalStateException(String.format(
-					"Swipe type '%s' is not supported", swipeTypeStr));
+	@When("^I do (long|short) swipe (down|up) on conversations list$")
+	public void IDoSwipeDown(String swipeTypeShortLong, String swipeTypeUpDown)
+			throws Exception {
+		if (swipeTypeUpDown.equals("down")) {
+			switch (swipeTypeShortLong) {
+			case "short":
+				getConversationsListPage().doShortSwipeDown();
+				break;
+			case "long":
+				getConversationsListPage().doLongSwipeDown();
+				break;
+			default:
+				throw new IllegalStateException(String.format(
+						"Swipe type '%s' is not supported", swipeTypeShortLong));
+			}
+		} else {
+			switch (swipeTypeShortLong) {
+			case "long":
+				getConversationsListPage().doLongSwipeUp();
+				break;
+			default:
+				throw new IllegalStateException(String.format(
+						"Swipe type '%s' is not supported", swipeTypeShortLong));
+			}
 		}
 	}
 
@@ -269,6 +277,21 @@ public class ConversationsListPageSteps {
 						"Play/Pause button is not visible next to conversation item '%s'",
 						convoName), getConversationsListPage()
 						.waitUntilPlayPauseButtonVisibleNextTo(convoName));
+	}
+
+	/**
+	 * Do swipe on a conversations list item to show actions popover
+	 * 
+	 * @step. ^I swipe right (?:the |\\s*)conversations list item (.*)
+	 * 
+	 * @param name
+	 *            conversation name/alias
+	 * @throws Exception
+	 */
+	@When("^I swipe right (?:the |\\s*)conversations list item (.*)")
+	public void ISwipeRightListItem(String name) throws Exception {
+		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
+		getConversationsListPage().swipeRightListItem(name);
 	}
 
 	private BufferedImage previousPlayPauseBtnState = null;

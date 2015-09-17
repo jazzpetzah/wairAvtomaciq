@@ -296,6 +296,9 @@ public final class WebAppLocators {
 		public static final String idBlackBorder = "detail-view";
 
 		public static final String cssFullscreenImage = ".detail-view-image";
+
+		public static final Function<String, String> cssUserAvatarById = id -> String
+				.format("[user-id='%s']", id);
 	}
 
 	public static final class ConnectToPage {
@@ -378,6 +381,9 @@ public final class WebAppLocators {
 				+ "//*[@data-uie-name='item-user' and .//*[contains(@class,'selected')]]";
 
 		public static final String cssSearchField = "[data-uie-name='enter-users']";
+
+		public static final String cssMoreButton = "[data-uie-name='item-more']";
+
 	}
 
 	public static final class RegistrationPage {

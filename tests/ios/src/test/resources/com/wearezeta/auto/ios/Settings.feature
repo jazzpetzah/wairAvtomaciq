@@ -23,6 +23,9 @@ Feature: Settings
     And I click on Settings button on personal page
     And I click on About button on personal page
     Then I see About page
+    And I close About page
+    And I close self profile
+    Then I see Contact list with my name <Name>
 
     Examples: 
       | Name      |

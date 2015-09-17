@@ -33,6 +33,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
+import org.openqa.selenium.remote.SessionNotFoundException;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Wait;
@@ -139,6 +140,9 @@ public class DriverUtils {
 									.findElement(by).isDisplayed())
 							|| !isElementInScreenRect(driver,
 									driver.findElement(by));
+				} catch (SessionNotFoundException e) {
+					log.debug(e.getMessage());
+					return true;
 				} catch (WebDriverException e) {
 					return true;
 				}
@@ -708,16 +712,20 @@ public class DriverUtils {
 			WebElement element) {
 		final Point coords = element.getLocation();
 		final Dimension size = element.getSize();
-		driver.tap(1, coords.x + size.getWidth() / 2,
-				coords.y + size.getHeight() / 2, 1);
+		final int x = coords.x + size.getWidth() / 2;
+		final int y = coords.y + size.getHeight() / 2;
+		log.info("Tap on " + x + ":" + y);
+		driver.tap(1, x, y, 1);
 	}
 
 	public static void tapOnPercentOfElement(AppiumDriver driver,
 			WebElement element, int percentX, int percentY) {
 		final Point coords = element.getLocation();
 		final Dimension size = element.getSize();
-		driver.tap(1, coords.x + size.getWidth() * percentX / 100, coords.y
-				+ size.getHeight() * percentY / 100, 1);
+		final int x = coords.x + size.getWidth() * percentX / 100;
+		final int y = coords.y + size.getHeight() * percentY / 100;
+		log.info("Tap on " + x + ":" + y);
+		driver.tap(1, x, y, 1);
 
 	}
 
@@ -738,6 +746,13 @@ public class DriverUtils {
 		} else {
 			dstY = coords.getY() - yOffset;
 		}
+		dstY = (driver.manage().window().getSize().getHeight() < dstY) ? driver
+				.manage().window().getSize().getHeight() : dstY;
+		dstX = (driver.manage().window().getSize().getWidth() < dstX) ? driver
+				.manage().window().getSize().getWidth() : dstX;
+		dstY = (dstY < 0) ? 0 : dstY;
+		dstX = (dstX < 0) ? 0 : dstX;
+		log.info("Tap on " + dstX + ":" + dstY);
 		driver.tap(1, dstX, dstY, 1);
 	}
 }

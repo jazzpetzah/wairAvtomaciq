@@ -319,7 +319,7 @@ public class CommonAndroidSteps {
 	 */
 	@When("^I tap on center of screen")
 	public void WhenITapOnCenterOfScreen() throws Throwable {
-		pagesCollection.getCommonPage().tapOnCenterOfScreen();
+		pagesCollection.getCommonPage().tapByCoordinates(50, 40);
 	}
 
 	/**
@@ -677,7 +677,7 @@ public class CommonAndroidSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@When("^Contact (.*) sends (\\d+) messages? to user (.*)$")
+	@When("^Contact (.*) send[s]* (\\d+) messages? to user (.*)$")
 	public void UserSendXMessagesToConversation(String msgFromUserNameAlias,
 			int count, String dstUserNameAlias) throws Exception {
 		for (int i = 0; i < count; i++) {
@@ -1010,7 +1010,7 @@ public class CommonAndroidSteps {
 	public void ISetDefaultInputMethod() throws Exception {
 		AndroidCommonUtils.resetDefaultIME();
 	}
-	
+
 	/**
 	 * Sets IME used to input unicode data (ADBKeyBoard.apk)
 	 * 

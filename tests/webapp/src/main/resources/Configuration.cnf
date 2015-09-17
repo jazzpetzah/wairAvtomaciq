@@ -14,3 +14,4 @@ webappImagesPath=${webappImagesPath}
 extendedLoggingLevel=${extendedLoggingLevel}
 #staging, production, edge
 backendType=${backendType}
+rcNotificationsRecepients=${rcNotificationsRecepients}
