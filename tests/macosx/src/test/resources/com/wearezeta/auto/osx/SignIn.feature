@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @regression @id1788 @torun
+  @regression @id1788
    Scenario Outline: Sign in to Wire OS X
       Given There is 1 user where <Name> is me
       Given I switch to sign in page

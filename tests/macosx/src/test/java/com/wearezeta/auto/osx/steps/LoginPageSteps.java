@@ -1,25 +1,19 @@
 package com.wearezeta.auto.osx.steps;
 
 import org.apache.log4j.Logger;
-import org.junit.Assert;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.pages.PagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
 
 public class LoginPageSteps {
 
 	private static final Logger LOG = ZetaLogger.getLog(LoginPageSteps.class
 			.getName());
 
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	com.wearezeta.auto.web.steps.LoginPageSteps parentSteps = new com.wearezeta.auto.web.steps.LoginPageSteps();
 
 	/**
 	 * Enters user email and password into corresponding fields on sign in
@@ -38,26 +32,8 @@ public class LoginPageSteps {
 	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void ISignInUsingLoginAndPassword(String login, String password)
 			throws Exception {
-		try {
-			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchUserException e) {
-			try {
-				// search for email by name aliases in case name is specified
-				login = usrMgr.findUserByNameOrNameAlias(login).getEmail();
-			} catch (NoSuchUserException ex) {
-			}
-		}
 
-		try {
-			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		LOG.debug("Starting to Sign in using login " + login + " and password "
-				+ password);
-		this.IEnterEmail(login);
-		this.IEnterPassword(password);
-		this.IPressSignInButton();
+		parentSteps.ISignInUsingLoginAndPassword(login, password);
 	}
 
 	/**
@@ -70,8 +46,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I press Sign In button$")
 	public void IPressSignInButton() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.loginPage
-				.clickSignInButton();
+		parentSteps.IPressSignInButton();
 	}
 
 	/**
@@ -83,9 +58,7 @@ public class LoginPageSteps {
 	 */
 	@Then("^I am signed in properly$")
 	public void IAmSignedInProperly() throws Exception {
-		Assert.assertTrue(
-				"Sign In button/login progress spinner are still visible",
-				PagesCollection.loginPage.waitForLogin());
+		parentSteps.IAmSignedInProperly();
 	}
 
 	/**
@@ -98,8 +71,7 @@ public class LoginPageSteps {
 	 */
 	@Then("^the sign in error message reads (.*)")
 	public void TheSignInErrorMessageReads(String message) throws Exception {
-		assertThat("sign in error message",
-				PagesCollection.loginPage.getErrorMessage(), equalTo(message));
+		parentSteps.TheSignInErrorMessageReads(message);
 	}
 
 	/**
@@ -110,8 +82,7 @@ public class LoginPageSteps {
 	 */
 	@Then("^a red dot is shown inside the email field on the sign in form$")
 	public void ARedDotIsShownOnTheEmailField() throws Exception {
-		assertThat("Red dot on email field",
-				PagesCollection.loginPage.isRedDotOnEmailField());
+		parentSteps.ARedDotIsShownOnTheEmailField();
 	}
 
 	/**
@@ -123,8 +94,7 @@ public class LoginPageSteps {
 	 */
 	@Then("^a red dot is shown inside the password field on the sign in form$")
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
-		assertThat("Red dot on password field",
-				PagesCollection.loginPage.isRedDotOnPasswordField());
+		parentSteps.ARedDotIsShownOnThePasswordField();
 	}
 
 	/**
@@ -137,12 +107,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I enter email (\\S+)$")
 	public void IEnterEmail(String email) {
-		try {
-			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		PagesCollection.loginPage.inputEmail(email);
+		parentSteps.IEnterEmail(email);
 	}
 
 	/**
@@ -155,12 +120,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I enter password \"([^\"]*)\"$")
 	public void IEnterPassword(String password) {
-		try {
-			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-		PagesCollection.loginPage.inputPassword(password);
+		parentSteps.IEnterPassword(password);
 	}
 
 	/**
@@ -174,10 +134,7 @@ public class LoginPageSteps {
 	 */
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
-		LOG.debug("ISeeSignInPage");
-		boolean visible = PagesCollection.loginPage.isVisible();
-		LOG.debug("login visible: " + visible);
-		Assert.assertTrue(visible);
+		parentSteps.ISeeSignInPage();
 	}
 
 	/**
@@ -191,12 +148,6 @@ public class LoginPageSteps {
 	 */
 	@Then("^I see login error \"(.*)\"$")
 	public void ISeeLoginError(String expectedError) throws Exception {
-		final String loginErrorText = PagesCollection.loginPage
-				.getErrorMessage();
-		Assert.assertTrue(
-				String.format(
-						"The actual login error '%s' is not equal to the expected one: '%s'",
-						loginErrorText, expectedError), loginErrorText
-						.equals(expectedError));
+		parentSteps.ISeeLoginError(expectedError);
 	}
 }

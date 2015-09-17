@@ -12,7 +12,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
@@ -25,6 +24,8 @@ import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
 import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.APPIUM_HUB_URL;
+import static com.wearezeta.auto.osx.common.OSXExecutionContext.CURRENT_PLATFORM;
+import static com.wearezeta.auto.osx.common.OSXExecutionContext.CURRENT_SECONDARY_PLATFORM;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
 import com.wearezeta.auto.osx.pages.MainWirePage;
 import com.wearezeta.auto.osx.pages.MenuBarPage;
@@ -58,9 +59,6 @@ public class CommonOSXSteps {
 			.getName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
-
-	public static final Platform CURRENT_PLATFORM = Platform.Mac;
-	public static final Platform CURRENT_SECONDARY_PLATFORM = Platform.Web;
 
 	private ChromeDriverService service;
 
@@ -115,7 +113,10 @@ public class CommonOSXSteps {
 	private void commonBefore() throws Exception {
 		killAllApps();
 		clearAppData();
+		startApp();
+	}
 
+	private void startApp() throws Exception {
 		final Future<ZetaOSXDriver> osxDriver = createOSXDriver();
 		final Future<ZetaWebAppDriver> webDriver = createWebDriver();
 
@@ -125,13 +126,15 @@ public class CommonOSXSteps {
 		app.navigate().to(WIRE_APP_PATH);
 
 		ZetaFormatter.setLazyDriver(osxDriver);
+
 		OSXPagesCollection.mainWirePage = new MainWirePage(osxDriver);
 		OSXPagesCollection.menuBarPage = new MenuBarPage(osxDriver);
-		Thread.sleep(5000);
+
+		OSXPagesCollection.mainWirePage.focusApp();
+		Thread.sleep(3000);// wait for page to load TODO scan for spinner
 		OSXPagesCollection.menuBarPage.switchEnvironment();
 		PagesCollection.registrationPage = new RegistrationPage(webDriver);
 		PagesCollection.loginPage = new LoginPage(webDriver);
-
 	}
 
 	@Before("@performance")
@@ -387,6 +390,18 @@ public class CommonOSXSteps {
 						+ "Score %.3f >= 0.980d", score), score < 0.98d);
 	}
 
+	@When("^I kill the app$")
+	public void KillApp() throws Exception {
+		clearDrivers();
+	}
+
+	@When("^I restart the app$")
+	public void restartApp() throws Exception {
+		OSXPagesCollection.mainWirePage.closeWindow();
+		clearDrivers();
+		startApp();
+	}
+
 	@After
 	public void tearDown() throws Exception {
 		try {
@@ -397,10 +412,16 @@ public class CommonOSXSteps {
 			e.printStackTrace();
 		}
 
-		OSXPage.clearPagesCollection();
-
 		commonSteps.getUserManager().resetUsers();
+		try {
+			OSXPagesCollection.mainWirePage.closeWindow();
+		} catch (Exception e) {
+		}
+		clearDrivers();
+	}
 
+	private void clearDrivers() throws Exception {
+		OSXPage.clearPagesCollection();
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
 			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
 		}

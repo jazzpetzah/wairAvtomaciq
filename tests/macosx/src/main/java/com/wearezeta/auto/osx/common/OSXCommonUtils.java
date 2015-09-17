@@ -1,7 +1,5 @@
 package com.wearezeta.auto.osx.common;
 
-import io.appium.java_client.AppiumDriver;
-
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -17,12 +15,15 @@ import com.dd.plist.PropertyListParser;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaDriver;
+import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.BuildVersionInfo;
 import com.wearezeta.auto.common.misc.ClientDeviceInfo;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
 import com.wearezeta.auto.osx.util.NSPoint;
 import java.util.Arrays;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.Point;
 
 public class OSXCommonUtils extends CommonUtils {
 
@@ -140,14 +141,15 @@ public class OSXCommonUtils extends CommonUtils {
 		return result;
 	}
 
-	public static NSPoint calculateScreenResolution(ZetaDriver driver)
+	public static NSPoint calculateScreenResolution(ZetaOSXDriver driver)
 			throws Exception {
 		BufferedImage im = DriverUtils.takeFullScreenShot(driver).orElseThrow(
 				IllegalStateException::new);
 		return new NSPoint(im.getWidth(), im.getHeight());
 	}
 
-	public static boolean isRetinaDisplay(ZetaDriver driver) throws Exception {
+	public static boolean isRetinaDisplay(ZetaOSXDriver driver)
+			throws Exception {
 		NSPoint size = calculateScreenResolution(driver);
 		return isRetinaDisplay(size.x(), size.y());
 	}
@@ -160,25 +162,22 @@ public class OSXCommonUtils extends CommonUtils {
 		}
 	}
 
-	public static int screenPixelsMultiplier(AppiumDriver driver)
+	public static int screenPixelsMultiplier(ZetaOSXDriver driver)
 			throws Exception {
-		return (isRetinaDisplay((ZetaDriver) driver)) ? OSXConstants.Common.SIZE_MULTIPLIER_RETINA
+		return (isRetinaDisplay(driver)) ? OSXConstants.Common.SIZE_MULTIPLIER_RETINA
 				: OSXConstants.Common.SIZE_MULTIPLIER_NO_RETINA;
 	}
 
 	public static BufferedImage takeElementScreenshot(WebElement element,
-			AppiumDriver driver) throws Exception {
+			ZetaOSXDriver driver) throws Exception {
 		int multiply = screenPixelsMultiplier(driver);
 
 		BufferedImage screenshot = DriverUtils.takeFullScreenShot(
 				(ZetaDriver) driver).orElseThrow(IllegalStateException::new);
-		NSPoint elementLocation = NSPoint.fromString(element
-				.getAttribute(OSXConstants.Attributes.AXPOSITION));
-		NSPoint elementSize = NSPoint.fromString(element
-				.getAttribute(OSXConstants.Attributes.AXSIZE));
-		return screenshot.getSubimage(elementLocation.x() * multiply,
-				elementLocation.y() * multiply, elementSize.x() * multiply,
-				elementSize.y() * multiply);
+		Point elPoint = element.getLocation();
+		Dimension elSize = element.getSize();
+		return screenshot.getSubimage(elPoint.x * multiply, elPoint.y
+				* multiply, elSize.width * multiply, elSize.height * multiply);
 	}
 
 	public static String getOsxClientInfoPlistFromConfig(Class<?> c)

@@ -1,5 +1,6 @@
 package com.wearezeta.auto.osx.common;
 
+import com.wearezeta.auto.common.Platform;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
@@ -11,6 +12,9 @@ public class OSXExecutionContext {
 
 	private static final Logger LOG = ZetaLogger
 			.getLog(OSXExecutionContext.class.getName());
+
+	public static final Platform CURRENT_PLATFORM = Platform.Mac;
+	public static final Platform CURRENT_SECONDARY_PLATFORM = Platform.Web;
 
 	public static final String APPIUM_HUB_URL = System.getProperty(
 			"com.wire.appium.hub.url", "http://localhost:4622/wd/hub");
