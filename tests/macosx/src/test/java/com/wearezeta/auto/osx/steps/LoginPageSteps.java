@@ -39,12 +39,12 @@ public class LoginPageSteps {
 	/**
 	 * Presses Sign In button on the corresponding page
 	 *
-	 * @step. ^I press Sign In button$
+	 * @step. ^I press [Ss]ign [Ii]n button$
 	 *
 	 * @throws Exception
 	 *             if Selenium fails to wait until sign in action completes
 	 */
-	@When("^I press Sign In button$")
+	@When("^I press [Ss]ign [Ii]n button$")
 	public void IPressSignInButton() throws Exception {
 		parentSteps.IPressSignInButton();
 	}
