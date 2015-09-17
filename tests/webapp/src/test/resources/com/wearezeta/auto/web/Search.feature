@@ -200,7 +200,7 @@ Feature: Search
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | Message1 |
 
-  @smoke @id3207
+  @smoke @id3207 @torun
   Scenario Outline: Verify you can search by email
     Given There are 2 users where <Name> is me
     Given I switch to Sign In page
