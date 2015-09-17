@@ -102,14 +102,10 @@ public class MainWirePage extends OSXPage {
 	}
 
 	public boolean isX(int x) {
-		System.out.println("X: "
-				+ (window.getLocation().getX() - SPACE_FOR_DOCK));
 		return x == window.getLocation().getX() - SPACE_FOR_DOCK;
 	}
 
 	public boolean isY(int y) {
-		System.out.println("Y: "
-				+ (window.getLocation().getY() - TITLEBAR_HEIGHT));
 		return y == window.getLocation().getY() - TITLEBAR_HEIGHT;
 	}
 
