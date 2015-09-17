@@ -177,15 +177,18 @@ public abstract class IOSPage extends BasePage {
 		IOSPage.imagesPath = imagesPath;
 	}
 
-	public void clickPopupSelectAllButton() {
+	public void clickPopupSelectAllButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), popupSelectAll);
 		popupSelectAll.click();
 	}
 
-	public void clickPopupCopyButton() {
+	public void clickPopupCopyButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), popupCopy);
 		popupCopy.click();
 	}
 
-	public void clickPopupPasteButton() {
+	public void clickPopupPasteButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), popupPaste);
 		popupPaste.click();
 	}
 
@@ -224,8 +227,8 @@ public abstract class IOSPage extends BasePage {
 
 	public boolean isKeyboardVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(), keyboard)
-				&& DriverUtils.waitUntilElementClickable(getDriver(),
-						keyboard, 3);
+				&& DriverUtils.waitUntilElementClickable(getDriver(), keyboard,
+						3);
 	}
 
 	public void clickKeyboardDeleteButton() {

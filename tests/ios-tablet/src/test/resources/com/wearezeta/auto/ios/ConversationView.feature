@@ -237,6 +237,8 @@ Feature: Conversation View
     And I input more than 200 chars message and send it
     And I type the message
     And I swipe right on Dialog page
+    When I tap on my name <Name>
+	And I close self profile
     And I tap on contact name <Contact>
     And I tap on text input
     And I send the message
@@ -257,9 +259,9 @@ Feature: Conversation View
     And I see dialog page
     And I input more than 200 chars message and send it
     And I type the message
-    And I swipe right on Dialog page
+	When I tap on my name <Name>
+	And I close self profile
     And I tap on contact name <Contact>
-    And I tap on text input
     And I send the message
     Then I see message in the dialog
 
