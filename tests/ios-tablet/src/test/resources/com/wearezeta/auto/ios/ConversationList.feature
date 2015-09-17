@@ -96,7 +96,6 @@ Feature: Conversation List
     And I see Contact list with my name <Name>
     And I open archived conversations on iPad
     And I tap on contact name <ArchivedUser>
-    And I navigate back to conversations view
     Then I see first item in contact list named <ArchivedUser>
 
     Examples: 

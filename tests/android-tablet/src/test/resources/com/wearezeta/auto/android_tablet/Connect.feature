@@ -449,10 +449,12 @@ Feature: Connect
     And I see the conversation <WaitingMess2> in my conversations list
     When I tap the conversation <WaitingMess2>
     And I see the Incoming connections page
+    And I scroll the list up to 2 times until <Contact2> entry is visible on Incoming connections page
     And I ignore incoming connection request from <Contact2> on Incoming connections page
     Then I see the conversation <WaitingMess1> in my conversations list
     When I tap the conversation <WaitingMess1>
     And I see the Incoming connections page
+    And I scroll the list up to 2 times until <Contact1> entry is visible on Incoming connections page
     And I ignore incoming connection request from <Contact1> on Incoming connections page
     Then I see the Conversations list with no conversations
     When <Contact3> sent connection request to me

@@ -334,11 +334,20 @@ public class ContactListPageSteps {
 				+ name3 + ", " + " is in chat list", chatExists);
 	}
 
+	/**
+	 * Verify that conversation with pointed name is not displayed in contact
+	 * list
+	 * 
+	 * @step. I dont see conversation (.*) in contact list
+	 * @param name
+	 *            conversation name to verify
+	 * @throws Exception
+	 */
 	@When("I dont see conversation (.*) in contact list")
 	public void IDoNotSeeConversationInContactList(String name)
 			throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		Assert.assertFalse(getContactListPage().isDisplayedInContactList(name));
+		Assert.assertTrue(getContactListPage().contactIsNotDisplayed(name));
 	}
 
 	/**
