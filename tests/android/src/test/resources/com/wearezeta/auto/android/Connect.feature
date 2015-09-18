@@ -250,7 +250,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id550 @staging
+  @id550 @regression
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>

@@ -444,7 +444,6 @@ public class ContactListPage extends AndroidPage {
 		BufferedImage unreadDot = getElementScreenshot(
 				this.getDriver().findElement(locator)).orElseThrow(
 				IllegalStateException::new);
-
 		String path = null;
 		if (expected.equals(EXPECTED_DOT_STATE_SMALL)) {
 			path = CommonUtils.getDefaultImagesPath(ContactListPage.class)
@@ -457,8 +456,7 @@ public class ContactListPage extends AndroidPage {
 					+ UNREAD_DOT_NO_UNREAD_DOT_IMG;
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-
 		return ImageUtil.getOverlapScore(unreadDot, templateImage,
-				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+				ImageUtil.RESIZE_TO_MAX_SCORE);
 	}
 }

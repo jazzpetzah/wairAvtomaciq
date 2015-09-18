@@ -275,7 +275,7 @@ public class ContactListPageSteps {
 					.orElseThrow(IllegalStateException::new);
 			score = ImageUtil.getOverlapScore(currentPlayPauseBtnState,
 					previousPlayPauseBtnState,
-					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+					ImageUtil.RESIZE_TO_MAX_SCORE);
 			if (score < MAX_SIMILARITY_THRESHOLD) {
 				break;
 			}
@@ -371,7 +371,7 @@ public class ContactListPageSteps {
 		final double score = getContactListPage().getUnreadDotOverlapScore(
 				indicator, contact);
 		Assert.assertTrue(
-				"Overlap between two images has not enough score. Expected >= 0.9, current = "
-						+ score, score >= 0.9d);
+				"Overlap between two images has not enough score. Expected >= 0.7, current = "
+						+ score, score >= 0.7d);
 	}
 }
