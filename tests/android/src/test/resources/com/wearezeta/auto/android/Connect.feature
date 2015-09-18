@@ -339,7 +339,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id720 @regression
+  @id720 @regression_off @staging
   Scenario Outline: I want to be seen in the search results of someone I blocked
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to <Name>

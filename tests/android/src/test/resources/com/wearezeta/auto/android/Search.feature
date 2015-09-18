@@ -1,6 +1,6 @@
 Feature: Search
 
-  @id218 @regression
+  @id218 @regression_off @staging 
   Scenario Outline: I can search for contact by full name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -34,7 +34,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat |
 
-  @id223 @regression @rc @rc42
+  @id223 @regression_off @rc_off @rc42_off @staging
   Scenario Outline: I can search for contact by partial name
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -108,7 +108,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id319 @regression @rc
+  @id319 @regression_off @rc_off @staging
   Scenario Outline: I can create group chat from Search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

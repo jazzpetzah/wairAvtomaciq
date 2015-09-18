@@ -736,8 +736,8 @@ public class DialogPageSteps {
 		final double score = getDialogPage()
 				.getMediaBarControlIconOverlapScore(iconLabel);
 		Assert.assertTrue(
-				"Overlap between two images has not enough score. Expected >= 0.90, current = "
-						+ score, score >= 0.90d);
+				"Overlap between two images has not enough score. Expected >= 0.75, current = "
+						+ score, score >= 0.75d);
 	}
 
 	/**
@@ -753,8 +753,8 @@ public class DialogPageSteps {
 		final double score = getDialogPage().getMediaControlIconOverlapScore(
 				iconLabel);
 		Assert.assertTrue(
-				"Overlap between two images has not enough score. Expected >= 0.90, current = "
-						+ score, score >= 0.90d);
+				"Overlap between two images has not enough score. Expected >= 0.75, current = "
+						+ score, score >= 0.75d);
 	}
 
 	/**
