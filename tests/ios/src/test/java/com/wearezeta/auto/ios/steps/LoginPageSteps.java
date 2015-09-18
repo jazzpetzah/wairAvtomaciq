@@ -105,6 +105,74 @@ public class LoginPageSteps {
 
 		getLoginPage().waitForLoginToFinish();
 	}
+	
+	/**
+	 * Enter verification code for specified user
+	 * 
+	 * @step. ^I enter verification code for user (.*)$
+	 * 
+	 * @param name
+	 *            name of user
+	 * @throws Exception
+	 */
+	@When("^I enter verification code for user (.*)$")
+	public void IEnterVerificationCodeForUser(String name) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
+				.getPhoneNumber());
+		getRegistrationPage().inputActivationCode(code);
+	}
+
+	/**
+	 * Verify if PHONE SIGN IN button is visible
+	 * 
+	 * @step. I see PHONE SIGN IN button
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see PHONE SIGN IN button")
+	public void ISeePhoneSignInButton() throws Exception {
+		Assert.assertTrue("PHONE SIGN IN button is not visible", getLoginPage()
+				.isPhoneSignInButtonVisible());
+	}
+
+	/**
+	 * Tap on PHONE SIGN IN button is visible
+	 * 
+	 * @step. I tap on PHONE SIGN IN button
+	 * 
+	 * @throws Exception
+	 */
+	@When("I tap on PHONE SIGN IN button")
+	public void ITapPhoneSignInButton() throws Exception {
+		getLoginPage().clickPhoneLogin();
+	}
+
+	/**
+	 * Verify country picker button presented
+	 * 
+	 * @step. I see country picker button on Sign in screen
+	 * 
+	 * @throws Exception
+	 */
+	@When("I see country picker button on Sign in screen")
+	public void ISeeCountryPickerButton() throws Exception {
+		Assert.assertTrue("Country picker button is not visible",
+				getLoginPage().isCountryPickerButttonVisible());
+	}
+	
+
+	/**
+	 * Verify verification code page shown
+	 * 
+	 * @step. ^I see verification code page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see verification code page$")
+	public void ISeeVerificationCodePage() throws Exception {
+		Assert.assertTrue(getRegistrationPage().isVerificationCodePageVisible());
+	}
 
 	/**
 	 * Sign in with email/password (20%) or phone number (80%)
@@ -142,6 +210,18 @@ public class LoginPageSteps {
 	@When("I press Sign in button")
 	public void WhenIPressSignInButton() throws Exception {
 		getLoginPage().signIn();
+	}
+
+	/**
+	 * Tap I HAVE AN ACCOUNT button
+	 * 
+	 * @step. I tap I HAVE AN ACCOUNT button
+	 * 
+	 * @throws Exception
+	 */
+	@When("I tap I HAVE AN ACCOUNT button")
+	public void ITapHaveAnAccount() throws Exception {
+		WhenIPressSignInButton();
 	}
 
 	/**
