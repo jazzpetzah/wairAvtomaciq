@@ -76,7 +76,7 @@ public class OSXCommonUtils extends CommonUtils {
 
 	public static void deletePreferencesFile() throws Exception {
 		String command = String.format(
-				"rm -rf %s/Library/Preferences/%s.plist",
+				"rm -rf \"%s/Library/Preferences/%s.plist\"",
 				OSXExecutionContext.USER_HOME,
 				OSXExecutionContext.CONFIG_DOMAIN);
 		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
@@ -194,41 +194,43 @@ public class OSXCommonUtils extends CommonUtils {
 		final String[] commands = new String[] {
 				"/bin/sh",
 				"-c",
-				"rm -rf "
-						+ OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/Cache &&"
-						+ "rm -f "
-						+ OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/Cookies &&"
-						+ "rm -rf "
-						+ OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/GPUCache &&"
-						+ "rm -rf "
-						+ OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/Local\\ Storage &&"
-						+ "rm -f "
-						+ OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/WebRTCIdentityStore &&"
-						+ "rm -f "
-						+ OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/WebRTCIdentityStore-journal &&"
-						+ "rm -f " + OSXExecutionContext.USER_HOME
-						+ "/Library/Application\\ Support/Wire/Cookies-journal" };
+				"rm -rf"
+						+ String.format(
+								" \"%s/Library/Application Support/Wire/Cache\"",
+								OSXExecutionContext.USER_HOME)
+						+ String.format(
+								" \"%s/Library/Application Support/Wire/Cookies\"",
+								OSXExecutionContext.USER_HOME)
+						+ String.format(
+								" \"%s/Library/Application Support/Wire/GPUCache\"",
+								OSXExecutionContext.USER_HOME)
+						+ String.format(
+								" \"%s/Library/Application Support/Wire/Local Storage\"",
+								OSXExecutionContext.USER_HOME)
+						+ String.format(
+								" \"%s/Library/Application Support/Wire/WebRTCIdentityStore\"",
+								OSXExecutionContext.USER_HOME)
+						+ String.format(
+								" \"%s/Library/Application Support/Wire/WebRTCIdentityStore-journal\"",
+								OSXExecutionContext.USER_HOME)
+						+ String.format(
+								" \"%s/Library/Application Support/Wire/Cookies-journal\"",
+								OSXExecutionContext.USER_HOME) };
 
 		LOG.debug("executing commands: " + Arrays.toString(commands));
-		final String result = executeOsXCommandWithOutput(commands);
-		LOG.debug("output: " + result);
+		executeOsXCommandWithOutput(commands);
 	}
 
 	public static void killAllApps() throws Exception {
 		final String[] commands = new String[] {
 				"/bin/sh",
 				"-c",
-				"kill $(ps aux | grep " + WIRE_APP_PATH
-						+ " | awk '{print $2}')" };
+				"kill "
+						+ String.format(
+								"$(ps aux | grep %s | awk '{print $2}')",
+								WIRE_APP_PATH) };
 		LOG.debug("executing commands: " + Arrays.toString(commands));
-		final String result = executeOsXCommandWithOutput(commands);
-		LOG.debug("output: " + result);
+		executeOsXCommandWithOutput(commands);
 
 	}
 }

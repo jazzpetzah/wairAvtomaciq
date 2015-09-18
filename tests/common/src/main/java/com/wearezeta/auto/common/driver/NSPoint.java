@@ -29,7 +29,8 @@ public class NSPoint {
 			return new NSPoint(Integer.parseInt(matcher.group(1)),
 					Integer.parseInt(matcher.group(2)));
 		}
-		return null;
+		throw new IllegalArgumentException(
+				"Could not find point in given String");
 	}
 
 	public String toString() {
