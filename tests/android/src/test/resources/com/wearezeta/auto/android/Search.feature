@@ -116,9 +116,12 @@ Feature: Search
   Scenario Outline: I can create group chat from Search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact3> is connected to <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I open search by tap
+    When I tap on contact name <Contact3>
+    And I navigate back from dialog page
+    And I open search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
@@ -129,8 +132,8 @@ Feature: Search
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName           |
-      | user1Name | user2Name | user3Name | PeoplePicker GroupChat2 |
+      | Name      | Contact1  | Contact2  | GroupChatName           | Contact3  |
+      | user1Name | user2Name | user3Name | PeoplePicker GroupChat2 | user4Name |
 
   @id1395 @smoke @rc @rc42
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
