@@ -339,17 +339,18 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id720 @regression
+  @id720 @regression @torun
   Scenario Outline: I want to be seen in the search results of someone I blocked
     Given There are 3 users where <Name> is me
+    # Having the extra user is a workaround for an app bug
     Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> blocks user Myself
     Given I sign in using my email
     Given I see Contact list with contacts
-    When User <Contact1> blocks user Myself
-    Then I wait until <Contact1> exists in backend search results
-    When I tap on contact name <Contact2>
-    And I navigate back from dialog page
-    And I open Search by tap
+    And I see contact list with name <Contact1>
+    And I see contact list with name <Contact2>
+    And I wait until <Contact1> exists in backend search results
+    When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
