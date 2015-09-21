@@ -63,8 +63,8 @@ Feature: Sign In
       | Login      | Password      | Name      | NewPassword  |
       | user1Email | user1Password | user1Name | aqa123456789 |
 
-  @staging @id2717
-  Scenario Outline: Verify first time phone sign in
+  @staging @id2719
+  Scenario Outline: Verify phone sign in when email is assigned
     Given There is 1 user where <Name> is me
     Given I see sign in screen
     Given I see country picker button on Sign in screen
