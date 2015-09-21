@@ -339,7 +339,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id720 @regression @torun
+  @id720 @regression
   Scenario Outline: I want to be seen in the search results of someone I blocked
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
