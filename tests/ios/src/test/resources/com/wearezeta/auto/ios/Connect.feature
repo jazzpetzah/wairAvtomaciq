@@ -39,6 +39,7 @@ Feature: Connect
     And I see Hello connect message from user <Contact> on Pending request page
     And I click Connect button on Pending request page
     And I wait for 2 seconds
+    And I return to the chat list
     Then I see first item in contact list named <Contact>
 
     Examples: 
@@ -78,10 +79,11 @@ Feature: Connect
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
+    And I return to the chat list
     And I dont see Pending request link in contact list
     And I don't see conversation with not connected user <Contact1>
     And I wait until <Contact1> exists in backend search results
-    And I swipe down contact list
+    And I open search by taping on it
     And I see People picker page
     And I tap on Search input on People picker page
     And I search for ignored user name <Contact1> and tap on it
@@ -104,6 +106,7 @@ Feature: Connect
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Connect button on Pending requests page <SentRequests> times
+    And I return to the chat list
     Then I dont see Pending request link in contact list
     And I see user <Contact1> in contact list
     And I see user <Contact2> in contact list
@@ -275,7 +278,8 @@ Feature: Connect
 
   @regression @rc @id3223
   Scenario Outline: Verify possibility of disconnecting from conversation list
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact1>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
@@ -287,16 +291,16 @@ Feature: Connect
     Then I see Cancel request confirmation page
     And I confirm Cancel request by click on Yes button
     And I see Details button is visible
-    And I return to the chat list
     Then I dont see conversation <Contact> in contact list
 
     Examples: 
-      | Name      | Contact1  |
-      | user1Name | user2Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @regression @id3224
   Scenario Outline: Verify sending connection request after disconnecting
-    Given There are 2 users where <Name> is me
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact2>
     Given Me sent connection request to <Contact1>
     Given I sign in using my email or phone number
     And I see Contact list with my name <Name>
@@ -306,7 +310,6 @@ Feature: Connect
     And I click Cancel request button
     And I confirm Cancel request by click on Yes button
     And I see Details button is visible
-    And I return to the chat list
     And I open search by taping on it
     And I input in People picker search field user name <Contact1>
     And I see user <Contact1> found on People picker page
@@ -317,8 +320,8 @@ Feature: Connect
     Then I see first item in contact list named <Contact1>
 
     Examples: 
-      | Name      | Contact1  |
-      | user1Name | user2Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @regression @id3225
   Scenario Outline: Verify possibility of disconnecting from Search UI
