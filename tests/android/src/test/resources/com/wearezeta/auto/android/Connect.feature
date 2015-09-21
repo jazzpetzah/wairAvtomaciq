@@ -339,7 +339,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id720 @regression_off @staging
+  @id720 @regression
   Scenario Outline: I want to be seen in the search results of someone I blocked
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -352,8 +352,8 @@ Feature: Connect
     And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    Then I see user <Contact> found on People picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    Then I see user <Contact1> found on People picker page
 
     Examples: 
       | Name      | Contact1  | Contact2  |
