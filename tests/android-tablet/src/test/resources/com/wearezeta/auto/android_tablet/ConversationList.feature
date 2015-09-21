@@ -87,12 +87,12 @@ Feature: Conversation List
     Then I see Conversation Actions popover
     When I select <ItemSilence> menu item on Conversation Actions popover
     Then I do not see Conversation Actions popover
-    And I see the conversation <Contact> in my conversations list is silenced
+    And I see the conversation <Contact1> in my conversations list is silenced
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions popover
     When I select <ItemNotify> menu item on Conversation Actions popover
     Then I do not see Conversation Actions popover
-    And I see the conversation <Contact> in my conversations list is not silenced
+    And I see the conversation <Contact1> in my conversations list is not silenced
 
     Examples: 
       | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
@@ -111,12 +111,12 @@ Feature: Conversation List
     Then I see Conversation Actions popover
     When I select <ItemSilence> menu item on Conversation Actions popover
     Then I do not see Conversation Actions popover
-    And I see the conversation <Contact> in my conversations list is silenced
+    And I see the conversation <Contact1> in my conversations list is silenced
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions popover
     When I select <ItemNotify> menu item on Conversation Actions popover
     Then I do not see Conversation Actions popover
-    And I see the conversation <Contact> in my conversations list is not silenced
+    And I see the conversation <Contact1> in my conversations list is not silenced
 
     Examples: 
       | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
