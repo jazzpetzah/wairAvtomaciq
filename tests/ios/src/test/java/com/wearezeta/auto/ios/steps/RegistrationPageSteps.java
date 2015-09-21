@@ -85,6 +85,18 @@ public class RegistrationPageSteps {
 		Assert.assertTrue(getRegistrationPage().isPictureSelected());
 	}
 
+	/**
+	 * Verify Set picture page shown
+	 * 
+	 * @step. I see Set Picture page
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Set Picture page$")
+	public void ISeeSetPicturePage() throws Exception {
+		getRegistrationPage().isSetPicturePageVisible();
+	}
+
 	@When("^I press Picture button$")
 	public void WhenIPressPictureButton() throws Exception {
 		getRegistrationPage().selectPicture();
@@ -189,6 +201,18 @@ public class RegistrationPageSteps {
 	@When("^I accept terms of service$")
 	public void IAcceptTermsOfService() throws Exception {
 		getRegistrationPage().clickAgreeButton();
+	}
+
+	/**
+	 * Verify Term Of Use page shown
+	 * 
+	 * @step. ^I see Term Of Use page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see Term Of Use page$")
+	public void ISeeTermOfUsePage() throws Exception {
+		Assert.assertTrue(getRegistrationPage().isTermOfUsePageVisible());
 	}
 
 	/**
@@ -440,7 +464,7 @@ public class RegistrationPageSteps {
 	public void ISeeConfirmationPage() throws Exception {
 		Assert.assertTrue(getRegistrationPage().isConfirmationShown());
 	}
-	
+
 	/**
 	 * Start monitoring thread for activation email. Please put this step BEFORE
 	 * you submit the registration form

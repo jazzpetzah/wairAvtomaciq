@@ -96,3 +96,38 @@ Feature: Sign In
     Examples: 
       | Login      | Password      | Name      | NewPassword  |
       | user1Email | user1Password | user1Name | aqa123456789 |
+
+  @staging @id2726
+  Scenario Outline: Verify first time phone sign in [PORTRAIT]
+    Given There is 1 user where <Name> is me
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    Then I see PHONE SIGN IN button
+    When I tap on PHONE SIGN IN button
+    Then I see country picker button on Sign in screen
+    When I enter phone number for user <Name>
+    Then I see verification code page
+    When I enter verification code for user <Name>
+    Then I see Contact list with my name <Name>
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id3787
+  Scenario Outline: Verify first time phone sign in [LANDSCAPE]
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to landscape
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    Then I see PHONE SIGN IN button
+    When I tap on PHONE SIGN IN button
+    Then I see country picker button on Sign in screen
+    When I enter phone number for user <Name>
+    Then I see verification code page
+    When I enter verification code for user <Name>
+    Then I see Contact list with my name <Name>
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

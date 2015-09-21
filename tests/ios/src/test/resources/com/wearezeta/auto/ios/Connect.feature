@@ -372,3 +372,50 @@ Feature: Connect
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
+
+  @staging @id1199
+  Scenario Outline: Verify you can send text messages and images in 1to1 chat to the person who blocked you
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Contact> blocks user <Name>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact>
+    Then I see dialog page
+    And I type the message
+    When I send the message
+    Then I see message in the dialog
+    When I swipe the text input cursor
+    And I press Add Picture button
+    And I press Camera Roll button
+    And I choose a picture from camera roll
+    And I press Confirm button
+    Then I see new photo in the dialog
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+
+  @staging @id1133
+  Scenario Outline: Verify unblocking from users profile page
+    Given There are 2 users where <Name> is me
+    Given <Contact> is connected to <Name>
+    Given User <Name> blocks user <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    Then I dont see conversation <Contact> in contact list
+    When I open search by taping on it
+    And I see People picker page
+    And I tap on Search input on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    And I unblock user
+    Then I see dialog page
+    When I navigate back to conversations view
+    And I click close button to dismiss people view
+    Then I see user <Contact> in contact list
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
