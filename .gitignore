@@ -11,3 +11,9 @@ tests/webapp/nbactions.xml
 tests/tools/jenkins_controller/.idea
 customBackend.json
 .classpath
+
+#IDEA stuff
+*.iml
+*.idea/
+out/
+
