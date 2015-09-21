@@ -109,6 +109,9 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameMaybeLater)
 	private WebElement maybeLater;
 
+	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton)
+	private WebElement countryPickerButtton;
+
 	private String login;
 
 	private String password;
@@ -139,6 +142,11 @@ public class LoginPage extends IOSPage {
 		} else {
 			DriverUtils.mobileTapByCoordinates(getDriver(), emailLoginButton);
 		}
+	}
+
+	public boolean isPhoneSignInButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				phoneLoginButton);
 	}
 
 	public void clickPhoneLogin() throws Exception {
@@ -361,5 +369,10 @@ public class LoginPage extends IOSPage {
 	public void pressSimulatorHomeButton() throws Exception {
 		cmdVscript(scriptString);
 		DriverUtils.resetApp(getDriver());
+	}
+
+	public boolean isCountryPickerButttonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				countryPickerButtton);
 	}
 }

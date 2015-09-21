@@ -104,22 +104,16 @@ public class SketchPageSteps {
 	@When("^I verify that my sketch in fullscreen is the same as what I drew$")
 	public void WhenIVerifyThatMySketchInFullscreenMatchesWhatIDrew()
 			throws Exception {
-		final double MAX_OVERLAP_SCORE = 0.91;
-
 		BufferedImage lastImageInConversation = getDialogPage()
 				.getLastImageInFullScreen().orElseThrow(AssertionError::new);
-
 		if (ImageUtil.isLandscape(lastImageInConversation)) {
 			sketch = ImageUtil.rotateCCW90Degrees(sketch);
 		}
-
 		double score = ImageUtil.getOverlapScore(lastImageInConversation,
-				sketch, ImageUtil.RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION);
-
-		if (score < MAX_OVERLAP_SCORE) {
-			Assert.fail(String.format(
-					"Score %s is less than expected score - %s", score,
-					MAX_OVERLAP_SCORE));
-		}
+				sketch, ImageUtil.RESIZE_TO_MAX_SCORE);
+		System.out.println("score=" + score);
+		Assert.assertTrue(
+				"Overlap between two images has not enough score. Expected >= 0.7, current = "
+						+ score, score >= 0.7d);
 	}
 }

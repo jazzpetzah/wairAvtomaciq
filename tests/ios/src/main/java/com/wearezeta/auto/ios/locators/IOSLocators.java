@@ -86,7 +86,7 @@ public final class IOSLocators {
 
 	public static final String nameConnectOtherUserButton = "CONNECT";
 
-	public static final String xpathConnectOtherUserButton = "//UIAButton[@name='CONNECT']";
+	public static final String xpathConnectOtherUserButton = "//UIAButton[@name='CONNECT' or @name='OtherUserMetaControllerLeftButton']";
 
 	public static final String nameIgnoreOtherUserButton = "IGNORE";
 
@@ -665,8 +665,9 @@ public final class IOSLocators {
 		public static final String xpathActivationCode = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]";
 		public static final String xpathConfirmPhoneNumber = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]/UIAButton[1]";
 		public static final String nameAgreeButton = "I AGREE";
-
 		public static final String nameSelectPictureButton = "SET A PICTURE";
+		public static final String xpathVerificationPage = "//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]";
+		public static final String nameTermOfUsePage = "By continuing you agree to the Wire Terms of Use.";
 	}
 
 	public final class LoginPage {
@@ -674,6 +675,7 @@ public final class IOSLocators {
 		public static final String nameBackButton = "BackToWelcomeButton";
 		public static final String nameEmailLoginButton = "EMAIL SIGN IN";
 		public static final String nameMaybeLater = "MAYBE LATER";
+		public static final String nameCountryPickerButton = "CountryPickerButton";
 	}
 
 	public final class PeoplePickerPage {

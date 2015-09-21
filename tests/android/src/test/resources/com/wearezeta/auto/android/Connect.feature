@@ -250,7 +250,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id550 @staging
+  @id550 @regression
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -339,23 +339,25 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id720 @regression
+  @id720 @regression_off @staging
   Scenario Outline: I want to be seen in the search results of someone I blocked
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email
     Given I see Contact list with contacts
-    When User <Contact> blocks user Myself
-    Then I wait until <Contact> exists in backend search results
-    When I open Search by tap
+    When User <Contact1> blocks user Myself
+    Then I wait until <Contact1> exists in backend search results
+    When I tap on contact name <Contact2>
+    And I navigate back from dialog page
+    And I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
     Then I see user <Contact> found on People picker page
 
     Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id723 @regression
   Scenario Outline: I want to unblock someone from their Profile view

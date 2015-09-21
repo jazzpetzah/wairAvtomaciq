@@ -2,20 +2,22 @@ Feature: Search
 
   @id218 @regression
   Scenario Outline: I can search for contact by full name
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    And I wait until <Contact> exists in backend search results
-    When I open search by tap
+    Given I wait until <Contact1> exists in backend search results
+    When I tap on contact name <Contact2>
+    And I navigate back from dialog page
+    And I open search by tap
     And I see People picker page
     And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    Then I see user <Contact> in People picker
+    And I enter "<Contact1>" into Search input on People Picker page
+    Then I see user <Contact1> in People picker
 
     Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id220 @regression
   Scenario Outline: I can search group conversation by full name
@@ -36,19 +38,21 @@ Feature: Search
 
   @id223 @regression @rc @rc42
   Scenario Outline: I can search for contact by partial name
-    Given There are 2 users where <Name> is me
-    Given Myself is connected to <Contact>
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I open search by tap
+    When I tap on contact name <Contact2>
+    And I navigate back from dialog page
+    And I open search by tap
     And I see People picker page
     And I tap on Search input on People picker page
-    And I input in search field part <Size> of user name to connect to <Contact>
-    Then I see user <Contact> in People picker
+    And I input in search field part <Size> of user name to connect to <Contact1>
+    Then I see user <Contact1> in People picker
 
     Examples: 
-      | Name      | Contact   | Size |
-      | user1Name | user2Name | 12   |
+      | Name      | Contact1   | Contact2   | Size |
+      | user1Name | user2Name  | user3Name  | 12   |
 
   @id225 @regression
   Scenario Outline: I can search group converation by partial name
@@ -80,7 +84,7 @@ Feature: Search
     Examples: 
       | Name      |
       | user1Name |
-      
+
   @id2177 @regression
   Scenario Outline: Open/Close Search by different actions
     Given There are 2 users where <Name> is me
@@ -103,18 +107,21 @@ Feature: Search
     And I navigate back to Conversations List
     Then I see Contact list with contacts
     And I do not see TOP PEOPLE
-    
+
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id319 @regression @rc
+  @id319 @regression_off @rc_off @staging
   Scenario Outline: I can create group chat from Search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
+    Given <Contact3> is connected to <Name>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
-    When I open search by tap
+    When I tap on contact name <Contact3>
+    And I navigate back from dialog page
+    And I open search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact1>" into Search input on People Picker page
@@ -125,9 +132,9 @@ Feature: Search
     Then I see group chat page with users <Contact1>,<Contact2>
 
     Examples: 
-      | Name      | Contact1  | Contact2  | GroupChatName           |
-      | user1Name | user2Name | user3Name | PeoplePicker GroupChat2 |
-      
+      | Name      | Contact1  | Contact2  | GroupChatName           | Contact3  |
+      | user1Name | user2Name | user3Name | PeoplePicker GroupChat2 | user4Name |
+
   @id1395 @smoke @rc @rc42
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
