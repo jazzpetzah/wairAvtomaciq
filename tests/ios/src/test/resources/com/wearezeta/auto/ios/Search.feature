@@ -393,3 +393,28 @@ Feature: Search
     Examples: 
       | Name      |
       | user1Name |
+      
+  @torun @staging @id3279
+  Scenario Outline: Verify action buttons disappear by deleting token from a search field
+  	Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 1st top connection contact
+    And I see action buttons appeared on People picker page
+    And I input in People picker search field user name <Contact>
+    And I see user <Contact> found on People picker page
+    And I tap on connected user <Contact> on People picker page
+    And I see Create Conversation button on People picker page
+    And I press backspace button
+    Then I see open conversation action button on People picker page
+    And I press backspace button
+    Then I see action buttons disappeared on People picker page
+    
+    Examples: 
+      | Name      | Contact  |
+      | user1Name | user3Name|
