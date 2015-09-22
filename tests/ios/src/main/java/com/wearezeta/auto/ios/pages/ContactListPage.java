@@ -84,6 +84,9 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
 	private WebElement leaveActionMenuButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameCancelButton)
+	private WebElement cancelActionMenuButton;
 
 	private int oldLocation = 0;
 
@@ -771,4 +774,9 @@ public class ContactListPage extends IOSPage {
 	public void clickLeaveButtonInActionMenu() {
 		leaveActionMenuButton.click();
 	}
+
+	public void clickCancelButtonInActionMenu() {
+		cancelActionMenuButton.click();
+	}
+
 }
