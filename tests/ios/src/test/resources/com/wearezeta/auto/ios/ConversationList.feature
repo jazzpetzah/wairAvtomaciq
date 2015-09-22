@@ -257,6 +257,22 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | Message | Image       |
       | user1Name | user2Name | user3Name | testing | testing.jpg |
 
+  @staging @id3319
+  Scenario Outline: Verify closing the action menu by clicking on cancel on out of the menu
+    Given There are 2 users where <Name> is me
+    Given Myself is connected to <Contact>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I swipe right on a <Contact>
+    Then I see conversation <Contact> name in action menu in Contact List
+    And I see Cancel button in action menu in Contact List
+    And I press Cancel button in action menu in Contact List
+    Then I see Contact list with my name <Name>
+    
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user2Name |
+  
   @staging @id3312
   Scenario Outline: Verify silencing and notify from the action menu
     Given There are 2 users where <Name> is me
