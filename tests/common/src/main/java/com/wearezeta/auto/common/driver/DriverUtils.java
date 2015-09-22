@@ -755,4 +755,20 @@ public class DriverUtils {
 		log.info("Tap on " + dstX + ":" + dstY);
 		driver.tap(1, dstX, dstY, 1);
 	}
+	
+	public static void sendTextToInputByScript(RemoteWebDriver driver, String scriptLocator, String text) {
+			String script = String.format(scriptLocator
+					+ ".setValue(\"%s\")", text);
+			int maxRetrys = 3;
+			int retryCounter = 0;
+			while (retryCounter < maxRetrys) {
+				try {
+					driver.executeScript(script);
+					retryCounter = maxRetrys;
+				} catch (WebDriverException ex) {
+					log.debug("Appium execute script fail. " + ex.getMessage());
+					retryCounter++;
+				}
+			}
+	}
 }
