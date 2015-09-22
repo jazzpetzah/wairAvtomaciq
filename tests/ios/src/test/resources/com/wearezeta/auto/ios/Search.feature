@@ -406,9 +406,7 @@ Feature: Search
     And I see top people list on People picker page
     And I tap on 1st top connection contact
     And I see action buttons appeared on People picker page
-    And I input in People picker search field user name <Contact>
-    And I see user <Contact> found on People picker page
-    And I tap on connected user <Contact> on People picker page
+    And I tap on 2nd top connection contact
     And I see Create Conversation button on People picker page
     And I press backspace button
     Then I see open conversation action button on People picker page
