@@ -418,3 +418,22 @@ Feature: Search
     Examples: 
       | Name      | Contact   |
       | user1Name | user3Name |
+      
+  @torun @staging @id3281
+  Scenario Outline: Verify opening conversation with action button
+  	Given There are 2 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 1st top connection contact
+    And I see open conversation action button on People picker page
+    And I click open conversation action button on People picker page
+    Then I see dialog page
+    
+    Examples: 
+      | Name      |
+      | user1Name |
