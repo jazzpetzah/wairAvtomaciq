@@ -528,7 +528,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	/**
 	 * http://stackoverflow.com/questions/28150650/open-chrome-with-adb
 	 * 
-	 * @param invitationUrl
+	 * @param url
 	 * @throws Exception
 	 */
 	public static void openLinkInChrome(String url) throws Exception {
@@ -536,5 +536,39 @@ public class AndroidCommonUtils extends CommonUtils {
 				.format("shell am start -a android.intent.action.VIEW "
 						+ "-n com.android.chrome/com.google.android.apps.chrome.Main "
 						+ "-d \"%s\"", url));
+	}
+
+	public static int getBatteryCapacity() throws Exception {
+		final String output = getAdbOutput(
+				"shell cat /sys/class/power_supply/battery/capacity").trim();
+		return Integer.parseInt(output);
+	}
+
+	public static long getRxBytes() throws Exception {
+		final String output = getAdbOutput(
+				"shell cat /proc/net/xt_qtaguid/stats").trim();
+		final String[] lines = output.split("\n");
+		if (lines.length > 1) {
+			final String[] values = lines[1].split(" ");
+			if (values.length > 5) {
+				return Long.parseLong(values[5].trim());
+			}
+		}
+		throw new RuntimeException(String.format(
+				"Cannot parse Rx bytes value from adb output:\n%s", output));
+	}
+
+	public static long getTxBytes() throws Exception {
+		final String output = getAdbOutput(
+				"shell cat /proc/net/xt_qtaguid/stats").trim();
+		final String[] lines = output.split("\n");
+		if (lines.length > 1) {
+			final String[] values = lines[1].split(" ");
+			if (values.length > 7) {
+				return Long.parseLong(values[7].trim());
+			}
+		}
+		throw new RuntimeException(String.format(
+				"Cannot parse Tx bytes value from adb output:\n%s", output));
 	}
 }
