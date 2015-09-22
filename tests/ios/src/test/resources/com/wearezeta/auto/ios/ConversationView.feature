@@ -710,7 +710,7 @@ Feature: Conversation View
       | Name      | Contact1  | VimeoLink                   |
       | user1Name | user2Name | https://vimeo.com/129426512 |
 
-  @staging @id3788
+  @regression @id3788
   Scenario Outline: Verify sending link and opening it
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -727,7 +727,7 @@ Feature: Conversation View
       | Name      | Contact1  | Link                  |
       | user1Name | user2Name | https://www.wire.com/ |
 
-  @staging @id3789
+  @regression @id3789
   Scenario Outline: Verify sending link and text in one message and opening the link
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>
@@ -743,3 +743,26 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact1  | MessageAndLink                  |
       | user1Name | user2Name | Check https://www.wire.com/ out |
+
+  @regression @id3798
+  Scenario Outline: Verify input field and action buttons are not shown simultaniously
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>, <Contact2>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I type the message
+    And I return to the chat list
+    When I tap on contact name <Contact2>
+    And I see dialog page
+    And I return to the chat list
+    And I tap on contact name <Contact1>
+	And I see dialog page
+	Then I see Close input options button is not visible
+	And I see the message in input field
+
+    Examples: 
+      | Name      | Contact1   | Contact2  |
+      | user1Name | user2Name  | user3Name |
+

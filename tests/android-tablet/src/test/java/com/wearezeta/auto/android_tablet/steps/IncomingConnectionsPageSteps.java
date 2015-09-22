@@ -7,6 +7,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.android_tablet.pages.TabletIncomingConnectionsPage;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 
+import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -109,5 +110,25 @@ public class IncomingConnectionsPageSteps {
 				"The name '%s' is not visible on Incoming connections page",
 				expectedName), getIncomingConnectionsPage()
 				.waitUntilNameVisible(expectedName));
+	}
+
+	/**
+	 * Scrolls the list of incoming pending connection up to X times to reach a
+	 * particular entry
+	 * 
+	 * @step. ^I scroll the list of pending incoming connections up to (\\d+)
+	 *        times until (.*) entry is visible on Incoming connections page$"
+	 * 
+	 * @param maxTimes
+	 *            max scroll retries
+	 * @param name
+	 *            user name/alias to scroll to
+	 * @throws Exception
+	 */
+	@And("^I scroll the list up to (\\d+) times until (.*) entry is visible on Incoming connections page$")
+	public void IScrollTheListUntilEntryIsVisible(int maxTimes, String name)
+			throws Exception {
+		name = usrMgr.findUserByNameOrNameAlias(name).getName();
+		getIncomingConnectionsPage().scrollUntilEntryIsVisible(name, maxTimes);
 	}
 }

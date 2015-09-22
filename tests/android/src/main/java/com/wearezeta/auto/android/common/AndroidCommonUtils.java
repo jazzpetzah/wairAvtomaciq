@@ -524,4 +524,17 @@ public class AndroidCommonUtils extends CommonUtils {
 		}
 		return false;
 	}
+
+	/**
+	 * http://stackoverflow.com/questions/28150650/open-chrome-with-adb
+	 * 
+	 * @param invitationUrl
+	 * @throws Exception
+	 */
+	public static void openLinkInChrome(String url) throws Exception {
+		executeAdb(String
+				.format("shell am start -a android.intent.action.VIEW "
+						+ "-n com.android.chrome/com.google.android.apps.chrome.Main "
+						+ "-d \"%s\"", url));
+	}
 }

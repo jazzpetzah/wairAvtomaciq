@@ -21,7 +21,7 @@ public class CallingPageSteps {
 		return (CallingLockscreenPage) pagesCollection
 				.getPage(CallingLockscreenPage.class);
 	}
-	
+
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private static final long CALLER_NAME_VISIBILITY_TIMEOUT_MILLISECONDS = 5000;
@@ -228,21 +228,26 @@ public class CallingPageSteps {
 	 * @throws Exception
 	 */
 	@When("^I see (\\d+) users? take part in call$")
-	public void ISeeXUsersTakePartInGroupCall(int expectedUsersCount)
+	public void ISeeXUsersTakePartInGroupCall(final int expectedUsersCount)
 			throws Exception {
 		int actualUsersCount;
-		boolean check = false;
-		int count = 0;
+		int ntries = 0;
 		do {
 			actualUsersCount = getCallingOverlayPage()
 					.numberOfParticipantsInGroupCall();
-			check = (actualUsersCount == expectedUsersCount);
-		} while (!check && count < 3);
-		Assert.assertTrue(String.format(
-				"Number of users (%s) not as expected (%s)", actualUsersCount,
-				expectedUsersCount), check);
+			if (actualUsersCount == expectedUsersCount) {
+				return;
+			} else {
+				Thread.sleep(1500);
+				ntries++;
+			}
+		} while (ntries < 3);
+		throw new AssertionError(
+				String.format(
+						"The actual count of users in call (%s) does not equal to the expected count (%s)",
+						actualUsersCount, expectedUsersCount));
 	}
-	
+
 	/**
 	 * Check if alert notifying that group call is full appears
 	 * 
@@ -254,7 +259,7 @@ public class CallingPageSteps {
 	public void ISeeGroupCallIsFullAlert() throws Exception {
 		Assert.assertTrue(getCallingOverlayPage().isGroupCallFullAlertVisible());
 	}
-	
+
 	/**
 	 * Check whether expected number of users present in group call
 	 * 
@@ -266,9 +271,10 @@ public class CallingPageSteps {
 	public void ICloseGroupCallIsFullAlert() throws Exception {
 		getCallingOverlayPage().closeGroupCallFullAlert();
 	}
-	
+
 	/**
-	 * Check that answer call alert appears if there is another call during ongoing call
+	 * Check that answer call alert appears if there is another call during
+	 * ongoing call
 	 * 
 	 * @step. ^I see answer call alert$
 	 * 
@@ -278,7 +284,7 @@ public class CallingPageSteps {
 	public void ISeeAnswerCallAlert() throws Exception {
 		Assert.assertTrue(getCallingOverlayPage().isAnswerCallAlertVisible());
 	}
-	
+
 	/**
 	 * Cancels another call on answer call alert
 	 * 
@@ -290,7 +296,7 @@ public class CallingPageSteps {
 	public void ICancelNewCallFromAlert() throws Exception {
 		getCallingOverlayPage().answerCallCancel();
 	}
-	
+
 	/**
 	 * Accepts another call on answer call alert
 	 * 
@@ -302,9 +308,10 @@ public class CallingPageSteps {
 	public void IStartNewCallFromAnswerCallAlert() throws Exception {
 		getCallingOverlayPage().answerCallContinue();
 	}
-	
+
 	/**
-	 * Check that end current call alert appears if there is another call during ongoing call
+	 * Check that end current call alert appears if there is another call during
+	 * ongoing call
 	 * 
 	 * @step. ^I see end current call alert$
 	 * 
@@ -312,9 +319,10 @@ public class CallingPageSteps {
 	 */
 	@When("^I see end current call alert$")
 	public void ISeeEndCurrentCallAlert() throws Exception {
-		Assert.assertTrue(getCallingOverlayPage().isEndCurrentCallAlertVisible());
+		Assert.assertTrue(getCallingOverlayPage()
+				.isEndCurrentCallAlertVisible());
 	}
-	
+
 	/**
 	 * Cancels another call on end current call alert
 	 * 
@@ -326,7 +334,7 @@ public class CallingPageSteps {
 	public void ICancelNewCallFromEndCurrentCallAlert() throws Exception {
 		getCallingOverlayPage().endCurrentCallCancel();
 	}
-	
+
 	/**
 	 * I start another call on answer call alert
 	 * 
@@ -338,5 +346,5 @@ public class CallingPageSteps {
 	public void IStartNewCallFromEndCurrentCallAlert() throws Exception {
 		getCallingOverlayPage().endCurrentCallContinue();
 	}
-	
+
 }

@@ -32,7 +32,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.misc.MessageEntry;
 
 public class DialogPage extends AndroidPage {
-	
+
 	private static final Logger log = ZetaLogger.getLog(DialogPage.class
 			.getSimpleName());
 	public static final String MEDIA_PLAY = "PLAY";
@@ -48,6 +48,11 @@ public class DialogPage extends AndroidPage {
 	public static final String idDialogImages = "iv__row_conversation__message_image";
 
 	public static final String idAddPicture = "cursor_menu_item_camera";
+
+	public static final String idSelfAvatar = "civ__cursor__self_avatar";
+	@FindBy(id = idSelfAvatar)
+	private WebElement selfAvatar;
+	final By selfAvatarLocator = By.id(idSelfAvatar);
 
 	private static final Function<String, String> xpathConversationMessageByText = text -> String
 			.format("//*[@id='ltv__row_conversation__message' and @value='%s']",
@@ -188,7 +193,7 @@ public class DialogPage extends AndroidPage {
 	@FindBy(id = idCall)
 	private WebElement callBtn;
 
-	private static final String idCursorCloseButton = "cursor_button_close";
+	public static final String idCursorCloseButton = "cursor_button_close";
 	@FindBy(id = idCursorCloseButton)
 	private WebElement closeBtn;
 
@@ -367,10 +372,10 @@ public class DialogPage extends AndroidPage {
 							"The string '%s' was autocorrected. Please disable autocorrection on the device and restart the test.",
 							message));
 		}
-		if (DriverUtils.waitUntilLocatorAppears(getDriver(),
-				giphyPreviewButtonLocator)
-				&& (giphyPreviewButton.getLocation().y * 100
+		if (DriverUtils.waitUntilLocatorAppears(getDriver(), selfAvatarLocator)
+				&& (selfAvatar.getLocation().y * 100
 						/ getDriver().manage().window().getSize().getHeight() < 90)) {
+			log.info("Press keyboard send button by coordinates");
 			pressKeyboardSendButton();
 			this.hideKeyboard();
 		} else {
@@ -635,7 +640,7 @@ public class DialogPage extends AndroidPage {
 		BufferedImage realImage = ImageUtil.readImageFromFile(CommonUtils
 				.getImagesPath(CommonUtils.class) + DIALOG_IMAGE);
 		double score = ImageUtil.getOverlapScore(realImage, dialogImage,
-				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+				ImageUtil.RESIZE_TO_MAX_SCORE);
 		return (score >= MIN_ACCEPTABLE_IMAGE_VALUE);
 	}
 
@@ -764,7 +769,7 @@ public class DialogPage extends AndroidPage {
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		return ImageUtil.getOverlapScore(pingImage, templateImage,
-				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+				ImageUtil.RESIZE_TO_MAX_SCORE);
 	}
 
 	public boolean waitForPingMessageWithText(String expectedText)
@@ -800,6 +805,8 @@ public class DialogPage extends AndroidPage {
 	private static final double MAX_BUTTON_STATE_OVERLAP = 0.5;
 
 	public void tapPlayPauseBtn() throws Exception {
+		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idPlayPauseMedia));
 		assert DriverUtils.waitUntilElementClickable(getDriver(), playPauseBtn);
 		final BufferedImage initialState = getElementScreenshot(playPauseBtn)
 				.orElseThrow(
@@ -815,7 +822,7 @@ public class DialogPage extends AndroidPage {
 							"Failed to get a screenshot of Play/Pause button"));
 			final double overlapScore = ImageUtil.getOverlapScore(currentState,
 					initialState,
-					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+					ImageUtil.RESIZE_TO_MAX_SCORE);
 			if (overlapScore < MAX_BUTTON_STATE_OVERLAP) {
 				return;
 			} else {
@@ -844,8 +851,8 @@ public class DialogPage extends AndroidPage {
 				.isElementPresentAndDisplayed(getDriver(), cursorBtnImg)) {
 			tapOnCursorFrame();
 			this.hideKeyboard();
-			Thread.sleep(500); // fix for scrolling animation
 		}
+		Thread.sleep(500); // fix for scrolling animation
 	}
 
 	public boolean waitUntilYoutubePlayButtonVisible() throws Exception {
@@ -865,7 +872,7 @@ public class DialogPage extends AndroidPage {
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		return ImageUtil.getOverlapScore(mediaImage, templateImage,
-				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+				ImageUtil.RESIZE_TO_MAX_SCORE);
 	}
 
 	public double getMediaControlIconOverlapScore(String label)
@@ -881,7 +888,7 @@ public class DialogPage extends AndroidPage {
 		}
 		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
 		return ImageUtil.getOverlapScore(mediaImage, templateImage,
-				ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+				ImageUtil.RESIZE_TO_MAX_SCORE);
 	}
 
 	public void tapPlayPauseMediaBarBtn() throws Exception {

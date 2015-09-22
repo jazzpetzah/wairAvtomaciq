@@ -1070,4 +1070,16 @@ public class DialogPageSteps {
 	public void ITapOnLinkWithAMessage() throws Throwable {
 		getDialogPage().tapOnLinkWithinAMessage();
 	}
+	
+	/**
+	 * Verify that input field contains expected text message
+	 * @step. ^I see the message in input field$
+	 * @throws Exception
+	 */
+	@When("^I see the message in input field$")
+	public void WhenISeeMessageInInputField() throws Exception {
+
+		Assert.assertTrue("Input field has incorrect message or empty", 
+					message.equals(getDialogPage().getStringFromInput()));
+	}
 }
