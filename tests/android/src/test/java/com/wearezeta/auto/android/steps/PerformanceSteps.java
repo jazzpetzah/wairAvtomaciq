@@ -201,6 +201,8 @@ public class PerformanceSteps {
 		batteryPerfReport.setPreviousTxBytes(AndroidCommonUtils.getTxBytes());
 	}
 
+	private final static long CALL_STATUS_CHECKING_INTERVAL = 30000; // milliseconds
+
 	/**
 	 * Check whether a call is still in progress
 	 * 
@@ -217,7 +219,7 @@ public class PerformanceSteps {
 			throws Exception {
 		final long millisecondsStarted = System.currentTimeMillis();
 		while (System.currentTimeMillis() - millisecondsStarted <= durationMinutes * 1000 * 60) {
-			Thread.sleep(30000);
+			Thread.sleep(CALL_STATUS_CHECKING_INTERVAL);
 			final List<Flow> flows = commonCallingSteps.getFlows(caller);
 			if (flows.size() == 0) {
 				throw new IllegalStateException(
