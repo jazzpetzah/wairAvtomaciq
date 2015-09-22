@@ -194,9 +194,21 @@ public class ConnectToPageSteps {
 	 * @throws Exception
 	 * 
 	 */
-	@When("^I click Block button on connect to page$")
+	@When("^I click Block button$")
 	public void IClickBlockButton() throws Exception {
 		getConnectToPage().clickBlockBtn();
+	}
+	
+	/**
+	 * Unblocks an incoming connection request
+	 * 
+	 * @step. ^I click Unblock button on connect to page$
+	 * @throws Exception
+	 * 
+	 */
+	@When("^I click Unblock button$")
+	public void IClickUnblockButton() throws Exception {
+		getConnectToPage().clickUnblockBtn();
 	}
 
 	/**

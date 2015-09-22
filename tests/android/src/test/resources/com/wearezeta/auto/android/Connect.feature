@@ -320,10 +320,10 @@ Feature: Connect
     And I see contact list with name <Contact>
     When I tap on contact name <Contact>
     And I see that connection is pending
-    And I click Block button on connect to page
+    And I click Block button
     And I confirm block on connect to page
     And I press back button
-    And I wait for 5 seconds
+    And I wait for 2 seconds
     Then I do not see contact list with name <Contact>
     And I wait until <Contact> exists in backend search results
     And I open Search by tap
@@ -332,8 +332,8 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I see user <Contact> found on People picker page
     And I tap on user name found on People picker page <Contact>
-    Then User info should be shown with Unblock button
-    And I click Unblock button
+    When I click Unblock button
+    Then I see contact list with name <Contact>
 
     Examples: 
       | Name      | Contact   |
