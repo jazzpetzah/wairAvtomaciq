@@ -177,7 +177,9 @@ public final class IOSLocators {
 	public static final String nameLeaveConversationButton = "LEAVE";
 
 	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
-
+	
+	public static final String nameCancelButton = "CANCEL";
+	
 	public static final String nameSilenceConversationButton = "SILENCE";
 
 	public static final String xpathSilenceConversationButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[@name='SILENCE']";
@@ -542,6 +544,7 @@ public final class IOSLocators {
 	public static final String scriptSignInEmailPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"EmailField\"]";
 	public static final String scriptSignInPasswordPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].secureTextFields()[\"PasswordField\"]";
 	public static final String scriptRegistrationEmailInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"RegistrationEmailField\"]";
+	public static final String scriptSearchField = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"textViewSearch\"]";
 
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";

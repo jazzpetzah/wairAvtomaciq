@@ -51,12 +51,9 @@ public class PendingRequestsPage extends IOSPage {
 		for (int i = 0; i < clicks; i++) {
 			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 					By.name(IOSLocators.namePendingRequestIgnoreButton));
-			this.getWait().until(
-					ExpectedConditions
-							.elementToBeClickable(ignoreRequestButton));
+			DriverUtils.waitUntilElementClickable(getDriver(), ignoreRequestButton);
 			ignoreRequestButton.click();
-			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-					By.name(IOSLocators.namePendingRequestIgnoreButton));
+			
 		}
 		page = new ContactListPage(this.getLazyDriver());
 		return page;
