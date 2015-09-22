@@ -21,11 +21,11 @@ Feature: Performance Tests
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     And I see Contact list with contacts
-    When I initialize battery performance report
     And <Contact> calls me using <CallBackend>
     And I answer the call from the overlay bar
     Then I see calling overlay Big bar
     When I lock the device
+    When I initialize battery performance report
     And I verify the call from <Contact> is in progress for <Time> minutes
     Then I generate battery performance report
 
