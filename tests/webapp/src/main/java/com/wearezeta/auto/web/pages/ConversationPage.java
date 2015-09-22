@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.concurrent.Future;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,6 +45,8 @@ public class ConversationPage extends WebPage {
 			.getSimpleName());
 
 	private static final String TOOLTIP_PEOPLE = "People";
+
+	private static final String CALLING_IN_LABEL = "IN ";
 
 	@FindBy(how = How.XPATH, using = WebAppLocators.ConversationPage.xpathLastImageEntry)
 	private WebElement lastImageEntry;
@@ -98,6 +101,9 @@ public class ConversationPage extends WebPage {
 
 	@FindBy(xpath = WebAppLocators.ConversationPage.xpathJoinCallBar)
 	private WebElement joinCallBar;
+
+	@FindBy(css = WebAppLocators.ConversationPage.cssLabelOnOutgoingCall)
+	private WebElement labelOnOutgoingCall;
 
 	public ConversationPage(Future<ZetaWebAppDriver> lazyDriver)
 			throws Exception {
@@ -365,17 +371,21 @@ public class ConversationPage extends WebPage {
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
 	}
 
+	public List<String> getNamesFromOutgoingCallingBar() throws Exception {
+		assert isCallingBarVisible() : "Calling bar is not visible!";
+		String label = labelOnOutgoingCall.getText();
+		label = label.substring(CALLING_IN_LABEL.length(), label.length());
+		return Arrays.asList(label.split(", "));
+	}
+
 	public void waitForCallingBarToBeDisplayedWithName(String name)
 			throws Exception {
 		assert DriverUtils
 				.waitUntilLocatorIsDisplayed(
 						this.getDriver(),
 						By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRootByName
-								.apply(name)),
-						MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar with name "
-				+ name
-				+ " has not been shown within "
-				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
+								.apply(name))) : "Calling bar with name "
+				+ name + " has not been shown.";
 	}
 
 	public void clickAcceptCallButton() throws Exception {
@@ -410,6 +420,11 @@ public class ConversationPage extends WebPage {
 				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot),
 				MAX_CALLING_BAR_VISIBILITY_TIMEOUT) : "Calling bar has not been hidden within "
 				+ MAX_CALLING_BAR_VISIBILITY_TIMEOUT + " second(s)";
+	}
+
+	public boolean isCallingBarVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
+				By.xpath(WebAppLocators.ConversationPage.xpathCallingBarRoot));
 	}
 
 	public String getLastTextMessage() throws Exception {
