@@ -748,4 +748,15 @@ public class ContactListPageSteps {
 	public void IPressLeaveButtonInActionMenuInContactList() throws Throwable {
 		getContactListPage().clickLeaveButtonInActionMenu();
 	}
+	
+	/**
+	 * Clicks the Cancel button in action menu of contact list
+	 * 
+	 * @step ^I press Cancel button in action menu in Contact list$
+	 * @throws Throwable
+	 */
+	@Then("^I press Cancel button in action menu in Contact List$")
+	public void IPressCancelButtonInActionMenuInContactList() throws Throwable {
+		getContactListPage().clickCancelButtonInActionMenu();
+	}
 }
