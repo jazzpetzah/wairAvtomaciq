@@ -76,4 +76,26 @@ public class PendingRequestsPageSteps {
 		Assert.assertTrue(getPendingRequestsPage().isIgnoreButtonDisplayed());
 	}
 
+	/**
+	 * Verifies that you both know section is visible
+	 * 
+	 * @step. ^I see YOU BOTH KNOW people section$
+	 * @throws Throwable
+	 */
+	@When("^I see YOU BOTH KNOW people section$")
+	public void ISeeYOUBOTHKNOWPeopleSection() throws Throwable {
+		Assert.assertTrue(getPendingRequestsPage().isYouBothKnowDisplayed());
+	}
+
+	/**
+	 * Clicks on a person in the you both know section
+	 * 
+	 * @step. ^I click person in YOU BOTH KNOW section$
+	 * @throws Throwable
+	 */
+	@When("^I click person in YOU BOTH KNOW section$")
+	public void IClickPersonInYOUBOTHKNOWSection() throws Throwable {
+		getPendingRequestsPage().clickYouBothKnowPeopleIcon();
+	}
+
 }

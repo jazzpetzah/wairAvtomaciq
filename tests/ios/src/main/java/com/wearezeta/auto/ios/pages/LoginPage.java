@@ -126,10 +126,9 @@ public class LoginPage extends IOSPage {
 		return viewPager != null;
 	}
 
-	public IOSPage signIn() throws IOException {
+	public void signIn() throws IOException {
 
 		signInButton.click();
-		return this;
 	}
 
 	public void switchToEmailLogin() throws Exception {
@@ -169,22 +168,20 @@ public class LoginPage extends IOSPage {
 		}
 	}
 
-	public ContactListPage waitForLoginToFinish() throws Exception {
+	public void waitForLoginToFinish() throws Exception {
 
-		if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(IOSLocators.xpathLoginButton), 40)) {
-			return new ContactListPage(this.getLazyDriver());
-		} else {
 			throw new AssertionError(
 					"Login button is still visible after the timeout");
 		}
 	}
 
-	public IOSPage login() throws Exception {
+	public void login() throws Exception {
 
 		confirmSignInButton.click();
 
-		return waitForLoginToFinish();
+		waitForLoginToFinish();
 	}
 
 	public void clickLoginButton() {

@@ -97,8 +97,8 @@ Feature: Sign In
       | Login      | Password      | Name      | NewPassword  |
       | user1Email | user1Password | user1Name | aqa123456789 |
 
-  @staging @id2726
-  Scenario Outline: Verify first time phone sign in [PORTRAIT]
+  @staging @id3817
+  Scenario Outline: Verify phone sign in when email is assigned [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
     When I tap I HAVE AN ACCOUNT button
@@ -114,8 +114,8 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id3787
-  Scenario Outline: Verify first time phone sign in [LANDSCAPE]
+  @staging @id3818
+  Scenario Outline: Verify phone sign in when email is assigned [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I see sign in screen

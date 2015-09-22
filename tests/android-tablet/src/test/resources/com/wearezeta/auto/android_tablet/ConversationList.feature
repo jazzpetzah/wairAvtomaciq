@@ -73,9 +73,8 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact   | ItemSilence | ItemNotify |
       | user1Name | user2Name | SILENCE     | NOTIFY     |
-      
-#Move to regression after stabilisation
-@id2888 @staging
+
+  @id2888 @regression @rc
   Scenario Outline: Mute and unmute conversation from conversations list in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -97,9 +96,8 @@ Feature: Conversation List
     Examples: 
       | Name      | Contact1  | Contact2  | ItemSilence | ItemNotify |
       | user1Name | user2Name | user3Name | SILENCE     | NOTIFY     |
-      
-#Move to regression after stabilisation
-@id3137 @staging
+
+  @id3137 @regression @rc
   Scenario Outline: Mute and unmute conversation from conversations list in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
