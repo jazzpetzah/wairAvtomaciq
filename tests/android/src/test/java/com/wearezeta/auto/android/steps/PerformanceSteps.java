@@ -253,12 +253,12 @@ public class PerformanceSteps {
 	/**
 	 * Generate battery performance report based on collected data
 	 * 
-	 * @step. ^I generate battery performance report$
+	 * @step. ^I generate battery performance report for (\\d+) minutes?$
 	 * 
 	 * @throws Exception
 	 */
-	@Then("^I generate battery performance report$")
-	public void IGerenearetBatteryPerfReport() throws Exception {
+	@Then("^I generate battery performance report for (\\d+) minutes?$")
+	public void IGerenearetBatteryPerfReport(int durationMinutes) throws Exception {
 		if (this.batteryPerfReport == null) {
 			throw new IllegalStateException(
 					"You have to initialize the report first");
@@ -267,6 +267,7 @@ public class PerformanceSteps {
 				.getBatteryCapacity());
 		batteryPerfReport.setCurrentRxBytes(AndroidCommonUtils.getRxBytes());
 		batteryPerfReport.setCurrentTxBytes(AndroidCommonUtils.getTxBytes());
+		batteryPerfReport.setMinutesDuration(durationMinutes);
 		PerformanceHelpers.storeWidgetDataAsJSON(batteryPerfReport,
 				AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
 	}

@@ -27,7 +27,7 @@ Feature: Performance Tests
     When I lock the device
     When I initialize battery performance report
     And I verify the call from <Contact> is in progress for <Time> minutes
-    Then I generate battery performance report
+    Then I generate battery performance report for <Time> minutes
 
     Examples:
       | Name      | Contact   | Time            | CallBackend |
