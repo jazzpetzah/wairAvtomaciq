@@ -2,6 +2,7 @@ package com.wearezeta.auto.android.steps;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriverException;
 
@@ -14,6 +15,7 @@ import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
+import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
 import com.wearezeta.auto.common.performance.PerformanceHelpers;
@@ -33,6 +35,9 @@ public class PerformanceSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 	private final CommonCallingSteps2 commonCallingSteps = CommonCallingSteps2
 			.getInstance();
+
+	private static final Logger log = ZetaLogger.getLog(PerformanceSteps.class
+			.getSimpleName());
 
 	private static final int DEFAULT_SWIPE_TIME = 500;
 	private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
@@ -220,14 +225,15 @@ public class PerformanceSteps {
 		final long millisecondsStarted = System.currentTimeMillis();
 		while (System.currentTimeMillis() - millisecondsStarted <= durationMinutes * 1000 * 60) {
 			Thread.sleep(CALL_STATUS_CHECKING_INTERVAL);
+			final long secondsElapsed = (System.currentTimeMillis() - millisecondsStarted) / 1000;
+			final long secondsRemaining = durationMinutes * 60 - secondsElapsed;
 			final List<Flow> flows = commonCallingSteps.getFlows(caller);
 			if (flows.size() == 0) {
 				throw new IllegalStateException(
 						String.format(
 								"User '%s' has no active flows, "
 										+ "which means that the call was unexpectedly terminated after %d seconds",
-								caller,
-								(System.currentTimeMillis() - millisecondsStarted) / 1000));
+								caller, secondsElapsed));
 			}
 			for (Flow flow : flows) {
 				final long rxBytes = flow.getBytesIn();
@@ -238,6 +244,9 @@ public class PerformanceSteps {
 				Assert.assertTrue("Sent bytes count should be greater than 0",
 						txBytes > 0);
 			}
+			log.info(String
+					.format("Successfully verified the ongoing call after %d seconds. %d seconds left till the end of the perf test...",
+							secondsElapsed, secondsRemaining));
 		}
 	}
 
