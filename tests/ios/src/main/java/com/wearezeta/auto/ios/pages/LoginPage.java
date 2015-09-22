@@ -204,14 +204,8 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setLogin(String login) throws Exception {
-		getWait().until(ExpectedConditions.elementToBeClickable(loginField));
-		String script = String.format(IOSLocators.scriptSignInEmailPath
-				+ ".setValue(\"%s\")", login);
-		try {
-			this.getDriver().executeScript(script);
-		} catch (WebDriverException ex) {
-			log.debug("fucking appium! " + ex.getMessage());
-		}
+		DriverUtils.sendTextToInputByScript(getDriver(),
+				IOSLocators.scriptSignInEmailPath, login);
 	}
 
 	public String getPassword() {
@@ -219,13 +213,8 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setPassword(String password) throws Exception {
-		String script = String.format(IOSLocators.scriptSignInPasswordPath
-				+ ".setValue(\"%s\")", password);
-		try {
-			this.getDriver().executeScript(script);
-		} catch (WebDriverException ex) {
-			log.debug("fucking web appium! " + ex.getMessage());
-		}
+		DriverUtils.sendTextToInputByScript(getDriver(),
+				IOSLocators.scriptSignInPasswordPath, password);
 	}
 
 	public boolean waitForLogin() throws Exception {
