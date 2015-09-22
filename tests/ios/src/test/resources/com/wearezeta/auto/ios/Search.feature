@@ -393,10 +393,10 @@ Feature: Search
     Examples: 
       | Name      |
       | user1Name |
-      
-  @torun @staging @id3279
+
+  @staging @id3279
   Scenario Outline: Verify action buttons disappear by deleting token from a search field
-  	Given There are 3 users where <Name> is me
+    Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
@@ -414,7 +414,7 @@ Feature: Search
     Then I see open conversation action button on People picker page
     And I press backspace button
     Then I see action buttons disappeared on People picker page
-    
+
     Examples: 
-      | Name      | Contact  |
-      | user1Name | user3Name|
+      | Name      | Contact   |
+      | user1Name | user3Name |
