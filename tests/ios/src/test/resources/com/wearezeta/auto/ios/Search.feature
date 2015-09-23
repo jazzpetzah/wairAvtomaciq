@@ -417,7 +417,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user3Name |
       
-  @torun @staging @id3281
+  @staging @id3281
   Scenario Outline: Verify opening conversation with action button
   	Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
