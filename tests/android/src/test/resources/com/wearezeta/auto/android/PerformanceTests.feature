@@ -18,6 +18,7 @@ Feature: Performance Tests
   @battery_performance
   Scenario Outline: Battery usage while in a call
     Given There are 2 users where <Name> is me
+    Given <Contact> has an avatar picture from file <Picture>
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
     And I see Contact list with contacts
@@ -30,6 +31,6 @@ Feature: Performance Tests
     Then I generate battery performance report for <Time> minutes
 
     Examples:
-      | Name      | Contact   | Time            | CallBackend |
-      | user1Name | user2Name | ${perfDuration} | chrome      |
-#      | user1Name | user2Name | 2               | chrome      |
+      | Name      | Contact   | Time            | CallBackend | Picture                      |
+      | user1Name | user2Name | ${perfDuration} | chrome      | aqaPictureContact600_800.jpg |
+#      | user1Name | user2Name | 2               | chrome      | aqaPictureContact600_800.jpg |
