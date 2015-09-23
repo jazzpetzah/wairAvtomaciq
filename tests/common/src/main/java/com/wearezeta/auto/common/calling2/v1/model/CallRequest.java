@@ -4,18 +4,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CallRequest {
+	private final static long DEFAULT_CALL_TIMEOUT = 1000L * 60 * 60 * 2; // milliseconds
 
 	private final String conversationId;
 	private final Long timeout;
 
 	public CallRequest(String conversationId) {
 		this.conversationId = conversationId;
-		this.timeout = 1000L * 60 * 60;
+		this.timeout = DEFAULT_CALL_TIMEOUT;
 	}
 
 	public CallRequest() {
 		this.conversationId = "";
-		this.timeout = 1000L * 60 * 60;
+		this.timeout = DEFAULT_CALL_TIMEOUT;
 	}
 
 	public String getConversationId() {
