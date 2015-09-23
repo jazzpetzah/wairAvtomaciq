@@ -189,6 +189,8 @@ public class PerformanceSteps {
 	}
 
 	private AndroidBatteryPerfReportModel batteryPerfReport = null;
+	private long rxBytes = 0;
+	private long txBytes = 0;
 
 	/**
 	 * Initialize battery perf report by recording current device metrics for
@@ -203,12 +205,8 @@ public class PerformanceSteps {
 		batteryPerfReport = new AndroidBatteryPerfReportModel();
 		batteryPerfReport.setPreviousCapacityValue(AndroidCommonUtils
 				.getBatteryCapacity());
-		final String packageId = AndroidCommonUtils
-				.getAndroidPackageFromConfig(getClass());
-		batteryPerfReport.setPreviousRxBytes(AndroidCommonUtils
-				.getRxBytes(packageId));
-		batteryPerfReport.setPreviousTxBytes(AndroidCommonUtils
-				.getTxBytes(packageId));
+		batteryPerfReport.setPreviousRxBytes(0);
+		batteryPerfReport.setPreviousTxBytes(0);
 	}
 
 	private final static long CALL_STATUS_CHECKING_INTERVAL = 30000; // milliseconds
@@ -242,11 +240,11 @@ public class PerformanceSteps {
 								caller, secondsElapsed));
 			}
 			for (Flow flow : flows) {
-				final long rxBytes = flow.getBytesIn();
+				rxBytes = flow.getBytesIn();
 				Assert.assertTrue(
 						"Received bytes count should be greater than 0",
 						rxBytes > 0);
-				final long txBytes = flow.getBytesOut();
+				txBytes = flow.getBytesOut();
 				Assert.assertTrue("Sent bytes count should be greater than 0",
 						txBytes > 0);
 			}
@@ -272,12 +270,8 @@ public class PerformanceSteps {
 		}
 		batteryPerfReport.setCurrentCapacityValue(AndroidCommonUtils
 				.getBatteryCapacity());
-		final String packageId = AndroidCommonUtils
-				.getAndroidPackageFromConfig(getClass());
-		batteryPerfReport.setCurrentRxBytes(AndroidCommonUtils
-				.getRxBytes(packageId));
-		batteryPerfReport.setCurrentTxBytes(AndroidCommonUtils
-				.getTxBytes(packageId));
+		batteryPerfReport.setCurrentRxBytes(rxBytes);
+		batteryPerfReport.setCurrentTxBytes(txBytes);
 		batteryPerfReport.setMinutesDuration(durationMinutes);
 		PerformanceHelpers.storeWidgetDataAsJSON(batteryPerfReport,
 				AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
