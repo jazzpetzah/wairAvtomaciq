@@ -204,6 +204,7 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setLogin(String login) throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), loginField);
 		DriverUtils.sendTextToInputByScript(getDriver(),
 				IOSLocators.scriptSignInEmailPath, login);
 	}
@@ -213,6 +214,7 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setPassword(String password) throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), passwordField);
 		DriverUtils.sendTextToInputByScript(getDriver(),
 				IOSLocators.scriptSignInPasswordPath, password);
 	}
