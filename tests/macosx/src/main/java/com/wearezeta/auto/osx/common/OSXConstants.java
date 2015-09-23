@@ -47,13 +47,14 @@ public class OSXConstants {
 	}
 
 	public static final class Common {
-		
+
 		public static final int SIZE_MULTIPLIER_RETINA = 2;
-		
+
 		public static final int SIZE_MULTIPLIER_NO_RETINA = 1;
-		
+
 		public static final String AX_BOOLEAN_FALSE = "0";
-		
+
 		public static final String AX_BOOLEAN_TRUE = "1";
+
 	}
 }

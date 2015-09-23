@@ -12,7 +12,7 @@ import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
 import com.wearezeta.auto.web.pages.ActivationPage;
 import com.wearezeta.auto.web.pages.LoginPage;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -41,7 +41,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I enter user name (.*) on Registration page$")
 	public void IEnterName(String name) throws Exception {
-		PagesCollection.registrationPage.waitForRegistrationPageToFullyLoad();
+		WebappPagesCollection.registrationPage.waitForRegistrationPageToFullyLoad();
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchUserException e) {
@@ -52,7 +52,7 @@ public class RegistrationPageSteps {
 			this.userToRegister.clearNameAliases();
 			this.userToRegister.addNameAlias(name);
 		}
-		PagesCollection.registrationPage.enterName(this.userToRegister
+		WebappPagesCollection.registrationPage.enterName(this.userToRegister
 				.getName());
 	}
 
@@ -80,9 +80,9 @@ public class RegistrationPageSteps {
 		}
 
 		if (flag) {
-			PagesCollection.registrationPage.enterEmail(email);
+			WebappPagesCollection.registrationPage.enterEmail(email);
 		} else {
-			PagesCollection.registrationPage.enterEmail(this.userToRegister
+			WebappPagesCollection.registrationPage.enterEmail(this.userToRegister
 					.getEmail());
 		}
 	}
@@ -105,7 +105,7 @@ public class RegistrationPageSteps {
 			this.userToRegister.setPassword(password);
 			this.userToRegister.addPasswordAlias(password);
 		}
-		PagesCollection.registrationPage.enterPassword(this.userToRegister
+		WebappPagesCollection.registrationPage.enterPassword(this.userToRegister
 				.getPassword());
 	}
 
@@ -118,7 +118,7 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I submit registration form$")
 	public void ISubmitRegistration() throws Exception {
-		PagesCollection.registrationPage.submitRegistration();
+		WebappPagesCollection.registrationPage.submitRegistration();
 	}
 
 	/**
@@ -150,8 +150,7 @@ public class RegistrationPageSteps {
 	@Then("^I see email (.*) on [Vv]erification page$")
 	public void ISeeVerificationEmail(String email) throws NoSuchUserException {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		assertThat(
-				PagesCollection.registrationPage.getVerificationEmailAddress(),
+		assertThat(WebappPagesCollection.registrationPage.getVerificationEmailAddress(),
 				equalTo(email));
 	}
 
@@ -167,7 +166,7 @@ public class RegistrationPageSteps {
 	@Then("^I see error \"(.*)\" on [Vv]erification page$")
 	public void ISeeErrorMessageOnVerificationPage(String message)
 			throws Throwable {
-		assertThat(PagesCollection.registrationPage.getErrorMessage(),
+		assertThat(WebappPagesCollection.registrationPage.getErrorMessage(),
 				equalTo(message));
 	}
 
@@ -183,10 +182,10 @@ public class RegistrationPageSteps {
 	public void ARedDotIsShownOnTheEmailField(String not) throws Exception {
 		if (not == null) {
 			assertThat("Red dot on email field",
-					PagesCollection.registrationPage.isRedDotOnEmailField());
+					WebappPagesCollection.registrationPage.isRedDotOnEmailField());
 		} else {
 			assertThat("Red dot on email field",
-					!PagesCollection.registrationPage.isRedDotOnEmailField());
+					!WebappPagesCollection.registrationPage.isRedDotOnEmailField());
 		}
 	}
 
@@ -199,7 +198,7 @@ public class RegistrationPageSteps {
 	@Then("^I verify that an envelope icon is shown$")
 	public void IVerifyThatAnEnvelopeIconIsShown() throws Exception {
 		assertThat("Envelope icon not shown",
-				PagesCollection.registrationPage.isEnvelopeShown());
+				WebappPagesCollection.registrationPage.isEnvelopeShown());
 	}
 
 	/**
@@ -232,11 +231,11 @@ public class RegistrationPageSteps {
 	public void WhenIActivateUserByUrl() throws Exception {
 		final String link = BackendAPIWrappers
 				.getUserActivationLink(this.activationMessage);
-		ActivationPage activationPage = (ActivationPage) PagesCollection.registrationPage
+		ActivationPage activationPage = (ActivationPage) WebappPagesCollection.registrationPage
 				.instantiatePage(ActivationPage.class);
 		activationPage.setUrl(link);
 		activationPage.navigateTo();
-		PagesCollection.contactListPage = activationPage
+		WebappPagesCollection.contactListPage = activationPage
 				.verifyActivation(ACTIVATION_TIMEOUT);
 
 		this.userToRegister.setUserState(UserState.Created);
@@ -250,11 +249,11 @@ public class RegistrationPageSteps {
 				.addPasswordAlias(ClientUsersManager.PASSWORD_ALIAS_TEMPLATE
 						.apply(userIndex));
 
-		if (PagesCollection.loginPage == null) {
-			PagesCollection.loginPage = (LoginPage) activationPage
+		if (WebappPagesCollection.loginPage == null) {
+			WebappPagesCollection.loginPage = (LoginPage) activationPage
 					.instantiatePage(LoginPage.class);
 		}
-		PagesCollection.loginPage.waitForLogin();
+		WebappPagesCollection.loginPage.waitForLogin();
 	}
 
 	/**
@@ -266,7 +265,7 @@ public class RegistrationPageSteps {
 	 */
 	@Given("^I switch to [Ss]ign [Ii]n page$")
 	public void ISwitchToLoginPage() throws Exception {
-		PagesCollection.loginPage = PagesCollection.registrationPage
+		WebappPagesCollection.loginPage = WebappPagesCollection.registrationPage
 				.switchToLoginPage();
 	}
 }

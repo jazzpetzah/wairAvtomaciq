@@ -1,76 +1,135 @@
 Feature: Sign In
 
-  @smoke @id690
-  Scenario Outline: Sign in ZClient
-    Given There is 1 user where <Name> is me
-    And I see Welcome screen
-    When I start Sign In
-    And I type login <Login>
-    And I type password <Password>
-    And I press Sign In button
-    Then I see my name <Name> in Contact list
+  @regression @id1788
+   Scenario Outline: Sign in to Wire OS X
+      Given There is 1 user where <Name> is me
+      Given I switch to sign in page
+      Given I see Sign In page
+      When I enter email <Email>
+      And I enter password "<Password>"
+      And I press Sign In button
+      Then I am signed in properly
+      And I see Contacts Upload dialog
+      And I close Contacts Upload dialog
+      And I see my avatar on top of Contact list
 
-    Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      Examples: 
+         | Email      | Password      | Name      |
+         | user1Email | user1Password | user1Name |
 
-  #Not supported functionality - Sign Out
-  @regression @id525
-  Scenario Outline: Change Sign in user
-    Given There are 2 users where <Name> is me
-    Given I Sign in using login <Login2> and password <Password2>
-    And I see my name <Name2> in Contact list
-    And I open self profile
-    And I open picture settings
-    And I choose to select picture from image file
-    And I select image file userpicture_portrait.jpg
-    And I see photo in User profile
-    When I sign out
-    And I Sign in using login <Login> and password <Password>
-    Then I see my name <Name> in Contact list
-    And I open self profile
-    And I see name <Name> in User profile
-    And I see email of <Name> in User profile
-    And I open picture settings
-    And I see changed user picture
+  @smoke @id1792
+   Scenario Outline: Verify sign in error appearance in case of wrong credentials
+      Given There is 1 user where user1Name is me
+      Given I switch to sign in page
+      When I enter email <Email>
+      And I enter password "<Password>"
+      And I press Sign In button
+      Then the sign in error message reads <Error>
+      And a red dot is shown inside the email field on the sign in form
+      And a red dot is shown inside the password field on the sign in form
 
-    Examples: 
-      | Login      | Login2     | Password      | Password2     | Name      | Name2     |
-      | user1Email | user2Email | user1Password | user2Password | user1Name | user2Name |
+      Examples: 
+         | Email      | Password      | Error                                      |
+         | user1Email |               | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
+         | user1Email | wrongPassword | WRONG EMAIL OR PASSWORD. PLEASE TRY AGAIN. |
 
-  @regression @id1120
-  Scenario Outline: Verify I see wrong address or password message
-    And I see Welcome screen
-    When I start Sign In
-    And I type login <Login>
-    And I type password <Password>
-    And I press Sign In button
-    Then I see wrong credentials message
-    When I type login <Login2>
-    Then I do not see wrong credentials message
-    When I press Sign In button
-    And I see wrong credentials message
-    And I type password <Password2> by AppleScript
-    Then I do not see wrong credentials message
+  @smoke @id2714
+   Scenario Outline: Verify you can sign in with a phone number with correct credentials
+      Given There is 1 user where <Name> is me
+      Given I switch to sign in page
+      When I switch to phone number sign in page
+      When I sign in using phone number of user <Name>
+      And I click on forward button on phone number sign in
+      And I enter phone verification code for user <Name>
+      Then I am signed in properly
+      And I see Contacts Upload dialog
+      And I close Contacts Upload dialog
+      And I see my avatar on top of Contact list
 
-    Examples: 
-      | Login | Password | Login2 | Password2 |
-      | aaa   | aaa      | aaa2   | aaa2      |
+      Examples: 
+         | Name      |
+         | user1Name |
 
-  @regression @id1116
-  Scenario Outline: Verify Sign In progress behaviour while there are probelms with internet connectivity
-    Given There is 1 user where <Name> is me
-    Given Internet connection is lost
-    And I see Welcome screen
-    When I start Sign In
-    And I type login <Login>
-    And I type password <Password>
-    And I sign in expecting No Internet message
-    Then I see internet connectivity error message
-    When Internet connection is restored
-    And I press Sign In button
-    Then I see my name <Name> in Contact list
+  @regression @id2715
+   Scenario Outline: Verify you see correct error message when sign in with incorrect phone number
+      Given I switch to sign in page
+      When I switch to phone number sign in page
+      And I enter country code <CountryCode> on phone number sign in
+      And I enter phone number <PhoneNumber> on phone number sign in
+      And I click on forward button on phone number sign in
+      Then I see invalid phone number error message saying <Error>
 
-    Examples: 
-      | Login      | Password      | Name      |
-      | user1Email | user1Password | user1Name |
+      Examples: 
+         | CountryCode | PhoneNumber | Error                |
+         | +49         | 9999999999  | INVALID PHONE NUMBER |
+         | +49         | qwerqwer    | INVALID PHONE NUMBER |
+         | +49         | !@$!@$      | INVALID PHONE NUMBER |
+
+  @regression @id2716
+   Scenario Outline: Verify you see correct error message when sign in with a phone number with incorrect code
+      Given There is 1 user where <Name> is me
+      Given I switch to sign in page
+      When I switch to phone number sign in page
+      When I sign in using phone number of user <Name>
+      And I click on forward button on phone number sign in
+      And I enter wrong phone verification code for user <Name>
+      Then I see invalid phone code error message saying <Error>
+
+      Examples: 
+         | Name      | Error        |
+         | user1Name | INVALID CODE |
+
+  @regression @id2707
+   Scenario Outline: Verify you are asked to add an email address after sign in with a phone number
+      Given There is 1 user where <Name> is me with phone number only
+      Given I switch to sign in page
+      When I switch to phone number sign in page
+      When I sign in using phone number of user <Name>
+      And I click on forward button on phone number sign in
+      And I enter phone verification code for emailless user <Name>
+      And I enter email address <EmailOfOtherUser> on add email address dialog
+      And I enter password <PasswordOfOtherUser> on add email address dialog
+      And I click add button on add email address dialog
+      Then I see error message on add email address dialog saying <ErrorAlready>
+      And a red dot is shown inside the email field on add email address dialog
+      When I enter email address <InvalidEmail> on add email address dialog
+      And I enter password <PasswordOfOtherUser> on add email address dialog
+      And I click add button on add email address dialog
+      Then I see error message on add email address dialog saying <ErrorInvalidEmail>
+      And a red dot is shown inside the email field on add email address dialog
+      When I enter email of user <Name> on add email address dialog
+      And I enter password <InvalidPassword> on add email address dialog
+      And I click add button on add email address dialog
+      Then I see error message on add email address dialog saying <ErrorInvalidPassword>
+      And a red dot is shown inside the password field on add email address dialog
+      When I enter email of user <Name> on add email address dialog
+      And I enter password <PasswordOfOtherUser> on add email address dialog
+      And I click add button on add email address dialog
+      Then I verify that an envelope icon is shown
+
+      Examples: 
+         | Name      | EmailOfOtherUser      | PasswordOfOtherUser | ErrorAlready                | InvalidEmail | ErrorInvalidEmail                   | InvalidPassword | ErrorInvalidPassword                                |
+         | user1Name | qa1+qa1@wearezeta.com | aqa123456!          | EMAIL ADDRESS ALREADY TAKEN | @example.com | PLEASE ENTER A VALID EMAIL ADDRESS. | 123             | PLEASE CHOOSE A PASSWORD WITH AT LEAST 8 CHARACTERS |
+
+  @regression @id2227
+   Scenario Outline: Show invitation button when Gmail import on registration has no suggestions
+      Given There is 1 user where <Name> is me
+      Given I switch to sign in page
+      Given I see Sign In page
+      When I enter email <Email>
+      And I enter password "<Password>"
+      And I press Sign In button
+      Then I am signed in properly
+      And I see Contacts Upload dialog
+      And I click button to import Gmail Contacts
+      And I see Google login popup
+      When I sign up at Google with email <Gmail> and password <GmailPassword>
+      Then I see Search is opened
+      And I see Bring Your Friends button on People Picker page
+      When I click Bring Your Friends button on People Picker page
+      Then I remember invitation link on Bring Your Friends popover
+      And I do not see Gmail Import button on People Picker page
+
+      Examples: 
+         | Email      | Password      | Name      | Gmail                       | GmailPassword |
+         | user1Email | user1Password | user1Name | smoketester.wire2@gmail.com | aqa123456     |

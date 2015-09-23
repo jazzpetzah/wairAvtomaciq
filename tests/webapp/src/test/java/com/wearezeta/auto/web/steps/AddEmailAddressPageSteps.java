@@ -2,7 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -25,7 +25,7 @@ public class AddEmailAddressPageSteps {
 	public void IEnterEmailOfUserOnAddEmailAddressDialog(String name)
 			throws Throwable {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
-		PagesCollection.addEmailAddressPage.setEmail(user.getEmail());
+		WebappPagesCollection.addEmailAddressPage.setEmail(user.getEmail());
 	}
 
 	/**
@@ -39,7 +39,7 @@ public class AddEmailAddressPageSteps {
 	@When("^I enter email address (.*) on add email address dialog$")
 	public void IEnterEmailOnAddEmailAddressDialog(String email)
 			throws Throwable {
-		PagesCollection.addEmailAddressPage.setEmail(email);
+		WebappPagesCollection.addEmailAddressPage.setEmail(email);
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class AddEmailAddressPageSteps {
 	 */
 	@When("^I enter password (.*) on add email address dialog$")
 	public void IEnterPasswordOnAddEmailAddressDialog(String password) throws Exception {
-		PagesCollection.addEmailAddressPage.setPassword(password);
+		WebappPagesCollection.addEmailAddressPage.setPassword(password);
 	}
 
 	/**
@@ -62,7 +62,7 @@ public class AddEmailAddressPageSteps {
 	 */
 	@When("^I click add button on add email address dialog$")
 	public void IClickAddButtonOnAddEmailAddressDialog() {
-		PagesCollection.addEmailAddressPage.clickAddButton();
+		WebappPagesCollection.addEmailAddressPage.clickAddButton();
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class AddEmailAddressPageSteps {
 	public void ISeeErrorMessageOnAddEmailAddressDialog(String message)
 			throws Exception {
 		assertThat("invalid email error",
-				PagesCollection.addEmailAddressPage.getErrorMessage(),
+				WebappPagesCollection.addEmailAddressPage.getErrorMessage(),
 				equalTo(message));
 	}
 
@@ -92,7 +92,7 @@ public class AddEmailAddressPageSteps {
 	@Then("^a red dot is shown inside the email field on add email address dialog$")
 	public void ARedDotIsShownOnTheEmailField() throws Exception {
 		assertThat("Red dot on email field",
-				PagesCollection.addEmailAddressPage.isRedDotOnEmailField());
+				WebappPagesCollection.addEmailAddressPage.isRedDotOnEmailField());
 	}
 
 	/**
@@ -106,6 +106,6 @@ public class AddEmailAddressPageSteps {
 	@Then("^a red dot is shown inside the password field on add email address dialog$")
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
 		assertThat("Red dot on password field",
-				PagesCollection.addEmailAddressPage.isRedDotOnPasswordField());
+				WebappPagesCollection.addEmailAddressPage.isRedDotOnPasswordField());
 	}
 }

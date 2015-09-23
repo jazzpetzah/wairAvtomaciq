@@ -4,7 +4,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
@@ -37,12 +37,12 @@ public class PendingConnectionsPageSteps {
 		mailAlias = mailAlias.trim();
 		if ("".equals(mailAlias)) {
 			// no mail given. just check if any text is in mail field
-			assertThat(PagesCollection.pendingConnectionsPage
+			assertThat(WebappPagesCollection.pendingConnectionsPage
 					.getEmailByName(user.getId()), not(equalTo("")));
 		} else {
 			// mail given. strict check for mail
 			String email = user.getEmail();
-			assertThat(PagesCollection.pendingConnectionsPage.getEmailByName(
+			assertThat(WebappPagesCollection.pendingConnectionsPage.getEmailByName(
 					user.getId()).toLowerCase(), equalTo(email));
 
 		}
@@ -63,7 +63,7 @@ public class PendingConnectionsPageSteps {
 	public void ISeeConnectionMessageFromUser(String message, String user)
 			throws Exception {
 		user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.pendingConnectionsPage
+		Assert.assertTrue(WebappPagesCollection.pendingConnectionsPage
 				.getMessageByName(user).equals(message));
 
 	}
@@ -80,7 +80,7 @@ public class PendingConnectionsPageSteps {
 	public void ISeeAvatarFromUser(String nameAlias) throws Exception {
 		//user = usrMgr.replaceAliasesOccurences(user, FindBy.NAME_ALIAS);
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(nameAlias);
-		Assert.assertTrue(PagesCollection.pendingConnectionsPage
+		Assert.assertTrue(WebappPagesCollection.pendingConnectionsPage
 				.isAvatarByIdVisible(user.getId()));
 
 	}
@@ -98,7 +98,7 @@ public class PendingConnectionsPageSteps {
 	public void ISeeAcceptButtonConnectionFromUser(String userAlias)
 			throws Exception {
 		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.pendingConnectionsPage
+		Assert.assertTrue(WebappPagesCollection.pendingConnectionsPage
 				.isAcceptRequestButtonForUserVisible(user.getId()));
 	}
 
@@ -115,7 +115,7 @@ public class PendingConnectionsPageSteps {
 	public void ISeeIgnoreButtonConnectionFromUser(String userAlias)
 			throws Exception {
 		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
-		Assert.assertTrue(PagesCollection.pendingConnectionsPage
+		Assert.assertTrue(WebappPagesCollection.pendingConnectionsPage
 				.isIgnoreRequestButtonForUserVisible(user.getId()));
 	}
 
@@ -134,7 +134,7 @@ public class PendingConnectionsPageSteps {
 			String userAlias) throws Exception {
 		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
 		AccentColor accentColor = usrMgr.getSelfUser().getAccentColor();
-		assertThat(PagesCollection.pendingConnectionsPage
+		assertThat(WebappPagesCollection.pendingConnectionsPage
 				.getAcceptRequestButtonBgColor(user.getId()),equalTo(accentColor));
 	}
 
@@ -153,7 +153,7 @@ public class PendingConnectionsPageSteps {
 			throws Exception {
 		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
 		AccentColor accentColor = usrMgr.getSelfUser().getAccentColor();
-		Assert.assertTrue(PagesCollection.pendingConnectionsPage
+		Assert.assertTrue(WebappPagesCollection.pendingConnectionsPage
 				.getIgnoreRequestButtonBorderColor(user.getId()).equals(accentColor));
 	}
 
@@ -172,8 +172,7 @@ public class PendingConnectionsPageSteps {
 	public void ISeeXAvatarsInConnectionRequest(int amount, String nameAlias)
 			throws Throwable {
 		ClientUser user = usrMgr.findUserBy(nameAlias, FindBy.NAME_ALIAS);
-		assertThat(
-				PagesCollection.pendingConnectionsPage.getAmountOfKnownConnectionAvatars(user
+		assertThat(WebappPagesCollection.pendingConnectionsPage.getAmountOfKnownConnectionAvatars(user
 						.getId()), equalTo(amount));
 	}
 
@@ -191,8 +190,7 @@ public class PendingConnectionsPageSteps {
 	public void ISeeXOthersInConnectionRequest(int amount, String nameAlias)
 			throws Throwable {
 		ClientUser user = usrMgr.findUserBy(nameAlias, FindBy.NAME_ALIAS);
-		assertThat(
-				PagesCollection.pendingConnectionsPage.getOthersTextOfKnownConnections(user
+		assertThat(WebappPagesCollection.pendingConnectionsPage.getOthersTextOfKnownConnections(user
 						.getId()), equalTo("+" + amount));
 	}
 
@@ -209,7 +207,7 @@ public class PendingConnectionsPageSteps {
 	public void IAcceptConnectionRequestFromUser(String userAlias)
 			throws Exception {
 		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
-		PagesCollection.pendingConnectionsPage.acceptRequestFromUser(user
+		WebappPagesCollection.pendingConnectionsPage.acceptRequestFromUser(user
 				.getId());
 	}
 
@@ -226,7 +224,7 @@ public class PendingConnectionsPageSteps {
 	public void IIgnoreConnectionRequestFromUser(String userAlias)
 			throws Exception {
 		ClientUser user = usrMgr.findUserBy(userAlias, FindBy.NAME_ALIAS);
-		PagesCollection.pendingConnectionsPage
+		WebappPagesCollection.pendingConnectionsPage
 				.ignoreRequestFromUser(user.getId());
 	}
 

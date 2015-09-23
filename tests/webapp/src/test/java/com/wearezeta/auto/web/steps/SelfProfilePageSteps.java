@@ -6,7 +6,7 @@ import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
@@ -28,7 +28,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I click gear button on self profile page$")
 	public void IClickGearButton() throws Exception {
-		PagesCollection.selfProfilePage.clickGearButton();
+		WebappPagesCollection.selfProfilePage.clickGearButton();
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I select (.*) menu item on self profile page$")
 	public void ISelectGearMenuItem(String name) throws Exception {
-		PagesCollection.selfProfilePage.selectGearMenuItem(name);
+		WebappPagesCollection.selfProfilePage.selectGearMenuItem(name);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class SelfProfilePageSteps {
 	@And("^I see user name on self profile page (.*)$")
 	public void ISeeUserNameOnSelfProfilePage(String name) throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		boolean nameCorrect = PagesCollection.selfProfilePage
+		boolean nameCorrect = WebappPagesCollection.selfProfilePage
 				.checkNameInSelfProfile(name);
 		Assert.assertTrue(nameCorrect);
 	}
@@ -76,7 +76,7 @@ public class SelfProfilePageSteps {
 			throws Exception {
 		phoneNumber = usrMgr.replaceAliasesOccurences(phoneNumber,
 				FindBy.PHONENUMBER_ALIAS);
-		assertThat(PagesCollection.selfProfilePage.getUserPhoneNumber(),
+		assertThat(WebappPagesCollection.selfProfilePage.getUserPhoneNumber(),
 				equalTo(phoneNumber));
 	}
 
@@ -99,7 +99,7 @@ public class SelfProfilePageSteps {
 
 		}
 
-		String actualEmail = PagesCollection.selfProfilePage.getUserMail();
+		String actualEmail = WebappPagesCollection.selfProfilePage.getUserMail();
 		Assert.assertEquals(email, actualEmail);
 	}
 
@@ -113,7 +113,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I change username to (.*)")
 	public void IChangeUserNameTo(String name) {
-		PagesCollection.selfProfilePage.setUserName(name);
+		WebappPagesCollection.selfProfilePage.setUserName(name);
 		usrMgr.getSelfUser().setName(name);
 	}
 
@@ -130,7 +130,7 @@ public class SelfProfilePageSteps {
 	 */
 	@Then("^I set my accent color to (\\w+)$")
 	public void ISetMyAccentColorTo(String colorName) throws Exception {
-		PagesCollection.selfProfilePage.selectAccentColor(colorName);
+		WebappPagesCollection.selfProfilePage.selectAccentColor(colorName);
 	}
 
 	/*
@@ -146,7 +146,7 @@ public class SelfProfilePageSteps {
 	@Then("^I verify my accent color in color picker is set to (\\w+) color$")
 	public void IVerifyMyAccentColor(String colorName) {
 		final int expectedColorId = AccentColor.getByName(colorName).getId();
-		final int actualColorId = PagesCollection.selfProfilePage
+		final int actualColorId = WebappPagesCollection.selfProfilePage
 				.getCurrentAccentColorId();
 		Assert.assertTrue("my actual accent color is not set",
 				actualColorId == expectedColorId);
@@ -161,7 +161,7 @@ public class SelfProfilePageSteps {
 	 */
 	@And("^I click camera button$")
 	public void IClickCameraButton() throws Exception {
-		PagesCollection.profilePicturePage = PagesCollection.selfProfilePage
+		WebappPagesCollection.profilePicturePage = WebappPagesCollection.selfProfilePage
 				.clickCameraButton();
 	}
 
@@ -179,7 +179,7 @@ public class SelfProfilePageSteps {
 	@Then("^I verify my avatar background color is set to (\\w+) color$")
 	public void IVerifyMyAvatarColor(String colorName) throws Exception {
 		final AccentColor expectedColor = AccentColor.getByName(colorName);
-		final AccentColor avatarColor = PagesCollection.selfProfilePage
+		final AccentColor avatarColor = WebappPagesCollection.selfProfilePage
 				.getCurrentAvatarAccentColor();
 		Assert.assertTrue("my avatar background accent color is not set",
 				avatarColor == expectedColor);
