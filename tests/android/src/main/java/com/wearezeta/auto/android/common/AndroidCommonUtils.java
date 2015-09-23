@@ -582,25 +582,34 @@ public class AndroidCommonUtils extends CommonUtils {
 	 * @throws Exception
 	 */
 	private static long getNetworkStatValue(final String packageId,
-			final int columnNumber) throws Exception {
-		final String output = getAdbOutput(
-				"shell cat /proc/net/xt_qtaguid/stats").trim();
+			final Pattern pattern) throws Exception {
+		final String output = getAdbOutput("shell dumpsys netstats detail")
+				.trim();
 		final String[] lines = output.split("\n");
+		boolean isEntryFound = false;
+		long result = 0;
 		for (String line : lines) {
-			final String[] values = line.split(" ");
-			if (values.length > columnNumber
-					&& values[3].trim().equals(getUidForPackage(packageId))) {
-				return Long.parseLong(values[columnNumber].trim());
+			if (line.contains("uid=")) {
+				isEntryFound = line.contains(String.format("uid=%s",
+						getUidForPackage(packageId)));
+			}
+			if (isEntryFound) {
+				final Matcher matcher = pattern.matcher(line);
+				if (matcher.find()) {
+					result += Long.parseLong(matcher.group(1));
+				}
 			}
 		}
-		return 0;
+		return result;
 	}
 
 	public static long getRxBytes(String packageId) throws Exception {
-		return getNetworkStatValue(packageId, 5);
+		return getNetworkStatValue(packageId,
+				Pattern.compile("rxBytes=([0-9]+)"));
 	}
 
 	public static long getTxBytes(String packageId) throws Exception {
-		return getNetworkStatValue(packageId, 7);
+		return getNetworkStatValue(packageId,
+				Pattern.compile("txBytes=([0-9]+)"));
 	}
 }
