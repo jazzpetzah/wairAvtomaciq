@@ -1,6 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.YouAreInvitedPage;
 
 import cucumber.api.java.en.Then;
@@ -23,9 +23,9 @@ public class SendInvitationPopoverPageSteps {
 	public void ISeeSendInvitationPopover(String shouldNotBeVisible)
 			throws Exception {
 		if (shouldNotBeVisible == null) {
-			PagesCollection.bringYourFriendsPopover.isVisible();
+			WebappPagesCollection.bringYourFriendsPopover.isVisible();
 		} else {
-			PagesCollection.bringYourFriendsPopover.isNotVisible();
+			WebappPagesCollection.bringYourFriendsPopover.isNotVisible();
 		}
 	}
 
@@ -38,7 +38,7 @@ public class SendInvitationPopoverPageSteps {
 	 */
 	@Then("^I click Invite button on Bring Your Friends popover$")
 	public void IClickInviteButton() throws Exception {
-		PagesCollection.bringYourFriendsPopover.clickInviteButton();
+		WebappPagesCollection.bringYourFriendsPopover.clickInviteButton();
 	}
 
 	/**
@@ -50,7 +50,7 @@ public class SendInvitationPopoverPageSteps {
 	 */
 	@When("^I remember invitation link on Bring Your Friends popover$")
 	public void IRemeberInvitationLink() {
-		invitationLink = PagesCollection.bringYourFriendsPopover.parseInvitationLink();
+		invitationLink = WebappPagesCollection.bringYourFriendsPopover.parseInvitationLink();
 	}
 
 	/**
@@ -67,9 +67,9 @@ public class SendInvitationPopoverPageSteps {
 					"Invitation link has not been remembered before!");
 		}
 
-		PagesCollection.youAreInvitedPage = (YouAreInvitedPage) PagesCollection.loginPage
+		WebappPagesCollection.youAreInvitedPage = (YouAreInvitedPage) WebappPagesCollection.loginPage
 				.instantiatePage(YouAreInvitedPage.class);
-		PagesCollection.youAreInvitedPage.setUrl(invitationLink);
-		PagesCollection.youAreInvitedPage.navigateTo();
+		WebappPagesCollection.youAreInvitedPage.setUrl(invitationLink);
+		WebappPagesCollection.youAreInvitedPage.navigateTo();
 	}
 }

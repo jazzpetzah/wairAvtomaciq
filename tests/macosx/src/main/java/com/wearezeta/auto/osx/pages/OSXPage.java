@@ -1,33 +1,28 @@
 package com.wearezeta.auto.osx.pages;
 
 import java.io.IOException;
-import java.util.concurrent.Future;
 
 import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
+import java.util.concurrent.Future;
 
 public abstract class OSXPage extends BasePage {
+
 	private String path = null;
 
 	@Override
 	protected ZetaOSXDriver getDriver() throws Exception {
 		return (ZetaOSXDriver) super.getDriver();
 	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	protected Future<ZetaOSXDriver> getLazyDriver() {
-		return (Future<ZetaOSXDriver>) super.getLazyDriver();
+
+	public OSXPage(Future<ZetaOSXDriver> osxDriver) throws Exception {
+		super(osxDriver);
 	}
 
-	public OSXPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
-		this(lazyDriver, null);
-	}
-
-	public OSXPage(Future<ZetaOSXDriver> lazyDriver, String path)
+	public OSXPage(Future<ZetaOSXDriver> osxDriver, String path)
 			throws Exception {
-		super(lazyDriver);
+		super(osxDriver);
 		this.path = path;
 	}
 
@@ -46,12 +41,12 @@ public abstract class OSXPage extends BasePage {
 	}
 
 	public void startApp() throws Exception {
-		this.getDriver().navigate().to(OSXExecutionContext.wirePath);
+		this.getDriver().navigate().to(OSXExecutionContext.WIRE_APP_PATH);
 	}
 
 	public static void clearPagesCollection() throws IllegalArgumentException,
 			IllegalAccessException {
-		clearPagesCollection(PagesCollection.class, OSXPage.class);
+		clearPagesCollection(OSXPagesCollection.class, OSXPage.class);
 	}
 
 	// not used in OS X

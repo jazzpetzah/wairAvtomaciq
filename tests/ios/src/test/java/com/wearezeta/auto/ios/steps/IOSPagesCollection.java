@@ -5,6 +5,7 @@ import com.wearezeta.auto.common.BasePage;
 import com.wearezeta.auto.ios.pages.IOSPage;
 
 public class IOSPagesCollection extends AbstractPagesCollection {
+
 	private static IOSPagesCollection instance = null;
 
 	public synchronized static IOSPagesCollection getInstance() {
@@ -24,19 +25,13 @@ public class IOSPagesCollection extends AbstractPagesCollection {
 	}
 
 	@Override
-	public IOSPage getPage(Class<? extends BasePage> pageClass)
-			throws Exception {
-		return (IOSPage) super.getPage(pageClass);
-	}
-
-	@Override
 	public void setFirstPage(BasePage page) {
 		if (!(page instanceof IOSPage)) {
 			throw new IllegalStateException(
-					String.format(
-							"Only instances of '%s' are allowed. '%s' instance has been provided instead",
-							this.getClass().getSimpleName(), page.getClass()
-									.getSimpleName()));
+				String.format(
+					"Only instances of '%s' are allowed. '%s' instance has been provided instead",
+					this.getClass().getSimpleName(), page.getClass()
+					.getSimpleName()));
 		}
 		super.setFirstPage((IOSPage) page);
 	}
