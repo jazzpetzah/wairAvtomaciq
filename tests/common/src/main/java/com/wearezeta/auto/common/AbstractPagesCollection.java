@@ -22,15 +22,14 @@ public abstract class AbstractPagesCollection {
 		return pagesMapping.get(pagesMapping.keySet().iterator().next());
 	}
 
-	public BasePage getPage(Class<? extends BasePage> pageClass)
-			throws Exception {
+	public <T extends BasePage> T getPage(Class<T> pageClass) throws Exception {
 		if (!pagesMapping.containsKey(pageClass)) {
 			this.printPages();
 			log.debug(String.format(" > +++ %s", pageClass.getSimpleName()));
 			pagesMapping.put(pageClass,
 					getCommonPage().instantiatePage(pageClass));
 		}
-		return pagesMapping.get(pageClass);
+		return pageClass.cast(pagesMapping.get(pageClass));
 	}
 
 	public boolean removePage(Class<? extends BasePage> pageClass) {

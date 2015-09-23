@@ -14,7 +14,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager.FindBy;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.external.PasswordChangePage;
 import com.wearezeta.auto.web.pages.external.PasswordChangeRequestPage;
 
@@ -44,12 +44,12 @@ public class PasswordChangeRequestSteps {
 	 */
 	@Then("^I see Password Change Request page$")
 	public void ISeePasswordChangeRequestPage() throws Exception {
-		if (PagesCollection.passwordChangeRequestPage == null) {
-			PagesCollection.passwordChangeRequestPage = (PasswordChangeRequestPage) PagesCollection.loginPage
+		if (WebappPagesCollection.passwordChangeRequestPage == null) {
+			WebappPagesCollection.passwordChangeRequestPage = (PasswordChangeRequestPage) WebappPagesCollection.loginPage
 					.instantiatePage(PasswordChangeRequestPage.class);
 		}
 		Assert.assertTrue("Email field not visible",
-				PagesCollection.passwordChangeRequestPage.isEmailFieldVisible());
+				WebappPagesCollection.passwordChangeRequestPage.isEmailFieldVisible());
 		;
 	}
 
@@ -66,7 +66,7 @@ public class PasswordChangeRequestSteps {
 	public void IEnterEmail(String emailOrAlias) {
 		emailOrAlias = usrMgr.replaceAliasesOccurences(emailOrAlias,
 				FindBy.EMAIL_ALIAS);
-		PagesCollection.passwordChangeRequestPage.setEmail(emailOrAlias);
+		WebappPagesCollection.passwordChangeRequestPage.setEmail(emailOrAlias);
 	}
 
 	private static final int PASSWORD_MSG_TIMWOUT_SECONDS = 60;
@@ -107,7 +107,7 @@ public class PasswordChangeRequestSteps {
 	 */
 	@And("^I click Change Password button on Password Change Request page$")
 	public void IClickChangePasswordButton() throws Exception {
-		PagesCollection.passwordChangeRequestSuccessfullPage = PagesCollection.passwordChangeRequestPage
+		WebappPagesCollection.passwordChangeRequestSuccessfullPage = WebappPagesCollection.passwordChangeRequestPage
 				.clickChangePasswordButton();
 	}
 
@@ -120,8 +120,7 @@ public class PasswordChangeRequestSteps {
 	 */
 	@Then("^I see Password Change Request Succeeded page$")
 	public void ISeeRequestSucceededPage() throws Exception {
-		assertThat(
-				PagesCollection.passwordChangeRequestSuccessfullPage
+		assertThat(WebappPagesCollection.passwordChangeRequestSuccessfullPage
 						.isConfirmationTextVisible(),
 				is(true));
 	}
@@ -143,11 +142,11 @@ public class PasswordChangeRequestSteps {
 		}
 		final PasswordResetMessage wrappedMsg = new PasswordResetMessage(
 				this.passwordChangeMessage.get());
-		PagesCollection.passwordChangePage = (PasswordChangePage) PagesCollection.loginPage
+		WebappPagesCollection.passwordChangePage = (PasswordChangePage) WebappPagesCollection.loginPage
 				.instantiatePage(PasswordChangePage.class);
-		PagesCollection.passwordChangePage.setUrl(wrappedMsg
+		WebappPagesCollection.passwordChangePage.setUrl(wrappedMsg
 				.extractPasswordResetLink());
-		PagesCollection.passwordChangePage.navigateTo();
+		WebappPagesCollection.passwordChangePage.navigateTo();
 	}
 
 }

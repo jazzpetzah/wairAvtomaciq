@@ -84,7 +84,7 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
 	private WebElement leaveActionMenuButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameCancelButton)
 	private WebElement cancelActionMenuButton;
 
@@ -777,6 +777,17 @@ public class ContactListPage extends IOSPage {
 
 	public void clickCancelButtonInActionMenu() {
 		cancelActionMenuButton.click();
+	}
+
+	public String getSelectedConversationCellValue(String conversation)
+			throws Exception {
+		WebElement conversationCell = this
+				.getDriver()
+				.findElement(
+						By.xpath(String
+								.format(IOSLocators.ContactListPage.xpathSpecificContactListCell,
+										conversation)));
+		return conversationCell.getAttribute("value");
 	}
 
 }
