@@ -44,11 +44,11 @@ public class PerformanceSteps {
 	private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
 
 	private ContactListPage getContactListPage() throws Exception {
-		return (ContactListPage) pagesCollection.getPage(ContactListPage.class);
+		return pagesCollection.getPage(ContactListPage.class);
 	}
 
 	private DialogPage getDialogPage() throws Exception {
-		return (DialogPage) pagesCollection.getPage(DialogPage.class);
+		return pagesCollection.getPage(DialogPage.class);
 	}
 
 	/**

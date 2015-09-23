@@ -752,7 +752,7 @@ public class ContactListPageSteps {
 	/**
 	 * Clicks the Cancel button in action menu of contact list
 	 * 
-	 * @step ^I press Cancel button in action menu in Contact list$
+	 * @step. ^I press Cancel button in action menu in Contact list$
 	 * @throws Throwable
 	 */
 	@Then("^I press Cancel button in action menu in Contact List$")
