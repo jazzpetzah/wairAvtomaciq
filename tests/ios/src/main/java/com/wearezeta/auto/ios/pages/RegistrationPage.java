@@ -123,8 +123,14 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameAgreeButton)
 	private WebElement agreeButton;
 
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameTermOfUsePage)
+	private WebElement termOfUsePage;
+
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameSelectPictureButton)
 	private WebElement selectPictureButton;
+
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.xpathVerificationPage)
+	private WebElement verificationPage;
 
 	private String name;
 	private String email;
@@ -151,6 +157,11 @@ public class RegistrationPage extends IOSPage {
 		DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.name(IOSLocators.RegistrationPage.nameAgreeButton));
 		agreeButton.click();
+	}
+
+	public boolean isTermOfUsePageVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				termOfUsePage);
 	}
 
 	private void selectCountryByCode(String code) throws Exception {
@@ -188,6 +199,12 @@ public class RegistrationPage extends IOSPage {
 			phoneNumber.sendKeys(number);
 		}
 		confirmInput.click();
+	}
+
+	public boolean isVerificationCodePageVisible() throws Exception {
+		boolean flag = DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.xpath(IOSLocators.RegistrationPage.xpathVerificationPage));
+		return flag;
 	}
 
 	public void inputActivationCode(String code) throws Exception {
@@ -237,6 +254,11 @@ public class RegistrationPage extends IOSPage {
 
 	public void switchToRearCamera() {
 		clickSwitchCameraButton();
+	}
+
+	public boolean isSetPicturePageVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.name(IOSLocators.RegistrationPage.nameSelectPictureButton));
 	}
 
 	public CameraRollPage selectPicture() throws Exception {
@@ -301,10 +323,8 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void scriptInputEmail(String val) throws Exception {
-		String script = String.format(
-				IOSLocators.scriptRegistrationEmailInputPath
-						+ ".setValue(\"%s\");", val);
-		this.getDriver().executeScript(script);
+		DriverUtils.sendTextToInputByScript(getDriver(),
+				IOSLocators.scriptRegistrationEmailInputPath, val);
 	}
 
 	public void scriptInputAndConfirmEmail(String val) throws Exception {

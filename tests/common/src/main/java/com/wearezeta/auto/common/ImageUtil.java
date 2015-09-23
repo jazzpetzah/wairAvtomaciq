@@ -26,6 +26,7 @@ public class ImageUtil {
 	public static final int RESIZE_FROM2560x1600OPTIMIZED = 4;
 	public static final int RESIZE_TEMPLATE_TO_RESOLUTION = 5;
 	public static final int RESIZE_FROM_OPTIMIZED = 6;
+	public static final int RESIZE_TO_MAX_SCORE = 7;
 
 	static {
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
@@ -111,7 +112,20 @@ public class ImageUtil {
 
 	public static double getOverlapScore(BufferedImage refImage,
 			BufferedImage tplImage, int resizeMode) {
-		return getOverlapScore(refImage, tplImage, resizeMode, 1, 1);
+		if (resizeMode == RESIZE_TO_MAX_SCORE) {
+			if (getOverlapScore(refImage, tplImage,
+					RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION, 1, 1) > getOverlapScore(
+					refImage, tplImage,
+					RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION, 1, 1)) {
+				return getOverlapScore(refImage, tplImage,
+						RESIZE_TEMPLATE_TO_REFERENCE_RESOLUTION, 1, 1);
+			} else {
+				return getOverlapScore(refImage, tplImage,
+						RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION, 2, 1);
+			}
+		} else {
+			return getOverlapScore(refImage, tplImage, resizeMode, 1, 1);
+		}
 	}
 
 	public static double getOverlapScore(BufferedImage refImage,

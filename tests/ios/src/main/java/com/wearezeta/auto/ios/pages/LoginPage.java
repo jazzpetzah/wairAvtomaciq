@@ -109,6 +109,9 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameMaybeLater)
 	private WebElement maybeLater;
 
+	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton)
+	private WebElement countryPickerButtton;
+
 	private String login;
 
 	private String password;
@@ -123,10 +126,9 @@ public class LoginPage extends IOSPage {
 		return viewPager != null;
 	}
 
-	public IOSPage signIn() throws IOException {
+	public void signIn() throws IOException {
 
 		signInButton.click();
-		return this;
 	}
 
 	public void switchToEmailLogin() throws Exception {
@@ -139,6 +141,11 @@ public class LoginPage extends IOSPage {
 		} else {
 			DriverUtils.mobileTapByCoordinates(getDriver(), emailLoginButton);
 		}
+	}
+
+	public boolean isPhoneSignInButtonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				phoneLoginButton);
 	}
 
 	public void clickPhoneLogin() throws Exception {
@@ -161,22 +168,20 @@ public class LoginPage extends IOSPage {
 		}
 	}
 
-	public ContactListPage waitForLoginToFinish() throws Exception {
+	public void waitForLoginToFinish() throws Exception {
 
-		if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(IOSLocators.xpathLoginButton), 40)) {
-			return new ContactListPage(this.getLazyDriver());
-		} else {
 			throw new AssertionError(
 					"Login button is still visible after the timeout");
 		}
 	}
 
-	public IOSPage login() throws Exception {
+	public void login() throws Exception {
 
 		confirmSignInButton.click();
 
-		return waitForLoginToFinish();
+		waitForLoginToFinish();
 	}
 
 	public void clickLoginButton() {
@@ -199,14 +204,9 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setLogin(String login) throws Exception {
-		getWait().until(ExpectedConditions.elementToBeClickable(loginField));
-		String script = String.format(IOSLocators.scriptSignInEmailPath
-				+ ".setValue(\"%s\")", login);
-		try {
-			this.getDriver().executeScript(script);
-		} catch (WebDriverException ex) {
-			log.debug("fucking appium! " + ex.getMessage());
-		}
+		DriverUtils.waitUntilElementClickable(getDriver(), loginField);
+		DriverUtils.sendTextToInputByScript(getDriver(),
+				IOSLocators.scriptSignInEmailPath, login);
 	}
 
 	public String getPassword() {
@@ -214,13 +214,9 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setPassword(String password) throws Exception {
-		String script = String.format(IOSLocators.scriptSignInPasswordPath
-				+ ".setValue(\"%s\")", password);
-		try {
-			this.getDriver().executeScript(script);
-		} catch (WebDriverException ex) {
-			log.debug("fucking web appium! " + ex.getMessage());
-		}
+		DriverUtils.waitUntilElementClickable(getDriver(), passwordField);
+		DriverUtils.sendTextToInputByScript(getDriver(),
+				IOSLocators.scriptSignInPasswordPath, password);
 	}
 
 	public boolean waitForLogin() throws Exception {
@@ -361,5 +357,10 @@ public class LoginPage extends IOSPage {
 	public void pressSimulatorHomeButton() throws Exception {
 		cmdVscript(scriptString);
 		DriverUtils.resetApp(getDriver());
+	}
+
+	public boolean isCountryPickerButttonVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				countryPickerButtton);
 	}
 }

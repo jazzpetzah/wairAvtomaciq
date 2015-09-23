@@ -250,7 +250,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id550 @staging
+  @id550 @regression
   Scenario Outline: I want to initiate a connect request by selecting someone from within a group conversation
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>
@@ -320,10 +320,10 @@ Feature: Connect
     And I see contact list with name <Contact>
     When I tap on contact name <Contact>
     And I see that connection is pending
-    And I click Block button on connect to page
+    And I click Block button
     And I confirm block on connect to page
     And I press back button
-    And I wait for 5 seconds
+    And I wait for 2 seconds
     Then I do not see contact list with name <Contact>
     And I wait until <Contact> exists in backend search results
     And I open Search by tap
@@ -332,8 +332,8 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I see user <Contact> found on People picker page
     And I tap on user name found on People picker page <Contact>
-    Then User info should be shown with Unblock button
-    And I click Unblock button
+    When I click Unblock button
+    Then I see contact list with name <Contact>
 
     Examples: 
       | Name      | Contact   |
@@ -341,21 +341,24 @@ Feature: Connect
 
   @id720 @regression
   Scenario Outline: I want to be seen in the search results of someone I blocked
-    Given There are 2 users where <Name> is me
-    Given <Contact> is connected to <Name>
+    Given There are 3 users where <Name> is me
+    # Having the extra user is a workaround for an app bug
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given User <Contact1> blocks user Myself
     Given I sign in using my email
     Given I see Contact list with contacts
-    When User <Contact> blocks user Myself
-    Then I wait until <Contact> exists in backend search results
+    And I see contact list with name <Contact1>
+    And I see contact list with name <Contact2>
+    And I wait until <Contact1> exists in backend search results
     When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
-    And I enter "<Contact>" into Search input on People Picker page
-    Then I see user <Contact> found on People picker page
+    And I enter "<Contact1>" into Search input on People Picker page
+    Then I see user <Contact1> found on People picker page
 
     Examples: 
-      | Name      | Contact   |
-      | user1Name | user2Name |
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
 
   @id723 @regression
   Scenario Outline: I want to unblock someone from their Profile view

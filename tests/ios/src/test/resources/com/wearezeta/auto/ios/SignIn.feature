@@ -62,3 +62,17 @@ Feature: Sign In
     Examples: 
       | Login      | Password      | Name      | NewPassword  |
       | user1Email | user1Password | user1Name | aqa123456789 |
+
+  @staging @id2719
+  Scenario Outline: Verify phone sign in when email is assigned
+    Given There is 1 user where <Name> is me
+    Given I see sign in screen
+    Given I see country picker button on Sign in screen
+    When I enter phone number for user <Name>
+    Then I see verification code page
+    When I enter verification code for user <Name>
+    Then I see Contact list with my name <Name>
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

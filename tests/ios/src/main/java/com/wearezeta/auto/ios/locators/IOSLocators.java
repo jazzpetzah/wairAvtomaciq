@@ -86,7 +86,7 @@ public final class IOSLocators {
 
 	public static final String nameConnectOtherUserButton = "CONNECT";
 
-	public static final String xpathConnectOtherUserButton = "//UIAButton[@name='CONNECT']";
+	public static final String xpathConnectOtherUserButton = "//UIAButton[@name='CONNECT' or @name='OtherUserMetaControllerLeftButton']";
 
 	public static final String nameIgnoreOtherUserButton = "IGNORE";
 
@@ -177,7 +177,9 @@ public final class IOSLocators {
 	public static final String nameLeaveConversationButton = "LEAVE";
 
 	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
-
+	
+	public static final String nameCancelButton = "CANCEL";
+	
 	public static final String nameSilenceConversationButton = "SILENCE";
 
 	public static final String xpathSilenceConversationButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[@name='SILENCE']";
@@ -479,6 +481,8 @@ public final class IOSLocators {
 	public static final String namePendingRequestConnectButton = "CONNECT";
 	public static final String xpathPendingRequesterName = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
 	public static final String xpathPendingRequestMessage = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[3]";
+	public static final String xpathYouBothKnowPeopleIcon =  "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
+	public static final String nameYouBothKnowHeader = "YOU BOTH KNOW";
 
 	// ///////////////////////////
 	// People picker
@@ -540,6 +544,7 @@ public final class IOSLocators {
 	public static final String scriptSignInEmailPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"EmailField\"]";
 	public static final String scriptSignInPasswordPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].secureTextFields()[\"PasswordField\"]";
 	public static final String scriptRegistrationEmailInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"RegistrationEmailField\"]";
+	public static final String scriptSearchField = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"textViewSearch\"]";
 
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";
@@ -665,8 +670,9 @@ public final class IOSLocators {
 		public static final String xpathActivationCode = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]";
 		public static final String xpathConfirmPhoneNumber = "//UIAWindow[@name='ZClientMainWindow']/UIATextField[1]/UIAButton[1]";
 		public static final String nameAgreeButton = "I AGREE";
-
 		public static final String nameSelectPictureButton = "SET A PICTURE";
+		public static final String xpathVerificationPage = "//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]";
+		public static final String nameTermOfUsePage = "By continuing you agree to the Wire Terms of Use.";
 	}
 
 	public final class LoginPage {
@@ -674,6 +680,7 @@ public final class IOSLocators {
 		public static final String nameBackButton = "BackToWelcomeButton";
 		public static final String nameEmailLoginButton = "EMAIL SIGN IN";
 		public static final String nameMaybeLater = "MAYBE LATER";
+		public static final String nameCountryPickerButton = "CountryPickerButton";
 	}
 
 	public final class PeoplePickerPage {

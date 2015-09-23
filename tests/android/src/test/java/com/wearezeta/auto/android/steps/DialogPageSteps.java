@@ -302,7 +302,7 @@ public class DialogPageSteps {
 					.getCurrentButtonStateScreenshot(buttonName);
 			overlapScore = ImageUtil.getOverlapScore(currentStateScreenshot,
 					previousStateScreenshot,
-					ImageUtil.RESIZE_REFERENCE_TO_TEMPLATE_RESOLUTION);
+					ImageUtil.RESIZE_TO_MAX_SCORE);
 			if (overlapScore <= BUTTON_STATE_OVERLAP_MAX_SCORE) {
 				return;
 			}
@@ -753,8 +753,8 @@ public class DialogPageSteps {
 		final double score = getDialogPage().getMediaControlIconOverlapScore(
 				iconLabel);
 		Assert.assertTrue(
-				"Overlap between two images has not enough score. Expected >= 0.72, current = "
-						+ score, score >= 0.72d);
+				"Overlap between two images has not enough score. Expected >= 0.75, current = "
+						+ score, score >= 0.75d);
 	}
 
 	/**

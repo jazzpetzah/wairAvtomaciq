@@ -184,6 +184,7 @@ Feature: Self Profile
   Scenario Outline: Verify name change [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent message TestMessage to conversation <Contact>
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on my name <Name>
@@ -202,6 +203,7 @@ Feature: Self Profile
   Scenario Outline: Verify name change [LANDSCAPE]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
+    Given User <Name> sent message TestMessage to conversation <Contact>
     Given I rotate UI to landscape
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>

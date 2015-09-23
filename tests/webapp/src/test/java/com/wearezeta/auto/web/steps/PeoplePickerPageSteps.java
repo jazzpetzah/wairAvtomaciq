@@ -60,7 +60,8 @@ public class PeoplePickerPageSteps {
 				FindBy.NAME_ALIAS);
 		nameOrEmail = usrMgr.replaceAliasesOccurences(nameOrEmail,
 				FindBy.EMAIL_ALIAS);
-		WebappPagesCollection.peoplePickerPage.searchForUser(nameOrEmail);
+		// adding spaces to ensure trimming of input
+		PagesCollection.peoplePickerPage.searchForUser(" " + nameOrEmail + " ");
 	}
 
 	/**

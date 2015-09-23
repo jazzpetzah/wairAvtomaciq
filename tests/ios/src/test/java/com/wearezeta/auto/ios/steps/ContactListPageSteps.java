@@ -334,11 +334,20 @@ public class ContactListPageSteps {
 				+ name3 + ", " + " is in chat list", chatExists);
 	}
 
+	/**
+	 * Verify that conversation with pointed name is not displayed in contact
+	 * list
+	 * 
+	 * @step. I dont see conversation (.*) in contact list
+	 * @param name
+	 *            conversation name to verify
+	 * @throws Exception
+	 */
 	@When("I dont see conversation (.*) in contact list")
 	public void IDoNotSeeConversationInContactList(String name)
 			throws Exception {
 		name = usrMgr.replaceAliasesOccurences(name, FindBy.NAME_ALIAS);
-		Assert.assertFalse(getContactListPage().isDisplayedInContactList(name));
+		Assert.assertTrue(getContactListPage().contactIsNotDisplayed(name));
 	}
 
 	/**
@@ -738,5 +747,16 @@ public class ContactListPageSteps {
 	@When("^I press Leave button in action menu in Contact List$")
 	public void IPressLeaveButtonInActionMenuInContactList() throws Throwable {
 		getContactListPage().clickLeaveButtonInActionMenu();
+	}
+	
+	/**
+	 * Clicks the Cancel button in action menu of contact list
+	 * 
+	 * @step ^I press Cancel button in action menu in Contact list$
+	 * @throws Throwable
+	 */
+	@Then("^I press Cancel button in action menu in Contact List$")
+	public void IPressCancelButtonInActionMenuInContactList() throws Throwable {
+		getContactListPage().clickCancelButtonInActionMenu();
 	}
 }

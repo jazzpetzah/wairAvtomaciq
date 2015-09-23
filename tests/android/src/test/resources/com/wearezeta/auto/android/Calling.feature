@@ -621,7 +621,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @id3184 @staging
+  @id3184 @regression
   Scenario Outline: Verify leaving group conversation during the call
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -637,13 +637,11 @@ Feature: Calling
     And I see calling overlay Big bar
     And I tap conversation details button
     And I press options menu button
-    And I press Leave conversation button
+    And I press Leave conversation menu button
     And I confirm leaving
     And I see Contact list
-    And <Name> is unarchived group chat <GroupChatName>
-    And I tap on contact name <GroupChatName>
-    Then I do not see "JOIN CALL" button
-    And I do not see call overlay
+    When I swipe up contact list
+    Then I do not see contact list with name <GroupChatName>
     And <Contact1> stops all calls to <GroupChatName>
     And <Contact2> stops all calls to <GroupChatName>
 
