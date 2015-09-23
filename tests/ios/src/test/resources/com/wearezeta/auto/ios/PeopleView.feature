@@ -349,7 +349,7 @@ Feature: People View
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
 
-  @torun @staging @id712
+  @staging @id712
   Scenario Outline: Verify you can block a person from profile view
     Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
