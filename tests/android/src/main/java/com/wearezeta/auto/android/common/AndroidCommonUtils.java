@@ -590,7 +590,7 @@ public class AndroidCommonUtils extends CommonUtils {
 		long result = 0;
 		for (String line : lines) {
 			if (line.contains("uid=")) {
-				isEntryFound = line.contains(String.format("uid=%s",
+				isEntryFound = line.contains(String.format(" uid=%s ",
 						getUidForPackage(packageId)));
 			}
 			if (isEntryFound) {
