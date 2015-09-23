@@ -348,3 +348,23 @@ Feature: People View
     Examples: 
       | Name      | Contact   | Color  | NewName |
       | user1Name | user2Name | Violet | SILENCE |
+
+  @torun @staging @id712
+  Scenario Outline: Verify you can block a person from profile view
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I open conversation details
+    And I see <Contact1> user profile page
+    And I press conversation menu button
+    And I press menu Block button
+    And I confirm blocking alert
+    Then I dont see conversation <Contact1> in contact list
+    Then I see conversation <Contact2> is selected in list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
