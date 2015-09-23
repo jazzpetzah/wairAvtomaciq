@@ -161,7 +161,8 @@ class RealAndroidDevice(BaseNodeVerifier):
         if not result:
             _, stdout, _ = ssh_client.exec_command('/usr/local/bin/adb shell netstat')
             output2 = stdout.read()
-            result = output2.find('ESTABLISHED') > 0 or output2.find('LISTEN') > 0
+            result = (len(output2.strip().split('\n')) == 1) or \
+                     (output2.find('ESTABLISHED') > 0 or output2.find('LISTEN') > 0)
             return (result, '{}\n\n{}'.format(output1, output2))
         return (result, output1)
 
