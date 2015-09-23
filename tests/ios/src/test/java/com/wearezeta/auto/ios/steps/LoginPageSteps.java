@@ -68,6 +68,7 @@ public class LoginPageSteps {
 	 */
 	@Given("^I sign in using my email$")
 	public void GivenISignInUsingEmail() throws Exception {
+		System.out.println(getLoginPage().getPageSource());
 		Assert.assertNotNull(getLoginPage().isVisible());
 		getLoginPage().signIn();
 
