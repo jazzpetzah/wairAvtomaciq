@@ -783,3 +783,42 @@ Feature: Search
     Examples: 
       | Name      |
       | user1Name |
+
+  @staging @id3821
+  Scenario Outline: Verify opening conversation with action button [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 1st top connection contact
+    And I see open conversation action button on People picker page
+    And I click open conversation action button on People picker page
+    Then I see dialog page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @staging @id3822
+  Scenario Outline: Verify opening conversation with action button [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 1st top connection contact
+    And I see open conversation action button on People picker page
+    And I click open conversation action button on People picker page
+    Then I see dialog page
+
+    Examples: 
+      | Name      |
+      | user1Name |

@@ -557,8 +557,10 @@ public final class IOSLocators {
 	// Unblock user locator
 	// //////////////////////////
 	public static final String nameUnblockButton = "UNBLOCK";
-
+	
 	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
+	
+	public static final String nameBlockMenuButton = "BLOCK";
 
 	// //////////////////////////
 	// Reset Password from Sign In
@@ -661,6 +663,8 @@ public final class IOSLocators {
 		public static final String xpathFormatActionMenuConversationName = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAStaticText[@name='%s']";
 		
 		public static final String xpathFormatActionMenuXButton = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAButton[@name='%s']";
+		
+		public static final String xpathSpecificContactListCell = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']";
 	}
 
 	public final class RegistrationPage {
