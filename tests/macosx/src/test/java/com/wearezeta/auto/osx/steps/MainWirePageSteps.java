@@ -1,10 +1,14 @@
 package com.wearezeta.auto.osx.steps;
 
+import com.wearezeta.auto.osx.pages.MainWirePage;
 import com.wearezeta.auto.osx.pages.OSXPagesCollection;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class MainWirePageSteps {
+
+	private OSXPagesCollection osxPagesCollection = OSXPagesCollection
+			.getInstance();
 
 	/**
 	 * Closes the app
@@ -15,7 +19,7 @@ public class MainWirePageSteps {
 	 */
 	@When("^I close the app$")
 	public void ICloseApp() throws Exception {
-		OSXPagesCollection.mainWirePage.closeWindow();
+		osxPagesCollection.getPage(MainWirePage.class).closeWindow();
 	}
 
 	/**
@@ -27,7 +31,7 @@ public class MainWirePageSteps {
 	 */
 	@When("^I minimize the app$")
 	public void IMinimizeApp() throws Exception {
-		OSXPagesCollection.mainWirePage.minimizeWindow();
+		osxPagesCollection.getPage(MainWirePage.class).minimizeWindow();
 	}
 
 	/**
@@ -39,7 +43,7 @@ public class MainWirePageSteps {
 	 */
 	@When("^I maximize the app$")
 	public void IMaximizeApp() throws Exception {
-		OSXPagesCollection.mainWirePage.maximizeWindow();
+		osxPagesCollection.getPage(MainWirePage.class).maximizeWindow();
 	}
 
 	/**
@@ -51,7 +55,8 @@ public class MainWirePageSteps {
 	 */
 	@When("^I verify app is in fullscreen$")
 	public void IVerifyAppFullscreen() throws Exception {
-		Assert.assertTrue(OSXPagesCollection.mainWirePage.isFullscreen());
+		Assert.assertTrue(osxPagesCollection.getPage(MainWirePage.class)
+				.isFullscreen());
 	}
 
 	/**
@@ -63,7 +68,8 @@ public class MainWirePageSteps {
 	 */
 	@When("^I verify app is in minimum size$")
 	public void IVerifyAppMini() throws Exception {
-		Assert.assertTrue(OSXPagesCollection.mainWirePage.isMini());
+		Assert.assertTrue(osxPagesCollection.getPage(MainWirePage.class)
+				.isMini());
 	}
 
 	/**
@@ -75,7 +81,7 @@ public class MainWirePageSteps {
 	 */
 	@When("^I resize the app to the max by hand$")
 	public void IResizeToMaxByHand() throws Exception {
-		OSXPagesCollection.mainWirePage.resizeToMaxByHand();
+		osxPagesCollection.getPage(MainWirePage.class).resizeToMaxByHand();
 	}
 
 	/**
@@ -87,7 +93,7 @@ public class MainWirePageSteps {
 	 */
 	@When("^I resize the app to the min by hand$")
 	public void IResizeToMinByHand() throws Exception {
-		OSXPagesCollection.mainWirePage.resizeToMinByHand();
+		osxPagesCollection.getPage(MainWirePage.class).resizeToMinByHand();
 	}
 
 	/**
@@ -100,7 +106,7 @@ public class MainWirePageSteps {
 	 */
 	@When("^I ensure initial positioning$")
 	public void IEnsureInitialPositioning() throws Exception {
-		OSXPagesCollection.mainWirePage.ensurePosition();
+		osxPagesCollection.getPage(MainWirePage.class).ensurePosition();
 	}
 
 	/**
@@ -118,7 +124,7 @@ public class MainWirePageSteps {
 	 */
 	@When("^I change position of the app to X (\\d+) and Y (\\d+)$")
 	public void IPositioningTo(int x, int y) throws Exception {
-		OSXPagesCollection.mainWirePage.positionByHand(x, y);
+		osxPagesCollection.getPage(MainWirePage.class).positionByHand(x, y);
 	}
 
 	/**
@@ -136,14 +142,14 @@ public class MainWirePageSteps {
 	 */
 	@When("^I verify app X coordinate is (\\d+) and Y coordinate is (\\d+)$")
 	public void IVerifyPosition(int x, int y) throws Exception {
+		MainWirePage mainWirePage = osxPagesCollection
+				.getPage(MainWirePage.class);
 		Assert.assertTrue("Expected X coordinate " + x
-				+ " does not match the actual value "
-				+ OSXPagesCollection.mainWirePage.getX(),
-				OSXPagesCollection.mainWirePage.isX(x));
+				+ " does not match the actual value " + mainWirePage.getX(),
+				mainWirePage.isX(x));
 		Assert.assertTrue("Expected Y coordinate " + y
-				+ " does not match the actual value "
-				+ OSXPagesCollection.mainWirePage.getY(),
-				OSXPagesCollection.mainWirePage.isY(y));
+				+ " does not match the actual value " + mainWirePage.getY(),
+				mainWirePage.isY(y));
 	}
 
 	/**
@@ -161,7 +167,8 @@ public class MainWirePageSteps {
 	 */
 	@When("^I resize the app to width (\\d+) px and height (\\d+) px$")
 	public void IResizeTo(int width, int height) throws Exception {
-		OSXPagesCollection.mainWirePage.resizeByHand(width, height);
+		osxPagesCollection.getPage(MainWirePage.class).resizeByHand(width,
+				height);
 	}
 
 	/**
@@ -179,10 +186,10 @@ public class MainWirePageSteps {
 	 */
 	@When("^I verify app width is (\\d+) px and height is (\\d+) px$")
 	public void IVerifySizeOf(int width, int height) throws Exception {
-		Assert.assertTrue(OSXPagesCollection.mainWirePage
-				.isApproximatelyHeight(height));
-		Assert.assertTrue(OSXPagesCollection.mainWirePage
-				.isApproximatelyWidth(width));
+		MainWirePage mainWirePage = osxPagesCollection
+				.getPage(MainWirePage.class);
+		Assert.assertTrue(mainWirePage.isApproximatelyHeight(height));
+		Assert.assertTrue(mainWirePage.isApproximatelyWidth(width));
 	}
 
 }

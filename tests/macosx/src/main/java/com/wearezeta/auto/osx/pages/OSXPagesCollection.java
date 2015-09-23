@@ -1,21 +1,38 @@
 package com.wearezeta.auto.osx.pages;
 
 import com.wearezeta.auto.common.AbstractPagesCollection;
-import com.wearezeta.auto.osx.pages.common.ChoosePicturePage;
-import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
-import com.wearezeta.auto.osx.pages.common.ProblemReportPage;
+import com.wearezeta.auto.common.BasePage;
 
 public class OSXPagesCollection extends AbstractPagesCollection {
 
-	// OSX pages
-	public static MainWirePage mainWirePage = null;
+	private static OSXPagesCollection instance = null;
 
-	public static MenuBarPage menuBarPage = null;
+	public synchronized static OSXPagesCollection getInstance() {
+		if (instance == null) {
+			instance = new OSXPagesCollection();
+		}
+		return instance;
+	}
 
-	public static ChoosePicturePage choosePicturePage = null;
+	private OSXPagesCollection() {
+		super();
+	}
 
-	public static NoInternetConnectionPage noInternetPage = null;
+	@Override
+	public OSXPage getCommonPage() throws Exception {
+		return (OSXPage) super.getCommonPage();
+	}
 
-	public static ProblemReportPage problemReportPage = null;
+	@Override
+	public void setFirstPage(BasePage page) {
+		if (!(page instanceof OSXPage)) {
+			throw new IllegalStateException(
+					String.format(
+							"Only instances of '%s' are allowed. '%s' instance has been provided instead",
+							this.getClass().getSimpleName(), page.getClass()
+									.getSimpleName()));
+		}
+		super.setFirstPage((OSXPage) page);
+	}
 
 }

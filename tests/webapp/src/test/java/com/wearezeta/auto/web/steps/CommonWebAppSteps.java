@@ -46,7 +46,7 @@ import com.wearezeta.auto.web.common.Browser;
 import com.wearezeta.auto.web.common.WebAppConstants;
 import com.wearezeta.auto.web.common.WebAppExecutionContext;
 import com.wearezeta.auto.web.common.WebCommonUtils;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 import com.wearezeta.auto.web.pages.WebPage;
 
@@ -193,7 +193,7 @@ public class CommonWebAppSteps {
         webdrivers.put(uniqueName, lazyWebDriver);
         lazyWebDriver.get(ZetaDriver.INIT_TIMEOUT_MILLISECONDS,
             TimeUnit.MILLISECONDS).get(url);
-        PagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
+        WebappPagesCollection.registrationPage = new RegistrationPage(lazyWebDriver,
             url);
         ZetaFormatter.setLazyDriver(lazyWebDriver);
     }
@@ -747,7 +747,7 @@ public class CommonWebAppSteps {
      */
     @Then("^I refresh page$")
     public void IRefreshPage() throws Exception {
-        PagesCollection.registrationPage.refreshPage();
+        WebappPagesCollection.registrationPage.refreshPage();
     }
 
     @SuppressWarnings("unchecked")
@@ -887,7 +887,7 @@ public class CommonWebAppSteps {
      */
     @Given("^I open Sign In page$")
     public void IOpenSignInPage() throws Exception {
-        PagesCollection.loginPage = PagesCollection.registrationPage
+        WebappPagesCollection.loginPage = WebappPagesCollection.registrationPage
             .openSignInPage();
     }
 

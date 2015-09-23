@@ -7,7 +7,8 @@ import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.common.usrmgmt.UserState;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.RegistrationPage;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -18,6 +19,9 @@ import static org.hamcrest.CoreMatchers.*;
 public class RegistrationPageSteps {
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+
+	private WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	private ClientUser userToRegister = null;
 
@@ -36,7 +40,8 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I enter user name (.*) on Registration page$")
 	public void IEnterName(String name) throws Exception {
-		PagesCollection.registrationPage.waitForRegistrationPageToFullyLoad();
+		webappPagesCollection.getPage(RegistrationPage.class)
+				.waitForRegistrationPageToFullyLoad();
 		try {
 			this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		} catch (NoSuchUserException e) {
@@ -47,8 +52,8 @@ public class RegistrationPageSteps {
 			this.userToRegister.clearNameAliases();
 			this.userToRegister.addNameAlias(name);
 		}
-		PagesCollection.registrationPage.enterName(this.userToRegister
-				.getName());
+		webappPagesCollection.getPage(RegistrationPage.class).enterName(
+				this.userToRegister.getName());
 	}
 
 	/**
@@ -75,10 +80,11 @@ public class RegistrationPageSteps {
 		}
 
 		if (flag) {
-			PagesCollection.registrationPage.enterEmail(email);
+			webappPagesCollection.getPage(RegistrationPage.class).enterEmail(
+					email);
 		} else {
-			PagesCollection.registrationPage.enterEmail(this.userToRegister
-					.getEmail());
+			webappPagesCollection.getPage(RegistrationPage.class).enterEmail(
+					this.userToRegister.getEmail());
 		}
 	}
 
@@ -100,8 +106,8 @@ public class RegistrationPageSteps {
 			this.userToRegister.setPassword(password);
 			this.userToRegister.addPasswordAlias(password);
 		}
-		PagesCollection.registrationPage.enterPassword(this.userToRegister
-				.getPassword());
+		webappPagesCollection.getPage(RegistrationPage.class).enterPassword(
+				this.userToRegister.getPassword());
 	}
 
 	/**
@@ -113,7 +119,8 @@ public class RegistrationPageSteps {
 	 */
 	@When("^I submit registration form$")
 	public void ISubmitRegistration() throws Exception {
-		PagesCollection.registrationPage.submitRegistration();
+		webappPagesCollection.getPage(RegistrationPage.class)
+				.submitRegistration();
 	}
 
 	/**
@@ -127,11 +134,11 @@ public class RegistrationPageSteps {
 	 * @throws NoSuchUserException
 	 */
 	@Then("^I see email (.*) on [Vv]erification page$")
-	public void ISeeVerificationEmail(String email) throws NoSuchUserException {
+	public void ISeeVerificationEmail(String email) throws NoSuchUserException,
+			Exception {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		assertThat(
-				PagesCollection.registrationPage.getVerificationEmailAddress(),
-				equalTo(email));
+		assertThat(webappPagesCollection.getPage(RegistrationPage.class)
+				.getVerificationEmailAddress(), equalTo(email));
 	}
 
 	/**
@@ -146,8 +153,8 @@ public class RegistrationPageSteps {
 	@Then("^I see error \"(.*)\" on [Vv]erification page$")
 	public void ISeeErrorMessageOnVerificationPage(String message)
 			throws Throwable {
-		assertThat(PagesCollection.registrationPage.getErrorMessage(),
-				equalTo(message));
+		assertThat(webappPagesCollection.getPage(RegistrationPage.class)
+				.getErrorMessage(), equalTo(message));
 	}
 
 	/**
@@ -162,10 +169,12 @@ public class RegistrationPageSteps {
 	public void ARedDotIsShownOnTheEmailField(String not) throws Exception {
 		if (not == null) {
 			assertThat("Red dot on email field",
-					PagesCollection.registrationPage.isRedDotOnEmailField());
+					webappPagesCollection.getPage(RegistrationPage.class)
+							.isRedDotOnEmailField());
 		} else {
 			assertThat("Red dot on email field",
-					!PagesCollection.registrationPage.isRedDotOnEmailField());
+					webappPagesCollection.getPage(RegistrationPage.class)
+							.isRedDotOnEmailField());
 		}
 	}
 
@@ -178,7 +187,8 @@ public class RegistrationPageSteps {
 	@Then("^I verify that an envelope icon is shown$")
 	public void IVerifyThatAnEnvelopeIconIsShown() throws Exception {
 		assertThat("Envelope icon not shown",
-				PagesCollection.registrationPage.isEnvelopeShown());
+				webappPagesCollection.getPage(RegistrationPage.class)
+						.isEnvelopeShown());
 	}
 
 	/**
@@ -207,7 +217,7 @@ public class RegistrationPageSteps {
 	 */
 	@Given("^I switch to [Ss]ign [Ii]n page$")
 	public void ISwitchToLoginPage() throws Exception {
-		PagesCollection.loginPage = PagesCollection.registrationPage
+		webappPagesCollection.getPage(RegistrationPage.class)
 				.switchToLoginPage();
 	}
 }

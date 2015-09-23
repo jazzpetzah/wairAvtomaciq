@@ -1,13 +1,17 @@
 package com.wearezeta.auto.osx.steps;
 
 import com.wearezeta.auto.web.pages.ContactsUploadPage;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.pages.external.GoogleLoginPage;
 
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.When;
 
 public class ContactsUploadPageSteps {
 	private static final int VISIBILITY_TIMEOUT = 15; // seconds
+
+	private WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	/**
 	 * Verify that Contacts Upload dialog is visible
@@ -17,11 +21,8 @@ public class ContactsUploadPageSteps {
 	 */
 	@And("^I see Contacts Upload dialog$")
 	public void ISeeContactsUploadDialog() throws Exception {
-		if (PagesCollection.contactsUploadPage == null) {
-			PagesCollection.contactsUploadPage = (ContactsUploadPage) PagesCollection.loginPage
-					.instantiatePage(ContactsUploadPage.class);
-		}
-		PagesCollection.contactsUploadPage.waitUntilVisible(VISIBILITY_TIMEOUT);
+		webappPagesCollection.getPage(ContactsUploadPage.class)
+				.waitUntilVisible(VISIBILITY_TIMEOUT);
 	}
 
 	/**
@@ -33,7 +34,7 @@ public class ContactsUploadPageSteps {
 	 */
 	@And("^I see Google login popup$")
 	public void ISeeGoogleLoginPopup() throws Exception {
-		PagesCollection.googleLoginPage = PagesCollection.contactsUploadPage
+		webappPagesCollection.getPage(ContactsUploadPage.class)
 				.switchToGooglePopup();
 	}
 
@@ -49,16 +50,17 @@ public class ContactsUploadPageSteps {
 	@When("^I sign up at Google with email (.*) and password (.*)$")
 	public void ISignUpAtGoogleWithEmail(String email, String password)
 			throws Exception {
+		GoogleLoginPage googleLoginPage = webappPagesCollection
+				.getPage(GoogleLoginPage.class);
 		// sometimes Google already shows the email
-		PagesCollection.googleLoginPage.setEmail(email);
+		googleLoginPage.setEmail(email);
 		// sometimes google shows a next button and you have to enter the
 		// password separately
-		if (PagesCollection.googleLoginPage.hasNextButton()) {
-			PagesCollection.googleLoginPage.clickNext();
+		if (googleLoginPage.hasNextButton()) {
+			googleLoginPage.clickNext();
 		}
-		PagesCollection.googleLoginPage.setPassword(password);
-		PagesCollection.peoplePickerPage = PagesCollection.googleLoginPage
-				.clickSignIn();
+		googleLoginPage.setPassword(password);
+		googleLoginPage.clickSignIn();
 	}
 
 	/**
@@ -68,8 +70,8 @@ public class ContactsUploadPageSteps {
 	 * 
 	 */
 	@And("^I close Contacts Upload dialog$")
-	public void ICloseContactsUploadDialog() {
-		PagesCollection.contactsUploadPage.close();
+	public void ICloseContactsUploadDialog() throws Exception {
+		webappPagesCollection.getPage(ContactsUploadPage.class).close();
 	}
 
 	/**
@@ -79,8 +81,9 @@ public class ContactsUploadPageSteps {
 	 * 
 	 */
 	@And("^I click button to import Gmail Contacts$")
-	public void IClickButtonToImportGmailContacts() {
-		PagesCollection.contactsUploadPage.clickShareContactsButton();
+	public void IClickButtonToImportGmailContacts() throws Exception {
+		webappPagesCollection.getPage(ContactsUploadPage.class)
+				.clickShareContactsButton();
 	}
 
 	/**
@@ -92,7 +95,7 @@ public class ContactsUploadPageSteps {
 	 */
 	@And("^I click Show Search button on Contacts Upload dialog$")
 	public void IClickShowSearchButton() throws Exception {
-		PagesCollection.peoplePickerPage = PagesCollection.contactsUploadPage
+		webappPagesCollection.getPage(ContactsUploadPage.class)
 				.clickShowSearchButton();
 	}
 }

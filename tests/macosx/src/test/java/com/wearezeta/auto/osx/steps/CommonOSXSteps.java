@@ -32,7 +32,7 @@ import com.wearezeta.auto.osx.pages.MenuBarPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.OSXPagesCollection;
 import com.wearezeta.auto.web.pages.LoginPage;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 
 import cucumber.api.java.After;
@@ -61,6 +61,11 @@ public class CommonOSXSteps {
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	private ChromeDriverService service;
+
+	private final OSXPagesCollection osxPagesCollection = OSXPagesCollection
+			.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
 	private Future<ZetaWebAppDriver> createWebDriver() throws IOException {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -127,14 +132,16 @@ public class CommonOSXSteps {
 
 		ZetaFormatter.setLazyDriver(osxDriver);
 
-		OSXPagesCollection.mainWirePage = new MainWirePage(osxDriver);
-		OSXPagesCollection.menuBarPage = new MenuBarPage(osxDriver);
+		osxPagesCollection.setFirstPage(new MainWirePage(osxDriver));
+		MainWirePage mainWirePage = osxPagesCollection
+				.getPage(MainWirePage.class);
+		MenuBarPage menuBarPage = osxPagesCollection.getPage(MenuBarPage.class);
 
-		OSXPagesCollection.mainWirePage.focusApp();
+		mainWirePage.focusApp();
 		Thread.sleep(3000);// wait for page to load TODO scan for spinner
-		OSXPagesCollection.menuBarPage.switchEnvironment();
-		PagesCollection.registrationPage = new RegistrationPage(webDriver);
-		PagesCollection.loginPage = new LoginPage(webDriver);
+		menuBarPage.switchEnvironment();
+		webappPagesCollection.setFirstPage(new RegistrationPage(webDriver));
+		webappPagesCollection.getPage(LoginPage.class);
 	}
 
 	@Before("@performance")
@@ -349,8 +356,8 @@ public class CommonOSXSteps {
 	@When("^I take fullscreen shot and save it as (.*)$")
 	public void ITakeFullscreenShotAndSaveItAsAlias(String screenshotAlias)
 			throws Exception {
-		final Optional<BufferedImage> shot = OSXPagesCollection.mainWirePage
-				.takeScreenshot();
+		final Optional<BufferedImage> shot = osxPagesCollection.getPage(
+				MainWirePage.class).takeScreenshot();
 		if (shot.isPresent()) {
 			OSXExecutionContext.SCREENSHOTS.put(screenshotAlias, shot.get());
 		} else {
@@ -397,7 +404,7 @@ public class CommonOSXSteps {
 
 	@When("^I restart the app$")
 	public void restartApp() throws Exception {
-		OSXPagesCollection.mainWirePage.closeWindow();
+		osxPagesCollection.getPage(MainWirePage.class).closeWindow();
 		clearDrivers();
 		startApp();
 	}
@@ -414,7 +421,7 @@ public class CommonOSXSteps {
 
 		commonSteps.getUserManager().resetUsers();
 		try {
-			OSXPagesCollection.mainWirePage.closeWindow();
+			osxPagesCollection.getPage(MainWirePage.class).closeWindow();
 		} catch (Exception e) {
 		}
 		clearDrivers();
