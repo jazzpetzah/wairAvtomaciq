@@ -544,31 +544,59 @@ public class AndroidCommonUtils extends CommonUtils {
 		return Integer.parseInt(output);
 	}
 
+	private static final String[] WIRE_PACKAGE_IDS = new String[] { "com.waz",
+			"com.wire" };
+
+	private static String getUidForWireUser() throws Exception {
+		final String output = getAdbOutput("shell dumpsys package").trim();
+		final String[] lines = output.split("\n");
+		for (String line : lines) {
+			for (String pkg_id : WIRE_PACKAGE_IDS) {
+				if (line.contains(pkg_id)) {
+					final Pattern pattern = Pattern.compile("userid/([0-9]+)");
+					final Matcher matcher = pattern.matcher(line);
+					if (matcher.find()) {
+						return matcher.group(1);
+					}
+				}
+			}
+		}
+		throw new RuntimeException(String.format(
+				"UserId for packages '%s' cannot be found. Adb output:\n%s",
+				WIRE_PACKAGE_IDS, output));
+	}
+
 	public static long getRxBytes() throws Exception {
 		final String output = getAdbOutput(
 				"shell cat /proc/net/xt_qtaguid/stats").trim();
 		final String[] lines = output.split("\n");
-		if (lines.length > 1) {
-			final String[] values = lines[1].split(" ");
-			if (values.length > 5) {
+		final String uid = getUidForWireUser();
+		for (String line : lines) {
+			final String[] values = line.split(" ");
+			if (values.length > 5 && values[3].trim().equals(uid)) {
 				return Long.parseLong(values[5].trim());
 			}
 		}
-		throw new RuntimeException(String.format(
-				"Cannot parse Rx bytes value from adb output:\n%s", output));
+		throw new RuntimeException(
+				String.format(
+						"Cannot parse Rx bytes value for userId %s from adb output:\n%s",
+						uid, output));
 	}
 
 	public static long getTxBytes() throws Exception {
 		final String output = getAdbOutput(
 				"shell cat /proc/net/xt_qtaguid/stats").trim();
 		final String[] lines = output.split("\n");
+		final String uid = getUidForWireUser();
 		if (lines.length > 1) {
 			final String[] values = lines[1].split(" ");
-			if (values.length > 7) {
+			if (values.length > 7 && values[3].trim().equals(uid)) {
 				return Long.parseLong(values[7].trim());
 			}
 		}
-		throw new RuntimeException(String.format(
-				"Cannot parse Tx bytes value from adb output:\n%s", output));
+		throw new RuntimeException(
+				String.format(
+						"Cannot parse Tx bytes value for userId %s from adb output:\n%s",
+						uid, output));
 	}
 }

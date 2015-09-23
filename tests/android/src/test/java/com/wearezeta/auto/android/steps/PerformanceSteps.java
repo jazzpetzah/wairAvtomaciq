@@ -15,6 +15,7 @@ import com.wearezeta.auto.android.pages.ContactListPage;
 import com.wearezeta.auto.android.pages.DialogPage;
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.calling2.v1.model.Flow;
+import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
@@ -225,6 +226,7 @@ public class PerformanceSteps {
 		final long millisecondsStarted = System.currentTimeMillis();
 		while (System.currentTimeMillis() - millisecondsStarted <= durationMinutes * 1000 * 60) {
 			Thread.sleep(CALL_STATUS_CHECKING_INTERVAL);
+			PlatformDrivers.getInstance().pingDrivers();
 			final long secondsElapsed = (System.currentTimeMillis() - millisecondsStarted) / 1000;
 			final long secondsRemaining = durationMinutes * 60 - secondsElapsed;
 			final List<Flow> flows = commonCallingSteps.getFlows(caller);
