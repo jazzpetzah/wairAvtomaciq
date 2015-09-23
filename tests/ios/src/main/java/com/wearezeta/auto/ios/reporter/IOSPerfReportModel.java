@@ -51,7 +51,9 @@ public class IOSPerfReportModel extends PerfReportModel {
 	}
 
 	public void loadDataFromLog(final String output) {
-		this.setAppStartupTime(readLogValue(APP_LAUNCH_TIME_REGEX, output));
+		log.debug(output);
+		log.debug("Setting app startup time");
+		this.setAppStartupTime(readLastLogValue(APP_LAUNCH_TIME_REGEX, output));
 		this.setSignInTime(readLogValue(LOGIN_SUCCESS_REGEX, output)
 				+ readLogValue(CONTACT_LIST_LOADED_REGEX, output));
 		this.clearConvoStartupTimes();
