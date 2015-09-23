@@ -61,7 +61,8 @@ public class PeoplePickerPageSteps {
 		nameOrEmail = usrMgr.replaceAliasesOccurences(nameOrEmail,
 				FindBy.EMAIL_ALIAS);
 		// adding spaces to ensure trimming of input
-		PagesCollection.peoplePickerPage.searchForUser(" " + nameOrEmail + " ");
+		WebappPagesCollection.peoplePickerPage.searchForUser(" " + nameOrEmail
+				+ " ");
 	}
 
 	/**
@@ -102,7 +103,8 @@ public class PeoplePickerPageSteps {
 	@When("^I remove user (.*) from suggestions in People Picker$")
 	public void IClickRemoveButton(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		WebappPagesCollection.peoplePickerPage.clickRemoveButtonOnSuggestion(contact);
+		WebappPagesCollection.peoplePickerPage
+				.clickRemoveButtonOnSuggestion(contact);
 	}
 
 	/**
@@ -118,7 +120,8 @@ public class PeoplePickerPageSteps {
 	@When("^I make a connection request for user (.*) directly from People Picker$")
 	public void IClickPlusButton(String contact) throws Exception {
 		contact = usrMgr.replaceAliasesOccurences(contact, FindBy.NAME_ALIAS);
-		WebappPagesCollection.peoplePickerPage.clickPlusButtonOnSuggestion(contact);
+		WebappPagesCollection.peoplePickerPage
+				.clickPlusButtonOnSuggestion(contact);
 	}
 
 	/**
@@ -172,7 +175,8 @@ public class PeoplePickerPageSteps {
 
 	@Then("^I see more than (\\d+) suggestions? in people picker$")
 	public void ISeeMoreThanXSuggestionsInPeoplePicker(int count) {
-		assertThat("people suggestions",
+		assertThat(
+				"people suggestions",
 				WebappPagesCollection.peoplePickerPage.getNumberOfSuggestions(),
 				greaterThan(count));
 	}
@@ -233,7 +237,8 @@ public class PeoplePickerPageSteps {
 		WebappPagesCollection.peoplePickerPage = WebappPagesCollection.contactListPage
 				.openPeoplePicker();
 		Assert.assertTrue("Top People list is not shown",
-				WebappPagesCollection.peoplePickerPage.isTopPeopleLabelVisible());
+				WebappPagesCollection.peoplePickerPage
+						.isTopPeopleLabelVisible());
 	}
 
 	/**
@@ -252,7 +257,8 @@ public class PeoplePickerPageSteps {
 		for (String alias : CommonSteps.splitAliases(namesOfTopPeople)) {
 			final String userName = usrMgr.findUserByNameOrNameAlias(alias)
 					.getName();
-			WebappPagesCollection.peoplePickerPage.clickNameInTopPeople(userName);
+			WebappPagesCollection.peoplePickerPage
+					.clickNameInTopPeople(userName);
 		}
 	}
 

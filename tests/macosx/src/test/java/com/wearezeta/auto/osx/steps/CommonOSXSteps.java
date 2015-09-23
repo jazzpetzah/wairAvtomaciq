@@ -31,7 +31,6 @@ import com.wearezeta.auto.osx.pages.MainWirePage;
 import com.wearezeta.auto.osx.pages.MenuBarPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
 import com.wearezeta.auto.osx.pages.OSXPagesCollection;
-import com.wearezeta.auto.web.pages.LoginPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
 
@@ -141,7 +140,6 @@ public class CommonOSXSteps {
 		Thread.sleep(3000);// wait for page to load TODO scan for spinner
 		menuBarPage.switchEnvironment();
 		webappPagesCollection.setFirstPage(new RegistrationPage(webDriver));
-		webappPagesCollection.getPage(LoginPage.class);
 	}
 
 	@Before("@performance")
