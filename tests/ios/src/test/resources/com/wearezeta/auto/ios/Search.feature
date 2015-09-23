@@ -419,7 +419,7 @@ Feature: Search
       
   @torun @staging @id3281
   Scenario Outline: Verify opening conversation with action button
-  	Given There are 2 users where <Name> is me
+  	Given There are 3 users where <Name> is me
     Given Myself is connected to all other users
     Given I sign in using my email or phone number
     When I see Contact list with my name <Name>
@@ -431,7 +431,7 @@ Feature: Search
     And I see open conversation action button on People picker page
     And I click open conversation action button on People picker page
     Then I see dialog page
-    
+     
     Examples: 
       | Name      |
       | user1Name |
