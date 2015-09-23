@@ -545,7 +545,8 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 
 	private static String getUidForPackage(String packageId) throws Exception {
-		final String output = getAdbOutput("shell dumpsys package").trim();
+		final String output = getAdbOutput(
+				String.format("shell dumpsys package %s", packageId)).trim();
 		final String[] lines = output.split("\n");
 		boolean isPackageSignatureFound = false;
 		for (String line : lines) {
