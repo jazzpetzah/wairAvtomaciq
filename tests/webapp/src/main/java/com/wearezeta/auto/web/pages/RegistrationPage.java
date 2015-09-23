@@ -36,16 +36,18 @@ public class RegistrationPage extends WebPage {
 
 	@FindBy(how = How.CSS, using = WebAppLocators.RegistrationPage.cssVerificationEmail)
 	private WebElement verificationEmail;
-	
+
 	@FindBy(css = WebAppLocators.RegistrationPage.cssSwitchToSignInButton)
 	private WebElement switchToSignInButton;
 
+	// TODO move to locators
 	@FindBy(css = ".icon-envelope")
 	private WebElement verificationEnvelope;
 
 	@FindBy(css = WebAppLocators.RegistrationPage.cssRedDotOnEmailField)
 	private WebElement redDotOnEmailField;
 
+	// TODO move to locators
 	@FindBy(xpath = "//*[@data-uie-name='status-error']//div")
 	private WebElement errorMessage;
 
@@ -53,7 +55,12 @@ public class RegistrationPage extends WebPage {
 			throws Exception {
 		super(lazyDriver, url);
 	}
-	
+
+	public RegistrationPage(Future<ZetaWebAppDriver> lazyDriver)
+			throws Exception {
+		super(lazyDriver, null);
+	}
+
 	public boolean waitForRegistrationPageToFullyLoad() throws Exception {
 		return DriverUtils.waitUntilElementClickable(this.getDriver(),
 				emailField, TIMEOUT_FOR_FIRST_LOAD_OF_PAGE);
@@ -65,7 +72,8 @@ public class RegistrationPage extends WebPage {
 				.waitUntilElementClickable(getDriver(), switchToSignInButton);
 		switchToSignInButton.click();
 
-		return new LoginPage(this.getLazyDriver(), this.getDriver().getCurrentUrl());
+		return new LoginPage(this.getLazyDriver(), this.getDriver()
+				.getCurrentUrl());
 	}
 
 	private void removeReadonlyAttr(String cssLocator) throws Exception {
@@ -100,7 +108,8 @@ public class RegistrationPage extends WebPage {
 	}
 
 	public boolean isEnvelopeShown() throws Exception {
-		return DriverUtils.waitUntilElementClickable(getDriver(), verificationEnvelope);
+		return DriverUtils.waitUntilElementClickable(getDriver(),
+				verificationEnvelope);
 	}
 
 	public String getVerificationEmailAddress() {

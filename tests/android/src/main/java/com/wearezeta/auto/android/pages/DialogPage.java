@@ -35,6 +35,7 @@ public class DialogPage extends AndroidPage {
 
 	private static final Logger log = ZetaLogger.getLog(DialogPage.class
 			.getSimpleName());
+
 	public static final String MEDIA_PLAY = "PLAY";
 	public static final String MEDIA_PAUSE = "PAUSE";
 	public static final String PING_LABEL = "PINGED";
@@ -821,8 +822,7 @@ public class DialogPage extends AndroidPage {
 					() -> new AssertionError(
 							"Failed to get a screenshot of Play/Pause button"));
 			final double overlapScore = ImageUtil.getOverlapScore(currentState,
-					initialState,
-					ImageUtil.RESIZE_TO_MAX_SCORE);
+					initialState, ImageUtil.RESIZE_TO_MAX_SCORE);
 			if (overlapScore < MAX_BUTTON_STATE_OVERLAP) {
 				return;
 			} else {

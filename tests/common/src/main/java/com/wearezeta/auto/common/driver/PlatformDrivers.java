@@ -130,6 +130,10 @@ public final class PlatformDrivers {
 		}
 	}
 
+	public Map<Platform, Future<? extends RemoteWebDriver>> getDrivers() {
+		return drivers;
+	}
+
 	{
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override

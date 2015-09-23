@@ -54,7 +54,7 @@ public class WebPage extends BasePage {
 
 	public static void clearPagesCollection() throws IllegalArgumentException,
 			IllegalAccessException {
-		clearPagesCollection(PagesCollection.class, WebPage.class);
+		clearPagesCollection(WebappPagesCollection.class, WebPage.class);
 	}
 
 	// not used in WebApp

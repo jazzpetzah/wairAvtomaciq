@@ -9,7 +9,7 @@ import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.PhoneNumberVerificationPage;
 
 import cucumber.api.java.en.Then;
@@ -38,7 +38,7 @@ public class PhoneNumberVerificationPageSteps {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
 		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
 				.getPhoneNumber());
-		PagesCollection.contactListPage = PagesCollection.phoneNumberVerificationPage
+		WebappPagesCollection.contactListPage = WebappPagesCollection.phoneNumberVerificationPage
 				.enterCode(code);
 	}
 
@@ -57,7 +57,7 @@ public class PhoneNumberVerificationPageSteps {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
 		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
 				.getPhoneNumber());
-		PagesCollection.addEmailAddressPage = PagesCollection.phoneNumberVerificationPage
+		WebappPagesCollection.addEmailAddressPage = WebappPagesCollection.phoneNumberVerificationPage
 				.enterCodeForEmaillessUser(code);
 	}
 
@@ -82,7 +82,7 @@ public class PhoneNumberVerificationPageSteps {
 		} else {
 			wrongcode = "0" + code.substring(1);
 		}
-		PagesCollection.contactListPage = PagesCollection.phoneNumberVerificationPage
+		WebappPagesCollection.contactListPage = WebappPagesCollection.phoneNumberVerificationPage
 				.enterCode(wrongcode);
 	}
 
@@ -98,7 +98,7 @@ public class PhoneNumberVerificationPageSteps {
 	@Then("^I see invalid phone code error message saying (.*)")
 	public void TheSignInErrorMessageReads(String message) throws Exception {
 		assertThat("invalid phone code error",
-				PagesCollection.phoneNumberVerificationPage.getErrorMessage(),
+				WebappPagesCollection.phoneNumberVerificationPage.getErrorMessage(),
 				equalTo(message));
 	}
 }
