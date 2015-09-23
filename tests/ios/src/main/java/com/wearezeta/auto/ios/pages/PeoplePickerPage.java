@@ -572,5 +572,4 @@ public class PeoplePickerPage extends IOSPage {
 		DriverUtils.waitUntilElementClickable(getDriver(), sendImageButton);
 		sendImageButton.click();
 	}
-
 }
