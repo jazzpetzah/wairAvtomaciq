@@ -144,7 +144,7 @@ public class OtherUserPersonalInfoPageSteps {
 	public void IClickArchiveMenu() throws Exception {
 		getOtherUserPersonalInfoPage().clickArchiveMenuButton();
 	}
-	
+
 	/**
 	 * Click delete menu button in ellipsis menu
 	 * 
@@ -155,7 +155,7 @@ public class OtherUserPersonalInfoPageSteps {
 	public void IClickDeleteMenu() throws Exception {
 		getOtherUserPersonalInfoPage().clickDeleteMenuButton();
 	}
-	
+
 	/**
 	 * Click delete to confirm conversation content deletion
 	 * 
@@ -166,4 +166,27 @@ public class OtherUserPersonalInfoPageSteps {
 	public void IConfirmDelete() throws Exception {
 		getOtherUserPersonalInfoPage().clickConfirmDeleteButton();
 	}
+
+	/**
+	 * Clicks on the Block button in the profile menu
+	 * 
+	 * @step. ^I press menu Block button$
+	 * @throws Throwable
+	 */
+	@When("^I press menu Block button$")
+	public void IPressMenuBlockButton() throws Throwable {
+		getOtherUserPersonalInfoPage().clickBlockMenuButton();
+	}
+
+	/**
+	 * Confirms the blocking alert by clicking block
+	 * 
+	 * @step. ^I confirm blocking alert$
+	 * @throws Throwable
+	 */
+	@When("^I confirm blocking alert$")
+	public void IConfirmBlockingAlert() throws Throwable {
+		getOtherUserPersonalInfoPage().clickBlockMenuButton();
+	}
+
 }
