@@ -544,16 +544,21 @@ public class AndroidCommonUtils extends CommonUtils {
 		return Integer.parseInt(output);
 	}
 
-	private static final String[] WIRE_PACKAGE_IDS = new String[] { "com.waz",
-			"com.wire" };
-
-	private static String getUidForWireUser() throws Exception {
+	private static String getUidForPackage(String packageId) throws Exception {
 		final String output = getAdbOutput("shell dumpsys package").trim();
 		final String[] lines = output.split("\n");
+		boolean isPackageSignatureFound = false;
 		for (String line : lines) {
-			for (String pkg_id : WIRE_PACKAGE_IDS) {
-				if (line.contains(pkg_id)) {
-					final Pattern pattern = Pattern.compile("userid/([0-9]+)");
+			if (line.trim().startsWith("Package [")) {
+				if (line.contains("[" + packageId + "]")) {
+					isPackageSignatureFound = true;
+				} else {
+					isPackageSignatureFound = false;
+				}
+			}
+			if (isPackageSignatureFound) {
+				if (line.trim().startsWith("userId=")) {
+					final Pattern pattern = Pattern.compile("userId=([0-9]+)");
 					final Matcher matcher = pattern.matcher(line);
 					if (matcher.find()) {
 						return matcher.group(1);
@@ -562,41 +567,35 @@ public class AndroidCommonUtils extends CommonUtils {
 			}
 		}
 		throw new RuntimeException(String.format(
-				"UserId for packages '%s' cannot be found. Adb output:\n%s",
-				WIRE_PACKAGE_IDS, output));
+				"UserId for the package '%s' cannot be found. Adb output:\n%s",
+				packageId, output));
 	}
 
-	public static long getRxBytes() throws Exception {
+	public static long getRxBytes(String packageId) throws Exception {
 		final String output = getAdbOutput(
 				"shell cat /proc/net/xt_qtaguid/stats").trim();
 		final String[] lines = output.split("\n");
-		final String uid = getUidForWireUser();
+		final String uid = getUidForPackage(packageId);
 		for (String line : lines) {
 			final String[] values = line.split(" ");
 			if (values.length > 5 && values[3].trim().equals(uid)) {
 				return Long.parseLong(values[5].trim());
 			}
 		}
-		throw new RuntimeException(
-				String.format(
-						"Cannot parse Rx bytes value for userId %s from adb output:\n%s",
-						uid, output));
+		return 0;
 	}
 
-	public static long getTxBytes() throws Exception {
+	public static long getTxBytes(String packageId) throws Exception {
 		final String output = getAdbOutput(
 				"shell cat /proc/net/xt_qtaguid/stats").trim();
 		final String[] lines = output.split("\n");
-		final String uid = getUidForWireUser();
+		final String uid = getUidForPackage(packageId);
 		if (lines.length > 1) {
 			final String[] values = lines[1].split(" ");
 			if (values.length > 7 && values[3].trim().equals(uid)) {
 				return Long.parseLong(values[7].trim());
 			}
 		}
-		throw new RuntimeException(
-				String.format(
-						"Cannot parse Tx bytes value for userId %s from adb output:\n%s",
-						uid, output));
+		return 0;
 	}
 }

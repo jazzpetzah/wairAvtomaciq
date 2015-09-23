@@ -203,8 +203,12 @@ public class PerformanceSteps {
 		batteryPerfReport = new AndroidBatteryPerfReportModel();
 		batteryPerfReport.setPreviousCapacityValue(AndroidCommonUtils
 				.getBatteryCapacity());
-		batteryPerfReport.setPreviousRxBytes(AndroidCommonUtils.getRxBytes());
-		batteryPerfReport.setPreviousTxBytes(AndroidCommonUtils.getTxBytes());
+		final String packageId = AndroidCommonUtils
+				.getAndroidPackageFromConfig(getClass());
+		batteryPerfReport.setPreviousRxBytes(AndroidCommonUtils
+				.getRxBytes(packageId));
+		batteryPerfReport.setPreviousTxBytes(AndroidCommonUtils
+				.getTxBytes(packageId));
 	}
 
 	private final static long CALL_STATUS_CHECKING_INTERVAL = 30000; // milliseconds
@@ -260,15 +264,20 @@ public class PerformanceSteps {
 	 * @throws Exception
 	 */
 	@Then("^I generate battery performance report for (\\d+) minutes?$")
-	public void IGerenearetBatteryPerfReport(int durationMinutes) throws Exception {
+	public void IGerenearetBatteryPerfReport(int durationMinutes)
+			throws Exception {
 		if (this.batteryPerfReport == null) {
 			throw new IllegalStateException(
 					"You have to initialize the report first");
 		}
 		batteryPerfReport.setCurrentCapacityValue(AndroidCommonUtils
 				.getBatteryCapacity());
-		batteryPerfReport.setCurrentRxBytes(AndroidCommonUtils.getRxBytes());
-		batteryPerfReport.setCurrentTxBytes(AndroidCommonUtils.getTxBytes());
+		final String packageId = AndroidCommonUtils
+				.getAndroidPackageFromConfig(getClass());
+		batteryPerfReport.setCurrentRxBytes(AndroidCommonUtils
+				.getRxBytes(packageId));
+		batteryPerfReport.setCurrentTxBytes(AndroidCommonUtils
+				.getTxBytes(packageId));
 		batteryPerfReport.setMinutesDuration(durationMinutes);
 		PerformanceHelpers.storeWidgetDataAsJSON(batteryPerfReport,
 				AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
