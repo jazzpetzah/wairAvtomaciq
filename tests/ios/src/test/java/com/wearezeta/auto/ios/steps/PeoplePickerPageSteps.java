@@ -679,14 +679,16 @@ public class PeoplePickerPageSteps {
 		Assert.assertFalse("Send image action button is still visible",
 				getPeoplePickerPage().isSendImageButtonVisible());
 	}
-	
+
 	/**
 	 * Opens conversation from the action button in people picker
+	 * 
 	 * @step. ^I click open conversation action button on People picker page$
 	 * @throws Throwable
 	 */
 	@When("^I click open conversation action button on People picker page$")
-	public void IClickOpenConversationActionButtonOnPeoplePickerPage() throws Throwable {
+	public void IClickOpenConversationActionButtonOnPeoplePickerPage()
+			throws Throwable {
 		getPeoplePickerPage().clickOpenConversationButton();
 	}
 }
