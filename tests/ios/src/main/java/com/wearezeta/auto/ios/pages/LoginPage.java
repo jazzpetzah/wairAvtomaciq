@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -15,16 +14,11 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class LoginPage extends IOSPage {
-	private static final Logger log = ZetaLogger.getLog(LoginPage.class
-			.getSimpleName());
-
 	final String[] scriptString = new String[] {
 			"tell application \"System Events\"",
 			"tell application \"iOS Simulator\" to activate",

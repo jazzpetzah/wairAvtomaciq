@@ -206,8 +206,6 @@ public class RegistrationPageSteps {
 		userToRegister.setUserState(UserState.Created);
 	}
 
-	private static final int ACTIVATION_TIMEOUT = 15; // seconds
-
 	/**
 	 * Switch to Sign In page
 	 * 

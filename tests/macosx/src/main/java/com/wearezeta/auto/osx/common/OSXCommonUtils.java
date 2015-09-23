@@ -88,11 +88,6 @@ public class OSXCommonUtils extends CommonUtils {
 		Thread.sleep(PREFS_DAEMON_RESTART_TIMEOUT);
 	}
 
-	private static void removeZClientDomain(String domain) throws Exception {
-		String command = "defaults delete " + domain;
-		executeOsXCommand(new String[] { "/bin/bash", "-c", command });
-	}
-
 	public static boolean isBackendTypeSet(String bt) throws Exception {
 		if (!isBackendTypeSetForDomain(OSXExecutionContext.CONFIG_DOMAIN, bt)) {
 			return false;

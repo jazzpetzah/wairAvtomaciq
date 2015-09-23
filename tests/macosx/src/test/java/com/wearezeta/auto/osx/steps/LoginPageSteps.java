@@ -1,19 +1,11 @@
 package com.wearezeta.auto.osx.steps;
 
-import org.apache.log4j.Logger;
-
-import com.wearezeta.auto.common.log.ZetaLogger;
-
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class LoginPageSteps {
-
-	private static final Logger LOG = ZetaLogger.getLog(LoginPageSteps.class
-			.getName());
-
-	com.wearezeta.auto.web.steps.LoginPageSteps parentSteps = new com.wearezeta.auto.web.steps.LoginPageSteps();
+	LoginPageSteps parentSteps = new LoginPageSteps();
 
 	/**
 	 * Enters user email and password into corresponding fields on sign in
