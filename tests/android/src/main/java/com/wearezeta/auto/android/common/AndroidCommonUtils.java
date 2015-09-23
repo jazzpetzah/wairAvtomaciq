@@ -572,31 +572,35 @@ public class AndroidCommonUtils extends CommonUtils {
 				packageId, output));
 	}
 
-	public static long getRxBytes(String packageId) throws Exception {
+	/**
+	 * Return the corresponding network stat value for a package
+	 * 
+	 * @param packageId
+	 * @param columnNumber
+	 *            starts from 0
+	 * @return
+	 * @throws Exception
+	 */
+	private static long getNetworkStatValue(final String packageId,
+			final int columnNumber) throws Exception {
 		final String output = getAdbOutput(
 				"shell cat /proc/net/xt_qtaguid/stats").trim();
 		final String[] lines = output.split("\n");
-		final String uid = getUidForPackage(packageId);
 		for (String line : lines) {
 			final String[] values = line.split(" ");
-			if (values.length > 5 && values[3].trim().equals(uid)) {
-				return Long.parseLong(values[5].trim());
+			if (values.length > columnNumber
+					&& values[3].trim().equals(getUidForPackage(packageId))) {
+				return Long.parseLong(values[columnNumber].trim());
 			}
 		}
 		return 0;
 	}
 
+	public static long getRxBytes(String packageId) throws Exception {
+		return getNetworkStatValue(packageId, 5);
+	}
+
 	public static long getTxBytes(String packageId) throws Exception {
-		final String output = getAdbOutput(
-				"shell cat /proc/net/xt_qtaguid/stats").trim();
-		final String[] lines = output.split("\n");
-		final String uid = getUidForPackage(packageId);
-		if (lines.length > 1) {
-			final String[] values = lines[1].split(" ");
-			if (values.length > 7 && values[3].trim().equals(uid)) {
-				return Long.parseLong(values[7].trim());
-			}
-		}
-		return 0;
+		return getNetworkStatValue(packageId, 7);
 	}
 }
