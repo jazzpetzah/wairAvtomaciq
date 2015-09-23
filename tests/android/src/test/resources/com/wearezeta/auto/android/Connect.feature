@@ -302,7 +302,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id680 @regression
+  @id680 @regression_off @staging
   Scenario Outline: I want to see user has been blocked within the Start UI
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -339,7 +339,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id720 @regression
+  @id720 @regression_off @staging
   Scenario Outline: I want to be seen in the search results of someone I blocked
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
@@ -360,7 +360,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id723 @regression
+  @id723 @regression_off @staging
   Scenario Outline: I want to unblock someone from their Profile view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

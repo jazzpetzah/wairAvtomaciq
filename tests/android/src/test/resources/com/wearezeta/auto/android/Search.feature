@@ -112,7 +112,7 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id319 @regression @rc
+  @id319 @regression_off @rc_off @staging
   Scenario Outline: I can create group chat from Search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
