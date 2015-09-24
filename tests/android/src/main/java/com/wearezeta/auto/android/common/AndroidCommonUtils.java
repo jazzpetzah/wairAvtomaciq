@@ -545,7 +545,8 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 
 	private static String getUidForPackage(String packageId) throws Exception {
-		final String output = getAdbOutput("shell dumpsys package").trim();
+		final String output = getAdbOutput(
+				String.format("shell dumpsys package %s", packageId)).trim();
 		final String[] lines = output.split("\n");
 		boolean isPackageSignatureFound = false;
 		for (String line : lines) {
@@ -571,31 +572,44 @@ public class AndroidCommonUtils extends CommonUtils {
 				packageId, output));
 	}
 
-	public static long getRxBytes(String packageId) throws Exception {
-		final String output = getAdbOutput(
-				"shell cat /proc/net/xt_qtaguid/stats").trim();
+	/**
+	 * Return the corresponding network stat value for a package
+	 * 
+	 * @param packageId
+	 * @param columnNumber
+	 *            starts from 0
+	 * @return
+	 * @throws Exception
+	 */
+	private static long getNetworkStatValue(final String packageId,
+			final Pattern pattern) throws Exception {
+		final String output = getAdbOutput("shell dumpsys netstats detail")
+				.trim();
 		final String[] lines = output.split("\n");
-		final String uid = getUidForPackage(packageId);
+		boolean isEntryFound = false;
+		long result = 0;
 		for (String line : lines) {
-			final String[] values = line.split(" ");
-			if (values.length > 5 && values[3].trim().equals(uid)) {
-				return Long.parseLong(values[5].trim());
+			if (line.contains("uid=")) {
+				isEntryFound = line.contains(String.format(" uid=%s ",
+						getUidForPackage(packageId)));
+			}
+			if (isEntryFound) {
+				final Matcher matcher = pattern.matcher(line);
+				if (matcher.find()) {
+					result += Long.parseLong(matcher.group(1));
+				}
 			}
 		}
-		return 0;
+		return result;
+	}
+
+	public static long getRxBytes(String packageId) throws Exception {
+		return getNetworkStatValue(packageId,
+				Pattern.compile("rxBytes=([0-9]+)"));
 	}
 
 	public static long getTxBytes(String packageId) throws Exception {
-		final String output = getAdbOutput(
-				"shell cat /proc/net/xt_qtaguid/stats").trim();
-		final String[] lines = output.split("\n");
-		final String uid = getUidForPackage(packageId);
-		if (lines.length > 1) {
-			final String[] values = lines[1].split(" ");
-			if (values.length > 7 && values[3].trim().equals(uid)) {
-				return Long.parseLong(values[7].trim());
-			}
-		}
-		return 0;
+		return getNetworkStatValue(packageId,
+				Pattern.compile("txBytes=([0-9]+)"));
 	}
 }
