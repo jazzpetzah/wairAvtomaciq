@@ -18,7 +18,7 @@ public class CameraRollTabletPopoverPageSteps {
 	/**
 	 * Tap on Camera Roll button
 	 * 
-	 * @step ^I press Camera Roll button on iPad$
+	 * @step. ^I press Camera Roll button on iPad$
 	 * 
 	 * @throws Throwable
 	 */
@@ -42,7 +42,7 @@ public class CameraRollTabletPopoverPageSteps {
 	/**
 	 * Tap on confirm button
 	 * 
-	 * @step ^I press Confirm button on iPad popover$
+	 * @step. ^I press Confirm button on iPad popover$
 	 * 
 	 * @throws Throwable
 	 */

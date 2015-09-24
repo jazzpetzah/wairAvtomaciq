@@ -6,7 +6,7 @@ import org.junit.Assert;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
@@ -70,7 +70,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I press Sign In button$")
 	public void IPressSignInButton() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.loginPage
+		WebappPagesCollection.contactListPage = WebappPagesCollection.loginPage
 				.clickSignInButton();
 	}
 
@@ -83,9 +83,8 @@ public class LoginPageSteps {
 	 */
 	@Then("^I am signed in properly$")
 	public void IAmSignedInProperly() throws Exception {
-		Assert.assertTrue(
-				"Sign In button/login progress spinner are still visible",
-				PagesCollection.loginPage.waitForLogin());
+		Assert.assertTrue("Sign In button/login progress spinner are still visible",
+				WebappPagesCollection.loginPage.waitForLogin());
 	}
 
 	/**
@@ -99,7 +98,7 @@ public class LoginPageSteps {
 	@Then("^the sign in error message reads (.*)")
 	public void TheSignInErrorMessageReads(String message) throws Exception {
 		assertThat("sign in error message",
-				PagesCollection.loginPage.getErrorMessage(), equalTo(message));
+				WebappPagesCollection.loginPage.getErrorMessage(), equalTo(message));
 	}
 
 	/**
@@ -111,7 +110,7 @@ public class LoginPageSteps {
 	@Then("^a red dot is shown inside the email field on the sign in form$")
 	public void ARedDotIsShownOnTheEmailField() throws Exception {
 		assertThat("Red dot on email field",
-				PagesCollection.loginPage.isRedDotOnEmailField());
+				WebappPagesCollection.loginPage.isRedDotOnEmailField());
 	}
 
 	/**
@@ -124,7 +123,7 @@ public class LoginPageSteps {
 	@Then("^a red dot is shown inside the password field on the sign in form$")
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
 		assertThat("Red dot on password field",
-				PagesCollection.loginPage.isRedDotOnPasswordField());
+				WebappPagesCollection.loginPage.isRedDotOnPasswordField());
 	}
 
 	/**
@@ -142,7 +141,7 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.loginPage.inputEmail(email);
+		WebappPagesCollection.loginPage.inputEmail(email);
 	}
 
 	/**
@@ -160,7 +159,7 @@ public class LoginPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		PagesCollection.loginPage.inputPassword(password);
+		WebappPagesCollection.loginPage.inputPassword(password);
 	}
 
 	/**
@@ -174,7 +173,7 @@ public class LoginPageSteps {
 	 */
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
-		Assert.assertTrue(PagesCollection.loginPage.isVisible());
+		Assert.assertTrue(WebappPagesCollection.loginPage.isVisible());
 	}
 
 	/**
@@ -186,7 +185,7 @@ public class LoginPageSteps {
 	 */
 	@When("^I click Change Password button$")
 	public void IClickChangePassword() throws Exception {
-		PagesCollection.passwordChangeRequestPage = PagesCollection.loginPage
+		WebappPagesCollection.passwordChangeRequestPage = WebappPagesCollection.loginPage
 				.clickChangePasswordButton();
 	}
 
@@ -201,7 +200,7 @@ public class LoginPageSteps {
 	 */
 	@Then("^I see login error \"(.*)\"$")
 	public void ISeeLoginError(String expectedError) throws Exception {
-		final String loginErrorText = PagesCollection.loginPage
+		final String loginErrorText = WebappPagesCollection.loginPage
 				.getErrorMessage();
 		Assert.assertTrue(
 				String.format(
@@ -212,7 +211,7 @@ public class LoginPageSteps {
 
 	@When("^I switch to phone number sign in page$")
 	public void i_switch_to_phone_number_sign_in_page() throws Throwable {
-		PagesCollection.phoneNumberLoginPage = PagesCollection.loginPage
+		WebappPagesCollection.phoneNumberLoginPage = WebappPagesCollection.loginPage
 				.switchToPhoneNumberLoginPage();
 	}
 }

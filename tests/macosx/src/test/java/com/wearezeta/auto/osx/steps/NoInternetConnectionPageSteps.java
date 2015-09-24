@@ -2,11 +2,15 @@ package com.wearezeta.auto.osx.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.osx.pages.PagesCollection;
+import com.wearezeta.auto.osx.pages.OSXPagesCollection;
+import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
 
 import cucumber.api.java.en.Then;
 
 public class NoInternetConnectionPageSteps {
+
+	private OSXPagesCollection osxPagesCollection = OSXPagesCollection
+			.getInstance();
 
 	/**
 	 * Checks that No internet connection error appears when internet is blocked
@@ -19,7 +23,9 @@ public class NoInternetConnectionPageSteps {
 	 */
 	@Then("^I see internet connectivity error message$")
 	public void ISeeInternetConnectivityErrorMessage() throws Exception {
-		Assert.assertTrue(PagesCollection.noInternetPage.isVisible());
-		PagesCollection.noInternetPage.closeDialog();
+		NoInternetConnectionPage noInternetPage = osxPagesCollection
+				.getPage(NoInternetConnectionPage.class);
+		Assert.assertTrue(noInternetPage.isVisible());
+		noInternetPage.closeDialog();
 	}
 }

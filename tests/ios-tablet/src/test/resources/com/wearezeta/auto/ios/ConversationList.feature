@@ -174,7 +174,7 @@ Feature: Conversation List
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
     And I see dialog page
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I see change of state for first conversation cell
 
     Examples: 
@@ -194,7 +194,7 @@ Feature: Conversation List
     And I remember the state of the first conversation cell
     When I tap on contact name <Contact>
     And I see dialog page
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I see change of state for first conversation cell
 
     Examples: 
@@ -316,9 +316,9 @@ Feature: Conversation List
     Given I Sign in on tablet using my email
     And I see Contact list with my name <Name>
     When I tap on contact name <Contact>
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact1>
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I dont see unread message indicator in list for contact <Contact>
     And Contact <Contact> send number 1 of message to user <Name>
     Then I see 1 unread message indicator in list for contact <Contact>
@@ -364,7 +364,7 @@ Feature: Conversation List
     And I see dialog page
     And I type and send long message and media link <YouTubeLink>
     And I click play video button
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I see play/pause button next to username <Contact> in contact list
     And I tap on play/pause button in contact list
     And I see Play media button next to user <Contact>
@@ -389,7 +389,7 @@ Feature: Conversation List
     And I see incoming calling message for contact <Contact>
     And I accept incoming call
     And I see mute call, end call buttons
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I see mute call button in conversation list
     And I click mute call button in conversation list
     And I swipe left in current window
@@ -411,7 +411,7 @@ Feature: Conversation List
     And I see dialog page
     And I tap media link
     And I rotate UI to portrait
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I see Pause media button next to user <Contact>
     And I tap on play/pause button in contact list
     And I see Play media button next to user <Contact>
@@ -424,7 +424,7 @@ Feature: Conversation List
       | Name      | Contact   | SoundCloudLink                                                                       |
       | user1Name | user2Name | https://soundcloud.com/revealed-recordings/dannic-shermanology-wait-for-you-download |
 
-  @staging
+  @staging @id3828
   Scenario Outline: Verify action menu is opened on swipe right on the group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -443,7 +443,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
-  @staging
+  @staging @id3827
   Scenario Outline: Verify action menu is opened on swipe right on the group conversation [LANDSCAPE]
     Given I rotate UI to landscape
     Given There are 3 users where <Name> is me
@@ -463,7 +463,7 @@ Feature: Conversation List
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3name | ActionMenuChat |
 
-  @staging
+  @staging @id3831
   Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [PORTRAIT]
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -481,7 +481,7 @@ Feature: Conversation List
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @staging
+  @staging @id3832
   Scenario Outline: Verify action menu is opened on swipe right on 1to1 conversation [LANDSCAPE]
     Given I rotate UI to landscape
     Given There are 2 users where <Name> is me

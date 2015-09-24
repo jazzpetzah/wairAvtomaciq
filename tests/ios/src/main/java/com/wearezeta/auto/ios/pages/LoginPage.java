@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Future;
 
-import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
@@ -15,16 +14,11 @@ import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
-import com.wearezeta.auto.ios.pages.ContactListPage;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
-import com.wearezeta.auto.common.log.ZetaLogger;
 
 public class LoginPage extends IOSPage {
-	private static final Logger log = ZetaLogger.getLog(LoginPage.class
-			.getSimpleName());
-
 	final String[] scriptString = new String[] {
 			"tell application \"System Events\"",
 			"tell application \"iOS Simulator\" to activate",
@@ -112,6 +106,9 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton)
 	private WebElement countryPickerButtton;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.LoginPage.xpathSetEmailPasswordSuggetionLabel)
+	private WebElement setEmailPasswordSuggetionLabel;
+
 	private String login;
 
 	private String password;
@@ -126,10 +123,9 @@ public class LoginPage extends IOSPage {
 		return viewPager != null;
 	}
 
-	public IOSPage signIn() throws IOException {
+	public void signIn() throws IOException {
 
 		signInButton.click();
-		return this;
 	}
 
 	public void switchToEmailLogin() throws Exception {
@@ -169,22 +165,20 @@ public class LoginPage extends IOSPage {
 		}
 	}
 
-	public ContactListPage waitForLoginToFinish() throws Exception {
+	public void waitForLoginToFinish() throws Exception {
 
-		if (DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
+		if (!DriverUtils.waitUntilLocatorDissapears(this.getDriver(),
 				By.xpath(IOSLocators.xpathLoginButton), 40)) {
-			return new ContactListPage(this.getLazyDriver());
-		} else {
 			throw new AssertionError(
 					"Login button is still visible after the timeout");
 		}
 	}
 
-	public IOSPage login() throws Exception {
+	public void login() throws Exception {
 
 		confirmSignInButton.click();
 
-		return waitForLoginToFinish();
+		waitForLoginToFinish();
 	}
 
 	public void clickLoginButton() {
@@ -207,14 +201,9 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setLogin(String login) throws Exception {
-		getWait().until(ExpectedConditions.elementToBeClickable(loginField));
-		String script = String.format(IOSLocators.scriptSignInEmailPath
-				+ ".setValue(\"%s\")", login);
-		try {
-			this.getDriver().executeScript(script);
-		} catch (WebDriverException ex) {
-			log.debug("fucking appium! " + ex.getMessage());
-		}
+		DriverUtils.waitUntilElementClickable(getDriver(), loginField);
+		DriverUtils.sendTextToInputByScript(getDriver(),
+				IOSLocators.scriptSignInEmailPath, login);
 	}
 
 	public String getPassword() {
@@ -222,13 +211,9 @@ public class LoginPage extends IOSPage {
 	}
 
 	public void setPassword(String password) throws Exception {
-		String script = String.format(IOSLocators.scriptSignInPasswordPath
-				+ ".setValue(\"%s\")", password);
-		try {
-			this.getDriver().executeScript(script);
-		} catch (WebDriverException ex) {
-			log.debug("fucking web appium! " + ex.getMessage());
-		}
+		DriverUtils.waitUntilElementClickable(getDriver(), passwordField);
+		DriverUtils.sendTextToInputByScript(getDriver(),
+				IOSLocators.scriptSignInPasswordPath, password);
 	}
 
 	public boolean waitForLogin() throws Exception {
@@ -249,17 +234,12 @@ public class LoginPage extends IOSPage {
 
 	public Boolean isLoginFinished() throws Exception {
 		dismisSettingsWaring();
-		try {
-			this.getWait().until(
-					ExpectedConditions.presenceOfElementLocated(By
-							.name(IOSLocators.ContactListPage.nameSelfButton)));
-			this.getWait().until(
-					ExpectedConditions.visibilityOfElementLocated(By
-							.name(IOSLocators.ContactListPage.nameSelfButton)));
-		} catch (WebDriverException ex) {
-		}
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.ContactListPage.nameSelfButton), 1);
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.ContactListPage.nameSelfButton));
+		return DriverUtils.isElementPresentAndDisplayed(
+				getDriver(),
+				getDriver().findElement(
+						By.name(IOSLocators.ContactListPage.nameSelfButton)));
 	}
 
 	@Override
@@ -374,5 +354,10 @@ public class LoginPage extends IOSPage {
 	public boolean isCountryPickerButttonVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				countryPickerButtton);
+	}
+
+	public boolean isSetEmailPasswordSuggestionVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				setEmailPasswordSuggetionLabel);
 	}
 }

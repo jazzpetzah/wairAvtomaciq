@@ -9,7 +9,7 @@ import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.PhoneNumber;
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
@@ -34,9 +34,9 @@ public class PhoneNumberLoginPageSteps {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
 		String number = user.getPhoneNumber().toString();
 		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		PagesCollection.phoneNumberLoginPage
+		WebappPagesCollection.phoneNumberLoginPage
 				.enterCountryCode(PhoneNumber.WIRE_COUNTRY_PREFIX);
-		PagesCollection.phoneNumberLoginPage.enterPhoneNumber(number);
+		WebappPagesCollection.phoneNumberLoginPage.enterPhoneNumber(number);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class PhoneNumberLoginPageSteps {
 	 */
 	@When("^I enter phone number (.*) on phone number sign in$")
 	public void IEnterPhoneNumber(String number) {
-		PagesCollection.phoneNumberLoginPage.enterPhoneNumber(number);
+		WebappPagesCollection.phoneNumberLoginPage.enterPhoneNumber(number);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class PhoneNumberLoginPageSteps {
 	 */
 	@When("^I enter country code (.*) on phone number sign in$")
 	public void ISelectCountryCode(String code) throws Exception {
-		PagesCollection.phoneNumberLoginPage.enterCountryCode(code);
+		WebappPagesCollection.phoneNumberLoginPage.enterCountryCode(code);
 	}
 
 	/**
@@ -75,7 +75,7 @@ public class PhoneNumberLoginPageSteps {
 	 */
 	@When("^I click on forward button on phone number sign in$")
 	public void IClickOnForwardButtonOnPhoneNumberSignIn() throws Exception {
-		PagesCollection.phoneNumberVerificationPage = PagesCollection.phoneNumberLoginPage
+		WebappPagesCollection.phoneNumberVerificationPage = WebappPagesCollection.phoneNumberLoginPage
 				.clickForwardButton();
 	}
 
@@ -91,7 +91,7 @@ public class PhoneNumberLoginPageSteps {
 	public void ISeeInvalidPhoneNumberErrorMessageSayingX(String message)
 			throws Exception {
 		assertThat("invalid phone number error",
-				PagesCollection.phoneNumberLoginPage.getErrorMessage(),
+				WebappPagesCollection.phoneNumberLoginPage.getErrorMessage(),
 				equalTo(message));
 	}
 }

@@ -292,7 +292,7 @@ Feature: Calling
     And I see mute call, end call buttons
     And I end started call
     Then I see missed call from contact <Contact2>
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I see missed call indicator in list for contact <Contact2>
 
     Examples: 
@@ -319,7 +319,7 @@ Feature: Calling
     And I see mute call, end call buttons
     And I end started call
     Then I see missed call from contact <Contact2>
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I see missed call indicator in list for contact <Contact2>
 
     Examples: 
@@ -487,7 +487,7 @@ Feature: Calling
     And I press call button
     And I see mute call, end call buttons
     And <Contact> verifies that waiting instance status is changed to active in <Timeout> seconds
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I see mute call button in conversation list
     And I rotate UI to landscape
     Then I dont see mute call button in conversation list on iPad

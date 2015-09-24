@@ -393,3 +393,66 @@ Feature: Search
     Examples: 
       | Name      |
       | user1Name |
+
+  @staging @id3279
+  Scenario Outline: Verify action buttons disappear by deleting token from a search field
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 1st top connection contact
+    And I see action buttons appeared on People picker page
+    And I tap on 2nd top connection contact
+    And I see Create Conversation button on People picker page
+    And I press backspace button
+    Then I see open conversation action button on People picker page
+    And I press backspace button
+    Then I see action buttons disappeared on People picker page
+
+    Examples: 
+      | Name      | Contact   |
+      | user1Name | user3Name |
+
+  @staging @id3281
+  Scenario Outline: Verify opening conversation with action button
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I sign in using my email or phone number
+    When I see Contact list with my name <Name>
+    And I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if top people list is not there
+    And I see top people list on People picker page
+    And I tap on 1st top connection contact
+    And I see open conversation action button on People picker page
+    And I click open conversation action button on People picker page
+    Then I see dialog page
+
+    Examples: 
+      | Name      |
+      | user1Name |
+
+  @staging @id2121
+  Scenario Outline: Verify label hiding after dismissing all PYMK
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>,<Contact3>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe to reveal hide button for suggested contact <Contact2>
+    And I tap hide for suggested contact <Contact2>
+    And I swipe to reveal hide button for suggested contact <Contact3>
+    And I tap hide for suggested contact <Contact3>
+    Then I dont see CONNECT label
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |

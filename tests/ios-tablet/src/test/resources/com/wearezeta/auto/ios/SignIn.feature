@@ -97,8 +97,8 @@ Feature: Sign In
       | Login      | Password      | Name      | NewPassword  |
       | user1Email | user1Password | user1Name | aqa123456789 |
 
-  @staging @id2726
-  Scenario Outline: Verify first time phone sign in [PORTRAIT]
+  @staging @id3817
+  Scenario Outline: Verify phone sign in when email is assigned [PORTRAIT]
     Given There is 1 user where <Name> is me
     Given I see sign in screen
     When I tap I HAVE AN ACCOUNT button
@@ -114,8 +114,8 @@ Feature: Sign In
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @staging @id3787
-  Scenario Outline: Verify first time phone sign in [LANDSCAPE]
+  @staging @id3818
+  Scenario Outline: Verify phone sign in when email is assigned [LANDSCAPE]
     Given There is 1 user where <Name> is me
     Given I rotate UI to landscape
     Given I see sign in screen
@@ -126,6 +126,55 @@ Feature: Sign In
     When I enter phone number for user <Name>
     Then I see verification code page
     When I enter verification code for user <Name>
+    Then I see Contact list with my name <Name>
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id2726
+  Scenario Outline: Verify first time phone sign in when email is not assigned [PORTRAIT]
+    Given There is 1 user where <Name> is me with phone number only
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    Then I see PHONE SIGN IN button
+    When I tap on PHONE SIGN IN button
+    Then I see country picker button on Sign in screen
+    When I enter phone number for user <Name>
+    Then I see verification code page
+    When I enter verification code for user <Name>
+    Then I see set email/password suggesstion page
+    When I have entered login <Email>
+    And I start activation email monitoring
+    And I have entered password <Password>
+    When I click DONE keyboard button
+    Then I see email verification reminder
+    When I verify registration address
+    Then I see Contact list with my name <Name>
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id3787
+  Scenario Outline: Verify first time phone sign in when email is not assigned [LANDSCAPE]
+    Given There is 1 user where <Name> is me with phone number only
+    Given I rotate UI to landscape
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    Then I see PHONE SIGN IN button
+    When I tap on PHONE SIGN IN button
+    Then I see country picker button on Sign in screen
+    When I enter phone number for user <Name>
+    Then I see verification code page
+    When I enter verification code for user <Name>
+    Then I see set email/password suggesstion page
+    When I have entered login <Email>
+    And I start activation email monitoring
+    And I have entered password <Password>
+    When I click DONE keyboard button
+    Then I see email verification reminder
+    When I verify registration address
     Then I see Contact list with my name <Name>
 
     Examples: 

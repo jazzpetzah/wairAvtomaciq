@@ -679,7 +679,7 @@ Feature: Conversation View
     Examples: 
       | Name      | Contact   |
       | user1Name | user2Name |
-      
+
   @regression @id2781
   Scenario Outline: Verify player isn't displayed for vimeo links without video IDs
     Given There are 2 users where <Name> is me

@@ -110,3 +110,45 @@ Feature: Self Profile
     Examples: 
       | Name      |
       | user1Name |
+
+  @id2857 @staging
+  Scenario Outline: User can change accent color and it is saved after sign in sign out (portrait)
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to portrait
+    Given I sign in using my email
+    Given I see Conversations list with no conversations
+    And I tap my avatar on top of Conversations list
+    When I change accent color to <AccentColor>
+    And I see color <AccentColor> selected on Self Profile page
+    And I tap Options button on Self Profile page
+    And I tap Sign Out button on Self Profile page
+    And I see welcome screen
+    And I sign in using my email
+    And I see Conversations list with no conversations
+    And I tap my avatar on top of Conversations list
+    Then I see color <AccentColor> selected on Self Profile page
+
+    Examples: 
+      | Name      | AccentColor |
+      | user1Name | Violet      |
+
+  @id3109 @staging
+  Scenario Outline: User can change accent color and it is saved after sign in sign out (landscape)
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to landscape
+    Given I sign in using my email
+    Given I see Conversations list with no conversations
+    And I tap my avatar on top of Conversations list
+    When I change accent color to <AccentColor>
+    And I see color <AccentColor> selected on Self Profile page
+    And I tap Options button on Self Profile page
+    And I tap Sign Out button on Self Profile page
+    And I see welcome screen
+    And I sign in using my email
+    And I see Conversations list with no conversations
+    And I tap my avatar on top of Conversations list
+    Then I see color <AccentColor> selected on Self Profile page
+
+    Examples: 
+      | Name      | AccentColor |
+      | user1Name | Violet      |

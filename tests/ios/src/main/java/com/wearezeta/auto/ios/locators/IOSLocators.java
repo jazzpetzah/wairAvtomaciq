@@ -86,7 +86,7 @@ public final class IOSLocators {
 
 	public static final String nameConnectOtherUserButton = "CONNECT";
 
-	public static final String xpathConnectOtherUserButton = "//UIAButton[@name='CONNECT']";
+	public static final String xpathConnectOtherUserButton = "//UIAButton[@name='CONNECT' or @name='OtherUserMetaControllerLeftButton']";
 
 	public static final String nameIgnoreOtherUserButton = "IGNORE";
 
@@ -177,7 +177,9 @@ public final class IOSLocators {
 	public static final String nameLeaveConversationButton = "LEAVE";
 
 	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
-
+	
+	public static final String nameCancelButton = "CANCEL";
+	
 	public static final String nameSilenceConversationButton = "SILENCE";
 
 	public static final String xpathSilenceConversationButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[@name='SILENCE']";
@@ -479,6 +481,8 @@ public final class IOSLocators {
 	public static final String namePendingRequestConnectButton = "CONNECT";
 	public static final String xpathPendingRequesterName = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
 	public static final String xpathPendingRequestMessage = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[3]";
+	public static final String xpathYouBothKnowPeopleIcon =  "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
+	public static final String nameYouBothKnowHeader = "YOU BOTH KNOW";
 
 	// ///////////////////////////
 	// People picker
@@ -525,6 +529,7 @@ public final class IOSLocators {
 	public static final class KeyboardButtons {
 		public static final String nameHideKeyboardButton = "Hide keyboard";
 		public static final String nameSpaceButton = "space";
+		public static final String nameDoneButton = "done";
 	}
 
 	// //////////////
@@ -540,6 +545,7 @@ public final class IOSLocators {
 	public static final String scriptSignInEmailPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"EmailField\"]";
 	public static final String scriptSignInPasswordPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].secureTextFields()[\"PasswordField\"]";
 	public static final String scriptRegistrationEmailInputPath = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textFields()[\"RegistrationEmailField\"]";
+	public static final String scriptSearchField = "UIATarget.localTarget().frontMostApp().windows()[\"ZClientMainWindow\"].textViews()[\"textViewSearch\"]";
 
 	public static final String nameYouLeftMessage = "YOU LEFT";
 	public static final String nameYouPingedMessage = "YOU PINGED";
@@ -552,8 +558,10 @@ public final class IOSLocators {
 	// Unblock user locator
 	// //////////////////////////
 	public static final String nameUnblockButton = "UNBLOCK";
-
+	
 	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
+	
+	public static final String nameBlockMenuButton = "BLOCK";
 
 	// //////////////////////////
 	// Reset Password from Sign In
@@ -656,6 +664,8 @@ public final class IOSLocators {
 		public static final String xpathFormatActionMenuConversationName = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAStaticText[@name='%s']";
 		
 		public static final String xpathFormatActionMenuXButton = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAButton[@name='%s']";
+		
+		public static final String xpathSpecificContactListCell = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']";
 	}
 
 	public final class RegistrationPage {
@@ -676,6 +686,7 @@ public final class IOSLocators {
 		public static final String nameEmailLoginButton = "EMAIL SIGN IN";
 		public static final String nameMaybeLater = "MAYBE LATER";
 		public static final String nameCountryPickerButton = "CountryPickerButton";
+		public static final String xpathSetEmailPasswordSuggetionLabel = "//UIAStaticText[contains(@name, 'Add email address and password')]";
 	}
 
 	public final class PeoplePickerPage {

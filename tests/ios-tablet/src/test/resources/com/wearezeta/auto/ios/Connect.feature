@@ -100,7 +100,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @regression @rc @id2354 @id2610 
+  @regression @rc @id2354 @id2610
   Scenario Outline: Send connection request to unconnected participant in a group chat [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <GroupCreator>
@@ -153,7 +153,7 @@ Feature: Connect
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Ignore button on Pending requests page <SentRequests> times
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I dont see Pending request link in contact list
     And I don't see conversation with not connected user <Contact1>
     And I wait until <Contact1> exists in backend search results
@@ -207,7 +207,7 @@ Feature: Connect
     And I click on Pending request link in contact list
     And I see Pending request page
     And I click on Connect button on Pending requests page <SentRequests> times
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I dont see Pending request link in contact list
     And I see user <Contact1> in contact list
     And I see user <Contact2> in contact list
@@ -306,7 +306,7 @@ Feature: Connect
     And I wait for 5 seconds
     And I see new photo in the dialog
     And I see message in the dialog
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I see People picker page
     And I click close button to dismiss people view
     And Contact <Contact> sends random message to user <Name>
@@ -635,7 +635,7 @@ Feature: Connect
     And I click on Ignore button on Pending requests page
     And I go back to group info page or popover
     And I exit the group info iPad popover
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I dont see Pending request link in contact list
 
     Examples: 
@@ -667,3 +667,42 @@ Feature: Connect
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName |
       | user1Name | user2Name | user3Name | user4Name | IGNORECONNECT |
+
+  @staging @id3795
+  Scenario Outline: Verify common connections are not tappable [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact2> sent connection request to me
+    Given <Contact1> is connected to <Contact2>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
+    And I see Pending request page
+    And I see YOU BOTH KNOW people section
+    And I click person in YOU BOTH KNOW section
+    Then I see Pending request page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @staging @id3796
+  Scenario Outline: Verify common connections are not tappable [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact2> sent connection request to me
+    Given <Contact1> is connected to <Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    And I see Pending request link in contact list
+    And I click on Pending request link in contact list
+    And I see Pending request page
+    And I see YOU BOTH KNOW people section
+    And I click person in YOU BOTH KNOW section
+    Then I see Pending request page
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |

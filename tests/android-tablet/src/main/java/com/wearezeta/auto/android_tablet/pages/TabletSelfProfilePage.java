@@ -1,6 +1,7 @@
 package com.wearezeta.auto.android_tablet.pages;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -8,6 +9,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import com.wearezeta.auto.android.util.AccentColorUtil;
+import com.wearezeta.auto.common.backend.AccentColor;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
@@ -30,6 +33,12 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 	public static final String idOptionsButton = "gtv__profile__settings_button";
 	@FindBy(id = idOptionsButton)
 	private WebElement optionsButton;
+
+	private static final String idColorPicker = "cpcl__color_picker_layout";
+
+	private static final String xpathSignOutBtn = "//*[@id='ttv__profile__settings_box__signout']";
+	@FindBy(xpath = xpathSignOutBtn)
+	private WebElement signOutBtn;
 
 	public TabletSelfProfilePage(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
@@ -81,5 +90,43 @@ public class TabletSelfProfilePage extends AndroidTabletPage {
 			throws Exception {
 		final By locator = By.xpath(xpathOptionsMenuItemByName.apply(itemName));
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+	}
+	
+	public void tapSignOutBtn() throws Exception {
+		System.out.println(getDriver().getPageSource());
+		assert DriverUtils.waitUntilElementClickable(getDriver(), signOutBtn);
+		signOutBtn.click();
+	}
+
+	public WebElement findCorrectColorPicker() throws Exception {
+		List<WebElement> colorPickers = getDriver().findElements(
+				By.id(idColorPicker));
+		WebElement colorPicker = colorPickers.get(0);
+		int x = colorPicker.getLocation().getX();
+		if (colorPickers.size() > 1) {
+			for (WebElement cp : colorPickers) {
+				if (cp.getLocation().getX() < x) {
+					colorPicker = cp;
+					x = cp.getLocation().getX();
+				}
+			}
+		}
+		return colorPicker;
+	}
+
+	public void chooseColorOnColorPicker(AccentColor color) throws Exception {
+		WebElement colorPicker = findCorrectColorPicker();
+		final int NUMBER_OF_COLORS = 7;
+		int id = color.getId() - 1;
+		int percentX = (100 / NUMBER_OF_COLORS) * id + (100 / NUMBER_OF_COLORS)
+				/ 2;
+		DriverUtils.tapOnPercentOfElement(getDriver(), colorPicker, percentX,
+				50);
+	}
+
+	public AccentColor findSelectedAccentColor() throws Exception {
+		WebElement colorPicker = findCorrectColorPicker();
+		return AccentColorUtil.findSelectedAccentColor(this.getDriver(),
+				colorPicker);
 	}
 }

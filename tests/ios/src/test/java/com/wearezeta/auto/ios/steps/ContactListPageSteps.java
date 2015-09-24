@@ -748,4 +748,33 @@ public class ContactListPageSteps {
 	public void IPressLeaveButtonInActionMenuInContactList() throws Throwable {
 		getContactListPage().clickLeaveButtonInActionMenu();
 	}
+
+	/**
+	 * Clicks the Cancel button in action menu of contact list
+	 * 
+	 * @step. ^I press Cancel button in action menu in Contact list$
+	 * @throws Throwable
+	 */
+	@Then("^I press Cancel button in action menu in Contact List$")
+	public void IPressCancelButtonInActionMenuInContactList() throws Throwable {
+		getContactListPage().clickCancelButtonInActionMenu();
+	}
+
+	/**
+	 * Verifies that next conversation is selected in list
+	 * 
+	 * @step. ^I see conversation (.*) is selected in list$
+	 * @param conversation
+	 *            that is selected now
+	 * @throws Throwable
+	 */
+	@Then("^I see conversation (.*) is selected in list$")
+	public void ISeeConversationIsSelectedInList(String conversation)
+			throws Throwable {
+		conversation = usrMgr.replaceAliasesOccurences(conversation,
+				FindBy.NAME_ALIAS);
+		String convIsSelected = getContactListPage()
+				.getSelectedConversationCellValue(conversation);
+		Assert.assertEquals("1", convIsSelected);
+	}
 }

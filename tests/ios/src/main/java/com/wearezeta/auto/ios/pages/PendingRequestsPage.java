@@ -27,6 +27,9 @@ public class PendingRequestsPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathPendingRequestMessage)
 	private WebElement pendingMessage;
+	
+	@FindBy(how = How.XPATH, using = IOSLocators.xpathYouBothKnowPeopleIcon)
+	private WebElement youBothKnowPeopleIcon;
 
 	private String autoHelloMessage = CommonSteps.CONNECTION_MESSAGE;
 
@@ -48,12 +51,9 @@ public class PendingRequestsPage extends IOSPage {
 		for (int i = 0; i < clicks; i++) {
 			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 					By.name(IOSLocators.namePendingRequestIgnoreButton));
-			this.getWait().until(
-					ExpectedConditions
-							.elementToBeClickable(ignoreRequestButton));
+			DriverUtils.waitUntilElementClickable(getDriver(), ignoreRequestButton);
 			ignoreRequestButton.click();
-			DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-					By.name(IOSLocators.namePendingRequestIgnoreButton));
+			
 		}
 		page = new ContactListPage(this.getLazyDriver());
 		return page;
@@ -128,6 +128,15 @@ public class PendingRequestsPage extends IOSPage {
 	public boolean isIgnoreButtonDisplayed() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
 				By.name(IOSLocators.namePendingRequestIgnoreButton), 5);
+	}
+
+	public boolean isYouBothKnowDisplayed() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(this.getDriver(),
+				By.name(IOSLocators.nameYouBothKnowHeader), 5);
+	}
+
+	public void clickYouBothKnowPeopleIcon() {
+		youBothKnowPeopleIcon.click();
 	}
 
 }

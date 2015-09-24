@@ -100,7 +100,7 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameCloseButton)
 	private WebElement closeButton;
-	
+
 	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathMessageEntries)
 	private List<WebElement> messageEntries;
 
@@ -154,7 +154,7 @@ public class DialogPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.DialogPage.xpathGiphyImage)
 	private WebElement giphyImage;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.DialogPage.nameSoundCloudButton)
 	private WebElement soundCloudButton;
 
@@ -197,7 +197,7 @@ public class DialogPage extends IOSPage {
 		callButton.click();
 		return new StartedCallPage(getLazyDriver());
 	}
-	
+
 	public int getNumberOfMessageEntries() {
 		return messageEntries.size();
 	}
@@ -258,9 +258,9 @@ public class DialogPage extends IOSPage {
 			conversationInput.sendKeys(message);
 		}
 	}
-	
+
 	public String getStringFromInput() throws Exception {
-			return conversationInput.getText();
+		return conversationInput.getText();
 	}
 
 	public void scrollToTheEndOfConversationByTapOnCursorInput()
@@ -786,9 +786,8 @@ public class DialogPage extends IOSPage {
 	}
 
 	public void sendMessageUsingScript(String message) throws Exception {
-		String script = String.format(IOSLocators.scriptCursorInputPath
-				+ ".setValue(\"%s\");", message);
-		this.getDriver().executeScript(script);
+		DriverUtils.sendTextToInputByScript(getDriver(),
+				IOSLocators.scriptCursorInputPath, message);
 		clickKeyboardReturnButton();
 	}
 
@@ -1057,21 +1056,17 @@ public class DialogPage extends IOSPage {
 				By.xpath(IOSLocators.DialogPage.xpathGiphyImage));
 	}
 
-	public void tapOnLink() throws Exception {	
-		WebElement tapLink = this
-				.getDriver()
-				.findElement(
-						By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
-		DriverUtils.mobileTapByCoordinates(getDriver(),
-				tapLink);
+	public void tapOnLink() throws Exception {
+		WebElement tapLink = this.getDriver().findElement(
+				By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
+		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink);
 	}
 
 	public void tapOnLinkWithinAMessage() throws Exception {
-		WebElement tapLink = this
-				.getDriver()
-				.findElement(
-						By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
-		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink,-(tapLink.getSize().width/4) , 0);
+		WebElement tapLink = this.getDriver().findElement(
+				By.xpath(IOSLocators.DialogPage.xpathSimpleMessageLink));
+		DriverUtils.mobileTapByCoordinates(getDriver(), tapLink,
+				-(tapLink.getSize().width / 4), 0);
 	}
 
 }
