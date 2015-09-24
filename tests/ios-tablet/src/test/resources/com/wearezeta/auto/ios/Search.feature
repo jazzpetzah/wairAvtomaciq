@@ -844,7 +844,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @torun @staging @id3824
+  @staging @id3824
   Scenario Outline: Verify label hiding after dismissing all PYMK [LANDSCAPE]
     Given There are 4 users where <Name> is me
     Given Myself is connected to <Contact1>
