@@ -251,7 +251,7 @@ Feature: Search
   Scenario Outline: Verify I can start a 1:1 call with search ui buttons
     Given My browser supports calling
     Given There are 3 users where <Name> is me
-    Given Myself is connected to <Contact1>,<Contact2>
+    Given Myself is connected to <Contact1>
     Given I switch to Sign In page
     Given I Sign in using login <Login> and password <Password>
     And I see my avatar on top of Contact list
@@ -265,8 +265,8 @@ Feature: Search
     Then I do not see the calling bar
 
     Examples: 
-      | Login      | Password      | Name      | Contact1  | Contact2  |
-      | user1Email | user1Password | user1Name | user2Name | user3Name |
+      | Login      | Password      | Name      | Contact1  |
+      | user1Email | user1Password | user1Name | user2Name |
 
   @staging @id3326
   Scenario Outline: Verify I can start a group call with search ui buttons
