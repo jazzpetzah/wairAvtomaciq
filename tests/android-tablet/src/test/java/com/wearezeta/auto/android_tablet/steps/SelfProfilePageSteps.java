@@ -21,13 +21,11 @@ public class SelfProfilePageSteps {
 			.getInstance();
 
 	private TabletSelfProfilePage getSelfProfilePage() throws Exception {
-		return (TabletSelfProfilePage) pagesCollection
-				.getPage(TabletSelfProfilePage.class);
+		return pagesCollection.getPage(TabletSelfProfilePage.class);
 	}
 
 	private SelfProfileCameraPage getSelfProfileCameraPage() throws Exception {
-		return (SelfProfileCameraPage) pagesCollection
-				.getPage(SelfProfileCameraPage.class);
+		return pagesCollection.getPage(SelfProfileCameraPage.class);
 	}
 
 	/**
