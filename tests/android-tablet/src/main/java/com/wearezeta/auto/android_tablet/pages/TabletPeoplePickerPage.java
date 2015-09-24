@@ -21,11 +21,11 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 	@FindBy(id = idPickerSearch)
 	public WebElement pickerSearch;
 
-	public static final String xpathTopPeopleHeader = "//*[@id='ttv_pickuser__list_header_title' and @value='TOP PEOPLE']";
+	public static final String xpathTopPeopleHeader = "//*[@id='rv_top_users']";
 
 	public static final Function<String, String> xpathTopPeopleAvatarByName = name -> String
-			.format("//*[@id='ttv_pickuser__list_header_title']/parent::*/parent::*//*[@value='%s']/parent::*/parent::*",
-					name.toUpperCase());
+			.format("%s//*[@id='cwtf__startui_top_user' and .//*[@value='%s']]",
+					xpathTopPeopleHeader, name.toUpperCase());
 
 	public static final String idCreateConversationButton = "ll_pickuser_confirmbutton";
 	@FindBy(id = idCreateConversationButton)
@@ -145,6 +145,21 @@ public class TabletPeoplePickerPage extends AndroidTabletPage {
 
 	public void doLongSwipeDown() throws Exception {
 		getAndroidPeoplePickerPage().doLongSwipeDown();
+	}
+
+	public void tapOpenConversationButton() throws Exception {
+		getAndroidPeoplePickerPage().tapOpenConversationButton();
+	}
+
+	public boolean waitUntilOpenConversationButtonIsVisible() throws Exception {
+		return getAndroidPeoplePickerPage()
+				.waitUntilOpenConversationButtonIsVisible();
+	}
+
+	public boolean waitUntilOpenConversationButtonIsInvisible()
+			throws Exception {
+		return getAndroidPeoplePickerPage()
+				.waitUntilOpenConversationButtonIsInvisible();
 	}
 
 }
