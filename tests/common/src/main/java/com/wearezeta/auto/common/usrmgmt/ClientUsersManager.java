@@ -1,26 +1,21 @@
 package com.wearezeta.auto.common.usrmgmt;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpStatus;
-import org.apache.log4j.Logger;
-
 import com.google.common.base.Throwables;
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
 import com.wearezeta.auto.common.log.ZetaLogger;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
+
+import java.math.BigInteger;
+import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 public class ClientUsersManager {
 	private static final int NUMBER_OF_REGISTRATION_RETRIES = 3;
@@ -252,6 +247,7 @@ public class ClientUsersManager {
 	private final Random random = new Random();
 
 	// ! Mutates the users list
+    //TODO process spawning should probably occur here
 	private void generateUsers(List<ClientUser> usersToCreate,
 			final RegistrationStrategy strategy) throws Exception {
 		ExecutorService executor = Executors
