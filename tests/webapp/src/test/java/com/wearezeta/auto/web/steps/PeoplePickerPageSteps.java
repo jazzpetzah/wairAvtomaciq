@@ -229,7 +229,8 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I click Call button on People Picker page$")
 	public void IClickCallButton() throws Exception {
-		PagesCollection.contactListPage = PagesCollection.peoplePickerPage.clickCallButton();
+		WebappPagesCollection.contactListPage = WebappPagesCollection.peoplePickerPage
+				.clickCallButton();
 	}
 
 	/**
