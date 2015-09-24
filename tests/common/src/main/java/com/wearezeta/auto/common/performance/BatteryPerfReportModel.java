@@ -14,6 +14,25 @@ public abstract class BatteryPerfReportModel extends AbstractPerfReportModel {
 	private long previousTxBytes;
 	private long currentTxBytes;
 	private int minutesDuration;
+	private long flowRxBytes;
+
+	public long getFlowRxBytes() {
+		return flowRxBytes;
+	}
+
+	public void setFlowRxBytes(long flowRxBytes) {
+		this.flowRxBytes = flowRxBytes;
+	}
+
+	public long getFlowTxBytes() {
+		return flowTxBytes;
+	}
+
+	public void setFlowTxBytes(long flowTxBytes) {
+		this.flowTxBytes = flowTxBytes;
+	}
+
+	private long flowTxBytes;
 
 	public int getMinutesDuration() {
 		return minutesDuration;
@@ -84,6 +103,8 @@ public abstract class BatteryPerfReportModel extends AbstractPerfReportModel {
 		result.put("previousTxBytes", this.getPreviousTxBytes());
 		result.put("currentTxBytes", this.getCurrentTxBytes());
 		result.put("minutesDuration", this.getMinutesDuration());
+		result.put("flowTxBytes", this.getFlowTxBytes());
+		result.put("flowRxBytes", this.getFlowRxBytes());
 		return result;
 	}
 
@@ -96,5 +117,7 @@ public abstract class BatteryPerfReportModel extends AbstractPerfReportModel {
 		this.setPreviousTxBytes(jsonObj.getLong("previousTxBytes"));
 		this.setCurrentTxBytes(jsonObj.getLong("currentTxBytes"));
 		this.setMinutesDuration(jsonObj.getInt("minutesDuration"));
+		this.setFlowRxBytes(jsonObj.getLong("flowRxBytes"));
+		this.setFlowTxBytes(jsonObj.getLong("flowTxBytes"));
 	}
 }

@@ -332,6 +332,7 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I see user <Contact> found on People picker page
     And I tap on user name found on People picker page <Contact>
+    And User info should be shown with Unblock button
     When I click Unblock button
     Then I see contact list with name <Contact>
 
@@ -374,9 +375,9 @@ Feature: Connect
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
     And I tap on user name found on People picker page <Contact1>
-    Then User info should be shown with Block button
-    And I click Unblock button
-    And I see dialog page
+    And User info should be shown with Unblock button
+    When I click Unblock button
+    Then I see dialog page
     And I navigate back from dialog page
     And I see contact list with name <Contact1>
 
