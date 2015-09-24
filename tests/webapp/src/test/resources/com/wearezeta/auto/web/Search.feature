@@ -217,7 +217,7 @@ Feature: Search
       | Login      | Password      | Name      | Name2     | Email2     |
       | user1Email | user1Password | user1Name | user2Name | user2Email |
 
-  @staging @id3321
+  @regression @id3321
   Scenario Outline: Verify More button is shown in Top People list when you have more than 8 people in Top people
     Given There are 11 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>, <Contact3>, <Contact4>, <Contact5>, <Contact6>, <Contact7>, <Contact8>, <Contact9>, <Contact10>
