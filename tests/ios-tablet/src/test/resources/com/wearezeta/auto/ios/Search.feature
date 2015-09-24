@@ -822,3 +822,44 @@ Feature: Search
     Examples: 
       | Name      |
       | user1Name |
+
+  @staging @id2482
+  Scenario Outline: Verify label hiding after dismissing all PYMK [PORTRAIT]
+    Given There are 4 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>,<Contact3>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe to reveal hide button for suggested contact <Contact2>
+    And I tap hide for suggested contact <Contact2>
+    And I swipe to reveal hide button for suggested contact <Contact3>
+    And I tap hide for suggested contact <Contact3>
+    Then I dont see CONNECT label
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | Contact3  |
+      | user1Name | user2Name | user3Name | user4Name |
+
+  @staging @id3824
+  Scenario Outline: Verify label hiding after dismissing all PYMK [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given <Contact1> is connected to <Contact2>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I open search by taping on it
+    And I see People picker page
+    And I re-enter the people picker if CONNECT label is not there
+    And I see CONNECT label
+    And I swipe to reveal hide button for suggested contact <Contact2>
+    And I tap hide for suggested contact <Contact2>
+    Then I dont see CONNECT label
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
