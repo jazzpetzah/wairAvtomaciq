@@ -71,7 +71,7 @@ public class DialogPageSteps {
 
 	@When("^I tap on text input$")
 	public void WhenITapOnTextInput() throws Exception {
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 3; i++) {
 			getDialogPage().tapOnCursorInput();
 			if (getDialogPage().isKeyboardVisible()) {
 				break;

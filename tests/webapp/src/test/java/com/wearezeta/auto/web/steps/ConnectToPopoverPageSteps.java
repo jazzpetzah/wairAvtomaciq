@@ -1,6 +1,6 @@
 package com.wearezeta.auto.web.steps;
 
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.popovers.ConnectToPopoverContainer;
 
 import cucumber.api.java.en.And;
@@ -16,7 +16,7 @@ public class ConnectToPopoverPageSteps {
 	 */
 	@When("^I click Connect button on Connect To popover$")
 	public void IAcceptConnectionRequestFromUser() throws Exception {
-		((ConnectToPopoverContainer) PagesCollection.popoverPage)
+		((ConnectToPopoverContainer) WebappPagesCollection.popoverPage)
 				.clickConnectButton();
 	}
 
@@ -27,7 +27,7 @@ public class ConnectToPopoverPageSteps {
 	 */
 	@And("^I see Connect To popover$")
 	public void ISeeConnectToPopover() throws Exception {
-		((ConnectToPopoverContainer) PagesCollection.popoverPage)
+		((ConnectToPopoverContainer) WebappPagesCollection.popoverPage)
 				.waitUntilVisibleOrThrowException();
 	}
 
@@ -43,10 +43,10 @@ public class ConnectToPopoverPageSteps {
 	public void ISeePendingOutgoingConnectionPopover(String doNot)
 			throws Exception {
 		if (doNot == null) {
-			((ConnectToPopoverContainer) PagesCollection.popoverPage)
+			((ConnectToPopoverContainer) WebappPagesCollection.popoverPage)
 					.waitUntilVisibleOrThrowException();
 		} else {
-			((ConnectToPopoverContainer) PagesCollection.popoverPage)
+			((ConnectToPopoverContainer) WebappPagesCollection.popoverPage)
 					.waitUntilNotVisibleOrThrowException();
 		}
 	}
@@ -61,7 +61,7 @@ public class ConnectToPopoverPageSteps {
 	@When("^I click Cancel request on Pending Outgoing Connection popover$")
 	public void IClickCancelRequestButtonOnPendingOutgoingConnectionPopover()
 			throws Exception {
-		((ConnectToPopoverContainer) PagesCollection.popoverPage)
+		((ConnectToPopoverContainer) WebappPagesCollection.popoverPage)
 				.clickCancelRequestButton();
 	}
 
@@ -73,7 +73,7 @@ public class ConnectToPopoverPageSteps {
 	 */
 	@And("^I see Cancel request confirmation popover$")
 	public void ISeeCancelRequestConfirmationPopover() throws Exception {
-		((ConnectToPopoverContainer) PagesCollection.popoverPage)
+		((ConnectToPopoverContainer) WebappPagesCollection.popoverPage)
 				.waitUntilVisibleOrThrowException();
 	}
 
@@ -84,7 +84,7 @@ public class ConnectToPopoverPageSteps {
 	 */
 	@When("^I click No button on Cancel request confirmation popover$")
 	public void IClickNoButtonOnCancelRequestConfirmationPopover() {
-		((ConnectToPopoverContainer) PagesCollection.popoverPage)
+		((ConnectToPopoverContainer) WebappPagesCollection.popoverPage)
 				.clickNoButton();
 	}
 
@@ -95,7 +95,7 @@ public class ConnectToPopoverPageSteps {
 	 */
 	@When("^I click Yes button on Cancel request confirmation popover$")
 	public void IClickYesButtonOnCancelRequestConfirmationPopover() {
-		((ConnectToPopoverContainer) PagesCollection.popoverPage)
+		((ConnectToPopoverContainer) WebappPagesCollection.popoverPage)
 				.clickYesButton();
 	}
 }

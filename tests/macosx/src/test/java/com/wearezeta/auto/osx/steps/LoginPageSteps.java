@@ -1,42 +1,17 @@
 package com.wearezeta.auto.osx.steps;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-import org.junit.Assert;
-
-import com.wearezeta.auto.common.backend.BackendAPIWrappers;
-import com.wearezeta.auto.common.email.handlers.IMAPSMailbox;
-import com.wearezeta.auto.common.log.ZetaLogger;
-import com.wearezeta.auto.common.usrmgmt.ClientUser;
-import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
-import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.osx.common.InputMethodEnum;
-import com.wearezeta.auto.osx.common.LoginBehaviourEnum;
-import com.wearezeta.auto.osx.pages.ContactListPage;
-import com.wearezeta.auto.osx.pages.OSXPage;
-import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.SelfProfilePage;
-import com.wearezeta.auto.osx.pages.common.NoInternetConnectionPage;
-import com.wearezeta.auto.osx.pages.welcome.LoginPage;
-
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 public class LoginPageSteps {
-
-	private static final Logger log = ZetaLogger.getLog(LoginPageSteps.class
-			.getSimpleName());
-
-	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
+	LoginPageSteps parentSteps = new LoginPageSteps();
 
 	/**
 	 * Enters user email and password into corresponding fields on sign in
 	 * screen then taps "Sign In" button
 	 * 
-	 * @step. ^I [Ss]ign in using login (.*) and password (.*)$
+	 * @step. ^I Sign in using login (.*) and password (.*)$
 	 * 
 	 * @param login
 	 *            user login string
@@ -46,276 +21,125 @@ public class LoginPageSteps {
 	 * @throws AssertionError
 	 *             if login operation was unsuccessful
 	 */
-	@Given("^I [Ss]ign in using login (.*) and password (.*)$")
+	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void ISignInUsingLoginAndPassword(String login, String password)
 			throws Exception {
-		log.debug(String.format("Sign in using email %s and password %s",
-				login, password));
-		WelcomePageSteps welcomePageSteps = new WelcomePageSteps();
-		welcomePageSteps.IStartSignIn();
-		this.ITypeLogin(login);
-		this.ITypePassword(password);
-		this.IPressSignInButton();
 
-		Assert.assertTrue(String.format(
-				"Failed to sign in using email %s and password %s", login,
-				password), PagesCollection.loginPage.waitForLogin());
-
-		ClientUser user = null;
-		try {
-			user = usrMgr.findUserByNameOrNameAlias(login);
-		} catch (NoSuchUserException e) {
-			try {
-				user = usrMgr.findUserByEmailOrEmailAlias(login);
-			} catch (NoSuchUserException ex) {
-			}
-		}
-		if (user != null) {
-			usrMgr.setSelfUser(user);
-		}
+		parentSteps.ISignInUsingLoginAndPassword(login, password);
 	}
 
 	/**
-	 * Clicks on Sign In button and submits entered credentials
-	 * 
+	 * Presses Sign In button on the corresponding page
+	 *
 	 * @step. ^I press [Ss]ign [Ii]n button$
-	 * 
+	 *
 	 * @throws Exception
+	 *             if Selenium fails to wait until sign in action completes
 	 */
 	@When("^I press [Ss]ign [Ii]n button$")
 	public void IPressSignInButton() throws Exception {
-		ISignInExpectingResult(LoginBehaviourEnum.SUCCESSFUL.getResult());
-	}
-
-	@When("^I [Ss]ign [Ii]n expecting (sucessful login|error|[Nn]o [Ii]nternet message)$")
-	public void ISignInExpectingResult(String result) throws Exception {
-		OSXPage page = null;
-		for (LoginBehaviourEnum value : LoginBehaviourEnum.values()) {
-			if (value.getResult().toLowerCase().equals(result.toLowerCase())) {
-				page = PagesCollection.loginPage.signIn(value);
-			}
-		}
-		if (page instanceof ContactListPage) {
-			PagesCollection.contactListPage = (ContactListPage) page;
-			PagesCollection.selfProfilePage = (SelfProfilePage) PagesCollection.contactListPage
-					.instantiatePage(SelfProfilePage.class);
-		} else if (page instanceof NoInternetConnectionPage) {
-			PagesCollection.noInternetPage = (NoInternetConnectionPage) page;
-		} else if (page instanceof LoginPage) {
-			PagesCollection.loginPage = (LoginPage) page;
-		}
+		parentSteps.IPressSignInButton();
 	}
 
 	/**
-	 * Enters login in corresponding field on Sign In page
-	 * 
-	 * @step. ^I type login (.*)$
-	 * 
-	 * @param login
-	 *            user login string
-	 */
-	@When("^I type login (.*)$")
-	public void ITypeLogin(String login) {
-		try {
-			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
-		} catch (NoSuchUserException e) {
-			try {
-				// search for email by name aliases in case name is specified
-				login = usrMgr.findUserByNameOrNameAlias(login).getEmail();
-			} catch (NoSuchUserException ex) {
-			}
-		}
-
-		PagesCollection.loginPage.typeEmail(login);
-	}
-
-	/**
-	 * Enters password in corresponding field on Sign In page (this step doesn't
-	 * support password with spaces in it, use full version: 'I type password
-	 * (.*) by sending keys' for password with spaces testing)
-	 * 
-	 * @step. ^I type password (\\S*)$
-	 * 
-	 * @param password
-	 *            user password string
+	 * Verifies whether an account is signed in properly
+	 *
+	 * @step. ^I am signed in properly$
 	 *
 	 * @throws Exception
 	 */
-	@When("^I type password (\\S*)$")
-	public void ITypePassword(String password) throws Exception {
-		ITypePasswordByMode(password, InputMethodEnum.SEND_KEYS.getMethod());
+	@Then("^I am signed in properly$")
+	public void IAmSignedInProperly() throws Exception {
+		parentSteps.IAmSignedInProperly();
 	}
 
 	/**
-	 * Enters password in corresponding field on Sign In page using specified
-	 * input mode
-	 * 
-	 * @step. ^I type password (.*) by (sending keys|AppleScript)$
-	 * 
-	 * @param password
-	 *            user password string
-	 * @param mode
-	 *            set value mode ('sending keys' - sends text using
-	 *            WebElement.sendKeys() method | 'AppleScript')
+	 * Checks if a error message is shown on the sign in page
 	 *
+	 * @step. ^the sign in error message reads (.*)
+	 * @param message
+	 *            expected error message
 	 * @throws Exception
 	 */
-	@When("^I type password (.*) by (sending keys|AppleScript)$")
-	public void ITypePasswordByMode(String password, String mode)
-			throws Exception {
-		try {
-			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchUserException e) {
-		}
-		for (InputMethodEnum method : InputMethodEnum.values()) {
-			if (method.getMethod().toLowerCase().equals(mode.toLowerCase())) {
-				PagesCollection.loginPage.typePassword(password, method);
-			}
-		}
+	@Then("^the sign in error message reads (.*)")
+	public void TheSignInErrorMessageReads(String message) throws Exception {
+		parentSteps.TheSignInErrorMessageReads(message);
 	}
 
 	/**
-	 * When called after logout, checks that Sign In screen is opened
-	 * 
-	 * @step. I have returned to Sign In screen
+	 * Checks if a red dot is shown inside the email field on the sign in form
+	 *
+	 * @step. ^a red dot is shown inside the email field on the sign in form$
 	 * @throws Exception
 	 */
-	@Then("I have returned to Sign In screen")
-	public void ThenISeeSignInScreen() throws Exception {
-		Assert.assertTrue("Failed to logout",
-				PagesCollection.contactListPage.waitForSignOut());
-		Assert.assertTrue(PagesCollection.contactListPage.isSignOutFinished());
+	@Then("^a red dot is shown inside the email field on the sign in form$")
+	public void ARedDotIsShownOnTheEmailField() throws Exception {
+		parentSteps.ARedDotIsShownOnTheEmailField();
 	}
 
 	/**
-	 * Checks that corresponding error message appears when incorrect
-	 * credentials are entered
-	 * 
-	 * @step. I see wrong credentials message
-	 * 
-	 * @throws AssertionError
-	 *             if there is no message about wrong credentials on Sign In
-	 *             screen
-	 */
-	@Then("I see wrong credentials message")
-	public void ISeeWrongCredentialsMessage() {
-		Assert.assertTrue(PagesCollection.loginPage
-				.isWrongCredentialsMessageDisplayed());
-	}
-
-	/**
-	 * Checks that corresponding error message did not appear when credentials
-	 * are entered
-	 * 
-	 * @step. ^I do not see wrong credentials message$
-	 * 
-	 * @throws AssertionError
-	 *             if there is message about wrong credentials on Sign In screen
-	 */
-	@Then("^I do not see wrong credentials message$")
-	public void IDoNotSeeWrongCredentialsMessage() {
-		Assert.assertFalse(PagesCollection.loginPage
-				.isWrongCredentialsMessageDisplayed());
-	}
-
-	/**
-	 * Clicks on Change password button on Sign In screen
-	 * 
-	 * @step. ^I select to Reset Password$
-	 */
-	@When("^I select to Reset Password$")
-	public void ISelectToResetPassword() {
-		PagesCollection.loginPage.forgotPassword();
-	}
-
-	/**
-	 * Checks that opened page is Forgot Password page
-	 * 
-	 * @step. ^I see Forgot Password page in browser$
-	 * 
+	 * Checks if a red dot is shown inside the password field on the sign in
+	 * form
+	 *
+	 * @step. ^a red dot is shown inside the password field on the sign in form$
 	 * @throws Exception
 	 */
-	@Then("^I see Forgot Password page in browser$")
-	public void ISeeChangePasswordPageInBrowser() throws Exception {
-		PagesCollection.loginPage.isForgotPasswordPageAppears();
+	@Then("^a red dot is shown inside the password field on the sign in form$")
+	public void ARedDotIsShownOnThePasswordField() throws Exception {
+		parentSteps.ARedDotIsShownOnThePasswordField();
 	}
 
 	/**
-	 * Opens Forgot Password page on staging website
+	 * Types email string into the corresponding input field on sign in page
 	 * 
-	 * @step. ^I go to Forgot Password page$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I go to Forgot Password page$")
-	public void IGoToForgotPasswordPage() throws Exception {
-		PagesCollection.changePasswordPage = PagesCollection.loginPage
-				.openStagingForgotPasswordPage();
-	}
-
-	/**
-	 * Enters email to receive Change Password link
-	 * 
-	 * @step. ^I enter user email (.*) to change password$
+	 * @step. ^I enter email (\\S+)$
 	 * 
 	 * @param email
 	 *            user email string
-	 * 
-	 * @throws Exception
 	 */
-	@When("^I enter user email (.*) to change password$")
-	public void IEnterEmailToChangePassword(String email) throws Exception {
-		try {
-			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
-
-		Map<String, String> expectedHeaders = new HashMap<String, String>();
-		expectedHeaders.put("Delivered-To", email);
-		PagesCollection.loginPage.setPasswordResetMessage(IMAPSMailbox
-				.getInstance().getMessage(expectedHeaders,
-						BackendAPIWrappers.ACTIVATION_TIMEOUT));
-		PagesCollection.changePasswordPage
-				.enterEmailForChangePasswordAndSubmit(email);
+	@When("^I enter email (\\S+)$")
+	public void IEnterEmail(String email) {
+		parentSteps.IEnterEmail(email);
 	}
 
 	/**
-	 * Searches for email message with Change Password link and opens it in
-	 * Safari
+	 * Types password string into the corresponding input field on sign in page
 	 * 
-	 * @step. ^I open change password link from email$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I open change password link from email$")
-	public void IOpenChangePasswordLinkFromEmail() throws Exception {
-		PagesCollection.changePasswordPage = PagesCollection.loginPage
-				.openResetPasswordPage();
-	}
-
-	/**
-	 * Submits new password on Change Password page in Safari
-	 * 
-	 * @step. ^I reset password to (.*)$
+	 * @step. ^I enter password \"([^\"]*)\"$
 	 * 
 	 * @param password
-	 *            new user password string
+	 *            password string
+	 */
+	@When("^I enter password \"([^\"]*)\"$")
+	public void IEnterPassword(String password) {
+		parentSteps.IEnterPassword(password);
+	}
+
+	/**
+	 * Verifies whether Sign In page is the current page
+	 * 
+	 * @step. ^I see Sign In page$
+	 * @throws Exception
 	 * 
 	 * @throws AssertionError
-	 *             when correct message about password changing does not appear
-	 *             in browser
+	 *             if current page is not Sign In page
 	 */
-	@When("^I reset password to (.*)$")
-	public void IEnterNewPasswordOnChangePasswordPage(String password)
-			throws Exception {
-		try {
-			password = usrMgr.findUserByPasswordAlias(password).getPassword();
-		} catch (NoSuchUserException e) {
-			// Ignore silently
-		}
+	@Given("^I see Sign In page$")
+	public void ISeeSignInPage() throws Exception {
+		parentSteps.ISeeSignInPage();
+	}
 
-		Assert.assertTrue(PagesCollection.changePasswordPage
-				.resetPasswordSetNew(password));
+	/**
+	 * Verifies whether the expected login error is visible on the page
+	 * 
+	 * @step. ^I see login error \"(.*)\"$
+	 * 
+	 * @param expectedError
+	 *            the text of error
+	 * @throws Exception
+	 */
+	@Then("^I see login error \"(.*)\"$")
+	public void ISeeLoginError(String expectedError) throws Exception {
+		parentSteps.ISeeLoginError(expectedError);
 	}
 }

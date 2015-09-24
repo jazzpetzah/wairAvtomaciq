@@ -55,6 +55,9 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = OtherUserPersonalInfoPage.idRightActionButton)
 	private WebElement blockButton;
 
+	@FindBy(id = OtherUserPersonalInfoPage.idUnblockBtn)
+	private WebElement unblockButton;
+
 	@FindBy(xpath = xpathConfirmBtn)
 	private WebElement confirmBtn;
 
@@ -69,8 +72,14 @@ public class ConnectToPage extends AndroidPage {
 		return null;
 	}
 
-	public void clickBlockBtn() {
+	public void clickBlockBtn() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), blockButton);
 		blockButton.click();
+	}
+
+	public void clickUnblockBtn() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), unblockButton);
+		unblockButton.click();
 	}
 
 	public void pressConfirmBtn() throws Exception {
@@ -185,8 +194,7 @@ public class ConnectToPage extends AndroidPage {
 		final WebElement leftConnectBtn = getDriver().findElement(
 				By.xpath(xpathUserDetailsLeftButton.apply("Connect")));
 		this.getWait().until(
-				ExpectedConditions
-						.elementToBeClickable(leftConnectBtn));
+				ExpectedConditions.elementToBeClickable(leftConnectBtn));
 		leftConnectBtn.click();
 
 	}

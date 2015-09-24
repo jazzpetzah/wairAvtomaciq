@@ -142,8 +142,8 @@ public class PeoplePickerPage extends IOSPage {
 	public Boolean isPeoplePickerPageVisible() throws Exception {
 		boolean result = DriverUtils.waitUntilLocatorAppears(this.getDriver(),
 				By.xpath(IOSLocators.xpathPickerSearch));
-		//Thread.sleep(1000);
-		//clickLaterButton();
+		// Thread.sleep(1000);
+		// clickLaterButton();
 		return result;
 	}
 
@@ -191,13 +191,22 @@ public class PeoplePickerPage extends IOSPage {
 				IllegalStateException::new);
 	}
 
-	public void fillTextInPeoplePickerSearch(String text) {
+	public void fillTextInPeoplePickerSearch(String text) throws Exception {
 		try {
-			peoplePickerSearch.sendKeys(text);
+			sendTextToSeachInput(text);
+			clickSpaceKeyboardButton();
+			//peoplePickerSearch.sendKeys(text);
 		} catch (WebDriverException ex) {
 			peoplePickerSearch.clear();
-			peoplePickerSearch.sendKeys(text);
+			sendTextToSeachInput(text);
+			clickSpaceKeyboardButton();
+			//peoplePickerSearch.sendKeys(text);
 		}
+	}
+
+	public void sendTextToSeachInput(String text) throws Exception {
+		DriverUtils.sendTextToInputByScript(getDriver(),
+				IOSLocators.scriptSearchField, text);
 	}
 
 	public boolean waitUserPickerFindUser(String user) throws Exception {
@@ -563,5 +572,4 @@ public class PeoplePickerPage extends IOSPage {
 		DriverUtils.waitUntilElementClickable(getDriver(), sendImageButton);
 		sendImageButton.click();
 	}
-
 }

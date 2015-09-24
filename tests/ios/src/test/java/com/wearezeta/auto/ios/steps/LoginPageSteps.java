@@ -105,7 +105,7 @@ public class LoginPageSteps {
 
 		getLoginPage().waitForLoginToFinish();
 	}
-	
+
 	/**
 	 * Enter verification code for specified user
 	 * 
@@ -160,7 +160,6 @@ public class LoginPageSteps {
 		Assert.assertTrue("Country picker button is not visible",
 				getLoginPage().isCountryPickerButttonVisible());
 	}
-	
 
 	/**
 	 * Verify verification code page shown
@@ -172,6 +171,18 @@ public class LoginPageSteps {
 	@When("^I see verification code page$")
 	public void ISeeVerificationCodePage() throws Exception {
 		Assert.assertTrue(getRegistrationPage().isVerificationCodePageVisible());
+	}
+
+	/**
+	 * Verify set email/password suggesstion page is shown
+	 * 
+	 * @step. ^I see set email/password suggesstion page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I see set email/password suggesstion page$")
+	public void ISeeSetEmailPassSuggestionPage() throws Exception {
+		Assert.assertTrue(getLoginPage().isSetEmailPasswordSuggestionVisible());
 	}
 
 	/**

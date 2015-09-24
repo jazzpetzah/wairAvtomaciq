@@ -398,7 +398,7 @@ Feature: People View
     And I click NOTIFY button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I see dialog page
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I see conversation <GroupChatName> is unsilenced
 
     Examples: 
@@ -444,7 +444,7 @@ Feature: People View
     And I click SILENCE button on iPad ellipsis menu
     And I exit the group info iPad popover
     And I see dialog page
-    And I swipe right on Dialog page
+    And I return to the chat list
     Then I see conversation <GroupChatName> is silenced
 
     Examples: 
@@ -513,3 +513,85 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | ParticipantsNumber |
       | user1Name | user2Name | user3Name | user4Name | AddContact    | 4                  |
+
+  @staging @id2333
+  Scenario Outline: Verify you can block a person from profile view [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I open conversation details
+    And I see <Contact1> user profile page
+    And I press conversation menu button
+    And I press menu Block button
+    And I confirm blocking alert
+    Then I dont see conversation <Contact1> in contact list
+    Then I see conversation <Contact2> is selected in list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @staging @id3834
+  Scenario Outline: Verify you can block a person from profile view [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on contact name <Contact1>
+    And I see dialog page
+    And I open conversation details
+    And I see <Contact1> user profile page
+    And I press conversation menu button
+    And I press menu Block button
+    And I confirm blocking alert
+    Then I dont see conversation <Contact1> in contact list
+    Then I see conversation <Contact2> is selected in list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  |
+      | user1Name | user2Name | user3Name |
+
+  @staging @id2336
+  Scenario Outline: Verify you can unblock someone from a group conversation [PORTRAIT]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> blocks user <Contact1>
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I select contact <Contact1>
+    And I see <Contact1> user profile page
+    And I unblock user
+    Then I see dialog page
+    Then I see conversation <Contact1> is selected in list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName    |
+      | user1Name | user2Name | user3Name | UnblockFromGroup |
+
+  @staging @id3835
+  Scenario Outline: Verify you can unblock someone from a group conversation [LANDSCAPE]
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> blocks user <Contact1>
+    Given I rotate UI to landscape
+    Given I Sign in on tablet using my email
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I select contact <Contact1>
+    And I see <Contact1> user profile page
+    And I unblock user
+    Then I see dialog page
+    Then I see conversation <Contact1> is selected in list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName    |
+      | user1Name | user2Name | user3Name | UnblockFromGroup |

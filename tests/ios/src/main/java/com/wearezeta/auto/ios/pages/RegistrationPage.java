@@ -255,7 +255,7 @@ public class RegistrationPage extends IOSPage {
 	public void switchToRearCamera() {
 		clickSwitchCameraButton();
 	}
-	
+
 	public boolean isSetPicturePageVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.name(IOSLocators.RegistrationPage.nameSelectPictureButton));
@@ -323,10 +323,8 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	public void scriptInputEmail(String val) throws Exception {
-		String script = String.format(
-				IOSLocators.scriptRegistrationEmailInputPath
-						+ ".setValue(\"%s\");", val);
-		this.getDriver().executeScript(script);
+		DriverUtils.sendTextToInputByScript(getDriver(),
+				IOSLocators.scriptRegistrationEmailInputPath, val);
 	}
 
 	public void scriptInputAndConfirmEmail(String val) throws Exception {
@@ -541,8 +539,9 @@ public class RegistrationPage extends IOSPage {
 				timeoutSeconds);
 	}
 
-	public boolean isEmailVerifPromptVisible() {
-		return emailVerifPrompt.isDisplayed();
+	public boolean isEmailVerifPromptVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				emailVerifPrompt);
 	}
 
 }

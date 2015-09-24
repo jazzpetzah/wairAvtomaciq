@@ -81,9 +81,9 @@ public class PeoplePickerPage extends WebPage {
 	public AbstractPopoverContainer clickNotConnectedUserName(String name)
 			throws Exception {
 		clickNotConnectedUser(name);
-		PagesCollection.popoverPage = new ConnectToPopoverContainer(
+		WebappPagesCollection.popoverPage = new ConnectToPopoverContainer(
 				this.getLazyDriver());
-		return (ConnectToPopoverContainer) PagesCollection.popoverPage;
+		return (ConnectToPopoverContainer) WebappPagesCollection.popoverPage;
 	}
 
 	public boolean isUserFound(String name) throws Exception {
@@ -229,9 +229,9 @@ public class PeoplePickerPage extends WebPage {
 	public ConnectToPopoverContainer clickPendingUserName(String name)
 			throws Exception {
 		clickPendingUser(name);
-		PagesCollection.popoverPage = new ConnectToPopoverContainer(
+		WebappPagesCollection.popoverPage = new ConnectToPopoverContainer(
 				this.getLazyDriver());
-		return (ConnectToPopoverContainer) PagesCollection.popoverPage;
+		return (ConnectToPopoverContainer) WebappPagesCollection.popoverPage;
 	}
 
 	private void clickPendingUser(String name) throws Exception {

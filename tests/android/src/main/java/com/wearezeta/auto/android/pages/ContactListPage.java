@@ -307,8 +307,10 @@ public class ContactListPage extends AndroidPage {
 						CONTACT_LIST_LOAD_TIMEOUT_SECONDS);
 
 		final By selfAvatarLocator = By.id(idSelfUserAvatar);
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				selfAvatarLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS) : "Self avatar is not visible on top of conversations list";
+		if (!DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				selfAvatarLocator, CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
+			log.warn("Self avatar is not detected on top of conversations list");
+		}
 
 		final By spinnerConvoListLoadingProgressLocator = By
 				.xpath(xpathSpinnerConversationsListLoadingIndicator);

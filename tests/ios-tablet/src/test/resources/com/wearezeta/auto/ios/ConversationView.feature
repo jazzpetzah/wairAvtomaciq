@@ -236,7 +236,7 @@ Feature: Conversation View
     And I see dialog page
     And I input more than 200 chars message and send it
     And I type the message
-    And I swipe right on Dialog page
+    And I return to the chat list
     When I tap on my name <Name>
 	And I close self profile
     And I tap on contact name <Contact>
@@ -642,7 +642,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I tap on text input
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact>
     Then I see media link <SoundCloudLink> and media in dialog
     And I tap media link
@@ -834,7 +834,7 @@ Feature: Conversation View
     When I tap on contact name <Contact>
     And I see dialog page
     And I post media link <YouTubeLink>
-    And I swipe right on Dialog page
+    And I return to the chat list
     And I tap on contact name <Contact>
     Then I see youtube link <YouTubeLink> and media in dialog
     And I click video container for the first time

@@ -198,6 +198,18 @@ public class CommonIOSSteps {
 	public void IClickSpaceKeyboardButton() throws Exception {
 		pagesCollecton.getCommonPage().clickSpaceKeyboardButton();
 	}
+	
+	/**
+	 * Click on Done button on keyboard
+	 * 
+	 * @step. I click DONE keyboard button
+	 * 
+	 * @throws Exception
+	 */
+	@When("I click DONE keyboard button")
+	public void IClickDoneKeyboardButton() throws Exception {
+		pagesCollecton.getCommonPage().clickDoneKeyboardButton();
+	}
 
 	/**
 	 * Closes the app for a certain amount of time in seconds
@@ -300,6 +312,26 @@ public class CommonIOSSteps {
 				myNameAlias);
 		IChangeUserAvatarPicture(myNameAlias, "default");
 	}
+	
+    /**
+     * Creates specified number of users and sets user with specified name as
+     * main user. The user is registered with a phone number only and has no
+     * email address attached
+     *
+     * @step. ^There (?:is|are) (\\d+) users? where (.*) is me with phone number
+     * only$
+     *
+     * @param count number of users to create
+     * @param myNameAlias user name or name alias to use as main user
+     *
+     * @throws Exception
+     */
+    @Given("^There (?:is|are) (\\d+) users? where (.*) is me with phone number only$")
+    public void ThereAreNUsersWhereXIsMeWithoutEmail(int count,
+        String myNameAlias) throws Exception {
+        commonSteps.ThereAreNUsersWhereXIsMeWithPhoneNumberOnly(
+            CURRENT_PLATFORM, count, myNameAlias);
+    }
 
 	@When("^(.*) ignore all requests$")
 	public void IgnoreAllIncomingConnectRequest(String userToNameAlias)

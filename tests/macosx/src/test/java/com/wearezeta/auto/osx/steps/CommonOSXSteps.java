@@ -1,157 +1,145 @@
 package com.wearezeta.auto.osx.steps;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Date;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.Future;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.remote.RemoteWebDriver;
 
 import com.wearezeta.auto.common.CommonCallingSteps2;
 import com.wearezeta.auto.common.CommonSteps;
-import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
-import com.wearezeta.auto.common.Platform;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
-import com.wearezeta.auto.osx.common.OSXCommonUtils;
+import static com.wearezeta.auto.osx.common.OSXCommonUtils.clearAppData;
+import static com.wearezeta.auto.osx.common.OSXCommonUtils.killAllApps;
 import com.wearezeta.auto.osx.common.OSXConstants;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
+import static com.wearezeta.auto.osx.common.OSXExecutionContext.APPIUM_HUB_URL;
+import static com.wearezeta.auto.osx.common.OSXExecutionContext.CURRENT_PLATFORM;
+import static com.wearezeta.auto.osx.common.OSXExecutionContext.CURRENT_SECONDARY_PLATFORM;
+import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
+import com.wearezeta.auto.osx.pages.MainWirePage;
+import com.wearezeta.auto.osx.pages.MenuBarPage;
 import com.wearezeta.auto.osx.pages.OSXPage;
-import com.wearezeta.auto.osx.pages.PagesCollection;
-import com.wearezeta.auto.osx.pages.common.MainMenuAndDockPage;
-import com.wearezeta.auto.osx.pages.common.ProblemReportPage;
-import com.wearezeta.auto.osx.pages.welcome.LoginPage;
-import com.wearezeta.auto.osx.pages.welcome.WelcomePage;
+import com.wearezeta.auto.osx.pages.OSXPagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
+import com.wearezeta.auto.web.pages.RegistrationPage;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 public class CommonOSXSteps {
 
 	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
-	public static final Logger log = ZetaLogger.getLog(CommonOSXSteps.class
-			.getSimpleName());
+	public static final Logger LOG = ZetaLogger.getLog(CommonOSXSteps.class
+			.getName());
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
-	public static final Platform CURRENT_PLATFORM = Platform.Mac;
+	private ChromeDriverService service;
 
-	private static final int MAX_DRIVER_CREATION_RETRIES = 3;
+	private final OSXPagesCollection osxPagesCollection = OSXPagesCollection
+			.getInstance();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
 
-	private Date testStartedTimestamp;
+	private Future<ZetaWebAppDriver> createWebDriver() throws IOException {
+		final DesiredCapabilities capabilities = new DesiredCapabilities();
+		ChromeOptions options = new ChromeOptions();
+		// simulate a fake webcam and mic for testing
+		options.addArguments("use-fake-device-for-media-stream");
+		// allow skipping the security prompt for sharing the media device
+		options.addArguments("use-fake-ui-for-media-stream");
+		options.setBinary(WIRE_APP_PATH + OSXExecutionContext.ELECTRON_SUFFIX);
+		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+		capabilities.setCapability("platformName",
+				CURRENT_SECONDARY_PLATFORM.name());
 
-	private long startupTime = -1;
+		service = new ChromeDriverService.Builder()
+				.usingDriverExecutable(
+						new File(OSXExecutionContext.CHROMEDRIVER_PATH))
+				.usingAnyFreePort().build();
+		service.start();
+		final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-	private static boolean backendSet = false;
+		Callable<ZetaWebAppDriver> callableWebAppDriver = () -> new ZetaWebAppDriver(
+				service.getUrl(), capabilities);
 
-	public long getStartupTime() {
-		return this.startupTime;
+		final Future<ZetaWebAppDriver> lazyWebDriver = pool
+				.submit(callableWebAppDriver);
+		PlatformDrivers.getInstance().getDrivers()
+				.put(CURRENT_SECONDARY_PLATFORM, lazyWebDriver);
+		return lazyWebDriver;
 	}
 
-	static {
-		// for Jenkins slaves we should define that environment has display
-		CommonUtils.defineNoHeadlessEnvironment();
-		// disabling selenium logs to exclude not used output from log
-		CommonUtils.disableSeleniumLogs();
-	}
-
-	public static boolean resetBackendSettingsIfOverwritten()
-			throws IOException, Exception {
-		OSXCommonUtils.resetOSXPrefsDaemon();
-		if (!OSXCommonUtils.isBackendTypeSet(CommonUtils
-				.getBackendType(CommonOSXSteps.class))) {
-			log.debug("Backend setting were overwritten. Trying to restart app.");
-			OSXCommonUtils.killWireIfStuck();
-			OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-					.getBackendType(CommonOSXSteps.class));
-			OSXCommonUtils.resetOSXPrefsDaemon();
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	private Future<ZetaOSXDriver> resetOSXDriver(String url) throws Exception {
+	private Future<ZetaOSXDriver> createOSXDriver()
+			throws MalformedURLException {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability(CapabilityType.BROWSER_NAME, "");
-		capabilities.setCapability(CapabilityType.PLATFORM, CURRENT_PLATFORM
-				.getName().toUpperCase());
-		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
+		capabilities.setCapability(CapabilityType.PLATFORM, "MAC");
+		capabilities.setCapability("platformName", "Mac");
 
-		return (Future<ZetaOSXDriver>) PlatformDrivers.getInstance()
-				.resetDriver(url, capabilities, MAX_DRIVER_CREATION_RETRIES,
-						this::startApp, null);
-	}
+		final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-	private void startApp(RemoteWebDriver drv) {
-		try {
-			CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
-		} catch (Exception e) {
-		}
-		try {
-			OSXCommonUtils.deleteWireLoginFromKeychain();
-		} catch (Exception e) {
-		}
-		try {
-			OSXCommonUtils.deletePreferencesFile();
-		} catch (Exception e) {
-		}
-		try {
-			OSXCommonUtils.deleteCacheFolder();
-		} catch (Exception e) {
-		}
+		Callable<ZetaOSXDriver> callableOSXDriver = () -> new ZetaOSXDriver(
+				new URL(APPIUM_HUB_URL), capabilities);
 
-		if (!backendSet) {
-			try {
-				OSXCommonUtils.removeAllZClientSettingsFromDefaults();
-			} catch (Exception e) {
-			}
-			try {
-				OSXCommonUtils.setZClientBackendAndDisableStartUI(CommonUtils
-						.getBackendType(this.getClass()));
-			} catch (Exception e) {
-			}
-			backendSet = true;
-		}
-		drv.navigate().to(OSXExecutionContext.wirePath);
-
-		try {
-			if (resetBackendSettingsIfOverwritten()) {
-				drv.navigate().to(OSXExecutionContext.wirePath);
-			}
-		} catch (Exception e) {
-		}
+		final Future<ZetaOSXDriver> lazyOSXDriver = pool
+				.submit(callableOSXDriver);
+		PlatformDrivers.getInstance().getDrivers()
+				.put(CURRENT_PLATFORM, lazyOSXDriver);
+		return lazyOSXDriver;
 	}
 
 	private void commonBefore() throws Exception {
-		this.testStartedTimestamp = new Date();
-		final Future<ZetaOSXDriver> lazyDriver = resetOSXDriver(OSXExecutionContext.appiumUrl);
+		killAllApps();
+		clearAppData();
+		startApp();
+	}
 
-		PagesCollection.mainMenuPage = new MainMenuAndDockPage(lazyDriver);
-		PagesCollection.welcomePage = new WelcomePage(lazyDriver);
-		PagesCollection.loginPage = new LoginPage(lazyDriver);
-		PagesCollection.problemReportPage = new ProblemReportPage(lazyDriver);
+	private void startApp() throws Exception {
+		final Future<ZetaOSXDriver> osxDriver = createOSXDriver();
+		final Future<ZetaWebAppDriver> webDriver = createWebDriver();
 
-		ZetaFormatter.setLazyDriver(lazyDriver);
-		// saving time of startup for Sync Engine
-		this.startupTime = new Date().getTime()
-				- this.testStartedTimestamp.getTime();
+		// get drivers instantly
+		final ZetaOSXDriver app = osxDriver.get();
+		webDriver.get();
+		app.navigate().to(WIRE_APP_PATH);
+
+		ZetaFormatter.setLazyDriver(osxDriver);
+
+		osxPagesCollection.setFirstPage(new MainWirePage(osxDriver));
+		MainWirePage mainWirePage = osxPagesCollection
+				.getPage(MainWirePage.class);
+		MenuBarPage menuBarPage = osxPagesCollection.getPage(MenuBarPage.class);
+
+		mainWirePage.focusApp();
+		Thread.sleep(3000);// wait for page to load TODO scan for spinner
+		menuBarPage.switchEnvironment();
+		webappPagesCollection.setFirstPage(new RegistrationPage(webDriver));
 	}
 
 	@Before("@performance")
@@ -245,8 +233,7 @@ public class CommonOSXSteps {
 	public void ContactSendImageToConversation(String imageSenderUserNameAlias,
 			String imageFileName, String conversationType,
 			String dstConversationName) throws Exception {
-		String imagePath = OSXExecutionContext.userDocuments + "/"
-				+ imageFileName;
+		String imagePath = OSXExecutionContext.USER_HOME + "/" + imageFileName;
 		Boolean isGroup = null;
 		if (conversationType.equals("single user")) {
 			isGroup = false;
@@ -264,13 +251,13 @@ public class CommonOSXSteps {
 	@When("^I change user (.*) avatar picture from file (.*)$")
 	public void IChangeUserAvatarPictureFromFile(String user, String picture)
 			throws Exception {
-		String picturePath = OSXExecutionContext.userDocuments + "/" + picture;
+		String picturePath = OSXExecutionContext.USER_HOME + "/" + picture;
 		try {
 			user = usrMgr.findUserByNameOrNameAlias(user).getName();
 		} catch (NoSuchUserException e) {
 			// do nothing
 		}
-		log.debug("Setting avatar for user " + user + " from image "
+		LOG.debug("Setting avatar for user " + user + " from image "
 				+ picturePath);
 		commonSteps.IChangeUserAvatarPicture(user, picturePath);
 	}
@@ -334,18 +321,18 @@ public class CommonOSXSteps {
 	/**
 	 * Changes accent color of specified user to one from the list using REST
 	 * API
-	 * 
+	 *
 	 * @step. ^User (\\w+) changes accent color to
 	 *        (StrongBlue|StrongLimeGreen|BrightYellow
 	 *        |VividRed|BrightOrange|SoftPink|Violet)$
-	 * 
+	 *
 	 * @param userNameAlias
 	 *            user name
 	 * @param newColor
 	 *            one of possible accent colors:
 	 *            StrongBlue|StrongLimeGreen|BrightYellow
 	 *            |VividRed|BrightOrange|SoftPink|Violet
-	 * 
+	 *
 	 * @throws Exception
 	 */
 	@When("^User (\\w+) changes accent color to (StrongBlue|StrongLimeGreen|BrightYellow|VividRed|BrightOrange|SoftPink|Violet)$")
@@ -357,9 +344,9 @@ public class CommonOSXSteps {
 	/**
 	 * Stores screenshot of the whole screen for usage during execution by
 	 * specified alias
-	 * 
+	 *
 	 * @step. ^I take fullscreen shot and save it as (.*)$
-	 * 
+	 *
 	 * @param screenshotAlias
 	 *            string id for stored screenshot
 	 * @throws Exception
@@ -367,10 +354,10 @@ public class CommonOSXSteps {
 	@When("^I take fullscreen shot and save it as (.*)$")
 	public void ITakeFullscreenShotAndSaveItAsAlias(String screenshotAlias)
 			throws Exception {
-		final Optional<BufferedImage> shot = PagesCollection.mainMenuPage
-				.takeScreenshot();
+		final Optional<BufferedImage> shot = osxPagesCollection.getPage(
+				MainWirePage.class).takeScreenshot();
 		if (shot.isPresent()) {
-			OSXExecutionContext.screenshots.put(screenshotAlias, shot.get());
+			OSXExecutionContext.SCREENSHOTS.put(screenshotAlias, shot.get());
 		} else {
 			throw new RuntimeException(
 					"Selenium has failed to take screenshot of the current page");
@@ -379,33 +366,45 @@ public class CommonOSXSteps {
 
 	/**
 	 * Compares screenshots stored with specified aliases
-	 * 
+	 *
 	 * @step. ^I see that screen (.*) is changed in comparison with (.*)$
-	 * 
+	 *
 	 * @param resultAlias
 	 *            current screen appearance
 	 * @param previousAlias
 	 *            screen stored before
-	 * 
+	 *
 	 * @throws AssertionError
 	 *             if screenshots are similar enough
 	 */
 	@Then("^I see that screen (.*) is changed in comparison with (.*)$")
 	public void ISeeScreensAreDifferent(String resultAlias, String previousAlias) {
-		BufferedImage reference = OSXExecutionContext.screenshots
+		BufferedImage reference = OSXExecutionContext.SCREENSHOTS
 				.get(resultAlias);
-		BufferedImage template = OSXExecutionContext.screenshots
+		BufferedImage template = OSXExecutionContext.SCREENSHOTS
 				.get(previousAlias);
 		Assert.assertNotNull(reference);
 		Assert.assertNotNull(template);
 		double score = ImageUtil.getOverlapScore(reference, template,
 				ImageUtil.RESIZE_NORESIZE);
-		log.debug(String.format(
+		LOG.debug(String.format(
 				"Score for comparison of screens %s and %s is %.3f",
 				resultAlias, previousAlias, score));
 		Assert.assertTrue(String.format(
 				"Screens are the same, but expected not to be. "
 						+ "Score %.3f >= 0.980d", score), score < 0.98d);
+	}
+
+	@When("^I kill the app$")
+	public void KillApp() throws Exception {
+		clearDrivers();
+	}
+
+	@When("^I restart the app$")
+	public void restartApp() throws Exception {
+		osxPagesCollection.getPage(MainWirePage.class).closeWindow();
+		clearDrivers();
+		startApp();
 	}
 
 	@After
@@ -418,19 +417,25 @@ public class CommonOSXSteps {
 			e.printStackTrace();
 		}
 
-		OSXCommonUtils.collectSystemLogs(testStartedTimestamp);
-
-		OSXPage.clearPagesCollection();
-
 		commonSteps.getUserManager().resetUsers();
+		try {
+			osxPagesCollection.getPage(MainWirePage.class).closeWindow();
+		} catch (Exception e) {
+		}
+		clearDrivers();
+	}
 
-		// workaround for stuck on Send picture test
-		OSXCommonUtils.killWireIfStuck();
-
-		CommonUtils.enableTcpForAppName(OSXConstants.Apps.WIRE);
-
+	private void clearDrivers() throws Exception {
+		OSXPage.clearPagesCollection();
 		if (PlatformDrivers.getInstance().hasDriver(CURRENT_PLATFORM)) {
 			PlatformDrivers.getInstance().quitDriver(CURRENT_PLATFORM);
+		}
+		if (PlatformDrivers.getInstance().hasDriver(CURRENT_SECONDARY_PLATFORM)) {
+			PlatformDrivers.getInstance()
+					.quitDriver(CURRENT_SECONDARY_PLATFORM);
+		}
+		if (service != null && service.isRunning()) {
+			service.stop();
 		}
 	}
 

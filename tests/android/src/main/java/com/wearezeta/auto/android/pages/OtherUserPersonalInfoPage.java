@@ -30,7 +30,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public static final String LEAVE_CONVERSATION_BUTTON = "Leave conversation";
 	public static final String LEAVE_BUTTON = "LEAVE";
 
-	public static final String idUnblockBtn = "zb__connect_request__unblock_button";
+	public static final String idUnblockBtn = "zb__single_user_participants__unblock_button";
 	@FindBy(id = idUnblockBtn)
 	private WebElement unblockButton;
 
