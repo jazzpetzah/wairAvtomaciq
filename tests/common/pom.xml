@@ -140,6 +140,17 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+            <!--TODO read the examples on the android maven plugin github page (under test/projects/libraryprojects)-->
+            <plugin>
+                <groupId>com.simpligility.maven.plugins</groupId>
+                <artifactId>android-maven-plugin</artifactId>
+                <version>4.3.0</version>
+                <configuration>
+                    <sdk>
+                        <platform>19</platform>
+                    </sdk>
+                </configuration>
+            </plugin>
 
         </plugins>
 
