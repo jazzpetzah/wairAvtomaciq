@@ -126,7 +126,8 @@ public class CallingOverlayPage extends AndroidPage {
 	public boolean waitUntilNameAppearsOnCallingBarAvatar(String name)
 			throws Exception {
 		final By locator = By.xpath(xpathCallingBarAvatarByName.apply(name));
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
+		// isDisplayed sometimes does not work properly here
+		return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
 	}
 
 	public DialogPage acceptCall() throws Exception {
