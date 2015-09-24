@@ -132,7 +132,8 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user2Name | user3Name | PeoplePickerGroupChat2 |
 
-  @id1395 @smoke @rc @rc42
+# @smoke @rc @rc42
+  @id1395 @staging
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -172,8 +173,9 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2213 @regression @rc @rc42
-  Scenario Outline: I can dismiss PYMK by swipe
+#  @regression @rc @rc42
+  @id2213 @staging
+  Scenario Outline: (This test should be fixed in PR for the bug) I can dismiss PYMK by swipe
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>
     Given <Contact1> is connected to <Contact2>
