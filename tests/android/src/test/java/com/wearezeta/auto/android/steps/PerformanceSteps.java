@@ -44,11 +44,11 @@ public class PerformanceSteps {
 	private static final int MAX_MSGS_IN_CONVO_WINDOW = 100;
 
 	private ContactListPage getContactListPage() throws Exception {
-		return (ContactListPage) pagesCollection.getPage(ContactListPage.class);
+		return pagesCollection.getPage(ContactListPage.class);
 	}
 
 	private DialogPage getDialogPage() throws Exception {
-		return (DialogPage) pagesCollection.getPage(DialogPage.class);
+		return pagesCollection.getPage(DialogPage.class);
 	}
 
 	/**
@@ -189,8 +189,8 @@ public class PerformanceSteps {
 	}
 
 	private AndroidBatteryPerfReportModel batteryPerfReport = null;
-	private long rxBytes = 0;
-	private long txBytes = 0;
+	private long flowRxBytes = 0;
+	private long flowTxBytes = 0;
 
 	/**
 	 * Initialize battery perf report by recording current device metrics for
@@ -205,8 +205,12 @@ public class PerformanceSteps {
 		batteryPerfReport = new AndroidBatteryPerfReportModel();
 		batteryPerfReport.setPreviousCapacityValue(AndroidCommonUtils
 				.getBatteryCapacity());
-		batteryPerfReport.setPreviousRxBytes(0);
-		batteryPerfReport.setPreviousTxBytes(0);
+		final String packageId = AndroidCommonUtils
+				.getAndroidPackageFromConfig(getClass());
+		batteryPerfReport.setPreviousRxBytes(AndroidCommonUtils
+				.getRxBytes(packageId));
+		batteryPerfReport.setPreviousTxBytes(AndroidCommonUtils
+				.getTxBytes(packageId));
 	}
 
 	private final static long CALL_STATUS_CHECKING_INTERVAL = 30000; // milliseconds
@@ -240,13 +244,13 @@ public class PerformanceSteps {
 								caller, secondsElapsed));
 			}
 			for (Flow flow : flows) {
-				rxBytes = flow.getBytesIn();
+				flowRxBytes = flow.getBytesIn();
 				Assert.assertTrue(
 						"Received bytes count should be greater than 0",
-						rxBytes > 0);
-				txBytes = flow.getBytesOut();
+						flowRxBytes > 0);
+				flowTxBytes = flow.getBytesOut();
 				Assert.assertTrue("Sent bytes count should be greater than 0",
-						txBytes > 0);
+						flowTxBytes > 0);
 			}
 			log.info(String
 					.format("Successfully verified the ongoing call after %d seconds. %d seconds left till the end of the perf test...",
@@ -270,9 +274,15 @@ public class PerformanceSteps {
 		}
 		batteryPerfReport.setCurrentCapacityValue(AndroidCommonUtils
 				.getBatteryCapacity());
-		batteryPerfReport.setCurrentRxBytes(rxBytes);
-		batteryPerfReport.setCurrentTxBytes(txBytes);
+		final String packageId = AndroidCommonUtils
+				.getAndroidPackageFromConfig(getClass());
+		batteryPerfReport.setCurrentRxBytes(AndroidCommonUtils
+				.getRxBytes(packageId));
+		batteryPerfReport.setCurrentTxBytes(AndroidCommonUtils
+				.getTxBytes(packageId));
 		batteryPerfReport.setMinutesDuration(durationMinutes);
+		batteryPerfReport.setFlowRxBytes(flowRxBytes);
+		batteryPerfReport.setFlowTxBytes(flowTxBytes);
 		PerformanceHelpers.storeWidgetDataAsJSON(batteryPerfReport,
 				AndroidCommonUtils.getPerfReportPathFromConfig(getClass()));
 	}

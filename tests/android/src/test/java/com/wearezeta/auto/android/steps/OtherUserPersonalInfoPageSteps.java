@@ -127,6 +127,8 @@ public class OtherUserPersonalInfoPageSteps {
 	}
 
 	/**
+	 * -- returns fake false result
+	 * 
 	 * Checks to see that a user has been blocked by looking at the "is blocked"
 	 * button on their profile page
 	 * 

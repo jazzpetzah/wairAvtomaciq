@@ -302,7 +302,7 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id680 @regression
+  @id680 @regression_off @staging
   Scenario Outline: I want to see user has been blocked within the Start UI
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -332,6 +332,7 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I see user <Contact> found on People picker page
     And I tap on user name found on People picker page <Contact>
+    And User info should be shown with Unblock button
     When I click Unblock button
     Then I see contact list with name <Contact>
 
@@ -339,7 +340,7 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id720 @regression
+  @id720 @regression_off @staging
   Scenario Outline: I want to be seen in the search results of someone I blocked
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
@@ -360,7 +361,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id723 @regression
+  @id723 @regression_off @staging
   Scenario Outline: I want to unblock someone from their Profile view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -374,9 +375,9 @@ Feature: Connect
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
     And I tap on user name found on People picker page <Contact1>
-    Then User info should be shown with Block button
-    And I click Unblock button
-    And I see dialog page
+    And User info should be shown with Unblock button
+    When I click Unblock button
+    Then I see dialog page
     And I navigate back from dialog page
     And I see contact list with name <Contact1>
 
