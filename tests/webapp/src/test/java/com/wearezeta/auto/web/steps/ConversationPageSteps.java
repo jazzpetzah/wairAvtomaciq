@@ -549,6 +549,28 @@ public class ConversationPageSteps {
 			WebappPagesCollection.conversationPage = (ConversationPage) WebappPagesCollection.loginPage
 					.instantiatePage(ConversationPage.class);
 		}
+		final List<String> aliasList = splitAliases(aliases);
+		for (String alias : aliasList) {
+			final String participantName = usrMgr.findUserByNameOrNameAlias(
+					alias).getName();
+			WebappPagesCollection.conversationPage
+					.waitForCallingBarToBeDisplayedWithName(participantName);
+		}
+	}
+
+	/**
+	 *
+	 * @step. ^I see outgoing call for users? (.*)$
+	 * @param aliases
+	 *            comma separated list of usernames currently calling
+	 * @throws Exception
+	 */
+	@Then("^I see outgoing call for users? (.*)$")
+	public void ISeeOutgoingCallForUsers(String aliases) throws Exception {
+		if (WebappPagesCollection.conversationPage == null) {
+			WebappPagesCollection.conversationPage = (ConversationPage) WebappPagesCollection.loginPage
+					.instantiatePage(ConversationPage.class);
+		}
 		final List<String> participants = new ArrayList<String>();
 		final List<String> aliasList = splitAliases(aliases);
 		for (String alias : aliasList) {

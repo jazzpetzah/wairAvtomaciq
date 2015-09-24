@@ -284,7 +284,7 @@ Feature: Search
     And I see user <Contact2> found in People Picker
     And I select <Contact2> from People Picker results
     And I click Call button on People Picker page
-    And I see the calling bar from users <Contact1>,<Contact2>
+    And I see outgoing call for users <Contact1>,<Contact2>
     When I end the call
     Then I do not see the calling bar
 
