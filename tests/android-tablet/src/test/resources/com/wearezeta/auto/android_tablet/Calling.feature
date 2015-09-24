@@ -258,7 +258,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id2841 @staging @torun
+  @id2841 @staging
   Scenario Outline: Other wire user trying to call me while I'm already in wire call 
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -269,14 +269,14 @@ Feature: Calling
     And I see the conversation <Contact2> in my conversations list
     When <Contact1> calls me using <CallBackend>
     Then I see calling overlay Big bar
-    And I see call participants Myself,<Contact1> on the calling overlay
     When I tap <AcceptBtnName> button on the calling overlay
+    And I see call participants Myself,<Contact1> on the calling overlay
     And <Contact2> calls me using <CallBackend>
     Then I see calling overlay Big bar
-    And I see call participants Myself,<Contact2> on the calling overlay
+    And I see call participant <Contact2> on the calling overlay
     And I see the conversation <Contact1> in my conversations list
     And I see the conversation <Contact2> in my conversations list
 
     Examples: 
       | Name      | Contact1  | Contact2  | CallBackend | AcceptBtnName |
-      | user1Name | user2Name | user3Name | chrome      | Accept        |
+      | user1Name | user2Name | user3Name | autocall    | Accept        |
