@@ -47,6 +47,10 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public static final String idSendConnectionRequestButton = "zb__send_connect_request__connect_button";
 
+	private static final String idOpenConversationButton = "zb__conversation_quick_menu__conversation_button";
+	@FindBy(id = idOpenConversationButton)
+	private WebElement openConversationButton;
+
 	private static final Function<String, String> xpathPeoplePickerGroupByName = name -> String
 			.format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']",
 					name);
@@ -361,5 +365,20 @@ public class PeoplePickerPage extends AndroidPage {
 		this.getDriver().swipe(coords.x + elementSize.width / 2, coords.y,
 				coords.x + elementSize.width / 2,
 				coords.y + elementSize.height / 4 * 3, 2000);
+	}
+
+	public void tapOpenConversationButton() {
+		openConversationButton.click();
+	}
+
+	public boolean waitUntilOpenConversationButtonIsVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idOpenConversationButton));
+	}
+
+	public boolean waitUntilOpenConversationButtonIsInvisible()
+			throws Exception {
+		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
+				By.id(idOpenConversationButton));
 	}
 }

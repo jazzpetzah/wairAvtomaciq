@@ -151,7 +151,7 @@ Feature: People View
     And I see People Picker page
     And I keep on reopening People Picker until I see Top People
     And I tap <Contact1> avatar in Top People
-    When I tap Create Conversation button
+    When I tap Open Conversation button
     Then I see the conversation view
     And I see the chat header message contains "<Contact1>" text on conversation view page
 
@@ -170,8 +170,10 @@ Feature: People View
     And I see People Picker page
     And I keep on reopening People Picker until I see Top People
     And I tap <Contact1> avatar in Top People
-    When I tap Create Conversation button
+    When I tap Open Conversation button
     Then I see the conversation view
+    And I do not see the Open Conversation button
+    And I see the conversation <Contact1> in my conversations list
     And I see the chat header message contains "<Contact1>" text on conversation view page
 
     Examples: 
