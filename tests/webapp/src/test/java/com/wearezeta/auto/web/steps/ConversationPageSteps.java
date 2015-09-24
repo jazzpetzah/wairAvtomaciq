@@ -4,13 +4,16 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.wearezeta.auto.common.CommonSteps;
+
 import static com.wearezeta.auto.common.CommonSteps.splitAliases;
+
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUser;
@@ -23,6 +26,7 @@ import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -535,24 +539,27 @@ public class ConversationPageSteps {
 	/**
 	 *
 	 * @step. ^I see the calling bar from users? (.*)$
-	 * @param participants
+	 * @param aliases
 	 *            comma separated list of usernames currently calling
 	 * @throws Exception
 	 */
 	@Then("^I see the calling bar from users? (.*)$")
-	public void IWaitForCallingBar(String participants) throws Exception {
+	public void IWaitForCallingBar(String aliases) throws Exception {
 		if (WebappPagesCollection.conversationPage == null) {
 			WebappPagesCollection.conversationPage = (ConversationPage) WebappPagesCollection.loginPage
 					.instantiatePage(ConversationPage.class);
 		}
-		final List<String> participantList = splitAliases(participants);
-		for (String participant : participantList) {
+		final List<String> participants = new ArrayList<String>();
+		final List<String> aliasList = splitAliases(aliases);
+		for (String alias : aliasList) {
 			final String participantName = usrMgr.findUserByNameOrNameAlias(
-					participant).getName();
-			WebappPagesCollection.conversationPage
-					.waitForCallingBarToBeDisplayedWithName(participantName);
+					alias).getName();
+			participants.add(participantName.toUpperCase());
 		}
-
+		assertThat(
+				WebappPagesCollection.conversationPage
+						.getNamesFromOutgoingCallingBar(),
+				is(participants));
 	}
 
 	/**
