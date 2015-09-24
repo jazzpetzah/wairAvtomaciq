@@ -539,8 +539,9 @@ public class RegistrationPage extends IOSPage {
 				timeoutSeconds);
 	}
 
-	public boolean isEmailVerifPromptVisible() {
-		return emailVerifPrompt.isDisplayed();
+	public boolean isEmailVerifPromptVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				emailVerifPrompt);
 	}
 
 }

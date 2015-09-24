@@ -67,6 +67,9 @@ public abstract class IOSPage extends BasePage {
 	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameSpaceButton)
 	private WebElement keyboardSpaceBtn;
 
+	@FindBy(how = How.NAME, using = IOSLocators.KeyboardButtons.nameDoneButton)
+	private WebElement keyboardDoneBtn;
+
 	private static String imagesPath = "";
 
 	public IOSPage(Future<ZetaIOSDriver> driver) throws Exception {
@@ -226,9 +229,9 @@ public abstract class IOSPage extends BasePage {
 	}
 
 	public boolean isKeyboardVisible() throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), 
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.className(IOSLocators.classNameKeyboard), 3)
-					&& DriverUtils.waitUntilElementClickable(getDriver(), keyboard,
+				&& DriverUtils.waitUntilElementClickable(getDriver(), keyboard,
 						3);
 	}
 
@@ -250,6 +253,11 @@ public abstract class IOSPage extends BasePage {
 
 	public void clickSpaceKeyboardButton() {
 		keyboardSpaceBtn.click();
+	}
+
+	public void clickDoneKeyboardButton() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), keyboardDoneBtn);
+		keyboardDoneBtn.click();
 	}
 
 	public static Object executeScript(String script) throws Exception {

@@ -30,6 +30,9 @@ public class ContactListPage extends IOSPage {
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
 	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
 	private final int CONV_SWIPE_TIME = 500;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameSelfButton)
+	private WebElement selfUserButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
