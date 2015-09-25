@@ -27,7 +27,7 @@ Feature: Application
 
     Examples: 
       | Login      | Password      | Name      |
-         | user1Email | user1Password | user1Name |
+      | user1Email | user1Password | user1Name |
 
   @staging @id3423 @torun
    Scenario Outline: Verify I can block user from conversation list with right click
