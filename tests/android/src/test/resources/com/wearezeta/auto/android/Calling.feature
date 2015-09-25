@@ -10,6 +10,7 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
+    Then I do not see calling overlay Big bar
     When I tap on contact name <Contact>
     And I see dialog page
     Then I see dialog with missed call from <Contact>
@@ -27,7 +28,7 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I click the ignore call button
-    Then I cannot see the call bar
+    Then I do not see calling overlay Big bar
 
     Examples: 
       | Name      | Contact   | CallBackend |
