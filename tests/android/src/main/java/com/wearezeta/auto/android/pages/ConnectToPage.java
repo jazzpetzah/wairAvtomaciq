@@ -23,13 +23,18 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = idConnectToHeader)
 	private List<WebElement> connectToHeaders;
 
-	private static final Function<String, String> xpathConnectToHeaderByText = name -> String
+	private static final Function<String, String> xpathConnectToHeaderByText = text -> String
 			.format("//*[@id='taet__participants__header' and @value='%s']",
-					name);
+					text);
 
 	private static final String idConnectRequestAccept = "zb__connect_request__accept_button";
 	@FindBy(id = idConnectRequestAccept)
 	private WebElement connectAcceptBtn;
+
+	private static final Function<String, String> xpathAcceptButtonByHeaderText = text -> String
+			.format("//*[@id='ll__connect_request__main_container' and .%s]//*[@id='%s']",
+					xpathConnectToHeaderByText.apply(text),
+					idConnectRequestAccept);
 
 	@FindBy(id = idConnectRequestAccept)
 	private List<WebElement> connectAcceptBtns;
@@ -94,8 +99,6 @@ public class ConnectToPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	private static final int MAX_SCROLLS = 8;
-
 	public boolean isConnectToHeaderVisible(String name) throws Exception {
 		final By locator = By.xpath(xpathConnectToHeaderByText.apply(name));
 		boolean result = DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
@@ -106,45 +109,17 @@ public class ConnectToPage extends AndroidPage {
 		return result;
 	}
 
-	public void scrollToInboxContact(String contactName) throws Exception {
-		scrollToInboxContact(contactName, MAX_SCROLLS);
-	}
-
 	public void scrollToInboxContact(String contactName, int maxScrolls)
 			throws Exception {
-		final By locator = By.xpath(xpathConnectToHeaderByText
+		final By locator = By.xpath(xpathAcceptButtonByHeaderText
 				.apply(contactName));
 		int ntry = 1;
-		Boolean swipeUp = true;
-		String currentContact = "";
-		String latestContact = "";
 		do {
-			if (connectToHeaders.size() > 1
-					&& connectToHeader.getLocation().y < 0)
-				currentContact = connectToHeaders.get(1).getText();
-			else
-				currentContact = connectToHeader.getText();
-			log.debug("Looking for: " + contactName + "; Current contact: "
-					+ currentContact + "; latestContact: " + latestContact);
-			if (DriverUtils.waitUntilLocatorAppears(getDriver(), locator, 5)
-					&& currentContact.equals(contactName)) {
-				log.debug("User had appeared.");
-				tapOnCenterOfScreen();
-				this.waitUntilIgnoreButtonIsClickable();
+			if (DriverUtils
+					.waitUntilLocatorIsDisplayed(getDriver(), locator, 1)) {
 				return;
-			} else {
-				if (latestContact.equals(currentContact)) {
-					log.debug("End of list reached. We will reset swipe count and change swipe direction.");
-					swipeUp = false;
-					ntry = 1;
-				}
-				log.debug("User still invisible. Swipe #" + ntry);
-				if (swipeUp)
-					this.swipeUpCoordinates(1000, 50);
-				else
-					this.swipeDownCoordinates(1000, 50);
 			}
-			latestContact = currentContact;
+			this.swipeUpCoordinates(1000, 50);
 			ntry++;
 		} while (ntry <= maxScrolls);
 		throw new RuntimeException(

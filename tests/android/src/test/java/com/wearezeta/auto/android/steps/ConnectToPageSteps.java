@@ -38,6 +38,8 @@ public class ConnectToPageSteps {
 				getConnectToPage().isConnectToHeaderVisible(contact));
 	}
 
+	private final static int MAX_USERS = 5;
+	
 	/**
 	 * Scroll to gived user in the inbox
 	 * 
@@ -50,7 +52,7 @@ public class ConnectToPageSteps {
 	@When("^I scroll to inbox contact (.*)$")
 	public void WhenIScrollToInboxContact(String contact) throws Throwable {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		getConnectToPage().scrollToInboxContact(contact);
+		getConnectToPage().scrollToInboxContact(contact, MAX_USERS);
 	}
 
 	/**
