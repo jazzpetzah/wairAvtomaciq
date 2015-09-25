@@ -71,7 +71,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName           | Size |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat1 | 5    |
 
-  @id327 @smoke @rc
+  @id327 @regression @rc
   Scenario Outline: Open Search by tap in search box and close by UI button
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -112,7 +112,8 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id319 @regression_off @rc_off @staging
+# @regression @rc
+  @id319 @staging
   Scenario Outline: I can create group chat from Search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -132,7 +133,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user2Name | user3Name | PeoplePickerGroupChat2 |
 
-# @smoke @rc @rc42
+# @regression @rc @rc42
   @id1395 @staging
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me

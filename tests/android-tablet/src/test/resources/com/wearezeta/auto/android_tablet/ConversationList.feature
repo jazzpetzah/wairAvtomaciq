@@ -1,6 +1,6 @@
 Feature: Conversation List
 
-  @id2246 @smoke @rc
+  @id2246 @regression @rc
   Scenario Outline: Mute and unmute conversation from conversation details in landscape mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -37,7 +37,7 @@ Feature: Conversation List
       | Name      | Contact   | ItemSilence | ItemNotify |
       | user1Name | user2Name | SILENCE     | NOTIFY     |
 
-  @id2260 @smoke @rc
+  @id2260 @regression @rc
   Scenario Outline: Mute and unmute conversation from conversation details in portrait mode
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me

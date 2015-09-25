@@ -2,6 +2,7 @@ package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Future;
 
 import org.junit.Assert;
@@ -131,6 +132,9 @@ public class RegistrationPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.xpathVerificationPage)
 	private WebElement verificationPage;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameResendCodeButton)
+	private WebElement resendCodeButton;
 
 	private String name;
 	private String email;
@@ -212,6 +216,16 @@ public class RegistrationPage extends IOSPage {
 				.until(ExpectedConditions.elementToBeClickable(activationCode));
 		activationCode.sendKeys(code);
 		confirmInput.click();
+	}
+	
+	public void inputRandomActivationCode() throws Exception {
+		Random rand = new Random();
+		int random = 100000+rand.nextInt(100000);
+		inputActivationCode(Integer.toString(random));
+	}
+	
+	public void clickResendCodeButton() {
+		resendCodeButton.click();
 	}
 
 	public boolean isTakePhotoSmileDisplayed() {
@@ -542,6 +556,10 @@ public class RegistrationPage extends IOSPage {
 	public boolean isEmailVerifPromptVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				emailVerifPrompt);
+	}
+
+	public void reSendActivationCode() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), reSendButton);
 	}
 
 }

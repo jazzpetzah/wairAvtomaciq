@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
-
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
@@ -121,6 +120,50 @@ public class LoginPageSteps {
 		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
 				.getPhoneNumber());
 		getRegistrationPage().inputActivationCode(code);
+	}
+
+	/**
+	 * Inputs not valid verification code
+	 * 
+	 * @step. ^I enter random verification code$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I enter random verification code$")
+	public void IEnterRandomVerificationCode() throws Exception {
+		getRegistrationPage().inputRandomActivationCode();
+	}
+	
+	/**
+	 * Sends new verification code for specified user and enter previous one
+	 * 
+	 * @step. ^I enter verification code for user (.*)$
+	 * 
+	 * @param name
+	 *            name of user
+	 * @throws Exception
+	 */
+	@When("^I enter previous verification code for user (.*)$")
+	public void IEnterPreviousVerificationCodeForUser(String name) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(name);
+		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(user
+				.getPhoneNumber());
+		getRegistrationPage().clickResendCodeButton();
+		getRegistrationPage().inputActivationCode(code);
+	}
+	
+	/**
+	 * Click on RESEND button to send new verification code
+	 * 
+	 * @step. ^I enter verification code for user (.*)$
+	 * 
+	 * @param name
+	 *            name of user
+	 * @throws Exception
+	 */
+	@When("^I tap RESEND code button$")
+	public void ITapResendCodeButton() throws Exception {
+		getRegistrationPage().clickResendCodeButton();
 	}
 
 	/**
@@ -506,6 +549,19 @@ public class LoginPageSteps {
 	public void ISeeWrongCredentialsNotification() throws Exception {
 		Assert.assertTrue("I don't see wrong credentials notification",
 				getLoginPage().wrongCredentialsNotificationIsShown());
+	}
+	
+	/**
+	 * Verifies whether the notification Resend avialble in 10 min is shown
+	 * 
+	 * @step. ^I see Resend will be possible after 10 min aleart$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see Resend will be possible after 10 min aleart$")
+	public void ISeeResendIn10minAlert() throws Exception {
+		Assert.assertTrue("I don't see Resend in 10 min alert",
+				getLoginPage().isResendIn10minAlertVisible());
 	}
 
 	/**

@@ -177,9 +177,9 @@ public final class IOSLocators {
 	public static final String nameLeaveConversationButton = "LEAVE";
 
 	public static final String nameYouHaveLeft = "YOU HAVE LEFT";
-	
+
 	public static final String nameCancelButton = "CANCEL";
-	
+
 	public static final String nameSilenceConversationButton = "SILENCE";
 
 	public static final String xpathSilenceConversationButton = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAButton[@name='SILENCE']";
@@ -481,7 +481,7 @@ public final class IOSLocators {
 	public static final String namePendingRequestConnectButton = "CONNECT";
 	public static final String xpathPendingRequesterName = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[contains(@name, 'Connect to')]";
 	public static final String xpathPendingRequestMessage = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]//UIAStaticText[3]";
-	public static final String xpathYouBothKnowPeopleIcon =  "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
+	public static final String xpathYouBothKnowPeopleIcon = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[1]/UIAButton[2]";
 	public static final String nameYouBothKnowHeader = "YOU BOTH KNOW";
 
 	// ///////////////////////////
@@ -558,9 +558,9 @@ public final class IOSLocators {
 	// Unblock user locator
 	// //////////////////////////
 	public static final String nameUnblockButton = "UNBLOCK";
-	
+
 	public static final String xpathContactListContainer = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]";
-	
+
 	public static final String nameBlockMenuButton = "BLOCK";
 
 	// //////////////////////////
@@ -615,9 +615,9 @@ public final class IOSLocators {
 		public static final String nameEndCallAlertButton = "End Call";
 
 		public static final String xpathGroupCallAvatars = "//UIAWindow[@name='ZClientNotificationWindow']//UIACollectionCell";
-		
+
 		public static final String classNameUIACollectionCell = "UIACollectionCell";
-		
+
 		public static final String xpathGroupCallFullMessage = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIAAlert[@name='The call is full']";
 	}
 
@@ -640,7 +640,7 @@ public final class IOSLocators {
 		public static final String xpathGiphyImage = "//UIATextView[@name='via giphy.com']/following::UIATableCell[@name='ImageCell']";
 
 		public static final String nameSoundCloudButton = "soundcloud";
-		
+
 		public static final String xpathMessageEntries = "//UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell";
 
 		public static final String xpathSimpleMessageLink = "//UIAApplication[1]/UIAWindow[@name='ZClientMainWindow']/UIATableView[1]/UIATableCell[last()]/UIATextView[1]";
@@ -650,7 +650,7 @@ public final class IOSLocators {
 		public static final String nameEllipsisMenuButton = "metaControllerRightButton";
 
 		public static final String xpathArchiveButton = "//UIAButton[@name='SILENCE']/preceding-sibling::UIAButton[@name='ARCHIVE']";
-		
+
 		public static final String xpathConfirmDeleteButton = "//UIAButton[@name='CANCEL']/following-sibling::UIAButton[@name='DELETE']";
 	}
 
@@ -660,11 +660,11 @@ public final class IOSLocators {
 		public static final String xpathArchiveConversationButton = "//UIAButton[@name='ARCHIVE' and @visible='true']";
 		public static final String xpathDeleteConversationButton = "//UIAButton[@name='DELETE' and @visible='true']";
 		public static final String nameMuteCallButton = "MuteVoiceButton";
-		
+
 		public static final String xpathFormatActionMenuConversationName = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAStaticText[@name='%s']";
-		
+
 		public static final String xpathFormatActionMenuXButton = "//UIAStaticText[@name='ARCHIVE']/following-sibling::UIAButton[@name='%s']";
-		
+
 		public static final String xpathSpecificContactListCell = "//UIAApplication/UIAWindow[@name='ZClientMainWindow']/UIACollectionView[1]/UIACollectionCell[@name='%s']";
 	}
 
@@ -678,6 +678,7 @@ public final class IOSLocators {
 		public static final String nameSelectPictureButton = "SET A PICTURE";
 		public static final String xpathVerificationPage = "//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]";
 		public static final String nameTermOfUsePage = "By continuing you agree to the Wire Terms of Use.";
+		public static final String nameResendCodeButton = "RESEND";
 	}
 
 	public final class LoginPage {
@@ -739,6 +740,11 @@ public final class IOSLocators {
 
 		public static final String nameSketchCancelButton = "SketchCancelButton";
 
+	}
+
+	public final class Alerts {
+
+		public static final String nameResentIn10min = "We already sent you a code via SMS. Tap Resend after 10 minutes to get a new one.";
 	}
 
 	// ///////////

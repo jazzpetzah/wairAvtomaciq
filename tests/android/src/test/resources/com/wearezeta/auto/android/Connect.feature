@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id191 @id193 @smoke @rc @rc42
+  @id191 @id193 @regression @rc @rc42
   Scenario Outline: Send connection request from search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -21,7 +21,7 @@ Feature: Connect
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @id323 @smoke @rc
+  @id323 @regression @rc
   Scenario Outline: Accept incoming connection request from conversation list
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
@@ -302,7 +302,8 @@ Feature: Connect
       | Name      | Contact1  |
       | user1Name | user2Name |
 
-  @id680 @regression_off @staging
+# @regression
+  @id680 @staging
   Scenario Outline: I want to see user has been blocked within the Start UI
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -340,7 +341,8 @@ Feature: Connect
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id720 @regression_off @staging
+# @regression
+  @id720 @staging
   Scenario Outline: I want to be seen in the search results of someone I blocked
     Given There are 3 users where <Name> is me
     # Having the extra user is a workaround for an app bug
@@ -361,7 +363,8 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id723 @regression_off @staging
+# @regression
+  @id723 @staging
   Scenario Outline: I want to unblock someone from their Profile view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

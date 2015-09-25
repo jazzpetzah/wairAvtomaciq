@@ -1,6 +1,6 @@
  Feature: Ping
  
-  @id2253 @smoke @rc
+  @id2253 @regression @rc
   Scenario Outline: Send ping and ping again to contact in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -21,7 +21,7 @@
       | Name      | Contact   | Message1   | Message2         |
       | user1Name | user2Name | YOU PINGED | YOU PINGED AGAIN |
 
-  @id2239 @smoke @rc
+  @id2239 @regression @rc
   Scenario Outline: Send ping and ping again to contact in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
