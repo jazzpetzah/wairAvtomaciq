@@ -64,7 +64,8 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
 
-  @id594 @regression @rc
+# @regression @rc
+  @id594 @staging
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
@@ -153,7 +154,8 @@ Feature: People View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1509 @regression @rc
+# @regression @rc
+  @id1509 @staging
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>
