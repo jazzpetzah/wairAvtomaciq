@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @id326 @smoke
+  @id326 @regression
   Scenario Outline: Sign in to Wire by mail
     Given There is 1 user where <Name> is me
     Given I see welcome screen
@@ -14,7 +14,7 @@ Feature: Sign In
       | Login      | Password      | Name      |
       | user1Email | user1Password | user1Name |
 
-  @id3245 @smoke
+  @id3245 @regression
   Scenario Outline: Sign in to Wire by phone
     Given There are 1 users where <Name> is me
     When I sign in using my phone number
@@ -24,7 +24,7 @@ Feature: Sign In
       | Name      |
       | user1Name |
       
-  #@id209 @smoke
+  #@id209 @regression
   #Scenario Outline: I can change sign in user
     #Given I have 2 users and 0 contacts for 0 users
     #Given I Sign in using login <Login1> and password <Password>
@@ -43,7 +43,7 @@ Feature: Sign In
     #  | Login1  | Password    | Login2   |
     #  | aqaUser | aqaPassword | yourUser |
 
-  @id1413 @smoke @rc
+  @id1413 @regression @rc
   Scenario Outline: User should be notified if the details he enetered on the sign in screen are incorrect
     Given I see welcome screen
     When I switch to email sign in screen

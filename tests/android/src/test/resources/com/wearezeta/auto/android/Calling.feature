@@ -65,7 +65,8 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-  @id1497 @calling_basic_off @rc_off @staging
+# @calling_basic @rc
+  @id1497 @staging
   Scenario Outline: Receive call while Wire is running in the background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -131,7 +132,8 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Message                   | Msg        |
       | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
-  @id2210 @calling_basic_off @rc_off @rc42_off @staging 
+# @calling_basic @rc @rc42
+  @id2210  @staging 
   Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -541,7 +543,8 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @id3170 @calling_basic_off @rc_off @rc42_off @staging 
+# @calling_basic @rc @rc42
+  @id3170 @staging 
   Scenario Outline: Verify accepting group call in background
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

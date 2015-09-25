@@ -21,7 +21,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName   | Picture                      | Contact1NewName   |
       | user1Name | user2Name | user3Name | GroupInfoCheck2 | aqaPictureContact600_800.jpg | aqaPictureContact |
 
-  @id321 @smoke @rc @rc42
+  @id321 @regression @rc @rc42
   Scenario Outline: Leave group conversation
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -40,7 +40,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @id322 @smoke @rc @rc42
+  @id322 @regression @rc @rc42
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
