@@ -76,3 +76,27 @@ Feature: Sign In
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @staging @id2717
+  Scenario Outline: Verify first time phone sign in when email is not assigned
+    Given There is 1 user where <Name> is me with phone number only
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    Then I see PHONE SIGN IN button
+    When I tap on PHONE SIGN IN button
+    Then I see country picker button on Sign in screen
+    When I enter phone number for user <Name>
+    Then I see verification code page
+    When I enter verification code for user <Name>
+    Then I see set email/password suggesstion page
+    When I have entered login <Email>
+    And I start activation email monitoring
+    And I have entered password <Password>
+    When I click DONE keyboard button
+    Then I see email verification reminder
+    When I verify registration address
+    Then I see Contact list with my name <Name>
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

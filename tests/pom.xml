@@ -15,7 +15,6 @@
 		<module>macosx</module>
 		<module>webapp</module>
 		<module>cmdclient</module>
-		<module>perf-helper</module>
 		<module>ios-tablet</module>
 	</modules>
 </project>

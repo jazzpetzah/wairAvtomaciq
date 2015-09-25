@@ -368,3 +368,24 @@ Feature: People View
     Examples: 
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
+
+  @staging @id722
+  Scenario Outline: Verify you can unblock someone from a group conversation
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to all other users
+    Given <Name> has group chat <GroupChatName> with <Contact1>,<Contact2>
+    Given User <Name> blocks user <Contact1>
+    Given I sign in using my email or phone number
+    And I see Contact list with my name <Name>
+    When I tap on group chat with name <GroupChatName>
+    And I open group conversation details
+    And I select contact <Contact1>
+    And I see <Contact1> user profile page
+    And I unblock user
+    Then I see dialog page
+    And I return to the chat list
+    Then I see conversation <Contact1> is selected in list
+
+    Examples: 
+      | Name      | Contact1  | Contact2  | GroupChatName    |
+      | user1Name | user2Name | user3Name | UnblockFromGroup |

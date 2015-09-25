@@ -544,6 +544,7 @@ public class AndroidCommonUtils extends CommonUtils {
 		return Integer.parseInt(output);
 	}
 
+	@SuppressWarnings("unused")
 	private static String getUidForPackage(String packageId) throws Exception {
 		final String output = getAdbOutput(
 				String.format("shell dumpsys package %s", packageId)).trim();
@@ -572,6 +573,23 @@ public class AndroidCommonUtils extends CommonUtils {
 				packageId, output));
 	}
 
+	private static int getPackagePid(String packageId) throws Exception {
+		final String output = getAdbOutput("shell ps").trim();
+		final String[] lines = output.split("\n");
+		for (String line : lines) {
+			line = line.trim();
+			final String[] values = line.split("\\s+");
+			if (values.length >= 9) {
+				if (values[8].equals(packageId)) {
+					return Integer.parseInt(values[1]);
+				}
+			}
+		}
+		throw new RuntimeException(String.format(
+				"PID for the package '%s' cannot be found. Adb output:\n%s",
+				packageId, output));
+	}
+
 	/**
 	 * Return the corresponding network stat value for a package
 	 * 
@@ -582,21 +600,18 @@ public class AndroidCommonUtils extends CommonUtils {
 	 * @throws Exception
 	 */
 	private static long getNetworkStatValue(final String packageId,
-			final Pattern pattern) throws Exception {
-		final String output = getAdbOutput("shell dumpsys netstats detail")
-				.trim();
+			final int columnNumber) throws Exception {
+		final String output = getAdbOutput(
+				String.format("shell cat /proc/%d/net/dev",
+						getPackagePid(packageId))).trim();
 		final String[] lines = output.split("\n");
-		boolean isEntryFound = false;
 		long result = 0;
 		for (String line : lines) {
-			if (line.contains("uid=")) {
-				isEntryFound = line.contains(String.format(" uid=%s ",
-						getUidForPackage(packageId)));
-			}
-			if (isEntryFound) {
-				final Matcher matcher = pattern.matcher(line);
-				if (matcher.find()) {
-					result += Long.parseLong(matcher.group(1));
+			line = line.trim();
+			final String[] values = line.split("\\s+");
+			if (values.length > columnNumber) {
+				if (values[0].endsWith(":") && !values[0].startsWith("lo")) {
+					result += Long.parseLong(values[columnNumber]);
 				}
 			}
 		}
@@ -604,12 +619,10 @@ public class AndroidCommonUtils extends CommonUtils {
 	}
 
 	public static long getRxBytes(String packageId) throws Exception {
-		return getNetworkStatValue(packageId,
-				Pattern.compile("rxBytes=([0-9]+)"));
+		return getNetworkStatValue(packageId, 1);
 	}
 
 	public static long getTxBytes(String packageId) throws Exception {
-		return getNetworkStatValue(packageId,
-				Pattern.compile("txBytes=([0-9]+)"));
+		return getNetworkStatValue(packageId, 9);
 	}
 }

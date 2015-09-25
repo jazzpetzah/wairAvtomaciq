@@ -106,6 +106,9 @@ public class LoginPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.LoginPage.nameCountryPickerButton)
 	private WebElement countryPickerButtton;
 
+	@FindBy(how = How.XPATH, using = IOSLocators.LoginPage.xpathSetEmailPasswordSuggetionLabel)
+	private WebElement setEmailPasswordSuggetionLabel;
+
 	private String login;
 
 	private String password;
@@ -231,17 +234,12 @@ public class LoginPage extends IOSPage {
 
 	public Boolean isLoginFinished() throws Exception {
 		dismisSettingsWaring();
-		try {
-			this.getWait().until(
-					ExpectedConditions.presenceOfElementLocated(By
-							.name(IOSLocators.ContactListPage.nameSelfButton)));
-			this.getWait().until(
-					ExpectedConditions.visibilityOfElementLocated(By
-							.name(IOSLocators.ContactListPage.nameSelfButton)));
-		} catch (WebDriverException ex) {
-		}
-		return DriverUtils.waitUntilLocatorAppears(this.getDriver(),
-				By.name(IOSLocators.ContactListPage.nameSelfButton), 1);
+		DriverUtils.waitUntilLocatorAppears(getDriver(),
+				By.name(IOSLocators.ContactListPage.nameSelfButton));
+		return DriverUtils.isElementPresentAndDisplayed(
+				getDriver(),
+				getDriver().findElement(
+						By.name(IOSLocators.ContactListPage.nameSelfButton)));
 	}
 
 	@Override
@@ -356,5 +354,10 @@ public class LoginPage extends IOSPage {
 	public boolean isCountryPickerButttonVisible() throws Exception {
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				countryPickerButtton);
+	}
+
+	public boolean isSetEmailPasswordSuggestionVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				setEmailPasswordSuggetionLabel);
 	}
 }
