@@ -40,7 +40,8 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-  @id322 @regression @rc @rc42
+# @regression @rc @rc42
+  @id322 @staging
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
