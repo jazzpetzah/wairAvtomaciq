@@ -1,4 +1,4 @@
-package com.wearezeta.auto.osx.steps;
+package com.wearezeta.auto.osx.steps.webapp;
 
 import com.wearezeta.auto.web.pages.ContactsUploadPage;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
@@ -10,7 +10,7 @@ import cucumber.api.java.en.When;
 public class ContactsUploadPageSteps {
 	private static final int VISIBILITY_TIMEOUT = 15; // seconds
 
-	private WebappPagesCollection webappPagesCollection = WebappPagesCollection
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
 	/**

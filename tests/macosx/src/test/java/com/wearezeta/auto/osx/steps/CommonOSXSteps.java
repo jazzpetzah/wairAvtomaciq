@@ -15,6 +15,7 @@ import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.ZetaFormatter;
 import com.wearezeta.auto.common.driver.PlatformDrivers;
 import com.wearezeta.auto.common.driver.ZetaOSXDriver;
+import com.wearezeta.auto.common.driver.ZetaOSXWebAppDriver;
 import com.wearezeta.auto.common.driver.ZetaWebAppDriver;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
@@ -27,12 +28,14 @@ import static com.wearezeta.auto.osx.common.OSXExecutionContext.APPIUM_HUB_URL;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.CURRENT_PLATFORM;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.CURRENT_SECONDARY_PLATFORM;
 import static com.wearezeta.auto.osx.common.OSXExecutionContext.WIRE_APP_PATH;
-import com.wearezeta.auto.osx.pages.MainWirePage;
-import com.wearezeta.auto.osx.pages.MenuBarPage;
-import com.wearezeta.auto.osx.pages.OSXPage;
-import com.wearezeta.auto.osx.pages.OSXPagesCollection;
+import com.wearezeta.auto.osx.pages.osx.MainWirePage;
+import com.wearezeta.auto.osx.pages.osx.MenuBarPage;
+import com.wearezeta.auto.osx.pages.osx.OSXPage;
+import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.RegistrationPage;
+import com.wearezeta.auto.web.steps.CommonWebAppSteps;
+import static com.wearezeta.auto.web.steps.CommonWebAppSteps.log;
 
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -42,6 +45,7 @@ import cucumber.api.java.en.When;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -52,10 +56,11 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 public class CommonOSXSteps {
 
-	private final CommonSteps commonSteps = CommonSteps.getInstance();
-
 	public static final Logger LOG = ZetaLogger.getLog(CommonOSXSteps.class
 			.getName());
+
+	private static final String DEFAULT_USER_PICTURE = "/images/aqaPictureContact600_800.jpg";
+	private final CommonSteps commonSteps = CommonSteps.getInstance();
 
 	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
@@ -66,7 +71,8 @@ public class CommonOSXSteps {
 	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
 			.getInstance();
 
-	private Future<ZetaWebAppDriver> createWebDriver() throws IOException {
+	private Future<ZetaWebAppDriver> createWebDriver(
+			Future<ZetaOSXDriver> osxDriver) throws IOException {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		ChromeOptions options = new ChromeOptions();
 		// simulate a fake webcam and mic for testing
@@ -85,8 +91,8 @@ public class CommonOSXSteps {
 		service.start();
 		final ExecutorService pool = Executors.newFixedThreadPool(1);
 
-		Callable<ZetaWebAppDriver> callableWebAppDriver = () -> new ZetaWebAppDriver(
-				service.getUrl(), capabilities);
+		Callable<ZetaWebAppDriver> callableWebAppDriver = () -> new ZetaOSXWebAppDriver(
+				service.getUrl(), capabilities, osxDriver.get());
 
 		final Future<ZetaWebAppDriver> lazyWebDriver = pool
 				.submit(callableWebAppDriver);
@@ -122,7 +128,7 @@ public class CommonOSXSteps {
 
 	private void startApp() throws Exception {
 		final Future<ZetaOSXDriver> osxDriver = createOSXDriver();
-		final Future<ZetaWebAppDriver> webDriver = createWebDriver();
+		final Future<ZetaWebAppDriver> webDriver = createWebDriver(osxDriver);
 
 		// get drivers instantly
 		final ZetaOSXDriver app = osxDriver.get();
@@ -183,6 +189,36 @@ public class CommonOSXSteps {
 			throws Exception {
 		commonSteps.ThereAreNUsersWhereXIsMe(CURRENT_PLATFORM, count,
 				myNameAlias);
+		IChangeUserAvatarPicture(myNameAlias, "default");
+	}
+
+	/**
+	 * Set avatar picture for a particular user
+	 *
+	 * @step. ^User (\\w+) changes? avatar picture to (.*)
+	 *
+	 * @param userNameAlias
+	 *            user name/alias
+	 * @param path
+	 *            path to a picture on a local file system or 'default' to set
+	 *            the default picture
+	 * @throws Exception
+	 */
+	@When("^User (\\w+) changes? avatar picture to (.*)")
+	public void IChangeUserAvatarPicture(String userNameAlias, String path)
+			throws Exception {
+		String avatar = null;
+		final String rootPath = "/images/";
+		if (path.equals("default")) {
+			avatar = DEFAULT_USER_PICTURE;
+		} else {
+			avatar = rootPath + path;
+		}
+		URI uri = new URI(CommonWebAppSteps.class.getResource(avatar)
+				.toString());
+		log.debug("Change avatar of user " + userNameAlias + " to "
+				+ uri.getPath());
+		commonSteps.IChangeUserAvatarPicture(userNameAlias, uri.getPath());
 	}
 
 	@When("^(.*) ignore all requests$")

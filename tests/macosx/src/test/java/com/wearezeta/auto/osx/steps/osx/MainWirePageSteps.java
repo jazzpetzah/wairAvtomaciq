@@ -1,13 +1,13 @@
-package com.wearezeta.auto.osx.steps;
+package com.wearezeta.auto.osx.steps.osx;
 
-import com.wearezeta.auto.osx.pages.MainWirePage;
-import com.wearezeta.auto.osx.pages.OSXPagesCollection;
+import com.wearezeta.auto.osx.pages.osx.MainWirePage;
+import com.wearezeta.auto.osx.pages.osx.OSXPagesCollection;
 import cucumber.api.java.en.When;
 import org.junit.Assert;
 
 public class MainWirePageSteps {
 
-	private OSXPagesCollection osxPagesCollection = OSXPagesCollection
+	private final OSXPagesCollection osxPagesCollection = OSXPagesCollection
 			.getInstance();
 
 	/**

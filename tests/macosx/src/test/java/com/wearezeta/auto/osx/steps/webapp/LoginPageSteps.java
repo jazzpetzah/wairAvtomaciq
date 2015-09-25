@@ -1,19 +1,29 @@
-package com.wearezeta.auto.osx.steps;
+package com.wearezeta.auto.osx.steps.webapp;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
+import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
+import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
+import com.wearezeta.auto.web.pages.LoginPage;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 
 public class LoginPageSteps {
 
 	private static final Logger LOG = ZetaLogger.getLog(LoginPageSteps.class
 			.getName());
 
-	com.wearezeta.auto.web.steps.LoginPageSteps parentSteps = new com.wearezeta.auto.web.steps.LoginPageSteps();
+	private final WebappPagesCollection webappPagesCollection = WebappPagesCollection
+			.getInstance();
+
+	private final ClientUsersManager usrMgr = ClientUsersManager.getInstance();
 
 	/**
 	 * Enters user email and password into corresponding fields on sign in
@@ -32,21 +42,39 @@ public class LoginPageSteps {
 	@Given("^I Sign in using login (.*) and password (.*)$")
 	public void ISignInUsingLoginAndPassword(String login, String password)
 			throws Exception {
+		try {
+			login = usrMgr.findUserByEmailOrEmailAlias(login).getEmail();
+		} catch (NoSuchUserException e) {
+			try {
+				// search for email by name aliases in case name is specified
+				login = usrMgr.findUserByNameOrNameAlias(login).getEmail();
+			} catch (NoSuchUserException ex) {
+			}
+		}
 
-		parentSteps.ISignInUsingLoginAndPassword(login, password);
+		try {
+			password = usrMgr.findUserByPasswordAlias(password).getPassword();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		LOG.debug("Starting to Sign in using login " + login + " and password "
+				+ password);
+		this.IEnterEmail(login);
+		this.IEnterPassword(password);
+		this.IPressSignInButton();
 	}
 
 	/**
 	 * Presses Sign In button on the corresponding page
 	 *
-	 * @step. ^I press [Ss]ign [Ii]n button$
+	 * @step. ^I press Sign In button$
 	 *
 	 * @throws Exception
 	 *             if Selenium fails to wait until sign in action completes
 	 */
-	@When("^I press [Ss]ign [Ii]n button$")
+	@When("^I press Sign In button$")
 	public void IPressSignInButton() throws Exception {
-		parentSteps.IPressSignInButton();
+		webappPagesCollection.getPage(LoginPage.class).clickSignInButton();
 	}
 
 	/**
@@ -58,7 +86,9 @@ public class LoginPageSteps {
 	 */
 	@Then("^I am signed in properly$")
 	public void IAmSignedInProperly() throws Exception {
-		parentSteps.IAmSignedInProperly();
+		Assert.assertTrue(
+				"Sign In button/login progress spinner are still visible",
+				webappPagesCollection.getPage(LoginPage.class).waitForLogin());
 	}
 
 	/**
@@ -71,7 +101,9 @@ public class LoginPageSteps {
 	 */
 	@Then("^the sign in error message reads (.*)")
 	public void TheSignInErrorMessageReads(String message) throws Exception {
-		parentSteps.TheSignInErrorMessageReads(message);
+		assertThat("sign in error message",
+				webappPagesCollection.getPage(LoginPage.class)
+						.getErrorMessage(), equalTo(message));
 	}
 
 	/**
@@ -82,7 +114,9 @@ public class LoginPageSteps {
 	 */
 	@Then("^a red dot is shown inside the email field on the sign in form$")
 	public void ARedDotIsShownOnTheEmailField() throws Exception {
-		parentSteps.ARedDotIsShownOnTheEmailField();
+		assertThat("Red dot on email field",
+				webappPagesCollection.getPage(LoginPage.class)
+						.isRedDotOnEmailField());
 	}
 
 	/**
@@ -94,7 +128,9 @@ public class LoginPageSteps {
 	 */
 	@Then("^a red dot is shown inside the password field on the sign in form$")
 	public void ARedDotIsShownOnThePasswordField() throws Exception {
-		parentSteps.ARedDotIsShownOnThePasswordField();
+		assertThat("Red dot on password field",
+				webappPagesCollection.getPage(LoginPage.class)
+						.isRedDotOnPasswordField());
 	}
 
 	/**
@@ -106,8 +142,13 @@ public class LoginPageSteps {
 	 *            user email string
 	 */
 	@When("^I enter email (\\S+)$")
-	public void IEnterEmail(String email) {
-		parentSteps.IEnterEmail(email);
+	public void IEnterEmail(String email) throws Exception {
+		try {
+			email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		webappPagesCollection.getPage(LoginPage.class).inputEmail(email);
 	}
 
 	/**
@@ -119,8 +160,13 @@ public class LoginPageSteps {
 	 *            password string
 	 */
 	@When("^I enter password \"([^\"]*)\"$")
-	public void IEnterPassword(String password) {
-		parentSteps.IEnterPassword(password);
+	public void IEnterPassword(String password) throws Exception {
+		try {
+			password = usrMgr.findUserByPasswordAlias(password).getPassword();
+		} catch (NoSuchUserException e) {
+			// Ignore silently
+		}
+		webappPagesCollection.getPage(LoginPage.class).inputPassword(password);
 	}
 
 	/**
@@ -134,7 +180,21 @@ public class LoginPageSteps {
 	 */
 	@Given("^I see Sign In page$")
 	public void ISeeSignInPage() throws Exception {
-		parentSteps.ISeeSignInPage();
+		Assert.assertTrue(webappPagesCollection.getPage(LoginPage.class)
+				.isVisible());
+	}
+
+	/**
+	 * Click Change Password button on login page
+	 * 
+	 * @step. ^I click Change Password button$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Change Password button$")
+	public void IClickChangePassword() throws Exception {
+		webappPagesCollection.getPage(LoginPage.class)
+				.clickChangePasswordButton();
 	}
 
 	/**
@@ -148,6 +208,18 @@ public class LoginPageSteps {
 	 */
 	@Then("^I see login error \"(.*)\"$")
 	public void ISeeLoginError(String expectedError) throws Exception {
-		parentSteps.ISeeLoginError(expectedError);
+		final String loginErrorText = webappPagesCollection.getPage(
+				LoginPage.class).getErrorMessage();
+		Assert.assertTrue(
+				String.format(
+						"The actual login error '%s' is not equal to the expected one: '%s'",
+						loginErrorText, expectedError), loginErrorText
+						.equals(expectedError));
+	}
+
+	@When("^I switch to phone number sign in page$")
+	public void i_switch_to_phone_number_sign_in_page() throws Throwable {
+		webappPagesCollection.getPage(LoginPage.class)
+				.switchToPhoneNumberLoginPage();
 	}
 }

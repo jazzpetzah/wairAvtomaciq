@@ -5,7 +5,7 @@ import org.apache.log4j.Logger;
 
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.osx.common.OSXExecutionContext;
-import com.wearezeta.auto.osx.pages.OSXPage;
+import com.wearezeta.auto.osx.pages.osx.OSXPage;
 import java.util.concurrent.Future;
 
 public class MainMenuAndDockPage extends OSXPage {
