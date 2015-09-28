@@ -26,10 +26,14 @@ class CliHandlerBase(object):
             return
         current_timestamp = time.time()
         while time.time() - current_timestamp < timeout:
-            if job.is_queued():
+            try:
+                if job.is_queued():
+                    time.sleep(7)
+                else:
+                    return
+            except Exception:
+                traceback.print_exc()
                 time.sleep(7)
-            else:
-                return
         raise TimeoutError('The job is still in the queue after {0} seconds timeout'.format(timeout))
 
     def _get_parser(self):
