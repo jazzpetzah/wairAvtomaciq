@@ -132,7 +132,7 @@ public class RegistrationPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.xpathVerificationPage)
 	private WebElement verificationPage;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameResendCodeButton)
 	private WebElement resendCodeButton;
 
@@ -193,18 +193,11 @@ public class RegistrationPage extends IOSPage {
 		}
 	}
 
-	public void inputPhoneNumber(String number, String code) throws Exception {
+	public void selectCodeAndInputPhoneNumber(String number, String code) throws Exception {
 		selectCountryByCode(code);
-		getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
-		try {
-			phoneNumber.sendKeys(number);
-		} catch (WebDriverException ex) {
-			phoneNumber.clear();
-			phoneNumber.sendKeys(number);
-		}
-		confirmInput.click();
+		inputPhoneNumber(number);
 	}
-	
+
 	public void inputPhoneNumber(String number) throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
 		try {
@@ -228,11 +221,12 @@ public class RegistrationPage extends IOSPage {
 		activationCode.sendKeys(code);
 		confirmInput.click();
 	}
-	
+
 	public void inputRandomActivationCode() throws Exception {
-		inputActivationCode(Integer.toString(CommonUtils.generateRandomXdigits(6)));
+		inputActivationCode(Integer.toString(CommonUtils
+				.generateRandomXdigits(6)));
 	}
-	
+
 	public void clickResendCodeButton() {
 		resendCodeButton.click();
 	}

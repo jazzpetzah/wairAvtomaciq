@@ -95,7 +95,7 @@ public class LoginPageSteps {
 	private void phoneLoginSequence(final PhoneNumber number) throws Exception {
 		getLoginPage().clickPhoneLogin();
 
-		getRegistrationPage().inputPhoneNumber(
+		getRegistrationPage().selectCodeAndInputPhoneNumber(
 				number.toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""),
 				PhoneNumber.WIRE_COUNTRY_PREFIX);
 		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(number);

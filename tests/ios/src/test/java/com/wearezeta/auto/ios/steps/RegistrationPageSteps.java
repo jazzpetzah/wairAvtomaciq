@@ -190,7 +190,7 @@ public class RegistrationPageSteps {
 		this.userToRegister = usrMgr.findUserByNameOrNameAlias(name);
 		String number = this.userToRegister.getPhoneNumber().toString();
 		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
-		getRegistrationPage().inputPhoneNumber(number,
+		getRegistrationPage().selectCodeAndInputPhoneNumber(number,
 				PhoneNumber.WIRE_COUNTRY_PREFIX);
 	}
 
