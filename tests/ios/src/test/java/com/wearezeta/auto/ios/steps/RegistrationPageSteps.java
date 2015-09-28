@@ -7,6 +7,7 @@ import java.util.concurrent.Future;
 
 import org.junit.Assert;
 
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.LanguageUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
@@ -191,6 +192,19 @@ public class RegistrationPageSteps {
 		number = number.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, "");
 		getRegistrationPage().inputPhoneNumber(number,
 				PhoneNumber.WIRE_COUNTRY_PREFIX);
+	}
+
+	/**
+	 * Input in sign in by phone number page a random phone number
+	 * 
+	 * @step. ^I enter random phone number$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I enter random phone number$")
+	public void IEnterRandomePhoneNumber() throws Exception {
+		getRegistrationPage().inputPhoneNumber(
+				Integer.toString(CommonUtils.generateRandomXdigits(7)));
 	}
 
 	/**

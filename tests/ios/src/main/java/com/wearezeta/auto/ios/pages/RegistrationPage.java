@@ -2,7 +2,6 @@ package com.wearezeta.auto.ios.pages;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Future;
 
 import org.junit.Assert;
@@ -18,6 +17,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.IOSPage;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -204,6 +204,17 @@ public class RegistrationPage extends IOSPage {
 		}
 		confirmInput.click();
 	}
+	
+	public void inputPhoneNumber(String number) throws Exception {
+		getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
+		try {
+			phoneNumber.sendKeys(number);
+		} catch (WebDriverException ex) {
+			phoneNumber.clear();
+			phoneNumber.sendKeys(number);
+		}
+		confirmInput.click();
+	}
 
 	public boolean isVerificationCodePageVisible() throws Exception {
 		boolean flag = DriverUtils.waitUntilLocatorAppears(getDriver(),
@@ -219,9 +230,7 @@ public class RegistrationPage extends IOSPage {
 	}
 	
 	public void inputRandomActivationCode() throws Exception {
-		Random rand = new Random();
-		int random = 100000+rand.nextInt(100000);
-		inputActivationCode(Integer.toString(random));
+		inputActivationCode(Integer.toString(CommonUtils.generateRandomXdigits(6)));
 	}
 	
 	public void clickResendCodeButton() {

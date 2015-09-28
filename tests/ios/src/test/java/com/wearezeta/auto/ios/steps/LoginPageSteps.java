@@ -564,6 +564,19 @@ public class LoginPageSteps {
 	}
 
 	/**
+	 * Verifies whether the notification invalid phone number shown
+	 * 
+	 * @step. ^I see invalid phone number alert$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see invalid phone number alert$")
+	public void ISeeInvalidPhoneNumberAlert() throws Exception {
+		Assert.assertTrue("I don't see invalid phone number alert",
+				getLoginPage().isInvalidPhoneNumberAlertShown());
+	}
+
+	/**
 	 * Clicks on the Forgot/Change password button on the Sign In screen
 	 * 
 	 * @step. ^I click on Change Password button on SignIn$

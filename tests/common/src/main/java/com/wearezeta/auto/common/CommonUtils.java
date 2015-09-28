@@ -611,4 +611,12 @@ public class CommonUtils {
 			throws Exception {
 		return getValueFromCommonConfig(c, "jenkinsJobUrl");
 	}
+
+	public static int generateRandomXdigits(double i) {
+		Random rand = new Random();
+		int random = (int) (Math.pow(10, i - 1)) * (rand.nextInt(8) + 1)
+				+ rand.nextInt((int) (Math.pow(10, i - 1)));
+		return random;
+	}
+
 }
