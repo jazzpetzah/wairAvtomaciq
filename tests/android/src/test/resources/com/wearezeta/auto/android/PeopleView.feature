@@ -40,8 +40,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  |
       | user1Name | user2Name | user3Name | LeaveGroupChat |
 
-# @regression @rc @rc42
-  @id322 @staging
+  @id322 @regression @rc @rc42
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -57,13 +56,13 @@ Feature: People View
     And I click Remove
     And I confirm remove
     Then I do not see <Contact2> on group chat info page
-    And I return to group chat page
+    When I return to group chat page
     And I see dialog page
     Then I see message <Message> contact <Contact2> on group page
 
     Examples: 
       | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
-      | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
+      | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
 
 # @regression @rc
   @id594 @staging

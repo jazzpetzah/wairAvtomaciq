@@ -474,7 +474,11 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see my message \"(.*)\" in the dialog$")
 	public void ThenISeeMyMessageInTheDialog(String msg) throws Exception {
-		getDialogPage().waitForMessage(expandMessage(msg));
+		Assert.assertTrue(
+				String.format(
+						"The message '%s' is not visible in the conversation view",
+						msg), getDialogPage()
+						.waitForMessage(expandMessage(msg)));
 	}
 
 	/**
@@ -672,9 +676,11 @@ public class DialogPageSteps {
 	@Then("^I see message (.*) contact (.*) on group page$")
 	public void ThenISeeMessageContactOnGroupPage(String message, String contact)
 			throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
-				.toUpperCase();
-		getDialogPage().waitForMessage(message + " " + contact);
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		final String expectedMsg = message + " " + contact;
+		Assert.assertTrue(String.format(
+				"The message '%s' is not visible in the conversation view",
+				expectedMsg), getDialogPage().waitForMessage(expectedMsg));
 	}
 
 	/**

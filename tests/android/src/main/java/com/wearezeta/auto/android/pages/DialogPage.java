@@ -434,23 +434,10 @@ public class DialogPage extends AndroidPage {
 		}
 	}
 
-	private static final int MSG_DELIVERY_TIMEOUT_SECONDS = 4;
-
-	public void waitForMessage(String text) throws Exception {
+	public boolean waitForMessage(String text) throws Exception {
+		tapDialogPageBottom();
 		final By locator = By.xpath(xpathConversationMessageByText.apply(text));
-		int ntry = 0;
-		do {
-			ntry++;
-			this.swipeByCoordinates(DEFAULT_SWIPE_TIME, 50, 70, 50, 50);
-		} while (!DriverUtils.waitUntilLocatorAppears(getDriver(), locator,
-				MSG_DELIVERY_TIMEOUT_SECONDS) && ntry <= MAX_SWIPE_RETRIES);
-
-		if (ntry > MAX_SWIPE_RETRIES) {
-			throw new RuntimeException(
-					String.format(
-							"Message '%s' has not been displayed after '%s' seconds timeout",
-							text, MSG_DELIVERY_TIMEOUT_SECONDS));
-		}
+		return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
 	}
 
 	public boolean waitForUnsentIndicator(String text) throws Exception {
