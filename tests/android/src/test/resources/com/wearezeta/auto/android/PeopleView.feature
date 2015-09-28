@@ -64,8 +64,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName       | Message     |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | You removed |
 
-# @regression @rc
-  @id594 @staging
+  @id594 @regression @rc
   Scenario Outline: Verify correct group info page information
     Given There are 3 users where <Name> is me
     Given <Contact1> has an avatar picture from file <Picture>
@@ -90,7 +89,7 @@ Feature: People View
     And I tap conversation details button
     Then I see the correct participant avatars for <Contact1NewName>,<Contact2NewName>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  | ParticipantNumber | GroupChatName  | Picture                      | Color1       | Color2       | Contact1NewName   | Contact2NewName       |
       | user1Name | user3Name | user2Name | 3                 | GroupInfoCheck | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow | aqaPictureContact | aqaAvatar TestContact |
 
