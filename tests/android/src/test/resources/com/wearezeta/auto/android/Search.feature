@@ -174,8 +174,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-#  @regression @rc @rc42
-  @id2213 @staging
+  @id2213 @regression @rc @rc42
   Scenario Outline: (This test should be fixed in PR for the bug) I can dismiss PYMK by swipe
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>

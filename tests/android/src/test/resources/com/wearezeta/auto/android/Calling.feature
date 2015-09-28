@@ -67,8 +67,7 @@ Feature: Calling
       | Name      | Contact1  | Contact2  | CallBackend |
       | user1Name | user2Name | user3Name | autocall    |
 
-# @calling_basic @rc
-  @id1497 @staging
+  @id1497 @calling_basic @rc
   Scenario Outline: Receive call while Wire is running in the background
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -81,7 +80,7 @@ Feature: Calling
     And I answer the call from the lock screen
     Then I see started call message for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -134,8 +133,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend | Message                   | Msg        |
       | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
-# @calling_basic @rc @rc42
-  @id2210  @staging 
+  @id2210 @calling_basic @rc @rc42
   Scenario Outline: Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
