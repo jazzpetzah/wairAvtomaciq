@@ -38,7 +38,7 @@ Feature: Connect
       | Login      | Password      | Name      | UnknownContact | UnknownContactMail | Message   |
       | user1Email | user1Password | user1Name | user2Name      | user2Email         | YOU ADDED |
 
-  @staging @id3303
+  @regression @id3303
   Scenario Outline: Verify pending user profiles contain known people information
     Given There are 11 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>,<Contact3>,<Contact4>,<Contact5>

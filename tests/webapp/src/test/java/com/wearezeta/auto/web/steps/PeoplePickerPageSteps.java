@@ -221,6 +221,19 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
+	 * Click Call button on People Picker page
+	 * 
+	 * @step. ^I click Call button on People Picker page$
+	 * 
+	 * @throws Exception
+	 */
+	@When("^I click Call button on People Picker page$")
+	public void IClickCallButton() throws Exception {
+		WebappPagesCollection.contactListPage = WebappPagesCollection.peoplePickerPage
+				.clickCallButton();
+	}
+
+	/**
 	 * Closes and opens People Picker until Top People list is visible on People
 	 * Picker page
 	 * 

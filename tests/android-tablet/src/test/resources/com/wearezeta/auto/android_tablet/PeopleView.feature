@@ -1,6 +1,6 @@
 Feature: People View
 
-  @id2261 @smoke @rc
+  @id2261 @regression @rc
   Scenario Outline: Check contact personal info in portrait mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -19,7 +19,7 @@ Feature: People View
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id2247 @smoke @rc
+  @id2247 @regression @rc
   Scenario Outline: Check contact personal info in landscape mode
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -38,7 +38,7 @@ Feature: People View
       | Name      | Contact   | ContactEmail |
       | user1Name | user2Name | user2Email   |
 
-  @id2257 @smoke @rc
+  @id2257 @regression @rc
   Scenario Outline: Leave group conversation in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -62,7 +62,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  | ItemLeave |
       | user1Name | user2Name | user3Name | LeaveGroupChat | LEAVE     |
   
-  @id2243 @smoke @rc
+  @id2243 @regression @rc
   Scenario Outline: Leave group conversation in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -86,7 +86,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName  | ItemLeave |
       | user1Name | user2Name | user3Name | LeaveGroupChat | LEAVE     |
       
-  @id2258 @smoke
+  @id2258 @regression
   Scenario Outline: Remove from group chat in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -113,7 +113,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName       | Action      |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
 
-  @id2244 @smoke
+  @id2244 @regression
   Scenario Outline: Remove from group chat in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -140,7 +140,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName       | Action      |
       | user1Name | user2Name | user3Name | RemoveFromGroupChat | YOU REMOVED |
 
-  @id2282 @smoke @rc
+  @id2282 @regression @rc
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in portrait mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -151,7 +151,7 @@ Feature: People View
     And I see People Picker page
     And I keep on reopening People Picker until I see Top People
     And I tap <Contact1> avatar in Top People
-    When I tap Create Conversation button
+    When I tap Open Conversation button
     Then I see the conversation view
     And I see the chat header message contains "<Contact1>" text on conversation view page
 
@@ -159,7 +159,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2283 @smoke @rc
+  @id2283 @regression @rc
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People in landscape mode
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -170,8 +170,10 @@ Feature: People View
     And I see People Picker page
     And I keep on reopening People Picker until I see Top People
     And I tap <Contact1> avatar in Top People
-    When I tap Create Conversation button
+    When I tap Open Conversation button
     Then I see the conversation view
+    And I do not see the Open Conversation button
+    And I see the conversation <Contact1> in my conversations list
     And I see the chat header message contains "<Contact1>" text on conversation view page
 
     Examples: 

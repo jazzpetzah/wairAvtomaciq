@@ -217,7 +217,7 @@ Feature: Search
       | Login      | Password      | Name      | Name2     | Email2     |
       | user1Email | user1Password | user1Name | user2Name | user2Email |
 
-  @staging @id3321
+  @regression @id3321
   Scenario Outline: Verify More button is shown in Top People list when you have more than 8 people in Top people
     Given There are 11 users where <Name> is me
     Given Myself is connected to <Contact1>, <Contact2>, <Contact3>, <Contact4>, <Contact5>, <Contact6>, <Contact7>, <Contact8>, <Contact9>, <Contact10>
@@ -246,3 +246,48 @@ Feature: Search
     Examples: 
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | Contact4  | Contact5  | Contact6  | Contact7  | Contact8  | Contact9   | Contact10  | Message1 |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | user5Name | user6Name | user7Name | user8Name | user9Name | user10Name | user11Name | Message1 |
+
+  @staging @id3325
+  Scenario Outline: Verify I can start a 1:1 call with search ui buttons
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open People Picker from Contact List
+    And I type <Contact1> in search field of People Picker
+    And I see user <Contact1> found in People Picker
+    And I select <Contact1> from People Picker results
+    And I click Call button on People Picker page
+    And I see the calling bar
+    When I end the call
+    Then I do not see the calling bar
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  |
+      | user1Email | user1Password | user1Name | user2Name |
+
+  @staging @id3326
+  Scenario Outline: Verify I can start a group call with search ui buttons
+    Given My browser supports calling
+    Given There are 3 users where <Name> is me
+    Given Myself is connected to <Contact1>,<Contact2>
+    Given I switch to Sign In page
+    Given I Sign in using login <Login> and password <Password>
+    And I see my avatar on top of Contact list
+    When I open People Picker from Contact List
+    And I type <Contact1> in search field of People Picker
+    And I see user <Contact1> found in People Picker
+    And I select <Contact1> from People Picker results
+    And I type <Contact2> in search field of People Picker
+    And I see user <Contact2> found in People Picker
+    And I select <Contact2> from People Picker results
+    And I click Call button on People Picker page
+    And I see outgoing call for users <Contact1>,<Contact2>
+    When I end the call
+    Then I do not see the calling bar
+
+    Examples: 
+      | Login      | Password      | Name      | Contact1  | Contact2  |
+      | user1Email | user1Password | user1Name | user2Name | user3Name |

@@ -263,6 +263,11 @@ public final class CommonSteps {
 		BackendAPIWrappers.archiveGroupConv(user, conversationIDToArchive);
 	}
 
+	public void GenerateNewLoginCode(String asUser) throws Exception {
+		ClientUser user = usrMgr.findUserByNameOrNameAlias(asUser);
+		BackendAPIWrappers.generateNewLoginCode(user);
+	}
+
 	public void MuteConversationWithUser(String usersToNameAliases,
 			String muteConversationWithUser) throws Exception {
 		ClientUser user = usrMgr.findUserByNameOrNameAlias(usersToNameAliases);

@@ -520,6 +520,11 @@ public final class BackendAPIWrappers {
 		}
 		return conversationId;
 	}
+	
+	public static void generateNewLoginCode(ClientUser user) throws Exception {
+		BackendREST
+		.generateLoginCode(user.getPhoneNumber());
+	}
 
 	public static ClientUser tryLoginByUser(ClientUser user) throws Exception {
 		if (user.getAccessToken() != null) {

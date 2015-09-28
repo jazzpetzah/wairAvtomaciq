@@ -1,6 +1,6 @@
 Feature: Sign Out
 
-  @id2266 @smoke @rc
+  @id2266 @regression @rc
   Scenario Outline: Sign out from Wire in portrait mode
     Given There is 1 user where <Name> is me
     Given I see welcome screen
@@ -17,7 +17,7 @@ Feature: Sign Out
       | Name      |
       | user1Name |
 
-  @id2251 @smoke @rc
+  @id2251 @regression @rc
   Scenario Outline: Sign out from Wire in landscape mode
     Given There is 1 user where <Name> is me
     Given I see welcome screen

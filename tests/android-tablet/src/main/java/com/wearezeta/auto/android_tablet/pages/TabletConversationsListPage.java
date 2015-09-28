@@ -86,6 +86,8 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
 	public TabletSelfProfilePage tapMyAvatar() throws Exception {
 		getContactListPage().tapOnMyAvatar();
+		// Wait for transition animation
+		Thread.sleep(1000);
 		return new TabletSelfProfilePage(this.getLazyDriver());
 	}
 
