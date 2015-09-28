@@ -95,7 +95,7 @@ public class LoginPageSteps {
 	private void phoneLoginSequence(final PhoneNumber number) throws Exception {
 		getLoginPage().clickPhoneLogin();
 
-		getRegistrationPage().inputPhoneNumber(
+		getRegistrationPage().selectCodeAndInputPhoneNumber(
 				number.toString().replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""),
 				PhoneNumber.WIRE_COUNTRY_PREFIX);
 		String code = BackendAPIWrappers.getLoginCodeByPhoneNumber(number);
@@ -561,6 +561,19 @@ public class LoginPageSteps {
 	public void ISeeResendIn10minAlert() throws Exception {
 		Assert.assertTrue("I don't see Resend in 10 min alert", getLoginPage()
 				.isResendIn10minAlertVisible());
+	}
+
+	/**
+	 * Verifies whether the notification invalid phone number shown
+	 * 
+	 * @step. ^I see invalid phone number alert$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I see invalid phone number alert$")
+	public void ISeeInvalidPhoneNumberAlert() throws Exception {
+		Assert.assertTrue("I don't see invalid phone number alert",
+				getLoginPage().isInvalidPhoneNumberAlertShown());
 	}
 
 	/**

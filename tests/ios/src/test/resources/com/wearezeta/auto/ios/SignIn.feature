@@ -1,6 +1,6 @@
 Feature: Sign In
 
-  @smoke @rc @id340
+  @regression @rc @id340
   Scenario Outline: Sign in to ZClient
     Given There is 1 user where <Name> is me
     Given I see sign in screen
@@ -127,6 +127,18 @@ Feature: Sign In
     And I see verification code page
     When I tap RESEND code button
     Then I see Resend will be possible after 10 min aleart
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id2724 @noAcceptAlert
+  Scenario Outline: Verify impossibility to login with unregistered phone number
+    Given There is 1 user where <Name> is me
+    Given I see sign in screen
+    When I see country picker button on Sign in screen
+    And I enter random phone number
+    Then I see invalid phone number alert
 
     Examples: 
       | Email      | Password      | Name      |

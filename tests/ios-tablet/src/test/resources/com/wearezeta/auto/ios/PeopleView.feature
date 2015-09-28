@@ -89,7 +89,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | Contact3  |
       | user1Name | user2Name | user3Name | user4Name |
 
-  @smoke @rc @id2445
+  @regression @rc @id2445
   Scenario Outline: Verify leaving group conversation [PORTRAIT]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -109,7 +109,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | LeaveGroup    |
 
-  @smoke @regression @id2708
+  @regression @regression @id2708
   Scenario Outline: Verify leaving group conversation [LANDSCAPE]
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

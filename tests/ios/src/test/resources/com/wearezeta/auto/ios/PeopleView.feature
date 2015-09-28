@@ -1,6 +1,6 @@
 Feature: People View
 
-  @smoke @id1393
+  @regression @id1393
   Scenario Outline: Start group chat with users from contact list
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -73,7 +73,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | GroupChatName |
       | user1Name | user2Name | user3Name | TESTCHAT      |
 
-  @smoke @rc @id1390
+  @regression @rc @id1390
   Scenario Outline: Remove from group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -115,7 +115,7 @@ Feature: People View
       | Name      | Contact1  | Contact2  | ParticipantNumber | Picture                      | Color        | Color1       |
       | user1Name | user2Name | user3Name | 3                 | aqaPictureContact600_800.jpg | BrightOrange | BrightYellow |
 
-  @smoke @rc @id1406
+  @regression @rc @id1406
   Scenario Outline: I can edit the conversation name
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

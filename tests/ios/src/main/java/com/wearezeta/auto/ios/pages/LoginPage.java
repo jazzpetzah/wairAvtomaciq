@@ -108,9 +108,12 @@ public class LoginPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.LoginPage.xpathSetEmailPasswordSuggetionLabel)
 	private WebElement setEmailPasswordSuggetionLabel;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameResentIn10min)
 	private WebElement resendIn10minAlert;
+
+	@FindBy(how = How.NAME, using = IOSLocators.Alerts.nameInvalidPhoneNumber)
+	private WebElement invalidPhoneNumberAlert;
 
 	private String login;
 
@@ -365,7 +368,14 @@ public class LoginPage extends IOSPage {
 	}
 
 	public boolean isResendIn10minAlertVisible() throws Exception {
+		DriverUtils.waitUntilAlertAppears(getDriver());
 		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
 				resendIn10minAlert);
+	}
+
+	public boolean isInvalidPhoneNumberAlertShown() throws Exception {
+		DriverUtils.waitUntilAlertAppears(getDriver());
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				invalidPhoneNumberAlert);
 	}
 }
