@@ -1,8 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -167,47 +165,17 @@ public class PeoplePickerPage extends AndroidPage {
 				By.id(idPickerTopPeopleHeader));
 	}
 
-	public AndroidPage selectContact(String contactName) throws Exception {
+	public void  selectContact(String contactName) throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				pickerSearchUser, 5);
 		pickerSearchUser.click();
-		final Map<By, AndroidPage> pagesMapping = new HashMap<By, AndroidPage>();
-		pagesMapping.put(By.id(OtherUserPersonalInfoPage.idUnblockBtn),
-				new OtherUserPersonalInfoPage(this.getLazyDriver()));
-		pagesMapping.put(By.id(ConnectToPage.idConnectToHeader),
-				new ConnectToPage(this.getLazyDriver()));
-		pagesMapping.put(By.id(idPickerBtnDone), this);
-		final int maxScanTries = 3;
-		int scanTry = 1;
-		while (scanTry <= maxScanTries) {
-			for (Map.Entry<By, AndroidPage> entry : pagesMapping.entrySet()) {
-				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-						entry.getKey(), 1)) {
-					return entry.getValue();
-				}
-			}
-			scanTry++;
-		}
-		if (DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				pickerSearchUser)) {
-			DriverUtils.tapInTheCenterOfTheElement(getDriver(),
-					pickerSearchUser);
-		}
-		return new DialogPage(this.getLazyDriver());
 	}
 
-	public AndroidPage selectGroup(String contactName) throws Exception {
+	public void selectGroup(String contactName) throws Exception {
 		final By locator = By.xpath(xpathPeoplePickerGroupByName
 				.apply(contactName));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 		this.getDriver().findElement(locator).click();
-
-		if (DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				addToConversationsButton)) {
-			return this;
-		} else {
-			return new DialogPage(this.getLazyDriver());
-		}
 	}
 
 	@Override

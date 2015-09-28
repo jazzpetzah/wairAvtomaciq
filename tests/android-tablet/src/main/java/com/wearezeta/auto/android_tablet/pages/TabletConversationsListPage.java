@@ -49,7 +49,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
 	public void verifyConversationsListIsLoaded() throws Exception {
 		try {
-			getContactListPage().waitForConversationListLoad();
+			getContactListPage().verifyContactListIsFullyLoaded();
 		} finally {
 			// FIXME: Workaround for android bug AN-2238
 			if (ScreenOrientationHelper.getInstance().fixOrientation(

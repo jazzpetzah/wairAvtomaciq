@@ -30,9 +30,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	public static final String LEAVE_CONVERSATION_BUTTON = "Leave conversation";
 	public static final String LEAVE_BUTTON = "LEAVE";
 
-	public static final String idUnblockBtn = "zb__single_user_participants__unblock_button";
-	@FindBy(id = idUnblockBtn)
-	private WebElement unblockButton;
+	public static final String idConnectRequestUnblock = "zb__connect_request__unblock_button";
+	public static final String idSingleUserUnblock = "zb__single_user_participants__unblock_button";
 
 	private static final Function<String, String> xpathPartcipantNameByText = text -> String
 			.format("//*[@id='ttv__participants__header' and @value='%s']",
@@ -119,8 +118,10 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	}
 
 	public boolean isUnblockBtnVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				unblockButton);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idSingleUserUnblock), 2)
+				|| DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+						By.id(idConnectRequestUnblock), 2);
 	}
 
 	private static By[] getOneToOneOptionsMenuLocators() {

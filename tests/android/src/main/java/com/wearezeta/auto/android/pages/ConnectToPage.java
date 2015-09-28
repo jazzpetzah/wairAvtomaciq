@@ -60,9 +60,6 @@ public class ConnectToPage extends AndroidPage {
 	@FindBy(id = OtherUserPersonalInfoPage.idRightActionButton)
 	private WebElement blockButton;
 
-	@FindBy(id = OtherUserPersonalInfoPage.idUnblockBtn)
-	private WebElement unblockButton;
-
 	@FindBy(xpath = xpathConfirmBtn)
 	private WebElement confirmBtn;
 
@@ -83,8 +80,16 @@ public class ConnectToPage extends AndroidPage {
 	}
 
 	public void clickUnblockBtn() throws Exception {
-		DriverUtils.waitUntilElementClickable(getDriver(), unblockButton);
-		unblockButton.click();
+		for (String id : new String[] {
+				OtherUserPersonalInfoPage.idConnectRequestUnblock,
+				OtherUserPersonalInfoPage.idSingleUserUnblock }) {
+			if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.id(id),
+					1)) {
+				getDriver().findElement(By.id(id)).click();
+				return;
+			}
+		}
+		throw new AssertionError("Unblock button is not visible");
 	}
 
 	public void pressConfirmBtn() throws Exception {

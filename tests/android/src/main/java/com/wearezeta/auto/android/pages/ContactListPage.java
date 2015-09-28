@@ -182,10 +182,6 @@ public class ContactListPage extends AndroidPage {
 		elementSwipeUp(contactListFrame, 2000);
 	}
 
-	public void waitForConversationListLoad() throws Exception {
-		verifyContactListIsFullyLoaded();
-	}
-
 	public AndroidPage tapOnContactByPosition(List<WebElement> contacts, int id)
 			throws Exception {
 		try {
@@ -316,10 +312,10 @@ public class ContactListPage extends AndroidPage {
 				.xpath(xpathSpinnerConversationsListLoadingIndicator);
 		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(),
 				spinnerConvoListLoadingProgressLocator,
-				CONTACT_LIST_LOAD_TIMEOUT_SECONDS)) {
+				CONTACT_LIST_LOAD_TIMEOUT_SECONDS / 2)) {
 			log.warn(String
 					.format("It seems that conversations list has not been loaded within %s seconds (the spinner is still visible)",
-							CONTACT_LIST_LOAD_TIMEOUT_SECONDS));
+							CONTACT_LIST_LOAD_TIMEOUT_SECONDS / 2));
 		}
 
 		assert this.waitUntilConversationsInfoIsLoaded() : String
