@@ -14,7 +14,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @rc @IPv6 @id330
+  @regression @rc @IPv6 @id330
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -47,7 +47,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @rc @IPv6 @id332 @id1470
+  @regression @rc @IPv6 @id332 @id1470
   Scenario Outline: Send a camera roll picture to user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -540,7 +540,7 @@ Feature: Conversation View
       | Name      | Contact   | SoundCloudLink                                                            |
       | user1Name | user2Name | https://soundcloud.com/isabella-emanuelsson/david-guetta-she-wolf-falling |
 
-  @smoke @IPv6 @id2762
+  @regression @IPv6 @id2762
   Scenario Outline: Receive message from contact
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>
@@ -555,7 +555,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @smoke @IPv6 @id2763 @deployPictures
+  @regression @IPv6 @id2763 @deployPictures
   Scenario Outline: Receive a camera roll picture from user from contact list
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

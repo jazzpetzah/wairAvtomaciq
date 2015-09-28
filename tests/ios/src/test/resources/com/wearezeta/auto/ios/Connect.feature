@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @smoke @id3272
+  @regression @id3272
   Scenario Outline: Send invitation message to a user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>
@@ -25,7 +25,7 @@ Feature: Connect
       | Name      | Contact   | ContactEmail | Contact2  |
       | user1Name | user2Name | user2Email   | user3Name |
 
-  @smoke @rc @id1475
+  @regression @rc @id1475
   Scenario Outline: Get invitation message from user
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact2>

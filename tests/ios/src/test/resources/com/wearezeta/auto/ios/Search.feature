@@ -1,6 +1,6 @@
 Feature: Search
 
-  @smoke @id2147
+  @regression @id2147
   Scenario Outline: Verify search by email
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -15,7 +15,7 @@ Feature: Search
       | Name      | ContactEmail | ContactName |
       | user1Name | user2Email   | user2Name   |
 
-  @smoke @rc @id2148 @id2543
+  @regression @rc @id2148 @id2543
   Scenario Outline: Verify search by name
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
