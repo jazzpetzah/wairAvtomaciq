@@ -25,11 +25,12 @@ class CliHandlerBase(object):
         if timeout < 0:
             return
         current_timestamp = time.time()
-        MAX_WAIT = timeout
-        while job.is_queued() and time.time() - current_timestamp < MAX_WAIT:
-            time.sleep(5)
-        if job.is_queued():
-            raise TimeoutError('The job is still in the queue after {0} seconds timeout'.format(MAX_WAIT))
+        while time.time() - current_timestamp < timeout:
+            if job.is_queued():
+                time.sleep(7)
+            else:
+                return
+        raise TimeoutError('The job is still in the queue after {0} seconds timeout'.format(timeout))
 
     def _get_parser(self):
         parser = argparse.ArgumentParser()
