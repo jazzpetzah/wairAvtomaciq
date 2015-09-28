@@ -71,7 +71,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName           | Size |
       | user1Name | user3Name | user2Name | PeoplePicker GroupChat1 | 5    |
 
-  @id327 @smoke @rc
+  @id327 @regression @rc
   Scenario Outline: Open Search by tap in search box and close by UI button
     Given There is 1 user where <Name> is me
     Given I sign in using my email or phone number
@@ -112,12 +112,14 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id319 @regression_off @rc_off @staging
+  @id319 @regression @rc
   Scenario Outline: I can create group chat from Search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     And I open search by tap
     And I see People picker page
     And I tap on Search input on People picker page
@@ -132,8 +134,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  | GroupChatName          |
       | user1Name | user2Name | user3Name | PeoplePickerGroupChat2 |
 
-# @smoke @rc @rc42
-  @id1395 @staging
+  @id1395 @regression @rc @rc42
   Scenario Outline: Verify starting 1:1 conversation with a person from Top People
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -173,8 +174,7 @@ Feature: Search
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-#  @regression @rc @rc42
-  @id2213 @staging
+  @id2213 @regression @rc @rc42
   Scenario Outline: (This test should be fixed in PR for the bug) I can dismiss PYMK by swipe
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>

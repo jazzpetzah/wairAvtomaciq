@@ -1,6 +1,6 @@
 Feature: Conversation View
 
-  @id316 @smoke
+  @id316 @regression
   Scenario Outline: Send Message to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -16,7 +16,7 @@ Feature: Conversation View
       | Name      | Contact   | Message |
       | user1Name | user2Name | Yo      |
 
-  @id318 @smoke @rc @rc42
+  @id318 @regression @rc @rc42
   Scenario Outline: Send Camera picture to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -34,8 +34,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-#@smoke @rc @rc42
-  @id1262 @staging
+  @id1262 @regression @rc @rc42
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -60,7 +59,7 @@ Feature: Conversation View
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id320 @smoke @rc
+  @id320 @regression @rc
   Scenario Outline: Send message to group chat
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -93,7 +92,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id145 @smoke
+  @id145 @regression
   Scenario Outline: Send Upper and Lower case to contact
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -235,7 +234,8 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-  @id1504 @regression @rc @rc42
+# @regression @rc @rc42  
+  @id1504 @staging
   Scenario Outline: Verify you can play/pause media from the Media Bar (SoundCloud)
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact1>

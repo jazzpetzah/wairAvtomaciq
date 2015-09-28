@@ -90,8 +90,9 @@ public class DialogPage extends AndroidPage {
 	private List<WebElement> messagesList;
 
 	private static final String idMissedCallMesage = "ttv__row_conversation__missed_call";
-	@FindBy(id = idMissedCallMesage)
-	private WebElement missedCallMessage;
+
+	private static final Function<String, String> xpathMissedCallMesageByText = text -> String
+			.format("//*[@id='%s' and @value='%s']", idMissedCallMesage, text);
 
 	private static final String idCursorFrame = "cursor_layout";
 	@FindBy(id = idCursorFrame)
@@ -235,8 +236,8 @@ public class DialogPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public void waitForCursorInputVisible() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+	public boolean waitForCursorInputVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCursorArea));
 	}
 
@@ -249,8 +250,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void tapOnTextInputIfVisible() throws Exception {
-		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCursorArea), 5)) {
+		if (waitForCursorInputVisible()) {
 			cursorArea.click();
 		}
 	}
@@ -265,7 +265,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void swipeOnCursorInput() throws Exception {
-		commonSteps.WaitForTime(0.5);
+		commonSteps.WaitForTime(1);
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorArea));
 		final By cursorLocator = By.id(idCursorArea);
 		int ntry = 1;
@@ -434,23 +434,10 @@ public class DialogPage extends AndroidPage {
 		}
 	}
 
-	private static final int MSG_DELIVERY_TIMEOUT_SECONDS = 4;
-
-	public void waitForMessage(String text) throws Exception {
+	public boolean waitForMessage(String text) throws Exception {
+		tapDialogPageBottom();
 		final By locator = By.xpath(xpathConversationMessageByText.apply(text));
-		int ntry = 0;
-		do {
-			ntry++;
-			this.swipeByCoordinates(DEFAULT_SWIPE_TIME, 50, 70, 50, 50);
-		} while (!DriverUtils.waitUntilLocatorAppears(getDriver(), locator,
-				MSG_DELIVERY_TIMEOUT_SECONDS) && ntry <= MAX_SWIPE_RETRIES);
-
-		if (ntry > MAX_SWIPE_RETRIES) {
-			throw new RuntimeException(
-					String.format(
-							"Message '%s' has not been displayed after '%s' seconds timeout",
-							text, MSG_DELIVERY_TIMEOUT_SECONDS));
-		}
+		return DriverUtils.waitUntilLocatorAppears(getDriver(), locator);
 	}
 
 	public boolean waitForUnsentIndicator(String text) throws Exception {
@@ -903,8 +890,11 @@ public class DialogPage extends AndroidPage {
 				By.id(idMediaBarControl), timeoutSeconds);
 	}
 
-	public String getMissedCallMessage() throws Exception {
-		return missedCallMessage.getText();
+	public boolean waitUntilMissedCallMessageIsVisible(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathMissedCallMesageByText
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public String getLastMessageFromDialog() {

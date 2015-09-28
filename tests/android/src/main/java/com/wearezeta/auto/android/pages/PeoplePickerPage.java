@@ -1,8 +1,6 @@
 package com.wearezeta.auto.android.pages;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -47,10 +45,6 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public static final String idSendConnectionRequestButton = "zb__send_connect_request__connect_button";
 
-	private static final String idOpenConversationButton = "zb__conversation_quick_menu__conversation_button";
-	@FindBy(id = idOpenConversationButton)
-	private WebElement openConversationButton;
-
 	private static final Function<String, String> xpathPeoplePickerGroupByName = name -> String
 			.format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']",
 					name);
@@ -65,9 +59,7 @@ public class PeoplePickerPage extends AndroidPage {
 	private static final Function<String, String> xpathPickerUserByName = name -> String
 			.format("//*[@id='%s' and @value='%s']", idPickerSearchUsers, name);
 
-	private static final String idPickerTopPeopleHeader = "ttv_pickuser__list_header_title";
-	@FindBy(id = idPickerTopPeopleHeader)
-	private WebElement pickerTopPeopleHeader;
+	private static final String idTopPeopleRoot = "rv_top_users";
 
 	private static final String idPeoplePickerSerchConversations = "ttv_pickuser_searchconversation_name";
 	@FindBy(id = idPeoplePickerSerchConversations)
@@ -88,13 +80,13 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(id = idPickerGrid)
 	private WebElement pickerGrid;
 
-	private static final String idPickerBtnDone = "ttv_pickuser_confirmbutton__title";
+	private static final String idPickerBtnDone = "zb__pickuser__confirmation_button";
 	@FindBy(id = idPickerBtnDone)
 	private WebElement addToConversationsButton;
 
-	private static final String idCreateConversationIcon = "gtv_pickuser_confirmbutton__icon";
-	@FindBy(id = idCreateConversationIcon)
-	private WebElement createConversation;
+	private static final String idCreateOrOpenConversationButton = "zb__conversation_quick_menu__conversation_button";
+	@FindBy(id = idCreateOrOpenConversationButton)
+	private WebElement createOrOpenConversation;
 
 	private static final String idNoResultsFound = "ttv_pickuser__error_header";
 	@FindBy(id = idNoResultsFound)
@@ -158,56 +150,28 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isTopPeopleHeaderVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				pickerTopPeopleHeader);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idTopPeopleRoot));
 	}
 
 	public boolean waitUntilTopPeopleHeaderInvisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idPickerTopPeopleHeader));
+				By.id(idTopPeopleRoot));
 	}
 
-	public AndroidPage selectContact(String contactName) throws Exception {
+	public void selectContact(String contactName) throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				pickerSearchUser, 5);
+				pickerSearchUser) : String.format(
+				"The user '%s' has not been found in People Picker",
+				contactName);
 		pickerSearchUser.click();
-		final Map<By, AndroidPage> pagesMapping = new HashMap<By, AndroidPage>();
-		pagesMapping.put(By.id(OtherUserPersonalInfoPage.idUnblockBtn),
-				new OtherUserPersonalInfoPage(this.getLazyDriver()));
-		pagesMapping.put(By.id(ConnectToPage.idConnectToHeader),
-				new ConnectToPage(this.getLazyDriver()));
-		pagesMapping.put(By.id(idPickerBtnDone), this);
-		final int maxScanTries = 3;
-		int scanTry = 1;
-		while (scanTry <= maxScanTries) {
-			for (Map.Entry<By, AndroidPage> entry : pagesMapping.entrySet()) {
-				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-						entry.getKey(), 1)) {
-					return entry.getValue();
-				}
-			}
-			scanTry++;
-		}
-		if (DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				pickerSearchUser)) {
-			DriverUtils.tapInTheCenterOfTheElement(getDriver(),
-					pickerSearchUser);
-		}
-		return new DialogPage(this.getLazyDriver());
 	}
 
-	public AndroidPage selectGroup(String contactName) throws Exception {
+	public void selectGroup(String contactName) throws Exception {
 		final By locator = By.xpath(xpathPeoplePickerGroupByName
 				.apply(contactName));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 		this.getDriver().findElement(locator).click();
-
-		if (DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				addToConversationsButton)) {
-			return this;
-		} else {
-			return new DialogPage(this.getLazyDriver());
-		}
 	}
 
 	@Override
@@ -249,31 +213,24 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isAddToConversationBtnVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				addToConversationsButton);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idPickerBtnDone));
 	}
 
-	public DialogPage clickOnAddToCoversationButton() throws Exception {
-		this.getDriver().navigate().back();
+	public void clickOnAddToCoversationButton() throws Exception {
 		addToConversationsButton.click();
-		return new DialogPage(this.getLazyDriver());
 	}
 
-	// TODO: move this to some base page
-
-	public AndroidPage tapCreateConversation() throws Exception {
-		final By locator = By.id(idCreateConversationIcon);
-		this.hideKeyboard();
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-		createConversation.click();
-		return new DialogPage(this.getLazyDriver());
+	public void tapCreateConversation() throws Exception {
+		// this.hideKeyboard();
+		assert waitUntilOpenConversationButtonIsVisible() : "Create/Open Conversation button is not visible in People Picker";
+		createOrOpenConversation.click();
 	}
 
-	public ContactListPage tapClearButton() throws Exception {
+	public void tapClearButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				pickerClearBtn);
 		pickerClearBtn.click();
-		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public boolean userIsVisible(String contact) throws Exception {
@@ -368,17 +325,17 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public void tapOpenConversationButton() {
-		openConversationButton.click();
+		createOrOpenConversation.click();
 	}
 
 	public boolean waitUntilOpenConversationButtonIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idOpenConversationButton));
+				By.id(idCreateOrOpenConversationButton));
 	}
 
 	public boolean waitUntilOpenConversationButtonIsInvisible()
 			throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idOpenConversationButton));
+				By.id(idCreateOrOpenConversationButton));
 	}
 }
