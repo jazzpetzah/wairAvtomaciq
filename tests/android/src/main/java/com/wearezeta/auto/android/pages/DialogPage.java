@@ -265,7 +265,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void swipeOnCursorInput() throws Exception {
-		commonSteps.WaitForTime(0.5);
+		commonSteps.WaitForTime(1);
 		getWait().until(ExpectedConditions.elementToBeClickable(cursorArea));
 		final By cursorLocator = By.id(idCursorArea);
 		int ntry = 1;

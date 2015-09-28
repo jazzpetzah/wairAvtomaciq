@@ -34,8 +34,7 @@ Feature: Conversation View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-#@regression @rc @rc42
-  @id1262 @staging
+  @id1262 @regression @rc @rc42
   Scenario Outline: Create group conversation from 1:1
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -86,7 +86,7 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(id = idPickerGrid)
 	private WebElement pickerGrid;
 
-	private static final String idPickerBtnDone = "ttv_pickuser_confirmbutton__title";
+	private static final String idPickerBtnDone = "zb__pickuser__confirmation_button";
 	@FindBy(id = idPickerBtnDone)
 	private WebElement addToConversationsButton;
 
@@ -165,7 +165,7 @@ public class PeoplePickerPage extends AndroidPage {
 				By.id(idPickerTopPeopleHeader));
 	}
 
-	public void  selectContact(String contactName) throws Exception {
+	public void selectContact(String contactName) throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				pickerSearchUser, 5);
 		pickerSearchUser.click();
@@ -217,12 +217,11 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isAddToConversationBtnVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				addToConversationsButton);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idPickerBtnDone));
 	}
 
 	public DialogPage clickOnAddToCoversationButton() throws Exception {
-		this.getDriver().navigate().back();
 		addToConversationsButton.click();
 		return new DialogPage(this.getLazyDriver());
 	}
