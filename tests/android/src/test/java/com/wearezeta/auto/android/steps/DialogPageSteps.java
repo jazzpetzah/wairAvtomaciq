@@ -57,7 +57,8 @@ public class DialogPageSteps {
 	 */
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
-		getDialogPage().waitForCursorInputVisible();
+		Assert.assertTrue("The cursor is not visible in the conversation view",
+				getDialogPage().waitForCursorInputVisible());
 	}
 
 	/**

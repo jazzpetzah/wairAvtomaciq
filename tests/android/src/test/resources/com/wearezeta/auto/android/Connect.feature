@@ -359,8 +359,7 @@ Feature: Connect
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-# @regression
-  @id723 @staging
+  @id723 @regression
   Scenario Outline: I want to unblock someone from their Profile view
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -380,7 +379,7 @@ Feature: Connect
     And I navigate back from dialog page
     And I see contact list with name <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 

@@ -236,8 +236,8 @@ public class DialogPage extends AndroidPage {
 		super(lazyDriver);
 	}
 
-	public void waitForCursorInputVisible() throws Exception {
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+	public boolean waitForCursorInputVisible() throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idCursorArea));
 	}
 
@@ -250,8 +250,7 @@ public class DialogPage extends AndroidPage {
 	}
 
 	public void tapOnTextInputIfVisible() throws Exception {
-		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idCursorArea), 5)) {
+		if (waitForCursorInputVisible()) {
 			cursorArea.click();
 		}
 	}
