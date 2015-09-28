@@ -301,8 +301,7 @@ public class DialogPageSteps {
 			final BufferedImage currentStateScreenshot = getDialogPage()
 					.getCurrentButtonStateScreenshot(buttonName);
 			overlapScore = ImageUtil.getOverlapScore(currentStateScreenshot,
-					previousStateScreenshot,
-					ImageUtil.RESIZE_TO_MAX_SCORE);
+					previousStateScreenshot, ImageUtil.RESIZE_TO_MAX_SCORE);
 			if (overlapScore <= BUTTON_STATE_OVERLAP_MAX_SCORE) {
 				return;
 			}
@@ -770,8 +769,12 @@ public class DialogPageSteps {
 	public void ThenISeeDialogWithMissedCallFrom(String contact)
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertEquals(contact + " CALLED", getDialogPage()
-				.getMissedCallMessage());
+		final String expectedMessage = contact + " CALLED";
+		Assert.assertTrue(
+				String.format(
+						"Missed call message '%s' is not visible in the conversation view",
+						expectedMessage), getDialogPage()
+						.waitUntilMissedCallMessageIsVisible(expectedMessage));
 	}
 
 	/**

@@ -90,8 +90,9 @@ public class DialogPage extends AndroidPage {
 	private List<WebElement> messagesList;
 
 	private static final String idMissedCallMesage = "ttv__row_conversation__missed_call";
-	@FindBy(id = idMissedCallMesage)
-	private WebElement missedCallMessage;
+
+	private static final Function<String, String> xpathMissedCallMesageByText = text -> String
+			.format("//*[@id='%s' and @value='%s']", idMissedCallMesage, text);
 
 	private static final String idCursorFrame = "cursor_layout";
 	@FindBy(id = idCursorFrame)
@@ -903,8 +904,11 @@ public class DialogPage extends AndroidPage {
 				By.id(idMediaBarControl), timeoutSeconds);
 	}
 
-	public String getMissedCallMessage() throws Exception {
-		return missedCallMessage.getText();
+	public boolean waitUntilMissedCallMessageIsVisible(String expectedMessage)
+			throws Exception {
+		final By locator = By.xpath(xpathMissedCallMesageByText
+				.apply(expectedMessage));
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
 	}
 
 	public String getLastMessageFromDialog() {
