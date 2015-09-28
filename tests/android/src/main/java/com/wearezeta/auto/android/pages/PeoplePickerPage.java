@@ -167,7 +167,9 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public void selectContact(String contactName) throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
-				pickerSearchUser, 5);
+				pickerSearchUser) : String.format(
+				"The user '%s' has not been found in People Picker",
+				contactName);
 		pickerSearchUser.click();
 	}
 

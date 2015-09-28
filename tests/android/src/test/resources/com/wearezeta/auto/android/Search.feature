@@ -112,13 +112,14 @@ Feature: Search
       | Name      | Contact   |
       | user1Name | user2Name |
 
-# @regression @rc
-  @id319 @staging
+  @id319 @regression @rc
   Scenario Outline: I can create group chat from Search results
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given I sign in using my email or phone number
     Given I see Contact list with contacts
+    Given I wait until <Contact1> exists in backend search results
+    Given I wait until <Contact2> exists in backend search results
     And I open search by tap
     And I see People picker page
     And I tap on Search input on People picker page
