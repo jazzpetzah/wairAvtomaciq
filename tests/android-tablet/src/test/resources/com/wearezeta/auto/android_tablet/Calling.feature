@@ -258,7 +258,7 @@ Feature: Calling
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
-  @id2841 @staging
+  @id2841 @calling_advanced
   Scenario Outline: Other wire user trying to call me while I'm already in wire call 
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
