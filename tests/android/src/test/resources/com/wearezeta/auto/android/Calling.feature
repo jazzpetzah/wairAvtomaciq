@@ -542,8 +542,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-# @calling_basic @rc @rc42
-  @id3170 @staging 
+  @id3170 @calling_basic @rc @rc42
   Scenario Outline: Verify accepting group call in background
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
