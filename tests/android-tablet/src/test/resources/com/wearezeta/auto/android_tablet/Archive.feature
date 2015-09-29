@@ -46,7 +46,8 @@
     When I swipe right the conversations list item <Contact1>
     Then I see Conversation Actions overlay
     When I select <UnarchiveItem> menu item on Conversation Actions overlay
-    Then I see the conversation view
+    Then I do not see Conversation Actions overlay
+    And I see the conversation view
     And I see the conversation <Contact1> in my conversations list
 
     Examples: 

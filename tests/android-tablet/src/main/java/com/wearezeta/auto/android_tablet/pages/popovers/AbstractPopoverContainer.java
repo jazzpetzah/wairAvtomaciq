@@ -21,20 +21,13 @@ public abstract class AbstractPopoverContainer extends AndroidTabletPage {
 	protected abstract By getLocator();
 
 	public boolean waitUntilVisible() throws Exception {
-		if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), getLocator())) {
-			final WebElement self = getDriver().findElement(getLocator());
-			return self.getLocation().getX() >= 0;
-		}
-		return false;
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				getLocator());
 	}
 
 	public boolean waitUntilInvisible() throws Exception {
-		if (!DriverUtils.waitUntilLocatorDissapears(getDriver(), getLocator(),
-				2)) {
-			final WebElement self = getDriver().findElement(getLocator());
-			return self.getLocation().getX() < 0;
-		}
-		return true;
+		return DriverUtils
+				.waitUntilLocatorDissapears(getDriver(), getLocator());
 	}
 
 	public void tapInTheCenter() throws Exception {
