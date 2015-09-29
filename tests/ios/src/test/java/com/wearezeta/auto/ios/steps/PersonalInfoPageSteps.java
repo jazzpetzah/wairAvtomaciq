@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.junit.Assert;
 
 import com.wearezeta.auto.common.ImageUtil;
+import com.wearezeta.auto.common.usrmgmt.ClientUser;
 import com.wearezeta.auto.common.usrmgmt.ClientUsersManager;
 import com.wearezeta.auto.common.usrmgmt.NoSuchUserException;
 import com.wearezeta.auto.ios.pages.IOSPage;
@@ -467,7 +468,8 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see my new name (.*)$")
 	public void ISeeMyNewName(String name) throws Throwable {
-		String actualName = getPersonalInfoPage().getUserNameValue().toLowerCase();
+		String actualName = getPersonalInfoPage().getUserNameValue()
+				.toLowerCase();
 		Assert.assertTrue(actualName.contains(name.toLowerCase()));
 	}
 
@@ -586,6 +588,31 @@ public class PersonalInfoPageSteps {
 	public void ISeeSelfProfilePage() throws Exception {
 		Assert.assertTrue("Self profile page is not visible",
 				getPersonalInfoPage().waitSelfProfileVisible());
+	}
+
+	/**
+	 * Clicks the Add Phone Number Button in self profile
+	 * 
+	 * @step. ^I tap to add my phone number$
+	 * @throws Throwable
+	 */
+	@When("^I tap to add my phone number$")
+	public void ITapToAddMyPhoneNumber() throws Throwable {
+		getPersonalInfoPage().clickAddPhoneNumberButton();
+	}
+
+	/**
+	 * Verifies that phone number is added to profile
+	 * 
+	 * @step. ^I see phone number attached to profile$
+	 * @throws Throwable
+	 */
+	@Then("^I see phone number attached to profile$")
+	public void ISeePhoneNumberAttachedToProfile() throws Throwable {
+		ClientUser self = usrMgr.getSelfUserOrThrowError();
+		String number = self.getPhoneNumber().toString();
+		Assert.assertTrue("Phone number did not get attached to the profile",
+				getPersonalInfoPage().isPhoneNumberAttachedToProfile(number));
 	}
 
 }
