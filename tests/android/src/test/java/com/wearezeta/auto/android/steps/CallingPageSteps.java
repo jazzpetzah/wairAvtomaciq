@@ -78,18 +78,6 @@ public class CallingPageSteps {
 	}
 
 	/**
-	 * Checks to see that the call bar is not visible
-	 * 
-	 * @step. ^I cannot see the call bar$
-	 * 
-	 * @throws Exception
-	 */
-	@When("^I cannot see the call bar$")
-	public void ICannotSeeTheCallBar() throws Exception {
-		Assert.assertTrue(getCallingOverlayPage().waitUntilNotVisible());
-	}
-
-	/**
 	 * Checks to see that the calling lock screen appears when a user calls
 	 * while Wire is minimised or the phone is locked
 	 * 
@@ -165,18 +153,29 @@ public class CallingPageSteps {
 	/**
 	 * Check calling Big bar
 	 * 
-	 * @step. ^I see calling overlay Big bar$
+	 * @step. ^I (do not )?see calling overlay Big bar$
+	 * 
+	 * @param shouldNotSee
+	 *            equals to null if 'do not' does not exist in the step
+	 *            signature
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I see calling overlay Big bar$")
-	public void WhenISeeCallingOverlayBigBar() throws Exception {
-		Assert.assertTrue(getCallingOverlayPage().callingOverlayIsVisible());
-		Assert.assertTrue(getCallingOverlayPage()
-				.incomingCallerAvatarIsVisible());
-		Assert.assertTrue(getCallingOverlayPage().callingDismissIsVisible());
-		Assert.assertTrue(getCallingOverlayPage().callingSpeakerIsVisible());
-		Assert.assertTrue(getCallingOverlayPage().callingMicMuteIsVisible());
+	@When("^I (do not )?see calling overlay Big bar$")
+	public void WhenISeeCallingOverlayBigBar(String shouldNotSee)
+			throws Exception {
+		if (shouldNotSee == null) {
+			Assert.assertTrue(getCallingOverlayPage().callingOverlayIsVisible());
+			Assert.assertTrue(getCallingOverlayPage()
+					.incomingCallerAvatarIsVisible());
+			Assert.assertTrue(getCallingOverlayPage().callingDismissIsVisible());
+			Assert.assertTrue(getCallingOverlayPage().callingSpeakerIsVisible());
+			Assert.assertTrue(getCallingOverlayPage().callingMicMuteIsVisible());
+		} else {
+			Assert.assertTrue(
+					"Calling bar is still visible, but should be hidden",
+					getCallingOverlayPage().incomingCallerAvatarIsInvisible());
+		}
 	}
 
 	/**

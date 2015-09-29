@@ -57,7 +57,8 @@ public class DialogPageSteps {
 	 */
 	@When("^I see dialog page$")
 	public void WhenISeeDialogPage() throws Exception {
-		getDialogPage().waitForCursorInputVisible();
+		Assert.assertTrue("The cursor is not visible in the conversation view",
+				getDialogPage().waitForCursorInputVisible());
 	}
 
 	/**
@@ -301,8 +302,7 @@ public class DialogPageSteps {
 			final BufferedImage currentStateScreenshot = getDialogPage()
 					.getCurrentButtonStateScreenshot(buttonName);
 			overlapScore = ImageUtil.getOverlapScore(currentStateScreenshot,
-					previousStateScreenshot,
-					ImageUtil.RESIZE_TO_MAX_SCORE);
+					previousStateScreenshot, ImageUtil.RESIZE_TO_MAX_SCORE);
 			if (overlapScore <= BUTTON_STATE_OVERLAP_MAX_SCORE) {
 				return;
 			}
@@ -474,7 +474,11 @@ public class DialogPageSteps {
 	 */
 	@Then("^I see my message \"(.*)\" in the dialog$")
 	public void ThenISeeMyMessageInTheDialog(String msg) throws Exception {
-		getDialogPage().waitForMessage(expandMessage(msg));
+		Assert.assertTrue(
+				String.format(
+						"The message '%s' is not visible in the conversation view",
+						msg), getDialogPage()
+						.waitForMessage(expandMessage(msg)));
 	}
 
 	/**
@@ -672,9 +676,11 @@ public class DialogPageSteps {
 	@Then("^I see message (.*) contact (.*) on group page$")
 	public void ThenISeeMessageContactOnGroupPage(String message, String contact)
 			throws Exception {
-		contact = usrMgr.findUserByNameOrNameAlias(contact).getName()
-				.toUpperCase();
-		getDialogPage().waitForMessage(message + " " + contact);
+		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
+		final String expectedMsg = message + " " + contact;
+		Assert.assertTrue(String.format(
+				"The message '%s' is not visible in the conversation view",
+				expectedMsg), getDialogPage().waitForMessage(expectedMsg));
 	}
 
 	/**
@@ -770,8 +776,12 @@ public class DialogPageSteps {
 	public void ThenISeeDialogWithMissedCallFrom(String contact)
 			throws Exception {
 		contact = usrMgr.findUserByNameOrNameAlias(contact).getName();
-		Assert.assertEquals(contact + " CALLED", getDialogPage()
-				.getMissedCallMessage());
+		final String expectedMessage = contact + " CALLED";
+		Assert.assertTrue(
+				String.format(
+						"Missed call message '%s' is not visible in the conversation view",
+						expectedMessage), getDialogPage()
+						.waitUntilMissedCallMessageIsVisible(expectedMessage));
 	}
 
 	/**

@@ -68,6 +68,9 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameUnsilenceConversationButton)
 	private WebElement notifyMenuButton;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.nameBlockMenuButton)
+	private WebElement blockMenuButton;
 
 	public OtherUserPersonalInfoPage(Future<ZetaIOSDriver> lazyDriver)
 			throws Exception {
@@ -189,6 +192,10 @@ public class OtherUserPersonalInfoPage extends IOSPage {
 	public void clickNotifyMenuButton() throws InterruptedException {
 		notifyMenuButton.click();
 		Thread.sleep(2000);
+	}
+	
+	public void clickBlockMenuButton() {
+		blockMenuButton.click();
 	}
 
 	@Override

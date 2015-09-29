@@ -215,15 +215,26 @@ public class PeoplePickerPageSteps {
 	}
 
 	/**
-	 * Tap the Create Conversation button
+	 * Tap the Create/Open Conversation button
 	 * 
-	 * @step. ^I tap Create Conversation button$
+	 * @step. ^I tap (Create|Open) Conversation button$
+	 * 
+	 * @param buttonType
+	 *            either Open or Create
 	 * 
 	 * @throws Exception
 	 */
-	@When("^I tap Create Conversation button$")
-	public void ITapCreateConversationButton() throws Exception {
-		getPeoplePickerPage().tapCreateConversationButton();
+	@When("^I tap (Create|Open) Conversation button$")
+	public void ITapConversationActionButton(String buttonType)
+			throws Exception {
+		switch (buttonType) {
+		case "Open":
+			getPeoplePickerPage().tapOpenConversationButton();
+			break;
+		case "Create":
+			getPeoplePickerPage().tapCreateConversationButton();
+			break;
+		}
 	}
 
 	private String firstPYMKItemName = null;
@@ -413,4 +424,29 @@ public class PeoplePickerPageSteps {
 					"Swipe type '%s' is not supported", swipeTypeStr));
 		}
 	}
+
+	/**
+	 * Verify whether Open Conversation button is visible
+	 * 
+	 * @step. ^I (do not )?see (?:the |\\s*)Open Conversation button$"
+	 * 
+	 * @param shouldBeVisible
+	 *            equals to null if the button should be visible
+	 * @throws Exception
+	 */
+	@Then("^I (do not )?see (?:the |\\s*)Open Conversation button$")
+	public void ISeeOpenConversationButton(String shouldBeVisible)
+			throws Exception {
+		if (shouldBeVisible == null) {
+			Assert.assertTrue("Open Conversation button is not visible",
+					getPeoplePickerPage()
+							.waitUntilOpenConversationButtonIsVisible());
+		} else {
+			Assert.assertTrue(
+					"Open Conversation button is still visible, but should be hidden",
+					getPeoplePickerPage()
+							.waitUntilOpenConversationButtonIsInvisible());
+		}
+	}
+
 }

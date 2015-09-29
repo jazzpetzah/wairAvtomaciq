@@ -528,7 +528,7 @@ public class AndroidCommonUtils extends CommonUtils {
 	/**
 	 * http://stackoverflow.com/questions/28150650/open-chrome-with-adb
 	 * 
-	 * @param invitationUrl
+	 * @param url
 	 * @throws Exception
 	 */
 	public static void openLinkInChrome(String url) throws Exception {
@@ -536,5 +536,93 @@ public class AndroidCommonUtils extends CommonUtils {
 				.format("shell am start -a android.intent.action.VIEW "
 						+ "-n com.android.chrome/com.google.android.apps.chrome.Main "
 						+ "-d \"%s\"", url));
+	}
+
+	public static int getBatteryCapacity() throws Exception {
+		final String output = getAdbOutput(
+				"shell cat /sys/class/power_supply/battery/capacity").trim();
+		return Integer.parseInt(output);
+	}
+
+	@SuppressWarnings("unused")
+	private static String getUidForPackage(String packageId) throws Exception {
+		final String output = getAdbOutput(
+				String.format("shell dumpsys package %s", packageId)).trim();
+		final String[] lines = output.split("\n");
+		boolean isPackageSignatureFound = false;
+		for (String line : lines) {
+			if (line.trim().startsWith("Package [")) {
+				if (line.contains("[" + packageId + "]")) {
+					isPackageSignatureFound = true;
+				} else {
+					isPackageSignatureFound = false;
+				}
+			}
+			if (isPackageSignatureFound) {
+				if (line.trim().startsWith("userId=")) {
+					final Pattern pattern = Pattern.compile("userId=([0-9]+)");
+					final Matcher matcher = pattern.matcher(line);
+					if (matcher.find()) {
+						return matcher.group(1);
+					}
+				}
+			}
+		}
+		throw new RuntimeException(String.format(
+				"UserId for the package '%s' cannot be found. Adb output:\n%s",
+				packageId, output));
+	}
+
+	private static int getPackagePid(String packageId) throws Exception {
+		final String output = getAdbOutput("shell ps").trim();
+		final String[] lines = output.split("\n");
+		for (String line : lines) {
+			line = line.trim();
+			final String[] values = line.split("\\s+");
+			if (values.length >= 9) {
+				if (values[8].equals(packageId)) {
+					return Integer.parseInt(values[1]);
+				}
+			}
+		}
+		throw new RuntimeException(String.format(
+				"PID for the package '%s' cannot be found. Adb output:\n%s",
+				packageId, output));
+	}
+
+	/**
+	 * Return the corresponding network stat value for a package
+	 * 
+	 * @param packageId
+	 * @param columnNumber
+	 *            starts from 0
+	 * @return
+	 * @throws Exception
+	 */
+	private static long getNetworkStatValue(final String packageId,
+			final int columnNumber) throws Exception {
+		final String output = getAdbOutput(
+				String.format("shell cat /proc/%d/net/dev",
+						getPackagePid(packageId))).trim();
+		final String[] lines = output.split("\n");
+		long result = 0;
+		for (String line : lines) {
+			line = line.trim();
+			final String[] values = line.split("\\s+");
+			if (values.length > columnNumber) {
+				if (values[0].endsWith(":") && !values[0].startsWith("lo")) {
+					result += Long.parseLong(values[columnNumber]);
+				}
+			}
+		}
+		return result;
+	}
+
+	public static long getRxBytes(String packageId) throws Exception {
+		return getNetworkStatValue(packageId, 1);
+	}
+
+	public static long getTxBytes(String packageId) throws Exception {
+		return getNetworkStatValue(packageId, 9);
 	}
 }

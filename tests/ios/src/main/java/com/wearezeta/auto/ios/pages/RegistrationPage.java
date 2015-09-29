@@ -17,6 +17,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.wearezeta.auto.ios.locators.IOSLocators;
 import com.wearezeta.auto.ios.pages.IOSPage;
+import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.driver.DriverUtils;
 import com.wearezeta.auto.common.driver.SwipeDirection;
 import com.wearezeta.auto.common.driver.ZetaIOSDriver;
@@ -132,6 +133,9 @@ public class RegistrationPage extends IOSPage {
 	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.xpathVerificationPage)
 	private WebElement verificationPage;
 
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameResendCodeButton)
+	private WebElement resendCodeButton;
+
 	private String name;
 	private String email;
 	private String password;
@@ -189,8 +193,12 @@ public class RegistrationPage extends IOSPage {
 		}
 	}
 
-	public void inputPhoneNumber(String number, String code) throws Exception {
+	public void selectCodeAndInputPhoneNumber(String number, String code) throws Exception {
 		selectCountryByCode(code);
+		inputPhoneNumber(number);
+	}
+
+	public void inputPhoneNumber(String number) throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
 		try {
 			phoneNumber.sendKeys(number);
@@ -212,6 +220,15 @@ public class RegistrationPage extends IOSPage {
 				.until(ExpectedConditions.elementToBeClickable(activationCode));
 		activationCode.sendKeys(code);
 		confirmInput.click();
+	}
+
+	public void inputRandomActivationCode() throws Exception {
+		inputActivationCode(Integer.toString(CommonUtils
+				.generateRandomXdigits(6)));
+	}
+
+	public void clickResendCodeButton() {
+		resendCodeButton.click();
 	}
 
 	public boolean isTakePhotoSmileDisplayed() {
@@ -539,8 +556,13 @@ public class RegistrationPage extends IOSPage {
 				timeoutSeconds);
 	}
 
-	public boolean isEmailVerifPromptVisible() {
-		return emailVerifPrompt.isDisplayed();
+	public boolean isEmailVerifPromptVisible() throws Exception {
+		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
+				emailVerifPrompt);
+	}
+
+	public void reSendActivationCode() throws Exception {
+		DriverUtils.waitUntilElementClickable(getDriver(), reSendButton);
 	}
 
 }

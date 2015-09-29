@@ -24,8 +24,7 @@ public class ConversationsListPageSteps {
 
 	private TabletConversationsListPage getConversationsListPage()
 			throws Exception {
-		return (TabletConversationsListPage) pagesCollection
-				.getPage(TabletConversationsListPage.class);
+		return pagesCollection.getPage(TabletConversationsListPage.class);
 	}
 
 	/**

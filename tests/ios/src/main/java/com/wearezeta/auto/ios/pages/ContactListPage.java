@@ -30,6 +30,9 @@ public class ContactListPage extends IOSPage {
 	private final double MIN_ACCEPTABLE_IMAGE_VALUE = 0.70;
 	private final double MIN_ACCEPTABLE_IMAGE_SCORE = 0.80;
 	private final int CONV_SWIPE_TIME = 500;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.ContactListPage.nameSelfButton)
+	private WebElement selfUserButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathNameContactList)
 	private List<WebElement> contactListNames;
@@ -84,7 +87,7 @@ public class ContactListPage extends IOSPage {
 
 	@FindBy(how = How.NAME, using = IOSLocators.nameLeaveConversationButton)
 	private WebElement leaveActionMenuButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.nameCancelButton)
 	private WebElement cancelActionMenuButton;
 
@@ -777,6 +780,17 @@ public class ContactListPage extends IOSPage {
 
 	public void clickCancelButtonInActionMenu() {
 		cancelActionMenuButton.click();
+	}
+
+	public String getSelectedConversationCellValue(String conversation)
+			throws Exception {
+		WebElement conversationCell = this
+				.getDriver()
+				.findElement(
+						By.xpath(String
+								.format(IOSLocators.ContactListPage.xpathSpecificContactListCell,
+										conversation)));
+		return conversationCell.getAttribute("value");
 	}
 
 }

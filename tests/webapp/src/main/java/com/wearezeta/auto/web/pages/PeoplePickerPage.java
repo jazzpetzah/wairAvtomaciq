@@ -38,6 +38,9 @@ public class PeoplePickerPage extends WebPage {
 	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssOpenOrCreateConversationButton)
 	private WebElement openOrCreateConversationButton;
 
+	@FindBy(how = How.CSS, using = WebAppLocators.PeoplePickerPage.cssCallButton)
+	private WebElement callButton;
+
 	@FindBy(css = WebAppLocators.PeoplePickerPage.cssCloseSearchButton)
 	private WebElement closeSearchButton;
 
@@ -78,9 +81,9 @@ public class PeoplePickerPage extends WebPage {
 	public AbstractPopoverContainer clickNotConnectedUserName(String name)
 			throws Exception {
 		clickNotConnectedUser(name);
-		PagesCollection.popoverPage = new ConnectToPopoverContainer(
+		WebappPagesCollection.popoverPage = new ConnectToPopoverContainer(
 				this.getLazyDriver());
-		return (ConnectToPopoverContainer) PagesCollection.popoverPage;
+		return (ConnectToPopoverContainer) WebappPagesCollection.popoverPage;
 	}
 
 	public boolean isUserFound(String name) throws Exception {
@@ -174,6 +177,13 @@ public class PeoplePickerPage extends WebPage {
 		return new BringYourFriendsPopoverPage(this.getLazyDriver());
 	}
 
+	public ContactListPage clickCallButton() throws Exception {
+		assert DriverUtils.waitUntilElementClickable(getDriver(), callButton);
+		callButton.click();
+
+		return new ContactListPage(this.getLazyDriver());
+	}
+
 	public int getNumberOfSuggestions() {
 		return suggestions.size();
 	}
@@ -219,9 +229,9 @@ public class PeoplePickerPage extends WebPage {
 	public ConnectToPopoverContainer clickPendingUserName(String name)
 			throws Exception {
 		clickPendingUser(name);
-		PagesCollection.popoverPage = new ConnectToPopoverContainer(
+		WebappPagesCollection.popoverPage = new ConnectToPopoverContainer(
 				this.getLazyDriver());
-		return (ConnectToPopoverContainer) PagesCollection.popoverPage;
+		return (ConnectToPopoverContainer) WebappPagesCollection.popoverPage;
 	}
 
 	private void clickPendingUser(String name) throws Exception {
@@ -306,4 +316,5 @@ public class PeoplePickerPage extends WebPage {
 	public int getNumberOfTopPeople() {
 		return topPeople.size();
 	}
+
 }

@@ -1,6 +1,6 @@
 Feature: Connect
 
-  @id191 @id193 @smoke @rc @rc42
+  @id191 @id193 @regression @rc @rc42
   Scenario Outline: Send connection request from search
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
@@ -21,7 +21,7 @@ Feature: Connect
       | Name      | Contact   | Message       |
       | user1Name | user2Name | Hellow friend |
 
-  @id323 @smoke @rc
+  @id323 @regression @rc
   Scenario Outline: Accept incoming connection request from conversation list
     Given There are 2 users where <Name> is me
     Given <Contact> sent connection request to <Name>
@@ -306,13 +306,12 @@ Feature: Connect
   Scenario Outline: I want to see user has been blocked within the Start UI
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list with no contacts
+    Given I see Contact list with mo contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
     And I see People picker page
     And I tap on Search input on People picker page
     And I enter "<Contact>" into Search input on People Picker page
-    And I wait for 1 second
     And I tap on user name found on People picker page <Contact>
     And I see connect to <Contact> dialog
     And I click Connect button on connect to page
@@ -322,8 +321,6 @@ Feature: Connect
     And I see that connection is pending
     And I click Block button
     And I confirm block on connect to page
-    And I press back button
-    And I wait for 2 seconds
     Then I do not see contact list with name <Contact>
     And I wait until <Contact> exists in backend search results
     And I open Search by tap
@@ -332,7 +329,9 @@ Feature: Connect
     And I enter "<Contact>" into Search input on People Picker page
     And I see user <Contact> found on People picker page
     And I tap on user name found on People picker page <Contact>
+    And User info should be shown with Unblock button
     When I click Unblock button
+    And I navigate back from dialog page
     Then I see contact list with name <Contact>
 
     Examples: 
@@ -374,13 +373,13 @@ Feature: Connect
     And I enter "<Contact1>" into Search input on People Picker page
     And I see user <Contact1> found on People picker page
     And I tap on user name found on People picker page <Contact1>
-    Then User info should be shown with Block button
-    And I click Unblock button
-    And I see dialog page
+    And User info should be shown with Unblock button
+    When I click Unblock button
+    Then I see dialog page
     And I navigate back from dialog page
     And I see contact list with name <Contact1>
 
-    Examples: 
+    Examples:
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 

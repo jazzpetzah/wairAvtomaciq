@@ -49,7 +49,7 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
 	public void verifyConversationsListIsLoaded() throws Exception {
 		try {
-			getContactListPage().waitForConversationListLoad();
+			getContactListPage().verifyContactListIsFullyLoaded();
 		} finally {
 			// FIXME: Workaround for android bug AN-2238
 			if (ScreenOrientationHelper.getInstance().fixOrientation(
@@ -86,6 +86,8 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 
 	public TabletSelfProfilePage tapMyAvatar() throws Exception {
 		getContactListPage().tapOnMyAvatar();
+		// Wait for transition animation
+		Thread.sleep(1000);
 		return new TabletSelfProfilePage(this.getLazyDriver());
 	}
 

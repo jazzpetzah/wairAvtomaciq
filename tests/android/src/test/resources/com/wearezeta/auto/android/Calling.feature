@@ -1,7 +1,8 @@
 Feature: Calling
 
   #CallBackend available values: 'autocall', 'webdriver'
-  @id373 @calling_basic @rc
+#@id373 @calling_basic @rc
+  @id373 @staging
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -10,6 +11,7 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     And I wait for 5 seconds
     And <Contact> stops all calls to me
+    Then I do not see calling overlay Big bar
     When I tap on contact name <Contact>
     And I see dialog page
     Then I see dialog with missed call from <Contact>
@@ -27,7 +29,7 @@ Feature: Calling
     When <Contact> calls me using <CallBackend>
     And I see incoming calling message for contact <Contact>
     And I click the ignore call button
-    Then I cannot see the call bar
+    Then I do not see calling overlay Big bar
 
     Examples: 
       | Name      | Contact   | CallBackend |
@@ -78,7 +80,7 @@ Feature: Calling
     And I answer the call from the lock screen
     Then I see started call message for contact <Contact>
 
-    Examples: 
+    Examples:
       | Name      | Contact   | CallBackend |
       | user1Name | user2Name | autocall    |
 
@@ -297,7 +299,8 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-  @id3168 @calling_basic @rc
+#@id3168 @calling_basic @rc
+  @id3168 @staging
   Scenario Outline: I can join group call after I leave it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -541,7 +544,8 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-  @id3170 @calling_basic @rc @rc42
+# @calling_basic @rc @rc42
+  @id3170 @staging 
   Scenario Outline: Verify accepting group call in background
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

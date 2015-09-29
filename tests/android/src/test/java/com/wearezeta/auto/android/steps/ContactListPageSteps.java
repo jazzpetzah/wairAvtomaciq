@@ -186,7 +186,7 @@ public class ContactListPageSteps {
 		} catch (NoSuchUserException e) {
 			// Ignore silently
 		}
-		getContactListPage().waitForConversationListLoad();
+		getContactListPage().verifyContactListIsFullyLoaded();
 		if (shouldNotSee == null) {
 			Assert.assertTrue(getContactListPage().isContactExists(userName, 1));
 		} else {
@@ -274,8 +274,7 @@ public class ContactListPageSteps {
 					.getScreenshotOfPlayPauseButtonNextTo(convoName)
 					.orElseThrow(IllegalStateException::new);
 			score = ImageUtil.getOverlapScore(currentPlayPauseBtnState,
-					previousPlayPauseBtnState,
-					ImageUtil.RESIZE_TO_MAX_SCORE);
+					previousPlayPauseBtnState, ImageUtil.RESIZE_TO_MAX_SCORE);
 			if (score < MAX_SIMILARITY_THRESHOLD) {
 				break;
 			}

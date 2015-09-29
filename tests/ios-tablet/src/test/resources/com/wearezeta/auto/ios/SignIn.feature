@@ -131,3 +131,153 @@ Feature: Sign In
     Examples: 
       | Email      | Password      | Name      |
       | user1Email | user1Password | user1Name |
+
+  @staging @id2726
+  Scenario Outline: Verify first time phone sign in when email is not assigned [PORTRAIT]
+    Given There is 1 user where <Name> is me with phone number only
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    Then I see PHONE SIGN IN button
+    When I tap on PHONE SIGN IN button
+    Then I see country picker button on Sign in screen
+    When I enter phone number for user <Name>
+    Then I see verification code page
+    When I enter verification code for user <Name>
+    Then I see set email/password suggesstion page
+    When I have entered login <Email>
+    And I start activation email monitoring
+    And I have entered password <Password>
+    When I click DONE keyboard button
+    Then I see email verification reminder
+    When I verify registration address
+    Then I see Contact list with my name <Name>
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id3787
+  Scenario Outline: Verify first time phone sign in when email is not assigned [LANDSCAPE]
+    Given There is 1 user where <Name> is me with phone number only
+    Given I rotate UI to landscape
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    Then I see PHONE SIGN IN button
+    When I tap on PHONE SIGN IN button
+    Then I see country picker button on Sign in screen
+    When I enter phone number for user <Name>
+    Then I see verification code page
+    When I enter verification code for user <Name>
+    Then I see set email/password suggesstion page
+    When I have entered login <Email>
+    And I start activation email monitoring
+    And I have entered password <Password>
+    When I click DONE keyboard button
+    Then I see email verification reminder
+    When I verify registration address
+    Then I see Contact list with my name <Name>
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id3836 @noAcceptAlert
+  Scenario Outline: Verify impossibility to login with the wrong code [PORTRAIT]
+    Given There is 1 user where <Name> is me
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    Then I see PHONE SIGN IN button
+    And I tap on PHONE SIGN IN button
+    And I see country picker button on Sign in screen
+    And I enter phone number for user <Name>
+    And I see verification code page
+    When I enter random verification code
+    Then I see wrong credentials notification
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id3836 @noAcceptAlert
+  Scenario Outline: Verify impossibility to login with the wrong code [LANDSCAPE]
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to landscape
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    Then I see PHONE SIGN IN button
+    And I tap on PHONE SIGN IN button
+    And I see country picker button on Sign in screen
+    And I enter phone number for user <Name>
+    And I see verification code page
+    When I enter random verification code
+    Then I see wrong credentials notification
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id3839 @noAcceptAlert
+  Scenario Outline: Verify impossibility to resend code within 10 min [PORTRAIT]
+    Given There is 1 user where <Name> is me
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    Then I see PHONE SIGN IN button
+    And I tap on PHONE SIGN IN button
+    And I see country picker button on Sign in screen
+    And I enter phone number for user <Name>
+    And I see verification code page
+    When I tap RESEND code button
+    Then I see Resend will be possible after 10 min aleart
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id3840 @noAcceptAlert
+  Scenario Outline: Verify impossibility to resend code within 10 min [LANDSCAPE]
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to landscape
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    Then I see PHONE SIGN IN button
+    And I tap on PHONE SIGN IN button
+    And I see country picker button on Sign in screen
+    And I enter phone number for user <Name>
+    And I see verification code page
+    When I tap RESEND code button
+    Then I see Resend will be possible after 10 min aleart
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id2733 @noAcceptAlert
+  Scenario Outline: Verify impossibility to login with unregistered phone number [PORTRAIT]
+    Given There is 1 user where <Name> is me
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    And I see PHONE SIGN IN button
+    And I tap on PHONE SIGN IN button
+    And I see country picker button on Sign in screen
+    And I enter random phone number
+    Then I see invalid phone number alert
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |
+
+  @staging @id3843 @noAcceptAlert
+  Scenario Outline: Verify impossibility to login with unregistered phone number [LANDSCAPE]
+    Given There is 1 user where <Name> is me
+    Given I rotate UI to landscape
+    Given I see sign in screen
+    When I tap I HAVE AN ACCOUNT button
+    And I see PHONE SIGN IN button
+    And I tap on PHONE SIGN IN button
+    And I see country picker button on Sign in screen
+    And I enter random phone number
+    Then I see invalid phone number alert
+
+    Examples: 
+      | Email      | Password      | Name      |
+      | user1Email | user1Password | user1Name |

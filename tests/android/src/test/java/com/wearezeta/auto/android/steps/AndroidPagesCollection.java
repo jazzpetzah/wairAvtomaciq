@@ -25,19 +25,13 @@ final class AndroidPagesCollection extends AbstractPagesCollection {
 	}
 
 	@Override
-	public AndroidPage getPage(Class<? extends BasePage> pageClass)
-			throws Exception {
-		return (AndroidPage) super.getPage(pageClass);
-	}
-
-	@Override
 	public void setFirstPage(BasePage page) {
 		if (!(page instanceof AndroidPage)) {
 			throw new IllegalStateException(
-					String.format(
-							"Only instances of '%s' are allowed. '%s' instance has been provided instead",
-							this.getClass().getSimpleName(), page.getClass()
-									.getSimpleName()));
+				String.format(
+					"Only instances of '%s' are allowed. '%s' instance has been provided instead",
+					this.getClass().getSimpleName(), page.getClass()
+					.getSimpleName()));
 		}
 		super.setFirstPage((AndroidPage) page);
 	}

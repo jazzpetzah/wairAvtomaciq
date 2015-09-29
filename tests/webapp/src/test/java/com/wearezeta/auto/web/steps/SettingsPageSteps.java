@@ -2,7 +2,7 @@ package com.wearezeta.auto.web.steps;
 
 import org.junit.Assert;
 
-import com.wearezeta.auto.web.pages.PagesCollection;
+import com.wearezeta.auto.web.pages.WebappPagesCollection;
 import com.wearezeta.auto.web.pages.SettingsPage;
 import com.wearezeta.auto.web.pages.SettingsPage.SoundAlertsLevel;
 
@@ -21,9 +21,9 @@ public class SettingsPageSteps {
 	 */
 	@Then("^I see Settings dialog$")
 	public void ISeeSetingsDialog() throws Exception {
-		PagesCollection.settingsPage = (SettingsPage) PagesCollection.loginPage
+		WebappPagesCollection.settingsPage = (SettingsPage) WebappPagesCollection.loginPage
 				.instantiatePage(SettingsPage.class);
-		Assert.assertTrue(PagesCollection.settingsPage.isVisible());
+		Assert.assertTrue(WebappPagesCollection.settingsPage.isVisible());
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class SettingsPageSteps {
 	 */
 	@When("^I select Sound Alerts setting to be (None|Some|All)")
 	public void ISelectSoundAlertsSetting(String newLevel) throws Exception {
-		PagesCollection.settingsPage.setSoundAlertsLevel(SoundAlertsLevel
+		WebappPagesCollection.settingsPage.setSoundAlertsLevel(SoundAlertsLevel
 				.fromString(newLevel));
 	}
 
@@ -51,7 +51,7 @@ public class SettingsPageSteps {
 	 */
 	@When("^I see Sound Alerts setting is set to (None|Some|All)")
 	public void ISeeSoundAlertsSettingIs(String expectedValue) {
-		final String currentValue = PagesCollection.settingsPage
+		final String currentValue = WebappPagesCollection.settingsPage
 				.getSoundAlertsLevel().toString();
 		Assert.assertTrue(
 				String.format(
@@ -67,7 +67,7 @@ public class SettingsPageSteps {
 	 */
 	@When("I click close settings page button")
 	public void IClickCloseSettingsPageButton() {
-		PagesCollection.settingsPage.clickCloseButton();
+		WebappPagesCollection.settingsPage.clickCloseButton();
 	}
 
 }

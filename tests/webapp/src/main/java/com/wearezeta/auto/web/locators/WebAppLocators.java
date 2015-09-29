@@ -288,6 +288,8 @@ public final class WebAppLocators {
 		public static String xpathSilenceIncomingCallButton = xpathCallingBarRoot
 				+ "//*[contains(@class, 'icon-minus')]";
 
+		public static final String cssLabelOnOutgoingCall = "#call-controls .cc-label-message";
+
 		// image fullscreen
 		public static final String cssModalDialog = ".modal-show";
 
@@ -340,6 +342,8 @@ public final class WebAppLocators {
 		public static final String cssNameSearchInput = "[data-uie-name='enter-users']";
 
 		public static final String cssOpenOrCreateConversationButton = "[data-uie-name='do-add-create'],[data-uie-name='do-open']";
+
+		public static final String cssCallButton = "#search-header [data-uie-name='do-call']";
 
 		public static final Function<String, String> xpathSearchResultByName = (
 				name) -> String.format(
