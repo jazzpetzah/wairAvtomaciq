@@ -111,12 +111,10 @@ public class ContactListPage extends AndroidPage {
 			.format("//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
 					name.toUpperCase());
 
-	// private static final String xpathTopConversationsListLoadingIndicator =
-	// "//*[@id='lbv__conversation_list__loading_indicator']/*";
 	private static final String xpathSpinnerConversationsListLoadingIndicator = "//*[@id='liv__conversations__loading_indicator']/*";
 
 	private static final Function<String, String> xpathConversationListEntry = name -> String
-			.format("//b[TextView[@id='tv_conv_list_topic' and @value='%s']]//*[@id='civ__list_row']",
+			.format("//*[@id='tv_conv_list_topic' and @value='%s']/parent::*//*[@id='civ__list_row']",
 					name);
 
 	private static final Logger log = ZetaLogger.getLog(ContactListPage.class

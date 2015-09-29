@@ -306,7 +306,7 @@ Feature: Connect
   Scenario Outline: I want to see user has been blocked within the Start UI
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list with mo contacts
+    Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
     And I see People picker page
