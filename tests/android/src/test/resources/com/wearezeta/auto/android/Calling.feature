@@ -1,8 +1,6 @@
 Feature: Calling
 
-  #CallBackend available values: 'autocall', 'webdriver'
-#@id373 @calling_basic @rc
-  @id373 @staging
+  @id373 @calling_basic @rc
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
@@ -544,8 +542,7 @@ Feature: Calling
       | Login      | Password      | Name      | Contact1  | Contact2  | Contact3  | GroupChatName | CallBackend |
       | user1Email | user1Password | user1Name | user2Name | user3Name | user4Name | GroupCallChat | autocall    |
 
-# @calling_basic @rc @rc42
-  @id3170 @staging 
+  @id3170 @calling_basic @rc @rc42
   Scenario Outline: Verify accepting group call in background
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
