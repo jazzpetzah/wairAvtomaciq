@@ -72,9 +72,14 @@ public class CommonIOSSteps {
 		CommonIOSSteps.skipBeforeAfter = skipBeforeAfter;
 	}
 
-	@SuppressWarnings("unchecked")
 	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts)
 			throws Exception {
+		return resetIOSDriver(enableAutoAcceptAlerts, false);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Future<ZetaIOSDriver> resetIOSDriver(boolean enableAutoAcceptAlerts,
+			boolean overrideWaitForAppScript) throws Exception {
 		final DesiredCapabilities capabilities = new DesiredCapabilities();
 		capabilities.setCapability("platformName", CURRENT_PLATFORM.getName());
 		capabilities.setCapability("app", getPath());
@@ -90,6 +95,11 @@ public class CommonIOSSteps {
 								+ backendType);
 		if (enableAutoAcceptAlerts) {
 			capabilities.setCapability("autoAcceptAlerts", true);
+		}
+
+		if (overrideWaitForAppScript) {
+			capabilities.setCapability("waitForAppScript",
+					"$.delay(20000); true;");
 		}
 
 		setTestStartedDate(new Date());
@@ -522,10 +532,10 @@ public class CommonIOSSteps {
 	@Given("^I restart application$")
 	public void IResetApplication() throws Exception {
 		tearDown();
-		setUpNoAlerts();
+		commonBefore(resetIOSDriver(false, true));
 		Thread.sleep(60000);
 	}
-	
+
 	@Given("^User (\\w+) is [Mm]e$")
 	public void UserXIsMe(String nameAlias) throws Exception {
 		commonSteps.UserXIsMe(nameAlias);
