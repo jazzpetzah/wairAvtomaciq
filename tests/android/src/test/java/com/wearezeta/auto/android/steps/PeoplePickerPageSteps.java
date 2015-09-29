@@ -99,6 +99,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I swipe down people picker$")
 	public void ISwipeDownContactList() throws Exception {
+		getPeoplePickerPage().hideKeyboard();
 		getPeoplePickerPage().swipeDown(500);
 	}
 
