@@ -244,6 +244,7 @@ Feature: Conversation View
     When I tap on contact name <Contact1>
     And I see dialog page
     And Contact <Contact1> send 18 messages to user Myself
+    And I scroll to the bottom of conversation view
     And I tap on text input
     And I type the message "<SoudCloudLink>" and send it
     And I swipe down on dialog page

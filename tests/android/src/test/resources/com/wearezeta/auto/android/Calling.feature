@@ -1,8 +1,6 @@
 Feature: Calling
 
-  #CallBackend available values: 'autocall', 'webdriver'
-#@id373 @calling_basic @rc
-  @id373 @staging
+  @id373 @calling_basic @rc
   Scenario Outline: Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
