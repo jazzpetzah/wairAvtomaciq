@@ -679,6 +679,9 @@ public final class IOSLocators {
 		public static final String xpathVerificationPage = "//UIAStaticText[contains(@name, 'Enter the verification code we sent to')]";
 		public static final String nameTermOfUsePage = "By continuing you agree to the Wire Terms of Use.";
 		public static final String nameResendCodeButton = "RESEND";
+		
+		public static final String nameCountryPicker = "CountryPickerButton";
+		public static final String namePhoneNumberField = "PhoneNumberField";
 	}
 
 	public final class LoginPage {
@@ -710,6 +713,8 @@ public final class IOSLocators {
 
 	public final class PersonalInfoPage {
 		public static final String nameCloseButton = "CloseButton";
+		public static final String nameAddPhoneNumberButton = "ADD PHONE NUMBER";
+		public static final String xpathPhoneEmailField =  "//UIAStaticText[contains(@name, '%s')]";
 	}
 
 	public final class GiphyPreviewPage {
