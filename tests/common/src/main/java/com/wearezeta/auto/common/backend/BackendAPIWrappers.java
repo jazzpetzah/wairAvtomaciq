@@ -183,7 +183,7 @@ public final class BackendAPIWrappers {
 				.getString("code");
 	}
 
-	public static String getActivationCodeForBookedPhoneNumber(
+	private static String getActivationCodeForBookedPhoneNumber(
 			PhoneNumber phoneNumber) throws Exception {
 		return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString(
 				"code");
