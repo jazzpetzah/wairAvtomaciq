@@ -117,7 +117,7 @@ public class PersonalInfoPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.xpathAboutCloseButton)
 	private WebElement aboutCloseButton;
-	
+
 	@FindBy(how = How.NAME, using = IOSLocators.PersonalInfoPage.nameAddPhoneNumberButton)
 	private WebElement addPhoneNumberButton;
 
@@ -443,9 +443,11 @@ public class PersonalInfoPage extends IOSPage {
 		addPhoneNumberButton.click();
 	}
 
-	public boolean isPhoneNumberAttachedToProfile(String number) throws Exception {
-		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By.xpath(String.format(
+	public boolean isPhoneNumberAttachedToProfile(String number)
+			throws Exception {
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), By
+				.xpath(String.format(
 						IOSLocators.PersonalInfoPage.xpathPhoneEmailField,
-						number)));		
+						number)));
 	}
 }
