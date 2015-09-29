@@ -108,12 +108,18 @@ public class RegistrationPage extends IOSPage {
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathPhoneNumber)
 	private WebElement phoneNumber;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.namePhoneNumberField)
+	private WebElement phoneNumberField;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathActivationCode)
 	private WebElement activationCode;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountry)
 	private WebElement selectCountry;
+	
+	@FindBy(how = How.NAME, using = IOSLocators.RegistrationPage.nameCountryPicker)
+	private WebElement countryPickerButton;
 
 	@FindBy(how = How.XPATH, using = IOSLocators.RegistrationPage.xpathCountryList)
 	private WebElement countryList;
@@ -169,7 +175,7 @@ public class RegistrationPage extends IOSPage {
 	}
 
 	private void selectCountryByCode(String code) throws Exception {
-		selectCountry.click();
+		countryPickerButton.click();
 		boolean result = false;
 		int count = 0;
 		while (!result && count < 10) {
@@ -201,10 +207,10 @@ public class RegistrationPage extends IOSPage {
 	public void inputPhoneNumber(String number) throws Exception {
 		getWait().until(ExpectedConditions.elementToBeClickable(phoneNumber));
 		try {
-			phoneNumber.sendKeys(number);
+			phoneNumberField.sendKeys(number);
 		} catch (WebDriverException ex) {
-			phoneNumber.clear();
-			phoneNumber.sendKeys(number);
+			phoneNumberField.clear();
+			phoneNumberField.sendKeys(number);
 		}
 		confirmInput.click();
 	}
