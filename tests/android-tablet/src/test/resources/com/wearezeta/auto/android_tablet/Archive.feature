@@ -9,16 +9,16 @@
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions popover
-    When I select <ArchiveItem> menu item on Conversation Actions popover
-    Then I do not see Conversation Actions popover
+    Then I see Conversation Actions overlay
+    When I select <ArchiveItem> menu item on Conversation Actions overlay
+    Then I do not see Conversation Actions overlay
     And I do not see conversation <Contact1> in my conversations list
     When I do long swipe up on conversations list
     Then I see the conversation <Contact1> in my conversations list
     When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions popover
-    When I select <UnarchiveItem> menu item on Conversation Actions popover
-    Then I do not see Conversation Actions popover
+    Then I see Conversation Actions overlay
+    When I select <UnarchiveItem> menu item on Conversation Actions overlay
+    Then I do not see Conversation Actions overlay
     And I see the conversation view
     When I swipe right to show the conversations list
     Then I see the conversation <Contact1> in my conversations list
@@ -36,16 +36,16 @@
     Given I see the conversations list with conversations
     And I see the conversation <Contact1> in my conversations list
     When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions popover
-    When I select <ArchiveItem> menu item on Conversation Actions popover
-    Then I do not see Conversation Actions popover
+    Then I see Conversation Actions overlay
+    When I select <ArchiveItem> menu item on Conversation Actions overlay
+    Then I do not see Conversation Actions overlay
     And I do not see conversation <Contact1> in my conversations list
     When I do long swipe up on conversations list
     Then I see the conversation <Contact1> in my conversations list
     When I swipe right the conversations list item <Contact1>
-    Then I see Conversation Actions popover
-    When I select <UnarchiveItem> menu item on Conversation Actions popover
-    Then I do not see Conversation Actions popover
+    Then I see Conversation Actions overlay
+    When I select <UnarchiveItem> menu item on Conversation Actions overlay
+    Then I do not see Conversation Actions overlay
     And I see the conversation view
     And I see the conversation <Contact1> in my conversations list
 
