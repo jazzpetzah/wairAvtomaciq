@@ -100,7 +100,7 @@ public final class BackendAPIWrappers {
 			activationCode = getActivationCodeForRegisteredEmail(user
 					.getEmail());
 			activateRegisteredEmailByBackdoorCade(user.getEmail(),
-					activationCode, false);
+					activationCode, false);			
 			while (true) {
 				try {
 					attachUserPhoneNumber(user);
@@ -115,6 +115,14 @@ public final class BackendAPIWrappers {
 				}
 			}
 			break;
+		case ByEmailOnly:
+			BackendREST.registerNewUser(user.getEmail(), user.getName(),
+					user.getPassword());
+			activationCode = getActivationCodeForRegisteredEmail(user
+					.getEmail());
+			activateRegisteredEmailByBackdoorCade(user.getEmail(),
+					activationCode, false);	
+			break;	
 		case ByPhoneNumber:
 		case ByPhoneNumberOnly:
 			while (true) {
@@ -175,7 +183,7 @@ public final class BackendAPIWrappers {
 				.getString("code");
 	}
 
-	private static String getActivationCodeForBookedPhoneNumber(
+	public static String getActivationCodeForBookedPhoneNumber(
 			PhoneNumber phoneNumber) throws Exception {
 		return BackendREST.getActivationDataViaBackdoor(phoneNumber).getString(
 				"code");
