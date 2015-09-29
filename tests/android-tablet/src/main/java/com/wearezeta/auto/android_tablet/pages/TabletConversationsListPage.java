@@ -48,39 +48,14 @@ public class TabletConversationsListPage extends AndroidTabletPage {
 	}
 
 	public void verifyConversationsListIsLoaded() throws Exception {
-		try {
-			getContactListPage().verifyContactListIsFullyLoaded();
-		} finally {
+		if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
 			// FIXME: Workaround for android bug AN-2238
-			if (ScreenOrientationHelper.getInstance().fixOrientation(
-					getDriver()) == ScreenOrientation.PORTRAIT) {
-				final int screenWidth = getDriver().manage().window().getSize()
-						.getWidth();
-
-				final By overlayLocator = By
-						.id(TabletSelfProfilePage.idSelfProfileView);
-				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-						overlayLocator, 1)
-						&& getDriver().findElement(overlayLocator)
-								.getLocation().getX() < screenWidth / 2) {
-					this.tapOnCenterOfScreen();
-					this.tapOnCenterOfScreen();
-					DriverUtils.swipeByCoordinates(getDriver(), 1000, 10, 50,
-							90, 50);
-					return;
-				}
-
-				final By convoViewLocator = By
-						.id(TabletConversationViewPage.idRootLocator);
-				if (DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-						convoViewLocator, 1)
-						&& getDriver().findElement(convoViewLocator)
-								.getLocation().getX() < screenWidth / 4) {
-					DriverUtils.swipeByCoordinates(getDriver(), 1000, 10, 50,
-							90, 50);
-					return;
-				}
-			}
+			DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
+		}
+		getContactListPage().verifyContactListIsFullyLoaded();
+		if (ScreenOrientationHelper.getInstance().fixOrientation(getDriver()) == ScreenOrientation.PORTRAIT) {
+			// FIXME: Workaround for android bug AN-2238
+			DriverUtils.swipeByCoordinates(getDriver(), 1000, 30, 50, 90, 50);
 		}
 	}
 

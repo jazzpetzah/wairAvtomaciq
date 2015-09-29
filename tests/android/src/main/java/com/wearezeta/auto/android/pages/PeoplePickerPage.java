@@ -45,10 +45,6 @@ public class PeoplePickerPage extends AndroidPage {
 
 	public static final String idSendConnectionRequestButton = "zb__send_connect_request__connect_button";
 
-	private static final String idOpenConversationButton = "zb__conversation_quick_menu__conversation_button";
-	@FindBy(id = idOpenConversationButton)
-	private WebElement openConversationButton;
-
 	private static final Function<String, String> xpathPeoplePickerGroupByName = name -> String
 			.format("//*[@id='ttv_pickuser_searchconversation_name' and @value='%s']",
 					name);
@@ -63,9 +59,7 @@ public class PeoplePickerPage extends AndroidPage {
 	private static final Function<String, String> xpathPickerUserByName = name -> String
 			.format("//*[@id='%s' and @value='%s']", idPickerSearchUsers, name);
 
-	private static final String idPickerTopPeopleHeader = "ttv_pickuser__list_header_title";
-	@FindBy(id = idPickerTopPeopleHeader)
-	private WebElement pickerTopPeopleHeader;
+	private static final String idTopPeopleRoot = "rv_top_users";
 
 	private static final String idPeoplePickerSerchConversations = "ttv_pickuser_searchconversation_name";
 	@FindBy(id = idPeoplePickerSerchConversations)
@@ -90,9 +84,9 @@ public class PeoplePickerPage extends AndroidPage {
 	@FindBy(id = idPickerBtnDone)
 	private WebElement addToConversationsButton;
 
-	private static final String idCreateConversationIcon = "gtv_pickuser_confirmbutton__icon";
-	@FindBy(id = idCreateConversationIcon)
-	private WebElement createConversation;
+	private static final String idCreateOrOpenConversationButton = "zb__conversation_quick_menu__conversation_button";
+	@FindBy(id = idCreateOrOpenConversationButton)
+	private WebElement createOrOpenConversation;
 
 	private static final String idNoResultsFound = "ttv_pickuser__error_header";
 	@FindBy(id = idNoResultsFound)
@@ -156,13 +150,13 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public boolean isTopPeopleHeaderVisible() throws Exception {
-		return DriverUtils.isElementPresentAndDisplayed(getDriver(),
-				pickerTopPeopleHeader);
+		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
+				By.id(idTopPeopleRoot));
 	}
 
 	public boolean waitUntilTopPeopleHeaderInvisible() throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idPickerTopPeopleHeader));
+				By.id(idTopPeopleRoot));
 	}
 
 	public void selectContact(String contactName) throws Exception {
@@ -223,26 +217,20 @@ public class PeoplePickerPage extends AndroidPage {
 				By.id(idPickerBtnDone));
 	}
 
-	public DialogPage clickOnAddToCoversationButton() throws Exception {
+	public void clickOnAddToCoversationButton() throws Exception {
 		addToConversationsButton.click();
-		return new DialogPage(this.getLazyDriver());
 	}
 
-	// TODO: move this to some base page
-
-	public AndroidPage tapCreateConversation() throws Exception {
-		final By locator = By.id(idCreateConversationIcon);
-		this.hideKeyboard();
-		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator);
-		createConversation.click();
-		return new DialogPage(this.getLazyDriver());
+	public void tapCreateConversation() throws Exception {
+		// this.hideKeyboard();
+		assert waitUntilOpenConversationButtonIsVisible() : "Create/Open Conversation button is not visible in People Picker";
+		createOrOpenConversation.click();
 	}
 
-	public ContactListPage tapClearButton() throws Exception {
+	public void tapClearButton() throws Exception {
 		assert DriverUtils.waitUntilElementClickable(getDriver(),
 				pickerClearBtn);
 		pickerClearBtn.click();
-		return new ContactListPage(this.getLazyDriver());
 	}
 
 	public boolean userIsVisible(String contact) throws Exception {
@@ -337,17 +325,17 @@ public class PeoplePickerPage extends AndroidPage {
 	}
 
 	public void tapOpenConversationButton() {
-		openConversationButton.click();
+		createOrOpenConversation.click();
 	}
 
 	public boolean waitUntilOpenConversationButtonIsVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
-				By.id(idOpenConversationButton));
+				By.id(idCreateOrOpenConversationButton));
 	}
 
 	public boolean waitUntilOpenConversationButtonIsInvisible()
 			throws Exception {
 		return DriverUtils.waitUntilLocatorDissapears(getDriver(),
-				By.id(idOpenConversationButton));
+				By.id(idCreateOrOpenConversationButton));
 	}
 }

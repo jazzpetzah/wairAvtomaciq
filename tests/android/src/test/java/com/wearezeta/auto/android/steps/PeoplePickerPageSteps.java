@@ -99,6 +99,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I swipe down people picker$")
 	public void ISwipeDownContactList() throws Exception {
+		getPeoplePickerPage().hideKeyboard();
 		getPeoplePickerPage().swipeDown(500);
 	}
 
@@ -499,8 +500,6 @@ public class PeoplePickerPageSteps {
 				getPeoplePickerPage().waitUntilPYMKItemIsVisible(1));
 	}
 
-	private static final long TOP_PEOPLE_VISIBILITY_TIMEOUT_MILLISECONDS = 120 * 1000;
-
 	/**
 	 * Wait for Top People list to appear in People picker
 	 * 
@@ -510,25 +509,7 @@ public class PeoplePickerPageSteps {
 	 */
 	@When("^I wait until Top People list appears$")
 	public void WaitForTopPeople() throws Exception {
-		if (!getPeoplePickerPage().isTopPeopleHeaderVisible()) {
-			// FIXME: Workaround for bug where Top People is sometimes not shown
-			// if sign in for the first time
-			getPeoplePickerPage().tapClearButton();
-			((ContactListPage) pagesCollection.getPage(ContactListPage.class))
-					.tapOnMyAvatar();
-			((PersonalInfoPage) pagesCollection.getPage(PersonalInfoPage.class))
-					.tapOptionsButton();
-			((PersonalInfoPage) pagesCollection.getPage(PersonalInfoPage.class))
-					.tapSignOutBtn();
-			new LoginSteps().ISignInUsingMyEmail();
-			new ContactListPageSteps().GivenISeeContactList();
-			((ContactListPage) pagesCollection.getPage(ContactListPage.class))
-					.tapOnSearchButton();
-		}
-		if (!getPeoplePickerPage().isTopPeopleHeaderVisible()) {
-			throw new AssertionError(String.format(
-					"Top People list has not been shown after %s seconds",
-					TOP_PEOPLE_VISIBILITY_TIMEOUT_MILLISECONDS / 1000));
-		}
+		Assert.assertTrue("Top People list is not visible",
+				getPeoplePickerPage().isTopPeopleHeaderVisible());
 	}
 }

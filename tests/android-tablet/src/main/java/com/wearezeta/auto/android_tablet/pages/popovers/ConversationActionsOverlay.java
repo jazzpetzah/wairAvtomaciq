@@ -6,12 +6,12 @@ import org.openqa.selenium.By;
 
 import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
-public class ConversationActionsPopover extends AbstractPopoverContainer {
-	public static final String idRootLocator = "fl__participant_dialog__main__container";
+public class ConversationActionsOverlay extends AbstractPopoverContainer {
+	public static final String idRootLocator = "fl__conversation_list__settings_box";
 
 	private ConversationActionsMenuPage conversationActionsMenuPage;
 
-	public ConversationActionsPopover(Future<ZetaAndroidDriver> lazyDriver)
+	public ConversationActionsOverlay(Future<ZetaAndroidDriver> lazyDriver)
 			throws Exception {
 		super(lazyDriver);
 		this.conversationActionsMenuPage = new ConversationActionsMenuPage(

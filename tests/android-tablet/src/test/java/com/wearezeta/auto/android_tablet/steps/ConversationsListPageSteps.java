@@ -279,7 +279,7 @@ public class ConversationsListPageSteps {
 	}
 
 	/**
-	 * Do swipe on a conversations list item to show actions popover
+	 * Do swipe on a conversations list item to show actions overlay
 	 * 
 	 * @step. ^I swipe right (?:the |\\s*)conversations list item (.*)
 	 * 
