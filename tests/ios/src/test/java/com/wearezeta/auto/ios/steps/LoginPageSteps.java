@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
+
 import com.wearezeta.auto.common.CommonUtils;
 import com.wearezeta.auto.common.backend.BackendAPIWrappers;
 import com.wearezeta.auto.common.backend.BackendRequestException;
@@ -103,6 +104,26 @@ public class LoginPageSteps {
 		getRegistrationPage().inputActivationCode(code);
 
 		getLoginPage().waitForLoginToFinish();
+	}
+
+	/**
+	 * Enters the phone number and verification code at self profile page
+	 * 
+	 * @step. ^I enter phone number and verification code$
+	 * @throws Throwable
+	 */
+	@When("^I enter phone number and verification code$")
+	public void IEnterPhoneNumberAndVerificationCode() throws Throwable {
+		ClientUser self = usrMgr.getSelfUserOrThrowError();
+		self.setPhoneNumber(new PhoneNumber(PhoneNumber.WIRE_COUNTRY_PREFIX));
+		getRegistrationPage().selectCodeAndInputPhoneNumber(
+				self.getPhoneNumber().toString()
+						.replace(PhoneNumber.WIRE_COUNTRY_PREFIX, ""),
+				PhoneNumber.WIRE_COUNTRY_PREFIX);
+		String code = BackendAPIWrappers.getActivationCodeByPhoneNumber(self
+				.getPhoneNumber());
+
+		getRegistrationPage().inputActivationCode(code);
 	}
 
 	/**
@@ -664,6 +685,15 @@ public class LoginPageSteps {
 	@When("^Return to Wire app$")
 	public void ReturnToWireApp() throws Exception {
 		getLoginPage().pressSimulatorHomeButton();
+	}
+
+	/**
+	 * 
+	 * @throws Throwable
+	 */
+	@When("^I click Not Now to not add phone number$")
+	public void IClickNotNowToNotAddPhoneNumber() throws Throwable {
+		getLoginPage().clickPhoneNotNow();
 	}
 
 }
