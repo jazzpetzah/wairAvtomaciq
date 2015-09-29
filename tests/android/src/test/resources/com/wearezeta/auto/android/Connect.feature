@@ -285,8 +285,6 @@ Feature: Connect
     And I press options menu button
     And I press BLOCK conversation menu button
     And I confirm block
-    And I press back button
-    And I navigate back from dialog page
     Then I do not see contact list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact1> is blocked in backend search results

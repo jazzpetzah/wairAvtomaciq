@@ -538,15 +538,6 @@ public class DialogPage extends AndroidPage {
 		return new ContactListPage(this.getLazyDriver());
 	}
 
-	/**
-	 * Just return new ContactListPage
-	 * 
-	 * @throws Exception
-	 */
-	public ContactListPage initContactListPage() throws Exception {
-		return new ContactListPage(this.getLazyDriver());
-	}
-
 	public boolean isHintVisible() throws Exception {
 		return DriverUtils.waitUntilLocatorIsDisplayed(getDriver(),
 				By.id(idSearchHintClose));
