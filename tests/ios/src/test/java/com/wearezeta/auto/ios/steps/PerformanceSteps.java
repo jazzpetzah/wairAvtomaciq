@@ -12,6 +12,7 @@ import com.wearezeta.auto.ios.reporter.IOSLogListener;
 import com.wearezeta.auto.ios.reporter.IOSPerfReportModel;
 import com.wearezeta.auto.ios.tools.IOSCommonUtils;
 import com.wearezeta.auto.common.CommonUtils;
+import com.wearezeta.auto.common.ImageUtil;
 import com.wearezeta.auto.common.log.ZetaLogger;
 import com.wearezeta.auto.common.performance.PerformanceCommon;
 import com.wearezeta.auto.common.performance.PerformanceCommon.PerformanceLoop;
@@ -82,6 +83,7 @@ public class PerformanceSteps {
 		int visibleContactsSize;
 		while ((visibleContactsSize = getContactListPage().GetVisibleContacts().size()) == 0 && ntry <= maxTries) {
 			log.debug("Waiting for contact list. Iteration #" + ntry);
+			ImageUtil.storeImageToFile(getContactListPage().takeScreenshot().get(), "/Project/cl_look_"+ntry+".png");
 			Thread.sleep(millisecondsDelay);
 			ntry++;
 		}
