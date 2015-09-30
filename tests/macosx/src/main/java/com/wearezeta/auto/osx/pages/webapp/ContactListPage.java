@@ -84,15 +84,6 @@ public class ContactListPage extends WebPage {
 	@FindBy(css = WebAppLocators.ContactListPage.cssUnmuteButton)
 	private WebElement unmuteButton;
 
-	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveButton)
-	private WebElement leaveButton;
-
-	@FindBy(css = WebAppLocators.ContactListPage.cssBlockButton)
-	private WebElement blockButton;
-
-	@FindBy(css = WebAppLocators.ContactListPage.cssDeleteButton)
-	private WebElement deleteButton;
-
 	// leave warning
 
 	@FindBy(css = WebAppLocators.ContactListPage.cssLeaveModalCancelButton)
@@ -267,33 +258,6 @@ public class ContactListPage extends WebPage {
 		openArchivedConvosButton.click();
 	}
 
-	public void clickArchiveConversation() throws Exception {
-		waitForOptionButtonsToBeClickable();
-		archiveButton.click();
-	}
-
-	public void clickMuteConversation() throws Exception {
-		waitForOptionButtonsToBeClickable();
-		muteButton.click();
-	}
-
-	private void waitForOptionButtonsToBeClickable() throws Exception {
-		assert DriverUtils.waitUntilElementClickable(this.getDriver(),
-				archiveButton);
-		assert (DriverUtils
-				.waitUntilLocatorIsDisplayed(
-						this.getDriver(),
-						By.cssSelector(WebAppLocators.ContactListPage.cssMuteButton),
-						3) && DriverUtils.waitUntilElementClickable(
-				this.getDriver(), muteButton, 3))
-				|| (DriverUtils
-						.waitUntilLocatorIsDisplayed(
-								this.getDriver(),
-								By.cssSelector(WebAppLocators.ContactListPage.cssUnmuteButton),
-								3) && DriverUtils.waitUntilElementClickable(
-						this.getDriver(), this.unmuteButton, 3));
-	}
-
 	public boolean isConversationMuted(String conversationName)
 			throws Exception {
 		// moving focus from contact - to now show ... button
@@ -385,21 +349,6 @@ public class ContactListPage extends WebPage {
 			openPeoplePickerButton.click();
 		}
 		return webappPagesCollection.getPage(PeoplePickerPage.class);
-	}
-
-	public void clickUnmuteConversation() throws Exception {
-		waitForOptionButtonsToBeClickable();
-		unmuteButton.click();
-	}
-
-	public void clickLeaveConversation() throws Exception {
-		waitForOptionButtonsToBeClickable();
-		leaveButton.click();
-	}
-
-	public void clickBlockConversation() throws Exception {
-		waitForOptionButtonsToBeClickable();
-		blockButton.click();
 	}
 
 	public ConversationPage unarchiveConversation(String conversationName)
@@ -570,11 +519,6 @@ public class ContactListPage extends WebPage {
 
 	public void clickBlockOnBlockWarning() {
 		blockModalActionButton.click();
-	}
-
-	public void clickDeleteConversation() throws Exception {
-		waitForOptionButtonsToBeClickable();
-		deleteButton.click();
 	}
 
 	public boolean isDeleteWarningModalForGroupVisible() throws Exception {

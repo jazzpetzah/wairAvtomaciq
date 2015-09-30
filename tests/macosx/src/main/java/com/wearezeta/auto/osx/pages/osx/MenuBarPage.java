@@ -14,11 +14,14 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class MenuBarPage extends OSXPage {
 
-	@FindBy(how = How.XPATH, using = OSXLocators.AppMenu.developerMenu)
-	protected WebElement developerMenu;
+	@FindBy(how = How.XPATH, using = OSXLocators.AppMenu.helpMenu)
+	protected WebElement helpMenu;
 
-	@FindBy(how = How.XPATH, using = OSXLocators.AppMenu.developerStagingMenuItem)
-	protected WebElement developerStagingMenuItem;
+	@FindBy(how = How.XPATH, using = OSXLocators.AppMenu.stagingMenuItem)
+	protected WebElement stagingMenuItem;
+
+	@FindBy(how = How.XPATH, using = OSXLocators.AppMenu.versionMenuItem)
+	protected WebElement versionMenuItem;
 
 	public MenuBarPage(Future<ZetaOSXDriver> lazyDriver) throws Exception {
 		super(lazyDriver);
@@ -27,12 +30,28 @@ public class MenuBarPage extends OSXPage {
 	public void switchEnvironment() throws Exception {
 		new WebDriverWait(getDriver(), 10).until(ExpectedConditions
 				.visibilityOfElementLocated(By
-						.xpath(OSXLocators.AppMenu.developerMenu)));
-		developerMenu.click();
+						.xpath(OSXLocators.AppMenu.helpMenu)));
+		helpMenu.click();
+		new WebDriverWait(getDriver(), 1).until(ExpectedConditions
+				.visibilityOfElementLocated(By
+						.xpath(OSXLocators.AppMenu.versionMenuItem)));
+		versionMenuItem.click();
 		new WebDriverWait(getDriver(), 10).until(ExpectedConditions
 				.visibilityOfElementLocated(By
-						.xpath(OSXLocators.AppMenu.developerStagingMenuItem)));
-		developerStagingMenuItem.click();
+						.xpath(OSXLocators.AppMenu.helpMenu)));
+		helpMenu.click();
+		new WebDriverWait(getDriver(), 1).until(ExpectedConditions
+				.visibilityOfElementLocated(By
+						.xpath(OSXLocators.AppMenu.versionMenuItem)));
+		versionMenuItem.click();
+		new WebDriverWait(getDriver(), 10).until(ExpectedConditions
+				.visibilityOfElementLocated(By
+						.xpath(OSXLocators.AppMenu.helpMenu)));
+		helpMenu.click();
+		new WebDriverWait(getDriver(), 10).until(ExpectedConditions
+				.visibilityOfElementLocated(By
+						.xpath(OSXLocators.AppMenu.stagingMenuItem)));
+		stagingMenuItem.click();
 	}
 
 }

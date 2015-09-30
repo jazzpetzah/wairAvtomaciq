@@ -218,7 +218,8 @@ public class ContactListPageSteps {
 		ContactListPage contactListPage = webappPagesCollection
 				.getPage(ContactListPage.class);
 		contactListPage.clickOptionsButtonForContact(contact);
-		contactListPage.clickArchiveConversation();
+		// TODO
+		// contactListPage.clickArchiveConversation();
 	}
 
 	/**
@@ -344,7 +345,8 @@ public class ContactListPageSteps {
 		ContactListPage contactListPage = webappPagesCollection
 				.getPage(ContactListPage.class);
 		contactListPage.clickOptionsButtonForContact(contact);
-		contactListPage.clickMuteConversation();
+		// TODO
+		// contactListPage.clickMuteConversation();
 	}
 
 	/**
@@ -363,7 +365,8 @@ public class ContactListPageSteps {
 		ContactListPage contactListPage = webappPagesCollection
 				.getPage(ContactListPage.class);
 		contactListPage.clickOptionsButtonForContact(contact);
-		contactListPage.clickUnmuteConversation();
+		// TODO
+		// contactListPage.clickUnmuteConversation();
 	}
 
 	/**
@@ -719,30 +722,6 @@ public class ContactListPageSteps {
 	}
 
 	/**
-	 * Click the leave option
-	 * 
-	 * @step. ^I click the option to leave in the options popover$
-	 * @throws Exception
-	 */
-	@When("^I click the option to leave in the options popover$")
-	public void IClickLeaveButton() throws Exception {
-		webappPagesCollection.getPage(ContactListPage.class)
-				.clickLeaveConversation();
-	}
-
-	/**
-	 * Click the block option
-	 * 
-	 * @step. ^I click the option to block in the options popover$
-	 * @throws Exception
-	 */
-	@When("^I click the option to block in the options popover$")
-	public void IClickBlockButton() throws Exception {
-		webappPagesCollection.getPage(ContactListPage.class)
-				.clickBlockConversation();
-	}
-
-	/**
 	 * Verifies the modal is visible
 	 * 
 	 * @step. ^I see a leave warning modal$
@@ -816,18 +795,6 @@ public class ContactListPageSteps {
 				.getItemIndex(conv);
 		assertThat("Conversation is not on the top", itemIndex, equalTo(1));
 
-	}
-
-	/**
-	 * Click the delete option
-	 * 
-	 * @step. ^I click delete in the options popover$
-	 * @throws Exception
-	 */
-	@When("^I click delete in the options popover$")
-	public void IClickDeleteButton() throws Exception {
-		webappPagesCollection.getPage(ContactListPage.class)
-				.clickDeleteConversation();
 	}
 
 	/**

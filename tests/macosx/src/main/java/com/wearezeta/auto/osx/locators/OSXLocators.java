@@ -10,8 +10,9 @@ public final class OSXLocators {
 
 		public static final String editMenu = "//AXMenuBarItem[@AXTitle='Edit']";
 
-		public static final String developerMenu = "//AXMenuBarItem[@AXTitle='Developer']";
-		public static final String developerStagingMenuItem = "//AXMenuItem[@AXTitle='Staging']";
+		public static final String helpMenu = "//AXMenuBarItem[@AXTitle='Help']";
+		public static final String stagingMenuItem = "//AXMenuItem[@AXTitle='Staging']";
+		public static final String versionMenuItem = "//AXMenuItem[contains(@AXTitle,'Version')]";
 
 	}
 
