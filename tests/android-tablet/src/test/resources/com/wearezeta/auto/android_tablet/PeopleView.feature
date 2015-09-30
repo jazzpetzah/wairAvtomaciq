@@ -320,7 +320,7 @@ Feature: People View
       | Name      | Contact1   | Contact1Email | Contact2  | GroupChatName | Subheader |
       | user1Name | user2Name  | user2Email    | user3Name | GroupChat     | 3 PEOPLE  |
 
-  @id2895 @regression @rc
+  @id2895 @regression
   Scenario Outline: Check interaction with options menu (portrait)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
@@ -349,7 +349,7 @@ Feature: People View
       | Name      | Contact1   | Contact2  | GroupChatName | ItemLeave |
       | user1Name | user2Name  | user3Name | GroupChat     | LEAVE     |
 
-  @id3148 @regression @rc
+  @id3148 @regression
   Scenario Outline: Check interaction with options menu (landscape)
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>

@@ -10,12 +10,12 @@ import com.wearezeta.auto.common.driver.ZetaAndroidDriver;
 
 public class ConversationActionsMenuPage extends AbstractPopoverPage {
 	private final static Function<String, String> xpathActionMenuItemByName = itemName -> String
-			.format("//*[@id='%s']//*[@value='%s']",
-					ConversationActionsPopover.idRootLocator,
+			.format("%s//*[@value='%s']",
+					ConversationActionsOverlay.xpathRootLocator,
 					itemName.toUpperCase());
 
 	public ConversationActionsMenuPage(Future<ZetaAndroidDriver> lazyDriver,
-			ConversationActionsPopover container) throws Exception {
+			ConversationActionsOverlay container) throws Exception {
 		super(lazyDriver, container);
 	}
 

@@ -16,8 +16,8 @@ public class ParticipantsPage extends AbstractConversationDetailsPage {
 	private WebElement confirmLeaveButton;
 
 	public static final Function<String, String> xpathParticipantAvatarByName = name -> String
-			.format("//*[@id='%s']//*[@value='%s']/parent::*/parent::*",
-					GroupPopover.idRootLocator, name.toUpperCase());
+			.format("//*[@id='pfac__participants']//*[@id='ttv__group__adapter' and @value='%s']/parent::*/parent::*",
+					name.split("\\s+")[0]);
 
 	private static final String idConvoNameInput = "taet__participants__header__editable";
 	@FindBy(id = idConvoNameInput)

@@ -20,14 +20,12 @@ public class ConversationViewPageSteps {
 
 	private TabletConversationViewPage getConversationViewPage()
 			throws Exception {
-		return (TabletConversationViewPage) pagesCollection
-				.getPage(TabletConversationViewPage.class);
+		return pagesCollection.getPage(TabletConversationViewPage.class);
 	}
 
 	private ConversationViewCameraPage getConversationViewCameraPage()
 			throws Exception {
-		return (ConversationViewCameraPage) pagesCollection
-				.getPage(ConversationViewCameraPage.class);
+		return pagesCollection.getPage(ConversationViewCameraPage.class);
 	}
 
 	/**
@@ -284,8 +282,8 @@ public class ConversationViewPageSteps {
 	}
 
 	/**
-	 * Tap the Ping button to send Ping/Ping Again event from the currently opened
-	 * conversation
+	 * Tap the Ping button to send Ping/Ping Again event from the currently
+	 * opened conversation
 	 * 
 	 * @step. ^I tap Ping button (twice )?in (?:the |\\s*)[Cc]onversation view$
 	 * 

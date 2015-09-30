@@ -74,7 +74,7 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 	private WebElement renameButton;
 
 	private static final Function<String, String> xpathConvOptionsMenuItemByName = name -> String
-			.format("//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
+			.format("//*[@id='fl__participant__settings_box']//*[starts-with(@id, 'ttv__settings_box__item') and @value='%s']",
 					name.toUpperCase());
 
 	@FindBy(id = PeoplePickerPage.idParticipantsClose)
@@ -192,7 +192,8 @@ public class OtherUserPersonalInfoPage extends AndroidPage {
 		final By locator = By.xpath(xpathConvOptionsMenuItemByName
 				.apply(itemName));
 		assert DriverUtils.waitUntilLocatorIsDisplayed(getDriver(), locator) : String
-				.format("Conversation menu item '%s' could not be found on the current screen");
+				.format("Conversation menu item '%s' could not be found on the current screen",
+						itemName);
 		getDriver().findElement(locator).click();
 	}
 

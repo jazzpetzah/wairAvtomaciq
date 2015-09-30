@@ -153,8 +153,7 @@ Feature: People View
       | Name      | Contact   |
       | user1Name | user2Name |
 
-# @regression @rc
-  @id1509 @staging
+  @id1509 @regression @rc
   Scenario Outline: Verify you cannot start a 1:1 conversation from a group chat if the other user is not in your contacts list
     Given There are 3 users where <Name> is me
     Given <Contact1> is connected to <Name>,<Contact2>

@@ -285,8 +285,6 @@ Feature: Connect
     And I press options menu button
     And I press BLOCK conversation menu button
     And I confirm block
-    And I press back button
-    And I navigate back from dialog page
     Then I do not see contact list with name <Contact1>
     And I wait until <Contact1> exists in backend search results
     And I wait until <Contact1> is blocked in backend search results
@@ -306,7 +304,7 @@ Feature: Connect
   Scenario Outline: I want to see user has been blocked within the Start UI
     Given There are 2 users where <Name> is me
     Given I sign in using my email or phone number
-    Given I see Contact list with mo contacts
+    Given I see Contact list with no contacts
     And I wait until <Contact> exists in backend search results
     When I open Search by tap
     And I see People picker page
