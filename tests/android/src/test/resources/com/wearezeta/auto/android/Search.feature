@@ -52,7 +52,7 @@ Feature: Search
 
     Examples: 
       | Name      | Contact1   | Contact2   | Size |
-      | user1Name | user2Name  | user3Name  | 12   |
+      | user1Name | user2Name  | user3Name  | 7    |
 
   @id225 @regression
   Scenario Outline: I can search group converation by partial name
