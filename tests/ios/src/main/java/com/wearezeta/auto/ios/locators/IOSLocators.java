@@ -40,7 +40,7 @@ public final class IOSLocators {
 
 	public static final String classNameUIAButton = "UIAButton";
 
-	public static final String xpathEmailField = "//UIAApplication[1]/UIAWindow[1]/UIATextField[1]";
+	public static final String xpathEmailField = "//UIAElement[@name='ProfileSelfNameField']/following-sibling::UIAStaticText[1]";
 
 	public static final String xpathUserProfileName = "//UIAApplication[1]/UIAWindow[1]/UIAElement[1]/UIATextView[1]";
 
