@@ -1,7 +1,7 @@
 Feature: Calling
 
   @id373 @calling_basic @rc
-  Scenario Outline: Verify calling from missed call indicator in conversation
+  Scenario Outline: (BUG AN-2826) Verify calling from missed call indicator in conversation
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -132,7 +132,7 @@ Feature: Calling
       | user1Name | user2Name | autocall    | simple message in english | YOU PINGED |
 
   @id2210 @calling_basic @rc @rc42
-  Scenario Outline: Calling bar buttons are clickable and change their states
+  Scenario Outline: (BUG AN-2815) Calling bar buttons are clickable and change their states
     Given There are 2 users where <Name> is me
     Given <Contact> is connected to me
     Given I sign in using my email or phone number
@@ -297,9 +297,8 @@ Feature: Calling
       | CallBackend | Name      | Contact1  | Contact2  | GroupChatName    |
       | autocall    | user1Name | user2Name | user3Name | ChatForGroupCall |
 
-#@id3168 @calling_basic @rc
-  @id3168 @staging
-  Scenario Outline: I can join group call after I leave it
+  @id3168 @calling_basic @rc
+  Scenario Outline: (BUG AN-2825) I can join group call after I leave it
     Given There are 3 users where <Name> is me
     Given Myself is connected to <Contact1>,<Contact2>
     Given Myself has group chat <GroupChatName> with <Contact1>,<Contact2>

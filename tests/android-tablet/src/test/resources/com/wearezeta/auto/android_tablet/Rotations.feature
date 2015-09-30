@@ -84,7 +84,7 @@ Feature: Rotations
       | Name      | Contact1  | Contact2  |
       | user1Name | user2Name | user3Name |
 
-  @id2908 @regression @rc
+  @id2908 @regression
   Scenario Outline: I want to exit fullscreen view in landscape
     Given There are 2 users where <Name> is me
     Given Myself is connected to <Contact>

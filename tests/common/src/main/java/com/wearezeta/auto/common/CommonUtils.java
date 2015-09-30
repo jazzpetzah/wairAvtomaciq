@@ -36,8 +36,6 @@ public class CommonUtils {
 	private static final String IOS_AVATAR_CLOCK_IMAGE = "new_avatarclock.png";
 	private static final String MEDIABAR_PLAY_IMAGE = "android_mediabar_play_image_(white).png";
 	private static final String MEDIABAR_PAUSE_IMAGE = "android_mediabar_pause_image_(white).png";
-	private static final String MEDIA_PLAY_IMAGE = "android_media_play_image_(white).png";
-	private static final String MEDIA_PAUSE_IMAGE = "android_media_pause_image.png";
 	private static final String ALPHANUMERIC_PLUS_SYMBOLS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ1234567890!@#$%^&*()";
 
 	private static final Random rand = new Random();
@@ -168,18 +166,6 @@ public class CommonUtils {
 	public static String getMediaBarPauseIconPath(Class<?> c) throws Exception {
 		String path = getValueFromConfig(c, "defaultImagesPath")
 				+ MEDIABAR_PAUSE_IMAGE;
-		return path;
-	}
-
-	public static String getMediaPlayIconPath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ MEDIA_PLAY_IMAGE;
-		return path;
-	}
-
-	public static String getMediaPauseIconPath(Class<?> c) throws Exception {
-		String path = getValueFromConfig(c, "defaultImagesPath")
-				+ MEDIA_PAUSE_IMAGE;
 		return path;
 	}
 

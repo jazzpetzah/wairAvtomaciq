@@ -365,8 +365,8 @@ public class PersonalInfoPageSteps {
 	@When("I see email (.*) on Personal page")
 	public void ISeeMyEmailOnPersonalPage(String email) throws Exception {
 		email = usrMgr.findUserByEmailOrEmailAlias(email).getEmail();
-		Assert.assertTrue(email
-				.equals(getPersonalInfoPage().getUserEmailVaue()));
+		Assert.assertTrue(getPersonalInfoPage()
+				.getUserEmailVaue().contains(email));
 	}
 
 	@When("I attempt to enter (.*) and press return")
@@ -467,7 +467,8 @@ public class PersonalInfoPageSteps {
 	 */
 	@Then("^I see my new name (.*)$")
 	public void ISeeMyNewName(String name) throws Throwable {
-		String actualName = getPersonalInfoPage().getUserNameValue().toLowerCase();
+		String actualName = getPersonalInfoPage().getUserNameValue()
+				.toLowerCase();
 		Assert.assertTrue(actualName.contains(name.toLowerCase()));
 	}
 

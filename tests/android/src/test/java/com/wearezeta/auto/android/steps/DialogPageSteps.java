@@ -596,9 +596,7 @@ public class DialogPageSteps {
 	 */
 	@When("^I navigate back from dialog page$")
 	public void WhenINavigateBackFromDialogPage() throws Exception {
-		// getDialogPage().navigateBack(1000);
-		getDialogPage().navigateBack();
-		getDialogPage().initContactListPage();
+		getDialogPage().navigateBack(1000);
 	}
 
 	/**
@@ -746,21 +744,54 @@ public class DialogPageSteps {
 						+ score, score >= 0.75d);
 	}
 
+	private BufferedImage previousMediaButtonState = null;
+
 	/**
-	 * Verify that I see Play or Pause button in Media item
+	 * Store the screenshot of current media control button state
 	 * 
-	 * @step. ^I see (.*) button in Media$
+	 * @step. ^I remember the state of PlayPause media item button$
 	 * 
 	 * @throws Exception
-	 * 
 	 */
-	@Then("^I see (.*) button in Media$")
-	public void ThenISeeButtonInMedia(String iconLabel) throws Exception {
-		final double score = getDialogPage().getMediaControlIconOverlapScore(
-				iconLabel);
-		Assert.assertTrue(
-				"Overlap between two images has not enough score. Expected >= 0.75, current = "
-						+ score, score >= 0.75d);
+	@When("^I remember the state of PlayPause media item button$")
+	public void IRememeberMediaItemButtonState() throws Exception {
+		previousMediaButtonState = getDialogPage()
+				.getMediaControlButtonScreenshot();
+	}
+
+	final static double MAX_OVERLAP_SCORE = 0.97;
+
+	/**
+	 * Verify the current state of media control button has been changed since
+	 * the last snapshot was made
+	 * 
+	 * @step. ^I verify the state of PlayPause media item button is changed$
+	 * 
+	 * @throws Exception
+	 */
+	@Then("^I verify the state of PlayPause media item button is changed$")
+	public void IVerifyStateOfMediaControlButtonIsChanged() throws Exception {
+		if (previousMediaButtonState == null) {
+			throw new IllegalStateException(
+					"Please take a screenshot of previous button state first");
+		}
+		int ntry = 1;
+		double overlapScore = 1.0;
+		do {
+			final BufferedImage currentMediaButtonState = getDialogPage()
+					.getMediaControlButtonScreenshot();
+			overlapScore = ImageUtil.getOverlapScore(previousMediaButtonState,
+					currentMediaButtonState, ImageUtil.RESIZE_NORESIZE);
+			if (overlapScore < MAX_OVERLAP_SCORE) {
+				return;
+			}
+			Thread.sleep(1500);
+			ntry++;
+		} while (ntry <= 3);
+		throw new AssertionError(
+				String.format(
+						"It seems like the state of media control button has not been changed (%.2f >= %.2f)",
+						overlapScore, MAX_OVERLAP_SCORE));
 	}
 
 	/**
