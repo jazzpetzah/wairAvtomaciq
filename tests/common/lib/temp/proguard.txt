@@ -1,0 +1,18 @@
+# view AndroidManifest.xml #generated:18
+-keep class com.waz.zms.CallService { <init>(...); }
+
+# view AndroidManifest.xml #generated:29
+-keep class com.waz.zms.GcmBroadcastReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:19
+-keep class com.waz.zms.GcmNotifierService { <init>(...); }
+
+# view AndroidManifest.xml #generated:17
+-keep class com.waz.zms.SyncService { <init>(...); }
+
+# view AndroidManifest.xml #generated:22
+-keep class com.waz.zms.UpdateBroadcastReceiver { <init>(...); }
+
+# view AndroidManifest.xml #generated:20
+-keep class com.waz.zms.UpdateService { <init>(...); }
+
