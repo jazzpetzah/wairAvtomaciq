@@ -853,20 +853,9 @@ public class DialogPage extends AndroidPage {
 				ImageUtil.RESIZE_TO_MAX_SCORE);
 	}
 
-	public double getMediaControlIconOverlapScore(String label)
-			throws Exception {
-		getWait().until(ExpectedConditions.elementToBeClickable(playPauseBtn));
-		String path = null;
-		BufferedImage mediaImage = getElementScreenshot(playPauseBtn)
-				.orElseThrow(IllegalStateException::new);
-		if (label.equals(MEDIA_PLAY)) {
-			path = CommonUtils.getMediaPlayIconPath(DialogPage.class);
-		} else if (label.equals(MEDIA_PAUSE)) {
-			path = CommonUtils.getMediaPauseIconPath(DialogPage.class);
-		}
-		BufferedImage templateImage = ImageUtil.readImageFromFile(path);
-		return ImageUtil.getOverlapScore(mediaImage, templateImage,
-				ImageUtil.RESIZE_TO_MAX_SCORE);
+	public BufferedImage getMediaControlButtonScreenshot() throws Exception {
+		return getElementScreenshot(playPauseBtn).orElseThrow(
+				IllegalStateException::new);
 	}
 
 	public void tapPlayPauseMediaBarBtn() throws Exception {
