@@ -52,6 +52,14 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>2.47.1</version>
+
+            <!--conflicts with the newer netty import from akka-->
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -114,9 +122,30 @@
         </dependency>
 
         <dependency>
+            <groupId>romanb</groupId>
+            <artifactId>cryptobox-jni-osx</artifactId>
+            <version>0.3.1</version>
+            <type>tar.gz</type>
+        </dependency>
+
+        <dependency>
+            <groupId>com.wearezeta</groupId>
+            <artifactId>zmessaging-android</artifactId>
+            <version>43-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/lib/temp/classes.jar</systemPath>
+        </dependency>
+
+        <dependency>
             <groupId>actors</groupId>
             <artifactId>actors_2.11</artifactId>
-            <version>42-SNAPSHOT</version>
+            <version>43-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.wearezeta</groupId>
+                    <artifactId>zmessaging-android</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
@@ -140,17 +169,6 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-            <!--TODO read the examples on the android maven plugin github page (under test/projects/libraryprojects)-->
-            <plugin>
-                <groupId>com.simpligility.maven.plugins</groupId>
-                <artifactId>android-maven-plugin</artifactId>
-                <version>4.3.0</version>
-                <configuration>
-                    <sdk>
-                        <platform>19</platform>
-                    </sdk>
-                </configuration>
-            </plugin>
 
         </plugins>
 
@@ -161,4 +179,12 @@
             </resource>
         </resources>
     </build>
+    <repositories>
+        <repository>
+            <id>3rdparty</id>
+            <name>3rd party</name>
+            <url>http://192.168.10.18:8081/nexus/content/repositories/thirdparty/</url>
+            <layout>default</layout>
+        </repository>
+    </repositories>
 </project>

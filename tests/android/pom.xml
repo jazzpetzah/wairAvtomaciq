@@ -47,11 +47,13 @@
 			<version>3.3</version>
 		</dependency>
 
-		<dependency>
-			<groupId>com.google.android</groupId>
-			<artifactId>android</artifactId>
-			<version>4.1.1.4</version>
-		</dependency>
+        <!-- this includes the android package -->
+        <!-- TODO have it depend on the latest android jar that always matches the robolectric version -->
+        <dependency>
+            <groupId>org.robolectric</groupId>
+            <artifactId>android-all</artifactId>
+            <version>5.0.0_r2-robolectric-1</version>
+        </dependency>
 
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -82,12 +84,24 @@
 			<groupId>org.seleniumhq.selenium</groupId>
 			<artifactId>selenium-java</artifactId>
 			<version>2.44.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 
 		<dependency>
 			<groupId>io.appium</groupId>
 			<artifactId>java-client</artifactId>
 			<version>2.1.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.ow2.asm</groupId>
+                    <artifactId>asm</artifactId>
+                </exclusion>
+            </exclusions>
 		</dependency>
 
 		<dependency>
@@ -118,6 +132,7 @@
 			<artifactId>poi</artifactId>
 			<version>3.12-beta1</version>
 		</dependency>
+
 	</dependencies>
 
 	<build>
